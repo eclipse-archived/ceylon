@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -66,6 +67,24 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 "] (" + node.getAntlrTreeNode().getLine() + 
                 ":" + node.getAntlrTreeNode().getCharPositionInLine()  + 
                 ")");
+        if (node instanceof Tree.Primary) {
+            Declaration d = ((Tree.Primary) node).getDeclaration();
+            if (d!=null) {
+                print("  #" + d);
+            }
+        }
+        if (node instanceof Tree.Declaration) {
+            Declaration d = ((Tree.Declaration) node).getDeclarationModel();
+            if (d!=null) {
+                print("  #" + d);
+            }
+        }
+        if (node instanceof Tree.SimpleType) {
+            Declaration d = ((Tree.SimpleType) node).getDeclarationModel();
+            if (d!=null) {
+                print("  #" + d);
+            }
+        }
         if (node instanceof Tree.Term) {
             ProducedType type = ((Tree.Term) node).getTypeModel();
             if (type!=null) {
