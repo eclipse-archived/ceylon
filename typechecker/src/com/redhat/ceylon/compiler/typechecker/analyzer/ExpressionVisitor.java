@@ -837,7 +837,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         else {
             //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
             that.setTypeModel(that.getPrimary().getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
-            List<ParameterList> pls = ((Functional) mr.getDeclaration()).getParameterLists();
+            List<ParameterList> pls = ((Functional) that.getPrimary().getDeclaration()).getParameterLists();
             if (pls.isEmpty()) {
                 that.addError("receiver does not define a parameter list");
             }
