@@ -136,5 +136,7 @@ class Operators() {
     
     @error X()[].doIt();
     @error X()?.doIt();
+    
+    @type["Nothing"] local nnnn = none[0];
 
 }

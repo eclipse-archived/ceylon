@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -610,13 +611,18 @@ public class ExpressionVisitor extends Visitor {
             return null;
         }
         else if (isOptionalType(pt)) {
+            //Nothing|Nothing|T == Nothing|T
             return pt;
+        }
+        else if (pt.getDeclaration() instanceof BottomType) {
+            //Nothing|0 == Nothing
+            return getNothingDeclaration().getType();
         }
         else {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
-            types.add(getNothingDeclaration().getType());
-            types.add(pt);
+            addToUnion(types,getNothingDeclaration().getType());
+            addToUnion(types,pt);
             ut.setCaseTypes(types);
             return ut.getType();
         }
@@ -870,17 +876,17 @@ public class ExpressionVisitor extends Visitor {
             ProducedType st = pt.getSupertype(getCorrespondenceDeclaration());
             if (st==null) {
                 that.getPrimary().addError("illegal receiving type for index expression: " +
-                        pt.getProducedTypeName() + " is not Correspondence");
+                        pt.getProducedTypeName() + " is not of type: Correspondence");
             }
             else {
                 List<ProducedType> args = st.getTypeArgumentList();
                 ProducedType kt = args.get(0);
                 ProducedType vt = args.get(1);
-                ProducedType rt;
                 if (that.getElementOrRange()==null) {
                     that.addError("malformed index expression");
                 }
                 else {
+                    ProducedType rt;
                     if (that.getElementOrRange() instanceof Tree.Element) {
                         Tree.Element e = (Tree.Element) that.getElementOrRange();
                         ProducedType et = e.getExpression().getTypeModel();
