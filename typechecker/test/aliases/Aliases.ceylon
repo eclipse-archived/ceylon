@@ -2,7 +2,10 @@ class Aliases() {
     
     class C(String s) = Class<String>;
     @type["Class<String>"] C("hello");
+    @type["Class<String>"] C{s="hello";};
     C("hello").hello("gavin");
+    C{s="hello";}.hello{name="gavin";};
+    Class<String>{message="hello";}.hello{name="gavin";};
     C c = C("hello");
     c.hello("gavin");
     Class<String> csp = c;
