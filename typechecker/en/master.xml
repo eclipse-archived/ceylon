@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding="iso-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3CR3//EN"
+                      "../support/docbook-dtd/docbookx.dtd"
+
+[
+<!ENTITY introduction              SYSTEM "modules/introduction.xml">
+<!ENTITY declarations              SYSTEM "modules/declarations.xml">
+<!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
+<!ENTITY expressions               SYSTEM "modules/expressions.xml">
+<!ENTITY literals                  SYSTEM "modules/literals.xml">
+<!ENTITY operators                 SYSTEM "modules/operators.xml">
+<!ENTITY types                     SYSTEM "modules/types.xml">
+]>
+
+<book lang="en">
+
+    <bookinfo>
+        <title>Project Ceylon</title>
+        <subtitle>A Better Java</subtitle>
+        <releaseinfo>For internal discussion only</releaseinfo>
+    </bookinfo>
+
+    <toc/>
+
+    &introduction;
+    &declarations;
+    &statementblocks;
+    &expressions;
+    &literals;
+    &operators;
+    &types;
+
+</book>
+

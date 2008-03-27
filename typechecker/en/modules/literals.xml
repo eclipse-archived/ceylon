@@ -1,0 +1,443 @@
+<chapter id="literals">
+    <title>Literals</title>
+    
+    <para>Ceylon supports a special literal value syntax for each of the following types 
+    <literal>Integer</literal>, <literal>Float</literal>, <literal>String</literal>, 
+    <literal>Byte</literal>, <literal>Character</literal>, <literal>Boolean</literal>, 
+    <literal>Functor</literal> and <literal>Regex</literal>.
+    </para>
+    
+    <programlisting>Literal := 
+BooleanLiteral | 
+DatetimeLiteral | DateLiteral | TimeLiteral
+IntegerLiteral | FloatLiteral |
+CharacterLiteral | ByteLiteral | 
+StringLiteral | RegexLiteral |
+EnumerationLiteral |
+FunctorLiteral |
+"this" | "super"</programlisting>
+    
+    <section>
+        <title>Boolean literals</title>
+        
+        <para>A boolean literal has this form:</para>
+        
+        <programlisting>BooleanLiteral := "true" | "false"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Boolean found = false;</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>Boolean found = lang.Boolean.FALSE;</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Datetime literals</title>
+        
+        <para>A datetime literal has the form:</para>
+        
+        <programlisting>DatetimeLiteral := "now"</programlisting>
+        
+        <programlisting>DateLiteral := 
+SINGEQUOTE 
+Digit{1,2} SLASH Digit{1,2} SLASH DIGIT{4} 
+SINGEQUOTE</programlisting>
+        
+        <programlisting>TimeLiteral := 
+SINGEQUOTE 
+Digit{1,2} COLON Digit{2} ( COLON DIGIT{2} ( COLON DIGIT{3} )? )? 
+(SPACE "AM"|"PM")? 
+(SPACE Character{3,4})? 
+SINGEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Datetime datetime = now;</programlisting>
+        <programlisting>Date date = '25/03/2005';</programlisting>
+        <programlisting>Time time = '12:00 AM PST';</programlisting>
+        
+        <para>Datetimes may be composed from dates and times using the <literal>@</literal> operator.</para>
+        
+        <programlisting>Datetime datetime = '25/03/2005' @ '12:00 AM PST';</programlisting>
+        
+        <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
+        <literal>years</literal>, <literal>months</literal>, <literal>days</literal>, <literal>weeks</literal>
+        of the <literal>Integer</literal> class let us construct durations.</para>
+        
+        <programlisting>Duration&lt;Time&gt; duration = 12.hours + 34.minutes;</programlisting>
+        <programlisting>Duration&lt;Date&gt; duration = 1.year + 2.months + 3.days;</programlisting>
+        
+        <para>Durations may be composed using the arithmetic operators <literal>+</literal>, 
+        <literal>-</literal>, <literal>*</literal> and <literal>/</literal>.</para>
+        
+        <programlisting>Duration&lt;Time&gt; duration = 1.seconds / 10 - 1.seconds / 1000;</programlisting> 
+        
+        <para>The methods <literal>before()</literal> and <literal>after()</literal> let us add and
+        subtract durations to and from datetimes.</para>
+        
+        <programlisting>Time time = 10.seconds.before('12:00 AM');</programlisting>
+        <programlisting>Date date = 1.week.after('2/9/1974');</programlisting>
+        
+        <para>The <literal>..</literal> operator lets us construct intervals:</para>
+        
+        <programlisting>Interval&lt;Date&gt; timeRange = '0:0:00' .. '12:59:59 PM';</programlisting>
+        <programlisting>Interval&lt;Date&gt; dateRange = '1/1/2008' .. '31/12/2007';</programlisting>
+        <programlisting>Interval&lt;Datetime&gt; datetimeRange = '1/1/2008' @ '0:0:00' .. '31/12/2007' @ '12:59:59 PM';</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Integer literals</title>
+        
+        <para>An integer literal has this form:</para>
+        
+        <programlisting>IntegerLiteral = 
+Digit+ | 
+SINGLEQUOTE ( HexDigit{4} | HexDigit{8} ) SINGLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Integer i = i + 10;</programlisting>
+        
+        <programlisting>panel.backgroundColor = 'FF33';</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Float literals</title>
+        
+        <para>A float literal has this form:</para>
+        
+        <programlisting>FloatLiteral := 
+Digit+ PERIOD Digit+ 
+( ("E"|"e")? (PLUS|MINUS)? Digit+ )?</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Public Static Constant: Float PI = 3.14159;</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>public static final Float PI = new lang.Float(3.14159f);</programlisting>
+
+    </section>
+    
+    <section>
+        <title>String literals</title>
+        
+        <para>A string literal has this form:</para>
+        
+        <programlisting>StringLiteral = DOUBLEQUOTE ( Character+ | DOLLAR OPENBRACE Expression CLOSEBRACE )* DOUBLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>person.name = "Gavin";</programlisting>
+        
+        <programlisting>log.info("$(Time()) $message");</programlisting>
+        
+        <programlisting>String multilineString = "Strings may
+span multiple lines
+if you prefer.";</programlisting>
+        
+        <para>The first example is equivalent to this Java code:</para>
+        
+        <programlisting>person.name().set( new lang.String("Gavin") );</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Character literals</title>
+        
+        <para>A character literal has this form:</para>
+        
+        <programlisting>CharacterLiteral := SINGLEQUOTE Character SINGLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>if ( string[i] == '+' ) { ... }</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Byte literals</title>
+        
+        <para>A byte literal has this form:</para>
+        
+        <programlisting>ByteLiteral := SINGLEQUOTE ( BinaryDigit{8} | HexDigit{2} ) SINGLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Byte masked = b &amp; '01101001';</programlisting>
+        
+        <programlisting>Byte byte = 'A0';</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>Byte masked = b.and( new lang.Byte("01101001") );</programlisting>
+        
+        <programlisting>Byte byte = new lang.Byte("A0")</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Regex literals</title>
+        
+        <para>A regex literal has this form:</para>
+        
+        <programlisting>RegexLiteral := BACKTICK RegularExpression BACKTICK</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Boolean isEmail = email.matches( `^\w+@((\w+)\.)+$` );</programlisting>
+        
+        <programlisting>Integer quotedWords = `\W"w+"\W`.matcher(text).count();</programlisting>
+        
+        <para>The second example is equivalent to this Java code:</para>
+        
+        <programlisting>Integer quotedWords = new lang.Regex("\\W\"w+\"\\W").matcher(text).count();</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Functor literals</title>
+        
+        <para>A functor literal has this form:</para>
+        
+        <programlisting>FunctorLiteral :=
+(Type TypeParameters?)? 
+( VariableList FunctorBody? | OPENPAREN MethodPointer CLOSEPAREN )</programlisting>
+
+        <programlisting>FunctorBody := Block | MethodDirective | Expression</programlisting>
+        
+        <para>TODO: functor literal variable lists can't define default parameter values, they 
+        are defined by the functor declaration.</para>
+        
+        <!--  
+        <programlisting>VariableAndConditionList := OPENPAREN Variables? (COLON Condition)? CLOSEPAREN</programlisting>
+        -->
+
+        <para>For example:</para>
+        
+        <programlisting>Order&lt;Float&gt; order = Order&lt;Float&gt;(Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
+        
+        <programlisting>people.sort( Order&lt;Person&gt;(Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
+        
+        <programlisting>lineItems.sort( Order&lt;Float&gt;(lineItemComparator#compare) );</programlisting>
+        
+        <programlisting>people.select( Select&lt;Person&gt;(Person p) return p.age>18 )
+    .collect( Collect&lt;Person&gt;(Person p) return p.name );</programlisting>
+        
+        <!--  
+        <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
+        
+        <programlisting>people.select( Collect&lt;Person&gt;(Person p: p.age>18) );</programlisting>
+        -->
+        
+        <para>The functor type may be omitted in variable assignments, return directives or 
+        method parameters, if the type can be inferred.</para>
+        
+        <programlisting>Order&lt;Float&gt; order = (Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
+        
+        <programlisting>people.sort( (Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
+        
+        <programlisting>lineItems.sort( (lineItemComparator#compare) );</programlisting>
+        
+        <programlisting>people.select( (Person p) return p.age>18 )
+    .collect( (Person p) return p.name );</programlisting>
+        <!--  
+        <programlisting>people.collect( (Person p: p.age>18) return p.name; );</programlisting>
+        
+        <programlisting>people.select( (Person p: p.age>18) );</programlisting>
+        -->
+        
+        <para>Furthermore, if a method takes exactly one closure as its argument, the
+        parentheses may be eliminated in the method call:</para>
+        
+        <programlisting>amounts.sort(Float x, Float y) 
+{ 
+    return x&lt;=&gt;y; 
+}</programlisting>
+        
+        <programlisting>people.sort(Person x, Person y) 
+    return y.name&lt;=&gt;x.name;</programlisting>
+        
+        <programlisting>lineItems.sort(lineItemComparator#compare);</programlisting>
+        
+        <programlisting>people.select (Person p) { return p.age>18 }
+    .collect (Person p) { return p.name };</programlisting>
+        <!--  
+        <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
+        
+        <programlisting>people.select(Person p: p.age>18);</programlisting>
+        -->
+        
+        <!-- 
+        <para>Finally, if the functor has exactly one parameter, the variable list
+        may be eliminated.</para>
+        
+        <programlisting>people.select( return it.age>18 )
+    .collect( return it.name );</programlisting>
+         -->
+        
+        <para>The following code:</para>
+        
+        <programlisting>(0..10).each (Integer num) 
+    log.info(num);</programlisting>
+        
+        <para>Is equivalent to:</para>
+        
+        <programlisting>new Range&lt;Integer&gt;(0, 10).each( new Do() {
+        @Override Boolean call(Integer x) { 
+            ParentClass.this.log.info(num); 
+        } 
+    } );</programlisting>
+    
+        <para>This code:</para>
+        
+        <programlisting>Integer min = 0;
+Integer max = 0;
+List list = list.select(Integer x) 
+    return x > min &amp;&amp; x &lt; max;</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>Integer min = 0; 
+Integer max = 10; 
+List list = list.select( new Select(min, max) { 
+        final Integer min = (Integer) locals[0];
+        final Integer max = (Integer) locals[1];
+        @Override Boolean call(Integer x) { 
+            return x > min &amp;&amp; x &lt; max; 
+        } 
+    } );</programlisting>
+    
+        <section>
+        
+        <title>Possible extension</title>
+    
+        <para>The following code:</para>
+        
+        <programlisting>Integer min = 0;
+Integer max = 0;
+Integer count = 0;
+Integer size = list.each(Integer x) { 
+    if ( x > min ) count++; 
+    if ( x > max) max = x; 
+};</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>Integer min = 0; 
+Integer max = 0;
+Integer count = 0;
+final List list$1 = list;
+final Select functor$1 = new Do(min, max, count) { 
+        Integer min = (Integer) locals[0];
+        Integer max = (Integer) locals[1];
+        Integer count = (Integer) locals[2];
+        @Override Boolean call(Integer x) { 
+            if ( x > min ) count++; 
+            if ( x > max) max = x; 
+            locals[0] = min;
+            locals[1] = max;
+            locals[2] = count;
+        }
+    };
+final Integer result$1 = list$1.each(functor$1);
+final Object[] locals$1 = functor$1.locals();
+min = (Integer) locals[0];
+max = (Integer) locals[1];
+count = (Integer) locals[2];
+Integer size = result$1;</programlisting>
+
+        <para>Or, perhaps:</para>
+    
+        <programlisting>Integer min = 0; 
+Integer max = 0;
+Integer count = 0;
+final List list$1 = list;
+final Select functor$1 = new Select(min, max, count) { 
+        @Override Boolean call(Integer x) { 
+            if ( x > locals[0] ) locals[3]++; 
+            if ( x > locals[1] ) locals[1] = x; 
+        }
+    };
+final Integer result$1 = list$1.each(functor$1);
+final Object[] locals$1 = functor$1.locals();
+min = (Integer) locals[0];
+max = (Integer) locals[1];
+count = (Integer) locals[2];
+Integer size = result$1;</programlisting>
+
+        </section>
+    
+    </section>
+    
+    <section>
+        <title>Enumeration literals</title>
+        
+        <para>The following literal is supported, representing an
+        empty enumeration:</para>
+        
+        <programlisting>"none"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Enumeration&lt;String&gt; enum = none;</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>Enumeration&lt;String&gt; enum = collections.Enumeration.emptyEnumeration&lt;String&gt;();</programlisting>
+
+        <para>There are no true literals for lists, sets or maps. However, the
+        <literal>..</literal> and <literal>-></literal> operators, together with
+        the convenient enumeration constructor syntax help us achieve the desired 
+        effect.</para>
+
+        <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>
+        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
+                
+        <para>Enumerations are transparently converted to sets or maps,
+        allowing sets and maps to be initialized as follows:</para>
+        
+        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
+        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
+        <programlisting>OpenList&lt;String&gt; list = none;</programlisting>
+        
+    </section>
+
+    <section>
+        <title>Object literals</title>
+        
+        <para>There are no true literals for objects. Rather, there is a nice syntax 
+        for calling the class constructor, assigning attribute values (including 
+        constant attribute values) and (optionally) overriding methods and attributes. 
+        For example:</para>
+        
+        <programlisting>Person gavin = Person { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = Address { ... };
+    birthdate = Date { day = 25; month = MARCH; year = ... }
+    employer = jboss;
+};</programlisting>
+
+        <programlisting>Person gavin = Person(jboss) { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = Address { ... };
+    birthdate = Date { day = 25; month = MARCH; year = ... }
+};</programlisting>
+
+    </section>
+
+</chapter>

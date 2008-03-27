@@ -1,0 +1,1065 @@
+<chapter id="types">
+    <title>Basic types</title>
+    
+    <para>There are no primitive types in Ceylon, however, there are certain
+    important types provided by the package <literal>lang</literal>. Many
+    of these types support <emphasis>operators</emphasis>.</para>
+        
+    <section>
+        <title>The root type</title>
+        
+        <para>The <literal>lang.Object</literal> class is the root of the
+        type hierarchy and supports the binary operators <literal>==</literal> (equals),
+        <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
+        <literal>.</literal> (invoke), <literal>^.</literal> (chain invoke),
+        <literal>~></literal> (in), <literal>!~></literal> (not in), the unary prefix 
+        operator <literal>$</literal> (render), and the binary operator 
+        <literal>=</literal> (assign).</para>
+        
+        <para>In addition, references of type <literal>Nullable:Object</literal>
+        support the binary operators <literal>?.</literal> (nullsafe invoke) 
+        and <literal>default</literal>
+        <!-- and <literal>?:</literal> (null default) -->and the unary operator
+        <literal>exists</literal>, along with the binary operators 
+        <literal>==</literal> (equals), <literal>!=</literal> (not equals), 
+        <literal>===</literal> (identity equals) and <literal>=</literal> (assign).</para>
+        
+        <programlisting><![CDATA[Public Abstract: 
+class Object<X> {
+        
+    /**
+     * equals operator x == y
+     */
+    Public: Boolean equals(Object that) 
+        return this===that;    
+    Protected: Boolean equals(Object that, Attribute... attributes) { ... }
+    
+    Public: Integer hash return identityHash(this);
+    Protected: Integer hash(Attribute... attributes) { ... }
+        
+    /**
+     * unary render operator $x
+     */
+    Public: String string { ... }
+    
+    Public: Boolean in<Y>(Category<Y> cat)
+        where (Y<=X) 
+        return cat.contains(this);
+    
+    Public: Boolean in<Y>(Iterable<Y> iterable) 
+        where (Y<=X)
+        return for any ( Object elem in iterable ) 
+            elem == this;
+        
+    Public: Type<X> class { ... }
+    
+    Public: Boolean is(Type<?> type) 
+        return this.class.assignableTo(type);
+    
+    Public: T as<T>(Type<T> type) { ... }
+        
+    Protected Static Constant: Log log = Log(class);
+        
+    ...
+        
+}]]></programlisting>
+
+    </section>
+    
+    <section>
+        <title>Boolean values</title>
+        
+        <para>The <literal>lang.Boolean</literal> selector represents
+        boolean values, and supports the binary <literal>||, &amp;&amp;, =>,
+        |, &amp;, ^</literal> and unary <literal>!</literal> operators.</para>
+        
+        <programlisting>Public: 
+selector Boolean {
+
+    TRUE, FALSE;
+
+    /**
+     * binary or operator x | y
+     */
+    Public: Boolean or(Boolean boolean) { ... }
+    /**
+     * binary and operator x &amp; y
+     */
+    Public: Boolean and(Boolean boolean) { ... }
+    /**
+     * binary xor operator x ^ y
+     */
+    Public: Boolean xor(Boolean boolean) { ... }
+
+    /**
+     * unary not operator !x
+     */
+    Public: Boolean negation
+        return switch(this) {
+            case (TRUE) FALSE
+            case (FALSE) TRUE
+        };
+    
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Iterable objects and iterators</title>
+        
+        <para>The <literal>lang.Iterable&lt;X&gt;</literal> interface
+        represents a type that may be iterated over using a
+        <literal>lang.Iterator&lt;X&gt;</literal>. It supports the
+        binary operators <literal>*.</literal> (spread)<!--  ,
+        <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
+        (spread comparison)--> and <literal>*~></literal> (all in).</para>
+        
+        <programlisting>Public: 
+interface Iterable&lt;X&gt; {
+        
+    Public: Iterator&lt;X&gt; iterator();
+    
+}</programlisting>
+
+        <programlisting>Public: 
+interface Iterator&lt;X&gt; {
+
+    Public: Boolean more;
+    Public: X current;
+    Public: X next();
+    
+}</programlisting>
+
+        <para>The following decorator exists:</para>
+
+        <programlisting><![CDATA[Public: decorator Iterables<X> (Iterable<X> iterable) {
+
+    void each(Do<X> each) { ... }
+    Integer count(Test<X> test) { ... }
+    Boolean isAll(Test<X> test) { ... }
+    Boolean isAny(Test<X> test) { ... }
+    
+    Nullable: X first(Test<X> test) { ... }
+    
+    Y accumulate<Y>(Y initial, Accumulate<Y,X> accumulate) { ... }
+    
+    Collection<X> select(Test<X> test) { ... }
+    Collection<X> reject(Test<X> test) { ... }
+    
+    Bag<Y> transform<Y>(Transform<X, Y> transform) { ... }
+    List<Y> transform<Y>(Transform<X, Y> transform, Compare<X,Y> compare) { ... }
+    Set<Y> collect<Y>(Transform<X, Y> transform) { ... }
+    Map<X, Y> map<Y>(Transform<X, Y> transform) { ... }
+    List<X> list(Compare<X,Y> compare) { ... }
+    
+}]]></programlisting>
+
+        <programlisting>Public: void functor Do&lt;X&gt;(X element);</programlisting>
+        <programlisting>Public: Boolean functor Test&lt;X&gt;(X element);</programlisting>
+        <programlisting>Public: Y functor Transform&lt;X,Y&gt;(X element);</programlisting>
+        <programlisting>Public: Y functor Accumulate&lt;X,Y&gt;(Y current, X element);</programlisting>
+        <programlisting>Public: Comparison functor Compare&lt;X&gt;(X x, Y y);</programlisting>
+        
+        <para>Some iterable objects may support element removal
+        during iteration.</para>
+        
+        <programlisting>Public: 
+Iterable&lt;X&gt;
+interface OpenIterable&lt;X&gt; {
+        
+    Public: OpenIterator&lt;X&gt; iterator();
+    
+}</programlisting>
+
+        <programlisting>Public: 
+OpenIterator&lt;X&gt;    
+interface OpenIterator&lt;X&gt; {
+
+    Public: void remove();
+    
+}</programlisting>
+
+        <programlisting><![CDATA[Public: decorator OpenIterables (OpenIterable iterable) {
+
+    Integer remove(Test<X> test) { ... }
+    Integer retain(Test<X> test) { ... }
+    
+}]]></programlisting>
+
+    </section>
+    
+    <section>
+        <title>Cases</title>
+        
+        <para>The interface <literal>Case&lt;X&gt;</literal> represents a
+        type that may be used as a case in the <literal>switch</literal>
+        construct.</para>
+        
+        <programlisting>Public: 
+interface Case&lt;X&gt; {
+
+    Boolean test(X value);
+    
+}</programlisting>        
+        
+    </section>
+    
+    <section>
+        <title>Usables</title>
+        
+        <para>The interface <literal>Usable</literal> represents an
+        object with a lifecycle controlled by the <literal>using</literal>
+        construct.</para>
+        
+        <programlisting>Public: 
+interface Usable {
+
+    void begin();
+    void end();
+    void end(Exception e);
+    
+}</programlisting>        
+       
+    </section>
+    
+    <section>
+        <title>Category, Correspondence and Container</title>
+        
+        <para>The interface <literal>lang.Category</literal> represents
+        the abstract notion of an object that contains other objects.</para>
+        
+        <programlisting>Public: 
+interface Category&lt;X&gt; {
+    
+    Boolean contains(X element);
+
+}</programlisting>
+
+        <programlisting>Public:
+decorator Categories&lt;X&gt;(Category&lt;X&gt; category) {
+    Boolean contains(Iterable&lt;X&gt; elements) 
+        return for all (X x in elements) 
+            category.contains(x); 
+}</programlisting>
+
+        <para>There is a mutable subtype, representing a category to which 
+        objects may be added.</para>
+        
+        <!-- Catalog -->
+        
+        <programlisting>Public: 
+Category&lt;X&gt;
+interface OpenCategory&lt;X&gt; {
+    
+    Boolean add(X element);
+
+}</programlisting>
+
+        <programlisting>Public:
+decorator OpenCategories&lt;X&gt;(OpenCategory&lt;X&gt; category) {
+    Boolean add(Iterable&lt;X&gt; elements) 
+        find (Boolean added = false)
+            for (X x in elements) 
+                added |= category.add(x); 
+}</programlisting>
+
+        <para>The interface <literal>lang.Correspondence</literal> represents
+        the abstract notion of an object that maps value of one type to values
+        of some other type. It supports the binary operator
+        <literal>[key]</literal> (lookup).</para>
+        
+        <programlisting>Public: 
+interface Correspondence&lt;U, V&gt; {
+    
+    /**
+     * lookup operator x[key]
+     */
+    V value(U key);
+    
+    Boolean defines(U key);
+    
+}</programlisting>
+
+        <programlisting>Public:
+decorator Correspondences&lt;X&gt;(Correspondence&lt;X&gt; correspondence) {
+
+    /**
+     * lookup operator x[keys]
+     */
+    List&lt;V&gt; values(List&lt;U&gt; keys)
+        return for (U key in keys) 
+            correspondence.lookup(key);
+    
+    /**
+     * lookup operator x[keys]
+     */
+    Set&lt;V&gt; values(Set&lt;U&gt; keys)
+        return ( for (U key in keys) correspondence.lookup(key) ).elements;
+    
+    Boolean defines(Collection&lt;U&gt; keys)
+        return for (U key in keys) 
+                if ( !correspondence.defines(key) ) found false
+            fail true;
+    
+}</programlisting>
+
+        <para>There is a mutable subtype, representing a correspondence
+        for which new mappings may be defined, and existing mappings 
+        modified. It provides for the use of element expressions in
+        assignments.</para>
+        
+        <!-- Association -->
+
+        <programlisting>Public: 
+Correspondence&lt;U, V&gt; 
+interface OpenCorrespondence&lt;U, V&gt; {
+        
+    /**
+     * element assignment x[key] = value
+     */
+     Nullable: V define(U key, V value);
+     
+    void define(Map&lt;U, V&gt; definitions);
+    
+}</programlisting>
+
+        <para>The interface <literal>lang.Container</literal> represents
+        the abstract notion of an object that may be empty. It supports 
+        the unary postfix operator <literal>nonempty</literal><!--and
+        the binary operator <literal>??:</literal> (empty default)-->.</para>
+        
+        <!-- Holder -->
+        
+        <programlisting>Public:
+interface Container {
+        
+    /**
+     * negation of non-empty operator x??
+     */
+    Boolean empty;
+    
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Entries</title>
+        
+        <para>The <literal>Entry</literal> class represents a pair of 
+        associated objects.</para>
+
+        <para>Entries may be constructed using the <literal>-></literal> 
+        operator:</para>
+
+            <programlisting><![CDATA[Public: 
+class Entry<U,V>(U key, V value) {
+
+    Public Constant: U key = key;
+    Public Constant: V value = value;
+    
+    Override Public: Boolean equals(Object that)
+        return equals(that, Entry#key, Entry#value);
+        
+    Override Public: Integer hash 
+        return hash(Entry#key, Entry#value);
+
+}]]></programlisting>
+
+   <section>
+   </section>
+            
+
+    </section>
+    
+    <section>
+        <title>Collections</title>
+        
+        <para>The interface <literal>lang.Collection</literal> is the 
+        root of the Ceylon collections framework.</para>
+        
+        <programlisting><![CDATA[Public: 
+Iterable<X>
+Category<X> 
+Container
+interface Collection<X> {
+    
+    Integer size;
+
+    Integer count(X element);
+    
+    Set<X> elements;
+
+    OpenCollection<X> copy();
+    
+}]]></programlisting>
+
+        
+        <para>Mutable collections implement <literal>lang.OpenCollection</literal>:</para>
+        
+        <!-- Container -->
+        
+        <programlisting><![CDATA[Public:
+OpenIterable<X>
+OpenCategory<X>
+Collection<X>
+interface OpenCollection<X> {
+    
+    Boolean clear();
+
+    Boolean remove(X element);
+    Integer remove(Collection<X> elements);    
+    Integer retain(Collection<X> elements);    
+
+}]]></programlisting>
+
+        <section>
+            <title>Sets</title>
+            
+            <para>Sets implement the following interface,
+            and support the binary operators <literal>+</literal>
+            (union), <literal>~</literal> (intersect), 
+            <literal>-</literal> (complement),
+            <literal>>=</literal> (superset),
+            <literal>&lt;=</literal> (subset),
+            <literal>></literal> (proper superset) and
+            <literal>&lt;</literal> (proper subset),
+            in addition to inherited operators:</para>
+            
+            <programlisting><![CDATA[Public:  
+Collection<X>
+Correspondence<X, Boolean> 
+interface Set<X> {
+    
+    /**
+     * union operator x + y
+     */
+    Set<X> union(Set<X> set);
+    
+    /**
+     * intersect operator x % y
+     */
+    Set<X> intersection(Set<X> set);
+    
+    /**
+    * complement operator x - y
+    */
+    Set<X> complement(Set<X> set);
+    
+    /**
+     * superset operator x > y
+     */
+    Boolean superset(Set<X> set);
+    
+    /**
+     * subset operator x < y
+     */
+    Boolean subset(Set<X> set);
+    
+    OpenSet<X> copy();
+
+    //Set<X> select(Test<X> test);
+    //Set<X> reject(Test<X> test);
+    
+}]]></programlisting>
+
+            <para>There is a mutable subtype:</para>
+            
+            <!-- Selection -->
+            
+            <programlisting><![CDATA[Public: 
+Set<X>
+OpenCollection<X>
+OpenCorrespondence<X, Boolean> 
+interface OpenSet<X> {}]]></programlisting>
+
+        </section>
+        
+        <section>
+            <title>Lists</title>
+            
+            <para>Lists implement the following interface, and support 
+            the binary operators <literal>+</literal> (join),
+            <!--<literal>&lt;&lt;, >></literal> (left, right shift),-->
+            <literal>[...j], [i...]</literal> (lower, upper range) and the 
+            ternary operator <literal>[i..j]</literal> (subrange) in addition
+            to operators inherited from <literal>Collection</literal>
+            and <literal>Correspondence</literal>:</para>
+            
+            <programlisting><![CDATA[Public:
+Collection<X>
+Correspondence<Integer, X>
+interface List<X> {
+    
+    X first;    
+    X last;
+    
+    Nullable: X firstOrNull;    
+    Nullable: X lastOrNull;
+    
+    Integer firstIndex;
+    Integer lastIndex;
+    
+    Integer firstIndex(X element);
+    Integer lastIndex(X element);
+    
+    List<X> head();
+    List<X> tail();
+    List<X> head(Integer to);
+    List<X> tail(Integer from);
+    
+    /**
+     * range operator x[from..to] 
+     */
+    List<X> range(Integer from, Integer to);
+
+    /**
+     * join operator x + y
+     */
+    List<X> join(List<X> elements);
+    
+    /**
+     * left shift operator &lt;&lt;
+     */
+    List<X> shiftLeft(Integer places);
+    
+    /**
+     * right shift operator >>
+     */
+    List<X> shiftRight(Integer places);
+    
+    List<X> sublist(Integer from, Integer to);
+    
+    List<X> reversed();
+    
+    OpenList<X> copy();
+
+    //List<X> select(Test<X> test);
+    //List<X> reject(Test<X> test);
+    
+}]]></programlisting>
+
+            <para>There is a mutable subtype:</para>
+            
+            <!-- Enumeration -->
+            
+            <programlisting><![CDATA[Public: 
+List<X>
+OpenCollection<X> 
+OpenCorrespondence<Integer, X> 
+interface OpenList<X> {
+
+    void prepend(X element);
+    void prepend(List<X> elements);
+    void append(X element);
+    void append(List<X> elements);
+
+    void insert(Integer key, X element);
+    void truncate(Integer from, Integer to);
+    
+    X removeFirst();
+    X removeLast();
+    
+    void reverse();
+    void sort(Compare<X,Y> compare);
+    
+    OpenList<X> sublist(Integer from, Integer to);
+    
+}]]></programlisting>
+            
+        </section>
+            
+        <section>
+            <title>Maps</title>
+            
+            <para>Maps implement the following interface:</para>
+            
+            <programlisting><![CDATA[Public:  
+Collection<Entry<U,V>> 
+Correspondence<U, V>
+interface Map<U,V> {
+    
+    Set<U> keys;
+    Bag<V> values;    
+    Map<V, Set<U>> inverse;
+    
+    Nullable: V valueOrNull(U key);
+
+    //Set<Entry<U,V>> entries;
+    
+    OpenMap<X> copy();
+    
+    //Map<U,V> select(Test<Entry<U,V>> test);
+    //Map<U,V> reject(Test<Entry<U,V>> test);
+    
+}]]></programlisting>
+
+            <para>There is a mutable subtype:</para>
+            
+            <!-- Dictionary -->
+            
+            <programlisting><![CDATA[Public: 
+Map<U,V>
+OpenCollection<Entry<U,V>>
+OpenCorrespondence<U, V> 
+interface OpenMap<U,V> {
+    
+    OpenSet<U> keys;
+    OpenBag<V> values;
+    OpenMap<V, Set<U>> inverse;
+
+    Integer removeKeys(Collection<U> keys);
+    Integer retainKeys(Collection<U> keys);
+    
+}]]></programlisting>
+            
+        </section>
+        
+        <section>
+            <title>Bags</title>
+            
+            <para>Bags implement the following interface:</para>
+            
+            <programlisting><![CDATA[Public:
+Collection<X>
+Correspondence<X, Integer>
+interface Bag<X> {
+    
+    OpenBag<X> copy();
+    
+}]]></programlisting>
+
+            <para>There is a mutable subtype:</para>
+            
+            <!-- Inventory -->
+            
+            <programlisting><![CDATA[Public: 
+Bag<X>
+OpenCollection<X>
+OpenCorrespondence<X, Integer>
+interface OpenBag<X> {}]]></programlisting>
+            
+        </section>
+        
+    </section>
+    
+    <section>
+        <title>Ordered values</title>
+        
+        <para>The <literal>lang.Comparable&lt;T&gt;</literal> interface 
+        represents totally ordered types, and supports the binary operators 
+        <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
+        (compare).</para>
+        
+        <programlisting>Public: interface Comparable&lt;T&gt; {
+    
+    /**
+     * compare operator &lt;=&gt;
+     */
+    Public: Comparison compare(T other);
+    
+}</programlisting>
+        
+        <programlisting>Public: selector Comparison { 
+    LARGER, SMALLER, EQUAL;
+    Public: Boolean larger return this==BIGGER;
+    Public: Boolean smaller return this==SMALLER;
+    Public: Boolean equal return this==EQUAL;
+    Public: Boolean unequal return this!=EQUAL;
+    Public: Boolean largeAs return this!=SMALLER;
+    Public: Boolean smallAs return this!=LARGER;
+}</programlisting>
+
+        <para>The <literal>lang.Ordinal&lt;T&gt;</literal> interface 
+        represents objects in a sequence, and supports the binary
+        operator <literal>..</literal> (range) and postfix unary 
+        operators <literal>++</literal> (successor) and 
+        <literal>--</literal> (predecessor). In addition, variables 
+        support the prefix unary operators <literal>++</literal> 
+        (increment) and <literal>--</literal> (decrement).</para>
+        
+        <programlisting>Public: interface Ordinal&lt;T&gt; {
+
+    //unary "++" operator 
+    Public: T successor;
+    
+    //unary "--" operator 
+    Public: T predecessor;
+    
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Ranges and enumerations</title>
+        
+        <para>Ranges and enumerations both implement <literal>List</literal>,
+        therefore they support the join, subrange, contains and lookup operators, 
+        among others. Ranges may be constructed using the <literal>..</literal> 
+        operator:</para> 
+        
+        <programlisting>Public: 
+List&lt;X&gt; 
+Case&lt;X&gt;
+class Range&lt;X&gt;(X first, X last) 
+    where (X>=Ordinal &amp; X>=Comparable) { 
+
+    Public: X first = first;
+    Public: X last = last;
+    
+    ... 
+    
+}</programlisting>
+
+        <para>Enumerations represent an explicit list of values and may be constructed 
+        using a simplified syntax:</para>
+        
+        <programlisting>Public: 
+List&lt;X&gt; 
+Case&lt;X&gt;
+class Enumeration&lt;X&gt;(X... values) { 
+    
+    ... 
+
+    Static: Enumeration&lt;Y&gt; emptyEnumeration() return ...;
+    
+}</programlisting>
+
+        <para>Enumerations may be freely converted to sets or maps:</para>
+        
+        <programlisting>Public: 
+Map&lt;U, V&gt; converter EnumerationToMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum)
+    return ...;</programlisting>
+
+        <programlisting>Public: 
+Set&lt;X&gt; converter EnumerationToSet(Enumeration&lt;X&gt; enum)
+    return ...;</programlisting>
+
+        <programlisting>Public: 
+OpenMap&lt;U, V&gt; converter EnumerationToOpenMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum)
+    return ...;</programlisting>
+
+        <programlisting>Public: 
+OpenSet&lt;X&gt; converter EnumerationToOpenSet(Enumeration&lt;X&gt; enum)
+    return ...;</programlisting>
+
+        <programlisting>Public: 
+OpenList&lt;X&gt; converter EnumerationToOpenList(Enumeration&lt;X&gt; enum)
+    return ...;</programlisting>
+
+        <para>Furthermore, any object may be transparently promoted to an enumeration:</para>
+        
+        <programlisting>Enumeration&lt;T&gt; 
+converter ObjectToEnumeration(Object object): 
+    return Enumeration(object);</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Characters, character strings and ranges</title>
+        
+        <para>Characters are represented by the following class:</para>
+
+        <programlisting>Public: 
+Ordinal&lt;Character&gt;
+Comparable&lt;Character&gt;
+Case&lt;Character&gt;
+class Character { ... }</programlisting>
+        
+        <para>Strings implement <literal>List</literal>, therefore they 
+        support the join, subrange, contains and lookup operators, 
+        among others. Ranges may be constructed using the <literal>..</literal> 
+        operator:</para> 
+                
+        <programlisting>Public: 
+Comparable&lt;String&gt; 
+List&lt;Character&gt; 
+Case&lt;String&gt;
+class String(Character... characters) {
+
+    Public: List&lt;Character&gt; characters = characters;
+    
+    ... 
+    
+    Public: Iterable&lt;String&gt; tokens(Iterable&lt;Character&gt; separators=" ,;:") return ...;
+    Public: String join(String... strings);
+    Public: String join(Iterable&lt;String&gt; strings);
+    
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Regular expressions</title>
+        
+        <programlisting>Public:
+Case&lt;String&gt;
+class Regex { 
+    List&lt;Match&gt; matchList(String string);
+    Boolean matches(String string);
+    ... 
+}</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Numbers</title>
+        
+        <para>
+        The <literal>lang.Number&lt;T&gt;</literal> interface 
+        represents numeric values, and supports the binary operators 
+        <literal>+,-, *, /, %</literal>, and the unary prefix operators 
+        <literal>-, +</literal>. In addition, variables of type 
+        <literal>lang.Number</literal> support 
+        <literal>+=, -=, /=, *=</literal>.
+        </para>
+        
+        <programlisting>Public: 
+Comparable&lt;Number&lt;?&gt;&gt;
+Ordinal&lt;T&gt;
+interface Number&lt;T&gt; {
+    
+    //binary "+" operator
+    Public: T add(T number);
+    Public: Number add(Number number);
+
+    //binary "-" operator
+    Public: T subtract(T number);
+    Public: Number subtract(Number number);
+
+    //binary "*" operator
+    Public: T multiply(T number);
+    Public: Number multiply(Number number);
+
+    //binary "/" operator
+    Public: T divide(T number);
+    Public: T divide(Number number);
+    
+    //binary "%" operator
+    Public: T remainder(T number);
+    Public: T remainder(Number number);
+    
+    //unary "-" operator 
+    Public: T inverse;
+    
+    Public: Boolean integral;
+    Public: Boolean positive;
+    Public: Boolean negative;
+    Public: Boolean zero;
+    Public: Boolean unit;
+    
+    Public: Exact exact;
+    Public: Whole whole;
+    Public: Natural natural;
+    Public: Integer integer;
+    Public: Float float;
+    Public: Double double;
+    Public: Long long;
+
+    Public: Exact fractionalPart;
+    Public: Integer scale;
+    Public: Integer precision;
+    
+}</programlisting>
+
+        <programlisting>Public Final:
+Number&lt;Natural&gt; 
+Case&lt;Natural&gt;
+class Natural {
+    ...
+}</programlisting>
+
+        <programlisting>Public Final:
+Number&lt;Integer&gt; 
+Case&lt;Integer&gt;
+class Integer {
+    ...
+    
+    Public: void times(Iteration iteration) { ... }
+    Public: void upto(Integer max, Iteration iteration) { ... }
+    Public: void downto(Integer min, Iteration iteration) { ... }
+    
+}</programlisting>
+
+        <programlisting>Public Final:
+Number&lt;Long&gt; 
+Case&lt;Long&gt;
+class Long {
+    ...
+}</programlisting>
+
+        <programlisting>Public Final: 
+Number&lt;Float&gt;
+class Float {
+    ...
+}</programlisting>
+
+        <programlisting>Public Final: 
+Number&lt;Double&gt;
+class Double {
+    ...
+}</programlisting>
+
+        <programlisting>Public:
+Number&lt;Exact&gt; 
+class Exact {
+    ...
+}</programlisting>
+
+        <programlisting>Public:
+Number&lt;Whole&gt;
+Case&lt;Whole&gt;
+class Whole {
+    ...
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Instants, intervals and durations</title>
+        
+        <programlisting>Public:
+class Instant {
+    ...
+}</programlisting>
+
+        <programlisting>Public:
+class Time extends Instant {
+    Constant: Integer hours;
+    Constant: Integer minutes;
+    Constant Nullable: Integer seconds;
+    Constant Nullable: Integer milliseconds;
+    Nullable: Timezone timezone;
+    ...
+}</programlisting>
+        
+        <programlisting>Public:
+class Date extends Instant {
+    Constant: Integer year;
+    Constant: Integer month;
+    Constant: Integer day;
+    ...
+}</programlisting>
+        
+        <programlisting>Public:
+class Datetime extends Instant(Time time, Date date) {
+    Constant: Time time = time;
+    Constant: Date date = date;
+    ...
+}</programlisting>
+        
+        <programlisting>Public:
+class Interval&lt;X&gt;(X start, X end) 
+where (X >= Instant) {
+    Constant: X start = start;
+    Constant: X end = end;
+    ...
+}</programlisting>
+
+        <programlisting>Public:
+class Duration&lt;X&gt;(Map&lt;Granularity&lt;X&gt;,Integer&gt; magnitude) 
+where (X >= Instant) {
+
+    Constant: Map&lt;Granularity&lt;X&gt;,Integer&gt; magnitude = magnitude;
+    
+    X before(X instant) { ... }
+    X after(X instant) { ... }
+    
+    Datetime before(Datetime instant) { ... }
+    Datetime after(Datetime instant) { ... }
+    
+    Duration&lt;X&gt; add(Duration&lt;X&gt; duration) { ... }
+    Duration&lt;X&gt; subtract(Duration&lt;X&gt; duration) { ... }
+    
+    ...
+}</programlisting>
+
+        <programlisting>Public: interface Granularity&lt;X&gt; where (X >= Instant) {}</programlisting>
+
+        <programlisting>Public:
+Granularity&lt;Date&gt;
+selector DateGranularity { 
+    YEAR, MONTH, WEEK, DAY
+}</programlisting>
+
+        <programlisting>Public:
+Granularity&lt;Time&gt;
+selector TimeGranularity { 
+    HOUR, MINUTE, SECOND, MILLISECOND
+}</programlisting>
+
+        
+    </section>
+    
+    <section>
+        <title>Binary values</title>
+        
+        <para>The <literal>lang.Binary&lt;T&gt;</literal> interface represents
+        binary values<!--, and supports the binary <literal>|||, &amp;&amp;&amp;, ^^^</literal> 
+        operators and the unary <literal>~</literal> operator, along with the 
+        operators inherited from <literal>List&lt;Boolean&gt;</literal>-->.</para>
+        
+        <programlisting>Public: 
+List&lt;Boolean&gt; 
+interface Binary&lt;T&gt; {
+    
+    Public: T and(T binary);
+    Public: T or(T binary);
+    Public: T xor(T binary);    
+    Public: T complement;
+    
+}</programlisting>
+
+        <programlisting>Public:
+Binary&lt;Byte&gt; 
+class Byte {
+    ...
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Primitive type optimization</title>
+        
+    <para>For certain types, the Ceylon compiler is permitted to transform
+    variable declarations to Java primitive types, literal values to Java literals, 
+    and operator invocations to use of native Java operators, as long as the
+    transformation does not affect the semantics of the code.</para>
+    
+    <para>For this example:</para>
+    
+    <programlisting>Integer calc(Integer j) {
+    Integer i = list.size();
+    i++;
+    return i * j + 1000;
+}</programlisting>
+    
+    <para>the following equivalent Java code is acceptable:</para>
+    
+    <programlisting>Integer calc(Integer j) {
+    int i = list.size();
+    i++;
+    return new Integer( i * lang.Util.intValue(j) + 1000 );
+}</programlisting>
+
+    <para>The following optimizations are allowed:</para>
+    
+    <itemizedlist>
+        <listitem><literal>lang.Integer</literal> to Java <literal>int</literal></listitem>
+        <listitem><literal>lang.Long</literal> to Java <literal>long</literal></listitem>
+        <listitem><literal>lang.Float</literal> to Java <literal>float</literal></listitem>
+        <listitem><literal>lang.Double</literal> to Java <literal>double</literal></listitem>
+        <listitem><literal>lang.Boolean</literal> to Java <literal>boolean</literal></listitem>
+    </itemizedlist>
+    
+    <para>However, these optimizations may never be performed for variables, attributes
+    or method types declared <literal>Nullable</literal>.</para>
+    
+    <para>The following operators may be optimized: 
+    <literal>+, -, *, /, ++, --, +=, -=, *=, /=, 
+    &gt;, &lt;, &lt;=, &gt;=, ==, &amp;&amp;, ||, !</literal>.</para>
+    
+    <para>Finally, integer, float and boolean literals may be optimized.</para>
+    
+    </section>
+    
+</chapter>

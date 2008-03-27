@@ -1,0 +1,422 @@
+<chapter id="expressions">
+    <title>Expressions</title>
+    <!--  
+    <programlisting>items.accumulate&lt;Float&gt;( 0.0, (Float sum, Item i): sum+i.amount )</programlisting>
+    -->
+    
+    <section>
+        <title>Invocations</title>
+        
+        <para>Methods, classes, class instances and functors are <emphasis>invokable</emphasis>.
+        Invocation of a class is called <emphasis>instantiation</emphasis>. Invocation of a
+        class instance is called <emphasis>attribute configuration</emphasis>.</para>
+        
+        <para>Any invocation must specify values for parameters, either by listing or naming 
+        parameter values. Required parameters must be specified. Optional parameters and
+        varargs may also be specified.</para>
+        
+        <programlisting>ParameterValueSet := ParameterValueList | NamedParameterValueList</programlisting>
+        
+        <para>When parameter values are listed, required parameters are assigned first, in the order
+        in which they were declared, followed by optional parameters, in the order they were declared.
+        If there are any remaining optional parameters, they will be assigned their default values.
+        On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
+            
+        <programlisting>ParameterValueList := OPENPAREN ( ParameterValue (COMMA ParameterValue)* )? CLOSEPAREN</programlisting>
+        
+        <programlisting>ParameterValue := Expression</programlisting>
+        
+        <para>When parameter values are named, required and optional parameter values are specified 
+        by name. Vararg parameter values are specified by listing them.</para>
+
+        <programlisting>NamedParameterValueList := 
+OPENBRACE 
+NamedParameterValue* 
+( VarargParameterValue (COMMA VarargParameterValue)* )? 
+CLOSEBRACE</programlisting>
+
+        <programlisting>NamedParameterValue := Identifier Initializer SEMICOLON</programlisting>
+
+        <programlisting>VarargParameterValue := Expression | Variable Initializer | ForExpression</programlisting>
+        
+        <para>A vararg parameter may be a local variable declaration. Multiple vararg parameters may be
+        constructed using a <literal>for</literal> comprehension.</para>
+        
+        <para>TODO: should there be a special syntax to "spread" the values of a list into vararg
+        parameters, eg. <literal>*list</literal>.</para>
+        
+        <section>
+            <title>Method invocation</title>
+            
+            <para>Method invocations follow the following schema.</para>
+            
+            <programlisting>MethodInvocation := (Expression DOT)? Identifier ParameterValueSet</programlisting>
+            
+            <para>For example:</para>
+            
+            <programlisting>log.info("Hello world!")</programlisting>
+            <programlisting>log.info { message = "Hello world!"; }</programlisting>
+            <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
+            <programlisting>printer.print { "Names: ", for (Person p in people) p.name }</programlisting>
+            
+            <para>The value of a method invocation is the return value of the method.
+            The parameter values are passed to the formal parameters of the method.</para>
+            
+        </section>
+        
+        <section>
+            <title>Static method invocation</title>
+            
+            <para>Static method invocations follow the following schema.</para>
+            
+            <programlisting>StaticMethodInvocation := (Type DOT)? Identifier ParameterValueSet</programlisting>
+            
+            <para>For example:</para>
+            
+            <programlisting>HashCode.calculate(DEFAULT, firstName, initial, lastName)</programlisting>
+            <programlisting>HashCode.calculate { algorithm=DEFAULT; firstName, initial, lastName }</programlisting>
+            
+            <para>The value of a static method invocation is the return value of the static method.
+            The parameter values are passed to the formal parameters of the method.</para>
+            
+        </section>
+        
+        <section>
+            <title>Class instantiation</title>
+            
+            <para>Classes may be instantiated according to the following schema:</para>
+            
+            <programlisting>Instantiation := Type ParameterValueSet</programlisting>
+            
+            <para>For example:</para>
+            
+            <programlisting>Map&lt;String, Person&gt;(entries)</programlisting>
+            <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
+            <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
+            
+            <programlisting>Panel {
+	label = "Hello";
+	Input i = Input(),
+	Button {
+		label = "Hello";
+		action = () {
+			log.info(i.value);
+		}
+	}
+}</programlisting>
+            
+            <para>The value of a class instantiation is a new instance of the class.
+            The parameter values are passed to the initialization parameters of the 
+            class. If the class has no initialization parameters, they are assigned
+            directly to attributes of the class (in this case, named parameters must 
+            be used).</para>
+            
+        </section>
+            
+        <section>
+            <title>Enumeration instantiation</title>
+            
+            <para>Enumerations may be instantiated according to the following 
+            simplified syntax:</para>
+            
+            <programlisting>EnumerationInstantiation := OPENBRACE ParameterValues CLOSEBRACE</programlisting>
+            
+            <para>In this case, there is no need to explicitly specify the type.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+                        
+        </section>
+            
+        <section>
+            <title>Inline classes</title>
+            
+            <para>Inline classes may be instantiated according to:</para>
+            
+            <programlisting>InlineClass := Annotations Type* Instantiation NamedParameterValueAndMemberList</programlisting>
+            
+            <programlisting>NamedParameterValueAndMemberList :=
+OPENBRACE 
+NamedParameterValue* ParameterValues?
+( Method | Attribute | Assert SEMICOLON )*
+CLOSEBRACE</programlisting>
+
+            <para>For example:</para>
+            
+            <programlisting>Task task = Task() {
+    timeout=1000;
+    Override: void run() { ... }
+    Override: void fail(Exception e) { ... }
+}</programlisting>
+
+            <programlisting>return Transactional: Resource Database() {
+    url = "jdbc:hsqldb:.";
+    username = "gavin";
+    password = "foobar";
+    void create() open();
+    void destroy() close();
+};</programlisting>
+            
+            <para>The value of an inline class instantiation is a new instance of the inline class.
+            The named parameter values are assigned directly to attributes of the superclass.</para>
+            
+        </section>
+        
+        <section>
+            <title>Attribute configuration</title>
+            
+            <para>Attribute configuration follows the following schema.</para>
+            
+            <programlisting>AttributeConfiguration := Expression NamedParameterValueList</programlisting>
+            
+            <para>For example:</para>
+            
+            <programlisting>person { firstName="Gavin"; initial='A'; lastName="King"; }</programlisting>
+            
+            <para>The value of an attribute configuration is the instance being configured.
+            The parameter values are assigned to attributes of the instance.</para>
+            
+        </section>
+        
+        <section>
+            <title>Functor invocation</title>
+            
+            <para>Functor invocations follow the following schema.</para>
+            
+            <programlisting>MethodInvocation := Expression ParameterValues</programlisting>
+            
+            <para>For example:</para>
+            
+            <programlisting>compare("AAA", "aaa")</programlisting>
+            <programlisting>compare { x = "AAA"; y = "aaa"; }</programlisting>
+            
+            <para>The value of a functor invocation is the return value of the functor.
+            The parameter values are passed to the formal parameters of the functor
+            implementation.</para>
+            
+        </section>
+        
+    </section>
+    
+    <section>
+        <title>Control expressions</title>
+        
+        <section>
+            <title><literal>find</literal></title>
+            
+            <para>The <literal>find</literal> expression has the following form:</para>
+            
+            <programlisting>FindExpression := "find" OPENPAREN Variable Initializer? CLOSEPAREN OpenBlock</programlisting>
+
+            <para>The construct evaluates to the value of the variable after
+            executing the block. All execution paths must result in an
+            initialized variable.</para>
+
+            <programlisting>Public: String welcome 
+    return find (String greeting) 
+        if (user exists) 
+            greeting = "Hi ${user.name}!" 
+        else 
+            greeting = "Hello World!";</programlisting>
+            
+            <programlisting>return find (Nullable: Person p) {
+    using (Session s = sf.openSession())
+        try
+            p = s.get(#Person, pid)
+        catch (NotFoundException nfe)
+            p = null;
+     if (p.deleted) p = null;
+};</programlisting>
+            
+            <programlisting>Person gavin = find (Person gavin)
+    for (Person p ~> people)
+        if (p.firstName.lower == "gavin") 
+            found gavin = if (p.deleted) null else p
+    fail 
+        throw NotFoundException();</programlisting>
+
+            <programlisting>return find (Boolean allowed=false)
+    for (Permission p ~> user.permissions)
+        if (p.action == action &amp;&amp; p.object = object) 
+            found allowed=true;</programlisting>
+            
+            <programlisting>log.info {
+    message = find (Float sum=0.0) 
+        for (Order o~>orders)
+            sum += o.total;
+}</programlisting>
+
+            <programlisting>return find (OpenList&lt;Person&gt; adults=none) 
+    for (Person p~>people)
+        if (p.age>=18) adults.add(p);</programlisting>
+
+            <programlisting>return find (OpenMap&lt;String, Integer&gt; ages=none) 
+    for (Person p~>people) ages.add( p.name->p.age );</programlisting>
+
+        </section>
+
+        <section>
+            <title><literal>if/else</literal></title>
+            
+            <para>The <literal>if/else</literal> expression has the following form:</para>
+            
+            <programlisting>IfElseExpression := 
+"if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN CaseExpression 
+"else" CaseExpression</programlisting>
+                    
+            <programlisting>CaseExpression := Expression | ThrowDirective | FoundDirective | BreakDirective</programlisting>
+
+            <para>If all conditions are satisfied, the whole expression evaluates
+            to the value of the first expression. Otherwise, the whole expression
+            evaluates to the value of the second expression.</para>
+
+            <para>For example:</para>
+            
+            <programlisting>Public: String welcome 
+    return if (user exists)
+            "Hi ${user.name}!" 
+        else 
+            "Hello World!";</programlisting>
+
+            <programlisting>Boolean paid = if (Payment payment = order.payment exists) payment.paid else false;</programlisting>
+            
+            <programlisting>Nullable:String name = if (person exists, person.active) "$(person.firstName) $(person.lastName)";</programlisting>
+
+        </section>
+        
+        <section>
+            <title><literal>switch/case/else</literal></title>
+            
+            <para>The <literal>switch/case/else</literal> expression has the following form:</para>
+            
+            <programlisting>SwitchCaseElseExpression := 
+"switch" OPENPAREN Expression CLOSEPAREN
+( "case" "null" CaseExpression )?
+( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN CaseExpression )* 
+( "else" CaseExpression )?</programlisting>
+
+            <para>The whole expression evaluates to the value of the first case expression 
+            for which the case value tests true.</para>
+            
+            <para>For example:</para>
+
+            <programlisting>PaymentProcessor processor
+    return switch (payment.type) 
+        case null throw NoPaymentTypeException
+        case (CREDIT, DEBIT) cardPaymentProcessor 
+        case (CHECK) checkPaymentProcessor
+        else interactivePaymentProcessor;</programlisting>
+
+            <programlisting>log.info { 
+    message = switch (num) 
+        case (0) "Zero" 
+        case (1) "Unity" 
+        else $num
+}</programlisting>
+            
+        </section>
+        
+        <section>
+            <title><literal>for/fail</literal></title>
+            
+            <para>The <literal>for/fail</literal> expression has one of the following forms:</para>
+             
+            <programlisting>ForExpression := 
+"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+( "by" OPENPAREN Order (SEMICOLON Order) CLOSEPAREN )?
+Expression?</programlisting>
+
+            <programlisting>ForAnyAllExpression := 
+"for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+Expression</programlisting>
+
+            <programlisting>ForFailExpression := 
+"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+CaseExpression
+"fail" CaseExpression</programlisting>
+
+            <programlisting>Order := Expression ("asc"|"desc")</programlisting>
+
+            <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
+            <literal>all</literal> modifier appears, and upon whether a <literal>fail</literal>
+            expression appears.</para>
+            
+            <para>If a <literal>fail</literal> expression appears, the whole expression
+            evaluates to the value of the fail expression, unless the loop exists early
+            due to execution of a <literal>found</literal> directive, in which case
+            the whole expression evaluates to the value specified by the 
+            <literal>found</literal> directive.</para>
+
+            <para>If <literal>any</literal> or <literal>all</literal> is specified,
+            the element expression must be of type <literal>Boolean</literal>, and the 
+            whole expression evaluates to a <literal>Boolean</literal> value.</para>
+            
+            <para>If neither modifier appears, and if no <literal>fail</literal> expression appears, 
+            the whole expression evaluates to an enumeration of element expression values, one element 
+            for each iteration of the loop (that satisfies the all iteration conditions). If no expression
+            appears, the result is an enumeration of elements of the first iteration. If <literal>by</literal>
+            appears, the results are ordered according to the order expression values. Each
+            comparison expression must be of type <literal>Comparable</literal>.</para> 
+            
+            <para>For example:</para>
+
+            <programlisting>List&lt;String&gt; adults = for (Person p in people: p.age>18);</programlisting>
+            
+            <programlisting>List&lt;String&gt; adultNames = for (Person p in people: p.age>18) p.name;</programlisting>
+
+            <programlisting>Public: List&lt;Person&gt; employees(Country country)
+    return for (Organization o in orgs: o.country==country; Person p in o.employees) p;</programlisting>
+
+            <programlisting>log.info( ", ".join( for (String key -> Integer value in map) "$key = $value" ) );</programlisting>
+            
+            <programlisting>return for all (LineItem li in lineItems) li.quantity>0;</programlisting>
+            
+            <programlisting>Person gavin = for (Person p in people) 
+        if (p.name.lower=="gavin") found gavin
+    fail null;</programlisting>
+            
+        </section>
+ 
+        <section>
+            <title><literal>using</literal></title>
+            
+            <para>The <literal>using</literal> expression has the form:</para>
+            
+            <programlisting>UsingExpression := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN Expression</programlisting>
+            
+            <para>The whole expression evaluates to the value of the expression.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>return using (semaphore) map[key];</programlisting>
+            
+            <programlisting>Person p = using ( Session s = Session() ) s.get(#Person, id);</programlisting>
+            
+        </section>
+
+        <section>
+            <title><literal>try/catch</literal></title>
+            
+            <para>The <literal>try/catch</literal> expression has the form:</para>
+            
+            <programlisting>TryCatchFinallyExpression := 
+"try" Expression
+("catch" OPENPAREN Variable CLOSEPAREN CaseExpression)+</programlisting>
+
+            <para>If the try block executes without exception, the construct evaluates to the 
+            value of the try block. If an exception is handled by a catch block, the construct
+            evaluates to the value of that catch block.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>Person p = try
+        s.get(#Person, id) 
+    catch (NotFoundException e) 
+        null;</programlisting>
+            
+        </section>
+
+    </section>
+    
+</chapter>

@@ -1,0 +1,475 @@
+<chapter id="statementblocks">
+    <title>Blocks and control structures</title>
+    
+    <para>Method, attribute and converter bodies contain procedural code
+    that is executed when the method, attribute or converter is invoked.
+    The code contains expressions and assertions and is organized using 
+    blocks and control structures.</para>
+    
+    <section>
+        <title>Blocks</title>
+            
+        <para>A <emphasis>block</emphasis> is list of semicolon-delimited expressions, 
+        assertions, local variable declarations, and control structures, surrounded by 
+        braces. Some blocks end in a control directive. The expressions, assertions,
+        local variable initializers and control structures are executed sequentially.</para>
+
+        <programlisting>Block := 
+OPENBRACE 
+Statement* 
+( ControlDirective SEMICOLON )?
+CLOSEBRACE</programlisting>
+
+        <para>Where:</para>
+
+        <programlisting>Statement := Expression SEMICOLON | LocalVariable | ControlStructure</programlisting>
+        <programlisting>ControlDirective := ReturnDirective | FoundDirective | BreakDirective | ThrowDirective</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Control directives</title>
+        
+        <para>Control directives include the <literal>return</literal>
+        directive (to return a value from a method, attribute getter or converter),
+        the <literal>found</literal> directive (to terminate a loop<!-- or find block--> 
+        successfully), the <literal>break</literal> directive (to terminate a loop
+        <!--or find block-->unsuccessfully) and the <literal>throw</literal> directive 
+        (to raise an exception).</para>
+        
+        <programlisting>ReturnDirective := "return" Expression</programlisting>
+        <programlisting>FoundDirective := "found" Expression</programlisting>
+        <programlisting>BreakDirective := "break"</programlisting>
+        <programlisting>ThrowDirective := "throw" Expression</programlisting>
+        
+        <para>The <literal>return</literal> directive may not be used outside of
+        the body of an attribute getter, a non-<literal>void</literal> method or 
+        a converter.</para>        
+        
+        <para>The <literal>break</literal> directive may not be used outside of
+        the body of a loop.</para>
+        
+        <para>The <literal>found</literal> directive may not be used outside of
+        the body of a <literal>find</literal>.</para>        
+        
+    </section>
+        
+    <section>
+        <title>Method, attribute and converter bodies</title>
+        
+        <para>A method, attribute or converter body consists of either an
+        expression (void methods only), a <emphasis>return directive</emphasis>
+        (non-void methods only), a <emphasis>throw directive</emphasis> or a 
+        <emphasis>block</emphasis>.</para>
+        
+        <programlisting>OpenBody := Block | MethodDirective</programlisting>
+        <programlisting>ClosedBody := Block | MethodDirective SEMICOLON</programlisting>
+        <programlisting>VoidBody := Block | ( Expression | ThowDirective ) SEMICOLON</programlisting>
+        
+        <para>Where:</para>
+        
+        <programlisting>MethodDirective := ReturnDirective | ThrowDirective</programlisting>
+        
+        <para>Attribute getter, non-<literal>void</literal> method and converter bodies 
+        must end at a <literal>return</literal> or <literal>throw</literal> directive
+        for every possible execution path.</para>
+        
+    </section>
+           
+    <section id="controlstructures">
+        <title>Control structures</title>
+        
+        <para>Control of execution flow may be achieved using control
+        directives and control structures. Control structures include
+        conditionals, loops, exception management and assertions:</para>
+
+        <programlisting>ControlStructure := 
+IfElse | SwitchCaseElse | 
+DoWhileFail | ForFail | 
+Using | TryCatchFinally |
+Assert</programlisting>
+
+        <para><emphasis>Control structures</emphasis> are not considered to be 
+        expressions in Ceylon. However, all control structures have a corresponding 
+        <emphasis>control expression</emphasis> which may be used anywhere an 
+        expression may be used.</para>
+                
+        <para>A control structure body consists of an expression, a control directive or a 
+        block.</para>
+        
+        <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
+        <programlisting>ClosedBlock := Block | ( Expression | ControlDirective ) SEMICOLON</programlisting>
+            
+        <section>
+            <title><literal>if/else</literal></title>
+            
+            <para>The <literal>if/else</literal> conditional has the following form:</para>
+            
+            <programlisting>IfElse := 
+"if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN
+( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting>
+
+            <programlisting>Condition := 
+Expression | 
+( Variable Initializer | Expression ) ("exists"|"nonempty") </programlisting>
+
+            <para>The semantics of a condition depend upon whether the 
+            <literal>exists</literal> or <literal>nonempty</literal> modifier appears.</para>
+
+            <para>If no <literal>exists</literal> or <literal>nonempty</literal> modifier appears, 
+            the condition must be an expression of type <literal>Boolean</literal>. If the 
+            <literal>exists</literal> modifier appears, the condition must be an expression or 
+            variable initializer of type <literal>Nullable: Object</literal>. If the 
+            <literal>nonempty</literal> modifiers appear, the condition must be an expression or 
+            variable initializer of type <literal>Nullable: Container</literal>. In either case, 
+            the variable will be treated by the compiler as having non-null type inside the first 
+            block, relaxing the usual compile-time restrictions upon nullable types.</para>
+                        
+            <para> If all conditions are satisfied, the first block is executed. Otherwise, 
+            the second block is executed, if it is defined.</para>
+
+            <para>For example:</para>
+            
+            <programlisting>if ( payment.amount &lt;= account.balance ) 
+{
+    account.balance -= payment.amount;
+    payment.paid = true;
+}
+else
+{
+    throw NotEnoughMoneyException();
+}</programlisting>
+
+            <programlisting>Public: void welcome(Nullable: User user) 
+{
+    if (user exists)
+        log.info("Hi ${user.name}!") 
+    else 
+        log.info("Hello World!");
+}</programlisting>
+            
+            <programlisting>Public: Payment payment(Order order) 
+{
+    if (Payment p = order.payment exists)
+    {
+        return p;
+    }
+    else
+    { 
+        return Payment(order);
+    }
+}</programlisting>
+
+            <programlisting>if (Payment p = order.payment exists, p.paid)
+{
+    log.info("already paid");
+}</programlisting>
+            
+        </section>
+        
+        <section>
+            <title><literal>switch/case/else</literal></title>
+            
+            <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
+            
+            <programlisting>SwitchCaseElse := 
+"switch" OPENPAREN Expression CLOSEPAREN
+( Cases SEMICOLON | OPENBRACE Cases CLOSEBRACE )</programlisting>
+            
+            <programlisting>Cases := 
+( "case" "null" OpenBlock )?
+( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN OpenBlock )* 
+( "else" OpenBlock )?</programlisting>
+
+            <para>The expression may be of any type. However, if the expression type is 
+            <literal>Nullable</literal>, there must be an explicit <literal>case null</literal>
+            defined. The case values must be expressions of type <literal>Case&lt;X&gt;</literal>, 
+            where <literal>X</literal> is the switch expression type.</para> 
+            
+            <para>If no else block is defined, the switch value expression must be of type 
+            <literal>Selector</literal>, and all values of the selector must be explicitly
+            listed.</para>
+            
+            <para>When the construct is 
+            evaluated, the switch expression value is tested (using <literal>test()</literal>) 
+            against the case values, and the case block for the first case value that tests true 
+            is executed. If no case value tests true, and a else block is defined, the else 
+            block is executed.</para>
+            
+            <para>For example:</para>
+
+            <programlisting>PaymentProcessor processor
+{
+    switch (payment.type) 
+        case null throw NoPaymentTypeException()
+        case (CREDIT, DEBIT) return cardPaymentProcessor 
+        case (CHECK) return checkPaymentProcessor
+        else return interactivePaymentProcessor;
+}</programlisting>
+            
+            <programlisting>switch (payment.type) 
+{
+    case (CREDIT, DEBIT) 
+    { 
+        log.debug("card payment");
+        cardPaymentProcessor.process(payment, user.card);
+    } 
+    case (CHECK) 
+    {
+        log.debug("check payment");
+        checkPaymentProcessor.process(payment);
+    }
+    else 
+    {
+        log.debug("other payment type");
+    }
+}</programlisting>
+
+        </section>
+        
+        <section>
+            <title><literal>for/fail</literal></title>
+            
+             <para>The <literal>for/fail</literal> loop has the following form:</para>
+             
+            <programlisting>ForFail :=
+"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+( ClosedBlock | OpenBlock "fail" ClosedBlock )
+</programlisting>
+
+            <programlisting>Iteration := Variable ("->" Variable)? "in" Expression (COLON Condition (COMMA Condition))? </programlisting>
+
+            <para>Each iterated expression must be of type <literal>Iterable</literal>
+            or <literal>Iterator</literal>. If two iteration variables are defined, it 
+            must be of type <literal>Iterable&lt;Entry&gt;</literal> or 
+            <literal>Iterator&lt;Entry&gt;</literal>. Each iteration constraint expression
+            must be of type <literal>Boolean</literal> (or <literal>Nullable: Object</literal>
+            of the <literal>exists</literal> modifier appears). Iterated and constraint 
+            expressions may refer to iteration variables defined earlier.</para>
+            
+            <para>The body of the loop is executed once for each combination of iterated 
+            elements for which the constraint expressions evaluate to true.</para>
+            
+            <para>If the loop exits early via execution of one of the control directives 
+            <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
+            the fail block is not executed. Otherwise, if the loop completes, or if the
+            loop exists early via execution of the control directive <literal>found</literal>, 
+            the fail block is executed, if it is defined.</para>
+            
+            <para>For example:</para>
+
+            <programlisting>for (Person p in people) 
+    log.info(p.name);</programlisting>
+
+            <programlisting>for (String key -> Integer value in map) 
+    log.info("$key = $value");</programlisting>
+            
+            <programlisting>for (Person p in people) 
+{
+    log.debug("found $(p.name)");
+    if (p.age >= 18) 
+    {
+        log.info("found an adult: $(p.name)");
+        found;
+    }
+}
+fail
+{
+    log.info("no adults");
+}
+</programlisting>
+
+            <programlisting>for (Person p in people: p.age>=18, p.active) 
+{
+        log.info("found an adult");
+        found;
+}
+fail
+{
+    log.info("no adults");
+}
+</programlisting>
+
+            <programlisting>for (Organization o in orgs: o.country==AUSTRALIA; Person p in o.employees) 
+{
+    log.info("employee: $(p.name)");
+    ...
+}</programlisting>
+
+        </section>
+        
+        <section>
+            <title><literal>do/while/fail</literal></title>
+            
+            <para>The <literal>do/while/fail</literal> loop has the form:</para>
+            
+            <programlisting>DoWhileFail := 
+( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
+"while" OPENPAREN Condition (COMMA Condition) CLOSEPAREN ( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting>
+            
+            <para>Both blocks are executed repeatedly, until one of the termination 
+            conditions first evaluates to false, at which point iteration ends. In each 
+            iteration, the first block is executed before the conditions are
+            evaluated, and the second block is executed after they are all evaluated.</para>
+            
+            <para>If the loop exits early via execution of one of the control directives 
+            <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
+            the fail block is not executed. Otherwise, if the loop completes, or if the
+            loop exists early via execution of the control directive <literal>found</literal>, 
+            the fail block is executed, if it is defined.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>do ( Integer i=0 ) 
+    log.info("count = " + $i) 
+while (i&lt;=10) i++;</programlisting>
+            
+            <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator)
+while (iter.more) 
+    log.info( iter.next().name );</programlisting>
+            
+            <programlisting>do (Iterator&lt;Person&gt; iter = people.iterator)
+while (iter.more) 
+{ 
+    Person p = iter.next();
+    log.debug(p.name);
+    p.greet();
+}</programlisting>
+            
+            <programlisting>while (Person parent = person.parent exists) 
+{ 
+    log.info(parent.name);
+    person = parent;
+}</programlisting>
+            
+            <programlisting>do 
+{ 
+    log.info(person.name);
+    person = person.parent;
+} 
+while (!person.dead);</programlisting>
+            
+            <programlisting>do ( Person person = ... ) 
+{ 
+    log.info(person.name);
+} 
+while (!person.parent.dead) 
+{
+    person = person.parent;    
+}</programlisting>
+            
+            <!--
+            <programlisting>do ( Iterator&lt;Object&gt; i=list.iterator() )
+    log.debug( $i.current )
+while ( i.more )
+    i.next();</programlisting>
+             -->
+    
+        </section>
+        
+        <section>
+            <title><literal>using</literal></title>
+            
+            <para>The <literal>using</literal> exception manager has the form:</para>
+            
+            <programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting>
+            
+            <programlisting>Resource := Variable Initializer | Expression</programlisting>
+            
+            <para>The resource expressions must be of type <literal>Usable</literal>. When the 
+            construct is executed, <literal>begin()</literal> is called upon each resource, the 
+            block is executed, and then <literal>end()</literal> is called upon each resource, 
+            with the thrown exception, if any.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>
+using ( Transaction(), Session s = Session() ) 
+{
+     Person p = s.get(#Person, id);
+     ...
+}</programlisting>
+
+            <programlisting>using (semaphore) map[key] = value;</programlisting>
+
+            <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
+            keyword.)</para>
+            
+        </section>
+
+        <section>
+            <title><literal>try/catch/finally</literal></title>
+            
+            <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
+            
+            <programlisting>TryCatchFinally := 
+"try" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock
+("catch" OPENPAREN Variable CLOSEPAREN OpenBlock)*
+("catch" OPENPAREN Variable CLOSEPAREN | "finally" ) ClosedBlock</programlisting>
+
+            <para>When an exception occurs in the try block, the first matching
+            catch block is executed, if any. The finally block is always executed.
+            The types of each catch block variable must extend 
+            <literal>lang.Exception</literal>.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>try ( File file = File(name) )
+{
+    file.open(READONLY);
+    ...
+}
+catch (FileNotFoundException fnfe) 
+{
+    log.info("file not found: $name");
+}
+catch (FileReadException fre) 
+{
+    log.info("could not read from file: $name");
+}
+finally 
+{
+    if (file.open) file.close();
+}</programlisting>
+
+            <programlisting>try using ( Transaction(), Session s = Session() )
+{
+    Person p = s.get(#Person, id)
+    ...
+    return p;
+} 
+catch (NotFoundException e)
+{ 
+    return null;
+}</programlisting>
+            
+         </section>
+
+    <section>
+        <title>Assertions</title>
+            
+        <para>An assertion has the following form:</para>
+        
+        <programlisting>Assert := "assert" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression?</programlisting>
+        
+        <!-- para>Assertions appearing in class declarations are checked after each method
+        or constructor invocation. Assertions appearing in compound blocks are checked
+        when the block is executed.</para-->
+        
+        <para>The first expression is of type <literal>Boolean</literal>, and the second
+        of type <literal>String</literal>.</para>
+        
+        <para>The following assertion:</para>
+        
+        <programlisting>assert (expression) message;</programlisting>
+        
+        <para>Is equivalent to:</para>
+        
+        <programlisting>if (ASSERTIONS_ENABLED &amp;&amp; !expression) 
+    throw new AssertionFailedException(message);</programlisting>
+        
+    </section>
+    
+    </section>
+
+</chapter>
