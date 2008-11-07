@@ -68,7 +68,7 @@ interface List&lt;T&gt; {
     <programlisting>Public: Boolean login() { ... }</programlisting>
     
     <programlisting>Public: 
-String join(Iterable&lt;String&gt;, String delimiter = ", ") { 
+String join(Iterable&lt;String&gt; strings, String delimiter = ", ") { 
    ... 
 }</programlisting>
     
@@ -134,6 +134,7 @@ class Token = Datetime()
         <programlisting>@Entity public class Customer 
     extends Person 
 { 
+    public Customer(Organization org) { super(org); }
     ... 
 }</programlisting>
         

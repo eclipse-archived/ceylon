@@ -226,33 +226,33 @@ CLOSEBRACE</programlisting>
             p = s.get(#Person, pid)
         catch (NotFoundException nfe)
             p = null;
-     if (p.deleted) p = null;
+     if (p exists, p.deleted) p = null;
 };</programlisting>
             
             <programlisting>Person gavin = find (Person gavin)
-    for (Person p ~> people)
+    for (Person p in people)
         if (p.firstName.lower == "gavin") 
             found gavin = if (p.deleted) null else p
     fail 
         throw NotFoundException();</programlisting>
 
             <programlisting>return find (Boolean allowed=false)
-    for (Permission p ~> user.permissions)
+    for (Permission p in user.permissions)
         if (p.action == action &amp;&amp; p.object = object) 
             found allowed=true;</programlisting>
             
             <programlisting>log.info {
     message = find (Float sum=0.0) 
-        for (Order o~>orders)
+        for (Order o in orders)
             sum += o.total;
 }</programlisting>
 
             <programlisting>return find (OpenList&lt;Person&gt; adults=none) 
-    for (Person p~>people)
+    for (Person p in people)
         if (p.age>=18) adults.add(p);</programlisting>
 
             <programlisting>return find (OpenMap&lt;String, Integer&gt; ages=none) 
-    for (Person p~>people) ages.add( p.name->p.age );</programlisting>
+    for (Person p in people) ages.add( p.name->p.age );</programlisting>
 
         </section>
 

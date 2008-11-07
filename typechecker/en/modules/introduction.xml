@@ -72,7 +72,8 @@
     True open classes are not supported. However, Ceylon supports 
     <emphasis>decorators</emphasis>, which allows addition of methods 
     and interfaces to existing types, and overriding of existing
-    methods. Decorators only affect the behavior
+    methods. Decorators only affect the behavior of a type, not its
+    state.
     </para>
     
     <para>

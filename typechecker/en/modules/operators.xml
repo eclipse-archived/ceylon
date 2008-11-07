@@ -150,7 +150,7 @@
             <entry><literal>*.</literal></entry>
             <entry><literal>lhs*.member</literal></entry>
             <entry>spread invoke</entry>
-            <entry><literal>for (X x ~> lhs) x.member</literal></entry>
+            <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
             <entry></entry>
             <entry><literal>List</literal> of member type</entry>

@@ -12,7 +12,7 @@
         type hierarchy and supports the binary operators <literal>==</literal> (equals),
         <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
         <literal>.</literal> (invoke), <literal>^.</literal> (chain invoke),
-        <literal>~></literal> (in), <literal>!~></literal> (not in), the unary prefix 
+        <literal>in</literal> (in), the unary prefix 
         operator <literal>$</literal> (render), and the binary operator 
         <literal>=</literal> (assign).</para>
         
@@ -110,9 +110,9 @@ selector Boolean {
         <para>The <literal>lang.Iterable&lt;X&gt;</literal> interface
         represents a type that may be iterated over using a
         <literal>lang.Iterator&lt;X&gt;</literal>. It supports the
-        binary operators <literal>*.</literal> (spread)<!--  ,
+        binary operator <literal>*.</literal> (spread).<!--  ,
         <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
-        (spread comparison)--> and <literal>*~></literal> (all in).</para>
+        (spread comparison)--> <!--and <literal>*~></literal> (all in).--></para>
         
         <programlisting>Public: 
 interface Iterable&lt;X&gt; {
