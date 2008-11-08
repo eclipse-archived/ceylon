@@ -190,6 +190,9 @@ else
             <literal>Selector</literal>, and all values of the selector must be explicitly
             listed.</para>
             
+            <para>If the expression is of type <literal>Selector</literal>, and all values 
+            of the selector are be explicitly listed, no else block may be specified.</para>
+            
             <para>When the construct is 
             evaluated, the switch expression value is tested (using <literal>test()</literal>) 
             against the case values, and the case block for the first case value that tests true 
