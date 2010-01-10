@@ -114,12 +114,11 @@
         Here's a classic example, implemented in Ceylon:
         </para>
         
-        <programlisting>import system.Main;
+        <programlisting>class Hello {
 
-class Hello {
-
-    Main Static: 
-    void hello() log.info("Hello, World!");
+    main: void hello() {
+        log.info("Hello, World!");
+    }
 
 }</programlisting>
 
@@ -127,9 +126,7 @@ class Hello {
         This code defines a Ceylon class named <literal>Hello</literal>, with 
         a single method with no parameters and no return value, named 
         <literal>hello</literal>. Two <emphasis>annotations</emphasis> appear on 
-        the method declaration. The <literal>Static</literal> annotation specifies 
-        that the method may be called without any receiving instance of 
-        <literal>Hello</literal>. The <literal>Main</literal> annotation specifies 
+        the method declaration. The <literal>main</literal> annotation specifies 
         that this method is called automatically when the virtual machine is 
         started. The <literal>hello()</literal> method calls the 
         <literal>info()</literal> method of an attribute named 
@@ -141,19 +138,11 @@ class Hello {
         This improved version of the program takes a name as input from the console:
         </para>
         
-        <programlisting><![CDATA[import system.Main;
-import container.Current;
-import collections.List;
+        <programlisting><![CDATA[class Hello {
 
-class Hello {
-
-    Main Static: 
-    void hello(Current: Process process) {
-        
+    main: void hello(Process process) {
         String name = process.args.firstOrNull default "World";
-        
         log.info("Hello, $name!");
-
     }
 
 }]]></programlisting>
@@ -178,13 +167,12 @@ import html.Body;
 import html.Div;
 import web.Page;
 
-Page { resource="/hello.html"; }:
-Html class Hello {
-
-    Current: Request request;
+page ("/hello.html"):
+class Hello(Request request) 
+        extends Html(request) {
 
     String name 
-        return request.parameters["name"].firstOrNull
+        = request.parameters["name"].firstOrNull
             default "World";
     
     head = Head { title="Hello World"; };
@@ -204,9 +192,9 @@ Html class Hello {
 
         <para>This program demonstrates Ceylon's support for defining structured data,
         in this case, HTML. The <literal>Hello</literal> class extends Ceylon's
-        <literal>Html</literal> class and specifies named parameter values for the
-        superclass constructor. The <literal>Page</literal> annotation specifies the
-        URL at which this HTML should be accessible.</para>
+        <literal>Html</literal> class and sets the values of its attributes. The 
+        <literal>page</literal> annotation specifies the URL at which this HTML should 
+        be accessible.</para>
 
     </section>
     

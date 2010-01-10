@@ -63,6 +63,8 @@ SINGEQUOTE</programlisting>
         
         <programlisting>Datetime datetime = '25/03/2005' @ '12:00 AM PST';</programlisting>
         
+        <!--
+        
         <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
         <literal>years</literal>, <literal>months</literal>, <literal>days</literal>, <literal>weeks</literal>
         of the <literal>Integer</literal> class let us construct durations.</para>
@@ -80,6 +82,8 @@ SINGEQUOTE</programlisting>
         
         <programlisting>Time time = 10.seconds.before('12:00 AM');</programlisting>
         <programlisting>Date date = 1.week.after('2/9/1974');</programlisting>
+        
+        -->
         
         <para>The <literal>..</literal> operator lets us construct intervals:</para>
         

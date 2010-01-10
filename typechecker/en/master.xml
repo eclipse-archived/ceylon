@@ -28,7 +28,7 @@
     &expressions;
     &literals;
     &operators;
-    &types;
+    <!--&types;-->
 
 </book>
 

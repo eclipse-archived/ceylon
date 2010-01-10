@@ -7,86 +7,97 @@
     following general schema: 
     </para>
     
-    <programlisting>Annotations? Type* keyword? Identifier TypeParameters? VariableList? TypeConstraintList? Declaration?</programlisting>
+    <programlisting>Annotations? 
+Type? keyword? Identifier TypeParameters? FormalParameters? 
+Supertype?
+Interfaces? 
+TypeConstraints? 
+Declaration?</programlisting>
     
     <para>Where:</para>
     
     <programlisting>Annotations := Annotation+ COLON</programlisting>
     
-    <programlisting>TypeParameters := LT Identifier (COMMA Identifier)* GT</programlisting>
-    
-    <programlisting>VariableList := OPENPAREN Variables? CLOSEPAREN</programlisting>
-
-    <programlisting>Variables: = 
-Variable ( Initializer | (COMMA Variable)* ) 
-(COMMA Variable Initializer)* 
-(COMMA Variable "...")?</programlisting>
- 
-    <programlisting>Variable := Annotations? Type+ Identifier</programlisting>
-    
-    <programlisting>Initializer := EQUALS Expression</programlisting>
-    
     <programlisting>Type := Identifier (DOT Identifier)* TypeParameters?</programlisting>
     
-    <programlisting>TypeConstraintList = "where" OPENPAREN TypeConstraint (SEMICOLON TypeConstraint)* CLOSEPAREN</programlisting>
+    <programlisting>TypeParameters := LT Identifier (COMMA Identifier)* GT</programlisting>
+
+    <programlisting>FormalParameters: = 
+OPENPAREN
+FormalParameter (COMMA FormalParameter)* (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
+OptionalParameter (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
+VarargsParameter?
+CLOSEPAREN</programlisting>
+ 
+    <programlisting>OptionalParameter = FormalParameter Initializer</programlisting>
     
-    <programlisting>TypeConstraint := Ident (GT|LT) EQ? (Type|Ident)</programlisting>
+    <programlisting>VarargsParameter = FormalParameter "..."</programlisting>
+
+    <programlisting>FormalParameter := Annotations? Type Identifier</programlisting>
+    
+    <programlisting>Supertype := "extends" Instantiation</programlisting>
+    
+    <programlisting>Interfaces = "satisfies" Type (COMMA Type)*</programlisting>
+
+    <programlisting>TypeConstraints = "where" TypeConstraint (SEMICOLON TypeConstraint)*</programlisting>
+    
+    <programlisting>TypeConstraint := Ident (GE|LE) (Type|Ident)</programlisting>
     
     <para>For example:</para>
     
-    <programlisting>Comparable&lt;Person&gt; Person person = ... ;</programlisting>
+    <programlisting>Comparable&lt;Person&gt; Person person = Person(name);</programlisting>
     
-    <programlisting>Public Entity: 
-class Customer(Organization org) = Person(org) 
-{ 
+    <programlisting>public entity: 
+class Customer(Name name, optional: Organization org = null) 
+    extends Person(name, org) 
+{
    ... 
 }</programlisting>
 
-    <programlisting>Public: 
-Set&lt;T&gt; 
-class HashSet&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none) 
-    where (T>Comparable) 
+    <programlisting>public:
+class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none)
+    extends AbstractCollection&lt;Entry&lt;T&gt;&gt;(entries)
+    satisfies Map&lt;T&gt; 
+    where T >= Comparable 
 { 
     ... 
 }</programlisting>
     
-    <programlisting>Public: 
-Sequence&lt;T&gt; 
-Collection&lt;T&gt; 
-interface List&lt;T&gt; {
+    <programlisting>public: interface List&lt;T&gt;
+    satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; 
+{
     ...
 }</programlisting>
 
     <programlisting>Integer count = 0;</programlisting>
     
-    <programlisting>Protected: String firstName;</programlisting>
+    <programlisting>protected: String firstName;</programlisting>
     
-    <programlisting>Public: String name { ... } assign { ... }</programlisting>
+    <programlisting>public: String name { return join(firstName, lastName); }
+    assign { firstName = first(name); lastName = last(name); }</programlisting>
     
-    <programlisting>Public: Float total return ... ;</programlisting>
+    <programlisting>public: Float total { return calculateTotal(lineItems); }</programlisting>
     
-    <programlisting>Public: Boolean login() { ... }</programlisting>
+    <programlisting>public: Boolean login() { ... }</programlisting>
     
-    <programlisting>Public: 
-String join(Iterable&lt;String&gt; strings, String delimiter = ", ") { 
+    <programlisting>public: 
+String join(Iterable&lt;String&gt; strings, 
+            String delimiter = ", ") 
+{ 
    ... 
 }</programlisting>
     
-    <programlisting>Public: 
-Boolean functor Order&lt;T&gt;(T x, T y);</programlisting>
+    <programlisting>public: Boolean functor Order&lt;T&gt;(T x, T y);</programlisting>
 
-    <programlisting>Public: 
-Comparable&lt;Person&gt; 
-decorator ComparablePerson(Person person) 
+    <programlisting>public: decorator ComparablePerson(Person person) 
+    satisfies Comparable&lt;Person&gt; 
 {
    ... 
 }</programlisting>
                
-    <programlisting>Public: 
-Float 
-converter IntegerToFloat(Integer int) 
+    <programlisting>public: Float converter IntegerToFloat(Integer int) 
 {
-   ... 
+   return Float(int);
 }</programlisting>
     
     <para>Thus, the syntax of Ceylon declarations is more regular than Java or C#.</para>
@@ -96,45 +107,49 @@ converter IntegerToFloat(Integer int)
         
         <para>Class are declared according to the following:</para>
         
-        <programlisting>Annotations? Type* 
-"class" Identifier TypeParameters?
-VariableList?
-TypeConstraintList?
-EQUALS Instantiation
-OPENBRACE 
-( Attribute | Method | Assert SEMICOLON )* 
-CLOSEBRACE</programlisting>
+        <programlisting>Annotations? 
+"class" Identifier TypeParameters? FormalParameters?
+Supertype?
+Interfaces?
+TypeConstraints?
+InstanceEnumeraton?
+Block</programlisting>
 
-       <para>TODO: do we really need to allow assertions in the class body,
-       or is it enough to let them put them in the PostInvoke: method?</para>
-        
+        <programlisting>InstanceEnumeraton := 
+"instances" 
+Identifier ParameterValueSet? 
+(COMMA Identifier ParameterValueSet?)* 
+"..."?</programlisting>
+
         <para>
         For example:
         </para>
         
-        <programlisting>Public Entity: 
-class Customer(Organization org) = Person(org)
+        <programlisting>public entity: 
+class Customer(Name name, optional: Organization org = null) 
+   extends Person(name, org) 
 { 
     ... 
 }</programlisting>
-        <programlisting>Comparable&lt;Token&gt; 
-Identifier 
-class Token = Datetime()
+        <programlisting>class Token() 
+   extends Datetime()
+   satisfies Comparable&lt;Token&gt;, Identifier
 { 
     ... 
 }</programlisting>
         
         <para>
-        The types listed before the <literal>class</literal> keyword are the interfaces.
-        The type specified in the initializer clause is a superclass. The 
-        semantics of class inheritance are exactly the same as Java, and the above 
-        declarations are equivalent to the following Java declarations: 
+        The types listed after the <literal>satisfies</literal> keyword are the implemented
+        interfaces. The type specified after the <literal>extends</literal> keyword is a 
+        superclass. The semantics of class inheritance are exactly the same as Java, and the 
+        above declarations are equivalent to the following Java declarations: 
         </para>
         
-        <programlisting>@Entity public class Customer 
+        <programlisting>@entity public class Customer 
     extends Person 
 { 
-    public Customer(Organization org) { super(org); }
+    public Customer(Name name) { this(name, null); }
+    public Customer(Name name, Organization org) { super(name, org); }
     ... 
 }</programlisting>
         
@@ -142,21 +157,21 @@ class Token = Datetime()
     extends Datetime 
     implements Comparable&lt;Token&gt;, Identifier 
 { 
+    public Token() { super(); }
     ... 
 }</programlisting>
         
         <para>
         Ceylon classes do not support a Java-like constructor declaration syntax. However, 
         Ceylon supports <emphasis>class initialization parameters</emphasis>. A class 
-        initialization parameter may be used by attribute initializers.
+        initialization parameter may be used anywhere in the class body.
         </para>
         
         <para>This declaration:</para>
         
-        <programlisting>Public: 
-class Key(Lock lock) 
+        <programlisting>public: class Key(Lock lock) 
 {
-    Public Constant: Lock lock = lock;
+    public constant: Lock lock = lock;
 }</programlisting>
         
         <para>Is equivalent to this Java class:</para>
@@ -164,38 +179,58 @@ class Key(Lock lock)
         <programlisting>public class Key 
 { 
         
-    private final ConstantAttribute&lt;Lock&gt; lock;
-    
-    public ConstantAttribute&lt;Lock&gt; lock() { return lock; }
+    private final ReadAttribute&lt;Lock&gt; lock;
+    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
     
     public Key(Lock lock) 
     { 
-        this.lock = new ConstantSimpleAttribute&lt;Lock&gt;(lock); 
+        this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
     }
     
 }</programlisting>
 
-        <para>The class initialization parameters are optional. The following
-        class:</para>
+        <para>This declaration:</para>
         
-        <programlisting>Public: 
-class Point 
+        <programlisting>public: class Key(Lock lock) 
 {
-    Public: Exact x;
-    Public: Exact y;
+    public: Lock lock { return lock };
 }</programlisting>
         
-        <para>Is equivalent to a Java class with a default constructor:</para>
+        <para>Is equivalent to this Java class:</para>
+
+        <programlisting>public class Key 
+{
+    private Lock _lock;
+        
+    private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
+        @Override public Lock get() { return _lock; }
+    }; 
+    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
+    
+    public Key(Lock lock) 
+    { 
+        _lock = lock; 
+    }
+    
+}</programlisting>
+
+        <para>Class initialization parameters are optional. The following class:</para>
+        
+        <programlisting>public: class Point 
+{
+    public: Exact x;
+    public: Exact y;
+}</programlisting>
+        
+        <para>Is equivalent to this Java class with a default constructor:</para>
         
         <programlisting>public class Point 
 {
-        
+   
     private final Attribute&lt;Exact&gt; x = new SimpleAttribute&lt;Exact&gt;();
-    
     public SimpleAttribute&lt;Exact&gt; x() { return x; }
     
     private final Attribute&lt;Exact&gt; y = new SimpleAttribute&lt;Exact&gt;();
-    
     public SimpleAttribute&lt;Exact&gt; y() { return y; }
     
 }</programlisting>
@@ -203,14 +238,16 @@ class Point
         <para>A subclass must pass values to each superclass initialization 
         parameter.</para>
 
-        <programlisting>Public: 
-class SpecialKey1 = Key( SpecialLock() ) 
+        <programlisting>public: 
+class SpecialKey1()
+    extends Key( SpecialLock() ) 
 {
     ...
 }</programlisting>
 
-        <programlisting>Public: 
-class SpecialKey2(Lock lock) = Key(lock) 
+        <programlisting>public: 
+class SpecialKey2(Lock lock) 
+    extends Key(lock) 
 {
     ...
 }</programlisting>
@@ -235,6 +272,43 @@ class SpecialKey2(Lock lock) = Key(lock)
     ... 
 }</programlisting>
 
+        <para>The body of a class may contain arbitrary code, which is
+        executed when the class is instantiated.</para>
+        
+        <programlisting>public: class DiagonalPoint(Exact position) 
+    extends Point()
+{
+    Exact displacement = position**2/2;
+    Integer sign = if (position.negative) -1 else 1;
+    
+    x = sqrt(displacement) * sign;
+    y = sqrt(displacement) * sign;
+    
+    assert (x**2 + y**2 == position**2);
+    
+}</programlisting>
+        
+        <para>The compiler is permitted to optimize private attribute 
+        declarations. So the above class is equivalent to:</para>
+        
+        <programlisting>public class DiagonalPoint 
+    extends Point
+{
+
+    public DiagonalPoint(Exact position) 
+    {
+        Exact displacement = position.exponentiate(2).divide(2);
+        Integer sign = position.negative ? -1 : 1;
+        
+        x = sqrt(displacement).multiply(sign);
+        y = sqrt(displacement).multiply(sign);
+        assert x.exponentiate(2) + y.exponentiate(2) 
+             == position.exponentiate(2);
+    }
+    
+}</programlisting>
+        
+        <!--
         <para>Note that additional initialization may be performed in any
         method annotated <literal>AfterCreate</literal>. Invariants may
         be asserted in any method annotated <literal>AfterInvoke</literal>.</para>
@@ -257,7 +331,77 @@ class Point(Float x, Float y)
         assert sqrt( x**2 + y**2 ) &lt; 100.0;
     
 }</programlisting>
+        -->
 
+        <para>The keyword <literal>instances</literal> is used to define a set of predefined
+        instances.</para>
+        
+        <programlisting>public: class DayOfWeek 
+    instances mon, tues, wed, thurs, fri, sat, sun {}</programlisting>
+
+        <programlisting>public: class DayOfWeek(String name)
+    instances 
+       mon("Monday"), 
+       tues("Tuesday"),
+       wed("Wednesday"),
+       thurs("Thursday"),
+       fri("Friday"),
+       sat("Saturday"),
+       sun("Sunday")
+{
+    public constant: String name = name;
+}</programlisting>
+        
+        <para>
+        A class with an <literal>instances</literal> declaration implicitly extends 
+        <literal>lang.Selector</literal>, a subclass of <literal>java.lang.Enum</literal>. 
+        The above declarations are equivalent to the following Java declarations: 
+        </para>
+        
+        <programlisting>public class DayOfWeek 
+    extends Selector&lt;DayOfWeek&gt; 
+{ 
+    public DayOfWeek mon = new DayOfWeek("mon", 0); 
+    public DayOfWeek tues = new DayOfWeek("tues", 1);
+    public DayOfWeek wed = new DayOfWeek("wed, 2");
+    public DayOfWeek thurs = new DayOfWeek("thurs", 3);
+    public DayOfWeek fri = new DayOfWeek("fri", 4);
+    public DayOfWeek sat = new DayOfWeek("sat", 5);
+    public DayOfWeek sun = new DayOfWeek("sun", 6);
+    
+    private DayOfWeek(String id, int ord)
+    {
+        super(id, ord);
+    }
+    
+}</programlisting>
+        
+        <programlisting>public class DayOfWeek 
+    extends Selector&lt;DayOfWeek&gt; 
+{
+    private final ReadAttribute&lt;String&gt; name;
+       
+    public DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
+    public DayOfWeek tues = new DayOfWeek("Tuesday", "tues", 1);
+    public DayOfWeek wed = new DayOfWeek("Wednesday", "wed, 2");
+    public DayOfWeek thurs = new DayOfWeek("Thursday", "thurs", 3);
+    public DayOfWeek fri = new DayOfWeek("Friday", "fri", 4);
+    public DayOfWeek sat = new DayOfWeek("Saturday", "sat", 5);
+    public DayOfWeek sun = new DayOfWeek("Sunday", "sun", 6);
+     
+    private DayOfWeek(String name, String id, int ord)
+    {
+        super(id, ord);
+        name = new SimpleReadAttribute(name);
+    }
+    
+}</programlisting>
+
+        <!--
+        <para>A class with an <literal>instances</literal> declaration may not extend
+        a class with no <literal>instances</literal> declaration.</para>
+        -->
+        
     </section>
     
     <section>
@@ -265,9 +409,10 @@ class Point(Float x, Float y)
         
         <para>Interfaces are declared according to the following:</para>
         
-        <programlisting>Annotations? Type* 
+        <programlisting>Annotations?
 "interface" Identifier TypeParameters?
-TypeConstraintList? 
+Interfaces?
+TypeConstraints? 
 OPENBRACE 
 ( Attribute | Method )* 
 CLOSEBRACE</programlisting>
@@ -281,22 +426,19 @@ CLOSEBRACE</programlisting>
     ... 
 }</programlisting>
 
-        <programlisting>Public: 
-interface Comparable&lt;T&gt; 
+        <programlisting>public: interface Comparable&lt;T&gt; 
 { 
     ... 
 }</programlisting>
 
-        <programlisting>Public: 
-Sequence&lt;T&gt; 
-Collection&lt;T&gt; 
-interface List&lt;T&gt; 
+        <programlisting>public: interface List&lt;T&gt;
+    satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; 
 {
     ...
 }</programlisting>
         
         <para>
-        The types listed before the <literal>interface</literal> keyword are the supertypes.
+        The types listed after the <literal>satisfies</literal> keyword are the supertypes.
         All supertypes of an interface must be interfaces. The semantics of interface inheritance 
         are exactly the same as Java, and the above declarations are equivalent to the following 
         Java declarations: 
@@ -363,55 +505,54 @@ public User(String username, Person person);</programlisting>
         
         <para>Methods are declared according to one of the following schemes:</para>
         
-        <programlisting>Annotations? Type+
-Identifier TypeParameters? 
-VariableList
-TypeConstraintList?
-( SEMICOLON | ClosedBody )</programlisting>
-
-        <programlisting>Annotations? "void"
-Identifier TypeParameters? 
-VariableList
-TypeConstraintList?
-( SEMICOLON | VoidBody )</programlisting>
+        <programlisting>Annotations? 
+(Type | "void") Identifier TypeParameters? FormalParameters
+TypeConstraints?
+( SEMICOLON | Block )</programlisting>
 
         <para>
         For example:
         </para>
         
-        <programlisting>Public Nullable: U get(Nullable: V key);</programlisting>
+        <programlisting>public optional: U get(optional: V key);</programlisting>
         
-        <programlisting>Protected: 
+        <programlisting>protected: 
 void init(Integer initialCount=0) 
-    count=initialCount;</programlisting>
+{
+    count=initialCount;
+}</programlisting>
     
-        <programlisting>Public: 
+        <programlisting>public: 
 Integer add(Integer x, Integer y) 
-    return x + y;</programlisting>
+{
+    return x + y;
+}</programlisting>
     
-        <programlisting>Identifier Datetime createToken() 
-    return Token();</programlisting>
+        <programlisting>Identifier createToken() 
+{
+    return Token();
+}</programlisting>
     
-        <programlisting>Public: 
+        <programlisting>public: 
 Boolean login() 
 { 
     ... 
 }</programlisting>
 
-        <programlisting>Protected: 
+        <programlisting>protected: 
 void destroy() 
 { 
     ... 
 }</programlisting>
 
-        <programlisting>Public: 
+        <programlisting>public: 
 void print(Object...) 
 { 
     ... 
 }</programlisting>
         
         <para>
-        A method body may omit the braces if it consists of exactly one statement. If
+        <!--A method body may omit the braces if it consists of exactly one statement.--> If
         there is no method body at all, the method throws <literal>UnsupportedMethodException</literal> 
         when invoked.
         </para>
@@ -448,79 +589,90 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>Attributes are declared according to the following:</para>
         
-        <programlisting>Annotations? Type+ 
-Identifier 
-( Initializer? SEMICOLON | ClosedBody | OpenBody "assign" VoidBody )</programlisting>
+        <programlisting>Annotations? 
+Type Identifier 
+( Initializer? SEMICOLON | Block ("assign" Block)? )</programlisting>
         
         <para>
         For example:
         </para>
         
-        <programlisting>Protected: String firstName;</programlisting>
+        <programlisting>protected: String firstName;</programlisting>
+        
         <programlisting>Integer count = 0;</programlisting>
-        <programlisting>Public: Float total 
+        
+        <programlisting>public: Float total 
+{
     return find (Float sum = 0.0) 
         for (LineItem li in lineItems) 
-            sum += li.amount;</programlisting>
-        <programlisting>Public: String name 
+            sum += li.amount;
+}</programlisting>
+            
+        <programlisting>public: 
+String name { return renderName(n); }
+    assign { n = parseName(name); }</programlisting>
+        
+        <programlisting>public: String name 
 {
-    return " ".join(firstName, lastName);
+    return " ".join(firstName, lastName)
 }
-assign
+assign 
 {
-    Iterator tokens = name.tokens().iterator();
-    firstName = tokens.next();
+    Iterator tokens = name.tokens().iterator(), 
+    firstName = tokens.next(), 
     lastName = tokens.next();
 }</programlisting>
 
-        <programlisting>Public: 
-String name 
-    return renderName() 
-    assign parseName(name);</programlisting>
-        
         <para>
         An attribute declaration is equivalent to a Java method declaration together with 
-        a Java field declaration, both of type <literal>lang.Attribute</literal>, both with 
-        the same name as the attribute.
+        a Java field declaration, both of type <literal>lang.Attribute</literal> or
+        <literal>lang.ReadAttribute</literal> both with the same name as the attribute.
         </para>
         
         <para>
-        When getter code is specified, the field is initialized to an instance 
-        of an anonymous inner subclass of <literal>lang.Attribute</literal> that overrides 
-        the <literal>get()</literal> and <literal>set()</literal> methods with the content of 
-        the getter and setter code blocks, if any. For example:
+        The compiler is permitted to optimize private attributes to a simple Java field
+        declaration or a local variable in a Java constructor. Private attributes may not
+        be accessed via reflection.
         </para>
         
-        <programlisting>Public: Float total
-    return items.totalPrice;</programlisting>
+        <para>
+        When getter/setter code is specified, the field is initialized to an instance 
+        of an anonymous inner subclass of <literal>lang.Attribute</literal> or
+        <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
+        and <literal>set()</literal> methods with the content of the getter and setter 
+        code blocks, if any. For example:
+        </para>
+        
+        <programlisting>public: Float total { return items.totalPrice; }</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
-        <programlisting>private final Attribute&lt;Float&gt; total = new Attribute&lt;Float&gt;() {
+        <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
     @Override public Float get() { return items.get().totalPrice; }
 };
 
-public Attribute&lt;Float&gt; total() { return total; }</programlisting>
+public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
         <para>While:</para>
         
-        <programlisting>Public: String name { return renderName(); } assign { parseName(name); }</programlisting>
+        <programlisting>public: String name { return renderName(n); }
+    assign { n = parseName(name); }</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;String&gt; name = new Attribute&lt;String&gt;() {
-    @Override public String get() { return renderName(); }
-    @Override public void set(String value) { parseName(value); }
+    @Override public String get() { return renderName(n); }
+    @Override public void set(String name) { n = parseName(name); }
 };
 
 public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
         <para>
-        If getter code is not specified, the equivalent Java declaration uses a
-        an instance of <literal>lang.SimpleAttribute</literal>. For example:
-        </para> 
+        If getter code is not specified, the equivalent Java declaration uses a an 
+        instance of <literal>lang.SimpleAttribute</literal> or 
+        <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
         
-        <programlisting>Protected: String firstName;</programlisting>
+        <programlisting>protected: String firstName;</programlisting>
 
         <para>is equivalent to this Java code:</para>
         
@@ -537,6 +689,16 @@ protected Attribute&lt;String&gt; firstName() { return firstName; }</programlist
         <programlisting>private final Attribute&lt;Integer&gt; count = new SimpleAttribute&lt;Integer&gt;(0);
 
 private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
+
+        <para>And:</para>
+        
+        <programlisting>final Integer max = 99;</programlisting>
+        
+        <para>is equivalent to this Java code:</para>
+        
+        <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
+
+private ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         <para>TODO: Should we generate getters and setters, just for interop with Java?</para>
 
@@ -572,12 +734,12 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
         
         <para>
         Unlike Java fields, Ceylon attribute access is polymorphic and attribute definitions 
-        may be overridden by subclasses. A Ceylon attribute may declare multiple types, in which
-        case the value of the attribute must be an instance of all the declared types.
+        may be overridden by subclasses.
         </para> 
             
     </section>
     
+    <!--  
     <section>
         <title>Selectors</title>
         
@@ -594,6 +756,7 @@ CLOSEBRACE</programlisting>
         <para>Where:</para>
         
         <programlisting>SelectorValue := Identifier ( OPENPAREN ( Expression (COMMA Expression)* )? CLOSEPAREN )?</programlisting>
+        
         <para>
         For example:
         </para>
@@ -654,13 +817,14 @@ selector ComparisonOperation {
         <para>TODO: let selectors have abstract methods that are overridden by the selector values!</para>
         
     </section>
+    -->
     
     <section>
         <title>Functors</title>
         
         <para>Functors are declared according to the following:</para>
         
-        <programlisting>Annotations? ( Type+ | "void" ) 
+        <programlisting>Annotations? ( Type | "void" ) 
 "functor" Identifier TypeParameters? 
 VariableList 
 TypeConstraintList? 
@@ -670,7 +834,7 @@ SEMICOLON</programlisting>
         For example:
         </para>
         
-        <programlisting>Public: Comparison functor Order&lt;T&gt;(T x, T y);</programlisting>
+        <programlisting>public: Comparison functor Order&lt;T&gt;(T x, T y);</programlisting>
         
         <para>
         A functor declaration is equivalent to a Java abstract class declaration that extends
@@ -731,13 +895,13 @@ SEMICOLON</programlisting>
         
         <para>Decorators are declared according to the following:</para>
         
-        <programlisting>Annotations? Type* 
-"decorator" Identifier TypeParameters? 
+        <programlisting>Annotations?
+"decorator" Identifier TypeParameters? OPENPAREN Variable CLOSEPAREN
+Interfaces?
 TypeConstraintList? 
-OPENPAREN Variable CLOSEPAREN
 OPENBRACE Method* CLOSEBRACE</programlisting>
 
-        <para>Types appearing before the <literal>decorator</literal> keyword must be interfaces, and
+        <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
         are called the <emphasis>introduced types</emphasis>. Methods declared by a decorator are 
         called <emphasis>introduced methods</emphasis>.</para>
         
@@ -745,37 +909,33 @@ OPENBRACE Method* CLOSEBRACE</programlisting>
         For example:
         </para>
         
-        <programlisting>Public: 
-decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
+        <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
 { 
     ... 
 }</programlisting>
 
-        <programlisting>Public: 
-Comparable&lt;User&gt; 
-decorator ComparableUser(User u) 
+        <programlisting>public: decorator ComparableUser(User user) 
+    satisfies Comparable&lt;User&gt; 
 { 
-    ... 
+    public: Comparison compare(User other) 
+    { 
+        return user.username &lt;=&gt; other.username; 
+    }
 }</programlisting>
         
         <para>
         A decorator declaration is equivalent to a Java class declaration. For example:
         </para>
         
-        <programlisting>Public: 
-decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
+        <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
 {
             
-    Public: 
-    Collection&lt;T&gt; nonZeroElements() 
+    public: Collection&lt;T&gt; nonZeroElements() 
+    {
         return collection.exclude(0); 
-        
-    Public Override: 
-    void clear() 
-        if ( collection.isEmpty() ) 
-            throw new IllegalStateException() 
-        else 
-            collection.clear();
+    }
+    
+    ...
     
 }</programlisting>
         
@@ -784,6 +944,7 @@ decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection)
         </para>
         
         <programlisting>public final class CollectionUtils&lt;T&gt; 
+    extends Collection
 {
             
     private final Collection&lt;T&gt; collection
@@ -798,24 +959,20 @@ decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection)
         return collection.exclude(0); 
     }
     
-    public void clear() { 
-        if ( collection.isEmpty() ) 
-            throw new IllegalStateException() 
-        else 
-            collection.clear(); 
-    }
+    ...
     
 }</programlisting>
 
         <para>And this decorator declaration:</para>
         
-        <programlisting>Public: 
-Comparable&lt;User&gt; 
-decorator ComparableUser(User u) 
+        <programlisting>public: decorator ComparableUser(User user) 
+    satisfies Comparable&lt;User&gt; 
 {
             
-    Public: Comparison compareTo(User other)
-        other.userId &lt;=&gt; u.userId;
+    public: Comparison compare(User other) 
+    {
+        return user.username &lt;=&gt; other.username;
+    }
     
 }</programlisting>
         
@@ -824,22 +981,23 @@ decorator ComparableUser(User u)
         </para>
         
         <programlisting>public final class ComparableUser 
+    extends User
     implements Comparable&lt;User&gt; 
 {
     
-    private final User u;
+    private final User user;
     
-    public ComparableUser(User u) 
+    public ComparableUser(User user) 
     { 
-        this.u = u; 
+        this.user = user; 
     }
     
     public Comparison compareTo(User other) 
     { 
-        return Comparison.compare(other.userId, u.userId);
+        return Comparison.compare(other.username, user.username);
     }
     
-}</programlisting>        
+}</programlisting>    
         
         <para>
         Finally, this introduced method call:
@@ -853,6 +1011,11 @@ decorator ComparableUser(User u)
 
         <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
         
+        <para>A decorator may not override a method defined by the decorated type.</para>
+        
+        <para>Methods defined by the decorated type are delegated to the decorated 
+        instance.</para>
+
     </section>
     
     <section>
@@ -864,15 +1027,16 @@ decorator ComparableUser(User u)
 "converter" Identifier TypeParameters? 
 TypeConstraintList? 
 OPENPAREN Variable CLOSEPAREN 
-ClosedBody</programlisting>
+Block</programlisting>
         
         <para>
         For example:
         </para>
         
-        <programlisting>User 
-converter PersonUser(Person person) 
-    return person.user;</programlisting>
+        <programlisting>User converter PersonUser(Person person) 
+{
+    return person.user;
+}</programlisting>
         
         <para>
         A converter declaration is equivalent to a Java class declaration. The example above is
@@ -882,7 +1046,8 @@ converter PersonUser(Person person)
         <programlisting>public final class PersonUser 
     extends Converter&lt;Person, User&gt; 
 {
-    @Override User convert(Person person) { 
+    @Override User convert(Person person) 
+    {
         return person.user; 
     }
 }</programlisting>
@@ -906,13 +1071,13 @@ User user = new PersonUser().convert(person);</programlisting>
         
         <para>(Local) variables are declared according to the following:</para>
         
-        <programlisting>Annotations? Type+ Identifier Initializer? SEMICOLON</programlisting>
+        <programlisting>Annotations? Type Identifier Initializer? SEMICOLON</programlisting>
         
         <para>
         For example:
         </para>
         
-        <programlisting>Nullable: String firstName;</programlisting>
+        <programlisting>optional: String firstName;</programlisting>
         <programlisting>Integer count = 0;</programlisting>
         
         <para>
@@ -920,6 +1085,9 @@ User user = new PersonUser().convert(person);</programlisting>
         that Ceylon variables may declare multiple types. This indicates that the value must 
         implement or extend all the declared types.
         </para>
+        
+        <para>Note that a local variable is really just a special case of an attribute declaration,
+        but one that is optimized by the compiler.</para>
         
     </section>
 

@@ -10,19 +10,19 @@
         <title>Blocks</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited expressions, 
-        assertions, local variable declarations, and control structures, surrounded by 
-        braces. Some blocks end in a control directive. The expressions, assertions,
+        assertions, method, attribute and local variable declarations, and control structures, 
+        surrounded by braces. Some blocks end in a control directive. The expressions, assertions,
         local variable initializers and control structures are executed sequentially.</para>
 
         <programlisting>Block := 
 OPENBRACE 
-Statement* 
+Statement*
 ( ControlDirective SEMICOLON )?
 CLOSEBRACE</programlisting>
 
         <para>Where:</para>
 
-        <programlisting>Statement := Expression SEMICOLON | LocalVariable | ControlStructure</programlisting>
+        <programlisting>Statement := Expression SEMICOLON | Method | Attribute | LocalVariable | ControlStructure</programlisting>
         <programlisting>ControlDirective := ReturnDirective | FoundDirective | BreakDirective | ThrowDirective</programlisting>
 
     </section>
@@ -44,16 +44,17 @@ CLOSEBRACE</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside of
         the body of an attribute getter, a non-<literal>void</literal> method or 
-        a converter.</para>        
+        a converter.</para>
         
         <para>The <literal>break</literal> directive may not be used outside of
         the body of a loop.</para>
         
         <para>The <literal>found</literal> directive may not be used outside of
-        the body of a <literal>find</literal>.</para>        
+        the body of a loop.</para>
         
     </section>
-        
+    
+    <!--  
     <section>
         <title>Method, attribute and converter bodies</title>
         
@@ -64,7 +65,7 @@ CLOSEBRACE</programlisting>
         
         <programlisting>OpenBody := Block | MethodDirective</programlisting>
         <programlisting>ClosedBody := Block | MethodDirective SEMICOLON</programlisting>
-        <programlisting>VoidBody := Block | ( Expression | ThowDirective ) SEMICOLON</programlisting>
+        <programlisting>VoidBody := VoidBlock | ( Expression | ThowDirective ) SEMICOLON</programlisting>
         
         <para>Where:</para>
         
@@ -75,6 +76,7 @@ CLOSEBRACE</programlisting>
         for every possible execution path.</para>
         
     </section>
+    -->
            
     <section id="controlstructures">
         <title>Control structures</title>
@@ -99,6 +101,8 @@ Assert</programlisting>
         
         <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
         <programlisting>ClosedBlock := Block | ( Expression | ControlDirective ) SEMICOLON</programlisting>
+        
+        <!--
             
         <section>
             <title><literal>if/else</literal></title>
@@ -119,9 +123,9 @@ Expression |
             <para>If no <literal>exists</literal> or <literal>nonempty</literal> modifier appears, 
             the condition must be an expression of type <literal>Boolean</literal>. If the 
             <literal>exists</literal> modifier appears, the condition must be an expression or 
-            variable initializer of type <literal>Nullable: Object</literal>. If the 
-            <literal>nonempty</literal> modifiers appear, the condition must be an expression or 
-            variable initializer of type <literal>Nullable: Container</literal>. In either case, 
+            variable initializer of type <literal>optional: Object</literal>. If the 
+            <literal>nonempty</literal> modifier appears, the condition must be an expression or 
+            variable initializer of type <literal>optional: Container</literal>. In either case, 
             the variable will be treated by the compiler as having non-null type inside the first 
             block, relaxing the usual compile-time restrictions upon nullable types.</para>
                         
@@ -140,7 +144,7 @@ else
     throw NotEnoughMoneyException();
 }</programlisting>
 
-            <programlisting>Public: void welcome(Nullable: User user) 
+            <programlisting>public: void welcome(optional: User user) 
 {
     if (user exists)
         log.info("Hi ${user.name}!") 
@@ -148,7 +152,7 @@ else
         log.info("Hello World!");
 }</programlisting>
             
-            <programlisting>Public: Payment payment(Order order) 
+            <programlisting>public: Payment payment(Order order) 
 {
     if (Payment p = order.payment exists)
     {
@@ -182,7 +186,7 @@ else
 ( "else" OpenBlock )?</programlisting>
 
             <para>The expression may be of any type. However, if the expression type is 
-            <literal>Nullable</literal>, there must be an explicit <literal>case null</literal>
+            <literal>optional</literal>, there must be an explicit <literal>case null</literal>
             defined. The case values must be expressions of type <literal>Case&lt;X&gt;</literal>, 
             where <literal>X</literal> is the switch expression type.</para> 
             
@@ -205,19 +209,19 @@ else
 {
     switch (payment.type) 
         case null throw NoPaymentTypeException()
-        case (CREDIT, DEBIT) return cardPaymentProcessor 
-        case (CHECK) return checkPaymentProcessor
+        case (credit, debit) return cardPaymentProcessor 
+        case (check) return checkPaymentProcessor
         else return interactivePaymentProcessor;
 }</programlisting>
             
             <programlisting>switch (payment.type) 
 {
-    case (CREDIT, DEBIT) 
+    case (credit, debit) 
     { 
         log.debug("card payment");
         cardPaymentProcessor.process(payment, user.card);
     } 
-    case (CHECK) 
+    case (check) 
     {
         log.debug("check payment");
         checkPaymentProcessor.process(payment);
@@ -246,7 +250,7 @@ else
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
             must be of type <literal>Iterable&lt;Entry&gt;</literal> or 
             <literal>Iterator&lt;Entry&gt;</literal>. Each iteration constraint expression
-            must be of type <literal>Boolean</literal> (or <literal>Nullable: Object</literal>
+            must be of type <literal>Boolean</literal> (or <literal>optional: Object</literal>
             of the <literal>exists</literal> modifier appears). Iterated and constraint 
             expressions may refer to iteration variables defined earlier.</para>
             
@@ -256,7 +260,7 @@ else
             <para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
             the fail block is not executed. Otherwise, if the loop completes, or if the
-            loop exists early via execution of the control directive <literal>found</literal>, 
+            loop exits early via execution of the control directive <literal>break</literal>, 
             the fail block is executed, if it is defined.</para>
             
             <para>For example:</para>
@@ -293,7 +297,7 @@ fail
 }
 </programlisting>
 
-            <programlisting>for (Organization o in orgs: o.country==AUSTRALIA; Person p in o.employees) 
+            <programlisting>for (Organization o in orgs: o.country==au; Person p in o.employees) 
 {
     log.info("employee: $(p.name)");
     ...
@@ -318,7 +322,7 @@ fail
             <para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
             the fail block is not executed. Otherwise, if the loop completes, or if the
-            loop exists early via execution of the control directive <literal>found</literal>, 
+            loop exits early via execution of the control directive <literal>break</literal>, 
             the fail block is executed, if it is defined.</para>
             
             <para>For example:</para>
@@ -360,13 +364,6 @@ while (!person.parent.dead)
 {
     person = person.parent;    
 }</programlisting>
-            
-            <!--
-            <programlisting>do ( Iterator&lt;Object&gt; i=list.iterator() )
-    log.debug( $i.current )
-while ( i.more )
-    i.next();</programlisting>
-             -->
     
         </section>
         
@@ -419,7 +416,7 @@ using ( Transaction(), Session s = Session() )
             
             <programlisting>try ( File file = File(name) )
 {
-    file.open(READONLY);
+    file.open(readOnly);
     ...
 }
 catch (FileNotFoundException fnfe) 
@@ -455,9 +452,9 @@ catch (NotFoundException e)
         
         <programlisting>Assert := "assert" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression?</programlisting>
         
-        <!-- para>Assertions appearing in class declarations are checked after each method
-        or constructor invocation. Assertions appearing in compound blocks are checked
-        when the block is executed.</para-->
+        <para>Assertions appearing in class declarations are checked after the class
+        is instantiated. Assertions appearing in other blocks are checked when the 
+        block is executed.</para>
         
         <para>The first expression is of type <literal>Boolean</literal>, and the second
         of type <literal>String</literal>.</para>
@@ -472,6 +469,7 @@ catch (NotFoundException e)
     throw new AssertionFailedException(message);</programlisting>
         
     </section>
+        -->
     
     </section>
 

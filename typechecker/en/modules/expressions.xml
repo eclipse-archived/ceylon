@@ -1,8 +1,5 @@
 <chapter id="expressions">
     <title>Expressions</title>
-    <!--  
-    <programlisting>items.accumulate&lt;Float&gt;( 0.0, (Float sum, Item i): sum+i.amount )</programlisting>
-    -->
     
     <section>
         <title>Invocations</title>
@@ -62,6 +59,8 @@ CLOSEBRACE</programlisting>
             <para>The value of a method invocation is the return value of the method.
             The parameter values are passed to the formal parameters of the method.</para>
             
+            <para>Methods may not be invoked on an expression of type <literal>optional</literal>.</para>
+            
         </section>
         
         <section>
@@ -73,8 +72,8 @@ CLOSEBRACE</programlisting>
             
             <para>For example:</para>
             
-            <programlisting>HashCode.calculate(DEFAULT, firstName, initial, lastName)</programlisting>
-            <programlisting>HashCode.calculate { algorithm=DEFAULT; firstName, initial, lastName }</programlisting>
+            <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
+            <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
             
             <para>The value of a static method invocation is the return value of the static method.
             The parameter values are passed to the formal parameters of the method.</para>
@@ -95,14 +94,14 @@ CLOSEBRACE</programlisting>
             <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
             
             <programlisting>Panel {
-	label = "Hello";
-	Input i = Input(),
-	Button {
-		label = "Hello";
-		action = () {
-			log.info(i.value);
-		}
-	}
+    label = "Hello";
+    Input i = Input(),
+    Button {
+        label = "Hello";
+        action = () {
+            log.info(i.value);
+        }
+    }
 }</programlisting>
             
             <para>The value of a class instantiation is a new instance of the class.
@@ -134,23 +133,17 @@ CLOSEBRACE</programlisting>
             
             <para>Inline classes may be instantiated according to:</para>
             
-            <programlisting>InlineClass := Annotations Type* Instantiation NamedParameterValueAndMemberList</programlisting>
-            
-            <programlisting>NamedParameterValueAndMemberList :=
-OPENBRACE 
-NamedParameterValue* ParameterValues?
-( Method | Attribute | Assert SEMICOLON )*
-CLOSEBRACE</programlisting>
+            <programlisting>InlineClass := Annotations Type Instantiation Interfaces Block</programlisting>
 
             <para>For example:</para>
             
             <programlisting>Task task = Task() {
     timeout=1000;
-    Override: void run() { ... }
-    Override: void fail(Exception e) { ... }
+    override: void run() { ... }
+    override: void fail(Exception e) { ... }
 }</programlisting>
 
-            <programlisting>return Transactional: Resource Database() {
+            <programlisting>return transactional: Resource Database() {
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
@@ -199,6 +192,8 @@ CLOSEBRACE</programlisting>
         
     </section>
     
+    <!--
+    
     <section>
         <title>Control expressions</title>
         
@@ -213,14 +208,17 @@ CLOSEBRACE</programlisting>
             executing the block. All execution paths must result in an
             initialized variable.</para>
 
-            <programlisting>Public: String welcome 
+            <programlisting>public: String welcome 
+{
     return find (String greeting) 
         if (user exists) 
             greeting = "Hi ${user.name}!" 
         else 
-            greeting = "Hello World!";</programlisting>
+            greeting = "Hello World!";
+}</programlisting>
             
-            <programlisting>return find (Nullable: Person p) {
+            <programlisting>return find (optional: Person p) 
+{
     using (Session s = sf.openSession())
         try
             p = s.get(#Person, pid)
@@ -241,7 +239,8 @@ CLOSEBRACE</programlisting>
         if (p.action == action &amp;&amp; p.object = object) 
             found allowed=true;</programlisting>
             
-            <programlisting>log.info {
+            <programlisting>log.info 
+{
     message = find (Float sum=0.0) 
         for (Order o in orders)
             sum += o.total;
@@ -273,15 +272,17 @@ CLOSEBRACE</programlisting>
 
             <para>For example:</para>
             
-            <programlisting>Public: String welcome 
+            <programlisting>public: String welcome 
+{
     return if (user exists)
             "Hi ${user.name}!" 
         else 
-            "Hello World!";</programlisting>
+            "Hello World!";
+}</programlisting>
 
             <programlisting>Boolean paid = if (Payment payment = order.payment exists) payment.paid else false;</programlisting>
             
-            <programlisting>Nullable:String name = if (person exists, person.active) "$(person.firstName) $(person.lastName)";</programlisting>
+            <programlisting>optional: String name = if (person exists, person.active) "$(person.firstName) $(person.lastName)";</programlisting>
 
         </section>
         
@@ -308,7 +309,8 @@ CLOSEBRACE</programlisting>
         case (CHECK) checkPaymentProcessor
         else interactivePaymentProcessor;</programlisting>
 
-            <programlisting>log.info { 
+            <programlisting>log.info 
+{ 
     message = switch (num) 
         case (0) "Zero" 
         case (1) "Unity" 
@@ -365,8 +367,10 @@ CaseExpression
             
             <programlisting>List&lt;String&gt; adultNames = for (Person p in people: p.age>18) p.name;</programlisting>
 
-            <programlisting>Public: List&lt;Person&gt; employees(Country country)
-    return for (Organization o in orgs: o.country==country; Person p in o.employees) p;</programlisting>
+            <programlisting>public: List&lt;Person&gt; employees(Country country) 
+{
+    return for (Organization o in orgs: o.country==country; Person p in o.employees) p;
+}</programlisting>
 
             <programlisting>log.info( ", ".join( for (String key -> Integer value in map) "$key = $value" ) );</programlisting>
             
@@ -418,5 +422,7 @@ CaseExpression
         </section>
 
     </section>
+    
+    -->
     
 </chapter>

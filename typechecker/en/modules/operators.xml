@@ -34,7 +34,7 @@
     
     <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.add(person1)^.add(person2)*.name;</programlisting>
     
-    <programlisting>Nullable: String name = person?.name;</programlisting>
+    <programlisting>optional: String name = person?.name;</programlisting>
     
     
     <para>Are equivalent to the following (Ceylon) code:</para>
@@ -73,7 +73,7 @@
         Override: void call(String element) { element.name; } 
     }.result;</programlisting>
     
-    <programlisting>Nullable: String name = if (person exists) person.name else null;</programlisting>
+    <programlisting>optional: String name = if (person exists) person.name else null;</programlisting>
     
     <section>
         <title>List of operators</title>
@@ -109,9 +109,9 @@
             <entry><literal>lhs = rhs</literal></entry>
             <entry>assign</entry>
             <entry></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Member invocation</emphasis></entry></row>
@@ -139,9 +139,9 @@
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe invoke</entry>
             <entry><literal>if (lhs exists) lhs.member else null</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry></entry>
-            <entry><literal>Nullable</literal> member type</entry>
+            <entry><literal>optional</literal> member type</entry>
         </row>
         
         <!-- Spread -->
@@ -163,8 +163,8 @@
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>Object.identical(lhs, rhs)</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -172,8 +172,8 @@
             <entry><literal>lhs == rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>if (lhs exists) lhs.equals(rhs) else if (rhs exists) false else true</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -181,8 +181,8 @@
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
             <entry><literal>if (lhs exists) lhs.equals(rhs).negation else if (rhs exists) true else false</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -358,7 +358,7 @@
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (lhs exists) true else false</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -367,7 +367,7 @@
             <entry><literal>lhs default rhs</literal></entry>
             <entry>default</entry>
             <entry><literal>if (lhs exists) lhs else rhs</literal></entry>
-            <entry><literal>Nullable: T</literal></entry>
+            <entry><literal>optional: T</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -378,7 +378,7 @@
             <entry><literal>lhs ?: rhs</literal></entry>
             <entry>null default</entry>
             <entry><literal>if (lhs?) lhs else rhs</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Object</literal></entry>
         </row>
@@ -390,8 +390,8 @@
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>null assignment</entry>
             <entry><literal>if (lhs?) false else (lhs=rhs)?</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -399,8 +399,8 @@
             <entry><literal>lhs =? rhs</literal></entry>
             <entry>null assignment</entry>
             <entry><literal>if (rhs?) (lhs=rhs)? else false</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         -->
@@ -413,7 +413,7 @@
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (lhs exists) lhs.empty.negation else false</literal></entry>
-            <entry><literal>Nullable: Container</literal></entry>
+            <entry><literal>optional: Container</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -424,7 +424,7 @@
             <entry><literal>lhs ??: rhs</literal></entry>
             <entry>empty default</entry>
             <entry><literal>if (lhs)? ( if (lhs.empty) rhs else lhs ) else rhs</literal></entry>
-            <entry><literal>Nullable: Holder</literal></entry>
+            <entry><literal>optional: Holder</literal></entry>
             <entry><literal>Container</literal></entry>
             <entry><literal>Container</literal></entry>
         </row>
@@ -436,8 +436,8 @@
             <entry><literal>lhs ??= rhs</literal></entry>
             <entry>empty assignment</entry>
             <entry><literal>if (lhs??) false else (lhs=rhs)??</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -445,8 +445,8 @@
             <entry><literal>lhs =?? rhs</literal></entry>
             <entry>empty assignment</entry>
             <entry><literal>if (rhs??) (lhs=rhs)?? else false</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         -->
@@ -601,6 +601,8 @@
         
         -->
         
+        <!--
+        
         <row><entry namest="first" nameend="last"><emphasis>Set operations</emphasis></entry></row>
         
         <row>
@@ -631,6 +633,8 @@
             <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         
+        -->
+        
         <!--
         <row>
             <entry><literal>*</literal></entry>
@@ -642,6 +646,8 @@
             <entry><literal>Set&lt;Pair&lt;X,Y&gt;&gt;</literal></entry>
         </row>
         -->
+        
+        <!--
         
         <row><entry namest="first" nameend="last"><emphasis>Set comparison</emphasis></entry></row>
         
@@ -681,6 +687,8 @@
             <entry><literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
+        
+        -->
         
         <row><entry namest="first" nameend="last"><emphasis>Constructors</emphasis></entry></row>
 
@@ -732,7 +740,7 @@
             <entry>render</entry>
             <entry><literal>if (rhs exists) rhs.string else ""</literal></entry>
             <entry></entry>
-            <entry><literal>Nullable: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
             <entry><literal>String</literal></entry>
         </row>
         
@@ -899,6 +907,7 @@
             <entry><literal>Number</literal></entry>
         </row>
         
+        <!--
         <row><entry namest="first" nameend="last"><emphasis>Duration arithmetic</emphasis></entry></row>
                 
         <row>
@@ -940,6 +949,7 @@
             <entry><literal>Integer</literal></entry>
             <entry><literal>Duration</literal></entry>
         </row>
+        -->
         
         <!--
         
@@ -1070,9 +1080,9 @@
             </row>
             -->
             <row>
-                <entry>Multiplication, division, remainder,
-                intersection<!--, bitwise and-->, for
-                numbers, sets and durations:</entry> 
+                <entry>Multiplication, division, remainder
+                <!--intersection--><!--, bitwise and--> for
+                numbers<!--, sets--><!--and durations-->:</entry> 
                 <entry>
                 <literal>*</literal>, 
                 <literal>/</literal>, 
@@ -1084,9 +1094,9 @@
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Addition, subtraction, concatenation, 
-                union, complement, join<!--, bitwise or, bitwise xor-->,
-                for numbers, sets, lists and durations:</entry> 
+                <entry>Addition, subtraction, concatenation 
+                <!--union, complement, join--><!--, bitwise or, bitwise xor-->
+                for numbers<!--, sets,--><!-- and durations--> and lists:</entry> 
                 <entry>
                 <literal>+</literal>, 
                 <literal>-</literal><!--, 
@@ -1135,7 +1145,7 @@
                 <entry>Right</entry>
             </row>
             <row>
-                <entry>Comparison, set comparison, containment:</entry> 
+                <entry>Comparison, <!--set comparison,--> containment:</entry> 
                 <entry>
                 <literal>&lt;=&gt;</literal>,
                 <literal>&lt;</literal>, 

@@ -16,7 +16,7 @@
         operator <literal>$</literal> (render), and the binary operator 
         <literal>=</literal> (assign).</para>
         
-        <para>In addition, references of type <literal>Nullable:Object</literal>
+        <para>In addition, references of type <literal>optional:Object</literal>
         support the binary operators <literal>?.</literal> (nullsafe invoke) 
         and <literal>default</literal>
         <!-- and <literal>?:</literal> (null default) -->and the unary operator
@@ -139,7 +139,7 @@ interface Iterator&lt;X&gt; {
     Boolean isAll(Test<X> test) { ... }
     Boolean isAny(Test<X> test) { ... }
     
-    Nullable: X first(Test<X> test) { ... }
+    optional: X first(Test<X> test) { ... }
     
     Y accumulate<Y>(Y initial, Accumulate<Y,X> accumulate) { ... }
     
@@ -317,7 +317,7 @@ interface OpenCorrespondence&lt;U, V&gt; {
     /**
      * element assignment x[key] = value
      */
-     Nullable: V define(U key, V value);
+     optional: V define(U key, V value);
      
     void define(Map&lt;U, V&gt; definitions);
     
@@ -493,8 +493,8 @@ interface List<X> {
     X first;    
     X last;
     
-    Nullable: X firstOrNull;    
-    Nullable: X lastOrNull;
+    optional: X firstOrNull;    
+    optional: X lastOrNull;
     
     Integer firstIndex;
     Integer lastIndex;
@@ -582,7 +582,7 @@ interface Map<U,V> {
     Bag<V> values;    
     Map<V, Set<U>> inverse;
     
-    Nullable: V valueOrNull(U key);
+    optional: V valueOrNull(U key);
 
     //Set<Entry<U,V>> entries;
     
@@ -926,9 +926,9 @@ class Instant {
 class Time extends Instant {
     Constant: Integer hours;
     Constant: Integer minutes;
-    Constant Nullable: Integer seconds;
-    Constant Nullable: Integer milliseconds;
-    Nullable: Timezone timezone;
+    Constant optional: Integer seconds;
+    Constant optional: Integer milliseconds;
+    optional: Timezone timezone;
     ...
 }</programlisting>
         
@@ -1052,7 +1052,7 @@ class Byte {
     </itemizedlist>
     
     <para>However, these optimizations may never be performed for variables, attributes
-    or method types declared <literal>Nullable</literal>.</para>
+    or method types declared <literal>optional</literal>.</para>
     
     <para>The following operators may be optimized: 
     <literal>+, -, *, /, ++, --, +=, -=, *=, /=, 
