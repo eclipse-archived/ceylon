@@ -1,10 +1,10 @@
 <chapter id="statementblocks">
     <title>Blocks and control structures</title>
     
-    <para>Method, attribute and converter bodies contain procedural code
-    that is executed when the method, attribute or converter is invoked.
-    The code contains expressions and assertions and is organized using 
-    blocks and control structures.</para>
+    <para>Method, attribute, converter, class and functor literal bodies contain 
+    procedural code that is executed when the method, attribute or converter is 
+    invoked. The code contains expressions, control directives and assertions and 
+    is organized using blocks and control structures.</para>
     
     <section>
         <title>Blocks</title>
