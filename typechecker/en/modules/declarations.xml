@@ -688,12 +688,12 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
 
         <para>And:</para>
         
-        <programlisting>constant: Integer max = 99;</programlisting>
+        <programlisting>public constant: Integer max = 99;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
-private ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
+public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         <para>TODO: Should we generate getters and setters, just for interop with Java?</para>
 
