@@ -650,7 +650,6 @@ assign
         <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
     @Override public Float get() { return items.get().totalPrice; }
 };
-
 public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
         <para>While:</para>
@@ -664,7 +663,6 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
     @Override public String get() { return renderName(n); }
     @Override public void set(String name) { n = parseName(name); }
 };
-
 public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
         <para>
@@ -677,7 +675,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;String&gt; firstName = new SimpleAttribute&lt;String&gt;();
-
 protected Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
 
         <para>While:</para>
@@ -687,17 +684,15 @@ protected Attribute&lt;String&gt; firstName() { return firstName; }</programlist
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;Integer&gt; count = new SimpleAttribute&lt;Integer&gt;(0);
-
 private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
 
         <para>And:</para>
         
-        <programlisting>final Integer max = 99;</programlisting>
+        <programlisting>constant: Integer max = 99;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
-
 private ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         <para>TODO: Should we generate getters and setters, just for interop with Java?</para>
