@@ -7,13 +7,13 @@
     Java and C#. Ceylon programs execute in any standard Java Virtual Machine 
     and, like Java, take advantage of the memory management and concurrency 
     features of that environment. The Ceylon compiler is able to compile 
-    Ceylon code that calls Java classes or interfaces, and Java code that 
-    calls Ceylon classes or interfaces. Ceylon differs from Java by 
-    eliminating primitive types and arrays and introducing a number of 
-    improvements (inspired in some cases by dynamic languages such as SmallTalk, 
-    Python and Ruby) to the language and type system that reduce verbosity 
-    compared to Java or C#. Moreover, Ceylon provides its own native SDK as a 
-    replacement for the Java platform class libraries.
+    Ceylon code that calls Java classes or interfaces, and Java code that calls 
+    Ceylon classes or interfaces. Ceylon differs from Java by eliminating 
+    primitive types and arrays and introducing a number of improvements 
+    (inspired in some cases by dynamic languages such as SmallTalk, Python and 
+    Ruby) to the language and type system that reduce verbosity compared to 
+    Java or C#. Moreover, Ceylon provides its own native SDK as a replacement 
+    for the Java platform class libraries.
     </para>
     
     <para>
@@ -36,7 +36,7 @@
     </para>
     
     <para>
-    By default, Ceylon classes, attributes and local locals are immutable. 
+    By default, Ceylon classes, attributes and locals are immutable. 
     Mutable classes, attributes and locals must be explicitly declared
     using the <literal>mutable</literal> annotation. An immutable class may 
     not declare mutable attributes or extend a mutable class. An immutable 
