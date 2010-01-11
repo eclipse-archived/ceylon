@@ -309,15 +309,13 @@ class Customer(Name name, optional: Organization org = null)
         <para>A subclass must pass values to each superclass initialization 
         parameter.</para>
 
-        <programlisting>public: 
-class SpecialKey1()
+        <programlisting>public: class SpecialKey1()
     extends Key( SpecialLock() ) 
 {
     ...
 }</programlisting>
 
-        <programlisting>public: 
-class SpecialKey2(Lock lock) 
+        <programlisting>public: class SpecialKey2(Lock lock) 
     extends Key(lock) 
 {
     ...
