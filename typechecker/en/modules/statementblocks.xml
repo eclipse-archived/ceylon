@@ -9,38 +9,58 @@
     <section>
         <title>Blocks</title>
             
-        <para>A <emphasis>block</emphasis> is list of semicolon-delimited expressions, 
-        assertions, method, attribute and local variable declarations, and control structures, 
-        surrounded by braces. Some blocks end in a control directive. The expressions, assertions,
-        local variable initializers and control structures are executed sequentially.</para>
+        <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
+        assertions, method, attribute and local declarations, and control structures, 
+        surrounded by braces. Some blocks end in a control directive. The expressions, 
+        assertions, local initializers and control structures are executed sequentially.</para>
+
+        <section>
+        <title>Blocks and statements</title>
+
+        <para>A statement is an expression, control structure, control statement or a
+        method, attribute or local declaration.</para>
 
         <programlisting>Block := 
 OPENBRACE 
 Statement*
-( ControlDirective SEMICOLON )?
+ControlStatement?
 CLOSEBRACE</programlisting>
 
-        <para>Where:</para>
+        <programlisting>Statement := 
+Expression SEMICOLON | 
+Method | 
+Attribute | 
+LocalVariable | 
+ControlStructure</programlisting>
 
-        <programlisting>Statement := Expression SEMICOLON | Method | Attribute | LocalVariable | ControlStructure</programlisting>
-        <programlisting>ControlDirective := ReturnDirective | FoundDirective | BreakDirective | ThrowDirective</programlisting>
-
+        <programlisting>ControlStatement := ControlDirective SEMICOLON</programlisting>
+        
+        </section>
+        
     </section>
     
     <section>
         <title>Control directives</title>
         
-        <para>Control directives include the <literal>return</literal>
-        directive (to return a value from a method, attribute getter or converter),
-        the <literal>found</literal> directive (to terminate a loop<!-- or find block--> 
-        successfully), the <literal>break</literal> directive (to terminate a loop
-        <!--or find block-->unsuccessfully) and the <literal>throw</literal> directive 
-        (to raise an exception).</para>
+        <para>A control directive is a statement that affects the flow of execution.</para>
+
+        <para>Ceylon provides the following control directives:</para>
         
-        <programlisting>ReturnDirective := "return" Expression</programlisting>
-        <programlisting>FoundDirective := "found" Expression</programlisting>
-        <programlisting>BreakDirective := "break"</programlisting>
-        <programlisting>ThrowDirective := "throw" Expression</programlisting>
+        <itemizedlist>
+            <listitem>the <literal>return</literal> directive&mdash;to return a value from a method, 
+            attribute getter or converter,</listitem>
+            <listitem>the <literal>found</literal> directive&mdash;to terminate a loop<!-- or find block--> 
+            successfully,</listitem>
+            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop<!--or find block-->
+            unsuccessfully, and</listitem>
+            <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
+        </itemizedlist>
+        
+         <programlisting>ControlDirective := 
+"return" Expression | 
+"found" Expression | 
+"break" | 
+"throw" Expression</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside of
         the body of an attribute getter, a non-<literal>void</literal> method or 
@@ -85,6 +105,21 @@ CLOSEBRACE</programlisting>
         directives and control structures. Control structures include
         conditionals, loops, exception management and assertions:</para>
 
+        <para>Ceylon provides the following control structures:</para>
+        
+        <itemizedlist>
+            <listitem>the <literal>if/else</literal> conditional&mdash;for controlling execution based
+            upon a boolean value, and dealing with null values,</listitem>
+            <listitem>the <literal>switch/case/else</literal> conditional&mdash;for controlling execution
+            using an enumerated list of values,</listitem>
+            <listitem>the <literal>do/while/fail</literal> loop&mdash;for loops which terminate based
+            upon the value of a boolean expression,</listitem>
+            <listitem>the <literal>for/fail</literal> loop&mdash;for looping over elements of a collection,</listitem>
+            <listitem>the <literal>using</literal> construct&mdash;for controlling the lifecycle of heavyweight
+            objects, and</listitem>
+            <listitem>the <literal>try/catch/finally</literal> construct&mdash;for managing exceptions</listitem>
+        </itemizedlist>
+                
         <programlisting>ControlStructure := 
 IfElse | SwitchCaseElse | 
 DoWhileFail | ForFail | 
@@ -123,10 +158,10 @@ Expression |
             <para>If no <literal>exists</literal> or <literal>nonempty</literal> modifier appears, 
             the condition must be an expression of type <literal>Boolean</literal>. If the 
             <literal>exists</literal> modifier appears, the condition must be an expression or 
-            variable initializer of type <literal>optional: Object</literal>. If the 
+            local initializer of type <literal>optional: Object</literal>. If the 
             <literal>nonempty</literal> modifier appears, the condition must be an expression or 
-            variable initializer of type <literal>optional: Container</literal>. In either case, 
-            the variable will be treated by the compiler as having non-null type inside the first 
+            local initializer of type <literal>optional: Container</literal>. In either case, 
+            the local will be treated by the compiler as having non-null type inside the first 
             block, relaxing the usual compile-time restrictions upon nullable types.</para>
                         
             <para> If all conditions are satisfied, the first block is executed. Otherwise, 
@@ -409,7 +444,7 @@ using ( Transaction(), Session s = Session() )
 
             <para>When an exception occurs in the try block, the first matching
             catch block is executed, if any. The finally block is always executed.
-            The types of each catch block variable must extend 
+            The types of each catch block local must extend 
             <literal>lang.Exception</literal>.</para>
             
             <para>For example:</para>

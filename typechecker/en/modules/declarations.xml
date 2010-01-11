@@ -1,11 +1,18 @@
 <chapter id="declarations">
     <title>Declarations</title>
     
-    <para>
-    All classes, interfaces, selectors, attributes, methods, constructors, variables, 
-    functors, decorators and converters must be declared. Declarations conform to the 
-    following general schema: 
-    </para>
+    <para>All classes, interfaces, selectors, attributes, methods, constructors, 
+    locals, functors, decorators and converters must be declared.</para>
+    
+    <section>
+        <title>General declaration syntax</title>
+        
+        <para>All declarations follow a general pattern.</para> 
+      
+    <section>
+    <title>Abstract declaration</title>
+    
+    <para>Declarations conform to the following general schema:</para>
     
     <programlisting>Annotations? 
 Type? keyword? Identifier TypeParameters? FormalParameters? 
@@ -13,36 +20,94 @@ Supertype?
 Interfaces? 
 TypeConstraints? 
 Declaration?</programlisting>
+
+    </section>
     
-    <para>Where:</para>
+    <section>
+    <title>Annotation list</title>
+
+    <para>Declarations may be preceded by a list of annotations.</para>
     
     <programlisting>Annotations := Annotation+ COLON</programlisting>
     
+    </section>
+    
+    <section>
+    <title>Type declaration</title>
+
+    <para>Method, attribute and converter declarations must declare a type.</para>
+    
     <programlisting>Type := Identifier (DOT Identifier)* TypeParameters?</programlisting>
+
+    </section>
+    
+    <section>
+    <title>Type parameter list</title>
+
+    <para>Method, class, interface, decorator and converter declarations may declare 
+    generic type parameters.</para>
     
     <programlisting>TypeParameters := LT Identifier (COMMA Identifier)* GT</programlisting>
 
+    </section>
+
+    <section>
+    <title>Formal parameter list</title>
+
+    <para>Method and class declarations may declare formal parameters, including
+    optional parameters and a varargs parameter.</para>
+    
     <programlisting>FormalParameters: = 
 OPENPAREN
 FormalParameter (COMMA FormalParameter)* (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
 OptionalParameter (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
 VarargsParameter?
 CLOSEPAREN</programlisting>
- 
+
     <programlisting>OptionalParameter = FormalParameter Initializer</programlisting>
     
     <programlisting>VarargsParameter = FormalParameter "..."</programlisting>
-
+    
     <programlisting>FormalParameter := Annotations? Type Identifier</programlisting>
     
+    </section>
+    
+    <section>
+    <title>Extended class</title>
+
+    <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
+    
     <programlisting>Supertype := "extends" Instantiation</programlisting>
+
+    </section>
+    
+    <section>
+    <title>Implemented interfaces</title>
+
+    <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
+    using the <literal>satisfies</literal> clause.</para>
     
     <programlisting>Interfaces = "satisfies" Type (COMMA Type)*</programlisting>
 
+    </section>
+
+    <section>
+    <title>Generic type constraint list</title>
+
+    <para>Method, class, interface, decorator and converter declarations which declare 
+    generic type parameters may declare constraints upon the type parameters using the
+    <literal>where</literal> clause.</para>
+    
     <programlisting>TypeConstraints = "where" TypeConstraint (SEMICOLON TypeConstraint)*</programlisting>
-    
+
     <programlisting>TypeConstraint := Ident (GE|LE) (Type|Ident)</programlisting>
+
+    </section>
     
+    <!--
+    <section>
+        <title>Declaration examples</title>
+        
     <para>For example:</para>
     
     <programlisting>Comparable&lt;Person&gt; Person person = Person(name);</programlisting>
@@ -102,10 +167,16 @@ String join(Iterable&lt;String&gt; strings,
     
     <para>Thus, the syntax of Ceylon declarations is more regular than Java or C#.</para>
     
+    </section>
+    -->
+    
+    </section>
+    
     <section>
         <title>Classes</title>
         
-        <para>Class are declared according to the following:</para>
+        <para>A class is a stateful, instantiable type. Class are declared according to 
+        the following:</para>
         
         <programlisting>Annotations? 
 "class" Identifier TypeParameters? FormalParameters?
@@ -115,25 +186,23 @@ TypeConstraints?
 InstanceEnumeraton?
 Block</programlisting>
 
-        <programlisting>InstanceEnumeraton := 
-"instances" 
-Identifier ParameterValueSet? 
-(COMMA Identifier ParameterValueSet?)* 
-"..."?</programlisting>
-
+        <section>
+             <title>Class inheritance</title>
+        
         <para>
+        A class may extend another class, and implement any number of interfaces.
         For example:
         </para>
         
-        <programlisting>public entity: 
+        <programlisting>public mutable entity:
 class Customer(Name name, optional: Organization org = null) 
-   extends Person(name, org) 
+    extends Person(name, org) 
 { 
     ... 
 }</programlisting>
         <programlisting>class Token() 
-   extends Datetime()
-   satisfies Comparable&lt;Token&gt;, Identifier
+    extends Datetime()
+    satisfies Comparable&lt;Token&gt;, Identifier
 { 
     ... 
 }</programlisting>
@@ -160,6 +229,11 @@ class Customer(Name name, optional: Organization org = null)
     public Token() { super(); }
     ... 
 }</programlisting>
+
+        </section>
+       
+        <section>
+            <title>Class instantiation</title>
         
         <para>
         Ceylon classes do not support a Java-like constructor declaration syntax. However, 
@@ -171,14 +245,13 @@ class Customer(Name name, optional: Organization org = null)
         
         <programlisting>public: class Key(Lock lock) 
 {
-    public constant: Lock lock = lock;
+    public: Lock lock = lock;
 }</programlisting>
         
         <para>Is equivalent to this Java class:</para>
 
         <programlisting>public class Key 
-{ 
-        
+{
     private final ReadAttribute&lt;Lock&gt; lock;
     public ReadAttribute&lt;Lock&gt; lock() { return lock; }
     
@@ -216,23 +289,21 @@ class Customer(Name name, optional: Organization org = null)
 
         <para>Class initialization parameters are optional. The following class:</para>
         
-        <programlisting>public: class Point 
+        <programlisting>public mutable: class Point 
 {
-    public: Exact x;
-    public: Exact y;
+    public mutable: Exact x;
+    public mutable: Exact y;
 }</programlisting>
         
         <para>Is equivalent to this Java class with a default constructor:</para>
         
         <programlisting>public class Point 
 {
-   
     private final Attribute&lt;Exact&gt; x = new SimpleAttribute&lt;Exact&gt;();
     public SimpleAttribute&lt;Exact&gt; x() { return x; }
     
     private final Attribute&lt;Exact&gt; y = new SimpleAttribute&lt;Exact&gt;();
     public SimpleAttribute&lt;Exact&gt; y() { return y; }
-    
 }</programlisting>
         
         <para>A subclass must pass values to each superclass initialization 
@@ -275,7 +346,7 @@ class SpecialKey2(Lock lock)
         <para>The body of a class may contain arbitrary code, which is
         executed when the class is instantiated.</para>
         
-        <programlisting>public: class DiagonalPoint(Exact position) 
+        <programlisting>public mutable: class DiagonalPoint(Exact position) 
     extends Point()
 {
     Exact displacement = position**2/2;
@@ -291,10 +362,8 @@ class SpecialKey2(Lock lock)
         <para>The compiler is permitted to optimize private attribute 
         declarations. So the above class is equivalent to:</para>
         
-        <programlisting>public class DiagonalPoint 
-    extends Point
+        <programlisting>public class DiagonalPoint extends Point
 {
-
     public DiagonalPoint(Exact position) 
     {
         Exact displacement = position.exponentiate(2).divide(2);
@@ -304,10 +373,11 @@ class SpecialKey2(Lock lock)
         y = sqrt(displacement).multiply(sign);
         assert x.exponentiate(2) + y.exponentiate(2) 
              == position.exponentiate(2);
-    }
-    
+    } 
 }</programlisting>
         
+        </section>
+
         <!--
         <para>Note that additional initialization may be performed in any
         method annotated <literal>AfterCreate</literal>. Invariants may
@@ -332,6 +402,17 @@ class Point(Float x, Float y)
     
 }</programlisting>
         -->
+
+        <section>
+        <title>Instance enumeration</title>
+        
+        <para>A class may specify an enumerated list of instances:</para>
+        
+        <programlisting>InstanceEnumeraton := 
+"instances" 
+Identifier ParameterValueSet? 
+(COMMA Identifier ParameterValueSet?)* 
+"..."?</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>
@@ -397,6 +478,8 @@ class Point(Float x, Float y)
     
 }</programlisting>
 
+        </section>
+
         <!--
         <para>A class with an <literal>instances</literal> declaration may not extend
         a class with no <literal>instances</literal> declaration.</para>
@@ -407,7 +490,9 @@ class Point(Float x, Float y)
     <section>
         <title>Interfaces</title>
         
-        <para>Interfaces are declared according to the following:</para>
+        <para>An interface is a non-instantiable type. Interfaces may not be
+        directly instantiated. Interfaces are declared according to the 
+        following:</para>
         
         <programlisting>Annotations?
 "interface" Identifier TypeParameters?
@@ -416,21 +501,24 @@ TypeConstraints?
 OPENBRACE 
 ( Attribute | Method )* 
 CLOSEBRACE</programlisting>
-        
-        <para>
-        For example:
-        </para>
-        
-        <programlisting>interface PaymentStrategy 
-{ 
-    ... 
-}</programlisting>
 
-        <programlisting>public: interface Comparable&lt;T&gt; 
-{ 
-    ... 
-}</programlisting>
+        <para>For example:</para>
+        
+        <programlisting>interface PaymentStrategy { ... }</programlisting>
 
+        <programlisting>public: interface Comparable&lt;T&gt; { ... }</programlisting>
+
+         <para>Equivalent to the following Java interfaces:</para>
+
+        <programlisting>interface PaymentStrategy { ... }</programlisting>
+
+        <programlisting>public interface Comparable&lt;T&gt; { ... }</programlisting>
+
+        <section>
+            <title>Interface inheritance</title>
+            
+        <para>An interface may extend any number of other interfaces. For example:</para>
+        
         <programlisting>public: interface List&lt;T&gt;
     satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; 
 {
@@ -438,27 +526,19 @@ CLOSEBRACE</programlisting>
 }</programlisting>
         
         <para>
-        The types listed after the <literal>satisfies</literal> keyword are the supertypes.
-        All supertypes of an interface must be interfaces. The semantics of interface inheritance 
+        The types listed after the <literal>satisfies</literal> keyword are the supertypes. All 
+        supertypes of an interface must be interfaces. The semantics of interface inheritance 
         are exactly the same as Java, and the above declarations are equivalent to the following 
         Java declarations: 
         </para>
         
-        <programlisting>interface PaymentStrategy 
-{ 
-    ... 
-}</programlisting>
-
-        <programlisting>public interface Comparable&lt;T&gt; 
-{ 
-    ... 
-}</programlisting>
-
         <programlisting>public interface List&lt;T&gt; 
     extends Sequence&lt;T&gt;, Collection&lt;T&gt; 
 {
     ...
 }</programlisting>
+
+        </section>
         
     </section>
     
@@ -503,16 +583,15 @@ public User(String username, Person person);</programlisting>
     <section>
         <title>Methods</title>
         
-        <para>Methods are declared according to one of the following schemes:</para>
+        <para>A method is a callable block of code. Methods may have parameters and
+        may return a value. Methods are declared according to one of the following:</para>
         
         <programlisting>Annotations? 
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints?
 ( SEMICOLON | Block )</programlisting>
 
-        <para>
-        For example:
-        </para>
+        <para>For example:</para>
         
         <programlisting>public optional: U get(optional: V key);</programlisting>
         
@@ -587,23 +666,25 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     <section>
         <title>Attributes</title>
         
-        <para>Attributes are declared according to the following:</para>
+        <para>An attribute defines state. Attributes are declared according to the 
+        following:</para>
         
         <programlisting>Annotations? 
 Type Identifier 
 ( Initializer? SEMICOLON | Block ("assign" Block)? )</programlisting>
+
+        <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
+        definitions may be overridden by subclasses.</para>
+            
+        <para>For example:</para>
         
-        <para>
-        For example:
-        </para>
+        <programlisting>protected mutable: String firstName;</programlisting>
         
-        <programlisting>protected: String firstName;</programlisting>
-        
-        <programlisting>Integer count = 0;</programlisting>
+        <programlisting>mutable: Integer count = 0;</programlisting>
         
         <programlisting>public: Float total 
 {
-    return find (Float sum = 0.0) 
+    return find (Float sum = 0.0)
         for (LineItem li in lineItems) 
             sum += li.amount;
 }</programlisting>
@@ -635,6 +716,9 @@ assign
         be accessed via reflection.
         </para>
         
+        <section>
+            <title>Attributes with getter/setter code</title>
+        
         <para>
         When getter/setter code is specified, the field is initialized to an instance 
         of an anonymous inner subclass of <literal>lang.Attribute</literal> or
@@ -665,12 +749,17 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 };
 public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
+        </section>
+        
+        <section>
+            <title>Simple attributes</title>
+            
         <para>
         If getter code is not specified, the equivalent Java declaration uses a an 
         instance of <literal>lang.SimpleAttribute</literal> or 
         <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
         
-        <programlisting>protected: String firstName;</programlisting>
+        <programlisting>protected mutable: String firstName;</programlisting>
 
         <para>is equivalent to this Java code:</para>
         
@@ -679,7 +768,7 @@ protected Attribute&lt;String&gt; firstName() { return firstName; }</programlist
 
         <para>While:</para>
         
-        <programlisting>Integer count = 0;</programlisting>
+        <programlisting>mutable: Integer count = 0;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
@@ -688,7 +777,7 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
 
         <para>And:</para>
         
-        <programlisting>public constant: Integer max = 99;</programlisting>
+        <programlisting>public: Integer max = 99;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
@@ -696,42 +785,9 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         <para>TODO: Should we generate getters and setters, just for interop with Java?</para>
-
-        <para>
-        This attribute getter call:
-        </para>
         
-        <programlisting>String name = person.name;</programlisting>
-        
-        <para>
-        is equivalent to the following Java code:   
-        </para>
-
-        <programlisting>String name = person.name().get();</programlisting>
-        
-        <para>
-        This attribute setter call:
-        </para>
-        
-        <programlisting>person.name = "Gavin";</programlisting>
-        
-        <para>
-        is equivalent to the following Java code:   
-        </para>
-
-        <programlisting>person.name().set("Gavin");</programlisting>
-                        
-        <para>
-        If getter code is specified, and <literal>assign</literal> is not specified,
-        the attribute is not settable, and any attempt to assign to the attribute will
-        result in a compiler error.
-        </para>
-        
-        <para>
-        Unlike Java fields, Ceylon attribute access is polymorphic and attribute definitions 
-        may be overridden by subclasses.
-        </para> 
-            
+        </section>
+                
     </section>
     
     <!--  
@@ -817,7 +873,8 @@ selector ComparisonOperation {
     <section>
         <title>Functors</title>
         
-        <para>Functors are declared according to the following:</para>
+        <para>A functor represents a typed block of code. Functors are declared according to 
+        the following:</para>
         
         <programlisting>Annotations? ( Type | "void" ) 
 "functor" Identifier TypeParameters? 
@@ -825,9 +882,7 @@ VariableList
 TypeConstraintList? 
 SEMICOLON</programlisting>
         
-        <para>
-        For example:
-        </para>
+        <para>For example:</para>
         
         <programlisting>public: Comparison functor Order&lt;T&gt;(T x, T y);</programlisting>
         
@@ -846,12 +901,12 @@ SEMICOLON</programlisting>
     { 
         super(locals); 
     }
-    
 }</programlisting>
 
-        <para>
-        Consider the following functor literal:
-        </para>
+        <section>
+            <title>Functor literals</title>
+            
+        <para>Consider the following functor literal:</para>
         
         <programlisting>Order&lt;String&gt; order = (String x, String y) { x &lt;=&gt; y }</programlisting>
         
@@ -859,9 +914,7 @@ SEMICOLON</programlisting>
         
         <programlisting>Order&lt;String&gt; order = (String x, String y) x &lt;=&gt; y;</programlisting>
         
-        <para>
-        These literals are equivalent to this Java code:
-        </para>
+        <para>These literals are equivalent to this Java code:</para>
 
         <programlisting>Order&lt;String&gt; order = new Order&lt;String&gt;() 
 {
@@ -871,24 +924,23 @@ SEMICOLON</programlisting>
     }
 };</programlisting>
         
-        <para>
-        And this functor invocation:
-        </para>
+        <para>And this functor invocation:</para>
         
         <programlisting>Boolean result = order("Gavin", "Emmanuel");</programlisting>
         
-        <para>
-        Is equivalent to this Java code:
-        </para>
+        <para>Is equivalent to this Java code:</para>
 
         <programlisting>Boolean result = order.call("Gavin", "Emmanuel");</programlisting>
+        
+        </section>
         
     </section>
     
     <section>
         <title>Decorators</title>
         
-        <para>Decorators are declared according to the following:</para>
+        <para>A decorator introduces methods and interfaces to a given type. Decorators are 
+        declared according to the following:</para>
         
         <programlisting>Annotations?
 "decorator" Identifier TypeParameters? OPENPAREN Variable CLOSEPAREN
@@ -896,52 +948,30 @@ Interfaces?
 TypeConstraintList? 
 OPENBRACE Method* CLOSEBRACE</programlisting>
 
-        <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
-        are called the <emphasis>introduced types</emphasis>. Methods declared by a decorator are 
-        called <emphasis>introduced methods</emphasis>.</para>
-        
-        <para>
-        For example:
-        </para>
-        
-        <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
-{ 
-    ... 
-}</programlisting>
+        <para>Decorators may introduce interfaces types and methods.</para>
 
-        <programlisting>public: decorator ComparableUser(User user) 
-    satisfies Comparable&lt;User&gt; 
-{ 
-    public: Comparison compare(User other) 
-    { 
-        return user.username &lt;=&gt; other.username; 
-    }
-}</programlisting>
+        <section>
+            <title>Introduced methods</title>
+            
+        <para>Methods declared by a decorator are called <emphasis>introduced methods</emphasis>.</para>
         
-        <para>
-        A decorator declaration is equivalent to a Java class declaration. For example:
-        </para>
+        <para>For example, this decorator:</para>
         
         <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
 {
-            
     public: Collection&lt;T&gt; nonZeroElements() 
     {
         return collection.exclude(0); 
     }
     
-    ...
-    
+    ...   
 }</programlisting>
         
-        <para>
-        is equivalent to this Java declaration:
-        </para>
+        <para>is equivalent to this Java declaration:</para>
         
         <programlisting>public final class CollectionUtils&lt;T&gt; 
     extends Collection
 {
-            
     private final Collection&lt;T&gt; collection
     
     public CollectionUtils(Collection&lt;T&gt; collection) 
@@ -955,31 +985,44 @@ OPENBRACE Method* CLOSEBRACE</programlisting>
     }
     
     ...
-    
 }</programlisting>
 
-        <para>And this decorator declaration:</para>
+        <para>This introduced method call:</para>
+        
+        <programlisting>Collection&lt;Integer&gt; result = collection.nullElements();</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+
+        <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
+        
+        <para>A decorator may not override a method defined by the decorated type. Methods defined 
+        by the decorated type are delegated to the decorated instance.</para>
+
+        </section>
+        
+        <section>
+            <title>Introduced types</title>
+            
+        <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
+        are called the <emphasis>introduced types</emphasis>.</para>
+        
+        <para>This decorator declaration:</para>
         
         <programlisting>public: decorator ComparableUser(User user) 
     satisfies Comparable&lt;User&gt; 
 {
-            
     public: Comparison compare(User other) 
     {
         return user.username &lt;=&gt; other.username;
     }
-    
 }</programlisting>
         
-        <para>
-        is equivalent to this Java declaration:
-        </para>
+        <para>is equivalent to this Java declaration:</para>
         
         <programlisting>public final class ComparableUser 
     extends User
     implements Comparable&lt;User&gt; 
 {
-    
     private final User user;
     
     public ComparableUser(User user) 
@@ -991,52 +1034,33 @@ OPENBRACE Method* CLOSEBRACE</programlisting>
     { 
         return Comparison.compare(other.username, user.username);
     }
-    
-}</programlisting>    
-        
-        <para>
-        Finally, this introduced method call:
-        </para>
-        
-        <programlisting>Collection&lt;Integer&gt; result = collection.nullElements();</programlisting>
-        
-        <para>
-        Is equivalent to this Java code:
-        </para>
+}</programlisting>
 
-        <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
-        
-        <para>A decorator may not override a method defined by the decorated type.</para>
-        
-        <para>Methods defined by the decorated type are delegated to the decorated 
-        instance.</para>
-
+        </section>
+                
     </section>
     
     <section>
         <title>Converters</title>
         
-        <para>Converters are declared according to the following:</para>
+        <para>A converter allows immutable values of one type to be transparently converted to
+        values of another type. Converters are declared according to the following:</para>
         
         <programlisting>Annotations? Type 
 "converter" Identifier TypeParameters? 
 TypeConstraintList? 
 OPENPAREN Variable CLOSEPAREN 
 Block</programlisting>
-        
-        <para>
-        For example:
-        </para>
+
+        <para>For example:</para>
         
         <programlisting>User converter PersonUser(Person person) 
 {
     return person.user;
 }</programlisting>
         
-        <para>
-        A converter declaration is equivalent to a Java class declaration. The example above is
-        equivalent to the following Java class:
-        </para>
+        <para>A converter declaration is equivalent to a Java class declaration. The example 
+        above is equivalent to the following Java class:</para>
         
         <programlisting>public final class PersonUser 
     extends Converter&lt;Person, User&gt; 
@@ -1062,27 +1086,21 @@ User user = new PersonUser().convert(person);</programlisting>
     </section>
         
     <section>
-        <title>Variables</title>
+        <title>Locals</title>
         
-        <para>(Local) variables are declared according to the following:</para>
+        <para>A local is really just a special case of an attribute declaration, but one that 
+        is optimized by the compiler. Locals are declared according to the following:</para>
         
         <programlisting>Annotations? Type Identifier Initializer? SEMICOLON</programlisting>
         
-        <para>
-        For example:
-        </para>
+        <para>For example:</para>
         
         <programlisting>optional: String firstName;</programlisting>
-        <programlisting>Integer count = 0;</programlisting>
+        <programlisting>mutable: Integer count = 0;</programlisting>
         
-        <para>
-        The semantics of variable declarations are identical to Java local variables, except 
-        that Ceylon variables may declare multiple types. This indicates that the value must 
-        implement or extend all the declared types.
-        </para>
+        <para>The semantics of local declarations are identical to Java local variables.</para>
         
-        <para>Note that a local variable is really just a special case of an attribute declaration,
-        but one that is optimized by the compiler.</para>
+        <para>Formal parameters are also considered to be locals.</para>
         
     </section>
 

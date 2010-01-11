@@ -1248,7 +1248,7 @@
         
         <itemizedlist>
             <listitem>
-                <para>any local variable expression, for example <literal>count</literal></para>
+                <para>any local, for example <literal>count</literal></para>
             </listitem>
             <listitem>
                 <para>any attribute expression, for example <literal>person.name</literal></para>
@@ -1259,7 +1259,7 @@
             </listitem>
         </itemizedlist>
         
-        <para>When an assignment expression is executed, the value of the local variable or
+        <para>When an assignment expression is executed, the value of the local or
         attribute is set to the new value, or the <literal>define()</literal> method of
         <literal>OpenCorrespondence</literal> is called.</para>
         

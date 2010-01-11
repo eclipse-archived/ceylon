@@ -1021,7 +1021,7 @@ class Byte {
         <title>Primitive type optimization</title>
         
     <para>For certain types, the Ceylon compiler is permitted to transform
-    variable declarations to Java primitive types, literal values to Java literals, 
+    local declarations to Java primitive types, literal values to Java literals, 
     and operator invocations to use of native Java operators, as long as the
     transformation does not affect the semantics of the code.</para>
     
@@ -1051,7 +1051,7 @@ class Byte {
         <listitem><literal>lang.Boolean</literal> to Java <literal>boolean</literal></listitem>
     </itemizedlist>
     
-    <para>However, these optimizations may never be performed for variables, attributes
+    <para>However, these optimizations may never be performed for locals, attributes
     or method types declared <literal>optional</literal>.</para>
     
     <para>The following operators may be optimized: 

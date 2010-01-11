@@ -244,8 +244,8 @@ if you prefer.";</programlisting>
         <programlisting>people.select( Collect&lt;Person&gt;(Person p: p.age>18) );</programlisting>
         -->
         
-        <para>The functor type may be omitted in variable assignments, return directives or 
-        method parameters, if the type can be inferred.</para>
+        <para>The functor type may be omitted in assignments, return directives or method 
+        parameters, if the type can be inferred.</para>
         
         <programlisting>Order&lt;Float&gt; order = (Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
         
