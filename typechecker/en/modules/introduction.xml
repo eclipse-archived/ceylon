@@ -109,6 +109,14 @@
     </para>
     
     <para>
+    Ceylon features language-level package and module constructs, and 
+    language-level access control with four levels of visibility for 
+    program elements: private (the default), <literal>package</literal>, 
+    <literal>module</literal> and <literal>public</literal>. There is no
+    equivalent of Java's <literal>protected</literal>.
+    </para>
+    
+    <para>
     Finally, Ceylon provides an extensible type conversion facility that
     allows values of different types to be treated as interchangeable by
     the compiler. This facility makes it easy for Ceylon code to transparently

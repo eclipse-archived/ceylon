@@ -595,7 +595,7 @@ TypeConstraints?
         
         <programlisting>public optional: U get(optional: V key);</programlisting>
         
-        <programlisting>protected: 
+        <programlisting>package: 
 void init(Integer initialCount=0) 
 {
     count=initialCount;
@@ -618,7 +618,7 @@ Boolean login()
     ... 
 }</programlisting>
 
-        <programlisting>protected: 
+        <programlisting>package: 
 void destroy() 
 { 
     ... 
@@ -678,7 +678,7 @@ Type Identifier
             
         <para>For example:</para>
         
-        <programlisting>protected mutable: String firstName;</programlisting>
+        <programlisting>package mutable: String firstName;</programlisting>
         
         <programlisting>mutable: Integer count = 0;</programlisting>
         
@@ -759,12 +759,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         instance of <literal>lang.SimpleAttribute</literal> or 
         <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
         
-        <programlisting>protected mutable: String firstName;</programlisting>
+        <programlisting>package mutable: String firstName;</programlisting>
 
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;String&gt; firstName = new SimpleAttribute&lt;String&gt;();
-protected Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
+Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
 
         <para>While:</para>
         
