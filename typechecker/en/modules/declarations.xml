@@ -138,11 +138,6 @@ class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none)
     
     <programlisting>protected: String firstName;</programlisting>
     
-    <programlisting>public: String name { return join(firstName, lastName); }
-    assign { firstName = first(name); lastName = last(name); }</programlisting>
-    
-    <programlisting>public: Float total { return calculateTotal(lineItems); }</programlisting>
-    
     <programlisting>public: Boolean login() { ... }</programlisting>
     
     <programlisting>public: 
@@ -664,13 +659,22 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     <section>
         <title>Attributes</title>
         
-        <para>An attribute defines state. Attributes are declared according to the 
-        following:</para>
+        <para>There are three kinds of declarations related to attribute definition:</para>
         
-        <programlisting>Annotations? 
-Type Identifier 
-( Initializer? SEMICOLON | Block ("assign" Block)? )</programlisting>
-
+        <itemizedlist>
+            <listitem>
+                <para>Simple attribute declarations define state (very similar to a Java field).</para>
+            </listitem>
+            <listitem>
+                <para>Attribute getter declarations define how the value of a derived attribute
+                is obtained.</para>
+            </listitem>
+            <listitem>
+                <para>Attribute setter declarations define how the value of a derived attribute
+                is assigned.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
         definitions may be overridden by subclasses.</para>
             
@@ -680,32 +684,20 @@ Type Identifier
         
         <programlisting>mutable: Integer count = 0;</programlisting>
         
+        <programlisting>public: String name { return join(firstName, lastName); }
+public: assign name { firstName = first(name); lastName = last(name); }</programlisting>
+    
         <programlisting>public: Float total 
 {
     return find (Float sum = 0.0)
         for (LineItem li in lineItems) 
             sum += li.amount;
 }</programlisting>
-            
-        <programlisting>public: 
-String name { return renderName(n); }
-    assign { n = parseName(name); }</programlisting>
-        
-        <programlisting>public: String name 
-{
-    return " ".join(firstName, lastName)
-}
-assign 
-{
-    Iterator tokens = name.tokens().iterator(), 
-    firstName = tokens.next(), 
-    lastName = tokens.next();
-}</programlisting>
 
         <para>
         An attribute declaration is equivalent to a Java method declaration together with 
         a Java field declaration, both of type <literal>lang.Attribute</literal> or
-        <literal>lang.ReadAttribute</literal> both with the same name as the attribute.
+        <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         
         <para>
@@ -716,13 +708,17 @@ assign
         
         <section>
             <title>Attributes with getter/setter code</title>
-        
+            
+            <para>An attribute getter is declared as follows:</para>
+            
+            <programlisting>Annotations? 
+Type Identifier Block</programlisting>
+
         <para>
-        When getter/setter code is specified, the field is initialized to an instance 
+        When getter code is specified, the Java field is initialized to an instance 
         of an anonymous inner subclass of <literal>lang.Attribute</literal> or
         <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
-        and <literal>set()</literal> methods with the content of the getter and setter 
-        code blocks, if any. For example:
+        method with the content of the getter block. For example:
         </para>
         
         <programlisting>public: Float total { return items.totalPrice; }</programlisting>
@@ -734,26 +730,44 @@ assign
 };
 public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
-        <para>While:</para>
+            <para>An attribute setter is declared as follows:</para>
+            
+            <programlisting>Annotations? 
+"assign" Identifier Block</programlisting>
+
+        <para>
+        When setter code is specified, the Java field is initialized to an instance 
+        of an anonymous inner subclass of <literal>lang.Attribute</literal> that 
+        overrides the <literal>set()</literal> method with the content of the 
+        setter block. For example:
+        </para>
         
-        <programlisting>public: String name { return renderName(n); }
-    assign { n = parseName(name); }</programlisting>
+        <programlisting>public: String name { return join(firstName, lastName); }
+public: assign name { firstName = first(name); lastName = last(name); }</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;String&gt; name = new Attribute&lt;String&gt;() {
-    @Override public String get() { return renderName(n); }
-    @Override public void set(String name) { n = parseName(name); }
+    @Override public String get() { return join(firstName, lastName); }
+    @Override public void set(String name) { firstName = first(name); lastName = last(name); }
 };
 public Attribute&lt;String&gt; name() { return name; }</programlisting>
+
+        <para>The attribute name specified by the setter must correspond to a 
+        matching attribute getter.</para>
 
         </section>
         
         <section>
             <title>Simple attributes</title>
             
-        <para>
-        If getter code is not specified, the equivalent Java declaration uses a an 
+        <para><emphasis></emphasis>Simple attribute defines state. Simple attributes are declared 
+        according to the following:</para>
+        
+        <programlisting>Annotations? 
+Type Identifier Initializer? SEMICOLON</programlisting>
+
+        <para>For a simple attribute, the Java field is initialized to an 
         instance of <literal>lang.SimpleAttribute</literal> or 
         <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
         
@@ -1057,6 +1071,8 @@ Block</programlisting>
     return person.user;
 }</programlisting>
         
+        <para>The parameter type must be immutable.</para>
+
         <para>A converter declaration is equivalent to a Java class declaration. The example 
         above is equivalent to the following Java class:</para>
         
@@ -1070,8 +1086,8 @@ Block</programlisting>
 }</programlisting>
 
         <para>The Ceylon compiler searches for an appropriate converter whenever a value is
-        assigned to a non-assignable type. If a converter for the types is found, the 
-        compiler inserts a call to the converter. For example, this Ceylon assignment:</para>
+        assigned to a non-assignable type. If exactly one converter for the types is found, 
+        the compiler inserts a call to the converter. For example, this Ceylon assignment:</para>
         
         <programlisting>Person person = ...;
 User user = person;</programlisting>
