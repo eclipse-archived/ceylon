@@ -28,12 +28,12 @@ CLOSEBRACE</programlisting>
 
         <programlisting>Statement := 
 Expression SEMICOLON | 
-Method | 
-Attribute | 
-LocalVariable | 
-ControlStructure</programlisting>
+ControlStructure |
+Declaration</programlisting>
 
         <programlisting>ControlStatement := ControlDirective SEMICOLON</programlisting>
+        
+        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
         
         </section>
         
