@@ -121,11 +121,11 @@ Digit+ PERIOD Digit+
         
         <para>For example:</para>
         
-        <programlisting>Public Static Constant: Float PI = 3.14159;</programlisting>
+        <programlisting>Public Static Constant: Float pi = 3.14159;</programlisting>
         
         <para>Equivalent to this Java code:</para>
         
-        <programlisting>public static final Float PI = new lang.Float(3.14159f);</programlisting>
+        <programlisting>public static final Float pi = new lang.Float(3.14159f);</programlisting>
 
     </section>
     
