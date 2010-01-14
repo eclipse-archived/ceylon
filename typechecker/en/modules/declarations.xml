@@ -26,9 +26,14 @@ Declaration?</programlisting>
     <section>
     <title>Annotation list</title>
 
-    <para>Declarations may be preceded by a list of annotations.</para>
+    <para>Declarations may be preceded by a list of annotations. An annotation is just
+    an instantiation of a class.</para>
     
-    <programlisting>Annotations := Annotation+ COLON</programlisting>
+    <programlisting>Annotations := Instantiation+ COLON</programlisting>
+    
+    <para>For example:</para>
+    
+    <programlisting>public action{description="Log In"; url="/login";} scope(session):</programlisting>
     
     </section>
     
@@ -38,17 +43,16 @@ Declaration?</programlisting>
     <para>Method, attribute and converter declarations must declare a type.</para>
     
     <programlisting>Type := Identifier (DOT Identifier)* TypeParameters?</programlisting>
-
-    </section>
     
-    <section>
-    <title>Type parameter list</title>
-
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>
     
-    <programlisting>TypeParameters := LT Identifier (COMMA Identifier)* GT</programlisting>
+    <programlisting>TypeParameters := LT Type (COMMA Type)* GT</programlisting>
 
+    <para>For example:</para>
+    
+    <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+    
     </section>
 
     <section>
@@ -66,9 +70,15 @@ CLOSEPAREN</programlisting>
 
     <programlisting>OptionalParameter = FormalParameter Initializer</programlisting>
     
-    <programlisting>VarargsParameter = FormalParameter "..."</programlisting>
+    <programlisting>VarargsParameter = Annotations? Type "..." Identifier</programlisting>
     
     <programlisting>FormalParameter := Annotations? Type Identifier</programlisting>
+    
+    <para>For example:</para>
+    
+    <programlisting>(Product product, Integer quantity=1)</programlisting>
+    
+    <programlisting>(Name name, optional: Organization org=null, Address... addresses)</programlisting>
     
     </section>
     
@@ -79,6 +89,10 @@ CLOSEPAREN</programlisting>
     
     <programlisting>Supertype := "extends" Instantiation</programlisting>
 
+    <para>For example:</para>
+    
+    <programlisting>extends Person(name, org)</programlisting>
+    
     </section>
     
     <section>
@@ -89,6 +103,10 @@ CLOSEPAREN</programlisting>
     
     <programlisting>Interfaces = "satisfies" Type (COMMA Type)*</programlisting>
 
+    <para>For example:</para>
+    
+    <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
+    
     </section>
 
     <section>
@@ -98,10 +116,28 @@ CLOSEPAREN</programlisting>
     generic type parameters may declare constraints upon the type parameters using the
     <literal>where</literal> clause.</para>
     
-    <programlisting>TypeConstraints = "where" TypeConstraint (SEMICOLON TypeConstraint)*</programlisting>
+    <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
 
-    <programlisting>TypeConstraint := Ident (GE|LE) (Type|Ident)</programlisting>
-
+    <programlisting>TypeConstraint := Ident ( (GE|LE) (Type|Ident) | FormalParameters ) </programlisting>
+    
+    <para>There are three kinds of type constraints:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>upper bounds,</para>
+        </listitem>
+        <listitem>
+            <para>lower bounds, and</para>
+        </listitem>
+        <listitem>
+            <para>initialization parameter specifications.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>For example:</para>
+    
+    <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
+    
     </section>
     
     <!--
@@ -305,7 +341,7 @@ class Customer(Name name, optional: Organization org = null)
         parameter.</para>
 
         <programlisting>public: class SpecialKey1()
-    extends Key( SpecialLock() ) 
+    extends Key( new SpecialLock() ) 
 {
     ...
 }</programlisting>
@@ -483,29 +519,28 @@ Identifier ParameterValueSet?
     <section>
         <title>Interfaces</title>
         
-        <para>An interface is a non-instantiable type. Interfaces may not be
-        directly instantiated. Interfaces are declared according to the 
-        following:</para>
+        <para>An interface is a type which does not specify implementation. Interfaces may 
+        not be directly instantiated. Interfaces are declared according to the following:</para>
         
         <programlisting>Annotations?
 "interface" Identifier TypeParameters?
 Interfaces?
 TypeConstraints? 
 OPENBRACE 
-( Attribute | Method )* 
+( Method | AttributeGetter | AttributeSetter )* 
 CLOSEBRACE</programlisting>
 
         <para>For example:</para>
-        
-        <programlisting>interface PaymentStrategy { ... }</programlisting>
 
-        <programlisting>public: interface Comparable&lt;T&gt; { ... }</programlisting>
+        <programlisting>public: interface Comparable&lt;T&gt; {
+    Comparison compare(T other);
+}</programlisting>
 
-         <para>Equivalent to the following Java interfaces:</para>
+         <para>Which is equivalent to the following Java interface:</para>
 
-        <programlisting>interface PaymentStrategy { ... }</programlisting>
-
-        <programlisting>public interface Comparable&lt;T&gt; { ... }</programlisting>
+        <programlisting>public interface Comparable&lt;T&gt; {
+    Comparison compare(T other);
+}</programlisting>
 
         <section>
             <title>Interface inheritance</title>
@@ -521,8 +556,8 @@ CLOSEBRACE</programlisting>
         <para>
         The types listed after the <literal>satisfies</literal> keyword are the supertypes. All 
         supertypes of an interface must be interfaces. The semantics of interface inheritance 
-        are exactly the same as Java, and the above declarations are equivalent to the following 
-        Java declarations: 
+        are exactly the same as Java, and the above declaration is equivalent to the following 
+        Java declaration: 
         </para>
         
         <programlisting>public interface List&lt;T&gt; 
@@ -577,7 +612,7 @@ public User(String username, Person person);</programlisting>
         <title>Methods</title>
         
         <para>A method is a callable block of code. Methods may have parameters and
-        may return a value. Methods are declared according to one of the following:</para>
+        may return a value. Methods are declared according to the following:</para>
         
         <programlisting>Annotations? 
 (Type | "void") Identifier TypeParameters? FormalParameters
@@ -604,23 +639,11 @@ Integer add(Integer x, Integer y)
 {
     return Token();
 }</programlisting>
-    
-        <programlisting>public: 
-Boolean login() 
-{ 
-    ... 
-}</programlisting>
-
-        <programlisting>package: 
-void destroy() 
-{ 
-    ... 
-}</programlisting>
 
         <programlisting>public: 
-void print(Object...) 
+void print(Object... objects) 
 { 
-    ... 
+    for (Object object in objects) { ... }
 }</programlisting>
         
         <para>
@@ -759,15 +782,40 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         </section>
         
         <section>
-            <title>Simple attributes</title>
+            <title>Simple attributes and locals</title>
             
-        <para><emphasis></emphasis>Simple attribute defines state. Simple attributes are declared 
-        according to the following:</para>
+        <para>Simple attribute defines state. Simple attributes are declared according to the 
+        following:</para>
         
         <programlisting>Annotations? 
 Type Identifier Initializer? SEMICOLON</programlisting>
 
-        <para>For a simple attribute, the Java field is initialized to an 
+        <para>Formal parameters of classes, methods, decorators and converters are also considered
+        to be simple attributes.</para>
+
+        <para>A local is really just a special case of a simple attribute declaration, but one that 
+        is optimized by the compiler.</para> 
+        
+        <itemizedlist>
+            <listitem>
+                <para>An attribute declared inside the body of a class represents a local if it 
+                is not used inside a method, attribute setter or attribute getter declaration.</para>
+            </listitem>
+            <listitem>
+                <para>An attribute declared inside the body of a method represents a local.</para>
+            </listitem>
+            <listitem>
+                <para>An formal parameter of a class or decorator represents a local if it is not 
+                used inside a method, attribute setter or attribute getter declaration.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter of a method or converter represents a local.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The semantics of locals are identical to Java local variables.</para>
+        
+        <para>For a simple attribute that is not a local, the Java field is initialized to an 
         instance of <literal>lang.SimpleAttribute</literal> or 
         <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
         
@@ -958,7 +1006,7 @@ SEMICOLON</programlisting>
 "decorator" Identifier TypeParameters? OPENPAREN Variable CLOSEPAREN
 Interfaces?
 TypeConstraintList? 
-OPENBRACE Method* CLOSEBRACE</programlisting>
+OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlisting>
 
         <para>Decorators may introduce interfaces types and methods.</para>
 
@@ -1097,25 +1145,6 @@ User user = person;</programlisting>
         <programlisting>Person person = ...;
 User user = new PersonUser().convert(person);</programlisting>
 
-    </section>
-        
-    <section>
-        <title>Locals</title>
-        
-        <para>A local is really just a special case of an attribute declaration, but one that 
-        is optimized by the compiler. Locals are declared according to the following:</para>
-        
-        <programlisting>Annotations? Type Identifier Initializer? SEMICOLON</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>optional: String firstName;</programlisting>
-        <programlisting>mutable: Integer count = 0;</programlisting>
-        
-        <para>The semantics of local declarations are identical to Java local variables.</para>
-        
-        <para>Formal parameters are also considered to be locals.</para>
-        
     </section>
 
 </chapter>
