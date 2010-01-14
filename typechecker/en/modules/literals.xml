@@ -169,7 +169,7 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section>
+    <!--section>
         <title>Byte literals</title>
         
         <para>A byte literal has this form:</para>
@@ -188,7 +188,7 @@ if you prefer.";</programlisting>
         
         <programlisting>Byte byte = new lang.Byte("A0")</programlisting>
         
-    </section>
+    </section-->
     
     <section>
         <title>Regex literals</title>
