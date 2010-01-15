@@ -311,8 +311,8 @@ CLOSEBRACE</programlisting>
             is no second expression specified.</para>
             
             <para>The type of the whole expression is the common supertype of the
-            first and second expressions, <literal>optional</literal> if no
-            second expression is specified.</para>
+            first and second expressions, <literal>optional</literal> if no second 
+            expression is specified.</para>
 
             <para>For example:</para>
             
@@ -346,10 +346,9 @@ CLOSEBRACE</programlisting>
             expression evaluates to the value of the else expression, or to null if there is
             no else expression specified.</para>
             
-            <para>The type of the whole expression is the common supertype of the
-            case expressions, <literal>optional</literal> if no else expression
-            expression is specified (and if not all enumerated instances of the type
-            are listed).</para>
+            <para>The type of the whole expression is the common supertype of the case 
+            expressions, <literal>optional</literal> if no else expression is specified (and 
+            if not all enumerated instances of the type are listed).</para>
 
              <para>For example:</para>
 
