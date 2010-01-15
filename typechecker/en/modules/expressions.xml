@@ -234,6 +234,8 @@ CLOSEBRACE</programlisting>
         <para>Control expressions allow a more declarative style of programming, that minimizes
         the use of locals.</para>
         
+        <para>TODO: given that we have functors, do we really need these??</para>
+        
         <!--
         <programlisting>CaseExpression := Expression | ThrowDirective | FoundDirective | BreakDirective</programlisting>
         -->
@@ -245,9 +247,9 @@ CLOSEBRACE</programlisting>
             
             <programlisting>FindExpression := "find" OPENPAREN Variable Initializer? CLOSEPAREN OpenBlock</programlisting>
 
-            <para>The construct evaluates to the value of the local after
-            executing the block. All execution paths must result in an
-            initialized local or a thrown exception.</para>
+            <para><literal>find</literal> turns a block of statements into an expression. The construct 
+            evaluates to the value of the local after executing the block. All execution paths must 
+            result in an initialized local or a thrown exception.</para>
 
             <programlisting>public: String welcome 
 {
@@ -401,17 +403,22 @@ Expression?</programlisting>
             the whole expression evaluates to the value specified by the 
             <literal>found</literal> directive.</para>
             -->
-
+            
+            <itemizedlist>
+            <listitem>
             <para>If <literal>any</literal> or <literal>all</literal> is specified,
             the element expression must be of type <literal>Boolean</literal>, and the 
             whole expression evaluates to a <literal>Boolean</literal> value.</para>
-            
+            </listitem>
+            <listitem>
             <para>If neither modifier appears, <!--and if no <literal>fail</literal> expression appears,-->
             the whole expression evaluates to an enumeration of element expression values, one element 
             for each iteration of the loop (that satisfies the all iteration conditions). If no expression
             appears, the result is an enumeration of elements of the first iteration. If <literal>by</literal>
             appears, the results are ordered according to the order expression values. Each
             comparison expression must be of type <literal>Comparable</literal>.</para> 
+            </listitem>
+            </itemizedlist>
             
             <para>For example:</para>
 
