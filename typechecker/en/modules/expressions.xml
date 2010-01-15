@@ -313,26 +313,24 @@ if you prefer.";</programlisting>
         class instance is called <emphasis>attribute configuration</emphasis>.</para>
         
         <para>Any invocation must specify values for parameters, either by listing or naming 
-        parameter values. Required parameters must be specified. Optional parameters and
-        varargs may also be specified.</para>
+        parameter values.</para>
         
-        <para>Any invocation may be specified by listing parameters, or by using named parameters:</para>
+        <programlisting>ParameterValues := OrderedParameterValues | NamedParameterValues</programlisting>
         
-        <programlisting>ParameterValueSet := ParameterValueList | NamedParameterValueList</programlisting>
+        <para>Required parameters must be specified. Optional parameters and varargs may also be 
+        specified.</para>
         
         <para>When parameter values are listed, required parameters are assigned first, in the order
         in which they were declared, followed by optional parameters, in the order they were declared.
         If there are any remaining optional parameters, they will be assigned their default values.
         On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
             
-        <programlisting>ParameterValueList := OPENPAREN ( ParameterValue (COMMA ParameterValue)* )? CLOSEPAREN</programlisting>
-        
-        <programlisting>ParameterValue := Expression</programlisting>
-        
+        <programlisting>OrderedParameterValues := OPENPAREN ( Expression (COMMA Expression)* )? CLOSEPAREN</programlisting>
+                
         <para>When parameter values are named, required and optional parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
-        <programlisting>NamedParameterValueList := 
+        <programlisting>NamedParameterValues := 
 OPENBRACE 
 NamedParameterValue* 
 ( VarargParameterValue (COMMA VarargParameterValue)* )? 
@@ -356,7 +354,7 @@ CLOSEBRACE</programlisting>
             
             <para>Method invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := (Expression DOT)? Identifier ParameterValueSet</programlisting>
+            <programlisting>MethodInvocation := (Expression DOT)? Identifier ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -377,7 +375,7 @@ CLOSEBRACE</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (Type DOT)? Identifier ParameterValueSet</programlisting>
+            <programlisting>StaticMethodInvocation := (Type DOT)? Identifier ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -394,7 +392,7 @@ CLOSEBRACE</programlisting>
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := Type ParameterValueSet</programlisting>
+            <programlisting>Instantiation := Type ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -427,7 +425,7 @@ CLOSEBRACE</programlisting>
             <para>Enumerations may be instantiated according to the following 
             simplified syntax:</para>
             
-            <programlisting>EnumerationInstantiation := OPENBRACE ParameterValues CLOSEBRACE</programlisting>
+            <programlisting>EnumerationInstantiation := OPENBRACE Expression (COMMA Expression)* CLOSEBRACE</programlisting>
             
             <para>In this case, there is no need to explicitly specify the type.</para>
             
@@ -470,7 +468,7 @@ CLOSEBRACE</programlisting>
             
             <para>Attribute configuration follows the following schema.</para>
             
-            <programlisting>AttributeConfiguration := Expression NamedParameterValueList</programlisting>
+            <programlisting>AttributeConfiguration := Expression NamedParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -486,7 +484,7 @@ CLOSEBRACE</programlisting>
             
             <para>Functor invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := Expression ParameterValues</programlisting>
+            <programlisting>FunctorInvocation := Expression ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -2085,7 +2083,7 @@ Expression?</programlisting>
         <programlisting>FunctorExpression :=
 (Type TypeParameters?)? 
 ( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN ClosedBlock | 
-OPENPAREN MemberLiteral CLOSEPAREN )</programlisting>
+OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <para>For example:</para>
         

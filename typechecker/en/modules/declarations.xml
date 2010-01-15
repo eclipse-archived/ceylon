@@ -442,8 +442,8 @@ class Point(Float x, Float y)
         
         <programlisting>InstanceEnumeraton := 
 "instances" 
-Identifier ParameterValueSet? 
-(COMMA Identifier ParameterValueSet?)* 
+Identifier ParameterValues? 
+(COMMA Identifier ParameterValues?)* 
 "..."?</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
