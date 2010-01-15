@@ -530,7 +530,7 @@ Identifier ParameterValueSet?
 Interfaces?
 TypeConstraints? 
 OPENBRACE 
-( Method | AttributeGetter | AttributeSetter )* 
+( MethodStub | AttributeStub )* 
 CLOSEBRACE</programlisting>
 
         <para>For example:</para>
@@ -679,7 +679,20 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>
         A Ceylon method invocation is equivalent to a Java method invocation.
         </para>
-                
+        
+        <section>
+            <title>Interface methods</title>
+            
+        <para>For an interface, the method declaration may not specify a body:</para>
+        
+        <programlisting>MethodStub :=
+Annotations? 
+(Type | "void") Identifier TypeParameters? FormalParameters
+TypeConstraints? 
+SEMICOLON</programlisting>
+        
+        </section>
+        
     </section>
     
     <section>
@@ -702,7 +715,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </itemizedlist>
         
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
-        definitions may be overridden by subclasses.</para>
+        definitions may be overridden by subclasses. If the attribute is not declared
+        <literal>optional</literal>, it may not be overridden or implemented by an
+        attribute declared <literal>optional</literal>.</para>
             
         <para>For example:</para>
         
@@ -852,6 +867,18 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         <para>TODO: Should we generate getters and setters, just for interop with Java?</para>
+        
+        </section>
+        
+        <section>
+            <title>Interface attributes</title>
+            
+        <para>For an interface, an attribute declaration may not specify an initalizer:</para>
+        
+        <programlisting>AttributeStub := Annotations? Type Identifier SEMICOLON</programlisting>
+        
+        <para>Interface attributes may be specified <literal>mutable</literal>, in which case
+        an implementation of the interface must also define the attribute to be mutable.</para>
         
         </section>
                 
