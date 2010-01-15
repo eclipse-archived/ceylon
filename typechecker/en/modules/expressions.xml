@@ -1,6 +1,310 @@
 <chapter id="expressions">
     <title>Expressions</title>
     
+    <section id="literals">
+    <title>Literals</title>
+    
+    <para>Ceylon supports a special literal value syntax for each of the following types: 
+    <!--literal>Boolean</literal--> <literal>Date</literal>, <literal>Time</literal>
+    <literal>Integer</literal>, <literal>Float</literal>, <literal>Character</literal>, 
+    <literal>String</literal> and <literal>Regex</literal>.
+    </para>
+    
+    <programlisting>Literal :=
+DateLiteral | TimeLiteral
+IntegerLiteral | FloatLiteral |
+CharacterLiteral
+StringLiteral | RegexLiteral |
+EnumerationLiteral |
+"this" | "super"</programlisting>
+
+    <para>The keywords <literal>this</literal> and <literal>super</literal> are equivalent
+    to the Java forms.</para>
+    
+    <!--
+    <section>
+        <title>Boolean literals</title>
+        
+        <para>A boolean literal has this form:</para>
+        
+        <programlisting>BooleanLiteral := "true" | "false"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Boolean found = false;</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>Boolean found = lang.Boolean.FALSE;</programlisting>
+        
+        <para>TODO: is this really a special literal, or is it just an
+        enumerated instance of the <literal>Boolean</literal> class?</para>
+
+    </section>
+    -->
+    
+    <section>
+        <title>Datetime literals</title>
+        
+        <para>A datetime literal has the form:</para>
+        
+        <!--
+        <programlisting>DatetimeLiteral := "now"</programlisting>
+        -->
+        
+        <programlisting>DateLiteral := 
+SINGEQUOTE 
+Digit{1,2} SLASH Digit{1,2} SLASH DIGIT{4} 
+SINGEQUOTE</programlisting>
+        
+        <programlisting>TimeLiteral := 
+SINGEQUOTE 
+Digit{1,2} COLON Digit{2} ( COLON DIGIT{2} ( COLON DIGIT{3} )? )? 
+(SPACE "AM"|"PM")? 
+(SPACE Character{3,4})? 
+SINGEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <!--
+        <programlisting>Datetime datetime = now;</programlisting>
+        -->
+        
+        <programlisting>Date date = '25/03/2005';</programlisting>
+        <programlisting>Time time = '12:00 AM PST';</programlisting>
+        
+        <para>Datetimes may be composed from dates and times using the <literal>@</literal> operator.</para>
+        
+        <programlisting>Datetime datetime = '25/03/2005' @ '12:00 AM PST';</programlisting>
+        
+        <!--
+        
+        <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
+        <literal>years</literal>, <literal>months</literal>, <literal>days</literal>, <literal>weeks</literal>
+        of the <literal>Integer</literal> class let us construct durations.</para>
+        
+        <programlisting>Duration&lt;Time&gt; duration = 12.hours + 34.minutes;</programlisting>
+        <programlisting>Duration&lt;Date&gt; duration = 1.year + 2.months + 3.days;</programlisting>
+        
+        <para>Durations may be composed using the arithmetic operators <literal>+</literal>, 
+        <literal>-</literal>, <literal>*</literal> and <literal>/</literal>.</para>
+        
+        <programlisting>Duration&lt;Time&gt; duration = 1.seconds / 10 - 1.seconds / 1000;</programlisting> 
+        
+        <para>The methods <literal>before()</literal> and <literal>after()</literal> let us add and
+        subtract durations to and from datetimes.</para>
+        
+        <programlisting>Time time = 10.seconds.before('12:00 AM');</programlisting>
+        <programlisting>Date date = 1.week.after('2/9/1974');</programlisting>
+        
+        -->
+        
+        <para>The <literal>..</literal> operator lets us construct intervals:</para>
+        
+        <programlisting>Interval&lt;Date&gt; timeRange = '0:0:00' .. '12:59:59 PM';</programlisting>
+        <programlisting>Interval&lt;Date&gt; dateRange = '1/1/2008' .. '31/12/2007';</programlisting>
+        <programlisting>Interval&lt;Datetime&gt; datetimeRange = '1/1/2008' @ '0:0:00' .. '31/12/2007' @ '12:59:59 PM';</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Integer literals</title>
+        
+        <para>An integer literal has this form:</para>
+        
+        <programlisting>IntegerLiteral = 
+Digit+ | 
+SINGLEQUOTE ( HexDigit{4} | HexDigit{8} ) SINGLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Integer i = i + 10;</programlisting>
+        
+        <programlisting>panel.backgroundColor = 'FF33';</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Float literals</title>
+        
+        <para>A float literal has this form:</para>
+        
+        <programlisting>FloatLiteral := 
+Digit+ PERIOD Digit+ 
+( ("E"|"e")? (PLUS|MINUS)? Digit+ )?</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>public static: Float pi = 3.14159;</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>public static final Float pi = new lang.Float(3.14159f);</programlisting>
+
+    </section>
+    
+    <section>
+        <title>String literals</title>
+        
+        <para>A string literal has this form:</para>
+        
+        <programlisting>StringLiteral = DOUBLEQUOTE ( Character+ | DOLLAR OPENBRACE Expression CLOSEBRACE )* DOUBLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>person.name = "Gavin";</programlisting>
+        
+        <programlisting>log.info("$(Time()) $message");</programlisting>
+        
+        <programlisting>String multilineString = "Strings may
+span multiple lines
+if you prefer.";</programlisting>
+        
+        <para>The first example is equivalent to this Java code:</para>
+        
+        <programlisting>person.name().set( new lang.String("Gavin") );</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Character literals</title>
+        
+        <para>A character literal has this form:</para>
+        
+        <programlisting>CharacterLiteral := SINGLEQUOTE Character SINGLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>if ( string[i] == '+' ) { ... }</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
+        
+    </section>
+    
+    <!--section>
+        <title>Byte literals</title>
+        
+        <para>A byte literal has this form:</para>
+        
+        <programlisting>ByteLiteral := SINGLEQUOTE ( BinaryDigit{8} | HexDigit{2} ) SINGLEQUOTE</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Byte masked = b &amp; '01101001';</programlisting>
+        
+        <programlisting>Byte byte = 'A0';</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>Byte masked = b.and( new lang.Byte("01101001") );</programlisting>
+        
+        <programlisting>Byte byte = new lang.Byte("A0")</programlisting>
+        
+    </section-->
+    
+    <section>
+        <title>Regex literals</title>
+        
+        <para>A regex literal has this form:</para>
+        
+        <programlisting>RegexLiteral := BACKTICK RegularExpression BACKTICK</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Boolean isEmail = email.matches( `^\w+@((\w+)\.)+$` );</programlisting>
+        
+        <programlisting>Integer quotedWords = `\W"w+"\W`.matcher(text).count();</programlisting>
+        
+        <para>The second example is equivalent to this Java code:</para>
+        
+        <programlisting>Integer quotedWords = new lang.Regex("\\W\"w+\"\\W").matcher(text).count();</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Enumeration literals</title>
+        
+        <para>The following literal is supported, representing an empty enumeration:</para>
+        
+        <programlisting>"none"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Enumeration&lt;String&gt; enum = none;</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>Enumeration&lt;String&gt; enum = collections.Enumeration.emptyEnumeration&lt;String&gt;();</programlisting>
+
+         <para>TODO: is this really a special literal, or is it just an
+        enumerated instance of the <literal>Enumeration</literal> class?</para>
+
+        <para>There are no true literals for lists, sets or maps. However, the
+        <literal>..</literal> and <literal>-></literal> operators, together with
+        the convenient enumeration constructor syntax, and some built-in converters 
+        help us achieve the desired effect.</para>
+
+        <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>
+        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
+                
+        <para>Enumerations are transparently converted to sets or maps,
+        allowing sets and maps to be initialized as follows:</para>
+        
+        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
+        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
+        <programlisting>OpenList&lt;String&gt; list = none;</programlisting>
+        
+    </section>
+
+    <section>
+        <title>Object literals</title>
+        
+        <para>There are no true literals for objects. Rather, there is a nice syntax 
+        for calling the class constructor, assigning attribute values (including 
+        constant attribute values) and (optionally) overriding methods and attributes. 
+        For example:</para>
+        
+        <programlisting>Person gavin = Person { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = Address { ... };
+    birthdate = Date { day = 25; month = MARCH; year = ... }
+    employer = jboss;
+};</programlisting>
+
+        <programlisting>Person gavin = Person(jboss) { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = Address { ... };
+    birthdate = Date { day = 25; month = MARCH; year = ... }
+};</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Type and member literals</title>
+        
+        <para>The <literal>Type</literal> object for a type, the <literal>Method</literal>
+        object for a method, or the <literal>Attribute</literal> object for an attribute
+        may be referred to using a special literal syntax:</para>
+        
+        <programlisting>TypeLiteral := HASH Type</programlisting>
+        
+        <programlisting>MemberLiteral := Type HASH Identifier</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;&gt;;</programlisting>
+        <programlisting>Attribute&lt;String&gt; nameAttribute = Person#name;</programlisting>
+        
+    </section>
+
+    </section>
+
     <section>
         <title>Invocations</title>
         
@@ -372,19 +676,19 @@ CLOSEBRACE</programlisting>
         </section>
         
         <section>
-            <title><literal>for/fail</literal></title>
+            <title><literal>for</literal></title>
             
-            <para>The <literal>for/fail</literal> expression has one of the following forms:</para>
+            <para>The <literal>for</literal> expression has one of the following forms:</para>
              
-            <programlisting>ForExpression := 
+            <programlisting>ForComprehension := 
 "for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
 ( "by" OPENPAREN Order (SEMICOLON Order) CLOSEPAREN )?
 Expression?</programlisting>
 
-            <programlisting>ForAnyAllExpression := 
+            <programlisting>ForQuantification := 
 "for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression</programlisting>
-            
-            <!--  
+
+           <!--  
             <programlisting>ForFailExpression := 
 "for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression
 "fail" Expression</programlisting>
@@ -392,7 +696,10 @@ Expression?</programlisting>
 
             <programlisting>Order := Expression ("asc"|"desc")</programlisting>
 
-            <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
+            <para>The first form is a Python-style comprehension. The second form is called a
+            quantification.</para>
+            
+             <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
             <literal>all</literal> modifier appears<!--, and upon whether a <literal>fail</literal>
             expression appears-->.</para>
             
@@ -528,6 +835,1408 @@ Expression?</programlisting>
         <programlisting>order.lineItems.define( 0, LineItem { product: prod; quantity: 1; } );</programlisting>
         
         
+    </section>
+    
+    <section id="operators">
+    <title>Operators</title>
+            
+    <para>Operators are syntactic shorthand for more complex expressions
+    involving method invocation or attribute access. Each operator is defined 
+    for a particular type. There is support for user-defined operator 
+    <emphasis>overloading</emphasis>. However, the semantics of an operator 
+    may be customized by the implementation of the type that the operator
+    applies to.</para>
+    
+    <para>For example, the following Ceylon code examples:</para>
+    
+    <programlisting>Double z = x * y;</programlisting>
+    
+    <programlisting>++count;</programlisting>
+    
+    <programlisting>Integer j = i++;</programlisting>
+    
+    <programlisting>x *= 2;</programlisting>
+    
+    <programlisting>if ( x > 100 ) { ... }</programlisting>
+    
+    <programlisting>User gavin = users["Gavin"];</programlisting>
+    
+    <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
+    
+    <programlisting>for ( Integer i in 1..10 ) { ... }</programlisting>
+
+    <programlisting>if ( name == value ) return ... ;</programlisting>
+    
+    <programlisting>if ( x&gt;10 || x&lt;0 ) { ... }</programlisting>
+    
+    <programlisting>log.info( "Hello " + $person + "!")</programlisting>
+    
+    <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.add(person1)^.add(person2)*.name;</programlisting>
+    
+    <programlisting>optional: String name = person?.name;</programlisting>
+    
+    
+    <para>Are equivalent to the following (Ceylon) code:</para>
+    
+    <programlisting>Double z = x.multiply(y);</programlisting>
+    
+    <programlisting>count = count.successor;</programlisting>
+    
+    <programlisting>Integer j = ( i = i.successor ).predecessor;</programlisting>
+    
+    <programlisting>z = z.multiply(2);</programlisting>
+    
+    <programlisting>if ( x.compare(100).larger ) { ... }</programlisting>
+    
+    <programlisting>User gavin = users.value("Gavin");</programlisting>
+        
+    <programlisting>List&lt;Item&gt; firstPage = list.range(0..20);</programlisting>
+    
+    <programlisting>for ( Integer i in Range(1,10) ) { ... }</programlisting>
+
+    <programlisting>if ( if (name exists) name.equals(value) else if (value exists) false else true ) return ... ;</programlisting>
+    
+    <programlisting>if ( x.compare(10).larger ) true else x.compare(0).smaller ) { ... }</programlisting>
+    
+    <programlisting>log.info( "Hello ".join(person.string).join("!") )</programlisting>
+    
+    <programlisting>List&lt;String&gt; names = 
+    Spread&lt;String&gt; { 
+        lhs: Chain&lt;String&gt; { 
+            lhs: Chain&lt;String&gt; { 
+                lhs: ArrayList(); 
+                Override: void call() { lhs.add(person1); } }.lhs
+            }
+            Override: void call() { lhs.add(person2); } }.lhs
+        }
+        Override: void call(String element) { element.name; } 
+    }.result;</programlisting>
+    
+    <programlisting>optional: String name = if (person exists) person.name else null;</programlisting>
+    
+    <section>
+        <title>List of operators</title>
+    
+        <para>The following table defines the semantics of the Ceylon operators:</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
+    
+        <row>
+            <entry><literal>=</literal></entry>
+            <entry><literal>lhs = rhs</literal></entry>
+            <entry>assign</entry>
+            <entry></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Member invocation</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>.</literal></entry>
+            <entry><literal>lhs.member</literal></entry>
+            <entry>invoke</entry>
+            <entry></entry>
+            <entry><literal>Object</literal></entry>
+            <entry></entry>
+            <entry>Member type</entry>
+        </row>
+        <row>
+            <entry><literal>^.</literal></entry>
+            <entry><literal>lhs^.member</literal></entry>
+            <entry>chain invoke</entry>
+            <entry></entry>
+            <entry><literal>X</literal></entry>
+            <entry></entry>
+            <entry>X</entry>
+        </row>
+        <row>
+            <entry><literal>?.</literal></entry>
+            <entry><literal>lhs?.member</literal></entry>
+            <entry>nullsafe invoke</entry>
+            <entry><literal>if (lhs exists) lhs.member else null</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry></entry>
+            <entry><literal>optional</literal> member type</entry>
+        </row>
+        
+        <!-- Spread -->
+        
+        <row>
+            <entry><literal>*.</literal></entry>
+            <entry><literal>lhs*.member</literal></entry>
+            <entry>spread invoke</entry>
+            <entry><literal>for (X x in lhs) x.member</literal></entry>
+            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry></entry>
+            <entry><literal>List</literal> of member type</entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Equality</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>===</literal></entry>
+            <entry><literal>lhs === rhs</literal></entry>
+            <entry>identical</entry>
+            <entry><literal>Object.identical(lhs, rhs)</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>==</literal></entry>
+            <entry><literal>lhs == rhs</literal></entry>
+            <entry>equal</entry>
+            <entry><literal>if (lhs exists) lhs.equals(rhs) else if (rhs exists) false else true</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>!=</literal></entry>
+            <entry><literal>lhs != rhs</literal></entry>
+            <entry>not equal</entry>
+            <entry><literal>if (lhs exists) lhs.equals(rhs).negation else if (rhs exists) true else false</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Comparison</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>&lt;=&gt;</literal></entry>
+            <entry><literal>lhs &lt;=&gt; rhs</literal></entry>
+            <entry>compare</entry>
+            <entry><literal>lhs.compare(rhs)</literal></entry>
+            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>Comparison</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&lt;</literal></entry>
+            <entry><literal>lhs &lt; rhs</literal></entry>
+            <entry>smaller</entry>
+            <entry><literal>lhs.compare(rhs).smaller</literal></entry>
+            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&gt;</literal></entry>
+            <entry><literal>lhs &gt; rhs</literal></entry>
+            <entry>larger</entry>
+            <entry><literal>lhs.compare(rhs).larger</literal></entry>
+            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&lt;=</literal></entry>
+            <entry><literal>lhs &lt;= rhs</literal></entry>
+            <entry>small as</entry>
+            <entry><literal>lhs.compare(rhs).smallAs</literal></entry>
+            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&gt;=</literal></entry>
+            <entry><literal>lhs &gt;= rhs</literal></entry>
+            <entry>large as</entry>
+            <entry><literal>lhs.compare(rhs).largeAs</literal></entry>
+            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+                
+        <row><entry namest="first" nameend="last"><emphasis>Logical operations</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>!</literal><!--or <literal>not</literal>--></entry>
+            <entry><literal>!rhs</literal><!--or <literal>not rhs</literal>--></entry>
+            <entry>logical negation</entry>
+            <entry><literal>rhs.negation</literal></entry>
+            <entry></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>|</literal></entry>
+            <entry><literal>lhs | rhs</literal></entry>
+            <entry>disjunction</entry>
+            <entry><literal>lhs.or(rhs)</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&amp;</literal></entry>
+            <entry><literal>lhs &amp; rhs</literal></entry>
+            <entry>conjunction</entry>
+            <entry><literal>lhs.and(rhs)</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>^</literal></entry>
+            <entry><literal>lhs ^ rhs</literal></entry>
+            <entry>exclusive disjunction</entry>
+            <entry><literal>lhs.xor(rhs)</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+
+        <row>
+            <entry><literal>||</literal></entry>
+            <entry><literal>lhs || rhs</literal></entry>
+            <entry>shortcircuit disjunction</entry>
+            <entry><literal>if (lhs) true else rhs</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&amp;&amp;</literal></entry>
+            <entry><literal>lhs &amp;&amp; rhs</literal></entry>
+            <entry>shortcircuit conjunction</entry>
+            <entry><literal>if (lhs) rhs else false</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>=></literal></entry>
+            <entry><literal>lhs => rhs</literal></entry>
+            <entry>implication</entry>
+            <entry><literal>if (lhs) rhs else true</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Logical assignment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>|=</literal></entry>
+            <entry><literal>lhs |= rhs</literal></entry>
+            <entry>or</entry>
+            <entry><literal>lhs = lhs.or(rhs)</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&amp;=</literal></entry>
+            <entry><literal>lhs &amp;= rhs</literal></entry>
+            <entry>and</entry>
+            <entry><literal>lhs = lhs.and(rhs)</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>^=</literal></entry>
+            <entry><literal>lhs ^= rhs</literal></entry>
+            <entry>xor</entry>
+            <entry><literal>lhs = lhs.xor(rhs)</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+
+        <row>
+            <entry><literal>||=</literal></entry>
+            <entry><literal>lhs ||= rhs</literal></entry>
+            <entry>shortcircuit or</entry>
+            <entry><literal>lhs = if (lhs) true else rhs</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+
+        <row>
+            <entry><literal>&amp;&amp;=</literal></entry>
+            <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
+            <entry>shortcircuit and</entry>
+            <entry><literal>lhs = if (lhs) rhs else false</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Existence (null value handling)</emphasis></entry></row>
+        
+        <row>
+            <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
+            <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
+            <entry>exists</entry>
+            <entry><literal>if (lhs exists) true else false</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>default</literal></entry>
+            <entry><literal>lhs default rhs</literal></entry>
+            <entry>default</entry>
+            <entry><literal>if (lhs exists) lhs else rhs</literal></entry>
+            <entry><literal>optional: T</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
+        </row>
+
+        <!--  
+        <row>
+            <entry><literal>?:</literal></entry>
+            <entry><literal>lhs ?: rhs</literal></entry>
+            <entry>null default</entry>
+            <entry><literal>if (lhs?) lhs else rhs</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal>Object</literal></entry>
+        </row>
+        -->
+        
+        <!--
+        <row>
+            <entry><literal>?=</literal></entry>
+            <entry><literal>lhs ?= rhs</literal></entry>
+            <entry>null assignment</entry>
+            <entry><literal>if (lhs?) false else (lhs=rhs)?</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>=?</literal></entry>
+            <entry><literal>lhs =? rhs</literal></entry>
+            <entry>null assignment</entry>
+            <entry><literal>if (rhs?) (lhs=rhs)? else false</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        -->
+        <!--         
+        <row><entry namest="first" nameend="last"><emphasis>Emptiness</emphasis></entry></row>
+        --> 
+        
+        <row>
+            <entry><literal><!--??-->nonempty</literal></entry>
+            <entry><literal><!--??-->lhs nonempty</literal></entry>
+            <entry>nonempty</entry>
+            <entry><literal>if (lhs exists) lhs.empty.negation else false</literal></entry>
+            <entry><literal>optional: Container</literal></entry>
+            <entry></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <!--  
+        <row>
+            <entry><literal>??:</literal></entry>
+            <entry><literal>lhs ??: rhs</literal></entry>
+            <entry>empty default</entry>
+            <entry><literal>if (lhs)? ( if (lhs.empty) rhs else lhs ) else rhs</literal></entry>
+            <entry><literal>optional: Holder</literal></entry>
+            <entry><literal>Container</literal></entry>
+            <entry><literal>Container</literal></entry>
+        </row>
+        -->
+        
+        <!--  
+        <row>
+            <entry><literal>??=</literal></entry>
+            <entry><literal>lhs ??= rhs</literal></entry>
+            <entry>empty assignment</entry>
+            <entry><literal>if (lhs??) false else (lhs=rhs)??</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>=??</literal></entry>
+            <entry><literal>lhs =?? rhs</literal></entry>
+            <entry>empty assignment</entry>
+            <entry><literal>if (rhs??) (lhs=rhs)?? else false</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        -->
+        
+        <row><entry namest="first" nameend="last"><emphasis>Containment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>in</literal></entry>
+            <entry><literal>lhs in rhs</literal></entry>
+            <entry>in</entry>
+            <entry><literal>lhs.in(rhs)</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <!--  
+        <row>
+            <entry><literal>~></literal> or <literal>in</literal></entry>
+            <entry><literal>lhs ~> rhs</literal> or <literal>lhs in rhs</literal></entry>
+            <entry>in</entry>
+            <entry><literal>lhs.in(rhs)</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>!~></literal></entry>
+            <entry><literal>lhs !~> rhs</literal></entry>
+            <entry>not in</entry>
+            <entry><literal>lhs.in(rhs).negation</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>*~></literal></entry>
+            <entry><literal>lhs *~> rhs</literal></entry>
+            <entry>all in</entry>
+            <entry><literal>for (X x in lhs: !x.in(rhs)) found false fail true</literal></entry>
+            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Category&lt;X&gt; or <literal>Iterable&lt;X&gt;</literal></literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        -->
+
+        <row><entry namest="first" nameend="last"><emphasis>Concatenation</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>+</literal></entry>
+            <entry><literal>lhs + rhs</literal></entry>
+            <entry>join</entry>
+            <entry><literal>lhs.join(rhs)</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+        </row>
+
+        <row><entry namest="first" nameend="last"><emphasis>Keyed element access</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>[]</literal></entry>
+            <entry><literal>lhs[index]</literal></entry>
+            <entry>lookup</entry>
+            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Y</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[]</literal></entry>
+            <entry><literal>lhs[indices]</literal></entry>
+            <entry>lookup</entry>
+            <entry><literal>lhs.values(index)</literal></entry>
+            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>List&lt;Y&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[]</literal></entry>
+            <entry><literal>lhs[indices]</literal></entry>
+            <entry>lookup</entry>
+            <entry><literal>lhs.values(index)</literal></entry>
+            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;Y&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[,,]</literal></entry>
+            <entry><literal>lhs[x, y, z]</literal></entry>
+            <entry>enumerated range</entry>
+            <entry><literal>Enumeration( lhs.lookup(x), lhs.lookup(y), lhs.lookup(z) )</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>Enumeration&lt;X&gt;</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Subranges</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>[..]</literal></entry>
+            <entry><literal>lhs[x..y]</literal></entry>
+            <entry>subrange</entry>
+            <entry><literal>lhs.range(x,y)</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[...]</literal></entry>
+            <entry><literal>lhs[x...]</literal></entry>
+            <entry>upper range</entry>
+            <entry><literal>lhs.tail(x)</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[...]</literal></entry>
+            <entry><literal>lhs[...y]</literal></entry>
+            <entry>lower range</entry>
+            <entry><literal>lhs.head(y)</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+        </row>
+        
+        <!--  
+        
+        <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>&lt;&lt;</literal></entry>
+            <entry><literal>lhs &lt;&lt; rhs</literal></entry>
+            <entry>left shift</entry>
+            <entry><literal>lhs.shiftLeft(rhs)</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>>></literal></entry>
+            <entry><literal>lhs >> rhs</literal></entry>
+            <entry>right shift</entry>
+            <entry><literal>lhs.shiftRight(rhs)</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>List&lt;X&gt;</literal></entry>
+        </row>
+        
+        -->
+        
+        <!--
+        
+        <row><entry namest="first" nameend="last"><emphasis>Set operations</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>+</literal></entry>
+            <entry><literal>lhs + rhs</literal></entry>
+            <entry>union</entry>
+            <entry><literal>lhs.union(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>~</literal></entry>
+            <entry><literal>lhs ~ rhs</literal></entry>
+            <entry>intersection</entry>
+            <entry><literal>lhs.intersection(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>-</literal></entry>
+            <entry><literal>lhs - rhs</literal></entry>
+            <entry>complement</entry>
+            <entry><literal>lhs.complement(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+        </row>
+        
+        -->
+        
+        <!--
+        <row>
+            <entry><literal>*</literal></entry>
+            <entry><literal>lhs * rhs</literal></entry>
+            <entry>cartesian product</entry>
+            <entry><literal>lhs.product(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;Y&gt;</literal></entry>
+            <entry><literal>Set&lt;Pair&lt;X,Y&gt;&gt;</literal></entry>
+        </row>
+        -->
+        
+        <!--
+        
+        <row><entry namest="first" nameend="last"><emphasis>Set comparison</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>&lt;=</literal></entry>
+            <entry><literal>lhs &lt;= rhs</literal></entry>
+            <entry>subset</entry>
+            <entry><literal>lhs.subset(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&gt;=</literal></entry>
+            <entry><literal>lhs &gt;= rhs</literal></entry>
+            <entry>superset</entry>
+            <entry><literal>lhs.superset(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&lt;</literal></entry>
+            <entry><literal>lhs &lt; rhs</literal></entry>
+            <entry>proper subset</entry>
+            <entry><literal>lhs.properSubset(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&gt;</literal></entry>
+            <entry><literal>lhs &gt; rhs</literal></entry>
+            <entry>proper superset</entry>
+            <entry><literal>lhs.properSuperset(rhs)</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Set&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        -->
+        
+        <row><entry namest="first" nameend="last"><emphasis>Constructors</emphasis></entry></row>
+
+        <row>
+            <entry><literal>..</literal></entry>
+            <entry><literal>lhs .. rhs</literal></entry>
+            <entry>range</entry>
+            <entry><literal>Range(lhs, rhs)</literal></entry>
+            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>Range&lt;T&gt;</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>-></literal></entry>
+            <entry><literal>lhs -> rhs</literal></entry>
+            <entry>entry</entry>
+            <entry><literal>Entry(lhs, rhs)</literal></entry>
+            <entry><literal>U</literal></entry>
+            <entry><literal>V</literal></entry>
+            <entry><literal>Entry&lt;U,V&gt;</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>@</literal></entry>
+            <entry><literal>lhs @ rhs</literal></entry>
+            <entry>datetime</entry>
+            <entry><literal>Datetime(lhs, rhs)</literal></entry>
+            <entry><literal>Date</literal></entry>
+            <entry><literal>Time</literal></entry>
+            <entry><literal>Datetime</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>..</literal></entry>
+            <entry><literal>lhs .. rhs</literal></entry>
+            <entry>interval</entry>
+            <entry><literal>Interval(lhs, rhs)</literal></entry>
+            <entry><literal>Instant</literal></entry>
+            <entry><literal>Instant</literal></entry>
+            <entry><literal>Interval</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>$</literal></entry>
+            <entry><literal>$rhs</literal></entry>
+            <entry>render</entry>
+            <entry><literal>if (rhs exists) rhs.string else ""</literal></entry>
+            <entry></entry>
+            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>String</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Increment, decrement</emphasis></entry></row>
+        
+        <!-- Prefix increment, decrement -->
+        
+        <row>
+            <entry><literal>++</literal></entry>
+            <entry><literal>++rhs</literal></entry>
+            <entry>increment</entry>
+            <entry><literal>rhs = rhs.successor</literal></entry>
+            <entry></entry>
+            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+        </row>
+        <row>
+            <entry><literal>--</literal></entry>
+            <entry><literal>--rhs</literal></entry>
+            <entry>decrement</entry>
+            <entry><literal>rhs = rhs.predecessor</literal></entry>
+            <entry></entry>
+            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+        </row>
+        
+        <!-- Postfix increment, decrement -->
+        
+        <row>
+            <entry><literal>++</literal></entry>
+            <entry><literal>lhs++</literal></entry>
+            <entry>successor</entry>
+            <entry><literal>(lhs = lhs.successor).predecessor</literal></entry>
+            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry></entry>
+            <entry><literal>T</literal></entry>
+        </row>
+        <row>
+            <entry><literal>--</literal></entry>
+            <entry><literal>lhs--</literal></entry>
+            <entry>predecessor</entry>
+            <entry><literal>(lhs = lhs.predecessor).successor</literal></entry>
+            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry></entry>
+            <entry><literal>T</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Numeric operations</emphasis></entry></row>
+        
+        <!-- Unary negative -->
+        
+        <row>
+            <entry><literal>-</literal></entry>
+            <entry><literal>-rhs</literal></entry>
+            <entry>negation</entry>
+            <entry><literal>rhs.inverse</literal></entry>
+            <entry></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        
+        <!-- Arithmetic -->
+        
+        <row>
+            <entry><literal>+</literal></entry>
+            <entry><literal>lhs + rhs</literal></entry>
+            <entry>sum</entry>
+            <entry><literal>lhs.add(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>-</literal></entry>
+            <entry><literal>lhs - rhs</literal></entry>
+            <entry>difference</entry>
+            <entry><literal>lhs.subtract(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>*</literal></entry>
+            <entry><literal>lhs * rhs</literal></entry>
+            <entry>product</entry>
+            <entry><literal>lhs.multiply(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>/</literal></entry>
+            <entry><literal>lhs / rhs</literal></entry>
+            <entry>quotient</entry>
+            <entry><literal>lhs.divide(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>%</literal></entry>
+            <entry><literal>lhs % rhs</literal></entry>
+            <entry>remainder</entry>
+            <entry><literal>lhs.remainder(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>**</literal></entry>
+            <entry><literal>lhs ** rhs</literal></entry>
+            <entry>exponentiate</entry>
+            <entry><literal>lhs.exponentiate(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Numeric assignment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>+=</literal></entry>
+            <entry><literal>lhs += rhs</literal></entry>
+            <entry>add</entry>
+            <entry><literal>lhs = lhs.add(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>-=</literal></entry>
+            <entry><literal>lhs -= rhs</literal></entry>
+            <entry>subtract</entry>
+            <entry><literal>lhs = lhs.subtract(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>*=</literal></entry>
+            <entry><literal>lhs *= rhs</literal></entry>
+            <entry>multiply</entry>
+            <entry><literal>lhs = lhs.multiply(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>/=</literal></entry>
+            <entry><literal>lhs /= rhs</literal></entry>
+            <entry>divide</entry>
+            <entry><literal>lhs = lhs.divide(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        <row>
+            <entry><literal>%=</literal></entry>
+            <entry><literal>lhs %= rhs</literal></entry>
+            <entry>remainder</entry>
+            <entry><literal>lhs = lhs.remainder(rhs)</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+            <entry><literal>Number</literal></entry>
+        </row>
+        
+        <!--
+        <row><entry namest="first" nameend="last"><emphasis>Duration arithmetic</emphasis></entry></row>
+                
+        <row>
+            <entry><literal>+</literal></entry>
+            <entry><literal>lhs + rhs</literal></entry>
+            <entry>extend</entry>
+            <entry><literal>lhs.extend(rhs)</literal></entry>
+            <entry><literal>Duration</literal></entry>
+            <entry><literal>Duration</literal></entry>
+            <entry><literal>Duration</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>-</literal></entry>
+            <entry><literal>lhs - rhs</literal></entry>
+            <entry>curtail</entry>
+            <entry><literal>lhs.curtail(rhs)</literal></entry>
+            <entry><literal>Duration</literal></entry>
+            <entry><literal>Duration</literal></entry>
+            <entry><literal>Duration</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>*</literal></entry>
+            <entry><literal>lhs * rhs</literal></entry>
+            <entry>multiply</entry>
+            <entry><literal>lhs.times(rhs)</literal></entry>
+            <entry><literal>Duration</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>Duration</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>/</literal></entry>
+            <entry><literal>lhs / rhs</literal></entry>
+            <entry>divide</entry>
+            <entry><literal>lhs.divide(rhs)</literal></entry>
+            <entry><literal>Duration</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>Duration</literal></entry>
+        </row>
+        -->
+        
+        <!--
+        
+        <row><entry namest="first" nameend="last"><emphasis>Bitwise operations</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>|||</literal></entry>
+            <entry><literal>lhs ||| rhs</literal></entry>
+            <entry>bitwise or</entry>
+            <entry><literal>lhs.or(rhs)</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&amp;&amp;&amp;</literal></entry>
+            <entry><literal>lhs &amp;&amp;&amp; rhs</literal></entry>
+            <entry>bitwise and</entry>
+            <entry><literal>lhs.and(rhs)</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+        </row>
+        <row>
+            <entry><literal>^^^</literal></entry>
+            <entry><literal>lhs ^^^ rhs</literal></entry>
+            <entry>bitwise xor</entry>
+            <entry><literal>lhs.xor(rhs)</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+        </row>
+        <row>
+            <entry><literal>~</literal></entry>
+            <entry><literal>~rhs</literal></entry>
+            <entry>bitwise not</entry>
+            <entry><literal>rhs.not</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+            <entry><literal>Binary</literal></entry>
+        </row>
+        
+        -->
+        
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+    
+    <section>
+        <title>Operator precedence and associativity</title>
+        
+        <para>This table defines operator precedence from highest to lowest,
+        along with associativity rules:</para>
+        
+    <table>
+    <tgroup cols="4">
+        <colspec colnum="1" colwidth="2.5*" align="center"/>
+        <colspec colnum="2" colwidth="2.0*" align="center"/>
+        <colspec colnum="3" colwidth="1.0*" align="center"/>
+        <colspec colnum="4" colwidth="0.7*" align="center"/>
+    <thead>
+        <row>
+            <entry>Operations</entry>
+            <entry>Operators</entry>
+            <entry>Type</entry>
+            <entry>Associativity</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+            <row>
+                <entry>Member invocation and lookup, subrange, reflection:</entry>
+                <entry>
+                <literal>.</literal>, 
+                <literal>^.</literal>, 
+                <literal>*.</literal>, 
+                <literal>?.</literal>, 
+                <literal>[]</literal>, 
+                <literal>[..]</literal>, 
+                <literal>[...]</literal>, 
+                <literal>[,,]</literal>,
+                <literal>#</literal></entry>
+                <entry>Binary / ternary / N-ary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Prefix increment, decrement,
+                negation, render, bitwise complement:</entry>
+                <entry>
+                <literal>++</literal>, 
+                <literal>--</literal>, 
+                <literal>-</literal>, 
+                <literal>$</literal>,
+                <literal>~</literal> 
+                </entry>
+                <entry>Unary prefix</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
+                <entry>Postfix increment, decrement:</entry>
+                <entry>
+                <literal>++</literal>, 
+                <literal>--</literal>
+                </entry> 
+                <entry>Unary postfix</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Exponentiation:</entry>
+                <entry>
+                <literal>**</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <!--  
+            <row>
+                <entry>Exponentiation, shift:</entry>
+                <entry>
+                <literal>**</literal>,
+                <literal>&lt;&lt;</literal>, 
+                <literal>>></literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            -->
+            <row>
+                <entry>Multiplication, division, remainder
+                <!--intersection--><!--, bitwise and--> for
+                numbers<!--, sets--><!--and durations-->:</entry> 
+                <entry>
+                <literal>*</literal>, 
+                <literal>/</literal>, 
+                <literal>%</literal>,
+                <literal>~</literal><!--,
+                <literal>&amp;&amp;&amp;</literal>-->
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Addition, subtraction, concatenation 
+                <!--union, complement, join--><!--, bitwise or, bitwise xor-->
+                for numbers<!--, sets,--><!-- and durations--> and lists:</entry> 
+                <entry>
+                <literal>+</literal>, 
+                <literal>-</literal><!--, 
+                <literal>|||</literal>, 
+                <literal>^^^</literal>-->
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Date/time composition:</entry> 
+                <entry><literal>@</literal></entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Range, interval and entry construction:</entry> 
+                <entry><literal>..</literal>, <literal>-></literal></entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Existence, emptiness:</entry>
+                <entry><literal>exists</literal>, <literal>nonempty</literal></entry> 
+                <entry>Unary postfix</entry>
+                <entry>None</entry>
+            </row>
+            <!--
+            <row>
+                <entry>Existence, emptiness:</entry>
+                <entry><literal>?</literal>, <literal>??</literal></entry> 
+                <entry>Unary postfix</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Binary existence, emptiness:</entry> 
+                <entry><literal>?:</literal>, <literal>??:</literal></entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+            -->
+            <row>
+                <entry>Default:</entry> 
+                <entry><literal>default</literal></entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
+                <entry>Comparison, <!--set comparison,--> containment:</entry> 
+                <entry>
+                <literal>&lt;=&gt;</literal>,
+                <literal>&lt;</literal>, 
+                <literal>&gt;</literal>, 
+                <literal>&lt;=</literal>, 
+                <literal>&gt;=</literal>,
+                <!--<literal>~></literal>,
+                <literal>!~></literal>,
+                <literal>*~></literal>-->
+                <literal>in</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Equality, null assignment,
+                empty assignment:</entry>
+                <entry>
+                <literal>==</literal>, 
+                <literal>!=</literal>, 
+                <literal>===</literal><!--,
+                <literal>?=</literal>, 
+                <literal>=?</literal>,
+                <literal>??=</literal>, 
+                <literal>=??</literal> -->
+                </entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+        
+            <row>
+                <entry>Negation:</entry>
+                <entry><literal>!</literal></entry>
+                <entry>Unary prefix</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
+                <entry>Conjunction:</entry> 
+                <entry>
+                <literal>&amp;&amp;</literal>, 
+                <literal>&amp;</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Disjunction:</entry>
+                <entry>
+                <literal>||</literal>, 
+                <literal>|</literal>, 
+                <literal>^</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Implication:</entry>
+                <entry>
+                <literal>=></literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Assignment, numeric assignment, logical assignment:</entry> 
+                <entry>
+                <literal>=</literal>, 
+                <literal>+=</literal>, 
+                <literal>-=</literal>, 
+                <literal>*=</literal>, 
+                <literal>/=</literal>, 
+                <literal>%=</literal>, 
+                <literal>&amp;=</literal>, 
+                <literal>|=</literal>, 
+                <literal>^=</literal>, 
+                <literal>&amp;&amp;=</literal>, 
+                <literal>||=</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+            
+    </tbody>
+    </tgroup>
+    </table>
+            
+    </section>
+    
+    </section>
+
+    <section>
+        <title>Functor expressions</title>
+        
+        <para>A functor expression has this form:</para>
+        
+        <programlisting>FunctorExpression :=
+(Type TypeParameters?)? 
+( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN ClosedBlock | 
+OPENPAREN MemberLiteral CLOSEPAREN )</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Order&lt;Float&gt; order = Order&lt;Float&gt;(Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
+        
+        <programlisting>people.sort( Order&lt;Person&gt;(Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
+        
+        <programlisting>lineItems.sort( Order&lt;Float&gt;(lineItemComparator#compare) );</programlisting>
+        
+        <programlisting>people.select( Select&lt;Person&gt;(Person p) return p.age>18 )
+    .collect( Collect&lt;Person&gt;(Person p) return p.name );</programlisting>
+        
+        <!--  
+        <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
+        
+        <programlisting>people.select( Collect&lt;Person&gt;(Person p: p.age>18) );</programlisting>
+        -->
+        
+        <para>The functor type may be omitted in assignments, return directives or method 
+        parameters, if the type can be inferred.</para>
+        
+        <programlisting>Order&lt;Float&gt; order = (Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
+        
+        <programlisting>people.sort( (Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
+        
+        <programlisting>lineItems.sort( (lineItemComparator#compare) );</programlisting>
+        
+        <programlisting>people.select( (Person p) return p.age>18 )
+    .collect( (Person p) return p.name );</programlisting>
+        <!--  
+        <programlisting>people.collect( (Person p: p.age>18) return p.name; );</programlisting>
+        
+        <programlisting>people.select( (Person p: p.age>18) );</programlisting>
+        -->
+        
+        <para>Furthermore, if a method takes exactly one closure as its argument, the
+        parentheses may be eliminated in the method call:</para>
+        
+        <programlisting>amounts.sort(Float x, Float y) { return x&lt;=&gt;y; }</programlisting>
+        
+        <programlisting>people.sort(Person x, Person y) 
+    return y.name&lt;=&gt;x.name;</programlisting>
+        
+        <programlisting>lineItems.sort(lineItemComparator#compare);</programlisting>
+        
+        <programlisting>people.select (Person p) { return p.age>18 }
+    .collect (Person p) { return p.name };</programlisting>
+        <!--  
+        <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
+        
+        <programlisting>people.select(Person p: p.age>18);</programlisting>
+        -->
+        
+        <!-- 
+        <para>Finally, if the functor has exactly one parameter, the variable list
+        may be eliminated.</para>
+        
+        <programlisting>people.select( return it.age>18 )
+    .collect( return it.name );</programlisting>
+         -->
+        
+        <para>The following code:</para>
+        
+        <programlisting>(0..10).each (Integer num) 
+    log.info(num);</programlisting>
+        
+        <para>Is equivalent to:</para>
+        
+        <programlisting>new Range&lt;Integer&gt;(0, 10).each( new Do() {
+        @Override Boolean call(Integer x) { 
+            ParentClass.this.log.info(num); 
+        } 
+    } );</programlisting>
+    
+        <para>This code:</para>
+        
+        <programlisting>Integer min = 0;
+Integer max = 0;
+List list = list.select(Integer x) 
+    return x > min &amp;&amp; x &lt; max;</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>Integer min = 0; 
+Integer max = 10; 
+List list = list.select( new Select(min, max) { 
+        final Integer min = (Integer) locals[0];
+        final Integer max = (Integer) locals[1];
+        @Override Boolean call(Integer x) { 
+            return x > min &amp;&amp; x &lt; max; 
+        } 
+    } );</programlisting>
+    
+        <section>
+        
+        <title>Possible extension</title>
+    
+        <para>The following code:</para>
+        
+        <programlisting>Integer min = 0;
+Integer max = 0;
+Integer count = 0;
+Integer size = list.each(Integer x) { 
+    if ( x > min ) count++; 
+    if ( x > max) max = x; 
+};</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>Integer min = 0; 
+Integer max = 0;
+Integer count = 0;
+final List list$1 = list;
+final Select functor$1 = new Do(min, max, count) { 
+        Integer min = (Integer) locals[0];
+        Integer max = (Integer) locals[1];
+        Integer count = (Integer) locals[2];
+        @Override Boolean call(Integer x) { 
+            if ( x > min ) count++; 
+            if ( x > max) max = x; 
+            locals[0] = min;
+            locals[1] = max;
+            locals[2] = count;
+        }
+    };
+final Integer result$1 = list$1.each(functor$1);
+final Object[] locals$1 = functor$1.locals();
+min = (Integer) locals[0];
+max = (Integer) locals[1];
+count = (Integer) locals[2];
+Integer size = result$1;</programlisting>
+
+        <para>Or, perhaps:</para>
+    
+        <programlisting>Integer min = 0; 
+Integer max = 0;
+Integer count = 0;
+final List list$1 = list;
+final Select functor$1 = new Select(min, max, count) { 
+        @Override Boolean call(Integer x) { 
+            if ( x > locals[0] ) locals[3]++; 
+            if ( x > locals[1] ) locals[1] = x; 
+        }
+    };
+final Integer result$1 = list$1.each(functor$1);
+final Object[] locals$1 = functor$1.locals();
+min = (Integer) locals[0];
+max = (Integer) locals[1];
+count = (Integer) locals[2];
+Integer size = result$1;</programlisting>
+
+        </section>
+    
     </section>
     
 </chapter>

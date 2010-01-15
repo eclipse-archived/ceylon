@@ -7,8 +7,6 @@
 <!ENTITY declarations              SYSTEM "modules/declarations.xml">
 <!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
 <!ENTITY expressions               SYSTEM "modules/expressions.xml">
-<!ENTITY literals                  SYSTEM "modules/literals.xml">
-<!ENTITY operators                 SYSTEM "modules/operators.xml">
 <!ENTITY types                     SYSTEM "modules/types.xml">
 ]>
 
@@ -102,8 +100,6 @@
     &declarations;
     &statementblocks;
     &expressions;
-    &literals;
-    &operators;
     &types;
 
 </book>
