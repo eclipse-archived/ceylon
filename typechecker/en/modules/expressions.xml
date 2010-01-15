@@ -309,6 +309,10 @@ CLOSEBRACE</programlisting>
             to the value of the first expression. Otherwise, the whole expression
             evaluates to the value of the second expression, or to null if there
             is no second expression specified.</para>
+            
+            <para>The type of the whole expression is the common supertype of the
+            first and second expressions, <literal>optional</literal> if no
+            second expression is specified.</para>
 
             <para>For example:</para>
             
@@ -342,7 +346,12 @@ CLOSEBRACE</programlisting>
             expression evaluates to the value of the else expression, or to null if there is
             no else expression specified.</para>
             
-            <para>For example:</para>
+            <para>The type of the whole expression is the common supertype of the
+            case expressions, <literal>optional</literal> if no else expression
+            expression is specified (and if not all enumerated instances of the type
+            are listed).</para>
+
+             <para>For example:</para>
 
             <programlisting>optional: PaymentProcessor processor
     return switch (payment.type) 
@@ -454,9 +463,12 @@ Expression?</programlisting>
 "try" Expression
 ("catch" OPENPAREN Variable CLOSEPAREN Expression)+</programlisting>
 
-            <para>If the try block executes without exception, the construct evaluates to the 
-            value of the try block. If an exception is handled by a catch block, the construct
-            evaluates to the value of that catch block.</para>
+            <para>If the try expression executes without exception, the construct evaluates to the 
+            value of the try expression. If an exception is handled by a catch, the construct
+            evaluates to the value of that catch expression.</para>
+            
+            <para>The type of the whole expression is the common supertype of the try and all
+            catch expressions.</para>
             
             <para>For example:</para>
             
