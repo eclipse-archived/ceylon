@@ -222,17 +222,9 @@ if you prefer.";</programlisting>
         
         <programlisting>FunctorLiteral :=
 (Type TypeParameters?)? 
-( VariableList FunctorBody? | OPENPAREN MethodPointer CLOSEPAREN )</programlisting>
-
-        <programlisting>FunctorBody := Block | MethodDirective | Expression</programlisting>
+( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN ClosedBlock | 
+OPENPAREN MemberLiteral CLOSEPAREN )</programlisting>
         
-        <para>TODO: functor literal variable lists can't define default parameter values, they 
-        are defined by the functor declaration.</para>
-        
-        <!--  
-        <programlisting>VariableAndConditionList := OPENPAREN Variables? (COLON Condition)? CLOSEPAREN</programlisting>
-        -->
-
         <para>For example:</para>
         
         <programlisting>Order&lt;Float&gt; order = Order&lt;Float&gt;(Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
@@ -270,10 +262,7 @@ if you prefer.";</programlisting>
         <para>Furthermore, if a method takes exactly one closure as its argument, the
         parentheses may be eliminated in the method call:</para>
         
-        <programlisting>amounts.sort(Float x, Float y) 
-{ 
-    return x&lt;=&gt;y; 
-}</programlisting>
+        <programlisting>amounts.sort(Float x, Float y) { return x&lt;=&gt;y; }</programlisting>
         
         <programlisting>people.sort(Person x, Person y) 
     return y.name&lt;=&gt;x.name;</programlisting>

@@ -580,7 +580,7 @@ CLOSEBRACE</programlisting>
         <para>Constructors are declared according to the following:</para>
         
         <programlisting>Annotations? Identifier 
-VariableList
+FormalParameters
 ( SEMICOLON | ClosedBlock )</programlisting>
 
         <para>
@@ -596,8 +596,8 @@ VariableList
         </para>
         
         <para>
-        A method body may omit the braces if it consists of exactly one statement. If
-        there is no constructor body at all, the constructor assigns each parameter to
+        A constructor body may omit the braces if it consists of exactly one statement. 
+        If there is no constructor body at all, the constructor assigns each parameter to
         the attribute with the same name.
         </para>
         
@@ -892,7 +892,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         
         <programlisting>Annotations? Type* 
 "selector" Identifier
-VariableList?
+FormalParameters?
 OPENBRACE 
 SelectorValue (COMMA SelectorValue)*
 ( SEMICOLON ( Attribute | Method )* )? 
@@ -972,7 +972,7 @@ selector ComparisonOperation {
         
         <programlisting>Annotations? ( Type | "void" ) 
 "functor" Identifier TypeParameters? 
-VariableList 
+FormalParameters 
 TypeConstraintList? 
 SEMICOLON</programlisting>
         
@@ -1037,7 +1037,7 @@ SEMICOLON</programlisting>
         declared according to the following:</para>
         
         <programlisting>Annotations?
-"decorator" Identifier TypeParameters? OPENPAREN Variable CLOSEPAREN
+"decorator" Identifier TypeParameters? OPENPAREN FormalParameter CLOSEPAREN
 Interfaces?
 TypeConstraintList? 
 OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlisting>
@@ -1101,6 +1101,8 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         <section>
             <title>Introduced types</title>
             
+            <para>TODO: there are holes in the semantics of this stuff!</para>
+            
         <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
         are called the <emphasis>introduced types</emphasis>.</para>
         
@@ -1147,9 +1149,12 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         <programlisting>Annotations? Type 
 "converter" Identifier TypeParameters? 
 TypeConstraintList? 
-OPENPAREN Variable CLOSEPAREN 
+OPENPAREN FormalParameter CLOSEPAREN 
 Block</programlisting>
 
+        <para>TODO: would it be better to just let you annotate a static method <literal>converter:</literal>,
+        instead of having a whole special declaration?</para>
+            
         <para>For example:</para>
         
         <programlisting>public: User converter PersonUser(Person person) { return person.user; }</programlisting>

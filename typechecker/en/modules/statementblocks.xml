@@ -108,16 +108,30 @@ Declaration</programlisting>
         <para>Ceylon provides the following control structures:</para>
         
         <itemizedlist>
-            <listitem>the <literal>if/else</literal> conditional&mdash;for controlling execution based
-            upon a boolean value, and dealing with null values,</listitem>
-            <listitem>the <literal>switch/case/else</literal> conditional&mdash;for controlling execution
-            using an enumerated list of values,</listitem>
-            <listitem>the <literal>do/while/fail</literal> loop&mdash;for loops which terminate based
-            upon the value of a boolean expression,</listitem>
-            <listitem>the <literal>for/fail</literal> loop&mdash;for looping over elements of a collection,</listitem>
-            <listitem>the <literal>using</literal> construct&mdash;for controlling the lifecycle of heavyweight
-            objects, and</listitem>
-            <listitem>the <literal>try/catch/finally</literal> construct&mdash;for managing exceptions</listitem>
+            <listitem>
+                <para>the <literal>if/else</literal> conditional&mdash;for controlling execution based
+                upon a boolean value, and dealing with null values,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>switch/case/else</literal> conditional&mdash;for controlling execution
+                using an enumerated list of values,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>do/while/fail</literal> loop&mdash;for loops which terminate based
+                upon the value of a boolean expression,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
+                collection,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>using</literal> resource manager&mdash;for controlling the lifecycle 
+                of heavyweight objects, and</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>try/catch/finally</literal> exception manager&mdash;for managing 
+                exceptions</para>
+            </listitem>
         </itemizedlist>
                 
         <programlisting>ControlStructure := 
@@ -126,19 +140,66 @@ DoWhileFail | ForFail |
 Using | TryCatchFinally |
 Assert</programlisting>
 
-        <para><emphasis>Control structures</emphasis> are not considered to be 
-        expressions in Ceylon. However, all control structures have a corresponding 
-        <emphasis>control expression</emphasis> which may be used anywhere an 
-        expression may be used.</para>
+        <para><emphasis>Control structures</emphasis> are not considered to be expressions in Ceylon. 
+        However, all control structures have a corresponding <emphasis>control expression</emphasis> 
+        which may be used anywhere an expression may be used.</para>
+        
+        <para>TODO: do/while/file, for/fail and if/else are significantly enhanced compared to other 
+        Java-like languages. Is this truly a good thing?</para>
                 
-        <para>A control structure body consists of an expression, a control directive or a 
-        block.</para>
+        <para>A control structure body consists of an expression, a control directive or a block.</para>
         
         <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
         <programlisting>ClosedBlock := Block | ( Expression | ControlDirective ) SEMICOLON</programlisting>
         
-        <!--
-            
+        <para>Some control expression allow embedded declaration of a local.</para>
+        
+        <programlisting>Variable := Annotations? Type Identifier</programlisting>
+        
+        <para>Several control structures expect conditions:</para>
+        
+        <programlisting>Condition := 
+Expression | 
+( Variable Initializer | Expression ) ("exists"|"nonempty")</programlisting>
+
+        <para>The semantics of a condition depend upon whether the <literal>exists</literal> or 
+        <literal>nonempty</literal> modifier appears:</para>
+
+        <itemizedlist>
+            <listitem>
+                <para>If no <literal>exists</literal> or <literal>nonempty</literal> modifier appears, 
+                the condition must be an expression of type <literal>Boolean</literal>. The condition
+                is satisfied if the expression evaluates to <literal>true</literal> at runtime.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>exists</literal> modifier appears, the condition must be an 
+                expression or local initializer of type <literal>optional: Object</literal>. The
+                condition is satisfied if the expression or initializer evaluates to a non-null value
+                at runtime.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
+                expression or local initializer of type <literal>optional: Container</literal>. The
+                condition is satisfied if the expression or initializer evaluates to a non-null value
+                at runtime, and if the resulting <literal>Container</literal> is non-empty.</para>
+            </listitem>
+        </itemizedlist>
+
+        <para>For <literal>exists</literal> or <literal>nonempty</literal> conditions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the condition is a local variable initializer, the local variable may be
+                declared without the <literal>optional</literal> annotation, even though the 
+                initializer expression is of type <literal>optional</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>if the condition is a local variable, the local will be treated by the compiler 
+                as having non-null type inside the block that follows immediately, relaxing the usual 
+                compile-time restrictions upon <literal>optional</literal> types.</para>
+            </listitem>
+        </itemizedlist>
+                        
         <section>
             <title><literal>if/else</literal></title>
             
@@ -148,25 +209,12 @@ Assert</programlisting>
 "if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN
 ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting>
 
-            <programlisting>Condition := 
-Expression | 
-( Variable Initializer | Expression ) ("exists"|"nonempty") </programlisting>
+            <para>If all conditions are satisfied, the first block is executed. Otherwise, the 
+            second block is executed, if it is defined.</para>
 
-            <para>The semantics of a condition depend upon whether the 
-            <literal>exists</literal> or <literal>nonempty</literal> modifier appears.</para>
-
-            <para>If no <literal>exists</literal> or <literal>nonempty</literal> modifier appears, 
-            the condition must be an expression of type <literal>Boolean</literal>. If the 
-            <literal>exists</literal> modifier appears, the condition must be an expression or 
-            local initializer of type <literal>optional: Object</literal>. If the 
-            <literal>nonempty</literal> modifier appears, the condition must be an expression or 
-            local initializer of type <literal>optional: Container</literal>. In either case, 
-            the local will be treated by the compiler as having non-null type inside the first 
-            block, relaxing the usual compile-time restrictions upon nullable types.</para>
-                        
-            <para> If all conditions are satisfied, the first block is executed. Otherwise, 
-            the second block is executed, if it is defined.</para>
-
+            <para>Condition expressions may refer to any local variable defined by a previous
+            condition.</para>
+            
             <para>For example:</para>
             
             <programlisting>if ( payment.amount &lt;= account.balance ) 
@@ -220,27 +268,33 @@ else
 ( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN OpenBlock )* 
 ( "else" OpenBlock )?</programlisting>
 
-            <para>The expression may be of any type. However, if the expression type is 
-            <literal>optional</literal>, there must be an explicit <literal>case null</literal>
-            defined. The case values must be expressions of type <literal>Case&lt;X&gt;</literal>, 
-            where <literal>X</literal> is the switch expression type.</para> 
+            <para>The expression may be of any type. The case values must be expressions of 
+            type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> is the switch 
+            expression type.</para>
+
+            <para>If a <literal>case null</literal> is defined, the expression type must be 
+            <literal>optional</literal>.</para>
+
+            <para>If the expression type is <literal>optional</literal>, there must be an 
+            explicit <literal>case null</literal> defined. </para> 
             
-            <para>If no else block is defined, the switch value expression must be of type 
-            <literal>Selector</literal>, and all values of the selector must be explicitly
-            listed.</para>
+            <para>If no <literal>else</literal> block is defined, the switch value expression
+            must be of type <literal>Selector</literal>, and all enumerated instances of the 
+            classs must be explicitly listed.</para>
             
             <para>If the expression is of type <literal>Selector</literal>, and all values 
-            of the selector are be explicitly listed, no else block may be specified.</para>
+            of the selector are explicitly listed, no <literal>else</literal> block may be 
+            specified.</para>
             
-            <para>When the construct is 
-            evaluated, the switch expression value is tested (using <literal>test()</literal>) 
-            against the case values, and the case block for the first case value that tests true 
-            is executed. If no case value tests true, and a else block is defined, the else 
+            <para>When the construct is executed, the switch expression value is tested 
+            against the case values (using <literal>Case.test()</literal>) , and the case 
+            block for the first case value that tests true is executed. If no case value 
+            tests true, and an <literal>else</literal> block is defined, the <literal>else</literal> 
             block is executed.</para>
             
             <para>For example:</para>
 
-            <programlisting>PaymentProcessor processor
+            <programlisting>public: PaymentProcessor processor
 {
     switch (payment.type) 
         case null throw NoPaymentTypeException()
@@ -279,18 +333,22 @@ else
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting>
 
+            <para>An iteration variable declaration must specify an iterated expression 
+            that contains the range of values to be iterated. It may optionally specify 
+            one or more iteration constraint expressions (conditions).</para>
+
             <programlisting>Iteration := Variable ("->" Variable)? "in" Expression (COLON Condition (COMMA Condition))? </programlisting>
 
             <para>Each iterated expression must be of type <literal>Iterable</literal>
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
             must be of type <literal>Iterable&lt;Entry&gt;</literal> or 
-            <literal>Iterator&lt;Entry&gt;</literal>. Each iteration constraint expression
-            must be of type <literal>Boolean</literal> (or <literal>optional: Object</literal>
-            of the <literal>exists</literal> modifier appears). Iterated and constraint 
-            expressions may refer to iteration variables defined earlier.</para>
+            <literal>Iterator&lt;Entry&gt;</literal>.</para>
+            
+            <para>Iterated and constraint expressions may refer to any local variable 
+            defined by a previous iteration.</para>
             
             <para>The body of the loop is executed once for each combination of iterated 
-            elements for which the constraint expressions evaluate to true.</para>
+            elements for which all constraint expressions are satisfied.</para>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -347,12 +405,13 @@ fail
             
             <programlisting>DoWhileFail := 
 ( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
-"while" OPENPAREN Condition (COMMA Condition) CLOSEPAREN ( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting>
+"while" OPENPAREN Condition (COMMA Condition) CLOSEPAREN 
+( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting>
             
             <para>Both blocks are executed repeatedly, until one of the termination 
             conditions first evaluates to false, at which point iteration ends. In each 
-            iteration, the first block is executed before the conditions are
-            evaluated, and the second block is executed after they are all evaluated.</para>
+            iteration, the first block is executed before the conditions are evaluated, 
+            and the second block is executed after they are all evaluated.</para>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -405,7 +464,7 @@ while (!person.parent.dead)
         <section>
             <title><literal>using</literal></title>
             
-            <para>The <literal>using</literal> exception manager has the form:</para>
+            <para>The <literal>using</literal> resource manager has the form:</para>
             
             <programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting>
             
@@ -504,7 +563,6 @@ catch (NotFoundException e)
     throw new AssertionFailedException(message);</programlisting>
         
     </section>
-        -->
     
     </section>
 
