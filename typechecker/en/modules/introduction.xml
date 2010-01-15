@@ -101,7 +101,7 @@
     
     <para>
     Ceylon provides sophisticated support for meta-programming, including 
-    a typesafe metamodel and events. This facility is inspired by similar, 
+    a typesafe metamodel and events. This facility is inspired by similar 
     features found in dynamic languages such as Smalltalk, Python and Ruby, 
     and by the much more complex features found in aspect oriented languages
     like Aspect J. Ceylon does not, however, support aspect oriented

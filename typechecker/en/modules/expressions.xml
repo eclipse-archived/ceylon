@@ -39,6 +39,9 @@ CLOSEBRACE</programlisting>
         <para>A vararg parameter may be a local declaration. Multiple vararg parameters may be
         constructed using a <literal>for</literal> comprehension.</para>
         
+        <para>TODO: exactly what types are accepted by a vararg parameter? Any <literal>Iterable</literal>?
+        Exactly how is it accessed in the body of the method? As a <literal>List</literal>?</para>
+        
         <para>TODO: should there be a special syntax to "spread" the values of a list into vararg
         parameters, eg. <literal>*list</literal>.</para>
         
@@ -457,5 +460,48 @@ CaseExpression
     </section>
     
     -->
+    
+    <section>
+        <title>Assignable expressions</title>
+        
+        <para>Certain expressions are <emphasis>assignable</emphasis>. An assignable
+        expression may appear as the LHS of the <emphasis>=</emphasis> (assign) operator,
+        and possibly, depending upon the type of the expression, as the LHS of the 
+        numeric or logical assignment operators <literal>=, +=, -=, *=, /=, %=, &amp;=, 
+        |=, ^=, &amp;&amp;=, ||=</literal> or as the subject of the increment or decrement
+        operators <literal>++, --</literal>.</para>
+        
+        <para>The following expressions are assignable:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a local declared <literal>mutable</literal>, for example 
+                <literal>count</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>any attribute expression where the underlying attribute has a setter
+                or is a simple attribute declared <literal>mutable</literal>, for example 
+                <literal>person.name</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>element expressions for the type <literal>OpenCorrespondence</literal>, 
+                for example <literal>order.lineItems[0]</literal></para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>When an assignment expression is executed, the value of the local or
+        attribute is set to the new value, or the <literal>define()</literal> method of
+        <literal>OpenCorrespondence</literal> is called.</para>
+        
+        <para>Thus, the following statement:</para>
+        
+        <programlisting>order.lineItems[0] = LineItem { product: prod; quantity: 1; };</programlisting>
+        
+        <para>Is equivalent to:</para>
+        
+        <programlisting>order.lineItems.define( 0, LineItem { product: prod; quantity: 1; } );</programlisting>
+        
+        
+    </section>
     
 </chapter>

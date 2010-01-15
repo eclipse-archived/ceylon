@@ -16,6 +16,9 @@ StringLiteral | RegexLiteral |
 EnumerationLiteral |
 FunctorLiteral |
 "this" | "super"</programlisting>
+
+    <para>The keywords <literal>this</literal> and <literal>super</literal> are equivalent
+    to the Java forms.</para>
     
     <section>
         <title>Boolean literals</title>
@@ -31,6 +34,9 @@ FunctorLiteral |
         <para>Equivalent to this Java code:</para>
         
         <programlisting>Boolean found = lang.Boolean.FALSE;</programlisting>
+        
+        <para>TODO: is this really a special literal, or is it just an
+        enumerated instance of the <literal>Boolean</literal> class?</para>
 
     </section>
     
@@ -387,8 +393,8 @@ Integer size = result$1;</programlisting>
     <section>
         <title>Enumeration literals</title>
         
-        <para>The following literal is supported, representing an
-        empty enumeration:</para>
+        <para>The following literal is supported, representing an empty 
+        enumeration:</para>
         
         <programlisting>"none"</programlisting>
         
@@ -400,10 +406,13 @@ Integer size = result$1;</programlisting>
         
         <programlisting>Enumeration&lt;String&gt; enum = collections.Enumeration.emptyEnumeration&lt;String&gt;();</programlisting>
 
+         <para>TODO: is this really a special literal, or is it just an
+        enumerated instance of the <literal>Enumeration</literal> class?</para>
+
         <para>There are no true literals for lists, sets or maps. However, the
         <literal>..</literal> and <literal>-></literal> operators, together with
-        the convenient enumeration constructor syntax help us achieve the desired 
-        effect.</para>
+        the convenient enumeration constructor syntax, and some built-in converters 
+        help us achieve the desired effect.</para>
 
         <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>
         <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
@@ -442,6 +451,24 @@ Integer size = result$1;</programlisting>
     birthdate = Date { day = 25; month = MARCH; year = ... }
 };</programlisting>
 
+    </section>
+    
+    <section>
+        <title>Type and member literals</title>
+        
+        <para>The <literal>Type</literal> object for a type, the <literal>Method</literal>
+        object for a method, or the <literal>Attribute</literal> object for an attribute
+        may be referred to using a special literal syntax:</para>
+        
+        <programlisting>TypeLiteral := HASH Type</programlisting>
+        
+        <programlisting>MemberLiteral := Type HASH Identifier</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;&gt;;</programlisting>
+        <programlisting>Attribute&lt;String&gt; nameAttribute = Person#name;</programlisting>
+        
     </section>
 
 </chapter>

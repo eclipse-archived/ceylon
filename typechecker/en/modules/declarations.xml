@@ -404,6 +404,9 @@ class Customer(Name name, optional: Organization org = null)
              == position.exponentiate(2);
     } 
 }</programlisting>
+
+        <para>TODO: should class initialization parameters be allowed to be
+        declared <literal>mutable</literal>?</para>
         
         </section>
 
@@ -778,6 +781,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
         <para>The attribute name specified by the setter must correspond to a 
         matching attribute getter.</para>
+        
+        <para>TODO: should we allow overloaded attribute setters, for example:</para>
+        
+        <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
 
         </section>
         
@@ -1055,8 +1062,12 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
 
         <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
         
+        <para>Introduced methods are only available in a source file that expicitly 
+        <literal>import</literal>s the decorator.</para>
+        
         <para>A decorator may not override a method defined by the decorated type. Methods defined 
-        by the decorated type are delegated to the decorated instance.</para>
+        by the decorated type are delegated to the decorated instance. TODO: is this the right thing
+        to say??</para>
 
         </section>
         
@@ -1114,10 +1125,7 @@ Block</programlisting>
 
         <para>For example:</para>
         
-        <programlisting>User converter PersonUser(Person person) 
-{
-    return person.user;
-}</programlisting>
+        <programlisting>public: User converter PersonUser(Person person) { return person.user; }</programlisting>
         
         <para>The parameter type must be immutable.</para>
 
@@ -1145,6 +1153,9 @@ User user = person;</programlisting>
         <programlisting>Person person = ...;
 User user = new PersonUser().convert(person);</programlisting>
 
+        <para>A conversion is only available in a source file that expicitly 
+        <literal>import</literal>s the converter.</para>
+        
     </section>
 
 </chapter>

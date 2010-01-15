@@ -21,6 +21,82 @@
     </bookinfo>
 
     <toc/>
+    
+    <preface>
+    <title>A work in progress</title>
+    
+    <para>The goal of this project is to make a clean break with the legacy 
+    Java SE platform, by improving upon the Java language and class libraries, 
+    and by providing a modular architecture for a new platform based upon the 
+    Java Virtual Machine.</para>
+    
+    <para>Java is a simple language to learn and Java code is easy to read and
+    understand. Java provides a level of typesafety that is appropriate for
+    business computing and enables sophisticated tooling with features like
+    refactoring support, code completion and code navigation. Ceylon aims to 
+    retain the overall model of Java, while getting rid of some of Java's warts: 
+    primitive types, arrays, constructors, getters/setters, checked exceptions,
+    raw types.</para> 
+    
+    <para>Ceylon has the following goals:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>to execute on the JVM, and interoperate with Java code,</para>
+        </listitem>
+        <listitem>
+            <para>to be easy to learn for Java and C# developers,</para>
+        </listitem>
+        <listitem>
+            <para>to eliminate some of Java's verbosity, while retaining its 
+            readability&mdash;Ceylon does <emphasis>not</emphasis> aim to be 
+            the least verbose/most cryptic language around,</para>
+        </listitem>
+        <listitem>
+            <para>to provide a declarative syntax for expressing hierarchical 
+            information like user interface definition, externalized data, and 
+            system configuration, thereby eliminating Java's dependence upon 
+            XML,</para>
+        </listitem>
+        <listitem>
+            <para>to improve compile-time typesafety using special handling for 
+            null values,</para>
+        </listitem>
+        <listitem>
+            <para>to provide language-level modularity, and</para>
+        </listitem>
+        <listitem>
+            <para>to improve on Java's very primitive facilities for meta-programming, 
+            thus making it easier to write frameworks.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Unlike other alternative JVM languages, Ceylon aims to completely replace 
+    the legacy Java SE class libraries.</para>
+    
+    <para>Therefore, the Ceylon SDK will provide:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the OpenJDK virtual machine,</para>
+        </listitem>
+        <listitem>
+            <para>a compiler that compiles both Ceylon and Java source,</para>
+        </listitem>
+        <listitem>
+            <para>Eclipse-based tooling,</para>
+        </listitem>
+        <listitem>
+            <para>a module runtime, and</para>
+        </listitem>
+        <listitem>
+            <para>a set of class libraries that provides much of the functionality
+            of the Java SE platform, together with the core functionality of the
+            Java EE platform.</para>
+        </listitem>
+    </itemizedlist>
+    
+    </preface>
 
     &introduction;
     &declarations;
@@ -28,7 +104,7 @@
     &expressions;
     &literals;
     &operators;
-    <!--&types;-->
+    &types;
 
 </book>
 
