@@ -316,6 +316,8 @@ if you prefer.";</programlisting>
         parameter values. Required parameters must be specified. Optional parameters and
         varargs may also be specified.</para>
         
+        <para>Any invocation may be specified by listing parameters, or by using named parameters:</para>
+        
         <programlisting>ParameterValueSet := ParameterValueList | NamedParameterValueList</programlisting>
         
         <para>When parameter values are listed, required parameters are assigned first, in the order
@@ -338,7 +340,7 @@ CLOSEBRACE</programlisting>
 
         <programlisting>NamedParameterValue := Identifier Initializer SEMICOLON</programlisting>
 
-        <programlisting>VarargParameterValue := Expression | Variable Initializer | ForExpression</programlisting>
+        <programlisting>VarargParameterValue := Expression | Variable Initializer | ForComprehension</programlisting>
         
         <para>A vararg parameter may be a local declaration. Multiple vararg parameters may be
         constructed using a <literal>for</literal> comprehension.</para>
