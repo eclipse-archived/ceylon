@@ -228,10 +228,15 @@ CLOSEBRACE</programlisting>
         
     </section>
     
-    <!--
-    
     <section>
         <title>Control expressions</title>
+        
+        <para>Control expressions allow a more declarative style of programming, that minimizes
+        the use of locals.</para>
+        
+        <!--
+        <programlisting>CaseExpression := Expression | ThrowDirective | FoundDirective | BreakDirective</programlisting>
+        -->
         
         <section>
             <title><literal>find</literal></title>
@@ -242,7 +247,7 @@ CLOSEBRACE</programlisting>
 
             <para>The construct evaluates to the value of the local after
             executing the block. All execution paths must result in an
-            initialized local.</para>
+            initialized local or a thrown exception.</para>
 
             <programlisting>public: String welcome 
 {
@@ -272,7 +277,7 @@ CLOSEBRACE</programlisting>
 
             <programlisting>return find (Boolean allowed=false)
     for (Permission p in user.permissions)
-        if (p.action == action &amp;&amp; p.object = object) 
+        if (p.action == action &amp;&amp; p.object == object) 
             found allowed=true;</programlisting>
             
             <programlisting>log.info 
@@ -297,14 +302,13 @@ CLOSEBRACE</programlisting>
             <para>The <literal>if/else</literal> expression has the following form:</para>
             
             <programlisting>IfElseExpression := 
-"if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN CaseExpression 
-"else" CaseExpression</programlisting>
-                    
-            <programlisting>CaseExpression := Expression | ThrowDirective | FoundDirective | BreakDirective</programlisting>
+"if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN Expression 
+("else" Expression)?</programlisting>
 
             <para>If all conditions are satisfied, the whole expression evaluates
             to the value of the first expression. Otherwise, the whole expression
-            evaluates to the value of the second expression.</para>
+            evaluates to the value of the second expression, or to null if there
+            is no second expression specified.</para>
 
             <para>For example:</para>
             
@@ -329,20 +333,22 @@ CLOSEBRACE</programlisting>
             
             <programlisting>SwitchCaseElseExpression := 
 "switch" OPENPAREN Expression CLOSEPAREN
-( "case" "null" CaseExpression )?
-( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN CaseExpression )* 
-( "else" CaseExpression )?</programlisting>
+( "case" "null" Expression )?
+( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression )* 
+( "else" Expression )?</programlisting>
 
             <para>The whole expression evaluates to the value of the first case expression 
-            for which the case value tests true.</para>
+            for which the case value tests true. If no case expression tests true, the whole 
+            expression evaluates to the value of the else expression, or to null if there is
+            no else expression specified.</para>
             
             <para>For example:</para>
 
-            <programlisting>PaymentProcessor processor
+            <programlisting>optional: PaymentProcessor processor
     return switch (payment.type) 
-        case null throw NoPaymentTypeException
-        case (CREDIT, DEBIT) cardPaymentProcessor 
-        case (CHECK) checkPaymentProcessor
+        case null null
+        case (credit, debit) cardPaymentProcessor 
+        case (check) checkPaymentProcessor
         else interactivePaymentProcessor;</programlisting>
 
             <programlisting>log.info 
@@ -350,7 +356,7 @@ CLOSEBRACE</programlisting>
     message = switch (num) 
         case (0) "Zero" 
         case (1) "Unity" 
-        else $num
+        else $num;
 }</programlisting>
             
         </section>
@@ -366,13 +372,13 @@ CLOSEBRACE</programlisting>
 Expression?</programlisting>
 
             <programlisting>ForAnyAllExpression := 
-"for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
-Expression</programlisting>
-
+"for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression</programlisting>
+            
+            <!--  
             <programlisting>ForFailExpression := 
-"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
-CaseExpression
-"fail" CaseExpression</programlisting>
+"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression
+"fail" Expression</programlisting>
+            -->
 
             <programlisting>Order := Expression ("asc"|"desc")</programlisting>
 
@@ -380,17 +386,19 @@ CaseExpression
             <literal>all</literal> modifier appears, and upon whether a <literal>fail</literal>
             expression appears.</para>
             
+            <!--
             <para>If a <literal>fail</literal> expression appears, the whole expression
-            evaluates to the value of the fail expression, unless the loop exists early
+            evaluates to the value of the fail expression, unless the loop exits early
             due to execution of a <literal>found</literal> directive, in which case
             the whole expression evaluates to the value specified by the 
             <literal>found</literal> directive.</para>
+            -->
 
             <para>If <literal>any</literal> or <literal>all</literal> is specified,
             the element expression must be of type <literal>Boolean</literal>, and the 
             whole expression evaluates to a <literal>Boolean</literal> value.</para>
             
-            <para>If neither modifier appears, and if no <literal>fail</literal> expression appears, 
+            <para>If neither modifier appears, <!--and if no <literal>fail</literal> expression appears,-->
             the whole expression evaluates to an enumeration of element expression values, one element 
             for each iteration of the loop (that satisfies the all iteration conditions). If no expression
             appears, the result is an enumeration of elements of the first iteration. If <literal>by</literal>
@@ -405,16 +413,18 @@ CaseExpression
 
             <programlisting>public: List&lt;Person&gt; employees(Country country) 
 {
-    return for (Organization o in orgs: o.country==country; Person p in o.employees) p;
+    return for (Organization o in orgs: o.country==country; Person p in o.employees) by (p.name) p;
 }</programlisting>
 
             <programlisting>log.info( ", ".join( for (String key -> Integer value in map) "$key = $value" ) );</programlisting>
             
             <programlisting>return for all (LineItem li in lineItems) li.quantity>0;</programlisting>
             
+            <!--
             <programlisting>Person gavin = for (Person p in people) 
         if (p.name.lower=="gavin") found gavin
     fail null;</programlisting>
+            -->
             
         </section>
  
@@ -442,7 +452,7 @@ CaseExpression
             
             <programlisting>TryCatchFinallyExpression := 
 "try" Expression
-("catch" OPENPAREN Variable CLOSEPAREN CaseExpression)+</programlisting>
+("catch" OPENPAREN Variable CLOSEPAREN Expression)+</programlisting>
 
             <para>If the try block executes without exception, the construct evaluates to the 
             value of the try block. If an exception is handled by a catch block, the construct
@@ -458,8 +468,6 @@ CaseExpression
         </section>
 
     </section>
-    
-    -->
     
     <section>
         <title>Assignable expressions</title>
