@@ -975,6 +975,9 @@ selector ComparisonOperation {
 FormalParameters 
 TypeConstraintList? 
 SEMICOLON</programlisting>
+
+        <para>TODO: let's wait and see what Java 7 does with closures. It will be easier for
+        developers to learn something that is aligned with what Java does.</para>
         
         <para>For example:</para>
         
