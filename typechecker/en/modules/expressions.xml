@@ -391,8 +391,8 @@ Expression?</programlisting>
             <programlisting>Order := Expression ("asc"|"desc")</programlisting>
 
             <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
-            <literal>all</literal> modifier appears, and upon whether a <literal>fail</literal>
-            expression appears.</para>
+            <literal>all</literal> modifier appears<!--, and upon whether a <literal>fail</literal>
+            expression appears-->.</para>
             
             <!--
             <para>If a <literal>fail</literal> expression appears, the whole expression
