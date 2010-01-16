@@ -227,14 +227,12 @@ Block</programlisting>
         
         <programlisting>public mutable entity:
 class Customer(Name name, optional: Organization org = null) 
-    extends Person(name, org) 
-{ 
+        extends Person(name, org) { 
     ... 
 }</programlisting>
         <programlisting>class Token() 
-    extends Datetime()
-    satisfies Comparable&lt;Token&gt;, Identifier
-{ 
+        extends Datetime()
+        satisfies Comparable&lt;Token&gt;, Identifier {
     ... 
 }</programlisting>
         
@@ -246,17 +244,15 @@ class Customer(Name name, optional: Organization org = null)
         </para>
         
         <programlisting>@entity public class Customer 
-    extends Person 
-{ 
+        extends Person {
     public Customer(Name name) { this(name, null); }
     public Customer(Name name, Organization org) { super(name, org); }
     ... 
 }</programlisting>
         
         <programlisting>class Token 
-    extends Datetime 
-    implements Comparable&lt;Token&gt;, Identifier 
-{ 
+        extends Datetime 
+        implements Comparable&lt;Token&gt;, Identifier {
     public Token() { super(); }
     ... 
 }</programlisting>
@@ -274,20 +270,17 @@ class Customer(Name name, optional: Organization org = null)
         
         <para>This declaration:</para>
         
-        <programlisting>public: class Key(Lock lock) 
-{
+        <programlisting>public: class Key(Lock lock) {
     public: Lock lock = lock;
 }</programlisting>
         
         <para>Is equivalent to this Java class:</para>
 
-        <programlisting>public class Key 
-{
+        <programlisting>public class Key {
     private final ReadAttribute&lt;Lock&gt; lock;
     public ReadAttribute&lt;Lock&gt; lock() { return lock; }
     
-    public Key(Lock lock) 
-    { 
+    public Key(Lock lock) {
         this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
     }
     
@@ -295,15 +288,13 @@ class Customer(Name name, optional: Organization org = null)
 
         <para>This declaration:</para>
         
-        <programlisting>public: class Key(Lock lock) 
-{
+        <programlisting>public: class Key(Lock lock) {
     public: Lock lock { return lock };
 }</programlisting>
         
         <para>Is equivalent to this Java class:</para>
 
-        <programlisting>public class Key 
-{
+        <programlisting>public class Key {
     private Lock _lock;
         
     private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
@@ -311,8 +302,7 @@ class Customer(Name name, optional: Organization org = null)
     }; 
     public ReadAttribute&lt;Lock&gt; lock() { return lock; }
     
-    public Key(Lock lock) 
-    { 
+    public Key(Lock lock) { 
         _lock = lock; 
     }
     
@@ -320,16 +310,14 @@ class Customer(Name name, optional: Organization org = null)
 
         <para>Class initialization parameters are optional. The following class:</para>
         
-        <programlisting>public mutable: class Point 
-{
+        <programlisting>public mutable: class Point {
     public mutable: Exact x;
     public mutable: Exact y;
 }</programlisting>
         
         <para>Is equivalent to this Java class with a default constructor:</para>
         
-        <programlisting>public class Point 
-{
+        <programlisting>public class Point {
     private final Attribute&lt;Exact&gt; x = new SimpleAttribute&lt;Exact&gt;();
     public SimpleAttribute&lt;Exact&gt; x() { return x; }
     
@@ -341,22 +329,19 @@ class Customer(Name name, optional: Organization org = null)
         parameter.</para>
 
         <programlisting>public: class SpecialKey1()
-    extends Key( new SpecialLock() ) 
-{
+        extends Key( new SpecialLock() ) {
     ...
 }</programlisting>
 
         <programlisting>public: class SpecialKey2(Lock lock) 
-    extends Key(lock) 
-{
+        extends Key(lock) {
     ...
 }</programlisting>
 
         <para>Which are equivalent to the Java:</para>
         
         <programlisting>public class SpecialKey1 
-    extends Key 
-{
+        extends Key {
     public SpecialKey1() { 
         super( SpecialLock() );
     }
@@ -364,8 +349,7 @@ class Customer(Name name, optional: Organization org = null)
 }</programlisting>
 
         <programlisting>public class SpecialKey2 
-    extends Key 
-{
+        extends Key {
     public SpecialKey2(Lock lock) { 
         super(lock);
     }
@@ -376,8 +360,8 @@ class Customer(Name name, optional: Organization org = null)
         executed when the class is instantiated.</para>
         
         <programlisting>public mutable: class DiagonalPoint(Exact position) 
-    extends Point()
-{
+        extends Point() {
+        
     Exact displacement = position**2/2;
     Integer sign = if (position.negative) -1 else 1;
     
@@ -391,10 +375,9 @@ class Customer(Name name, optional: Organization org = null)
         <para>The compiler is permitted to optimize private attribute 
         declarations. So the above class is equivalent to:</para>
         
-        <programlisting>public class DiagonalPoint extends Point
-{
-    public DiagonalPoint(Exact position) 
-    {
+        <programlisting>public class DiagonalPoint extends Point {
+        
+    public DiagonalPoint(Exact position) {
         Exact displacement = position.exponentiate(2).divide(2);
         Integer sign = position.negative ? -1 : 1;
         
@@ -402,7 +385,8 @@ class Customer(Name name, optional: Organization org = null)
         y = sqrt(displacement).multiply(sign);
         assert x.exponentiate(2) + y.exponentiate(2) 
              == position.exponentiate(2);
-    } 
+    }
+    
 }</programlisting>
 
         <para>TODO: should class initialization parameters be allowed to be
@@ -450,19 +434,20 @@ Identifier ParameterValues?
         instances.</para>
         
         <programlisting>public: class DayOfWeek 
-    instances mon, tues, wed, thurs, fri, sat, sun {}</programlisting>
+        instances mon, tues, wed, thurs, fri, sat, sun {}</programlisting>
 
         <programlisting>public: class DayOfWeek(String name)
-    instances 
-       mon("Monday"), 
-       tues("Tuesday"),
-       wed("Wednesday"),
-       thurs("Thursday"),
-       fri("Friday"),
-       sat("Saturday"),
-       sun("Sunday")
-{
-    public constant: String name = name;
+        instances 
+            mon("Monday"), 
+            tues("Tuesday"),
+            wed("Wednesday"),
+            thurs("Thursday"),
+            fri("Friday"),
+            sat("Saturday"),
+            sun("Sunday") {
+       
+    public: String name = name;
+    
 }</programlisting>
         
         <para>
@@ -472,8 +457,8 @@ Identifier ParameterValues?
         </para>
         
         <programlisting>public class DayOfWeek 
-    extends Selector&lt;DayOfWeek&gt; 
-{ 
+        extends Selector&lt;DayOfWeek&gt; { 
+        
     public DayOfWeek mon = new DayOfWeek("mon", 0); 
     public DayOfWeek tues = new DayOfWeek("tues", 1);
     public DayOfWeek wed = new DayOfWeek("wed, 2");
@@ -482,16 +467,15 @@ Identifier ParameterValues?
     public DayOfWeek sat = new DayOfWeek("sat", 5);
     public DayOfWeek sun = new DayOfWeek("sun", 6);
     
-    private DayOfWeek(String id, int ord)
-    {
+    private DayOfWeek(String id, int ord) {
         super(id, ord);
     }
     
 }</programlisting>
         
         <programlisting>public class DayOfWeek 
-    extends Selector&lt;DayOfWeek&gt; 
-{
+        extends Selector&lt;DayOfWeek&gt; {
+        
     private final ReadAttribute&lt;String&gt; name;
        
     public DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
@@ -551,8 +535,7 @@ CLOSEBRACE</programlisting>
         <para>An interface may extend any number of other interfaces. For example:</para>
         
         <programlisting>public: interface List&lt;T&gt;
-    satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; 
-{
+        satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
     ...
 }</programlisting>
         
@@ -564,8 +547,7 @@ CLOSEBRACE</programlisting>
         </para>
         
         <programlisting>public interface List&lt;T&gt; 
-    extends Sequence&lt;T&gt;, Collection&lt;T&gt; 
-{
+        extends Sequence&lt;T&gt;, Collection&lt;T&gt; {
     ...
 }</programlisting>
 
@@ -617,7 +599,8 @@ public User(String username, Person person);</programlisting>
         <para>A method is a callable block of code. Methods may have parameters and
         may return a value. Methods are declared according to the following:</para>
         
-        <programlisting>Annotations? 
+        <programlisting>Method :=
+Annotations? 
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints?
 ( SEMICOLON | Block )</programlisting>
@@ -626,26 +609,19 @@ TypeConstraints?
         
         <programlisting>public optional: U get(optional: V key);</programlisting>
         
-        <programlisting>package: 
-void init(Integer initialCount=0) 
-{
+        <programlisting>package: void init(Integer initialCount=0) {
     count=initialCount;
 }</programlisting>
     
-        <programlisting>public: 
-Integer add(Integer x, Integer y) 
-{
+        <programlisting>public: Integer add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
     
-        <programlisting>Identifier createToken() 
-{
+        <programlisting>Identifier createToken() {
     return Token();
 }</programlisting>
 
-        <programlisting>public: 
-void print(Object... objects) 
-{ 
+        <programlisting>public: void print(Object... objects) {
     for (Object object in objects) { ... }
 }</programlisting>
         
@@ -728,8 +704,7 @@ SEMICOLON</programlisting>
         <programlisting>public: String name { return join(firstName, lastName); }
 public: assign name { firstName = first(name); lastName = last(name); }</programlisting>
     
-        <programlisting>public: Float total 
-{
+        <programlisting>public: Float total {
     return find (Float sum = 0.0)
         for (LineItem li in lineItems) 
             sum += li.amount;
@@ -752,8 +727,7 @@ public: assign name { firstName = first(name); lastName = last(name); }</program
             
             <para>An attribute getter is declared as follows:</para>
             
-            <programlisting>Annotations? 
-Type Identifier Block</programlisting>
+            <programlisting>AttributeGetter := Annotations? Type Identifier Block</programlisting>
 
         <para>
         When getter code is specified, the Java field is initialized to an instance 
@@ -773,8 +747,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
             <para>An attribute setter is declared as follows:</para>
             
-            <programlisting>Annotations? 
-"assign" Identifier Block</programlisting>
+            <programlisting>AttributeSetter := Annotations? "assign" Identifier Block</programlisting>
 
         <para>
         When setter code is specified, the Java field is initialized to an instance 
@@ -809,8 +782,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>Annotations? 
-Type Identifier Initializer? SEMICOLON</programlisting>
+        <programlisting>SimpleAttribute := Annotations? Type Identifier Initializer? SEMICOLON</programlisting>
 
         <para>Formal parameters of classes, methods, decorators and converters are also considered
         to be simple attributes.</para>
@@ -990,14 +962,15 @@ SEMICOLON</programlisting>
         </para>
         
         <programlisting>public abstract class Order&lt;T&gt; 
-    extends Functor&lt;Comparison&gt; 
-{
+        extends Functor&lt;Comparison&gt; {
+        
     public abstract Comparison call(T x, T y);
     
     protected Order(Object... locals) 
     { 
         super(locals); 
     }
+    
 }</programlisting>
 
         <section>
@@ -1013,10 +986,8 @@ SEMICOLON</programlisting>
         
         <para>These literals are equivalent to this Java code:</para>
 
-        <programlisting>Order&lt;String&gt; order = new Order&lt;String&gt;() 
-{
-    public Comparison call(String x, String y) 
-    { 
+        <programlisting>Order&lt;String&gt; order = new Order&lt;String&gt;() {
+    public Comparison call(String x, String y) { 
         return Comparison.compare(x,y); 
     }
 };</programlisting>
@@ -1054,10 +1025,9 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         
         <para>For example, this decorator:</para>
         
-        <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) 
-{
-    public: Collection&lt;T&gt; nonZeroElements() 
-    {
+        <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
+    
+    public: Collection&lt;T&gt; nonZeroElements() {
         return collection.exclude(0); 
     }
     
@@ -1067,17 +1037,15 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         <para>is equivalent to this Java declaration:</para>
         
         <programlisting>public final class CollectionUtils&lt;T&gt; 
-    extends Collection
-{
+        extends Collection {
+        
     private final Collection&lt;T&gt; collection
     
-    public CollectionUtils(Collection&lt;T&gt; collection) 
-    { 
+    public CollectionUtils(Collection&lt;T&gt; collection) { 
         this.collection = collection; 
     }
     
-    public Collection&lt;T&gt; nonZeroElements() 
-    { 
+    public Collection&lt;T&gt; nonZeroElements() { 
         return collection.exclude(0); 
     }
     
@@ -1112,29 +1080,28 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         <para>This decorator declaration:</para>
         
         <programlisting>public: decorator ComparableUser(User user) 
-    satisfies Comparable&lt;User&gt; 
-{
+        satisfies Comparable&lt;User&gt; {
+        
     public: Comparison compare(User other) 
     {
         return user.username &lt;=&gt; other.username;
     }
+    
 }</programlisting>
         
         <para>is equivalent to this Java declaration:</para>
         
         <programlisting>public final class ComparableUser 
-    extends User
-    implements Comparable&lt;User&gt; 
-{
+        extends User
+        implements Comparable&lt;User&gt; {
+        
     private final User user;
     
-    public ComparableUser(User user) 
-    { 
+    public ComparableUser(User user) { 
         this.user = user; 
     }
     
-    public Comparison compareTo(User other) 
-    { 
+    public Comparison compareTo(User other) { 
         return Comparison.compare(other.username, user.username);
     }
 }</programlisting>
@@ -1168,8 +1135,7 @@ Block</programlisting>
         above is equivalent to the following Java class:</para>
         
         <programlisting>public final class PersonUser 
-    extends Converter&lt;Person, User&gt; 
-{
+        extends Converter&lt;Person, User&gt; {
     @Override User convert(Person person) 
     {
         return person.user; 

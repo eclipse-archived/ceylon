@@ -1,6 +1,27 @@
 <chapter id="expressions">
     <title>Expressions</title>
     
+    <para>Ceylon expressions are significantly more powerful than Java, allowing a more
+    declarative style of programming.</para>
+    
+    <para>Expressions are formed from:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>literal values,</para>
+        </listitem>
+        <listitem>
+            <para>invocations of methods, attributes and functors, and instantiations
+            of classes,</para>
+        </listitem>
+        <listitem>
+            <para>operators and control expressions, and</para>
+        </listitem>
+        <listitem>
+            <para>functor expressions.</para>
+        </listitem>
+    </itemizedlist>
+    
     <section id="literals">
     <title>Literals</title>
     
@@ -536,7 +557,8 @@ CLOSEBRACE</programlisting>
         <title>Control expressions</title>
         
         <para>Control expressions allow a more declarative style of programming, that minimizes
-        the use of locals.</para>
+        the use of locals. A control expression is really just a kind of operator, with a complex
+        syntax.</para>
         
         <para>TODO: given that we have functors, do we really need these??</para>
         
@@ -555,17 +577,15 @@ CLOSEBRACE</programlisting>
             evaluates to the value of the local after executing the block. All execution paths must 
             result in an initialized local or a thrown exception.</para>
 
-            <programlisting>public: String welcome 
-{
-    return find (String greeting) 
+            <programlisting>log.info {
+    message = find (String greeting) 
         if (user exists) 
             greeting = "Hi ${user.name}!" 
         else 
             greeting = "Hello World!";
 }</programlisting>
             
-            <programlisting>return find (optional: Person p) 
-{
+            <programlisting>return find (optional mutable: Person p) {
     using (Session s = sf.openSession())
         try
             p = s.get(#Person, pid)
@@ -581,14 +601,13 @@ CLOSEBRACE</programlisting>
     fail 
         throw NotFoundException();</programlisting>
 
-            <programlisting>return find (Boolean allowed=false)
+            <programlisting>return find (mutable: Boolean allowed=false)
     for (Permission p in user.permissions)
         if (p.action == action &amp;&amp; p.object == object) 
             found allowed=true;</programlisting>
             
-            <programlisting>log.info 
-{
-    message = find (Float sum=0.0) 
+            <programlisting>log.info {
+    message = find (mutable: Float sum=0.0) 
         for (Order o in orders)
             sum += o.total;
 }</programlisting>
@@ -598,7 +617,8 @@ CLOSEBRACE</programlisting>
         if (p.age>=18) adults.add(p);</programlisting>
 
             <programlisting>return find (OpenMap&lt;String, Integer&gt; ages=none) 
-    for (Person p in people) ages.add( p.name->p.age );</programlisting>
+    for (Person p in people) 
+        ages.add( p.name->p.age );</programlisting>
 
         </section>
 
@@ -607,9 +627,11 @@ CLOSEBRACE</programlisting>
             
             <para>The <literal>if/else</literal> expression has the following form:</para>
             
-            <programlisting>IfElseExpression := 
+            <programlisting>IfElseExpression := "if" OPENPAREN Condition CLOSEPAREN Expression ("else" Expression)?</programlisting>
+
+            <!--programlisting>IfElseExpression := 
 "if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN Expression 
-("else" Expression)?</programlisting>
+("else" Expression)?</programlisting-->
 
             <para>If all conditions are satisfied, the whole expression evaluates
             to the value of the first expression. Otherwise, the whole expression
@@ -622,18 +644,32 @@ CLOSEBRACE</programlisting>
 
             <para>For example:</para>
             
-            <programlisting>public: String welcome 
-{
-    return if (user exists)
+            <programlisting>log.info {
+    message = 
+        if (user exists)
             "Hi ${user.name}!" 
         else 
             "Hello World!";
 }</programlisting>
 
-            <programlisting>Boolean paid = if (Payment payment = order.payment exists) payment.paid else false;</programlisting>
+            <programlisting>public: Boolean paid {
+    return if (Payment payment = order.payment exists) 
+            payment.paid 
+        else 
+            false;
+}</programlisting>
             
-            <programlisting>optional: String name = if (person exists, person.active) "$(person.firstName) $(person.lastName)";</programlisting>
+            <programlisting>optional: String name = 
+    if (person exists) 
+        if (person.active) 
+            "$(person.firstName) $(person.lastName)";</programlisting>
+            
+            <para>TODO: should we allow multiple conditions to be combined into a single if:</para>
 
+            <programlisting>optional: String name = 
+    if (person exists, person.active) 
+        "$(person.firstName) $(person.lastName)";</programlisting>
+            
         </section>
         
         <section>
@@ -644,7 +680,7 @@ CLOSEBRACE</programlisting>
             <programlisting>SwitchCaseElseExpression := 
 "switch" OPENPAREN Expression CLOSEPAREN
 ( "case" "null" Expression )?
-( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression )* 
+( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression )+ 
 ( "else" Expression )?</programlisting>
 
             <para>The whole expression evaluates to the value of the first case expression 
@@ -665,13 +701,7 @@ CLOSEBRACE</programlisting>
         case (check) checkPaymentProcessor
         else interactivePaymentProcessor;</programlisting>
 
-            <programlisting>log.info 
-{ 
-    message = switch (num) 
-        case (0) "Zero" 
-        case (1) "Unity" 
-        else $num;
-}</programlisting>
+            <programlisting>log.info( switch (num) case (0) "Zero" case (1) "Unity" else $num );</programlisting>
             
         </section>
         
@@ -680,13 +710,17 @@ CLOSEBRACE</programlisting>
             
             <para>The <literal>for</literal> expression has one of the following forms:</para>
              
-            <programlisting>ForComprehension := 
+            <programlisting>ForComprehension := "for" OPENPAREN Iteration CLOSEPAREN Expression</programlisting>
+
+            <!--programlisting>ForComprehension := 
 "for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
 ( "by" OPENPAREN Order (SEMICOLON Order) CLOSEPAREN )?
-Expression?</programlisting>
+Expression?</programlisting-->
 
-            <programlisting>ForQuantification := 
-"for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression</programlisting>
+            <programlisting>ForQuantification := "for" ("any"|"all") OPENPAREN Iteration CLOSEPAREN Expression</programlisting>
+
+            <!--programlisting>ForQuantification := 
+"for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression</programlisting-->
 
            <!--  
             <programlisting>ForFailExpression := 
@@ -694,12 +728,12 @@ Expression?</programlisting>
 "fail" Expression</programlisting>
             -->
 
-            <programlisting>Order := Expression ("asc"|"desc")</programlisting>
+            <!--programlisting>Order := Expression ("asc"|"desc")</programlisting-->
 
             <para>The first form is a Python-style comprehension. The second form is called a
             quantification.</para>
             
-             <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
+            <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
             <literal>all</literal> modifier appears<!--, and upon whether a <literal>fail</literal>
             expression appears-->.</para>
             
@@ -712,30 +746,35 @@ Expression?</programlisting>
             -->
             
             <itemizedlist>
-            <listitem>
-            <para>If <literal>any</literal> or <literal>all</literal> is specified,
-            the element expression must be of type <literal>Boolean</literal>, and the 
-            whole expression evaluates to a <literal>Boolean</literal> value.</para>
-            </listitem>
-            <listitem>
-            <para>If neither modifier appears, <!--and if no <literal>fail</literal> expression appears,-->
-            the whole expression evaluates to an enumeration of element expression values, one element 
-            for each iteration of the loop (that satisfies the all iteration conditions). If no expression
-            appears, the result is an enumeration of elements of the first iteration. If <literal>by</literal>
-            appears, the results are ordered according to the order expression values. Each
-            comparison expression must be of type <literal>Comparable</literal>.</para> 
-            </listitem>
+                <listitem>
+                    <para>If <literal>any</literal> or <literal>all</literal> is specified, the 
+                    element expression must be of type <literal>Boolean</literal>, and the whole 
+                    expression evaluates to a <literal>Boolean</literal> value.</para>
+                </listitem>
+                <listitem>
+                    <para>If neither modifier appears, <!--and if no <literal>fail</literal> expression appears,-->
+                    the whole expression evaluates to an enumeration of element expression values, 
+                    one element for each iteration of the loop that evaluates to a non-null value,
+                    unless the element expression is of type <literal>Iterable</literal>, in which
+                    case each iteration results in multiple elements. 
+                    <!-- (that satisfies the all iteration conditions)-->
+                    <!--If no expression appears, the result is an enumeration of elements of the 
+                    first iteration.--> <!--If <literal>by</literal> appears, the results are ordered 
+                    according to the order expression values. Each comparison expression must be 
+                    of type <literal>Comparable</literal>.--></para> 
+                </listitem>
             </itemizedlist>
             
             <para>For example:</para>
 
-            <programlisting>List&lt;String&gt; adults = for (Person p in people: p.age>18);</programlisting>
+            <programlisting>List&lt;Person&gt; adults = for (Person p in people) if (p.age>18) p;</programlisting>
             
-            <programlisting>List&lt;String&gt; adultNames = for (Person p in people: p.age>18) p.name;</programlisting>
+            <programlisting>List&lt;String&gt; adultNames = for (Person p in people) if (p.age>18) p.name;</programlisting>
 
-            <programlisting>public: List&lt;Person&gt; employees(Country country) 
-{
-    return for (Organization o in orgs: o.country==country; Person p in o.employees) by (p.name) p;
+            <programlisting>public: List&lt;Person&gt; employees(Country country) {
+    return for (Organization o in orgs) 
+        if (o.country==country) 
+            for (Person p in o.employees) p;
 }</programlisting>
 
             <programlisting>log.info( ", ".join( for (String key -> Integer value in map) "$key = $value" ) );</programlisting>
@@ -748,6 +787,19 @@ Expression?</programlisting>
     fail null;</programlisting>
             -->
             
+            <para>TODO: should we allow multiple iterations, and conditions, and orders to be combined 
+            into a single for:</para>
+            
+            <programlisting>List&lt;Person&gt; adults = for (Person p in people: p.age>18);</programlisting>
+            
+            <programlisting>List&lt;String&gt; adultNames = for (Person p in people: p.age>18) p.name;</programlisting>
+
+            <programlisting>public: List&lt;Person&gt; employees(Country country) {
+    return for (Organization o in orgs: o.country==country; 
+                Person p in o.employees) 
+        by (p.name) p;
+}</programlisting>
+
         </section>
  
         <section>
@@ -755,15 +807,26 @@ Expression?</programlisting>
             
             <para>The <literal>using</literal> expression has the form:</para>
             
-            <programlisting>UsingExpression := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN Expression</programlisting>
+            <programlisting>UsingExpression := "using" OPENPAREN Resource CLOSEPAREN Expression</programlisting>
             
+            <!--programlisting>UsingExpression := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN Expression</programlisting-->
+
             <para>The whole expression evaluates to the value of the expression.</para>
             
             <para>For example:</para>
             
             <programlisting>return using (semaphore) map[key];</programlisting>
             
-            <programlisting>Person p = using ( Session s = Session() ) s.get(#Person, id);</programlisting>
+            <programlisting>Person p = 
+    using ( Transaction() ) 
+        using ( Session s = Session() ) 
+            s.get(#Person, id);</programlisting>
+            
+            <para>TODO: should we allow multiple resources in a single using:</para>
+            
+            <programlisting>Person p = 
+    using ( Transaction(), Session s = Session() ) 
+        s.get(#Person, id);</programlisting>
             
         </section>
 
@@ -772,9 +835,7 @@ Expression?</programlisting>
             
             <para>The <literal>try/catch</literal> expression has the form:</para>
             
-            <programlisting>TryCatchFinallyExpression := 
-"try" Expression
-("catch" OPENPAREN Variable CLOSEPAREN Expression)+</programlisting>
+            <programlisting>TryCatchExpression := "try" Expression ("catch" OPENPAREN Variable CLOSEPAREN Expression)+</programlisting>
 
             <para>If the try expression executes without exception, the construct evaluates to the 
             value of the try expression. If an exception is handled by a catch, the construct
@@ -785,7 +846,8 @@ Expression?</programlisting>
             
             <para>For example:</para>
             
-            <programlisting>Person p = try
+            <programlisting>Person p = 
+    try
         s.get(#Person, id) 
     catch (NotFoundException e) 
         null;</programlisting>
@@ -2082,7 +2144,7 @@ Expression?</programlisting>
         
         <programlisting>FunctorExpression :=
 (Type TypeParameters?)? 
-( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN ClosedBlock | 
+( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN OpenBlock | 
 OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <para>For example:</para>
@@ -2091,7 +2153,7 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <programlisting>people.sort( Order&lt;Person&gt;(Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
         
-        <programlisting>lineItems.sort( Order&lt;Float&gt;(lineItemComparator#compare) );</programlisting>
+        <programlisting>lineItems.sort( Order&lt;Float&gt;(LineItemComparator()#compare) );</programlisting>
         
         <programlisting>people.select( Select&lt;Person&gt;(Person p) return p.age>18 )
     .collect( Collect&lt;Person&gt;(Person p) return p.name );</programlisting>
@@ -2109,7 +2171,7 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <programlisting>people.sort( (Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
         
-        <programlisting>lineItems.sort( (lineItemComparator#compare) );</programlisting>
+        <programlisting>lineItems.sort( (LineItemComparator()#compare) );</programlisting>
         
         <programlisting>people.select( (Person p) return p.age>18 )
     .collect( (Person p) return p.name );</programlisting>
@@ -2124,13 +2186,12 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <programlisting>amounts.sort(Float x, Float y) { return x&lt;=&gt;y; }</programlisting>
         
-        <programlisting>people.sort(Person x, Person y) 
-    return y.name&lt;=&gt;x.name;</programlisting>
+        <programlisting>people.sort(Person x, Person y) return y.name&lt;=&gt;x.name;</programlisting>
         
-        <programlisting>lineItems.sort(lineItemComparator#compare);</programlisting>
+        <programlisting>lineItems.sort(LineItemComparator()#compare);</programlisting>
         
-        <programlisting>people.select (Person p) { return p.age>18 }
-    .collect (Person p) { return p.name };</programlisting>
+        <programlisting>people.select (Person p) { return p.age>18; }
+    .collect (Person p) { return p.name; };</programlisting>
         <!--  
         <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
         
@@ -2147,8 +2208,7 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <para>The following code:</para>
         
-        <programlisting>(0..10).each (Integer num) 
-    log.info(num);</programlisting>
+        <programlisting>(0..10).each (Integer num) log.info(num);</programlisting>
         
         <para>Is equivalent to:</para>
         

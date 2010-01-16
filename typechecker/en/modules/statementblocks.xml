@@ -144,19 +144,17 @@ Assert</programlisting>
         However, all control structures have a corresponding <emphasis>control expression</emphasis> 
         which may be used anywhere an expression may be used.</para>
         
-        <para>TODO: do/while/file, for/fail and if/else are significantly enhanced compared to other 
-        Java-like languages. Is this truly a good thing?</para>
-                
         <para>A control structure body consists of an expression, a control directive or a block.</para>
         
         <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
         <programlisting>ClosedBlock := Block | ( Expression | ControlDirective ) SEMICOLON</programlisting>
         
-        <para>Some control expression allow embedded declaration of a local.</para>
+        <para>Some control structures allow embedded declaration of a local. This local is available
+        inside the control structure body.</para>
         
         <programlisting>Variable := Annotations? Type Identifier</programlisting>
         
-        <para>Several control structures expect conditions:</para>
+        <para>Some control structures expect conditions:</para>
         
         <programlisting>Condition := 
 Expression | 
@@ -205,51 +203,46 @@ Expression |
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse := 
-"if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN
-( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting>
+            <programlisting>IfElse := "if" OPENPAREN Condition CLOSEPAREN ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting>
 
-            <para>If all conditions are satisfied, the first block is executed. Otherwise, the 
+            <!--programlisting>IfElse := 
+"if" OPENPAREN Condition (COMMA Condition)* CLOSEPAREN
+( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting-->
+
+            <para>If the condition is satisfied, the first block is executed. Otherwise, the 
             second block is executed, if it is defined.</para>
 
-            <para>Condition expressions may refer to any local variable defined by a previous
-            condition.</para>
+            <!--para>Condition expressions may refer to any local variable defined by a previous
+            condition.</para-->
             
             <para>For example:</para>
             
-            <programlisting>if ( payment.amount &lt;= account.balance ) 
-{
+            <programlisting>if ( payment.amount &lt;= account.balance ) {
     account.balance -= payment.amount;
     payment.paid = true;
 }
-else
-{
+else {
     throw NotEnoughMoneyException();
 }</programlisting>
 
-            <programlisting>public: void welcome(optional: User user) 
-{
+            <programlisting>public: void welcome(optional: User user) {
     if (user exists)
         log.info("Hi ${user.name}!") 
     else 
         log.info("Hello World!");
 }</programlisting>
             
-            <programlisting>public: Payment payment(Order order) 
-{
-    if (Payment p = order.payment exists)
-    {
+            <programlisting>public: Payment payment(Order order) {
+    if (Payment p = order.payment exists) {
         return p;
     }
-    else
-    { 
+    else { 
         return Payment(order);
     }
 }</programlisting>
 
-            <programlisting>if (Payment p = order.payment exists, p.paid)
-{
-    log.info("already paid");
+            <programlisting>if (Payment p = order.payment exists) {
+    if (p.paid) log.info("already paid");
 }</programlisting>
             
         </section>
@@ -265,12 +258,12 @@ else
             
             <programlisting>Cases := 
 ( "case" "null" OpenBlock )?
-( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN OpenBlock )* 
+( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN OpenBlock )+
 ( "else" OpenBlock )?</programlisting>
 
-            <para>The expression may be of any type. The case values must be expressions of 
-            type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> is the switch 
-            expression type.</para>
+            <para>The switch expression may be of any type. The case values must be 
+            expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
+            is the switch expression type.</para>
 
             <para>If a <literal>case null</literal> is defined, the expression type must be 
             <literal>optional</literal>.</para>
@@ -294,8 +287,7 @@ else
             
             <para>For example:</para>
 
-            <programlisting>public: PaymentProcessor processor
-{
+            <programlisting>public: PaymentProcessor processor {
     switch (payment.type) 
         case null throw NoPaymentTypeException()
         case (credit, debit) return cardPaymentProcessor 
@@ -303,20 +295,16 @@ else
         else return interactivePaymentProcessor;
 }</programlisting>
             
-            <programlisting>switch (payment.type) 
-{
-    case (credit, debit) 
-    { 
+            <programlisting>switch (payment.type) {
+    case (credit, debit) { 
         log.debug("card payment");
         cardPaymentProcessor.process(payment, user.card);
     } 
-    case (check) 
-    {
+    case (check) {
         log.debug("check payment");
         checkPaymentProcessor.process(payment);
     }
-    else 
-    {
+    else {
         log.debug("other payment type");
     }
 }</programlisting>
@@ -329,26 +317,33 @@ else
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
             <programlisting>ForFail :=
-"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+"for" OPENPAREN Iteration CLOSEPAREN 
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting>
 
-            <para>An iteration variable declaration must specify an iterated expression 
-            that contains the range of values to be iterated. It may optionally specify 
-            one or more iteration constraint expressions (conditions).</para>
+            <!--programlisting>ForFail :=
+"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+( ClosedBlock | OpenBlock "fail" ClosedBlock )
+</programlisting-->
 
-            <programlisting>Iteration := Variable ("->" Variable)? "in" Expression (COLON Condition (COMMA Condition))? </programlisting>
+            <para>An iteration variable declaration must specify an iterated expression 
+            that contains the range of values to be iterated. <!--It may optionally specify 
+            one or more iteration constraint expressions (conditions).--></para>
+
+            <programlisting>Iteration := Variable ("->" Variable)? "in" Expression</programlisting>
+
+            <!--programlisting>Iteration := Variable ("->" Variable)? "in" Expression (COLON Condition (COMMA Condition)*)? </programlisting-->
 
             <para>Each iterated expression must be of type <literal>Iterable</literal>
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
             must be of type <literal>Iterable&lt;Entry&gt;</literal> or 
             <literal>Iterator&lt;Entry&gt;</literal>.</para>
             
-            <para>Iterated and constraint expressions may refer to any local variable 
-            defined by a previous iteration.</para>
+            <!--para>Iterated and constraint expressions may refer to any local variable 
+            defined by a previous iteration.</para-->
             
-            <para>The body of the loop is executed once for each combination of iterated 
-            elements for which all constraint expressions are satisfied.</para>
+            <para>The body of the loop is executed once for each <!--combination of--> 
+            iterated element<!--for which all constraint expressions are satisfied-->.</para>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -358,43 +353,32 @@ else
             
             <para>For example:</para>
 
-            <programlisting>for (Person p in people) 
-    log.info(p.name);</programlisting>
+            <programlisting>for (Person p in people) log.info(p.name);</programlisting>
 
-            <programlisting>for (String key -> Integer value in map) 
-    log.info("$key = $value");</programlisting>
+            <programlisting>for (String key -> Integer value in map) log.info("$key = $value");</programlisting>
             
-            <programlisting>for (Person p in people) 
-{
+            <programlisting>for (Person p in people) {
     log.debug("found $(p.name)");
-    if (p.age >= 18) 
-    {
+    if (p.age >= 18) {
         log.info("found an adult: $(p.name)");
         found;
     }
 }
-fail
-{
+fail {
     log.info("no adults");
 }
 </programlisting>
 
-            <programlisting>for (Person p in people: p.age>=18, p.active) 
-{
+            <programlisting>for (Person p in people) {
+    if (p.age>=18) {
         log.info("found an adult");
         found;
+    }
 }
-fail
-{
+fail {
     log.info("no adults");
 }
 </programlisting>
-
-            <programlisting>for (Organization o in orgs: o.country==au; Person p in o.employees) 
-{
-    log.info("employee: $(p.name)");
-    ...
-}</programlisting>
 
         </section>
         
@@ -405,13 +389,18 @@ fail
             
             <programlisting>DoWhileFail := 
 ( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
-"while" OPENPAREN Condition (COMMA Condition) CLOSEPAREN 
+"while" OPENPAREN Condition CLOSEPAREN 
 ( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting>
             
-            <para>Both blocks are executed repeatedly, until one of the termination 
-            conditions first evaluates to false, at which point iteration ends. In each 
-            iteration, the first block is executed before the conditions are evaluated, 
-            and the second block is executed after they are all evaluated.</para>
+            <!--programlisting>DoWhileFail := 
+( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
+"while" OPENPAREN Condition (COMMA Condition)* CLOSEPAREN 
+( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
+            
+            <para>Both blocks are executed repeatedly, until the termination 
+            condition first evaluates to false, at which point iteration ends. In each 
+            iteration, the first block is executed before the condition is evaluated, 
+            and the second block is executed after it is evaluated.</para>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -430,35 +419,33 @@ while (iter.more)
     log.info( iter.next().name );</programlisting>
             
             <programlisting>do (Iterator&lt;Person&gt; iter = people.iterator)
-while (iter.more) 
-{ 
+while (iter.more) {
     Person p = iter.next();
     log.debug(p.name);
     p.greet();
 }</programlisting>
             
-            <programlisting>while (Person parent = person.parent exists) 
-{ 
+            <programlisting>while (Person parent = person.parent exists) {
     log.info(parent.name);
     person = parent;
 }</programlisting>
             
-            <programlisting>do 
-{ 
+            <programlisting>do {
     log.info(person.name);
     person = person.parent;
 } 
 while (!person.dead);</programlisting>
             
-            <programlisting>do ( Person person = ... ) 
-{ 
+            <programlisting>do ( Person person = ... ) {
     log.info(person.name);
 } 
-while (!person.parent.dead) 
-{
+while (!person.parent.dead) {
     person = person.parent;    
 }</programlisting>
     
+        <para>TODO: do/while/fail is significantly enhanced compared to other Java-like languages. 
+        Is this truly a good thing?</para>
+                
         </section>
         
         <section>
@@ -467,6 +454,8 @@ while (!person.parent.dead)
             <para>The <literal>using</literal> resource manager has the form:</para>
             
             <programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting>
+
+            <!--programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting-->
             
             <programlisting>Resource := Variable Initializer | Expression</programlisting>
             
@@ -477,11 +466,9 @@ while (!person.parent.dead)
             
             <para>For example:</para>
             
-            <programlisting>
-using ( Transaction(), Session s = Session() ) 
-{
-     Person p = s.get(#Person, id);
-     ...
+            <programlisting>using ( Transaction() ) using ( Session s = Session() ) {
+    Person p = s.get(#Person, id);
+    ...
 }</programlisting>
 
             <programlisting>using (semaphore) map[key] = value;</programlisting>
@@ -508,32 +495,26 @@ using ( Transaction(), Session s = Session() )
             
             <para>For example:</para>
             
-            <programlisting>try ( File file = File(name) )
-{
+            <programlisting>try ( File file = File(name) ) {
     file.open(readOnly);
     ...
 }
-catch (FileNotFoundException fnfe) 
-{
+catch (FileNotFoundException fnfe) {
     log.info("file not found: $name");
 }
-catch (FileReadException fre) 
-{
+catch (FileReadException fre) {
     log.info("could not read from file: $name");
 }
-finally 
-{
+finally {
     if (file.open) file.close();
 }</programlisting>
 
-            <programlisting>try using ( Transaction(), Session s = Session() )
-{
+            <programlisting>try using ( Transaction() ) using ( Session s = Session() ) {
     Person p = s.get(#Person, id)
     ...
     return p;
 } 
-catch (NotFoundException e)
-{ 
+catch (NotFoundException e) { 
     return null;
 }</programlisting>
             
