@@ -586,12 +586,11 @@ CLOSEBRACE</programlisting>
 }</programlisting>
             
             <programlisting>return find (optional mutable: Person p) {
-    using (Session s = sf.openSession())
-        try
-            p = s.get(#Person, pid)
-        catch (NotFoundException nfe)
-            p = null;
-     if (p exists, p.deleted) p = null;
+    try ( Session s = sf.openSession() )
+        p = s.get(#Person, pid)
+    catch (NotFoundException nfe)
+        p = null;
+    if (p exists, p.deleted) p = null;
 };</programlisting>
             
             <programlisting>Person gavin = find (Person gavin)
@@ -801,7 +800,8 @@ Expression?</programlisting-->
 }</programlisting>
 
         </section>
- 
+        
+        <!--
         <section>
             <title><literal>using</literal></title>
             
@@ -809,26 +809,14 @@ Expression?</programlisting-->
             
             <programlisting>UsingExpression := "using" OPENPAREN Resource CLOSEPAREN Expression</programlisting>
             
-            <!--programlisting>UsingExpression := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN Expression</programlisting-->
+            <programlisting>UsingExpression := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN Expression</programlisting>
 
             <para>The whole expression evaluates to the value of the expression.</para>
             
             <para>For example:</para>
             
-            <programlisting>return using (semaphore) map[key];</programlisting>
-            
-            <programlisting>Person p = 
-    using ( Transaction() ) 
-        using ( Session s = Session() ) 
-            s.get(#Person, id);</programlisting>
-            
-            <para>TODO: should we allow multiple resources in a single using:</para>
-            
-            <programlisting>Person p = 
-    using ( Transaction(), Session s = Session() ) 
-        s.get(#Person, id);</programlisting>
-            
         </section>
+        -->
 
         <section>
             <title><literal>try/catch</literal></title>
@@ -851,6 +839,19 @@ Expression?</programlisting-->
         s.get(#Person, id) 
     catch (NotFoundException e) 
         null;</programlisting>
+            
+            <programlisting>return try (semaphore) map[key];</programlisting>
+            
+            <programlisting>Person p = 
+    try ( Transaction() ) 
+        try ( Session s = Session() ) 
+            s.get(#Person, id);</programlisting>
+            
+            <para>TODO: should we allow multiple resources in a single try:</para>
+            
+            <programlisting>Person p = 
+    try ( Transaction(), Session s = Session() ) 
+        s.get(#Person, id);</programlisting>
             
         </section>
 

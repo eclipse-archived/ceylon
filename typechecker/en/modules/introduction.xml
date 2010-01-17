@@ -86,9 +86,7 @@
     
     <para>
     Ceylon features an exceptions model inspired by Java and C#, but checked 
-    exceptions are not supported. In addition, Ceylon provides the 
-    <literal>using</literal> construct which simplifies management of
-    heavyweight resources.
+    exceptions are not supported.
     </para>
     
     <para>

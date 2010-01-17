@@ -122,15 +122,11 @@ Declaration</programlisting>
             </listitem>
             <listitem>
                 <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
-                collection,</para>
-            </listitem>
-            <listitem>
-                <para>the <literal>using</literal> resource manager&mdash;for controlling the lifecycle 
-                of heavyweight objects, and</para>
+                collection, and</para>
             </listitem>
             <listitem>
                 <para>the <literal>try/catch/finally</literal> exception manager&mdash;for managing 
-                exceptions</para>
+                exceptions and controlling the lifecycle of objects which require explicit destruction.</para>
             </listitem>
         </itemizedlist>
                 
@@ -448,35 +444,28 @@ while (!person.parent.dead) {
                 
         </section>
         
+        <!--
         <section>
             <title><literal>using</literal></title>
             
             <para>The <literal>using</literal> resource manager has the form:</para>
             
             <programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting>
+            
+            <para>TODO: do we really need a special syntax for using? Using functors, a 
+            using could look like this:</para>
+        
+            <programlisting>Transaction().perform() {
+    Session s = Session();
+    s.perform() { 
+        Person p = s.get(#Person, id)
+        ...
+        return p;
+    }
+};</programlisting>
 
-            <!--programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting-->
-            
-            <programlisting>Resource := Variable Initializer | Expression</programlisting>
-            
-            <para>The resource expressions must be of type <literal>Usable</literal>. When the 
-            construct is executed, <literal>begin()</literal> is called upon each resource, the 
-            block is executed, and then <literal>end()</literal> is called upon each resource, 
-            with the thrown exception, if any.</para>
-            
-            <para>For example:</para>
-            
-            <programlisting>using ( Transaction() ) using ( Session s = Session() ) {
-    Person p = s.get(#Person, id);
-    ...
-}</programlisting>
-
-            <programlisting>using (semaphore) map[key] = value;</programlisting>
-
-            <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
-            keyword.)</para>
-            
         </section>
+        -->
 
         <section>
             <title><literal>try/catch/finally</literal></title>
@@ -484,7 +473,7 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-"try" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock
+"try" (OPENPAREN Resource CLOSEPAREN)? OpenBlock
 ("catch" OPENPAREN Variable CLOSEPAREN OpenBlock)*
 ("catch" OPENPAREN Variable CLOSEPAREN | "finally" ) ClosedBlock</programlisting>
 
@@ -492,6 +481,13 @@ while (!person.parent.dead) {
             catch block is executed, if any. The finally block is always executed.
             The types of each catch block local must extend 
             <literal>lang.Exception</literal>.</para>
+            
+            <programlisting>Resource := Variable Initializer | Expression</programlisting>
+            
+            <para>The resource expression must be of type <literal>Usable</literal>. When the 
+            construct is executed, <literal>begin()</literal> is called upon each resource, the 
+            block is executed, and then <literal>end()</literal> is called upon each resource, 
+            with the thrown exception, if any.</para>
             
             <para>For example:</para>
             
@@ -508,8 +504,18 @@ catch (FileReadException fre) {
 finally {
     if (file.open) file.close();
 }</programlisting>
+            
+            <programlisting>try ( Transaction() ) try ( Session s = Session() ) {
+    Person p = s.get(#Person, id);
+    ...
+}</programlisting>
 
-            <programlisting>try using ( Transaction() ) using ( Session s = Session() ) {
+            <programlisting>try (semaphore) map[key] = value;</programlisting>
+
+            <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
+            keyword.)</para>
+            
+            <programlisting>try ( Transaction() ) try ( Session s = Session() ) {
     Person p = s.get(#Person, id)
     ...
     return p;
@@ -536,13 +542,18 @@ catch (NotFoundException e) {
         
         <para>The following assertion:</para>
         
-        <programlisting>assert (expression) message;</programlisting>
+        <programlisting>assert (input nonempty) "input may not be empty";</programlisting>
         
-        <para>Is equivalent to:</para>
+        <para>Is equivalent to this Java:</para>
         
-        <programlisting>if (ASSERTIONS_ENABLED &amp;&amp; !expression) 
+        <programlisting>if (ASSERTIONS_ENABLED &amp;&amp; ( input!=null &amp;&amp; !input.empty().get() ) ) 
     throw new AssertionFailedException(message);</programlisting>
+    
+        <para>TODO: do we really need a special syntax for assertions? They are barely 
+        used in Java ... Using functors, an assertion could look like this:</para>
         
+        <programlisting>"input may not be empty".assert () return input nonempty;</programlisting>
+
     </section>
     
     </section>

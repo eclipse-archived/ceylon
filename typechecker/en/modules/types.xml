@@ -255,8 +255,7 @@
         <title>Usables</title>
         
         <para>The interface <literal>lang.Usable</literal> represents an
-        object with a lifecycle controlled by the <literal>using</literal>
-        construct.</para>
+        object with a lifecycle controlled by <literal>try</literal>.</para>
         
         <programlisting>public: interface Usable {
 
