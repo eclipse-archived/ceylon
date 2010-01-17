@@ -629,10 +629,11 @@ TypeConstraints?
     for (Object object in objects) { ... }
 }</programlisting>
         
+        <!--A method body may omit the braces if it consists of exactly one statement.-->
+        
         <para>
-        <!--A method body may omit the braces if it consists of exactly one statement.--> If
-        there is no method body at all, the method throws <literal>UnsupportedMethodException</literal> 
-        when invoked.
+        If there is no method body, and the method is not declared <literal>abstract</literal>, 
+        the method throws <literal>UnsupportedMethodException</literal> when invoked.
         </para>
         
         <para>
@@ -661,15 +662,23 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </para>
         
         <section>
-            <title>Interface methods</title>
+            <title>Interface methods and abstract methods</title>
             
-        <para>For an interface, the method declaration may not specify a body:</para>
+        <para>Methods declared by interfaces and methods marked <literal>abstract</literal> may 
+        not specify a body:</para>
         
         <programlisting>MethodStub :=
 Annotations? 
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints? 
 SEMICOLON</programlisting>
+
+        <para>Interface methods and abstract methods must be implemented by every 
+        non-<literal>abstract</literal> class that implements the interface or
+        subclasses the abstract class.</para>
+        
+        <para>Classes which declare methods marked <literal>abstract</literal> must also be
+        declared <literal>abstract</literal>, and may not be instantiated.</para>
         
         </section>
         
@@ -847,14 +856,22 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         </section>
         
         <section>
-            <title>Interface attributes</title>
+            <title>Interface attributes and abstract attributes</title>
             
-        <para>For an interface, an attribute declaration may not specify an initalizer:</para>
+        <para>Attributes declared by interfaces and attributes marked <literal>abstract</literal> 
+        may not specify an initalizer, getter or setter:</para>
         
         <programlisting>AttributeStub := Annotations? Type Identifier SEMICOLON</programlisting>
         
-        <para>Interface attributes may be specified <literal>mutable</literal>, in which case
-        an implementation of the interface must also define the attribute to be mutable.</para>
+        <para>Interface attributes and abstract attributes must be implemented by every 
+        non-<literal>abstract</literal> class that implements the interface or subclasses the 
+        abstract class.</para>
+        
+        <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
+        in which case every subtype must also define the attribute to be mutable.</para>
+        
+        <para>Classes which declare methods marked <literal>abstract</literal> must also be declared 
+        <literal>abstract</literal>, and may not be instantiated.</para>
         
         </section>
                 
