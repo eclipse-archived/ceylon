@@ -1189,12 +1189,13 @@ User user = new PersonUser().convert(person);</programlisting>
             <listitem>
                 <para><literal>public</literal>, <literal>module</literal>,
                 <literal>package</literal> determine the visibility of a 
-                declaration.</para>
+                declaration (by default, the declaration is visible only
+                inside the same compilation unit).</para>
             </listitem>
             <listitem>
                 <para><literal>abstract</literal> specifies that a class
-                cannot be instantiated, or that a method of an abstract
-                class must be implemented by all subclasses.</para>
+                cannot be instantiated, or that a method or attribute of 
+                an abstract class must be implemented by all subclasses.</para>
             </listitem>
             <listitem>
                 <para><literal>static</literal> specifies that a method
