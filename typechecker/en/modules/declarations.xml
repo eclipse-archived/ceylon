@@ -529,24 +529,28 @@ CLOSEBRACE</programlisting>
     Comparison compare(T other);
 }</programlisting>
 
+        <para>TODO: Fan lets interfaces declare methods with implementation. This is
+        less needed in Ceylon because we have decorators. But it seems pretty harmless
+        and useful.</para>
+        
         <section>
             <title>Interface inheritance</title>
             
-        <para>An interface may extend any number of other interfaces. For example:</para>
+            <para>An interface may extend any number of other interfaces. For example:</para>
         
-        <programlisting>public: interface List&lt;T&gt;
+            <programlisting>public: interface List&lt;T&gt;
         satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
     ...
 }</programlisting>
         
-        <para>
-        The types listed after the <literal>satisfies</literal> keyword are the supertypes. All 
-        supertypes of an interface must be interfaces. The semantics of interface inheritance 
-        are exactly the same as Java, and the above declaration is equivalent to the following 
-        Java declaration: 
-        </para>
+            <para>
+            The types listed after the <literal>satisfies</literal> keyword are the supertypes. All 
+            supertypes of an interface must be interfaces. The semantics of interface inheritance 
+            are exactly the same as Java, and the above declaration is equivalent to the following 
+            Java declaration: 
+            </para>
         
-        <programlisting>public interface List&lt;T&gt; 
+            <programlisting>public interface List&lt;T&gt; 
         extends Sequence&lt;T&gt;, Collection&lt;T&gt; {
     ...
 }</programlisting>
