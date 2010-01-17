@@ -61,7 +61,7 @@ Declaration?</programlisting>
     <para>Method and class declarations may declare formal parameters, including
     optional parameters and a varargs parameter.</para>
     
-    <programlisting>FormalParameters: = 
+    <programlisting>FormalParameters := 
 OPENPAREN
 FormalParameter (COMMA FormalParameter)* (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
 OptionalParameter (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 

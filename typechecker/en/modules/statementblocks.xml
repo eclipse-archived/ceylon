@@ -486,7 +486,7 @@ while (!person.parent.dead) {
             
             <para>The type of each catch local must extend <literal>lang.Exception</literal>.</para>
             
-            <programlisting>Catch : = "catch" OPENPAREN Variable CLOSEPAREN</programlisting>
+            <programlisting>Catch := "catch" OPENPAREN Variable CLOSEPAREN</programlisting>
             
             <para>The resource expression must be of type <literal>Usable</literal>.</para>
             
