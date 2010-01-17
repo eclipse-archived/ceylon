@@ -116,7 +116,7 @@
         boolean values, and supports the binary <literal>||, &amp;&amp;, =>,
         |, &amp;, ^</literal> and unary <literal>!</literal> operators.</para>
         
-        <programlisting>public: class Boolean 
+        <programlisting>public final: class Boolean 
         instances true, false {
 
     /**

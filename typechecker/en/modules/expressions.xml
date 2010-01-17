@@ -37,10 +37,10 @@ IntegerLiteral | FloatLiteral |
 CharacterLiteral
 StringLiteral | RegexLiteral |
 EnumerationLiteral |
-"this" | "super"</programlisting>
+"this" | "super" | "null"</programlisting>
 
-    <para>The keywords <literal>this</literal> and <literal>super</literal> are equivalent
-    to the Java forms.</para>
+    <para>The keywords <literal>this</literal>, <literal>super</literal> and 
+    <literal>null</literal> are equivalent to the Java forms.</para>
     
     <!--
     <section>

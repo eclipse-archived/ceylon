@@ -1158,5 +1158,47 @@ User user = new PersonUser().convert(person);</programlisting>
         <literal>import</literal>s the converter.</para>
         
     </section>
+    
+    <section id="declaration modifiers">
+        <title>Declaration modifiers</title>
+        
+        <para>The following annotations are compiler instructions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>public</literal>, <literal>module</literal>,
+                <literal>package</literal> determine the visibility of a 
+                declaration.</para>
+            </listitem>
+            <listitem>
+                <para><literal>static</literal> specifies that a method
+                can be called without an instance of the type that defines
+                the method.</para>
+            </listitem>
+            <listitem>
+                <para><literal>mutable</literal> specifies that an attribute
+                or local may be assigned, or that a class has assignable
+                attributes.</para>
+            </listitem>
+            <listitem>
+                <para><literal>optional</literal> specifies that a value may
+                be null.</para>
+            </listitem>
+            <listitem>
+                <para><literal>final</literal> indicates that a class may not
+                be extended, or that a method may not be overridden.</para>
+            </listitem>
+            <listitem>
+                <para><literal>override</literal> indicates that a method
+                overrides a method defined by a supertype.</para>
+            </listitem>
+            <listitem>
+                <para><literal>once</literal> indicates that a method or 
+                attribute is executed at most once, and the resulting value
+                is cached.</para>
+            </listitem>
+        </itemizedlist>
+        
+    </section>
 
 </chapter>
