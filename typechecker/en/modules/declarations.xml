@@ -1175,6 +1175,11 @@ User user = new PersonUser().convert(person);</programlisting>
                 declaration.</para>
             </listitem>
             <listitem>
+                <para><literal>abstract</literal> specifies that a class
+                cannot be instantiated, or that a method of an abstract
+                class must be implemented by all subclasses.</para>
+            </listitem>
+            <listitem>
                 <para><literal>static</literal> specifies that a method
                 can be called without an instance of the type that defines
                 the method.</para>
