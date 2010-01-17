@@ -132,7 +132,7 @@ Declaration</programlisting>
                 
         <programlisting>ControlStructure := 
 IfElse | SwitchCaseElse | 
-DoWhileFail | ForFail | 
+DoWhile | ForFail | 
 Using | TryCatchFinally |
 Assert</programlisting>
 
@@ -143,7 +143,7 @@ Assert</programlisting>
         <para>A control structure body consists of an expression, a control directive or a block.</para>
         
         <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
-        <programlisting>ClosedBlock := Block | ( Expression | ControlDirective ) SEMICOLON</programlisting>
+        <programlisting>ClosedBlock := Block | (Expression | ControlDirective) SEMICOLON</programlisting>
         
         <para>Some control structures allow embedded declaration of a local. This local is available
         inside the control structure body.</para>
@@ -154,7 +154,7 @@ Assert</programlisting>
         
         <programlisting>Condition := 
 Expression | 
-( Variable Initializer | Expression ) ("exists"|"nonempty")</programlisting>
+(Variable Initializer | Expression) ("exists"|"nonempty")</programlisting>
 
         <para>The semantics of a condition depend upon whether the <literal>exists</literal> or 
         <literal>nonempty</literal> modifier appears:</para>
@@ -199,7 +199,7 @@ Expression |
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse := "if" OPENPAREN Condition CLOSEPAREN ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting>
+            <programlisting>IfElse := "if" OPENPAREN Condition CLOSEPAREN (ClosedBlock | OpenBlock "else" ClosedBlock)</programlisting>
 
             <!--programlisting>IfElse := 
 "if" OPENPAREN Condition (COMMA Condition)* CLOSEPAREN
@@ -213,7 +213,7 @@ Expression |
             
             <para>For example:</para>
             
-            <programlisting>if ( payment.amount &lt;= account.balance ) {
+            <programlisting>if (payment.amount &lt;= account.balance) {
     account.balance -= payment.amount;
     payment.paid = true;
 }
@@ -250,29 +250,31 @@ else {
             
             <programlisting>SwitchCaseElse := 
 "switch" OPENPAREN Expression CLOSEPAREN
-( Cases SEMICOLON | OPENBRACE Cases CLOSEBRACE )</programlisting>
+(Cases SEMICOLON | OPENBRACE Cases CLOSEBRACE)</programlisting>
             
             <programlisting>Cases := 
-( "case" "null" OpenBlock )?
-( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN OpenBlock )+
-( "else" OpenBlock )?</programlisting>
+("case" "null" OpenBlock)?
+("case" OPENPAREN Case CLOSEPAREN OpenBlock)+
+("else" OpenBlock)?</programlisting>
 
             <para>The switch expression may be of any type. The case values must be 
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
             is the switch expression type.</para>
 
-            <para>If a <literal>case null</literal> is defined, the expression type must be 
-            <literal>optional</literal>.</para>
+            <programlisting>Case := Expression (COMMA Expression)*</programlisting>
 
-            <para>If the expression type is <literal>optional</literal>, there must be an 
-            explicit <literal>case null</literal> defined. </para> 
+            <para>If a <literal>case null</literal> is defined, the switch expression type must 
+            be <literal>optional</literal>.</para>
+
+            <para>If the switch expression type is <literal>optional</literal>, there must be 
+            an explicit <literal>case null</literal> defined. </para> 
             
-            <para>If no <literal>else</literal> block is defined, the switch value expression
+            <para>If no <literal>else</literal> block is defined, the switch expression
             must be of type <literal>Selector</literal>, and all enumerated instances of the 
             classs must be explicitly listed.</para>
             
-            <para>If the expression is of type <literal>Selector</literal>, and all values 
-            of the selector are explicitly listed, no <literal>else</literal> block may be 
+            <para>If the switch expression is of type <literal>Selector</literal>, and all 
+            values of the selector are explicitly listed, no <literal>else</literal> block may be 
             specified.</para>
             
             <para>When the construct is executed, the switch expression value is tested 
@@ -312,10 +314,7 @@ else {
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
-            <programlisting>ForFail :=
-"for" OPENPAREN Iteration CLOSEPAREN 
-( ClosedBlock | OpenBlock "fail" ClosedBlock )
-</programlisting>
+            <programlisting>ForFail := "for" OPENPAREN ForIterator CLOSEPAREN (ClosedBlock | OpenBlock "fail" ClosedBlock)</programlisting>
 
             <!--programlisting>ForFail :=
 "for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
@@ -326,7 +325,7 @@ else {
             that contains the range of values to be iterated. <!--It may optionally specify 
             one or more iteration constraint expressions (conditions).--></para>
 
-            <programlisting>Iteration := Variable ("->" Variable)? "in" Expression</programlisting>
+            <programlisting>ForIterator := Variable ("->" Variable)? "in" Expression</programlisting>
 
             <!--programlisting>Iteration := Variable ("->" Variable)? "in" Expression (COLON Condition (COMMA Condition)*)? </programlisting-->
 
@@ -379,14 +378,15 @@ fail {
         </section>
         
         <section>
-            <title><literal>do/while/fail</literal></title>
+            <title><literal>do/while</literal></title>
             
-            <para>The <literal>do/while/fail</literal> loop has the form:</para>
+            <para>The <literal>do/while</literal> loop has the form:</para>
             
-            <programlisting>DoWhileFail := 
-( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
-"while" OPENPAREN Condition CLOSEPAREN 
-( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting>
+            <programlisting>DoWhile := 
+( "do" (OPENPAREN DoIterator CLOSEPAREN)? OpenBlock? )?
+"while" OPENPAREN Condition CLOSEPAREN (SEMICOLON | ClosedBlock)</programlisting>
+
+            <programlisting>DoIterator := Variable Initializer</programlisting>
             
             <!--programlisting>DoWhileFail := 
 ( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
@@ -398,17 +398,22 @@ fail {
             iteration, the first block is executed before the condition is evaluated, 
             and the second block is executed after it is evaluated.</para>
             
-            <para>If the loop exits early via execution of one of the control directives 
+            <para>TODO: does do/while need a fail block? Python has it, but what is 
+            the real usecase?</para>
+            
+            <!--para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
             the fail block is not executed. Otherwise, if the loop completes, or if the
             loop exits early via execution of the control directive <literal>break</literal>, 
-            the fail block is executed, if it is defined.</para>
+            the fail block is executed, if it is defined.</para-->
             
             <para>For example:</para>
             
-            <programlisting>do ( Integer i=0 ) 
+            <programlisting>do (Integer i=0) 
     log.info("count = " + $i) 
 while (i&lt;=10) i++;</programlisting>
+
+            <para>(The previous example is Ceylon's version of a traditional C for loop.)</para>
             
             <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator)
 while (iter.more) 
@@ -432,7 +437,7 @@ while (iter.more) {
 } 
 while (!person.dead);</programlisting>
             
-            <programlisting>do ( Person person = ... ) {
+            <programlisting>do (Person person = ...) {
     log.info(person.name);
 } 
 while (!person.parent.dead) {
@@ -473,21 +478,23 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-"try" (OPENPAREN Resource CLOSEPAREN)? OpenBlock
-("catch" OPENPAREN Variable CLOSEPAREN OpenBlock)*
-("catch" OPENPAREN Variable CLOSEPAREN | "finally" ) ClosedBlock</programlisting>
+"try" (OPENPAREN Resource CLOSEPAREN)?
+( ClosedBlock | OpenBlock (Catch OpenBlock)* (Catch ClosedBlock | "finally" ClosedBlock) )</programlisting>
 
-            <para>When an exception occurs in the try block, the first matching
-            catch block is executed, if any. The finally block is always executed.
-            The types of each catch block local must extend 
-            <literal>lang.Exception</literal>.</para>
+            <para>When an exception occurs in the try block, the first matching catch block is 
+            executed, if any. The finally block is always executed.</para>
+            
+            <para>The type of each catch local must extend <literal>lang.Exception</literal>.</para>
+            
+            <programlisting>Catch : = "catch" OPENPAREN Variable CLOSEPAREN</programlisting>
+            
+            <para>The resource expression must be of type <literal>Usable</literal>.</para>
             
             <programlisting>Resource := Variable Initializer | Expression</programlisting>
             
-            <para>The resource expression must be of type <literal>Usable</literal>. When the 
-            construct is executed, <literal>begin()</literal> is called upon each resource, the 
-            block is executed, and then <literal>end()</literal> is called upon each resource, 
-            with the thrown exception, if any.</para>
+            <para>When the construct is executed, <literal>begin()</literal> is called upon the 
+            resource, the try block is executed, and then <literal>end()</literal> is called upon 
+            the resource, with the thrown exception, if any.</para>
             
             <para>For example:</para>
             

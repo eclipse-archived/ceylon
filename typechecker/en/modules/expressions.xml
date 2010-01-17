@@ -678,9 +678,9 @@ CLOSEBRACE</programlisting>
             
             <programlisting>SwitchCaseElseExpression := 
 "switch" OPENPAREN Expression CLOSEPAREN
-( "case" "null" Expression )?
-( "case" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression )+ 
-( "else" Expression )?</programlisting>
+("case" "null" Expression)?
+("case" OPENPAREN Case CLOSEPAREN Expression)+ 
+("else" Expression)?</programlisting>
 
             <para>The whole expression evaluates to the value of the first case expression 
             for which the case value tests true. If no case expression tests true, the whole 
@@ -709,14 +709,14 @@ CLOSEBRACE</programlisting>
             
             <para>The <literal>for</literal> expression has one of the following forms:</para>
              
-            <programlisting>ForComprehension := "for" OPENPAREN Iteration CLOSEPAREN Expression</programlisting>
+            <programlisting>ForComprehension := "for" OPENPAREN ForIterator CLOSEPAREN Expression</programlisting>
 
             <!--programlisting>ForComprehension := 
 "for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
 ( "by" OPENPAREN Order (SEMICOLON Order) CLOSEPAREN )?
 Expression?</programlisting-->
 
-            <programlisting>ForQuantification := "for" ("any"|"all") OPENPAREN Iteration CLOSEPAREN Expression</programlisting>
+            <programlisting>ForQuantification := "for" ("any"|"all") OPENPAREN ForIterator CLOSEPAREN Expression</programlisting>
 
             <!--programlisting>ForQuantification := 
 "for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression</programlisting-->
@@ -823,7 +823,7 @@ Expression?</programlisting-->
             
             <para>The <literal>try/catch</literal> expression has the form:</para>
             
-            <programlisting>TryCatchExpression := "try" Expression ("catch" OPENPAREN Variable CLOSEPAREN Expression)+</programlisting>
+            <programlisting>TryCatchExpression := "try" Expression ("catch" OPENPAREN Variable CLOSEPAREN Expression)*</programlisting>
 
             <para>If the try expression executes without exception, the construct evaluates to the 
             value of the try expression. If an exception is handled by a catch, the construct
