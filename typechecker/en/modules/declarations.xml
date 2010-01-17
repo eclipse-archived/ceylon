@@ -657,6 +657,9 @@ TypeConstraints?
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
 
+        <para>TODO: should we allow a method or attribute getter/setter to omit the braces
+        if it consists of exactly one statement. (What about converters?)</para>
+
         <para>
         A Ceylon method invocation is equivalent to a Java method invocation.
         </para>
