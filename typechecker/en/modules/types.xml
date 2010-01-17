@@ -24,7 +24,7 @@
         <literal>==</literal> (equals), <literal>!=</literal> (not equals), 
         <literal>===</literal> (identity equals) and <literal>=</literal> (assign).</para>
         
-        <programlisting><![CDATA[public abstract immutable: class Object<X> {
+        <programlisting><![CDATA[public abstract: class Object<X> {
         
     /**
      * The equals operator x == y.
