@@ -326,7 +326,7 @@ if you prefer.";</programlisting>
 
     </section>
 
-    <section>
+    <section id="invocations">
         <title>Invocations</title>
         
         <para>Methods, classes, class instances and functors are <emphasis>invokable</emphasis>.
@@ -553,7 +553,7 @@ CLOSEBRACE</programlisting>
         
     </section>
     
-    <section>
+    <section id="controlexpressions">
         <title>Control expressions</title>
         
         <para>Control expressions allow a more declarative style of programming, that minimizes
@@ -857,7 +857,7 @@ Expression?</programlisting-->
 
     </section>
     
-    <section>
+    <section id="assignableexpressions">
         <title>Assignable expressions</title>
         
         <para>Certain expressions are <emphasis>assignable</emphasis>. An assignable
@@ -981,6 +981,10 @@ Expression?</programlisting-->
         <title>List of operators</title>
     
         <para>The following table defines the semantics of the Ceylon operators:</para>
+        
+        <para>TODO: if there's one thing C syntax got wrong, it's the use of = 
+        for assignment. := is a much, much better choice. Should we fix this, or
+        is consistency with other C-like languages more important?</para>
     
     <table>
     <tgroup cols="7">
@@ -2138,7 +2142,7 @@ Expression?</programlisting-->
     
     </section>
 
-    <section>
+    <section id="functorexpressions">
         <title>Functor expressions</title>
         
         <para>A functor expression has this form:</para>

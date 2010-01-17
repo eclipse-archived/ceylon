@@ -6,19 +6,16 @@
     invoked. The code contains expressions, control directives and assertions and 
     is organized using blocks and control structures.</para>
     
-    <section>
-        <title>Blocks</title>
+    <section id="blocks">
+        <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
         assertions, method, attribute and local declarations, and control structures, 
         surrounded by braces. Some blocks end in a control directive. The expressions, 
         assertions, local initializers and control structures are executed sequentially.</para>
 
-        <section>
-        <title>Blocks and statements</title>
-
-        <para>A statement is an expression, control structure, control statement or a
-        method, attribute or local declaration.</para>
+        <para>A <emphasis>statement</emphasis> is an expression, control structure, 
+        control statement or a method, attribute or local declaration.</para>
 
         <programlisting>Block := 
 OPENBRACE 
@@ -35,11 +32,9 @@ Declaration</programlisting>
         
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
         
-        </section>
-        
     </section>
     
-    <section>
+    <section id="controldirectives">
         <title>Control directives</title>
         
         <para>A control directive is a statement that affects the flow of execution.</para>

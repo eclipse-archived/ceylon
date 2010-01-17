@@ -4,7 +4,7 @@
     <para>All classes, interfaces, selectors, attributes, methods, constructors, 
     locals, functors, decorators and converters must be declared.</para>
     
-    <section>
+    <section id="generaldeclarations">
         <title>General declaration syntax</title>
         
         <para>All declarations follow a general pattern.</para> 
@@ -203,7 +203,7 @@ String join(Iterable&lt;String&gt; strings,
     
     </section>
     
-    <section>
+    <section id="classes">
         <title>Classes</title>
         
         <para>A class is a stateful, instantiable type. Class are declared according to 
@@ -503,7 +503,7 @@ Identifier ParameterValues?
         
     </section>
     
-    <section>
+    <section id="interfaces">
         <title>Interfaces</title>
         
         <para>An interface is a type which does not specify implementation. Interfaces may 
@@ -593,7 +593,7 @@ public User(String username, Person person);</programlisting>
     </section>
     -->
     
-    <section>
+    <section id="methods">
         <title>Methods</title>
         
         <para>A method is a callable block of code. Methods may have parameters and
@@ -671,7 +671,7 @@ SEMICOLON</programlisting>
         
     </section>
     
-    <section>
+    <section id="attributes">
         <title>Attributes</title>
         
         <para>There are three kinds of declarations related to attribute definition:</para>
@@ -936,7 +936,7 @@ selector ComparisonOperation {
     </section>
     -->
     
-    <section>
+    <section id="functors">
         <title>Functors</title>
         
         <para>A functor represents a typed block of code. Functors are declared according to 
@@ -1004,7 +1004,7 @@ SEMICOLON</programlisting>
         
     </section>
     
-    <section>
+    <section id="decorators">
         <title>Decorators</title>
         
         <para>A decorator introduces methods and interfaces to a given type. Decorators are 
@@ -1110,7 +1110,7 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
                 
     </section>
     
-    <section>
+    <section id="converters">
         <title>Converters</title>
         
         <para>A converter allows immutable values of one type to be transparently converted to
