@@ -394,6 +394,54 @@ class Customer(Name name, optional: Organization org = null)
         
         </section>
 
+       <section>
+            <title>Optional parameters</title>
+            
+        <para>
+        When a class with an optional parameter is instantiated, and a value is not assigned to the
+        optional parameter by the caller, the default value specified by the initializer is used.
+        </para>
+        
+        <para>This class:</para>
+        
+        <programlisting>public: class Counter(Integer initialCount=0) { ... }</programlisting>
+        
+        <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
+        
+        <programlisting>public class Counter {
+        
+    public Counter() {
+        Counter(0);
+    }
+    
+    public Counter(Integer initialCount) {
+        ...;
+    }
+    
+    public Counter(CounterParameters namedParameters) {
+        Counter( namedParameters.initialCount );
+    }
+
+    public static class CounterParameters {
+        private Integer initialCount=0;
+        CounterParameters initialCount(Integer initialCount) { 
+            this.initialCount = initialCount;
+            return this;
+        }
+    }
+    
+}</programlisting>
+
+        <para>This named parameter call:</para>
+        
+        <programlisting>Counter { initialCount=10; }</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>new Counter ( new CounterParameters().initialCount(10) );</programlisting>
+
+        </section>
+        
         <!--
         <para>Note that additional initialization may be performed in any
         method annotated <literal>AfterCreate</literal>. Invariants may
