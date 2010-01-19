@@ -611,12 +611,6 @@ TypeConstraints?
 
         <para>For example:</para>
         
-        <programlisting>public optional: U get(optional: V key);</programlisting>
-        
-        <programlisting>package: void init(Integer initialCount=0) {
-    count=initialCount;
-}</programlisting>
-    
         <programlisting>public: Integer add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
@@ -625,6 +619,8 @@ TypeConstraints?
     return Token();
 }</programlisting>
 
+        <programlisting>public optional: U get(optional: V key);</programlisting>
+        
         <programlisting>public: void print(Object... objects) {
     for (Object object in objects) { ... }
 }</programlisting>
@@ -636,16 +632,9 @@ TypeConstraints?
         the method throws <literal>UnsupportedMethodException</literal> when invoked.
         </para>
         
+         <!--  
         <para>
-        The semantics of method declarations are identical to Java, except that Ceylon methods
-        may declare optional parameters. Methods with optional parameters may not be overloaded.
-        When a method with an optional parameter is called, and a value is not assigned to the
-        optional parameter by the caller, the default value specified by the initializer is used.
-        </para>
-        
-        <!--  
-        <para>
-        The semantics of method declarations are identical to Java, except that Ceylon methods
+        Ceylon methods
         may declare multiple types for any formal parameter and multiple return types. This
         indicates that the value passed or returned must implement or extend all the declared
         types.
@@ -661,8 +650,70 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         if it consists of exactly one statement. (What about converters?)</para>
 
         <para>
-        A Ceylon method invocation is equivalent to a Java method invocation.
+        A Ceylon method invocation is equivalent to a Java method invocation. The semantics of 
+        method declarations are identical to Java, except that Ceylon methods may declare optional 
+        parameters. 
         </para>
+        
+       <section>
+            <title>Optional parameters</title>
+            
+        <para>
+        Methods with optional parameters may not be overloaded.
+        </para>
+        
+        <para>
+        When a method with an optional parameter is called, and a value is not assigned to the
+        optional parameter by the caller, the default value specified by the initializer is used.
+        </para>
+        
+        <para>This method:</para>
+        
+        <programlisting>public: class Counter {
+        
+    package: void init(Integer initialCount=0) {
+        count=initialCount;
+    }
+    
+    ...
+
+}</programlisting>
+        
+        <para>Is equivalent to three Java method declarations and an inner class:</para>
+        
+        <programlisting>public class Counter {
+        
+    void init() {
+        init(0);
+    }
+    
+    void init(Integer initialCount) {
+        count=initialCount;
+    }
+    
+    void init(CounterInitParameters namedParameters) {
+        init( namedParameters.initialCount );
+    }
+
+    static class CounterInitParameters {
+        private Integer initialCount=0;
+        CounterInitParameters initialCount(Integer initialCount) { 
+            this.initialCount = initialCount;
+            return this;
+        }
+    }
+    
+}</programlisting>
+
+        <para>This named parameter call:</para>
+        
+        <programlisting>counter.init { initialCount=10; }</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>counter.init ( new CounterInitParameters().initialCount(10) );</programlisting>
+
+        </section>
         
         <section>
             <title>Interface methods and abstract methods</title>
