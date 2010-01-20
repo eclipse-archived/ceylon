@@ -618,6 +618,36 @@ CLOSEBRACE</programlisting>
             <programlisting>return find (OpenMap&lt;String, Integer&gt; ages=none) 
     for (Person p in people) 
         ages.add( p.name->p.age );</programlisting>
+        
+            <para>TODO: Instead of find, or we could just say that blocks are expression
+            that evaluate to the last statement, for example:</para>
+
+            <programlisting>log.info {
+    message = { 
+        String greeting;
+        if (user exists) 
+            greeting = "Hi ${user.name}!" 
+        else 
+            greeting = "Hello World!";
+        greeting;
+    }
+}</programlisting>
+            
+            <programlisting>log.info {
+    message = {
+        mutable: Float sum=0.0;
+        for (Order o in orders)
+            sum += o.total;
+        sum;
+    }
+}</programlisting>
+
+            <programlisting>return {
+    OpenList&lt;Person&gt; adults=none;
+    for (Person p in people)
+        if (p.age>=18) adults.add(p);
+    adults;
+}</programlisting>
 
         </section>
 
