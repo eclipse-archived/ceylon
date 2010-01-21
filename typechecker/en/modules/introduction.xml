@@ -73,8 +73,7 @@
     </para>
     
     <para>
-    True closures are not supported. However, Ceylon does support
-    <emphasis>functors</emphasis>, which provide many of the same benefits.
+    Ceylon supports closures, called <emphasis>functors</emphasis>.
     </para>
     
     <para>

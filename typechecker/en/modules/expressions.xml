@@ -2178,20 +2178,20 @@ Expression?</programlisting-->
         <para>A functor expression has this form:</para>
         
         <programlisting>FunctorExpression :=
-(Type TypeParameters?)? 
-( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN OpenBlock | 
+FunctorType? 
+( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN FunctorBlock | 
 OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>Order&lt;Float&gt; order = Order&lt;Float&gt;(Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
+        <programlisting>F&lt;Float,Float:Comparison&gt; order = Order&lt;Float&gt;(Float x, Float y) { x&lt;=&gt;y };</programlisting>
         
-        <programlisting>people.sort( Order&lt;Person&gt;(Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
+        <programlisting>people.sort( F&lt;Person,Person:Comparison&gt;(Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
         
-        <programlisting>lineItems.sort( Order&lt;Float&gt;(LineItemComparator()#compare) );</programlisting>
+        <programlisting>lineItems.sort( F&lt;LineItem,LineItem:Comparison&gt;(LineItemComparator()#compare) );</programlisting>
         
-        <programlisting>people.select( Select&lt;Person&gt;(Person p) return p.age>18 )
-    .collect( Collect&lt;Person&gt;(Person p) return p.name );</programlisting>
+        <programlisting>people.select( F&lt;Person:Boolean&gt;(Person p) p.age>18 )
+    .collect( F&lt;Person,String&gt;(Person p) p.name );</programlisting>
         
         <!--  
         <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
@@ -2202,14 +2202,14 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         <para>The functor type may be omitted in assignments, return directives or method 
         parameters, if the type can be inferred.</para>
         
-        <programlisting>Order&lt;Float&gt; order = (Float x, Float y) { return x&lt;=&gt;y; };</programlisting>
+        <programlisting>F&lt;Float,Float:Comparison&gt; order = (Float x, Float y) { x&lt;=&gt;y };</programlisting>
         
-        <programlisting>people.sort( (Person x, Person y) return y.name&lt;=&gt;x.name );</programlisting>
+        <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
         
         <programlisting>lineItems.sort( (LineItemComparator()#compare) );</programlisting>
         
-        <programlisting>people.select( (Person p) return p.age>18 )
-    .collect( (Person p) return p.name );</programlisting>
+        <programlisting>people.select( (Person p) p.age>18 )
+    .collect( (Person p) p.name );</programlisting>
         <!--  
         <programlisting>people.collect( (Person p: p.age>18) return p.name; );</programlisting>
         
@@ -2219,14 +2219,14 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         <para>Furthermore, if a method takes exactly one closure as its argument, the
         parentheses may be eliminated in the method call:</para>
         
-        <programlisting>amounts.sort(Float x, Float y) { return x&lt;=&gt;y; }</programlisting>
+        <programlisting>amounts.sort(Float x, Float y) { x&lt;=&gt;y }</programlisting>
         
-        <programlisting>people.sort(Person x, Person y) return y.name&lt;=&gt;x.name;</programlisting>
+        <programlisting>people.sort(Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
         
         <programlisting>lineItems.sort(LineItemComparator()#compare);</programlisting>
         
-        <programlisting>people.select (Person p) { return p.age>18; }
-    .collect (Person p) { return p.name; };</programlisting>
+        <programlisting>people.select (Person p) { p.age>18 }
+    .collect (Person p) { p.name };</programlisting>
         <!--  
         <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
         
@@ -2241,13 +2241,39 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
     .collect( return it.name );</programlisting>
          -->
         
+        <para>Consider the following functor expression:</para>
+        
+        <programlisting>F&lt;String,String:Comparison&gt; order = (String x, String y) { x &lt;=&gt; y }</programlisting>
+        
+        <para>Or:</para>
+        
+        <programlisting>F&lt;String,String:Comparison&gt; order = (String x, String y) x &lt;=&gt; y;</programlisting>
+        
+        <para>These expressions are both equivalent to this Java code:</para>
+
+        <programlisting>F2&lt;String,String,Comparison&gt; order = 
+    new F2&lt;String,String,Comparison&gt;() {
+        public Comparison call(String x, String y) { 
+            return Comparison.compare(x,y); 
+        }
+    };</programlisting>
+        
+        <para>And this functor invocation:</para>
+        
+        <programlisting>Comparison result = order("Gavin", "Emmanuel");</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+
+        <programlisting>Comparison result = order.call("Gavin", "Emmanuel");</programlisting>
+        
         <para>The following code:</para>
         
         <programlisting>(0..10).each (Integer num) log.info(num);</programlisting>
         
         <para>Is equivalent to:</para>
         
-        <programlisting>new Range&lt;Integer&gt;(0, 10).each( new Do() {
+        <programlisting>new Range&lt;Integer&gt;(0, 10).each( 
+    new F1&lt;Integer,Boolean&gt;() {
         @Override Boolean call(Integer x) { 
             ParentClass.this.log.info(num); 
         } 
@@ -2264,7 +2290,7 @@ List list = list.select(Integer x)
         
         <programlisting>Integer min = 0; 
 Integer max = 10; 
-List list = list.select( new Select(min, max) { 
+List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) { 
         final Integer min = (Integer) locals[0];
         final Integer max = (Integer) locals[1];
         @Override Boolean call(Integer x) { 
@@ -2292,7 +2318,8 @@ Integer size = list.each(Integer x) {
 Integer max = 0;
 Integer count = 0;
 final List list$1 = list;
-final Select functor$1 = new Do(min, max, count) { 
+final F1&lt;Integer,Boolean&gt; functor$1 = 
+    new F1&lt;Integer,Boolean&gt;(min, max, count) { 
         Integer min = (Integer) locals[0];
         Integer max = (Integer) locals[1];
         Integer count = (Integer) locals[2];
@@ -2317,7 +2344,8 @@ Integer size = result$1;</programlisting>
 Integer max = 0;
 Integer count = 0;
 final List list$1 = list;
-final Select functor$1 = new Select(min, max, count) { 
+final F1&lt;Integer,Boolean&gt; functor$1 = 
+    new F1&lt;Integer,Boolean&gt;(min, max, count) { 
         @Override Boolean call(Integer x) { 
             if ( x > locals[0] ) locals[3]++; 
             if ( x > locals[1] ) locals[1] = x; 

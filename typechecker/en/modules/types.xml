@@ -179,32 +179,34 @@
 
         <programlisting><![CDATA[public: decorator Iterables<X> (Iterable<X> iterable) {
 
-    public: void each(Do<X> each) { ... }
-    public: Integer count(Test<X> test) { ... }
-    public: Boolean isAll(Test<X> test) { ... }
-    public: Boolean isAny(Test<X> test) { ... }
+    public: void each(F<X:void> each) { ... }
+    public: Integer count(F<X:Boolean> test) { ... }
+    public: Boolean isAll(F<X:Boolean> test) { ... }
+    public: Boolean isAny(F<X:Boolean> test) { ... }
     
-    public optional: X first(Test<X> test) { ... }
+    public optional: X first(F<X:Boolean> test) { ... }
     
-    public: Y accumulate<Y>(Y initial, Accumulate<Y,X> accumulate) { ... }
+    public: Y accumulate<Y>(Y initial, F<Y,X:Y> accumulate) { ... }
     
-    public: Collection<X> select(Test<X> test) { ... }
-    public: Collection<X> reject(Test<X> test) { ... }
+    public: Collection<X> select(F<X:Boolean> test) { ... }
+    public: Collection<X> reject(F<X:Boolean> test) { ... }
     
-    public: Bag<Y> transform<Y>(Transform<X, Y> transform) { ... }
-    public: List<Y> transform<Y>(Transform<X, Y> transform, Compare<X,Y> compare) { ... }
-    public: Set<Y> collect<Y>(Transform<X, Y> transform) { ... }
-    public: Map<X, Y> map<Y>(Transform<X, Y> transform) { ... }
-    public: List<X> list(Compare<X,Y> compare) { ... }
+    public: Bag<Y> transform<Y>(F<X:Y> transform) { ... }
+    public: List<Y> transform<Y>(F<X:Y> transform, F<Y,Y:Comparison> compare) { ... }
+    public: Set<Y> collect<Y>(F<X:Y> transform) { ... }
+    public: Map<X, Y> map<Y>(F<X:Y> transform) { ... }
+    public: List<X> list(F<X,X:Comparison> compare) { ... }
     
 }]]></programlisting>
 
+    <!--
         <programlisting>public: void functor Do&lt;X&gt;(X element);</programlisting>
         <programlisting>public: Boolean functor Test&lt;X&gt;(X element);</programlisting>
         <programlisting>public: Y functor Transform&lt;X,Y&gt;(X element);</programlisting>
         <programlisting>public: Y functor Accumulate&lt;X,Y&gt;(Y current, X element);</programlisting>
         <programlisting>public: Comparison functor Compare&lt;X&gt;(X x, Y y);</programlisting>
-        
+    -->
+    
         <para>Some iterable objects may support element removal during iteration.</para>
         
         <programlisting>public mutable: interface OpenIterable&lt;X&gt; 
@@ -223,8 +225,8 @@
 
         <programlisting><![CDATA[public: decorator OpenIterables (OpenIterable iterable) {
 
-    public: Integer remove(Test<X> test) { ... }
-    public: Integer retain(Test<X> test) { ... }
+    public: Integer remove(F<X:Boolean> test) { ... }
+    public: Integer retain(F<X:Boolean> test) { ... }
     
 }]]></programlisting>
 
@@ -502,9 +504,6 @@
     
     public: OpenSet<X> copy();
 
-    //public: Set<X> select(Test<X> test);
-    //public: Set<X> reject(Test<X> test);
-    
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
@@ -560,9 +559,6 @@
     
     public: OpenList<X> copy();
 
-    //public: List<X> select(Test<X> test);
-    //public: List<X> reject(Test<X> test);
-    
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
@@ -582,7 +578,7 @@
     public: X removeLast();
     
     public: void reverse();
-    public: void sort(Compare<X,Y> compare);
+    public: void sort(F<X,X:Comparison> compare);
     
     public: OpenList<X> sublist(Integer from, Integer to);
     
@@ -607,9 +603,6 @@
     //public: Set<Entry<U,V>> entries;
     
     public: OpenMap<X> copy();
-    
-    //public: Map<U,V> select(Test<Entry<U,V>> test);
-    //public: Map<U,V> reject(Test<Entry<U,V>> test);
     
 }]]></programlisting>
 

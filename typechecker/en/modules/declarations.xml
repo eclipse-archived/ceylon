@@ -1,8 +1,8 @@
 <chapter id="declarations">
     <title>Declarations</title>
     
-    <para>All classes, interfaces, selectors, attributes, methods, constructors, 
-    locals, functors, decorators and converters must be declared.</para>
+    <para>All classes, interfaces, methods, attributes, locals, decorators and 
+    converters must be declared.</para>
     
     <section id="generaldeclarations">
         <title>General declaration syntax</title>
@@ -42,7 +42,11 @@ Declaration?</programlisting>
 
     <para>Method, attribute and converter declarations must declare a type.</para>
     
-    <programlisting>Type := Identifier (DOT Identifier)* TypeParameters?</programlisting>
+    <programlisting>Type := RegularType | FunctorType</programlisting>
+    
+    <para>Most types are classes or interfaces:</para>
+    
+    <programlisting>RegularType := Identifier (DOT Identifier)* TypeParameters?</programlisting>
     
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>
@@ -52,6 +56,16 @@ Declaration?</programlisting>
     <para>For example:</para>
     
     <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+    
+    <para>There are also functor types:</para>
+    
+    <programlisting>FunctorType := "F" LT Type (COMMA Type)* COLON (Type|"void") GT</programlisting>
+    
+    <para>For example:</para>
+    
+    <programlisting>F&lt;X,X:Comparison&gt;</programlisting>
+    <programlisting>F&lt;Payment:Boolean&gt;</programlisting>
+    <programlisting>F&lt;Y:void&gt;</programlisting>
     
     </section>
 
@@ -1058,7 +1072,7 @@ selector ComparisonOperation {
         
     </section>
     -->
-    
+    <!--  
     <section id="functors">
         <title>Functors</title>
         
@@ -1130,6 +1144,7 @@ SEMICOLON</programlisting>
         </section>
         
     </section>
+    -->
     
     <section id="decorators">
         <title>Decorators</title>
