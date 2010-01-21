@@ -316,11 +316,33 @@ if you prefer.";</programlisting>
         <programlisting>TypeLiteral := HASH Type</programlisting>
         
         <programlisting>MemberLiteral := Type HASH Identifier</programlisting>
-        
+               
         <para>For example:</para>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;&gt;;</programlisting>
-        <programlisting>Attribute&lt;String&gt; nameAttribute = Person#name;</programlisting>
+        <programlisting>Attribute&lt;Person,String&gt; nameAttribute = Person#name;</programlisting>
+        <programlisting>Method&lt;Person,F&lt;String:void&gt;&gt; sayMethod = Person#say;</programlisting>
+        
+        <!--
+        <para>Method literals satisfy the type <literal>F&lt;X,P,Q,...:R&gt;</literal> where 
+        <literal>X</literal> is the declaring type, <literal>P,Q,...</literal> are the method 
+        parameter types, and <literal>R</literal> is the method return type.</para>
+        
+        <para>Attribute literals satisfy the types <literal>F&lt;X:T&gt;</literal> and 
+        <literal>F&lt;X,T:void&gt;</literal> where <literal>X</literal> is the declaring type
+        and <literal>T</literal> is the attribute type.</para>
+        
+        <para>Therefore, method and attriute literals may be assigned directly to an
+        assignable expression of the matching functor type.</para>
+        -->
+        
+        <para>Note that the <literal>#</literal> curry operator may also be applied to an 
+        arbitrary expression, to obtain a <literal>Callable&lt;F&lt;P,Q,...:R&gt;&gt;</literal> 
+        where <literal>P,Q,...</literal> are the method parameter types and <literal>R</literal> 
+        is the method return type, or a <literal>Value&lt;T&gt;</literal> or 
+        <literal>OpenValue&lt;T&gt;</literal> where <literal>T</literal> is the attribute 
+        type.</para>
+        
         
     </section>
 
@@ -1050,6 +1072,20 @@ Expression?</programlisting-->
             <entry><literal>optional: Object</literal></entry>
         </row>
         
+        <row><entry namest="first" nameend="last"><emphasis>Member reference</emphasis></entry></row>
+
+        <row>
+            <entry><literal>#</literal></entry>
+            <entry><literal>lhs#member</literal></entry>
+            <entry>curry</entry>
+            <entry></entry>
+            <entry><literal>Object</literal></entry>
+            <entry></entry>
+            <entry><literal>Callable&lt;F&lt;P,Q,...:R&gt;&gt;</literal>, 
+            <literal>Value&lt;T&gt;</literal> or
+            <literal>OpenValue&lt;T&gt;</literal></entry>
+        </row>
+
         <row><entry namest="first" nameend="last"><emphasis>Member invocation</emphasis></entry></row>
         
         <row>
@@ -1068,7 +1104,7 @@ Expression?</programlisting-->
             <entry></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
-            <entry>X</entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>?.</literal></entry>
@@ -2177,19 +2213,14 @@ Expression?</programlisting-->
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression :=
-FunctorType? 
-( OPENPAREN Variable (COMMA Variable)* CLOSEPAREN FunctorBlock | 
-OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
+        <programlisting>FunctorExpression := FunctorType? OPENPAREN Variable (COMMA Variable)* CLOSEPAREN FunctorBlock</programlisting>
         
         <para>For example:</para>
         
         <programlisting>F&lt;Float,Float:Comparison&gt; order = Order&lt;Float&gt;(Float x, Float y) { x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort( F&lt;Person,Person:Comparison&gt;(Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
-        
-        <programlisting>lineItems.sort( F&lt;LineItem,LineItem:Comparison&gt;(LineItemComparator()#compare) );</programlisting>
-        
+               
         <programlisting>people.select( F&lt;Person:Boolean&gt;(Person p) p.age>18 )
     .collect( F&lt;Person,String&gt;(Person p) p.name );</programlisting>
         
@@ -2205,9 +2236,7 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         <programlisting>F&lt;Float,Float:Comparison&gt; order = (Float x, Float y) { x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
-        
-        <programlisting>lineItems.sort( (LineItemComparator()#compare) );</programlisting>
-        
+                
         <programlisting>people.select( (Person p) p.age>18 )
     .collect( (Person p) p.name );</programlisting>
         <!--  
@@ -2222,8 +2251,6 @@ OPENPAREN Expression HASH Identifier CLOSEPAREN )</programlisting>
         <programlisting>amounts.sort(Float x, Float y) { x&lt;=&gt;y }</programlisting>
         
         <programlisting>people.sort(Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
-        
-        <programlisting>lineItems.sort(LineItemComparator()#compare);</programlisting>
         
         <programlisting>people.select (Person p) { p.age>18 }
     .collect (Person p) { p.name };</programlisting>

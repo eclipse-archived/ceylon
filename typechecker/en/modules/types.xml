@@ -149,6 +149,67 @@
     </section>
     
     <section>
+        <title>Values and callables</title>
+        
+        <para>The interface <literal>Callable</literal>
+        represents a callable reference.</para>
+        
+        <programlisting>public: interface Callable&lt;S&gt;
+        where S >= Functor {
+    public: S invoke;
+}</programlisting>
+        
+        <para>The interface <literal>Value</literal> models a 
+        readable value.</para>
+        
+        <programlisting>public: interface Value&lt;T&gt; {
+    public: F&lt;:T&gt; get;
+}</programlisting>
+
+        <para>The interface <literal>OpenValue</literal> models 
+        a readable and writeable value.</para>
+        
+        <programlisting>public: interface OpenValue&lt;T&gt; 
+        satisfies Value&lt;T&gt; {
+    public: F&lt;T:void&gt; set;
+}</programlisting>
+
+    </section>
+    
+    <section>
+        <title>Methods and attributes</title>
+        
+        <programlisting>public: interface Member&lt;X&gt; {
+    public: Type&lt;X&gt; declaringType;
+    public: String name;
+    public: Visibility visibility;
+    public: Boolean abstract;
+    public: Boolean override;
+}</programlisting>
+        
+        <programlisting>public: interface Method&lt;X,S&gt;
+        where S >= Functor {
+    public: Type&lt;Object+&gt; returnType;
+    public: List&lt;Type&lt;Object+&gt;&gt; parameterTypes;
+    public: Callable&lt;S&gt; curry(X instance);
+    public: Boolean static;
+    public: Boolean once;
+}</programlisting>
+        
+        <programlisting>public: interface Attribute&lt;X,T&gt; {
+    public: Type&lt;T&gt; attributeType;
+    public: boolean mutable;
+    public: Value&lt;T&gt; curry(X instance);
+}</programlisting>
+                
+        <programlisting>public: interface MutableAttribute&lt;X,T&gt;
+        extends Attribute&lt;X,T&gt; {
+    public override: OpenValue&lt;T&gt; curry(X instance);
+}</programlisting>
+                
+    </section>
+    
+    <section>
         <title>Iterable objects and iterators</title>
         
         <para>The <literal>lang.Iterable&lt;X&gt;</literal> interface

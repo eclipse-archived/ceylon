@@ -1333,17 +1333,18 @@ User user = new PersonUser().convert(person);</programlisting>
                 be null.</para>
             </listitem>
             <listitem>
-                <para><literal>final</literal> indicates that a class may not
-                be extended, or that a method may not be overridden.</para>
+                <para><literal>final</literal> indicates that a class may 
+                not be extended, or that a method or attribute may not be 
+                overridden.</para>
             </listitem>
             <listitem>
                 <para><literal>override</literal> indicates that a method
-                overrides a method defined by a supertype.</para>
+                or attribute overrides a method or attribute defined by a 
+                supertype.</para>
             </listitem>
             <listitem>
-                <para><literal>once</literal> indicates that a method or 
-                attribute is executed at most once, and the resulting value
-                is cached.</para>
+                <para><literal>once</literal> indicates that a method is 
+                executed at most once, and the resulting value is cached.</para>
             </listitem>
         </itemizedlist>
         
