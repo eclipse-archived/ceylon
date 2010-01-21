@@ -554,7 +554,7 @@ catch (NotFoundException e) {
         <para>TODO: do we really need a special syntax for assertions? They are barely 
         used in Java ... Using functors, an assertion could look like this:</para>
         
-        <programlisting>"input may not be empty".assert () return input nonempty;</programlisting>
+        <programlisting>assert ("input may not be empty") that input nonempty;</programlisting>
 
     </section>
     

@@ -2213,8 +2213,10 @@ Expression?</programlisting-->
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression := FunctorType? OPENPAREN Variable (COMMA Variable)* CLOSEPAREN FunctorBlock</programlisting>
+        <programlisting>FunctorExpression := FunctorType? FunctorLocals OpenBlock</programlisting>
         
+        <programlisting>FunctorLocals := OPENPAREN Variable (COMMA Variable)* CLOSEPAREN</programlisting>
+                
         <para>For example:</para>
         
         <programlisting>F&lt;Float,Float:Comparison&gt; order = Order&lt;Float&gt;(Float x, Float y) { x&lt;=&gt;y };</programlisting>
@@ -2244,29 +2246,6 @@ Expression?</programlisting-->
         
         <programlisting>people.select( (Person p: p.age>18) );</programlisting>
         -->
-        
-        <para>Furthermore, if a method takes exactly one closure as its argument, the
-        parentheses may be eliminated in the method call:</para>
-        
-        <programlisting>amounts.sort(Float x, Float y) { x&lt;=&gt;y }</programlisting>
-        
-        <programlisting>people.sort(Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
-        
-        <programlisting>people.select (Person p) { p.age>18 }
-    .collect (Person p) { p.name };</programlisting>
-        <!--  
-        <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
-        
-        <programlisting>people.select(Person p: p.age>18);</programlisting>
-        -->
-        
-        <!-- 
-        <para>Finally, if the functor has exactly one parameter, the variable list
-        may be eliminated.</para>
-        
-        <programlisting>people.select( return it.age>18 )
-    .collect( return it.name );</programlisting>
-         -->
         
         <para>Consider the following functor expression:</para>
         
@@ -2326,8 +2305,62 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
     } );</programlisting>
     
         <section>
+        <title>TODO: syntax extension for methods with functor parameters</title>
         
-        <title>Possible extension</title>
+        <para>Furthermore, if for parameters of a method which are functor types, Ceylon
+        provides a special method invocation protocol:</para>
+        
+        <programlisting>(Expression DOT)? Identifier OrderedParameterValues (Identifier SimpleFunctorExpression)*</programlisting>
+        
+        <para>The identifiers listed after the ordered parameter values are names of method 
+        parameters of functor type, in the order in which they appear in the method declaration. 
+        Each of these arguments is a functor expression, where the functor parameter list may 
+        be omitted for functors with no parameters:</para>
+        
+        <programlisting>SimpleFunctorExpression := FunctorLocals? OpenBlock</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>String label = (x>10).if() isTrue "big" isFalse "little";</programlisting>
+        
+        <programlisting>amounts.sort() by (Float x, Float y) { x&lt;=&gt;y }</programlisting>
+        
+        <programlisting>people.sort() by (Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
+        
+        <programlisting>people.select() only (Person p) { p.age>18 }
+    .collect() each (Person p) { p.name };</programlisting>
+    
+        <programlisting>optional: specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
+        
+        <programlisting>(x>10).if() 
+isTrue {
+    log.debug("big");
+    big(x);
+}
+isFalse {
+    log.debug("little");
+    little(x);
+}</programlisting>
+        <!--  
+        <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
+        
+        <programlisting>people.select(Person p: p.age>18);</programlisting>
+        -->
+        
+        <!-- 
+        <para>Finally, if the functor has exactly one parameter, the variable list
+        may be eliminated.</para>
+        
+        <programlisting>people.select( return it.age>18 )
+    .collect( return it.name );</programlisting>
+         -->
+        
+        
+        </section>
+    
+        <section>
+        
+        <title>TODO: assignment to local variables from surrounding scope</title>
     
         <para>The following code:</para>
         
