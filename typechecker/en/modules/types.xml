@@ -1036,7 +1036,7 @@
         <para>The <literal>Util</literal> class defines several methods
         for building complex expressons.</para>
         
-        <programlisting><![CDATA[public class Util {
+        <programlisting><![CDATA[public: class Util {
 
     /**
      * If the condition is true, evaluate first block,
