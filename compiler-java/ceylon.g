@@ -142,10 +142,6 @@ LongSuffix
     :   'l' | 'L'
     ;
 
-HEXDIGIT
-: HexDigit
- 
-	;
 
 fragment
 NonIntegerNumber
