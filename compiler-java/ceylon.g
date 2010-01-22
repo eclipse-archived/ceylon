@@ -8,22 +8,27 @@ options {
 
 compilationUnit 
 	:
-	'{'
-	(expression ';')*
-	'}'
+        '{'
+        (statement ';')*
+        '}'
 	;
+
+statement
+	:	
+	(declaration
+	| expression) ;
 
 literal
 	: enumerationLiteral
 	| integerLiteral
 	| FLOATLITERAL
 	| CHARLITERAL
-	| STRINGLITERAL
+	| stringLiteral
 	| dateLiteral
-;	
+    ;	
 
 dateLiteral
-: DATELITERAL | TIMELITERAL;
+    : DATELITERAL | TIMELITERAL;
 
 integerLiteral
 	: INTLITERAL
@@ -31,17 +36,17 @@ integerLiteral
 
 expression 
     :   additiveExpression
-    | '{' expression ';' (expression ';')* '}'
+/*    | '{' expression ';' (expression ';')* '}' */
     ;
 
-additiveExpression 
+additiveExpression
     :   multiplicativeExpression
         (   
             (   '+'
             |   '-'
             )
             multiplicativeExpression
-         )*
+        )*
     ;
 
 multiplicativeExpression 
@@ -55,32 +60,38 @@ multiplicativeExpression
             unaryExpression
         )*
 	;
-	
+
 unaryExpression 
     :   '+'  unaryExpression
     |   '-' unaryExpression
     |   '++' unaryExpression
     |   '--' unaryExpression
-        |   unaryExpressionNotPlusMinus
+    |   unaryExpressionNotPlusMinus
     ;
-    
- unaryExpressionNotPlusMinus 
+
+unaryExpressionNotPlusMinus 
     :   '~' unaryExpression
     |   '!' unaryExpression
     |   primary   
     ;
-	
-	
+
+
 enumerationLiteral
-: 'none'
-	|	'{'( STRINGLITERAL)? (',' STRINGLITERAL)* '}'
+    : 'none'
+	|	'{'( SIMPLESTRINGLITERAL)? (',' SIMPLESTRINGLITERAL)* '}'
 	;
+
+
+stringLiteral
+    : SIMPLESTRINGLITERAL
+    ;
+
 
 orderedParameterValues
 	:  '(' expression (COMMA expression)* ')'
 	;
-	
-	
+
+
 methodInvocation
 	: (primary '.') IDENTIFIER orderedParameterValues
 	;
@@ -92,65 +103,79 @@ selector
     |   '.' 'this'
     |   '.' 'super'
     ;
-	
+
 primary
 	:   IDENTIFIER
         ('.' IDENTIFIER
         )*
         (arguments)?
-        	| literal
-        	| parExpression
+    | literal
+    | parExpression
         
 
-	
+        
 	;
 arguments 
-    :   '(' (expressionList
-        )? ')'
-    ;
+:
+
+	(positionalArguments) (namedArguments)?| (namedArguments) ;
 
 expressionList 
     :   expression
         (',' expression
         )*
     ;
-	
+
 parExpression 
     :   '(' expression ')'
     ;
-    
+
 identifierSuffix 
-    	:	arguments
+    :	arguments
     ;
 
-
+positionalArguments
+    :   '(' (expressionList
+        )? ')'
+    ;
+	
+namedArguments
+	:
+	'{'
+	(IDENTIFIER '=' expression ';')+
+	'}'
+	;
+	
+declaration
+	:	IDENTIFIER (selector)* IDENTIFIER ('=' expression)?
+	;
 /********************************************************************************************
                   Lexer section
 *********************************************************************************************/
 
 
 INTLITERAL
-: ('0' .. '9')('0' .. '9')*
+    : ('0' .. '9')('0' .. '9')*
 	| '\'' HexDigit HexDigit HexDigit HexDigit '\''
 	| '\'' HexDigit HexDigit '\''
 	;
 
 fragment
 Digit 
-: '0'..'9'
-;
+    : '0'..'9'
+    ;
 
 fragment
 Digit2
-: Digit Digit
-;
+    : Digit Digit
+    ;
 
 DATELITERAL
-: '\'' Digit Digit? '/' Digit Digit '/' Digit Digit Digit Digit  '\''
+    : '\'' Digit Digit? '/' Digit Digit '/' Digit Digit Digit Digit  '\''
 	;
 
 TIMELITERAL
-: '\'' Digit Digit? ':' Digit Digit (':' Digit Digit ( ':' Digit Digit Digit)?)? '\''
+    : '\'' Digit Digit? ':' Digit Digit (':' Digit Digit ( ':' Digit Digit Digit)?)? '\''
 	;
 
 fragment
@@ -158,117 +183,88 @@ HexDigit
     :   ('0'..'9'|'a'..'f'|'A'..'F')
     ;
 
-fragment
-LongSuffix
-    :   'l' | 'L'
-    ;
 
 
-fragment
-NonIntegerNumber
+FLOATLITERAL
     :   ('0' .. '9')+ '.' ('0' .. '9')+ Exponent?  
     |   '.' ( '0' .. '9' )+ Exponent?  
     |   ('0' .. '9')+ Exponent  
-        ;
-        
+    ;
+
 fragment 
 Exponent    
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
-    
-FLOATLITERAL
-    :   NonIntegerNumber
-    ;
-    
+
+
 CHARLITERAL
     :   '\'' 
-        (   EscapeSequence 
-        |   ~( '\'' | '\\' | '\r' | '\n' )
+        (    ~( '\'' | '\r' | '\n' | '\\')
+        | EscapeSequence
         ) 
+        
         '\''
     ; 
 
-STRINGLITERAL
+SIMPLESTRINGLITERAL
     :   '"' 
-        (   EscapeSequence
-        |   ~( '\\' | '"' | '\r' | '\n' )        
-        )* 
+        (    ~( '\r' | '\n' | '"' | '\\')   
+        | EscapeSequence
+        )*
         '"' 
     ;
+
 
 fragment
 EscapeSequence 
     :   '\\' (
-                 'b' 
-             |   't' 
-             |   'n' 
-             |   'f' 
-             |   'r' 
-             |   '\"' 
-             |   '\'' 
-             |   '\\' 
-             |       
-                 ('0'..'3') ('0'..'7') ('0'..'7')
-             |       
-                 ('0'..'7') ('0'..'7') 
-             |       
-                 ('0'..'7')
-             )          
-;     
+            'b' 
+        |   't' 
+        |   'n' 
+        |   'f' 
+        |   'r' 
+        |   '\"' 
+        |   '\'' 
+        )          
+    ;     
 
 WS  
     :   (
-             ' '
+            ' '
         |    '\r'
         |    '\t'
         |    '\u000C'
         |    '\n'
         ) 
-            {
-                skip();
-            }          
+        {
+            skip();
+        }          
     ;
-    
-COMMENT
-         @init{
-            boolean isJavaDoc = false;
-        }
-    :   '/*'
-            {
-                if((char)input.LA(1) == '*'){
-                    isJavaDoc = true;
-                }
-            }
-        (options {greedy=false;} : . )* 
-        '*/'
-            {
-                    skip();
-            }
-    ;
+
 
 LINE_COMMENT
     :   '//' ~('\n'|'\r')*  ('\r\n' | '\r' | '\n') 
-            {
-                skip();
-            }
+        {
+            skip();
+        }
     |   '//' ~('\n'|'\r')*     // a line comment could appear at the end of the file without CR/LF
-            {
-                skip();
-            }
+        {
+            skip();
+        }
     ;   
-        
+
 CASE
     :   'case'
     ;
-    
+
 CATCH
     :   'catch'
     ;
-    
+
 CLASS
     :   'class'
     ;
-    
+
 CONST
     :   'const'
     ;
