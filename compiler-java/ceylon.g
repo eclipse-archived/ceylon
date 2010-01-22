@@ -23,8 +23,8 @@ literal
 
 integerLiteral
 	: INTLITERAL
-	| '\'' HexDigit HexDigit HexDigit HexDigit '\''
-	| '\'' HexDigit HexDigit '\''
+	| 
+	| 
 	;
 
 expression 
@@ -59,8 +59,7 @@ unaryExpression
     |   '-' unaryExpression
     |   '++' unaryExpression
     |   '--' unaryExpression
-    | IDENTIFIER
-    |   unaryExpressionNotPlusMinus
+        |   unaryExpressionNotPlusMinus
     ;
     
  unaryExpressionNotPlusMinus 
@@ -94,9 +93,9 @@ selector
 	
 primary
 	:   IDENTIFIER
-/*        ('.' IDENTIFIER
+        ('.' IDENTIFIER
         )*
-        (arguments)? */
+        (arguments)?
         	| literal
         	| parExpression
         
@@ -130,6 +129,8 @@ identifierSuffix
 
 INTLITERAL
 : ('0' .. '9')('0' .. '9')*
+	| '\'' HexDigit HexDigit HexDigit HexDigit '\''
+	| '\'' HexDigit HexDigit '\''
 	;
 
 fragment
