@@ -81,12 +81,12 @@
     /**
      * The Type of the instance.
      */
-    public: Type<X> type { ... }
+    public: Type<X+> type { ... }
     
     /**
      * Determine if the instance is of the given Type.
      */
-    public: Boolean is(Type<?> type) {
+    public: Boolean is(Type<Object+> type) {
         return this.type.assignableTo(type);
     }
     
@@ -178,7 +178,14 @@
     <section>
         <title>Methods and attributes</title>
         
-        <programlisting>public: interface Member&lt;X&gt; {
+        <programlisting>public: interface Annotated {
+    public: Boolean annotated(Type&lt;Object+&gt; type);
+    public: T annotation&lt;T&gt;(Type&lt;T&gt; type);
+    public: Set&lt;Object&gt; annotations;
+}</programlisting>
+        
+        <programlisting>public: interface Member&lt;X&gt; 
+        satisfies Annotated {
     public: Type&lt;X&gt; declaringType;
     public: String name;
     public: Visibility visibility;
@@ -187,7 +194,8 @@
 }</programlisting>
         
         <programlisting>public: interface Method&lt;X,S&gt;
-        where S >= Functor {
+        where S >= Functor 
+        satisfies Member&lt;X&gt; {
     public: Type&lt;Object+&gt; returnType;
     public: List&lt;Type&lt;Object+&gt;&gt; parameterTypes;
     public: Callable&lt;S&gt; curry(X instance);
@@ -195,14 +203,15 @@
     public: Boolean once;
 }</programlisting>
         
-        <programlisting>public: interface Attribute&lt;X,T&gt; {
+        <programlisting>public: interface Attribute&lt;X,T&gt; 
+        satisfies Member&lt;X&gt; {
     public: Type&lt;T&gt; attributeType;
     public: boolean mutable;
     public: Value&lt;T&gt; curry(X instance);
 }</programlisting>
                 
         <programlisting>public: interface MutableAttribute&lt;X,T&gt;
-        extends Attribute&lt;X,T&gt; {
+        satisfies Attribute&lt;X,T&gt; {
     public override: OpenValue&lt;T&gt; curry(X instance);
 }</programlisting>
                 
