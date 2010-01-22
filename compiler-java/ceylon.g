@@ -36,6 +36,7 @@ integerLiteral
 
 expression 
     :   additiveExpression
+    ('=' expression)?
 /*    | '{' expression ';' (expression ';')* '}' */
     ;
 
@@ -139,10 +140,20 @@ positionalArguments
         )? ')'
     ;
 	
+namedArgument
+    :
+    IDENTIFIER '=' expression
+    |
+    ;
+
+varargArguments
+:	expression (',' expression)*
+	;
+	
 namedArguments
 	:
 	'{'
-	(IDENTIFIER '=' expression ';')+
+	(namedArgument ';')* varargArguments?
 	'}'
 	;
 	
