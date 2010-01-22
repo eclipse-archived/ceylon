@@ -44,10 +44,10 @@ Declaration</programlisting>
         <itemizedlist>
             <listitem>the <literal>return</literal> directive&mdash;to return a value from a method, 
             attribute getter or converter,</listitem>
-            <listitem>the <literal>found</literal> directive&mdash;to terminate a loop<!-- or find block--> 
-            successfully,</listitem>
-            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop<!--or find block-->
-            unsuccessfully, and</listitem>
+            <listitem>the <literal>found</literal> directive&mdash;to terminate a <literal>for/fail</literal> 
+            loop successfully,</listitem>
+            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop unsuccessfully, 
+            and</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
@@ -65,7 +65,7 @@ Declaration</programlisting>
         the body of a loop.</para>
         
         <para>The <literal>found</literal> directive may not be used outside of
-        the body of a loop.</para>
+        the body of a <literal>for/fail</literal> loop.</para>
         
     </section>
     
@@ -142,8 +142,6 @@ Assert</programlisting>
         
         <para>Some control structures allow embedded declaration of a local. This local is available
         inside the control structure body.</para>
-        
-        <programlisting>Variable := Annotations? Type Identifier</programlisting>
         
         <para>Some control structures expect conditions:</para>
         
@@ -320,9 +318,9 @@ else {
             that contains the range of values to be iterated. <!--It may optionally specify 
             one or more iteration constraint expressions (conditions).--></para>
 
-            <programlisting>ForIterator := Variable ("->" Variable)? "in" Expression</programlisting>
+            <programlisting>ForIterator := (Variable | VariablePair) "in" Expression</programlisting>
 
-            <!--programlisting>Iteration := Variable ("->" Variable)? "in" Expression (COLON Condition (COMMA Condition)*)? </programlisting-->
+            <!--programlisting>Iteration := (Variable | VariablePair) "in" Expression (COLON Condition (COMMA Condition)*)? </programlisting-->
 
             <para>Each iterated expression must be of type <literal>Iterable</literal>
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
@@ -407,8 +405,6 @@ fail {
             <programlisting>do (Integer i=0) 
     log.info("count = " + $i) 
 while (i&lt;=10) i++;</programlisting>
-
-            <para>(The previous example is Ceylon's version of a traditional C for loop.)</para>
             
             <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator)
 while (iter.more) 

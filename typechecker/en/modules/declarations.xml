@@ -86,13 +86,19 @@ CLOSEPAREN</programlisting>
     
     <programlisting>VarargsParameter = Annotations? Type "..." Identifier</programlisting>
     
-    <programlisting>FormalParameter := Annotations? Type Identifier</programlisting>
+    <programlisting>FormalParameter := Variable | VariablePair</programlisting>
+    
+    <programlisting>Variable := Annotations? Type Identifier</programlisting>
+        
+    <programlisting>VariablePair := Annotations? Variable "->" Variable</programlisting>
     
     <para>For example:</para>
     
     <programlisting>(Product product, Integer quantity=1)</programlisting>
     
     <programlisting>(Name name, optional: Organization org=null, Address... addresses)</programlisting>
+    
+    <programlisting>(Key key -> Value value)</programlisting>
     
     </section>
     
@@ -686,6 +692,8 @@ TypeConstraints?
         <programlisting>public: void print(Object... objects) {
     for (Object object in objects) { ... }
 }</programlisting>
+
+        <programlisting>public: void addEntry(V key -> U value) { ... }</programlisting>
         
         <!--A method body may omit the braces if it consists of exactly one statement.-->
         

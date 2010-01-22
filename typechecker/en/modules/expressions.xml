@@ -575,340 +575,6 @@ CLOSEBRACE</programlisting>
         
     </section>
     
-    <section id="controlexpressions">
-        <title>Control expressions</title>
-        
-        <para>Control expressions allow a more declarative style of programming, that minimizes
-        the use of locals. A control expression is really just a kind of operator, with a complex
-        syntax.</para>
-        
-        <para>TODO: given that we have functors, do we really need these??</para>
-        
-        <!--
-        <programlisting>CaseExpression := Expression | ThrowDirective | FoundDirective | BreakDirective</programlisting>
-        -->
-        
-        <section>
-            <title><literal>find</literal></title>
-            
-            <para>The <literal>find</literal> expression has the following form:</para>
-            
-            <programlisting>FindExpression := "find" OPENPAREN Variable Initializer? CLOSEPAREN OpenBlock</programlisting>
-
-            <para><literal>find</literal> turns a block of statements into an expression. The construct 
-            evaluates to the value of the local after executing the block. All execution paths must 
-            result in an initialized local or a thrown exception.</para>
-
-            <programlisting>log.info {
-    message = find (String greeting) 
-        if (user exists) 
-            greeting = "Hi ${user.name}!" 
-        else 
-            greeting = "Hello World!";
-}</programlisting>
-            
-            <programlisting>return find (optional mutable: Person p) {
-    try ( Session s = sf.openSession() )
-        p = s.get(#Person, pid)
-    catch (NotFoundException nfe)
-        p = null;
-    if (p exists, p.deleted) p = null;
-};</programlisting>
-            
-            <programlisting>Person gavin = find (Person gavin)
-    for (Person p in people)
-        if (p.firstName.lower == "gavin") 
-            found gavin = if (p.deleted) null else p
-    fail 
-        throw NotFoundException();</programlisting>
-
-            <programlisting>return find (mutable: Boolean allowed=false)
-    for (Permission p in user.permissions)
-        if (p.action == action &amp;&amp; p.object == object) 
-            found allowed=true;</programlisting>
-            
-            <programlisting>log.info {
-    message = find (mutable: Float sum=0.0) 
-        for (Order o in orders)
-            sum += o.total;
-}</programlisting>
-
-            <programlisting>return find (OpenList&lt;Person&gt; adults=none) 
-    for (Person p in people)
-        if (p.age>=18) adults.add(p);</programlisting>
-
-            <programlisting>return find (OpenMap&lt;String, Integer&gt; ages=none) 
-    for (Person p in people) 
-        ages.add( p.name->p.age );</programlisting>
-        
-            <para>TODO: Instead of find, or we could just say that blocks are expression
-            that evaluate to the last statement, for example:</para>
-
-            <programlisting>log.info {
-    message = { 
-        String greeting;
-        if (user exists) 
-            greeting = "Hi ${user.name}!" 
-        else 
-            greeting = "Hello World!";
-        greeting;
-    }
-}</programlisting>
-            
-            <programlisting>log.info {
-    message = {
-        mutable: Float sum=0.0;
-        for (Order o in orders)
-            sum += o.total;
-        sum;
-    }
-}</programlisting>
-
-            <programlisting>return {
-    OpenList&lt;Person&gt; adults=none;
-    for (Person p in people)
-        if (p.age>=18) adults.add(p);
-    adults;
-}</programlisting>
-
-        </section>
-
-        <section>
-            <title><literal>if/else</literal></title>
-            
-            <para>The <literal>if/else</literal> expression has the following form:</para>
-            
-            <programlisting>IfElseExpression := "if" OPENPAREN Condition CLOSEPAREN Expression ("else" Expression)?</programlisting>
-
-            <!--programlisting>IfElseExpression := 
-"if" OPENPAREN Condition (COMMA Condition) CLOSEPAREN Expression 
-("else" Expression)?</programlisting-->
-
-            <para>If all conditions are satisfied, the whole expression evaluates
-            to the value of the first expression. Otherwise, the whole expression
-            evaluates to the value of the second expression, or to null if there
-            is no second expression specified.</para>
-            
-            <para>The type of the whole expression is the common supertype of the
-            first and second expressions, <literal>optional</literal> if no second 
-            expression is specified.</para>
-
-            <para>For example:</para>
-            
-            <programlisting>log.info {
-    message = 
-        if (user exists)
-            "Hi ${user.name}!" 
-        else 
-            "Hello World!";
-}</programlisting>
-
-            <programlisting>public: Boolean paid {
-    return if (Payment payment = order.payment exists) 
-            payment.paid 
-        else 
-            false;
-}</programlisting>
-            
-            <programlisting>optional: String name = 
-    if (person exists) 
-        if (person.active) 
-            "$(person.firstName) $(person.lastName)";</programlisting>
-            
-            <para>TODO: should we allow multiple conditions to be combined into a single if:</para>
-
-            <programlisting>optional: String name = 
-    if (person exists, person.active) 
-        "$(person.firstName) $(person.lastName)";</programlisting>
-            
-        </section>
-        
-        <section>
-            <title><literal>switch/case/else</literal></title>
-            
-            <para>The <literal>switch/case/else</literal> expression has the following form:</para>
-            
-            <programlisting>SwitchCaseElseExpression := 
-"switch" OPENPAREN Expression CLOSEPAREN
-("case" "null" Expression)?
-("case" OPENPAREN Case CLOSEPAREN Expression)+ 
-("else" Expression)?</programlisting>
-
-            <para>The whole expression evaluates to the value of the first case expression 
-            for which the case value tests true. If no case expression tests true, the whole 
-            expression evaluates to the value of the else expression, or to null if there is
-            no else expression specified.</para>
-            
-            <para>The type of the whole expression is the common supertype of the case 
-            expressions, <literal>optional</literal> if no else expression is specified (and 
-            if not all enumerated instances of the type are listed).</para>
-
-             <para>For example:</para>
-
-            <programlisting>optional: PaymentProcessor processor
-    return switch (payment.type) 
-        case null null
-        case (credit, debit) cardPaymentProcessor 
-        case (check) checkPaymentProcessor
-        else interactivePaymentProcessor;</programlisting>
-
-            <programlisting>log.info( switch (num) case (0) "Zero" case (1) "Unity" else $num );</programlisting>
-            
-        </section>
-        
-        <section>
-            <title><literal>for</literal></title>
-            
-            <para>The <literal>for</literal> expression has one of the following forms:</para>
-             
-            <programlisting>ForComprehension := "for" OPENPAREN ForIterator CLOSEPAREN Expression</programlisting>
-
-            <!--programlisting>ForComprehension := 
-"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
-( "by" OPENPAREN Order (SEMICOLON Order) CLOSEPAREN )?
-Expression?</programlisting-->
-
-            <programlisting>ForQuantification := "for" ("any"|"all") OPENPAREN ForIterator CLOSEPAREN Expression</programlisting>
-
-            <!--programlisting>ForQuantification := 
-"for" ("any"|"all") OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression</programlisting-->
-
-           <!--  
-            <programlisting>ForFailExpression := 
-"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN Expression
-"fail" Expression</programlisting>
-            -->
-
-            <!--programlisting>Order := Expression ("asc"|"desc")</programlisting-->
-
-            <para>The first form is a Python-style comprehension. The second form is called a
-            quantification.</para>
-            
-            <para>The semantics of the expression depend upon whether the <literal>any</literal> or 
-            <literal>all</literal> modifier appears<!--, and upon whether a <literal>fail</literal>
-            expression appears-->.</para>
-            
-            <!--
-            <para>If a <literal>fail</literal> expression appears, the whole expression
-            evaluates to the value of the fail expression, unless the loop exits early
-            due to execution of a <literal>found</literal> directive, in which case
-            the whole expression evaluates to the value specified by the 
-            <literal>found</literal> directive.</para>
-            -->
-            
-            <itemizedlist>
-                <listitem>
-                    <para>If <literal>any</literal> or <literal>all</literal> is specified, the 
-                    element expression must be of type <literal>Boolean</literal>, and the whole 
-                    expression evaluates to a <literal>Boolean</literal> value.</para>
-                </listitem>
-                <listitem>
-                    <para>If neither modifier appears, <!--and if no <literal>fail</literal> expression appears,-->
-                    the whole expression evaluates to an enumeration of element expression values, 
-                    one element for each iteration of the loop that evaluates to a non-null value,
-                    unless the element expression is of type <literal>Iterable</literal>, in which
-                    case each iteration results in multiple elements. 
-                    <!-- (that satisfies the all iteration conditions)-->
-                    <!--If no expression appears, the result is an enumeration of elements of the 
-                    first iteration.--> <!--If <literal>by</literal> appears, the results are ordered 
-                    according to the order expression values. Each comparison expression must be 
-                    of type <literal>Comparable</literal>.--></para> 
-                </listitem>
-            </itemizedlist>
-            
-            <para>For example:</para>
-
-            <programlisting>List&lt;Person&gt; adults = for (Person p in people) if (p.age>18) p;</programlisting>
-            
-            <programlisting>List&lt;String&gt; adultNames = for (Person p in people) if (p.age>18) p.name;</programlisting>
-
-            <programlisting>public: List&lt;Person&gt; employees(Country country) {
-    return for (Organization o in orgs) 
-        if (o.country==country) 
-            for (Person p in o.employees) p;
-}</programlisting>
-
-            <programlisting>log.info( ", ".join( for (String key -> Integer value in map) "$key = $value" ) );</programlisting>
-            
-            <programlisting>return for all (LineItem li in lineItems) li.quantity>0;</programlisting>
-            
-            <!--
-            <programlisting>Person gavin = for (Person p in people) 
-        if (p.name.lower=="gavin") found gavin
-    fail null;</programlisting>
-            -->
-            
-            <para>TODO: should we allow multiple iterations, and conditions, and orders to be combined 
-            into a single for:</para>
-            
-            <programlisting>List&lt;Person&gt; adults = for (Person p in people: p.age>18);</programlisting>
-            
-            <programlisting>List&lt;String&gt; adultNames = for (Person p in people: p.age>18) p.name;</programlisting>
-
-            <programlisting>public: List&lt;Person&gt; employees(Country country) {
-    return for (Organization o in orgs: o.country==country; 
-                Person p in o.employees) 
-        by (p.name) p;
-}</programlisting>
-
-        </section>
-        
-        <!--
-        <section>
-            <title><literal>using</literal></title>
-            
-            <para>The <literal>using</literal> expression has the form:</para>
-            
-            <programlisting>UsingExpression := "using" OPENPAREN Resource CLOSEPAREN Expression</programlisting>
-            
-            <programlisting>UsingExpression := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN Expression</programlisting>
-
-            <para>The whole expression evaluates to the value of the expression.</para>
-            
-            <para>For example:</para>
-            
-        </section>
-        -->
-
-        <section>
-            <title><literal>try/catch</literal></title>
-            
-            <para>The <literal>try/catch</literal> expression has the form:</para>
-            
-            <programlisting>TryCatchExpression := "try" Expression ("catch" OPENPAREN Variable CLOSEPAREN Expression)*</programlisting>
-
-            <para>If the try expression executes without exception, the construct evaluates to the 
-            value of the try expression. If an exception is handled by a catch, the construct
-            evaluates to the value of that catch expression.</para>
-            
-            <para>The type of the whole expression is the common supertype of the try and all
-            catch expressions.</para>
-            
-            <para>For example:</para>
-            
-            <programlisting>Person p = 
-    try
-        s.get(#Person, id) 
-    catch (NotFoundException e) 
-        null;</programlisting>
-            
-            <programlisting>return try (semaphore) map[key];</programlisting>
-            
-            <programlisting>Person p = 
-    try ( Transaction() ) 
-        try ( Session s = Session() ) 
-            s.get(#Person, id);</programlisting>
-            
-            <para>TODO: should we allow multiple resources in a single try:</para>
-            
-            <programlisting>Person p = 
-    try ( Transaction(), Session s = Session() ) 
-        s.get(#Person, id);</programlisting>
-            
-        </section>
-
-    </section>
-    
     <section id="assignableexpressions">
         <title>Assignable expressions</title>
         
@@ -2215,7 +1881,11 @@ Expression?</programlisting-->
         
         <programlisting>FunctorExpression := FunctorType? FunctorLocals OpenBlock</programlisting>
         
-        <programlisting>FunctorLocals := OPENPAREN Variable (COMMA Variable)* CLOSEPAREN</programlisting>
+        <programlisting>FunctorLocals := OPENPAREN ( Variable | VariablePair (COMMA Variable | VariablePair)* ) CLOSEPAREN</programlisting>
+        
+        <para>A functor body may not contain a <literal>return</literal> directive. If the functor
+        body is a block, the value of the functor, when executed, is the value of the last expression
+        in the block.</para>
                 
         <para>For example:</para>
         
@@ -2225,6 +1895,8 @@ Expression?</programlisting-->
                
         <programlisting>people.select( F&lt;Person:Boolean&gt;(Person p) p.age>18 )
     .collect( F&lt;Person,String&gt;(Person p) p.name );</programlisting>
+        
+        <programlisting>namedValues.each( F&lt;Entry&lt;String,Object&gt;:void&gt; (String name->Object value) log.info("${name} ${value}") );</programlisting>
         
         <!--  
         <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
@@ -2241,6 +1913,9 @@ Expression?</programlisting-->
                 
         <programlisting>people.select( (Person p) p.age>18 )
     .collect( (Person p) p.name );</programlisting>
+
+        <programlisting>namedValues.each( (String name->Object value) log.info("${name} ${value}") );</programlisting>
+
         <!--  
         <programlisting>people.collect( (Person p: p.age>18) return p.name; );</programlisting>
         
@@ -2330,6 +2005,8 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
         <programlisting>people.select() only (Person p) { p.age>18 }
     .collect() each (Person p) { p.name };</programlisting>
     
+        <programlisting>namedValues.each() do (String name->Object value) log.info("${name} ${value}");</programlisting>
+
         <programlisting>optional: specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
         
         <programlisting>(x>10).if() 
