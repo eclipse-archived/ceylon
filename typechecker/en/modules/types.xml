@@ -8,13 +8,12 @@
     <section>
         <title>The root type</title>
         
-        <para>The <literal>lang.Object</literal> class is the root of the
-        type hierarchy and supports the binary operators <literal>==</literal> (equals),
+        <para>The <literal>lang.Object</literal> class is the root of the type 
+        hierarchy and supports the binary operators <literal>==</literal> (equals),
         <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
         <literal>.</literal> (invoke), <literal>^.</literal> (chain invoke),
-        <literal>in</literal> (in), the unary prefix 
-        operator <literal>$</literal> (render), and the binary operator 
-        <literal>=</literal> (assign).</para>
+        <literal>in</literal> (in), the unary prefix operator <literal>$</literal> 
+        (render), and the binary operator <literal>=</literal> (assign).</para>
         
         <para>In addition, references of type <literal>optional:Object</literal>
         support the binary operators <literal>?.</literal> (nullsafe invoke) 
@@ -462,6 +461,11 @@
       * Assign the given values to the given keys.
       */
      public: void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions);
+    
+     /**
+      * Add the given entry.
+      */
+     public: void define(U key -> V value);
     
 }</programlisting>
 

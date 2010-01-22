@@ -259,8 +259,9 @@ if you prefer.";</programlisting>
         
         <programlisting>Enumeration&lt;String&gt; enum = collections.Enumeration.emptyEnumeration&lt;String&gt;();</programlisting>
 
-         <para>TODO: is this really a special literal, or is it just an
-        enumerated instance of the <literal>Enumeration</literal> class?</para>
+         <para>TODO: is this really a special literal, or is it just the single
+        enumerated instance of the <literal>EmptyEnumeration</literal> class,
+        which has a converter to <literal>Enumeration&lt;X&gt;</literal>?</para>
 
         <para>There are no true literals for lists, sets or maps. However, the
         <literal>..</literal> and <literal>-></literal> operators, together with
@@ -1980,9 +1981,9 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
     } );</programlisting>
     
         <section>
-        <title>TODO: syntax extension for methods with functor parameters</title>
+        <title>Syntax extension for methods with functor parameters</title>
         
-        <para>Furthermore, if for parameters of a method which are functor types, Ceylon
+        <para>Furthermore, for parameters of a method which are functor types, Ceylon
         provides a special method invocation protocol:</para>
         
         <programlisting>(Expression DOT)? Identifier OrderedParameterValues (Identifier SimpleFunctorExpression)*</programlisting>

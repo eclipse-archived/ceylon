@@ -100,6 +100,9 @@ CLOSEPAREN</programlisting>
     
     <programlisting>(Key key -> Value value)</programlisting>
     
+    <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
+    parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
+    
     </section>
     
     <section>
