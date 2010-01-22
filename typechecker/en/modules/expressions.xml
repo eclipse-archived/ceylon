@@ -2059,7 +2059,19 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements,
         
         <programlisting>List&lt;String&gt; names = from (people) if (Person p) p>20 select (Person p) p.name;</programlisting>
         
-        <para>A specialized invocation syntax is provided for methods which define 
+        <para>Or, we may invoke the method as follows:</para>
+                  
+        <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues) 
+                      if user.authorized(key) 
+                      select "${key} ${value}";</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>List&lt;String&gt; labels = from (namedValues) 
+                      if (Key key -> Value value) user.authorized(key) 
+                      select (Key key -> Value value) "${key} ${value}";</programlisting>
+        
+        <para>A specialized invocation syntax is also provided for methods which define 
         a variable. If the first parameter of the method is of type <literal>X</literal>,
         annotated <literal>specified</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
