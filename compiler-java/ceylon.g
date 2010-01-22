@@ -19,12 +19,14 @@ literal
 	| FLOATLITERAL
 	| CHARLITERAL
 	| STRINGLITERAL
+	| dateLiteral
 ;	
+
+dateLiteral
+: DATELITERAL | TIMELITERAL;
 
 integerLiteral
 	: INTLITERAL
-	| 
-	| 
 	;
 
 expression 
@@ -131,6 +133,24 @@ INTLITERAL
 : ('0' .. '9')('0' .. '9')*
 	| '\'' HexDigit HexDigit HexDigit HexDigit '\''
 	| '\'' HexDigit HexDigit '\''
+	;
+
+fragment
+Digit 
+: '0'..'9'
+;
+
+fragment
+Digit2
+: Digit Digit
+;
+
+DATELITERAL
+: '\'' Digit Digit? '/' Digit Digit '/' Digit Digit Digit Digit  '\''
+	;
+
+TIMELITERAL
+: '\'' Digit Digit? ':' Digit Digit (':' Digit Digit ( ':' Digit Digit Digit)?)? '\''
 	;
 
 fragment
