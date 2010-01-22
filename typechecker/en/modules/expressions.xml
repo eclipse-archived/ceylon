@@ -1950,7 +1950,7 @@ CLOSEBRACE</programlisting>
         
         <para>The following code:</para>
         
-        <programlisting>(0..10).each (Integer num) log.info(num);</programlisting>
+        <programlisting>(0..10).each( (Integer num) log.info(num) );</programlisting>
         
         <para>Is equivalent to:</para>
         
