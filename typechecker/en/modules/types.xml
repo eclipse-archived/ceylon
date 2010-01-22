@@ -1029,7 +1029,119 @@
         instances hour, minute, second, millisecond {}</programlisting>
         
     </section>
-    -->
+    
+    <section>
+        <title>Control expressions</title>
+        
+        <para>The <literal>Util</literal> class defines several methods
+        for building complex expressons.</para>
+        
+        <programlisting><![CDATA[public class Util {
+
+    /**
+     * If the condition is true, evaluate first block,
+     * and return the result. Otherwise, return a null
+     * value.
+     */
+    public static optional: Y ifTrue<Y>(Boolean condition,
+                                        F<:Y> then);
+
+    /**
+     * If the condition is true, evaluate first block,
+     * otherwise, evaluate second block. Return result
+     * of evaluation.
+     */
+    public static: Y ifTrue<Y>(Boolean condition,
+                               F<:Y> then, 
+                               F<:Y> otherwise);
+
+    /**
+     * If the value is non-null, evaluate first block,
+     * and return the result. Otherwise, return a null
+     * value.
+     */
+    public static optional: Y ifExists<X,Y>(specified optional: X value,
+                                            coordinated: F<X,Y> then);
+
+    /**
+     * If the value is non-null, evaluate first block,
+     * otherwise, evaluate second block. Return result
+     * of evaluation.
+     */
+    public static: Y ifExists<X,Y>(specified optional: X value,
+                                   coordinated: F<X,Y> then, 
+                                   F<Y> otherwise);
+
+    /**
+     * Iterate elements and return those for which the first
+     * block evaluates to true, ordered using the second block,
+     * if specified.
+     */
+    public static: List<X> from<X>(iterated: Iterable<X> elements,
+                                   coordinated: F<X:Boolean> if,
+                                   optional: F<X,X:Comparison> by = null);
+
+    /**
+     * Iterate elements and for each element evaluate the first block. 
+     * Build a list of the resulting values, ordered using the second 
+     * block, if specified.
+     */
+    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
+                                     coordinated: F<X:Y> select,
+                                     optional: F<Y,Y:Comparison> by = null);
+
+    /**
+     * Iterate elements and select those for which the first block 
+     * evaluates to true. For each of these, evaluate the second block. 
+     * Build a list of the resulting values, ordered using the third 
+     * block, if specified.
+     */
+    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
+                                     coordinated: F<X:Boolean> if, 
+                                     coordinated: F<X:Y> select,
+                                     optional: F<Y,Y:Comparison> by = null);
+
+    /**
+     * Return the first element for which the block evaluates to true,
+     * or a null value if no such element is found.
+     */
+    public static optional: X search<X>(iterated: Iterable<X> elements,
+                                        coordinated: F<X:Boolean> first);
+    
+    /**
+     * Return the first element for which the first block evaluates to 
+     * true, or the result of evaluating the second block, if no such
+     * element is found.
+     */
+    public static: X search<X>(iterated: Iterable<X> elements,
+                               coordinated: F<X:Boolean> first
+                               F<:X> otherwise);
+    
+    /**
+     * Return true iff for every element, the block evaluates to true.
+     */
+    public static: Boolean forAll<X>(iterated: Iterable<X> elements,
+                                     coordinated: F<X:Boolean> every);
+
+    /**
+     * Return true iff for some element, the block evaluates to true.
+     */
+    public static: Boolean forAny<X>(iterated: Iterable<X> elements,
+                                     coordinated: F<X:Boolean> exists);
+    
+    /**
+     * Using the given resource, attempt to evaluate the first block.
+     * If an exception occurs, and there is a matching block, evaluate
+     * the exception block.
+     */
+    public static: Y using<X,Y>(specified: X resource,
+                                coordinated: F<X,Y> seek,
+                                F<Exception+,Y>... except)
+                     where X >= Usable;
+
+}]]></programlisting>
+    
+    </section>
     
     <section>
         <title>Primitive type optimization</title>

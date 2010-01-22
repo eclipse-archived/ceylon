@@ -2033,6 +2033,72 @@ isFalse {
     .collect( return it.name );</programlisting>
          -->
         
+        <para>A specialized invocation syntax is provided for methods which iterate 
+        collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
+        annotated <literal>iterated</literal>, and all remaining parameters are of functor 
+        type, then the method may be invoked according to the following protocol:</para>
+        
+        <programlisting>(Expression DOT)? Identifier OPENPAREN ForIterator CLOSEPAREN (Identifier SimpleFunctorExpression)*</programlisting>
+        
+        <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
+        of type <literal>F&lt;X:Y&gt;</literal> need not declare its parameter. Instead, 
+        its parameter is declared by the iterator.</para>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static:
+List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements, 
+                  coordinated: F&lt;X:Boolean&gt; if, 
+                  coordinated: F&lt;X:Y&gt; select);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+                  
+        <programlisting>List&lt;String&gt; names = from (Person p in people) if p>20 select p.name;</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>List&lt;String&gt; names = from (people) if (Person p) p>20 select (Person p) p.name;</programlisting>
+        
+        <para>A specialized invocation syntax is provided for methods which define 
+        a variable. If the first parameter of the method is of type <literal>X</literal>,
+        annotated <literal>specified</literal>, and all remaining parameters are of functor 
+        type, then the method may be invoked according to the following protocol:</para>
+        
+        <programlisting>(Expression DOT)? Identifier OPENPAREN Variable Initializer CLOSEPAREN (Identifier SimpleFunctorExpression)*</programlisting>
+        
+        <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
+        of type <literal>F&lt;X:Y&gt;</literal> need not declare its parameter. Instead, 
+        its parameter is declared by the initializer.</para>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static:
+Y ifExists&lt;X,Y&gt;(specified optional: X value,
+                coordinated: F&lt;X,Y&gt; then, 
+                F&lt;Y&gt; otherwise);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+                  
+        <programlisting>Exact amount = ifExists(Payment p = order.payment) then p.amount otherwise 0.0;</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>Exact amount = ifExists(order.payment) then (Payment p) p.amount otherwise 0.0;</programlisting>
+        
+         <para>And for the following method declaration:</para>
+        
+        <programlisting>public static:
+Y using&lt;X,Y&gt;(specified: X resource, 
+             coordinated: F&lt;X,Y&gt; seek)
+  where X >= Usable;</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+                  
+        <programlisting>Order order = using (Session s = Session()) seek s.get(#Order, oid);</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>Order order = using (Session()) seek (Session s) s.get(#Order, oid);</programlisting>
         
         </section>
     
