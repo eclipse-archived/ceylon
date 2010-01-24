@@ -1041,7 +1041,7 @@
      * of statements into an expression.
      */
     public static: X evaluate<X>(specified optional: X variable,
-                                 coordinated: () produces X do);
+                                 coordinated: (X) produces X do);
 
     /**
      * If the condition is true, evaluate first block,
