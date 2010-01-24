@@ -23,7 +23,7 @@
         <literal>==</literal> (equals), <literal>!=</literal> (not equals), 
         <literal>===</literal> (identity equals) and <literal>=</literal> (assign).</para>
         
-        <programlisting><![CDATA[public abstract: class Object<X> {
+        <programlisting><![CDATA[public abstract: class Object {
         
     /**
      * The equals operator x == y.
@@ -109,6 +109,16 @@
     </section>
     
     <section>
+        <title>Types</title>
+        
+        <programlisting><![CDATA[public: interface Type<X> 
+        satisfies Case<Object> {
+    ...
+}]]></programlisting>
+        
+    </section>
+    
+    <section>
         <title>Boolean values</title>
         
         <para>The <literal>lang.Boolean</literal> class represents
@@ -156,6 +166,7 @@
         <programlisting>public: interface Callable&lt;S&gt;
         where S >= Functor {
     public: S invoke;
+    public: onCall( ... );
 }</programlisting>
         
         <para>The interface <literal>Value</literal> models a 
@@ -163,6 +174,7 @@
         
         <programlisting>public: interface Value&lt;T&gt; {
     public: () produces T get;
+    public: onGet( (T) produces T interceptor );
 }</programlisting>
 
         <para>The interface <literal>OpenValue</literal> models 
@@ -171,6 +183,7 @@
         <programlisting>public: interface OpenValue&lt;T&gt; 
         satisfies Value&lt;T&gt; {
     public: (T) void set;
+    public: onSet( (T) produces T interceptor );
 }</programlisting>
 
     </section>
@@ -201,6 +214,7 @@
     public: Callable&lt;S&gt; curry(X instance);
     public: Boolean static;
     public: Boolean once;
+    public: onCall( ... );
 }</programlisting>
         
         <programlisting>public: interface Attribute&lt;X,T&gt; 
@@ -208,11 +222,13 @@
     public: Type&lt;T&gt; attributeType;
     public: boolean mutable;
     public: Value&lt;T&gt; curry(X instance);
+    public: onGet( (X,T) produces T interceptor );
 }</programlisting>
                 
         <programlisting>public: interface MutableAttribute&lt;X,T&gt;
         satisfies Attribute&lt;X,T&gt; {
     public override: OpenValue&lt;T&gt; curry(X instance);
+    public: onSet( (X,T) produces T interceptor );
 }</programlisting>
                 
     </section>
