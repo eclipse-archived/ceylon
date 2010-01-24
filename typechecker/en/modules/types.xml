@@ -1079,7 +1079,7 @@
      */
     public static: List<X> from<X>(iterated: Iterable<X> elements,
                                    coordinated: (X) produces Boolean if,
-                                   optional: (X,X) produces Comparison by = null);
+                                   optional coordinated: (X) produces Comparable by = null);
 
     /**
      * Iterate elements and for each element evaluate the first block. 
@@ -1088,7 +1088,7 @@
      */
     public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
                                      coordinated: (X) produces Y select,
-                                     optional: (Y,Y) produces Comparison by = null);
+                                     optional coordinated: (X) produces Comparable by = null);
 
     /**
      * Iterate elements and select those for which the first block 
@@ -1099,7 +1099,7 @@
     public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
                                      coordinated: (X) produces Boolean if, 
                                      coordinated: (X) produces Y select,
-                                     optional: (Y,Y) produces Comparison by = null);
+                                     optional coordinated: (X) produces Comparable by = null);
 
     /**
      * Return the first element for which the block evaluates to true,
