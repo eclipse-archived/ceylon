@@ -385,7 +385,7 @@ CLOSEBRACE</programlisting>
             
             <para>Method invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := (Expression DOT)? Identifier ParameterValues</programlisting>
+            <programlisting>MethodInvocation := (Expression DOT)? Identifier TypeParameters? ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -406,7 +406,7 @@ CLOSEBRACE</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (Type DOT)? Identifier ParameterValues</programlisting>
+            <programlisting>StaticMethodInvocation := (Type DOT)? Identifier TypeParameters? ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -423,7 +423,7 @@ CLOSEBRACE</programlisting>
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := Type ParameterValues</programlisting>
+            <programlisting>Instantiation := RegularType ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -471,7 +471,7 @@ CLOSEBRACE</programlisting>
             
             <para>Inline classes may be instantiated according to:</para>
             
-            <programlisting>InlineClass := Annotations Type Instantiation Interfaces Block</programlisting>
+            <programlisting>InlineClass := Annotations? Instantiation Interfaces Block</programlisting>
 
             <para>For example:</para>
             
@@ -1867,7 +1867,7 @@ CLOSEBRACE</programlisting>
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression := FunctorType? FunctorLocals OpenBlock</programlisting>
+        <programlisting>FunctorExpression := FunctorLocals OpenBlock</programlisting>
         
         <programlisting>FunctorLocals := OPENPAREN ( Variable | VariablePair (COMMA Variable | VariablePair)* ) CLOSEPAREN</programlisting>
         
