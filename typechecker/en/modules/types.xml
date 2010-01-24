@@ -324,7 +324,7 @@
 
         <para>Classes with enumerated instances implicitly extend <literal>lang.Selector</literal>:</para>
         
-        <programlisting>public: class Selector&lt;X&gt;(String name, int ordinal)
+        <programlisting>public abstract: class Selector&lt;X&gt;(String name, int ordinal)
         satisfies Case&lt;X&gt;
         where X >= Selector&lt;X&gt; { ... }</programlisting>
         
