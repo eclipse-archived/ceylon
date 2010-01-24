@@ -55,19 +55,24 @@ Declaration</programlisting>
         
          <programlisting>ControlDirective := 
 "return" Expression | 
-"found" Expression | 
+"found" | 
 "break" | 
 "throw" Expression</programlisting>
         
-        <para>The <literal>return</literal> directive may not be used outside of
-        the body of an attribute getter, a non-<literal>void</literal> method or 
-        a converter.</para>
+        <para>The <literal>return</literal> directive may not be used outside of the 
+        body of an attribute getter, a non-<literal>void</literal> method or a 
+        converter.</para>
         
-        <para>The <literal>break</literal> directive may not be used outside of
-        the body of a loop.</para>
+        <para>The <literal>break</literal> directive may not be used outside of the 
+        body of a loop.</para>
         
-        <para>The <literal>found</literal> directive may not be used outside of
-        the body of a <literal>for/fail</literal> loop.</para>
+        <para>The <literal>found</literal> directive may not be used outside of the 
+        body of a <literal>for/fail</literal> loop.</para>
+        
+        <para>TODO: We could support <literal>for/fail</literal> loops that return a 
+        value by adding a <literal>found expr</literal> directive. We could support
+        conditionals that return a value by adding a <literal>then expr</literal>
+        directive.</para>
         
     </section>
     
