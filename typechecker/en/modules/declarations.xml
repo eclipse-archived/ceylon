@@ -1267,6 +1267,23 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
                 
     </section>
     
+    <section>
+       <title>Type aliases</title>
+    
+       <para>A type alias allows a type to be referred  to more compactly.</para>
+       
+       <programlisting>Annotations? "alias" Identifier TypeParameters? Interfaces? TypeConstraints? SEMICOLON</programlisting>
+       
+       <para>For example:</para>
+       
+       <programlisting>public: alias People satisfies List&lt;Person&gt;;</programlisting>
+       
+       <programlisting>package: alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
+       
+       <programlisting>alias Compare&lt;T&gt; satisfies (T,T) produces Comparison;</programlisting>
+    
+    </section>
+    
     <section id="converters">
         <title>Converters</title>
         
