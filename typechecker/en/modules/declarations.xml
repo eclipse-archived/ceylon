@@ -59,13 +59,17 @@ Declaration?</programlisting>
     
     <para>There are also functor types:</para>
     
-    <programlisting>FunctorType := "F" LT Type (COMMA Type)* COLON (Type|"void") GT</programlisting>
+    <programlisting>FunctorType := 
+OPENPAREN Type (COMMA Annotations? Type)* CLOSEPAREN 
+("produces" Annotations? Type | "void")</programlisting>
     
     <para>For example:</para>
     
-    <programlisting>F&lt;X,X:Comparison&gt;</programlisting>
-    <programlisting>F&lt;Payment:Boolean&gt;</programlisting>
-    <programlisting>F&lt;Y:void&gt;</programlisting>
+    <programlisting>(X,X) produces Comparison</programlisting>
+    <programlisting>(Payment) produces Boolean</programlisting>
+    <programlisting>(Y) void</programlisting>
+    <programlisting>() produces optional:Object</programlisting>
+    <programlisting>(optional:Y, Factory&lt;Y&gt;) produces Y</programlisting>
     
     </section>
 
@@ -1097,8 +1101,8 @@ TypeConstraintList?
 SEMICOLON</programlisting>
 
         <para>TODO: instead of having explicitly declared functor types like <literal>Order&lt;Person&gt;</literal>, 
-        we can just provide built-in functor types like <literal>F&lt;Person,Person:Comparison&gt;</literal>. If we
-        want more compact type names, we can provide some kind of typedef.</para>
+        we can just provide built-in functor types. If we want more compact type names, we can 
+        provide some kind of typedef.</para>
 
         <para>TODO: let's wait and see what Java 7 does with closures. It will be easier for
         developers to learn something that is aligned with what Java does.</para>

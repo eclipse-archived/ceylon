@@ -44,6 +44,8 @@ Declaration</programlisting>
         <itemizedlist>
             <listitem>the <literal>return</literal> directive&mdash;to return a value from a method, 
             attribute getter or converter,</listitem>
+            <listitem>the <literal>produces</literal> directive&mdash;to return a value from a 
+            functor,</listitem>
             <listitem>the <literal>found</literal> directive&mdash;to terminate a <literal>for/fail</literal> 
             loop successfully,</listitem>
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop unsuccessfully, 

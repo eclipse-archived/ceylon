@@ -321,24 +321,11 @@ if you prefer.";</programlisting>
         <para>For example:</para>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;&gt;;</programlisting>
-        <programlisting>Attribute&lt;Person,String&gt; nameAttribute = Person#name;</programlisting>
-        <programlisting>Method&lt;Person,F&lt;String:void&gt;&gt; sayMethod = Person#say;</programlisting>
-        
-        <!--
-        <para>Method literals satisfy the type <literal>F&lt;X,P,Q,...:R&gt;</literal> where 
-        <literal>X</literal> is the declaring type, <literal>P,Q,...</literal> are the method 
-        parameter types, and <literal>R</literal> is the method return type.</para>
-        
-        <para>Attribute literals satisfy the types <literal>F&lt;X:T&gt;</literal> and 
-        <literal>F&lt;X,T:void&gt;</literal> where <literal>X</literal> is the declaring type
-        and <literal>T</literal> is the attribute type.</para>
-        
-        <para>Therefore, method and attriute literals may be assigned directly to an
-        assignable expression of the matching functor type.</para>
-        -->
+        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person#name;</programlisting>
+        <programlisting>Method&lt;Person, (String) void&gt;&gt; sayMethod = Person#say;</programlisting>
         
         <para>Note that the <literal>#</literal> curry operator may also be applied to an 
-        arbitrary expression, to obtain a <literal>Callable&lt;F&lt;P,Q,...:R&gt;&gt;</literal> 
+        arbitrary expression, to obtain a <literal>Callable&lt;(P,Q,...) produces R&gt;</literal> 
         where <literal>P,Q,...</literal> are the method parameter types and <literal>R</literal> 
         is the method return type, or a <literal>Value&lt;T&gt;</literal> or 
         <literal>OpenValue&lt;T&gt;</literal> where <literal>T</literal> is the attribute 
@@ -748,7 +735,7 @@ CLOSEBRACE</programlisting>
             <entry></entry>
             <entry><literal>Object</literal></entry>
             <entry></entry>
-            <entry><literal>Callable&lt;F&lt;P,Q,...:R&gt;&gt;</literal>, 
+            <entry><literal>Callable&lt;(P,Q,...) produces R&gt;</literal>, 
             <literal>Value&lt;T&gt;</literal> or
             <literal>OpenValue&lt;T&gt;</literal></entry>
         </row>
@@ -1885,19 +1872,19 @@ CLOSEBRACE</programlisting>
         <programlisting>FunctorLocals := OPENPAREN ( Variable | VariablePair (COMMA Variable | VariablePair)* ) CLOSEPAREN</programlisting>
         
         <para>A functor body may not contain a <literal>return</literal> directive. If the functor
-        body is a block, the value of the functor, when executed, is the value of the last expression
-        in the block.</para>
+        body is a block, the value of the functor, when executed, is determined by the 
+        <literal>produces</literal> directive.</para>
                 
         <para>For example:</para>
         
-        <programlisting>F&lt;Float,Float:Comparison&gt; order = Order&lt;Float&gt;(Float x, Float y) { x&lt;=&gt;y };</programlisting>
+        <programlisting>(Float,Float) produces Comparison order = (Float x, Float y) { produces x&lt;=&gt;y };</programlisting>
         
-        <programlisting>people.sort( F&lt;Person,Person:Comparison&gt;(Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
+        <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
-        <programlisting>people.select( F&lt;Person:Boolean&gt;(Person p) p.age>18 )
-    .collect( F&lt;Person,String&gt;(Person p) p.name );</programlisting>
+        <programlisting>people.select( (Person p) p.age>18 )
+    .collect( (Person p) p.name );</programlisting>
         
-        <programlisting>namedValues.each( F&lt;Entry&lt;String,Object&gt;:void&gt; (String name->Object value) log.info("${name} ${value}") );</programlisting>
+        <programlisting>namedValues.each( (String name->Object value) log.info("${name} ${value}") );</programlisting>
         
         <!--  
         <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
@@ -1905,31 +1892,13 @@ CLOSEBRACE</programlisting>
         <programlisting>people.select( Collect&lt;Person&gt;(Person p: p.age>18) );</programlisting>
         -->
         
-        <para>The functor type may be omitted in assignments, return directives or method 
-        parameters, if the type can be inferred.</para>
-        
-        <programlisting>F&lt;Float,Float:Comparison&gt; order = (Float x, Float y) { x&lt;=&gt;y };</programlisting>
-        
-        <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
-                
-        <programlisting>people.select( (Person p) p.age>18 )
-    .collect( (Person p) p.name );</programlisting>
-
-        <programlisting>namedValues.each( (String name->Object value) log.info("${name} ${value}") );</programlisting>
-
-        <!--  
-        <programlisting>people.collect( (Person p: p.age>18) return p.name; );</programlisting>
-        
-        <programlisting>people.select( (Person p: p.age>18) );</programlisting>
-        -->
-        
         <para>Consider the following functor expression:</para>
         
-        <programlisting>F&lt;String,String:Comparison&gt; order = (String x, String y) { x &lt;=&gt; y }</programlisting>
+        <programlisting>(String,String) produces Comparison order = (String x, String y) { produces x &lt;=&gt; y }</programlisting>
         
         <para>Or:</para>
         
-        <programlisting>F&lt;String,String:Comparison&gt; order = (String x, String y) x &lt;=&gt; y;</programlisting>
+        <programlisting>(String,String) produces Comparison order = (String x, String y) x &lt;=&gt; y;</programlisting>
         
         <para>These expressions are both equivalent to this Java code:</para>
 
@@ -1999,12 +1968,12 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
         
         <programlisting>String label = (x>10).if() isTrue "big" isFalse "little";</programlisting>
         
-        <programlisting>amounts.sort() by (Float x, Float y) { x&lt;=&gt;y }</programlisting>
+        <programlisting>amounts.sort() by (Float x, Float y) { produces x&lt;=&gt;y }</programlisting>
         
         <programlisting>people.sort() by (Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
         
-        <programlisting>people.select() only (Person p) { p.age>18 }
-    .collect() each (Person p) { p.name };</programlisting>
+        <programlisting>people.select() only (Person p) { produces p.age>18 }
+    .collect() each (Person p) { produces p.name };</programlisting>
     
         <programlisting>namedValues.each() do (String name->Object value) log.info("${name} ${value}");</programlisting>
 
@@ -2041,15 +2010,15 @@ isFalse {
         <programlisting>(Expression DOT)? Identifier OPENPAREN ForIterator CLOSEPAREN (Identifier SimpleFunctorExpression)*</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
-        of type <literal>F&lt;X:Y&gt;</literal> need not declare its parameter. Instead, 
-        its parameter is declared by the iterator.</para>
+        of type <literal>(X) produces Y</literal> or <literal>(X) void</literal> need not 
+        declare its parameter. Instead, its parameter is declared by the iterator.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static:
 List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements, 
-                  coordinated: F&lt;X:Boolean&gt; if, 
-                  coordinated: F&lt;X:Y&gt; select);</programlisting>
+                  coordinated: (X) produces Boolean if, 
+                  coordinated: (X) produces Y select);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2079,15 +2048,15 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements,
         <programlisting>(Expression DOT)? Identifier OPENPAREN Variable Initializer CLOSEPAREN (Identifier SimpleFunctorExpression)*</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
-        of type <literal>F&lt;X:Y&gt;</literal> need not declare its parameter. Instead, 
-        its parameter is declared by the initializer.</para>
+        of type <literal>(X) produces Y</literal> or <literal>(X) void</literal> need not 
+        declare its parameter. Instead, its parameter is declared by the initializer.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static:
 Y ifExists&lt;X,Y&gt;(specified optional: X value,
-                coordinated: F&lt;X,Y&gt; then, 
-                F&lt;Y&gt; otherwise);</programlisting>
+                coordinated: (X) produces Y then, 
+                () produces Y otherwise);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2101,7 +2070,7 @@ Y ifExists&lt;X,Y&gt;(specified optional: X value,
         
         <programlisting>public static:
 Y using&lt;X,Y&gt;(specified: X resource, 
-             coordinated: F&lt;X,Y&gt; seek)
+             coordinated: (X) produces Y seek)
   where X >= Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>

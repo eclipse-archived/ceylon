@@ -162,7 +162,7 @@
         readable value.</para>
         
         <programlisting>public: interface Value&lt;T&gt; {
-    public: F&lt;:T&gt; get;
+    public: () produces T get;
 }</programlisting>
 
         <para>The interface <literal>OpenValue</literal> models 
@@ -170,7 +170,7 @@
         
         <programlisting>public: interface OpenValue&lt;T&gt; 
         satisfies Value&lt;T&gt; {
-    public: F&lt;T:void&gt; set;
+    public: (T) void set;
 }</programlisting>
 
     </section>
@@ -248,23 +248,23 @@
 
         <programlisting><![CDATA[public: decorator Iterables<X> (Iterable<X> iterable) {
 
-    public: void each(F<X:void> each) { ... }
-    public: Integer count(F<X:Boolean> test) { ... }
-    public: Boolean isAll(F<X:Boolean> test) { ... }
-    public: Boolean isAny(F<X:Boolean> test) { ... }
+    public: void each((X) void each) { ... }
+    public: Integer count((X) produces Boolean test) { ... }
+    public: Boolean isAll((X) produces Boolean test) { ... }
+    public: Boolean isAny((X) produces Boolean test) { ... }
     
-    public optional: X first(F<X:Boolean> test) { ... }
+    public optional: X first((X) produces Boolean test) { ... }
     
-    public: Y accumulate<Y>(Y initial, F<Y,X:Y> accumulate) { ... }
+    public: Y accumulate<Y>(Y initial, (Y,X) produces Y accumulate) { ... }
     
-    public: Collection<X> select(F<X:Boolean> test) { ... }
-    public: Collection<X> reject(F<X:Boolean> test) { ... }
+    public: Collection<X> select((X) produces Boolean test) { ... }
+    public: Collection<X> reject((X) produces Boolean test) { ... }
     
-    public: Bag<Y> transform<Y>(F<X:Y> transform) { ... }
-    public: List<Y> transform<Y>(F<X:Y> transform, F<Y,Y:Comparison> compare) { ... }
-    public: Set<Y> collect<Y>(F<X:Y> transform) { ... }
-    public: Map<X, Y> map<Y>(F<X:Y> transform) { ... }
-    public: List<X> list(F<X,X:Comparison> compare) { ... }
+    public: Bag<Y> transform<Y>((X) produces Y transform) { ... }
+    public: List<Y> transform<Y>((X) produces Y transform, (Y,Y) produces Comparison compare) { ... }
+    public: Set<Y> collect<Y>((X) produces Y transform) { ... }
+    public: Map<X, Y> map<Y>((X) produces Y transform) { ... }
+    public: List<X> list((X,X) produces Comparison compare) { ... }
     
 }]]></programlisting>
 
@@ -294,8 +294,8 @@
 
         <programlisting><![CDATA[public: decorator OpenIterables (OpenIterable iterable) {
 
-    public: Integer remove(F<X:Boolean> test) { ... }
-    public: Integer retain(F<X:Boolean> test) { ... }
+    public: Integer remove((X) produces Boolean test) { ... }
+    public: Integer retain((X) produces Boolean test) { ... }
     
 }]]></programlisting>
 
@@ -652,7 +652,7 @@
     public: X removeLast();
     
     public: void reverse();
-    public: void sort(F<X,X:Comparison> compare);
+    public: void sort((X,X) produces Comparison> compare);
     
     public: OpenList<X> sublist(Integer from, Integer to);
     
@@ -1044,7 +1044,7 @@
      * value.
      */
     public static optional: Y ifTrue<Y>(Boolean condition,
-                                        F<:Y> then);
+                                        () produces Y then);
 
     /**
      * If the condition is true, evaluate first block,
@@ -1052,8 +1052,8 @@
      * of evaluation.
      */
     public static: Y ifTrue<Y>(Boolean condition,
-                               F<:Y> then, 
-                               F<:Y> otherwise);
+                               () produces Y then, 
+                               () produces Y otherwise);
 
     /**
      * If the value is non-null, evaluate first block,
@@ -1061,7 +1061,7 @@
      * value.
      */
     public static optional: Y ifExists<X,Y>(specified optional: X value,
-                                            coordinated: F<X,Y> then);
+                                            coordinated: (X) produces Y then);
 
     /**
      * If the value is non-null, evaluate first block,
@@ -1069,8 +1069,8 @@
      * of evaluation.
      */
     public static: Y ifExists<X,Y>(specified optional: X value,
-                                   coordinated: F<X,Y> then, 
-                                   F<Y> otherwise);
+                                   coordinated: (X) produces Y then, 
+                                   () produces Y otherwise);
 
     /**
      * Iterate elements and return those for which the first
@@ -1078,8 +1078,8 @@
      * if specified.
      */
     public static: List<X> from<X>(iterated: Iterable<X> elements,
-                                   coordinated: F<X:Boolean> if,
-                                   optional: F<X,X:Comparison> by = null);
+                                   coordinated: (X) produces Boolean if,
+                                   optional: (X,X) produces Comparison by = null);
 
     /**
      * Iterate elements and for each element evaluate the first block. 
@@ -1087,8 +1087,8 @@
      * block, if specified.
      */
     public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: F<X:Y> select,
-                                     optional: F<Y,Y:Comparison> by = null);
+                                     coordinated: (X) produces Y select,
+                                     optional: (Y,Y) produces Comparison by = null);
 
     /**
      * Iterate elements and select those for which the first block 
@@ -1097,16 +1097,16 @@
      * block, if specified.
      */
     public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: F<X:Boolean> if, 
-                                     coordinated: F<X:Y> select,
-                                     optional: F<Y,Y:Comparison> by = null);
+                                     coordinated: (X) produces Boolean if, 
+                                     coordinated: (X) produces Y select,
+                                     optional: (Y,Y) produces Comparison by = null);
 
     /**
      * Return the first element for which the block evaluates to true,
      * or a null value if no such element is found.
      */
     public static optional: X search<X>(iterated: Iterable<X> elements,
-                                        coordinated: F<X:Boolean> first);
+                                        coordinated: (X) produces Boolean first);
     
     /**
      * Return the first element for which the first block evaluates to 
@@ -1114,20 +1114,20 @@
      * element is found.
      */
     public static: X search<X>(iterated: Iterable<X> elements,
-                               coordinated: F<X:Boolean> first
-                               F<:X> otherwise);
+                               coordinated: (X) produces Boolean first
+                               () produces X otherwise);
     
     /**
      * Return true iff for every element, the block evaluates to true.
      */
     public static: Boolean forAll<X>(iterated: Iterable<X> elements,
-                                     coordinated: F<X:Boolean> every);
+                                     coordinated: (X) produces Boolean every);
 
     /**
      * Return true iff for some element, the block evaluates to true.
      */
     public static: Boolean forAny<X>(iterated: Iterable<X> elements,
-                                     coordinated: F<X:Boolean> exists);
+                                     coordinated: (X) produces Boolean exists);
     
     /**
      * Using the given resource, attempt to evaluate the first block.
@@ -1135,8 +1135,8 @@
      * the exception block.
      */
     public static: Y using<X,Y>(specified: X resource,
-                                coordinated: F<X,Y> seek,
-                                F<Exception+,Y>... except)
+                                coordinated: (X) produces Y seek,
+                                (E) produces Y where E>=Exception... except)
                      where X >= Usable;
 
 }]]></programlisting>
