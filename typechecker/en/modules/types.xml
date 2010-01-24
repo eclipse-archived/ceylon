@@ -246,7 +246,7 @@
 
         <para>The following decorator exists:</para>
 
-        <programlisting><![CDATA[public: decorator Iterables<X> (Iterable<X> iterable) {
+        <!--programlisting><![CDATA[public: decorator Iterables<X> (Iterable<X> iterable) {
 
     public: void each((X) void each) { ... }
     public: Integer count((X) produces Boolean test) { ... }
@@ -266,16 +266,8 @@
     public: Map<X, Y> map<Y>((X) produces Y transform) { ... }
     public: List<X> list((X,X) produces Comparison compare) { ... }
     
-}]]></programlisting>
+}]]></programlisting-->
 
-    <!--
-        <programlisting>public: void functor Do&lt;X&gt;(X element);</programlisting>
-        <programlisting>public: Boolean functor Test&lt;X&gt;(X element);</programlisting>
-        <programlisting>public: Y functor Transform&lt;X,Y&gt;(X element);</programlisting>
-        <programlisting>public: Y functor Accumulate&lt;X,Y&gt;(Y current, X element);</programlisting>
-        <programlisting>public: Comparison functor Compare&lt;X&gt;(X x, Y y);</programlisting>
-    -->
-    
         <para>Some iterable objects may support element removal during iteration.</para>
         
         <programlisting>public mutable: interface OpenIterable&lt;X&gt; 
@@ -292,12 +284,12 @@
     
 }</programlisting>
 
-        <programlisting><![CDATA[public: decorator OpenIterables (OpenIterable iterable) {
+        <!--programlisting><![CDATA[public: decorator OpenIterables (OpenIterable iterable) {
 
     public: Integer remove((X) produces Boolean test) { ... }
     public: Integer retain((X) produces Boolean test) { ... }
     
-}]]></programlisting>
+}]]></programlisting-->
 
     </section>
     
@@ -1037,6 +1029,19 @@
         for building complex expressons.</para>
         
         <programlisting><![CDATA[public: class Util {
+        
+    /**
+     * Evaluate the block. Useful for turning a series
+     * of statements into an expression.
+     */
+    public static: X evaluate<X>(() produces X do);
+
+    /**
+     * Evaluate the block. Useful for turning a series
+     * of statements into an expression.
+     */
+    public static: X evaluate<X>(specified optional: X variable,
+                                 coordinated: () produces X do);
 
     /**
      * If the condition is true, evaluate first block,
@@ -1077,8 +1082,8 @@
      * block evaluates to true, ordered using the second block,
      * if specified.
      */
-    public static: List<X> from<X>(iterated: Iterable<X> elements,
-                                   coordinated: (X) produces Boolean if,
+    public static: List<X> list<X>(iterated: Iterable<X> elements,
+                                   coordinated: (X) produces Boolean having,
                                    optional coordinated: (X) produces Comparable by = null);
 
     /**
@@ -1086,7 +1091,7 @@
      * Build a list of the resulting values, ordered using the second 
      * block, if specified.
      */
-    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
+    public static: List<Y> list<X,Y>(iterated: Iterable<X> elements,
                                      coordinated: (X) produces Y select,
                                      optional coordinated: (X) produces Comparable by = null);
 
@@ -1096,8 +1101,8 @@
      * Build a list of the resulting values, ordered using the third 
      * block, if specified.
      */
-    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: (X) produces Boolean if, 
+    public static: List<Y> list<X,Y>(iterated: Iterable<X> elements,
+                                     coordinated: (X) produces Boolean having, 
                                      coordinated: (X) produces Y select,
                                      optional coordinated: (X) produces Comparable by = null);
 
@@ -1105,17 +1110,23 @@
      * Return the first element for which the block evaluates to true,
      * or a null value if no such element is found.
      */
-    public static optional: X search<X>(iterated: Iterable<X> elements,
-                                        coordinated: (X) produces Boolean first);
+    public static optional: X first<X>(iterated: Iterable<X> elements,
+                                       coordinated: (X) produces Boolean having);
     
     /**
      * Return the first element for which the first block evaluates to 
      * true, or the result of evaluating the second block, if no such
      * element is found.
      */
-    public static: X search<X>(iterated: Iterable<X> elements,
-                               coordinated: (X) produces Boolean first
-                               () produces X otherwise);
+    public static: X first<X>(iterated: Iterable<X> elements,
+                              coordinated: (X) produces Boolean having
+                              () produces X otherwise);
+    
+    /**
+     * Count the elements for with the block evaluates to true.
+     */
+    public static: Integer count<X>(iterated: Iterable<X> elements,
+                                    coordinated: (X) produces Boolean having);
     
     /**
      * Return true iff for every element, the block evaluates to true.
