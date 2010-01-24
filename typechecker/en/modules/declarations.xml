@@ -1173,7 +1173,7 @@ Interfaces?
 TypeConstraintList? 
 OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlisting>
 
-        <para>Decorators may introduce interfaces types and methods.</para>
+        <para>Decorators may introduce interfaces and methods.</para>
 
         <section>
             <title>Introduced methods</title>
@@ -1267,12 +1267,22 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
                 
     </section>
     
-    <section>
+    <section id="typealiases">
        <title>Type aliases</title>
     
        <para>A type alias allows a type to be referred  to more compactly.</para>
        
        <programlisting>Annotations? "alias" Identifier TypeParameters? Interfaces? TypeConstraints? SEMICOLON</programlisting>
+       
+       <para>A type alias may satisfy either:</para>
+       
+       <itemizedlist>
+           <listitem><para>any number of interfaces and at most one class, or</para></listitem>
+           <listitem><para>a single functor type.</para></listitem>
+       </itemizedlist>
+       
+       <para>Any expression which is assignable to all the satisfied types is assignable 
+       to the alias type.</para>
        
        <para>For example:</para>
        
