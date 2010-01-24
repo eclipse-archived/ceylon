@@ -1075,7 +1075,7 @@
      * block evaluates to true, ordered using the second block,
      * if specified.
      */
-    public static: List<X> list<X>(iterated: Iterable<X> elements,
+    public static: List<X> from<X>(iterated: Iterable<X> elements,
                                    coordinated: (X) produces Boolean having,
                                    optional coordinated: (X) produces Comparable by = null);
 
@@ -1084,7 +1084,7 @@
      * Build a list of the resulting values, ordered using the second 
      * block, if specified.
      */
-    public static: List<Y> list<X,Y>(iterated: Iterable<X> elements,
+    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
                                      coordinated: (X) produces Y select,
                                      optional coordinated: (X) produces Comparable by = null);
 
@@ -1094,7 +1094,7 @@
      * Build a list of the resulting values, ordered using the third 
      * block, if specified.
      */
-    public static: List<Y> list<X,Y>(iterated: Iterable<X> elements,
+    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
                                      coordinated: (X) produces Boolean having, 
                                      coordinated: (X) produces Y select,
                                      optional coordinated: (X) produces Comparable by = null);
