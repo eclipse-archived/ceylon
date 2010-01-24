@@ -623,6 +623,8 @@
     
     public: List<X> reversed();
     
+    public: Map<Integer,X> map;
+    
     public: OpenList<X> copy();
 
 }]]></programlisting>
@@ -697,6 +699,8 @@
         satisfies Collection<X>, Correspondence<X, Integer> {
     
     public: OpenBag<X> copy();
+    
+    public: Map<X,Integer> map;
     
 }]]></programlisting>
 
