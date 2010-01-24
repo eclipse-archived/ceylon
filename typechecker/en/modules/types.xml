@@ -1037,13 +1037,6 @@
     public static: X evaluate<X>(() produces X do);
 
     /**
-     * Evaluate the block. Useful for turning a series
-     * of statements into an expression.
-     */
-    public static: X evaluate<X>(specified optional: X variable,
-                                 coordinated: (X) produces X do);
-
-    /**
      * If the condition is true, evaluate first block,
      * and return the result. Otherwise, return a null
      * value.
