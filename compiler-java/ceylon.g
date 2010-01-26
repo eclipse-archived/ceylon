@@ -48,26 +48,40 @@ stringLiteral
 
 expression 
     :   logicalNegationExpression
-        ('=' expression)?
+        (('=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=') expression)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
     
-    
+implicationExpression
+    :
+        disjunctionExpression ('=>' disjunctionExpression)*
+    ;
+
+disjunctionExpression
+    :
+        conjunctionExpression (('||' | '|' '^') conjunctionExpression)*
+    ;
+
+conjunctionExpression
+    :
+        logicalNegationExpression (('&&' | '&') logicalNegationExpression)*
+    ;
+
 logicalNegationExpression
 	:
-	'!' expression
-	| equalityExpression
+        '!' expression
+        | equalityExpression
 	;
     
 equalityExpression
 	:	comparisonExpression
-	(('=='|'!='|'===') comparisonExpression)*
+        (('=='|'!='|'===') comparisonExpression)*
 	;
     
 comparisonExpression
 	:
-	defaultExpression
-	(('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)*
+        defaultExpression
+        (('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)*
 	;
 
 defaultExpression
@@ -155,6 +169,10 @@ selector
     IDENTIFIER
         (arguments
         )?
+        | ('[' expression '..' expression ']')
+        | ('[' expression '...')
+        | ('[' '...' expression ']')
+        | ('[' expression (',' expression)* ']' )
     
     |   '.' 'this'
     |   '.' 'super'
@@ -593,6 +611,10 @@ NEQUAL	:	'<=>'
 	;
 	
 IN	:	'in'
+	;
+
+	
+HASH	:	'#'
 	;
 
 IDENTIFIER
