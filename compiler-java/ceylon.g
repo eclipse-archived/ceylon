@@ -1,7 +1,7 @@
 grammar ceylon;
 
 options {
-    backtrack=true;
+/*    backtrack=true;  */
     memoize=true;
 }
 
@@ -16,6 +16,11 @@ statement
 	:	
         (declaration
         | expression) ;
+
+declaration
+// FIXME: We need a classname like foo.bar.baz, not just a bare identifier
+	:	IDENTIFIER IDENTIFIER ('=' expression)?
+	;
 
 literal
 	: enumerationLiteral
@@ -47,7 +52,7 @@ stringLiteral
 
 
 expression 
-    :   logicalNegationExpression
+    :   implicationExpression
         (('=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=') expression)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
@@ -69,7 +74,7 @@ conjunctionExpression
 
 logicalNegationExpression
 	:
-        '!' expression
+        '!' equalityExpression
         | equalityExpression
 	;
     
@@ -108,12 +113,7 @@ dateCompositionExpression
 
 additiveExpression
     :   multiplicativeExpression
-        (   
-            (   '+'
-            |   '-'
-            )
-            multiplicativeExpression
-        )*
+        (('+' |  '-') multiplicativeExpression)*
     ;
 
 multiplicativeExpression 
@@ -139,25 +139,15 @@ unaryExpression
 unaryExpressionNotPlusMinus 
     :   '~' unaryExpression
     |   primary
-        (selector
-        )*
-        (   '++'
-        |   '--'
-        )?
     ;
 
 primary
 	:   IDENTIFIER
-        ('.' IDENTIFIER
-        )*
-        (arguments)?
+        selector*
     | literal
     | parExpression
     ;
 
-methodInvocation
-	: (primary '.') IDENTIFIER orderedParameterValues
-	;
 
 orderedParameterValues
 	:  '(' expression (COMMA expression)* ')'
@@ -165,28 +155,25 @@ orderedParameterValues
 
 
 selector  
-    :   ('.' | '^.'|'?.') 
-    IDENTIFIER
-        (arguments
-        )?
-        | ('[' expression '..' expression ']')
-        | ('[' expression '...')
-        | ('[' '...' expression ']')
-        | ('[' expression (',' expression)* ']' )
-    
-    |   '.' 'this'
-    |   '.' 'super'
+    :   ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
+    |
+        arguments
+     |   '[' ( expression ('...'
+                           | (',' expression)*
+                           | '..' expression)
+            | '...' expression)
+        ']'        
     ;
 
 arguments 
     :
-        (positionalArguments) (namedArguments)?| (namedArguments)
+        '(' positionalArguments ')'
+        | '{' namedArguments '}'
     ;
 
 namedArgument
     :
         IDENTIFIER '=' expression
-    |
     ;
 
 varargArguments
@@ -196,9 +183,7 @@ varargArguments
 
 namedArguments
 	:
-        '{'
-        (namedArgument ';')* varargArguments?
-        '}'
+        ((namedArgument ';') => namedArgument ';')* varargArguments?
 	;
 
 expressionList 
@@ -216,13 +201,8 @@ identifierSuffix
     ;
 
 positionalArguments
-    :   '(' (expressionList
-        )? ')'
+    :   expressionList?
     ;
-
-declaration
-	:	IDENTIFIER (selector)* IDENTIFIER ('=' expression)?
-	;
 
 INTLITERAL
     : ('0' .. '9')('0' .. '9')*
@@ -615,6 +595,9 @@ IN	:	'in'
 
 	
 HASH	:	'#'
+	;
+
+PLUSEQ	:	'+='
 	;
 
 IDENTIFIER
