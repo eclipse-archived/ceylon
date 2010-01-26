@@ -5,7 +5,6 @@ options {
     memoize=true;
 }
 
-
 compilationUnit 
 	:
         '{'
@@ -15,8 +14,8 @@ compilationUnit
 
 statement
 	:	
-	(declaration
-	| expression) ;
+        (declaration
+        | expression) ;
 
 literal
 	: enumerationLiteral
@@ -34,10 +33,63 @@ integerLiteral
 	: INTLITERAL
 	;
 
+enumerationLiteral
+    : 'none'
+	|	'{'( SIMPLESTRINGLITERAL)? (',' SIMPLESTRINGLITERAL)* '}'
+	;
+
+
+stringLiteral
+    : SIMPLESTRINGLITERAL
+        /* | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL  */
+    ;
+
+
+
 expression 
-    :   additiveExpression
-    ('=' expression)?
-/*    | '{' expression ';' (expression ';')* '}' */
+    :   logicalNegationExpression
+        ('=' expression)?
+        /*    | '{' expression ';' (expression ';')* '}' */
+    ;
+    
+    
+logicalNegationExpression
+	:
+	'!' expression
+	| equalityExpression
+	;
+    
+equalityExpression
+	:	comparisonExpression
+	(('=='|'!='|'===') comparisonExpression)*
+	;
+    
+comparisonExpression
+	:
+	defaultExpression
+	(('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)*
+	;
+
+defaultExpression
+	:	
+	existenceEmptinessExpression ('default' defaultExpression)?
+	;
+
+existenceEmptinessExpression
+    :
+        dateCompositionExpression
+        ('exists' | 'nonempty') ?
+    ;
+
+rangeIntervalEntryExpression
+    :
+        dateCompositionExpression
+        (('..'|'->') dateCompositionExpression)?
+    ;
+
+dateCompositionExpression
+    :
+        additiveExpression ('@' additiveExpression)?
     ;
 
 additiveExpression
@@ -72,37 +124,12 @@ unaryExpression
 
 unaryExpressionNotPlusMinus 
     :   '~' unaryExpression
-    |   '!' unaryExpression
-    |   primary   
-    ;
-
-
-enumerationLiteral
-    : 'none'
-	|	'{'( SIMPLESTRINGLITERAL)? (',' SIMPLESTRINGLITERAL)* '}'
-	;
-
-
-stringLiteral
-    : SIMPLESTRINGLITERAL
-    ;
-
-
-orderedParameterValues
-	:  '(' expression (COMMA expression)* ')'
-	;
-
-
-methodInvocation
-	: (primary '.') IDENTIFIER orderedParameterValues
-	;
-
-selector  
-    :   '.' IDENTIFIER
-        (arguments
+    |   primary
+        (selector
+        )*
+        (   '++'
+        |   '--'
         )?
-    |   '.' 'this'
-    |   '.' 'super'
     ;
 
 primary
@@ -112,14 +139,49 @@ primary
         (arguments)?
     | literal
     | parExpression
-        
+    ;
 
-        
+methodInvocation
+	: (primary '.') IDENTIFIER orderedParameterValues
 	;
-arguments 
-:
 
-	(positionalArguments) (namedArguments)?| (namedArguments) ;
+orderedParameterValues
+	:  '(' expression (COMMA expression)* ')'
+	;
+
+
+selector  
+    :   ('.' | '^.'|'?.') 
+    IDENTIFIER
+        (arguments
+        )?
+    
+    |   '.' 'this'
+    |   '.' 'super'
+    ;
+
+arguments 
+    :
+        (positionalArguments) (namedArguments)?| (namedArguments)
+    ;
+
+namedArgument
+    :
+        IDENTIFIER '=' expression
+    |
+    ;
+
+varargArguments
+    :	
+        expression (',' expression)*
+	;
+
+namedArguments
+	:
+        '{'
+        (namedArgument ';')* varargArguments?
+        '}'
+	;
 
 expressionList 
     :   expression
@@ -139,31 +201,10 @@ positionalArguments
     :   '(' (expressionList
         )? ')'
     ;
-	
-namedArgument
-    :
-    IDENTIFIER '=' expression
-    |
-    ;
 
-varargArguments
-:	expression (',' expression)*
-	;
-	
-namedArguments
-	:
-	'{'
-	(namedArgument ';')* varargArguments?
-	'}'
-	;
-	
 declaration
 	:	IDENTIFIER (selector)* IDENTIFIER ('=' expression)?
 	;
-/********************************************************************************************
-                  Lexer section
-*********************************************************************************************/
-
 
 INTLITERAL
     : ('0' .. '9')('0' .. '9')*
@@ -194,8 +235,6 @@ HexDigit
     :   ('0'..'9'|'a'..'f'|'A'..'F')
     ;
 
-
-
 FLOATLITERAL
     :   ('0' .. '9')+ '.' ('0' .. '9')+ Exponent?  
     |   '.' ( '0' .. '9' )+ Exponent?  
@@ -213,7 +252,6 @@ CHARLITERAL
         (    ~( '\'' | '\r' | '\n' | '\\')
         | EscapeSequence
         ) 
-        
         '\''
     ; 
 
@@ -225,6 +263,27 @@ SIMPLESTRINGLITERAL
         '"' 
     ;
 
+/*
+
+// There soesn't seem to be any reasonable way to lex these.
+
+LEFTSTRINGLITERAL
+    : '"'
+        (    ~( '\r' | '\n' | '"' | '\\')   
+        | EscapeSequence
+        )*
+        '${'
+    ;
+
+RIGHTSTRINGLITERAL
+    : '}'
+        (    ~( '\r' | '\n' | '"' | '\\')   
+        | EscapeSequence
+        )*
+        '"'
+    ;
+
+*/
 
 fragment
 EscapeSequence 
@@ -300,6 +359,10 @@ ENUM
     :   'enum'
     ;             
 
+EXISTS
+: 'exists'
+	;
+
 FINALLY
     :   'finally'
     ;
@@ -323,6 +386,10 @@ IMPORT
 INTERFACE
     :   'interface'
     ;
+    
+NONEMPTY
+: 'nonempty'
+	;
 
 PACKAGE
     :   'package'
@@ -368,9 +435,15 @@ TRY
     :   'try'
     ;
 
+/*
+
+Surely we're going to need this...
+
 VOLATILE
     :   'volatile'
     ;
+
+*/
 
 WHILE
     :   'while'
@@ -511,11 +584,17 @@ GT
 LT
     :   '<'
     ;        
+
+DOTS
+    : '..'
+    ;
     
-NULL	
-	: 'null'
-	;	
-              
+NEQUAL	:	'<=>'
+	;
+	
+IN	:	'in'
+	;
+
 IDENTIFIER
     :   IdentifierStart IdentifierPart*
     ;
