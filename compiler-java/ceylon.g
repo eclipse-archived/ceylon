@@ -1,7 +1,7 @@
 grammar ceylon;
 
 options {
-/*    backtrack=true;  */
+    /*    backtrack=true;  */
     memoize=true;
 }
 
@@ -13,13 +13,19 @@ compilationUnit
 	;
 
 statement
-	:	
-        (declaration
-        | expression) ;
+	: declaration
+    | expression ;
 
 declaration
-// FIXME: We need a classname like foo.bar.baz, not just a bare identifier
-	:	IDENTIFIER IDENTIFIER ('=' expression)?
+	: typeName typeParameters? IDENTIFIER ('=' expression)?
+	;
+
+typeName
+	: 	IDENTIFIER ('.'IDENTIFIER)* 
+	;
+
+typeParameters
+	: '<' typeName typeParameters? (',' typeName typeParameters?)* '>'
 	;
 
 literal
@@ -49,14 +55,12 @@ stringLiteral
         /* | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL  */
     ;
 
-
-
 expression 
     :   implicationExpression
         (('=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=') expression)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
-    
+
 implicationExpression
     :
         disjunctionExpression ('=>' disjunctionExpression)*
@@ -73,25 +77,24 @@ conjunctionExpression
     ;
 
 logicalNegationExpression
-	:
-        '!' equalityExpression
-        | equalityExpression
+	: '!' equalityExpression
+    | equalityExpression
 	;
-    
+
 equalityExpression
 	:	comparisonExpression
         (('=='|'!='|'===') comparisonExpression)*
 	;
-    
+
 comparisonExpression
 	:
         defaultExpression
-        (('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)*
+        (('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)?
 	;
 
 defaultExpression
 	:	
-	existenceEmptinessExpression ('default' defaultExpression)?
+        existenceEmptinessExpression ('default' defaultExpression)?
 	;
 
 existenceEmptinessExpression
@@ -117,19 +120,18 @@ additiveExpression
     ;
 
 multiplicativeExpression 
-    :
-        unaryExpression
-        (   
-            (   '*'
-            |   '/'
-            |   '%'
-            )
-            unaryExpression
-        )*
+    : exponentiationExpression
+        (('*' | '/' | '%') exponentiationExpression)*
+	;
+
+// FIXME: The spec says ** should be left-associative, but it's conventionally
+// right-associative, which is what I've done here.
+exponentiationExpression
+	: unaryExpression ('**' exponentiationExpression)?
 	;
 
 unaryExpression 
-    :   '+'  unaryExpression
+    :   '$'  unaryExpression
     |   '-' unaryExpression
     |   '++' unaryExpression
     |   '--' unaryExpression
@@ -142,33 +144,32 @@ unaryExpressionNotPlusMinus
     ;
 
 primary
-	:   IDENTIFIER
+	: IDENTIFIER
         selector*
     | literal
     | parExpression
     ;
 
-
 orderedParameterValues
 	:  '(' expression (COMMA expression)* ')'
 	;
-
 
 selector  
     :   ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
     |
         arguments
-     |   '[' ( expression ('...'
-                           | (',' expression)*
-                           | '..' expression)
-            | '...' expression)
+    |   '[' ( expression ('...'
+            | (',' expression)*
+            | '..' expression)
+        | '...' expression)
         ']'        
     ;
 
 arguments 
     :
         '(' positionalArguments ')'
-        | '{' namedArguments '}'
+    |
+        '{' namedArguments '}'
     ;
 
 namedArgument
@@ -188,8 +189,7 @@ namedArguments
 
 expressionList 
     :   expression
-        (',' expression
-        )*
+        (',' expression)*
     ;
 
 parExpression 
@@ -203,6 +203,9 @@ identifierSuffix
 positionalArguments
     :   expressionList?
     ;
+
+
+// Lexer
 
 INTLITERAL
     : ('0' .. '9')('0' .. '9')*
@@ -315,7 +318,7 @@ LINE_COMMENT
         {
             skip();
         }
-    |   '//' ~('\n'|'\r')*     // a line comment could appear at the end of the file without CR/LF
+    |   '//' ~('\n'|'\r')*
         {
             skip();
         }
