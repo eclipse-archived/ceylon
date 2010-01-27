@@ -6,49 +6,82 @@ options {
 }
 
 compilationUnit 
-	:
+    :
         '{'
-        (statement ';')*
+        (statement ';'
+        | block
+        )*
         '}'
-	;
+    ;
 
 statement
-	: declaration
-    | expression ;
+    : declaration
+    | expression
+    |
+    ;
 
-declaration
-	: typeName typeParameters? IDENTIFIER ('=' expression)?
+block
+    : '{' (statement ';')+ '}'
+    ;
+        
+
+declaration    :
+       /* (modifier | instantiation)+ ':'
+        typeName typeParameters? IDENTIFIER ('=' expression)?
+        | */
+       	type IDENTIFIER ('=' expression)?
+    ;
+
+type	:	typeName typeParameters?
 	;
+
+/* declaration
+	: type ((arguments type)+ ':' type)?
+	   IDENTIFIER ('=' expression)?
+	;
+*/
+
+modifier
+    : 'public'
+    | 'module'
+    | 'package'
+    | 'abstract'
+    | 'static'
+    | 'mutable'
+    | 'optional'
+    | 'final'
+    | 'override'
+    | 'once'
+    ;
 
 typeName
-	: 	IDENTIFIER ('.'IDENTIFIER)* 
-	;
+    :   IDENTIFIER ('.'IDENTIFIER)* 
+    ;
 
 typeParameters
-	: '<' typeName typeParameters? (',' typeName typeParameters?)* '>'
-	;
+    : '<' typeName typeParameters? (',' typeName typeParameters?)* '>'
+    ;
 
 literal
-	: enumerationLiteral
-	| integerLiteral
-	| FLOATLITERAL
-	| CHARLITERAL
-	| stringLiteral
-	| dateLiteral
-    ;	
+    : enumerationLiteral
+    | integerLiteral
+    | FLOATLITERAL
+    | CHARLITERAL
+    | stringLiteral
+    | dateLiteral
+    ;   
 
 dateLiteral
     : DATELITERAL | TIMELITERAL;
 
 integerLiteral
-	: INTLITERAL
-	;
+    : INTLITERAL
+    ;
 
 enumerationLiteral
     : 'none'
-	|	'{'( SIMPLESTRINGLITERAL)? (',' SIMPLESTRINGLITERAL)* '}'
-	;
-
+    |   '{'( SIMPLESTRINGLITERAL)? (',' SIMPLESTRINGLITERAL)* '}'
+    ;
 
 stringLiteral
     : SIMPLESTRINGLITERAL
@@ -77,25 +110,25 @@ conjunctionExpression
     ;
 
 logicalNegationExpression
-	: '!' logicalNegationExpression
+    : '!' logicalNegationExpression
     | equalityExpression
-	;
+    ;
 
 equalityExpression
-	:	comparisonExpression
+    :   comparisonExpression
         (('=='|'!='|'===') comparisonExpression)?
-	;
+    ;
 
 comparisonExpression
-	:
+    :
         defaultExpression
         (('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)?
-	;
+    ;
 
 defaultExpression
-	:	
+    :   
         existenceEmptinessExpression ('default' defaultExpression)?
-	;
+    ;
 
 existenceEmptinessExpression
     :
@@ -122,17 +155,17 @@ additiveExpression
 multiplicativeExpression 
     : exponentiationExpression
         (('*' | '/' | '%') exponentiationExpression)*
-	;
+    ;
 
 // FIXME: The spec says ** should be left-associative, but it's conventionally
 // right-associative, which is what I've done here.
 exponentiationExpression
-	: postfixExpression ('**' exponentiationExpression)?
-	;
+    : postfixExpression ('**' exponentiationExpression)?
+    ;
 
 postfixExpression
-	: unaryExpression ('--' | '++')*
-	;	
+    : unaryExpression ('--' | '++')*
+    ;   
 
 unaryExpression 
     :   '$'  unaryExpression
@@ -149,20 +182,20 @@ primary
     | literal
     | parExpression
     ;
-
-orderedParameterValues
-	:  '(' expression (COMMA expression)* ')'
-	;
+    
+instantiation
+    : typeName typeParameters? arguments
+    ;
 
 selector  
     :   ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
     |
         arguments
     |   '[' 
-    	( expression ('...'
-          	    | (',' expression)*
-          	    | '..' expression)
-        	| '...' expression)
+        ( expression ('...'
+                | (',' expression)*
+                | '..' expression)
+            | '...' expression)
         ']'        
     ;
 
@@ -179,14 +212,14 @@ namedArgument
     ;
 
 varargArguments
-    :	
+    :   
         expression (',' expression)*
-	;
+    ;
 
 namedArguments
-	:
+    :
         ((namedArgument ';') => namedArgument ';')* varargArguments?
-	;
+    ;
 
 expressionList 
     :   expression
@@ -198,7 +231,7 @@ parExpression
     ;
 
 identifierSuffix 
-    :	arguments
+    :   arguments
     ;
 
 positionalArguments
@@ -210,9 +243,9 @@ positionalArguments
 
 INTLITERAL
     : ('0' .. '9')('0' .. '9')*
-	| '\'' HexDigit HexDigit HexDigit HexDigit '\''
-	| '\'' HexDigit HexDigit '\''
-	;
+    | '\'' HexDigit HexDigit HexDigit HexDigit '\''
+    | '\'' HexDigit HexDigit '\''
+    ;
 
 fragment
 Digit 
@@ -224,13 +257,14 @@ Digit2
     : Digit Digit
     ;
 
+// FIXME: Doesn't allow ISO date format.
 DATELITERAL
     : '\'' Digit Digit? '/' Digit Digit '/' Digit Digit Digit Digit  '\''
-	;
+    ;
 
 TIMELITERAL
     : '\'' Digit Digit? ':' Digit Digit (':' Digit Digit ( ':' Digit Digit Digit)?)? '\''
-	;
+    ;
 
 fragment
 HexDigit
@@ -341,10 +375,6 @@ CONST
     :   'const'
     ;
 
-CONTINUE
-    :   'continue'
-    ;
-
 DEFAULT
     :   'default'
     ;
@@ -362,8 +392,8 @@ ENUM
     ;             
 
 EXISTS
-: 'exists'
-	;
+    : 'exists'
+    ;
 
 FINALLY
     :   'finally'
@@ -391,7 +421,7 @@ INTERFACE
     
 NONEMPTY
 : 'nonempty'
-	;
+    ;
 
 PACKAGE
     :   'package'
@@ -591,18 +621,22 @@ DOTS
     : '..'
     ;
     
-NEQUAL	:	'<=>'
-	;
-	
-IN	:	'in'
-	;
+NEQUAL  :   '<=>'
+    ;
+    
+IN  :   'in'
+    ;
 
-	
-HASH	:	'#'
-	;
+    
+HASH    :   '#'
+    ;
 
-PLUSEQ	:	'+='
-	;
+PLUSEQ  :   '+='
+    ;
+
+MODULE
+    : 'module'
+    ;
 
 IDENTIFIER
     :   IdentifierStart IdentifierPart*
