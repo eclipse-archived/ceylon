@@ -60,16 +60,16 @@ Declaration?</programlisting>
     <para>There are also functor types:</para>
     
     <programlisting>FunctorType := 
-OPENPAREN Type (COMMA Annotations? Type)* CLOSEPAREN 
+OPENPAREN ( Variable (COMMA Variable)* )? CLOSEPAREN 
 ("produces" Annotations? Type | "void")</programlisting>
     
     <para>For example:</para>
     
-    <programlisting>(X,X) produces Comparison</programlisting>
-    <programlisting>(Payment) produces Boolean</programlisting>
-    <programlisting>(Y) void</programlisting>
+    <programlisting>(X x,X y) produces Comparison</programlisting>
+    <programlisting>(Payment payment) produces Boolean</programlisting>
+    <programlisting>(Y element) void</programlisting>
     <programlisting>() produces optional:Object</programlisting>
-    <programlisting>(optional:Y, Factory&lt;Y&gt;) produces Y</programlisting>
+    <programlisting>(optional:Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
     
     </section>
 
@@ -604,8 +604,8 @@ CLOSEBRACE</programlisting>
     Comparison compare(T other);
 }</programlisting>
 
-        <para>TODO: Fan lets interfaces declare methods with implementation. This is
-        less needed in Ceylon because we have decorators. But it seems pretty harmless
+        <para>TODO: Fantom and Scala let interfaces declare methods with implementation. This 
+        is less needed in Ceylon because we have decorators. But it seems pretty harmless
         and useful.</para>
         
         <section>
@@ -1290,7 +1290,7 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
        
        <programlisting>package: alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
-       <programlisting>alias Compare&lt;T&gt; satisfies (T,T) produces Comparison;</programlisting>
+       <programlisting>alias Compare&lt;T&gt; satisfies (T x,T y) produces Comparison;</programlisting>
     
     </section>
     

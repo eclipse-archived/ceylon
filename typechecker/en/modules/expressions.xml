@@ -325,8 +325,8 @@ if you prefer.";</programlisting>
         <programlisting>Method&lt;Person, (String) void&gt;&gt; sayMethod = Person#say;</programlisting>
         
         <para>Note that the <literal>#</literal> curry operator may also be applied to an 
-        arbitrary expression, to obtain a <literal>Callable&lt;(P,Q,...) produces R&gt;</literal> 
-        where <literal>P,Q,...</literal> are the method parameter types and <literal>R</literal> 
+        arbitrary expression, to obtain a <literal>Callable&lt;(P p,Q q,...) produces R&gt;</literal> 
+        where <literal>P p, Q q,...</literal> are the method parameter types and <literal>R</literal> 
         is the method return type, or a <literal>Value&lt;T&gt;</literal> or 
         <literal>OpenValue&lt;T&gt;</literal> where <literal>T</literal> is the attribute 
         type.</para>
@@ -482,7 +482,8 @@ CLOSEBRACE</programlisting>
     override: void fail(Exception e) { ... }
 }</programlisting>
 
-            <programlisting>return transactional: Resource Database() {
+            <programlisting>return transactional: Database() 
+        satisfies Resource {
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
@@ -736,7 +737,7 @@ CLOSEBRACE</programlisting>
             <entry></entry>
             <entry><literal>Object</literal></entry>
             <entry></entry>
-            <entry><literal>Callable&lt;(P,Q,...) produces R&gt;</literal>, 
+            <entry><literal>Callable&lt;(P p, Q q,...) produces R&gt;</literal>, 
             <literal>Value&lt;T&gt;</literal> or
             <literal>OpenValue&lt;T&gt;</literal></entry>
         </row>
@@ -1878,7 +1879,7 @@ CLOSEBRACE</programlisting>
                 
         <para>For example:</para>
         
-        <programlisting>(Float,Float) produces Comparison order = (Float x, Float y) { produces x&lt;=&gt;y };</programlisting>
+        <programlisting>(Float x,Float y) produces Comparison order = (Float x, Float y) { produces x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
@@ -1895,11 +1896,11 @@ CLOSEBRACE</programlisting>
         
         <para>Consider the following functor expression:</para>
         
-        <programlisting>(String,String) produces Comparison order = (String x, String y) { produces x &lt;=&gt; y }</programlisting>
+        <programlisting>(String x, String y) produces Comparison order = (String x, String y) { produces x &lt;=&gt; y }</programlisting>
         
         <para>Or:</para>
         
-        <programlisting>(String,String) produces Comparison order = (String x, String y) x &lt;=&gt; y;</programlisting>
+        <programlisting>(String x, String y) produces Comparison order = (String x, String y) x &lt;=&gt; y;</programlisting>
         
         <para>These expressions are both equivalent to this Java code:</para>
 
@@ -1950,13 +1951,17 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
         } 
     } );</programlisting>
     
-        <section>
-        <title>Syntax extension for methods with functor parameters</title>
+        <section id="functorparametersyntax">
+        <title>Syntax extension for functor parameters</title>
         
         <para>Furthermore, for parameters of a method which are functor types, Ceylon
         provides a special method invocation protocol:</para>
         
-        <programlisting>(Expression DOT)? Identifier OrderedParameterValues (Identifier SimpleFunctorExpression)*</programlisting>
+        <programlisting>(Expression DOT)? Identifier OrderedParameterValues FunctorParameterValues</programlisting>
+        
+        <para>After the list of ordered parameters, a named list of functor parameters may be specified:</para>
+        
+        <programlisting>FunctorParameterValues := SimpleFunctorExpression? (Identifier SimpleFunctorExpression)*</programlisting>
         
         <para>The identifiers listed after the ordered parameter values are names of method 
         parameters of functor type, in the order in which they appear in the method declaration. 
@@ -2002,66 +2007,81 @@ isFalse {
         <programlisting>people.select( return it.age>18 )
     .collect( return it.name );</programlisting>
          -->
+         
+        <para>The name of the first parameter may be omitted, if desired.</para>
         
+        <programlisting>people.sort() (Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
+        
+        <programlisting>people.select() (Person p) { produces p.age>18 }
+    .collect() (Person p) { produces p.name };</programlisting>
+        
+        <section>
+            <title>Syntax extension for iterations</title>
+            
         <para>A specialized invocation syntax is provided for methods which iterate 
         collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
         annotated <literal>iterated</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>(Expression DOT)? Identifier OPENPAREN ForIterator CLOSEPAREN (Identifier SimpleFunctorExpression)*</programlisting>
+        <programlisting>(Expression DOT)? Identifier OPENPAREN ForIterator CLOSEPAREN FunctorParameterValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
-        of type <literal>(X) produces Y</literal> or <literal>(X) void</literal> need not 
+        of type <literal>(X x) produces Y</literal> or <literal>(X x) void</literal> need not 
         declare its parameter. Instead, its parameter is declared by the iterator.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static:
 List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements, 
-                  coordinated: (X) produces Boolean if, 
-                  coordinated: (X) produces Y select);</programlisting>
+                  coordinated: (X x) produces Y select, 
+                  coordinated: (X x) produces Boolean if);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>List&lt;String&gt; names = from (Person p in people) if p>20 select p.name;</programlisting>
+        <programlisting>List&lt;String&gt; names = from (Person p in people) p.name if p>20;</programlisting>
         
         <para>Which is equivalent to:</para>
         
-        <programlisting>List&lt;String&gt; names = from (people) if (Person p) p>20 select (Person p) p.name;</programlisting>
+        <programlisting>List&lt;String&gt; names = from (people) select (Person p) p.name if (Person p) p>20;</programlisting>
         
         <para>Or, we may invoke the method as follows:</para>
                   
         <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues) 
-                      if user.authorized(key) 
-                      select "${key} ${value}";</programlisting>
+                      select "${key} ${value}"
+                      if user.authorized(key);</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>List&lt;String&gt; labels = from (namedValues) 
-                      if (Key key -> Value value) user.authorized(key) 
-                      select (Key key -> Value value) "${key} ${value}";</programlisting>
+                      select (Key key -> Value value) "${key} ${value}"
+                      if (Key key -> Value value) user.authorized(key);</programlisting>
+                      
+        </section>
         
+        <section>
+            <title>Syntax extension for variable definition</title>
+            
         <para>A specialized invocation syntax is also provided for methods which define 
         a variable. If the first parameter of the method is of type <literal>X</literal>,
         annotated <literal>specified</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>(Expression DOT)? Identifier OPENPAREN Variable Initializer CLOSEPAREN (Identifier SimpleFunctorExpression)*</programlisting>
+        <programlisting>(Expression DOT)? Identifier OPENPAREN Variable Initializer CLOSEPAREN FunctorParameterValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
-        of type <literal>(X) produces Y</literal> or <literal>(X) void</literal> need not 
+        of type <literal>(X x) produces Y</literal> or <literal>(X x) void</literal> need not 
         declare its parameter. Instead, its parameter is declared by the initializer.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static:
 Y ifExists&lt;X,Y&gt;(specified optional: X value,
-                coordinated: (X) produces Y then, 
+                coordinated: (X x) produces Y then, 
                 () produces Y otherwise);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>Exact amount = ifExists(Payment p = order.payment) then p.amount otherwise 0.0;</programlisting>
+        <programlisting>Exact amount = ifExists(Payment p = order.payment) p.amount otherwise 0.0;</programlisting>
         
         <para>Which is equivalent to:</para>
         
@@ -2071,16 +2091,71 @@ Y ifExists&lt;X,Y&gt;(specified optional: X value,
         
         <programlisting>public static:
 Y using&lt;X,Y&gt;(specified: X resource, 
-             coordinated: (X) produces Y seek)
+             coordinated: (X x) produces Y seek)
   where X >= Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>Order order = using (Session s = Session()) seek s.get(#Order, oid);</programlisting>
+        <programlisting>Order order = using (Session s = Session()) s.get(#Order, oid);</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>Order order = using (Session()) seek (Session s) s.get(#Order, oid);</programlisting>
+        
+        </section>
+        
+        <section>
+            <title>Syntax extension for lists of cases</title>
+        </section>
+        
+        <para>A specialized invocation syntax is also provided for methods which define 
+        a list of cases. If the method has a parameter of type 
+        <literal>Enumeration&lt;(X) produces Y&gt;</literal> annotated <literal>cases</literal>,
+        the parameter value may be specified according to:</para>
+        
+        <programlisting>(Identifier FunctorExpression)+</programlisting>
+        
+        <para>Or, if the method has a parameter of type 
+        <literal>Enumeration&lt;Case&lt;X&gt;->() produces Y&gt;</literal> annotated 
+        <literal>cases</literal>, the parameter value may be specified according to:</para>
+        
+        <programlisting>(OPENPAREN Case CLOSEPAREN SimpleFunctorExpression)+</programlisting>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static: 
+ X attempt&lt;X&gt;(() produces X seek, 
+              cases: (E e) produces X where E>=Exception... except);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+        
+        <programlisting>attempt() { 
+    produces doSomething(); 
+} 
+except (SomethingWrong sw) {
+    log.info(sw);
+    produces -1;
+}
+except (SomethingElseWrong sew) {
+    log.warn(sew);
+    produces -2;
+}</programlisting>
+        
+        <para>And for the following method declaration:</para>
+        
+        <programlisting>public static: 
+ void select&lt;X&gt;(X selector),
+              cases: Case&lt;X&gt; -> () produces X... value);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+        
+        <programlisting>select(payment.type) 
+value (CHECK) {
+    paybyCheck(payment);
+}
+value (CARD) {
+    paybyCard(payment);
+}</programlisting>
         
         </section>
     

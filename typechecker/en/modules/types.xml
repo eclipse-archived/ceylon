@@ -174,7 +174,7 @@
         
         <programlisting>public: interface Value&lt;T&gt; {
     public: () produces T get;
-    public: onGet( (T) produces T interceptor );
+    public: onGet( (T t) produces T interceptor );
 }</programlisting>
 
         <para>The interface <literal>OpenValue</literal> models 
@@ -183,7 +183,7 @@
         <programlisting>public: interface OpenValue&lt;T&gt; 
         satisfies Value&lt;T&gt; {
     public: (T) void set;
-    public: onSet( (T) produces T interceptor );
+    public: onSet( (T t) produces T interceptor );
 }</programlisting>
 
     </section>
@@ -222,13 +222,13 @@
     public: Type&lt;T&gt; attributeType;
     public: boolean mutable;
     public: Value&lt;T&gt; curry(X instance);
-    public: onGet( (X,T) produces T interceptor );
+    public: onGet( (X x,T t) produces T interceptor );
 }</programlisting>
                 
         <programlisting>public: interface MutableAttribute&lt;X,T&gt;
         satisfies Attribute&lt;X,T&gt; {
     public override: OpenValue&lt;T&gt; curry(X instance);
-    public: onSet( (X,T) produces T interceptor );
+    public: onSet( (X x,T t) produces T interceptor );
 }</programlisting>
                 
     </section>
@@ -662,7 +662,7 @@
     public: X removeLast();
     
     public: void reverse();
-    public: void sort((X,X) produces Comparison> compare);
+    public: void sort((X x, X y) produces Comparison compare);
     
     public: OpenList<X> sublist(Integer from, Integer to);
     
@@ -1079,7 +1079,7 @@
      * value.
      */
     public static optional: Y ifExists<X,Y>(specified optional: X value,
-                                            coordinated: (X) produces Y then);
+                                            coordinated: (X x) produces Y then);
 
     /**
      * If the value is non-null, evaluate first block,
@@ -1087,7 +1087,7 @@
      * of evaluation.
      */
     public static: Y ifExists<X,Y>(specified optional: X value,
-                                   coordinated: (X) produces Y then, 
+                                   coordinated: (X x) produces Y then, 
                                    () produces Y otherwise);
 
     /**
@@ -1096,8 +1096,8 @@
      * if specified.
      */
     public static: List<X> from<X>(iterated: Iterable<X> elements,
-                                   coordinated: (X) produces Boolean having,
-                                   optional coordinated: (X) produces Comparable by = null);
+                                   coordinated: (X x) produces Boolean having,
+                                   optional coordinated: (X x) produces Comparable by = null);
 
     /**
      * Iterate elements and for each element evaluate the first block. 
@@ -1105,8 +1105,8 @@
      * block, if specified.
      */
     public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: (X) produces Y select,
-                                     optional coordinated: (X) produces Comparable by = null);
+                                     coordinated: (X x) produces Y select,
+                                     optional coordinated: (X x) produces Comparable by = null);
 
     /**
      * Iterate elements and select those for which the first block 
@@ -1115,16 +1115,16 @@
      * block, if specified.
      */
     public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: (X) produces Boolean having, 
-                                     coordinated: (X) produces Y select,
-                                     optional coordinated: (X) produces Comparable by = null);
+                                     coordinated: (X x) produces Boolean having, 
+                                     coordinated: (X x) produces Y select,
+                                     optional coordinated: (X x) produces Comparable by = null);
 
     /**
      * Return the first element for which the block evaluates to true,
      * or a null value if no such element is found.
      */
     public static optional: X first<X>(iterated: Iterable<X> elements,
-                                       coordinated: (X) produces Boolean having);
+                                       coordinated: (X x) produces Boolean having);
     
     /**
      * Return the first element for which the first block evaluates to 
@@ -1132,26 +1132,26 @@
      * element is found.
      */
     public static: X first<X>(iterated: Iterable<X> elements,
-                              coordinated: (X) produces Boolean having
+                              coordinated: (X x) produces Boolean having
                               () produces X otherwise);
     
     /**
      * Count the elements for with the block evaluates to true.
      */
     public static: Integer count<X>(iterated: Iterable<X> elements,
-                                    coordinated: (X) produces Boolean having);
+                                    coordinated: (X x) produces Boolean having);
     
     /**
      * Return true iff for every element, the block evaluates to true.
      */
     public static: Boolean forAll<X>(iterated: Iterable<X> elements,
-                                     coordinated: (X) produces Boolean every);
+                                     coordinated: (X x) produces Boolean every);
 
     /**
      * Return true iff for some element, the block evaluates to true.
      */
     public static: Boolean forAny<X>(iterated: Iterable<X> elements,
-                                     coordinated: (X) produces Boolean exists);
+                                     coordinated: (X x) produces Boolean exists);
     
     /**
      * Using the given resource, attempt to evaluate the first block.
@@ -1159,8 +1159,8 @@
      * the exception block.
      */
     public static: Y using<X,Y>(specified: X resource,
-                                coordinated: (X) produces Y seek,
-                                (E) produces Y where E>=Exception... except)
+                                coordinated: (X x) produces Y seek,
+                                (E e) produces Y where E>=Exception... except)
                      where X >= Usable;
 
 }]]></programlisting>
