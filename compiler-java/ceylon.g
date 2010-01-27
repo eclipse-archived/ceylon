@@ -63,12 +63,12 @@ expression
 
 implicationExpression
     :
-        disjunctionExpression ('=>' disjunctionExpression)*
+        disjunctionExpression ('=>' disjunctionExpression)?
     ;
 
 disjunctionExpression
     :
-        conjunctionExpression (('||' | '|' '^') conjunctionExpression)*
+        conjunctionExpression (('||' | '|' '^') conjunctionExpression)?
     ;
 
 conjunctionExpression
@@ -77,7 +77,7 @@ conjunctionExpression
     ;
 
 logicalNegationExpression
-	: '!' equalityExpression
+	: '!' logicalNegationExpression
     | equalityExpression
 	;
 
@@ -127,24 +127,24 @@ multiplicativeExpression
 // FIXME: The spec says ** should be left-associative, but it's conventionally
 // right-associative, which is what I've done here.
 exponentiationExpression
-	: unaryExpression ('**' exponentiationExpression)?
+	: postfixExpression ('**' exponentiationExpression)?
 	;
+
+postfixExpression
+	: unaryExpression ('--' | '++')*
+	;	
 
 unaryExpression 
     :   '$'  unaryExpression
     |   '-' unaryExpression
     |   '++' unaryExpression
     |   '--' unaryExpression
-    |   unaryExpressionNotPlusMinus
-    ;
-
-unaryExpressionNotPlusMinus 
-    :   '~' unaryExpression
+    |   '~' unaryExpression
     |   primary
     ;
 
 primary
-	: IDENTIFIER
+    : IDENTIFIER | 'this' | 'super'
         selector*
     | literal
     | parExpression
@@ -158,10 +158,11 @@ selector
     :   ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
     |
         arguments
-    |   '[' ( expression ('...'
-            | (',' expression)*
-            | '..' expression)
-        | '...' expression)
+    |   '[' 
+    	( expression ('...'
+          	    | (',' expression)*
+          	    | '..' expression)
+        	| '...' expression)
         ']'        
     ;
 
