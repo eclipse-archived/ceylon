@@ -83,7 +83,7 @@ logicalNegationExpression
 
 equalityExpression
 	:	comparisonExpression
-        (('=='|'!='|'===') comparisonExpression)*
+        (('=='|'!='|'===') comparisonExpression)?
 	;
 
 comparisonExpression
