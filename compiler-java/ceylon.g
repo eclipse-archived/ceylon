@@ -292,7 +292,8 @@ instantiation
     ;
 
 selector  
-    :   ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
+    :   
+        ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
     |
         arguments
     |   '[' 
@@ -346,7 +347,8 @@ positionalArguments
 formalParameters
     :   
     '(' (formalParameter 
-    (',' formalParameter)*)? ')';
+    (',' formalParameter)*)? ')'
+    ;
 
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
