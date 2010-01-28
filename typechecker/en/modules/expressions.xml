@@ -1801,16 +1801,11 @@ if you prefer.";</programlisting>
                 <entry>None</entry>
             </row>
             <row>
-                <entry>Equality, null assignment,
-                empty assignment:</entry>
+                <entry>Equality:</entry>
                 <entry>
                 <literal>==</literal>, 
                 <literal>!=</literal>, 
-                <literal>===</literal>,
-                <literal>?=</literal><!--, 
-                <literal>=?</literal>,
-                <literal>??=</literal>, 
-                <literal>=??</literal> -->
+                <literal>===</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
@@ -1850,7 +1845,8 @@ if you prefer.";</programlisting>
                 <entry>None</entry>
             </row>
             <row>
-                <entry>Assignment, numeric assignment, logical assignment:</entry> 
+                <entry>Assignment, numeric assignment, logical assignment,
+                default assignment:</entry> 
                 <entry>
                 <literal>=</literal>, 
                 <literal>+=</literal>, 
@@ -1862,7 +1858,8 @@ if you prefer.";</programlisting>
                 <literal>|=</literal>, 
                 <literal>^=</literal>, 
                 <literal>&amp;&amp;=</literal>, 
-                <literal>||=</literal>
+                <literal>||=</literal>,
+                <literal>?=</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Right</entry>
