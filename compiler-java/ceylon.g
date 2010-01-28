@@ -17,7 +17,7 @@ statement
     ;
 
 // A block must have at least one statement or it's not possible to
-// distinguish it from a string enumberation like {"foo"}.
+// distinguish it from a string enumeration like {"foo"}.
 block
     :
         '{' (statement ';')+ '}'
