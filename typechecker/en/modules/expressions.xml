@@ -1007,9 +1007,9 @@ if you prefer.";</programlisting>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
             <entry><literal>if (lhs exists) lhs else lhs=rhs</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>Object</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>optional T</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         
         <!--  
@@ -1806,8 +1806,8 @@ if you prefer.";</programlisting>
                 <entry>
                 <literal>==</literal>, 
                 <literal>!=</literal>, 
-                <literal>===</literal><!--,
-                <literal>?=</literal>, 
+                <literal>===</literal>,
+                <literal>?=</literal><!--, 
                 <literal>=?</literal>,
                 <literal>??=</literal>, 
                 <literal>=??</literal> -->
