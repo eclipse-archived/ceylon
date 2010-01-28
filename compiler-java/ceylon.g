@@ -5,8 +5,19 @@ options {
     memoize=true;
 }
 
-compilationUnit 
-    : (annotations? (classDeclaration | interfaceDeclaration | converterDeclaration))+
+compilationUnit
+    : 
+        (importDeclaration)*
+        (annotations? (classDeclaration | interfaceDeclaration | converterDeclaration))+
+    ;
+
+importDeclaration  
+    :
+        'import' 
+        IDENTIFIER
+        ('.' IDENTIFIER)*
+        ('.' '*')?
+        ';'
     ;
 
 statement
@@ -98,7 +109,7 @@ classDeclaration
         IDENTIFIER
         typeParameters?
         formalParameters?
-        ('extends' type)?
+        ('extends' instantiation)?
         ('satisfies' type (',' type)*)?
         ('where' typeConstraint ('&' typeConstraint)*)?
         // FIXME: These braces around the instances list are not in
