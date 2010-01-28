@@ -17,7 +17,7 @@
         
         <para>In addition, references of type <literal>optional:Object</literal>
         support the binary operators <literal>?.</literal> (nullsafe invoke) 
-        and <literal>default</literal>
+        and <literal>?</literal> (default)
         <!-- and <literal>?:</literal> (null default) -->and the unary operator
         <literal>exists</literal>, along with the binary operators 
         <literal>==</literal> (equals), <literal>!=</literal> (not equals), 

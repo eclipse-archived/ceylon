@@ -149,9 +149,7 @@
         
         <para>Some control structures expect conditions:</para>
         
-        <programlisting>Condition := 
-Expression | 
-(Variable Initializer | Expression) ("exists"|"nonempty")</programlisting>
+        <programlisting>Condition := Expression | (Variable Initializer | Expression) ("exists"|"nonempty")</programlisting>
 
         <para>The semantics of a condition depend upon whether the <literal>exists</literal> or 
         <literal>nonempty</literal> modifier appears:</para>
@@ -245,14 +243,13 @@ else {
             
             <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
             
-            <programlisting>SwitchCaseElse := 
-"switch" "(" Expression ")"
-(Cases ";" | "{" Cases "}")</programlisting>
+            <programlisting>SwitchCaseElse := "switch" "(" Expression ")" (Cases ";" | "{" Cases "}")</programlisting>
             
-            <programlisting>Cases := 
-("case" "null" OpenBlock)?
-("case" "(" Case ")" OpenBlock)+
-("else" OpenBlock)?</programlisting>
+            <programlisting>Cases := CaseNull? Case+ CaseElse?</programlisting>
+
+            <programlisting>CaseNull := "case" "null" OpenBlock</programlisting>
+            <programlisting>Case := "case" "(" Case ")" OpenBlock</programlisting>
+            <programlisting>CaseElse := "else" OpenBlock</programlisting>
 
             <para>The switch expression may be of any type. The case values must be 
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 

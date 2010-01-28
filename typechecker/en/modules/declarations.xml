@@ -15,7 +15,7 @@
     <para>Declarations conform to the following general schema:</para>
     
     <programlisting>Annotation* 
-Type? keyword? Identifier TypeParameters? FormalParameters? 
+Type? keyword? Identifier TypeParams? FormalParams? 
 Supertype?
 Interfaces? 
 TypeConstraints? 
@@ -55,14 +55,14 @@ public deprecated</programlisting>
     
     <para>Most types are classes or interfaces:</para>
     
-    <programlisting>RegularType := TypeName TypeParameters?</programlisting>
+    <programlisting>RegularType := TypeName TypeParams?</programlisting>
     
     <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
     
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>
     
-    <programlisting>TypeParameters := "&lt;" Type (COMMA Type)* "&gt;"</programlisting>
+    <programlisting>TypeParams := "&lt;" Type (COMMA Type)* "&gt;"</programlisting>
 
     <para>For example:</para>
     
@@ -70,9 +70,7 @@ public deprecated</programlisting>
     
     <para>There are also functor types:</para>
     
-    <programlisting>FunctorType := 
-"(" ( Variable (COMMA Variable)* )? ")" 
-("produces" Annotation* Type | "void")</programlisting>
+    <programlisting>FunctorType := "(" ( Variable (COMMA Variable)* )? ")" ("produces" Annotation* Type | "void")</programlisting>
     
     <para>For example:</para>
     
@@ -90,18 +88,18 @@ public deprecated</programlisting>
     <para>Method and class declarations may declare formal parameters, including
     optional parameters and a varargs parameter.</para>
     
-    <programlisting>FormalParameters := 
+    <programlisting>FormalParams := 
 "("
-FormalParameter (COMMA FormalParameter)* (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
-OptionalParameter (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
-VarargsParameter?
+FormalParam (COMMA FormalParam)* (COMMA OptionalParam)* (COMMA VarargsParam)? | 
+OptionalParam (COMMA OptionalParam)* (COMMA VarargsParam)? | 
+VarargsParam?
 ")"</programlisting>
 
-    <programlisting>OptionalParameter = FormalParameter Initializer</programlisting>
+    <programlisting>OptionalParam = FormalParam Initializer</programlisting>
     
-    <programlisting>VarargsParameter = Annotation* Type "..." Identifier</programlisting>
+    <programlisting>VarargsParam = Annotation* Type "..." Identifier</programlisting>
     
-    <programlisting>FormalParameter := Variable | VariablePair</programlisting>
+    <programlisting>FormalParam := Variable | VariablePair</programlisting>
     
     <programlisting>Variable := Annotation* Type Identifier</programlisting>
         
@@ -156,7 +154,7 @@ VarargsParameter?
     
     <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
 
-    <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParameters ) </programlisting>
+    <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParams ) </programlisting>
     
     <para>There are three kinds of type constraints:</para>
     
@@ -248,7 +246,7 @@ String join(Iterable&lt;String&gt; strings,
         the following:</para>
         
         <programlisting>Annotation*
-"class" Identifier TypeParameters? FormalParameters?
+"class" Identifier TypeParams? FormalParams?
 Supertype?
 Interfaces?
 TypeConstraints?
@@ -489,8 +487,8 @@ class Customer(Name name, optional Organization org = null)
         
         <programlisting>InstanceEnumeraton := 
 "instances" 
-Identifier ParameterValues? 
-(COMMA Identifier ParameterValues?)* 
+Identifier ParamValues? 
+(COMMA Identifier ParamValues?)* 
 "..."?</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
@@ -573,12 +571,10 @@ Identifier ParameterValues?
         not be directly instantiated. Interfaces are declared according to the following:</para>
         
         <programlisting>Annotation*
-"interface" Identifier TypeParameters?
+"interface" Identifier TypeParams?
 Interfaces?
 TypeConstraints? 
-"{" 
-( MethodStub | AttributeStub )* 
-"}"</programlisting>
+"{" ( MethodStub | AttributeStub )* "}"</programlisting>
 
         <para>For example:</para>
 
@@ -629,7 +625,7 @@ TypeConstraints?
         <para>Constructors are declared according to the following:</para>
         
         <programlisting>Annotation* Identifier 
-FormalParameters
+FormalParams
 ( ";" | ClosedBlock )</programlisting>
 
         <para>
@@ -668,7 +664,7 @@ public User(String username, Person person);</programlisting>
         
         <programlisting>Method :=
 Annotation*
-(Type | "void") Identifier TypeParameters? FormalParameters
+(Type | "void") Identifier TypeParams? FormalParams
 TypeConstraints?
 ( ";" | Block )</programlisting>
 
@@ -788,7 +784,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>MethodStub :=
 Annotation*
-(Type | "void") Identifier TypeParameters? FormalParameters
+(Type | "void") Identifier TypeParams? FormalParams
 TypeConstraints? 
 ";"</programlisting>
 
@@ -1004,7 +1000,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         
         <programlisting>Annotation* Type* 
 "selector" Identifier
-FormalParameters?
+FormalParams?
 "{" 
 SelectorValue (COMMA SelectorValue)*
 ( ";" ( Attribute | Method )* )? 
@@ -1083,8 +1079,8 @@ selector ComparisonOperation {
         the following:</para>
         
         <programlisting>Annotation* ( Type | "void" ) 
-"functor" Identifier TypeParameters? 
-FormalParameters 
+"functor" Identifier TypeParams? 
+FormalParams 
 TypeConstraintList? 
 ";"</programlisting>
 
@@ -1156,7 +1152,7 @@ TypeConstraintList?
         declared according to the following:</para>
         
         <programlisting>Annotation*
-"decorator" Identifier TypeParameters? "(" FormalParameter ")"
+"decorator" Identifier TypeParams? "(" FormalParam ")"
 Interfaces?
 TypeConstraintList? 
 "{" ( Method | AttributeGetter | AttributeSetter )* "}"</programlisting>
@@ -1260,7 +1256,7 @@ TypeConstraintList?
     
        <para>A type alias allows a type to be referred  to more compactly.</para>
        
-       <programlisting>Annotation* "alias" Identifier TypeParameters? Interfaces? TypeConstraints? ";"</programlisting>
+       <programlisting>Annotation* "alias" Identifier TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
        <para>A type alias may satisfy either:</para>
        
@@ -1289,9 +1285,9 @@ TypeConstraintList?
         values of another type. Converters are declared according to the following:</para>
         
         <programlisting>Annotation* Type 
-"converter" Identifier TypeParameters? 
+"converter" Identifier TypeParams? 
 TypeConstraintList? 
-"(" FormalParameter ")" 
+"(" FormalParam ")" 
 Block</programlisting>
 
         <para>TODO: would it be better to just let you annotate a static method <literal>converter:</literal>,

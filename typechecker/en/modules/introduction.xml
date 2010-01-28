@@ -156,7 +156,7 @@ class Hello {
 class Hello {
 
     main void hello(Process process) {
-        String name = process.args.firstOrNull default "World";
+        String name = process.args.firstOrNull ? "World";
         log.info("Hello, ${name}!");
     }
 
@@ -169,7 +169,7 @@ class Hello {
         has an attribute named <literal>args</literal>, which holds a 
         <literal>List</literal> of the program's command line arguments. The 
         local <literal>args</literal> is initialized from these arguments. The 
-        <literal>default</literal> operator returns the first argument that is 
+        <literal>?</literal> operator returns the first argument that is 
         not null. Finally, the value of the local is interpolated into the message 
         string.
         </para>
@@ -188,8 +188,7 @@ class Hello(Request request)
         extends Html(request) {
 
     String name 
-        = request.parameters["name"].firstOrNull
-            default "World";
+        = request.parameters["name"].firstOrNull ? "World";
     
     head = Head { title="Hello World"; };
     
