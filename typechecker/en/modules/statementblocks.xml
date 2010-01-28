@@ -69,6 +69,10 @@ Declaration</programlisting>
         <para>The <literal>found</literal> directive may not be used outside of the 
         body of a <literal>for/fail</literal> loop.</para>
         
+        <para>TODO: instead of <literal>break</literal> and <literal>found</literal>,
+        we could support <literal>break success</literal> and 
+        <literal>break failure</literal>.</para>
+        
         <para>TODO: We could support <literal>for/fail</literal> loops that return a 
         value by adding a <literal>found expr</literal> directive. We could support
         conditionals that return a value by adding a <literal>then expr</literal>
@@ -103,24 +107,29 @@ Declaration</programlisting>
     <section id="controlstructures">
         <title>Control structures</title>
         
-        <para>Control of execution flow may be achieved using control
-        directives and control structures. Control structures include
-        conditionals, loops, exception management and assertions:</para>
+        <para>Control of execution flow may be achieved using control directives and 
+        control structures. Control structures include conditionals, loops, exception 
+        management and assertions. For many tasks, the use of these traditional control
+        structures is considered bad style, and the use of expressions with functor 
+        parameters is preferred. However, control structures support the use of the 
+        <literal>return</literal>, <literal>break</literal> and <literal>found</literal> 
+        directives, whereas functors do not. Therefore, some tasks may be accomplished
+        only with control structures.</para>
 
         <para>Ceylon provides the following control structures:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the <literal>if/else</literal> conditional&mdash;for controlling execution based
-                upon a boolean value, and dealing with null values,</para>
+                <para>the <literal>if/else</literal> conditional&mdash;for controlling execution 
+                based upon a boolean value, and dealing with null values,</para>
             </listitem>
             <listitem>
-                <para>the <literal>switch/case/else</literal> conditional&mdash;for controlling execution
-                using an enumerated list of values,</para>
+                <para>the <literal>switch/case/else</literal> conditional&mdash;for controlling 
+                execution using an enumerated list of values,</para>
             </listitem>
             <listitem>
-                <para>the <literal>do/while/fail</literal> loop&mdash;for loops which terminate based
-                upon the value of a boolean expression,</para>
+                <para>the <literal>do/while/fail</literal> loop&mdash;for loops which terminate 
+                based upon the value of a boolean expression,</para>
             </listitem>
             <listitem>
                 <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 

@@ -46,7 +46,9 @@ Declaration?</programlisting>
     
     <para>Most types are classes or interfaces:</para>
     
-    <programlisting>RegularType := Identifier (DOT Identifier)* TypeParameters?</programlisting>
+    <programlisting>RegularType := TypeName TypeParameters?</programlisting>
+    
+    <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
     
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>

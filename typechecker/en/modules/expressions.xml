@@ -386,7 +386,9 @@ CLOSEBRACE</programlisting>
             
             <para>Method invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := (Expression DOT)? Identifier TypeParameters? ParameterValues</programlisting>
+            <programlisting>MethodInvocation := MethodReference TypeParameters? ParameterValues</programlisting>
+            
+            <programlisting>MemberReference := (Expression DOT)? Identifier</programlisting>
             
             <para>For example:</para>
             
@@ -407,7 +409,7 @@ CLOSEBRACE</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (Type DOT)? Identifier TypeParameters? ParameterValues</programlisting>
+            <programlisting>StaticMethodInvocation := (RegularType DOT)? Identifier TypeParameters? ParameterValues</programlisting>
             
             <para>For example:</para>
             
@@ -535,7 +537,7 @@ CLOSEBRACE</programlisting>
             
             <para>Attribute get access follows the following schema:</para>
             
-            <programlisting>AttributeGet := (Expression DOT)? Identifier</programlisting>
+            <programlisting>AttributeGet := MemberReference</programlisting>
             
             <para>This attribute getter call:</para>
         
@@ -547,7 +549,7 @@ CLOSEBRACE</programlisting>
         
             <para>Attribute set access follows the following schema:</para>
             
-            <programlisting>AttributeSet := (Expression DOT)? Identifier EQUALS Expression</programlisting>
+            <programlisting>AttributeSet := MemberReference EQUALS Expression</programlisting>
             
             <para>This attribute setter call:</para>
         
@@ -690,9 +692,11 @@ CLOSEBRACE</programlisting>
     
         <para>The following table defines the semantics of the Ceylon operators:</para>
         
-        <para>TODO: if there's one thing C syntax got wrong, it's the use of = 
-        for assignment. := is a much, much better choice. Should we fix this, or
-        is consistency with other C-like languages more important?</para>
+        <para>TODO: if there's one thing C syntax got wrong, it's the use of 
+        <literal>=</literal> for assignment. <literal>:=</literal> is a much, much 
+        better choice. Should we fix this, or is consistency with other C-like languages 
+        more important? One interesting possibility would be to use <literal>:=</literal> 
+        only for re-assigning mutable values.</para>
     
     <table>
     <tgroup cols="7">
@@ -1957,7 +1961,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
         <para>Furthermore, for parameters of a method which are functor types, Ceylon
         provides a special method invocation protocol:</para>
         
-        <programlisting>(Expression DOT)? Identifier OrderedParameterValues FunctorParameterValues</programlisting>
+        <programlisting>MemberReference OrderedParameterValues FunctorParameterValues</programlisting>
         
         <para>After the list of ordered parameters, a named list of functor parameters may be specified:</para>
         
@@ -2023,7 +2027,7 @@ isFalse {
         annotated <literal>iterated</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>(Expression DOT)? Identifier OPENPAREN ForIterator CLOSEPAREN FunctorParameterValues</programlisting>
+        <programlisting>MemberReference OPENPAREN ForIterator CLOSEPAREN FunctorParameterValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>(X x) produces Y</literal> or <literal>(X x) void</literal> need not 
@@ -2066,7 +2070,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements,
         annotated <literal>specified</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>(Expression DOT)? Identifier OPENPAREN Variable Initializer CLOSEPAREN FunctorParameterValues</programlisting>
+        <programlisting>MemberReference OPENPAREN Variable Initializer CLOSEPAREN FunctorParameterValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>(X x) produces Y</literal> or <literal>(X x) void</literal> need not 
@@ -2160,7 +2164,7 @@ value (CARD) {
         </section>
     
         <section>
-        
+        <!--
         <title>TODO: assignment to local variables from surrounding scope</title>
     
         <para>The following code:</para>
@@ -2222,5 +2226,6 @@ Integer size = result$1;</programlisting>
         </section>
     
     </section>
+    -->
     
 </chapter>
