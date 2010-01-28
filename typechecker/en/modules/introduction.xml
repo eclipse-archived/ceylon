@@ -157,7 +157,7 @@ class Hello {
 
     main void hello(Process process) {
         String name = process.args.firstOrNull default "World";
-        log.info("Hello, $name!");
+        log.info("Hello, ${name}!");
     }
 
 }]]></programlisting>
@@ -196,7 +196,7 @@ class Hello(Request request)
     body = Body {
         Div {
             cssClass = "greeting";
-            "Hello, $name!"
+            "Hello, ${name}!"
         },
         Div {
             cssClass = "footer";

@@ -25,81 +25,59 @@
         
         <programlisting><![CDATA[public abstract class Object {
         
-    /**
-     * The equals operator x == y.
-     *
-     * Default implementation performs identity comparison.
-     */
+    doc "The equals operator x == y. Default implementation performs 
+         identity comparison."
     public Boolean equals(Object that) {
         return this===that;
     }
     
-    /**
-     * Compares the given attributes of this instance with the given
-     * attributes of the given instance.
-     */
+    doc "Compares the given attributes of this instance with the given
+         attributes of the given instance."
     public Boolean equals(Object that, Attribute... attributes) { ... }
     
-    /**
-     * The hash code of the instance. Default implementation assumes 
-     * identity equality.
-     */
+    doc "The hash code of the instance. Default implementation assumes 
+         identity equality.
     public Integer hash {
         return identityHash(this);
     }
     
-    /**
-     * Computes the hash code of the instance using the given attributes.
-     */
+    doc "Computes the hash code of the instance using the given attributes."
     public Integer hash(Attribute... attributes) { ... }
         
-    /**
-     * The unary render operator $x.
-     *
-     * A developer-friendly string representing the instance.
-     */
+    doc "The unary render operator $x. A developer-friendly string 
+         representing the instance."
     public String string { ... }
     
-    /**
-     * Determine if the instance belongs to the given Category.
-     */
+    doc "Determine if the instance belongs to the given Category."
+    see #Category
     public Boolean in<Y>(Category<Y> cat)
             where (Y<=X) {
         return cat.contains(this);
     }
     
-    /**
-     * Determine if the instance belongs to the given Iterable
-     * object.
-     */
+    doc "Determine if the instance belongs to the given Iterable
+         object."
+    see #Iterable
     public Boolean in<Y>(Iterable<Y> iterable) 
             where (Y<=X) {
         return for any ( Object elem in iterable ) 
             elem == this;
     }
     
-    /**
-     * The Type of the instance.
-     */
+    doc "The Type of the instance."
     public Type<X+> type { ... }
     
-    /**
-     * Determine if the instance is of the given Type.
-     */
+    doc "Determine if the instance is of the given Type."
     public Boolean is(Type<Object+> type) {
         return this.type.assignableTo(type);
     }
     
-    /**
-     * Return a reference to the instance, of the given
-     * Type, or throw an exception if the instance is not
-     * of the given type.
-     */
+    doc "Return a reference to the instance, of the given
+         Type, or throw an exception if the instance is not
+         of the given type."
     public T as<T>(Type<T> type) { ... }
     
-    /**
-     * A log obect for the type.
-     */
+    doc "A log obect for the type."
     public static Log log = Log(type);
         
     ...
@@ -128,24 +106,16 @@
         <programlisting>public final class Boolean 
         instances true, false {
 
-    /**
-     * The binary or operator x | y
-     */
+    doc "The binary or operator x | y"
     public Boolean or(Boolean boolean) { ... }
     
-    /**
-     * The binary and operator x &amp; y
-     */
+    doc "The binary and operator x &amp; y"
     public Boolean and(Boolean boolean) { ... }
     
-    /**
-     * The binary xor operator x ^ y
-     */
+    doc "The binary xor operator x ^ y"
     public Boolean xor(Boolean boolean) { ... }
 
-    /**
-     * The unary not operator !x
-     */
+    doc "The unary not operator !x"
     public Boolean negation {
         return switch(this) {
             case (true) false
@@ -245,9 +215,7 @@
         
         <programlisting>public interface Iterable&lt;X&gt; {
     
-    /**
-     * Produce an iterator.
-     */
+    doc "Produce an iterator."
     public Iterator&lt;X&gt; iterator();
     
 }</programlisting>
@@ -354,18 +322,14 @@
         
         <programlisting>public interface Category&lt;X&gt; {
     
-    /**
-     * Determine if the given element belongs to the category.
-     */
+    doc "Determine if the given element belongs to the category."
     public Boolean contains(X element);
 
 }</programlisting>
 
         <programlisting>public decorator Categories&lt;X&gt; (Category&lt;X&gt; category) {
         
-    /**
-     * Determine if all the given elements belong to the category.
-     */
+    doc "Determine if all the given elements belong to the category."
     public Boolean contains(Iterable&lt;X&gt; elements) {
         return for all (X x in elements) 
             category.contains(x);
@@ -379,18 +343,14 @@
         <programlisting>public mutable interface OpenCategory&lt;X&gt; 
         satisfies Category&lt;X&gt; {
     
-    /**
-     * Add the given element to the category.
-     */
+    doc "Add the given element to the category."
     public Boolean add(X element);
 
 }</programlisting>
 
         <programlisting>public decorator OpenCategories&lt;X&gt; (OpenCategory&lt;X&gt; category) {
         
-    /**
-     * Add the given elements to the category.
-     */
+    doc "Add the given elements to the category."
     public Boolean add(Iterable&lt;X&gt; elements) {
         return find (Boolean added = false)
             for (X x in elements) 
@@ -406,45 +366,31 @@
         
         <programlisting>public interface Correspondence&lt;U, V&gt; {
     
-    /**
-     * Binary lookup operator x[key]
-     *
-     * Returns the value associated with the given key.
-     */
+    doc "Binary lookup operator x[key]. Returns the value associated 
+         with the given key."
     public V value(U key);
     
-    /**
-     * Determine if there is a value associated with the given key.
-     */
+    doc "Determine if there is a value associated with the given key."
     public Boolean defines(U key);
     
 }</programlisting>
 
         <programlisting>public decorator Correspondences&lt;X&gt; (Correspondence&lt;X&gt; correspondence) {
 
-    /**
-     * Binary lookup operator x[keys]
-     *
-     * Returns a list of values associated with the given keys,
-     * in order.
-     */
+    doc "Binary lookup operator x[keys]. Returns a list of values 
+         associated with the given keys, in order."
     public List&lt;V&gt; values(List&lt;U&gt; keys) {
         return for (U key in keys) 
             correspondence.lookup(key);
     }
     
-    /**
-     * Binary lookup operator x[keys]
-     *
-     * Returns a set of values associated with the given set of keys.
-     */
+    doc "Binary lookup operator x[keys]. Returns a set of values 
+         associated with the given set of keys."
     public Set&lt;V&gt; values(Set&lt;U&gt; keys) {
         return ( for (U key in keys) correspondence.lookup(key) ).elements;
     }
     
-    /**
-     * Determine if there are values associated with all the given keys.
-     */
+    doc "Determine if there are values associated with all the given keys."
     public Boolean defines(Collection&lt;U&gt; keys) {
         return for (U key in keys) 
                 if ( !correspondence.defines(key) ) found false
@@ -463,25 +409,18 @@
         <programlisting>public mutable interface OpenCorrespondence&lt;U, V&gt; 
         satisfies Correspondence&lt;U, V&gt; {
         
-    /**
-     * Element assignment x[key] = value
-     *
-     * Assign a value to the given key.
-     */
+     doc "Element assignment x[key] = value. Assign a value to the given 
+          key."
      public optional V define(U key, V value);
 
 }</programlisting>
 
         <programlisting>public decorator OpenCorrespondences&lt;X&gt; (OpenCorrespondence&lt;X&gt; correspondence) {
 
-     /**
-      * Assign the given values to the given keys.
-      */
+     doc "Assign the given values to the given keys."
      public void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions);
     
-     /**
-      * Add the given entry.
-      */
+     doc "Add the given entry."
      public void define(U key -> V value);
     
 }</programlisting>
@@ -493,9 +432,7 @@
         
         <programlisting>public interface Container {
         
-    /**
-     * Determine if the container is empty.
-     */
+    doc "Determine if the container is empty."
     Boolean empty;
     
 }</programlisting>
@@ -625,14 +562,10 @@
     public List<X> head(Integer to);
     public List<X> tail(Integer from);
     
-    /**
-     * range operator x[from..to] 
-     */
+    doc "The binary range operator x[from..to]"
     public List<X> range(Integer from, Integer to);
 
-    /**
-     * join operator x + y
-     */
+    doc "The binary join operator x + y"
     public List<X> join(List<X> elements);
     
     public List<X> sublist(Integer from, Integer to);
@@ -739,11 +672,8 @@
         
         <programlisting>public interface Comparable&lt;T&gt; {
     
-    /**
-     * The binary compare operator &lt;=&gt;
-     *
-     * Compares this instance with the given instance.
-     */
+    doc "The binary compare operator &lt;=&gt;. Compares this 
+         instance with the given instance."
     public Comparison compare(T other);
     
 }</programlisting>
@@ -770,18 +700,10 @@
         
         <programlisting>public interface Ordinal&lt;T&gt; {
 
-    /**
-     * The unary "++" operator 
-     *
-     * The successor of this instance.
-     */
+    doc "The unary "++" operator. The successor of this instance."
     public T successor;
     
-    /**
-     * The unary "--" operator 
-     *
-     * The predecessor of this instance.
-     */
+    doc "The unary "--" operator. The predecessor of this instance."
     public T predecessor;
     
 }</programlisting>
@@ -1050,114 +972,86 @@
         
         <programlisting><![CDATA[public class Util {
         
-    /**
-     * Evaluate the block. Useful for turning a series
-     * of statements into an expression.
-     */
+    doc "Evaluate the block. Useful for turning a series
+         of statements into an expression."
     public static X evaluate<X>(() produces X do);
 
-    /**
-     * If the condition is true, evaluate first block,
-     * and return the result. Otherwise, return a null
-     * value.
-     */
+    doc "If the condition is true, evaluate first block,
+         and return the result. Otherwise, return a null
+         value."
     public static optional Y ifTrue<Y>(Boolean condition,
                                         () produces Y then);
 
-    /**
-     * If the condition is true, evaluate first block,
-     * otherwise, evaluate second block. Return result
-     * of evaluation.
-     */
+    doc "If the condition is true, evaluate first block,
+         otherwise, evaluate second block. Return result
+         of evaluation."
     public static Y ifTrue<Y>(Boolean condition,
                                () produces Y then, 
                                () produces Y otherwise);
 
-    /**
-     * If the value is non-null, evaluate first block,
-     * and return the result. Otherwise, return a null
-     * value.
-     */
+    doc "If the value is non-null, evaluate first block,
+         and return the result. Otherwise, return a null
+         value."
     public static optional Y ifExists<X,Y>(specified optional X value,
                                             coordinated (X x) produces Y then);
 
-    /**
-     * If the value is non-null, evaluate first block,
-     * otherwise, evaluate second block. Return result
-     * of evaluation.
-     */
+    doc "If the value is non-null, evaluate first block,
+         otherwise, evaluate second block. Return result
+         of evaluation."
     public static Y ifExists<X,Y>(specified optional X value,
                                    coordinated (X x) produces Y then, 
                                    () produces Y otherwise);
 
-    /**
-     * Iterate elements and return those for which the first
-     * block evaluates to true, ordered using the second block,
-     * if specified.
-     */
+    doc "Iterate elements and return those for which the first
+         block evaluates to true, ordered using the second block,
+         if specified."
     public static List<X> from<X>(iterated Iterable<X> elements,
                                    coordinated (X x) produces Boolean having,
                                    optional coordinated (X x) produces Comparable by = null);
 
-    /**
-     * Iterate elements and for each element evaluate the first block. 
-     * Build a list of the resulting values, ordered using the second 
-     * block, if specified.
-     */
+    doc "Iterate elements and for each element evaluate the first block. 
+         Build a list of the resulting values, ordered using the second 
+         block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
                                      coordinated (X x) produces Y select,
                                      optional coordinated (X x) produces Comparable by = null);
 
-    /**
-     * Iterate elements and select those for which the first block 
-     * evaluates to true. For each of these, evaluate the second block. 
-     * Build a list of the resulting values, ordered using the third 
-     * block, if specified.
-     */
+    doc "Iterate elements and select those for which the first block 
+         evaluates to true. For each of these, evaluate the second block. 
+         Build a list of the resulting values, ordered using the third 
+         block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
                                      coordinated (X x) produces Boolean having, 
                                      coordinated (X x) produces Y select,
                                      optional coordinated (X x) produces Comparable by = null);
 
-    /**
-     * Return the first element for which the block evaluates to true,
-     * or a null value if no such element is found.
-     */
+    doc "Return the first element for which the block evaluates to true,
+         or a null value if no such element is found."
     public static optional X first<X>(iterated Iterable<X> elements,
                                        coordinated (X x) produces Boolean having);
     
-    /**
-     * Return the first element for which the first block evaluates to 
-     * true, or the result of evaluating the second block, if no such
-     * element is found.
-     */
+    doc "Return the first element for which the first block evaluates to 
+         true, or the result of evaluating the second block, if no such
+         element is found."
     public static X first<X>(iterated Iterable<X> elements,
                               coordinated (X x) produces Boolean having
                               () produces X otherwise);
     
-    /**
-     * Count the elements for with the block evaluates to true.
-     */
+    doc "Count the elements for with the block evaluates to true."
     public static Integer count<X>(iterated Iterable<X> elements,
                                     coordinated (X x) produces Boolean having);
     
-    /**
-     * Return true iff for every element, the block evaluates to true.
-     */
+    doc "Return true iff for every element, the block evaluates to true."
     public static Boolean forAll<X>(iterated Iterable<X> elements,
                                      coordinated (X x) produces Boolean every);
 
-    /**
-     * Return true iff for some element, the block evaluates to true.
-     */
+    doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
                                      coordinated (X x) produces Boolean exists);
     
-    /**
-     * Using the given resource, attempt to evaluate the first block.
-     * If an exception occurs, and there is a matching block, evaluate
-     * the exception block.
-     */
+    doc "Using the given resource, attempt to evaluate the first block.
+         If an exception occurs, and there is a matching block, evaluate
+         the exception block."
     public static Y using<X,Y>(specified X resource,
                                 coordinated (X x) produces Y seek,
                                 (E e) produces Y where E>=Exception... except)

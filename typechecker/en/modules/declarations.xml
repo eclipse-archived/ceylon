@@ -71,7 +71,7 @@ public deprecated</programlisting>
     <para>There are also functor types:</para>
     
     <programlisting>FunctorType := 
-OPENPAREN ( Variable (COMMA Variable)* )? CLOSEPAREN 
+"(" ( Variable (COMMA Variable)* )? ")" 
 ("produces" Annotation* Type | "void")</programlisting>
     
     <para>For example:</para>
@@ -91,11 +91,11 @@ OPENPAREN ( Variable (COMMA Variable)* )? CLOSEPAREN
     optional parameters and a varargs parameter.</para>
     
     <programlisting>FormalParameters := 
-OPENPAREN
+"("
 FormalParameter (COMMA FormalParameter)* (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
 OptionalParameter (COMMA OptionalParameter)* (COMMA VarargsParameter)? | 
 VarargsParameter?
-CLOSEPAREN</programlisting>
+")"</programlisting>
 
     <programlisting>OptionalParameter = FormalParameter Initializer</programlisting>
     
@@ -574,9 +574,9 @@ Identifier ParameterValues?
 "interface" Identifier TypeParameters?
 Interfaces?
 TypeConstraints? 
-OPENBRACE 
+"{" 
 ( MethodStub | AttributeStub )* 
-CLOSEBRACE</programlisting>
+"}"</programlisting>
 
         <para>For example:</para>
 
@@ -628,7 +628,7 @@ CLOSEBRACE</programlisting>
         
         <programlisting>Annotation* Identifier 
 FormalParameters
-( SEMICOLON | ClosedBlock )</programlisting>
+( ";" | ClosedBlock )</programlisting>
 
         <para>
         For example:
@@ -668,7 +668,7 @@ public User(String username, Person person);</programlisting>
 Annotation*
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints?
-( SEMICOLON | Block )</programlisting>
+( ";" | Block )</programlisting>
 
         <para>For example:</para>
         
@@ -788,7 +788,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 Annotation*
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints? 
-SEMICOLON</programlisting>
+";"</programlisting>
 
         <para>Interface methods and abstract methods must be implemented by every 
         non-<literal>abstract</literal> class that implements the interface or
@@ -912,7 +912,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>SimpleAttribute := Annotation* Type Identifier Initializer? SEMICOLON</programlisting>
+        <programlisting>SimpleAttribute := Annotation* Type Identifier Initializer? ";"</programlisting>
 
         <para>Formal parameters of classes, methods, decorators and converters are also considered
         to be simple attributes.</para>
@@ -961,7 +961,7 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
 
         <para>And:</para>
         
-        <programlisting>public: Integer max = 99;</programlisting>
+        <programlisting>public Integer max = 99;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
@@ -978,7 +978,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <para>Attributes declared by interfaces and attributes marked <literal>abstract</literal> 
         may not specify an initalizer, getter or setter:</para>
         
-        <programlisting>AttributeStub := Annotation* Type Identifier SEMICOLON</programlisting>
+        <programlisting>AttributeStub := Annotation* Type Identifier ";"</programlisting>
         
         <para>Interface attributes and abstract attributes must be implemented by every 
         non-<literal>abstract</literal> class that implements the interface or subclasses the 
@@ -1003,14 +1003,14 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <programlisting>Annotation* Type* 
 "selector" Identifier
 FormalParameters?
-OPENBRACE 
+"{" 
 SelectorValue (COMMA SelectorValue)*
-( SEMICOLON ( Attribute | Method )* )? 
-CLOSEBRACE</programlisting>
+( ";" ( Attribute | Method )* )? 
+"}"</programlisting>
         
         <para>Where:</para>
         
-        <programlisting>SelectorValue := Identifier ( OPENPAREN ( Expression (COMMA Expression)* )? CLOSEPAREN )?</programlisting>
+        <programlisting>SelectorValue := Identifier ( "(" ( Expression (COMMA Expression)* )? ")" )?</programlisting>
         
         <para>
         For example:
@@ -1084,7 +1084,7 @@ selector ComparisonOperation {
 "functor" Identifier TypeParameters? 
 FormalParameters 
 TypeConstraintList? 
-SEMICOLON</programlisting>
+";"</programlisting>
 
         <para>TODO: instead of having explicitly declared functor types like <literal>Order&lt;Person&gt;</literal>, 
         we can just provide built-in functor types. If we want more compact type names, we can 
@@ -1095,7 +1095,7 @@ SEMICOLON</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>public: Comparison functor Order&lt;T&gt;(T x, T y);</programlisting>
+        <programlisting>public Comparison functor Order&lt;T&gt;(T x, T y);</programlisting>
         
         <para>
         A functor declaration is equivalent to a Java abstract class declaration that extends
@@ -1154,10 +1154,10 @@ SEMICOLON</programlisting>
         declared according to the following:</para>
         
         <programlisting>Annotation*
-"decorator" Identifier TypeParameters? OPENPAREN FormalParameter CLOSEPAREN
+"decorator" Identifier TypeParameters? "(" FormalParameter ")"
 Interfaces?
 TypeConstraintList? 
-OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlisting>
+"{" ( Method | AttributeGetter | AttributeSetter )* "}"</programlisting>
 
         <para>Decorators may introduce interfaces and methods.</para>
 
@@ -1258,7 +1258,7 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
     
        <para>A type alias allows a type to be referred  to more compactly.</para>
        
-       <programlisting>Annotation* "alias" Identifier TypeParameters? Interfaces? TypeConstraints? SEMICOLON</programlisting>
+       <programlisting>Annotation* "alias" Identifier TypeParameters? Interfaces? TypeConstraints? ";"</programlisting>
        
        <para>A type alias may satisfy either:</para>
        
@@ -1289,7 +1289,7 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         <programlisting>Annotation* Type 
 "converter" Identifier TypeParameters? 
 TypeConstraintList? 
-OPENPAREN FormalParameter CLOSEPAREN 
+"(" FormalParameter ")" 
 Block</programlisting>
 
         <para>TODO: would it be better to just let you annotate a static method <literal>converter:</literal>,

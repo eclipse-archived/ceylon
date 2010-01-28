@@ -18,17 +18,17 @@
         control statement or a method, attribute or local declaration.</para>
 
         <programlisting>Block := 
-OPENBRACE 
+"{" 
 Statement*
 ControlStatement?
-CLOSEBRACE</programlisting>
+"}"</programlisting>
 
         <programlisting>Statement := 
-Expression SEMICOLON | 
+Expression ";" | 
 ControlStructure |
 Declaration</programlisting>
 
-        <programlisting>ControlStatement := ControlDirective SEMICOLON</programlisting>
+        <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
         
@@ -90,8 +90,8 @@ Declaration</programlisting>
         <emphasis>block</emphasis>.</para>
         
         <programlisting>OpenBody := Block | MethodDirective</programlisting>
-        <programlisting>ClosedBody := Block | MethodDirective SEMICOLON</programlisting>
-        <programlisting>VoidBody := VoidBlock | ( Expression | ThowDirective ) SEMICOLON</programlisting>
+        <programlisting>ClosedBody := Block | MethodDirective ";"</programlisting>
+        <programlisting>VoidBody := VoidBlock | ( Expression | ThowDirective ) ";"</programlisting>
         
         <para>Where:</para>
         
@@ -154,7 +154,7 @@ Assert</programlisting>
         <para>A control structure body consists of an expression, a control directive or a block.</para>
         
         <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
-        <programlisting>ClosedBlock := Block | (Expression | ControlDirective) SEMICOLON</programlisting>
+        <programlisting>ClosedBlock := Block | (Expression | ControlDirective) ";"</programlisting>
         
         <para>Some control structures allow embedded declaration of a local. This local is available
         inside the control structure body.</para>
@@ -208,10 +208,10 @@ Expression |
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse := "if" OPENPAREN Condition CLOSEPAREN (ClosedBlock | OpenBlock "else" ClosedBlock)</programlisting>
+            <programlisting>IfElse := "if" "(" Condition ")" (ClosedBlock | OpenBlock "else" ClosedBlock)</programlisting>
 
             <!--programlisting>IfElse := 
-"if" OPENPAREN Condition (COMMA Condition)* CLOSEPAREN
+"if" "(" Condition (COMMA Condition)* ")"
 ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting-->
 
             <para>If the condition is satisfied, the first block is executed. Otherwise, the 
@@ -258,12 +258,12 @@ else {
             <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
             
             <programlisting>SwitchCaseElse := 
-"switch" OPENPAREN Expression CLOSEPAREN
-(Cases SEMICOLON | OPENBRACE Cases CLOSEBRACE)</programlisting>
+"switch" "(" Expression ")"
+(Cases ";" | "{" Cases "}")</programlisting>
             
             <programlisting>Cases := 
 ("case" "null" OpenBlock)?
-("case" OPENPAREN Case CLOSEPAREN OpenBlock)+
+("case" "(" Case ")" OpenBlock)+
 ("else" OpenBlock)?</programlisting>
 
             <para>The switch expression may be of any type. The case values must be 
@@ -323,10 +323,10 @@ else {
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
-            <programlisting>ForFail := "for" OPENPAREN ForIterator CLOSEPAREN (ClosedBlock | OpenBlock "fail" ClosedBlock)</programlisting>
+            <programlisting>ForFail := "for" "(" ForIterator ")" (ClosedBlock | OpenBlock "fail" ClosedBlock)</programlisting>
 
             <!--programlisting>ForFail :=
-"for" OPENPAREN Iteration (SEMICOLON Iteration)* CLOSEPAREN 
+"for" "(" Iteration (";" Iteration)* ")" 
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting-->
 
@@ -336,7 +336,7 @@ else {
 
             <programlisting>ForIterator := (Variable | VariablePair) "in" Expression</programlisting>
 
-            <!--programlisting>Iteration := (Variable | VariablePair) "in" Expression (COLON Condition (COMMA Condition)*)? </programlisting-->
+            <!--programlisting>Iteration := (Variable | VariablePair) "in" Expression (":" Condition (COMMA Condition)*)? </programlisting-->
 
             <para>Each iterated expression must be of type <literal>Iterable</literal>
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
@@ -359,12 +359,12 @@ else {
 
             <programlisting>for (Person p in people) log.info(p.name);</programlisting>
 
-            <programlisting>for (String key -> Integer value in map) log.info("$key = $value");</programlisting>
+            <programlisting>for (String key -> Integer value in map) log.info("${key} = ${value}");</programlisting>
             
             <programlisting>for (Person p in people) {
-    log.debug("found $(p.name)");
+    log.debug("found ${p.name}");
     if (p.age >= 18) {
-        log.info("found an adult: $(p.name)");
+        log.info("found an adult: ${p.name}");
         found;
     }
 }
@@ -392,15 +392,15 @@ fail {
             <para>The <literal>do/while</literal> loop has the form:</para>
             
             <programlisting>DoWhile := 
-( "do" (OPENPAREN DoIterator CLOSEPAREN)? OpenBlock? )?
-"while" OPENPAREN Condition CLOSEPAREN (SEMICOLON | ClosedBlock)</programlisting>
+( "do" ("(" DoIterator ")")? OpenBlock? )?
+"while" "(" Condition ")" (";" | ClosedBlock)</programlisting>
 
             <programlisting>DoIterator := Variable Initializer</programlisting>
             
             <!--programlisting>DoWhileFail := 
-( "do" (OPENPAREN Variable Initializer CLOSEPAREN)? OpenBlock? )?
-"while" OPENPAREN Condition (COMMA Condition)* CLOSEPAREN 
-( SEMICOLON | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
+( "do" ("(" Variable Initializer ")")? OpenBlock? )?
+"while" "(" Condition (COMMA Condition)* ")" 
+( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
             <para>Both blocks are executed repeatedly, until the termination 
             condition first evaluates to false, at which point iteration ends. In each 
@@ -462,7 +462,7 @@ while (!person.parent.dead) {
             
             <para>The <literal>using</literal> resource manager has the form:</para>
             
-            <programlisting>Using := "using" OPENPAREN Resource (COMMA Resource)* CLOSEPAREN ClosedBlock</programlisting>
+            <programlisting>Using := "using" "(" Resource (COMMA Resource)* ")" ClosedBlock</programlisting>
             
             <para>TODO: do we really need a special syntax for using? Using functors, a 
             using could look like this:</para>
@@ -485,7 +485,7 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-"try" (OPENPAREN Resource CLOSEPAREN)?
+"try" ("(" Resource ")")?
 ( ClosedBlock | OpenBlock (Catch OpenBlock)* (Catch ClosedBlock | "finally" ClosedBlock) )</programlisting>
 
             <para>When an exception occurs in the try block, the first matching catch block is 
@@ -493,7 +493,7 @@ while (!person.parent.dead) {
             
             <para>The type of each catch local must extend <literal>lang.Exception</literal>.</para>
             
-            <programlisting>Catch := "catch" OPENPAREN Variable CLOSEPAREN</programlisting>
+            <programlisting>Catch := "catch" "(" Variable ")"</programlisting>
             
             <para>The resource expression must be of type <literal>Usable</literal>.</para>
             
@@ -510,10 +510,10 @@ while (!person.parent.dead) {
     ...
 }
 catch (FileNotFoundException fnfe) {
-    log.info("file not found: $name");
+    log.info("file not found: ${name}");
 }
 catch (FileReadException fre) {
-    log.info("could not read from file: $name");
+    log.info("could not read from file: ${name}");
 }
 finally {
     if (file.open) file.close();
@@ -545,7 +545,7 @@ catch (NotFoundException e) {
             
         <para>An assertion has the following form:</para>
         
-        <programlisting>Assert := "assert" OPENPAREN Expression (COMMA Expression)* CLOSEPAREN Expression?</programlisting>
+        <programlisting>Assert := "assert" "(" Expression (COMMA Expression)* ")" Expression?</programlisting>
         
         <para>Assertions appearing in class declarations are checked after the class
         is instantiated. Assertions appearing in other blocks are checked when the 

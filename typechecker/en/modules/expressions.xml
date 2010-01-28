@@ -74,16 +74,16 @@ EnumerationLiteral |
         -->
         
         <programlisting>DateLiteral := 
-SINGEQUOTE 
-Digit{1,2} SLASH Digit{1,2} SLASH DIGIT{4} 
-SINGEQUOTE</programlisting>
+"'" 
+Digit{1,2} "/" Digit{1,2} "/" Digit{4} 
+"'"</programlisting>
         
         <programlisting>TimeLiteral := 
-SINGEQUOTE 
-Digit{1,2} COLON Digit{2} ( COLON DIGIT{2} ( COLON DIGIT{3} )? )? 
-(SPACE "AM"|"PM")? 
-(SPACE Character{3,4})? 
-SINGEQUOTE</programlisting>
+"'" 
+Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )? 
+(" " "AM"|"PM")? 
+(" " Character{3,4})? 
+"'"</programlisting>
         
         <para>For example:</para>
         
@@ -135,7 +135,7 @@ SINGEQUOTE</programlisting>
         
         <programlisting>IntegerLiteral = 
 Digit+ | 
-SINGLEQUOTE ( HexDigit{4} | HexDigit{8} ) SINGLEQUOTE</programlisting>
+"'" ( HexDigit{4} | HexDigit{8} ) "'"</programlisting>
         
         <para>For example:</para>
         
@@ -151,12 +151,12 @@ SINGLEQUOTE ( HexDigit{4} | HexDigit{8} ) SINGLEQUOTE</programlisting>
         <para>A float literal has this form:</para>
         
         <programlisting>FloatLiteral := 
-Digit+ PERIOD Digit+ 
-( ("E"|"e")? (PLUS|MINUS)? Digit+ )?</programlisting>
+Digit+ "." Digit+ 
+( ("E"|"e")? ("+"|"-")? Digit+ )?</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>public static: Float pi = 3.14159;</programlisting>
+        <programlisting>public static Float pi = 3.14159;</programlisting>
         
         <para>Equivalent to this Java code:</para>
         
@@ -169,13 +169,13 @@ Digit+ PERIOD Digit+
         
         <para>A string literal has this form:</para>
         
-        <programlisting>StringLiteral = DOUBLEQUOTE ( Character+ | DOLLAR OPENBRACE Expression CLOSEBRACE )* DOUBLEQUOTE</programlisting>
+        <programlisting>StringLiteral = """ ( Character+ | "${" Expression "}" )* """</programlisting>
         
         <para>For example:</para>
         
         <programlisting>person.name = "Gavin";</programlisting>
         
-        <programlisting>log.info("$(Time()) $message");</programlisting>
+        <programlisting>log.info("${Time()} ${message}");</programlisting>
         
         <programlisting>String multilineString = "Strings may
 span multiple lines
@@ -192,7 +192,7 @@ if you prefer.";</programlisting>
         
         <para>A character literal has this form:</para>
         
-        <programlisting>CharacterLiteral := SINGLEQUOTE Character SINGLEQUOTE</programlisting>
+        <programlisting>CharacterLiteral := "'" Character "'"</programlisting>
         
         <para>For example:</para>
         
@@ -209,7 +209,7 @@ if you prefer.";</programlisting>
         
         <para>A byte literal has this form:</para>
         
-        <programlisting>ByteLiteral := SINGLEQUOTE ( BinaryDigit{8} | HexDigit{2} ) SINGLEQUOTE</programlisting>
+        <programlisting>ByteLiteral := "'" ( BinaryDigit{8} | HexDigit{2} ) "'"</programlisting>
         
         <para>For example:</para>
         
@@ -230,7 +230,7 @@ if you prefer.";</programlisting>
         
         <para>A regex literal has this form:</para>
         
-        <programlisting>RegexLiteral := BACKTICK RegularExpression BACKTICK</programlisting>
+        <programlisting>RegexLiteral := "`" RegularExpression "`"</programlisting>
         
         <para>For example:</para>
         
@@ -356,18 +356,18 @@ if you prefer.";</programlisting>
         If there are any remaining optional parameters, they will be assigned their default values.
         On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
             
-        <programlisting>OrderedParameterValues := OPENPAREN ( Expression (COMMA Expression)* )? CLOSEPAREN</programlisting>
+        <programlisting>OrderedParameterValues := "(" ( Expression (COMMA Expression)* )? ")"</programlisting>
                 
         <para>When parameter values are named, required and optional parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
         <programlisting>NamedParameterValues := 
-OPENBRACE 
+"{" 
 NamedParameterValue* 
 ( VarargParameterValue (COMMA VarargParameterValue)* )? 
-CLOSEBRACE</programlisting>
+"}"</programlisting>
 
-        <programlisting>NamedParameterValue := Identifier Initializer SEMICOLON</programlisting>
+        <programlisting>NamedParameterValue := Identifier Initializer ";"</programlisting>
 
         <programlisting>VarargParameterValue := Expression | Variable Initializer</programlisting>
         <!--programlisting>VarargParameterValue := Expression | Variable Initializer | ForComprehension</programlisting-->
@@ -459,7 +459,7 @@ CLOSEBRACE</programlisting>
             <para>Enumerations may be instantiated according to the following 
             simplified syntax:</para>
             
-            <programlisting>EnumerationInstantiation := OPENBRACE Expression (COMMA Expression)* CLOSEBRACE</programlisting>
+            <programlisting>EnumerationInstantiation := "{" Expression (COMMA Expression)* "}"</programlisting>
             
             <para>In this case, there is no need to explicitly specify the type.</para>
             
@@ -1875,7 +1875,7 @@ CLOSEBRACE</programlisting>
         
         <programlisting>FunctorExpression := FunctorLocals OpenBlock</programlisting>
         
-        <programlisting>FunctorLocals := OPENPAREN ( Variable | VariablePair (COMMA Variable | VariablePair)* ) CLOSEPAREN</programlisting>
+        <programlisting>FunctorLocals := "(" ( Variable | VariablePair (COMMA Variable | VariablePair)* ) ")"</programlisting>
         
         <para>A functor body may not contain a <literal>return</literal> directive. If the functor
         body is a block, the value of the functor, when executed, is determined by the 
@@ -2027,7 +2027,7 @@ isFalse {
         annotated <literal>iterated</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference OPENPAREN ForIterator CLOSEPAREN FunctorParameterValues</programlisting>
+        <programlisting>MemberReference "(" ForIterator ")" FunctorParameterValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>(X x) produces Y</literal> or <literal>(X x) void</literal> need not 
@@ -2070,7 +2070,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         annotated <literal>specified</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference OPENPAREN Variable Initializer CLOSEPAREN FunctorParameterValues</programlisting>
+        <programlisting>MemberReference "(" Variable Initializer ")" FunctorParameterValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>(X x) produces Y</literal> or <literal>(X x) void</literal> need not 
@@ -2123,7 +2123,7 @@ Y using&lt;X,Y&gt;(specified X resource,
         <literal>Enumeration&lt;Entry&lt;Case&lt;X&gt;, () produces Y&gt;&gt;</literal> annotated 
         <literal>cases</literal>, the parameter value may be specified according to:</para>
         
-        <programlisting>(OPENPAREN Case CLOSEPAREN SimpleFunctorExpression)+</programlisting>
+        <programlisting>("(" Case ")" SimpleFunctorExpression)+</programlisting>
         
         <para>For example, for the following method declaration:</para>
         
