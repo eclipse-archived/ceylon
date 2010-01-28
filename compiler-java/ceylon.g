@@ -6,34 +6,94 @@ options {
 }
 
 compilationUnit 
-    :
-    classDeclaration*
+    : (annotations? (classDeclaration | interfaceDeclaration | converterDeclaration))+
     ;
 
 statement
-    : declaration
-    | expression
-    |
+    : (declaration) => declaration
+    | expression ';'
+    | 'return' expression ';'
+    | ';'
     ;
 
 // A block must have at least one statement or it's not possible to
-// distinguish it from a string enumeration like {"foo"}.
+// distinguish it from an empty string enumeration {}.
 block
     :
-        '{' (statement ';')+ '}'
+        '{' (statement)+ '}'
     ;
-        
 
 declaration
-    :
-        annotations? type IDENTIFIER
-        ('=' expression
-          | formalParameters)?
+    :   
+        annotations? 
+        (attributeOrMethodDeclaration 
+        | classDeclaration
+        | decoratorDeclaration
+        | interfaceDeclaration
+        | converterDeclaration)
     ;
+
+// This is quite different from the grammar in the spec, but because
+// attributes and methods are syntactically very similar it makes
+// sense to recognize them in this way.  An attribute is a method with
+// no formalParameters.
+// FIXME: Allows "void foo" as an attribute declaration
+attributeOrMethodDeclaration
+    :
+        (type | 'void')
+        IDENTIFIER
+        ((formalParameters
+                ('where' typeConstraint ('&' typeConstraint)*)?
+                (';' | block))
+        |
+            (';' | block | '=' expression ';'))
+    ;
+
+decoratorDeclaration
+    :
+        'decorator'
+        IDENTIFIER
+        typeParameters?
+        formalParameters?
+        ('satisfies' type (',' type)*)?
+        ('where' typeConstraint ('&' typeConstraint)*)?
+        '{' attributeOrMethodDeclaration* '}'
+    ;
+
+// FIXME: Not to spec.  I can't parse "type converter" because it's not LL, 
+// but I can parse "converter type"
+converterDeclaration
+	:	
+        'converter'
+        type
+        IDENTIFIER
+        typeParameters?
+        ('where' typeConstraint ('&' typeConstraint)*)?
+        '(' annotations? type IDENTIFIER ')'
+	;
+
+interfaceDeclaration
+    :
+        'interface'
+        IDENTIFIER
+        typeParameters?
+        ('satisfies' type (',' type)*)?
+        ('where' typeConstraint ('&' typeConstraint)*)?
+        '{' (attributeOrMethodStub)* '}'
+    ;
+
+attributeOrMethodStub
+    :
+        annotations?
+        (type | 'void')
+        IDENTIFIER
+        (formalParameters
+            ('where' typeConstraint ('&' typeConstraint)*)?)?
+        ';'
+        ;
 
 classDeclaration
     :
-        annotations?
         'class'
         IDENTIFIER
         typeParameters?
@@ -41,10 +101,13 @@ classDeclaration
         ('extends' type)?
         ('satisfies' type (',' type)*)?
         ('where' typeConstraint ('&' typeConstraint)*)?
-        // FIXME: These braces around the instances list are not in the spec.
+        // FIXME: These braces around the instances list are not in
+        // the spec.  We need them because there's no way to
+        // distinguish between an optional argument list and the block
+        // of this class.
         ('instances' '{' (type arguments?) (',' type arguments?)* '}')?
-        ('{' (statement ';' | block)* '}')
-        ;
+        '{' (statement | block)* '}'
+    ;
         
 typeConstraint
     :   IDENTIFIER ((('>=' | '<=') type )| formalParameters)
@@ -205,7 +268,7 @@ unaryExpression
 
 primary
     :
-        IDENTIFIER | 'this' | 'super'
+        (IDENTIFIER | 'this' | 'super')
         selector*
     |
         literal
@@ -271,13 +334,13 @@ positionalArguments
 
 formalParameters
     :   
-    '(' formalParameter 
-    (',' formalParameter)* ')';
+    '(' (formalParameter 
+    (',' formalParameter)*)? ')';
 
-// FIXME: This accepts more than the language spec, in that named
-// arguments and varargs arguments can appear in any order.  We'll
-// have to enforce the rule that the ... appears at the end of the
-// parapmeter list in a later pass of the compiler.
+// FIXME: This accepts more than the language spec: named arguments
+// and varargs arguments can appear in any order.  We'll have to
+// enforce the rule that the ... appears at the end of the parapmeter
+// list in a later pass of the compiler.
 formalParameter
     :   annotations? type  IDENTIFIER ('=' expression | '...')?;
     
@@ -434,7 +497,7 @@ ENUM
     ;             
 
 EXISTS
-    : 'exists'
+    :    'exists'
     ;
 
 FINALLY
@@ -460,9 +523,9 @@ IMPORT
 INTERFACE
     :   'interface'
     ;
-    
+
 NONEMPTY
-: 'nonempty'
+    : 'nonempty'
     ;
 
 PACKAGE
@@ -681,8 +744,12 @@ PLUSEQ
     ;
 
 MODULE
-    : 'module'
+    :   'module'
     ;
+    
+CONVERTER
+	:	'converter'
+	;
 
 IDENTIFIER
     :   IdentifierStart IdentifierPart*
