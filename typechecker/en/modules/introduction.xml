@@ -129,7 +129,7 @@
         
         <programlisting>class Hello {
 
-    main: void hello() {
+    main void hello() {
         log.info("Hello, World!");
     }
 
@@ -138,7 +138,7 @@
         <para>
         This code defines a Ceylon class named <literal>Hello</literal>, with 
         a single method with no parameters and no return value, named 
-        <literal>hello</literal>. Two <emphasis>annotations</emphasis> appear on 
+        <literal>hello</literal>. An <emphasis>annotation</emphasis> appears on 
         the method declaration. The <literal>main</literal> annotation specifies 
         that this method is called automatically when the virtual machine is 
         started. The <literal>hello()</literal> method calls the 
@@ -153,7 +153,7 @@
         
         <programlisting><![CDATA[class Hello {
 
-    main: void hello(Process process) {
+    main void hello(Process process) {
         String name = process.args.firstOrNull default "World";
         log.info("Hello, $name!");
     }
@@ -180,7 +180,7 @@ import html.Body;
 import html.Div;
 import web.Page;
 
-page ("/hello.html"):
+@page ("/hello.html")
 class Hello(Request request) 
         extends Html(request) {
 

@@ -77,8 +77,8 @@ OPENPAREN ( Variable (COMMA Variable)* )? CLOSEPAREN
     <programlisting>(X x,X y) produces Comparison</programlisting>
     <programlisting>(Payment payment) produces Boolean</programlisting>
     <programlisting>(Y element) void</programlisting>
-    <programlisting>() produces optional:Object</programlisting>
-    <programlisting>(optional:Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
+    <programlisting>() produces optional Object</programlisting>
+    <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
     
     </section>
 
@@ -109,7 +109,7 @@ CLOSEPAREN</programlisting>
     
     <programlisting>(Product product, Integer quantity=1)</programlisting>
     
-    <programlisting>(Name name, optional: Organization org=null, Address... addresses)</programlisting>
+    <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
     
     <programlisting>(Key key -> Value value)</programlisting>
     
@@ -184,14 +184,14 @@ CLOSEPAREN</programlisting>
     
     <programlisting>Comparable&lt;Person&gt; Person person = Person(name);</programlisting>
     
-    <programlisting>public entity: 
-class Customer(Name name, optional: Organization org = null) 
+    <programlisting>public entity 
+class Customer(Name name, optional Organization org = null) 
     extends Person(name, org) 
 {
    ... 
 }</programlisting>
 
-    <programlisting>public:
+    <programlisting>public
 class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none)
     extends AbstractCollection&lt;Entry&lt;T&gt;&gt;(entries)
     satisfies Map&lt;T&gt; 
@@ -200,7 +200,7 @@ class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none)
     ... 
 }</programlisting>
     
-    <programlisting>public: interface List&lt;T&gt;
+    <programlisting>public interface List&lt;T&gt;
     satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; 
 {
     ...
@@ -208,26 +208,26 @@ class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none)
 
     <programlisting>Integer count = 0;</programlisting>
     
-    <programlisting>protected: String firstName;</programlisting>
+    <programlisting>protected String firstName;</programlisting>
     
-    <programlisting>public: Boolean login() { ... }</programlisting>
+    <programlisting>public Boolean login() { ... }</programlisting>
     
-    <programlisting>public: 
+    <programlisting>public 
 String join(Iterable&lt;String&gt; strings, 
             String delimiter = ", ") 
 { 
    ... 
 }</programlisting>
     
-    <programlisting>public: Boolean functor Order&lt;T&gt;(T x, T y);</programlisting>
+    <programlisting>public Boolean functor Order&lt;T&gt;(T x, T y);</programlisting>
 
-    <programlisting>public: decorator ComparablePerson(Person person) 
+    <programlisting>public decorator ComparablePerson(Person person) 
     satisfies Comparable&lt;Person&gt; 
 {
    ... 
 }</programlisting>
                
-    <programlisting>public: Float converter IntegerToFloat(Integer int) 
+    <programlisting>public Float converter IntegerToFloat(Integer int) 
 {
    return Float(int);
 }</programlisting>
@@ -261,8 +261,8 @@ Block</programlisting>
         For example:
         </para>
         
-        <programlisting>public mutable entity:
-class Customer(Name name, optional: Organization org = null) 
+        <programlisting>public mutable entity
+class Customer(Name name, optional Organization org = null) 
         extends Person(name, org) { 
     ... 
 }</programlisting>
@@ -306,8 +306,8 @@ class Customer(Name name, optional: Organization org = null)
         
         <para>This declaration:</para>
         
-        <programlisting>public: class Key(Lock lock) {
-    public: Lock lock = lock;
+        <programlisting>public class Key(Lock lock) {
+    public Lock lock = lock;
 }</programlisting>
         
         <para>Is equivalent to this Java class:</para>
@@ -324,8 +324,8 @@ class Customer(Name name, optional: Organization org = null)
 
         <para>This declaration:</para>
         
-        <programlisting>public: class Key(Lock lock) {
-    public: Lock lock { return lock };
+        <programlisting>public class Key(Lock lock) {
+    public Lock lock { return lock };
 }</programlisting>
         
         <para>Is equivalent to this Java class:</para>
@@ -346,9 +346,9 @@ class Customer(Name name, optional: Organization org = null)
 
         <para>Class initialization parameters are optional. The following class:</para>
         
-        <programlisting>public mutable: class Point {
-    public mutable: Exact x;
-    public mutable: Exact y;
+        <programlisting>public mutable class Point {
+    public mutable Exact x;
+    public mutable Exact y;
 }</programlisting>
         
         <para>Is equivalent to this Java class with a default constructor:</para>
@@ -364,12 +364,12 @@ class Customer(Name name, optional: Organization org = null)
         <para>A subclass must pass values to each superclass initialization 
         parameter.</para>
 
-        <programlisting>public: class SpecialKey1()
+        <programlisting>public class SpecialKey1()
         extends Key( new SpecialLock() ) {
     ...
 }</programlisting>
 
-        <programlisting>public: class SpecialKey2(Lock lock) 
+        <programlisting>public class SpecialKey2(Lock lock) 
         extends Key(lock) {
     ...
 }</programlisting>
@@ -395,7 +395,7 @@ class Customer(Name name, optional: Organization org = null)
         <para>The body of a class may contain arbitrary code, which is
         executed when the class is instantiated.</para>
         
-        <programlisting>public mutable: class DiagonalPoint(Exact position) 
+        <programlisting>public mutable class DiagonalPoint(Exact position) 
         extends Point() {
         
     Exact displacement = position**2/2;
@@ -440,7 +440,7 @@ class Customer(Name name, optional: Organization org = null)
         
         <para>This class:</para>
         
-        <programlisting>public: class Counter(Integer initialCount=0) { ... }</programlisting>
+        <programlisting>public class Counter(Integer initialCount=0) { ... }</programlisting>
         
         <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
         
@@ -477,31 +477,6 @@ class Customer(Name name, optional: Organization org = null)
         <programlisting>new Counter ( new CounterParameters().initialCount(10) );</programlisting>
 
         </section>
-        
-        <!--
-        <para>Note that additional initialization may be performed in any
-        method annotated <literal>AfterCreate</literal>. Invariants may
-        be asserted in any method annotated <literal>AfterInvoke</literal>.</para>
-        
-        <programlisting>
-Public:
-class Point(Float x, Float y) 
-{
-    
-    Public: Float x = x;
-    Public: Float y = y;
-    Public Constant: Date created;
-    
-    AfterCreate:
-    void create()
-        created = Date();
-        
-    AfterInvoke: 
-    void check()
-        assert sqrt( x**2 + y**2 ) &lt; 100.0;
-    
-}</programlisting>
-        -->
 
         <section>
         <title>Instance enumeration</title>
@@ -517,10 +492,10 @@ Identifier ParameterValues?
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>
         
-        <programlisting>public: class DayOfWeek 
+        <programlisting>public class DayOfWeek 
         instances mon, tues, wed, thurs, fri, sat, sun {}</programlisting>
 
-        <programlisting>public: class DayOfWeek(String name)
+        <programlisting>public class DayOfWeek(String name)
         instances 
             mon("Monday"), 
             tues("Tuesday"),
@@ -530,7 +505,7 @@ Identifier ParameterValues?
             sat("Saturday"),
             sun("Sunday") {
        
-    public: String name = name;
+    public String name = name;
     
 }</programlisting>
         
@@ -603,7 +578,7 @@ CLOSEBRACE</programlisting>
 
         <para>For example:</para>
 
-        <programlisting>public: interface Comparable&lt;T&gt; {
+        <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
 }</programlisting>
 
@@ -622,7 +597,7 @@ CLOSEBRACE</programlisting>
             
             <para>An interface may extend any number of other interfaces. For example:</para>
         
-            <programlisting>public: interface List&lt;T&gt;
+            <programlisting>public interface List&lt;T&gt;
         satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
     ...
 }</programlisting>
@@ -695,7 +670,7 @@ TypeConstraints?
 
         <para>For example:</para>
         
-        <programlisting>public: Integer add(Integer x, Integer y) {
+        <programlisting>public Integer add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
     
@@ -703,13 +678,13 @@ TypeConstraints?
     return Token();
 }</programlisting>
 
-        <programlisting>public optional: U get(optional: V key);</programlisting>
+        <programlisting>public optional U get(optional V key);</programlisting>
         
-        <programlisting>public: void print(Object... objects) {
+        <programlisting>public void print(Object... objects) {
     for (Object object in objects) { ... }
 }</programlisting>
 
-        <programlisting>public: void addEntry(V key -> U value) { ... }</programlisting>
+        <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
         <!--A method body may omit the braces if it consists of exactly one statement.-->
         
@@ -755,9 +730,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>This method:</para>
         
-        <programlisting>public: class Counter {
+        <programlisting>public class Counter {
         
-    package: void init(Integer initialCount=0) {
+    package void init(Integer initialCount=0) {
         count=initialCount;
     }
     
@@ -850,14 +825,14 @@ SEMICOLON</programlisting>
             
         <para>For example:</para>
         
-        <programlisting>package mutable: String firstName;</programlisting>
+        <programlisting>package mutable String firstName;</programlisting>
         
-        <programlisting>mutable: Integer count = 0;</programlisting>
+        <programlisting>mutable Integer count = 0;</programlisting>
         
-        <programlisting>public: String name { return join(firstName, lastName); }
-public: assign name { firstName = first(name); lastName = last(name); }</programlisting>
+        <programlisting>public String name { return join(firstName, lastName); }
+public assign name { firstName = first(name); lastName = last(name); }</programlisting>
     
-        <programlisting>public: Float total {
+        <programlisting>public Float total {
     return find (Float sum = 0.0)
         for (LineItem li in lineItems) 
             sum += li.amount;
@@ -889,7 +864,7 @@ public: assign name { firstName = first(name); lastName = last(name); }</program
         method with the content of the getter block. For example:
         </para>
         
-        <programlisting>public: Float total { return items.totalPrice; }</programlisting>
+        <programlisting>public Float total { return items.totalPrice; }</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
@@ -909,8 +884,8 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
         setter block. For example:
         </para>
         
-        <programlisting>public: String name { return join(firstName, lastName); }
-public: assign name { firstName = first(name); lastName = last(name); }</programlisting>
+        <programlisting>public String name { return join(firstName, lastName); }
+public assign name { firstName = first(name); lastName = last(name); }</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
@@ -966,7 +941,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         instance of <literal>lang.SimpleAttribute</literal> or 
         <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
         
-        <programlisting>package mutable: String firstName;</programlisting>
+        <programlisting>package mutable String firstName;</programlisting>
 
         <para>is equivalent to this Java code:</para>
         
@@ -975,7 +950,7 @@ Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
 
         <para>While:</para>
         
-        <programlisting>mutable: Integer count = 0;</programlisting>
+        <programlisting>mutable Integer count = 0;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
@@ -1191,9 +1166,9 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         
         <para>For example, this decorator:</para>
         
-        <programlisting>public: decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
+        <programlisting>public decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
     
-    public: Collection&lt;T&gt; nonZeroElements() {
+    public Collection&lt;T&gt; nonZeroElements() {
         return collection.exclude(0); 
     }
     
@@ -1245,10 +1220,10 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         
         <para>This decorator declaration:</para>
         
-        <programlisting>public: decorator ComparableUser(User user) 
+        <programlisting>public decorator ComparableUser(User user) 
         satisfies Comparable&lt;User&gt; {
         
-    public: Comparison compare(User other) 
+    public Comparison compare(User other) 
     {
         return user.username &lt;=&gt; other.username;
     }
@@ -1295,9 +1270,9 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
        
        <para>For example:</para>
        
-       <programlisting>public: alias People satisfies List&lt;Person&gt;;</programlisting>
+       <programlisting>public alias People satisfies List&lt;Person&gt;;</programlisting>
        
-       <programlisting>package: alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
+       <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
        <programlisting>alias Compare&lt;T&gt; satisfies (T x,T y) produces Comparison;</programlisting>
     
@@ -1320,7 +1295,7 @@ Block</programlisting>
             
         <para>For example:</para>
         
-        <programlisting>public: User converter PersonUser(Person person) { return person.user; }</programlisting>
+        <programlisting>public User converter PersonUser(Person person) { return person.user; }</programlisting>
         
         <para>The parameter type must be immutable.</para>
 

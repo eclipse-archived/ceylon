@@ -176,13 +176,13 @@ Expression |
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition must be an 
-                expression or local initializer of type <literal>optional: Object</literal>. The
+                expression or local initializer of type <literal>optional Object</literal>. The
                 condition is satisfied if the expression or initializer evaluates to a non-null value
                 at runtime.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
-                expression or local initializer of type <literal>optional: Container</literal>. The
+                expression or local initializer of type <literal>optional Container</literal>. The
                 condition is satisfied if the expression or initializer evaluates to a non-null value
                 at runtime, and if the resulting <literal>Container</literal> is non-empty.</para>
             </listitem>
@@ -230,14 +230,14 @@ else {
     throw NotEnoughMoneyException();
 }</programlisting>
 
-            <programlisting>public: void welcome(optional: User user) {
+            <programlisting>public void welcome(optional User user) {
     if (user exists)
         log.info("Hi ${user.name}!") 
     else 
         log.info("Hello World!");
 }</programlisting>
             
-            <programlisting>public: Payment payment(Order order) {
+            <programlisting>public Payment payment(Order order) {
     if (Payment p = order.payment exists) {
         return p;
     }
@@ -294,7 +294,7 @@ else {
             
             <para>For example:</para>
 
-            <programlisting>public: PaymentProcessor processor {
+            <programlisting>public PaymentProcessor processor {
     switch (payment.type) 
         case null throw NoPaymentTypeException()
         case (credit, debit) return cardPaymentProcessor 

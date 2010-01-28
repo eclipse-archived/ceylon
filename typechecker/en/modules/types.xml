@@ -23,47 +23,47 @@
         <literal>==</literal> (equals), <literal>!=</literal> (not equals), 
         <literal>===</literal> (identity equals) and <literal>=</literal> (assign).</para>
         
-        <programlisting><![CDATA[public abstract: class Object {
+        <programlisting><![CDATA[public abstract class Object {
         
     /**
      * The equals operator x == y.
      *
      * Default implementation performs identity comparison.
      */
-    public: Boolean equals(Object that) {
-        return this===that;    
+    public Boolean equals(Object that) {
+        return this===that;
     }
     
     /**
      * Compares the given attributes of this instance with the given
      * attributes of the given instance.
      */
-    public: Boolean equals(Object that, Attribute... attributes) { ... }
+    public Boolean equals(Object that, Attribute... attributes) { ... }
     
     /**
      * The hash code of the instance. Default implementation assumes 
      * identity equality.
      */
-    public: Integer hash {
+    public Integer hash {
         return identityHash(this);
     }
     
     /**
      * Computes the hash code of the instance using the given attributes.
      */
-    public: Integer hash(Attribute... attributes) { ... }
+    public Integer hash(Attribute... attributes) { ... }
         
     /**
      * The unary render operator $x.
      *
      * A developer-friendly string representing the instance.
      */
-    public: String string { ... }
+    public String string { ... }
     
     /**
      * Determine if the instance belongs to the given Category.
      */
-    public: Boolean in<Y>(Category<Y> cat)
+    public Boolean in<Y>(Category<Y> cat)
             where (Y<=X) {
         return cat.contains(this);
     }
@@ -72,7 +72,7 @@
      * Determine if the instance belongs to the given Iterable
      * object.
      */
-    public: Boolean in<Y>(Iterable<Y> iterable) 
+    public Boolean in<Y>(Iterable<Y> iterable) 
             where (Y<=X) {
         return for any ( Object elem in iterable ) 
             elem == this;
@@ -81,12 +81,12 @@
     /**
      * The Type of the instance.
      */
-    public: Type<X+> type { ... }
+    public Type<X+> type { ... }
     
     /**
      * Determine if the instance is of the given Type.
      */
-    public: Boolean is(Type<Object+> type) {
+    public Boolean is(Type<Object+> type) {
         return this.type.assignableTo(type);
     }
     
@@ -95,12 +95,12 @@
      * Type, or throw an exception if the instance is not
      * of the given type.
      */
-    public: T as<T>(Type<T> type) { ... }
+    public T as<T>(Type<T> type) { ... }
     
     /**
      * A log obect for the type.
      */
-    public static: Log log = Log(type);
+    public static Log log = Log(type);
         
     ...
         
@@ -111,7 +111,7 @@
     <section>
         <title>Types</title>
         
-        <programlisting><![CDATA[public: interface Type<X> 
+        <programlisting><![CDATA[public interface Type<X> 
         satisfies Case<Object> {
     ...
 }]]></programlisting>
@@ -125,28 +125,28 @@
         boolean values, and supports the binary <literal>||, &amp;&amp;, =>,
         |, &amp;, ^</literal> and unary <literal>!</literal> operators.</para>
         
-        <programlisting>public final: class Boolean 
+        <programlisting>public final class Boolean 
         instances true, false {
 
     /**
      * The binary or operator x | y
      */
-    public: Boolean or(Boolean boolean) { ... }
+    public Boolean or(Boolean boolean) { ... }
     
     /**
      * The binary and operator x &amp; y
      */
-    public: Boolean and(Boolean boolean) { ... }
+    public Boolean and(Boolean boolean) { ... }
     
     /**
      * The binary xor operator x ^ y
      */
-    public: Boolean xor(Boolean boolean) { ... }
+    public Boolean xor(Boolean boolean) { ... }
 
     /**
      * The unary not operator !x
      */
-    public: Boolean negation {
+    public Boolean negation {
         return switch(this) {
             case (true) false
             case (false) true
@@ -163,27 +163,27 @@
         <para>The interface <literal>Callable</literal>
         represents a callable reference.</para>
         
-        <programlisting>public: interface Callable&lt;S&gt;
+        <programlisting>public interface Callable&lt;S&gt;
         where S >= Functor {
-    public: S invoke;
-    public: onCall( ... );
+    public S invoke;
+    public onCall( ... );
 }</programlisting>
         
         <para>The interface <literal>Value</literal> models a 
         readable value.</para>
         
-        <programlisting>public: interface Value&lt;T&gt; {
-    public: () produces T get;
-    public: onGet( (T t) produces T interceptor );
+        <programlisting>public interface Value&lt;T&gt; {
+    public () produces T get;
+    public onGet( (T t) produces T interceptor );
 }</programlisting>
 
         <para>The interface <literal>OpenValue</literal> models 
         a readable and writeable value.</para>
         
-        <programlisting>public: interface OpenValue&lt;T&gt; 
+        <programlisting>public interface OpenValue&lt;T&gt; 
         satisfies Value&lt;T&gt; {
-    public: (T) void set;
-    public: onSet( (T t) produces T interceptor );
+    public (T) void set;
+    public onSet( (T t) produces T interceptor );
 }</programlisting>
 
     </section>
@@ -191,44 +191,44 @@
     <section>
         <title>Methods and attributes</title>
         
-        <programlisting>public: interface Annotated {
-    public: Boolean annotated(Type&lt;Object+&gt; type);
-    public: T annotation&lt;T&gt;(Type&lt;T&gt; type);
-    public: Set&lt;Object&gt; annotations;
+        <programlisting>public interface Annotated {
+    public Boolean annotated(Type&lt;Object+&gt; type);
+    public T annotation&lt;T&gt;(Type&lt;T&gt; type);
+    public Set&lt;Object&gt; annotations;
 }</programlisting>
         
-        <programlisting>public: interface Member&lt;X&gt; 
+        <programlisting>public interface Member&lt;X&gt; 
         satisfies Annotated {
-    public: Type&lt;X&gt; declaringType;
-    public: String name;
-    public: Visibility visibility;
-    public: Boolean abstract;
-    public: Boolean override;
+    public Type&lt;X&gt; declaringType;
+    public String name;
+    public Visibility visibility;
+    public Boolean abstract;
+    public Boolean override;
 }</programlisting>
         
-        <programlisting>public: interface Method&lt;X,S&gt;
+        <programlisting>public interface Method&lt;X,S&gt;
         where S >= Functor 
         satisfies Member&lt;X&gt; {
-    public: Type&lt;Object+&gt; returnType;
-    public: List&lt;Type&lt;Object+&gt;&gt; parameterTypes;
-    public: Callable&lt;S&gt; curry(X instance);
-    public: Boolean static;
-    public: Boolean once;
-    public: onCall( ... );
+    public Type&lt;Object+&gt; returnType;
+    public List&lt;Type&lt;Object+&gt;&gt; parameterTypes;
+    public Callable&lt;S&gt; curry(X instance);
+    public Boolean static;
+    public Boolean once;
+    public onCall( ... );
 }</programlisting>
         
-        <programlisting>public: interface Attribute&lt;X,T&gt; 
+        <programlisting>public interface Attribute&lt;X,T&gt; 
         satisfies Member&lt;X&gt; {
-    public: Type&lt;T&gt; attributeType;
-    public: boolean mutable;
-    public: Value&lt;T&gt; curry(X instance);
-    public: onGet( (X x,T t) produces T interceptor );
+    public Type&lt;T&gt; attributeType;
+    public boolean mutable;
+    public Value&lt;T&gt; curry(X instance);
+    public onGet( (X x,T t) produces T interceptor );
 }</programlisting>
                 
-        <programlisting>public: interface MutableAttribute&lt;X,T&gt;
+        <programlisting>public interface MutableAttribute&lt;X,T&gt;
         satisfies Attribute&lt;X,T&gt; {
-    public override: OpenValue&lt;T&gt; curry(X instance);
-    public: onSet( (X x,T t) produces T interceptor );
+    public override OpenValue&lt;T&gt; curry(X instance);
+    public onSet( (X x,T t) produces T interceptor );
 }</programlisting>
                 
     </section>
@@ -243,67 +243,67 @@
         <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
         (spread comparison)--> <!--and <literal>*~></literal> (all in).--></para>
         
-        <programlisting>public: interface Iterable&lt;X&gt; {
+        <programlisting>public interface Iterable&lt;X&gt; {
     
     /**
      * Produce an iterator.
      */
-    public: Iterator&lt;X&gt; iterator();
+    public Iterator&lt;X&gt; iterator();
     
 }</programlisting>
 
-        <programlisting>public: interface Iterator&lt;X&gt; {
+        <programlisting>public interface Iterator&lt;X&gt; {
 
-    public: Boolean more;
-    public: X current;
-    public: X next();
+    public Boolean more;
+    public X current;
+    public X next();
     
 }</programlisting>
 
         <para>The following decorator exists:</para>
 
-        <!--programlisting><![CDATA[public: decorator Iterables<X> (Iterable<X> iterable) {
+        <!--programlisting><![CDATA[public decorator Iterables<X> (Iterable<X> iterable) {
 
-    public: void each((X) void each) { ... }
-    public: Integer count((X) produces Boolean test) { ... }
-    public: Boolean isAll((X) produces Boolean test) { ... }
-    public: Boolean isAny((X) produces Boolean test) { ... }
+    public void each((X) void each) { ... }
+    public Integer count((X) produces Boolean test) { ... }
+    public Boolean isAll((X) produces Boolean test) { ... }
+    public Boolean isAny((X) produces Boolean test) { ... }
     
-    public optional: X first((X) produces Boolean test) { ... }
+    public optional X first((X) produces Boolean test) { ... }
     
-    public: Y accumulate<Y>(Y initial, (Y,X) produces Y accumulate) { ... }
+    public Y accumulate<Y>(Y initial, (Y,X) produces Y accumulate) { ... }
     
-    public: Collection<X> select((X) produces Boolean test) { ... }
-    public: Collection<X> reject((X) produces Boolean test) { ... }
+    public Collection<X> select((X) produces Boolean test) { ... }
+    public Collection<X> reject((X) produces Boolean test) { ... }
     
-    public: Bag<Y> transform<Y>((X) produces Y transform) { ... }
-    public: List<Y> transform<Y>((X) produces Y transform, (Y,Y) produces Comparison compare) { ... }
-    public: Set<Y> collect<Y>((X) produces Y transform) { ... }
-    public: Map<X, Y> map<Y>((X) produces Y transform) { ... }
-    public: List<X> list((X,X) produces Comparison compare) { ... }
+    public Bag<Y> transform<Y>((X) produces Y transform) { ... }
+    public List<Y> transform<Y>((X) produces Y transform, (Y,Y) produces Comparison compare) { ... }
+    public Set<Y> collect<Y>((X) produces Y transform) { ... }
+    public Map<X, Y> map<Y>((X) produces Y transform) { ... }
+    public List<X> list((X,X) produces Comparison compare) { ... }
     
 }]]></programlisting-->
 
         <para>Some iterable objects may support element removal during iteration.</para>
         
-        <programlisting>public mutable: interface OpenIterable&lt;X&gt; 
+        <programlisting>public mutable interface OpenIterable&lt;X&gt; 
         satisfies Iterable&lt;X&gt; {
         
-    public override: OpenIterator&lt;X&gt; iterator();
+    public override OpenIterator&lt;X&gt; iterator();
     
 }</programlisting>
 
-        <programlisting>public mutable: interface OpenIterator&lt;X&gt; 
+        <programlisting>public mutable interface OpenIterator&lt;X&gt; 
         satisfies OpenIterator&lt;X&gt; {
 
-    public: void remove();
+    public void remove();
     
 }</programlisting>
 
-        <!--programlisting><![CDATA[public: decorator OpenIterables (OpenIterable iterable) {
+        <!--programlisting><![CDATA[public decorator OpenIterables (OpenIterable iterable) {
 
-    public: Integer remove((X) produces Boolean test) { ... }
-    public: Integer retain((X) produces Boolean test) { ... }
+    public Integer remove((X) produces Boolean test) { ... }
+    public Integer retain((X) produces Boolean test) { ... }
     
 }]]></programlisting-->
 
@@ -316,15 +316,15 @@
         type that may be used as a case in the <literal>switch</literal>
         construct.</para>
         
-        <programlisting>public: interface Case&lt;X&gt; {
+        <programlisting>public interface Case&lt;X&gt; {
 
-    public: Boolean test(X value);
+    public Boolean test(X value);
     
 }</programlisting>
 
-        <para>Classes with enumerated instances implicitly extend <literal>lang.Selector</literal>:</para>
+        <para>Classes with enumerated instances implicitly extend <literal>lang.Selector</literal></para>
         
-        <programlisting>public abstract: class Selector&lt;X&gt;(String name, int ordinal)
+        <programlisting>public abstract class Selector&lt;X&gt;(String name, int ordinal)
         satisfies Case&lt;X&gt;
         where X >= Selector&lt;X&gt; { ... }</programlisting>
         
@@ -336,11 +336,11 @@
         <para>The interface <literal>lang.Usable</literal> represents an
         object with a lifecycle controlled by <literal>try</literal>.</para>
         
-        <programlisting>public: interface Usable {
+        <programlisting>public interface Usable {
 
-    public: void begin();
-    public: void end();
-    public: void end(Exception e);
+    public void begin();
+    public void end();
+    public void end(Exception e);
     
 }</programlisting>        
        
@@ -352,21 +352,21 @@
         <para>The interface <literal>lang.Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
         
-        <programlisting>public: interface Category&lt;X&gt; {
+        <programlisting>public interface Category&lt;X&gt; {
     
     /**
      * Determine if the given element belongs to the category.
      */
-    public: Boolean contains(X element);
+    public Boolean contains(X element);
 
 }</programlisting>
 
-        <programlisting>public: decorator Categories&lt;X&gt; (Category&lt;X&gt; category) {
+        <programlisting>public decorator Categories&lt;X&gt; (Category&lt;X&gt; category) {
         
     /**
      * Determine if all the given elements belong to the category.
      */
-    public: Boolean contains(Iterable&lt;X&gt; elements) {
+    public Boolean contains(Iterable&lt;X&gt; elements) {
         return for all (X x in elements) 
             category.contains(x);
     }
@@ -376,22 +376,22 @@
         <para>There is a mutable subtype, representing a category to which 
         objects may be added.</para>
         
-        <programlisting>public mutable: interface OpenCategory&lt;X&gt; 
+        <programlisting>public mutable interface OpenCategory&lt;X&gt; 
         satisfies Category&lt;X&gt; {
     
     /**
      * Add the given element to the category.
      */
-    public: Boolean add(X element);
+    public Boolean add(X element);
 
 }</programlisting>
 
-        <programlisting>public: decorator OpenCategories&lt;X&gt; (OpenCategory&lt;X&gt; category) {
+        <programlisting>public decorator OpenCategories&lt;X&gt; (OpenCategory&lt;X&gt; category) {
         
     /**
      * Add the given elements to the category.
      */
-    public: Boolean add(Iterable&lt;X&gt; elements) {
+    public Boolean add(Iterable&lt;X&gt; elements) {
         return find (Boolean added = false)
             for (X x in elements) 
                 added |= category.add(x);
@@ -404,23 +404,23 @@
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
         
-        <programlisting>public: interface Correspondence&lt;U, V&gt; {
+        <programlisting>public interface Correspondence&lt;U, V&gt; {
     
     /**
      * Binary lookup operator x[key]
      *
      * Returns the value associated with the given key.
      */
-    public: V value(U key);
+    public V value(U key);
     
     /**
      * Determine if there is a value associated with the given key.
      */
-    public: Boolean defines(U key);
+    public Boolean defines(U key);
     
 }</programlisting>
 
-        <programlisting>public: decorator Correspondences&lt;X&gt; (Correspondence&lt;X&gt; correspondence) {
+        <programlisting>public decorator Correspondences&lt;X&gt; (Correspondence&lt;X&gt; correspondence) {
 
     /**
      * Binary lookup operator x[keys]
@@ -428,7 +428,7 @@
      * Returns a list of values associated with the given keys,
      * in order.
      */
-    public: List&lt;V&gt; values(List&lt;U&gt; keys) {
+    public List&lt;V&gt; values(List&lt;U&gt; keys) {
         return for (U key in keys) 
             correspondence.lookup(key);
     }
@@ -438,14 +438,14 @@
      *
      * Returns a set of values associated with the given set of keys.
      */
-    public: Set&lt;V&gt; values(Set&lt;U&gt; keys) {
+    public Set&lt;V&gt; values(Set&lt;U&gt; keys) {
         return ( for (U key in keys) correspondence.lookup(key) ).elements;
     }
     
     /**
      * Determine if there are values associated with all the given keys.
      */
-    public: Boolean defines(Collection&lt;U&gt; keys) {
+    public Boolean defines(Collection&lt;U&gt; keys) {
         return for (U key in keys) 
                 if ( !correspondence.defines(key) ) found false
             fail true;
@@ -460,7 +460,7 @@
         
         <!-- Association? -->
 
-        <programlisting>public mutable: interface OpenCorrespondence&lt;U, V&gt; 
+        <programlisting>public mutable interface OpenCorrespondence&lt;U, V&gt; 
         satisfies Correspondence&lt;U, V&gt; {
         
     /**
@@ -468,21 +468,21 @@
      *
      * Assign a value to the given key.
      */
-     public optional: V define(U key, V value);
+     public optional V define(U key, V value);
 
 }</programlisting>
 
-        <programlisting>public: decorator OpenCorrespondences&lt;X&gt; (OpenCorrespondence&lt;X&gt; correspondence) {
+        <programlisting>public decorator OpenCorrespondences&lt;X&gt; (OpenCorrespondence&lt;X&gt; correspondence) {
 
      /**
       * Assign the given values to the given keys.
       */
-     public: void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions);
+     public void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions);
     
      /**
       * Add the given entry.
       */
-     public: void define(U key -> V value);
+     public void define(U key -> V value);
     
 }</programlisting>
 
@@ -491,7 +491,7 @@
         the unary postfix operator <literal>nonempty</literal><!--and
         the binary operator <literal>??:</literal> (empty default)-->.</para>
         
-        <programlisting>public: interface Container {
+        <programlisting>public interface Container {
         
     /**
      * Determine if the container is empty.
@@ -509,18 +509,18 @@
         associated objects.</para>
 
         <para>Entries may be constructed using the <literal>-></literal> 
-        operator:</para>
+        operator.</para>
 
-            <programlisting><![CDATA[public: class Entry<U,V>(U key, V value) {
+            <programlisting><![CDATA[public class Entry<U,V>(U key, V value) {
 
-    public: U key = key;
-    public: V value = value;
+    public U key = key;
+    public V value = value;
     
-    override public: Boolean equals(Object that) {
+    override public Boolean equals(Object that) {
         return equals(that, Entry#key, Entry#value);
     }
         
-    override public: Integer hash {
+    override public Integer hash {
         return hash(Entry#key, Entry#value);
     }
 
@@ -534,30 +534,30 @@
         <para>The interface <literal>lang.Collection</literal> is the 
         root of the Ceylon collections framework.</para>
         
-        <programlisting><![CDATA[public: interface Collection<X> 
+        <programlisting><![CDATA[public interface Collection<X> 
         satisfies Iterable<X>, Category<X>, Container {
     
-    public: Integer size;
+    public Integer size;
 
-    public: Integer count(X element);
+    public Integer count(X element);
     
-    public: Set<X> elements;
+    public Set<X> elements;
 
-    public: OpenCollection<X> copy();
+    public OpenCollection<X> copy();
     
 }]]></programlisting>
 
         
         <para>Mutable collections implement <literal>lang.OpenCollection</literal>:</para>
         
-        <programlisting><![CDATA[public mutable: interface OpenCollection<X> 
+        <programlisting><![CDATA[public mutable interface OpenCollection<X> 
         satisfies OpenIterable<X>, OpenCategory<X>, Collection<X> {
     
-    public: Boolean clear();
+    public Boolean clear();
 
-    public: Boolean remove(X element);
-    public: Integer remove(Collection<X> elements);    
-    public: Integer retain(Collection<X> elements);    
+    public Boolean remove(X element);
+    public Integer remove(Collection<X> elements);    
+    public Integer retain(Collection<X> elements);    
 
 }]]></programlisting>
 
@@ -574,23 +574,23 @@
             <literal>&lt;</literal> (proper subset),
             in addition to inherited operators-->:</para>
             
-            <programlisting><![CDATA[public: interface Set<X> 
+            <programlisting><![CDATA[public interface Set<X> 
         satisfies Collection<X>, Correspondence<X, Boolean> {
     
-    public: Set<X> union(Set<X> set);
-    public: Set<X> intersection(Set<X> set);
-    public: Set<X> complement(Set<X> set);
+    public Set<X> union(Set<X> set);
+    public Set<X> intersection(Set<X> set);
+    public Set<X> complement(Set<X> set);
     
-    public: Boolean superset(Set<X> set);
-    public: Boolean subset(Set<X> set);
+    public Boolean superset(Set<X> set);
+    public Boolean subset(Set<X> set);
     
-    public: OpenSet<X> copy();
+    public OpenSet<X> copy();
 
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public mutable: interface OpenSet<X> 
+            <programlisting><![CDATA[public mutable interface OpenSet<X> 
         satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<X, Boolean> {}]]></programlisting>
 
         </section>
@@ -605,66 +605,66 @@
             to operators inherited from <literal>Collection</literal>
             and <literal>Correspondence</literal>:</para>
             
-            <programlisting><![CDATA[public: interface List<X> 
+            <programlisting><![CDATA[public interface List<X> 
         satisfies Collection<X>, Correspondence<Integer, X> {
     
-    public: X first;    
-    public: X last;
+    public X first;    
+    public X last;
     
-    public optional: X firstOrNull;    
-    public optional: X lastOrNull;
+    public optional X firstOrNull;    
+    public optional X lastOrNull;
     
-    public: Integer firstIndex;
-    public: Integer lastIndex;
+    public Integer firstIndex;
+    public Integer lastIndex;
     
-    public: Integer firstIndex(X element);
-    public: Integer lastIndex(X element);
+    public Integer firstIndex(X element);
+    public Integer lastIndex(X element);
     
-    public: List<X> head();
-    public: List<X> tail();
-    public: List<X> head(Integer to);
-    public: List<X> tail(Integer from);
+    public List<X> head();
+    public List<X> tail();
+    public List<X> head(Integer to);
+    public List<X> tail(Integer from);
     
     /**
      * range operator x[from..to] 
      */
-    public: List<X> range(Integer from, Integer to);
+    public List<X> range(Integer from, Integer to);
 
     /**
      * join operator x + y
      */
-    public: List<X> join(List<X> elements);
+    public List<X> join(List<X> elements);
     
-    public: List<X> sublist(Integer from, Integer to);
+    public List<X> sublist(Integer from, Integer to);
     
-    public: List<X> reversed();
+    public List<X> reversed();
     
-    public: Map<Integer,X> map;
+    public Map<Integer,X> map;
     
-    public: OpenList<X> copy();
+    public OpenList<X> copy();
 
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public mutable: interface OpenList<X> 
+            <programlisting><![CDATA[public mutable interface OpenList<X> 
         satisfies List<X>, OpenCollection<X>, OpenCorrespondence<Integer, X> {
 
-    public: void prepend(X element);
-    public: void prepend(List<X> elements);
-    public: void append(X element);
-    public: void append(List<X> elements);
+    public void prepend(X element);
+    public void prepend(List<X> elements);
+    public void append(X element);
+    public void append(List<X> elements);
 
-    public: void insert(Integer key, X element);
-    public: void truncate(Integer from, Integer to);
+    public void insert(Integer key, X element);
+    public void truncate(Integer from, Integer to);
     
-    public: X removeFirst();
-    public: X removeLast();
+    public X removeFirst();
+    public X removeLast();
     
-    public: void reverse();
-    public: void sort((X x, X y) produces Comparison compare);
+    public void reverse();
+    public void sort((X x, X y) produces Comparison compare);
     
-    public: OpenList<X> sublist(Integer from, Integer to);
+    public OpenList<X> sublist(Integer from, Integer to);
     
 }]]></programlisting>
             
@@ -675,32 +675,32 @@
             
             <para>Maps implement the following interface:</para>
             
-            <programlisting><![CDATA[public: interface Map<U,V> 
+            <programlisting><![CDATA[public interface Map<U,V> 
     satisfies Collection<Entry<U,V>>, Correspondence<U, V> {
     
-    public: Set<U> keys;
-    public: Bag<V> values;    
-    public: Map<V, Set<U>> inverse;
+    public Set<U> keys;
+    public Bag<V> values;    
+    public Map<V, Set<U>> inverse;
     
-    public optional: V valueOrNull(U key);
+    public optional V valueOrNull(U key);
 
-    //public: Set<Entry<U,V>> entries;
+    //public Set<Entry<U,V>> entries;
     
-    public: OpenMap<X> copy();
+    public OpenMap<X> copy();
     
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public mutable: interface OpenMap<U,V> 
+            <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
         satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> {
     
-    public: OpenSet<U> keys;
-    public: OpenBag<V> values;
-    public: OpenMap<V, Set<U>> inverse;
+    public OpenSet<U> keys;
+    public OpenBag<V> values;
+    public OpenMap<V, Set<U>> inverse;
 
-    public: Integer removeKeys(Collection<U> keys);
-    public: Integer retainKeys(Collection<U> keys);
+    public Integer removeKeys(Collection<U> keys);
+    public Integer retainKeys(Collection<U> keys);
     
 }]]></programlisting>
             
@@ -711,18 +711,18 @@
             
             <para>Bags implement the following interface:</para>
             
-            <programlisting><![CDATA[public: interface Bag<X> 
+            <programlisting><![CDATA[public interface Bag<X> 
         satisfies Collection<X>, Correspondence<X, Integer> {
     
-    public: OpenBag<X> copy();
+    public OpenBag<X> copy();
     
-    public: Map<X,Integer> map;
+    public Map<X,Integer> map;
     
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public mutable: interface OpenBag<X> 
+            <programlisting><![CDATA[public mutable interface OpenBag<X> 
         satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<X, Integer> {}]]></programlisting>
             
         </section>
@@ -737,26 +737,26 @@
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
         
-        <programlisting>public: interface Comparable&lt;T&gt; {
+        <programlisting>public interface Comparable&lt;T&gt; {
     
     /**
      * The binary compare operator &lt;=&gt;
      *
      * Compares this instance with the given instance.
      */
-    public: Comparison compare(T other);
+    public Comparison compare(T other);
     
 }</programlisting>
         
-        <programlisting>public: class Comparison 
+        <programlisting>public class Comparison 
         instances larger, smaller, equal { 
         
-    public: Boolean larger return this==larger;
-    public: Boolean smaller return this==smaller;
-    public: Boolean equal return this==equal;
-    public: Boolean unequal return this!=equal;
-    public: Boolean largeAs return this!=smaller;
-    public: Boolean smallAs return this!=larger;
+    public Boolean larger return this==larger;
+    public Boolean smaller return this==smaller;
+    public Boolean equal return this==equal;
+    public Boolean unequal return this!=equal;
+    public Boolean largeAs return this!=smaller;
+    public Boolean smallAs return this!=larger;
     
 }</programlisting>
 
@@ -768,21 +768,21 @@
         support the prefix unary operators <literal>++</literal> 
         (increment) and <literal>--</literal> (decrement).</para>
         
-        <programlisting>public: interface Ordinal&lt;T&gt; {
+        <programlisting>public interface Ordinal&lt;T&gt; {
 
     /**
      * The unary "++" operator 
      *
      * The successor of this instance.
      */
-    public: T successor;
+    public T successor;
     
     /**
      * The unary "--" operator 
      *
      * The predecessor of this instance.
      */
-    public: T predecessor;
+    public T predecessor;
     
 }</programlisting>
 
@@ -796,12 +796,12 @@
         among others. Ranges may be constructed using the <literal>..</literal> 
         operator:</para> 
         
-        <programlisting>public: class Range&lt;X&gt;(X first, X last) 
+        <programlisting>public class Range&lt;X&gt;(X first, X last) 
         satisfies List&lt;X&gt;, Case&lt;X&gt;
         where X>=Ordinal &amp; X>=Comparable { 
 
-    public: X first = first;
-    public: X last = last;
+    public X first = first;
+    public X last = last;
     
     ... 
     
@@ -810,12 +810,12 @@
         <para>Enumerations represent an explicit list of values and may be constructed 
         using a simplified syntax:</para>
         
-        <programlisting>public: class Enumeration&lt;X&gt;(X... values)
+        <programlisting>public class Enumeration&lt;X&gt;(X... values)
         satisfies List&lt;X&gt;, Case&lt;X&gt; {
     
     ... 
 
-    static: Enumeration&lt;Y&gt; emptyEnumeration&lt;Y&gt;() {
+    static Enumeration&lt;Y&gt; emptyEnumeration&lt;Y&gt;() {
         return Enumeration&lt;X&gt;();
     }
     
@@ -823,19 +823,19 @@
 
         <para>Enumerations may be freely converted to sets or maps:</para>
         
-        <programlisting>public: Map&lt;U, V&gt; converter EnumerationToMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
+        <programlisting>public Map&lt;U, V&gt; converter EnumerationToMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
 
-        <programlisting>public: Set&lt;X&gt; converter EnumerationToSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
+        <programlisting>public Set&lt;X&gt; converter EnumerationToSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
 
-        <programlisting>public: OpenMap&lt;U, V&gt; converter EnumerationToOpenMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
+        <programlisting>public OpenMap&lt;U, V&gt; converter EnumerationToOpenMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
 
-        <programlisting>public: OpenSet&lt;X&gt; converter EnumerationToOpenSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
+        <programlisting>public OpenSet&lt;X&gt; converter EnumerationToOpenSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
 
-        <programlisting>public: OpenList&lt;X&gt; converter EnumerationToOpenList(Enumeration&lt;X&gt; enum) { ... }</programlisting>
+        <programlisting>public OpenList&lt;X&gt; converter EnumerationToOpenList(Enumeration&lt;X&gt; enum) { ... }</programlisting>
 
         <para>Furthermore, any object may be transparently promoted to an enumeration:</para>
         
-        <programlisting>public: Enumeration&lt;T&gt; converter ObjectToEnumeration(Object object) { return Enumeration(object); }</programlisting>
+        <programlisting>public Enumeration&lt;T&gt; converter ObjectToEnumeration(Object object) { return Enumeration(object); }</programlisting>
         
     </section>
     
@@ -844,23 +844,23 @@
         
         <para>Characters are represented by the following class:</para>
 
-        <programlisting>public: class Character 
+        <programlisting>public class Character 
         satisfies Ordinal&lt;Character&gt;, Comparable&lt;Character&gt;, Case&lt;Character&gt; { ... }</programlisting>
         
         <para>Strings implement <literal>List</literal>, therefore they 
         support the join, subrange, contains and lookup operators, 
         among others.</para> 
                 
-        <programlisting>public: class String(Character... characters) 
+        <programlisting>public class String(Character... characters) 
         satisfies Comparable&lt;String&gt;, List&lt;Character&gt;, Case&lt;String&gt; {
 
-    public: List&lt;Character&gt; characters = characters;
+    public List&lt;Character&gt; characters = characters;
     
     ... 
     
-    public: Iterable&lt;String&gt; tokens(Iterable&lt;Character&gt; separators=" ,;:") { return ...; }
-    public: String join(String... strings);
-    public: String join(Iterable&lt;String&gt; strings);
+    public Iterable&lt;String&gt; tokens(Iterable&lt;Character&gt; separators=" ,;") { return ...; }
+    public String join(String... strings);
+    public String join(Iterable&lt;String&gt; strings);
     
 }</programlisting>
 
@@ -869,10 +869,10 @@
     <section>
         <title>Regular expressions</title>
         
-        <programlisting>public: class Regex 
+        <programlisting>public class Regex 
         satisfies Case&lt;String&gt; { 
-    public: List&lt;Match&gt; matchList(String string);
-    public: Boolean matches(String string);
+    public List&lt;Match&gt; matchList(String string);
+    public Boolean matches(String string);
     ... 
 }</programlisting>
         
@@ -890,82 +890,82 @@
         <literal>+=, -=, /=, *=</literal>.
         </para>
         
-        <programlisting>public: interface Number&lt;T&gt; 
+        <programlisting>public interface Number&lt;T&gt; 
         satisfies Comparable&lt;Number&lt;?&gt;&gt;, Ordinal&lt;T&gt; {
     
     //binary "+" operator
-    public: T add(T number);
-    public: Number add(Number number);
+    public T add(T number);
+    public Number add(Number number);
 
     //binary "-" operator
-    public: T subtract(T number);
-    public: Number subtract(Number number);
+    public T subtract(T number);
+    public Number subtract(Number number);
 
     //binary "*" operator
-    public: T multiply(T number);
-    public: Number multiply(Number number);
+    public T multiply(T number);
+    public Number multiply(Number number);
 
     //binary "/" operator
-    public: T divide(T number);
-    public: T divide(Number number);
+    public T divide(T number);
+    public T divide(Number number);
     
     //binary "%" operator
-    public: T remainder(T number);
-    public: T remainder(Number number);
+    public T remainder(T number);
+    public T remainder(Number number);
     
     //unary "-" operator 
-    public: T inverse;
+    public T inverse;
     
-    public: T magnitude;
+    public T magnitude;
     
-    public: Boolean integral;
-    public: Boolean positive;
-    public: Boolean negative;
-    public: Boolean zero;
-    public: Boolean unit;
+    public Boolean integral;
+    public Boolean positive;
+    public Boolean negative;
+    public Boolean zero;
+    public Boolean unit;
     
-    public: Exact exact;
-    public: Whole whole;
-    public: Natural natural;
-    public: Integer integer;
-    public: Float float;
-    public: Double double;
-    public: Long long;
+    public Exact exact;
+    public Whole whole;
+    public Natural natural;
+    public Integer integer;
+    public Float float;
+    public Double double;
+    public Long long;
 
-    public: Exact fractionalPart;
-    public: Integer scale;
-    public: Integer precision;
+    public Exact fractionalPart;
+    public Integer scale;
+    public Integer precision;
     
 }</programlisting>
 
         <para>Seven numeric types are built in:</para>
 
-        <programlisting>public final: class Natural 
+        <programlisting>public final class Natural 
         satisfies Number&lt;Natural&gt;, Case&lt;Natural&gt; { ... }</programlisting>
 
-        <programlisting>public final: class Integer
+        <programlisting>public final class Integer
         satisfies Number&lt;Integer&gt;, Case&lt;Integer&gt; {
     ...
     
-    public: void times(Iteration iteration) { ... }
-    public: void upto(Integer max, Iteration iteration) { ... }
-    public: void downto(Integer min, Iteration iteration) { ... }
+    public void times(Iteration iteration) { ... }
+    public void upto(Integer max, Iteration iteration) { ... }
+    public void downto(Integer min, Iteration iteration) { ... }
     
 }</programlisting>
 
-        <programlisting>public final: class Long 
+        <programlisting>public final class Long 
         satisfies Number&lt;Long&gt;, Case&lt;Long&gt; { ... }</programlisting>
 
-        <programlisting>public final: class Float 
+        <programlisting>public final class Float 
         satisfies Number&lt;Float&gt; { ... }</programlisting>
 
-        <programlisting>public final: class Double 
+        <programlisting>public final class Double 
         satisfies Number&lt;Double&gt; { ... }</programlisting>
 
-        <programlisting>public: class Exact 
+        <programlisting>public class Exact 
         satisfies Number&lt;Exact&gt; { ... }</programlisting>
 
-        <programlisting>public: class Whole 
+        <programlisting>public class Whole 
         satisfies Number&lt;Whole&gt;, Case&lt;Whole&gt; { ... }</programlisting>
 
     </section>
@@ -973,70 +973,70 @@
     <section>
         <title>Instants, intervals and durations</title>
         
-        <programlisting>public: class Instant {
+        <programlisting>public class Instant {
     ...
 }</programlisting>
 
-        <programlisting>public: class Time(Integer hours, Integer minutes, 
-        optional: Integer seconds=null, optional: Integer milliseconds=null,
-        optional: Integer timezone=null) 
+        <programlisting>public class Time(Integer hours, Integer minutes, 
+        optional Integer seconds=null, optional Integer milliseconds=null,
+        optional Integer timezone=null) 
         extends Instant {
-    public: Integer hours = hours;
-    public: Integer minutes = minutes;
-    public optional: Integer seconds = seconds;
-    public optional: Integer milliseconds = milliseconds;
-    public optional: Timezone timezone = timezone;
+    public Integer hours = hours;
+    public Integer minutes = minutes;
+    public optional Integer seconds = seconds;
+    public optional Integer milliseconds = milliseconds;
+    public optional Timezone timezone = timezone;
     ...
 }</programlisting>
         
-        <programlisting>public: class Date(Integer year, Integer month, Integer day) 
+        <programlisting>public class Date(Integer year, Integer month, Integer day) 
         extends Instant {
-    public: Integer year = year;
-    public: Integer month = month;
-    public: Integer day = day;
+    public Integer year = year;
+    public Integer month = month;
+    public Integer day = day;
     ...
 }</programlisting>
         
-        <programlisting>public: class Datetime(Time time, Date date) 
+        <programlisting>public class Datetime(Time time, Date date) 
         extends Instant {
-    public: Time time = time;
-    public: Date date = date;
+    public Time time = time;
+    public Date date = date;
     ...
 }</programlisting>
         
-        <programlisting>public: class Interval&lt;X&gt;(X start, X end) 
+        <programlisting>public class Interval&lt;X&gt;(X start, X end) 
         where X >= Instant {
-    public: X start = start;
-    public: X end = end;
-    public: Duration&lt;X&gt; duration { return ...; }
+    public X start = start;
+    public X end = end;
+    public Duration&lt;X&gt; duration { return ...; }
     ...
 }</programlisting>
 
-        <programlisting>public: class Duration&lt;X&gt;(Map&lt;Granularity&lt;X&gt;, Integer&gt; magnitude) 
+        <programlisting>public class Duration&lt;X&gt;(Map&lt;Granularity&lt;X&gt;, Integer&gt; magnitude) 
         where X >= Instant {
 
-    public: Map&lt;Granularity&lt;X&gt;, Integer&gt; magnitude = magnitude;
+    public Map&lt;Granularity&lt;X&gt;, Integer&gt; magnitude = magnitude;
     
-    public: X before(X instant) { ... }
-    public: X after(X instant) { ... }
+    public X before(X instant) { ... }
+    public X after(X instant) { ... }
     
-    public: Datetime before(Datetime instant) { ... }
-    public: Datetime after(Datetime instant) { ... }
+    public Datetime before(Datetime instant) { ... }
+    public Datetime after(Datetime instant) { ... }
     
-    public: Duration&lt;X&gt; add(Duration&lt;X&gt; duration) { ... }
-    public: Duration&lt;X&gt; subtract(Duration&lt;X&gt; duration) { ... }
+    public Duration&lt;X&gt; add(Duration&lt;X&gt; duration) { ... }
+    public Duration&lt;X&gt; subtract(Duration&lt;X&gt; duration) { ... }
     
     ...
 }</programlisting>
 
-        <programlisting>public: interface Granularity&lt;X&gt; 
+        <programlisting>public interface Granularity&lt;X&gt; 
         where X >= Instant {}</programlisting>
 
-        <programlisting>public: class DateGranularity 
+        <programlisting>public class DateGranularity 
         satisfies Granularity&lt;Date&gt;
         instances year, month, week, day {}</programlisting>
 
-        <programlisting>public: class DateGranularity 
+        <programlisting>public class DateGranularity 
         satisfies Granularity&lt;Time&gt;
         instances hour, minute, second, millisecond {}</programlisting>
         
@@ -1048,20 +1048,20 @@
         <para>The <literal>Util</literal> class defines several methods
         for building complex expressons.</para>
         
-        <programlisting><![CDATA[public: class Util {
+        <programlisting><![CDATA[public class Util {
         
     /**
      * Evaluate the block. Useful for turning a series
      * of statements into an expression.
      */
-    public static: X evaluate<X>(() produces X do);
+    public static X evaluate<X>(() produces X do);
 
     /**
      * If the condition is true, evaluate first block,
      * and return the result. Otherwise, return a null
      * value.
      */
-    public static optional: Y ifTrue<Y>(Boolean condition,
+    public static optional Y ifTrue<Y>(Boolean condition,
                                         () produces Y then);
 
     /**
@@ -1069,7 +1069,7 @@
      * otherwise, evaluate second block. Return result
      * of evaluation.
      */
-    public static: Y ifTrue<Y>(Boolean condition,
+    public static Y ifTrue<Y>(Boolean condition,
                                () produces Y then, 
                                () produces Y otherwise);
 
@@ -1078,16 +1078,16 @@
      * and return the result. Otherwise, return a null
      * value.
      */
-    public static optional: Y ifExists<X,Y>(specified optional: X value,
-                                            coordinated: (X x) produces Y then);
+    public static optional Y ifExists<X,Y>(specified optional X value,
+                                            coordinated (X x) produces Y then);
 
     /**
      * If the value is non-null, evaluate first block,
      * otherwise, evaluate second block. Return result
      * of evaluation.
      */
-    public static: Y ifExists<X,Y>(specified optional: X value,
-                                   coordinated: (X x) produces Y then, 
+    public static Y ifExists<X,Y>(specified optional X value,
+                                   coordinated (X x) produces Y then, 
                                    () produces Y otherwise);
 
     /**
@@ -1095,18 +1095,18 @@
      * block evaluates to true, ordered using the second block,
      * if specified.
      */
-    public static: List<X> from<X>(iterated: Iterable<X> elements,
-                                   coordinated: (X x) produces Boolean having,
-                                   optional coordinated: (X x) produces Comparable by = null);
+    public static List<X> from<X>(iterated Iterable<X> elements,
+                                   coordinated (X x) produces Boolean having,
+                                   optional coordinated (X x) produces Comparable by = null);
 
     /**
      * Iterate elements and for each element evaluate the first block. 
      * Build a list of the resulting values, ordered using the second 
      * block, if specified.
      */
-    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: (X x) produces Y select,
-                                     optional coordinated: (X x) produces Comparable by = null);
+    public static List<Y> from<X,Y>(iterated Iterable<X> elements,
+                                     coordinated (X x) produces Y select,
+                                     optional coordinated (X x) produces Comparable by = null);
 
     /**
      * Iterate elements and select those for which the first block 
@@ -1114,52 +1114,52 @@
      * Build a list of the resulting values, ordered using the third 
      * block, if specified.
      */
-    public static: List<Y> from<X,Y>(iterated: Iterable<X> elements,
-                                     coordinated: (X x) produces Boolean having, 
-                                     coordinated: (X x) produces Y select,
-                                     optional coordinated: (X x) produces Comparable by = null);
+    public static List<Y> from<X,Y>(iterated Iterable<X> elements,
+                                     coordinated (X x) produces Boolean having, 
+                                     coordinated (X x) produces Y select,
+                                     optional coordinated (X x) produces Comparable by = null);
 
     /**
      * Return the first element for which the block evaluates to true,
      * or a null value if no such element is found.
      */
-    public static optional: X first<X>(iterated: Iterable<X> elements,
-                                       coordinated: (X x) produces Boolean having);
+    public static optional X first<X>(iterated Iterable<X> elements,
+                                       coordinated (X x) produces Boolean having);
     
     /**
      * Return the first element for which the first block evaluates to 
      * true, or the result of evaluating the second block, if no such
      * element is found.
      */
-    public static: X first<X>(iterated: Iterable<X> elements,
-                              coordinated: (X x) produces Boolean having
+    public static X first<X>(iterated Iterable<X> elements,
+                              coordinated (X x) produces Boolean having
                               () produces X otherwise);
     
     /**
      * Count the elements for with the block evaluates to true.
      */
-    public static: Integer count<X>(iterated: Iterable<X> elements,
-                                    coordinated: (X x) produces Boolean having);
+    public static Integer count<X>(iterated Iterable<X> elements,
+                                    coordinated (X x) produces Boolean having);
     
     /**
      * Return true iff for every element, the block evaluates to true.
      */
-    public static: Boolean forAll<X>(iterated: Iterable<X> elements,
-                                     coordinated: (X x) produces Boolean every);
+    public static Boolean forAll<X>(iterated Iterable<X> elements,
+                                     coordinated (X x) produces Boolean every);
 
     /**
      * Return true iff for some element, the block evaluates to true.
      */
-    public static: Boolean forAny<X>(iterated: Iterable<X> elements,
-                                     coordinated: (X x) produces Boolean exists);
+    public static Boolean forAny<X>(iterated Iterable<X> elements,
+                                     coordinated (X x) produces Boolean exists);
     
     /**
      * Using the given resource, attempt to evaluate the first block.
      * If an exception occurs, and there is a matching block, evaluate
      * the exception block.
      */
-    public static: Y using<X,Y>(specified: X resource,
-                                coordinated: (X x) produces Y seek,
+    public static Y using<X,Y>(specified X resource,
+                                coordinated (X x) produces Y seek,
                                 (E e) produces Y where E>=Exception... except)
                      where X >= Usable;
 

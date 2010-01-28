@@ -480,17 +480,17 @@ CLOSEBRACE</programlisting>
             
             <programlisting>Task task = Task() {
     timeout=1000;
-    override: void run() { ... }
-    override: void fail(Exception e) { ... }
+    override void run() { ... }
+    override void fail(Exception e) { ... }
 }</programlisting>
 
-            <programlisting>return transactional: Database() 
+            <programlisting>return transactional Database() 
         satisfies Resource {
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
-    void create() open();
-    void destroy() close();
+    override void create() open();
+    override void destroy() close();
 };</programlisting>
             
             <para>The value of an inline class instantiation is a new instance of the inline class.
@@ -646,7 +646,7 @@ CLOSEBRACE</programlisting>
     
     <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.add(person1)^.add(person2)*.name;</programlisting>
     
-    <programlisting>optional: String name = person?.name;</programlisting>
+    <programlisting>optional String name = person?.name;</programlisting>
     
     
     <para>Are equivalent to the following (Ceylon) code:</para>
@@ -675,17 +675,17 @@ CLOSEBRACE</programlisting>
     
     <programlisting>List&lt;String&gt; names = 
     Spread&lt;String&gt; { 
-        lhs: Chain&lt;String&gt; { 
-            lhs: Chain&lt;String&gt; { 
-                lhs: ArrayList(); 
-                Override: void call() { lhs.add(person1); } }.lhs
+        lhs = Chain&lt;String&gt; { 
+            lhs = Chain&lt;String&gt; { 
+                lhs = ArrayList(); 
+                override void call() { lhs.add(person1); } }.lhs
             }
-            Override: void call() { lhs.add(person2); } }.lhs
+            override void call() { lhs.add(person2); } }.lhs
         }
-        Override: void call(String element) { element.name; } 
+        override void call(String element) { element.name; } 
     }.result;</programlisting>
     
-    <programlisting>optional: String name = if (person exists) person.name else null;</programlisting>
+    <programlisting>optional String name = if (person exists) person.name else null;</programlisting>
     
     <section>
         <title>List of operators</title>
@@ -727,9 +727,9 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs = rhs</literal></entry>
             <entry>assign</entry>
             <entry></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Member reference</emphasis></entry></row>
@@ -771,7 +771,7 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe invoke</entry>
             <entry><literal>if (lhs exists) lhs.member else null</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry></entry>
             <entry><literal>optional</literal> member type</entry>
         </row>
@@ -795,8 +795,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>Object.identical(lhs, rhs)</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -804,8 +804,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs == rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>if (lhs exists) lhs.equals(rhs) else if (rhs exists) false else true</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -813,8 +813,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
             <entry><literal>if (lhs exists) lhs.equals(rhs).negation else if (rhs exists) true else false</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -990,7 +990,7 @@ CLOSEBRACE</programlisting>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (lhs exists) true else false</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -999,7 +999,7 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs default rhs</literal></entry>
             <entry>default</entry>
             <entry><literal>if (lhs exists) lhs else rhs</literal></entry>
-            <entry><literal>optional: T</literal></entry>
+            <entry><literal>optional T</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -1010,7 +1010,7 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs ?: rhs</literal></entry>
             <entry>null default</entry>
             <entry><literal>if (lhs?) lhs else rhs</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Object</literal></entry>
         </row>
@@ -1022,8 +1022,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>null assignment</entry>
             <entry><literal>if (lhs?) false else (lhs=rhs)?</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -1031,8 +1031,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs =? rhs</literal></entry>
             <entry>null assignment</entry>
             <entry><literal>if (rhs?) (lhs=rhs)? else false</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         -->
@@ -1045,7 +1045,7 @@ CLOSEBRACE</programlisting>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (lhs exists) lhs.empty.negation else false</literal></entry>
-            <entry><literal>optional: Container</literal></entry>
+            <entry><literal>optional Container</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -1056,7 +1056,7 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs ??: rhs</literal></entry>
             <entry>empty default</entry>
             <entry><literal>if (lhs)? ( if (lhs.empty) rhs else lhs ) else rhs</literal></entry>
-            <entry><literal>optional: Holder</literal></entry>
+            <entry><literal>optional Holder</literal></entry>
             <entry><literal>Container</literal></entry>
             <entry><literal>Container</literal></entry>
         </row>
@@ -1068,8 +1068,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs ??= rhs</literal></entry>
             <entry>empty assignment</entry>
             <entry><literal>if (lhs??) false else (lhs=rhs)??</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -1077,8 +1077,8 @@ CLOSEBRACE</programlisting>
             <entry><literal>lhs =?? rhs</literal></entry>
             <entry>empty assignment</entry>
             <entry><literal>if (rhs??) (lhs=rhs)?? else false</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         -->
@@ -1372,7 +1372,7 @@ CLOSEBRACE</programlisting>
             <entry>render</entry>
             <entry><literal>if (rhs exists) rhs.string else ""</literal></entry>
             <entry></entry>
-            <entry><literal>optional: Object</literal></entry>
+            <entry><literal>optional Object</literal></entry>
             <entry><literal>String</literal></entry>
         </row>
         
@@ -1987,7 +1987,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) {
     
         <programlisting>namedValues.each() do (String name->Object value) log.info("${name} ${value}");</programlisting>
 
-        <programlisting>optional: specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
+        <programlisting>optional specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
         
         <programlisting>(x>10).if() 
 isTrue {
@@ -2035,10 +2035,10 @@ isFalse {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static:
-List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements, 
-                  coordinated: (X x) produces Y select, 
-                  coordinated: (X x) produces Boolean if);</programlisting>
+        <programlisting>public static
+List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
+                  coordinated (X x) produces Y select, 
+                  coordinated (X x) produces Boolean if);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2078,9 +2078,9 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated: Iterable&lt;X&gt; elements,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static:
-Y ifExists&lt;X,Y&gt;(specified optional: X value,
-                coordinated: (X x) produces Y then, 
+        <programlisting>public static
+Y ifExists&lt;X,Y&gt;(specified optional X value,
+                coordinated (X x) produces Y then, 
                 () produces Y otherwise);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
@@ -2093,9 +2093,9 @@ Y ifExists&lt;X,Y&gt;(specified optional: X value,
         
          <para>And for the following method declaration:</para>
         
-        <programlisting>public static:
-Y using&lt;X,Y&gt;(specified: X resource, 
-             coordinated: (X x) produces Y seek)
+        <programlisting>public static
+Y using&lt;X,Y&gt;(specified X resource, 
+             coordinated (X x) produces Y seek)
   where X >= Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
@@ -2127,9 +2127,9 @@ Y using&lt;X,Y&gt;(specified: X resource,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static: 
+        <programlisting>public static
 X attempt&lt;X&gt;(() produces X seek, 
-             cases: (E e) produces X where E>=Exception... except);</programlisting>
+             cases (E e) produces X where E>=Exception... except);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
@@ -2147,9 +2147,9 @@ except (SomethingElseWrong sew) {
         
         <para>And for the following method declaration:</para>
         
-        <programlisting>public static: 
+        <programlisting>public static
 void select&lt;X&gt;(X selector),
-               cases: Entry&lt;Case&lt;X&gt;, () produces X&gt;... value);</programlisting>
+               cases Entry&lt;Case&lt;X&gt;, () produces X&gt;... value);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
