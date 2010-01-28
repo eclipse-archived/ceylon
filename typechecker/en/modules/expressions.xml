@@ -474,7 +474,7 @@ CLOSEBRACE</programlisting>
             
             <para>Inline classes may be instantiated according to:</para>
             
-            <programlisting>InlineClass := Annotations? Instantiation Interfaces Block</programlisting>
+            <programlisting>InlineClass := Annotation* Instantiation Interfaces Block</programlisting>
 
             <para>For example:</para>
             

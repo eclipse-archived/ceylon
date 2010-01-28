@@ -14,7 +14,7 @@
     
     <para>Declarations conform to the following general schema:</para>
     
-    <programlisting>Annotations? 
+    <programlisting>Annotation* 
 Type? keyword? Identifier TypeParameters? FormalParameters? 
 Supertype?
 Interfaces? 
@@ -29,11 +29,18 @@ Declaration?</programlisting>
     <para>Declarations may be preceded by a list of annotations. An annotation is just
     an instantiation of a class.</para>
     
-    <programlisting>Annotations := Instantiation+ COLON</programlisting>
+    <programlisting>Annotation := "@" Instantiation | TypeName (StringLiteral)?</programlisting>
+    
+    <para>For annotations with no constructor parameters, or for annotations with just
+    one string literal constructor parameter, the <literal>@</literal> and parentheses
+    may be omitted.</para>
     
     <para>For example:</para>
     
-    <programlisting>public action{description="Log In"; url="/login";} scope(session):</programlisting>
+    <programlisting>doc "The user log in action"
+author "Gavin King"
+@action{description="Log In"; url="/login";} @scope(session)
+public deprecated</programlisting>
     
     </section>
     
@@ -63,7 +70,7 @@ Declaration?</programlisting>
     
     <programlisting>FunctorType := 
 OPENPAREN ( Variable (COMMA Variable)* )? CLOSEPAREN 
-("produces" Annotations? Type | "void")</programlisting>
+("produces" Annotation* Type | "void")</programlisting>
     
     <para>For example:</para>
     
@@ -90,13 +97,13 @@ CLOSEPAREN</programlisting>
 
     <programlisting>OptionalParameter = FormalParameter Initializer</programlisting>
     
-    <programlisting>VarargsParameter = Annotations? Type "..." Identifier</programlisting>
+    <programlisting>VarargsParameter = Annotation* Type "..." Identifier</programlisting>
     
     <programlisting>FormalParameter := Variable | VariablePair</programlisting>
     
-    <programlisting>Variable := Annotations? Type Identifier</programlisting>
+    <programlisting>Variable := Annotation* Type Identifier</programlisting>
         
-    <programlisting>VariablePair := Annotations? Variable "->" Variable</programlisting>
+    <programlisting>VariablePair := Annotation* Variable "->" Variable</programlisting>
     
     <para>For example:</para>
     
@@ -238,7 +245,7 @@ String join(Iterable&lt;String&gt; strings,
         <para>A class is a stateful, instantiable type. Class are declared according to 
         the following:</para>
         
-        <programlisting>Annotations? 
+        <programlisting>Annotation*
 "class" Identifier TypeParameters? FormalParameters?
 Supertype?
 Interfaces?
@@ -586,7 +593,7 @@ Identifier ParameterValues?
         <para>An interface is a type which does not specify implementation. Interfaces may 
         not be directly instantiated. Interfaces are declared according to the following:</para>
         
-        <programlisting>Annotations?
+        <programlisting>Annotation*
 "interface" Identifier TypeParameters?
 Interfaces?
 TypeConstraints? 
@@ -642,7 +649,7 @@ CLOSEBRACE</programlisting>
         
         <para>Constructors are declared according to the following:</para>
         
-        <programlisting>Annotations? Identifier 
+        <programlisting>Annotation* Identifier 
 FormalParameters
 ( SEMICOLON | ClosedBlock )</programlisting>
 
@@ -681,7 +688,7 @@ public User(String username, Person person);</programlisting>
         may return a value. Methods are declared according to the following:</para>
         
         <programlisting>Method :=
-Annotations? 
+Annotation*
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints?
 ( SEMICOLON | Block )</programlisting>
@@ -801,7 +808,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         not specify a body:</para>
         
         <programlisting>MethodStub :=
-Annotations? 
+Annotation*
 (Type | "void") Identifier TypeParameters? FormalParameters
 TypeConstraints? 
 SEMICOLON</programlisting>
@@ -873,7 +880,7 @@ public: assign name { firstName = first(name); lastName = last(name); }</program
             
             <para>An attribute getter is declared as follows:</para>
             
-            <programlisting>AttributeGetter := Annotations? Type Identifier Block</programlisting>
+            <programlisting>AttributeGetter := Annotation* Type Identifier Block</programlisting>
 
         <para>
         When getter code is specified, the Java field is initialized to an instance 
@@ -893,7 +900,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
             <para>An attribute setter is declared as follows:</para>
             
-            <programlisting>AttributeSetter := Annotations? "assign" Identifier Block</programlisting>
+            <programlisting>AttributeSetter := Annotation* "assign" Identifier Block</programlisting>
 
         <para>
         When setter code is specified, the Java field is initialized to an instance 
@@ -928,7 +935,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>SimpleAttribute := Annotations? Type Identifier Initializer? SEMICOLON</programlisting>
+        <programlisting>SimpleAttribute := Annotation* Type Identifier Initializer? SEMICOLON</programlisting>
 
         <para>Formal parameters of classes, methods, decorators and converters are also considered
         to be simple attributes.</para>
@@ -994,7 +1001,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <para>Attributes declared by interfaces and attributes marked <literal>abstract</literal> 
         may not specify an initalizer, getter or setter:</para>
         
-        <programlisting>AttributeStub := Annotations? Type Identifier SEMICOLON</programlisting>
+        <programlisting>AttributeStub := Annotation* Type Identifier SEMICOLON</programlisting>
         
         <para>Interface attributes and abstract attributes must be implemented by every 
         non-<literal>abstract</literal> class that implements the interface or subclasses the 
@@ -1016,7 +1023,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         
         <para>Selectors are declared according to the following:</para>
         
-        <programlisting>Annotations? Type* 
+        <programlisting>Annotation* Type* 
 "selector" Identifier
 FormalParameters?
 OPENBRACE 
@@ -1096,7 +1103,7 @@ selector ComparisonOperation {
         <para>A functor represents a typed block of code. Functors are declared according to 
         the following:</para>
         
-        <programlisting>Annotations? ( Type | "void" ) 
+        <programlisting>Annotation* ( Type | "void" ) 
 "functor" Identifier TypeParameters? 
 FormalParameters 
 TypeConstraintList? 
@@ -1169,7 +1176,7 @@ SEMICOLON</programlisting>
         <para>A decorator introduces methods and interfaces to a given type. Decorators are 
         declared according to the following:</para>
         
-        <programlisting>Annotations?
+        <programlisting>Annotation*
 "decorator" Identifier TypeParameters? OPENPAREN FormalParameter CLOSEPAREN
 Interfaces?
 TypeConstraintList? 
@@ -1274,7 +1281,7 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
     
        <para>A type alias allows a type to be referred  to more compactly.</para>
        
-       <programlisting>Annotations? "alias" Identifier TypeParameters? Interfaces? TypeConstraints? SEMICOLON</programlisting>
+       <programlisting>Annotation* "alias" Identifier TypeParameters? Interfaces? TypeConstraints? SEMICOLON</programlisting>
        
        <para>A type alias may satisfy either:</para>
        
@@ -1302,7 +1309,7 @@ OPENBRACE ( Method | AttributeGetter | AttributeSetter )* CLOSEBRACE</programlis
         <para>A converter allows immutable values of one type to be transparently converted to
         values of another type. Converters are declared according to the following:</para>
         
-        <programlisting>Annotations? Type 
+        <programlisting>Annotation* Type 
 "converter" Identifier TypeParameters? 
 TypeConstraintList? 
 OPENPAREN FormalParameter CLOSEPAREN 
