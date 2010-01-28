@@ -2110,13 +2110,13 @@ Y using&lt;X,Y&gt;(specified: X resource,
         
         <para>A specialized invocation syntax is also provided for methods which define 
         a list of cases. If the method has a parameter of type 
-        <literal>Enumeration&lt;(X) produces Y&gt;</literal> annotated <literal>cases</literal>,
+        <literal>Enumeration&lt;(X x) produces Y&gt;</literal> annotated <literal>cases</literal>,
         the parameter value may be specified according to:</para>
         
         <programlisting>(Identifier FunctorExpression)+</programlisting>
         
         <para>Or, if the method has a parameter of type 
-        <literal>Enumeration&lt;Case&lt;X&gt;->() produces Y&gt;</literal> annotated 
+        <literal>Enumeration&lt;Entry&lt;Case&lt;X&gt;, () produces Y&gt;&gt;</literal> annotated 
         <literal>cases</literal>, the parameter value may be specified according to:</para>
         
         <programlisting>(OPENPAREN Case CLOSEPAREN SimpleFunctorExpression)+</programlisting>
@@ -2124,8 +2124,8 @@ Y using&lt;X,Y&gt;(specified: X resource,
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static: 
- X attempt&lt;X&gt;(() produces X seek, 
-              cases: (E e) produces X where E>=Exception... except);</programlisting>
+X attempt&lt;X&gt;(() produces X seek, 
+             cases: (E e) produces X where E>=Exception... except);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
@@ -2144,8 +2144,8 @@ except (SomethingElseWrong sew) {
         <para>And for the following method declaration:</para>
         
         <programlisting>public static: 
- void select&lt;X&gt;(X selector),
-              cases: Case&lt;X&gt; -> () produces X... value);</programlisting>
+void select&lt;X&gt;(X selector),
+               cases: Entry&lt;Case&lt;X&gt;, () produces X&gt;... value);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
