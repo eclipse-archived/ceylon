@@ -29,11 +29,13 @@ Declaration?</programlisting>
     <para>Declarations may be preceded by a list of annotations. An annotation is just
     an instantiation of a class.</para>
     
-    <programlisting>Annotation := "@" Instantiation | TypeName (StringLiteral)?</programlisting>
+    <programlisting>Annotation := 
+"@" Instantiation | 
+TypeName (StringLiteral|TypeLiteral|MemberLiteral|IntegerLiteral|FloatLiteral|RegexLiteral)?</programlisting>
     
-    <para>For annotations with no constructor parameters, or for annotations with just
-    one string literal constructor parameter, the <literal>@</literal> and parentheses
-    may be omitted.</para>
+    <para>For an annotation with no constructor parameters, or with just one string, 
+    type, member, integer, float or regex literal constructor parameter, the 
+    <literal>@</literal> and parentheses may be omitted.</para>
     
     <para>For example:</para>
     
@@ -1371,6 +1373,26 @@ User user = new PersonUser().convert(person);</programlisting>
             <listitem>
                 <para><literal>once</literal> indicates that a method is 
                 executed at most once, and the resulting value is cached.</para>
+            </listitem>
+            <listitem>
+                <para><literal>deprecated</literal> indicates that a method, 
+                attribute or type is deprecated.</para>
+            </listitem>
+            <listitem>
+                <para><literal>doc</literal> specifies the documentation for
+                a program element.</para>
+            </listitem>
+            <listitem>
+                <para><literal>author</literal> specifies the author of a 
+                program element.</para>
+            </listitem>
+            <listitem>
+                <para><literal>see</literal> specifies a related member or 
+                type.</para>
+            </listitem>
+            <listitem>
+                <para><literal>throws</literal> specifies a thrown exception
+                type.</para>
             </listitem>
         </itemizedlist>
         
