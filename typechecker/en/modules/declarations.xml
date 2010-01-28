@@ -37,9 +37,9 @@ Declaration?</programlisting>
     
     <para>For example:</para>
     
-    <programlisting>doc "The user log in action"
+    <programlisting>doc "The user login action"
 author "Gavin King"
-@action{description="Log In"; url="/login";} @scope(session)
+@action{description="Log In"; url="/login"} @scope(session)
 public deprecated</programlisting>
     
     </section>

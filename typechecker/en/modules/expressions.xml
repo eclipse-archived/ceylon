@@ -2163,8 +2163,8 @@ value (CARD) {
         
         </section>
     
-        <section>
         <!--
+        <section>
         <title>TODO: assignment to local variables from surrounding scope</title>
     
         <para>The following code:</para>
@@ -2224,8 +2224,8 @@ count = (Integer) locals[2];
 Integer size = result$1;</programlisting>
 
         </section>
+    -->
     
     </section>
-    -->
     
 </chapter>

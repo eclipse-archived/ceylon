@@ -127,7 +127,8 @@
         Here's a classic example, implemented in Ceylon:
         </para>
         
-        <programlisting>class Hello {
+        <programlisting>doc "The classic Hello World program"
+class Hello {
 
     main void hello() {
         log.info("Hello, World!");
@@ -151,7 +152,8 @@
         This improved version of the program takes a name as input from the console:
         </para>
         
-        <programlisting><![CDATA[class Hello {
+        <programlisting><![CDATA[doc "A more personalized greeting"
+class Hello {
 
     main void hello(Process process) {
         String name = process.args.firstOrNull default "World";
@@ -180,7 +182,8 @@ import html.Body;
 import html.Div;
 import web.Page;
 
-@page ("/hello.html")
+doc "A web page that displays a greeting"
+page "/hello.html"
 class Hello(Request request) 
         extends Html(request) {
 
