@@ -169,7 +169,7 @@ Digit+ "." Digit+
         
         <para>A string literal has this form:</para>
         
-        <programlisting>StringLiteral = """ ( Character+ | "${" Expression "}" )* """</programlisting>
+        <programlisting>StringLiteral = "&quot;" ( Character+ | "${" Expression "}" )* "&quot;"</programlisting>
         
         <para>For example:</para>
         

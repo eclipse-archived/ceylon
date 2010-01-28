@@ -3,30 +3,23 @@
     
     <para>Method, attribute, converter, class and functor literal bodies contain 
     procedural code that is executed when the method, attribute or converter is 
-    invoked. The code contains expressions, control directives and assertions and 
-    is organized using blocks and control structures.</para>
+    invoked. The code contains expressions and control directives and is organized 
+    using blocks and control structures.</para>
     
     <section id="blocks">
         <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
-        assertions, method, attribute and local declarations, and control structures, 
-        surrounded by braces. Some blocks end in a control directive. The expressions, 
-        assertions, local initializers and control structures are executed sequentially.</para>
+        method, attribute and local declarations, and control structures, surrounded 
+        by braces. Some blocks end in a control directive. The expressions, local 
+        initializers and control structures are executed sequentially.</para>
 
         <para>A <emphasis>statement</emphasis> is an expression, control structure, 
         control statement or a method, attribute or local declaration.</para>
 
-        <programlisting>Block := 
-"{" 
-Statement*
-ControlStatement?
-"}"</programlisting>
+        <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := 
-Expression ";" | 
-ControlStructure |
-Declaration</programlisting>
+        <programlisting>Statement := Annotation* Expression ";" | ControlStructure | Declaration</programlisting>
 
         <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
@@ -53,20 +46,19 @@ Declaration</programlisting>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>ControlDirective := 
-"return" Expression | 
-"found" | 
-"break" | 
-"throw" Expression</programlisting>
+         <programlisting>ControlDirective := ("return" | "produces") Expression | "throw" Expression | "found" | "break"</programlisting>
         
-        <para>The <literal>return</literal> directive may not be used outside of the 
+        <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter, a non-<literal>void</literal> method or a 
         converter.</para>
         
-        <para>The <literal>break</literal> directive may not be used outside of the 
+        <para>The <literal>produces</literal> directive may not be used outside
+        the body of a non-<literal>void</literal> functor expression.</para>
+        
+        <para>The <literal>break</literal> directive may not be used outside the 
         body of a loop.</para>
         
-        <para>The <literal>found</literal> directive may not be used outside of the 
+        <para>The <literal>found</literal> directive may not be used outside the 
         body of a <literal>for/fail</literal> loop.</para>
         
         <para>TODO: instead of <literal>break</literal> and <literal>found</literal>,
@@ -141,11 +133,7 @@ Declaration</programlisting>
             </listitem>
         </itemizedlist>
                 
-        <programlisting>ControlStructure := 
-IfElse | SwitchCaseElse | 
-DoWhile | ForFail | 
-Using | TryCatchFinally |
-Assert</programlisting>
+        <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
 
         <para><emphasis>Control structures</emphasis> are not considered to be expressions in Ceylon. 
         However, all control structures have a corresponding <emphasis>control expression</emphasis> 
@@ -540,6 +528,7 @@ catch (NotFoundException e) {
             
          </section>
 
+<!--
     <section>
         <title>Assertions</title>
             
@@ -560,7 +549,7 @@ catch (NotFoundException e) {
         
         <para>Is equivalent to this Java:</para>
         
-        <programlisting>if (ASSERTIONS_ENAB"<="D &amp;&amp; ( input!=null &amp;&amp; !input.empty().get() ) ) 
+        <programlisting>if (ASSERTIONS_ENABLED &amp;&amp; ( input!=null &amp;&amp; !input.empty().get() ) ) 
     throw new AssertionFailedException(message);</programlisting>
     
         <para>TODO: do we really need a special syntax for assertions? They are barely 
@@ -569,7 +558,8 @@ catch (NotFoundException e) {
         <programlisting>assert ("input may not be empty") that input nonempty;</programlisting>
 
     </section>
-    
+-->
+
     </section>
 
 </chapter>

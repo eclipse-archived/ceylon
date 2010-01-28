@@ -62,7 +62,7 @@ public deprecated</programlisting>
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>
     
-    <programlisting>TypeParameters := "<" Type (COMMA Type)* ">"</programlisting>
+    <programlisting>TypeParameters := "&lt;" Type (COMMA Type)* "&gt;"</programlisting>
 
     <para>For example:</para>
     
@@ -156,7 +156,7 @@ VarargsParameter?
     
     <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
 
-    <programlisting>TypeConstraint := Ident ( (">="|"<=") (Type|Ident) | FormalParameters ) </programlisting>
+    <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParameters ) </programlisting>
     
     <para>There are three kinds of type constraints:</para>
     
@@ -406,7 +406,8 @@ class Customer(Name name, optional Organization org = null)
     x = sqrt(displacement) * sign;
     y = sqrt(displacement) * sign;
     
-    assert (x**2 + y**2 == position**2);
+    doc "must have distance ${position} from origin" 
+    assert x**2 + y**2 == position**2;
     
 }</programlisting>
         
@@ -422,7 +423,8 @@ class Customer(Name name, optional Organization org = null)
         x = sqrt(displacement).multiply(sign);
         y = sqrt(displacement).multiply(sign);
         assert x.exponentiate(2) + y.exponentiate(2) 
-             == position.exponentiate(2);
+             == position.exponentiate(2) :
+        "must have distance " + position + " from origin";
     }
     
 }</programlisting>
@@ -1375,6 +1377,11 @@ User user = new PersonUser().convert(person);</programlisting>
                 executed at most once, and the resulting value is cached.</para>
             </listitem>
             <listitem>
+                <para><literal>assert</literal> indicates that a statement
+                must evaluate to true when assertions are enabled, and is 
+                not executed when assertions are disabled.</para>
+            </listitem>
+            <listitem>
                 <para><literal>deprecated</literal> indicates that a method, 
                 attribute or type is deprecated.</para>
             </listitem>
@@ -1401,6 +1408,10 @@ User user = new PersonUser().convert(person);</programlisting>
                 type.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>The string value of the <literal>doc</literal> and 
+        <literal>author</literal> annotations is parsed by the documentation
+        compiler as Seam Text, a simple ANTLR-based wiki text format.</para>
         
     </section>
 
