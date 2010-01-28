@@ -7,11 +7,7 @@ options {
 
 compilationUnit 
     :
-        '{'
-        (statement ';'
-        | block
-        )*
-        '}'
+    classDeclaration*
     ;
 
 statement
@@ -20,26 +16,51 @@ statement
     |
     ;
 
+// A block must have at least one statement or it's not possible to
+// distinguish it from a string enumberation like {"foo"}.
 block
-    : '{' (statement ';')+ '}'
+    :
+        '{' (statement ';')+ '}'
     ;
         
 
-declaration    :
-       /* (modifier | instantiation)+ ':'
-        typeName typeParameters? IDENTIFIER ('=' expression)?
-        | */
-       	type IDENTIFIER ('=' expression)?
+declaration
+    :
+        annotations? type IDENTIFIER
+        ('=' expression
+          | formalParameters)?
     ;
 
-type	:	typeName typeParameters?
-	;
+classDeclaration
+    :
+        annotations?
+        'class'
+        IDENTIFIER
+        typeParameters?
+        formalParameters?
+        ('extends' type)?
+        ('satisfies' type (',' type)*)?
+        ('where' typeConstraint ('&' typeConstraint)*)?
+        // FIXME: These braces around the instances list are not in the spec.
+        ('instances' '{' (type arguments?) (',' type arguments?)* '}')?
+        ('{' (statement ';' | block)* '}')
+        ;
+        
+typeConstraint
+    :   IDENTIFIER ((('>=' | '<=') type )| formalParameters)
+    ;
 
-/* declaration
-	: type ((arguments type)+ ':' type)?
-	   IDENTIFIER ('=' expression)?
-	;
-*/
+type
+    :   typeName typeParameters?
+    ;
+
+annotations
+    :   
+        ( '@' instantiation 
+        | modifier
+        | typeName SIMPLESTRINGLITERAL?)+
+        ':'
+    ;
 
 modifier
     : 'public'
@@ -55,7 +76,7 @@ modifier
     ;
 
 typeName
-    :   IDENTIFIER ('.'IDENTIFIER)* 
+    : IDENTIFIER ('.'IDENTIFIER)* 
     ;
 
 typeParameters
@@ -89,7 +110,8 @@ stringLiteral
     ;
 
 expression 
-    :   implicationExpression
+    :
+        implicationExpression
         (('=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=') expression)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
@@ -110,12 +132,15 @@ conjunctionExpression
     ;
 
 logicalNegationExpression
-    : '!' logicalNegationExpression
-    | equalityExpression
+    :
+        '!' logicalNegationExpression
+    |
+        equalityExpression
     ;
 
 equalityExpression
-    :   comparisonExpression
+    :
+        comparisonExpression
         (('=='|'!='|'===') comparisonExpression)?
     ;
 
@@ -157,14 +182,16 @@ multiplicativeExpression
         (('*' | '/' | '%') exponentiationExpression)*
     ;
 
-// FIXME: The spec says ** should be left-associative, but it's conventionally
-// right-associative, which is what I've done here.
+// FIXME: The spec says ** should be left-associative, but it's
+// conventionally right-associative, which is what I've done here.
 exponentiationExpression
-    : postfixExpression ('**' exponentiationExpression)?
+    :
+        postfixExpression ('**' exponentiationExpression)?
     ;
 
 postfixExpression
-    : unaryExpression ('--' | '++')*
+    :
+        unaryExpression ('--' | '++')*
     ;   
 
 unaryExpression 
@@ -177,10 +204,13 @@ unaryExpression
     ;
 
 primary
-    : IDENTIFIER | 'this' | 'super'
+    :
+        IDENTIFIER | 'this' | 'super'
         selector*
-    | literal
-    | parExpression
+    |
+        literal
+    |
+        parExpression
     ;
     
 instantiation
@@ -238,6 +268,19 @@ positionalArguments
     :   expressionList?
     ;
 
+
+formalParameters
+    :   
+    '(' formalParameter 
+    (',' formalParameter)* ')';
+
+// FIXME: This accepts more than the language spec, in that named
+// arguments and varargs arguments can appear in any order.  We'll
+// have to enforce the rule that the ... appears at the end of the
+// parapmeter list in a later pass of the compiler.
+formalParameter
+    :   annotations? type  IDENTIFIER ('=' expression | '...')?;
+    
 
 // Lexer
 
@@ -346,7 +389,6 @@ WS
             skip();
         }          
     ;
-
 
 LINE_COMMENT
     :   '//' ~('\n'|'\r')*  ('\r\n' | '\r' | '\n') 
@@ -621,17 +663,21 @@ DOTS
     : '..'
     ;
     
-NEQUAL  :   '<=>'
+NEQUAL
+    :   '<=>'
     ;
     
-IN  :   'in'
+IN
+    :   'in'
     ;
 
     
-HASH    :   '#'
+HASH
+    :   '#'
     ;
 
-PLUSEQ  :   '+='
+PLUSEQ
+    :   '+='
     ;
 
 MODULE
@@ -642,6 +688,7 @@ IDENTIFIER
     :   IdentifierStart IdentifierPart*
     ;
 
+// FIXME: Unicode identifiers
 fragment
 IdentifierStart
     :   'A'..'Z'
