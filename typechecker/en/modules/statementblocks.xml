@@ -560,7 +560,7 @@ catch (NotFoundException e) {
         
         <para>Is equivalent to this Java:</para>
         
-        <programlisting>if (ASSERTIONS_ENABLED &amp;&amp; ( input!=null &amp;&amp; !input.empty().get() ) ) 
+        <programlisting>if (ASSERTIONS_ENAB"<="D &amp;&amp; ( input!=null &amp;&amp; !input.empty().get() ) ) 
     throw new AssertionFailedException(message);</programlisting>
     
         <para>TODO: do we really need a special syntax for assertions? They are barely 

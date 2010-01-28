@@ -62,7 +62,7 @@ public deprecated</programlisting>
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>
     
-    <programlisting>TypeParameters := LT Type (COMMA Type)* GT</programlisting>
+    <programlisting>TypeParameters := "<" Type (COMMA Type)* ">"</programlisting>
 
     <para>For example:</para>
     
@@ -156,7 +156,7 @@ VarargsParameter?
     
     <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
 
-    <programlisting>TypeConstraint := Ident ( (GE|LE) (Type|Ident) | FormalParameters ) </programlisting>
+    <programlisting>TypeConstraint := Ident ( (">="|"<=") (Type|Ident) | FormalParameters ) </programlisting>
     
     <para>There are three kinds of type constraints:</para>
     
