@@ -119,10 +119,6 @@ classDeclaration
         ('extends' instantiation)?
         satisfiedTypes?
         typeConstraints?
-        // FIXME: These braces around the instances list are not in
-        // the spec.  We need them because there's no way to
-        // distinguish between an optional argument list and the block
-        // of this class.
         instanceEnumeration?
         block
     ;
@@ -214,7 +210,7 @@ stringLiteral
 
 expression 
     :
-        implicationExpression (assignmentOp expression)?
+        implicationExpression (assignmentOp implicationExpression)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
     
@@ -303,7 +299,7 @@ multiplicativeExpression
 // conventionally right-associative, which is what I've done here.
 exponentiationExpression
     :
-        postfixExpression ('**' exponentiationExpression)?
+        postfixExpression ('**' postfixExpression)?
     ;
 
 postfixExpression
