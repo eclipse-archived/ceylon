@@ -19,7 +19,7 @@
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := Annotation* Expression ";" | ControlStructure | Declaration</programlisting>
+        <programlisting>Statement := ( Annotation+ ':' )? Expression ";" | ControlStructure | Declaration</programlisting>
 
         <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
@@ -100,8 +100,8 @@
         <title>Control structures</title>
         
         <para>Control of execution flow may be achieved using control directives and 
-        control structures. Control structures include conditionals, loops, exception 
-        management and assertions. For many tasks, the use of these traditional control
+        control structures. Control structures include conditionals, loops, and 
+        exception management. For many tasks, the use of these traditional control
         structures is considered bad style, and the use of expressions with functor 
         parameters is preferred. However, control structures support the use of the 
         <literal>return</literal>, <literal>break</literal> and <literal>found</literal> 

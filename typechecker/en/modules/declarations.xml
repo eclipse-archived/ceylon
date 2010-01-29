@@ -406,8 +406,8 @@ class Customer(Name name, optional Organization org = null)
     x = sqrt(displacement) * sign;
     y = sqrt(displacement) * sign;
     
-    doc "must have distance ${position} from origin" 
-    assert x**2 + y**2 == position**2;
+    assert "must have distance ${position} from origin": 
+        x**2 + y**2 == position**2;
     
 }</programlisting>
         
