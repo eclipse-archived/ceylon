@@ -62,7 +62,7 @@ public deprecated</programlisting>
     <para>Method, class, interface, decorator and converter declarations may declare 
     generic type parameters.</para>
     
-    <programlisting>TypeParams := "&lt;" Type (COMMA Type)* "&gt;"</programlisting>
+    <programlisting>TypeParams := "&lt;" Type ("," Type)* "&gt;"</programlisting>
 
     <para>For example:</para>
     
@@ -70,7 +70,7 @@ public deprecated</programlisting>
     
     <para>There are also functor types:</para>
     
-    <programlisting>FunctorType := "(" ( Variable (COMMA Variable)* )? ")" ("produces" Annotation* Type | "void")</programlisting>
+    <programlisting>FunctorType := "(" ( Variable ("," Variable)* )? ")" ("produces" Annotation* Type | "void")</programlisting>
     
     <para>For example:</para>
     
@@ -90,8 +90,8 @@ public deprecated</programlisting>
     
     <programlisting>FormalParams := 
 "("
-FormalParam (COMMA FormalParam)* (COMMA OptionalParam)* (COMMA VarargsParam)? | 
-OptionalParam (COMMA OptionalParam)* (COMMA VarargsParam)? | 
+FormalParam ("," FormalParam)* ("," OptionalParam)* ("," VarargsParam)? | 
+OptionalParam ("," OptionalParam)* ("," VarargsParam)? | 
 VarargsParam?
 ")"</programlisting>
 
@@ -139,7 +139,7 @@ VarargsParam?
     <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
     using the <literal>satisfies</literal> clause.</para>
     
-    <programlisting>Interfaces = "satisfies" Type (COMMA Type)*</programlisting>
+    <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
 
     <para>For example:</para>
     
@@ -252,8 +252,7 @@ String join(Iterable&lt;String&gt; strings,
 Supertype?
 Interfaces?
 TypeConstraints?
-InstanceEnumeration?
-Block</programlisting>
+"{" InstanceEnumeration? Statement* "}"</programlisting>
 
         <section>
              <title>Class inheritance</title>
@@ -487,11 +486,7 @@ class Customer(Name name, optional Organization org = null)
         
         <para>A class may specify an enumerated list of instances:</para>
         
-        <programlisting>InstanceEnumeration := 
-"instances" 
-Identifier ParamValues? 
-(COMMA Identifier ParamValues?)* 
-"..."?</programlisting>
+        <programlisting>InstanceEnumeration := "instances" Identifier ParamValues? ("," Identifier ParamValues?)* ("..." | ";")</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>
@@ -1003,13 +998,13 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 "selector" Identifier
 FormalParams?
 "{" 
-SelectorValue (COMMA SelectorValue)*
+SelectorValue ("," SelectorValue)*
 ( ";" ( Attribute | Method )* )? 
 "}"</programlisting>
         
         <para>Where:</para>
         
-        <programlisting>SelectorValue := Identifier ( "(" ( Expression (COMMA Expression)* )? ")" )?</programlisting>
+        <programlisting>SelectorValue := Identifier ( "(" ( Expression ("," Expression)* )? ")" )?</programlisting>
         
         <para>
         For example:

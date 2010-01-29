@@ -197,7 +197,7 @@
             <programlisting>IfElse := "if" "(" Condition ")" (ClosedBlock | OpenBlock "else" ClosedBlock)</programlisting>
 
             <!--programlisting>IfElse := 
-"if" "(" Condition (COMMA Condition)* ")"
+"if" "(" Condition ("," Condition)* ")"
 ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting-->
 
             <para>If the condition is satisfied, the first block is executed. Otherwise, the 
@@ -255,7 +255,7 @@ else {
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
             is the switch expression type.</para>
 
-            <programlisting>Case := Expression (COMMA Expression)*</programlisting>
+            <programlisting>Case := Expression ("," Expression)*</programlisting>
 
             <para>If a <literal>case null</literal> is defined, the switch expression type must 
             be <literal>optional</literal>.</para>
@@ -321,7 +321,7 @@ else {
 
             <programlisting>ForIterator := (Variable | VariablePair) "in" Expression</programlisting>
 
-            <!--programlisting>Iteration := (Variable | VariablePair) "in" Expression (":" Condition (COMMA Condition)*)? </programlisting-->
+            <!--programlisting>Iteration := (Variable | VariablePair) "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
             <para>Each iterated expression must be of type <literal>Iterable</literal>
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
@@ -384,7 +384,7 @@ fail {
             
             <!--programlisting>DoWhileFail := 
 ( "do" ("(" Variable Initializer ")")? OpenBlock? )?
-"while" "(" Condition (COMMA Condition)* ")" 
+"while" "(" Condition ("," Condition)* ")" 
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
             <para>Both blocks are executed repeatedly, until the termination 
@@ -447,7 +447,7 @@ while (!person.parent.dead) {
             
             <para>The <literal>using</literal> resource manager has the form:</para>
             
-            <programlisting>Using := "using" "(" Resource (COMMA Resource)* ")" ClosedBlock</programlisting>
+            <programlisting>Using := "using" "(" Resource ("," Resource)* ")" ClosedBlock</programlisting>
             
             <para>TODO: do we really need a special syntax for using? Using functors, a 
             using could look like this:</para>
@@ -531,7 +531,7 @@ catch (NotFoundException e) {
             
         <para>An assertion has the following form:</para>
         
-        <programlisting>Assert := "assert" "(" Expression (COMMA Expression)* ")" Expression?</programlisting>
+        <programlisting>Assert := "assert" "(" Expression ("," Expression)* ")" Expression?</programlisting>
         
         <para>Assertions appearing in class declarations are checked after the class
         is instantiated. Assertions appearing in other blocks are checked when the 

@@ -356,12 +356,12 @@ if you prefer.";</programlisting>
         If there are any remaining optional parameters, they will be assigned their default values.
         On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
             
-        <programlisting>OrderedParamValues := "(" ( Expression (COMMA Expression)* )? ")"</programlisting>
+        <programlisting>OrderedParamValues := "(" ( Expression ("," Expression)* )? ")"</programlisting>
                 
         <para>When parameter values are named, required and optional parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
-        <programlisting>NamedParamValues := "{" NamedParamValue* ( VarargParamValue (COMMA VarargParamValue)* )? "}"</programlisting>
+        <programlisting>NamedParamValues := "{" NamedParamValue* ( VarargParamValue ("," VarargParamValue)* )? "}"</programlisting>
 
         <programlisting>NamedParamValue := Identifier Initializer ";"</programlisting>
 
@@ -455,7 +455,7 @@ if you prefer.";</programlisting>
             <para>Enumerations may be instantiated according to the following 
             simplified syntax:</para>
             
-            <programlisting>EnumerationInstantiation := "{" Expression (COMMA Expression)* "}"</programlisting>
+            <programlisting>EnumerationInstantiation := "{" Expression ("," Expression)* "}"</programlisting>
             
             <para>In this case, there is no need to explicitly specify the type.</para>
             
@@ -1880,7 +1880,7 @@ if you prefer.";</programlisting>
         
         <programlisting>FunctorExpression := FunctorLocals OpenBlock</programlisting>
         
-        <programlisting>FunctorLocals := "(" ( Variable | VariablePair (COMMA Variable | VariablePair)* ) ")"</programlisting>
+        <programlisting>FunctorLocals := "(" ( Variable | VariablePair ("," Variable | VariablePair)* ) ")"</programlisting>
         
         <para>A functor body may not contain a <literal>return</literal> directive. If the functor
         body is a block, the value of the functor, when executed, is determined by the 
