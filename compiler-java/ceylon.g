@@ -8,7 +8,14 @@ options {
 compilationUnit
     : 
         (importDeclaration)*
-        (annotations? (classDeclaration | interfaceDeclaration | converterDeclaration))+
+        (annotation* toplevelDeclaration)+
+    ;
+    
+toplevelDeclaration
+    : classDeclaration 
+    | interfaceDeclaration 
+    | converterDeclaration 
+    | decoratorDeclaration
     ;
 
 importDeclaration  
@@ -22,26 +29,22 @@ importDeclaration
 
 statement
     : (declaration) => declaration
-    | expression ';'
-    | 'return' expression ';'
-    | ';'
+    | expression? ';'
     ;
 
-// A block must have at least one statement or it's not possible to
-// distinguish it from an empty string enumeration {}.
+directive
+    : 'return' expression 
+    | 'throw' expression 
+    | 'break' 
+    | 'found'
+    ;
+
 block
-    :
-        '{' (statement)+ '}'
+    : '{' statement* ( directive ';'? )? '}'
     ;
 
 declaration
-    :   
-        annotations? 
-        (attributeOrMethodDeclaration 
-        | classDeclaration
-        | decoratorDeclaration
-        | interfaceDeclaration
-        | converterDeclaration)
+    :  annotation* (attributeOrMethodDeclaration | toplevelDeclaration)
     ;
 
 // This is quite different from the grammar in the spec, but because
@@ -51,13 +54,17 @@ declaration
 // FIXME: Allows "void foo" as an attribute declaration
 attributeOrMethodDeclaration
     :
-        (type | 'void')
+        (type | 'void' | 'assign')
         IDENTIFIER
-        ((formalParameters
-                ('where' typeConstraint ('&' typeConstraint)*)?
-                (';' | block))
-        |
-            (';' | block | '=' expression ';'))
+        (methodDefinition | attributeDefinition)
+    ;
+    
+methodDefinition
+    :   formalParameters typeConstraints?  (';' | block)
+    ;
+    
+attributeDefinition
+    :   ';' | block | initializer ';'
     ;
 
 decoratorDeclaration
@@ -66,8 +73,8 @@ decoratorDeclaration
         IDENTIFIER
         typeParameters?
         formalParameters?
-        ('satisfies' type (',' type)*)?
-        ('where' typeConstraint ('&' typeConstraint)*)?
+        satisfiedTypes?
+        typeConstraints?
         '{' attributeOrMethodDeclaration* '}'
     ;
 
@@ -79,8 +86,8 @@ converterDeclaration
         type
         IDENTIFIER
         typeParameters?
-        ('where' typeConstraint ('&' typeConstraint)*)?
-        '(' annotations? type IDENTIFIER ')'
+        typeConstraints?
+        '(' annotation* type IDENTIFIER ')'
 	;
 
 interfaceDeclaration
@@ -88,18 +95,18 @@ interfaceDeclaration
         'interface'
         IDENTIFIER
         typeParameters?
-        ('satisfies' type (',' type)*)?
-        ('where' typeConstraint ('&' typeConstraint)*)?
-        '{' (attributeOrMethodStub)* '}'
+        satisfiedTypes?
+        typeConstraints?
+        '{' attributeOrMethodStub* '}'
     ;
 
 attributeOrMethodStub
     :
-        annotations?
+        annotation*
         (type | 'void')
         IDENTIFIER
         (formalParameters
-            ('where' typeConstraint ('&' typeConstraint)*)?)?
+         typeConstraints?)?
         ';'
         ;
 
@@ -110,51 +117,74 @@ classDeclaration
         typeParameters?
         formalParameters?
         ('extends' instantiation)?
-        ('satisfies' type (',' type)*)?
-        ('where' typeConstraint ('&' typeConstraint)*)?
+        satisfiedTypes?
+        typeConstraints?
         // FIXME: These braces around the instances list are not in
         // the spec.  We need them because there's no way to
         // distinguish between an optional argument list and the block
         // of this class.
-        ('instances' '{' (type arguments?) (',' type arguments?)* '}')?
-        '{' (statement | block)* '}'
+        instanceEnumeration?
+        block
     ;
-        
+
+instanceEnumeration
+    :   'instances' instance (','instance?)*
+    ;
+
+instance 
+    : IDENTIFIER ( '(' positionalArguments ')' )?
+    ;
+
 typeConstraint
     :   IDENTIFIER ((('>=' | '<=') type )| formalParameters)
+    ;
+    
+typeConstraints
+    : 'where' typeConstraint ('&' typeConstraint)*
+    ;
+    
+satisfiedTypes
+    : 'satisfies' type (',' type)*
     ;
 
 type
     :   typeName typeParameters?
     ;
 
-annotations
+annotation
     :   
-        ( '@' instantiation 
+        '@' instantiation 
         | modifier
-        | typeName SIMPLESTRINGLITERAL?)+
-        ':'
+        | typeName literal? 
     ;
 
+//I would really love for these to not
+//be keywords, but for now they have
+//to be, since module and package are
+//also declarations
 modifier
     : 'public'
     | 'module'
     | 'package'
-    | 'abstract'
+    /*| 'abstract'
     | 'static'
     | 'mutable'
     | 'optional'
     | 'final'
     | 'override'
-    | 'once'
+    | 'once'*/
     ;
 
 typeName
-    : IDENTIFIER ('.'IDENTIFIER)* 
+    : IDENTIFIER ('.' IDENTIFIER)* 
     ;
 
 typeParameters
-    : '<' typeName typeParameters? (',' typeName typeParameters?)* '>'
+    : '<' type (',' type)* '>'
+    ;
+
+initializer
+    : '=' expression
     ;
 
 literal
@@ -175,7 +205,6 @@ integerLiteral
 
 enumerationLiteral
     : 'none'
-    |   '{'( SIMPLESTRINGLITERAL)? (',' SIMPLESTRINGLITERAL)* '}'
     ;
 
 stringLiteral
@@ -185,9 +214,23 @@ stringLiteral
 
 expression 
     :
-        implicationExpression
-        (('=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=') expression)?
+        implicationExpression (assignmentOp expression)?
         /*    | '{' expression ';' (expression ';')* '}' */
+    ;
+    
+assignmentOp
+    : '=' 
+    | '+=' 
+    | '-=' 
+    | '*=' 
+    | '/=' 
+    | '%=' 
+    | '&=' 
+    | '|=' 
+    | '^=' 
+    | '&&=' 
+    | '||=' 
+    | '?='
     ;
 
 implicationExpression
@@ -226,7 +269,7 @@ comparisonExpression
 
 defaultExpression
     :   
-        existenceEmptinessExpression ('default' defaultExpression)?
+        existenceEmptinessExpression ('?' defaultExpression)?
     ;
 
 existenceEmptinessExpression
@@ -269,66 +312,72 @@ postfixExpression
     ;   
 
 unaryExpression 
-    :   '$'  unaryExpression
-    |   '-' unaryExpression
-    |   '++' unaryExpression
-    |   '--' unaryExpression
-    |   '~' unaryExpression
+    :   ('$'|'-'|'++'|'--') unaryExpression
     |   primary
     ;
 
 primary
     :
-        (IDENTIFIER | 'this' | 'super')
-        selector*
-    |
-        literal
-    |
-        parExpression
+    ( IDENTIFIER 
+    | 'this' | 'super' | 'null'
+    | literal
+    | parExpression
+    | enumerationInstantiation ) 
+    selector*
     ;
     
 instantiation
     : typeName typeParameters? arguments
     ;
+    
+enumerationInstantiation
+    	: '{' expressionList '}'
+    	;
 
 selector  
-    :   
-        ('.' | '^.'|'?.') (IDENTIFIER | 'this' | 'super' )
-    |
-        arguments
-    |   '[' 
-        ( expression ('...'
-                | (',' expression)*
-                | '..' expression)
-            | '...' expression)
-        ']'        
+    : selectorOp IDENTIFIER
+    | arguments
+    | elementSelector        
+    ;
+    
+selectorOp
+    : '.' 
+    | '^.' 
+    | '?.' 
+    | '*.' 
+    | '#'
     ;
 
+elementSelector
+	: 
+	'[' elementsSpec ']'
+	;
+
+elementsSpec
+        :  
+           expression ( '...' | (',' expression)* | '..' expression )
+        |  '...' expression	
+        ;
+
 arguments 
-    :
-        '(' positionalArguments ')'
-    |
-        '{' namedArguments '}'
-    ;
+      :
+          '(' positionalArguments ')'
+      |   '{' namedArguments '}'
+      ;
 
 namedArgument
     :
-        IDENTIFIER '=' expression
+        IDENTIFIER initializer
     ;
 
 varargArguments
     :   
-        expression (',' expression)*
+        expressionList
     ;
 
 namedArguments
     :
         ((namedArgument ';') => namedArgument ';')* varargArguments?
-    ;
-
-expressionList 
-    :   expression
-        (',' expression)*
     ;
 
 parExpression 
@@ -343,11 +392,9 @@ positionalArguments
     :   expressionList?
     ;
 
-
 formalParameters
     :   
-    '(' (formalParameter 
-    (',' formalParameter)*)? ')'
+    '(' (formalParameter (',' formalParameter)*)? ')'
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
@@ -355,8 +402,12 @@ formalParameters
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    :   annotations? type  IDENTIFIER ('=' expression | '...')?;
+    :   annotation* type IDENTIFIER ( '->' type IDENTIFIER )? (initializer | '...')?;
     
+
+expressionList 
+    :   expression (',' expression)*
+    ;
 
 // Lexer
 
@@ -477,6 +528,14 @@ LINE_COMMENT
         }
     ;   
 
+ASSIGN
+    :   'assign'
+    ;
+    
+BREAK
+    :   'break'
+    ;
+    
 CASE
     :   'case'
     ;
@@ -489,8 +548,8 @@ CLASS
     :   'class'
     ;
 
-CONST
-    :   'const'
+DECORATOR
+    :   'decorator'
     ;
 
 DEFAULT
@@ -503,11 +562,7 @@ DO
 
 ELSE
     :   'else'
-    ;
-
-ENUM
-    :   'enum'
-    ;             
+    ;            
 
 EXISTS
     :    'exists'
@@ -521,12 +576,19 @@ FOR
     :   'for'
     ;
 
+FOUND
+    :   'found'
+    ;
 IF
     :   'if'
     ;
 
 IMPLEMENTS
     :   'implements'
+    ;
+
+SATISFIES
+    :   'satisfies'
     ;
 
 IMPORT
@@ -536,9 +598,17 @@ IMPORT
 INTERFACE
     :   'interface'
     ;
+    
+NONE
+    :   'none'
+    ;
+
+NULL
+    :   'null'
+    ;
 
 NONEMPTY
-    : 'nonempty'
+    :   'nonempty'
     ;
 
 PACKAGE
@@ -561,10 +631,6 @@ RETURN
     :   'return'
     ;
 
-STATIC
-    :   'static'
-    ;
-
 SUPER
     :   'super'
     ;
@@ -585,33 +651,25 @@ TRY
     :   'try'
     ;
 
-/*
-
-Surely we're going to need this...
+//Surely we're going to need this...
 
 VOLATILE
     :   'volatile'
     ;
 
-*/
+VOID
+    :   'void'
+    ;
 
 WHILE
     :   'while'
     ;
 
-TRUE
-    :   'true'
-    ;
-
-FALSE
-    :   'false'
-    ;
-
-OPENPAREN
+LPAREN
     :   '('
     ;
 
-CLOSEPAREN
+RPAREN
     :   ')'
     ;
 
@@ -735,11 +793,15 @@ LT
     :   '<'
     ;        
 
+ENTRY
+    : '->'
+    ;
+
 DOTS
     : '..'
     ;
     
-NEQUAL
+COMPARE
     :   '<=>'
     ;
     
@@ -761,7 +823,7 @@ MODULE
     ;
     
 CONVERTER
-	:	'converter'
+	:  'converter'
 	;
 
 IDENTIFIER
