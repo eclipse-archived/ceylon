@@ -105,7 +105,7 @@ VarargsParam?
     
     <programlisting>Variable := Annotation* Type Identifier</programlisting>
         
-    <programlisting>VariablePair := Annotation* Variable "->" Variable</programlisting>
+    <programlisting>VariablePair := Annotation* Type Identifier "->" Type Identifier</programlisting>
     
     <para>For example:</para>
     
