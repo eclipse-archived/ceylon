@@ -1679,13 +1679,13 @@ if you prefer.";</programlisting>
             </row>
             <row>
                 <entry>Prefix increment, decrement,
-                negation, render, bitwise complement:</entry>
+                negation, render<!--, bitwise complement-->:</entry>
                 <entry>
                 <literal>++</literal>, 
                 <literal>--</literal>, 
                 <literal>-</literal>, 
                 <literal>$</literal>,
-                <literal>~</literal> 
+                <!--literal>~</literal--> 
                 </entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
@@ -1726,8 +1726,8 @@ if you prefer.";</programlisting>
                 <entry>
                 <literal>*</literal>, 
                 <literal>/</literal>, 
-                <literal>%</literal>,
-                <literal>~</literal><!--,
+                <literal>%</literal><!--,
+                <literal>~</literal>,
                 <literal>&amp;&amp;&amp;</literal>-->
                 </entry>
                 <entry>Binary</entry>

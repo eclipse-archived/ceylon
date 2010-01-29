@@ -95,9 +95,11 @@ OptionalParam (COMMA OptionalParam)* (COMMA VarargsParam)? |
 VarargsParam?
 ")"</programlisting>
 
-    <programlisting>OptionalParam = FormalParam Initializer</programlisting>
+    <programlisting>OptionalParam := FormalParam Initializer</programlisting>
     
-    <programlisting>VarargsParam = Annotation* Type "..." Identifier</programlisting>
+    <programlisting>Initializer := "=" Expression</programlisting>
+    
+    <programlisting>VarargsParam := Annotation* Type "..." Identifier</programlisting>
     
     <programlisting>FormalParam := Variable | VariablePair</programlisting>
     
@@ -250,7 +252,7 @@ String join(Iterable&lt;String&gt; strings,
 Supertype?
 Interfaces?
 TypeConstraints?
-InstanceEnumeraton?
+InstanceEnumeration?
 Block</programlisting>
 
         <section>
@@ -485,7 +487,7 @@ class Customer(Name name, optional Organization org = null)
         
         <para>A class may specify an enumerated list of instances:</para>
         
-        <programlisting>InstanceEnumeraton := 
+        <programlisting>InstanceEnumeration := 
 "instances" 
 Identifier ParamValues? 
 (COMMA Identifier ParamValues?)* 
@@ -498,7 +500,7 @@ Identifier ParamValues?
         instances mon, tues, wed, thurs, fri, sat, sun {}</programlisting>
 
         <programlisting>public class DayOfWeek(String name)
-        instances 
+        instances
             mon("Monday"), 
             tues("Tuesday"),
             wed("Wednesday"),
