@@ -103,8 +103,8 @@
         boolean values, and supports the binary <literal>||, &amp;&amp;, =>,
         |, &amp;, ^</literal> and unary <literal>!</literal> operators.</para>
         
-        <programlisting>public final class Boolean 
-        instances true, false {
+        <programlisting>public final class Boolean {
+    instances true, false;
 
     doc "The binary or operator x | y"
     public Boolean or(Boolean boolean) { ... }
@@ -678,8 +678,9 @@
     
 }</programlisting>
         
-        <programlisting>public class Comparison 
-        instances larger, smaller, equal { 
+        <programlisting>public class Comparison {
+        
+    instances larger, smaller, equal;
         
     public Boolean larger return this==larger;
     public Boolean smaller return this==smaller;

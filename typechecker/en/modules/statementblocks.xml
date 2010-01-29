@@ -263,13 +263,13 @@ else {
             <para>If the switch expression type is <literal>optional</literal>, there must be 
             an explicit <literal>case null</literal> defined. </para> 
             
-            <para>If no <literal>else</literal> block is defined, the switch expression
-            must be of type <literal>Selector</literal>, and all enumerated instances of the 
-            classs must be explicitly listed.</para>
+            <para>If no <literal>else</literal> block is defined, the switch expression must be 
+            of type <literal>Selector</literal>, and all enumerated instances of the class must 
+            be explicitly listed.</para>
             
             <para>If the switch expression is of type <literal>Selector</literal>, and all 
-            values of the selector are explicitly listed, no <literal>else</literal> block may be 
-            specified.</para>
+            enumerated instances of the class are explicitly listed, no <literal>else</literal> 
+            block may be specified.</para>
             
             <para>When the construct is executed, the switch expression value is tested 
             against the case values (using <literal>Case.test()</literal>) , and the case 

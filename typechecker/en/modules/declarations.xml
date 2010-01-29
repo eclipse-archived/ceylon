@@ -496,18 +496,17 @@ Identifier ParamValues?
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>
         
-        <programlisting>public class DayOfWeek 
-        instances mon, tues, wed, thurs, fri, sat, sun {}</programlisting>
+        <programlisting>public class DayOfWeek { instances mon, tues, wed, thurs, fri, sat, sun; }</programlisting>
 
-        <programlisting>public class DayOfWeek(String name)
-        instances
-            mon("Monday"), 
-            tues("Tuesday"),
-            wed("Wednesday"),
-            thurs("Thursday"),
-            fri("Friday"),
-            sat("Saturday"),
-            sun("Sunday") {
+        <programlisting>public class DayOfWeek(String name) {
+    instances
+        mon("Monday"), 
+        tues("Tuesday"),
+        wed("Wednesday"),
+        thurs("Thursday"),
+        fri("Friday"),
+        sat("Saturday"),
+        sun("Sunday");
        
     public String name = name;
     
