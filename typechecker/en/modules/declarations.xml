@@ -1404,6 +1404,10 @@ User user = new PersonUser().convert(person);</programlisting>
                 <para><literal>deprecated</literal> indicates that a method, 
                 attribute or type is deprecated.</para>
             </listitem>
+            <listitem>
+                <para><literal>volatile</literal> indicates a volatile
+                simple attribute.</para>
+            </listitem>
         </itemizedlist>
             
         <para>The following annotations are instructions to the documentation
