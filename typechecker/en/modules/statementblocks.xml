@@ -392,8 +392,8 @@ fail {
             iteration, the first block is executed before the condition is evaluated, 
             and the second block is executed after it is evaluated.</para>
             
-            <para>TODO: does do/while need a fail block? Python has it, but what is 
-            the real usecase?</para>
+            <para>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
+            but what is the real usecase?</para>
             
             <!--para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -436,8 +436,8 @@ while (!person.parent.dead) {
     person = person.parent;    
 }</programlisting>
     
-        <para>TODO: do/while is significantly enhanced compared to other Java-like languages. 
-        Is this truly a good thing?</para>
+        <para>TODO: <literal>do/while</literal> is significantly enhanced compared to other 
+        Java-like languages. Is this truly a good thing?</para>
                 
         </section>
         
