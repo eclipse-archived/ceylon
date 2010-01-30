@@ -639,8 +639,6 @@ if you prefer.";</programlisting>
 
     <programlisting>if ( name == value ) return ... ;</programlisting>
     
-    <programlisting>if ( x&gt;10 || x&lt;0 ) { ... }</programlisting>
-    
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
     <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.add(person1)^.add(person2)*.name;</programlisting>
@@ -666,10 +664,8 @@ if you prefer.";</programlisting>
     
     <programlisting>for ( Integer i in Range(1,10) ) { ... }</programlisting>
 
-    <programlisting>if ( if (name exists) name.equals(value) else if (value exists) false else true ) return ... ;</programlisting>
-    
-    <programlisting>if ( x.compare(10).larger ) true else x.compare(0).smaller ) { ... }</programlisting>
-    
+    <programlisting>if ( nullsafeEquals(name, value) ) return ... ;</programlisting>
+       
     <programlisting>log.info( "Hello ".join(person.string).join("!") )</programlisting>
     
     <programlisting>List&lt;String&gt; names = 
