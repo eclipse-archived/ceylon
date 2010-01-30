@@ -285,10 +285,8 @@ if you prefer.";</programlisting>
     <section>
         <title>Object literals</title>
         
-        <para>There are no true literals for objects. Rather, there is a nice syntax 
-        for calling the class constructor, assigning attribute values (including 
-        constant attribute values) and (optionally) overriding methods and attributes. 
-        For example:</para>
+        <para>There are no true literals for user-defined classes. Rather, there is a 
+        nice syntax for calling the class constructor. For example:</para>
         
         <programlisting>Person gavin = Person { 
     firstName = "Gavin";
@@ -298,6 +296,9 @@ if you prefer.";</programlisting>
     birthdate = Date { day = 25; month = MARCH; year = ... }
     employer = jboss;
 };</programlisting>
+
+        <para>There is a similar syntax for setting the mutable attributes of an
+        instance after construction.</para>
 
         <programlisting>Person gavin = Person(jboss) { 
     firstName = "Gavin";
