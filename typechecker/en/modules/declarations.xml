@@ -694,7 +694,7 @@ TypeConstraints?
         <programlisting>public optional U get(optional V key);</programlisting>
         
         <programlisting>public void print(Object... objects) {
-    for (Object object in objects) { ... }
+    for (Object object in objects) log.info($object);
 }</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
@@ -846,9 +846,10 @@ TypeConstraints?
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>
     
         <programlisting>public Float total {
-    return find (Float sum = 0.0)
-        for (LineItem li in lineItems) 
-            sum += li.amount;
+    Float sum = 0.0;
+    for (LineItem li in lineItems) 
+        sum += li.amount;
+    return sum;
 }</programlisting>
 
         <para>

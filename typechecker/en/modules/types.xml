@@ -352,9 +352,10 @@
         
     doc "Add the given elements to the category."
     public Boolean add(Iterable&lt;X&gt; elements) {
-        return find (Boolean added = false)
-            for (X x in elements) 
-                added |= category.add(x);
+        Boolean added = false;
+        for (X x in elements) 
+            added |= category.add(x);
+        return added;
     }
     
 }</programlisting>
@@ -380,21 +381,20 @@
     doc "Binary lookup operator x[keys]. Returns a list of values 
          associated with the given keys, in order."
     public List&lt;V&gt; values(List&lt;U&gt; keys) {
-        return for (U key in keys) 
-            correspondence.lookup(key);
+        return from (U key in keys) select correspondence.lookup(key);
     }
     
     doc "Binary lookup operator x[keys]. Returns a set of values 
          associated with the given set of keys."
     public Set&lt;V&gt; values(Set&lt;U&gt; keys) {
-        return ( for (U key in keys) correspondence.lookup(key) ).elements;
+        return ( from (U key in keys) select correspondence.lookup(key) ).elements;
     }
     
     doc "Determine if there are values associated with all the given keys."
     public Boolean defines(Collection&lt;U&gt; keys) {
-        return for (U key in keys) 
-                if ( !correspondence.defines(key) ) found false
-            fail true;
+        for (U key in keys) 
+            if ( !correspondence.defines(key) ) return false
+        fail return true;
     }
     
 }</programlisting>
