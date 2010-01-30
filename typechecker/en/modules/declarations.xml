@@ -141,7 +141,8 @@ VarargsParam?
 	    <para>The parameter names in a functor type declaration do not affect assignability
 	    of the functor type. They are used when the functor is invoked using named parameters.</para>
 	    
-	    <para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax?</para>
+	    <para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
+	    how about <literal>Comparison functor(X x,X y)</literal>?</para>
     
     </section>
 
@@ -1317,7 +1318,7 @@ Block</programlisting>
             
         <para>For example:</para>
         
-        <programlisting>public User converter PersonUser(Person person) { return person.user; }</programlisting>
+        <programlisting>public converter User PersonUser(Person person) { return person.user; }</programlisting>
         
         <para>The parameter type must be immutable.</para>
 
