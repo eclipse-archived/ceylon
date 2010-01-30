@@ -21,6 +21,9 @@ Interfaces?
 TypeConstraints? 
 Declaration?</programlisting>
 
+        <comment><para>TODO: should the compiler enforce the declaration naming conventions
+        (initial lower/upper case)?</para></comment>
+
     </section>
     
     <section>
@@ -120,9 +123,9 @@ VarargsParam?
         
         <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
-        <comment>TODO: how are wildcard types specified? Possibilities include
+        <comment><para>TODO: how are wildcard types specified? Possibilities include
         <literal>Type&lt;Foo+&gt;</literal> and 
-        <literal>Type&lt;X&gt; where X>=Foo</literal>.</comment>
+        <literal>Type&lt;X&gt; where X>=Foo</literal>.</para></comment>
         
     </section>
     
@@ -146,8 +149,8 @@ VarargsParam?
         <para>The parameter names in a functor type declaration do not affect assignability
         of the functor type. They are used when the functor is invoked using named parameters.</para>
         
-        <comment>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
-        how about <literal>Comparison functor(X x,X y)</literal>?</comment>
+        <comment><para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
+        how about <literal>Comparison functor(X x,X y)</literal>?</para></comment>
     
     </section>
 
@@ -459,12 +462,12 @@ class Customer(Name name, optional Organization org = null)
     
 }</programlisting>
 
-        <comment>TODO: should class initialization parameters be allowed to be
-        declared <literal>mutable</literal>?</comment>
+        <comment><para>TODO: should class initialization parameters be allowed to be
+        declared <literal>mutable</literal>?</para></comment>
         
-        <comment>TODO: should class initialization parameters be allowed to be
+        <comment><para>TODO: should class initialization parameters be allowed to be
         declared <literal>public/package/module</literal>, allowing a shortcut
-        simple attribute declaration like in Scala?</comment>
+        simple attribute declaration like in Scala?</para></comment>
         
         </section>
 
@@ -619,9 +622,9 @@ TypeConstraints?
     Comparison compare(T other);
 }</programlisting>
 
-        <comment>TODO: Fantom and Scala let interfaces declare methods with implementation. This 
+        <comment><para>TODO: Fantom and Scala let interfaces declare methods with implementation. This 
         is less needed in Ceylon because we have decorators. But it seems pretty harmless
-        and useful.</comment>
+        and useful.</para></comment>
         
         <section>
             <title>Interface inheritance</title>
@@ -738,8 +741,8 @@ TypeConstraints?
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
 
-        <comment>TODO: should we allow a method or attribute getter/setter to omit the braces
-        if it consists of exactly one statement. (What about converters?)</comment>
+        <comment><para>TODO: should we allow a method or attribute getter/setter to omit the braces
+        if it consists of exactly one statement. (What about converters?)</para></comment>
 
         <para>
         A Ceylon method invocation is equivalent to a Java method invocation. The semantics of 
@@ -930,7 +933,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>The attribute name specified by the setter must correspond to a 
         matching attribute getter.</para>
         
-        <comment>TODO: should we allow overloaded attribute setters, for example:</comment>
+        <comment><para>TODO: should we allow overloaded attribute setters, for example:</para></comment>
         
         <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
 
@@ -998,7 +1001,7 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
-        <comment>TODO: Should we generate getters and setters, just for interop with Java?</comment>
+        <comment><para>TODO: Should we generate getters and setters, just for interop with Java?</para></comment>
         
         </section>
         
@@ -1239,14 +1242,14 @@ TypeConstraintList?
             <para>A decorator may not override a method defined by the decorated type. Methods defined 
             by the decorated type are delegated to the decorated instance.</para>
             
-            <comment>TODO: is this the right thing to say??</comment>
+            <comment><para>TODO: is this the right thing to say??</para></comment>
 
         </section>
         
         <section>
             <title>Introduced types</title>
             
-            <comment>TODO: there are holes in the semantics of this stuff!</comment>
+            <comment><para>TODO: there are holes in the semantics of this stuff!</para></comment>
             
             <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
             are called the <emphasis>introduced types</emphasis>.</para>
@@ -1323,8 +1326,8 @@ TypeConstraintList?
 "(" FormalParam ")" 
 Block</programlisting>
 
-        <comment>TODO: would it be better to just let you annotate a static method <literal>converter</literal>,
-        instead of having a whole special declaration?</comment>
+        <comment><para>TODO: would it be better to just let you annotate a static method <literal>converter</literal>,
+        instead of having a whole special declaration?</para></comment>
             
         <para>For example:</para>
         
@@ -1420,8 +1423,8 @@ User user = new PersonUser().convert(person);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <comment>TODO: should there be an <literal>annotation</literal>
-        modifier for classes which can be used as annotation types?</comment>
+        <comment><para>TODO: should there be an <literal>annotation</literal>
+        modifier for classes which can be used as annotation types?</para></comment>
             
         <para>The following annotations are instructions to the documentation
         compiler:</para>
