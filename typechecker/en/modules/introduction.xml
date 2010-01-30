@@ -41,7 +41,10 @@
     using the <literal>mutable</literal> annotation. An immutable class may 
     not declare mutable attributes or extend a mutable class. An immutable 
     attribute must be assigned when the class is instantiated. An immutable 
-    local must not be assigned more than once.
+    local must not be assigned more than once. In addition, Ceylon supports 
+    closures, called <emphasis>functors</emphasis>. These language features
+    encourage a more functional style of programming, resulting in code
+    which is more typesafe, easier to reason about, and easier to refactor.
     </para>
     
     <para>
@@ -60,8 +63,8 @@
     <para>
     Ceylon control flow structures are significantly enhanced versions of the
     traditional constructs found in C, C# and Java, including features inspired 
-    by Python. Unlike C or Java, Ceylon's control flow structures may be used to 
-    produce a value, eliminating the need for many locals.
+    by Python. <!--Unlike C or Java, Ceylon's control flow structures may be used to 
+    produce a value, eliminating the need for many locals.-->
     </para>
     
     <para>
@@ -70,10 +73,6 @@
     each operator is defined to act upon a certain class or interface type, 
     allowing application of the operator to any class which extends or implements 
     that type.
-    </para>
-    
-    <para>
-    Ceylon supports closures, called <emphasis>functors</emphasis>.
     </para>
     
     <para>
