@@ -10,12 +10,12 @@
         <para>All declarations follow a general pattern.</para> 
       
     <section>
-    <title>Abstract declaration</title>
-    
-    <para>Declarations conform to the following general schema:</para>
-    
-    <programlisting>Annotation* 
-Type? keyword? Identifier TypeParams? FormalParams? 
+	    <title>Abstract declaration</title>
+	    
+	    <para>Declarations conform to the following general schema:</para>
+	    
+	    <programlisting>Annotation* 
+keyword? Type? Identifier TypeParams? FormalParams? 
 Supertype?
 Interfaces? 
 TypeConstraints? 
@@ -26,155 +26,172 @@ Declaration?</programlisting>
     <section>
     <title>Annotation list</title>
 
-    <para>Declarations may be preceded by a list of annotations. An annotation is just
-    an instantiation of a class.</para>
+        <para>Declarations may be preceded by a list of annotations. An annotation is just
+        an instantiation of a class.</para>
     
-    <programlisting>Annotation := 
-"@" Instantiation | 
-TypeName (StringLiteral|TypeLiteral|MemberLiteral|IntegerLiteral|FloatLiteral|RegexLiteral)?</programlisting>
-    
-    <para>For an annotation with no constructor parameters, or with just one string, 
-    type, member, integer, float or regex literal constructor parameter, the 
-    <literal>@</literal> and parentheses may be omitted.</para>
-    
-    <para>For example:</para>
-    
-    <programlisting>doc "The user login action"
+	    <programlisting>Annotation := "@" Instantiation | TypeName Literal?</programlisting>
+	    
+	    <para>For an annotation with no constructor parameters, or with just one string, 
+	    type, member, integer, float or regex literal constructor parameter, the 
+	    <literal>@</literal> and parentheses may be omitted.</para>
+	    
+	    <para>For example:</para>
+	    
+	    <programlisting>doc "The user login action"
 author "Gavin King"
-@action{description="Log In"; url="/login"} @scope(session)
+@scope(session) @action { description="Log In"; url="/login" }
 public deprecated</programlisting>
     
     </section>
     
     <section>
-    <title>Type declaration</title>
-
-    <para>Method, attribute and converter declarations must declare a type.</para>
-    
-    <programlisting>Type := RegularType | FunctorType</programlisting>
-    
-    <para>Most types are classes or interfaces:</para>
-    
-    <programlisting>RegularType := TypeName TypeParams?</programlisting>
-    
-    <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
-    
-    <para>Method, class, interface, decorator and converter declarations may declare 
-    generic type parameters.</para>
-    
-    <programlisting>TypeParams := "&lt;" Type ("," Type)* "&gt;"</programlisting>
-
-    <para>For example:</para>
-    
-    <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
-    
-    <para>There are also functor types:</para>
-    
-    <programlisting>FunctorType := "(" ( Variable ("," Variable)* )? ")" ("produces" Annotation* Type | "void")</programlisting>
-    
-    <para>For example:</para>
-    
-    <programlisting>(X x,X y) produces Comparison</programlisting>
-    <programlisting>(Payment payment) produces Boolean</programlisting>
-    <programlisting>(Y element) void</programlisting>
-    <programlisting>() produces optional Object</programlisting>
-    <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
-    
-    </section>
-
-    <section>
-    <title>Formal parameter list</title>
-
-    <para>Method and class declarations may declare formal parameters, including
-    optional parameters and a varargs parameter.</para>
-    
-    <programlisting>FormalParams := 
+	    <title>Formal parameter list</title>
+	
+	    <para>Method and class declarations may declare formal parameters, including
+	    optional parameters and a varargs parameter.</para>
+	    
+	    <programlisting>FormalParams := 
 "("
 FormalParam ("," FormalParam)* ("," OptionalParam)* ("," VarargsParam)? | 
 OptionalParam ("," OptionalParam)* ("," VarargsParam)? | 
 VarargsParam?
 ")"</programlisting>
 
-    <programlisting>OptionalParam := FormalParam Initializer</programlisting>
+	    <programlisting>FormalParam := Variable | EntryVariablePair | RangeVariablePair</programlisting>
+	    
+	    <para>Each parameter is declared using with a type and name and may have annotations.</para>
+	    
+	    <programlisting>Variable := Annotation* Type Identifier</programlisting>
+	        
+        <para>Optional parameters specify a default value.</para>
+	
+	    <programlisting>OptionalParam := FormalParam Initializer</programlisting>
+	    
+	    <programlisting>Initializer := "=" Expression</programlisting>
+	    
+	    <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
+	    
+	    <programlisting>VarargsParam := Annotation* Type "..." Identifier</programlisting>
+	    
+	    <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
+	    may be specified as a pair of variables.</para>
+	    
+	    <programlisting>EntryVariablePair := Annotation* Type Identifier "->" Type Identifier</programlisting>
+
+	    <programlisting>RangeVariablePair := Annotation* Type Identifier ".." Identifier</programlisting>
+	    
+	    <para>For example:</para>
+	    
+	    <programlisting>(Product product, Integer quantity=1)</programlisting>
+	    
+	    <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
+	    
+	    <programlisting>(Key key -> Value value)</programlisting>
+	    
+	    <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
+	    parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
+	    
+	    <programlisting>(Float value, Integer min...max)</programlisting>
     
-    <programlisting>Initializer := "=" Expression</programlisting>
+	    <para>A variable pair declaration of form <literal>T u .. v</literal> results in a single 
+	    parameter of type <literal>Range&lt;T&gt;</literal>.</para>
+	    
+    </section>
     
-    <programlisting>VarargsParam := Annotation* Type "..." Identifier</programlisting>
+    <section>
+	    <title>Type declaration</title>
+	
+	    <para>Method, attribute and converter declarations must declare a type.</para>
+	    
+	    <programlisting>Type := RegularType | FunctorType</programlisting>
+	    
+	    <para>Most types are classes or interfaces:</para>
+	    
+	    <programlisting>RegularType := TypeName TypeParams?</programlisting>
+	    
+	    <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
+	    
+	    <para>Method, class, interface, decorator and converter declarations may declare 
+	    generic type parameters.</para>
+	    
+	    <programlisting>TypeParams := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+	
+	    <para>For example:</para>
+	    
+	    <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+	    
+	    <para>There are also functor types:</para>
+	    
+	    <programlisting>FunctorType := "(" ( Variable ("," Variable)* )? ")" ("produces" Annotation* Type | "void")</programlisting>
+	    
+	    <para>For example:</para>
+	    
+	    <programlisting>(X x,X y) produces Comparison</programlisting>
+	    <programlisting>(Payment payment) produces Boolean</programlisting>
+	    <programlisting>(Y element) void</programlisting>
+	    <programlisting>() produces optional Object</programlisting>
+	    <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
+	    
+	    <para>The parameter names in a functor type declaration do not affect assignability
+	    of the functor type. They are used when the functor is invoked using named parameters.</para>
     
-    <programlisting>FormalParam := Variable | VariablePair</programlisting>
-    
-    <programlisting>Variable := Annotation* Type Identifier</programlisting>
-        
-    <programlisting>VariablePair := Annotation* Type Identifier "->" Type Identifier</programlisting>
-    
-    <para>For example:</para>
-    
-    <programlisting>(Product product, Integer quantity=1)</programlisting>
-    
-    <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
-    
-    <programlisting>(Key key -> Value value)</programlisting>
-    
-    <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
-    parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
+    </section>
+
+    <section>
+	    <title>Extended class</title>
+	
+	    <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
+	    
+	    <programlisting>Supertype := "extends" Instantiation</programlisting>
+	
+	    <para>For example:</para>
+	    
+	    <programlisting>extends Person(name, org)</programlisting>
     
     </section>
     
     <section>
-    <title>Extended class</title>
-
-    <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
-    
-    <programlisting>Supertype := "extends" Instantiation</programlisting>
-
-    <para>For example:</para>
-    
-    <programlisting>extends Person(name, org)</programlisting>
-    
-    </section>
-    
-    <section>
-    <title>Implemented interfaces</title>
-
-    <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
-    using the <literal>satisfies</literal> clause.</para>
-    
-    <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
-
-    <para>For example:</para>
-    
-    <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
+	    <title>Implemented interfaces</title>
+	
+	    <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
+	    using the <literal>satisfies</literal> clause.</para>
+	    
+	    <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
+	
+	    <para>For example:</para>
+	    
+	    <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
     
     </section>
 
     <section>
     <title>Generic type constraint list</title>
 
-    <para>Method, class, interface, decorator and converter declarations which declare 
-    generic type parameters may declare constraints upon the type parameters using the
-    <literal>where</literal> clause.</para>
-    
-    <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
-
-    <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParams ) </programlisting>
-    
-    <para>There are three kinds of type constraints:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para>upper bounds,</para>
-        </listitem>
-        <listitem>
-            <para>lower bounds, and</para>
-        </listitem>
-        <listitem>
-            <para>initialization parameter specifications.</para>
-        </listitem>
-    </itemizedlist>
-    
-    <para>For example:</para>
-    
-    <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
+	    <para>Method, class, interface, decorator and converter declarations which declare 
+	    generic type parameters may declare constraints upon the type parameters using the
+	    <literal>where</literal> clause.</para>
+	    
+	    <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
+	
+	    <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParams ) </programlisting>
+	    
+	    <para>There are three kinds of type constraints:</para>
+	    
+	    <itemizedlist>
+	        <listitem>
+	            <para>upper bounds,</para>
+	        </listitem>
+	        <listitem>
+	            <para>lower bounds, and</para>
+	        </listitem>
+	        <listitem>
+	            <para>initialization parameter specifications.</para>
+	        </listitem>
+	    </itemizedlist>
+	    
+	    <para>For example:</para>
+	    
+	    <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
     
     </section>
     
@@ -1280,8 +1297,8 @@ TypeConstraintList?
         <para>A converter allows immutable values of one type to be transparently converted to
         values of another type. Converters are declared according to the following:</para>
         
-        <programlisting>Annotation* Type 
-"converter" Identifier TypeParams? 
+        <programlisting>Annotation*  
+"converter" Type Identifier TypeParams? 
 TypeConstraintList? 
 "(" FormalParam ")" 
 Block</programlisting>

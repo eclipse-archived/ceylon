@@ -319,9 +319,9 @@ else {
             that contains the range of values to be iterated. <!--It may optionally specify 
             one or more iteration constraint expressions (conditions).--></para>
 
-            <programlisting>ForIterator := (Variable | VariablePair) "in" Expression</programlisting>
+            <programlisting>ForIterator := FormalParam "in" Expression</programlisting>
 
-            <!--programlisting>Iteration := (Variable | VariablePair) "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
+            <!--programlisting>Iteration := FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
             <para>Each iterated expression must be of type <literal>Iterable</literal>
             or <literal>Iterator</literal>. If two iteration variables are defined, it 
