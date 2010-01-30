@@ -108,6 +108,8 @@
         directives, whereas functors do not. Therefore, some tasks may be accomplished
         only with control structures.</para>
 
+        <para>Control structures are not considered to be expressions in Ceylon.</para>
+        
         <para>Ceylon provides the following control structures:</para>
         
         <itemizedlist>
@@ -135,10 +137,6 @@
                 
         <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
 
-        <para><emphasis>Control structures</emphasis> are not considered to be expressions in Ceylon. 
-        However, all control structures have a corresponding <emphasis>control expression</emphasis> 
-        which may be used anywhere an expression may be used.</para>
-        
         <para>A control structure body consists of an expression, a control directive or a block.</para>
         
         <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
