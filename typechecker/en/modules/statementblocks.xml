@@ -120,8 +120,8 @@
                 execution using an enumerated list of values,</para>
             </listitem>
             <listitem>
-                <para>the <literal>do/while/fail</literal> loop&mdash;for loops which terminate 
-                based upon the value of a boolean expression,</para>
+                <para>the <literal>do/while</literal> loop&mdash;for loops which terminate based 
+                upon the value of a boolean expression,</para>
             </listitem>
             <listitem>
                 <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
@@ -436,7 +436,7 @@ while (!person.parent.dead) {
     person = person.parent;    
 }</programlisting>
     
-        <para>TODO: do/while/fail is significantly enhanced compared to other Java-like languages. 
+        <para>TODO: do/while is significantly enhanced compared to other Java-like languages. 
         Is this truly a good thing?</para>
                 
         </section>
