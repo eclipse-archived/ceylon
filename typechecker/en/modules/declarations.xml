@@ -140,6 +140,8 @@ VarargsParam?
 	    
 	    <para>The parameter names in a functor type declaration do not affect assignability
 	    of the functor type. They are used when the functor is invoked using named parameters.</para>
+	    
+	    <para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax?</para>
     
     </section>
 
@@ -947,7 +949,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <para>An attribute declared inside the body of a method represents a local.</para>
             </listitem>
             <listitem>
-                <para>An formal parameter of a class or decorator represents a local if it is not 
+                <para>A formal parameter of a class or decorator represents a local if it is not 
                 used inside a method, attribute setter or attribute getter declaration.</para>
             </listitem>
             <listitem>
