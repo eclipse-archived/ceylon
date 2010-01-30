@@ -122,8 +122,10 @@ VarargsParam?
 	    
 	    <para>There are also functor types:</para>
 	    
-	    <programlisting>FunctorType := "(" ( Variable ("," Variable)* )? ")" ("produces" Annotation* Type | "void")</programlisting>
+	    <programlisting>FunctorType := FunctorParams ("produces" Annotation* Type | "void")</programlisting>
 	    
+        <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
+        
 	    <para>For example:</para>
 	    
 	    <programlisting>(X x,X y) produces Comparison</programlisting>

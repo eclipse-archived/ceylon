@@ -1878,9 +1878,7 @@ if you prefer.";</programlisting>
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression := FunctorLocals OpenBlock</programlisting>
-        
-        <programlisting>FunctorLocals := "(" ( FormalParam ("," FormalParam)* ) ")"</programlisting>
+        <programlisting>FunctorExpression := FunctorParams OpenBlock</programlisting>
         
         <para>A functor body may not contain a <literal>return</literal> directive. If the functor
         body is a block, the value of the functor, when executed, is determined by the 
