@@ -61,14 +61,14 @@
         <para>The <literal>found</literal> directive may not be used outside the 
         body of a <literal>for/fail</literal> loop.</para>
         
-        <para>TODO: instead of <literal>break</literal> and <literal>found</literal>,
+        <comment>TODO: instead of <literal>break</literal> and <literal>found</literal>,
         we could support <literal>break success</literal> and 
-        <literal>break failure</literal>.</para>
+        <literal>break failure</literal>.</comment>
         
-        <para>TODO: We could support <literal>for/fail</literal> loops that return a 
+        <comment>TODO: We could support <literal>for/fail</literal> loops that return a 
         value by adding a <literal>found expr</literal> directive. We could support
         conditionals that return a value by adding a <literal>then expr</literal>
-        directive.</para>
+        directive.</comment>
         
     </section>
     
@@ -392,8 +392,8 @@ fail {
             iteration, the first block is executed before the condition is evaluated, 
             and the second block is executed after it is evaluated.</para>
             
-            <para>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
-            but what is the real usecase?</para>
+            <comment>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
+            but what is the real usecase?</comment>
             
             <!--para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -436,8 +436,8 @@ while (!person.parent.dead) {
     person = person.parent;    
 }</programlisting>
     
-        <para>TODO: <literal>do/while</literal> is significantly enhanced compared to other 
-        Java-like languages. Is this truly a good thing?</para>
+        <comment>TODO: <literal>do/while</literal> is significantly enhanced compared to other 
+        Java-like languages. Is this truly a good thing?</comment>
                 
         </section>
         
