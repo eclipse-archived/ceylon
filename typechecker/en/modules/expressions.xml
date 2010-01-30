@@ -994,6 +994,16 @@ if you prefer.";</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
+            <entry><literal><!--??-->nonempty</literal></entry>
+            <entry><literal><!--??-->lhs nonempty</literal></entry>
+            <entry>nonempty</entry>
+            <entry><literal>if (lhs exists) lhs.empty.negation else false</literal></entry>
+            <entry><literal>optional Container</literal></entry>
+            <entry></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row>
             <entry><literal>?</literal></entry>
             <entry><literal>lhs ? rhs</literal></entry>
             <entry>default</entry>
@@ -1050,16 +1060,6 @@ if you prefer.";</programlisting>
         <!--         
         <row><entry namest="first" nameend="last"><emphasis>Emptiness</emphasis></entry></row>
         --> 
-        
-        <row>
-            <entry><literal><!--??-->nonempty</literal></entry>
-            <entry><literal><!--??-->lhs nonempty</literal></entry>
-            <entry>nonempty</entry>
-            <entry><literal>if (lhs exists) lhs.empty.negation else false</literal></entry>
-            <entry><literal>optional Container</literal></entry>
-            <entry></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
         
         <!--  
         <row>
