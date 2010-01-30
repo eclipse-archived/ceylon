@@ -119,7 +119,11 @@ VarargsParam?
 	    <para>For example:</para>
 	    
 	    <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
-	    
+	</section>
+	
+    <section>
+	    <title>Functor type declaration</title>
+	
 	    <para>There are also functor types:</para>
 	    
 	    <programlisting>FunctorType := FunctorParams ("produces" Annotation* Type | "void")</programlisting>
