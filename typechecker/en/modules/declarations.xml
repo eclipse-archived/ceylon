@@ -93,7 +93,7 @@ VarargsParam?
 	    
 	    <programlisting>(Float value, Integer min...max)</programlisting>
     
-	    <para>A variable pair declaration of form <literal>T u .. v</literal> results in a single 
+	    <para>A variable pair declaration of form <literal>T x .. y</literal> results in a single 
 	    parameter of type <literal>Range&lt;T&gt;</literal>.</para>
 	    
     </section>
