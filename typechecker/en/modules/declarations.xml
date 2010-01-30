@@ -462,6 +462,10 @@ class Customer(Name name, optional Organization org = null)
         <para>TODO: should class initialization parameters be allowed to be
         declared <literal>mutable</literal>?</para>
         
+        <para>TODO: should class initialization parameters be allowed to be
+        declared <literal>public/package/module</literal>, allowing a shortcut
+        simple attribute declaration like in Scala?</para>
+        
         </section>
 
        <section>
