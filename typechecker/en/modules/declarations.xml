@@ -119,6 +119,11 @@ VarargsParam?
 	    <para>For example:</para>
 	    
 	    <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+	    
+	    <para>TODO: how are wildcard types specified? Possibilities include
+	    <literal>Type&lt;Foo+&gt;</literal> and 
+	    <literal>Type&lt;X&gt; where X>=Foo</literal>.</para>
+	    
 	</section>
 	
     <section>
