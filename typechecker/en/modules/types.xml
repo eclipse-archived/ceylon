@@ -25,20 +25,22 @@
         
         <programlisting><![CDATA[public abstract class Object {
         
-    doc "The equals operator x == y. Default implementation performs 
-         identity comparison."
+    doc "The equals operator x == y. Default implementation compares
+         attributes annotated |id|, or performs identity comparison."
+    see #id
     public Boolean equals(Object that) {
-        return this===that;
+        ...;
     }
     
     doc "Compares the given attributes of this instance with the given
          attributes of the given instance."
     public Boolean equals(Object that, Attribute... attributes) { ... }
     
-    doc "The hash code of the instance. Default implementation assumes 
-         identity equality.
+    doc "The hash code of the instance. Default implementation compares
+         attributes annotated |id|, or assumes identity equality."
+    see #id
     public Integer hash {
-        return identityHash(this);
+        return ...;
     }
     
     doc "Computes the hash code of the instance using the given attributes."
@@ -60,8 +62,7 @@
     see #Iterable
     public Boolean in<Y>(Iterable<Y> iterable) 
             where (Y<=X) {
-        return for any ( Object elem in iterable ) 
-            elem == this;
+        return forAny (Object elem in iterable) elem == this;
     }
     
     doc "The Type of the instance."
@@ -331,8 +332,7 @@
         
     doc "Determine if all the given elements belong to the category."
     public Boolean contains(Iterable&lt;X&gt; elements) {
-        return for all (X x in elements) 
-            category.contains(x);
+        return forAll (X x in elements) category.contains(x);
     }
     
 }</programlisting>

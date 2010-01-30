@@ -1436,6 +1436,25 @@ User user = new PersonUser().convert(person);</programlisting>
         <literal>author</literal> annotations is parsed by the documentation
         compiler as Seam Text, a simple ANTLR-based wiki text format.</para>
         
+        <para>The following annotations are important to the Ceylon SDK.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>id</literal> specifies that an attribute should
+                be tested by the <literal>equals()</literal> method, and included
+                in the <literal>hash</literal>.</para>
+            </listitem>
+            <listitem>
+                <para><literal>transient</literal> specifies that an attribute 
+                is not included in the serialized form of the object.</para>
+            </listitem>
+            <listitem>
+                <para><literal>read</literal> and <literal>write </literal>
+                indicate methods or attributes that are protected from multithreaded
+                access using a reentrant read/write lock with deadlock detection.</para>
+            </listitem>
+        </itemizedlist>
+        
     </section>
 
 </chapter>
