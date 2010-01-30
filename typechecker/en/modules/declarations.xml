@@ -10,11 +10,11 @@
         <para>All declarations follow a general pattern.</para> 
       
     <section>
-	    <title>Abstract declaration</title>
-	    
-	    <para>Declarations conform to the following general schema:</para>
-	    
-	    <programlisting>Annotation* 
+        <title>Abstract declaration</title>
+        
+        <para>Declarations conform to the following general schema:</para>
+        
+        <programlisting>Annotation* 
 keyword? Type? Identifier TypeParams? FormalParams? 
 Supertype?
 Interfaces? 
@@ -29,15 +29,15 @@ Declaration?</programlisting>
         <para>Declarations may be preceded by a list of annotations. An annotation is just
         an instantiation of a class.</para>
     
-	    <programlisting>Annotation := "@" Instantiation | TypeName Literal?</programlisting>
-	    
-	    <para>For an annotation with no constructor parameters, or with just one string, 
-	    type, member, integer, float or regex literal constructor parameter, the 
-	    <literal>@</literal> and parentheses may be omitted.</para>
-	    
-	    <para>For example:</para>
-	    
-	    <programlisting>doc "The user login action"
+        <programlisting>Annotation := "@" Instantiation | TypeName Literal?</programlisting>
+        
+        <para>For an annotation with no constructor parameters, or with just one string, 
+        type, member, integer, float or regex literal constructor parameter, the 
+        <literal>@</literal> and parentheses may be omitted.</para>
+        
+        <para>For example:</para>
+        
+        <programlisting>doc "The user login action"
 author "Gavin King"
 @scope(session) @action { description="Log In"; url="/login" }
 public deprecated</programlisting>
@@ -45,167 +45,167 @@ public deprecated</programlisting>
     </section>
     
     <section>
-	    <title>Formal parameter list</title>
-	
-	    <para>Method and class declarations may declare formal parameters, including
-	    optional parameters and a varargs parameter.</para>
-	    
-	    <programlisting>FormalParams := 
+        <title>Formal parameter list</title>
+    
+        <para>Method and class declarations may declare formal parameters, including
+        optional parameters and a varargs parameter.</para>
+        
+        <programlisting>FormalParams := 
 "("
 FormalParam ("," FormalParam)* ("," OptionalParam)* ("," VarargsParam)? | 
 OptionalParam ("," OptionalParam)* ("," VarargsParam)? | 
 VarargsParam?
 ")"</programlisting>
 
-	    <programlisting>FormalParam := Variable | EntryVariablePair | RangeVariablePair</programlisting>
-	    
-	    <para>Each parameter is declared using with a type and name and may have annotations.</para>
-	    
-	    <programlisting>Variable := Annotation* Type Identifier</programlisting>
-	        
+        <programlisting>FormalParam := Variable | EntryVariablePair | RangeVariablePair</programlisting>
+        
+        <para>Each parameter is declared using with a type and name and may have annotations.</para>
+        
+        <programlisting>Variable := Annotation* Type Identifier</programlisting>
+            
         <para>Optional parameters specify a default value.</para>
-	
-	    <programlisting>OptionalParam := FormalParam Initializer</programlisting>
-	    
-	    <programlisting>Initializer := "=" Expression</programlisting>
-	    
-	    <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
-	    
-	    <programlisting>VarargsParam := Annotation* Type "..." Identifier</programlisting>
-	    
-	    <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
-	    may be specified as a pair of variables.</para>
-	    
-	    <programlisting>EntryVariablePair := Annotation* Type Identifier "->" Type Identifier</programlisting>
-
-	    <programlisting>RangeVariablePair := Annotation* Type Identifier ".." Identifier</programlisting>
-	    
-	    <para>For example:</para>
-	    
-	    <programlisting>(Product product, Integer quantity=1)</programlisting>
-	    
-	    <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
-	    
-	    <programlisting>(Key key -> Value value)</programlisting>
-	    
-	    <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
-	    parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
-	    
-	    <programlisting>(Float value, Integer min...max)</programlisting>
     
-	    <para>A variable pair declaration of form <literal>T x .. y</literal> results in a single 
-	    parameter of type <literal>Range&lt;T&gt;</literal>.</para>
-	    
+        <programlisting>OptionalParam := FormalParam Initializer</programlisting>
+        
+        <programlisting>Initializer := "=" Expression</programlisting>
+        
+        <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
+        
+        <programlisting>VarargsParam := Annotation* Type "..." Identifier</programlisting>
+        
+        <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
+        may be specified as a pair of variables.</para>
+        
+        <programlisting>EntryVariablePair := Annotation* Type Identifier "->" Type Identifier</programlisting>
+
+        <programlisting>RangeVariablePair := Annotation* Type Identifier ".." Identifier</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>(Product product, Integer quantity=1)</programlisting>
+        
+        <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
+        
+        <programlisting>(Key key -> Value value)</programlisting>
+        
+        <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
+        parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
+        
+        <programlisting>(Float value, Integer min...max)</programlisting>
+    
+        <para>A variable pair declaration of form <literal>T x .. y</literal> results in a single 
+        parameter of type <literal>Range&lt;T&gt;</literal>.</para>
+        
     </section>
     
     <section>
-	    <title>Type declaration</title>
-	
-	    <para>Method, attribute and converter declarations must declare a type.</para>
-	    
-	    <programlisting>Type := RegularType | FunctorType</programlisting>
-	    
-	    <para>Most types are classes or interfaces:</para>
-	    
-	    <programlisting>RegularType := TypeName TypeParams?</programlisting>
-	    
-	    <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
-	    
-	    <para>Method, class, interface, decorator and converter declarations may declare 
-	    generic type parameters.</para>
-	    
-	    <programlisting>TypeParams := "&lt;" Type ("," Type)* "&gt;"</programlisting>
-	
-	    <para>For example:</para>
-	    
-	    <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
-	    
-	    <para>TODO: how are wildcard types specified? Possibilities include
-	    <literal>Type&lt;Foo+&gt;</literal> and 
-	    <literal>Type&lt;X&gt; where X>=Foo</literal>.</para>
-	    
-	</section>
-	
+        <title>Type declaration</title>
+    
+        <para>Method, attribute and converter declarations must declare a type.</para>
+        
+        <programlisting>Type := RegularType | FunctorType</programlisting>
+        
+        <para>Most types are classes or interfaces:</para>
+        
+        <programlisting>RegularType := TypeName TypeParams?</programlisting>
+        
+        <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
+        
+        <para>Method, class, interface, decorator and converter declarations may declare 
+        generic type parameters.</para>
+        
+        <programlisting>TypeParams := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+    
+        <para>For example:</para>
+        
+        <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        
+        <comment>TODO: how are wildcard types specified? Possibilities include
+        <literal>Type&lt;Foo+&gt;</literal> and 
+        <literal>Type&lt;X&gt; where X>=Foo</literal>.</comment>
+        
+    </section>
+    
     <section>
-	    <title>Functor type declaration</title>
-	
-	    <para>There are also functor types:</para>
-	    
-	    <programlisting>FunctorType := FunctorParams ("produces" Annotation* Type | "void")</programlisting>
-	    
+        <title>Functor type declaration</title>
+    
+        <para>There are also functor types:</para>
+        
+        <programlisting>FunctorType := FunctorParams ("produces" Annotation* Type | "void")</programlisting>
+        
         <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
         
-	    <para>For example:</para>
-	    
-	    <programlisting>(X x,X y) produces Comparison</programlisting>
-	    <programlisting>(Payment payment) produces Boolean</programlisting>
-	    <programlisting>(Y element) void</programlisting>
-	    <programlisting>() produces optional Object</programlisting>
-	    <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
-	    
-	    <para>The parameter names in a functor type declaration do not affect assignability
-	    of the functor type. They are used when the functor is invoked using named parameters.</para>
-	    
-	    <para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
-	    how about <literal>Comparison functor(X x,X y)</literal>?</para>
+        <para>For example:</para>
+        
+        <programlisting>(X x,X y) produces Comparison</programlisting>
+        <programlisting>(Payment payment) produces Boolean</programlisting>
+        <programlisting>(Y element) void</programlisting>
+        <programlisting>() produces optional Object</programlisting>
+        <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
+        
+        <para>The parameter names in a functor type declaration do not affect assignability
+        of the functor type. They are used when the functor is invoked using named parameters.</para>
+        
+        <comment>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
+        how about <literal>Comparison functor(X x,X y)</literal>?</comment>
     
     </section>
 
     <section>
-	    <title>Extended class</title>
-	
-	    <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
-	    
-	    <programlisting>Supertype := "extends" Instantiation</programlisting>
-	
-	    <para>For example:</para>
-	    
-	    <programlisting>extends Person(name, org)</programlisting>
+        <title>Extended class</title>
+    
+        <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
+        
+        <programlisting>Supertype := "extends" Instantiation</programlisting>
+    
+        <para>For example:</para>
+        
+        <programlisting>extends Person(name, org)</programlisting>
     
     </section>
     
     <section>
-	    <title>Implemented interfaces</title>
-	
-	    <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
-	    using the <literal>satisfies</literal> clause.</para>
-	    
-	    <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
-	
-	    <para>For example:</para>
-	    
-	    <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
+        <title>Implemented interfaces</title>
+    
+        <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
+        using the <literal>satisfies</literal> clause.</para>
+        
+        <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
+    
+        <para>For example:</para>
+        
+        <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
     
     </section>
 
     <section>
     <title>Generic type constraint list</title>
 
-	    <para>Method, class, interface, decorator and converter declarations which declare 
-	    generic type parameters may declare constraints upon the type parameters using the
-	    <literal>where</literal> clause.</para>
-	    
-	    <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
-	
-	    <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParams ) </programlisting>
-	    
-	    <para>There are three kinds of type constraints:</para>
-	    
-	    <itemizedlist>
-	        <listitem>
-	            <para>upper bounds,</para>
-	        </listitem>
-	        <listitem>
-	            <para>lower bounds, and</para>
-	        </listitem>
-	        <listitem>
-	            <para>initialization parameter specifications.</para>
-	        </listitem>
-	    </itemizedlist>
-	    
-	    <para>For example:</para>
-	    
-	    <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
+        <para>Method, class, interface, decorator and converter declarations which declare 
+        generic type parameters may declare constraints upon the type parameters using the
+        <literal>where</literal> clause.</para>
+        
+        <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
+    
+        <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParams ) </programlisting>
+        
+        <para>There are three kinds of type constraints:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>upper bounds,</para>
+            </listitem>
+            <listitem>
+                <para>lower bounds, and</para>
+            </listitem>
+            <listitem>
+                <para>initialization parameter specifications.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For example:</para>
+        
+        <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
     
     </section>
     
@@ -459,12 +459,12 @@ class Customer(Name name, optional Organization org = null)
     
 }</programlisting>
 
-        <para>TODO: should class initialization parameters be allowed to be
-        declared <literal>mutable</literal>?</para>
+        <comment>TODO: should class initialization parameters be allowed to be
+        declared <literal>mutable</literal>?</comment>
         
-        <para>TODO: should class initialization parameters be allowed to be
+        <comment>TODO: should class initialization parameters be allowed to be
         declared <literal>public/package/module</literal>, allowing a shortcut
-        simple attribute declaration like in Scala?</para>
+        simple attribute declaration like in Scala?</comment>
         
         </section>
 
@@ -619,9 +619,9 @@ TypeConstraints?
     Comparison compare(T other);
 }</programlisting>
 
-        <para>TODO: Fantom and Scala let interfaces declare methods with implementation. This 
+        <comment>TODO: Fantom and Scala let interfaces declare methods with implementation. This 
         is less needed in Ceylon because we have decorators. But it seems pretty harmless
-        and useful.</para>
+        and useful.</comment>
         
         <section>
             <title>Interface inheritance</title>
@@ -738,8 +738,8 @@ TypeConstraints?
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
 
-        <para>TODO: should we allow a method or attribute getter/setter to omit the braces
-        if it consists of exactly one statement. (What about converters?)</para>
+        <comment>TODO: should we allow a method or attribute getter/setter to omit the braces
+        if it consists of exactly one statement. (What about converters?)</comment>
 
         <para>
         A Ceylon method invocation is equivalent to a Java method invocation. The semantics of 
@@ -930,7 +930,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>The attribute name specified by the setter must correspond to a 
         matching attribute getter.</para>
         
-        <para>TODO: should we allow overloaded attribute setters, for example:</para>
+        <comment>TODO: should we allow overloaded attribute setters, for example:</comment>
         
         <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
 
@@ -998,7 +998,7 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
-        <para>TODO: Should we generate getters and setters, just for interop with Java?</para>
+        <comment>TODO: Should we generate getters and setters, just for interop with Java?</comment>
         
         </section>
         
@@ -1194,11 +1194,11 @@ TypeConstraintList?
         <section>
             <title>Introduced methods</title>
             
-        <para>Methods declared by a decorator are called <emphasis>introduced methods</emphasis>.</para>
-        
-        <para>For example, this decorator:</para>
-        
-        <programlisting>public decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
+            <para>Methods declared by a decorator are called <emphasis>introduced methods</emphasis>.</para>
+            
+            <para>For example, this decorator:</para>
+            
+            <programlisting>public decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
     
     public Collection&lt;T&gt; nonZeroElements() {
         return collection.exclude(0); 
@@ -1207,9 +1207,9 @@ TypeConstraintList?
     ...   
 }</programlisting>
         
-        <para>is equivalent to this Java declaration:</para>
-        
-        <programlisting>public final class CollectionUtils&lt;T&gt; 
+            <para>is equivalent to this Java declaration:</para>
+            
+            <programlisting>public final class CollectionUtils&lt;T&gt; 
         extends Collection {
         
     private final Collection&lt;T&gt; collection
@@ -1225,34 +1225,35 @@ TypeConstraintList?
     ...
 }</programlisting>
 
-        <para>This introduced method call:</para>
-        
-        <programlisting>Collection&lt;Integer&gt; result = collection.nullElements();</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-
-        <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
-        
-        <para>Introduced methods are only available in a source file that expicitly 
-        <literal>import</literal>s the decorator.</para>
-        
-        <para>A decorator may not override a method defined by the decorated type. Methods defined 
-        by the decorated type are delegated to the decorated instance. TODO: is this the right thing
-        to say??</para>
+            <para>This introduced method call:</para>
+            
+            <programlisting>Collection&lt;Integer&gt; result = collection.nullElements();</programlisting>
+            
+            <para>Is equivalent to this Java code:</para>
+    
+            <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
+            
+            <para>Introduced methods are only available in a source file that expicitly 
+            <literal>import</literal>s the decorator.</para>
+            
+            <para>A decorator may not override a method defined by the decorated type. Methods defined 
+            by the decorated type are delegated to the decorated instance.</para>
+            
+            <comment>TODO: is this the right thing to say??</comment>
 
         </section>
         
         <section>
             <title>Introduced types</title>
             
-            <para>TODO: there are holes in the semantics of this stuff!</para>
+            <comment>TODO: there are holes in the semantics of this stuff!</comment>
             
-        <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
-        are called the <emphasis>introduced types</emphasis>.</para>
-        
-        <para>This decorator declaration:</para>
-        
-        <programlisting>public decorator ComparableUser(User user) 
+            <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
+            are called the <emphasis>introduced types</emphasis>.</para>
+            
+            <para>This decorator declaration:</para>
+            
+            <programlisting>public decorator ComparableUser(User user) 
         satisfies Comparable&lt;User&gt; {
         
     public Comparison compare(User other) 
@@ -1262,9 +1263,9 @@ TypeConstraintList?
     
 }</programlisting>
         
-        <para>is equivalent to this Java declaration:</para>
-        
-        <programlisting>public final class ComparableUser 
+            <para>is equivalent to this Java declaration:</para>
+            
+            <programlisting>public final class ComparableUser 
         extends User
         implements Comparable&lt;User&gt; {
         
