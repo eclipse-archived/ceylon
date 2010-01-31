@@ -22,7 +22,8 @@ TypeConstraints?
 Declaration?</programlisting>
 
         <comment><para>TODO: should the compiler enforce the declaration naming conventions
-        (initial lower/upper case)?</para></comment>
+        (initial lower/upper case)? This would let us eliminate the <literal>@</literal>
+        from all annotations!</para></comment>
 
     </section>
     
@@ -45,10 +46,13 @@ author "Gavin King"
 @scope(session) @action { description="Log In"; url="/login" }
 public deprecated</programlisting>
 
+        <comment><para>TODO: is an annotation a constructor call, or a static method call?
+        Since they are lowercase, a static method call makes more sense.</para></comment>
+
         <comment><para>TODO: should we require that declarations with annotations be preceded
-        by a <literal>def</literal> keyword, and followed by a <literal>:</literal>, in order 
-        to eliminate backtracking in the parser, along with the <literal>@</literal>? For 
-        example:</para></comment>
+        by a <literal>def</literal> keyword and followed by a <literal>:</literal>, in order 
+        to eliminate backtracking in the parser? (Note that if the parser enforces declaration
+        naming conventions, the <literal>:</literal> is not needed.) For example:</para></comment>
         
         <programlisting>def public scope(session) action{url="/login"} deprecated:</programlisting>
     
@@ -1434,7 +1438,8 @@ User user = new PersonUser().convert(person);</programlisting>
         </itemizedlist>
         
         <comment><para>TODO: should there be an <literal>annotation</literal>
-        modifier for classes which can be used as annotation types?</para></comment>
+        modifier for classes (or static methods) which can be used as annotation 
+        types?</para></comment>
             
         <para>The following annotations are instructions to the documentation
         compiler:</para>
