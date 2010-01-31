@@ -733,11 +733,9 @@
         using a simplified syntax:</para>
         
         <programlisting>public class Enumeration&lt;X&gt;(X... values)
-        satisfies List&lt;X&gt; {
+        satisfies List&lt;X&gt;, Case&lt;X&gt; {
     ... 
 }</programlisting>
-
-        <comment><para>TODO: should it implement <literal>Case&lt;X&gt;</literal>?</para></comment>
 
         <para>Enumerations may be freely converted to sets or maps:</para>
         
