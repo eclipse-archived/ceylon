@@ -897,6 +897,9 @@
     <section>
         <title>Instants, intervals and durations</title>
         
+        <comment><para>TODO: this stuff is just for illustration, the real
+        date/time API will be much more complex and fully internationalized.</para></comment>
+        
         <programlisting>public class Instant {
     ...
 }</programlisting>

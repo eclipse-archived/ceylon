@@ -98,6 +98,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <programlisting>Datetime datetime = '25/03/2005' @ '12:00 AM PST';</programlisting>
         
+        <comment><para>TODO: should we allow wildcards and ranges, to get cron-style expressions 
+        like <literal>'1/*/*' @ '00:00 GMT'</literal>?</para></comment>
+        
         <!--
         
         <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
