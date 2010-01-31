@@ -49,12 +49,19 @@ public deprecated</programlisting>
         <comment><para>TODO: is an annotation a constructor call, or a static method call?
         Since they are lowercase, a static method call makes more sense.</para></comment>
 
-        <comment><para>TODO: should we require that declarations with annotations be preceded
-        by a <literal>def</literal> keyword and followed by a <literal>:</literal>, in order 
-        to eliminate backtracking in the parser? (Note that if the parser enforces declaration
-        naming conventions, the <literal>:</literal> is not needed.) For example:</para></comment>
+        <comment><para>TODO: should we require that member declarations with annotations be preceded
+        by a <literal>def</literal> keyword, in order to eliminate backtracking in the parser? If we 
+        decide that the parser doesn't enforce declaration naming conventions, this is not very 
+        appealing, since we would also need to close the list of annotations with a <literal>:</literal>. 
+        But if the parser does enforce declaration naming, this becomes a much more interesting 
+        possibility. For example:</para></comment>
         
         <programlisting>def public scope(session) action{url="/login"} deprecated</programlisting>
+        
+        <comment><para>NOTE: we can get most of the value of the <literal>def</literal> keyword with a
+        recommendation to developers that they put one of the built-in annotations, for example
+        <literal>public/module/package</literal> or <literal>doc</literal>, first in the annotation list.
+        This is enough of a hint to the compiler to eliminate backtracking in almost every case.</para></comment>
     
     </section>
     
