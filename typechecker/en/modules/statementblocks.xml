@@ -19,11 +19,15 @@
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := ( Annotation+ ':' )? Expression ";" | ControlStructure | Declaration</programlisting>
+        <programlisting>Statement := Expression ";" | ControlStructure | Declaration</programlisting>
 
         <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
+        
+        <comment><para>TODO: should we allow expressions to be annotated, for example:</para></comment>
+        
+        <programlisting>doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
         
     </section>
     

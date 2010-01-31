@@ -55,20 +55,29 @@ public deprecated</programlisting>
         <comment><para>TODO: is an annotation a constructor call, or a static method call?
         Since they are lowercase, a static method call makes more sense.</para></comment>
 
-        <comment><para>TODO: should we require that member declarations with annotations be preceded
-        by a <literal>def</literal> keyword, in order to eliminate backtracking in the parser? If we 
-        decide that the parser doesn't enforce declaration naming conventions, this is not very 
-        appealing, since we would also need to close the list of annotations with a <literal>:</literal>. 
-        But if the parser does enforce declaration naming, this becomes a much more interesting 
-        possibility. For example:</para></comment>
+        <comment>
+        <para>TODO: to eliminate backtracking in the parser, we could do one of the
+        following things:</para>
+        <itemizedlist>
+            <listitem>
+                <para>require that member declarations with annotations be preceded
+                by a <literal>def</literal> keyword,</para>
+            </listitem>
+            <listitem>
+                <para>require that all member declarations be preceded by one of
+                <literal>public/module/package/private</literal> or <literal>override</literal>,
+                or</para>
+            </listitem>
+            <listitem>
+                <para>surround all the annotations in brackets, like C#.</para>
+            </listitem>
+        </itemizedlist>
         
-        <programlisting>def public scope(session) action{url="/login"} deprecated</programlisting>
-        
-        <comment><para>NOTE: we can get most of the value of the <literal>def</literal> keyword with 
-        a recommendation to developers that they put one of the built-in annotations, for example
-        <literal>public/module/package</literal> or <literal>doc</literal>, first in the annotation 
-        list, and outlaw the use of those identifiers as names of members and local variables. This 
-        is enough of a hint to the compiler to eliminate backtracking in almost every case.</para></comment>
+        <para>NOTE: we can get much of the value of the <literal>def</literal> keyword with
+        a recommendation to developers that they put one of <literal>public/module/package</literal> 
+        or <literal>override</literal>, first in the annotation list, and outlaw the use of those 
+        identifiers as names of members and local variables. This is enough of a hint to the 
+        compiler to eliminate backtracking in almost every case.</para></comment>
     
     </section>
     
@@ -467,7 +476,7 @@ class Customer(Name name, optional Organization org = null)
     x = sqrt(displacement) * sign;
     y = sqrt(displacement) * sign;
     
-    assert "must have distance ${position} from origin": 
+    assert ("must have distance ${position} from origin")
         x**2 + y**2 == position**2;
     
 }</programlisting>
@@ -483,9 +492,13 @@ class Customer(Name name, optional Organization org = null)
         
         x = sqrt(displacement).multiply(sign);
         y = sqrt(displacement).multiply(sign);
-        assert x.exponentiate(2) + y.exponentiate(2) 
-             == position.exponentiate(2) :
-        "must have distance " + position + " from origin";
+        assertTrue("must have distance " + position + " from origin",
+               new F0&lt;Boolean&gt;() {
+                   public Boolean call() { 
+                       return x.exponentiate(2) + y.exponentiate(2) 
+                              == position.exponentiate(2);
+                   }
+               });
     }
     
 }</programlisting>
@@ -1439,11 +1452,6 @@ User user = new PersonUser().convert(person);</programlisting>
             <listitem>
                 <para><literal>once</literal> indicates that a method is 
                 executed at most once, and the resulting value is cached.</para>
-            </listitem>
-            <listitem>
-                <para><literal>assert</literal> indicates that a statement
-                must evaluate to true when assertions are enabled, and is 
-                not executed when assertions are disabled.</para>
             </listitem>
             <listitem>
                 <para><literal>deprecated</literal> indicates that a method, 
