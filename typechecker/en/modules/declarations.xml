@@ -1333,6 +1333,10 @@ TypeConstraintList?
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
        <programlisting>alias Compare&lt;T&gt; satisfies (T x,T y) produces Comparison;</programlisting>
+       
+       <para>A shortcut is provided for definition of private aliases.</para>
+       
+       <programlisting>"import" TypeName "alias" Identifier ";"</programlisting>
     
     </section>
     
