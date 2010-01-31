@@ -970,7 +970,7 @@
     <section>
         <title>Control expressions</title>
         
-        <para>The <literal>Util</literal> class defines several methods
+        <para>The <literal>lang.Util</literal> class defines several methods
         for building complex expressons.</para>
         
         <programlisting><![CDATA[public class Util {
