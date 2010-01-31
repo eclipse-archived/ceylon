@@ -44,6 +44,13 @@ Declaration?</programlisting>
 author "Gavin King"
 @scope(session) @action { description="Log In"; url="/login" }
 public deprecated</programlisting>
+
+        <comment><para>TODO: should we require that declarations with annotations be preceded
+        by a <literal>def</literal> keyword, and followed by a <literal>:</literal>, in order 
+        to eliminate backtracking in the parser, along with the <literal>@</literal>? For 
+        example:</para></comment>
+        
+        <programlisting>def public scope(session) action{url="/login"} deprecated:</programlisting>
     
     </section>
     
@@ -209,6 +216,9 @@ VarargsParam?
         <para>For example:</para>
         
         <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
+        
+        <comment><para>Should we use <literal>satisfies</literal> instead of <literal>>=</literal>? For
+        example <literal>where X satisfies Number&lt;X&gt; &amp; Y satisfies Comparable&lt;Y&gt;</literal>.</para></comment>
     
     </section>
     
