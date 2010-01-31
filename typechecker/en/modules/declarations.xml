@@ -54,7 +54,7 @@ public deprecated</programlisting>
         to eliminate backtracking in the parser? (Note that if the parser enforces declaration
         naming conventions, the <literal>:</literal> is not needed.) For example:</para></comment>
         
-        <programlisting>def public scope(session) action{url="/login"} deprecated:</programlisting>
+        <programlisting>def public scope(session) action{url="/login"} deprecated</programlisting>
     
     </section>
     
