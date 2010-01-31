@@ -771,8 +771,6 @@
                 
         <programlisting>public class String(Character... characters) 
         satisfies Comparable&lt;String&gt;, List&lt;Character&gt;, Case&lt;String&gt; {
-
-    public List&lt;Character&gt; characters = characters;
     
     ... 
     
