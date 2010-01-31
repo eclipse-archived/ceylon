@@ -977,6 +977,10 @@
          of statements into an expression."
     public static X evaluate<X>(() produces X do);
 
+    doc "Assert that the block evaluates to true. The block 
+         is executed only when assertions are enabled."
+    public static void assert(() produces Boolean evaluate);
+
     doc "If the condition is true, evaluate first block,
          and return the result. Otherwise, return a null
          value."
