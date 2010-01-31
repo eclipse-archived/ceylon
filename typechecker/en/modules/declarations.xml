@@ -24,6 +24,12 @@ Declaration?</programlisting>
         <comment><para>TODO: should the compiler enforce the declaration naming conventions
         (initial lower/upper case)? This would let us eliminate the <literal>@</literal>
         from all annotations!</para></comment>
+        
+        <para>Toplevel declarations may declare imports:</para>
+        
+        <programlisting>Import* Declaration+</programlisting>
+        
+        <programlisting>Import := "import" TypeName ('.' Identifier)? ('alias' Identifier)? ';'</programlisting>
 
     </section>
     
@@ -1336,7 +1342,7 @@ TypeConstraintList?
        
        <para>A shortcut is provided for definition of private aliases.</para>
        
-       <programlisting>"import" TypeName "alias" Identifier ";"</programlisting>
+       <programlisting>import java.util.List alias JavaList;</programlisting>
     
     </section>
     
