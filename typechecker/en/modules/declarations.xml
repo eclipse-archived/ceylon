@@ -58,10 +58,11 @@ public deprecated</programlisting>
         
         <programlisting>def public scope(session) action{url="/login"} deprecated</programlisting>
         
-        <comment><para>NOTE: we can get most of the value of the <literal>def</literal> keyword with a
-        recommendation to developers that they put one of the built-in annotations, for example
-        <literal>public/module/package</literal> or <literal>doc</literal>, first in the annotation list.
-        This is enough of a hint to the compiler to eliminate backtracking in almost every case.</para></comment>
+        <comment><para>NOTE: we can get most of the value of the <literal>def</literal> keyword with 
+        a recommendation to developers that they put one of the built-in annotations, for example
+        <literal>public/module/package</literal> or <literal>doc</literal>, first in the annotation 
+        list, and outlaw the use of those identifiers as names of members and local variables. This 
+        is enough of a hint to the compiler to eliminate backtracking in almost every case.</para></comment>
     
     </section>
     
