@@ -727,22 +727,17 @@
     public X last = last;
     
     ... 
-    
 }</programlisting>
 
         <para>Enumerations represent an explicit list of values and may be constructed 
         using a simplified syntax:</para>
         
         <programlisting>public class Enumeration&lt;X&gt;(X... values)
-        satisfies List&lt;X&gt;, Case&lt;X&gt; {
-    
+        satisfies List&lt;X&gt; {
     ... 
-
-    static Enumeration&lt;Y&gt; emptyEnumeration&lt;Y&gt;() {
-        return Enumeration&lt;X&gt;();
-    }
-    
 }</programlisting>
+
+        <comment><para>TODO: should it implement <literal>Case&lt;X&gt;</literal>?</para></comment>
 
         <para>Enumerations may be freely converted to sets or maps:</para>
         
@@ -763,7 +758,7 @@
     </section>
     
     <section>
-        <title>Characters, character strings and ranges</title>
+        <title>Characters and strings</title>
         
         <para>Characters are represented by the following class:</para>
 
@@ -787,6 +782,9 @@
     
 }</programlisting>
 
+        <comment><para>TODO: do we need character ranges, like <literal>'a'..'z'</literal>, or is 
+        it enough that we have regular expressions like <literal>`[a-z]`</literal>?</para></comment>
+
     </section>
     
     <section>
@@ -799,6 +797,9 @@
     ... 
 }</programlisting>
         
+        <comment><para>TODO: I assume these are just Java (Perl 5-style) regular expressions. Is
+        there some other better syntax around?</para></comment>
+
     </section>
     
     <section>
