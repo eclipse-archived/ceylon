@@ -844,7 +844,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <programlisting>public class Counter {
         
     package void init(Integer initialCount=0) {
-        count=initialCount;
+        count:=initialCount;
     }
     
     ...
