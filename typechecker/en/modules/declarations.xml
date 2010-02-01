@@ -23,7 +23,7 @@ Declaration?</programlisting>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
         be named with an initial uppercase. Members, parameters and locals must be 
-        named with an initial lowercase.</para>
+        named with an initial lowercase or underscore.</para>
         
         <para>Toplevel declarations may declare imports:</para>
         
@@ -175,6 +175,8 @@ VarargsParam?
         <programlisting>FunctorType := FunctorParams ("produce" Annotation* Type | "void")</programlisting>
         
         <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
+        
+        <comment><para>TODO: I can't get this syntax to parse!</para></comment>
         
         <para>For example:</para>
         
