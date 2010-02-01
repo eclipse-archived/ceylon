@@ -21,40 +21,41 @@ Interfaces?
 TypeConstraints? 
 Declaration?</programlisting>
 
-        <comment><para>TODO: should the compiler enforce the declaration naming conventions
-        (initial lower/upper case)? This would let us eliminate the <literal>@</literal>
-        from all annotations!</para></comment>
+        <para>The Ceylon compiler enforces identifier naming conventions. Types must
+        be named with an initial uppercase. Members, parameters and locals must be 
+        named with an initial lowercase.</para>
         
         <para>Toplevel declarations may declare imports:</para>
         
         <programlisting>Import* Declaration+</programlisting>
         
-        <programlisting>Import := "import" TypeName ('.' Identifier)? ('alias' Identifier)? ';'</programlisting>
+        <programlisting>Import := "import" Identifier ('.' Identifier)* ('alias' Identifier)? ';'</programlisting>
 
     </section>
     
     <section>
     <title>Annotation list</title>
 
-        <para>Declarations may be preceded by a list of annotations. An annotation is just
-        an instantiation of a class.</para>
+        <para>Declarations may be preceded by a list of annotations.</para>
     
-        <programlisting>Annotation := "@" Instantiation | TypeName Literal?</programlisting>
+        <programlisting>Annotation := LIdentifier ( ParamValues | Literal )?</programlisting>
         
-        <para>For an annotation with no constructor parameters, or with just one string, 
-        type, member, integer, float or regex literal constructor parameter, the 
-        <literal>@</literal> and parentheses may be omitted.</para>
+        <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
+        
+        <para>An annotation is a static method call. For an annotation with no constructor 
+        parameters, or with a single literal-valued constructor parameter, the parentheses/braces 
+        may be omitted.</para>
         
         <para>For example:</para>
         
         <programlisting>doc "The user login action"
 author "Gavin King"
-@scope(session) @action { description="Log In"; url="/login" }
+see #LogoutAction
+scope(session) 
+action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
 
-        <comment><para>TODO: is an annotation a constructor call, or a static method call?
-        Since they are lowercase, a static method call makes more sense.</para></comment>
-
+        <!--
         <comment>
         <para>TODO: to eliminate backtracking in the parser, we could do one of the
         following things:</para>
@@ -78,7 +79,8 @@ public deprecated</programlisting>
         or <literal>override</literal>, first in the annotation list, and outlaw the use of those 
         identifiers as names of members and local variables. This is enough of a hint to the 
         compiler to eliminate backtracking in almost every case.</para></comment>
-    
+        -->
+        
     </section>
     
     <section>
@@ -98,7 +100,7 @@ VarargsParam?
         
         <para>Each parameter is declared using with a type and name and may have annotations.</para>
         
-        <programlisting>Variable := Annotation* Type Identifier</programlisting>
+        <programlisting>Variable := Annotation* Type LIdentifier</programlisting>
             
         <para>Optional parameters specify a default value.</para>
     
@@ -108,14 +110,14 @@ VarargsParam?
         
         <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
         
-        <programlisting>VarargsParam := Annotation* Type "..." Identifier</programlisting>
+        <programlisting>VarargsParam := Annotation* Type "..." LIdentifier</programlisting>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
         
-        <programlisting>EntryVariablePair := Annotation* Type Identifier "->" Type Identifier</programlisting>
+        <programlisting>EntryVariablePair := Annotation* Type LIdentifier "->" Type LIdentifier</programlisting>
 
-        <programlisting>RangeVariablePair := Annotation* Type Identifier ".." Identifier</programlisting>
+        <programlisting>RangeVariablePair := Annotation* Type LIdentifier ".." LIdentifier</programlisting>
         
         <para>For example:</para>
         
@@ -146,7 +148,9 @@ VarargsParam?
         
         <programlisting>RegularType := TypeName TypeParams?</programlisting>
         
-        <programlisting>TypeName := Identifier (DOT Identifier)*</programlisting>
+        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
+        
+        <programlisting>TypeName := UIdentifier</programlisting>
         
         <para>Method, class, interface, decorator and converter declarations may declare 
         generic type parameters.</para>
@@ -155,7 +159,7 @@ VarargsParam?
     
         <para>For example:</para>
         
-        <programlisting>lang.collections.Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
         <comment><para>TODO: how are wildcard types specified? Possibilities include
         <literal>Type&lt;Foo+&gt;</literal> and 
@@ -168,17 +172,17 @@ VarargsParam?
     
         <para>There are also functor types:</para>
         
-        <programlisting>FunctorType := FunctorParams ("produces" Annotation* Type | "void")</programlisting>
+        <programlisting>FunctorType := FunctorParams ("produce" Annotation* Type | "void")</programlisting>
         
         <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>(X x,X y) produces Comparison</programlisting>
-        <programlisting>(Payment payment) produces Boolean</programlisting>
+        <programlisting>(X x,X y) produce Comparison</programlisting>
+        <programlisting>(Payment payment) produce Boolean</programlisting>
         <programlisting>(Y element) void</programlisting>
-        <programlisting>() produces optional Object</programlisting>
-        <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produces Y</programlisting>
+        <programlisting>() produce optional Object</programlisting>
+        <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produce Y</programlisting>
         
         <para>The parameter names in a functor type declaration do not affect assignability
         of the functor type. They are used when the functor is invoked using named parameters.</para>
@@ -319,7 +323,7 @@ String join(Iterable&lt;String&gt; strings,
         the following:</para>
         
         <programlisting>Annotation*
-"class" Identifier TypeParams? FormalParams?
+"class" UIdentifier TypeParams? FormalParams?
 Supertype?
 Interfaces?
 TypeConstraints?
@@ -492,7 +496,8 @@ class Customer(Name name, optional Organization org = null)
         
         x = sqrt(displacement).multiply(sign);
         y = sqrt(displacement).multiply(sign);
-        assertTrue("must have distance " + position + " from origin",
+        
+        assert_("must have distance " + position + " from origin",
                new F0&lt;Boolean&gt;() {
                    public Boolean call() { 
                        return x.exponentiate(2) + y.exponentiate(2) 
@@ -565,7 +570,7 @@ class Customer(Name name, optional Organization org = null)
         
         <para>A class may specify an enumerated list of instances:</para>
         
-        <programlisting>InstanceEnumeration := "instances" Identifier ParamValues? ("," Identifier ParamValues?)* ("..." | ";")</programlisting>
+        <programlisting>InstanceEnumeration := "instances" LIdentifier ParamValues? ("," LIdentifier ParamValues?)* ("..." | ";")</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>
@@ -646,7 +651,7 @@ class Customer(Name name, optional Organization org = null)
         not be directly instantiated. Interfaces are declared according to the following:</para>
         
         <programlisting>Annotation*
-"interface" Identifier TypeParams?
+"interface" UIdentifier TypeParams?
 Interfaces?
 TypeConstraints? 
 "{" ( MethodStub | AttributeStub )* "}"</programlisting>
@@ -739,7 +744,7 @@ public User(String username, Person person);</programlisting>
         
         <programlisting>Method :=
 Annotation*
-(Type | "void") Identifier TypeParams? FormalParams
+(Type | "void") LIdentifier TypeParams? FormalParams
 TypeConstraints?
 ( ";" | Block )</programlisting>
 
@@ -761,6 +766,10 @@ TypeConstraints?
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
+        <comment><para>TODO: should we allow a method or attribute getter/setter to omit the braces
+        if it consists of exactly one statement, just like we do for functor expressions? (What about 
+        converters?) I have actually tried this and it parses.</para></comment>
+
         <!--A method body may omit the braces if it consists of exactly one statement.-->
         
         <para>
@@ -777,13 +786,11 @@ TypeConstraints?
         </para>
         -->
         
-        <para>The Ceylon compiler preserves the names of method parameters.</para>
+        <para>The Ceylon compiler preserves the names of method parameters, using a Java
+        annotation.</para>
         
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
-
-        <comment><para>TODO: should we allow a method or attribute getter/setter to omit the braces
-        if it consists of exactly one statement. (What about converters?)</para></comment>
 
         <para>
         A Ceylon method invocation is equivalent to a Java method invocation. The semantics of 
@@ -859,7 +866,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>MethodStub :=
 Annotation*
-(Type | "void") Identifier TypeParams? FormalParams
+(Type | "void") LIdentifier TypeParams? FormalParams
 TypeConstraints? 
 ";"</programlisting>
 
@@ -920,6 +927,8 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         
+        <comment><para>TODO: Should we generate getters and setters, just for interop with Java?</para></comment>
+        
         <para>
         The compiler is permitted to optimize private attributes to a simple Java field
         declaration or a local variable in a Java constructor. Private attributes may not
@@ -931,7 +940,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
             
             <para>An attribute getter is declared as follows:</para>
             
-            <programlisting>AttributeGetter := Annotation* Type Identifier Block</programlisting>
+            <programlisting>AttributeGetter := Annotation* Type LIdentifier Block</programlisting>
 
         <para>
         When getter code is specified, the Java field is initialized to an instance 
@@ -951,7 +960,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
             <para>An attribute setter is declared as follows:</para>
             
-            <programlisting>AttributeSetter := Annotation* "assign" Identifier Block</programlisting>
+            <programlisting>AttributeSetter := Annotation* "assign" LIdentifier Block</programlisting>
 
         <para>
         When setter code is specified, the Java field is initialized to an instance 
@@ -986,7 +995,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>SimpleAttribute := Annotation* Type Identifier Initializer? ";"</programlisting>
+        <programlisting>SimpleAttribute := Annotation* Type LIdentifier Initializer? ";"</programlisting>
 
         <para>Formal parameters of classes, methods, decorators and converters are also considered
         to be simple attributes.</para>
@@ -1042,8 +1051,6 @@ private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
-        <comment><para>TODO: Should we generate getters and setters, just for interop with Java?</para></comment>
-        
         </section>
         
         <section>
@@ -1052,7 +1059,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <para>Attributes declared by interfaces and attributes marked <literal>abstract</literal> 
         may not specify an initalizer, getter or setter:</para>
         
-        <programlisting>AttributeStub := Annotation* Type Identifier ";"</programlisting>
+        <programlisting>AttributeStub := Annotation* Type LIdentifier ";"</programlisting>
         
         <para>Interface attributes and abstract attributes must be implemented by every 
         non-<literal>abstract</literal> class that implements the interface or subclasses the 
@@ -1228,7 +1235,7 @@ TypeConstraintList?
         declared according to the following:</para>
         
         <programlisting>Annotation*
-"decorator" Identifier TypeParams? "(" FormalParam ")"
+"decorator" UIdentifier TypeParams? "(" FormalParam ")"
 Interfaces?
 TypeConstraintList? 
 "{" ( Method | AttributeGetter | AttributeSetter )* "}"</programlisting>
@@ -1331,9 +1338,9 @@ TypeConstraintList?
     <section id="typealiases">
        <title>Type aliases</title>
     
-       <para>A type alias allows a type to be referred  to more compactly.</para>
+       <para>A type alias allows a type to be referred to more compactly.</para>
        
-       <programlisting>Annotation* "alias" Identifier TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
+       <programlisting>Annotation* "alias" UIdentifier TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
        <para>A type alias may satisfy either:</para>
        
@@ -1351,7 +1358,7 @@ TypeConstraintList?
        
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
-       <programlisting>alias Compare&lt;T&gt; satisfies (T x,T y) produces Comparison;</programlisting>
+       <programlisting>alias Compare&lt;T&gt; satisfies (T x,T y) produce Comparison;</programlisting>
        
        <para>A shortcut is provided for definition of private aliases.</para>
        
@@ -1366,7 +1373,7 @@ TypeConstraintList?
         values of another type. Converters are declared according to the following:</para>
         
         <programlisting>Annotation*  
-"converter" Type Identifier TypeParams? 
+"converter" Type UIdentifier TypeParams? 
 TypeConstraintList? 
 "(" FormalParam ")" 
 Block</programlisting>
@@ -1463,9 +1470,13 @@ User user = new PersonUser().convert(person);</programlisting>
             </listitem>
         </itemizedlist>
         
+        <comment><para>TODO: We can minimize backtracking in the parser by 
+        making all these "annotations" be keywords. It lets the parser 
+        recognize a member declaration a little bit more easily. But on the
+        other hand it's a new special kind of thing.</para></comment>
+        
         <comment><para>TODO: should there be an <literal>annotation</literal>
-        modifier for classes (or static methods) which can be used as annotation 
-        types?</para></comment>
+        modifier for static methods which can be used as annotations?</para></comment>
             
         <para>The following annotations are instructions to the documentation
         compiler:</para>

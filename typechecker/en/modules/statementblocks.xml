@@ -11,15 +11,16 @@
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
         method, attribute and local declarations, and control structures, surrounded 
-        by braces. Some blocks end in a control directive. The expressions, local 
+        by braces. Some blocks end in a control directive. The statements, local 
         initializers and control structures are executed sequentially.</para>
 
-        <para>A <emphasis>statement</emphasis> is an expression, control structure, 
-        control statement or a method, attribute or local declaration.</para>
+        <para>A <emphasis>statement</emphasis> is an assignment, an invocation of a 
+        method or functor, an instantiation of a class, a control structure, a control 
+        directive, or a method, attribute or local declaration.</para>
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := Expression ";" | ControlStructure | Declaration</programlisting>
+        <programlisting>Statement := ( Assignment | Invocation | Instantiation ) ";" | ControlStructure | Declaration</programlisting>
 
         <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
@@ -41,7 +42,7 @@
         <itemizedlist>
             <listitem>the <literal>return</literal> directive&mdash;to return a value from a method, 
             attribute getter or converter,</listitem>
-            <listitem>the <literal>produces</literal> directive&mdash;to return a value from a 
+            <listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
             functor,</listitem>
             <listitem>the <literal>found</literal> directive&mdash;to terminate a <literal>for/fail</literal> 
             loop successfully,</listitem>
@@ -50,13 +51,13 @@
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>ControlDirective := ("return" | "produces") Expression | "throw" Expression | "found" | "break"</programlisting>
+         <programlisting>ControlDirective := ("return" | "produce") Expression | "throw" Expression | "found" | "break"</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter, a non-<literal>void</literal> method or a 
         converter.</para>
         
-        <para>The <literal>produces</literal> directive may not be used outside
+        <para>The <literal>produce</literal> directive may not be used outside
         the body of a non-<literal>void</literal> functor expression.</para>
         
         <para>The <literal>break</literal> directive may not be used outside the 
