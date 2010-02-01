@@ -87,12 +87,12 @@ public deprecated</programlisting>
         <title>Formal parameter list</title>
     
         <para>Method and class declarations may declare formal parameters, including
-        optional parameters and a varargs parameter.</para>
+        defaulted parameters and a varargs parameter.</para>
         
         <programlisting>FormalParams := 
 "("
-FormalParam ("," FormalParam)* ("," OptionalParam)* ("," VarargsParam)? | 
-OptionalParam ("," OptionalParam)* ("," VarargsParam)? | 
+FormalParam ("," FormalParam)* ("," DefaultParam)* ("," VarargsParam)? | 
+DefaultParam ("," DefaultParam)* ("," VarargsParam)? | 
 VarargsParam?
 ")"</programlisting>
 
@@ -102,9 +102,9 @@ VarargsParam?
         
         <programlisting>Variable := Annotation* Type LIdentifier</programlisting>
             
-        <para>Optional parameters specify a default value.</para>
+        <para>Defaulted parameters specify a default value.</para>
     
-        <programlisting>OptionalParam := FormalParam Initializer</programlisting>
+        <programlisting>DefaultParam := FormalParam Initializer</programlisting>
         
         <programlisting>Initializer := "=" Expression</programlisting>
         
@@ -520,11 +520,11 @@ class Customer(Name name, optional Organization org = null)
         </section>
 
        <section>
-            <title>Optional parameters</title>
+            <title>Defaulted parameters</title>
             
         <para>
-        When a class with an optional parameter is instantiated, and a value is not assigned to the
-        optional parameter by the caller, the default value specified by the initializer is used.
+        When a class with an defaulted parameter is instantiated, and a value is not assigned to the
+        defaulted parameter by the caller, the default value specified by the initializer is used.
         </para>
         
         <para>This class:</para>
@@ -828,16 +828,13 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </para>
         
        <section>
-            <title>Optional parameters</title>
+            <title>Defaulted parameters</title>
             
-        <para>
-        Methods with optional parameters may not be overloaded.
-        </para>
+        <para>Methods with defaulted parameters may not be overloaded.</para>
         
-        <para>
-        When a method with an optional parameter is called, and a value is not assigned to the
-        optional parameter by the caller, the default value specified by the initializer is used.
-        </para>
+        <para>When a method with a defaulted parameter is called, and a value is not assigned to 
+        the defaulted parameter by the caller, the default value specified by the initializer is 
+        used.</para>
         
         <para>This method:</para>
         

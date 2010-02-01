@@ -354,17 +354,17 @@ if you prefer.";</programlisting>
         
         <programlisting>ParamValues := OrderedParamValues | NamedParamValues</programlisting>
         
-        <para>Required parameters must be specified. Optional parameters and varargs may also be 
+        <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
         specified.</para>
         
         <para>When parameter values are listed, required parameters are assigned first, in the order
-        in which they were declared, followed by optional parameters, in the order they were declared.
-        If there are any remaining optional parameters, they will be assigned their default values.
+        in which they were declared, followed by defaulted parameters, in the order they were declared.
+        If there are any remaining defaulted parameters, they will be assigned their default values.
         On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
             
         <programlisting>OrderedParamValues := "(" ( Expression ("," Expression)* )? ")"</programlisting>
                 
-        <para>When parameter values are named, required and optional parameter values are specified 
+        <para>When parameter values are named, required and defaulted parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
         <programlisting>NamedParamValues := "{" NamedParamValue* ( VarargParamValue ("," VarargParamValue)* )? "}"</programlisting>
