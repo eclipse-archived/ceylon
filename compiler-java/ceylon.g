@@ -1,8 +1,9 @@
 grammar ceylon;
 
 options {
-    /*    backtrack=true;  */
+    //backtrack=true;
     memoize=true;
+    //k=4;
 }
 
 compilationUnit
@@ -19,32 +20,84 @@ toplevelDeclaration
     ;
 
 importDeclaration  
-    :
-        'import' 
-        IDENTIFIER
-        ('.' IDENTIFIER)*
-        ('.' '*')?
-        ';'
-    ;
-
-statement
-    : (declaration) => declaration
-    | expression? ';'
-    ;
-
-directive
-    : 'return' expression 
-    | 'throw' expression 
-    | 'break' 
-    | 'found'
+    : 'import' identifier ('.' identifier)* ('.' '*')? ';'
     ;
 
 block
-    : '{' statement* ( directive ';'? )? '}'
+    :  '{' localOrStatement* directiveStatement? '}'
     ;
 
-declaration
-    :  annotation* (attributeOrMethodDeclaration | toplevelDeclaration)
+//we could eliminate the backtracking by requiring
+//annotations on local  declarations to be keywords
+localOrStatement
+    : //'local' local
+      (declarationStart) => annotation* localDeclaration
+    | statement
+    ;
+
+localDeclaration
+    :  type LIDENTIFIER initializer? ';'
+    ;
+
+//we could eliminate the backtracking by requiring
+//all member declarations to begin with a keyword
+memberOrStatement
+    :  //modifier member
+       (declarationStart) => annotation* ( memberDeclaration | toplevelDeclaration )
+    |  statement
+    ;
+
+//a normal functor expression
+functor 
+    : formalParameters functorBody
+    ;
+
+//shortcut functor expression that makes the parameter list 
+//optional
+specialFunctor 
+    : ( (formalParameterStart) => formalParameters )? functorBody
+    ;
+
+//special rule for syntactic predicates
+declarationStart
+    :  annotation* (type|'assign'|'void') LIDENTIFIER
+    ;
+
+//special rule for syntactic predicates
+formalParameterStart
+    :  '(' (declarationStart | ')')
+    ;
+
+//we can support enumerations as functor bodies, but
+//I think that's just confusing to the reader
+functorBody
+    : simpleExpression 
+    //| (enumeration)=>enumeration
+    //| statement
+    | block
+    ;
+
+//Let's limit statements to things that make sense, like
+//Java does (we could allow any arbitrary expression if
+//we wanted to, but why?)
+//FIXME: this rule is a bit of a mess
+statement 
+    :  //assignable ';'
+       ( '++' | '--' )? 
+       primary 
+       ( '++' | '--' | assignmentOp assignable | specialFunctorArguments)? ';'
+    ;
+
+directiveStatement
+    :  directive ';'?
+    ;
+
+directive
+    : 'return' assignable 
+    | 'produce' assignable
+    | 'throw' assignable 
+    | 'break' 
+    | 'found'
     ;
 
 // This is quite different from the grammar in the spec, but because
@@ -52,60 +105,56 @@ declaration
 // sense to recognize them in this way.  An attribute is a method with
 // no formalParameters.
 // FIXME: Allows "void foo" as an attribute declaration
-attributeOrMethodDeclaration
-    :
-        (type | 'void' | 'assign')
-        IDENTIFIER
-        (methodDefinition | attributeDefinition)
+memberDeclaration
+    : ('assign' | type | 'void') LIDENTIFIER ( methodDefinition | attributeDefinition )
     ;
     
 methodDefinition
-    :   formalParameters typeConstraints?  (';' | block)
+    : typeParameters? formalParameters typeConstraints? (block | ';')
     ;
     
 attributeDefinition
-    :   ';' | block | initializer ';'
+    : block | initializer? ';'
     ;
 
 decoratorDeclaration
     :
         'decorator'
-        IDENTIFIER
+        UIDENTIFIER
         typeParameters?
         formalParameters?
         satisfiedTypes?
         typeConstraints?
-        '{' attributeOrMethodDeclaration* '}'
+        '{' ( annotation* memberDeclaration )* '}'
     ;
 
-// FIXME: Not to spec.  I can't parse "type converter" because it's not LL, 
-// but I can parse "converter type"
 converterDeclaration
 	:	
         'converter'
         type
-        IDENTIFIER
+        UIDENTIFIER
         typeParameters?
         typeConstraints?
-        '(' annotation* type IDENTIFIER ')'
+        '(' annotation* type LIDENTIFIER ')'
 	;
 
 interfaceDeclaration
     :
         'interface'
-        IDENTIFIER
+        UIDENTIFIER
         typeParameters?
         satisfiedTypes?
         typeConstraints?
-        '{' attributeOrMethodStub* '}'
+        '{' memberStub* '}'
     ;
 
-attributeOrMethodStub
+memberStub
     :
         annotation*
         (type | 'void')
-        IDENTIFIER
-        (formalParameters
+        LIDENTIFIER
+        (typeParameters?
+         formalParameters
          typeConstraints?)?
         ';'
         ;
@@ -113,26 +162,29 @@ attributeOrMethodStub
 classDeclaration
     :
         'class'
-        IDENTIFIER
+        UIDENTIFIER
         typeParameters?
         formalParameters?
-        ('extends' instantiation)?
+        extendedType?
         satisfiedTypes?
         typeConstraints?
-        instanceEnumeration?
-        block
+        '{' instances? memberOrStatement* '}'
     ;
 
-instanceEnumeration
-    :   'instances' instance (','instance?)*
+extendedType
+    : 'extends' typeName typeParameters? arguments
+    ;
+    
+instances
+    : 'instances' instance (',' instance)* ';'
     ;
 
 instance 
-    : IDENTIFIER ( '(' positionalArguments ')' )?
+    : /*annotation**/ LIDENTIFIER arguments?
     ;
 
 typeConstraint
-    :   IDENTIFIER ((('>=' | '<=') type )| formalParameters)
+    :   UIDENTIFIER ((('>=' | '<=') type )| formalParameters)
     ;
     
 typeConstraints
@@ -144,35 +196,36 @@ satisfiedTypes
     ;
 
 type
+    :  regularType 
+    |  functorType
+    ;
+
+regularType
     :   typeName typeParameters?
     ;
 
-annotation
-    :   
-        '@' instantiation 
-        | modifier
-        | typeName literal? 
+functorType
+    :   'functor' '<' formalParameters ',' (type|'void') '>'
     ;
 
-//I would really love for these to not
-//be keywords, but for now they have
-//to be, since module and package are
-//also declarations
-modifier
-    : 'public'
-    | 'module'
-    | 'package'
-    /*| 'abstract'
-    | 'static'
-    | 'mutable'
-    | 'optional'
-    | 'final'
-    | 'override'
-    | 'once'*/
+annotation 
+    : annotationName ( arguments | literal )?
     ;
+
 
 typeName
-    : IDENTIFIER ('.' IDENTIFIER)* 
+    : //( identifier '.' )* 
+    UIDENTIFIER
+    ;
+
+annotationName
+    : //( identifier '.' )* 
+    LIDENTIFIER
+    ;
+
+identifier 
+    : LIDENTIFIER
+    | UIDENTIFIER
     ;
 
 typeParameters
@@ -180,7 +233,7 @@ typeParameters
     ;
 
 initializer
-    : '=' expression
+    : '=' assignable
     ;
 
 literal
@@ -190,10 +243,18 @@ literal
     | CHARLITERAL
     | stringLiteral
     | dateLiteral
+    | typeLiteral
     ;   
 
+//FIXME: member literals are a problem!
+typeLiteral
+    : '#' typeName
+    ;
+
 dateLiteral
-    : DATELITERAL | TIMELITERAL;
+    : DATELITERAL 
+    | TIMELITERAL
+    ;
 
 integerLiteral
     : INTLITERAL
@@ -208,9 +269,31 @@ stringLiteral
         /* | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL  */
     ;
 
+//This one is fully general
+assignable 
+    : //'~' specialFunctor
+    (formalParameterStart) => functor 
+    | enumeration
+    | expression
+    ;
+
+//This one is for use as a functor body
+simpleAssignable 
+	: enumeration	
+	| simpleExpression
+	;
+
+//This one is fully general
+//should we reall allow assigments here???
 expression 
-    :
-        implicationExpression (assignmentOp implicationExpression)?
+    : implicationExpression (assignmentOp assignable | specialFunctorArguments)?
+        /*    | '{' expression ';' (expression ';')* '}' */
+    ;
+
+//This one is for use as a functor body
+//should we reall allow assigments here???
+simpleExpression
+    : implicationExpression (assignmentOp simpleAssignable)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
     
@@ -270,8 +353,7 @@ defaultExpression
 
 existenceEmptinessExpression
     :
-        dateCompositionExpression
-        ('exists' | 'nonempty') ?
+        dateCompositionExpression ('exists' | 'nonempty')?
     ;
 
 rangeIntervalEntryExpression
@@ -299,13 +381,13 @@ multiplicativeExpression
 // conventionally right-associative, which is what I've done here.
 exponentiationExpression
     :
-        postfixExpression ('**' postfixExpression)?
+        postfixExpression ('**' exponentiationExpression)?
     ;
 
 postfixExpression
     :
         unaryExpression ('--' | '++')*
-    ;   
+    ;
 
 unaryExpression 
     :   ('$'|'-'|'++'|'--') unaryExpression
@@ -313,27 +395,27 @@ unaryExpression
     ;
 
 primary
-    :
-    ( IDENTIFIER 
-    | 'this' | 'super' | 'null'
+    : base selector*
+    ;
+
+base 
+    : identifier
     | literal
     | parExpression
-    | enumerationInstantiation ) 
-    selector*
+    //| enumerationInstantiation 
+    | 'this' 
+    | 'super' 
+    | 'null'
     ;
-    
-instantiation
-    : typeName typeParameters? arguments
-    ;
-    
-enumerationInstantiation
-    	: '{' expressionList '}'
+
+enumeration
+    	: '{' assignable (',' assignable)* '}'
     	;
 
-selector  
-    : selectorOp IDENTIFIER
+selector 
+    : selectorOp identifier
     | arguments
-    | elementSelector        
+    | elementSelector
     ;
     
 selectorOp
@@ -351,41 +433,41 @@ elementSelector
 
 elementsSpec
         :  
-           expression ( '...' | (',' expression)* | '..' expression )
-        |  '...' expression	
+           assignable ( '...' | (',' assignable)* | '..' assignable )
+        |  '...' assignable	
         ;
 
 arguments 
-      :
-          '(' positionalArguments ')'
-      |   '{' namedArguments '}'
+      : positionalArguments | namedArguments
+      ;
+    
+specialFunctorArguments 
+      : specialFunctorArgument+
       ;
 
+specialFunctorArgument
+    : LIDENTIFIER specialFunctor
+    ;
+      
 namedArgument
-    :
-        IDENTIFIER initializer
+    : LIDENTIFIER initializer
     ;
 
 varargArguments
-    :   
-        expressionList
+    :   assignable (',' assignable)*
     ;
 
 namedArguments
     :
-        ((namedArgument ';') => namedArgument ';')* varargArguments?
+        '{' ((namedArgument ';') => namedArgument ';')* varargArguments? '}'
     ;
 
 parExpression 
-    :   '(' expression ')'
+    :   '(' assignable ')'
     ;
-
-identifierSuffix 
-    :   arguments
-    ;
-
+    
 positionalArguments
-    :   expressionList?
+    :   '(' (assignable (',' assignable)*)? ')'
     ;
 
 formalParameters
@@ -398,11 +480,7 @@ formalParameters
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    :   annotation* type IDENTIFIER ( '->' type IDENTIFIER )? (initializer | '...')?;
-    
-
-expressionList 
-    :   expression (',' expression)*
+    :   annotation* type LIDENTIFIER ( ('->'|'..') type LIDENTIFIER )? (initializer | '...')?
     ;
 
 // Lexer
@@ -548,14 +626,10 @@ DECORATOR
     :   'decorator'
     ;
 
-DEFAULT
-    :   'default'
-    ;
-
 DO
     :   'do'
     ;
-
+    
 ELSE
     :   'else'
     ;            
@@ -575,12 +649,9 @@ FOR
 FOUND
     :   'found'
     ;
+    
 IF
     :   'if'
-    ;
-
-IMPLEMENTS
-    :   'implements'
     ;
 
 SATISFIES
@@ -607,20 +678,8 @@ NONEMPTY
     :   'nonempty'
     ;
 
-PACKAGE
-    :   'package'
-    ;
-
-PRIVATE
-    :   'private'
-    ;
-
-PROTECTED
-    :   'protected'
-    ;
-
-PUBLIC
-    :   'public'
+PRODUCE
+    :   'produce'
     ;
 
 RETURN
@@ -645,12 +704,6 @@ THROW
 
 TRY
     :   'try'
-    ;
-
-//Surely we're going to need this...
-
-VOLATILE
-    :   'volatile'
     ;
 
 VOID
@@ -804,7 +857,6 @@ COMPARE
 IN
     :   'in'
     ;
-
     
 HASH
     :   '#'
@@ -813,29 +865,35 @@ HASH
 PLUSEQ
     :   '+='
     ;
-
-MODULE
-    :   'module'
-    ;
     
 CONVERTER
 	:  'converter'
 	;
+    
+LIDENTIFIER 
+    :   LIdentifierPart IdentifierPart*
+    ;
 
-IDENTIFIER
-    :   IdentifierStart IdentifierPart*
+UIDENTIFIER 
+    :   UIdentifierPart IdentifierPart*
     ;
 
 // FIXME: Unicode identifiers
 fragment
-IdentifierStart
-    :   'A'..'Z'
-    |   '_'
+LIdentifierPart
+    :   '_'
     |   'a'..'z'
-    ;                
+    ;       
+                       
+// FIXME: Unicode identifiers
+fragment
+UIdentifierPart
+    :   'A'..'Z'
+    ;       
                        
 fragment 
 IdentifierPart
-    :   IdentifierStart
+    :   LIdentifierPart 
+    |   UIdentifierPart
     |   '0'..'9'
     ;
