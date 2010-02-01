@@ -47,7 +47,8 @@
     public Integer hash(Attribute... attributes) { ... }
         
     doc "The unary render operator $x. A developer-friendly string 
-         representing the instance."
+         representing the instance. By default, the string contains
+         the name of the type, and all attributes annotated |id|."
     public String string { ... }
     
     doc "Determine if the instance belongs to the given Category."
