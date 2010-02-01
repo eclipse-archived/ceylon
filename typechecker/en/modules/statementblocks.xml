@@ -30,6 +30,11 @@
         
         <programlisting>doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
         
+        <comment><para>TODO: it would be possible to say that any expression is a valid
+        statement, but this seems to just open up more potential programming errors. So
+        I think it's better to limit statements to assignments, invocations
+        and instantiations.</para></comment>
+        
     </section>
     
     <section id="controldirectives">
