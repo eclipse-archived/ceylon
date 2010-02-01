@@ -1077,7 +1077,7 @@
     <para>For this example:</para>
     
     <programlisting>Integer calc(Integer j) {
-    Integer i = list.size();
+    Integer i = list.size;
     i++;
     return i * j + 1000;
 }</programlisting>
@@ -1085,7 +1085,7 @@
     <para>the following equivalent Java code is acceptable:</para>
     
     <programlisting>Integer calc(Integer j) {
-    int i = list.size();
+    int i = list.size().get();
     i++;
     return new Integer( i * lang.Util.intValue(j) + 1000 );
 }</programlisting>
