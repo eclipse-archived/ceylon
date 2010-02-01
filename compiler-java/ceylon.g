@@ -266,7 +266,7 @@ enumerationLiteral
 
 stringLiteral
     : SIMPLESTRINGLITERAL
-        /* | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL  */
+       | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
     ;
 
 //This one is fully general
@@ -377,11 +377,9 @@ multiplicativeExpression
         (('*' | '/' | '%') exponentiationExpression)*
     ;
 
-// FIXME: The spec says ** should be left-associative, but it's
-// conventionally right-associative, which is what I've done here.
 exponentiationExpression
     :
-        postfixExpression ('**' exponentiationExpression)?
+        postfixExpression ('**' postfixExpression)?
     ;
 
 postfixExpression
@@ -535,36 +533,45 @@ CHARLITERAL
         '\''
     ; 
 
-SIMPLESTRINGLITERAL
-    :   '"' 
-        (    ~( '\r' | '\n' | '"' | '\\')   
-        | EscapeSequence
-        )*
-        '"' 
-    ;
-
 /*
 
-// There soesn't seem to be any reasonable way to lex these.
+SIMPLESTRINGLITERAL
+    :   ('"' | '}$')
+        (    ~( '\r' | '\n' | '"' | '\\' | '$' | '{' )   
+        | EscapeSequence
+        )*
+        ('"' | '${')
+    ;
+*/
+
+SIMPLESTRINGLITERAL
+    :   ('"')
+        StringPart
+        ('"')
+    ;
 
 LEFTSTRINGLITERAL
     : '"'
-        (    ~( '\r' | '\n' | '"' | '\\')   
-        | EscapeSequence
-        )*
+        StringPart
         '${'
     ;
 
 RIGHTSTRINGLITERAL
-    : '}'
-        (    ~( '\r' | '\n' | '"' | '\\')   
-        | EscapeSequence
-        )*
+    : '}$'
+        StringPart
         '"'
     ;
 
-*/
+fragment
+NonStringChars
+    	:    '$' | '{' | '\\' | '"'
+    	;
 
+fragment
+StringPart
+	:    ( ~ NonStringChars | EscapeSequence) *
+	;
+	
 fragment
 EscapeSequence 
     :   '\\' (
@@ -574,7 +581,10 @@ EscapeSequence
         |   'f' 
         |   'r' 
         |   '\"' 
-        |   '\'' 
+        |   '\''
+        |   '$'
+        |   '{'
+        |   '}' 
         )          
     ;     
 
