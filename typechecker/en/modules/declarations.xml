@@ -190,7 +190,7 @@ VarargsParam?
         of the functor type. They are used when the functor is invoked using named parameters.</para>
         
         <comment><para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
-        how about <literal>Comparison functor(X x,X y)</literal>?</para></comment>
+        how about <literal>&lt;Comparison(X x,X y)&gt;</literal>?</para></comment>
     
     </section>
 
