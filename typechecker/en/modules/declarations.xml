@@ -479,8 +479,8 @@ class Customer(Name name, optional Organization org = null)
     Exact displacement = position**2/2;
     Integer sign = if (position.negative) -1 else 1;
     
-    x = sqrt(displacement) * sign;
-    y = sqrt(displacement) * sign;
+    x := sqrt(displacement) * sign;
+    y := sqrt(displacement) * sign;
     
     assert ("must have distance ${position} from origin")
         x**2 + y**2 == position**2;

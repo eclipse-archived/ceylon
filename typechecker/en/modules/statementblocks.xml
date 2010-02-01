@@ -20,20 +20,36 @@
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := ( Assignment | Invocation | Instantiation ) ";" | ControlStructure | Declaration</programlisting>
+        <programlisting>Statement := ExpressionStatement | ControlStructure | Declaration | Initialization</programlisting>
 
         <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
+        <para>The Ceylon language distinguishes between assignment to a mutable value 
+        (the <literal>:=</literal> operator) and initialization of an local or attribute 
+        (using <literal>=</literal>).</para>
+        
+        <programlisting>Initialization := LIdentifier Initializer ";"</programlisting>
+        
+        <comment><para>TODO: is it right to use <literal>=</literal> for initialization of a
+        mutable value?</para></comment>
+        
+        <para>Blocks may contain declarations, which are, by default, only visible inside
+        the block:</para>
+        
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
         
-        <comment><para>TODO: should we allow expressions to be annotated, for example:</para></comment>
+        <para>Only certain expressions are valid statements.</para>
         
-        <programlisting>doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
+        <programlisting>ExpressionStatement := ( Assignment | Invocation | Instantiation ) ";"</programlisting>
         
         <comment><para>TODO: it would be possible to say that any expression is a valid
         statement, but this seems to just open up more potential programming errors. So
         I think it's better to limit statements to assignments, invocations
         and instantiations.</para></comment>
+        
+        <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
+        
+        <programlisting>doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
         
     </section>
     
@@ -218,7 +234,7 @@
             
             <programlisting>if (payment.amount &lt;= account.balance) {
     account.balance -= payment.amount;
-    payment.paid = true;
+    payment.paid := true;
 }
 else {
     throw NotEnoughMoneyException();
@@ -411,7 +427,7 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>do (Integer i=0) 
+            <programlisting>do (mutable Integer i=0) 
     log.info("count = " + $i) 
 while (i&lt;=10) i++;</programlisting>
             
@@ -428,12 +444,12 @@ while (iter.more) {
             
             <programlisting>while (Person parent = person.parent exists) {
     log.info(parent.name);
-    person = parent;
+    person := parent;
 }</programlisting>
             
             <programlisting>do {
     log.info(person.name);
-    person = person.parent;
+    person := person.parent;
 } 
 while (!person.dead);</programlisting>
             
@@ -441,7 +457,7 @@ while (!person.dead);</programlisting>
     log.info(person.name);
 } 
 while (!person.parent.dead) {
-    person = person.parent;    
+    person := person.parent;    
 }</programlisting>
     
         <comment><para>TODO: <literal>do/while</literal> is significantly enhanced compared to other 

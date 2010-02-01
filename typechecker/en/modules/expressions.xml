@@ -300,8 +300,8 @@ if you prefer.";</programlisting>
     employer = jboss;
 };</programlisting>
 
-        <para>There is a similar syntax for setting the mutable attributes of an
-        instance after construction.</para>
+        <para>A similar syntax is supported for specifying the values of uninitialized 
+        attributes of a class at instantiation time.</para>
 
         <programlisting>Person gavin = Person(jboss) { 
     firstName = "Gavin";
@@ -456,37 +456,45 @@ if you prefer.";</programlisting>
         </section>
             
         <section>
-            <title>Enumeration instantiation</title>
+            <title>Attribute initialization</title>
             
-            <para>Enumerations may be instantiated according to the following 
-            simplified syntax:</para>
+            <para>Attribute initialization follows the following schema.</para>
             
-            <programlisting>EnumerationInstantiation := "{" Expression ("," Expression)* "}"</programlisting>
-            
-            <para>In this case, there is no need to explicitly specify the type.</para>
+            <programlisting>AttributeInitialization := Instantiation NamedParamValues</programlisting>
             
             <para>For example:</para>
             
-            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+            <programlisting>Person() { firstName="Gavin"; initial='A'; lastName="King"; }</programlisting>
+            
+            <para>The value of an attribute initialization is the instance being initialized.
+            The named parameter values are assigned to uninitialized attributes of the instance.</para>
+            
+            <para>All non-<literal>optional</literal> attributes of a class must be explicitly
+            initialized when the class is instantiated, either in the body of the class, or using
+            attribute initialization. Uninitialized <literal>optional</literal> attributes are 
+            implicitly initialized to <literal>null</literal> if not explicitly initialized.</para>
+            
+            <para>TODO: is this the right thing to say? Should we require explicit initialization
+            even for <literal>optional</literal> attributes?</para>
                         
         </section>
-            
+        
         <section>
             <title>Inline classes</title>
             
             <para>Inline classes may be instantiated according to:</para>
             
-            <programlisting>InlineClass := Annotation* Instantiation Interfaces Block</programlisting>
+            <programlisting>InlineClass := "new" Annotation* Instantiation Interfaces Block</programlisting>
 
             <para>For example:</para>
             
-            <programlisting>Task task = Task() {
+            <programlisting>Task task = new Task() {
     timeout=1000;
     override void run() { ... }
     override void fail(Exception e) { ... }
 }</programlisting>
 
-            <programlisting>return transactional Database() 
+            <programlisting>return new transactional Database() 
         satisfies Resource {
     url = "jdbc:hsqldb:.";
     username = "gavin";
@@ -496,24 +504,9 @@ if you prefer.";</programlisting>
 };</programlisting>
             
             <para>The value of an inline class instantiation is a new instance of the inline class.
-            The named parameter values are assigned directly to attributes of the superclass.</para>
+            The block may contain method and attribute declarations and arbitrary code, and may 
+            initialize uninitialized attributes of the suerclass.</para>
             
-        </section>
-        
-        <section>
-            <title>Attribute configuration</title>
-            
-            <para>Attribute configuration follows the following schema.</para>
-            
-            <programlisting>AttributeConfiguration := Expression NamedParamValues</programlisting>
-            
-            <para>For example:</para>
-            
-            <programlisting>person { firstName="Gavin"; initial='A'; lastName="King"; }</programlisting>
-            
-            <para>The value of an attribute configuration is the instance being configured.
-            The parameter values are assigned to attributes of the instance.</para>
-                        
         </section>
         
         <section>
@@ -535,6 +528,22 @@ if you prefer.";</programlisting>
         </section>
         
         <section>
+            <title>Enumeration instantiation</title>
+            
+            <para>Enumerations may be instantiated according to the following 
+            simplified syntax:</para>
+            
+            <programlisting>EnumerationInstantiation := "{" Expression ("," Expression)* "}"</programlisting>
+            
+            <para>In this case, there is no need to explicitly specify the type.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+                        
+        </section>
+            
+        <section>
             <title>Attribute access</title>
             
             <para>Attribute get access follows the following schema:</para>
@@ -551,11 +560,11 @@ if you prefer.";</programlisting>
         
             <para>Attribute set access follows the following schema:</para>
             
-            <programlisting>AttributeSet := MemberReference "=" Expression</programlisting>
+            <programlisting>AttributeSet := MemberReference AssignmentOperator Expression</programlisting>
             
             <para>This attribute setter call:</para>
         
-            <programlisting>person.name = "Gavin";</programlisting>
+            <programlisting>person.name := "Gavin";</programlisting>
         
             <para>is equivalent to the following Java code:</para>
 
@@ -573,7 +582,7 @@ if you prefer.";</programlisting>
         <title>Assignable expressions</title>
         
         <para>Certain expressions are <emphasis>assignable</emphasis>. An assignable
-        expression may appear as the LHS of the <emphasis>=</emphasis> (assign) operator,
+        expression may appear as the LHS of the <emphasis>:=</emphasis> (assign) operator,
         and possibly, depending upon the type of the expression, as the LHS of the 
         numeric or logical assignment operators <literal>=, +=, -=, *=, /=, %=, &amp;=, 
         |=, ^=, &amp;&amp;=, ||=</literal> or as the subject of the increment or decrement
@@ -689,12 +698,6 @@ if you prefer.";</programlisting>
         <title>List of operators</title>
     
         <para>The following table defines the semantics of the Ceylon operators:</para>
-        
-        <comment><para>TODO: if there's one thing C syntax got wrong, it's the use of 
-        <literal>=</literal> for assignment. <literal>:=</literal> is a much, much 
-        better choice. Should we fix this, or is consistency with other C-like languages 
-        more important? One interesting possibility would be to use <literal>:=</literal> 
-        only for re-assigning mutable values.</para></comment>
     
     <table>
     <tgroup cols="7">
@@ -721,11 +724,11 @@ if you prefer.";</programlisting>
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
     
         <row>
-            <entry><literal>=</literal></entry>
-            <entry><literal>lhs = rhs</literal></entry>
+            <entry><literal>:=</literal></entry>
+            <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
             <entry></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>mutable optional Object</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>optional Object</literal></entry>
         </row>
@@ -940,7 +943,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.or(rhs)</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;=</literal></entry>
@@ -949,7 +952,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.and(rhs)</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
         <row>
             <entry><literal>^=</literal></entry>
@@ -958,7 +961,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.xor(rhs)</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
 
         <row>
@@ -968,7 +971,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = if (lhs) true else rhs</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
 
         <row>
@@ -978,7 +981,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = if (lhs) rhs else false</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Existence (null value handling)</emphasis></entry></row>
@@ -1021,7 +1024,7 @@ if you prefer.";</programlisting>
             <entry><literal>if (lhs exists) lhs else lhs=rhs</literal></entry>
             <entry><literal>optional T</literal></entry>
             <entry><literal>T</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         
         <!--  
@@ -1510,7 +1513,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.add(rhs)</literal></entry>
             <entry><literal>Number</literal></entry>
             <entry><literal>Number</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Number</literal></entry>
         </row>
         <row>
             <entry><literal>-=</literal></entry>
@@ -1519,7 +1522,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.subtract(rhs)</literal></entry>
             <entry><literal>Number</literal></entry>
             <entry><literal>Number</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Number</literal></entry>
         </row>
         <row>
             <entry><literal>*=</literal></entry>
@@ -1528,7 +1531,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.multiply(rhs)</literal></entry>
             <entry><literal>Number</literal></entry>
             <entry><literal>Number</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Number</literal></entry>
         </row>
         <row>
             <entry><literal>/=</literal></entry>
@@ -1537,7 +1540,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.divide(rhs)</literal></entry>
             <entry><literal>Number</literal></entry>
             <entry><literal>Number</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Number</literal></entry>
         </row>
         <row>
             <entry><literal>%=</literal></entry>
@@ -1546,7 +1549,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs = lhs.remainder(rhs)</literal></entry>
             <entry><literal>Number</literal></entry>
             <entry><literal>Number</literal></entry>
-            <entry><literal>void</literal></entry>
+            <entry><literal>Number</literal></entry>
         </row>
         
         <!--
@@ -1850,7 +1853,7 @@ if you prefer.";</programlisting>
                 <entry>Assignment, numeric assignment, logical assignment,
                 default assignment:</entry> 
                 <entry>
-                <literal>=</literal>, 
+                <literal>:=</literal>, 
                 <literal>+=</literal>, 
                 <literal>-=</literal>, 
                 <literal>*=</literal>, 

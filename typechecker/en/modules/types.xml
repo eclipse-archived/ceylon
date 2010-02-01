@@ -13,7 +13,7 @@
         <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
         <literal>.</literal> (invoke), <literal>^.</literal> (chain invoke),
         <literal>in</literal> (in), the unary prefix operator <literal>$</literal> 
-        (render), and the binary operator <literal>=</literal> (assign).</para>
+        (render), and the binary operator <literal>:=</literal> (assign).</para>
         
         <para>In addition, references of type <literal>optional:Object</literal>
         support the binary operators <literal>?.</literal> (nullsafe invoke) 
