@@ -321,8 +321,8 @@ String join(Iterable&lt;String&gt; strings,
     <section id="classes">
         <title>Classes</title>
         
-        <para>A class is a stateful, instantiable type. Class are declared according to 
-        the following:</para>
+        <para>A class is a stateful, instantiable type. Class are declared according 
+        to the following:</para>
         
         <programlisting>Annotation*
 "class" UIdentifier TypeParams? FormalParams?
@@ -565,6 +565,33 @@ class Customer(Name name, optional Organization org = null)
         
         <programlisting>new Counter ( new CounterParameters().initialCount(10) );</programlisting>
 
+        </section>
+        
+        <section>
+        <title>Annotations</title>
+        
+        <para>Every annotation is a static (non-void) method call. This Ceylon class:</para>
+        
+        <programlisting>doc "Represents a person"
+author "Gavin"
+public class Person { ... }</programlisting>
+
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>public class Person { ... 
+
+    static {
+        Type&lt;Person&gt; type = Type.get(Person.class);
+        type.addAnnotation( doc("Represents a person") );
+        type.addAnnotation( author("Gavin") );
+        type.addAnnotation( public() );
+    }
+
+    ...
+
+}</programlisting>
+
+        
         </section>
 
         <section>
