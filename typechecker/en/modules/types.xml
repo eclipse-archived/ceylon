@@ -975,51 +975,51 @@
         
     doc "Evaluate the block. Useful for turning a series
          of statements into an expression."
-    public static X evaluate<X>(() produce X do);
+    public static X evaluate<X>(() produce X do) { ... }
 
     doc "Assert that the block evaluates to true. The block 
          is executed only when assertions are enabled."
-    public static void assert(() produce Boolean evaluate);
+    public static void assert(() produce Boolean evaluate) { ... }
 
     doc "If the condition is true, evaluate first block,
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifTrue<Y>(Boolean condition,
-                                        () produce Y then);
+                                        () produce Y then) { ... }
 
     doc "If the condition is true, evaluate first block,
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifTrue<Y>(Boolean condition,
                                () produce Y then, 
-                               () produce Y otherwise);
+                               () produce Y otherwise) { ... }
 
     doc "If the value is non-null, evaluate first block,
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifExists<X,Y>(specified optional X value,
-                                            coordinated (X x) produce Y then);
+                                            coordinated (X x) produce Y then) { ... }
 
     doc "If the value is non-null, evaluate first block,
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifExists<X,Y>(specified optional X value,
                                    coordinated (X x) produce Y then, 
-                                   () produce Y otherwise);
+                                   () produce Y otherwise) { ... }
 
     doc "Iterate elements and return those for which the first
          block evaluates to true, ordered using the second block,
          if specified."
     public static List<X> from<X>(iterated Iterable<X> elements,
                                    coordinated (X x) produce Boolean having,
-                                   optional coordinated (X x) produce Comparable by = null);
+                                   optional coordinated (X x) produce Comparable by = null) { ... }
 
     doc "Iterate elements and for each element evaluate the first block. 
          Build a list of the resulting values, ordered using the second 
          block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
                                      coordinated (X x) produce Y select,
-                                     optional coordinated (X x) produce Comparable by = null);
+                                     optional coordinated (X x) produce Comparable by = null) { ... }
 
     doc "Iterate elements and select those for which the first block 
          evaluates to true. For each of these, evaluate the second block. 
@@ -1028,31 +1028,31 @@
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
                                      coordinated (X x) produce Boolean having, 
                                      coordinated (X x) produce Y select,
-                                     optional coordinated (X x) produce Comparable by = null);
+                                     optional coordinated (X x) produce Comparable by = null) { ... }
 
     doc "Return the first element for which the block evaluates to true,
          or a null value if no such element is found."
     public static optional X first<X>(iterated Iterable<X> elements,
-                                       coordinated (X x) produce Boolean having);
+                                       coordinated (X x) produce Boolean having) { ... }
     
     doc "Return the first element for which the first block evaluates to 
          true, or the result of evaluating the second block, if no such
          element is found."
     public static X first<X>(iterated Iterable<X> elements,
                               coordinated (X x) produce Boolean having
-                              () produce X otherwise);
+                              () produce X otherwise) { ... }
     
     doc "Count the elements for with the block evaluates to true."
     public static Integer count<X>(iterated Iterable<X> elements,
-                                    coordinated (X x) produce Boolean having);
+                                    coordinated (X x) produce Boolean having) { ... }
     
     doc "Return true iff for every element, the block evaluates to true."
     public static Boolean forAll<X>(iterated Iterable<X> elements,
-                                     coordinated (X x) produce Boolean every);
+                                     coordinated (X x) produce Boolean every) { ... }
 
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                     coordinated (X x) produce Boolean exists);
+                                     coordinated (X x) produce Boolean exists) { ... }
     
     doc "Using the given resource, attempt to evaluate the first block.
          If an exception occurs, and there is a matching block, evaluate
@@ -1060,7 +1060,7 @@
     public static Y using<X,Y>(specified X resource,
                                 coordinated (X x) produce Y seek,
                                 (E e) produce Y where E>=Exception... except)
-                     where X >= Usable;
+                     where X >= Usable { ... }
 
 }]]></programlisting>
     
