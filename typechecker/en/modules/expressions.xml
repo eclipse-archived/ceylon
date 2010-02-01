@@ -474,8 +474,8 @@ if you prefer.";</programlisting>
             attribute initialization. Uninitialized <literal>optional</literal> attributes are 
             implicitly initialized to <literal>null</literal> if not explicitly initialized.</para>
             
-            <para>TODO: is this the right thing to say? Should we require explicit initialization
-            even for <literal>optional</literal> attributes?</para>
+            <comment><para>TODO: is this the right thing to say? Should we require explicit 
+            initialization even for <literal>optional</literal> attributes?</para></comment>
                         
         </section>
         
