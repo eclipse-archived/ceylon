@@ -460,7 +460,7 @@ if you prefer.";</programlisting>
             
             <para>Attribute initialization follows the following schema.</para>
             
-            <programlisting>AttributeInitialization := Instantiation NamedParamValues</programlisting>
+            <programlisting>AttributeInitialization := Instantiation "{" Initialization* "}"</programlisting>
             
             <para>For example:</para>
             
