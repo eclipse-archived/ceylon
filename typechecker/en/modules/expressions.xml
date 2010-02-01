@@ -499,8 +499,8 @@ if you prefer.";</programlisting>
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
-    override void create() open();
-    override void destroy() close();
+    override void create() { open(); }
+    override void destroy() { close(); }
 };</programlisting>
             
             <para>The value of an inline class instantiation is a new instance of the inline class.
