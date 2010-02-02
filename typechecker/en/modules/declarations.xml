@@ -29,7 +29,7 @@ Declaration?</programlisting>
         
         <programlisting>Import* Declaration+</programlisting>
         
-        <programlisting>Import := "import" Identifier ('.' Identifier)* ('alias' Identifier)? ';'</programlisting>
+        <programlisting>Import := "import" Identifier ("." Identifier)* ("alias" Identifier)? ";"</programlisting>
 
     </section>
     
