@@ -696,7 +696,7 @@ if you prefer.";</programlisting>
         override void call(String element) { element.name; } 
     }.result;</programlisting>
     
-    <programlisting>optional String name = if (person exists) person.name else null;</programlisting>
+    <programlisting>optional String name = if (exists person) person.name else null;</programlisting>
     
     <section>
         <title>List of operators</title>
@@ -775,7 +775,7 @@ if you prefer.";</programlisting>
             <entry><literal>?.</literal></entry>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe invoke</entry>
-            <entry><literal>if (lhs exists) lhs.member else null</literal></entry>
+            <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry></entry>
             <entry><literal>optional</literal> member type</entry>
@@ -808,7 +808,7 @@ if you prefer.";</programlisting>
             <entry><literal>==</literal></entry>
             <entry><literal>lhs == rhs</literal></entry>
             <entry>equal</entry>
-            <entry><literal>if (lhs exists) lhs.equals(rhs) else if (rhs exists) false else true</literal></entry>
+            <entry><literal>if (exists lhs) lhs.equals(rhs) else if (exists rhs) false else true</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -817,7 +817,7 @@ if you prefer.";</programlisting>
             <entry><literal>!=</literal></entry>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
-            <entry><literal>if (lhs exists) lhs.equals(rhs).negation else if (rhs exists) true else false</literal></entry>
+            <entry><literal>if (exists lhs) lhs.equals(rhs).negation else if (exists rhs) true else false</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -994,7 +994,7 @@ if you prefer.";</programlisting>
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>if (lhs exists) true else false</literal></entry>
+            <entry><literal>if (exists lhs) true else false</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
@@ -1003,7 +1003,7 @@ if you prefer.";</programlisting>
             <entry><literal><!--??-->nonempty</literal></entry>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
-            <entry><literal>if (lhs exists) lhs.empty.negation else false</literal></entry>
+            <entry><literal>if (exists lhs) lhs.empty.negation else false</literal></entry>
             <entry><literal>optional Container</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
@@ -1013,7 +1013,7 @@ if you prefer.";</programlisting>
             <entry><literal>?</literal></entry>
             <entry><literal>lhs ? rhs</literal></entry>
             <entry>default</entry>
-            <entry><literal>if (lhs exists) lhs else rhs</literal></entry>
+            <entry><literal>if (exists lhs) lhs else rhs</literal></entry>
             <entry><literal>optional T</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>T</literal></entry>
@@ -1025,7 +1025,7 @@ if you prefer.";</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (lhs exists) lhs else lhs=rhs</literal></entry>
+            <entry><literal>if (exists lhs) lhs else lhs=rhs</literal></entry>
             <entry><literal>optional T</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>T</literal></entry>
@@ -1109,6 +1109,18 @@ if you prefer.";</programlisting>
             <entry><literal>lhs.in(rhs)</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>is</literal></entry>
+            <entry><literal>lhs is Rhs</literal></entry>
+            <entry>is</entry>
+            <entry><literal>lhs.instanceOf(#Rhs)</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal></literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -1387,7 +1399,7 @@ if you prefer.";</programlisting>
             <entry><literal>$</literal></entry>
             <entry><literal>$rhs</literal></entry>
             <entry>render</entry>
-            <entry><literal>if (rhs exists) rhs.string else ""</literal></entry>
+            <entry><literal>if (exists rhs) rhs.string else ""</literal></entry>
             <entry></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>String</literal></entry>
@@ -1794,7 +1806,8 @@ if you prefer.";</programlisting>
                 <entry>Right</entry>
             </row>
             <row>
-                <entry>Comparison, <!--set comparison,--> containment:</entry> 
+                <entry>Comparison, <!--set comparison,--> containment,
+                assignability:</entry> 
                 <entry>
                 <literal>&lt;=&gt;</literal>,
                 <literal>&lt;</literal>, 
@@ -1804,7 +1817,8 @@ if you prefer.";</programlisting>
                 <!--<literal>~></literal>,
                 <literal>!~></literal>,
                 <literal>*~></literal>-->
-                <literal>in</literal>
+                <literal>in</literal>,
+                <literal>is</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>

@@ -12,8 +12,9 @@
         hierarchy and supports the binary operators <literal>==</literal> (equals),
         <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
         <literal>.</literal> (invoke), <literal>^.</literal> (chain invoke),
-        <literal>in</literal> (in), the unary prefix operator <literal>$</literal> 
-        (render), and the binary operator <literal>:=</literal> (assign).</para>
+        <literal>in</literal> (in), <literal>is</literal> (is), the unary prefix 
+        operator <literal>$</literal> (render), and the binary operator 
+        <literal>:=</literal> (assign).</para>
         
         <para>In addition, references of type <literal>optional:Object</literal>
         support the binary operators <literal>?.</literal> (nullsafe invoke) 
@@ -70,8 +71,9 @@
     doc "The Type of the instance."
     public Type<X+> type { ... }
     
-    doc "Determine if the instance is of the given Type."
-    public Boolean is(Type<Object+> type) {
+    doc "Binary assignability operator x is Y. Determine if the instance 
+         is of the given Type."
+    public Boolean instanceOf(Type<Object+> type) {
         return this.type.assignableTo(type);
     }
     
@@ -1065,7 +1067,7 @@
 
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                    coordinated F<(X x), Boolean> exists) 
+                                    coordinated F<(X x), Boolean> some) 
                           { ... }
     
     doc "Using the given resource, attempt to evaluate the first block.

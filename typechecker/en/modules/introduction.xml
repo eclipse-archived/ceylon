@@ -29,7 +29,7 @@
     Nullable locals and attributes must be explicitly declared using the 
     <literal>optional</literal> annotation. Nullable expressions are not 
     assignable to non-<literal>optional</literal> locals or attributes, 
-    except via use of the <literal>if ( ... exists)</literal> construct. Thus, 
+    except via use of the <literal>if (exists ... )</literal> construct. Thus, 
     the Ceylon compiler is able to detect illegal use of a null value at 
     compile time. Therefore, there is no equivalent to Java's 
     <literal>NullPointerException</literal> in Ceylon.

@@ -173,16 +173,29 @@
         
         <para>Some control structures expect conditions:</para>
         
-        <programlisting>Condition := Expression | (Variable Initializer | Expression) ("exists"|"nonempty")</programlisting>
+       <programlisting>Condition := 
+("exists" | "nonempty" | "is" Type)? Expression |  
+("exists" | "nonempty" | "is") Variable Initializer</programlisting>
+        
+        <!--
+        <programlisting>Condition := Expression | (Variable Initializer | Expression) ("exists" | "nonempty" | "is" Type)</programlisting>
+        -->
 
         <para>The semantics of a condition depend upon whether the <literal>exists</literal> or 
         <literal>nonempty</literal> modifier appears:</para>
 
         <itemizedlist>
             <listitem>
-                <para>If no <literal>exists</literal> or <literal>nonempty</literal> modifier appears, 
-                the condition must be an expression of type <literal>Boolean</literal>. The condition
-                is satisfied if the expression evaluates to <literal>true</literal> at runtime.</para>
+                <para>If no <literal>is</literal>, <literal>exists</literal> or <literal>nonempty</literal> 
+                modifier appears, the condition must be an expression of type <literal>Boolean</literal>. 
+                The condition is satisfied if the expression evaluates to <literal>true</literal> at 
+                runtime.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>is</literal> modifier appears, the condition must be an 
+                expression or local initializer of type <literal>Object</literal>. The condition is 
+                satisfied if the expression or initializer evaluates to an instance of the specified 
+                type at runtime.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition must be an 
@@ -210,6 +223,20 @@
                 <para>if the condition is a local variable, the local will be treated by the compiler 
                 as having non-null type inside the block that follows immediately, relaxing the usual 
                 compile-time restrictions upon <literal>optional</literal> types.</para>
+            </listitem>
+        </itemizedlist>
+                        
+        <para>For <literal>is</literal> conditions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the condition is a local variable initializer, the local variable may be
+                declared with the specified type, even though the initializer expression is not of 
+                that type, or</para>
+            </listitem>
+            <listitem>
+                <para>if the condition is a local variable, the local will be treated by the compiler 
+                as having the specified type inside the block that follows immediately.</para>
             </listitem>
         </itemizedlist>
                         
@@ -241,14 +268,14 @@ else {
 }</programlisting>
 
             <programlisting>public void welcome(optional User user) {
-    if (user exists)
+    if (exists user)
         log.info("Hi ${user.name}!") 
     else 
         log.info("Hello World!");
 }</programlisting>
             
             <programlisting>public Payment payment(Order order) {
-    if (Payment p = order.payment exists) {
+    if (exists Payment p = order.payment) {
         return p;
     }
     else { 
@@ -256,8 +283,12 @@ else {
     }
 }</programlisting>
 
-            <programlisting>if (Payment p = order.payment exists) {
+            <programlisting>if (exists Payment p = order.payment) {
     if (p.paid) log.info("already paid");
+}</programlisting>
+            
+            <programlisting>if (is CardPayment p = order.payment) {
+    return p.card;
 }</programlisting>
             
         </section>
@@ -442,7 +473,7 @@ while (iter.more) {
     p.greet();
 }</programlisting>
             
-            <programlisting>while (Person parent = person.parent exists) {
+            <programlisting>while (exists Person parent = person.parent) {
     log.info(parent.name);
     person := parent;
 }</programlisting>
