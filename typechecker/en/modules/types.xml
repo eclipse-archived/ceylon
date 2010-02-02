@@ -77,11 +77,6 @@
         return this.type.assignableTo(type);
     }
     
-    doc "Return a reference to the instance, of the given
-         Type, or throw an exception if the instance is not
-         of the given type."
-    public T as<T>(Type<T> type) { ... }
-    
     doc "A log obect for the type."
     public static Log log = Log(type);
         
@@ -89,8 +84,16 @@
         
 }]]></programlisting>
 
+<!-- 
+    doc "Return a reference to the instance, of the given
+         Type, or throw an exception if the instance is not
+         of the given type."
+    public T as<T>(Type<T> type) { ... }
+-->
+
     </section>
-    
+
+<!--
     <section>
         <title>Types</title>
         
@@ -98,8 +101,9 @@
         satisfies Case<Object> {
     ...
 }]]></programlisting>
-        
+
     </section>
+--> 
     
     <section>
         <title>Boolean values</title>
