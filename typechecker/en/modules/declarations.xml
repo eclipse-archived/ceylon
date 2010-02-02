@@ -176,8 +176,6 @@ VarargsParam?
         
         <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
         
-        <comment><para>TODO: I can't get this syntax to parse!</para></comment>
-        
         <para>For example:</para>
         
         <programlisting>F&lt;(X x, X y), Comparison&gt;</programlisting>
