@@ -1909,9 +1909,9 @@ if you prefer.";</programlisting>
                 
         <para>For example:</para>
         
-        <programlisting>functor Comparison(Float x,Float y) order = functor Comparison(Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        <programlisting>functor Comparison(Float x, Float y) order = functor Comparison(Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
 
-        <programlisting>functor Comparison(Float x,Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        <programlisting>functor Comparison(Float x, Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
