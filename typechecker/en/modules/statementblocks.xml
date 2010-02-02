@@ -72,7 +72,7 @@
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>ControlDirective := ("return" | "produce") Expression | "throw" Expression | "found" | "break"</programlisting>
+         <programlisting>ControlDirective := "return" Expression? | "produce" Expression | "throw" Expression | "found" | "break"</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter, a non-<literal>void</literal> method or a 
