@@ -310,7 +310,7 @@ else {
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
             is the switch expression type.</para>
 
-            <programlisting>Case := Expression ("," Expression)*</programlisting>
+            <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
 
             <para>If a <literal>case null</literal> is defined, the switch expression type must 
             be <literal>optional</literal>.</para>
@@ -332,6 +332,13 @@ else {
             tests true, and an <literal>else</literal> block is defined, the <literal>else</literal> 
             block is executed.</para>
             
+            <para>For an <literal>is</literal> type case, if the switch expression is a local, 
+            then the local will be treated by the compiler as having the specified type inside 
+            the <literal>case</literal> block.</para>
+            
+            <comment><para>TODO: support <literal>catch</literal>-style syntax instead of 
+            <literal>case (is ...)</literal>?</para></comment>
+            
             <para>For example:</para>
 
             <programlisting>public PaymentProcessor processor {
@@ -350,6 +357,18 @@ else {
     case (check) {
         log.debug("check payment");
         checkPaymentProcessor.process(payment);
+    }
+    else {
+        log.debug("other payment type");
+    }
+}</programlisting>
+
+            <programlisting>switch (payment) {
+    case (is CardPayment) { 
+        pay(payment.amount, payment.card);
+    } 
+    case (is CheckPayment) {
+        pay(payment.amount, payment.check);
     }
     else {
         log.debug("other payment type");
