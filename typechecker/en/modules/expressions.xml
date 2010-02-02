@@ -300,6 +300,7 @@ if you prefer.";</programlisting>
     employer = jboss;
 };</programlisting>
 
+<!--  
         <para>A similar syntax is supported for specifying the values of uninitialized 
         attributes of a class at instantiation time.</para>
 
@@ -310,6 +311,7 @@ if you prefer.";</programlisting>
     address = Address { ... };
     birthdate = Date { day = 25; month = MARCH; year = ... }
 };</programlisting>
+-->
 
     </section>
     
@@ -454,7 +456,8 @@ if you prefer.";</programlisting>
             be used).</para>
             
         </section>
-            
+        
+        <!--  
         <section>
             <title>Attribute initialization</title>
             
@@ -478,6 +481,7 @@ if you prefer.";</programlisting>
             initialization even for <literal>optional</literal> attributes?</para></comment>
                         
         </section>
+        -->
         
         <section>
             <title>Inline classes</title>
@@ -489,23 +493,23 @@ if you prefer.";</programlisting>
             <para>For example:</para>
             
             <programlisting>Task task = new Task() {
-    timeout=1000;
+    timeout := 1000;
     override void run() { ... }
     override void fail(Exception e) { ... }
 }</programlisting>
 
             <programlisting>return new transactional Database() 
         satisfies Resource {
-    url = "jdbc:hsqldb:.";
-    username = "gavin";
+    url := "jdbc:hsqldb:.";
+    username := "gavin";
     password = "foobar";
     override void create() { open(); }
     override void destroy() { close(); }
 };</programlisting>
             
             <para>The value of an inline class instantiation is a new instance of the inline class.
-            The block may contain method and attribute declarations and arbitrary code, and may 
-            initialize uninitialized attributes of the suerclass.</para>
+            The block may contain method and attribute declarations and arbitrary code.<!-- and may 
+            initialize uninitialized attributes of the superclass.--></para>
             
         </section>
         
@@ -1885,9 +1889,9 @@ if you prefer.";</programlisting>
         
         <programlisting>FunctorExpression := FunctorParams OpenBlock</programlisting>
         
-        <para>A functor body may not contain a <literal>return</literal> directive. If the functor
-        body is a block, the value of the functor, when executed, is determined by the 
-        <literal>produce</literal> directive.</para>
+        <para>A functor body may not contain a <literal>return</literal> directive. If the 
+        functor body is a block, the value of the functor, when executed, is determined by 
+        the <literal>produce</literal> directive.</para>
                 
         <para>For example:</para>
         
@@ -1944,20 +1948,21 @@ if you prefer.";</programlisting>
         } 
     } );</programlisting>
     
+        <para>Functors may refer to immutable locals and members of the
+        containing class. They may not refer to mutable locals.</para>
+    
         <para>This code:</para>
         
         <programlisting>Integer min = 0;
-Integer max = 0;
+Integer max = 10;
 List list = list.select(Integer x) 
     return x > min &amp;&amp; x &lt; max;</programlisting>
         
         <para>Is equivalent to this Java code:</para>
         
-        <programlisting>Integer min = 0; 
-Integer max = 10; 
-List list = list.select( new F1&lt;Integer,Boolean&gt;(min, max) { 
-        final Integer min = (Integer) locals[0];
-        final Integer max = (Integer) locals[1];
+        <programlisting>final Integer min = 0; 
+final Integer max = 10; 
+List list = list.select( new F1&lt;Integer,Boolean&gt;() { 
         @Override Boolean call(Integer x) { 
             return x > min &amp;&amp; x &lt; max; 
         } 

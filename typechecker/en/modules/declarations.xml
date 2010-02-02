@@ -382,6 +382,9 @@ class Customer(Name name, optional Organization org = null)
         initialization parameter may be used anywhere in the class body.
         </para>
         
+        <para>All non-<literal>optional</literal> attributes of the class must be explicitly
+        initialized somewhere in the body of the class definition.</para>
+        
         <para>This declaration:</para>
         
         <programlisting>public class Key(Lock lock) {
@@ -425,17 +428,17 @@ class Customer(Name name, optional Organization org = null)
         <para>Class initialization parameters are optional. The following class:</para>
         
         <programlisting>public mutable class Point {
-    public mutable Exact x;
-    public mutable Exact y;
+    public mutable Exact x = 0.0;
+    public mutable Exact y = 0.0;
 }</programlisting>
         
         <para>Is equivalent to this Java class with a default constructor:</para>
         
         <programlisting>public class Point {
-    private final Attribute&lt;Exact&gt; x = new SimpleAttribute&lt;Exact&gt;();
+    private final Attribute&lt;Exact&gt; x = new SimpleAttribute&lt;Exact&gt;( new Exact(0.0) );
     public SimpleAttribute&lt;Exact&gt; x() { return x; }
     
-    private final Attribute&lt;Exact&gt; y = new SimpleAttribute&lt;Exact&gt;();
+    private final Attribute&lt;Exact&gt; y = new SimpleAttribute&lt;Exact&gt;( new Exact(0.0) );
     public SimpleAttribute&lt;Exact&gt; y() { return y; }
 }</programlisting>
         
