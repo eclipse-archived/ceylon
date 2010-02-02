@@ -39,6 +39,14 @@ localDeclaration
     :  type LIDENTIFIER initializer? ';'
     ;
 
+inlineClassDeclaration
+	:	
+	'inline' annotation*
+	UIDENTIFIER ('.' UIDENTIFIER*)
+	arguments
+	'{' memberOrStatement* '}'
+	;
+	
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 memberOrStatement
@@ -285,8 +293,9 @@ simpleAssignable
 
 //This one is fully general
 //should we reall allow assigments here???
-expression 
-    : implicationExpression (assignmentOp assignable | specialFunctorArguments)?
+expression
+	: inlineClassDeclaration
+    | implicationExpression (assignmentOp assignable | specialFunctorArguments)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
 
