@@ -172,7 +172,7 @@ VarargsParam?
     
         <para>There are also functor types:</para>
         
-        <programlisting>FunctorType := FunctorParams ("produce" Annotation* Type | "void")</programlisting>
+        <programlisting>FunctorType := "F" "&lt;" FunctorParams "," (Annotation* Type | "void") "&gt;"</programlisting>
         
         <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
         
@@ -180,17 +180,17 @@ VarargsParam?
         
         <para>For example:</para>
         
-        <programlisting>(X x,X y) produce Comparison</programlisting>
-        <programlisting>(Payment payment) produce Boolean</programlisting>
-        <programlisting>(Y element) void</programlisting>
-        <programlisting>() produce optional Object</programlisting>
-        <programlisting>(optional Y object, Factory&lt;Y&gt; factory) produce Y</programlisting>
+        <programlisting>F&lt;(X x, X y), Comparison&gt;</programlisting>
+        <programlisting>F&lt;(Payment payment), Boolean&gt;</programlisting>
+        <programlisting>F&lt;(Y element), void&gt;</programlisting>
+        <programlisting>F&lt;(), optional Object&gt;</programlisting>
+        <programlisting>F&lt;(optional Y object, Factory&lt;Y&gt; factory), Y&gt;</programlisting>
         
         <para>The parameter names in a functor type declaration do not affect assignability
         of the functor type. They are used when the functor is invoked using named parameters.</para>
         
-        <comment><para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a better syntax? Or
-        how about <literal>&lt;Comparison(X x,X y)&gt;</literal>?</para></comment>
+        <comment><para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a good syntax?
+        How about <literal>&lt;Comparison(X x,X y)&gt;</literal>?</para></comment>
     
     </section>
 
@@ -1387,7 +1387,7 @@ TypeConstraintList?
        
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
-       <programlisting>alias Compare&lt;T&gt; satisfies (T x,T y) produce Comparison;</programlisting>
+       <programlisting>alias Compare&lt;T&gt; satisfies F&lt;(T x, T y), Comparison&gt;;</programlisting>
        
        <para>A shortcut is provided for definition of private aliases.</para>
        

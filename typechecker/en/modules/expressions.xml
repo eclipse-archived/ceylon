@@ -333,7 +333,7 @@ if you prefer.";</programlisting>
         <programlisting>Method&lt;Person, (String) void&gt;&gt; sayMethod = Person#say;</programlisting>
         
         <para>Note that the <literal>#</literal> curry operator may also be applied to an 
-        arbitrary expression, to obtain a <literal>Callable&lt;(P p,Q q,...) produce R&gt;</literal> 
+        arbitrary expression, to obtain a <literal>Callable&lt;F&lt;(P p,Q q,...), R&gt;&gt;</literal> 
         where <literal>P p, Q q,...</literal> are the method parameter types and <literal>R</literal> 
         is the method return type, or a <literal>Value&lt;T&gt;</literal> or 
         <literal>OpenValue&lt;T&gt;</literal> where <literal>T</literal> is the attribute 
@@ -746,7 +746,7 @@ if you prefer.";</programlisting>
             <entry></entry>
             <entry><literal>Object</literal></entry>
             <entry></entry>
-            <entry><literal>Callable&lt;(P p, Q q,...) produce R&gt;</literal>, 
+            <entry><literal>Callable&lt;F&lt;(P p, Q q,...), R&gt;&gt;</literal>, 
             <literal>Value&lt;T&gt;</literal> or
             <literal>OpenValue&lt;T&gt;</literal></entry>
         </row>
@@ -1895,7 +1895,7 @@ if you prefer.";</programlisting>
                 
         <para>For example:</para>
         
-        <programlisting>(Float x,Float y) produce Comparison order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        <programlisting>F&lt;(Float x,Float y), Comparison&gt; order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
@@ -1912,11 +1912,11 @@ if you prefer.";</programlisting>
         
         <para>Consider the following functor expression:</para>
         
-        <programlisting>(String x, String y) produce Comparison order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
+        <programlisting>F&lt;(String x, String y), Comparison&gt; order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
         
         <para>Or:</para>
         
-        <programlisting>(String x, String y) produce Comparison order = (String x, String y) x &lt;=&gt; y;</programlisting>
+        <programlisting>F&lt;(String x, String y), Comparison&gt; order = (String x, String y) x &lt;=&gt; y;</programlisting>
         
         <para>These expressions are both equivalent to this Java code:</para>
 
@@ -2044,15 +2044,15 @@ isFalse {
         <programlisting>MemberReference "(" ForIterator ")" FunctorParamValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
-        of type <literal>(X x) produce Y</literal> or <literal>(X x) void</literal> need not 
+        of type <literal>F&lt;(X x), Y&gt;</literal> or <literal>F&lt;(X x), void&gt;</literal> need not 
         declare its parameter. Instead, its parameter is declared by the iterator.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static
 List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
-                  coordinated (X x) produce Boolean having,
-                  coordinated (X x) produce Y select);</programlisting>
+                  coordinated F&lt;(X x), Boolean&gt; having,
+                  coordinated F&lt;(X x), Y&gt; select);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2087,15 +2087,15 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         <programlisting>MemberReference "(" Variable Initializer ")" FunctorParamValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
-        of type <literal>(X x) produce Y</literal> or <literal>(X x) void</literal> need not 
+        of type <literal>F&lt;(X x), Y&gt;</literal> or <literal>F&lt;(X x), void&gt;</literal> need not 
         declare its parameter. Instead, its parameter is declared by the initializer.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static
 Y ifExists&lt;X,Y&gt;(specified optional X value,
-                coordinated (X x) produce Y then, 
-                () produce Y otherwise);</programlisting>
+                coordinated F&lt;(X x), Y&gt; then, 
+                F&lt;(), Y&gt; otherwise);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2109,7 +2109,7 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
         
         <programlisting>public static
 Y using&lt;X,Y&gt;(specified X resource, 
-             coordinated (X x) produce Y seek)
+             coordinated F&lt;(X x), Y&gt; seek)
   where X >= Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
@@ -2128,13 +2128,13 @@ Y using&lt;X,Y&gt;(specified X resource,
         
         <para>A specialized invocation syntax is also provided for methods which define 
         a list of cases. If the method has a parameter of type 
-        <literal>Enumeration&lt;(X x) produce Y&gt;</literal> annotated <literal>cases</literal>,
+        <literal>Enumeration&lt;F&lt;(X x), Y&gt;&gt;</literal> annotated <literal>cases</literal>,
         the parameter value may be specified according to:</para>
         
         <programlisting>(LIdentifier FunctorExpression)+</programlisting>
         
         <para>Or, if the method has a parameter of type 
-        <literal>Enumeration&lt;Entry&lt;Case&lt;X&gt;, () produce Y&gt;&gt;</literal> annotated 
+        <literal>Enumeration&lt;Entry&lt;Case&lt;X&gt;, F&lt;(), Y&gt;&gt;&gt;</literal> annotated 
         <literal>cases</literal>, the parameter value may be specified according to:</para>
         
         <programlisting>("(" Case ")" SimpleFunctorExpression)+</programlisting>
@@ -2142,8 +2142,8 @@ Y using&lt;X,Y&gt;(specified X resource,
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static
-X attempt&lt;X&gt;(() produce X seek, 
-             cases (E e) produce X where E>=Exception... except);</programlisting>
+X attempt&lt;X&gt;(F&lt;(), X&gt; seek, 
+             cases F&lt;(E e), X&gt; where E>=Exception... except);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
@@ -2164,7 +2164,7 @@ except (SomethingElseWrong sew) {
         
         <programlisting>public static
 void select&lt;X&gt;(X selector),
-               cases Entry&lt;Case&lt;X&gt;, () produce X&gt;... value);</programlisting>
+               cases Entry&lt;Case&lt;X&gt;, F&lt;(), X&gt;&gt;... value);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
