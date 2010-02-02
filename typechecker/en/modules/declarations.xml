@@ -189,9 +189,13 @@ VarargsParam?
         <para>The parameter names in a functor type declaration do not affect assignability
         of the functor type. They are used when the functor is invoked using named parameters.</para>
         
-        <comment><para>TODO: is <literal>F&lt;(X x,X y),Comparison&gt;</literal> a good syntax?
-        How about <literal>&lt;Comparison(X x,X y)&gt;</literal>?</para></comment>
+        <comment><para>TODO: is this a good syntax? How about this:</para></comment>
     
+        <programlisting>functor Comparison(X x, X y)</programlisting>
+        <programlisting>functor Boolean(Payment payment)</programlisting>
+        <programlisting>functor void(Y element)</programlisting>
+        <programlisting>functor optional Object()</programlisting>
+        <programlisting>functor Y(optional Y object, Factory&lt;Y&gt; factory)</programlisting>
     </section>
 
     <section>
