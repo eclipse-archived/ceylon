@@ -806,10 +806,7 @@ TypeConstraints?
 
         <!--A method body may omit the braces if it consists of exactly one statement.-->
         
-        <para>
-        If there is no method body, and the method is not declared <literal>abstract</literal>, 
-        the method throws <literal>UnsupportedMethodException</literal> when invoked.
-        </para>
+        <para>If there is no method body, the method must be declared <literal>abstract</literal>.</para>
         
          <!--  
         <para>
