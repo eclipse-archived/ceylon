@@ -31,22 +31,22 @@ block
 //annotations on local  declarations to be keywords
 localOrStatement
     : //'local' local
-      (declarationStart) => annotation* localDeclaration
+      (declarationStart) => annotation* localDeclaration ';'
     | statement
     ;
 
 localDeclaration
-    :  type LIDENTIFIER initializer? ';'
+    :  type LIDENTIFIER initializer?
     ;
 
 inlineClassDeclaration
-	:	
-	'inline' annotation*
-	UIDENTIFIER ('.' UIDENTIFIER*)
-	arguments
-	'{' memberOrStatement* '}'
-	;
-	
+    :   
+    'new' annotation*
+    UIDENTIFIER ('.' UIDENTIFIER*)
+    arguments
+    '{' memberOrStatement* '}'
+    ;
+    
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 memberOrStatement
@@ -91,9 +91,12 @@ functorBody
 //FIXME: this rule is a bit of a mess
 statement 
     :  //assignable ';'
+    (
        ( '++' | '--' )? 
        primary 
        ( '++' | '--' | assignmentOp assignable | specialFunctorArguments)? ';'
+    )
+    | controlStructure
     ;
 
 directiveStatement
@@ -137,14 +140,14 @@ decoratorDeclaration
     ;
 
 converterDeclaration
-	:	
+    :   
         'converter'
         type
         UIDENTIFIER
         typeParameters?
         typeConstraints?
         '(' annotation* type LIDENTIFIER ')'
-	;
+    ;
 
 interfaceDeclaration
     :
@@ -213,7 +216,7 @@ regularType
     ;
 
 functorType
-    :   'functor' '<' formalParameters ',' (type|'void') '>'
+    :   'F' '<' formalParameters ',' (type|'void') '>'
     ;
 
 annotation 
@@ -241,7 +244,7 @@ typeParameters
     ;
 
 initializer
-    : '=' assignable
+    : ('=' | ':=') assignable
     ;
 
 literal
@@ -287,14 +290,14 @@ assignable
 
 //This one is for use as a functor body
 simpleAssignable 
-	: enumeration	
-	| simpleExpression
-	;
+    : enumeration   
+    | simpleExpression
+    ;
 
 //This one is fully general
 //should we reall allow assigments here???
 expression
-	: inlineClassDeclaration
+    : inlineClassDeclaration
     | implicationExpression (assignmentOp assignable | specialFunctorArguments)?
         /*    | '{' expression ';' (expression ';')* '}' */
     ;
@@ -307,7 +310,7 @@ simpleExpression
     ;
     
 assignmentOp
-    : '=' 
+    : ':=' 
     | '+=' 
     | '-=' 
     | '*=' 
@@ -416,8 +419,8 @@ base
     ;
 
 enumeration
-    	: '{' assignable (',' assignable)* '}'
-    	;
+    : '{' assignable (',' assignable)* '}'
+    ;
 
 selector 
     : selectorOp identifier
@@ -434,14 +437,14 @@ selectorOp
     ;
 
 elementSelector
-	: 
-	'[' elementsSpec ']'
-	;
+    : 
+    '[' elementsSpec ']'
+    ;
 
 elementsSpec
         :  
            assignable ( '...' | (',' assignable)* | '..' assignable )
-        |  '...' assignable	
+        |  '...' assignable 
         ;
 
 arguments 
@@ -488,6 +491,74 @@ formalParameters
 // list in a later pass of the compiler.
 formalParameter
     :   annotation* type LIDENTIFIER ( ('->'|'..') type LIDENTIFIER )? (initializer | '...')?
+    ;
+
+// Control structures.
+
+controlStructure
+    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally ;
+    
+ifElse
+    : 'if' '(' expression ')' block ('else' block)?
+    ;
+    
+switchCaseElse
+    : 'switch' '(' expression ')' '{' cases '}'
+    ;
+    
+cases 
+    : caseNull caseStmt+ caseElse?
+    ;
+    
+caseNull
+    : 'case' 'null' block
+    ;
+    
+caseStmt 
+    : 'case' '(' caseExprs ')' block
+    ;
+    
+caseExprs
+    : expression (',' expression)*
+    ;
+    
+caseElse
+    : 'else' block
+    ;
+    
+forFail
+    : 'for' '(' forIterator ')' block ('fail' block)?
+    ;
+    
+forIterator
+    : controllingVariable 'in' simpleExpression
+    ;
+    
+controllingVariable
+    : annotation* type LIDENTIFIER ( ('->'|'..') type LIDENTIFIER )?
+    ;
+    
+doWhile
+    :   
+    ('do' ('(' doIterator ')')? block? )?  
+    'while' '(' expression ')' (block | ';')
+    ;
+
+doIterator
+    :   
+    localDeclaration
+    ;
+
+tryCatchFinally
+    :
+    'try' ('(' resource ')')?
+    block
+    ('catch' '(' localDeclaration ')' block)*
+    ('finally' block)?
+    ;
+    
+resource:   
+    localDeclaration | expression
     ;
 
 // Lexer
@@ -573,14 +644,14 @@ RIGHTSTRINGLITERAL
 
 fragment
 NonStringChars
-    	:    '$' | '{' | '\\' | '"'
-    	;
+    :    '$' | '{' | '\\' | '"'
+    ;
 
 fragment
 StringPart
-	:    ( ~ NonStringChars | EscapeSequence) *
-	;
-	
+    :    ( ~ NonStringChars | EscapeSequence) *
+    ;
+    
 fragment
 EscapeSequence 
     :   '\\' (
@@ -885,9 +956,17 @@ PLUSEQ
     :   '+='
     ;
     
+COLONEQ
+    :   ':='
+    ;
+    
+F
+    :   'F'
+    ;
+    
 CONVERTER
-	:  'converter'
-	;
+    :  'converter'
+    ;
     
 LIDENTIFIER 
     :   LIdentifierPart IdentifierPart*
