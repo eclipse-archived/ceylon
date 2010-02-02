@@ -152,8 +152,8 @@
         readable value.</para>
         
         <programlisting>public interface Value&lt;T&gt; {
-    public F&lt;(), T&gt; get;
-    public onGet( F&lt;(T t), T&gt; interceptor );
+    public functor T() get;
+    public onGet( functor T(T value) interceptor );
 }</programlisting>
 
         <para>The interface <literal>OpenValue</literal> models 
@@ -161,8 +161,8 @@
         
         <programlisting>public interface OpenValue&lt;T&gt; 
         satisfies Value&lt;T&gt; {
-    public (T) void set;
-    public onSet( F&lt;(T t), T&gt; interceptor );
+    public functor void(T value) set;
+    public onSet( functor T(T value) interceptor );
 }</programlisting>
 
     </section>
@@ -201,13 +201,13 @@
     public Type&lt;T&gt; attributeType;
     public boolean mutable;
     public Value&lt;T&gt; curry(X instance);
-    public onGet( F&lt;(X x,T t), T&gt; interceptor );
+    public onGet( functor T(X instance, T value) interceptor );
 }</programlisting>
                 
         <programlisting>public interface MutableAttribute&lt;X,T&gt;
         satisfies Attribute&lt;X,T&gt; {
     public override OpenValue&lt;T&gt; curry(X instance);
-    public onSet( F&lt;(X x,T t), T&gt; interceptor );
+    public onSet( functor T(X instance,T value) interceptor );
 }</programlisting>
                 
     </section>
@@ -603,7 +603,7 @@
     public X removeLast();
     
     public void reverse();
-    public void sort(F<(X x, X y), Comparison> compare);
+    public void sort(functor Comparison(X x, X y) compare);
     
     public OpenList<X> sublist(Integer from, Integer to);
     
@@ -983,56 +983,56 @@
         
     doc "Evaluate the block. Useful for turning a series
          of statements into an expression."
-    public static X evaluate<X>(F<(), X> do) { ... }
+    public static X evaluate<X>(functor X() do) { ... }
 
     doc "Assert that the block evaluates to true. The block 
          is executed only when assertions are enabled."
-    public static void assert(F<(), Boolean> evaluate) { ... }
+    public static void assert(functor Boolean() evaluate) { ... }
 
     doc "If the condition is true, evaluate first block,
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifTrue<Y>(Boolean condition,
-                                       F<(), Y> then) 
+                                       functor Y() then) 
                              { ... }
 
     doc "If the condition is true, evaluate first block,
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifTrue<Y>(Boolean condition,
-                              F<(), Y> then, 
-                              F<(), Y> otherwise) 
+                              functor Y() then, 
+                              functor Y() otherwise) 
                     { ... }
 
     doc "If the value is non-null, evaluate first block,
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifExists<X,Y>(specified optional X value,
-                                           coordinated F<(X x), Y> then) 
+                                           coordinated functor Y(X x) then) 
                              { ... }
 
     doc "If the value is non-null, evaluate first block,
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifExists<X,Y>(specified optional X value,
-                                  coordinated F<(X x), Y> then, 
-                                  F<(), Y> otherwise) 
+                                  coordinated functor Y(X x) then, 
+                                  functor Y() otherwise) 
                     { ... }
 
     doc "Iterate elements and return those for which the first
          block evaluates to true, ordered using the second block,
          if specified."
     public static List<X> from<X>(iterated Iterable<X> elements,
-                                  coordinated F<(X x), Boolean> having,
-                                  optional coordinated F<(X x), Comparable> by = null) 
+                                  coordinated functor Boolean(X x) having,
+                                  optional coordinated functor Comparison(X x) by = null) 
                           { ... }
 
     doc "Iterate elements and for each element evaluate the first block. 
          Build a list of the resulting values, ordered using the second 
          block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
-                                    coordinated F<(X x), Y> select,
-                                    optional coordinated F<(X x), Comparable> by = null) 
+                                    coordinated functor Y(X x) select,
+                                    optional coordinated functor Comparable(X x) by = null) 
                           { ... }
 
     doc "Iterate elements and select those for which the first block 
@@ -1040,46 +1040,46 @@
          Build a list of the resulting values, ordered using the third 
          block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
-                                    coordinated F<(X x), Boolean> having, 
-                                    coordinated F<(X x), Y> select,
-                                    optional coordinated F<(X x), Comparable> by = null) 
+                                    coordinated functor Boolean(X x) having, 
+                                    coordinated functor Y(X x) select,
+                                    optional coordinated functor Comparable(X x) by = null) 
                           { ... }
 
     doc "Return the first element for which the block evaluates to true,
          or a null value if no such element is found."
     public static optional X first<X>(iterated Iterable<X> elements,
-                                      coordinated F<(X x), Boolean> having) 
+                                      coordinated functor Boolean(X x) having) 
                              { ... }
     
     doc "Return the first element for which the first block evaluates to 
          true, or the result of evaluating the second block, if no such
          element is found."
     public static X first<X>(iterated Iterable<X> elements,
-                             coordinated F<(X x), Boolean> having
-                             F<(), X> otherwise) 
+                             coordinated functor Boolean(X x) having
+                             functor X() otherwise) 
                     { ... }
     
     doc "Count the elements for with the block evaluates to true."
     public static Integer count<X>(iterated Iterable<X> elements,
-                                   coordinated F<(X x), Boolean> having) 
+                                   coordinated functor Boolean(X x) having) 
                           { ... }
     
     doc "Return true iff for every element, the block evaluates to true."
     public static Boolean forAll<X>(iterated Iterable<X> elements,
-                                    coordinated F<(X x), Boolean> every) 
+                                    coordinated functor Boolean(X x) every) 
                           { ... }
 
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                    coordinated F<(X x), Boolean> some) 
+                                    coordinated functor Boolean(X x) some) 
                           { ... }
     
     doc "Using the given resource, attempt to evaluate the first block.
          If an exception occurs, and there is a matching block, evaluate
          the exception block."
     public static Y using<X,Y>(specified X resource,
-                               coordinated F<(X x), Y> seek,
-                               F<(E e), Y> where E>=Exception... except)
+                               coordinated functor Y(X x) seek,
+                               functor Y(E e) where E>=Exception... except)
                     where X >= Usable { ... }
 
 }]]></programlisting>
