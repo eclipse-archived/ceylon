@@ -176,9 +176,11 @@ VarargsParam?
         <programlisting>FunctorType := "F" "&lt;" FunctorParams "," (Annotation* Type | "void") "&gt;"</programlisting>
         -->
         
-        <programlisting>FunctorType := "functor" Annotation* (Type | "void") FunctorParams</programlisting>
+        <programlisting>FunctorType := "functor" Annotation* (Type | "void") FormalParams</programlisting>
         
+        <!-- 
         <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
+        -->
         
         <para>The parameter names in a functor type declaration do not affect assignability
         of the functor type. They are used when the functor is invoked using named parameters.</para>

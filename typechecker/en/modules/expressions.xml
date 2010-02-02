@@ -333,7 +333,7 @@ if you prefer.";</programlisting>
         <programlisting>Method&lt;Person, (String) void&gt;&gt; sayMethod = Person#say;</programlisting>
         
         <para>Note that the <literal>#</literal> curry operator may also be applied to an 
-        arbitrary expression, to obtain a <literal>Callable&lt;functor R(P p,Q q,...)&gt;</literal> 
+        arbitrary expression, to obtain a <literal>Callable&lt;functor R(P p, Q q,...)&gt;</literal> 
         where <literal>P p, Q q,...</literal> are the method parameter types and <literal>R</literal> 
         is the method return type, or a <literal>Value&lt;T&gt;</literal> or 
         <literal>OpenValue&lt;T&gt;</literal> where <literal>T</literal> is the attribute 
@@ -1901,7 +1901,7 @@ if you prefer.";</programlisting>
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression := FunctorParams OpenBlock</programlisting>
+        <programlisting>FunctorExpression := ( "functor" ( Annotation* (Type | "void") )? )? FormalParams OpenBlock</programlisting>
         
         <para>A functor body may not contain a <literal>return</literal> directive. If the 
         functor body is a block, the value of the functor, when executed, is determined by 
@@ -1909,6 +1909,8 @@ if you prefer.";</programlisting>
                 
         <para>For example:</para>
         
+        <programlisting>functor Comparison(Float x,Float y) order = functor Comparison(Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+
         <programlisting>functor Comparison(Float x,Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
@@ -1999,7 +2001,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         Each of these arguments is a functor expression, where the functor parameter list may 
         be omitted for functors with no parameters:</para>
         
-        <programlisting>SimpleFunctorExpression := FunctorLocals? OpenBlock</programlisting>
+        <programlisting>SimpleFunctorExpression := ( (Type | "void")? FormalParams )? OpenBlock</programlisting>
         
         <para>For example:</para>
         
