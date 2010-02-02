@@ -1935,6 +1935,9 @@ if you prefer.";</programlisting>
 
         <programlisting>Comparison result = order.call("Gavin", "Emmanuel");</programlisting>
         
+        <para>Functors may refer to immutable locals and members of the
+        containing class. They may not refer to mutable locals.</para>
+    
         <para>The following code:</para>
         
         <programlisting>(0..10).each( (Integer num) log.info(num) );</programlisting>
@@ -1947,9 +1950,6 @@ if you prefer.";</programlisting>
             ParentClass.this.log.info(num); 
         } 
     } );</programlisting>
-    
-        <para>Functors may refer to immutable locals and members of the
-        containing class. They may not refer to mutable locals.</para>
     
         <para>This code:</para>
         
