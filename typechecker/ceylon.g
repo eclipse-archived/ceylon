@@ -416,9 +416,7 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : // This doesn't do anything ATM.
-      rangeIntervalEntryExpression
-      //dateCompositionExpression ('exists' | 'nonempty')?
+    : dateCompositionExpression ('exists' | 'nonempty')?
     ;
 
 //I wonder if it would it be cleaner to give 
