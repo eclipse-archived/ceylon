@@ -553,12 +553,13 @@ formalParameter
 
 // Backtracking here is needed for exactly the same reason as localOrStatement.
 condition
-    : ('exists' | 'nonempty')? (expression | type memberName initializer)
+    : ('exists' | 'nonempty')? (expression | variable initializer)
     | 'is' type ((memberName initializer) => memberName initializer | expression)
     ;
 	
 controlStructure
-    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally;
+    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
+    ;
     
 ifElse
     : 'if' '(' condition ')' block ('else' block)?
@@ -591,9 +592,10 @@ caseElse
 forFail
     : 'for' '(' forIterator ')' block ('fail' block)?
     ;
-    
+
+//TODO: check this!
 forIterator
-    : controllingVariable 'in' simpleExpression
+    : formalParameter //controllingVariable 'in' (expression|enumeration)
     ;
     
 controllingVariable
@@ -607,19 +609,23 @@ doWhile
     ;
 
 doIterator
-    : localDeclaration
+    : variable initializer
     ;
 
 tryCatchFinally
     :
     'try' ('(' resource ')')?
     block
-    ('catch' '(' localDeclaration ')' block)*
+    ('catch' '(' variable ')' block)*
     ('finally' block)?
     ;
     
 resource
-    : localDeclaration | expression
+    : variable specifier | expression
+    ;
+
+variable
+    : type memberName
     ;
 
 // Lexer
