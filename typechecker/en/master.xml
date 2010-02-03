@@ -57,6 +57,11 @@
             XML,</para>
         </listitem>
         <listitem>
+            <para>to support and encourage a more functional style of programming 
+            with immutable objects and first class functions, alongside the
+            familiar imperative mode,</para>
+        </listitem>
+        <listitem>
             <para>to improve compile-time typesafety using special handling for 
             null values,</para>
         </listitem>

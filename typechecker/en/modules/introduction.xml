@@ -29,9 +29,9 @@
     Nullable locals and attributes must be explicitly declared using the 
     <literal>optional</literal> annotation. Nullable expressions are not 
     assignable to non-<literal>optional</literal> locals or attributes, 
-    except via use of the <literal>if (exists ... )</literal> construct. Thus, 
-    the Ceylon compiler is able to detect illegal use of a null value at 
-    compile time. Therefore, there is no equivalent to Java's 
+    except via use of the <literal>if (exists ... )</literal> construct. 
+    Thus, the Ceylon compiler is able to detect illegal use of a null value 
+    at compile time. Therefore, there is no equivalent to Java's 
     <literal>NullPointerException</literal> in Ceylon.
     </para>
     
@@ -61,14 +61,15 @@
     </para>
     
     <para>
-    Ceylon control flow structures are significantly enhanced versions of the
-    traditional constructs found in C, C# and Java, including features inspired 
-    by Python. <!--Unlike C or Java, Ceylon's control flow structures may be used to 
-    produce a value, eliminating the need for many locals.-->
+    Ceylon control flow structures are enhanced versions of the traditional 
+    constructs found in C, C# and Java. Even better, Ceylon functors can be
+    used together with a special method invocation protocol to achieve more
+    specialized flow control and other more functional-style constructs such 
+    as comprehensions.
     </para>
     
     <para>
-    Ceylon features a large set of operators, including most of the operators 
+    Ceylon features a rich set of operators, including most of the operators 
     supported by C and Java. True operator overloading is not supported. However, 
     each operator is defined to act upon a certain class or interface type, 
     allowing application of the operator to any class which extends or implements 
@@ -78,8 +79,8 @@
     <para>
     True open classes are not supported. However, Ceylon supports 
     <emphasis>decorators</emphasis>, which allows addition of methods and 
-    interfaces to existing types, and overriding of existing methods. Decorators 
-    only affect the behavior of a type, not its state.
+    interfaces to existing types, within a textual scope.<!-- and overriding of existing methods.-->
+    Decorators only affect the operations provided by a type, not its state.
     </para>
     
     <para>
@@ -88,11 +89,11 @@
     </para>
     
     <para>
-    Ceylon introduces certain syntax extensions that support the definition 
+    Ceylon introduces a set of syntax extensions that support the definition 
     of domain-specific languages and expression of structured data. These 
-    syntax extensions include significantly improved support for expressing 
-    literal values, compared to Java. One application of this syntax is the 
-    support for Java/C# like code annotations.
+    extensions include specialized syntax for initializing objects and 
+    collections and expressing literal values. One application of this syntax 
+    is the support for Java/C#-like code annotations.
     </para>
     
     <para>
