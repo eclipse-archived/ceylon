@@ -45,7 +45,7 @@ localDeclaration
 
 inlineClassDeclaration
     : 'new' annotation*
-      UIDENTIFIER ('.' UIDENTIFIER*)
+      regularType
       arguments
       '{' memberOrStatement* '}'
     ;
@@ -275,7 +275,7 @@ userAnnotation
 
 typeName
     : //( identifier '.' )* 
-    UIDENTIFIER
+    UIDENTIFIER ('.' UIDENTIFIER)*
     ;
 
 annotationName
@@ -315,7 +315,7 @@ literal
 //FIXME: member literals are a problem!
 //FIXME: type parameters 
 typeLiteral
-    : '#' typeName //typeParameters?
+    : '#' typeName //'#' type
     ;
 
 stringLiteral
