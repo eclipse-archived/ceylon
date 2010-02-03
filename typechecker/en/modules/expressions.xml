@@ -12,10 +12,10 @@
         </listitem>
         <listitem>
             <para>invocations of methods, attributes and functors, and instantiations
-            of classes,</para>
+            of classes and enumerations,</para>
         </listitem>
         <listitem>
-            <para>operators and control expressions, and</para>
+            <para>operators, and</para>
         </listitem>
         <listitem>
             <para>functor expressions.</para>
