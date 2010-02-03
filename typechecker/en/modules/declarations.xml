@@ -452,6 +452,11 @@ class Customer(Name name, optional Organization org = null)
     private final Attribute&lt;Exact&gt; y = new SimpleAttribute&lt;Exact&gt;( new Exact(0.0) );
     public SimpleAttribute&lt;Exact&gt; y() { return y; }
 }</programlisting>
+
+        <comment><para>TODO: is this the right thing to say? Alternatively, we could say that 
+        classes without a parameter list can't have statements or initialized simple attributes
+        in the body of the class, and get the constructor automatically generated for the 
+        list of attributes.</para></comment>
         
         <para>A subclass must pass values to each superclass initialization 
         parameter.</para>
