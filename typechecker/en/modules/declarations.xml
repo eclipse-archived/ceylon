@@ -282,7 +282,7 @@ class Customer(Name name, optional Organization org = null)
 }</programlisting>
 
     <programlisting>public
-class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = none)
+class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = {})
     extends AbstractCollection&lt;Entry&lt;T&gt;&gt;(entries)
     satisfies Map&lt;T&gt; 
     where T >= Comparable 
