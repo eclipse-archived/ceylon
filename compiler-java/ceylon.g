@@ -417,7 +417,8 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : dateCompositionExpression ('exists' | 'nonempty')?
+    : // dateCompositionExpression ('exists' | 'nonempty')?
+    rangeIntervalEntryExpression
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -425,7 +426,6 @@ existenceEmptinessExpression
 rangeIntervalEntryExpression
     : dateCompositionExpression
       (('..'|'->') (/*(functorStart) => functor|*/enumeration|dateCompositionExpression))?
-      
     ;
 
 dateCompositionExpression
@@ -495,7 +495,7 @@ elementSelector
     ;
 
 elementsSpec
-        : assignable ( '...' | (',' assignable)* | '..' assignable )
+        : assignable ( '...' | (',' assignable)* )
         | '...' assignable 
         ;
 
@@ -551,11 +551,17 @@ formalParameter
 
 // Control structures.
 
+// Backtraking here is needed for exactly the same reason as localOrStatement.
+condition
+    : ('exists' | 'nonempty')? (expression | type memberName initializer)
+    | 'is' type ((memberName initializer) => memberName initializer | expression)
+    ;
+	
 controlStructure
     : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally ;
     
 ifElse
-    : 'if' '(' expression ')' block ('else' block)?
+    : 'if' '(' condition ')' block ('else' block)?
     ;
     
 switchCaseElse
@@ -597,7 +603,7 @@ controllingVariable
 doWhile
     :   
     ('do' ('(' doIterator ')')? block? )?  
-    'while' '(' expression ')' (block | ';')
+    'while' '(' condition ')' (block | ';')
     ;
 
 doIterator
