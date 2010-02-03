@@ -104,9 +104,9 @@ VarargsParam?
             
         <para>Defaulted parameters specify a default value.</para>
     
-        <programlisting>DefaultParam := FormalParam Initializer</programlisting>
+        <programlisting>DefaultParam := FormalParam Specifier</programlisting>
         
-        <programlisting>Initializer := "=" Expression</programlisting>
+        <programlisting>Specifier := "=" Expression</programlisting>
         
         <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
         
@@ -437,8 +437,8 @@ class Customer(Name name, optional Organization org = null)
         <para>Class initialization parameters are optional. The following class:</para>
         
         <programlisting>public mutable class Point {
-    public mutable Exact x = 0.0;
-    public mutable Exact y = 0.0;
+    public mutable Exact x := 0.0;
+    public mutable Exact y := 0.0;
 }</programlisting>
         
         <para>Is equivalent to this Java class with a default constructor:</para>
@@ -944,7 +944,9 @@ TypeConstraints?
         
         <programlisting>package mutable String firstName;</programlisting>
         
-        <programlisting>mutable Integer count = 0;</programlisting>
+        <programlisting>mutable Integer count := 0;</programlisting>
+        
+        <programlisting>public static Exact pi = calculatePi();</programlisting>
         
         <programlisting>public String name { return join(firstName, lastName); }
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>
@@ -1031,6 +1033,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         following:</para>
         
         <programlisting>SimpleAttribute := Annotation* Type LIdentifier Initializer? ";"</programlisting>
+        
+        <para>The value of an immutable attribute is specified using <literal>=</literal>. Mutable 
+        attributes may be initialized using <literal>:=</literal>.</para>
+
+        <programlisting>Initializer := ("="|":=") Expression</programlisting>
 
         <para>Formal parameters of classes, methods, decorators and converters are also considered
         to be simple attributes.</para>
@@ -1070,7 +1077,7 @@ Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
 
         <para>While:</para>
         
-        <programlisting>mutable Integer count = 0;</programlisting>
+        <programlisting>mutable Integer count := 0;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         

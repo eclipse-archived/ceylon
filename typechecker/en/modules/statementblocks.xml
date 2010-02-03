@@ -30,9 +30,6 @@
         
         <programlisting>Initialization := LIdentifier Initializer ";"</programlisting>
         
-        <comment><para>TODO: is it right to use <literal>=</literal> for initialization of a
-        mutable value?</para></comment>
-        
         <para>Blocks may contain declarations, which are, by default, only visible inside
         the block:</para>
         
@@ -175,10 +172,10 @@
         
        <programlisting>Condition := 
 ("exists" | "nonempty" | "is" Type)? Expression |  
-("exists" | "nonempty" | "is") Variable Initializer</programlisting>
+("exists" | "nonempty" | "is") Variable Specifier</programlisting>
         
         <!--
-        <programlisting>Condition := Expression | (Variable Initializer | Expression) ("exists" | "nonempty" | "is" Type)</programlisting>
+        <programlisting>Condition := Expression | (Variable Specifier | Expression) ("exists" | "nonempty" | "is" Type)</programlisting>
         -->
 
         <para>The semantics of a condition depend upon whether the <literal>exists</literal> or 
@@ -454,17 +451,19 @@ fail {
 ( "do" ("(" DoIterator ")")? OpenBlock? )?
 "while" "(" Condition ")" (";" | ClosedBlock)</programlisting>
 
+            <para>The loop may declare an iterator variable, which may be mutable.</para>
+
             <programlisting>DoIterator := Variable Initializer</programlisting>
             
             <!--programlisting>DoWhileFail := 
-( "do" ("(" Variable Initializer ")")? OpenBlock? )?
+( "do" ("(" Variable Specifier ")")? OpenBlock? )?
 "while" "(" Condition ("," Condition)* ")" 
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
-            <para>Both blocks are executed repeatedly, until the termination 
-            condition first evaluates to false, at which point iteration ends. In each 
-            iteration, the first block is executed before the condition is evaluated, 
-            and the second block is executed after it is evaluated.</para>
+            <para>Both blocks are executed repeatedly, until the termination condition 
+            first evaluates to false, at which point iteration ends. In each iteration, 
+            the first block is executed before the condition is evaluated, and the 
+            second block is executed after it is evaluated.</para>
             
             <comment><para>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
             but what is the real usecase?</para></comment>
@@ -477,7 +476,7 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>do (mutable Integer i=0) 
+            <programlisting>do (mutable Integer i:=0) 
     log.info("count = " + $i) 
 while (i&lt;=10) i++;</programlisting>
             
@@ -492,18 +491,20 @@ while (iter.more) {
     p.greet();
 }</programlisting>
             
-            <programlisting>while (exists Person parent = person.parent) {
+            <programlisting>mutable Person person := ....;
+while (exists Person parent = person.parent) {
     log.info(parent.name);
     person := parent;
 }</programlisting>
             
-            <programlisting>do {
+            <programlisting>mutable Person person := ....;
+do {
     log.info(person.name);
     person := person.parent;
 } 
 while (!person.dead);</programlisting>
             
-            <programlisting>do (Person person = ...) {
+            <programlisting>do (Person person := ...) {
     log.info(person.name);
 } 
 while (!person.parent.dead) {
@@ -556,7 +557,7 @@ while (!person.parent.dead) {
             
             <para>The resource expression must be of type <literal>Usable</literal>.</para>
             
-            <programlisting>Resource := Variable Initializer | Expression</programlisting>
+            <programlisting>Resource := Variable Specifier | Expression</programlisting>
             
             <para>When the construct is executed, <literal>begin()</literal> is called upon the 
             resource, the try block is executed, and then <literal>end()</literal> is called upon 

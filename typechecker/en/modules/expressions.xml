@@ -371,10 +371,10 @@ if you prefer.";</programlisting>
 
         <programlisting>NamedParamValues := "{" NamedParamValue* ( VarargParamValue ("," VarargParamValue)* )? "}"</programlisting>
 
-        <programlisting>NamedParamValue := LIdentifier Initializer ";"</programlisting>
+        <programlisting>NamedParamValue := LIdentifier Specifier ";"</programlisting>
 
-        <programlisting>VarargParamValue := Expression | Variable Initializer</programlisting>
-        <!--programlisting>VarargParamValue := Expression | Variable Initializer | ForComprehension</programlisting-->
+        <programlisting>VarargParamValue := Expression | Variable Specifier</programlisting>
+        <!--programlisting>VarargParamValue := Expression | Variable Specifier | ForComprehension</programlisting-->
         
         <para>A vararg parameter may be a local declaration. Multiple vararg parameters may be
         constructed using a <literal>for</literal> comprehension.</para>
@@ -2100,7 +2100,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         annotated <literal>specified</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference "(" Variable Initializer ")" FunctorParamValues</programlisting>
+        <programlisting>MemberReference "(" Variable Specifier ")" FunctorParamValues</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
