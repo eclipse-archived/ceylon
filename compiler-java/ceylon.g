@@ -201,6 +201,7 @@ aliasDeclaration
         'alias'
         typeName
         typeParameters?
+        satisfiedTypes?
         typeConstraints?
         ';'
     ;
