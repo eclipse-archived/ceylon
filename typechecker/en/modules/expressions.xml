@@ -546,7 +546,7 @@ if you prefer.";</programlisting>
             
             <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
             
-            <programlisting>List&lt;Connection&gt; connections = {};</programlisting>
+            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
                         
         </section>
             
