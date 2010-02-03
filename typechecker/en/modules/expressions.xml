@@ -1903,7 +1903,10 @@ if you prefer.";</programlisting>
     </table>
     
     <comment><para>TODO: should <literal>?</literal> have a higher precedence?</para></comment>
-            
+    
+    <comment><para>TODO: should <literal>^</literal> have a higher precedence than
+    <literal>|</literal>?</para></comment>
+    
     </section>
     
     </section>
