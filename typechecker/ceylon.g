@@ -47,6 +47,7 @@ inlineClassDeclaration
     : 'new' annotation*
       regularType
       arguments
+      satisfiedTypes?
       '{' memberOrStatement* '}'
     ;
     
