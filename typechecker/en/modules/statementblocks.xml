@@ -12,7 +12,7 @@
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
         method, attribute and local declarations, and control structures, surrounded 
         by braces. Some blocks end in a control directive. The statements, local 
-        initializers and control structures are executed sequentially.</para>
+        specifiers and control structures are executed sequentially.</para>
 
         <para>A <emphasis>statement</emphasis> is an assignment, an invocation of a 
         method or functor, an instantiation of a class, a control structure, a control 
@@ -20,15 +20,15 @@
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := ExpressionStatement | ControlStructure | Declaration | Initialization</programlisting>
+        <programlisting>Statement := ExpressionStatement | ControlStructure | Declaration | Specification</programlisting>
 
         <programlisting>ControlStatement := ControlDirective ";"</programlisting>
         
         <para>The Ceylon language distinguishes between assignment to a mutable value 
-        (the <literal>:=</literal> operator) and initialization of an local or attribute 
-        (using <literal>=</literal>).</para>
+        (the <literal>:=</literal> operator) and specification of the value of an 
+        immutable local or attribute (using <literal>=</literal>).</para>
         
-        <programlisting>Initialization := LIdentifier Initializer ";"</programlisting>
+        <programlisting>Specification := LIdentifier Specifier ";"</programlisting>
         
         <para>Blocks may contain declarations, which are, by default, only visible inside
         the block:</para>
@@ -190,20 +190,20 @@
             </listitem>
             <listitem>
                 <para>If the <literal>is</literal> modifier appears, the condition must be an 
-                expression or local initializer of type <literal>Object</literal>. The condition is 
-                satisfied if the expression or initializer evaluates to an instance of the specified 
+                expression or local specifier of type <literal>Object</literal>. The condition is 
+                satisfied if the expression or specifier evaluates to an instance of the specified 
                 type at runtime.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition must be an 
-                expression or local initializer of type <literal>optional Object</literal>. The
-                condition is satisfied if the expression or initializer evaluates to a non-null value
+                expression or local specifier of type <literal>optional Object</literal>. The
+                condition is satisfied if the expression or specifier evaluates to a non-null value
                 at runtime.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
-                expression or local initializer of type <literal>optional Container</literal>. The
-                condition is satisfied if the expression or initializer evaluates to a non-null value
+                expression or local specifier of type <literal>optional Container</literal>. The
+                condition is satisfied if the expression or specifier evaluates to a non-null value
                 at runtime, and if the resulting <literal>Container</literal> is non-empty.</para>
             </listitem>
         </itemizedlist>
@@ -212,9 +212,9 @@
         
         <itemizedlist>
             <listitem>
-                <para>if the condition is a local variable initializer, the local variable may be
+                <para>if the condition is a local variable specifier, the local variable may be
                 declared without the <literal>optional</literal> annotation, even though the 
-                initializer expression is of type <literal>optional</literal>, or</para>
+                specifier expression is of type <literal>optional</literal>, or</para>
             </listitem>
             <listitem>
                 <para>if the condition is a local variable, the local will be treated by the compiler 
@@ -227,8 +227,8 @@
         
         <itemizedlist>
             <listitem>
-                <para>if the condition is a local variable initializer, the local variable may be
-                declared with the specified type, even though the initializer expression is not of 
+                <para>if the condition is a local variable specifier, the local variable may be
+                declared with the specified type, even though the specifier expression is not of 
                 that type, or</para>
             </listitem>
             <listitem>

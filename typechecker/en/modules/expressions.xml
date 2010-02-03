@@ -2104,7 +2104,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
-        declare its parameter. Instead, its parameter is declared by the initializer.</para>
+        declare its parameter. Instead, its parameter is declared by the specifier.</para>
         
         <para>For example, for the following method declaration:</para>
         

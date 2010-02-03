@@ -106,6 +106,8 @@ VarargsParam?
     
         <programlisting>DefaultParam := FormalParam Specifier</programlisting>
         
+        <para>The <literal>=</literal> specifier is used to indicate a value which does not change.</para>
+        
         <programlisting>Specifier := "=" Expression</programlisting>
         
         <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
@@ -536,7 +538,7 @@ class Customer(Name name, optional Organization org = null)
             
         <para>
         When a class with an defaulted parameter is instantiated, and a value is not assigned to the
-        defaulted parameter by the caller, the default value specified by the initializer is used.
+        defaulted parameter by the caller, the default value defined by the specifier is used.
         </para>
         
         <para>This class:</para>
@@ -842,7 +844,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>Methods with defaulted parameters may not be overloaded.</para>
         
         <para>When a method with a defaulted parameter is called, and a value is not assigned to 
-        the defaulted parameter by the caller, the default value specified by the initializer is 
+        the defaulted parameter by the caller, the default value defined by the specifier is 
         used.</para>
         
         <para>This method:</para>
@@ -1035,7 +1037,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <programlisting>SimpleAttribute := Annotation* Type LIdentifier Initializer? ";"</programlisting>
         
         <para>The value of an immutable attribute is specified using <literal>=</literal>. Mutable 
-        attributes may be initialized using <literal>:=</literal>.</para>
+        attributes may be initialized using the assignment operator <literal>:=</literal>.</para>
 
         <programlisting>Initializer := ("="|":=") Expression</programlisting>
 
