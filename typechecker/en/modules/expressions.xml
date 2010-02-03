@@ -34,12 +34,12 @@
     <programlisting>Literal :=
 DateLiteral | TimeLiteral
 IntegerLiteral | FloatLiteral |
-CharacterLiteral
-StringLiteral | RegexLiteral |
-"this" | "super" | "null"</programlisting>
+CharacterLiteral | StringLiteral | RegexLiteral |
+"this" | "super" | "null" | "none"</programlisting>
 
     <para>The keywords <literal>this</literal>, <literal>super</literal> and 
-    <literal>null</literal> are equivalent to the Java forms.</para>
+    <literal>null</literal> are equivalent to the Java forms. The keyword
+    <literal>none</literal> represents an empty enumeration.</para>
     
     <!--
     <section>
@@ -547,6 +547,13 @@ if you prefer.";</programlisting>
             <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
             
             <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
+            
+            <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
+            for a special value that can be assigned to any enumeration type.</para>
+            
+            <comment><para>Note: <literal>none</literal> can appear as a LHS, or serve as a 
+            functor body, whereas <literal>{ ... }</literal> can only appear as a RHS (unless 
+            surrounded by parentheses).</para></comment>
                         
         </section>
             
@@ -1987,6 +1994,9 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         } 
     } );</programlisting>
     
+        <comment><para>Note: a functor expression can only appear as a RHS (or surrounded by
+        parentheses).</para></comment>
+                        
         <section id="functorparametersyntax">
         <title>Syntax extension for functor parameters</title>
         
@@ -1995,7 +2005,8 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <programlisting>MemberReference OrderedParamValues FunctorParamValues</programlisting>
         
-        <para>After the list of ordered parameters, a named list of functor parameters may be specified:</para>
+        <para>After the list of ordered parameters, a named list of functor parameters may be 
+        specified:</para>
         
         <programlisting>FunctorParamValues := (LIdentifier SimpleFunctorExpression)*</programlisting>
         
