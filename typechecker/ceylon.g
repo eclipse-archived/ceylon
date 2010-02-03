@@ -536,25 +536,28 @@ positionalArguments
     ;
 
 formalParameters
-    : '(' (formalParameter (',' formalParameter)*)? ')'
+    : '(' (formalParameterSpec (',' formalParameterSpec)*)? ')'
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
+formalParameterSpec
+    : formalParameter (specifier | '...')?
+    ;
+
 formalParameter
-    : annotation* type
-      parameterName ( ('->'|'..') type parameterName )? 
-      (specifier | '...')?
+    : annotation* type parameterName 
+      ( '->' type parameterName | '..' parameterName )?
     ;
 
 // Control structures.
 
 // Backtracking here is needed for exactly the same reason as localOrStatement.
 condition
-    : ('exists' | 'nonempty')? (expression | variable initializer)
-    | 'is' type ((memberName initializer) => memberName initializer | expression)
+    : ('exists' | 'nonempty')? ( (declarationStart) => variable specifier | expression )
+    | 'is' type ( (memberName '=') => memberName specifier | expression )
     ;
 	
 controlStructure
@@ -593,9 +596,8 @@ forFail
     : 'for' '(' forIterator ')' block ('fail' block)?
     ;
 
-//TODO: check this!
 forIterator
-    : formalParameter //controllingVariable 'in' (expression|enumeration)
+    : formalParameter 'in' (expression|enumeration)
     ;
     
 controllingVariable
@@ -621,11 +623,12 @@ tryCatchFinally
     ;
     
 resource
-    : variable specifier | expression
+    : (declarationStart) => variable specifier 
+    | expression
     ;
 
 variable
-    : type memberName
+    : annotation* type memberName
     ;
 
 // Lexer
