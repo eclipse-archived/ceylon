@@ -8,6 +8,7 @@ options {
 compilationUnit
     : (importDeclaration)*
       (annotation* toplevelDeclaration)+
+      EOF
     ;
     
 toplevelDeclaration
@@ -15,10 +16,11 @@ toplevelDeclaration
     | interfaceDeclaration 
     | converterDeclaration 
     | decoratorDeclaration
+    | aliasDeclaration
     ;
 
 importDeclaration  
-    : 'import' importElement ('.' importElement)* ('.' '*')? ';'
+    : 'import' importElement ('.' importElement)* ('.' '*' | 'alias' typeName)? ';'
     ;
     
 importElement
@@ -33,7 +35,7 @@ block
 //local declarations to begin with a keyword
 localOrStatement
     : //'local' annotation* localDeclaration
-     (declarationStart) => annotation* localDeclaration
+      (declarationStart) => annotation* localDeclaration
     | statement
     ;
 
@@ -41,6 +43,13 @@ localDeclaration
     : type memberName initializer? ';'
     ;
 
+inlineClassDeclaration
+    : 'new' annotation*
+      UIDENTIFIER ('.' UIDENTIFIER*)
+      arguments
+      '{' memberOrStatement* '}'
+    ;
+    
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 memberOrStatement
@@ -107,10 +116,7 @@ statement
     : //assignable ';'
       postfixExpression 
       (assignmentOp assignable | specialFunctorArguments)? ';'
-    ;
-
-assignmentExpresson
-    :
+    | controlStructure
     ;
 
 directiveStatement
@@ -128,7 +134,7 @@ directive
 // what I have here now allows method and attribute bodies 
 // to omit the braces, just like functor bodies. The cost
 // of doing that was the need to add a predicate, and we're
-//still not sure if we really want this feature
+// still not sure if we really want this feature
 memberDeclaration
     : voidMethod | methodOrGetter | setter
     ;
@@ -171,14 +177,14 @@ decoratorDeclaration
     ;
 
 converterDeclaration
-    :	
+    :
         'converter'
         type
         typeName
         typeParameters?
         typeConstraints?
         '(' annotation* type parameterName ')'
-	;
+    ;
 
 interfaceDeclaration
     :
@@ -188,6 +194,16 @@ interfaceDeclaration
         satisfiedTypes?
         typeConstraints?
         '{' memberStub* '}'
+    ;
+
+aliasDeclaration
+    :
+        'alias'
+        typeName
+        typeParameters?
+        satisfiedTypes?
+        typeConstraints?
+        ';'
     ;
 
 memberStub
@@ -241,17 +257,13 @@ type
     : regularType | functorType
     ;
 
-regularType 
+regularType
     : typeName typeParameters?
-    ;	
+    ;
 
-/*functorType 
-    : '<' formalParameters ',' annotation* (type|'void') '>'
-    ;	specialFunctor
-*/
-functorType 
+functorType
     : 'functor' annotation* (type|'void') formalParameters
-    ;	
+    ;
 
 annotation 
     : declarationModifier | userAnnotation
@@ -279,9 +291,9 @@ typeParameters
     : '<' type (',' type)* '>'
     ;
 
-//for locals and attributs
+//for locals and attributes
 initializer
-    : ('='|':=') assignable
+    : ('=' | ':=') assignable
     ;
 
 //for parameters
@@ -293,10 +305,10 @@ literal
     : INTLITERAL
     | FLOATLITERAL
     | CHARLITERAL
-    | DATELITERAL 
+    | DATELITERAL
     | TIMELITERAL
+    | REGEXPLITERAL
     | stringLiteral
-//    | enumeration
     | typeLiteral
     ;   
 
@@ -308,7 +320,7 @@ typeLiteral
 
 stringLiteral
     : SIMPLESTRINGLITERAL
-        /* | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL  */
+    | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
     ;
 
 //This one is fully general
@@ -350,7 +362,7 @@ simpleExpression
     ;
     
 assignmentOp
-    : '=' 
+    : '=' //not really an assignment operator, but can be used to init locals
     | ':='
     | '+=' 
     | '-=' 
@@ -404,7 +416,9 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : dateCompositionExpression ('exists' | 'nonempty')?
+    : // This doesn't do anything ATM.
+      rangeIntervalEntryExpression
+      //dateCompositionExpression ('exists' | 'nonempty')?
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -429,11 +443,8 @@ multiplicativeExpression
       (('*' | '/' | '%') exponentiationExpression)*
     ;
 
-// FIXME: The spec says ** should be left-associative, but it's
-// conventionally right-associative, which is what I've done here.
 exponentiationExpression
-    : postfixExpression 
-      ('**' exponentiationExpression)?
+    : postfixExpression ('**' postfixExpression)?
     ;
 
 postfixExpression
@@ -454,7 +465,7 @@ base
     | memberName
     | literal
     | parExpression
-    //| enumerationInstantiation 
+    //| enumeration
     | 'this' 
     | 'super' 
     | 'null'
@@ -538,6 +549,81 @@ formalParameter
       (specifier | '...')?
     ;
 
+// Control structures.
+
+// Backtracking here is needed for exactly the same reason as localOrStatement.
+condition
+    : ('exists' | 'nonempty')? (expression | type memberName initializer)
+    | 'is' type ((memberName initializer) => memberName initializer | expression)
+    ;
+	
+controlStructure
+    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally ;
+    
+ifElse
+    : 'if' '(' condition ')' block ('else' block)?
+    ;
+    
+switchCaseElse
+    : 'switch' '(' expression ')' '{' cases '}'
+    ;
+    
+cases 
+    : caseNull caseStmt+ caseElse?
+    ;
+    
+caseNull
+    : 'case' 'null' block
+    ;
+    
+caseStmt 
+    : 'case' '(' caseExprs ')' block
+    ;
+    
+caseExprs
+    : expression (',' expression)*
+    ;
+    
+caseElse
+    : 'else' block
+    ;
+    
+forFail
+    : 'for' '(' forIterator ')' block ('fail' block)?
+    ;
+    
+forIterator
+    : controllingVariable 'in' simpleExpression
+    ;
+    
+controllingVariable
+    : annotation* type LIDENTIFIER ( ('->'|'..') type LIDENTIFIER )?
+    ;
+    
+doWhile
+    :   
+    ('do' ('(' doIterator ')')? block? )?  
+    'while' '(' condition ')' (block | ';')
+    ;
+
+doIterator
+    :   
+    localDeclaration
+    ;
+
+tryCatchFinally
+    :
+    'try' ('(' resource ')')?
+    block
+    ('catch' '(' localDeclaration ')' block)*
+    ('finally' block)?
+    ;
+    
+resource
+    :   
+    localDeclaration | expression
+    ;
+
 // Lexer
 
 INTLITERAL
@@ -581,7 +667,6 @@ Exponent
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
-
 CHARLITERAL
     :   '\'' 
         (    ~( '\'' | '\r' | '\n' | '\\')
@@ -590,36 +675,45 @@ CHARLITERAL
         '\''
     ; 
 
-SIMPLESTRINGLITERAL
-    :   '"' 
-        (    ~( '\r' | '\n' | '"' | '\\')   
-        | EscapeSequence
-        )*
-        '"' 
-    ;
-
 /*
 
-// There soesn't seem to be any reasonable way to lex these.
+SIMPLESTRINGLITERAL
+    :   ('"' | '}$')
+        (    ~( '\r' | '\n' | '"' | '\\' | '$' | '{' )   
+        | EscapeSequence
+        )*
+        ('"' | '${')
+    ;
+*/
+
+SIMPLESTRINGLITERAL
+    :   ('"')
+        StringPart
+        ('"')
+    ;
 
 LEFTSTRINGLITERAL
     : '"'
-        (    ~( '\r' | '\n' | '"' | '\\')   
-        | EscapeSequence
-        )*
+        StringPart
         '${'
     ;
 
 RIGHTSTRINGLITERAL
-    : '}'
-        (    ~( '\r' | '\n' | '"' | '\\')   
-        | EscapeSequence
-        )*
+    : '}$'
+        StringPart
         '"'
     ;
 
-*/
+fragment
+NonStringChars
+    :    '$' | '{' | '\\' | '"'
+    ;
 
+fragment
+StringPart
+    :    ( ~ NonStringChars | EscapeSequence) *
+    ;
+    
 fragment
 EscapeSequence 
     :   '\\' (
@@ -629,9 +723,21 @@ EscapeSequence
         |   'f' 
         |   'r' 
         |   '\"' 
-        |   '\'' 
+        |   '\''
+        |   '$'
+        |   '{'
+        |   '}' 
         )          
     ;     
+
+REGEXPLITERAL
+    : '`' (~( '`' | '\\') | RegexEscapeSequence)* '`'
+    ;
+
+fragment
+RegexEscapeSequence
+    :    ('\\' ~ '\n')
+    ;
 
 WS  
     :   (
@@ -656,6 +762,20 @@ LINE_COMMENT
             skip();
         }
     ;   
+
+MULTI_COMMENT
+        :       '/*'
+                {
+                        $channel=HIDDEN;
+                }
+                (       ~('/'|'*')
+                        |       ('/' ~'*') => '/'
+                        |       ('*' ~'/') => '*'
+                        |       MULTI_COMMENT
+                )*
+                '*/'
+        ;
+
 
 ASSIGN
     :   'assign'
@@ -708,7 +828,6 @@ FOUND
 IF
     :   'if'
     ;
-    
 
 SATISFIES
     :   'satisfies'
