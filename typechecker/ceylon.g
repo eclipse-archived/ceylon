@@ -468,6 +468,7 @@ base
     | 'super' 
     | 'null'
     | 'none'
+    | inlineClassDeclaration
     ;
 
 enumeration
