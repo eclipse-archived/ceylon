@@ -17,6 +17,7 @@ toplevelDeclaration
     | interfaceDeclaration 
     | converterDeclaration 
     | decoratorDeclaration
+    | aliasDeclaration
     ;
 
 importDeclaration  
@@ -159,6 +160,15 @@ interfaceDeclaration
         '{' memberStub* '}'
     ;
 
+aliasDeclaration
+    :
+        'alias'
+        UIDENTIFIER
+        typeParameters?
+        typeConstraints?
+        ';'
+    ;
+
 memberStub
     :
         annotation*
@@ -255,6 +265,7 @@ literal
     | stringLiteral
     | dateLiteral
     | typeLiteral
+    | regexLiteral
     ;   
 
 //FIXME: member literals are a problem!
@@ -278,6 +289,10 @@ enumerationLiteral
 stringLiteral
     : SIMPLESTRINGLITERAL
        | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
+    ;
+
+regexLiteral
+    : '`' (~ '`' | '\\`')* '`'
     ;
 
 //This one is fully general
@@ -557,7 +572,8 @@ tryCatchFinally
     ('finally' block)?
     ;
     
-resource:   
+resource
+    :   
     localDeclaration | expression
     ;
 
@@ -603,7 +619,6 @@ fragment
 Exponent    
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
-
 
 CHARLITERAL
     :   '\'' 
