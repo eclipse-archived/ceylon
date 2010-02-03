@@ -207,9 +207,9 @@ class Hello(Request request)
 
         <para>This program demonstrates Ceylon's support for defining structured data,
         in this case, HTML. The <literal>Hello</literal> class extends Ceylon's
-        <literal>Html</literal> class and sets the values of its attributes. The 
-        <literal>page</literal> annotation specifies the URL at which this HTML should 
-        be accessible.</para>
+        <literal>Html</literal> class and initializes its <literal>head</literal> and
+        <literal>body</literal> attributes. The <literal>page</literal> annotation 
+        specifies the URL at which this HTML should be accessible.</para>
 
     </section>
     
