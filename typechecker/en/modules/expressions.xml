@@ -341,7 +341,7 @@ if you prefer.";</programlisting>
         
         <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
         <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
-        <programlisting>OpenList&lt;String&gt; list = none;</programlisting>
+        <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
         
     </section>
     
