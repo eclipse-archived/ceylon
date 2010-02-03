@@ -394,7 +394,9 @@ class Customer(Name name, optional Organization org = null)
         </para>
         
         <para>All non-<literal>optional</literal> attributes of the class must be explicitly
-        initialized somewhere in the body of the class definition.</para>
+        initialized somewhere in the body of the class definition, unless the class is declared
+        <literal>abstract</literal>, in which case they must be initialized within the body of
+        every subclass definition.</para>
         
         <para>This declaration:</para>
         
