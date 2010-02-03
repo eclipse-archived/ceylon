@@ -3,12 +3,10 @@ grammar ceylon;
 options {
     //backtrack=true;
     memoize=true;
-    //k=4;
 }
 
 compilationUnit
-    : 
-        (importDeclaration)*
+    : (importDeclaration)*
         (annotation* toplevelDeclaration)+
     ;
     
@@ -21,7 +19,11 @@ toplevelDeclaration
     ;
 
 importDeclaration  
-    : 'import' identifier ('.' identifier)* ('.' '*')? ';'
+    : 'import' importElement ('.' importElement)* ('alias' typeName)? ';'
+    ;
+    
+importElement
+    : LIDENTIFIER | UIDENTIFIER
     ;
 
 block
@@ -29,15 +31,15 @@ block
     ;
 
 //we could eliminate the backtracking by requiring
-//annotations on local  declarations to be keywords
+//local  declarations to be keywords
 localOrStatement
-    : //'local' local
+    : //'local' annotation* localDeclaration
       (declarationStart) => annotation* localDeclaration ';'
     | statement
     ;
 
 localDeclaration
-    :  type LIDENTIFIER initializer?
+    :  type memberName initializer?
     ;
 
 inlineClassDeclaration
@@ -51,25 +53,43 @@ inlineClassDeclaration
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 memberOrStatement
-    :  //modifier member
+    :  //modifier  annotation* ( memberDeclaration | toplevelDeclaration )
        (declarationStart) => annotation* ( memberDeclaration | toplevelDeclaration )
     |  statement
     ;
 
 //a normal functor expression
 functor 
-    : formalParameters functorBody
+    : ('functor' (annotation* (type|'void'))?)? formalParameters functorBody
     ;
 
 //shortcut functor expression that makes the parameter list 
 //optional
 specialFunctor 
-    : ( (formalParameterStart) => formalParameters )? functorBody
+    : ( (typeName | formalParameterStart) => (type|'void')? formalParameters )? functorBody
     ;
 
 //special rule for syntactic predicates
 declarationStart
-    :  annotation* (type|'assign'|'void') LIDENTIFIER
+    :  declarationModifier 
+    | ( userAnnotation annotation* )? (type|'assign'|'void') LIDENTIFIER
+    ;
+
+//by making these things keywords, we reduce the amount of
+//backtracking
+declarationModifier 
+    : 'public'
+    | 'package'
+    | 'module'
+    | 'override'
+    | 'optional'
+    | 'mutable'
+    | 'abstract'
+    | 'final'
+    | 'static'
+    | 'once'
+    | 'deprecated'
+    | 'volatile'
     ;
 
 //special rule for syntactic predicates
@@ -89,15 +109,14 @@ functorBody
 //Let's limit statements to things that make sense, like
 //Java does (we could allow any arbitrary expression if
 //we wanted to, but why?)
-//FIXME: this rule is a bit of a mess
+//Even though it looks like this is non-associative
+//assignment, it is actually right associative because
+//assignable can be an assignment
 statement 
     :  //assignable ';'
-    (
-       ( '++' | '--' )? 
-       primary 
-       ( '++' | '--' | assignmentOp assignable | specialFunctorArguments)? ';'
-    )
-    | controlStructure
+        postfixExpression 
+        (assignmentOp assignable | specialFunctorArguments)? ';'
+        | controlStructure
     ;
 
 directiveStatement
@@ -105,34 +124,51 @@ directiveStatement
     ;
 
 directive
-    : 'return' assignable 
+    : 'return' assignable? 
     | 'produce' assignable
     | 'throw' assignable 
     | 'break' 
     | 'found'
     ;
 
-// This is quite different from the grammar in the spec, but because
-// attributes and methods are syntactically very similar it makes
-// sense to recognize them in this way.  An attribute is a method with
-// no formalParameters.
-// FIXME: Allows "void foo" as an attribute declaration
+// what I have here now allows method and attribute bodies 
+// to omit the braces, just like functor bodies. The cost
+// of doing that was the need to add a predicate, and we're
+// still not sure if we really want this feature
 memberDeclaration
-    : ('assign' | type | 'void') LIDENTIFIER ( methodDefinition | attributeDefinition )
+    : voidMethod | methodOrGetter | setter
     ;
     
+methodOrGetter
+    : type memberName ( (typeParameterStart | formalParameterStart) => methodDefinition | attributeDefinition )
+    ;
+
+setter
+    : 'assign' memberName attributeDefinition
+    ;
+    
+voidMethod 
+    : 'void' memberName methodDefinition
+    ;
+
+typeParameterStart
+    : '<'
+    ;
+    
+//this permits method with an expression instead of a body
 methodDefinition
-    : typeParameters? formalParameters typeConstraints? (block | ';')
+    : typeParameters? formalParameters typeConstraints? ( block | simpleExpression? ';' )
     ;
     
+//this permits attributes with an expression instead of a body
 attributeDefinition
-    : block | initializer? ';'
+    : block | (initializer | simpleExpression)? ';'
     ;
 
 decoratorDeclaration
     :
         'decorator'
-        UIDENTIFIER
+        typeName
         typeParameters?
         formalParameters?
         satisfiedTypes?
@@ -144,16 +180,16 @@ converterDeclaration
     :   
         'converter'
         type
-        UIDENTIFIER
+        typeName
         typeParameters?
         typeConstraints?
-        '(' annotation* type LIDENTIFIER ')'
+        '(' annotation* type parameterName ')'
     ;
 
 interfaceDeclaration
     :
         'interface'
-        UIDENTIFIER
+        typeName
         typeParameters?
         satisfiedTypes?
         typeConstraints?
@@ -163,7 +199,7 @@ interfaceDeclaration
 aliasDeclaration
     :
         'alias'
-        UIDENTIFIER
+        typeName
         typeParameters?
         typeConstraints?
         ';'
@@ -173,7 +209,7 @@ memberStub
     :
         annotation*
         (type | 'void')
-        LIDENTIFIER
+        memberName
         (typeParameters?
          formalParameters
          typeConstraints?)?
@@ -183,7 +219,7 @@ memberStub
 classDeclaration
     :
         'class'
-        UIDENTIFIER
+        typeName
         typeParameters?
         formalParameters?
         extendedType?
@@ -201,11 +237,11 @@ instances
     ;
 
 instance 
-    : /*annotation**/ LIDENTIFIER arguments?
+    : /*annotation**/ memberName arguments?
     ;
 
 typeConstraint
-    :   UIDENTIFIER ((('>=' | '<=') type )| formalParameters)
+    : typeName ((('>=' | '<=') type )| formalParameters)
     ;
     
 typeConstraints
@@ -217,8 +253,7 @@ satisfiedTypes
     ;
 
 type
-    :  regularType 
-    |  functorType
+    :  regularType | functorType
     ;
 
 regularType
@@ -226,14 +261,17 @@ regularType
     ;
 
 functorType
-    :   'F' '<' formalParameters ',' (type|'void') '>'
+    :   'functor' annotation* (type|'void') formalParameters
     ;
 
 annotation 
-    : annotationName ( arguments | literal )?
+    : declarationModifier | userAnnotation
     ;
 
-
+userAnnotation 
+    : annotationName ( arguments | literal )?
+    ;
+ 
 typeName
     : //( identifier '.' )* 
     UIDENTIFIER
@@ -244,28 +282,35 @@ annotationName
     LIDENTIFIER
     ;
 
-identifier 
+memberName 
     : LIDENTIFIER
-    | UIDENTIFIER
     ;
 
 typeParameters
     : '<' type (',' type)* '>'
     ;
 
+//for locals and attributes
 initializer
     : ('=' | ':=') assignable
     ;
 
+//for parameters
+specifier
+     : '=' assignable
+     ;
+
 literal
-    : enumerationLiteral
-    | integerLiteral
+    :
+      INTLITERAL
     | FLOATLITERAL
     | CHARLITERAL
     | stringLiteral
-    | dateLiteral
+    | DATELITERAL
+    | TIMELITERAL
     | typeLiteral
-    | regexLiteral
+    | REGEXPLITERAL
+//    | enumerationLiteral
     ;   
 
 //FIXME: member literals are a problem!
@@ -273,59 +318,53 @@ typeLiteral
     : '#' typeName
     ;
 
-dateLiteral
-    : DATELITERAL 
-    | TIMELITERAL
-    ;
-
-integerLiteral
-    : INTLITERAL
-    ;
-
-enumerationLiteral
-    : 'none'
-    ;
-
 stringLiteral
     : SIMPLESTRINGLITERAL
        | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
     ;
 
-regexLiteral
-    : '`' (~ '`' | '\\`')* '`'
-    ;
-
 //This one is fully general
 assignable 
     : //'~' specialFunctor
-    (formalParameterStart) => functor 
+    (functorStart) => functor
     | enumeration
     | expression
     ;
 
 //This one is for use as a functor body
 simpleAssignable 
-    : enumeration   
-    | simpleExpression
+    : (functorStart) => functor
+    | enumeration	
+ 	| simpleExpression
+ 	;
+
+functorStart
+    : 'functor' | formalParameterStart
     ;
 
 //This one is fully general
-//should we reall allow assigments here???
-expression
-    : inlineClassDeclaration
-    | implicationExpression (assignmentOp assignable | specialFunctorArguments)?
-        /*    | '{' expression ';' (expression ';')* '}' */
-    ;
-
+//Even though it looks like this is non-associative
+//assignment, it is actually right associative because
+//assignable can be an assignment
+expression 
+    : implicationExpression 
+      (assignmentOp assignable | specialFunctorArguments)?
+    //| '{' expression ';' (expression ';')* '}'
+     ;
+ 
 //This one is for use as a functor body
-//should we reall allow assigments here???
+//Even though it looks like this is non-associative
+//assignment, it is actually right associative because
+//simpleAssignable can be an assignment
 simpleExpression
-    : implicationExpression (assignmentOp simpleAssignable)?
-        /*    | '{' expression ';' (expression ';')* '}' */
-    ;
-    
+    : implicationExpression 
+      (assignmentOp simpleAssignable)?
+    //| '{' expression ';' (expression ';')* '}'
+     ;
+
 assignmentOp
     : ':=' 
+//    | '='      // FIXME: Is this really an assignment operator?
     | '+=' 
     | '-=' 
     | '*=' 
@@ -340,58 +379,58 @@ assignmentOp
     ;
 
 implicationExpression
-    :
-        disjunctionExpression ('=>' disjunctionExpression)?
+    : disjunctionExpression 
+      ('=>' disjunctionExpression)?
     ;
 
+//should '^' have a higher precedence?
 disjunctionExpression
-    :
-        conjunctionExpression (('||' | '|' '^') conjunctionExpression)?
+    :  conjunctionExpression 
+       (('||' | '|' '^') conjunctionExpression)?
     ;
 
 conjunctionExpression
-    :
-        logicalNegationExpression (('&&' | '&') logicalNegationExpression)*
+    : logicalNegationExpression 
+      (('&&' | '&') logicalNegationExpression)*
     ;
 
 logicalNegationExpression
-    :
-        '!' logicalNegationExpression
-    |
-        equalityExpression
+    : '!' logicalNegationExpression
+    | equalityExpression
     ;
 
 equalityExpression
-    :
-        comparisonExpression
-        (('=='|'!='|'===') comparisonExpression)?
+    :  comparisonExpression
+       (('=='|'!='|'===') (enumeration|comparisonExpression))?
     ;
 
 comparisonExpression
-    :
-        defaultExpression
-        (('<=>'|'<'|'>'|'<='|'>='|'in') defaultExpression)?
+    : defaultExpression
+      (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') (enumeration|defaultExpression))?
     ;
 
+//should we reverse the precedence order 
+//of '?' and 'exists'/'nonempty'?
 defaultExpression
-    :   
-        existenceEmptinessExpression ('?' defaultExpression)?
+    : existenceEmptinessExpression 
+      ('?' (enumeration|defaultExpression))?
     ;
 
 existenceEmptinessExpression
-    :
-        dateCompositionExpression ('exists' | 'nonempty')?
+    : dateCompositionExpression ('exists' | 'nonempty')?
     ;
 
+//I wonder if it would it be cleaner to give 
+//'..' a higher precedence than '->'
 rangeIntervalEntryExpression
-    :
-        dateCompositionExpression
-        (('..'|'->') dateCompositionExpression)?
+    : dateCompositionExpression
+      (('..'|'->') (/*(functorStart) => functor|*/enumeration|dateCompositionExpression))?
+      
     ;
 
 dateCompositionExpression
-    :
-        additiveExpression ('@' additiveExpression)?
+    :  additiveExpression 
+       ('@' additiveExpression)?
     ;
 
 additiveExpression
@@ -405,13 +444,11 @@ multiplicativeExpression
     ;
 
 exponentiationExpression
-    :
-        postfixExpression ('**' postfixExpression)?
+    : postfixExpression ('**' postfixExpression)?
     ;
 
 postfixExpression
-    :
-        unaryExpression ('--' | '++')*
+    : unaryExpression ('--' | '++')*
     ;
 
 unaryExpression 
@@ -424,21 +461,23 @@ primary
     ;
 
 base 
-    : identifier
+    : typeName
+    | memberName
     | literal
     | parExpression
     //| enumerationInstantiation 
     | 'this' 
     | 'super' 
     | 'null'
+    | 'none'
     ;
 
 enumeration
-    : '{' assignable (',' assignable)* '}'
+    : '{' (assignable (',' assignable)*)? '}'
     ;
 
 selector 
-    : selectorOp identifier
+    : selectorOp memberName
     | arguments
     | elementSelector
     ;
@@ -452,14 +491,12 @@ selectorOp
     ;
 
 elementSelector
-    : 
-    '[' elementsSpec ']'
+    : '[' elementsSpec ']'
     ;
 
 elementsSpec
-        :  
-           assignable ( '...' | (',' assignable)* | '..' assignable )
-        |  '...' assignable 
+        : assignable ( '...' | (',' assignable)* | '..' assignable )
+        | '...' assignable 
         ;
 
 arguments 
@@ -471,11 +508,15 @@ specialFunctorArguments
       ;
 
 specialFunctorArgument
-    : LIDENTIFIER specialFunctor
+    : parameterName specialFunctor
     ;
       
 namedArgument
-    : LIDENTIFIER initializer
+    : parameterName specifier
+    ;
+    
+parameterName
+    : LIDENTIFIER
     ;
 
 varargArguments
@@ -483,8 +524,7 @@ varargArguments
     ;
 
 namedArguments
-    :
-        '{' ((namedArgument ';') => namedArgument ';')* varargArguments? '}'
+    : '{' ((namedArgument ';') => namedArgument ';')* varargArguments? '}'
     ;
 
 parExpression 
@@ -496,8 +536,7 @@ positionalArguments
     ;
 
 formalParameters
-    :   
-    '(' (formalParameter (',' formalParameter)*)? ')'
+    : '(' (formalParameter (',' formalParameter)*)? ')'
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
@@ -505,7 +544,9 @@ formalParameters
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    :   annotation* type LIDENTIFIER ( ('->'|'..') type LIDENTIFIER )? (initializer | '...')?
+    : annotation* type
+      parameterName ( ('->'|'..') type parameterName )? 
+      (specifier | '...')?
     ;
 
 // Control structures.
@@ -683,6 +724,15 @@ EscapeSequence
         )          
     ;     
 
+REGEXPLITERAL
+    : '`' (~( '`' | '\\') | RegexEscapeSequence)* '`'
+    ;
+
+fragment
+RegexEscapeSequence
+    :    ('\\' ~ '\n')
+    ;
+
 WS  
     :   (
             ' '
@@ -706,6 +756,20 @@ LINE_COMMENT
             skip();
         }
     ;   
+
+MULTI_COMMENT
+        :       '/*'
+                {
+                        $channel=HIDDEN;
+                }
+                (       ~('/'|'*')
+                        |       ('/' ~'*') => '/'
+                        |       ('*' ~'/') => '*'
+                        |       MULTI_COMMENT
+                )*
+                '*/'
+        ;
+
 
 ASSIGN
     :   'assign'
@@ -758,6 +822,7 @@ FOUND
 IF
     :   'if'
     ;
+
 
 SATISFIES
     :   'satisfies'
@@ -879,6 +944,10 @@ COLON
     :   ':'
     ;
 
+COLONEQ
+    :   ':='
+    ;
+
 EQEQ
     :   '=='
     ;
@@ -951,7 +1020,7 @@ ENTRY
     : '->'
     ;
 
-DOTS
+RANGE
     : '..'
     ;
     
@@ -963,6 +1032,10 @@ IN
     :   'in'
     ;
     
+IS
+    :   'is'
+    ;
+
 HASH
     :   '#'
     ;
@@ -971,14 +1044,7 @@ PLUSEQ
     :   '+='
     ;
     
-COLONEQ
-    :   ':='
-    ;
-    
-F
-    :   'F'
-    ;
-    
+
 CONVERTER
     :  'converter'
     ;
