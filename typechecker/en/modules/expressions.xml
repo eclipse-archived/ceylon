@@ -36,7 +36,6 @@ DateLiteral | TimeLiteral
 IntegerLiteral | FloatLiteral |
 CharacterLiteral
 StringLiteral | RegexLiteral |
-EnumerationLiteral |
 "this" | "super" | "null"</programlisting>
 
     <para>The keywords <literal>this</literal>, <literal>super</literal> and 
@@ -249,6 +248,7 @@ if you prefer.";</programlisting>
         
     </section>
     
+    <!--
     <section>
         <title>Enumeration literals</title>
         
@@ -268,53 +268,9 @@ if you prefer.";</programlisting>
         enumerated instance of the <literal>EmptyEnumeration</literal> class,
         which has a converter to <literal>Enumeration&lt;X&gt;</literal>?</para></comment>
 
-        <para>There are no true literals for lists, sets or maps. However, the
-        <literal>..</literal> and <literal>-></literal> operators, together with
-        the convenient enumeration constructor syntax, and some built-in converters 
-        help us achieve the desired effect.</para>
-
-        <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>
-        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
-                
-        <para>Enumerations are transparently converted to sets or maps,
-        allowing sets and maps to be initialized as follows:</para>
-        
-        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
-        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
-        <programlisting>OpenList&lt;String&gt; list = none;</programlisting>
-        
     </section>
+    -->
 
-    <section>
-        <title>Object literals</title>
-        
-        <para>There are no true literals for user-defined classes. Rather, there is a 
-        nice syntax for calling the class constructor. For example:</para>
-        
-        <programlisting>Person gavin = Person { 
-    firstName = "Gavin";
-    initial = 'A';
-    lastName = "King";
-    address = Address { ... };
-    birthdate = Date { day = 25; month = MARCH; year = ... }
-    employer = jboss;
-};</programlisting>
-
-<!--  
-        <para>A similar syntax is supported for specifying the values of uninitialized 
-        attributes of a class at instantiation time.</para>
-
-        <programlisting>Person gavin = Person(jboss) { 
-    firstName = "Gavin";
-    initial = 'A';
-    lastName = "King";
-    address = Address { ... };
-    birthdate = Date { day = 25; month = MARCH; year = ... }
-};</programlisting>
--->
-
-    </section>
-    
     <section>
         <title>Type and member literals</title>
         
@@ -344,6 +300,51 @@ if you prefer.";</programlisting>
 
     </section>
 
+    <section>
+        <title>Objects and collections</title>
+        
+        <para>There are no true literals for user-defined classes. Rather, there is a 
+        nice syntax for calling the class constructor. For example:</para>
+        
+        <programlisting>Person gavin = Person { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = Address { ... };
+    birthdate = Date { day = 25; month = MARCH; year = ... }
+    employer = jboss;
+};</programlisting>
+
+<!--  
+        <para>A similar syntax is supported for specifying the values of uninitialized 
+        attributes of a class at instantiation time.</para>
+
+        <programlisting>Person gavin = Person(jboss) { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = Address { ... };
+    birthdate = Date { day = 25; month = MARCH; year = ... }
+};</programlisting>
+-->
+
+        <para>Likewise, there are no true literals for lists, sets or maps. However, 
+        the <literal>..</literal> and <literal>-></literal> operators, together with
+        the convenient enumeration constructor syntax, and some built-in converters 
+        help us achieve the desired effect.</para>
+
+        <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>
+        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
+                
+        <para>Enumerations are transparently converted to sets or maps,
+        allowing sets and maps to be initialized as follows:</para>
+        
+        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
+        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
+        <programlisting>OpenList&lt;String&gt; list = none;</programlisting>
+        
+    </section>
+    
     <section id="invocations">
         <title>Invocations</title>
         
@@ -537,13 +538,15 @@ if you prefer.";</programlisting>
             <para>Enumerations may be instantiated according to the following 
             simplified syntax:</para>
             
-            <programlisting>EnumerationInstantiation := "{" Expression ("," Expression)* "}"</programlisting>
+            <programlisting>EnumerationInstantiation := "{" ( Expression ("," Expression)* )? "}"</programlisting>
             
             <para>In this case, there is no need to explicitly specify the type.</para>
             
             <para>For example:</para>
             
             <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+            
+            <programlisting>List&lt;Connection&gt; connections = {};</programlisting>
                         
         </section>
             
