@@ -417,7 +417,7 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : // dateCompositionExpression ('exists' | 'nonempty')?
+    : // This doesn't do anything ATM.
     rangeIntervalEntryExpression
     ;
 
@@ -551,7 +551,7 @@ formalParameter
 
 // Control structures.
 
-// Backtraking here is needed for exactly the same reason as localOrStatement.
+// Backtracking here is needed for exactly the same reason as localOrStatement.
 condition
     : ('exists' | 'nonempty')? (expression | type memberName initializer)
     | 'is' type ((memberName initializer) => memberName initializer | expression)
