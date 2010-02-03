@@ -8,6 +8,7 @@ options {
 compilationUnit
     : (importDeclaration)*
         (annotation* toplevelDeclaration)+
+    EOF
     ;
     
 toplevelDeclaration
