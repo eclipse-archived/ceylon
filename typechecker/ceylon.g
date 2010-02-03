@@ -558,14 +558,14 @@ condition
     ;
 	
 controlStructure
-    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally ;
+    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally;
     
 ifElse
     : 'if' '(' condition ')' block ('else' block)?
     ;
     
 switchCaseElse
-    : 'switch' '(' expression ')' '{' cases '}'
+    : 'switch' '(' expression ')' ( '{' cases '}' | cases ';' )
     ;
     
 cases 
@@ -581,7 +581,7 @@ caseStmt
     ;
     
 caseExprs
-    : expression (',' expression)*
+    : expression (',' expression)* | 'is' type
     ;
     
 caseElse
@@ -607,8 +607,7 @@ doWhile
     ;
 
 doIterator
-    :   
-    localDeclaration
+    : localDeclaration
     ;
 
 tryCatchFinally
@@ -620,8 +619,7 @@ tryCatchFinally
     ;
     
 resource
-    :   
-    localDeclaration | expression
+    : localDeclaration | expression
     ;
 
 // Lexer
