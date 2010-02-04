@@ -313,13 +313,10 @@ stringLiteral
     | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
     ;
 
-//This one is fully general
 assignable 
     : (functorStart) => functor
     | expression
     ;
-
-//This one is for use as a functor body
 
 functorStart
     : 'functor' | formalParameterStart
