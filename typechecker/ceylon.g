@@ -534,7 +534,7 @@ controlStructure
     ;
     
 ifElse
-    : 'if' '(' condition ')' block ('else' block)?
+    : 'if' '(' condition ')' block ('else' 'if' block)* ('else' block)?
     ;
     
 switchCaseElse
