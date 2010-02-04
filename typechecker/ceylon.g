@@ -101,10 +101,8 @@ formalParameterStart
 //we can support enumerations as functor bodies, but
 //I think that's just confusing to the reader
 functorBody
-    : simpleExpression 
-    //| (enumeration)=>enumeration
-    //| statement
-    | block
+    : ('{') => block
+    | functorBodyExpression
     ;
 
 //Let's limit statements to things that make sense, like
@@ -145,7 +143,7 @@ methodOrGetter
     ;
 
 setter
-    : 'assign' memberName attributeDefinition
+    : 'assign' memberName block
     ;
     
 voidMethod 
@@ -156,14 +154,12 @@ typeParameterStart
     : '<'
     ;
 
-//this permits method with an expression instead of a body
 methodDefinition
-    : typeParameters? formalParameters typeConstraints? ( block | simpleExpression? ';' )
+    : typeParameters? formalParameters typeConstraints? ( block | ';' )
     ;
 
-//this permits attributes with an expression instead of a body
 attributeDefinition
-    : block | (initializer | simpleExpression)? ';'
+    : block | initializer ';'
     ;
 
 decoratorDeclaration
@@ -320,16 +316,10 @@ stringLiteral
 //This one is fully general
 assignable 
     : (functorStart) => functor
-    | enumeration
     | expression
     ;
 
 //This one is for use as a functor body
-simpleAssignable 
-    : (functorStart) => functor
-    | enumeration	
-    | simpleExpression
-    ;
 
 functorStart
     : 'functor' | formalParameterStart
@@ -342,17 +332,12 @@ functorStart
 expression 
     : implicationExpression 
       (assignmentOp assignable | specialFunctorArguments)?
-    //| '{' expression ';' (expression ';')* '}'
     ;
 
 //This one is for use as a functor body
-//Even though it looks like this is non-associative
-//assignment, it is actually right associative because
-//simpleAssignable can be an assignment
-simpleExpression
+functorBodyExpression
     : implicationExpression 
-      (assignmentOp simpleAssignable)?
-    //| '{' expression ';' (expression ';')* '}'
+      ( assignmentOp ( (functorStart) => functor | functorBodyExpression ) )?
     ;
     
 assignmentOp
@@ -393,20 +378,20 @@ logicalNegationExpression
     ;
 
 equalityExpression
-    :  comparisonExpression
-       (('=='|'!='|'===') (enumeration|comparisonExpression))?
+    : comparisonExpression
+      (('=='|'!='|'===') comparisonExpression)?
     ;
 
 comparisonExpression
     : defaultExpression
-      (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') (enumeration|defaultExpression))?
+      (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') defaultExpression)?
     ;
 
 //should we reverse the precedence order 
 //of '?' and 'exists'/'nonempty'?
 defaultExpression
     : existenceEmptinessExpression 
-      ('?' (enumeration|defaultExpression))?
+      ('?' defaultExpression)?
     ;
 
 existenceEmptinessExpression
@@ -417,7 +402,7 @@ existenceEmptinessExpression
 //'..' a higher precedence than '->'
 rangeIntervalEntryExpression
     : dateCompositionExpression
-      (('..'|'->') (/*(functorStart) => functor|*/enumeration|dateCompositionExpression))?
+      (('..'|'->') dateCompositionExpression)?
     ;
 
 dateCompositionExpression
@@ -451,18 +436,19 @@ unaryExpression
 primary
     : base selector*
     ;
-
+    
 base 
-    : '#'? regularType
-    |'#'? memberName
+    : regularType
+    | memberName
     | literal
     | parExpression
-    //| enumeration
+    | enumeration
     | 'this' 
     | 'super' 
     | 'null'
     | 'none'
     | inlineClassDeclaration
+    | '#' ( regularType | memberName )
     ;
 
 enumeration
@@ -470,17 +456,10 @@ enumeration
     ;
 
 selector 
-    : selectorOp memberName
+    : ('.' | '^.' | '?.' | '*.') memberName
+    | '#' memberName
     | arguments
     | elementSelector
-    ;
-    
-selectorOp
-    : '.' 
-    | '^.' 
-    | '?.' 
-    | '*.' 
-    | '#'
     ;
 
 elementSelector
@@ -590,7 +569,7 @@ forFail
     ;
 
 forIterator
-    : formalParameter 'in' (expression|enumeration)
+    : formalParameter 'in' expression
     ;
     
 controllingVariable
