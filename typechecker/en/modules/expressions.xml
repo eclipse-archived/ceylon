@@ -280,7 +280,7 @@ if you prefer.";</programlisting>
         
         <programlisting>TypeLiteral := HASH Type</programlisting>
         
-        <programlisting>MemberLiteral := Type HASH LIdentifier</programlisting>
+        <programlisting>MemberLiteral := (Type)? HASH LIdentifier</programlisting>
                
         <para>For example:</para>
         

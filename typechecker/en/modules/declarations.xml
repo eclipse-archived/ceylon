@@ -152,7 +152,7 @@ VarargsParam?
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
         
-        <programlisting>TypeName := UIdentifier</programlisting>
+        <programlisting>TypeName := (UIdentifier ".")* UIdentifier</programlisting>
         
         <para>Method, class, interface, decorator and converter declarations may declare 
         generic type parameters.</para>
