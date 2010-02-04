@@ -259,7 +259,7 @@ type
     ;
 
 regularType
-    : typeName typeParameters?
+    : typeName ( (typeParameterStart) => typeParameters )?
     ;
 
 functorType
@@ -310,14 +310,7 @@ literal
     | TIMELITERAL
     | REGEXPLITERAL
     | stringLiteral
-    | typeLiteral
     ;   
-
-//FIXME: member literals are a problem!
-//FIXME: type parameters 
-typeLiteral
-    : '#' typeName //'#' type
-    ;
 
 stringLiteral
     : SIMPLESTRINGLITERAL
@@ -460,8 +453,8 @@ primary
     ;
 
 base 
-    : typeName
-    | memberName
+    : '#'? regularType
+    |'#'? memberName
     | literal
     | parExpression
     //| enumeration
