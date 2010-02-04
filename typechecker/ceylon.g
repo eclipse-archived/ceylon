@@ -585,7 +585,7 @@ doIterator
 
 tryCatchFinally
     :
-    ( 'try' ('(' resource ')')? )+
+    'try' ( '(' resource ')' ( 'try' '(' resource ')' )* )?
     block
     ('catch' '(' variable ')' block)*
     ('finally' block)?
