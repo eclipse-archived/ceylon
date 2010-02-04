@@ -551,9 +551,8 @@ if you prefer.";</programlisting>
             <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
             for a special value that can be assigned to any enumeration type.</para>
             
-            <comment><para>Note: <literal>none</literal> can appear as a LHS, or serve as a 
-            functor body, whereas <literal>{ ... }</literal> can only appear as a RHS (unless 
-            surrounded by parentheses).</para></comment>
+            <comment><para>Note: <literal>none</literal> can appear as a functor body, but 
+            <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment>
                         
         </section>
             
