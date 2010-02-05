@@ -162,7 +162,7 @@ VarargsParam?
         <para>A covariant type parameter is indicated using <literal>out</literal>.
         A contravariant type parameter is indicated using <literal>in</literal>.</para>
         
-        <programlisting>Variance :=  "out" | "in"</programlisting>
+        <programlisting>Variance :=  ("out" | "in")?</programlisting>
     
         <para>For example:</para>
         
