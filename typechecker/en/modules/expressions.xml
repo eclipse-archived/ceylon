@@ -383,15 +383,20 @@ if you prefer.";</programlisting>
         <comment><para>TODO: exactly what types are accepted by a vararg parameter? Any <literal>Iterable</literal>?
         Exactly how is it accessed in the body of the method? As a <literal>List</literal>?</para></comment>
         
-        <comment><para>TODO: should there be a special syntax to "spread" the values of a list into vararg
-        parameters, eg. <literal>*list</literal>.</para></comment>
+        <comment><para>TODO: should there be a special syntax to "spread" the values of a list into 
+        vararg parameters, eg. <literal>*list</literal>.</para></comment>
+        
+        <para>Some invocations must explicitly specify arguments for the generic type parameters of 
+        the generic class or method.</para>
+        
+        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
         <section>
             <title>Method invocation</title>
             
             <para>Method invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := MethodReference TypeParams? ParamValues</programlisting>
+            <programlisting>MethodInvocation := MethodReference TypeArguments? ParamValues</programlisting>
             
             <programlisting>MemberReference := (Expression DOT)? LIdentifier</programlisting>
             
@@ -414,7 +419,7 @@ if you prefer.";</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (RegularType DOT)? LIdentifier TypeParams? ParamValues</programlisting>
+            <programlisting>StaticMethodInvocation := (RegularType DOT)? LIdentifier TypeArguments? ParamValues</programlisting>
             
             <para>For example:</para>
             
@@ -431,7 +436,7 @@ if you prefer.";</programlisting>
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := RegularType ParamValues</programlisting>
+            <programlisting>Instantiation := RegularType TypeArguments? ParamValues</programlisting>
             
             <para>For example:</para>
             

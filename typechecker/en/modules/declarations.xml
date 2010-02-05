@@ -157,7 +157,12 @@ VarargsParam?
         <para>Method, class, interface, decorator and converter declarations may declare 
         generic type parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" Variance Type ("," Variance Type)* "&gt;"</programlisting>
+        
+        <para>A covariant type parameter is indicated using <literal>out</literal>.
+        A contravariant type parameter is indicated using <literal>in</literal>.</para>
+        
+        <programlisting>Variance :=  "out" | "in"</programlisting>
     
         <para>For example:</para>
         
