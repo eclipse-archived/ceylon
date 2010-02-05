@@ -386,11 +386,6 @@ if you prefer.";</programlisting>
         <comment><para>TODO: should there be a special syntax to "spread" the values of a list into 
         vararg parameters, eg. <literal>*list</literal>.</para></comment>
         
-        <para>Some invocations must explicitly specify arguments for the generic type parameters of 
-        the generic class or method.</para>
-        
-        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
-        
         <section>
             <title>Method invocation</title>
             
