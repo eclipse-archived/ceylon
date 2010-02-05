@@ -140,24 +140,12 @@ VarargsParam?
     </section>
     
     <section>
-        <title>Type declaration</title>
+        <title>Generic type parameters</title>
     
-        <para>Method, attribute and converter declarations must declare a type.</para>
-        
-        <programlisting>Type := RegularType | FunctorType</programlisting>
-        
-        <para>Most types are classes or interfaces:</para>
-        
-        <programlisting>RegularType := TypeName TypeParams?</programlisting>
-        
-        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
-        
-        <programlisting>TypeName := (UIdentifier ".")* UIdentifier</programlisting>
-        
-        <para>Method, class, interface, decorator and converter declarations may declare 
+         <para>Method, class, interface, decorator and converter declarations may declare 
         generic type parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" Variance TypeName ("," Variance TypeName)* "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" Variance UIdentifier ("," Variance UIdentifier)* "&gt;"</programlisting>
         
         <para>A covariant type parameter is indicated using <literal>out</literal>.
         A contravariant type parameter is indicated using <literal>in</literal>.</para>
@@ -166,13 +154,40 @@ VarargsParam?
     
         <para>For example:</para>
         
-        <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        <programlisting>Map&lt;K, V&gt;</programlisting>
         
         <programlisting>Sender&lt;in M&gt;</programlisting>
         
         <programlisting>Container&lt;out T&gt;</programlisting>
         
         <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
+        
+    </section>
+
+
+    <section>
+        <title>Type declaration</title>
+    
+        <para>Method, attribute and converter declarations must declare a type.</para>
+        
+        <programlisting>Type := RegularType | FunctorType</programlisting>
+        
+        <para>Most types are classes or interfaces:</para>
+        
+        <programlisting>RegularType := TypeName TypeArguments?</programlisting>
+        
+        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
+        
+        <programlisting>TypeName := (UIdentifier ".")* UIdentifier</programlisting>
+        
+        <para>A generic type must specify arguments for the generic type parameters.</para>
+        
+        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        
     </section>
     
     <section>
