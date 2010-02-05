@@ -157,7 +157,7 @@ VarargsParam?
         <para>Method, class, interface, decorator and converter declarations may declare 
         generic type parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" Variance Type ("," Variance Type)* "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" Variance TypeName ("," Variance TypeName)* "&gt;"</programlisting>
         
         <para>A covariant type parameter is indicated using <literal>out</literal>.
         A contravariant type parameter is indicated using <literal>in</literal>.</para>
@@ -166,12 +166,13 @@ VarargsParam?
     
         <para>For example:</para>
         
-        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        <programlisting>Map&lt;Key, Value&gt;</programlisting>
         
-        <comment><para>TODO: how are wildcard types specified? Possibilities include
-        <literal>Type&lt;Foo+&gt;</literal> and 
-        <literal>Type&lt;X&gt; where X>=Foo</literal>.</para></comment>
+        <programlisting>Sender&lt;in M&gt;</programlisting>
         
+        <programlisting>Container&lt;out T&gt;</programlisting>
+        
+        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
     </section>
     
     <section>
