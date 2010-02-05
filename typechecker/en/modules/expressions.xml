@@ -1924,15 +1924,22 @@ if you prefer.";</programlisting>
         <para>For example:</para>
         
         <programlisting>functor Comparison(Float x, Float y) order = functor Comparison(Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        
+        <para>The keyword <literal>functor</literal>, and the return type may be omitted:</para>
 
         <programlisting>functor Comparison(Float x, Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        
+        <para>The braces around the functor body and the <literal>produce</literal> keyword 
+        may be omitted for single-line functors that return a value.</para>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
         <programlisting>people.select( (Person p) p.age>18 )
     .collect( (Person p) p.name );</programlisting>
+    
+        <para>The braces are required for <literal>void</literal> functors.</para>
         
-        <programlisting>namedValues.each( (String name->Object value) log.info("${name} ${value}") );</programlisting>
+        <programlisting>namedValues.each( (String name->Object value) { log.info("${name} ${value}"); } );</programlisting>
         
         <!--  
         <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
@@ -1944,7 +1951,7 @@ if you prefer.";</programlisting>
         
         <programlisting>functor Comparison(String x, String y) order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
         
-        <para>Or:</para>
+        <para>Or, equivalently:</para>
         
         <programlisting>functor Comparison(String x, String y) order = (String x, String y) x &lt;=&gt; y;</programlisting>
         
@@ -1970,7 +1977,7 @@ if you prefer.";</programlisting>
     
         <para>The following code:</para>
         
-        <programlisting>(0..10).each( (Integer num) log.info(num) );</programlisting>
+        <programlisting>(0..10).each( (Integer num) { log.info(num); } );</programlisting>
         
         <para>Is equivalent to:</para>
         
@@ -1985,8 +1992,7 @@ if you prefer.";</programlisting>
         
         <programlisting>Integer min = 0;
 Integer max = 10;
-List list = list.select(Integer x) 
-    return x > min &amp;&amp; x &lt; max;</programlisting>
+List list = list.select( (Integer x) x &gt; min &amp;&amp; x &lt; max );</programlisting>
         
         <para>Is equivalent to this Java code:</para>
         
@@ -1998,8 +2004,8 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         } 
     } );</programlisting>
     
-        <comment><para>Note: a functor expression can only appear as a RHS (or surrounded by
-        parentheses).</para></comment>
+        <comment><para>Note: a functor expression can only appear as the right side of an 
+        assignment, as a parameter, or surrounded by parentheses.</para></comment>
                         
         <section id="functorparametersyntax">
         <title>Syntax extension for functor parameters</title>
@@ -2027,12 +2033,12 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <programlisting>amounts.sort() by (Float x, Float y) { produce x&lt;=&gt;y }</programlisting>
         
-        <programlisting>people.sort() by (Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
+        <programlisting>people.sort() by (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
         
         <programlisting>people.select() only (Person p) { produce p.age>18 }
     .collect() each (Person p) { produce p.name };</programlisting>
     
-        <programlisting>namedValues.each() do (String name->Object value) log.info("${name} ${value}");</programlisting>
+        <programlisting>namedValues.each() do (String name->Object value) { log.info("${name} ${value}"); }</programlisting>
 
         <programlisting>optional specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
         
