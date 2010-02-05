@@ -392,7 +392,7 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : dateCompositionExpression ('exists' | 'nonempty')?
+    : rangeIntervalEntryExpression ('exists' | 'nonempty')?
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -464,7 +464,7 @@ elementSelector
     ;
 
 elementsSpec
-    : assignable ( '...' | (',' assignable)* | '..' assignable )
+    : assignable ( '...' | (',' assignable)*)
     |  '...' assignable	
     ;
 
