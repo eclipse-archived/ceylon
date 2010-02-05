@@ -7,8 +7,8 @@ options {
 
 compilationUnit
     : (importDeclaration)*
-        (annotation* toplevelDeclaration)+
-    EOF
+      (annotation* toplevelDeclaration)+
+      EOF
     ;
     
 toplevelDeclaration
@@ -20,7 +20,7 @@ toplevelDeclaration
     ;
 
 importDeclaration  
-    : 'import' importElement ('.' importElement)* ('alias' typeName)? ';'
+    : 'import' importElement ('.' importElement)* ('.' '*' | 'alias' typeName)? ';'
     ;
     
 importElement
@@ -28,35 +28,35 @@ importElement
     ;
 
 block
-    :  '{' localOrStatement* directiveStatement? '}'
+    : '{' localOrStatement* directiveStatement? '}'
     ;
 
 //we could eliminate the backtracking by requiring
-//local  declarations to be keywords
+//local declarations to begin with a keyword
 localOrStatement
     : //'local' annotation* localDeclaration
-      (declarationStart) => annotation* localDeclaration ';'
+      (declarationStart) => annotation* localDeclaration
     | statement
     ;
 
 localDeclaration
-    :  type memberName initializer?
+    : type memberName initializer? ';'
     ;
 
 inlineClassDeclaration
-    :   
-    'new' annotation*
-    UIDENTIFIER ('.' UIDENTIFIER*)
-    arguments
-    '{' memberOrStatement* '}'
+    : 'new' annotation*
+      regularType
+      arguments
+      satisfiedTypes?
+      '{' memberOrStatement* '}'
     ;
     
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 memberOrStatement
-    :  //modifier  annotation* ( memberDeclaration | toplevelDeclaration )
-       (declarationStart) => annotation* ( memberDeclaration | toplevelDeclaration )
-    |  statement
+    : //modifier  annotation* ( memberDeclaration | toplevelDeclaration )
+      (declarationStart) => annotation* ( memberDeclaration | toplevelDeclaration )
+    | statement
     ;
 
 //a normal functor expression
@@ -66,7 +66,7 @@ functor
 
 //shortcut functor expression that makes the parameter list 
 //optional
-specialFunctor 
+specialFunctor
     : ( (typeName | formalParameterStart) => (type|'void')? formalParameters )? functorBody
     ;
 
@@ -95,16 +95,14 @@ declarationModifier
 
 //special rule for syntactic predicates
 formalParameterStart
-    :  '(' (declarationStart | ')')
+    : '(' (declarationStart | ')')
     ;
 
 //we can support enumerations as functor bodies, but
 //I think that's just confusing to the reader
 functorBody
-    : simpleExpression 
-    //| (enumeration)=>enumeration
-    //| statement
-    | block
+    : ('{') => block
+    | functorBodyExpression
     ;
 
 //Let's limit statements to things that make sense, like
@@ -114,14 +112,14 @@ functorBody
 //assignment, it is actually right associative because
 //assignable can be an assignment
 statement 
-    :  //assignable ';'
-        postfixExpression 
-        (assignmentOp assignable | specialFunctorArguments)? ';'
-        | controlStructure
+    : //assignable ';'
+      postfixExpression 
+      (assignmentOp assignable | specialFunctorArguments)? ';'
+    | controlStructure
     ;
 
 directiveStatement
-    :  directive ';'?
+    : directive ';'?
     ;
 
 directive
@@ -145,7 +143,7 @@ methodOrGetter
     ;
 
 setter
-    : 'assign' memberName attributeDefinition
+    : 'assign' memberName block
     ;
     
 voidMethod 
@@ -155,15 +153,13 @@ voidMethod
 typeParameterStart
     : '<'
     ;
-    
-//this permits method with an expression instead of a body
+
 methodDefinition
-    : typeParameters? formalParameters typeConstraints? ( block | simpleExpression? ';' )
+    : typeParameters? formalParameters typeConstraints? ( block | ';' )
     ;
-    
-//this permits attributes with an expression instead of a body
+
 attributeDefinition
-    : block | (initializer | simpleExpression)? ';'
+    : block | initializer ';'
     ;
 
 decoratorDeclaration
@@ -178,7 +174,7 @@ decoratorDeclaration
     ;
 
 converterDeclaration
-    :   
+    :
         'converter'
         type
         typeName
@@ -255,15 +251,15 @@ satisfiedTypes
     ;
 
 type
-    :  regularType | functorType
+    : regularType | functorType
     ;
 
 regularType
-    :   typeName typeParameters?
+    : typeName ( (typeParameterStart) => typeParameters )?
     ;
 
 functorType
-    :   'functor' annotation* (type|'void') formalParameters
+    : 'functor' annotation* (type|'void') formalParameters
     ;
 
 annotation 
@@ -273,10 +269,10 @@ annotation
 userAnnotation 
     : annotationName ( arguments | literal )?
     ;
- 
+
 typeName
     : //( identifier '.' )* 
-    UIDENTIFIER
+    UIDENTIFIER ('.' UIDENTIFIER)*
     ;
 
 annotationName
@@ -299,46 +295,28 @@ initializer
 
 //for parameters
 specifier
-     : '=' assignable
-     ;
+    : '=' assignable
+    ;
 
 literal
-    :
-      INTLITERAL
+    : INTLITERAL
     | FLOATLITERAL
     | CHARLITERAL
-    | stringLiteral
     | DATELITERAL
     | TIMELITERAL
-    | typeLiteral
     | REGEXPLITERAL
-//    | enumerationLiteral
+    | stringLiteral
     ;   
-
-//FIXME: member literals are a problem!
-typeLiteral
-    : '#' typeName
-    ;
 
 stringLiteral
     : SIMPLESTRINGLITERAL
-       | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
+    | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
     ;
 
-//This one is fully general
 assignable 
-    : //'~' specialFunctor
-    (functorStart) => functor
-    | enumeration
+    : (functorStart) => functor
     | expression
     ;
-
-//This one is for use as a functor body
-simpleAssignable 
-    : (functorStart) => functor
-    | enumeration	
- 	| simpleExpression
- 	;
 
 functorStart
     : 'functor' | formalParameterStart
@@ -351,22 +329,17 @@ functorStart
 expression 
     : implicationExpression 
       (assignmentOp assignable | specialFunctorArguments)?
-    //| '{' expression ';' (expression ';')* '}'
-     ;
- 
-//This one is for use as a functor body
-//Even though it looks like this is non-associative
-//assignment, it is actually right associative because
-//simpleAssignable can be an assignment
-simpleExpression
-    : implicationExpression 
-      (assignmentOp simpleAssignable)?
-    //| '{' expression ';' (expression ';')* '}'
-     ;
+    ;
 
+//This one is for use as a functor body
+functorBodyExpression
+    : implicationExpression 
+      ( assignmentOp ( (functorStart) => functor | functorBodyExpression ) )?
+    ;
+    
 assignmentOp
-    : ':=' 
-//    | '='      // FIXME: Is this really an assignment operator?
+    : '=' //not really an assignment operator, but can be used to init locals
+    | ':='
     | '+=' 
     | '-=' 
     | '*=' 
@@ -402,32 +375,31 @@ logicalNegationExpression
     ;
 
 equalityExpression
-    :  comparisonExpression
-       (('=='|'!='|'===') (enumeration|comparisonExpression))?
+    : comparisonExpression
+      (('=='|'!='|'===') comparisonExpression)?
     ;
 
 comparisonExpression
     : defaultExpression
-      (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') (enumeration|defaultExpression))?
+      (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') defaultExpression)?
     ;
 
 //should we reverse the precedence order 
 //of '?' and 'exists'/'nonempty'?
 defaultExpression
     : existenceEmptinessExpression 
-      ('?' (enumeration|defaultExpression))?
+      ('?' defaultExpression)?
     ;
 
 existenceEmptinessExpression
-    : // This doesn't do anything ATM.
-    rangeIntervalEntryExpression
+    : dateCompositionExpression ('exists' | 'nonempty')?
     ;
 
 //I wonder if it would it be cleaner to give 
 //'..' a higher precedence than '->'
 rangeIntervalEntryExpression
     : dateCompositionExpression
-      (('..'|'->') (/*(functorStart) => functor|*/enumeration|dateCompositionExpression))?
+      (('..'|'->') dateCompositionExpression)?
     ;
 
 dateCompositionExpression
@@ -436,13 +408,13 @@ dateCompositionExpression
     ;
 
 additiveExpression
-    :   multiplicativeExpression
-        (('+' |  '-') multiplicativeExpression)*
+    : multiplicativeExpression
+      (('+' | '-') multiplicativeExpression)*
     ;
 
 multiplicativeExpression 
     : exponentiationExpression
-        (('*' | '/' | '%') exponentiationExpression)*
+      (('*' | '/' | '%') exponentiationExpression)*
     ;
 
 exponentiationExpression
@@ -454,42 +426,37 @@ postfixExpression
     ;
 
 unaryExpression 
-    :   ('$'|'-'|'++'|'--') unaryExpression
-    |   primary
+    : ('$'|'-'|'++'|'--') unaryExpression
+    | primary
     ;
 
 primary
     : base selector*
     ;
-
+    
 base 
-    : typeName
+    : regularType
     | memberName
     | literal
     | parExpression
-    //| enumerationInstantiation 
+    | enumeration
     | 'this' 
     | 'super' 
     | 'null'
     | 'none'
+    | inlineClassDeclaration
+    | '#' ( regularType | memberName )
     ;
 
 enumeration
-    : '{' (assignable (',' assignable)*)? '}'
+    : '{' ( assignable (',' assignable)* )? '}'
     ;
 
 selector 
-    : selectorOp memberName
+    : ('.' | '^.' | '?.' | '*.') memberName
+    | '#' memberName
     | arguments
     | elementSelector
-    ;
-    
-selectorOp
-    : '.' 
-    | '^.' 
-    | '?.' 
-    | '*.' 
-    | '#'
     ;
 
 elementSelector
@@ -497,17 +464,17 @@ elementSelector
     ;
 
 elementsSpec
-        : assignable ( '...' | (',' assignable)* )
-        | '...' assignable 
-        ;
+    : assignable ( '...' | (',' assignable)* | '..' assignable )
+    |  '...' assignable	
+    ;
 
 arguments 
-      : positionalArguments | namedArguments
-      ;
+    : positionalArguments | namedArguments
+    ;
     
 specialFunctorArguments 
-      : specialFunctorArgument+
-      ;
+    : specialFunctorArgument+
+    ;
 
 specialFunctorArgument
     : parameterName specialFunctor
@@ -522,7 +489,7 @@ parameterName
     ;
 
 varargArguments
-    :   assignable (',' assignable)*
+    : assignable (',' assignable)*
     ;
 
 namedArguments
@@ -530,44 +497,48 @@ namedArguments
     ;
 
 parExpression 
-    :   '(' assignable ')'
+    : '(' assignable ')'
     ;
     
 positionalArguments
-    :   '(' (assignable (',' assignable)*)? ')'
+    : '(' (assignable (',' assignable)*)? ')'
     ;
 
 formalParameters
-    : '(' (formalParameter (',' formalParameter)*)? ')'
+    : '(' (formalParameterSpec (',' formalParameterSpec)*)? ')'
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
+formalParameterSpec
+    : formalParameter (specifier | '...')?
+    ;
+
 formalParameter
-    : annotation* type
-      parameterName ( ('->'|'..') type parameterName )? 
-      (specifier | '...')?
+    : annotation* type parameterName 
+      ( '->' type parameterName | '..' parameterName )?
     ;
 
 // Control structures.
 
 // Backtracking here is needed for exactly the same reason as localOrStatement.
 condition
-    : ('exists' | 'nonempty')? (expression | type memberName initializer)
-    | 'is' type ((memberName initializer) => memberName initializer | expression)
+    : ('exists' | 'nonempty')? ( (declarationStart) => variable specifier | expression )
+    | 'is' type ( (memberName '=') => memberName specifier | expression )
     ;
 	
 controlStructure
-    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally ;
+    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
+    ;
     
 ifElse
     : 'if' '(' condition ')' block ('else' block)?
     ;
     
 switchCaseElse
-    : 'switch' '(' expression ')' '{' cases '}'
+    : 'switch' '(' expression ')' ( '{' cases '}' | cases ';' )
     ;
     
 cases 
@@ -583,7 +554,7 @@ caseStmt
     ;
     
 caseExprs
-    : expression (',' expression)*
+    : expression (',' expression)* | 'is' type
     ;
     
 caseElse
@@ -593,9 +564,9 @@ caseElse
 forFail
     : 'for' '(' forIterator ')' block ('fail' block)?
     ;
-    
+
 forIterator
-    : controllingVariable 'in' simpleExpression
+    : formalParameter 'in' expression
     ;
     
 controllingVariable
@@ -609,21 +580,24 @@ doWhile
     ;
 
 doIterator
-    :   
-    localDeclaration
+    : variable initializer
     ;
 
 tryCatchFinally
     :
     'try' ('(' resource ')')?
     block
-    ('catch' '(' localDeclaration ')' block)*
+    ('catch' '(' variable ')' block)*
     ('finally' block)?
     ;
     
 resource
-    :   
-    localDeclaration | expression
+    : (declarationStart) => variable specifier 
+    | expression
+    ;
+
+variable
+    : annotation* type memberName
     ;
 
 // Lexer
@@ -812,7 +786,7 @@ ELSE
     ;            
 
 EXISTS
-    :    'exists'
+    :   'exists'
     ;
 
 FINALLY
@@ -830,7 +804,6 @@ FOUND
 IF
     :   'if'
     ;
-
 
 SATISFIES
     :   'satisfies'
@@ -951,7 +924,7 @@ QUES
 COLON
     :   ':'
     ;
-
+    
 COLONEQ
     :   ':='
     ;
@@ -1025,11 +998,11 @@ LT
     ;        
 
 ENTRY
-    : '->'
+    :   '->'
     ;
 
 RANGE
-    : '..'
+    :   '..'
     ;
     
 COMPARE
@@ -1039,7 +1012,7 @@ COMPARE
 IN
     :   'in'
     ;
-    
+
 IS
     :   'is'
     ;
@@ -1052,7 +1025,6 @@ PLUSEQ
     :   '+='
     ;
     
-
 CONVERTER
     :  'converter'
     ;
