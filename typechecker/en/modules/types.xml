@@ -1064,8 +1064,8 @@
     <section>
         <title>Control expressions</title>
         
-        <para>The <literal>lang.Util</literal> class defines several methods
-        for building complex expressons.</para>
+        <para>The <literal>lang</literal> package defines several classes
+        containing static methods for building complex expressons.</para>
         
         <!-- 
     doc "Evaluate the block. Useful for turning a series
@@ -1076,7 +1076,7 @@
          -->
         
         
-        <programlisting><![CDATA[public class Util {
+        <programlisting><![CDATA[public class Assertions {
         
     doc "Assert that the block evaluates to true. The block 
          is executed only when assertions are enabled. If
@@ -1097,6 +1097,10 @@
         }
     }
 
+}]]></programlisting>
+    
+        <programlisting><![CDATA[public class Conditionals {
+        
     doc "If the condition is true, evaluate first block,
          and return the result. Otherwise, return a null
          value."
@@ -1150,7 +1154,98 @@
             return otherwise();
         }
     }
+    
+    doc "Evaluate the block which matches the selector value, and
+         return the result of the evaluation. If no block matches
+         the selector value, return a null value."
+    public static optional Y select<X,Y>(X selector,
+                                         cases Iterable<Entry<Case<X>, functor Y()>> value) {
+        for (Case<X> match -> functor X() evaluate in value) {
+            if ( match.test(selector) ) {
+                return evaluate(value);
+            }
+        }
+        return null;
+    }
 
+    doc "Evaluate the block which matches the selector value, and
+         return the result of the evaluation. If no block matches
+         the selector value, evaluate the last block and return
+         the result of the evaluation."
+    public static Y select<X,Y>(X selector,
+                                cases Iterable<Entry<Case<X>, functor Y()>> value
+                                functor Y() otherwise) {
+        if (exists Y y = select(selector, value)) {
+            return y;
+        }
+        else {
+            return otherwise();
+        }
+    }
+
+}]]></programlisting>
+    
+        <programlisting><![CDATA[public class Quantifiers {
+
+    doc "Count the elements for with the block evaluates to true."
+    public static Integer count<X>(iterated Iterable<X> elements,
+                                   coordinated functor Boolean(X x) having) {
+        mutable Integer count := 0;
+        for (X x in elements) {
+            if ( having(x) ) {
+                ++count;
+            }
+        }
+        return count;
+    }
+    
+    doc "Return true iff for every element, the block evaluates to true."
+    public static Boolean forAll<X>(iterated Iterable<X> elements,
+                                    coordinated functor Boolean(X x) every) {
+        for (X x in elements) {
+            if ( !having(x) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    doc "Return true iff for some element, the block evaluates to true."
+    public static Boolean forAny<X>(iterated Iterable<X> elements,
+                                    coordinated functor Boolean(X x) some) { 
+        return !forAll(elements, (X x) !some(x)); 
+    }
+    
+    doc "Return the first element for which the block evaluates to true,
+         or a null value if no such element is found."
+    public static optional X first<X>(iterated Iterable<X> elements,
+                                      coordinated functor Boolean(X x) having) {
+        for (X x in elements) {
+            if ( having(x) ) {
+                return x;
+            }
+        }
+        return null;
+    }
+    
+    doc "Return the first element for which the first block evaluates to 
+         true, or the result of evaluating the second block, if no such
+         element is found."
+    public static X first<X>(iterated Iterable<X> elements,
+                             coordinated functor Boolean(X x) having
+                             functor X() otherwise) {
+        if(exists X first = first(elements, having)) {
+            return first;
+        }
+        else {
+            return otherwise();
+        }
+    }
+    
+}]]></programlisting>
+        
+        <programlisting><![CDATA[public class ListComprehensions {
+        
     doc "Iterate elements and return those for which the first
          block evaluates to true, ordered using the second block,
          if specified."
@@ -1189,44 +1284,10 @@
         return list;
     }
 
-    doc "Return the first element for which the block evaluates to true,
-         or a null value if no such element is found."
-    public static optional X first<X>(iterated Iterable<X> elements,
-                                      coordinated functor Boolean(X x) having) {
-        for (X x in elements) {
-            if ( having(x) ) {
-                return x;
-            }
-        }
-        return null;
-    }
-    
-    doc "Return the first element for which the first block evaluates to 
-         true, or the result of evaluating the second block, if no such
-         element is found."
-    public static X first<X>(iterated Iterable<X> elements,
-                             coordinated functor Boolean(X x) having
-                             functor X() otherwise) {
-        if(exists X first = first(elements, having)) {
-            return first;
-        }
-        else {
-            return otherwise();
-        }
-    }
-    
-    doc "Count the elements for with the block evaluates to true."
-    public static Integer count<X>(iterated Iterable<X> elements,
-                                   coordinated functor Boolean(X x) having) {
-        mutable Integer count := 0;
-        for (X x in elements) {
-            if ( having(x) ) {
-                ++count;
-            }
-        }
-        return count;
-    }
-    
+}]]></programlisting>
+        
+        <programlisting><![CDATA[public class MapComprehensions {
+        
     doc "Construct a |Map| by evaluating the block for each given key.
          Each |Entry| is constructed from the key and the value result 
          of the evaluation."
@@ -1253,40 +1314,43 @@
         }
     }
 
-    doc "Return true iff for every element, the block evaluates to true."
-    public static Boolean forAll<X>(iterated Iterable<X> elements,
-                                    coordinated functor Boolean(X x) every) {
-        for (X x in elements) {
-            if ( !having(x) ) {
-                return false;
-            }
+}]]></programlisting>
+    
+        <programlisting><![CDATA[public class Handlers {
+        
+    doc "Attempt to evaluate the first block. If an exception occurs that 
+         matches the second block, evaluate the block."
+    public static Y attempt<Y,E>(functor Y() seek,
+                                 functor Y(E e) except) {
+        try {
+            return seek();
         }
-        return true;
+        catch (E e) {
+            return except(e);
+        }
     }
     
-    doc "Return true iff for some element, the block evaluates to true."
-    public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                    coordinated functor Boolean(X x) some) { 
-        return !forAll(elements, (X x) !some(x)); 
-    }
-    
-    doc "Using the given resource, attempt to evaluate the first block.
-         If an exception occurs, and there is a matching block, evaluate
-         the exception block."
+    doc "Using the given resource, attempt to evaluate the first block."
     public static Y using<X,Y>(specified X resource,
-                               coordinated functor Y(X x) seek,
-                               functor Y(E e) where E>=Exception... except)
+                               coordinated functor Y(X x) seek)
                     where X >= Usable {
         try (resource) {
             return seek(resource);
         }
-        catch (Exception e) {
-            for (Functor ex in except) {
-                FunctorType ft = ex.functorType;
-                if (e.instanceOf(ft.parameters.first.parameterType)) {
-                    return ft.curry(ex).invoke(e);
-                }
-            }
+    }
+    
+    doc "Using the given resource, attempt to evaluate the first block.
+         If an exception occurs that matches the block, evaluate the 
+         second block."
+    public static Y using<X,Y,E>(specified X resource,
+                                 coordinated functor Y(X x) seek,
+                                 functor Y(E e) except)
+                    where X >= Usable {
+        try (resource) {
+            return seek(resource);
+        }
+        catch (E e) {
+            return except(e);
         }
     }
     

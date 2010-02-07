@@ -2168,16 +2168,17 @@ Y using&lt;X,Y&gt;(specified X resource,
         
         <para>A specialized invocation syntax is also provided for methods which define 
         a list of cases. If the method has a parameter of type 
+        <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
+        <literal>cases</literal>, the parameter value may be specified according to:</para>
+        
+        <programlisting>("(" Case ")" SimpleFunctorExpression)+</programlisting>
+        
+        <!--  
+        <para>Or, If the method has a parameter of type 
         <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,
         the parameter value may be specified according to:</para>
         
         <programlisting>(LIdentifier FunctorExpression)+</programlisting>
-        
-        <para>Or, if the method has a parameter of type 
-        <literal>Enumeration&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
-        <literal>cases</literal>, the parameter value may be specified according to:</para>
-        
-        <programlisting>("(" Case ")" SimpleFunctorExpression)+</programlisting>
         
         <para>For example, for the following method declaration:</para>
         
@@ -2199,22 +2200,20 @@ except (SomethingElseWrong sew) {
     log.warn(sew);
     produce -2;
 }</programlisting>
+        -->
         
-        <para>And for the following method declaration:</para>
+        <para>For example, for the following method declaration:</para>
         
         <programlisting>public static
-void select&lt;X&gt;(X selector),
-               cases Entry&lt;Case&lt;X&gt;, functor X()&gt;... value);</programlisting>
+Y select&lt;X, Y&gt;(X selector,
+               cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... value);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
-        <programlisting>select (payment.type) 
-value (CHECK) {
-    paybyCheck(payment);
-}
-value (CARD) {
-    paybyCard(payment);
-}</programlisting>
+        <programlisting>return select (payment.type) 
+    value (CHECK) paybyCheck(payment)
+    value (CARD) paybyCard(payment);
+</programlisting>
         
         </section>
     
