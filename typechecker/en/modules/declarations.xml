@@ -1317,11 +1317,15 @@ TypeConstraintList?
         <title>Extensions</title>
         
         <para>An extension allows values of one type to be transparently converted to values 
-        of another type. Extensions are declared by annotating a method or class
-        <literal>extension</literal>. An extension method must have exactly one parameter.
-        An extension class must have exactly one initialization parameter.</para>
-            
+        of another type. Extensions are declared by annotating a method, attribute or class
+        <literal>extension</literal>. An extension method must be a static method with exactly 
+        one parameter, or a non-static method with no parameters. An extension class must have 
+        exactly one initialization parameter. An extension method or attribute must have a 
+        non-<literal>optional</literal> type.</para>
+        
         <para>For example:</para>
+        
+        <programlisting>public extension User user;</programlisting>
         
         <programlisting>public static extension User personToUser(Person person) { 
     return person.user; 

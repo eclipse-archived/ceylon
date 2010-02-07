@@ -830,14 +830,14 @@
         return HashMap(enum);
     }
 
-    public static extension 
-    OpenSet&lt;X&gt; toOpenSet&lt;X&gt;(Enumeration&lt;X&gt; enum) {
-        return enum.elements.copy();
+    public extension 
+    OpenSet&lt;X&gt; toOpenSet&lt;X&gt;() {
+        return elements.copy();
     }
 
-    public static extension 
-    OpenList&lt;X&gt; toOpenList&lt;X&gt;(Enumeration&lt;X&gt; enum) {
-        return enum.copy();
+    public extension 
+    OpenList&lt;X&gt; toOpenList&lt;X&gt;() {
+        return copy();
     }
 
     public static extension 
