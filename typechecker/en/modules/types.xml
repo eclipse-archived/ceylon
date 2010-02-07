@@ -112,7 +112,8 @@
         boolean values, and supports the binary <literal>||, &amp;&amp;, =>,
         |, &amp;, ^</literal> and unary <literal>!</literal> operators.</para>
         
-        <programlisting>public final class Boolean {
+        <programlisting>public final class Boolean 
+        satisfies Case&lt;Boolean&gt; {
     instances true, false;
 
     doc "The binary or operator x | y"
@@ -142,7 +143,7 @@
         <para>The interface <literal>Callable</literal>
         represents a callable reference.</para>
         
-        <programlisting>public interface Callable&lt;S&gt;
+        <programlisting>public interface Callable&lt;out S&gt;
         where S >= Functor {
     public S invoke;
     public onCall( ... );
@@ -151,7 +152,7 @@
         <para>The interface <literal>Value</literal> models a 
         readable value.</para>
         
-        <programlisting>public interface Value&lt;T&gt; {
+        <programlisting>public interface Value&lt;out T&gt; {
     public functor T() get;
     public onGet( functor T(T value) interceptor );
 }</programlisting>
@@ -176,7 +177,7 @@
     public Set&lt;Object&gt; annotations;
 }</programlisting>
         
-        <programlisting>public interface Member&lt;X&gt; 
+        <programlisting>public interface Member&lt;in X&gt; 
         satisfies Annotated {
     public Type&lt;X&gt; declaringType;
     public String name;
@@ -185,7 +186,7 @@
     public Boolean override;
 }</programlisting>
         
-        <programlisting>public interface Method&lt;X,S&gt;
+        <programlisting>public interface Method&lt;in X, out S&gt;
         where S >= Functor 
         satisfies Member&lt;X&gt; {
     public Type&lt;Object+&gt; returnType;
@@ -196,7 +197,7 @@
     public onCall( ... );
 }</programlisting>
         
-        <programlisting>public interface Attribute&lt;X,T&gt; 
+        <programlisting>public interface Attribute&lt;in X, out T&gt; 
         satisfies Member&lt;X&gt; {
     public Type&lt;T&gt; attributeType;
     public boolean mutable;
@@ -204,7 +205,7 @@
     public onGet( functor T(X instance, T value) interceptor );
 }</programlisting>
                 
-        <programlisting>public interface MutableAttribute&lt;X,T&gt;
+        <programlisting>public interface MutableAttribute&lt;in X, T&gt;
         satisfies Attribute&lt;X,T&gt; {
     public override OpenValue&lt;T&gt; curry(X instance);
     public onSet( functor T(X instance,T value) interceptor );
@@ -222,14 +223,14 @@
         <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
         (spread comparison)--> <!--and <literal>*~></literal> (all in).--></para>
         
-        <programlisting>public interface Iterable&lt;X&gt; {
+        <programlisting>public interface Iterable&lt;out X&gt; {
     
     doc "Produce an iterator."
     public Iterator&lt;X&gt; iterator();
     
 }</programlisting>
 
-        <programlisting>public interface Iterator&lt;X&gt; {
+        <programlisting>public interface Iterator&lt;out X&gt; {
 
     public Boolean more;
     public X current;
@@ -237,30 +238,31 @@
     
 }</programlisting>
 
+<!--
         <para>The following decorator exists:</para>
 
-        <!--programlisting><![CDATA[public decorator Iterables<X> (Iterable<X> iterable) {
+        <programlisting><![CDATA[public decorator Iterables<X> (Iterable<X> iterable) {
 
-    public void each((X) void each) { ... }
-    public Integer count((X) produce Boolean test) { ... }
-    public Boolean isAll((X) produce Boolean test) { ... }
-    public Boolean isAny((X) produce Boolean test) { ... }
+    public void forEach(functor void(X) each) { ... }
+    public Integer count(functor Boolean(X) test) { ... }
+    public Boolean forAll(functor Boolean(X) test) { ... }
+    public Boolean forAny(functor Boolean(X) test) { ... }
     
-    public optional X first((X) produce Boolean test) { ... }
+    public optional X first(functor Boolean(X) test) { ... }
     
-    public Y accumulate<Y>(Y initial, (Y,X) produce Y accumulate) { ... }
+    public Y accumulate<Y>(Y initial, functor Y(Y current, X element) accumulate) { ... }
     
-    public Collection<X> select((X) produce Boolean test) { ... }
-    public Collection<X> reject((X) produce Boolean test) { ... }
+    public Collection<X> select(functor Boolean(X) test) { ... }
+    public Collection<X> reject(functor Boolean(X) test) { ... }
     
-    public Bag<Y> transform<Y>((X) produce Y transform) { ... }
-    public List<Y> transform<Y>((X) produce Y transform, (Y,Y) produce Comparison compare) { ... }
-    public Set<Y> collect<Y>((X) produce Y transform) { ... }
-    public Map<X, Y> map<Y>((X) produce Y transform) { ... }
-    public List<X> list((X,X) produce Comparison compare) { ... }
+    public Bag<Y> transform<Y>(functor Y(X) transform) { ... }
+    public List<Y> transform<Y>(functor Y(X) transform, functor Comparison(Y x,Y y) comparison) { ... }
+    public Set<Y> collect<Y>(functor Y(X) transform) { ... }
+    public Map<X, Y> map<Y>(functor Y(X) transform) { ... }
+    public List<X> list(functor Comparison(X,X) compare) { ... }
     
-}]]></programlisting-->
-
+}]]></programlisting>
+-->
         <para>Some iterable objects may support element removal during iteration.</para>
         
         <programlisting>public mutable interface OpenIterable&lt;X&gt; 
@@ -274,6 +276,7 @@
         satisfies OpenIterator&lt;X&gt; {
 
     public void remove();
+    public Boolean replace(X replacement);
     
 }</programlisting>
 
@@ -293,7 +296,7 @@
         type that may be used as a case in the <literal>switch</literal>
         construct.</para>
         
-        <programlisting>public interface Case&lt;X&gt; {
+        <programlisting>public interface Case&lt;in X&gt; {
 
     public Boolean test(X value);
     
@@ -329,18 +332,18 @@
         <para>The interface <literal>lang.Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
         
-        <programlisting>public interface Category&lt;X&gt; {
+        <programlisting>public interface Category {
     
     doc "Determine if the given element belongs to the category."
-    public Boolean contains(X element);
+    public Boolean contains(Object element);
 
 }</programlisting>
 
-        <programlisting>public decorator Categories&lt;X&gt; (Category&lt;X&gt; category) {
+        <programlisting>public decorator Categories (Category category) {
         
     doc "Determine if all the given elements belong to the category."
-    public Boolean contains(Iterable&lt;X&gt; elements) {
-        return forAll (X x in elements) category.contains(x);
+    public Boolean contains(Iterable&lt;Object&gt; elements) {
+        return forAll (X x in elements) having category.contains(x);
     }
     
 }</programlisting>
@@ -348,7 +351,7 @@
         <para>There is a mutable subtype, representing a category to which 
         objects may be added.</para>
         
-        <programlisting>public mutable interface OpenCategory&lt;X&gt; 
+        <programlisting>public mutable interface OpenCategory&lt;in X&gt; 
         satisfies Category&lt;X&gt; {
     
     doc "Add the given element to the category."
@@ -356,13 +359,14 @@
 
 }</programlisting>
 
-        <programlisting>public decorator OpenCategories&lt;X&gt; (OpenCategory&lt;X&gt; category) {
+        <programlisting>public decorator OpenCategories&lt;in X&gt; (OpenCategory&lt;X&gt; category) {
         
     doc "Add the given elements to the category."
     public Boolean add(Iterable&lt;X&gt; elements) {
         Boolean added = false;
-        for (X x in elements) 
+        for (X x in elements) {
             added |= category.add(x);
+        }
         return added;
     }
     
@@ -373,7 +377,7 @@
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
         
-        <programlisting>public interface Correspondence&lt;U, V&gt; {
+        <programlisting>public interface Correspondence&lt;in U, out V&gt; {
     
     doc "Binary lookup operator x[key]. Returns the value associated 
          with the given key."
@@ -384,7 +388,7 @@
     
 }</programlisting>
 
-        <programlisting>public decorator Correspondences&lt;X&gt; (Correspondence&lt;X&gt; correspondence) {
+        <programlisting>public decorator Correspondences&lt;in U, out V&gt; (Correspondence&lt;U, V&gt; correspondence) {
 
     doc "Binary lookup operator x[keys]. Returns a list of values 
          associated with the given keys, in order."
@@ -399,10 +403,15 @@
     }
     
     doc "Determine if there are values associated with all the given keys."
-    public Boolean defines(Collection&lt;U&gt; keys) {
-        for (U key in keys) 
-            if ( !correspondence.defines(key) ) return false
-        fail return true;
+    public Boolean defines(Iterable&lt;U&gt; keys) {
+        for (U key in keys) {
+            if ( !correspondence.defines(key) ) {
+                return false
+            }
+        }
+        fail {
+            return true;
+        }
     }
     
 }</programlisting>
@@ -414,7 +423,7 @@
         
         <!-- Association? -->
 
-        <programlisting>public mutable interface OpenCorrespondence&lt;U, V&gt; 
+        <programlisting>public mutable interface OpenCorrespondence&lt;in U, V&gt; 
         satisfies Correspondence&lt;U, V&gt; {
         
      doc "Element assignment x[key] = value. Assign a value to the given 
@@ -423,13 +432,19 @@
 
 }</programlisting>
 
-        <programlisting>public decorator OpenCorrespondences&lt;X&gt; (OpenCorrespondence&lt;X&gt; correspondence) {
+        <programlisting>public decorator OpenCorrespondences&lt;in U, V&gt; (OpenCorrespondence&lt;U, V&gt; correspondence) {
 
      doc "Assign the given values to the given keys."
-     public void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions);
+     public void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions) {
+         for (U key->V value) {
+             correspondence.define(key, value);
+         }
+     }
     
      doc "Add the given entry."
-     public void define(U key -> V value);
+     public void define(U key -> V value) {
+         correspondence.define(key, value);
+     }
     
 }</programlisting>
 
@@ -441,7 +456,7 @@
         <programlisting>public interface Container {
         
     doc "Determine if the container is empty."
-    Boolean empty;
+    public Boolean empty;
     
 }</programlisting>
 
@@ -456,7 +471,7 @@
         <para>Entries may be constructed using the <literal>-></literal> 
         operator.</para>
 
-            <programlisting><![CDATA[public class Entry<U,V>(U key, V value) {
+            <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) {
 
     public U key = key;
     public V value = value;
@@ -464,7 +479,7 @@
     override public Boolean equals(Object that) {
         return equals(that, Entry#key, Entry#value);
     }
-        
+    
     override public Integer hash {
         return hash(Entry#key, Entry#value);
     }
@@ -479,19 +494,26 @@
         <para>The interface <literal>lang.Collection</literal> is the 
         root of the Ceylon collections framework.</para>
         
-        <programlisting><![CDATA[public interface Collection<X> 
-        satisfies Iterable<X>, Category<X>, Container {
+        <programlisting><![CDATA[public interface Collection<out X> 
+        satisfies Iterable<X>, Category, Container {
     
     public Integer size;
-
-    public Integer count(X element);
+    
+    public Integer count(Object element);
+    public Integer count(functor Boolean(X element) having);
     
     public Set<X> elements;
-
-    public OpenCollection<X> copy();
+    public Set<X> elements(functor Boolean(X element) having);
+    
+    public List<X> sort(functor Comparison(X x, X y) by);
+    
+    public OpenCollection<T> copy<T>() where T <= X;
     
 }]]></programlisting>
 
+<!--
+    public Collection<T> subcollection<T>(functor T(X element) restriction) where T >= X;
+-->
         
         <para>Mutable collections implement <literal>lang.OpenCollection</literal>:</para>
         
@@ -499,11 +521,10 @@
         satisfies OpenIterable<X>, OpenCategory<X>, Collection<X> {
     
     public Boolean clear();
-
+    
     public Boolean remove(X element);
-    public Integer remove(Collection<X> elements);    
-    public Integer retain(Collection<X> elements);    
-
+    public Integer remove(functor Boolean(X element) having);
+    
 }]]></programlisting>
 
         <section>
@@ -519,24 +540,26 @@
             <literal>&lt;</literal> (proper subset),
             in addition to inherited operators-->:</para>
             
-            <programlisting><![CDATA[public interface Set<X> 
-        satisfies Collection<X>, Correspondence<X, Boolean> {
+            <programlisting><![CDATA[public interface Set<out X> 
+        satisfies Collection<X>, Correspondence<Object, Boolean> {
     
-    public Set<X> union(Set<X> set);
-    public Set<X> intersection(Set<X> set);
-    public Set<X> complement(Set<X> set);
-    
-    public Boolean superset(Set<X> set);
-    public Boolean subset(Set<X> set);
-    
-    public OpenSet<X> copy();
+    public Boolean superset(Set<Object> set);
+    public Boolean subset(Set<Object> set);
+        
+    public OpenSet<T> copy<T>() where T <= X;
 
 }]]></programlisting>
+
+            <!--    
+    public Set<T> union(Set<T> set) where T<=X;
+    public Set<X> intersection(Set<Object> set);
+    public Set<X> complement(Set<Object> set);
+            -->
 
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenSet<X> 
-        satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<X, Boolean> {}]]></programlisting>
+        satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<Object, Boolean> {}]]></programlisting>
 
         </section>
         
@@ -550,39 +573,40 @@
             to operators inherited from <literal>Collection</literal>
             and <literal>Correspondence</literal>:</para>
             
-            <programlisting><![CDATA[public interface List<X> 
+            <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X>, Correspondence<Integer, X> {
     
     public X first;    
     public X last;
     
-    public optional X firstOrNull;    
+    public optional X firstOrNull;
     public optional X lastOrNull;
     
     public Integer firstIndex;
     public Integer lastIndex;
     
-    public Integer firstIndex(X element);
-    public Integer lastIndex(X element);
+    public Integer firstIndex(Object element);
+    public Integer lastIndex(Object element);
     
-    public List<X> head();
-    public List<X> tail();
-    public List<X> head(Integer to);
-    public List<X> tail(Integer from);
+    public optional Integer firstIndexOrNull(Object element);
+    public optional Integer lastIndexOrNull(Object element);
+    
+    public List<X> head(Integer to=firstIndex);
+    public List<X> tail(Integer from=lastIndex);
     
     doc "The binary range operator x[from..to]"
     public List<X> range(Integer from, Integer to);
 
     doc "The binary join operator x + y"
-    public List<X> join(List<X> elements);
+    public List<T> join(List<T> elements) where T<=X;
     
     public List<X> sublist(Integer from, Integer to);
-    
-    public List<X> reversed();
-    
+    public List<X> reversed;
     public Map<Integer,X> map;
     
-    public OpenList<X> copy();
+    public List<Y> transform<Y>(functor Y(X element) select);
+    
+    public OpenList<T> copy<T>() where T <= X;
 
 }]]></programlisting>
 
@@ -596,16 +620,21 @@
     public void append(X element);
     public void append(List<X> elements);
 
-    public void insert(Integer key, X element);
-    public void truncate(Integer from, Integer to);
+    public void insert(Integer at, X element);
+    public X removeIndex(Integer at);
+    
+    public void delete(Integer from, Integer to);
+    public void truncate(Integer from);
     
     public X removeFirst();
     public X removeLast();
     
     public void reverse();
-    public void sort(functor Comparison(X x, X y) compare);
+    public void reorder(functor Comparison(X x, X y) by);
     
     public OpenList<X> sublist(Integer from, Integer to);
+    public OpenList<X> reversed;
+    public OpenMap<Integer,X> map;
     
 }]]></programlisting>
             
@@ -616,18 +645,22 @@
             
             <para>Maps implement the following interface:</para>
             
-            <programlisting><![CDATA[public interface Map<U,V> 
+            <comment><para>TODO: is it OK that maps are not contravariant in U?</para></comment>
+            
+            <programlisting><![CDATA[public interface Map<U, out V>
     satisfies Collection<Entry<U,V>>, Correspondence<U, V> {
     
     public Set<U> keys;
-    public Bag<V> values;    
+    public Bag<V> values;
     public Map<V, Set<U>> inverse;
     
     public optional V valueOrNull(U key);
-
-    //public Set<Entry<U,V>> entries;
     
-    public OpenMap<X> copy();
+    public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
+    
+    public Map<U, V> entries(functor Boolean(U key -> V value) having);
+    
+    public OpenMap<U,T> copy<U,T>() where T <= V;
     
 }]]></programlisting>
 
@@ -639,9 +672,9 @@
     public OpenSet<U> keys;
     public OpenBag<V> values;
     public OpenMap<V, Set<U>> inverse;
-
-    public Integer removeKeys(Collection<U> keys);
-    public Integer retainKeys(Collection<U> keys);
+    
+    public optional V removeKey(U key);
+    public Integer removeKeys(functor Boolean(U key) having);
     
 }]]></programlisting>
             
@@ -652,10 +685,10 @@
             
             <para>Bags implement the following interface:</para>
             
-            <programlisting><![CDATA[public interface Bag<X> 
-        satisfies Collection<X>, Correspondence<X, Integer> {
+            <programlisting><![CDATA[public interface Bag<out X> 
+        satisfies Collection<X>, Correspondence<Object, Integer> {
     
-    public OpenBag<X> copy();
+    public OpenBag<T> copy<T>() where T <= X;
     
     public Map<X,Integer> map;
     
@@ -664,7 +697,46 @@
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<X, Integer> {}]]></programlisting>
+        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Integer> {}]]></programlisting>
+            
+        </section>
+        
+        <section>
+            <title>Collection operations</title>
+            
+            <programlisting><![CDATA[public decorator Collections<out X>(Collection<X> collection) {
+            
+    public static List<X> join<X>(List<X> list...) {
+        return new List<X> {
+            ...
+        };
+    }
+    
+    public static Bag<X> union<X>(Bag<X> bag...) {
+        return new Bag<X> {
+            ...
+        };
+    }
+    
+    public static Set<X> union<X>(Set<X> set...) {
+        return new Set<X> {
+            ...
+        };
+    }
+    
+    public static Set<X> intersection<X>(Set<X> set...) {
+        return new Set<X> {
+            ...
+        };
+    }
+    
+    public static Set<X> complement<X>(Set<X> set, Set<Object> sets...) {
+        return new Set<X> {
+            ...
+        };
+    }    
+            
+}]]></programlisting>
             
         </section>
         
@@ -678,7 +750,7 @@
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
         
-        <programlisting>public interface Comparable&lt;T&gt; {
+        <programlisting>public interface Comparable&lt;in T&gt; {
     
     doc "The binary compare operator &lt;=&gt;. Compares this 
          instance with the given instance."
@@ -728,7 +800,7 @@
         operator:</para> 
         
         <programlisting>public class Range&lt;X&gt;(X first, X last) 
-        satisfies List&lt;X&gt;, Case&lt;X&gt;
+        satisfies List&lt;X&gt;, Case&lt;Object&gt;
         where X>=Ordinal &amp; X>=Comparable { 
 
     public X first = first;
@@ -740,8 +812,8 @@
         <para>Enumerations represent an explicit list of values and may be constructed 
         using a simplified syntax:</para>
         
-        <programlisting>public class Enumeration&lt;X&gt;(X... values)
-        satisfies List&lt;X&gt;, Case&lt;X&gt; {
+        <programlisting>public class Enumeration&lt;out X&gt;(X... values)
+        satisfies List&lt;X&gt;, Case&lt;Object&gt; {
     ... 
 }</programlisting>
 
@@ -1068,6 +1140,18 @@
     public static Boolean forAll<X>(iterated Iterable<X> elements,
                                     coordinated functor Boolean(X x) every) 
                           { ... }
+    
+    doc "Construct a |Map| by evaluating the block for each given key.
+         Each |Entry| is constructed from the key and the value result 
+         of the evaluation."
+    public static Map<U,V> map<U,V>(iterated Iterable<U> keys,
+                                    coordinated functor V(U key) to);
+
+    doc "Construct a |Map| by evaluating the block for each given value.
+         Each |Entry| is constructed from the value and the key result 
+         of the evaluation."
+    public static Map<U,V> inverseMap<U,V>(iterated Iterable<V> values,
+                                    coordinated functor V(U key) from);
 
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
@@ -1081,7 +1165,7 @@
                                coordinated functor Y(X x) seek,
                                functor Y(E e) where E>=Exception... except)
                     where X >= Usable { ... }
-
+    
 }]]></programlisting>
     
     </section>
