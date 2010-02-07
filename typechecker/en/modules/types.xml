@@ -505,6 +505,7 @@
     public Set<X> elements;
     public Set<X> elements(functor Boolean(X element) having);
     
+    public List<X> sort();
     public List<X> sort(functor Comparison(X x, X y) by);
     
     public OpenCollection<T> copy<T>() where T <= X;
@@ -631,6 +632,7 @@
     public X removeLast();
     
     public void reverse();
+    public void resort();
     public void resort(functor Comparison(X x, X y) by);
     
     override public OpenList<X> sublist(Integer from, Integer to);
