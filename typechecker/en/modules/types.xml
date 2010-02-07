@@ -1160,14 +1160,19 @@
     doc "Construct a |Map| by evaluating the block for each given key.
          Each |Entry| is constructed from the key and the value result 
          of the evaluation."
-    public static Map<U,V> map<U,V>(iterated Iterable<U> keys,
-                                    coordinated functor V(U key) to);
+    public static Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
+                                        coordinated functor V(U key) to);
 
     doc "Construct a |Map| by evaluating the block for each given value.
          Each |Entry| is constructed from the value and the key result 
          of the evaluation."
-    public static Map<U,V> inverseMap<U,V>(iterated Iterable<V> values,
-                                    coordinated functor V(U key) from);
+    public static Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
+                                      coordinated functor V(U key) from);
+
+    doc "Construct a |Map| by evaluating the block for each given object
+         and collecting the resulting |Entry|s."
+    public static Map<U,V> map<X,U,V>(iterated Iterable<X> keys,
+                                      coordinated functor Entry<U,V>(X key) of);
 
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
