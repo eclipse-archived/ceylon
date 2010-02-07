@@ -853,9 +853,16 @@
     
     ... 
     
-    public Iterable&lt;String&gt; tokens(Iterable&lt;Character&gt; separators=" ,;") { return ...; }
-    public String join(String... strings);
-    public String join(Iterable&lt;String&gt; strings);
+    public Iterable&lt;String&gt; tokens(Iterable&lt;Character&gt; separators=" ,;\n\l\r\t") { return ...; }
+    
+    public String lowercase { return ...; }
+    public String uppercase { return ...; }
+    
+    public String strip(Iterable&lt;Character&gt; whitespace = " \n\l\r\t") { return ...; }
+    public String normalize(Iterable&lt;Character&gt; whitespace = " \n\l\r\t") { return ...; }
+    
+    public String join(String... strings) { return ...; }
+    public String join(Iterable&lt;String&gt; strings) { return ...; }
     
 }</programlisting>
 
