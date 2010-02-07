@@ -78,9 +78,11 @@
     
     <para>
     True open classes are not supported. However, Ceylon supports 
-    <emphasis>decorators</emphasis>, which allows addition of methods and 
-    interfaces to existing types, within a textual scope.<!-- and overriding of existing methods.-->
-    Decorators only affect the operations provided by a type, not its state.
+    <emphasis>extensions</emphasis>, which allows addition of methods and 
+    interfaces to existing types, and transparent conversion between types, 
+    within a textual scope. Decorators only affect the operations provided 
+    by a type, not its state. This facility makes it easy for Ceylon code to 
+    transparently interoperate and inter-compile with Java code.
     </para>
     
     <para>
@@ -111,13 +113,6 @@
     program elements: private (the default), <literal>package</literal>, 
     <literal>module</literal> and <literal>public</literal>. There is no
     equivalent of Java's <literal>protected</literal>.
-    </para>
-    
-    <para>
-    Finally, Ceylon provides an extensible type conversion facility that
-    allows values of different types to be treated as interchangeable by
-    the compiler. This facility makes it easy for Ceylon code to transparently
-    interoperate and inter-compile with Java code.
     </para>
     
     <section>

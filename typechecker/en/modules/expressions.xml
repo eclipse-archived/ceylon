@@ -330,7 +330,7 @@ if you prefer.";</programlisting>
 
         <para>Likewise, there are no true literals for lists, sets or maps. However, 
         the <literal>..</literal> and <literal>-></literal> operators, together with
-        the convenient enumeration constructor syntax, and some built-in converters 
+        the convenient enumeration constructor syntax, and some built-in extensions 
         help us achieve the desired effect.</para>
 
         <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>

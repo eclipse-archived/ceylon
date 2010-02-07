@@ -1,8 +1,7 @@
 <chapter id="declarations">
     <title>Declarations</title>
     
-    <para>All classes, interfaces, methods, attributes, locals, decorators and 
-    converters must be declared.</para>
+    <para>All classes, interfaces, methods, attributes and locals must be declared.</para>
     
     <section id="generaldeclarations">
         <title>General declaration syntax</title>
@@ -142,8 +141,7 @@ VarargsParam?
     <section>
         <title>Generic type parameters</title>
     
-         <para>Method, class, interface, decorator and converter declarations may declare 
-        generic type parameters.</para>
+         <para>Method, class and interface declarations may declare generic type parameters.</para>
         
         <programlisting>TypeParams := "&lt;" Variance UIdentifier ("," Variance UIdentifier)* "&gt;"</programlisting>
         
@@ -168,7 +166,7 @@ VarargsParam?
     <section>
         <title>Type declaration</title>
     
-        <para>Method, attribute and converter declarations must declare a type.</para>
+        <para>Method and attribute declarations must declare a type.</para>
         
         <programlisting>Type := RegularType | FunctorType</programlisting>
         
@@ -242,7 +240,7 @@ VarargsParam?
     <section>
         <title>Implemented interfaces</title>
     
-        <para>Classes, interfaces and decorators may satisfy implement or extend interfaces, 
+        <para>Classes and interfaces may satisfy implement or extend interfaces, 
         using the <literal>satisfies</literal> clause.</para>
         
         <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
@@ -256,8 +254,8 @@ VarargsParam?
     <section>
     <title>Generic type constraint list</title>
 
-        <para>Method, class, interface, decorator and converter declarations which declare 
-        generic type parameters may declare constraints upon the type parameters using the
+        <para>Method, class and interface declarations which declare generic type 
+        parameters may declare constraints upon the type parameters using the
         <literal>where</literal> clause.</para>
         
         <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
@@ -739,10 +737,6 @@ TypeConstraints?
     Comparison compare(T other);
 }</programlisting>
 
-        <comment><para>TODO: Fantom and Scala let interfaces declare methods with implementation. This 
-        is less needed in Ceylon because we have decorators. But it seems pretty harmless
-        and useful.</para></comment>
-        
         <section>
             <title>Interface inheritance</title>
             
@@ -838,21 +832,10 @@ TypeConstraints?
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
         <comment><para>TODO: should we allow a method or attribute getter/setter to omit the braces
-        if it consists of exactly one statement, just like we do for functor expressions? (What about 
-        converters?) I have actually tried this and it parses.</para></comment>
+        if it consists of exactly one statement, just like we do for functor expressions? I have 
+        actually tried this and it parses.</para></comment>
 
-        <!--A method body may omit the braces if it consists of exactly one statement.-->
-        
         <para>If there is no method body, the method must be declared <literal>abstract</literal>.</para>
-        
-         <!--  
-        <para>
-        Ceylon methods
-        may declare multiple types for any formal parameter and multiple return types. This
-        indicates that the value passed or returned must implement or extend all the declared
-        types.
-        </para>
-        -->
         
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
@@ -1069,8 +1052,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
         <programlisting>Initializer := ("="|":=") Expression</programlisting>
 
-        <para>Formal parameters of classes, methods, decorators and converters are also considered
-        to be simple attributes.</para>
+        <para>Formal parameters of classes and methods are also considered to be simple attributes.</para>
 
         <para>A local is really just a special case of a simple attribute declaration, but one that 
         is optimized by the compiler.</para> 
@@ -1084,11 +1066,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <para>An attribute declared inside the body of a method represents a local.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a class or decorator represents a local if it is not 
-                used inside a method, attribute setter or attribute getter declaration.</para>
+                <para>A formal parameter of a class represents a local if it is not used inside a 
+                method, attribute setter or attribute getter declaration.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a method or converter represents a local.</para>
+                <para>A formal parameter of a method represents a local.</para>
             </listitem>
         </itemizedlist>
         
@@ -1300,113 +1282,6 @@ TypeConstraintList?
     </section>
     -->
     
-    <section id="decorators">
-        <title>Decorators</title>
-        
-        <para>A decorator introduces methods and interfaces to a given type. Decorators are 
-        declared according to the following:</para>
-        
-        <programlisting>Annotation*
-"decorator" UIdentifier TypeParams? "(" FormalParam ")"
-Interfaces?
-TypeConstraintList? 
-"{" ( Method | AttributeGetter | AttributeSetter )* "}"</programlisting>
-
-        <para>Decorators may introduce interfaces and methods.</para>
-
-        <section>
-            <title>Introduced methods</title>
-            
-            <para>Methods declared by a decorator are called <emphasis>introduced methods</emphasis>.</para>
-            
-            <para>For example, this decorator:</para>
-            
-            <programlisting>public decorator CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
-    
-    public Collection&lt;T&gt; nonZeroElements() {
-        return collection.exclude(0); 
-    }
-    
-    ...   
-}</programlisting>
-        
-            <para>is equivalent to this Java declaration:</para>
-            
-            <programlisting>public final class CollectionUtils&lt;T&gt; 
-        extends Collection {
-        
-    private final Collection&lt;T&gt; collection
-    
-    public CollectionUtils(Collection&lt;T&gt; collection) { 
-        this.collection = collection; 
-    }
-    
-    public Collection&lt;T&gt; nonZeroElements() { 
-        return collection.exclude(0); 
-    }
-    
-    ...
-}</programlisting>
-
-            <para>This introduced method call:</para>
-            
-            <programlisting>Collection&lt;Integer&gt; result = collection.nullElements();</programlisting>
-            
-            <para>Is equivalent to this Java code:</para>
-    
-            <programlisting>Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
-            
-            <para>Introduced methods are only available in a source file that expicitly 
-            <literal>import</literal>s the decorator.</para>
-            
-            <para>A decorator may not override a method defined by the decorated type. Methods defined 
-            by the decorated type are delegated to the decorated instance.</para>
-            
-            <comment><para>TODO: is this the right thing to say??</para></comment>
-
-        </section>
-        
-        <section>
-            <title>Introduced types</title>
-            
-            <comment><para>TODO: there are holes in the semantics of this stuff!</para></comment>
-            
-            <para>Types appearing after the <literal>satisfies</literal> keyword must be interfaces, and
-            are called the <emphasis>introduced types</emphasis>.</para>
-            
-            <para>This decorator declaration:</para>
-            
-            <programlisting>public decorator ComparableUser(User user) 
-        satisfies Comparable&lt;User&gt; {
-        
-    public Comparison compare(User other) 
-    {
-        return user.username &lt;=&gt; other.username;
-    }
-    
-}</programlisting>
-        
-            <para>is equivalent to this Java declaration:</para>
-            
-            <programlisting>public final class ComparableUser 
-        extends User
-        implements Comparable&lt;User&gt; {
-        
-    private final User user;
-    
-    public ComparableUser(User user) { 
-        this.user = user; 
-    }
-    
-    public Comparison compareTo(User other) { 
-        return Comparison.compare(other.username, user.username);
-    }
-}</programlisting>
-
-        </section>
-                
-    </section>
-    
     <section id="typealiases">
        <title>Type aliases</title>
     
@@ -1438,55 +1313,67 @@ TypeConstraintList?
     
     </section>
     
-    <section id="converters">
-        <title>Converters</title>
+    <section id="extensions">
+        <title>Extensions</title>
         
-        <para>A converter allows immutable values of one type to be transparently converted to
-        values of another type. Converters are declared according to the following:</para>
-        
-        <programlisting>Annotation*  
-"converter" Type UIdentifier TypeParams? 
-TypeConstraintList? 
-"(" FormalParam ")" 
-Block</programlisting>
-
-        <comment><para>TODO: would it be better to just let you annotate a static method <literal>converter</literal>,
-        instead of having a whole special declaration?</para></comment>
+        <para>An extension allows values of one type to be transparently converted to values 
+        of another type. Extensions are declared by annotating a method or class
+        <literal>extension</literal>. An extension method must have exactly one parameter.
+        An extension class must have exactly one initialization parameter.</para>
             
         <para>For example:</para>
         
-        <programlisting>public converter User PersonUser(Person person) { return person.user; }</programlisting>
-        
-        <para>The parameter type must be immutable.</para>
-
-        <para>A converter declaration is equivalent to a Java class declaration. The example 
-        above is equivalent to the following Java class:</para>
-        
-        <programlisting>public final class PersonUser 
-        extends Converter&lt;Person, User&gt; {
-    @Override User convert(Person person) 
-    {
-        return person.user; 
-    }
+        <programlisting>public static extension User personToUser(Person person) { 
+    return person.user; 
 }</programlisting>
-
-        <para>The Ceylon compiler searches for an appropriate converter whenever a value is
-        assigned to a non-assignable type. If exactly one converter for the types is found, 
-        the compiler inserts a call to the converter. For example, this Ceylon assignment:</para>
         
-        <programlisting>Person person = ...;
+        <programlisting>public extension CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
+    
+    public Collection&lt;T&gt; nonZeroElements() {
+        return collection.elements() 
+            having (T element) element!=0; 
+    }
+    
+    ...   
+}</programlisting>
+        
+        <para>An extension method is called a converter. An extension class is called a 
+        decorator.</para>
+        
+        <para>The Ceylon compiler searches for an appropriate extension whenever a value of one
+        type is assigned to a non-assignable type. If exactly one extension for the two types is 
+        found, the compiler inserts a call to the extension. For example, this Ceylon assignment:</para>
+        
+        <programlisting>import org.mydomain.myproject.Converters.personToUser;
+...
+Person person = ...;
 User user = person;</programlisting>
 
         <para>Is equivalent to the following Java code:</para>
         
         <programlisting>Person person = ...;
-User user = new PersonUser().convert(person);</programlisting>
+User user = personToUser(person);</programlisting>
 
-        <para>A conversion is only available in a source file that expicitly 
-        <literal>import</literal>s the converter.</para>
+        <para>The Ceylon compiler also searches for an appropriate extension whenever a member
+        is invoked that is not declared by the type. If exactly one extension that declares the
+        member is found for the type, the compiler inserts a call to the extension. For example, 
+        this Ceylon method call:</para>
+        
+        <programlisting>import org.mydomain.myframework.CollectionUtils;
+...
+Collection&lt;Integer&gt; ints = ...;
+Collection&lt;Integer&gt; result = ints.nullElements();</programlisting>
+            
+        <para>Is equivalent to this Java code:</para>
+    
+        <programlisting>Collection&lt;Integer&gt; ints = ...;
+Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
+            
+        <para>An extension is only available in a source file that expicitly 
+        <literal>import</literal>s the extension.</para>
         
     </section>
-    
+        
     <section id="declaration modifiers">
         <title>Declaration modifiers</title>
         
@@ -1527,6 +1414,10 @@ User user = new PersonUser().convert(person);</programlisting>
                 <para><literal>override</literal> indicates that a method
                 or attribute overrides a method or attribute defined by a 
                 supertype.</para>
+            </listitem>
+            <listitem>
+                <para><literal>extension</literal> specifies that a method
+                is a converter, or that a class is a decorator.</para>
             </listitem>
             <listitem>
                 <para><literal>once</literal> indicates that a method is 

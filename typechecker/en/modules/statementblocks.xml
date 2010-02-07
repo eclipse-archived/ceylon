@@ -1,10 +1,10 @@
 <chapter id="statementblocks">
     <title>Blocks and control structures</title>
     
-    <para>Method, attribute, converter, class and functor literal bodies contain 
-    procedural code that is executed when the method, attribute or converter is 
-    invoked. The code contains expressions and control directives and is organized 
-    using blocks and control structures.</para>
+    <para>Method, attribute, class and functor literal bodies contain procedural code 
+    that is executed when the method, functor or attribute is invoked, or when the
+    class is instantiated. The code contains expressions and control directives and is 
+    organized using blocks and control structures.</para>
     
     <section id="blocks">
         <title>Blocks and statements</title>
@@ -58,8 +58,8 @@
         <para>Ceylon provides the following control directives:</para>
         
         <itemizedlist>
-            <listitem>the <literal>return</literal> directive&mdash;to return a value from a method, 
-            attribute getter or converter,</listitem>
+            <listitem>the <literal>return</literal> directive&mdash;to return a value from a method 
+            or attribute getter,</listitem>
             <listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
             functor,</listitem>
             <listitem>the <literal>found</literal> directive&mdash;to terminate a <literal>for/fail</literal> 
@@ -72,8 +72,7 @@
          <programlisting>ControlDirective := "return" Expression? | "produce" Expression | "throw" Expression | "found" | "break"</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
-        body of an attribute getter, a non-<literal>void</literal> method or a 
-        converter.</para>
+        body of an attribute getter or a non-<literal>void</literal> method.</para>
         
         <para>The <literal>produce</literal> directive may not be used outside
         the body of a non-<literal>void</literal> functor expression.</para>
@@ -94,30 +93,6 @@
         directive.</para></comment>
         
     </section>
-    
-    <!--  
-    <section>
-        <title>Method, attribute and converter bodies</title>
-        
-        <para>A method, attribute or converter body consists of either an
-        expression (void methods only), a <emphasis>return directive</emphasis>
-        (non-void methods only), a <emphasis>throw directive</emphasis> or a 
-        <emphasis>block</emphasis>.</para>
-        
-        <programlisting>OpenBody := Block | MethodDirective</programlisting>
-        <programlisting>ClosedBody := Block | MethodDirective ";"</programlisting>
-        <programlisting>VoidBody := VoidBlock | ( Expression | ThowDirective ) ";"</programlisting>
-        
-        <para>Where:</para>
-        
-        <programlisting>MethodDirective := ReturnDirective | ThrowDirective</programlisting>
-        
-        <para>Attribute getter, non-<literal>void</literal> method and converter bodies 
-        must end at a <literal>return</literal> or <literal>throw</literal> directive
-        for every possible execution path.</para>
-        
-    </section>
-    -->
            
     <section id="controlstructures">
         <title>Control structures</title>

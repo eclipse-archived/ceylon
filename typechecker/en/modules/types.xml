@@ -339,7 +339,7 @@
 
 }</programlisting>
 
-        <programlisting>public decorator Categories (Category category) {
+        <programlisting>public extension Categories(Category category) {
         
     doc "Determine if all the given elements belong to the category."
     public Boolean contains(Iterable&lt;Object&gt; elements) {
@@ -359,7 +359,7 @@
 
 }</programlisting>
 
-        <programlisting>public decorator OpenCategories&lt;in X&gt; (OpenCategory&lt;X&gt; category) {
+        <programlisting>public extension OpenCategories&lt;in X&gt;(OpenCategory&lt;X&gt; category) {
         
     doc "Add the given elements to the category."
     public Boolean add(Iterable&lt;X&gt; elements) {
@@ -388,7 +388,7 @@
     
 }</programlisting>
 
-        <programlisting>public decorator Correspondences&lt;in U, out V&gt; (Correspondence&lt;U, V&gt; correspondence) {
+        <programlisting>public extension Correspondences&lt;in U, out V&gt;(Correspondence&lt;U, V&gt; correspondence) {
 
     doc "Binary lookup operator x[keys]. Returns a list of values 
          associated with the given keys, in order."
@@ -432,7 +432,7 @@
 
 }</programlisting>
 
-        <programlisting>public decorator OpenCorrespondences&lt;in U, V&gt; (OpenCorrespondence&lt;U, V&gt; correspondence) {
+        <programlisting>public extension OpenCorrespondences&lt;in U, V&gt;(OpenCorrespondence&lt;U, V&gt; correspondence) {
 
      doc "Assign the given values to the given keys."
      public void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions) {
@@ -713,7 +713,7 @@
         <section>
             <title>Collection operations</title>
             
-            <programlisting><![CDATA[public decorator Collections<out X>(Collection<X> collection) {
+            <programlisting><![CDATA[public Collections {
             
     public static List<X> join<X>(List<X> list...) {
         return new List<X> {
@@ -828,19 +828,19 @@
 
         <para>Enumerations may be freely converted to sets or maps:</para>
         
-        <programlisting>public Map&lt;U, V&gt; converter EnumerationToMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
+        <programlisting>public static extension Map&lt;U, V&gt; enumerationToMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
 
-        <programlisting>public Set&lt;X&gt; converter EnumerationToSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
+        <programlisting>public static extension Set&lt;X&gt; enumerationToSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
 
-        <programlisting>public OpenMap&lt;U, V&gt; converter EnumerationToOpenMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
+        <programlisting>public static extension OpenMap&lt;U, V&gt; enumerationToOpenMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
 
-        <programlisting>public OpenSet&lt;X&gt; converter EnumerationToOpenSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
+        <programlisting>public static extension OpenSet&lt;X&gt; enumerationToOpenSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
 
-        <programlisting>public OpenList&lt;X&gt; converter EnumerationToOpenList(Enumeration&lt;X&gt; enum) { ... }</programlisting>
+        <programlisting>public static extension OpenList&lt;X&gt; enumerationToOpenList(Enumeration&lt;X&gt; enum) { ... }</programlisting>
 
         <para>Furthermore, any object may be transparently promoted to an enumeration:</para>
         
-        <programlisting>public Enumeration&lt;T&gt; converter ObjectToEnumeration(Object object) { return Enumeration(object); }</programlisting>
+        <programlisting>public static extension Enumeration&lt;T&gt; objectToEnumeration(Object object) { return Enumeration(object); }</programlisting>
         
     </section>
     
