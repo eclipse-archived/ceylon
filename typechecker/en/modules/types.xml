@@ -823,25 +823,30 @@
         
         <programlisting>public class Enumeration&lt;out X&gt;(X... values)
         satisfies List&lt;X&gt;, Case&lt;Object&gt; {
-    ... 
+    ...
+
+    public static extension 
+    OpenMap&lt;U, V&gt; toOpenMap&lt;U, V&gt;(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) {
+        return HashMap(enum);
+    }
+
+    public static extension 
+    OpenSet&lt;X&gt; toOpenSet&lt;X&gt;(Enumeration&lt;X&gt; enum) {
+        return enum.elements.copy();
+    }
+
+    public static extension 
+    OpenList&lt;X&gt; toOpenList&lt;X&gt;(Enumeration&lt;X&gt; enum) {
+        return enum.copy();
+    }
+
+    public static extension 
+    Enumeration&lt;T&gt; singleton&lt;T&gt;(T object) { 
+        return Enumeration(object); 
+    }
+    
 }</programlisting>
-
-        <para>Enumerations may be freely converted to sets or maps:</para>
-        
-        <programlisting>public static extension Map&lt;U, V&gt; enumerationToMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
-
-        <programlisting>public static extension Set&lt;X&gt; enumerationToSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
-
-        <programlisting>public static extension OpenMap&lt;U, V&gt; enumerationToOpenMap(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) { ... }</programlisting>
-
-        <programlisting>public static extension OpenSet&lt;X&gt; enumerationToOpenSet(Enumeration&lt;X&gt; enum) { ... }</programlisting>
-
-        <programlisting>public static extension OpenList&lt;X&gt; enumerationToOpenList(Enumeration&lt;X&gt; enum) { ... }</programlisting>
-
-        <para>Furthermore, any object may be transparently promoted to an enumeration:</para>
-        
-        <programlisting>public static extension Enumeration&lt;T&gt; objectToEnumeration(Object object) { return Enumeration(object); }</programlisting>
-        
+    
     </section>
     
     <section>
