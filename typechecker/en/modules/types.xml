@@ -603,6 +603,7 @@
     public List<X> sublist(Integer from, Integer to);
     public List<X> reversed;
     public Map<Integer,X> map;
+    public Bag<X> bag;
     
     public List<Y> transform<Y>(functor Y(X element) select);
     
