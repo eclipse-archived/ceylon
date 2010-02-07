@@ -502,6 +502,8 @@
     public Integer count(Object element);
     public Integer count(functor Boolean(X element) having);
     
+    public Boolean contains(functor Boolean(X element) having);
+    
     public Set<X> elements;
     public Set<X> elements(functor Boolean(X element) having);
     
@@ -586,11 +588,11 @@
     public Integer firstIndex;
     public Integer lastIndex;
     
-    public Integer firstIndex(Object element);
-    public Integer lastIndex(Object element);
+    public Integer firstIndex(functor Boolean(X element) having);
+    public Integer lastIndex(functor Boolean(X element) having);
     
-    public optional Integer firstIndexOrNull(Object element);
-    public optional Integer lastIndexOrNull(Object element);
+    public optional Integer firstIndexOrNull(functor Boolean(X element) having);
+    public optional Integer lastIndexOrNull(functor Boolean(X element) having);
     
     public List<X> head(Integer to=firstIndex);
     public List<X> tail(Integer from=lastIndex);
