@@ -1067,61 +1067,107 @@
         <para>The <literal>lang.Util</literal> class defines several methods
         for building complex expressons.</para>
         
-        <programlisting><![CDATA[public class Util {
-        
+        <!-- 
     doc "Evaluate the block. Useful for turning a series
          of statements into an expression."
-    public static X evaluate<X>(functor X() do) { ... }
+    public static X evaluate<X>(functor X() do) {
+        return do();
+    }
+         -->
+        
+        
+        <programlisting><![CDATA[public class Util {
+        
+    doc "Assert that the block evaluates to true. The block 
+         is executed only when assertions are enabled. If
+         the block evaluates to false, throw an 
+         |AssertionException|."
+    public static void assert(functor Boolean() true) {
+        assert("Assertion failed", evaluate);
+    }
 
     doc "Assert that the block evaluates to true. The block 
-         is executed only when assertions are enabled."
-    public static void assert(functor Boolean() evaluate) { ... }
+         is executed only when assertions are enabled. If
+         the block evaluates to false, throw an 
+         |AssertionException| with the given message."
+    public static void assert(String message
+                              functor Boolean() true) {
+        if ( assertionsEnabled() && !evaluate() ) {
+            throw new AssertionException(message);
+        }
+    }
 
     doc "If the condition is true, evaluate first block,
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifTrue<Y>(Boolean condition,
-                                       functor Y() then) 
-                             { ... }
+                                       functor Y() then) {
+        if (condition) {
+            return then();
+        }
+        else {
+            return null;
+        }
+    }
 
     doc "If the condition is true, evaluate first block,
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifTrue<Y>(Boolean condition,
                               functor Y() then, 
-                              functor Y() otherwise) 
-                    { ... }
+                              functor Y() otherwise) {
+        if (condition) {
+            return then();
+        }
+        else {
+            return otherwise();
+        }
+    }
 
     doc "If the value is non-null, evaluate first block,
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifExists<X,Y>(specified optional X value,
-                                           coordinated functor Y(X x) then) 
-                             { ... }
+                                           coordinated functor Y(X x) then) {
+        if (exists value) {
+            return then(value);
+        }
+        else {
+            return null;
+        }
+    }
 
     doc "If the value is non-null, evaluate first block,
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifExists<X,Y>(specified optional X value,
                                   coordinated functor Y(X x) then, 
-                                  functor Y() otherwise) 
-                    { ... }
+                                  functor Y() otherwise) {
+        if (exists value) {
+            return then(value);
+        }
+        else {
+            return otherwise();
+        }
+    }
 
     doc "Iterate elements and return those for which the first
          block evaluates to true, ordered using the second block,
          if specified."
     public static List<X> from<X>(iterated Iterable<X> elements,
                                   coordinated functor Boolean(X x) having,
-                                  optional coordinated functor Comparison(X x) by = null) 
-                          { ... }
+                                  optional coordinated functor Comparison(X x, X y) by = null) {
+        return from(elements, having, (X x) x, by);
+    }
 
     doc "Iterate elements and for each element evaluate the first block. 
          Build a list of the resulting values, ordered using the second 
          block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
                                     coordinated functor Y(X x) select,
-                                    optional coordinated functor Comparable(X x) by = null) 
-                          { ... }
+                                    optional coordinated functor Comparable(X x) by = null)  {
+        return from(elements, (X x) true, select, by);
+    }
 
     doc "Iterate elements and select those for which the first block 
          evaluates to true. For each of these, evaluate the second block. 
@@ -1130,56 +1176,99 @@
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
                                     coordinated functor Boolean(X x) having, 
                                     coordinated functor Y(X x) select,
-                                    optional coordinated functor Comparable(X x) by = null) 
-                          { ... }
+                                    optional coordinated functor Comparable(Y x, Y y) by = null) {
+        OpenList<Y> list = ArrayList<Y>();
+        for (X x in elements) {
+            if ( having(x) ) {
+                list.add( select(x) );
+            }
+        }
+        if (exists by) {
+            list.sort(by);
+        }
+        return list;
+    }
 
     doc "Return the first element for which the block evaluates to true,
          or a null value if no such element is found."
     public static optional X first<X>(iterated Iterable<X> elements,
-                                      coordinated functor Boolean(X x) having) 
-                             { ... }
+                                      coordinated functor Boolean(X x) having) {
+        for (X x in elements) {
+            if ( having(x) ) {
+                return x;
+            }
+        }
+        return null;
+    }
     
     doc "Return the first element for which the first block evaluates to 
          true, or the result of evaluating the second block, if no such
          element is found."
     public static X first<X>(iterated Iterable<X> elements,
                              coordinated functor Boolean(X x) having
-                             functor X() otherwise) 
-                    { ... }
+                             functor X() otherwise) {
+        if(exists X first = first(elements, having)) {
+            return first;
+        }
+        else {
+            return otherwise();
+        }
+    }
     
     doc "Count the elements for with the block evaluates to true."
     public static Integer count<X>(iterated Iterable<X> elements,
-                                   coordinated functor Boolean(X x) having) 
-                          { ... }
+                                   coordinated functor Boolean(X x) having) {
+        mutable Integer count := 0;
+        for (X x in elements) {
+            if ( having(x) ) {
+                ++count;
+            }
+        }
+        return count;
+    }
     
     doc "Construct a |Map| by evaluating the block for each given key.
          Each |Entry| is constructed from the key and the value result 
          of the evaluation."
     public static Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
-                                        coordinated functor V(U key) to)
-                           { return map(keys, (U key) key->to(key)); }
+                                        coordinated functor V(U key) to) { 
+        return map(keys, (U key) key->to(key)); 
+    }
 
     doc "Construct a |Map| by evaluating the block for each given value.
          Each |Entry| is constructed from the value and the key result 
          of the evaluation."
     public static Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
-                                      coordinated functor V(U key) from)
-                           { return map(values, (V value) value->from(value)); }
+                                      coordinated functor V(U key) from) { 
+        return map(values, (V value) value->from(value)); 
+    }
 
     doc "Construct a |Map| by evaluating the block for each given object
          and collecting the resulting |Entry|s."
-    public static Map<U,V> map<X,U,V>(iterated Iterable<X> keys,
-                                      coordinated functor Entry<U,V>(X key) of);
+    public static Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
+                                      coordinated functor Entry<U,V>(X element) of) {
+        OpenMap<U,V> map = HashMap<U,V>();
+        for (X x in elements) {
+            map.add( of(x) );
+        }
+    }
 
     doc "Return true iff for every element, the block evaluates to true."
     public static Boolean forAll<X>(iterated Iterable<X> elements,
-                                    coordinated functor Boolean(X x) every) 
-                          { ... }
+                                    coordinated functor Boolean(X x) every) {
+        for (X x in elements) {
+            if ( !having(x) ) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                    coordinated functor Boolean(X x) some) 
-                          { return !forAll(elements, (X x) !some(x)); }
+                                    coordinated functor Boolean(X x) some) { 
+        return !forAll(elements, (X x) !some(x)); 
+    }
     
     doc "Using the given resource, attempt to evaluate the first block.
          If an exception occurs, and there is a matching block, evaluate
@@ -1187,7 +1276,19 @@
     public static Y using<X,Y>(specified X resource,
                                coordinated functor Y(X x) seek,
                                functor Y(E e) where E>=Exception... except)
-                    where X >= Usable { ... }
+                    where X >= Usable {
+        try (resource) {
+            return seek(resource);
+        }
+        catch (Exception e) {
+            for (Functor ex in except) {
+                FunctorType ft = ex.functorType;
+                if (e.instanceOf(ft.parameters.first.parameterType)) {
+                    return ft.curry(ex).invoke(e);
+                }
+            }
+        }
+    }
     
 }]]></programlisting>
     

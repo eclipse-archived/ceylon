@@ -525,7 +525,7 @@ class Customer(Name name, optional Organization org = null)
     y := sqrt(displacement) * sign;
     
     assert ("must have distance ${position} from origin")
-        x**2 + y**2 == position**2;
+        true x**2 + y**2 == position**2;
     
 }</programlisting>
         
