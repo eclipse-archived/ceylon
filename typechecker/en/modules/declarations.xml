@@ -1325,7 +1325,10 @@ TypeConstraintList?
         
         <para>For example:</para>
         
-        <programlisting>public extension User user;</programlisting>
+        <programlisting>public class Person {
+    ...
+    public extension User user;
+}</programlisting>
         
         <programlisting>public static extension User personToUser(Person person) { 
     return person.user; 
