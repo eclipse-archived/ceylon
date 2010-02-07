@@ -633,9 +633,9 @@
     public void reverse();
     public void reorder(functor Comparison(X x, X y) by);
     
-    public OpenList<X> sublist(Integer from, Integer to);
-    public OpenList<X> reversed;
-    public OpenMap<Integer,X> map;
+    override public OpenList<X> sublist(Integer from, Integer to);
+    override public OpenList<X> reversed;
+    override public OpenMap<Integer,X> map;
     
 }]]></programlisting>
             
@@ -670,12 +670,12 @@
             <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
         satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> {
     
-    public OpenSet<U> keys;
-    public OpenBag<V> values;
-    public OpenMap<V, Set<U>> inverse;
+    override public OpenSet<U> keys;
+    override public OpenBag<V> values;
+    override public OpenMap<V, Set<U>> inverse;
     
     public optional V removeKey(U key);
-    public Integer removeKeys(functor Boolean(U key) having);
+    public Bag<V> removeKeys(functor Boolean(U key) having);
     
 }]]></programlisting>
             
@@ -698,7 +698,11 @@
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Integer> {}]]></programlisting>
+        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Integer> {
+        
+    override public OpenMap<X,Integer> map;
+    
+}]]></programlisting>
             
         </section>
         
