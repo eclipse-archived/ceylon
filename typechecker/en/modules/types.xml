@@ -602,7 +602,7 @@
     
     public List<X> sublist(Integer from, Integer to);
     public List<X> reversed;
-    public Bag<X> unordered;
+    public Bag<X> unsorted;
     public Map<Integer,X> map;
     
     public List<Y> transform<Y>(functor Y(X element) select);
@@ -631,7 +631,7 @@
     public X removeLast();
     
     public void reverse();
-    public void reorder(functor Comparison(X x, X y) by);
+    public void resort(functor Comparison(X x, X y) by);
     
     override public OpenList<X> sublist(Integer from, Integer to);
     override public OpenList<X> reversed;
