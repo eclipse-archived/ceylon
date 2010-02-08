@@ -228,7 +228,7 @@ classDeclaration
     ;
 
 extendedType
-    : 'extends' typeName typeParameters? arguments
+    : 'extends' regularType arguments
     ;
     
 instances
@@ -256,7 +256,7 @@ type
     ;
 
 regularType
-    : typeName ( (typeParameterStart) => typeParameters )?
+    : typeName ( (typeParameterStart) => typeArguments )?
     ;
 
 functorType
@@ -285,8 +285,12 @@ memberName
     : LIDENTIFIER
     ;
 
+typeArguments
+    : '<' type (',' type)* '>'
+    ;
+
 typeParameters
-    : '<' variance type (',' variance type)* '>'
+    : '<' variance typeName (',' variance typeName)* '>'
     ;
 
 variance 
