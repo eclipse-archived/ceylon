@@ -551,10 +551,10 @@ switchCaseElse
     ;
     
 cases 
-    : ('case' 'null' block)? ('case' '(' case ')' block)+ ('else' block)?
+    : ('case' 'null' block)? ('case' '(' caseList ')' block)+ ('else' block)?
     ;
     
-case
+caseList
     : expression (',' expression)* | 'is' type
     ;
     
