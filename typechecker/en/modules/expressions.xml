@@ -1930,23 +1930,39 @@ if you prefer.";</programlisting>
         <programlisting>functor Comparison(Float x, Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
         
         <para>The braces around the functor body and the <literal>produce</literal> keyword 
-        may be omitted for single-line functors that return a value.</para>
+        may be omitted for a single-line functor that produces a value if it appears as the 
+        right side of an assignment, as a parameter, or surrounded by parentheses.</para>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
         <programlisting>people.select( (Person p) p.age>18 )
     .collect( (Person p) p.name );</programlisting>
     
-        <para>The braces are required for <literal>void</literal> functors.</para>
+        <para>The braces are required for a <literal>void</literal> functor, or if the functor
+        does not appear as the right side of an assignment, nor as a parameter, nor surrounded by 
+        parentheses.</para>
         
         <programlisting>namedValues.each( (String name->Object value) { log.info("${name} ${value}"); } );</programlisting>
         
-        <!--  
-        <programlisting>people.collect( Collect&lt;Person&gt;(Person p: p.age>18) return p.name );</programlisting>
+        <para>If a functor is the only parameter of a method invocation, and the functor body
+        is surrounded by braces, the method call parentheses may be eliminated:</para>
         
-        <programlisting>people.select( Collect&lt;Person&gt;(Person p: p.age>18) );</programlisting>
-        -->
+        <programlisting>namedValues.each (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
         
+        <programlisting>Set&lt;People&gt; adults = people.elements (Person p) { produce p.age>18 };</programlisting>
+
+        <programlisting>int index = lineItems.firstIndex (LineItem li) { produce !li.product.available };</programlisting>
+
+        <para>In this situation, if the functor has no parameters, the functor parameter 
+        parentheses may also be eliminated:</para>
+        
+        <programlisting>(x>10).ifTrue { log.info("big!"); };</programlisting>
+        
+        <comment><para>Should we support a Groovy-style <literal>it</literal>, allowing the variable 
+        list to be eliminated for functors with one parameter? For example:</para></comment>
+        
+        <programlisting>Set&lt;People&gt; adults = people.elements { produce it.age>18 };</programlisting>
+         
         <para>Consider the following functor expression:</para>
         
         <programlisting>functor Comparison(String x, String y) order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
@@ -2003,9 +2019,6 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
             return x > min &amp;&amp; x &lt; max; 
         } 
     } );</programlisting>
-    
-        <comment><para>Note: a functor expression can only appear as the right side of an 
-        assignment, as a parameter, or surrounded by parentheses.</para></comment>
                         
         <section id="functorparametersyntax">
         <title>Syntax extension for functor parameters</title>
@@ -2025,20 +2038,20 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         Each of these arguments is a functor expression, where the functor parameter list may 
         be omitted for functors with no parameters:</para>
         
-        <programlisting>SimpleFunctorExpression := ( (Type | "void")? FormalParams )? (Expression|Block)</programlisting>
+        <programlisting>SimpleFunctorExpression := FormalParams? (Expression|Block)</programlisting>
         
         <para>For example:</para>
         
         <programlisting>String label = (x>10).if() isTrue "big" isFalse "little";</programlisting>
         
-        <programlisting>amounts.sort() by (Float x, Float y) { produce x&lt;=&gt;y }</programlisting>
+        <programlisting>amounts.sort() by (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
         
         <programlisting>people.sort() by (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
         
         <programlisting>people.select() only (Person p) { produce p.age>18 }
     .collect() each (Person p) { produce p.name };</programlisting>
     
-        <programlisting>namedValues.each() do (String name->Object value) { log.info("${name} ${value}"); }</programlisting>
+        <programlisting>namedValues.each() do (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
 
         <programlisting>optional specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
         
@@ -2050,21 +2063,8 @@ isTrue {
 isFalse {
     log.debug("little");
     little(x);
-}</programlisting>
-        <!--  
-        <programlisting>people.collect(Person p: p.age>18) return p.name;</programlisting>
-        
-        <programlisting>people.select(Person p: p.age>18);</programlisting>
-        -->
-        
-        <!-- 
-        <para>Finally, if the functor has exactly one parameter, the variable list
-        may be eliminated.</para>
-        
-        <programlisting>people.select( return it.age>18 )
-    .collect( return it.name );</programlisting>
-         -->
-         
+};</programlisting>
+
         <comment><para>TODO: I would love to be able to omit the parameter name from the first  
         parameter value, but I simply can't get this to parse. For example:</para></comment>
                 
