@@ -270,7 +270,7 @@ else {
             
             <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
             
-            <programlisting>SwitchCaseElse := "switch" "(" Expression ")" (Cases ";" | "{" Cases "}")</programlisting>
+            <programlisting>SwitchCaseElse := "switch" "(" Expression ")" (Cases | "{" Cases "}")</programlisting>
             
             <programlisting>Cases := CaseNull? Case+ CaseElse?</programlisting>
 

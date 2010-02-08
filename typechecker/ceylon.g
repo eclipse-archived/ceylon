@@ -547,7 +547,7 @@ ifElse
     ;
     
 switchCaseElse
-    : 'switch' '(' expression ')' ( '{' cases '}' | cases ';' )
+    : 'switch' '(' expression ')' ( '{' cases '}' | cases )
     ;
     
 cases 
