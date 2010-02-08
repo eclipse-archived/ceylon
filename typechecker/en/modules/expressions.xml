@@ -1915,7 +1915,7 @@ if you prefer.";</programlisting>
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression := ( "functor" ( Annotation* (Type | "void") )? )? FormalParams OpenBlock</programlisting>
+        <programlisting>FunctorExpression := ( "functor" ( Annotation* (Type | "void") )? )? FormalParams (Expression|Block)</programlisting>
         
         <para>A functor body may not contain a <literal>return</literal> directive. If the 
         functor body is a block, the value of the functor, when executed, is determined by 
@@ -2025,7 +2025,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         Each of these arguments is a functor expression, where the functor parameter list may 
         be omitted for functors with no parameters:</para>
         
-        <programlisting>SimpleFunctorExpression := ( (Type | "void")? FormalParams )? OpenBlock</programlisting>
+        <programlisting>SimpleFunctorExpression := ( (Type | "void")? FormalParams )? (Expression|Block)</programlisting>
         
         <para>For example:</para>
         

@@ -134,12 +134,7 @@
         </itemizedlist>
                 
         <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
-
-        <para>A control structure body consists of an expression, a control directive or a block.</para>
-        
-        <programlisting>OpenBlock := Block | Expression | ControlDirective</programlisting>
-        <programlisting>ClosedBlock := Block | (Expression | ControlDirective) ";"</programlisting>
-        
+       
         <para>Some control structures allow embedded declaration of a local. This local is available
         inside the control structure body.</para>
         
@@ -212,12 +207,15 @@
             </listitem>
         </itemizedlist>
                         
+        <comment><para>TODO: Should we support, like Java, single-statement control structure bodies 
+        without the braces.</para></comment>
+        
         <section>
             <title><literal>if/else</literal></title>
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse := "if" "(" Condition ")" (ClosedBlock | OpenBlock "else" ClosedBlock)</programlisting>
+            <programlisting>IfElse := "if" "(" Condition ")" Block ("else" Block)?</programlisting>
 
             <!--programlisting>IfElse := 
 "if" "(" Condition ("," Condition)* ")"
@@ -274,9 +272,9 @@ else {
             
             <programlisting>Cases := CaseNull? Case+ CaseElse?</programlisting>
 
-            <programlisting>CaseNull := "case" "null" OpenBlock</programlisting>
-            <programlisting>Case := "case" "(" Case ")" OpenBlock</programlisting>
-            <programlisting>CaseElse := "else" OpenBlock</programlisting>
+            <programlisting>CaseNull := "case" "null" Block</programlisting>
+            <programlisting>Case := "case" "(" Case ")" Block</programlisting>
+            <programlisting>CaseElse := "else" Block</programlisting>
 
             <para>The switch expression may be of any type. The case values must be 
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
@@ -354,7 +352,7 @@ else {
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
-            <programlisting>ForFail := "for" "(" ForIterator ")" (ClosedBlock | OpenBlock "fail" ClosedBlock)</programlisting>
+            <programlisting>ForFail := "for" "(" ForIterator ")" Block ("fail" Block)?</programlisting>
 
             <!--programlisting>ForFail :=
 "for" "(" Iteration (";" Iteration)* ")" 
@@ -388,9 +386,9 @@ else {
             
             <para>For example:</para>
 
-            <programlisting>for (Person p in people) log.info(p.name);</programlisting>
+            <programlisting>for (Person p in people) { log.info(p.name); }</programlisting>
 
-            <programlisting>for (String key -> Integer value in map) log.info("${key} = ${value}");</programlisting>
+            <programlisting>for (String key -> Integer value in map) { log.info("${key} = ${value}"); }</programlisting>
             
             <programlisting>for (Person p in people) {
     log.debug("found ${p.name}");
@@ -423,8 +421,8 @@ fail {
             <para>The <literal>do/while</literal> loop has the form:</para>
             
             <programlisting>DoWhile := 
-( "do" ("(" DoIterator ")")? OpenBlock? )?
-"while" "(" Condition ")" (";" | ClosedBlock)</programlisting>
+( "do" ("(" DoIterator ")")? Block? )?
+"while" "(" Condition ")" (";" | Block)</programlisting>
 
             <para>The loop may declare an iterator variable, which may be mutable.</para>
 
@@ -451,13 +449,15 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>do (mutable Integer i:=0) 
-    log.info("count = " + $i) 
-while (i&lt;=10) i++;</programlisting>
+            <programlisting>do (mutable Integer i:=0) {
+    log.info("count = " + $i);
+}
+while (i&lt;=10) { i++; }</programlisting>
             
             <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator)
-while (iter.more) 
-    log.info( iter.next().name );</programlisting>
+while (iter.more) {
+    log.info( iter.next().name );
+}</programlisting>
             
             <programlisting>do (Iterator&lt;Person&gt; iter = people.iterator)
 while (iter.more) {
@@ -520,16 +520,15 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-"try" ("(" Resource ")")?
-( ClosedBlock | OpenBlock (Catch OpenBlock)* (Catch ClosedBlock | "finally" ClosedBlock) )</programlisting>
+"try" ("(" Resource ")")? Block 
+("catch" "(" Variable ")" Block)* 
+("finally" Block)?</programlisting>
 
             <para>When an exception occurs in the try block, the first matching catch block is 
             executed, if any. The finally block is always executed.</para>
             
             <para>The type of each catch local must extend <literal>lang.Exception</literal>.</para>
-            
-            <programlisting>Catch := "catch" "(" Variable ")"</programlisting>
-            
+                        
             <para>The resource expression must be of type <literal>Usable</literal>.</para>
             
             <programlisting>Resource := Variable Specifier | Expression</programlisting>
@@ -554,23 +553,27 @@ finally {
     if (file.open) file.close();
 }</programlisting>
             
-            <programlisting>try ( Transaction() ) try ( Session s = Session() ) {
-    Person p = s.get(#Person, id);
-    ...
+            <programlisting>try ( Transaction() ) {
+    try ( Session s = Session() ) {
+        Person p = s.get(#Person, id);
+        ...
+    }
 }</programlisting>
 
-            <programlisting>try (semaphore) map[key] = value;</programlisting>
+            <programlisting>try (semaphore) { map[key] = value; }</programlisting>
 
             <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
             keyword.)</para>
             
-            <programlisting>try ( Transaction() ) try ( Session s = Session() ) {
-    Person p = s.get(#Person, id)
-    ...
-    return p;
-} 
-catch (NotFoundException e) { 
-    return null;
+            <programlisting>try ( Transaction() ) {
+    try ( Session s = Session() ) {
+        Person p = s.get(#Person, id)
+        ...
+        return p;
+    } 
+    catch (NotFoundException e) { 
+        return null;
+    }
 }</programlisting>
             
          </section>
