@@ -75,6 +75,12 @@ primaryFunctor
     : functorHeader? formalParameters block
     ;
 
+//a functor expression that can appear inside an expression
+//or as a method argument without the need for parens
+selectorFunctor 
+    : functorHeader? formalParameters? block
+    ;
+
 //shortcut functor expression that makes the parameter list 
 //optional, but can appear only using the special smalltalk
 //style method protocol
@@ -102,6 +108,11 @@ assignableFunctorStart
 //special rule for syntactic predicates
 primaryFunctorStart
     : 'functor' | '(' (declarationStart | ')' '{')
+    ;
+
+//special rule for syntactic predicates
+selectorFunctorStart
+    : primaryFunctorStart | '{'
     ;
 
 //special rule for syntactic predicates
@@ -483,7 +494,7 @@ enumeration
 selector 
     : ('.' | '^.' | '?.' | '*.') memberName
     | reflectedMember
-    | (primaryFunctorStart) => primaryFunctor
+    | (selectorFunctorStart) => selectorFunctor
     | arguments
     | elementSelector
     ;
