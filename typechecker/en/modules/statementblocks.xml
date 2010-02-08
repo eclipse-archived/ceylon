@@ -22,7 +22,7 @@
 
         <programlisting>Statement := ExpressionStatement | ControlStructure | Declaration | Specification</programlisting>
 
-        <programlisting>ControlStatement := ControlDirective ";"</programlisting>
+        <programlisting>ControlStatement := ControlDirective ";"?</programlisting>
         
         <para>The Ceylon language distinguishes between assignment to a mutable value 
         (the <literal>:=</literal> operator) and specification of the value of an 
@@ -238,23 +238,21 @@ else {
 }</programlisting>
 
             <programlisting>public void welcome(optional User user) {
-    if (exists user)
-        log.info("Hi ${user.name}!") 
-    else 
+    if (exists user) {
+        log.info("Hi ${user.name}!");
+    }
+    else {
         log.info("Hello World!");
+    }
 }</programlisting>
             
             <programlisting>public Payment payment(Order order) {
-    if (exists Payment p = order.payment) {
-        return p;
-    }
-    else { 
-        return Payment(order);
-    }
+    if (exists Payment p = order.payment) { return p }
+    else { return Payment(order) }
 }</programlisting>
 
             <programlisting>if (exists Payment p = order.payment) {
-    if (p.paid) log.info("already paid");
+    if (p.paid) { log.info("already paid"); }
 }</programlisting>
             
             <programlisting>if (is CardPayment p = order.payment) {
@@ -313,10 +311,10 @@ else {
 
             <programlisting>public PaymentProcessor processor {
     switch (payment.type) 
-        case null throw NoPaymentTypeException()
-        case (credit, debit) return cardPaymentProcessor 
-        case (check) return checkPaymentProcessor
-        else return interactivePaymentProcessor;
+        case null { throw NoPaymentTypeException() }
+        case (credit, debit) { return cardPaymentProcessor }
+        case (check) { return checkPaymentProcessor }
+        else { return interactivePaymentProcessor }
 }</programlisting>
             
             <programlisting>switch (payment.type) {
@@ -388,24 +386,15 @@ else {
 
             <programlisting>for (Person p in people) { log.info(p.name); }</programlisting>
 
-            <programlisting>for (String key -> Integer value in map) { log.info("${key} = ${value}"); }</programlisting>
+            <programlisting>for (String key -> Integer value in map) { 
+    log.info("${key} = ${value}"); 
+}</programlisting>
             
             <programlisting>for (Person p in people) {
     log.debug("found ${p.name}");
     if (p.age >= 18) {
         log.info("found an adult: ${p.name}");
-        found;
-    }
-}
-fail {
-    log.info("no adults");
-}
-</programlisting>
-
-            <programlisting>for (Person p in people) {
-    if (p.age>=18) {
-        log.info("found an adult");
-        found;
+        found
     }
 }
 fail {
@@ -569,10 +558,10 @@ finally {
     try ( Session s = Session() ) {
         Person p = s.get(#Person, id)
         ...
-        return p;
+        return p
     } 
     catch (NotFoundException e) { 
-        return null;
+        return null
     }
 }</programlisting>
             

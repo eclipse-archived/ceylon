@@ -65,7 +65,7 @@
     see #Iterable
     public Boolean in<Y>(Iterable<Y> iterable) 
             where (Y<=X) {
-        return forAny (Object elem in iterable) elem == this;
+        return forAny (Object elem in iterable) some elem == this;
     }
     
     doc "The Type of the instance."
@@ -343,7 +343,7 @@
         
     doc "Determine if all the given elements belong to the category."
     public Boolean contains(Iterable&lt;Object&gt; elements) {
-        return forAll (X x in elements) having category.contains(x);
+        return forAll (X x in elements) every category.contains(x);
     }
     
 }</programlisting>
@@ -1208,7 +1208,7 @@
     public static Boolean forAll<X>(iterated Iterable<X> elements,
                                     coordinated functor Boolean(X x) every) {
         for (X x in elements) {
-            if ( !having(x) ) {
+            if ( !every(x) ) {
                 return false;
             }
         }

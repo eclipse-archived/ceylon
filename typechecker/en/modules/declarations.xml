@@ -517,7 +517,7 @@ class Customer(Name name, optional Organization org = null)
         extends Point() {
         
     Exact displacement = position**2/2;
-    Integer sign = if (position.negative) -1 else 1;
+    Integer sign = ifTrue (position.negative) then -1 else 1;
     
     x := sqrt(displacement) * sign;
     y := sqrt(displacement) * sign;
@@ -826,7 +826,7 @@ TypeConstraints?
         <programlisting>public optional U get(optional V key);</programlisting>
         
         <programlisting>public void print(Object... objects) {
-    for (Object object in objects) log.info($object);
+    for (Object object in objects) { log.info($object); }
 }</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
@@ -966,8 +966,9 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
     
         <programlisting>public Float total {
     Float sum = 0.0;
-    for (LineItem li in lineItems) 
+    for (LineItem li in lineItems) {
         sum += li.amount;
+    }
     return sum;
 }</programlisting>
 
