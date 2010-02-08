@@ -1053,6 +1053,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
         <programlisting>Initializer := ("="|":=") Expression</programlisting>
 
+        <comment><para>TODO: I would like to support <literal>def</literal> in place of the type
+        for a simple attribute or local with an initializer. For example:</para></comment>
+        
+        <programlisting>def names = List&lt;String&gt;();</programlisting>
+        
         <para>Formal parameters of classes and methods are also considered to be simple attributes.</para>
 
         <para>A local is really just a special case of a simple attribute declaration, but one that 

@@ -513,7 +513,7 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-("try" | ("try" "(" Resource ")")+ ) Block 
+"try" | ( "(" Resource ("," Resource)* ")" )? Block 
 ("catch" "(" Variable ")" Block)* 
 ("finally" Block)?</programlisting>
 
@@ -546,20 +546,12 @@ finally {
     if (file.open) file.close();
 }</programlisting>
             
-            <programlisting>try ( Transaction() ) {
-    try ( Session s = Session() ) {
-        Person p = s.get(#Person, id);
-        ...
-    }
-}</programlisting>
-
             <programlisting>try (semaphore) { map[key] = value; }</programlisting>
 
             <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
             keyword.)</para>
             
-            <programlisting>try ( Transaction() )
-try ( Session s = Session() ) {
+            <programlisting>try ( Transaction(), Session s = Session() ) {
     Person p = s.get(#Person, id)
     ...
     return p
