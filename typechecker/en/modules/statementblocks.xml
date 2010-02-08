@@ -513,7 +513,7 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-"try" | ( "(" Resource ("," Resource)* ")" )? Block 
+"try" ( "(" Resource ("," Resource)* ")" )? Block 
 ("catch" "(" Variable ")" Block)* 
 ("finally" Block)?</programlisting>
 
