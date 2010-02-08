@@ -1953,6 +1953,7 @@ if you prefer.";</programlisting>
 
         <programlisting>int index = lineItems.firstIndex (LineItem li) { produce !li.product.available };</programlisting>
 
+        <!--Does not work due to ambiguity with named parameter syntax!
         <para>In this situation, if the functor has no parameters, the functor parameter 
         parentheses may also be eliminated:</para>
         
@@ -1962,6 +1963,7 @@ if you prefer.";</programlisting>
         list to be eliminated for functors with one parameter? For example:</para></comment>
         
         <programlisting>Set&lt;People&gt; adults = people.elements { produce it.age>18 };</programlisting>
+        -->
          
         <para>Consider the following functor expression:</para>
         
