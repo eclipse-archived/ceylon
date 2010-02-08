@@ -59,15 +59,49 @@ memberOrStatement
     | statement
     ;
 
-//a normal functor expression
-functor 
-    : ('functor' (annotation* (type|'void'))?)? formalParameters functorBody
+functorHeader
+    : 'functor' (annotation* (type | 'void'))?
+    ;
+
+//a functor expression that can appear as the RHS of an 
+//assignment, in an argument list, or in parens
+assignableFunctor 
+    : functorHeader? formalParameters functorBody
+    ;
+
+//a functor expression that can appear inside an expression
+//or as a method argument without the need for parens
+primaryFunctor 
+    : functorHeader? formalParameters block
     ;
 
 //shortcut functor expression that makes the parameter list 
-//optional
+//optional, but can appear only using the special smalltalk
+//style method protocol
 specialFunctor
-    : ( (typeName | formalParameterStart) => (type|'void')? formalParameters )? functorBody
+    : ( (formalParameterStart) => formalParameters )? functorBody
+    ;
+
+//we can support enumerations as functor bodies, but
+//I think that's just confusing to the reader
+functorBody
+    : ('{') => block
+    | functorBodyExpression
+    ;
+
+//special rule for syntactic predicates
+formalParameterStart
+    : '(' (declarationStart | ')')
+    ;
+
+//special rule for syntactic predicates
+assignableFunctorStart
+    : 'functor' | formalParameterStart
+    ;
+
+//special rule for syntactic predicates
+primaryFunctorStart
+    : 'functor' | '(' (declarationStart | ')' '{')
     ;
 
 //special rule for syntactic predicates
@@ -92,18 +126,6 @@ declarationModifier
     | 'deprecated'
     | 'volatile'
     | 'extension'
-    ;
-
-//special rule for syntactic predicates
-formalParameterStart
-    : '(' (declarationStart | ')')
-    ;
-
-//we can support enumerations as functor bodies, but
-//I think that's just confusing to the reader
-functorBody
-    : ('{') => block
-    | functorBodyExpression
     ;
 
 //Let's limit statements to things that make sense, like
@@ -268,7 +290,7 @@ annotation
     ;
 
 userAnnotation 
-    : annotationName ( arguments | literal )?
+    : annotationName ( arguments | literal | reflectedBase (reflectedMember)* )?
     ;
 
 typeName
@@ -319,16 +341,12 @@ literal
 
 stringLiteral
     : SIMPLESTRINGLITERAL
-    | LEFTSTRINGLITERAL expression RIGHTSTRINGLITERAL 
+    | LEFTSTRINGLITERAL expression (MIDDLESTRINGLITERAL expression)* RIGHTSTRINGLITERAL 
     ;
 
 assignable 
-    : (functorStart) => functor
+    : (assignableFunctorStart) => assignableFunctor
     | expression
-    ;
-
-functorStart
-    : 'functor' | formalParameterStart
     ;
 
 //This one is fully general
@@ -343,7 +361,7 @@ expression
 //This one is for use as a functor body
 functorBodyExpression
     : implicationExpression 
-      ( assignmentOp ( (functorStart) => functor | functorBodyExpression ) )?
+      ( assignmentOp ( (assignableFunctorStart) => assignableFunctor | functorBodyExpression ) )?
     ;
     
 assignmentOp
@@ -447,6 +465,7 @@ base
     : regularType
     | memberName
     | literal
+    | (primaryFunctorStart) => primaryFunctor
     | parExpression
     | enumeration
     | 'this' 
@@ -454,7 +473,7 @@ base
     | 'null'
     | 'none'
     | inlineClassDeclaration
-    | '#' ( regularType | memberName )
+    | reflectedBase
     ;
 
 enumeration
@@ -463,9 +482,18 @@ enumeration
 
 selector 
     : ('.' | '^.' | '?.' | '*.') memberName
-    | '#' memberName
+    | reflectedMember
+    | (primaryFunctorStart) => primaryFunctor
     | arguments
     | elementSelector
+    ;
+
+reflectedBase
+    : '#' ( regularType | memberName )
+    ;
+    
+reflectedMember
+    : '#' memberName
     ;
 
 elementSelector
@@ -670,6 +698,12 @@ RIGHTSTRINGLITERAL
     : '}$'
         StringPart
         '"'
+    ;
+
+MIDDLESTRINGLITERAL
+    : '}$'
+        StringPart
+        '${'
     ;
 
 fragment
