@@ -215,7 +215,10 @@
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse := "if" "(" Condition ")" Block ("else" Block)?</programlisting>
+            <programlisting>IfElse := 
+"if" "(" Condition ")" Block
+("else" "if" "(" Condition ")" Block)* 
+("else" Block)?</programlisting>
 
             <!--programlisting>IfElse := 
 "if" "(" Condition ("," Condition)* ")"
@@ -268,11 +271,10 @@ else {
             
             <programlisting>SwitchCaseElse := "switch" "(" Expression ")" (Cases | "{" Cases "}")</programlisting>
             
-            <programlisting>Cases := CaseNull? Case+ CaseElse?</programlisting>
-
-            <programlisting>CaseNull := "case" "null" Block</programlisting>
-            <programlisting>Case := "case" "(" Case ")" Block</programlisting>
-            <programlisting>CaseElse := "else" Block</programlisting>
+            <programlisting>Cases := 
+("case" "null" Block)? 
+("case" "(" Case ")" Block)+ 
+("else" Block)?</programlisting>
 
             <para>The switch expression may be of any type. The case values must be 
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
@@ -311,10 +313,10 @@ else {
 
             <programlisting>public PaymentProcessor processor {
     switch (payment.type) 
-        case null { throw NoPaymentTypeException() }
-        case (credit, debit) { return cardPaymentProcessor }
-        case (check) { return checkPaymentProcessor }
-        else { return interactivePaymentProcessor }
+    case null { throw NoPaymentTypeException() }
+    case (credit, debit) { return cardPaymentProcessor }
+    case (check) { return checkPaymentProcessor }
+    else { return interactivePaymentProcessor }
 }</programlisting>
             
             <programlisting>switch (payment.type) {
@@ -350,7 +352,9 @@ else {
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
-            <programlisting>ForFail := "for" "(" ForIterator ")" Block ("fail" Block)?</programlisting>
+            <programlisting>ForFail := 
+"for" "(" ForIterator ")" Block 
+("fail" Block)?</programlisting>
 
             <!--programlisting>ForFail :=
 "for" "(" Iteration (";" Iteration)* ")" 
@@ -509,7 +513,7 @@ while (!person.parent.dead) {
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
             <programlisting>TryCatchFinally := 
-"try" ("(" Resource ")")? Block 
+("try" | ("try" "(" Resource ")")+ ) Block 
 ("catch" "(" Variable ")" Block)* 
 ("finally" Block)?</programlisting>
 
@@ -518,7 +522,7 @@ while (!person.parent.dead) {
             
             <para>The type of each catch local must extend <literal>lang.Exception</literal>.</para>
                         
-            <para>The resource expression must be of type <literal>Usable</literal>.</para>
+            <para>Each resource expression must be of type <literal>Usable</literal>.</para>
             
             <programlisting>Resource := Variable Specifier | Expression</programlisting>
             
@@ -554,16 +558,16 @@ finally {
             <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
             keyword.)</para>
             
-            <programlisting>try ( Transaction() ) {
-    try ( Session s = Session() ) {
-        Person p = s.get(#Person, id)
-        ...
-        return p
-    } 
-    catch (NotFoundException e) { 
-        return null
-    }
-}</programlisting>
+            <programlisting>try ( Transaction() )
+try ( Session s = Session() ) {
+    Person p = s.get(#Person, id)
+    ...
+    return p
+} 
+catch (NotFoundException e) { 
+    return null
+}
+</programlisting>
             
          </section>
 

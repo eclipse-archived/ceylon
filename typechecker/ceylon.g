@@ -543,7 +543,7 @@ controlStructure
     ;
     
 ifElse
-    : 'if' '(' condition ')' block ('else' 'if' block)* ('else' block)?
+    : 'if' '(' condition ')' block ('else' 'if' '(' condition ')' block)* ('else' block)?
     ;
     
 switchCaseElse
@@ -551,23 +551,11 @@ switchCaseElse
     ;
     
 cases 
-    : caseNull caseStmt+ caseElse?
+    : ('case' 'null' block)? ('case' '(' case ')' block)+ ('else' block)?
     ;
     
-caseNull
-    : 'case' 'null' block
-    ;
-    
-caseStmt 
-    : 'case' '(' caseExprs ')' block
-    ;
-    
-caseExprs
+case
     : expression (',' expression)* | 'is' type
-    ;
-    
-caseElse
-    : 'else' block
     ;
     
 forFail
@@ -576,10 +564,6 @@ forFail
 
 forIterator
     : formalParameter 'in' expression
-    ;
-    
-controllingVariable
-    : annotation* type LIDENTIFIER ( ('->'|'..') type LIDENTIFIER )?
     ;
     
 doWhile
@@ -594,8 +578,7 @@ doIterator
 
 tryCatchFinally
     :
-    'try' ( '(' resource ')' ( 'try' '(' resource ')' )* )?
-    block
+    ( 'try' | ( 'try' '(' resource ')' )+ ) block
     ('catch' '(' variable ')' block)*
     ('finally' block)?
     ;
