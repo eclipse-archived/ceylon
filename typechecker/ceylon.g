@@ -14,8 +14,8 @@ compilationUnit
 toplevelDeclaration
     : classDeclaration 
     | interfaceDeclaration 
-    | converterDeclaration 
-    | decoratorDeclaration
+    //| converterDeclaration 
+    //| decoratorDeclaration
     | aliasDeclaration
     ;
 
@@ -91,6 +91,7 @@ declarationModifier
     | 'once'
     | 'deprecated'
     | 'volatile'
+    | 'extension'
     ;
 
 //special rule for syntactic predicates
@@ -125,7 +126,7 @@ directiveStatement
 directive
     : 'return' assignable? 
     | 'produce' assignable
-    | 'throw' assignable 
+    | 'throw' expression 
     | 'break' 
     | 'found'
     ;
@@ -162,7 +163,7 @@ attributeDefinition
     : block | initializer ';'
     ;
 
-decoratorDeclaration
+/*decoratorDeclaration
     :
         'decorator'
         typeName
@@ -181,7 +182,7 @@ converterDeclaration
         typeParameters?
         typeConstraints?
         '(' annotation* type parameterName ')'
-    ;
+    ;*/
 
 interfaceDeclaration
     :
@@ -285,9 +286,13 @@ memberName
     ;
 
 typeParameters
-    : '<' type (',' type)* '>'
+    : '<' variance type (',' variance type)* '>'
     ;
 
+variance 
+    : ('in'|'out')?
+    ;
+    
 //for locals and attributes
 initializer
     : ('=' | ':=') assignable
@@ -392,7 +397,7 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : dateCompositionExpression ('exists' | 'nonempty')?
+    : rangeIntervalEntryExpression ('exists' | 'nonempty')?
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -464,8 +469,8 @@ elementSelector
     ;
 
 elementsSpec
-    : assignable ( '...' | (',' assignable)* | '..' assignable )
-    |  '...' assignable	
+    : additiveExpression ( '...' | '..' additiveExpression | (',' additiveExpression)+ )?
+    |  '...' additiveExpression	
     ;
 
 arguments 
