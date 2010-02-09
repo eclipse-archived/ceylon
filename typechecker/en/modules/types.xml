@@ -1317,8 +1317,8 @@
         
     doc "Attempt to evaluate the first block. If an exception occurs that 
          matches the second block, evaluate the block."
-    public static Y attempt<Y,E>(functor Y() seek,
-                                 functor Y(E e) except) {
+    public static Y seek<Y,E>(functor Y() seek,
+                              functor Y(E e) except) {
         try {
             return seek();
         }
