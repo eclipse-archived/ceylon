@@ -35,6 +35,7 @@
 DateLiteral | TimeLiteral
 IntegerLiteral | FloatLiteral |
 CharacterLiteral | StringLiteral | RegexLiteral |
+TypeLiteral | MemberLiteral
 "this" | "super" | "null" | "none"</programlisting>
 
     <para>The keywords <literal>this</literal>, <literal>super</literal> and 
@@ -280,7 +281,7 @@ if you prefer.";</programlisting>
         
         <programlisting>TypeLiteral := HASH Type</programlisting>
         
-        <programlisting>MemberLiteral := (Type)? HASH LIdentifier</programlisting>
+        <programlisting>MemberLiteral := (Type)? HASH MemberName</programlisting>
                
         <para>For example:</para>
         
@@ -372,7 +373,7 @@ if you prefer.";</programlisting>
 
         <programlisting>NamedParamValues := "{" NamedParamValue* ( VarargParamValue ("," VarargParamValue)* )? "}"</programlisting>
 
-        <programlisting>NamedParamValue := LIdentifier Specifier ";"</programlisting>
+        <programlisting>NamedParamValue := ParameterName Specifier ";"</programlisting>
 
         <programlisting>VarargParamValue := Expression | Variable Specifier</programlisting>
         <!--programlisting>VarargParamValue := Expression | Variable Specifier | ForComprehension</programlisting-->
@@ -393,7 +394,7 @@ if you prefer.";</programlisting>
             
             <programlisting>MethodInvocation := MemberReference TypeArguments? ParamValues</programlisting>
             
-            <programlisting>MemberReference := (Expression DOT)? LIdentifier</programlisting>
+            <programlisting>MemberReference := (Expression DOT)? MemberName</programlisting>
             
             <para>For example:</para>
             
@@ -414,7 +415,7 @@ if you prefer.";</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (RegularType DOT)? LIdentifier TypeArguments? ParamValues</programlisting>
+            <programlisting>StaticMethodInvocation := (RegularType DOT)? MemberName TypeArguments? ParamValues</programlisting>
             
             <para>For example:</para>
             
@@ -458,6 +459,24 @@ if you prefer.";</programlisting>
             
         </section>
         
+        <section>
+            <title>Functor invocation</title>
+            
+            <para>Functor invocations follow the following schema.</para>
+            
+            <programlisting>FunctorInvocation := Expression ParamValues</programlisting>
+            
+            <para>For example:</para>
+            
+            <programlisting>compare("AAA", "aaa")</programlisting>
+            <programlisting>compare { x = "AAA"; y = "aaa"; }</programlisting>
+            
+            <para>The value of a functor invocation is the return value of the functor.
+            The parameter values are passed to the formal parameters of the functor
+            implementation.</para>
+            
+        </section>
+        
         <!--  
         <section>
             <title>Attribute initialization</title>
@@ -485,81 +504,9 @@ if you prefer.";</programlisting>
         -->
         
         <section>
-            <title>Inline classes</title>
-            
-            <para>Inline classes may be instantiated according to:</para>
-            
-            <programlisting>InlineClass := "new" Annotation* Instantiation Interfaces Block</programlisting>
-
-            <para>For example:</para>
-            
-            <programlisting>Task task = new Task() {
-    timeout := 1000;
-    override void run() { ... }
-    override void fail(Exception e) { ... }
-}</programlisting>
-
-            <programlisting>return new transactional Database() 
-        satisfies Resource {
-    url := "jdbc:hsqldb:.";
-    username := "gavin";
-    password = "foobar";
-    override void create() { open(); }
-    override void destroy() { close(); }
-};</programlisting>
-            
-            <para>The value of an inline class instantiation is a new instance of the inline class.
-            The block may contain method and attribute declarations and arbitrary code.<!-- and may 
-            initialize uninitialized attributes of the superclass.--></para>
-            
-        </section>
-        
-        <section>
-            <title>Functor invocation</title>
-            
-            <para>Functor invocations follow the following schema.</para>
-            
-            <programlisting>FunctorInvocation := Expression ParamValues</programlisting>
-            
-            <para>For example:</para>
-            
-            <programlisting>compare("AAA", "aaa")</programlisting>
-            <programlisting>compare { x = "AAA"; y = "aaa"; }</programlisting>
-            
-            <para>The value of a functor invocation is the return value of the functor.
-            The parameter values are passed to the formal parameters of the functor
-            implementation.</para>
-            
-        </section>
-        
-        <section>
-            <title>Enumeration instantiation</title>
-            
-            <para>Enumerations may be instantiated according to the following 
-            simplified syntax:</para>
-            
-            <programlisting>EnumerationInstantiation := "{" ( Expression ("," Expression)* )? "}"</programlisting>
-            
-            <para>In this case, there is no need to explicitly specify the type.</para>
-            
-            <para>For example:</para>
-            
-            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
-            
-            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
-            
-            <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
-            for a special value that can be assigned to any enumeration type.</para>
-            
-            <comment><para>Note: <literal>none</literal> can appear as a functor body, but 
-            <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment>
-                        
-        </section>
-            
-        <section>
             <title>Attribute access</title>
             
-            <para>Attribute get access follows the following schema:</para>
+            <para>Attribute get access follows this schema:</para>
             
             <programlisting>AttributeGet := MemberReference</programlisting>
             
@@ -591,6 +538,60 @@ if you prefer.";</programlisting>
         
     </section>
     
+        <section id="inlineclasses">
+            <title>Inline classes</title>
+            
+            <para>Inline classes may be instantiated according to:</para>
+            
+            <programlisting>InlineClass := "new" Annotation* Instantiation Interfaces Block</programlisting>
+
+            <para>For example:</para>
+            
+            <programlisting>Task task = new Task() {
+    timeout := 1000;
+    override void run() { ... }
+    override void fail(Exception e) { ... }
+}</programlisting>
+
+            <programlisting>return new transactional Database() 
+        satisfies Resource {
+    url := "jdbc:hsqldb:.";
+    username := "gavin";
+    password = "foobar";
+    override void create() { open(); }
+    override void destroy() { close(); }
+};</programlisting>
+            
+            <para>The value of an inline class instantiation is a new instance of the inline class.
+            The block may contain method and attribute declarations and arbitrary code.<!-- and may 
+            initialize uninitialized attributes of the superclass.--></para>
+            
+        </section>
+        
+        <section id="enumerationinstantiation">
+            <title>Enumeration instantiation</title>
+            
+            <para>Enumerations may be instantiated according to the following 
+            simplified syntax:</para>
+            
+            <programlisting>EnumerationInstantiation := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+            
+            <para>In this case, there is no need to explicitly specify the type.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+            
+            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
+            
+            <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
+            for a special value that can be assigned to any enumeration type.</para>
+            
+            <comment><para>Note: <literal>none</literal> can appear as a functor body, but 
+            <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment>
+                        
+        </section>
+            
     <section id="assignableexpressions">
         <title>Assignable expressions</title>
         
@@ -625,7 +626,7 @@ if you prefer.";</programlisting>
         
         <para>Thus, the following statement:</para>
         
-        <programlisting>order.lineItems[0] = LineItem { product = prod; quantity = 1; };</programlisting>
+        <programlisting>order.lineItems[0] := LineItem { product = prod; quantity = 1; };</programlisting>
         
         <para>Is equivalent to the Java:</para>
         
@@ -1915,11 +1916,20 @@ if you prefer.";</programlisting>
         
         <para>A functor expression has this form:</para>
         
-        <programlisting>FunctorExpression := ( "functor" ( Annotation* (Type | "void") )? )? FormalParams (Expression|Block)</programlisting>
+        <programlisting>FunctorExpression := FunctorHeader? FormalParams FunctorBody</programlisting>
         
-        <para>A functor body may not contain a <literal>return</literal> directive. If the 
-        functor body is a block, the value of the functor, when executed, is determined by 
-        the <literal>produce</literal> directive.</para>
+        <para>A functor expression may optionally specify annotations and/or return type. 
+        In this case, the keyword <literal>functor</literal> is required.</para>
+        
+        <programlisting>FunctorHeader := "functor" Annotation* (Type | "void")</programlisting>
+        
+        <para>A functor body may be a single expression, or a block.</para>
+        
+        <programlisting>FunctorBody = Expression | Block</programlisting>
+        
+        <para>If the body of a non-<literal>void</literal> functor is a block, the value of 
+        the functor, when executed, is determined by the <literal>produce</literal> directive. 
+        A functor body may not contain a <literal>return</literal> directive.</para>
                 
         <para>For example:</para>
         
@@ -2031,7 +2041,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <programlisting>PartialMethodInvocation := MemberReference TypeArguments? "(" Expression ("," Expression)* ")"</programlisting>
         
-        <programlisting>FunctorInvocation := Expression LIdentifier SimpleFunctorExpression</programlisting>
+        <programlisting>FunctorInvocation := Expression ParameterName SimpleFunctorExpression</programlisting>
         
         <para>For example:</para>
         
@@ -2051,14 +2061,14 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <para>Next, a named list of functor parameters may be specified:</para>
         
-        <programlisting>FunctorParamValues := (LIdentifier SimpleFunctorExpression)+</programlisting>
+        <programlisting>FunctorParamValues := (ParameterName SimpleFunctorExpression)+</programlisting>
         
         <para>The identifiers listed after the ordered parameter values are names of method 
         parameters of functor type, in the order in which they appear in the method declaration. 
         Each of these arguments is a functor expression, where the functor parameter list may 
         be omitted for functors with no parameters:</para>
         
-        <programlisting>SimpleFunctorExpression := FormalParams? (Expression|Block)</programlisting>
+        <programlisting>SimpleFunctorExpression := FormalParams? FunctorBody</programlisting>
         
         <para>For example:</para>
         

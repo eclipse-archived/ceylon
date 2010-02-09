@@ -22,13 +22,17 @@
 
         <programlisting>Statement := ExpressionStatement | ControlStructure | Declaration | Specification</programlisting>
 
+        <para>Control statements end execution of the current block and force the flow 
+        of execution to resume in some outer scope. They may only appear at the end of 
+        a block.</para>
+
         <programlisting>ControlStatement := ControlDirective ";"?</programlisting>
         
         <para>The Ceylon language distinguishes between assignment to a mutable value 
         (the <literal>:=</literal> operator) and specification of the value of an 
         immutable local or attribute (using <literal>=</literal>).</para>
         
-        <programlisting>Specification := LIdentifier Specifier ";"</programlisting>
+        <programlisting>Specification := MemberName Specifier ";"</programlisting>
         
         <para>Blocks may contain declarations, which are, by default, only visible inside
         the block:</para>
@@ -37,7 +41,9 @@
         
         <para>Only certain expressions are valid statements.</para>
         
-        <programlisting>ExpressionStatement := ( Assignment | Invocation | Instantiation ) ";"</programlisting>
+        <programlisting>ExpressionStatement := ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
+        
+        <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | FunctorInvocation | Instantiation</programlisting>
         
         <comment><para>TODO: it would be possible to say that any expression is a valid
         statement, but this seems to just open up more potential programming errors. So
@@ -472,7 +478,7 @@ do {
 } 
 while (!person.dead);</programlisting>
             
-            <programlisting>do (Person person := ...) {
+            <programlisting>do (mutable Person person := ...) {
     log.info(person.name);
 } 
 while (!person.parent.dead) {
@@ -546,7 +552,7 @@ finally {
     if (file.open) file.close();
 }</programlisting>
             
-            <programlisting>try (semaphore) { map[key] = value; }</programlisting>
+            <programlisting>try (semaphore) { map[key] := value; }</programlisting>
 
             <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
             keyword.)</para>

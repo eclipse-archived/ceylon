@@ -14,7 +14,7 @@
         <para>Declarations conform to the following general schema:</para>
         
         <programlisting>Annotation* 
-keyword? Type? Identifier TypeParams? FormalParams? 
+keyword? Type? (TypeName|MemberName) TypeParams? FormalParams? 
 Supertype?
 Interfaces? 
 TypeConstraints? 
@@ -24,11 +24,18 @@ Declaration?</programlisting>
         be named with an initial uppercase. Members, parameters and locals must be 
         named with an initial lowercase or underscore.</para>
         
+        <programlisting>PackageName := LIdentifier</programlisting>
+        <programlisting>TypeName := UIdentifier</programlisting>
+        <programlisting>MemberName := LIdentifier</programlisting>
+        <programlisting>ParameterName := LIdentifier</programlisting>
+        
         <para>Toplevel declarations may declare imports:</para>
         
         <programlisting>Import* Declaration+</programlisting>
         
-        <programlisting>Import := "import" Identifier ("." Identifier)* ('.' '*' | "alias" Identifier)? ";"</programlisting>
+        <programlisting>Import := "import" ImportElement ("." ImportElement)* ('.' '*' | "alias" ImportElement)? ";"</programlisting>
+        
+        <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
 
     </section>
     
@@ -37,7 +44,7 @@ Declaration?</programlisting>
 
         <para>Declarations may be preceded by a list of annotations.</para>
     
-        <programlisting>Annotation := LIdentifier ( ParamValues | Literal )?</programlisting>
+        <programlisting>Annotation := MemberName ( ParamValues | Literal )?</programlisting>
         
         <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
         
@@ -99,7 +106,7 @@ VarargsParam?
         
         <para>Each parameter is declared using with a type and name and may have annotations.</para>
         
-        <programlisting>Variable := Annotation* Type LIdentifier</programlisting>
+        <programlisting>Variable := Annotation* Type ParameterName</programlisting>
             
         <para>Defaulted parameters specify a default value.</para>
     
@@ -111,14 +118,14 @@ VarargsParam?
         
         <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
         
-        <programlisting>VarargsParam := Annotation* Type "..." LIdentifier</programlisting>
+        <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
         
-        <programlisting>EntryVariablePair := Annotation* Type LIdentifier "->" Type LIdentifier</programlisting>
+        <programlisting>EntryVariablePair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
 
-        <programlisting>RangeVariablePair := Annotation* Type LIdentifier ".." LIdentifier</programlisting>
+        <programlisting>RangeVariablePair := Annotation* Type ParameterName ".." ParameterName</programlisting>
         
         <para>For example:</para>
         
@@ -143,7 +150,7 @@ VarargsParam?
     
          <para>Method, class and interface declarations may declare generic type parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" Variance UIdentifier ("," Variance UIdentifier)* "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" Variance TypeName ("," Variance TypeName)* "&gt;"</programlisting>
         
         <para>A covariant type parameter is indicated using <literal>out</literal>.
         A contravariant type parameter is indicated using <literal>in</literal>.</para>
@@ -172,11 +179,11 @@ VarargsParam?
         
         <para>Most types are classes or interfaces:</para>
         
-        <programlisting>RegularType := TypeName TypeArguments?</programlisting>
+        <programlisting>RegularType := QualifiedTypeName TypeArguments?</programlisting>
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
         
-        <programlisting>TypeName := (UIdentifier ".")* UIdentifier</programlisting>
+        <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
         
         <para>A generic type must specify arguments for the generic type parameters.</para>
         
@@ -355,7 +362,7 @@ String join(Iterable&lt;String&gt; strings,
         to the following:</para>
         
         <programlisting>Annotation*
-"class" UIdentifier TypeParams? FormalParams?
+"class" TypeName TypeParams? FormalParams?
 Supertype?
 Interfaces?
 TypeConstraints?
@@ -643,7 +650,7 @@ public class Person { ... }</programlisting>
         
         <para>A class may specify an enumerated list of instances:</para>
         
-        <programlisting>InstanceEnumeration := "instances" LIdentifier ParamValues? ("," LIdentifier ParamValues?)* ("..." | ";")</programlisting>
+        <programlisting>InstanceEnumeration := "instances" MemberName ParamValues? ("," MemberName ParamValues?)* ("..." | ";")</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>
@@ -724,7 +731,7 @@ public class Person { ... }</programlisting>
         not be directly instantiated. Interfaces are declared according to the following:</para>
         
         <programlisting>Annotation*
-"interface" UIdentifier TypeParams?
+"interface" TypeName TypeParams?
 Interfaces?
 TypeConstraints? 
 "{" ( MethodStub | AttributeStub )* "}"</programlisting>
@@ -813,7 +820,7 @@ public User(String username, Person person);</programlisting>
         
         <programlisting>Method :=
 Annotation*
-(Type | "void") LIdentifier TypeParams? FormalParams
+(Type | "void") MemberName TypeParams? FormalParams
 TypeConstraints?
 ( ";" | Block )</programlisting>
 
@@ -918,7 +925,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>MethodStub :=
 Annotation*
-(Type | "void") LIdentifier TypeParams? FormalParams
+(Type | "void") MemberName TypeParams? FormalParams
 TypeConstraints? 
 ";"</programlisting>
 
@@ -995,7 +1002,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
             
             <para>An attribute getter is declared as follows:</para>
             
-            <programlisting>AttributeGetter := Annotation* Type LIdentifier Block</programlisting>
+            <programlisting>AttributeGetter := Annotation* Type MemberName Block</programlisting>
 
         <para>
         When getter code is specified, the Java field is initialized to an instance 
@@ -1015,7 +1022,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
             <para>An attribute setter is declared as follows:</para>
             
-            <programlisting>AttributeSetter := Annotation* "assign" LIdentifier Block</programlisting>
+            <programlisting>AttributeSetter := Annotation* "assign" MemberName Block</programlisting>
 
         <para>
         When setter code is specified, the Java field is initialized to an instance 
@@ -1050,7 +1057,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>SimpleAttribute := Annotation* Type LIdentifier Initializer? ";"</programlisting>
+        <programlisting>SimpleAttribute := Annotation* Type MemberName Initializer? ";"</programlisting>
         
         <para>The value of an immutable attribute is specified using <literal>=</literal>. Mutable 
         attributes may be initialized using the assignment operator <literal>:=</literal>.</para>
@@ -1123,7 +1130,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <para>Attributes declared by interfaces and attributes marked <literal>abstract</literal> 
         may not specify an initalizer, getter or setter:</para>
         
-        <programlisting>AttributeStub := Annotation* Type LIdentifier ";"</programlisting>
+        <programlisting>AttributeStub := Annotation* Type MemberName ";"</programlisting>
         
         <para>Interface attributes and abstract attributes must be implemented by every 
         non-<literal>abstract</literal> class that implements the interface or subclasses the 
@@ -1297,7 +1304,7 @@ TypeConstraintList?
     
        <para>A type alias allows a type to be referred to more compactly.</para>
        
-       <programlisting>Annotation* "alias" UIdentifier TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
+       <programlisting>Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
        <para>A type alias may satisfy either:</para>
        
