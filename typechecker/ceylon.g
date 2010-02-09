@@ -60,7 +60,7 @@ memberOrStatement
     ;
 
 functorHeader
-    : 'functor' (annotations? (type | 'void'))?
+    : 'functor' annotations? (type | 'void')
     ;
 
 //a functor expression that can appear as the RHS of an 
