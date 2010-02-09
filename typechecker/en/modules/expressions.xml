@@ -2077,7 +2077,7 @@ isFalse {
 };</programlisting>
 
         <section>
-            <title>Syntax extension for iterations</title>
+            <title>Iterations</title>
             
         <para>A specialized invocation syntax is provided for methods which iterate 
         collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
@@ -2120,7 +2120,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         </section>
         
         <section>
-            <title>Syntax extension for variable definition</title>
+            <title>Variable definition</title>
             
         <para>A specialized invocation syntax is also provided for methods which define 
         a variable. If the first parameter of the method is of type <literal>X</literal>,
@@ -2166,10 +2166,10 @@ Y using&lt;X,Y&gt;(specified X resource,
         </section>
         
         <section>
-            <title>Syntax extension for lists of cases</title>
+            <title>Lists of cases</title>
         </section>
         
-        <para>A specialized invocation syntax is also provided for methods which define 
+        <para>Finally, a specialized invocation syntax is provided for methods which define 
         a list of cases. If the method has a parameter of type 
         <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
         <literal>cases</literal>, the parameter value may be specified according to:</para>
