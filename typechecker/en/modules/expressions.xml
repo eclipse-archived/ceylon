@@ -391,7 +391,7 @@ if you prefer.";</programlisting>
             
             <para>Method invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := MethodReference TypeArguments? ParamValues</programlisting>
+            <programlisting>MethodInvocation := MemberReference TypeArguments? ParamValues</programlisting>
             
             <programlisting>MemberReference := (Expression DOT)? LIdentifier</programlisting>
             
@@ -2004,14 +2004,15 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         <para>Furthermore, for parameters of a method which are functor types, Ceylon
         provides a special method invocation protocol:</para>
         
-        <programlisting>(MemberReference OrderedParamValues | FunctorInvocation) FunctorParamValues</programlisting>
+        <programlisting>(PartialMethodInvocation | FunctorInvocation) FunctorParamValues</programlisting>
         
         <para>The protocol begins with either:</para>
 
         <itemizedlist>
             <listitem>
                 <para>a normal method invocation with a period before the method name 
-                and an ordered list of parameters surrounded be parentheses, or</para>
+                and an ordered list of parameters surrounded be parentheses, where
+                there must be at least one parameter, or</para>
             </listitem>
             <listitem>
                 <para>a special method invocation with a functor argument, which omits 
@@ -2019,6 +2020,10 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
                 omitted for functors with no parameters.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>In neither case are all parameters of the method required.</para>
+        
+        <programlisting>PartialMethodInvocation := MemberReference TypeArguments? "(" Expression ("," Expression)* ")"</programlisting>
         
         <programlisting>FunctorInvocation := Expression LIdentifier SimpleFunctorExpression</programlisting>
         
