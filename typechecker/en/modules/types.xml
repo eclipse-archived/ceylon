@@ -1082,23 +1082,15 @@
         
         
         <programlisting><![CDATA[public class Assertions {
-        
-    doc "Assert that the block evaluates to true. The block 
-         is executed only when assertions are enabled. If
-         the block evaluates to false, throw an 
-         |AssertionException|."
-    public static void assert(functor Boolean() true) {
-        assert("Assertion failed", evaluate);
-    }
 
     doc "Assert that the block evaluates to true. The block 
          is executed only when assertions are enabled. If
          the block evaluates to false, throw an 
          |AssertionException| with the given message."
-    public static void assert(String message
-                              functor Boolean() true) {
+    public static void assert(functor String() message
+                              functor Boolean() that) {
         if ( assertionsEnabled() && !evaluate() ) {
-            throw new AssertionException(message);
+            throw new AssertionException( message() );
         }
     }
 

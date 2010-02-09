@@ -522,8 +522,8 @@ class Customer(Name name, optional Organization org = null)
     x := sqrt(displacement) * sign;
     y := sqrt(displacement) * sign;
     
-    assert ("must have distance ${position} from origin")
-        true x**2 + y**2 == position**2;
+    assert "must have distance ${position} from origin" 
+        that x**2 + y**2 == position**2;
     
 }</programlisting>
         
@@ -532,20 +532,24 @@ class Customer(Name name, optional Organization org = null)
         
         <programlisting>public class DiagonalPoint extends Point {
         
-    public DiagonalPoint(Exact position) {
-        Exact displacement = position.exponentiate(2).divide(2);
-        Integer sign = position.negative ? -1 : 1;
+    public DiagonalPoint(final Exact position) {
+        final Exact displacement = position.exponentiate(2).divide(2);
+        final Integer sign = position.negative ? -1 : 1;
         
         x = sqrt(displacement).multiply(sign);
         y = sqrt(displacement).multiply(sign);
         
-        assert_("must have distance " + position + " from origin",
-               new F0&lt;Boolean&gt;() {
+        assert_(new F0&lt;String&gt;() {
+                   public String call() { 
+                       return "must have distance " + position + " from origin";
+                   }
+                },
+                new F0&lt;Boolean&gt;() {
                    public Boolean call() { 
                        return x.exponentiate(2) + y.exponentiate(2) 
                               == position.exponentiate(2);
                    }
-               });
+                });
     }
     
 }</programlisting>
