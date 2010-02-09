@@ -522,15 +522,11 @@ parExpression
     ;
     
 positionalArguments
-    : '(' ( (specialStart) => special | (assignable (',' assignable)*)? ) ')'
+    : '(' ( (variableStart) => special | (assignable (',' assignable)*)? ) ')'
     ;
 
 special
-    : regularType memberName (containment|specifier)
-    ;
-
-specialStart
-    : regularType memberName ('in'|'=')
+    : type memberName (containment|specifier)
     ;
 
 formalParameters
@@ -552,12 +548,19 @@ formalParameter
 
 // Control structures.
 
-// Backtracking here is needed for exactly the same reason as localOrStatement.
 condition
-    : ('exists' | 'nonempty')? ( (declarationStart) => variable specifier | expression )
-    | 'is' type ( (memberName '=') => memberName specifier | expression )
+    : expression | existsCondition | isCondition
     ;
-	
+
+// Backtracking here is needed for exactly the same reason as localOrStatement.
+existsCondition
+    : ('exists' | 'nonempty') ( (variableStart) => variable specifier | expression )
+    ;
+    
+isCondition
+    : 'is' type ( (memberName '=') => memberName specifier | expression )
+    ;
+    
 controlStructure
     : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
     ;
@@ -596,8 +599,9 @@ doWhile
     'while' '(' condition ')' (block | ';')
     ;
 
+//do iterators are allowed to be mutable and/or optional
 doIterator
-    : variable initializer
+    : annotation* variable initializer
     ;
 
 tryCatchFinally
@@ -608,12 +612,16 @@ tryCatchFinally
     ;
     
 resource
-    : (declarationStart) => variable specifier 
+    : (variableStart) => variable specifier 
     | expression
     ;
 
 variable
-    : annotation* type memberName
+    : type memberName
+    ;
+
+variableStart
+    : type memberName ('in'|'=')
     ;
 
 // Lexer
