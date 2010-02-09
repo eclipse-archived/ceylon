@@ -284,9 +284,9 @@ else {
 
             <para>The switch expression may be of any type. The case values must be 
             expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
-            is the switch expression type.</para>
+            is the switch expression type, or an explicit <literal>null</literal>.</para>
 
-            <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
+            <programlisting>Case := Expression ("," Expression)* | "is" Type | "null"</programlisting>
 
             <para>If a <literal>case (null)</literal> is defined, the switch expression type must 
             be <literal>optional</literal>.</para>
