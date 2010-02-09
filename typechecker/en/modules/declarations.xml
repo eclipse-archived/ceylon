@@ -150,7 +150,9 @@ VarargsParam?
     
          <para>Method, class and interface declarations may declare generic type parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" Variance TypeName ("," Variance TypeName)* "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
+        
+        <programlisting>TypeParam := Variance TypeName</programlisting>
         
         <para>A covariant type parameter is indicated using <literal>out</literal>.
         A contravariant type parameter is indicated using <literal>in</literal>.</para>
@@ -233,7 +235,7 @@ VarargsParam?
     <section>
         <title>Implemented interfaces</title>
     
-        <para>Classes and interfaces may satisfy implement or extend interfaces, 
+        <para>Classes and interfaces may satisfy (implement or extend) interfaces, 
         using the <literal>satisfies</literal> clause.</para>
         
         <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
