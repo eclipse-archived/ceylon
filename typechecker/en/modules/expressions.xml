@@ -2214,8 +2214,8 @@ Y select&lt;X, Y&gt;(X selector,
         <para>We may invoke the method as follows:</para>
         
         <programlisting>return select (payment.type) 
-    value (check) paybyCheck(payment)
-    value (card) paybyCard(payment);
+    value (check) payByCheck(payment)
+    value (card) payByCard(payment);
 </programlisting>
         
         </section>
