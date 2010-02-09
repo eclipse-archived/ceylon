@@ -2004,7 +2004,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         <para>Furthermore, for parameters of a method which are functor types, Ceylon
         provides a special method invocation protocol:</para>
         
-        <programlisting>(PartialMethodInvocation | FunctorInvocation) FunctorParamValues</programlisting>
+        <programlisting>PartialMethodInvocation FunctorParamValues | FunctorInvocation FunctorParamValues?</programlisting>
         
         <para>The protocol begins with either:</para>
 
@@ -2045,7 +2045,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <para>Next, a named list of functor parameters may be specified:</para>
         
-        <programlisting>FunctorParamValues := (LIdentifier SimpleFunctorExpression)*</programlisting>
+        <programlisting>FunctorParamValues := (LIdentifier SimpleFunctorExpression)+</programlisting>
         
         <para>The identifiers listed after the ordered parameter values are names of method 
         parameters of functor type, in the order in which they appear in the method declaration. 
