@@ -289,7 +289,7 @@ regularType
     ;
 
 functorType
-    : 'functor' annotations? (type|'void') formalParameters
+    : functorHeader formalParameters
     ;
 
 annotations
