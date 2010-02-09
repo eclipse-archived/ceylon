@@ -2167,17 +2167,30 @@ Y using&lt;X,Y&gt;(specified X resource,
         
         </section>
         
-        <!--
         <section>
             <title>Lists of cases</title>
         
         <para>Finally, a specialized invocation syntax is provided for methods which define 
         a list of cases. If the method has a parameter of type 
         <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
-        <literal>cases</literal>, the parameter value may be specified according to:</para>
+        <literal>cases</literal>, the parameter may be specified according to:</para>
         
-        <programlisting>("(" Case ")" SimpleFunctorExpression)+</programlisting>
-        -->
+        <programlisting>(case "(" Case ")" SimpleFunctorExpression)+</programlisting>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static
+Y select&lt;X, Y&gt;(X selector,
+              cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... cases);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+        
+        <programlisting>return select (payment.type) 
+    case (check) payByCheck(payment)
+    case (card) payByCard(payment);
+</programlisting>
+        
+        </section>
         <!--  
         <para>Or, If the method has a parameter of type 
         <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,
@@ -2206,23 +2219,9 @@ except (SomethingElseWrong sew) {
     produce -2;
 }</programlisting>
         -->
-        <!-- 
-        <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static
-Y select&lt;X, Y&gt;(X selector,
-               cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... value);</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-        
-        <programlisting>return select (payment.type) 
-    value (check) payByCheck(payment)
-    value (card) payByCard(payment);
-</programlisting>
-        
-        </section>
-        -->
     </section>
+    
         <!--
         <section>
         <title>TODO: assignment to local variables from surrounding scope</title>
