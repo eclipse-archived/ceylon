@@ -527,7 +527,7 @@ arguments
     ;
       
 namedArgument
-    : parameterName specifier
+    : parameterName specifier ';'
     ;
     
 parameterName
@@ -535,7 +535,7 @@ parameterName
     ;
 
 namedArguments
-    : '{' ((namedArgument ';') => namedArgument ';')* varargArguments? '}'
+    : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
     ;
 
 varargArguments
@@ -605,7 +605,7 @@ switchCaseElse
     ;
     
 cases 
-    : ('case' 'null' block)? ('case' '(' caseCondition ')' block)+ ('else' block)?
+    : ('case' '(' caseCondition ')' block)+ ('else' block)?
     ;
     
 caseCondition
