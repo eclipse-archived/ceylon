@@ -65,15 +65,15 @@ functorHeader
 
 //a functor expression that can appear as the RHS of an 
 //assignment, in an argument list, or in parens
-assignableFunctor 
+functor 
     : functorHeader? formalParameters functorBody
     ;
 
 //a functor expression that can appear inside an expression
-//or as a method argument without the need for parens
-primaryFunctor 
+//without the need for parens
+/*primaryFunctor 
     : functorHeader? formalParameters block
-    ;
+    ;*/
 
 //shortcut functor expression that makes the parameter list 
 //optional, but can appear only using the special smalltalk
@@ -86,7 +86,7 @@ specialFunctor
 //I think that's just confusing to the reader
 functorBody
     : ('{') => block
-    | functorBodyExpression
+    | implicationExpression
     ;
 
 //special rule for syntactic predicates
@@ -95,14 +95,14 @@ formalParameterStart
     ;
 
 //special rule for syntactic predicates
-assignableFunctorStart
+functorStart
     : 'functor' | formalParameterStart
     ;
 
 //special rule for syntactic predicates
-primaryFunctorStart
+/*primaryFunctorStart
     : 'functor' | '(' (declarationStart | ')' '{')
-    ;
+    ;*/
 
 //special rule for syntactic predicates
 declarationStart
@@ -128,16 +128,11 @@ declarationModifier
     | 'extension'
     ;
 
-//Let's limit statements to things that make sense, like
-//Java does (we could allow any arbitrary expression if
-//we wanted to, but why?)
 //Even though it looks like this is non-associative
 //assignment, it is actually right associative because
 //assignable can be an assignment
 statement 
-    : //assignable ';'
-      postfixExpression 
-      (assignmentOp assignable | specialFunctorArguments)? ';'
+    : expression ';'
     | controlStructure
     ;
 
@@ -289,6 +284,9 @@ annotation
     : declarationModifier | userAnnotation
     ;
 
+//TODO: we could minimize backtracking by limiting the 
+//kind of expressions that can appear as arguments to
+//the annotation
 userAnnotation 
     : annotationName ( arguments | literal | reflectedBase (reflectedMember)* )?
     ;
@@ -345,39 +343,26 @@ stringLiteral
     ;
 
 assignable 
-    : (assignableFunctorStart) => assignableFunctor
+    : (functorStart) => functor
     | expression
     ;
 
-//This one is fully general
 //Even though it looks like this is non-associative
 //assignment, it is actually right associative because
 //assignable can be an assignment
+//Note that = is not really an assignment operator, but 
+//can be used to init locals
 expression 
-    : implicationExpression 
-      (assignmentOp assignable | specialFunctorArguments)?
+    : methodExpression 
+      ( ('=' | ':=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
     ;
 
-//This one is for use as a functor body
-functorBodyExpression
-    : implicationExpression 
-      ( assignmentOp ( (assignableFunctorStart) => assignableFunctor | functorBodyExpression ) )?
+methodExpression
+    : implicationExpression (methodOrParameterName specialFunctor)*
     ;
-    
-assignmentOp
-    : '=' //not really an assignment operator, but can be used to init locals
-    | ':='
-    | '+=' 
-    | '-=' 
-    | '*=' 
-    | '/=' 
-    | '%=' 
-    | '&=' 
-    | '|=' 
-    | '^=' 
-    | '&&=' 
-    | '||=' 
-    | '?='
+
+methodOrParameterName
+    : LIDENTIFIER
     ;
 
 implicationExpression
@@ -465,7 +450,7 @@ base
     : regularType
     | memberName
     | literal
-    | (primaryFunctorStart) => primaryFunctor
+    //| (primaryFunctorStart) => primaryFunctor
     | parExpression
     | enumeration
     | 'this' 
@@ -481,11 +466,14 @@ enumeration
     ;
 
 selector 
-    : ('.' | '^.' | '?.' | '*.') memberName
+    : memberInvocation
     | reflectedMember
-    | (primaryFunctorStart) => primaryFunctor
     | arguments
     | elementSelector
+    ;
+
+memberInvocation
+    : ('.' | '^.' | '?.' | '*.') memberName
     ;
 
 reflectedBase
@@ -507,14 +495,6 @@ elementsSpec
 
 arguments 
     : positionalArguments | namedArguments
-    ;
-    
-specialFunctorArguments 
-    : specialFunctorArgument+
-    ;
-
-specialFunctorArgument
-    : parameterName specialFunctor
     ;
       
 namedArgument
