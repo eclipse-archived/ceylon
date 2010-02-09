@@ -44,7 +44,8 @@ localDeclaration
     ;
 
 inlineClassDeclaration
-    : 'new' annotations?
+    : 'new' 
+      annotations?
       regularType
       arguments
       satisfiedTypes?
