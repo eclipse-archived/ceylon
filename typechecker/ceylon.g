@@ -155,7 +155,10 @@ directive
 memberDeclaration
     : voidMethod | methodOrGetter | setter
     ;
-    
+
+//TODO: we would not really need the syntactic predicate
+//here if we leave off recognizing methods vs. attributes
+//until later
 methodOrGetter
     : type memberName ( (typeParameterStart | formalParameterStart) => methodDefinition | attributeDefinition )
     ;
@@ -358,7 +361,8 @@ expression
     ;
 
 methodExpression
-    : implicationExpression (methodOrParameterName specialFunctor)*
+    : implicationExpression 
+      (methodOrParameterName specialFunctor | 'case' '(' expression ')' specialFunctor)*
     ;
 
 methodOrParameterName
@@ -518,7 +522,15 @@ parExpression
     ;
     
 positionalArguments
-    : '(' (assignable (',' assignable)*)? ')'
+    : '(' ( (specialStart) => special | (assignable (',' assignable)*)? ) ')'
+    ;
+
+special
+    : regularType memberName (containment|specifier)
+    ;
+
+specialStart
+    : regularType memberName ('in'|'=')
     ;
 
 formalParameters
@@ -571,7 +583,11 @@ forFail
     ;
 
 forIterator
-    : formalParameter 'in' expression
+    : formalParameter containment
+    ;
+    
+containment
+    : 'in' expression
     ;
     
 doWhile
