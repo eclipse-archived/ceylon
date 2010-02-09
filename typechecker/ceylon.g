@@ -7,7 +7,7 @@ options {
 
 compilationUnit
     : (importDeclaration)*
-      (annotation* toplevelDeclaration)+
+      (annotations? toplevelDeclaration)+
       EOF
     ;
     
@@ -34,8 +34,8 @@ block
 //we could eliminate the backtracking by requiring
 //local declarations to begin with a keyword
 localOrStatement
-    : //'local' annotation* localDeclaration
-      (declarationStart) => annotation* localDeclaration
+    : //'local' annotations? localDeclaration
+      (declarationStart) => annotations? localDeclaration
     | statement
     ;
 
@@ -44,7 +44,7 @@ localDeclaration
     ;
 
 inlineClassDeclaration
-    : 'new' annotation*
+    : 'new' annotations?
       regularType
       arguments
       satisfiedTypes?
@@ -54,13 +54,13 @@ inlineClassDeclaration
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 memberOrStatement
-    : //modifier  annotation* ( memberDeclaration | toplevelDeclaration )
-      (declarationStart) => annotation* ( memberDeclaration | toplevelDeclaration )
+    : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
+      (declarationStart) => annotations? ( memberDeclaration | toplevelDeclaration )
     | statement
     ;
 
 functorHeader
-    : 'functor' (annotation* (type | 'void'))?
+    : 'functor' (annotations? (type | 'void'))?
     ;
 
 //a functor expression that can appear as the RHS of an 
@@ -90,6 +90,9 @@ functorBody
     ;
 
 //special rule for syntactic predicates
+//be careful with this one, since it 
+//matches "()", which can also be an 
+//argument list
 formalParameterStart
     : '(' (declarationStart | ')')
     ;
@@ -107,7 +110,7 @@ functorStart
 //special rule for syntactic predicates
 declarationStart
     :  declarationModifier 
-    | ( userAnnotation annotation* )? (type|'assign'|'void') LIDENTIFIER
+    | ( userAnnotation annotations? )? (type|'assign'|'void') LIDENTIFIER
     ;
 
 //by making these things keywords, we reduce the amount of
@@ -153,26 +156,32 @@ directive
 // of doing that was the need to add a predicate, and we're
 // still not sure if we really want this feature
 memberDeclaration
-    : voidMethod | methodOrGetter | setter
+    : voidMethodDeclaration 
+    | methodOrAttributeDeclaration 
+    | setterDeclaration
     ;
 
 //TODO: we would not really need the syntactic predicate
-//here if we leave off recognizing methods vs. attributes
+//here if we left off recognizing methods vs. attributes
 //until later
-methodOrGetter
+methodOrAttributeDeclaration
     : type memberName ( (typeParameterStart | formalParameterStart) => methodDefinition | attributeDefinition )
     ;
 
-setter
-    : 'assign' memberName block
+setterDeclaration
+    : 'assign' memberName setterDefinition
     ;
-    
-voidMethod 
+
+voidMethodDeclaration 
     : 'void' memberName methodDefinition
     ;
 
 typeParameterStart
     : '<'
+    ;
+
+setterDefinition
+    : block
     ;
 
 methodDefinition
@@ -191,7 +200,7 @@ attributeDefinition
         formalParameters?
         satisfiedTypes?
         typeConstraints?
-        '{' ( annotation* memberDeclaration )* '}'
+        '{' ( annotations? memberDeclaration )* '}'
     ;
 
 converterDeclaration
@@ -201,7 +210,7 @@ converterDeclaration
         typeName
         typeParameters?
         typeConstraints?
-        '(' annotation* type parameterName ')'
+        '(' annotations? type parameterName ')'
     ;*/
 
 interfaceDeclaration
@@ -226,7 +235,7 @@ aliasDeclaration
 
 memberStub
     :
-        annotation*
+        annotations?
         (type | 'void')
         memberName
         (typeParameters?
@@ -256,7 +265,7 @@ instances
     ;
 
 instance 
-    : /*annotation**/ memberName arguments?
+    : /*annotations?*/ memberName arguments?
     ;
 
 typeConstraint
@@ -280,7 +289,11 @@ regularType
     ;
 
 functorType
-    : 'functor' annotation* (type|'void') formalParameters
+    : 'functor' annotations? (type|'void') formalParameters
+    ;
+
+annotations
+    : annotation+
     ;
 
 annotation 
@@ -313,7 +326,11 @@ typeArguments
     ;
 
 typeParameters
-    : '<' variance typeName (',' variance typeName)* '>'
+    : '<' typeParameter (',' typeParameter)* '>'
+    ;
+
+typeParameter
+    : variance typeName
     ;
 
 variance 
@@ -361,8 +378,11 @@ expression
     ;
 
 methodExpression
-    : implicationExpression 
-      (methodOrParameterName specialFunctor | 'case' '(' expression ')' specialFunctor)*
+    : implicationExpression specialMethodArgument*
+    ;
+
+specialMethodArgument
+    :(  methodOrParameterName | 'case' '(' expression ')' ) specialFunctor 
     ;
 
 methodOrParameterName
@@ -522,7 +542,12 @@ parExpression
     ;
     
 positionalArguments
-    : '(' ( (variableStart) => special | (assignable (',' assignable)*)? ) ')'
+    : '(' ( positionalArgument (',' positionalArgument)* )? ')'
+    ;
+    
+positionalArgument
+    : (variableStart) => special 
+    | assignable
     ;
 
 special
@@ -530,20 +555,17 @@ special
     ;
 
 formalParameters
-    : '(' (formalParameterSpec (',' formalParameterSpec)*)? ')'
+    : '(' (formalParameter (',' formalParameter)*)? ')'
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
-formalParameterSpec
-    : formalParameter (specifier | '...')?
-    ;
-
 formalParameter
-    : annotation* type parameterName 
-      ( '->' type parameterName | '..' parameterName )?
+    :  annotations? type parameterName 
+      ( '->' type parameterName | '..' parameterName )? 
+      (specifier | '...')?
     ;
 
 // Control structures.
@@ -586,7 +608,7 @@ forFail
     ;
 
 forIterator
-    : formalParameter containment
+    : variable ('->' variable)? containment
     ;
     
 containment
@@ -601,7 +623,7 @@ doWhile
 
 //do iterators are allowed to be mutable and/or optional
 doIterator
-    : annotation* variable initializer
+    : annotations? variable initializer
     ;
 
 tryCatchFinally
