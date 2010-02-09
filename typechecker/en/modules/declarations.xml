@@ -44,7 +44,7 @@ Declaration?</programlisting>
 
         <para>Declarations may be preceded by a list of annotations.</para>
     
-        <programlisting>Annotation := MemberName ( ParamValues | Literal )?</programlisting>
+        <programlisting>Annotation := MemberName ( Arguments | Literal )?</programlisting>
         
         <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
         
@@ -255,7 +255,7 @@ VarargsParam?
         
         <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
     
-        <programlisting>TypeConstraint := Ident ( ("&gt;="|"&lt;=") (Type|Ident) | FormalParams ) </programlisting>
+        <programlisting>TypeConstraint := TypeName ( ("&gt;="|"&lt;=") Type | FormalParams ) </programlisting>
         
         <para>There are three kinds of type constraints:</para>
         
@@ -354,7 +354,7 @@ String join(Iterable&lt;String&gt; strings,
 Supertype?
 Interfaces?
 TypeConstraints?
-"{" InstanceEnumeration? Statement* "}"</programlisting>
+"{" Instances? Statement* "}"</programlisting>
 
         <section>
              <title>Class inheritance</title>
@@ -638,7 +638,9 @@ public class Person { ... }</programlisting>
         
         <para>A class may specify an enumerated list of instances:</para>
         
-        <programlisting>InstanceEnumeration := "instances" MemberName ParamValues? ("," MemberName ParamValues?)* ("..." | ";")</programlisting>
+        <programlisting>Instances := "instances" Instance ("," Instance)* ("..." | ";")</programlisting>
+
+        <programlisting>Instance := MemberName Arguments?</programlisting>
 
         <para>The keyword <literal>instances</literal> is used to define a set of predefined
         instances.</para>

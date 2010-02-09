@@ -356,7 +356,7 @@ if you prefer.";</programlisting>
         <para>Any invocation must specify values for parameters, either by listing or naming 
         parameter values.</para>
         
-        <programlisting>ParamValues := OrderedParamValues | NamedParamValues</programlisting>
+        <programlisting>Arguments := PositionalArguments | NamedArguments</programlisting>
         
         <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
         specified.</para>
@@ -366,17 +366,23 @@ if you prefer.";</programlisting>
         If there are any remaining defaulted parameters, they will be assigned their default values.
         On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
             
-        <programlisting>OrderedParamValues := "(" ( Expression ("," Expression)* )? ")"</programlisting>
+        <programlisting>PositionalArguments := "(" ( Expression ("," Expression)* )? ")"</programlisting>
                 
         <para>When parameter values are named, required and defaulted parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
-        <programlisting>NamedParamValues := "{" NamedParamValue* ( VarargParamValue ("," VarargParamValue)* )? "}"</programlisting>
+        <programlisting>NamedArguments := "{" NamedArgument* VarargArguments? "}"</programlisting>
 
-        <programlisting>NamedParamValue := ParameterName Specifier ";"</programlisting>
+        <para>Named arguments are followed by semicolons.</para>
 
-        <programlisting>VarargParamValue := Expression | Variable Specifier</programlisting>
-        <!--programlisting>VarargParamValue := Expression | Variable Specifier | ForComprehension</programlisting-->
+        <programlisting>NamedArgument := ParameterName Specifier ";"</programlisting>
+
+        <para>Vararg arguments are seperated by commas.</para>
+
+        <programlisting>VarargArguments := VarargArgument ("," VarargArgument)*</programlisting>
+
+        <programlisting>VarargArgument := Expression | Variable Specifier</programlisting>
+        <!--programlisting>VarargArgument := Expression | Variable Specifier | ForComprehension</programlisting-->
         
         <para>A vararg parameter may be a local declaration. Multiple vararg parameters may be
         constructed using a <literal>for</literal> comprehension.</para>
@@ -392,7 +398,7 @@ if you prefer.";</programlisting>
             
             <para>Method invocations follow the following schema.</para>
             
-            <programlisting>MethodInvocation := MemberReference TypeArguments? ParamValues</programlisting>
+            <programlisting>MethodInvocation := MemberReference TypeArguments? Arguments</programlisting>
             
             <programlisting>MemberReference := (Expression DOT)? MemberName</programlisting>
             
@@ -415,7 +421,7 @@ if you prefer.";</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (RegularType DOT)? MemberName TypeArguments? ParamValues</programlisting>
+            <programlisting>StaticMethodInvocation := (RegularType DOT)? MemberName TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -432,7 +438,7 @@ if you prefer.";</programlisting>
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := RegularType TypeArguments? ParamValues</programlisting>
+            <programlisting>Instantiation := RegularType TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -464,7 +470,7 @@ if you prefer.";</programlisting>
             
             <para>Functor invocations follow the following schema.</para>
             
-            <programlisting>FunctorInvocation := Expression ParamValues</programlisting>
+            <programlisting>FunctorInvocation := Expression Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -543,7 +549,7 @@ if you prefer.";</programlisting>
             
             <para>Inline classes may be instantiated according to:</para>
             
-            <programlisting>InlineClass := "new" Annotation* Instantiation Interfaces Block</programlisting>
+            <programlisting>InlineClass := "new" Annotation* Instantiation Interfaces "{" Statement* "}"</programlisting>
 
             <para>For example:</para>
             
@@ -2020,7 +2026,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         <para>For parameters of a method which are of functor type, Ceylon provides a 
         special method invocation protocol, inspired by Smalltalk:</para>
         
-        <programlisting>PartialMethodInvocation FunctorParamValues | FunctorInvocation FunctorParamValues?</programlisting>
+        <programlisting>PartialMethodInvocation FunctorArguments | FunctorInvocation FunctorArguments?</programlisting>
         
         <para>The protocol begins with either:</para>
 
@@ -2061,7 +2067,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <para>Next, a named list of functor parameters may be specified:</para>
         
-        <programlisting>FunctorParamValues := (ParameterName SimpleFunctorExpression)+</programlisting>
+        <programlisting>FunctorArguments := (ParameterName SimpleFunctorExpression)+</programlisting>
         
         <para>The identifiers listed after the ordered parameter values are names of method 
         parameters of functor type, in the order in which they appear in the method declaration. 
@@ -2096,7 +2102,7 @@ isFalse {
         annotated <literal>iterated</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference "(" ForIterator ")" FunctorParamValues</programlisting>
+        <programlisting>MemberReference "(" ForIterator ")" FunctorArguments</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
@@ -2139,7 +2145,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         annotated <literal>specified</literal>, and all remaining parameters are of functor 
         type, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference "(" Variable Specifier ")" FunctorParamValues</programlisting>
+        <programlisting>MemberReference "(" Variable Specifier ")" FunctorArguments</programlisting>
         
         <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
         of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 

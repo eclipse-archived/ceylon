@@ -20,26 +20,11 @@
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
-        <programlisting>Statement := ExpressionStatement | ControlStructure | Declaration | Specification</programlisting>
+        <programlisting>Statement := ExpressionStatement | DirectiveStatement | Specification | Declaration</programlisting>
 
-        <para>Control statements end execution of the current block and force the flow 
-        of execution to resume in some outer scope. They may only appear at the end of 
-        a block.</para>
-
-        <programlisting>ControlStatement := ControlDirective ";"?</programlisting>
-        
-        <para>The Ceylon language distinguishes between assignment to a mutable value 
-        (the <literal>:=</literal> operator) and specification of the value of an 
-        immutable local or attribute (using <literal>=</literal>).</para>
-        
-        <programlisting>Specification := MemberName Specifier ";"</programlisting>
-        
-        <para>Blocks may contain declarations, which are, by default, only visible inside
-        the block:</para>
-        
-        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
-        
-        <para>Only certain expressions are valid statements.</para>
+        <para>Only certain expressions are valid statements: assignment, prefix or 
+        postfix increment or decrement, invocation of a method or functor and
+        instantiation of a class.</para>
         
         <programlisting>ExpressionStatement := ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
         
@@ -49,6 +34,24 @@
         statement, but this seems to just open up more potential programming errors. So
         I think it's better to limit statements to assignments, invocations
         and instantiations.</para></comment>
+        
+        <para>Control directive statements end execution of the current block and force 
+        the flow of execution to resume in some outer scope. They may only appear at the 
+        end of a block, so the semicolon terminator is optional.</para>
+
+        <programlisting>DirectiveStatement := Directive ";"?</programlisting>
+        
+        <para>The Ceylon language distinguishes between assignment to a mutable value 
+        (the <literal>:=</literal> operator) and specification of the value of an 
+        immutable local or attribute (using <literal>=</literal>). A specification
+        is not an expression.</para>
+        
+        <programlisting>Specification := MemberName Specifier ";"</programlisting>
+        
+        <para>Blocks may contain declarations, which are, by default, only visible inside
+        the block:</para>
+        
+        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
         
         <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
         
@@ -75,7 +78,7 @@
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>ControlDirective := "return" Expression? | "produce" Expression | "throw" Expression | "found" | "break"</programlisting>
+         <programlisting>Directive := "return" Expression? | "produce" Expression | "throw" Expression | "found" | "break"</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter or a non-<literal>void</literal> method.</para>
@@ -146,16 +149,14 @@
         
         <para>Some control structures expect conditions:</para>
         
-       <programlisting>Condition := 
-("exists" | "nonempty" | "is" Type)? Expression |  
-("exists" | "nonempty" | "is") Variable Specifier</programlisting>
-        
-        <!--
-        <programlisting>Condition := Expression | (Variable Specifier | Expression) ("exists" | "nonempty" | "is" Type)</programlisting>
-        -->
+       <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
+       
+       <programlisting>ExistsCondition := ("exists" | "nonempty") (Variable Specifier | Expression)</programlisting>
+       
+       <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
 
-        <para>The semantics of a condition depend upon whether the <literal>exists</literal> or 
-        <literal>nonempty</literal> modifier appears:</para>
+        <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
+        <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
 
         <itemizedlist>
             <listitem>
@@ -278,7 +279,6 @@ else {
             <programlisting>SwitchCaseElse := "switch" "(" Expression ")" (Cases | "{" Cases "}")</programlisting>
             
             <programlisting>Cases := 
-("case" "null" Block)? 
 ("case" "(" Case ")" Block)+ 
 ("else" Block)?</programlisting>
 
@@ -288,11 +288,11 @@ else {
 
             <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
 
-            <para>If a <literal>case null</literal> is defined, the switch expression type must 
+            <para>If a <literal>case (null)</literal> is defined, the switch expression type must 
             be <literal>optional</literal>.</para>
 
             <para>If the switch expression type is <literal>optional</literal>, there must be 
-            an explicit <literal>case null</literal> defined. </para> 
+            an explicit <literal>case (null)</literal> defined. </para> 
             
             <para>If no <literal>else</literal> block is defined, the switch expression must be 
             of type <literal>Selector</literal>, and all enumerated instances of the class must 
@@ -319,7 +319,7 @@ else {
 
             <programlisting>public PaymentProcessor processor {
     switch (payment.type) 
-    case null { throw NoPaymentTypeException() }
+    case (null) { throw NoPaymentTypeException() }
     case (credit, debit) { return cardPaymentProcessor }
     case (check) { return checkPaymentProcessor }
     else { return interactivePaymentProcessor }
