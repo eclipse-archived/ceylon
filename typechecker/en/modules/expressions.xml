@@ -1930,41 +1930,17 @@ if you prefer.";</programlisting>
         <programlisting>functor Comparison(Float x, Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
         
         <para>The braces around the functor body and the <literal>produce</literal> keyword 
-        may be omitted for a single-line functor that produces a value if it appears as the 
-        right side of an assignment, as a parameter, or surrounded by parentheses.</para>
+        may be omitted.</para>
         
         <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
                
         <programlisting>people.select( (Person p) p.age>18 )
     .collect( (Person p) p.name );</programlisting>
     
-        <para>The braces are required for a <literal>void</literal> functor, or if the functor
-        does not appear as the right side of an assignment, nor as a parameter, nor surrounded by 
-        parentheses.</para>
+        <para>The braces are required for a <literal>void</literal> functor.</para>
         
         <programlisting>namedValues.each( (String name->Object value) { log.info("${name} ${value}"); } );</programlisting>
-        
-        <para>If a functor is the only parameter of a method invocation, and the functor body
-        is surrounded by braces, the method call parentheses may be eliminated:</para>
-        
-        <programlisting>namedValues.each (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
-        
-        <programlisting>Set&lt;People&gt; adults = people.elements (Person p) { produce p.age>18 };</programlisting>
-
-        <programlisting>int index = lineItems.firstIndex (LineItem li) { produce !li.product.available };</programlisting>
-
-        <!--Does not work due to ambiguity with named parameter syntax!
-        <para>In this situation, if the functor has no parameters, the functor parameter 
-        parentheses may also be eliminated:</para>
-        
-        <programlisting>(x>10).ifTrue { log.info("big!"); };</programlisting>
-        
-        <comment><para>Should we support a Groovy-style <literal>it</literal>, allowing the variable 
-        list to be eliminated for functors with one parameter? For example:</para></comment>
-        
-        <programlisting>Set&lt;People&gt; adults = people.elements { produce it.age>18 };</programlisting>
-        -->
-         
+                 
         <para>Consider the following functor expression:</para>
         
         <programlisting>functor Comparison(String x, String y) order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
@@ -2028,10 +2004,41 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         <para>Furthermore, for parameters of a method which are functor types, Ceylon
         provides a special method invocation protocol:</para>
         
-        <programlisting>MemberReference OrderedParamValues FunctorParamValues</programlisting>
+        <programlisting>(MemberReference OrderedParamValues | FunctorInvocation) FunctorParamValues</programlisting>
         
-        <para>After the list of ordered parameters, a named list of functor parameters may be 
-        specified:</para>
+        <para>The protocol begins with either:</para>
+
+        <itemizedlist>
+            <listitem>
+                <para>a normal method invocation with a period before the method name 
+                and an ordered list of parameters surrounded be parentheses, or</para>
+            </listitem>
+            <listitem>
+                <para>a special method invocation with a functor argument, which omits 
+                the period and parentheses, where the functor parameter list may be 
+                omitted for functors with no parameters.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>FunctorInvocation := Expression LIdentifier SimpleFunctorExpression</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>namedValues each (String name->Object value) { 
+    log.info("${name} ${value}"); 
+};</programlisting>
+        
+        <programlisting>Set&lt;People&gt; adults = people elements (Person p) p.age>18;</programlisting>
+
+        <programlisting>int index = lineItems firstIndex (LineItem li) !li.product.available;</programlisting>
+        
+        <programlisting>amounts sort (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        
+        <programlisting>people sort (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
+        
+        <programlisting>optional String label = x>10 isTrue "big";</programlisting>
+        
+        <para>Next, a named list of functor parameters may be specified:</para>
         
         <programlisting>FunctorParamValues := (LIdentifier SimpleFunctorExpression)*</programlisting>
         
@@ -2044,20 +2051,13 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <para>For example:</para>
         
-        <programlisting>String label = (x>10).if() isTrue "big" isFalse "little";</programlisting>
+        <programlisting>String label = x>10 isTrue "big" isFalse "little";</programlisting>
         
-        <programlisting>amounts.sort() by (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
-        
-        <programlisting>people.sort() by (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
-        
-        <programlisting>people.select() only (Person p) { produce p.age>18 }
-    .collect() each (Person p) { produce p.name };</programlisting>
-    
-        <programlisting>namedValues.each() do (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
+        <programlisting>people select (Person p) p.name having (Person p) p.age>18;</programlisting>
 
         <programlisting>optional specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
         
-        <programlisting>(x>10).if() 
+        <programlisting>x>10
 isTrue {
     log.debug("big");
     big(x);
@@ -2067,14 +2067,6 @@ isFalse {
     little(x);
 };</programlisting>
 
-        <comment><para>TODO: I would love to be able to omit the parameter name from the first  
-        parameter value, but I simply can't get this to parse. For example:</para></comment>
-                
-        <programlisting>people.sort() (Person x, Person y) y.name&lt;=&gt;x.name;</programlisting>
-        
-        <programlisting>people.select() (Person p) { produce p.age>18 }
-    .collect() (Person p) { produce p.name };</programlisting>
-        
         <section>
             <title>Syntax extension for iterations</title>
             
