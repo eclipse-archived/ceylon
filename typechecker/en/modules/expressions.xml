@@ -1918,10 +1918,10 @@ if you prefer.";</programlisting>
         
         <programlisting>FunctorExpression := FunctorHeader? FormalParams FunctorBody</programlisting>
         
+        <para>Functor expressions must specify a formal parameter list.</para>
+        
         <para>A functor expression may optionally specify annotations and/or return type. 
         In this case, the keyword <literal>functor</literal> is required.</para>
-        
-        <programlisting>FunctorHeader := "functor" Annotation* (Type | "void")</programlisting>
         
         <para>A functor body may be a single expression, or a block.</para>
         

@@ -200,29 +200,15 @@ VarargsParam?
     
         <para>There are also functor types:</para>
         
-        <!--  
-        <programlisting>FunctorType := "F" "&lt;" FunctorParams "," (Annotation* Type | "void") "&gt;"</programlisting>
-        -->
+        <programlisting>FunctorType := FunctorHeader FormalParams</programlisting>
         
-        <programlisting>FunctorType := "functor" Annotation* (Type | "void") FormalParams</programlisting>
-        
-        <!-- 
-        <programlisting>FunctorParams := "(" ( FormalParam ("," FormalParam)* )? ")"</programlisting>
-        -->
+        <programlisting>FunctorHeader := "functor" Annotation* (Type | "void")</programlisting>
         
         <para>The parameter names in a functor type declaration do not affect assignability
         of the functor type. They are used when the functor is invoked using named parameters.</para>
         
         <para>For example:</para>
         
-        <!--  
-        <programlisting>F&lt;(X x, X y), Comparison&gt;</programlisting>
-        <programlisting>F&lt;(Payment payment), Boolean&gt;</programlisting>
-        <programlisting>F&lt;(Y element), void&gt;</programlisting>
-        <programlisting>F&lt;(), optional Object&gt;</programlisting>
-        <programlisting>F&lt;(optional Y object, Factory&lt;Y&gt; factory), Y&gt;</programlisting>
-        -->
-    
         <programlisting>functor Comparison(X x, X y)</programlisting>
         <programlisting>functor Boolean(Payment payment)</programlisting>
         <programlisting>functor void(Y element)</programlisting>
