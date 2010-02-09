@@ -285,7 +285,7 @@ type
     ;
 
 regularType
-    : typeName ( (typeParameterStart) => typeArguments )?
+    : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
     ;
 
 functorType
@@ -307,9 +307,13 @@ userAnnotation
     : annotationName ( arguments | literal | reflectedBase (reflectedMember)* )?
     ;
 
-typeName
+qualifiedTypeName
     : //( identifier '.' )* 
     UIDENTIFIER ('.' UIDENTIFIER)*
+    ;
+
+typeName
+    : UIDENTIFIER
     ;
 
 annotationName
