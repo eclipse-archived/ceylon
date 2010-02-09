@@ -382,7 +382,7 @@ methodExpression
     ;
 
 specialMethodArgument
-    :(  methodOrParameterName | 'case' '(' expression ')' ) specialFunctor 
+    :(  methodOrParameterName | 'case' '(' expressions ')' ) specialFunctor 
     ;
 
 methodOrParameterName
@@ -486,7 +486,7 @@ base
     ;
 
 enumeration
-    : '{' ( assignable (',' assignable)* )? '}'
+    : '{' assignables? '}'
     ;
 
 selector 
@@ -529,12 +529,16 @@ parameterName
     : LIDENTIFIER
     ;
 
-varargArguments
-    : assignable (',' assignable)*
-    ;
-
 namedArguments
     : '{' ((namedArgument ';') => namedArgument ';')* varargArguments? '}'
+    ;
+
+varargArguments
+    : assignables
+    ;
+
+assignables
+    : assignable (',' assignable)*
     ;
 
 parExpression 
@@ -596,13 +600,21 @@ switchCaseElse
     ;
     
 cases 
-    : ('case' 'null' block)? ('case' '(' caseList ')' block)+ ('else' block)?
+    : ('case' 'null' block)? ('case' '(' caseCondition ')' block)+ ('else' block)?
     ;
     
-caseList
-    : expression (',' expression)* | 'is' type
+caseCondition
+    : expressions | isCaseCondition
     ;
-    
+
+expressions
+    : expression (',' expression)*
+    ;
+
+isCaseCondition
+    : 'is' type
+    ;
+
 forFail
     : 'for' '(' forIterator ')' block ('fail' block)?
     ;
