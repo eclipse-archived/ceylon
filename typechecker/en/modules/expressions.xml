@@ -1941,6 +1941,10 @@ if you prefer.";</programlisting>
         
         <programlisting>namedValues.each( (String name->Object value) { log.info("${name} ${value}"); } );</programlisting>
                  
+        <para>A functor expression can only appear as the right side of an assignment, initializer
+        or specifier, as an argument, in a control directive, as an element of an enumeration
+        instantiation, or surrounded by parentheses.</para>
+                        
         <para>Consider the following functor expression:</para>
         
         <programlisting>functor Comparison(String x, String y) order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
@@ -1999,10 +2003,10 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
     } );</programlisting>
                         
         <section id="functorparametersyntax">
-        <title>Syntax extension for functor parameters</title>
+        <title>Smalltalk-style method invocation</title>
         
-        <para>Furthermore, for parameters of a method which are functor types, Ceylon
-        provides a special method invocation protocol:</para>
+        <para>For parameters of a method which are of functor type, Ceylon provides a 
+        special method invocation protocol, inspired by Smalltalk:</para>
         
         <programlisting>PartialMethodInvocation FunctorParamValues | FunctorInvocation FunctorParamValues?</programlisting>
         
