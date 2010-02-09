@@ -2001,8 +2001,10 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
             return x > min &amp;&amp; x &lt; max; 
         } 
     } );</programlisting>
-                        
-        <section id="functorparametersyntax">
+    
+    </section>
+               
+    <section id="smalltalkprotocol">
         <title>Smalltalk-style method invocation</title>
         
         <para>For parameters of a method which are of functor type, Ceylon provides a 
@@ -2218,7 +2220,7 @@ Y select&lt;X, Y&gt;(X selector,
     value (card) payByCard(payment);
 </programlisting>
         
-        </section>
+    </section>
     
         <!--
         <section>
@@ -2282,7 +2284,5 @@ Integer size = result$1;</programlisting>
 
         </section>
     -->
-    
-    </section>
     
 </chapter>
