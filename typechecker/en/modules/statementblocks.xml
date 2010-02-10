@@ -144,16 +144,18 @@
                 
         <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
        
-        <para>Some control structures allow embedded declaration of a local. This local is available
+        <para>Some control structures allow embedded declaration of a local that is available
         inside the control structure body.</para>
+        
+        <programlisting>Variable := Type MemberName</programlisting>
         
         <para>Some control structures expect conditions:</para>
         
-       <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
+        <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
        
-       <programlisting>ExistsCondition := ("exists" | "nonempty") (Variable Specifier | Expression)</programlisting>
+        <programlisting>ExistsCondition := ("exists" | "nonempty") (Variable Specifier | Expression)</programlisting>
        
-       <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
+        <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
 
         <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
         <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
@@ -371,7 +373,7 @@ else {
             that contains the range of values to be iterated. <!--It may optionally specify 
             one or more iteration constraint expressions (conditions).--></para>
 
-            <programlisting>ForIterator := FormalParam "in" Expression</programlisting>
+            <programlisting>ForIterator := Variable ("->" Variable)? "in" Expression</programlisting>
 
             <!--programlisting>Iteration := FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
@@ -425,7 +427,7 @@ fail {
 
             <para>The loop may declare an iterator variable, which may be mutable.</para>
 
-            <programlisting>DoIterator := Variable Initializer</programlisting>
+            <programlisting>DoIterator := Annotation* Variable Initializer</programlisting>
             
             <!--programlisting>DoWhileFail := 
 ( "do" ("(" Variable Specifier ")")? OpenBlock? )?

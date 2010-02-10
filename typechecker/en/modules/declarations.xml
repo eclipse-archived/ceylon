@@ -102,30 +102,32 @@ DefaultParam ("," DefaultParam)* ("," VarargsParam)? |
 VarargsParam?
 ")"</programlisting>
 
-        <programlisting>FormalParam := Variable | EntryVariablePair | RangeVariablePair</programlisting>
+        <programlisting>FormalParam := Param | EntryParamPair | RangeParamPair</programlisting>
         
         <para>Each parameter is declared using with a type and name and may have annotations.</para>
         
-        <programlisting>Variable := Annotation* Type ParameterName</programlisting>
+        <programlisting>Param := Annotation* Type ParameterName</programlisting>
             
         <para>Defaulted parameters specify a default value.</para>
     
         <programlisting>DefaultParam := FormalParam Specifier</programlisting>
         
-        <para>The <literal>=</literal> specifier is used to indicate a value which does not change.</para>
+        <para>The <literal>=</literal> specifier is used throughout the language to indicate a 
+        value which cannot be reassigned.</para>
         
         <programlisting>Specifier := "=" Expression</programlisting>
         
-        <para>Varargs parameters accept multiple values or values of type <literal>List</literal>.</para>
+        <para>A varargs parameter accepts a lists of arguments or a single argument of type 
+        <literal>Iterable</literal>.</para>
         
         <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
         
-        <programlisting>EntryVariablePair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
+        <programlisting>EntryParamPair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
 
-        <programlisting>RangeVariablePair := Annotation* Type ParameterName ".." ParameterName</programlisting>
+        <programlisting>RangeParamPair := Annotation* Type ParameterName ".." ParameterName</programlisting>
         
         <para>For example:</para>
         

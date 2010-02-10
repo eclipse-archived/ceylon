@@ -382,7 +382,6 @@ if you prefer.";</programlisting>
         <programlisting>VarargArguments := VarargArgument ("," VarargArgument)*</programlisting>
 
         <programlisting>VarargArgument := Expression | Variable Specifier</programlisting>
-        <!--programlisting>VarargArgument := Expression | Variable Specifier | ForComprehension</programlisting-->
         
         <para>A vararg parameter may be a local declaration. Multiple vararg parameters may be
         constructed using a <literal>for</literal> comprehension.</para>
@@ -1948,7 +1947,7 @@ if you prefer.";</programlisting>
         <para>The braces around the functor body and the <literal>produce</literal> keyword 
         may be omitted.</para>
         
-        <programlisting>people.sort( (Person x, Person y) y.name&lt;=&gt;x.name );</programlisting>
+        <programlisting>people.sort( (Person x, Person y) y.name &lt;=&gt; x.name );</programlisting>
                
         <programlisting>people.select( (Person p) p.age>18 )
     .collect( (Person p) p.name );</programlisting>
