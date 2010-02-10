@@ -406,7 +406,7 @@ if you prefer.";</programlisting>
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
-            <programlisting>printer.print { "Names: ", from (Person p in people) p.name }</programlisting>
+            <programlisting>printer.print { "Names: ", from (Person p in people) select p.name }</programlisting>
             
             <para>The value of a method invocation is the return value of the method.
             The parameter values are passed to the formal parameters of the method.</para>
