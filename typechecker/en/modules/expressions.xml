@@ -411,7 +411,9 @@ if you prefer.";</programlisting>
             <para>The value of a method invocation is the return value of the method.
             The parameter values are passed to the formal parameters of the method.</para>
             
-            <para>Methods may not be invoked on an expression of type <literal>optional</literal>.</para>
+            <para>Methods may not be invoked using the <literal>.</literal> operators on an 
+            expression of type <literal>optional</literal>. They may be invoked using 
+            <literal>?.</literal>.</para>
             
         </section>
         
