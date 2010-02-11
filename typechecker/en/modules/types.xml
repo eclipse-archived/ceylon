@@ -63,11 +63,11 @@
     }
     
     doc "The Type of the instance."
-    public Type<X+> type { return ... }
+    public Type<Object> type { return ... }
     
     doc "Binary assignability operator x is Y. Determine if the instance 
          is of the given Type."
-    public Boolean instanceOf(Type<Object+> type) {
+    public Boolean instanceOf(Type<Object> type) {
         return this.type.assignableTo(type)
     }
     
@@ -365,7 +365,7 @@
         
     doc "Determine if all the given elements belong to the category."
     public Boolean contains(Iterable&lt;Object&gt; elements) {
-        return forAll (X x in elements) every category.contains(x)
+        return forAll (Object elem in elements) every category.contains(elem)
     }
     
 }</programlisting>
