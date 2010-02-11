@@ -959,6 +959,9 @@
 
         <para>Five numeric types are built in:</para>
 
+        <para><literal>lang.Natural</literal> represents 63 bit unsigned integers
+        (including zero).</para>
+        
         <programlisting>public final class Natural 
         satisfies Number&lt;Natural&gt;, Case&lt;Natural&gt; { 
     ... 
@@ -967,6 +970,8 @@
     public Natural rightShift(Natural digits) { ... }
         
 }</programlisting>
+
+        <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting>public final class Integer
         satisfies Number&lt;Integer&gt;, Case&lt;Integer&gt; {
@@ -978,14 +983,39 @@
     
 }</programlisting>
 
+        <para><literal>lang.Float</literal> represents 64 bit floating point
+        values.</para>
+
         <programlisting>public final class Float 
         satisfies Number&lt;Float&gt; { ... }</programlisting>
+
+        <para><literal>lang.Exact</literal> represents arbitrary-precision
+        and arbitrary-magnitude decimals.</para>
 
         <programlisting>public class Exact 
         satisfies Number&lt;Exact&gt; { ... }</programlisting>
 
+        <para><literal>lang.Whole</literal> represents arbitrary-magnitude
+        signed integers.</para>
+
         <programlisting>public class Whole 
         satisfies Number&lt;Whole&gt;, Case&lt;Whole&gt; { ... }</programlisting>
+        
+        <para>Built in converters exist for the following type conversions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>lang.Natural</literal> to <literal>lang.Integer</literal>,
+                <literal>lang.Whole</literal> and <literal>lang.Exact</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>lang.Integer</literal> to <literal>lang.Whole</literal>
+                and <literal>lang.Exact</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>lang.Whole</literal> to <literal>lang.Exact</literal></para>
+            </listitem>
+        </itemizedlist>
 
     </section>
     
