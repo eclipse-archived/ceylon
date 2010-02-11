@@ -1382,14 +1382,14 @@
     <itemizedlist>
         <listitem><literal>lang.Boolean</literal> to Java <literal>boolean</literal></listitem>
 
-        <listitem><literal>int lang.Natural</literal> to Java <literal>int</literal></listitem>
         <listitem><literal>lang.Natural</literal> to Java <literal>long</literal></listitem>
+        <listitem><literal>small lang.Natural</literal> to Java <literal>int</literal></listitem>
         
-        <listitem><literal>int lang.Integer</literal> to Java <literal>int</literal></listitem>
         <listitem><literal>lang.Integer</literal> to Java <literal>long</literal></listitem>
+        <listitem><literal>small lang.Integer</literal> to Java <literal>int</literal></listitem>
         
-        <listitem><literal>float lang.Float</literal> to Java <literal>float</literal></listitem>
         <listitem><literal>lang.Float</literal> to Java <literal>double</literal></listitem>
+        <listitem><literal>small lang.Float</literal> to Java <literal>float</literal></listitem>
     </itemizedlist>
     
     <para>However, these optimizations may never be performed for locals, attributes
