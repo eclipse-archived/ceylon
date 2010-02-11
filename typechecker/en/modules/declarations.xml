@@ -1359,6 +1359,11 @@ TypeConstraintList?
         <para>An extension method is called a converter. An extension class is called a 
         decorator.</para>
         
+        <comment><para>Note: I actually much prefer the readability of 
+        <literal>User personToUser(extends Person person)</literal> and
+        <literal>CollectionUtils&lt;T&gt;(extends Collection&lt;T&gt; collection)</literal>, but 
+        this doesn't work for attributes and non-static methods.</para></comment>
+        
         <para>The Ceylon compiler searches for an appropriate extension whenever a value of one
         type is assigned to a non-assignable type. If exactly one extension for the two types is 
         found, the compiler inserts a call to the extension. For example, this Ceylon assignment:</para>
