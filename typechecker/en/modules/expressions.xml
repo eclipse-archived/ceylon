@@ -761,9 +761,9 @@ if you prefer.";</programlisting>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
             <entry></entry>
-            <entry><literal>mutable optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>X</literal> or <literal>optional X</literal></entry>
+            <entry><literal>X</literal> or <literal>optional X</literal></entry>
+            <entry><literal>X</literal> or <literal>optional X</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Member reference</emphasis></entry></row>
@@ -773,8 +773,8 @@ if you prefer.";</programlisting>
             <entry><literal>lhs#member</literal></entry>
             <entry>curry</entry>
             <entry></entry>
-            <entry><literal>Object</literal></entry>
-            <entry></entry>
+            <entry><literal>X</literal></entry>
+            <entry>Member of <literal>X</literal></entry>
             <entry><literal>Callable&lt;functor R(P p, Q q,...)&gt;</literal>, 
             <literal>Value&lt;T&gt;</literal> or
             <literal>OpenValue&lt;T&gt;</literal></entry>
@@ -787,8 +787,8 @@ if you prefer.";</programlisting>
             <entry><literal>lhs.member</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Object</literal></entry>
-            <entry></entry>
+            <entry><literal>X</literal></entry>
+            <entry>Member of <literal>X</literal></entry>
             <entry>Member type</entry>
         </row>
         <row>
@@ -797,7 +797,7 @@ if you prefer.";</programlisting>
             <entry>chain invoke</entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
-            <entry></entry>
+            <entry>Member of <literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         <row>
@@ -805,8 +805,8 @@ if you prefer.";</programlisting>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe invoke</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry></entry>
+            <entry><literal>optional X</literal></entry>
+            <entry>Member of <literal>X</literal></entry>
             <entry><literal>optional</literal> member type</entry>
         </row>
         
@@ -818,7 +818,7 @@ if you prefer.";</programlisting>
             <entry>spread invoke</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
-            <entry></entry>
+            <entry>Member of <literal>X</literal></entry>
             <entry><literal>List</literal> of member type</entry>
         </row>
         
@@ -846,7 +846,7 @@ if you prefer.";</programlisting>
             <entry><literal>!=</literal></entry>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
-            <entry><literal>if (exists lhs) lhs.equals(rhs).negation else if (exists rhs) true else false</literal></entry>
+            <entry><literal>if (exists lhs) lhs.equals(rhs).complement else if (exists rhs) true else false</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -900,43 +900,43 @@ if you prefer.";</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
                 
-        <row><entry namest="first" nameend="last"><emphasis>Logical operations</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Logical and bitwise operations</emphasis></entry></row>
         
         <row>
             <entry><literal>!</literal><!--or <literal>not</literal>--></entry>
             <entry><literal>!rhs</literal><!--or <literal>not rhs</literal>--></entry>
-            <entry>logical negation</entry>
-            <entry><literal>rhs.negation</literal></entry>
+            <entry>complement</entry>
+            <entry><literal>rhs.complement</literal></entry>
             <entry></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>|</literal></entry>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;</literal></entry>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>^</literal></entry>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
 
         <row>
@@ -967,34 +967,34 @@ if you prefer.";</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Logical assignment</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Logical/bitwise assignment</emphasis></entry></row>
         
         <row>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs = lhs.or(rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs = lhs.and(rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs = lhs.xor(rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
 
         <row>
@@ -1002,9 +1002,9 @@ if you prefer.";</programlisting>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
             <entry><literal>lhs = if (lhs) true else rhs</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
 
         <row>
@@ -1012,9 +1012,9 @@ if you prefer.";</programlisting>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>lhs = if (lhs) rhs else false</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Existence (null value handling)</emphasis></entry></row>
@@ -1032,7 +1032,7 @@ if you prefer.";</programlisting>
             <entry><literal><!--??-->nonempty</literal></entry>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
-            <entry><literal>if (exists lhs) lhs.empty.negation else false</literal></entry>
+            <entry><literal>if (exists lhs) lhs.empty.complement else false</literal></entry>
             <entry><literal>optional Container</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
@@ -1044,8 +1044,8 @@ if you prefer.";</programlisting>
             <entry>default</entry>
             <entry><literal>if (exists lhs) lhs else rhs</literal></entry>
             <entry><literal>optional T</literal></entry>
-            <entry><literal>T</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>T</literal> or <literal>optional T</literal></entry>
+            <entry><literal>T</literal> or <literal>optional T</literal></entry>
         </row>
 
         <row><entry namest="first" nameend="last"><emphasis>Default assignment</emphasis></entry></row>
@@ -1056,8 +1056,8 @@ if you prefer.";</programlisting>
             <entry>default assignment</entry>
             <entry><literal>if (exists lhs) lhs else lhs=rhs</literal></entry>
             <entry><literal>optional T</literal></entry>
-            <entry><literal>T</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>T</literal> or <literal>optional T</literal></entry>
+            <entry><literal>T</literal> or <literal>optional T</literal></entry>
         </row>
         
         <!--  
@@ -1148,8 +1148,9 @@ if you prefer.";</programlisting>
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
             <entry><literal>lhs.instanceOf(#Rhs)</literal></entry>
-            <entry><literal>Object</literal></entry>
-            <entry><literal></literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry>Any type that is not a supertype of 
+            <literal>X</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -1688,6 +1689,12 @@ if you prefer.";</programlisting>
     </tgroup>
     </table>
     
+    <para>Note that the numeric operations return their argument type if both 
+    arguments are of the same subtype of <literal>Number</literal>.</para>
+    
+    <comment><para>TODO: should we have logical <literal>!</literal> and bitwise
+    <literal>~</literal> for consistency with C/Java?</para></comment>
+    
     </section>
     
     <section>
@@ -1864,13 +1871,13 @@ if you prefer.";</programlisting>
             </row>
         
             <row>
-                <entry>Negation:</entry>
+                <entry>Logical/bitwise complement:</entry>
                 <entry><literal>!</literal></entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
             </row>
             <row>
-                <entry>Conjunction:</entry> 
+                <entry>Logical/bitwise and:</entry> 
                 <entry>
                 <literal>&amp;&amp;</literal>, 
                 <literal>&amp;</literal>
@@ -1879,7 +1886,7 @@ if you prefer.";</programlisting>
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Disjunction:</entry>
+                <entry>Logical/bitwise or, xor:</entry>
                 <entry>
                 <literal>||</literal>, 
                 <literal>|</literal>, 
@@ -1922,6 +1929,10 @@ if you prefer.";</programlisting>
     </table>
     
     <comment><para>TODO: should <literal>?</literal> have a higher precedence?</para></comment>
+    
+    <comment><para>TODO: should <literal>|</literal> and <literal>&amp;</literal> have 
+    a higher precedence than <literal>||</literal> and <literal>&amp;&amp;</literal>, 
+    like in C and Java? What exactly is the reasoning behind that?</para></comment>
     
     <comment><para>TODO: should <literal>^</literal> have a higher precedence than
     <literal>|</literal>?</para></comment>
