@@ -62,10 +62,10 @@
     
     <para>
     Ceylon control flow structures are enhanced versions of the traditional 
-    constructs found in C, C# and Java. Even better, Ceylon functors can be
-    used together with a special method invocation protocol to achieve more
-    specialized flow control and other more functional-style constructs such 
-    as comprehensions.
+    constructs found in C, C# and Java. Even better, functors can be used 
+    together with a special SmallTalk-style method invocation protocol to 
+    achieve more specialized flow control and other more functional-style 
+    constructs such as comprehensions.
     </para>
     
     <para>
