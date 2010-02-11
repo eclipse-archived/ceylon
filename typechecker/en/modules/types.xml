@@ -51,14 +51,14 @@
     
     doc "Determine if the instance belongs to the given Category."
     see #Category
-    public Boolean in<Y>(Category<Y> cat) where (Y<=X) {
+    public Boolean in(Category cat) {
         return cat.contains(this)
     }
     
     doc "Determine if the instance belongs to the given Iterable
          object."
     see #Iterable
-    public Boolean in<Y>(Iterable<Y> iterable) where (Y<=X) {
+    public Boolean in(Iterable<Object> iterable) {
         return forAny (Object elem in iterable) some elem == this
     }
     
@@ -374,7 +374,7 @@
         objects may be added.</para>
         
         <programlisting>public mutable interface OpenCategory&lt;in X&gt; 
-        satisfies Category&lt;X&gt; {
+        satisfies Category {
     
     doc "Add the given element to the category."
     public Boolean add(X element);
