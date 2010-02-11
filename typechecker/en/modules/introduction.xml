@@ -3,25 +3,50 @@
     
     <para>
     Ceylon is a statically-typed, general-purpose, object-oriented language
-    featuring a syntax derived from the class of languages that includes 
-    Java and C#. Ceylon programs execute in any standard Java Virtual Machine 
-    and, like Java, take advantage of the memory management and concurrency 
-    features of that environment. The Ceylon compiler is able to compile 
-    Ceylon code that calls Java classes or interfaces, and Java code that calls 
-    Ceylon classes or interfaces. Ceylon differs from Java by eliminating 
-    primitive types and arrays and introducing a number of improvements 
-    (inspired in some cases by dynamic languages such as SmallTalk, Python and 
-    Ruby) to the language and type system that reduce verbosity compared to 
-    Java or C#. Moreover, Ceylon provides its own native SDK as a replacement 
-    for the Java platform class libraries.
+    featuring a syntax similar to Java and C#. Ceylon programs execute in any 
+    standard Java Virtual Machine and, like Java, take advantage of the memory 
+    management and concurrency features of that environment. The Ceylon 
+    compiler is able to compile Ceylon code that calls Java classes or 
+    interfaces, and Java code that calls Ceylon classes or interfaces. Ceylon 
+    improves upon the Java language and type system to reduce verbosity and 
+    increase typesafety compared to Java and C#. Ceylon encourages a more 
+    functional style of programming, resulting in code which is easier to 
+    reason about, and easier to refactor. Moreover, Ceylon provides its 
+    own native SDK as a replacement for the Java platform class libraries.
     </para>
     
     <para>
-    Ceylon features the same inheritance and generic type models as Java. 
+    Ceylon features a similar inheritance and generic type model to Java. 
     There are no primitive types or arrays in Ceylon, so all values are
     instances of the type hierarchy root <literal>lang.Object</literal>.
     However, the Ceylon compiler is permitted to optimize certain code to 
-    take advantage of the better performance of primitive types on the JVM. 
+    take advantage of the better performance of primitive types on the JVM.
+    Ceylon does not support Java-style wildcard type parameters. Instead,
+    like Scala, a type parameter may be marked as covariant or 
+    contravariant by the class or interface that declares the parameter.
+    </para>
+    
+    <para>
+    Ceylon methods are similar to Java methods. However, Ceylon does not
+    feature any Java-like constructor declaration and so each Ceylon class 
+    has exactly one "constructor". As an alternative to overloading, Ceylon 
+    supports method and constructor parameters with default values. In 
+    addition, Ceylon supports closures, called <emphasis>functors</emphasis>. 
+    </para>
+    
+    <para>
+    Ceylon classes do not contain fields, in the traditional sense. Instead, 
+    Ceylon supports only a higher-level construct: <emphasis>attributes</emphasis>, 
+    which are similar to C# properties.
+    </para>
+    
+    <para>
+    By default, Ceylon classes, attributes and locals are immutable. 
+    Mutable classes, attributes and locals must be explicitly declared
+    using the <literal>mutable</literal> annotation. An immutable class may 
+    not declare mutable attributes or extend a mutable class. An immutable 
+    attribute must be assigned when the class is instantiated. An immutable 
+    local may not be assigned more than once.
     </para>
     
     <para>
@@ -36,31 +61,6 @@
     </para>
     
     <para>
-    By default, Ceylon classes, attributes and locals are immutable. 
-    Mutable classes, attributes and locals must be explicitly declared
-    using the <literal>mutable</literal> annotation. An immutable class may 
-    not declare mutable attributes or extend a mutable class. An immutable 
-    attribute must be assigned when the class is instantiated. An immutable 
-    local must not be assigned more than once. In addition, Ceylon supports 
-    closures, called <emphasis>functors</emphasis>. These language features
-    encourage a more functional style of programming, resulting in code
-    which is more typesafe, easier to reason about, and easier to refactor.
-    </para>
-    
-    <para>
-    Ceylon classes do not contain fields, in the traditional sense. Instead, 
-    Ceylon supports only a higher-level construct: <emphasis>attributes</emphasis>, 
-    which are similar to C# properties.
-    </para>
-    
-    <para>
-    Ceylon methods are similar to Java methods. However, Ceylon does not
-    feature any Java-like constructor declaration and so each Ceylon class 
-    has exactly one "constructor". Instead, Ceylon provides a sophisticated 
-    object initialization syntax. 
-    </para>
-    
-    <para>
     Ceylon control flow structures are enhanced versions of the traditional 
     constructs found in C, C# and Java. Even better, Ceylon functors can be
     used together with a special method invocation protocol to achieve more
@@ -70,17 +70,26 @@
     
     <para>
     Ceylon features a rich set of operators, including most of the operators 
-    supported by C and Java. True operator overloading is not supported. However, 
-    each operator is defined to act upon a certain class or interface type, 
-    allowing application of the operator to any class which extends or implements 
-    that type.
+    supported by C and Java. True operator overloading is not supported. 
+    However, each operator is defined to act upon a certain class or interface 
+    type, allowing application of the operator to any class which extends or 
+    implements that type.
     </para>
+    
+    <para>Ceylon's numeric type system is much simpler than C, C# or Java, 
+    with exactly five built-in numeric types (compared to eight in Java and
+    eleven in C#). The built-in types are classes representing natural numbers, 
+    integers, floating point numbers, arbitrary magnitude integers and 
+    arbitrary precision decimals. <literal>Natural</literal>, 
+    <literal>Integer</literal> and <literal>Float</literal> values are 64 bit 
+    by default, and may be optimized for 32 bit architectures via use of the 
+    <literal>small</literal> annotation.</para>
     
     <para>
     True open classes are not supported. However, Ceylon supports 
-    <emphasis>extensions</emphasis>, which allows addition of methods and 
+    <emphasis>extensions</emphasis>, which allow addition of methods and 
     interfaces to existing types, and transparent conversion between types, 
-    within a textual scope. Decorators only affect the operations provided 
+    within a textual scope. Extensions only affect the operations provided 
     by a type, not its state. This facility makes it easy for Ceylon code to 
     transparently interoperate and inter-compile with Java code.
     </para>
@@ -95,7 +104,9 @@
     of domain-specific languages and expression of structured data. These 
     extensions include specialized syntax for initializing objects and 
     collections and expressing literal values. One application of this syntax 
-    is the support for Java/C#-like code annotations.
+    is the support for Java/C#-like code annotations. The goal of this facility
+    is to replace the use of XML for expressing hierarchical structures such
+    as documents, user interfaces, configuration and serialized data.
     </para>
     
     <para>
@@ -125,6 +136,7 @@
         <programlisting>doc "The classic Hello World program"
 class Hello {
 
+    doc "Say hello"
     main void hello() {
         log.info("Hello, World!");
     }
@@ -134,13 +146,15 @@ class Hello {
         <para>
         This code defines a Ceylon class named <literal>Hello</literal>, with 
         a single method with no parameters and no return value, named 
-        <literal>hello</literal>. An <emphasis>annotation</emphasis> appears on 
-        the method declaration. The <literal>main</literal> annotation specifies 
-        that this method is called automatically when the virtual machine is 
-        started. The <literal>hello()</literal> method calls the 
-        <literal>info()</literal> method of an attribute named 
-        <literal>log</literal> defined by the <literal>lang.Object</literal> class. 
-        By default, this method displays its parameter on the console. 
+        <literal>hello</literal>. The <literal>main</literal> annotation appears 
+        on the method declaration. This annotation specifies that the method is 
+        called automatically when the virtual machine is started. The 
+        <literal>hello()</literal> method calls the <literal>info()</literal> 
+        method of an attribute named <literal>log</literal> defined by the 
+        <literal>lang.Object</literal> class. By default, this method displays 
+        its parameter on the console. The <literal>doc</literal> annotation 
+        contains documentation that is included in the output of the Ceylon 
+        documentation compiler.
         </para>
         
         <para>
@@ -150,6 +164,7 @@ class Hello {
         <programlisting><![CDATA[doc "A more personalized greeting"
 class Hello {
 
+    doc "Say hello"
     main void hello(Process process) {
         String name = process.args.firstOrNull ? "World";
         log.info("Hello, ${name}!");
@@ -158,24 +173,20 @@ class Hello {
 }]]></programlisting>
 
         <para>
-        This time, the <literal>hello()</literal> method has a parameter. This
+        This time, the <literal>hello()</literal> method has a parameter. <!--This
         parameter value is <emphasis>injected</emphasis> by Ceylon's built-in
-        dependency management engine. The <literal>Process</literal> object
+        dependency management engine.--> The <literal>Process</literal> object
         has an attribute named <literal>args</literal>, which holds a 
         <literal>List</literal> of the program's command line arguments. The 
-        local <literal>args</literal> is initialized from these arguments. The 
-        <literal>?</literal> operator returns the first argument that is 
-        not null. Finally, the value of the local is interpolated into the message 
+        local <literal>name</literal> is initialized from these arguments. The 
+        <literal>?</literal> operator returns the first argument that is not 
+        null. Finally, the value of the local is interpolated into the message 
         string.
         </para>
 
         <para>Finally, lets rewrite this program as a web page:</para>
 
-        <programlisting><![CDATA[import html.Html;
-import html.Head;
-import html.Body;
-import html.Div;
-import web.Page;
+        <programlisting><![CDATA[import html.*;
 
 doc "A web page that displays a greeting"
 page "/hello.html"
@@ -200,8 +211,8 @@ class Hello(Request request)
 
 }]]></programlisting>
 
-        <para>This program demonstrates Ceylon's support for defining structured data,
-        in this case, HTML. The <literal>Hello</literal> class extends Ceylon's
+        <para>This program demonstrates Ceylon's support for defining structured 
+        data, in this case, HTML. The <literal>Hello</literal> class extends Ceylon's
         <literal>Html</literal> class and initializes its <literal>head</literal> and
         <literal>body</literal> attributes. The <literal>page</literal> annotation 
         specifies the URL at which this HTML should be accessible.</para>
