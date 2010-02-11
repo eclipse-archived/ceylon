@@ -41,6 +41,10 @@
     
     <itemizedlist>
         <listitem>
+            <para>to be appropriate for large scale development, but to also
+            be <emphasis>fun</emphasis>,</para>
+        </listitem>
+        <listitem>
             <para>to execute on the JVM, and interoperate with Java code,</para>
         </listitem>
         <listitem>
@@ -56,6 +60,10 @@
             information like user interface definition, externalized data, and 
             system configuration, thereby eliminating Java's dependence upon 
             XML,</para>
+        </listitem>
+        <listitem>
+            <para>to provide a more elegant and more flexible annotation syntax
+            to support frameworks and declarative programming,</para>
         </listitem>
         <listitem>
             <para>to support and encourage a more functional style of programming 
