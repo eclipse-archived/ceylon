@@ -1463,17 +1463,17 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements(
         <itemizedlist>
             <listitem>
                 <para><literal>byte</literal> specifies that a value of type
-                <literal>Natural</literal>, <literal>Integer</literal> 
+                <literal>Natural</literal> or <literal>Integer</literal> 
                 contains 8-bit values.</para>
             </listitem>
             <listitem>
                 <para><literal>short</literal> specifies that a value of type
-                <literal>Natural</literal>, <literal>Integer</literal> 
+                <literal>Natural</literal> or <literal>Integer</literal> 
                 contains 16-bit values.</para>
             </listitem>
             <listitem>
                 <para><literal>int</literal> specifies that a value of type
-                <literal>Natural</literal>, <literal>Integer</literal> 
+                <literal>Natural</literal> or <literal>Integer</literal> 
                 contains 32-bit values.</para>
             </listitem>
             <listitem>
