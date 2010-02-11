@@ -640,14 +640,15 @@ public class Person { ... }</programlisting>
         <section>
         <title>Instance enumeration</title>
         
-        <para>A class may specify an enumerated list of instances:</para>
+        <para>The keyword <literal>instances</literal> is used to specify an enumerated 
+        list of predefined instances.</para>
         
         <programlisting>Instances := "instances" Instance ("," Instance)* ("..." | ";")</programlisting>
 
         <programlisting>Instance := MemberName Arguments?</programlisting>
 
-        <para>The keyword <literal>instances</literal> is used to specify a set of predefined
-        instances.</para>
+        <para>If the instance list ends in <literal>;</literal> instead of <literal>...</literal>, 
+        additional instances of the class may not be instantiated.</para>
         
         <programlisting>public class DayOfWeek { instances mon, tues, wed, thurs, fri, sat, sun; }</programlisting>
 
