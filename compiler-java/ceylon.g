@@ -255,7 +255,7 @@ type
     ;
 
 regularType
-    : typeName ( (typeParameterStart) => typeParameters )?
+    : typeName ((typeParameterStart) => typeParameters)?
     ;
 
 functorType
