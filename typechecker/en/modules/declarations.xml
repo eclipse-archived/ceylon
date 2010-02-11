@@ -277,6 +277,8 @@ VarargsParam?
         
         <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
         
+        <comment><para>Should we use <literal>for</literal> instead of <literal>where</literal>?</para></comment>
+        
         <comment><para>Should we use <literal>satisfies</literal> instead of <literal>>=</literal>? For
         example <literal>where X satisfies Number&lt;X&gt; &amp; Y satisfies Comparable&lt;Y&gt;</literal>.</para></comment>
     
@@ -1461,16 +1463,6 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements(
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
         
         <itemizedlist>
-            <listitem>
-                <para><literal>byte</literal> specifies that a value of type
-                <literal>Natural</literal> or <literal>Integer</literal> 
-                contains 8-bit values.</para>
-            </listitem>
-            <listitem>
-                <para><literal>short</literal> specifies that a value of type
-                <literal>Natural</literal> or <literal>Integer</literal> 
-                contains 16-bit values.</para>
-            </listitem>
             <listitem>
                 <para><literal>int</literal> specifies that a value of type
                 <literal>Natural</literal> or <literal>Integer</literal> 

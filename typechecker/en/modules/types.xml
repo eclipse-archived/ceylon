@@ -1382,13 +1382,9 @@
     <itemizedlist>
         <listitem><literal>lang.Boolean</literal> to Java <literal>boolean</literal></listitem>
 
-        <listitem><literal>byte lang.Natural</literal> to Java <literal>byte</literal></listitem>
-        <listitem><literal>short lang.Natural</literal> to Java <literal>short</literal></listitem>
         <listitem><literal>int lang.Natural</literal> to Java <literal>int</literal></listitem>
         <listitem><literal>lang.Natural</literal> to Java <literal>long</literal></listitem>
         
-        <listitem><literal>byte lang.Integer</literal> to Java <literal>byte</literal></listitem>
-        <listitem><literal>short lang.Integer</literal> to Java <literal>short</literal></listitem>
         <listitem><literal>int lang.Integer</literal> to Java <literal>int</literal></listitem>
         <listitem><literal>lang.Integer</literal> to Java <literal>long</literal></listitem>
         

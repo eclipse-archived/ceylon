@@ -376,6 +376,9 @@ if you prefer.";</programlisting>
         <para>Named arguments are followed by semicolons.</para>
 
         <programlisting>NamedArgument := ParameterName Specifier ";"</programlisting>
+        
+        <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
+        thereby allowing the braces around an enumeration instantiation to be omitted?</para></comment>
 
         <para>Vararg arguments are seperated by commas.</para>
 
@@ -389,8 +392,10 @@ if you prefer.";</programlisting>
         <comment><para>TODO: exactly what types are accepted by a vararg parameter? Any <literal>Iterable</literal>?
         Exactly how is it accessed in the body of the method? As a <literal>List</literal>?</para></comment>
         
+        <!--  
         <comment><para>TODO: should there be a special syntax to "spread" the values of a list into 
         vararg parameters, eg. <literal>*list</literal>.</para></comment>
+        -->
         
         <section>
             <title>Method invocation</title>
