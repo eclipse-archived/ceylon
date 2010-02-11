@@ -566,7 +566,7 @@ class Customer(Name name, optional Organization org = null)
             <title>Defaulted parameters</title>
             
         <para>
-        When a class with an defaulted parameter is instantiated, and a value is not assigned to the
+        When a class with a defaulted parameter is instantiated, and a value is not assigned to the
         defaulted parameter by the caller, the default value defined by the specifier is used.
         </para>
         
