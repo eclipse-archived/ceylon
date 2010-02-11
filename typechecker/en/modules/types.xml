@@ -950,8 +950,6 @@
     public Natural natural;
     public Integer integer;
     public Float float;
-    public Double double;
-    public Long long;
 
     public Exact fractionalPart;
     public Integer scale;
@@ -959,10 +957,16 @@
     
 }</programlisting>
 
-        <para>Seven numeric types are built in:</para>
+        <para>Five numeric types are built in:</para>
 
         <programlisting>public final class Natural 
-        satisfies Number&lt;Natural&gt;, Case&lt;Natural&gt; { ... }</programlisting>
+        satisfies Number&lt;Natural&gt;, Case&lt;Natural&gt; { 
+    ... 
+    
+    public Natural leftShift(Natural digits) { ... }
+    public Natural rightShift(Natural digits) { ... }
+        
+}</programlisting>
 
         <programlisting>public final class Integer
         satisfies Number&lt;Integer&gt;, Case&lt;Integer&gt; {
@@ -974,14 +978,8 @@
     
 }</programlisting>
 
-        <programlisting>public final class Long 
-        satisfies Number&lt;Long&gt;, Case&lt;Long&gt; { ... }</programlisting>
-
         <programlisting>public final class Float 
         satisfies Number&lt;Float&gt; { ... }</programlisting>
-
-        <programlisting>public final class Double 
-        satisfies Number&lt;Double&gt; { ... }</programlisting>
 
         <programlisting>public class Exact 
         satisfies Number&lt;Exact&gt; { ... }</programlisting>
@@ -1382,11 +1380,20 @@
     <para>The following optimizations are allowed:</para>
     
     <itemizedlist>
-        <listitem><literal>lang.Integer</literal> to Java <literal>int</literal></listitem>
-        <listitem><literal>lang.Long</literal> to Java <literal>long</literal></listitem>
-        <listitem><literal>lang.Float</literal> to Java <literal>float</literal></listitem>
-        <listitem><literal>lang.Double</literal> to Java <literal>double</literal></listitem>
         <listitem><literal>lang.Boolean</literal> to Java <literal>boolean</literal></listitem>
+
+        <listitem><literal>byte lang.Natural</literal> to Java <literal>byte</literal></listitem>
+        <listitem><literal>short lang.Natural</literal> to Java <literal>short</literal></listitem>
+        <listitem><literal>int lang.Natural</literal> to Java <literal>int</literal></listitem>
+        <listitem><literal>lang.Natural</literal> to Java <literal>long</literal></listitem>
+        
+        <listitem><literal>byte lang.Integer</literal> to Java <literal>byte</literal></listitem>
+        <listitem><literal>short lang.Integer</literal> to Java <literal>short</literal></listitem>
+        <listitem><literal>int lang.Integer</literal> to Java <literal>int</literal></listitem>
+        <listitem><literal>lang.Integer</literal> to Java <literal>long</literal></listitem>
+        
+        <listitem><literal>float lang.Float</literal> to Java <literal>float</literal></listitem>
+        <listitem><literal>lang.Float</literal> to Java <literal>double</literal></listitem>
     </itemizedlist>
     
     <para>However, these optimizations may never be performed for locals, attributes

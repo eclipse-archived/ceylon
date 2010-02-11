@@ -661,7 +661,7 @@ if you prefer.";</programlisting>
     
     <para>For example, the following Ceylon code examples:</para>
     
-    <programlisting>Double z = x * y;</programlisting>
+    <programlisting>Float z = x * y;</programlisting>
     
     <programlisting>++count;</programlisting>
     
@@ -688,7 +688,7 @@ if you prefer.";</programlisting>
     
     <para>Are equivalent to the following (Ceylon) code:</para>
     
-    <programlisting>Double z = x.multiply(y);</programlisting>
+    <programlisting>Float z = x.multiply(y);</programlisting>
     
     <programlisting>count = count.successor;</programlisting>
     

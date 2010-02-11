@@ -1457,6 +1457,34 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements(
         <comment><para>TODO: should there be an <literal>annotation</literal>
         modifier for static methods which can be used as annotations?</para></comment>
             
+        <para>The following annotations are hints to the compiler that let
+        the compiler optimize compiled bytecode for non-64 bit architectures:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>byte</literal> specifies that a value of type
+                <literal>Natural</literal>, <literal>Integer</literal> 
+                contains 8-bit values.</para>
+            </listitem>
+            <listitem>
+                <para><literal>short</literal> specifies that a value of type
+                <literal>Natural</literal>, <literal>Integer</literal> 
+                contains 16-bit values.</para>
+            </listitem>
+            <listitem>
+                <para><literal>int</literal> specifies that a value of type
+                <literal>Natural</literal>, <literal>Integer</literal> 
+                contains 32-bit values.</para>
+            </listitem>
+            <listitem>
+                <para><literal>float</literal> specifies that a value of type
+                <literal>Float</literal> contains 32-bit values.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>By default, <literal>Natural</literal>, <literal>Integer</literal>
+        and <literal>Float</literal> are assumed to represent 64-bit values.</para>
+        
         <para>The following annotations are instructions to the documentation
         compiler:</para>
         
