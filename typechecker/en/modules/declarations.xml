@@ -646,7 +646,7 @@ public class Person { ... }</programlisting>
 
         <programlisting>Instance := MemberName Arguments?</programlisting>
 
-        <para>The keyword <literal>instances</literal> is used to define a set of predefined
+        <para>The keyword <literal>instances</literal> is used to specify a set of predefined
         instances.</para>
         
         <programlisting>public class DayOfWeek { instances mon, tues, wed, thurs, fri, sat, sun; }</programlisting>
