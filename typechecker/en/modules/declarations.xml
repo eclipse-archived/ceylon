@@ -851,7 +851,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
         <para>
         A Ceylon method invocation is equivalent to a Java method invocation. The semantics of 
-        method declarations are identical to Java, except that Ceylon methods may declare optional 
+        method declarations are identical to Java, except that Ceylon methods may declare defaulted 
         parameters. 
         </para>
         
