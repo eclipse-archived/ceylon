@@ -485,18 +485,18 @@ class Customer(Name name, optional Organization org = null)
         <para>Class initialization parameters are optional. The following class:</para>
         
         <programlisting>public mutable class Point {
-    public mutable Exact x := 0.0;
-    public mutable Exact y := 0.0;
+    public mutable Decimal x := 0.0;
+    public mutable Decimal y := 0.0;
 }</programlisting>
         
         <para>Is equivalent to this Java class with a default constructor:</para>
         
         <programlisting>public class Point {
-    private final Attribute&lt;Exact&gt; x = new SimpleAttribute&lt;Exact&gt;( new Exact(0.0) );
-    public SimpleAttribute&lt;Exact&gt; x() { return x; }
+    private final Attribute&lt;Decimal&gt; x = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
+    public SimpleAttribute&lt;Decimal&gt; x() { return x; }
     
-    private final Attribute&lt;Exact&gt; y = new SimpleAttribute&lt;Exact&gt;( new Exact(0.0) );
-    public SimpleAttribute&lt;Exact&gt; y() { return y; }
+    private final Attribute&lt;Decimal&gt; y = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
+    public SimpleAttribute&lt;Decimal&gt; y() { return y; }
 }</programlisting>
 
         <comment><para>TODO: is this the right thing to say? Alternatively, we could say that 
@@ -538,10 +538,10 @@ class Customer(Name name, optional Organization org = null)
         <para>The body of a class may contain arbitrary code, which is
         executed when the class is instantiated.</para>
         
-        <programlisting>public mutable class DiagonalPoint(Exact position) 
+        <programlisting>public mutable class DiagonalPoint(Decimal position) 
         extends Point() {
         
-    Exact displacement = position**2/2;
+    Decimal displacement = position**2/2;
     Integer sign = ifTrue (position.negative) then -1 else 1;
     
     x := sqrt(displacement) * sign;
@@ -557,8 +557,8 @@ class Customer(Name name, optional Organization org = null)
         
         <programlisting>public class DiagonalPoint extends Point {
         
-    public DiagonalPoint(final Exact position) {
-        final Exact displacement = position.exponentiate(2).divide(2);
+    public DiagonalPoint(final Decimal position) {
+        final Decimal displacement = position.exponentiate(2).divide(2);
         final Integer sign = position.negative ? -1 : 1;
         
         x = sqrt(displacement).multiply(sign);
@@ -991,7 +991,7 @@ TypeConstraints?
         
         <programlisting>mutable Integer count := 0;</programlisting>
         
-        <programlisting>public static Exact pi = calculatePi();</programlisting>
+        <programlisting>public static Decimal pi = calculatePi();</programlisting>
         
         <programlisting>public String name { return join(firstName, lastName); }
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>

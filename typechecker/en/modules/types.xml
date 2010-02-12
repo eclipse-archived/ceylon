@@ -965,8 +965,8 @@
     doc "Determine if the number is one"
     public Boolean unit;
     
-    doc "The number, represented as an |Exact|"
-    public Exact exact;
+    doc "The number, represented as an |Decimal|"
+    public Decimal exact;
 
     doc "The number, represented as a |Float|"
     public Float float;
@@ -1084,11 +1084,11 @@
         <programlisting>public final class Float 
         satisfies Arithmetic&lt;Float,Float&gt; { ... }</programlisting>
 
-        <para><literal>lang.Exact</literal> represents arbitrary-precision
+        <para><literal>lang.Decimal</literal> represents arbitrary-precision
         and arbitrary-magnitude decimals.</para>
 
-        <programlisting>public class Exact 
-        satisfies Precise&lt;Exact,Exact,Whole&gt; { ... }</programlisting>
+        <programlisting>public class Decimal 
+        satisfies Precise&lt;Decimal,Decimal,Whole&gt; { ... }</programlisting>
 
         <para>Built in converters exist for the following type conversions:</para>
         
@@ -1096,14 +1096,14 @@
             <listitem>
                 <para><literal>lang.Natural</literal> to <literal>lang.Integer</literal>,
                 <literal>lang.Float</literal>, <literal>lang.Whole</literal> and 
-                <literal>lang.Exact</literal></para>
+                <literal>lang.Decimal</literal></para>
             </listitem>
             <listitem>
                 <para><literal>lang.Integer</literal> to <literal>lang.Float</literal>,
-                <literal>lang.Whole</literal> and <literal>lang.Exact</literal></para>
+                <literal>lang.Whole</literal> and <literal>lang.Decimal</literal></para>
             </listitem>
             <listitem>
-                <para><literal>lang.Whole</literal> to <literal>lang.Exact</literal></para>
+                <para><literal>lang.Whole</literal> to <literal>lang.Decimal</literal></para>
             </listitem>
         </itemizedlist>
 

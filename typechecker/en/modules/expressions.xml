@@ -2198,11 +2198,11 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>Exact amount = ifExists(Payment p = order.payment) then p.amount otherwise 0.0;</programlisting>
+        <programlisting>Decimal amount = ifExists(Payment p = order.payment) then p.amount otherwise 0.0;</programlisting>
         
         <para>Which is equivalent to:</para>
         
-        <programlisting>Exact amount = ifExists(order.payment) then (Payment p) p.amount otherwise 0.0;</programlisting>
+        <programlisting>Decimal amount = ifExists(order.payment) then (Payment p) p.amount otherwise 0.0;</programlisting>
         
          <para>And for the following method declaration:</para>
         
