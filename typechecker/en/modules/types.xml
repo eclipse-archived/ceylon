@@ -1030,21 +1030,21 @@
     
 }</programlisting>
 
-        <para>The subtype <literal>lang.Precise</literal> supports the binary 
+        <para>The subtype <literal>lang.Integral</literal> supports the binary 
         operator <literal>%</literal>.</para>
 
-<programlisting>public interface Precise&lt;N, I, W&gt;
+<programlisting>public interface Integral&lt;N, I&gt;
         satisfies Arithmetic&lt;N, I&gt;, Ordinal 
-        where W >= Number &amp; I >= Number &amp; N >= Precise&lt;N, I, W&gt; {
+        where I >= Number &amp; N >= Precise&lt;N, I&gt; {
 
     doc "The binary % operator"
-    public W remainder(N number);
+    public N remainder(N number);
     
     doc "Determine if the number is equal
          to the given integer"
     public Boolean equals(Integer that);
     
-    public override W wholePart;
+    public override N wholePart;
 
 }</programlisting>
 
@@ -1054,7 +1054,7 @@
         (including zero).</para>
         
         <programlisting>public final class Natural 
-        satisfies Precise&lt;Natural,Integer,Natural&gt;, Case&lt;Number&gt;, Bits { 
+        satisfies Integral&lt;Natural,Integer&gt;, Case&lt;Number&gt;, Bits { 
     ... 
     
     public Natural leftShift(Natural digits) { return ... }
@@ -1065,7 +1065,7 @@
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting>public final class Integer
-        satisfies Precise&lt;Integer,Integer,Integer&gt;, Case&lt;Number&gt; {
+        satisfies Integral&lt;Integer,Integer&gt;, Case&lt;Number&gt; {
     ...
     
     public override Natural magnitude;
@@ -1076,7 +1076,7 @@
         signed integers.</para>
 
         <programlisting>public class Whole 
-        satisfies Precise&lt;Whole,Whole,Whole&gt; { ... }</programlisting>
+        satisfies Integral&lt;Whole,Whole&gt; { ... }</programlisting>
         
         <para><literal>lang.Float</literal> represents 64 bit floating point
         values.</para>
@@ -1088,7 +1088,7 @@
         and arbitrary-magnitude decimals.</para>
 
         <programlisting>public class Decimal 
-        satisfies Precise&lt;Decimal,Decimal,Whole&gt; { ... }</programlisting>
+        satisfies Arithmetic&lt;Decimal,Decimal&gt; { ... }</programlisting>
 
         <para>Built in converters exist for the following type conversions:</para>
         
