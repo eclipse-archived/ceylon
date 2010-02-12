@@ -220,6 +220,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <literal>final</literal>, only the <literal>this</literal> reference is
         assignable to <literal>subtype</literal>.</para>
         
+        <para>The type <literal>subtype</literal> is considered a covariant type parameter
+        of the type, and may not appear in contravariant positions of the type declaration.</para>
+        
     </section>
     
     <section>
