@@ -63,7 +63,7 @@
     }
     
     doc "The Type of the instance."
-    public Type<Object> type { return ... }
+    public Type<subtype> type { return ... }
     
     doc "Binary assignability operator x is Y. Determine if the instance 
          is of the given Type."
@@ -109,7 +109,7 @@
         operators from <literal>Bits</literal>.</para>
         
         <programlisting>public final class Boolean 
-        satisfies Case&lt;Boolean&gt;, Bits&lt;Boolean&gt; {
+        satisfies Case&lt;Boolean&gt;, Bits {
     instances true, false;
 
     doc "The binary or operator x | y"
@@ -194,7 +194,7 @@
         <title>Methods and attributes</title>
         
         <programlisting>public interface Annotated {
-    public Boolean annotated(Type&lt;Object+&gt; type);
+    public Boolean annotated(Type&lt;Object&gt; type);
     public T annotation&lt;T&gt;(Type&lt;T&gt; type);
     public Set&lt;Object&gt; annotations;
 }</programlisting>
@@ -211,8 +211,8 @@
         <programlisting>public interface Method&lt;in X, out S&gt;
         where S >= Functor 
         satisfies Member&lt;X&gt; {
-    public Type&lt;Object+&gt; returnType;
-    public List&lt;Type&lt;Object+&gt;&gt; parameterTypes;
+    public Type&lt;Object&gt; returnType;
+    public List&lt;Type&lt;Object&gt;&gt; parameterTypes;
     public Callable&lt;S&gt; curry(X instance);
     public Boolean static;
     public Boolean once;
@@ -314,7 +314,7 @@
     <section>
         <title>Cases and Selectors</title>
         
-        <para>The interface <literal>lang.Case&lt;X&gt;</literal> represents a
+        <para>The interface <literal>lang.Case</literal> represents a
         type that may be used as a case in the <literal>switch</literal>
         construct.</para>
         
@@ -326,9 +326,8 @@
 
         <para>Classes with enumerated instances implicitly extend <literal>lang.Selector</literal></para>
         
-        <programlisting>public abstract class Selector&lt;X&gt;(String name, int ordinal)
-        satisfies Case&lt;X&gt;
-        where X >= Selector&lt;X&gt; { ... }</programlisting>
+        <programlisting>public abstract class Selector(String name, int ordinal)
+        satisfies Case&lt;subtype&gt; { ... }</programlisting>
         
     </section>
     
@@ -776,7 +775,7 @@
     <section>
         <title>Ordered values</title>
         
-        <para>The <literal>lang.Comparable&lt;T&gt;</literal> interface 
+        <para>The <literal>lang.Comparable</literal> interface 
         represents totally ordered types, and supports the binary operators 
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
@@ -802,7 +801,7 @@
     
 }</programlisting>
 
-        <para>The <literal>lang.Ordinal&lt;T&gt;</literal> interface 
+        <para>The <literal>lang.Ordinal</literal> interface 
         represents objects in a sequence, and supports the binary
         operator <literal>..</literal> (range) and postfix unary 
         operators <literal>++</literal> (successor) and 
@@ -810,13 +809,13 @@
         support the prefix unary operators <literal>++</literal> 
         (increment) and <literal>--</literal> (decrement).</para>
         
-        <programlisting>public interface Ordinal&lt;T&gt; {
+        <programlisting>public interface Ordinal {
 
     doc "The unary "++" operator. The successor of this instance."
-    public T successor;
+    public subtype successor;
     
     doc "The unary "--" operator. The predecessor of this instance."
-    public T predecessor;
+    public subtype predecessor;
     
 }</programlisting>
 
@@ -838,6 +837,9 @@
     public X last = last;
     
     ... 
+    
+    List&lt;X&gt; by(Natural stepSize);  
+    
 }</programlisting>
 
         <para>Enumerations represent an explicit list of values and may be constructed 
@@ -877,7 +879,7 @@
         <para>Characters are represented by the following class:</para>
 
         <programlisting>public class Character 
-        satisfies Ordinal&lt;Character&gt;, Comparable&lt;Character&gt;, Case&lt;Character&gt; { ... }</programlisting>
+        satisfies Ordinal, Comparable&lt;Character&gt;, Case&lt;Character&gt; { ... }</programlisting>
         
         <para>Strings implement <literal>List</literal>, therefore they 
         support the join, subrange, contains and lookup operators, 
@@ -929,11 +931,11 @@
         <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
         operators.</para>
         
-        <programlisting>public interface Bits&lt;T&gt; {
-    public T or(T bits);
-    public T and(T bits);
-    public T xor(T bits);
-    public T complement;
+        <programlisting>public interface Bits {
+    public subtype or(subtype bits);
+    public subtype and(subtype bits);
+    public subtype xor(subtype bits);
+    public subtype complement;
     public List&lt;Boolean&gt; bits;
 }</programlisting>
         
@@ -942,59 +944,108 @@
     <section>
         <title>Numbers</title>
         
-        <para>
-        The <literal>lang.Number&lt;T&gt;</literal> interface 
-        represents numeric values, and supports the binary operators 
-        <literal>+,-, *, /, %, **</literal>, and the unary prefix operators 
-        <literal>-, +</literal>. In addition, variables of type 
-        <literal>lang.Number</literal> support 
-        <literal>+=, -=, /=, *=</literal>.
-        </para>
+        <para>The <literal>lang.Number</literal> interface is the abstract supertype
+        of all classes which represent numeric values.</para>
         
-        <programlisting>public interface Number&lt;T&gt; 
-        satisfies Comparable&lt;Number&lt;?&gt;&gt;, Ordinal&lt;T&gt; {
+        <programlisting>public interface Number {
     
-    //binary "+" operator
-    public T add(T number);
-    public Number add(Number number);
-
-    //binary "-" operator
-    public T subtract(T number);
-    public Number subtract(Number number);
-
-    //binary "*" operator
-    public T multiply(T number);
-    public Number multiply(Number number);
-
-    //binary "/" operator
-    public T divide(T number);
-    public T divide(Number number);
-    
-    //binary "%" operator
-    public T remainder(T number);
-    public T remainder(Number number);
-    
-    //unary "-" operator 
-    public T inverse;
-    
-    public T magnitude;
-    
+    doc "Determine if the number represents
+         an integer value"
     public Boolean integral;
+    
+    doc "Determine if the number is positive"
     public Boolean positive;
+    
+    doc "Determine if the number is negative"    
     public Boolean negative;
+
+    doc "Determine if the number is zero"
     public Boolean zero;
+    
+    doc "Determine if the number is one"
     public Boolean unit;
     
+    doc "The number, represented as an |Exact|"
     public Exact exact;
-    public Whole whole;
-    public Natural natural;
-    public Integer integer;
-    public Float float;
 
-    public Exact fractionalPart;
-    public Integer scale;
-    public Integer precision;
+    doc "The number, represented as a |Float|"
+    public Float float;
     
+    doc "The number, represented as an |Whole|,
+         after truncation of any fractional part"
+    public Whole whole;
+    
+    doc "The number, represented as an |Integer|,
+         after truncation of any fractional part"
+    public Integer integer;
+    
+    doc "The magnitude of the number"
+    public Number magnitude;
+    
+    doc "The fractional part of the number"
+    public Number fractionalPart;
+    
+    doc "The integral value of the number 
+         after truncation of the fractional
+         part"
+    public Number wholePart;
+
+    doc "The additive inverse (negative) of the 
+         number"
+    public Number inverse;
+
+}</programlisting>
+
+        <para>The subtype <literal>lang.Arithmetic</literal> supports the binary 
+        operators <literal>+,-, *, /, **</literal>, and the unary prefix 
+        operators <literal>-, +</literal>. In addition, mutable values of type 
+        <literal>lang.Number</literal> support <literal>+=, -=, /=, *=</literal>.
+        </para>
+
+<programlisting>public interface Arithmetic&lt;N, I&gt;
+        satisfies Number, Comparable&lt;N&gt; 
+        where I >= Number &amp; N >= Arithmetic&lt;N, I&gt; {
+
+    doc "The unary - operator"
+    public I inverse;
+
+    doc "The binary + operator"
+    public N add(N number);
+
+    doc "The binary - operator"
+    public N subtract(N number);
+
+    doc "The binary * operator"
+    public N multiply(N number);
+
+    doc "The binary / operator"
+    public N divide(N number);
+
+    doc "The binary ** operator"
+    public N powerOf(N number);
+    
+    public override N magnitude;
+    
+    public override N fractionalPart;
+    
+}</programlisting>
+
+        <para>The subtype <literal>lang.Precise</literal> supports the binary 
+        operator <literal>%</literal>.</para>
+
+<programlisting>public interface Precise&lt;N, I, W&gt;
+        satisfies Arithmetic&lt;N, I&gt;, Ordinal 
+        where W >= Number &amp; I >= Number &amp; N >= Precise&lt;N, I, W&gt; {
+
+    doc "The binary % operator"
+    public W remainder(N number);
+    
+    doc "Determine if the number is equal
+         to the given integer"
+    public Boolean equals(Integer that);
+    
+    public override W wholePart;
+
 }</programlisting>
 
         <para>Five numeric types are built in:</para>
@@ -1003,54 +1054,57 @@
         (including zero).</para>
         
         <programlisting>public final class Natural 
-        satisfies Number&lt;Natural&gt;, Case&lt;Natural&gt;, Bits&lt;Natural&gt; { 
+        satisfies Precise&lt;Natural,Integer,Natural&gt;, Case&lt;Number&gt;, Bits { 
     ... 
     
     public Natural leftShift(Natural digits) { return ... }
     public Natural rightShift(Natural digits) { return ... }
         
+    public Iterable&lt;Integer&gt; times { 
+        return 0..this.predecessor 
+    }
+    
 }</programlisting>
 
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting>public final class Integer
-        satisfies Number&lt;Integer&gt;, Case&lt;Integer&gt; {
+        satisfies Precise&lt;Integer,Integer,Integer&gt;, Case&lt;Number&gt; {
     ...
     
-    public void times(Iteration iteration) { ... }
-    public void upto(Integer max, Iteration iteration) { ... }
-    public void downto(Integer min, Iteration iteration) { ... }
+    public override Natural magnitude;
     
 }</programlisting>
-
-        <para><literal>lang.Float</literal> represents 64 bit floating point
-        values.</para>
-
-        <programlisting>public final class Float 
-        satisfies Number&lt;Float&gt; { ... }</programlisting>
-
-        <para><literal>lang.Exact</literal> represents arbitrary-precision
-        and arbitrary-magnitude decimals.</para>
-
-        <programlisting>public class Exact 
-        satisfies Number&lt;Exact&gt; { ... }</programlisting>
 
         <para><literal>lang.Whole</literal> represents arbitrary-magnitude
         signed integers.</para>
 
         <programlisting>public class Whole 
-        satisfies Number&lt;Whole&gt;, Case&lt;Whole&gt; { ... }</programlisting>
+        satisfies Precise&lt;Whole,Whole,Whole&gt; { ... }</programlisting>
         
+        <para><literal>lang.Float</literal> represents 64 bit floating point
+        values.</para>
+
+        <programlisting>public final class Float 
+        satisfies Arithmetic&lt;Float,Float&gt; { ... }</programlisting>
+
+        <para><literal>lang.Exact</literal> represents arbitrary-precision
+        and arbitrary-magnitude decimals.</para>
+
+        <programlisting>public class Exact 
+        satisfies Precise&lt;Exact,Exact,Whole&gt; { ... }</programlisting>
+
         <para>Built in converters exist for the following type conversions:</para>
         
         <itemizedlist>
             <listitem>
                 <para><literal>lang.Natural</literal> to <literal>lang.Integer</literal>,
-                <literal>lang.Whole</literal> and <literal>lang.Exact</literal></para>
+                <literal>lang.Float</literal>, <literal>lang.Whole</literal> and 
+                <literal>lang.Exact</literal></para>
             </listitem>
             <listitem>
-                <para><literal>lang.Integer</literal> to <literal>lang.Whole</literal>
-                and <literal>lang.Exact</literal></para>
+                <para><literal>lang.Integer</literal> to <literal>lang.Float</literal>,
+                <literal>lang.Whole</literal> and <literal>lang.Exact</literal></para>
             </listitem>
             <listitem>
                 <para><literal>lang.Whole</literal> to <literal>lang.Exact</literal></para>
