@@ -78,10 +78,12 @@
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>Directive := "return" Expression? | "produce" Expression | "throw" Expression | "found" | "break"</programlisting>
+         <programlisting>Directive := "return" Expression? | "produce" Expression | "throw" Expression? | "found" | "break"</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
-        body of an attribute getter or a non-<literal>void</literal> method.</para>
+        body of an attribute getter or method. A return value must be specified in 
+        a non-<literal>void</literal> method or attribute getter. A return value 
+        may not be specified in a <literal>void</literal> method.</para>
         
         <para>The <literal>produce</literal> directive may not be used outside
         the body of a non-<literal>void</literal> functor expression.</para>
@@ -91,6 +93,9 @@
         
         <para>The <literal>found</literal> directive may not be used outside the 
         body of a <literal>for/fail</literal> loop.</para>
+        
+        <para>A <literal>throw</literal> directive which specifies no exception
+        is equivalent to <literal>throw Exception()</literal>.</para>
         
         <comment><para>TODO: instead of <literal>break</literal> and <literal>found</literal>,
         we could support <literal>break success</literal> and 
