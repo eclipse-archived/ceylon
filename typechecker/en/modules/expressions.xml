@@ -33,7 +33,7 @@
     
     <programlisting>Literal :=
 DateLiteral | TimeLiteral
-IntegerLiteral | FloatLiteral |
+NaturalLiteral | FloatLiteral |
 CharacterLiteral | StringLiteral | RegexLiteral |
 TypeLiteral | MemberLiteral |
 SpecialValue</programlisting>
@@ -71,9 +71,9 @@ SpecialValue</programlisting>
     </section>
     
     <section>
-        <title>Datetime literals</title>
+        <title><literal>Date</literal> and <literal>Time</literal> literals</title>
         
-        <para>A datetime literal has the form:</para>
+        <para>A <literal>Date</literal> literal has the form:</para>
         
         <!--
         <programlisting>DatetimeLiteral := "now"</programlisting>
@@ -83,6 +83,8 @@ SpecialValue</programlisting>
 "'" 
 Digit{1,2} "/" Digit{1,2} "/" Digit{4} 
 "'"</programlisting>
+        
+        <para>A <literal>Time</literal> literal has the form:</para>
         
         <programlisting>TimeLiteral := 
 "'" 
@@ -100,7 +102,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <programlisting>Date date = '25/03/2005';</programlisting>
         <programlisting>Time time = '12:00 AM PST';</programlisting>
         
-        <para>Datetimes may be composed from dates and times using the <literal>@</literal> operator.</para>
+        <para>A <literal>Datetime</literal> may be composed from a <literal>Date</literal> and 
+        a <literal>Time</literal> using the <literal>@</literal> operator.</para>
         
         <programlisting>Datetime datetime = '25/03/2005' @ '12:00 AM PST';</programlisting>
         
@@ -138,26 +141,31 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section>
-        <title>Integer literals</title>
+        <title>Natural number literals</title>
         
-        <para>An integer literal has this form:</para>
+        <para>A <literal>Natural</literal> literal has this form:</para>
         
-        <programlisting>IntegerLiteral = 
+        <programlisting>NaturalLiteral = 
 Digit+ | 
 "'" ( HexDigit{4} | HexDigit{8} ) "'"</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>Integer i = i + 10;</programlisting>
+        <programlisting>Natural i = i + 10;</programlisting>
         
         <programlisting>panel.backgroundColor = 'FF33';</programlisting>
+        
+        <para>Negative integer values can be produced using the unary
+        <literal>-</literal> operator:</para>
+        
+        <programlisting>Integer j = -1;</programlisting>
         
     </section>
     
     <section>
-        <title>Float literals</title>
+        <title>Floating point number literals</title>
         
-        <para>A float literal has this form:</para>
+        <para>A <literal>Float</literal> literal has this form:</para>
         
         <programlisting>FloatLiteral := 
 Digit+ "." Digit+ 
@@ -176,7 +184,7 @@ Digit+ "." Digit+
     <section>
         <title>String literals</title>
         
-        <para>A string literal has this form:</para>
+        <para>A <literal>String</literal> literal has this form:</para>
         
         <programlisting>StringLiteral = "&quot;" ( Character+ | "${" Expression "}" )* "&quot;"</programlisting>
         
@@ -199,7 +207,7 @@ if you prefer.";</programlisting>
     <section>
         <title>Character literals</title>
         
-        <para>A character literal has this form:</para>
+        <para>A <literal>Character</literal> literal has this form:</para>
         
         <programlisting>CharacterLiteral := "'" Character "'"</programlisting>
         
@@ -239,7 +247,7 @@ if you prefer.";</programlisting>
     <section>
         <title>Regex literals</title>
         
-        <para>A regex literal has this form:</para>
+        <para>A <literal>Regex</literal> literal has this form:</para>
         
         <programlisting>RegexLiteral := "`" RegularExpression "`"</programlisting>
         
