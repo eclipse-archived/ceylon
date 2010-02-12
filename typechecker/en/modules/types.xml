@@ -109,7 +109,7 @@
         operators from <literal>Bits</literal>.</para>
         
         <programlisting>public final class Boolean 
-        satisfies Case&lt;Boolean&gt;, Bits {
+        satisfies Case&lt;Boolean&gt;, Bits&lt;Boolean&gt; {
     instances true, false;
 
     doc "The binary or operator x | y"
@@ -931,11 +931,11 @@
         <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
         operators.</para>
         
-        <programlisting>public interface Bits {
-    public subtype or(subtype bits);
-    public subtype and(subtype bits);
-    public subtype xor(subtype bits);
-    public subtype complement;
+        <programlisting>public interface Bits&lt;T&gt; {
+    public T or(T bits);
+    public T and(T bits);
+    public T xor(T bits);
+    public T complement;
     public List&lt;Boolean&gt; bits;
 }</programlisting>
         
@@ -1054,7 +1054,7 @@
         (including zero).</para>
         
         <programlisting>public final class Natural 
-        satisfies Integral&lt;Natural,Integer&gt;, Case&lt;Integral&gt;, Bits { 
+        satisfies Integral&lt;Natural,Integer&gt;, Case&lt;Integral&gt;, Bits&lt;Natural&gt; { 
     ... 
     
     public Natural leftShift(Natural digits) { return ... }
