@@ -1059,10 +1059,6 @@
     
     public Natural leftShift(Natural digits) { return ... }
     public Natural rightShift(Natural digits) { return ... }
-        
-    public Iterable&lt;Integer&gt; times { 
-        return 0..this.predecessor 
-    }
     
 }</programlisting>
 
@@ -1299,6 +1295,19 @@
         }
         else {
             return otherwise()
+        }
+    }
+
+}]]></programlisting>
+
+        <programlisting><![CDATA[public class Loops {
+
+    doc "Repeat the block the given number of times."
+    public static void repeat(Natural repetitions, functor void() times) {
+        do(mutable Integer i:=0) 
+        while (i<repetitions) {
+            times();
+            i++;
         }
     }
 
