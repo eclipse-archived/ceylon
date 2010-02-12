@@ -179,7 +179,7 @@ VarargsParam?
     
         <para>Method and attribute declarations must declare a type.</para>
         
-        <programlisting>Type := RegularType | FunctorType</programlisting>
+        <programlisting>Type := RegularType | FunctorType | "subtype"</programlisting>
         
         <para>Most types are classes or interfaces:</para>
         
@@ -196,6 +196,24 @@ VarargsParam?
         <para>For example:</para>
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        
+        <para>The special type <literal>subtype</literal> represents the concrete 
+        type of the current instance (the instance that is being invoked).</para>
+        
+        <para>For example:</para>
+        
+        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
+        
+        <programlisting>public abstract class Wrappable {
+   public Wrapper&lt;subtype&gt; wrap() {
+       return Wrapper(this);
+   }
+}</programlisting>
+        
+        <programlisting>public class Special() extends Wrappable() {}</programlisting>
+
+        <programlisting>Special special = Special();
+Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
     </section>
     

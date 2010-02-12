@@ -35,34 +35,40 @@
 DateLiteral | TimeLiteral
 IntegerLiteral | FloatLiteral |
 CharacterLiteral | StringLiteral | RegexLiteral |
-TypeLiteral | MemberLiteral
-"this" | "super" | "null" | "none"</programlisting>
+TypeLiteral | MemberLiteral |
+SpecialValue</programlisting>
 
-    <para>The keywords <literal>this</literal>, <literal>super</literal> and 
-    <literal>null</literal> are equivalent to the Java forms. The keyword
-    <literal>none</literal> represents an empty enumeration.</para>
-    
-    <!--
     <section>
-        <title>Boolean literals</title>
+        <title><literal>this</literal>, <literal>super</literal>, 
+        <literal>null</literal> and <literal>subtype</literal></title>
         
-        <para>A boolean literal has this form:</para>
+        <programlisting>SpecialValue := "this" | "super" | "null" | "none"</programlisting>
         
-        <programlisting>BooleanLiteral := "true" | "false"</programlisting>
+        <para>The keyword <literal>null</literal> refers to a special
+        value that is assignable to all <literal>optional</literal> 
+        types, and to no non-<literal>optional</literal> types. The
+        Ceylon language and compiler ensures that this value never
+        receives any invocation.</para>
         
-        <para>For example:</para>
+        <para>The keyword <literal>super</literal> refers to the
+        current instance (the instance that is being invoked), and 
+        is of the same type as the immediate superclass of the class. 
+        Any invocation of this reference is processed by the method 
+        defined or inherited by this superclass, bypassing any method 
+        declaration that overrides the method on the current class or 
+        any subclass of the current class.</para>
         
-        <programlisting>Boolean found = false;</programlisting>
+        <para>The keyword <literal>this</literal> refers to the
+        current instance, and is assignable to both the type of the 
+        current class (the class which declares the method being 
+        invoked), and to the special type <literal>subtype</literal>, 
+        representing the concrete type of the current instance.</para>
         
-        <para>Equivalent to this Java code:</para>
+        <para>The keyword <literal>none</literal> refers to a special
+        value that is assignable to all types that extend 
+        <literal>Enumeration</literal>. This value has no elements.</para>
         
-        <programlisting>Boolean found = lang.Boolean.FALSE;</programlisting>
-        
-        <para>TODO: is this really a special literal, or is it just an
-        enumerated instance of the <literal>Boolean</literal> class?</para>
-
     </section>
-    -->
     
     <section>
         <title>Datetime literals</title>
