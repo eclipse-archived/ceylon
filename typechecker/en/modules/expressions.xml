@@ -1503,65 +1503,65 @@ if you prefer.";</programlisting>
             <entry>negation</entry>
             <entry><literal>rhs.inverse</literal></entry>
             <entry></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>I</literal></entry>
         </row>
         
-        <!-- Arithmetic -->
+        <!-- Numeric -->
         
         <row>
             <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>sum</entry>
             <entry><literal>lhs.add(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>-</literal></entry>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
             <entry><literal>lhs.subtract(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>product</entry>
             <entry><literal>lhs.multiply(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>/</literal></entry>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>quotient</entry>
             <entry><literal>lhs.divide(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>%</literal></entry>
             <entry><literal>lhs % rhs</literal></entry>
             <entry>remainder</entry>
             <entry><literal>lhs.remainder(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Integral&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>**</literal></entry>
             <entry><literal>lhs ** rhs</literal></entry>
             <entry>exponentiate</entry>
             <entry><literal>lhs.exponentiate(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Numeric assignment</emphasis></entry></row>
@@ -1571,45 +1571,45 @@ if you prefer.";</programlisting>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
             <entry><literal>lhs = lhs.add(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
             <entry><literal>lhs = lhs.subtract(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
             <entry><literal>lhs = lhs.multiply(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
             <entry><literal>lhs = lhs.divide(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
             <entry><literal>lhs = lhs.remainder(rhs)</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
-            <entry><literal>Number</literal></entry>
+            <entry><literal>Integral&lt;N,I&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         
         <!--
@@ -1703,8 +1703,8 @@ if you prefer.";</programlisting>
     </tgroup>
     </table>
     
-    <para>Note that the numeric operations return their argument type if both 
-    arguments are of the same subtype of <literal>Number</literal>.</para>
+    <para>Note that there are several built-in converters allowing type promotion
+    of numeric types used in expressions.</para>
     
     <comment><para>TODO: should we have logical <literal>!</literal> and bitwise
     <literal>~</literal> for consistency with C/Java?</para></comment>
