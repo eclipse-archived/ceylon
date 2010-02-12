@@ -214,6 +214,11 @@ VarargsParam?
 
         <programlisting>Special special = Special();
 Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
+
+        <para>For a class declared <literal>final</literal>, any instance of the class
+        may be assigned to the type <literal>subtype</literal>. For a class not declared
+        <literal>final</literal>, only the <literal>this</literal> reference is
+        assignable to <literal>subtype</literal>.</para>
         
     </section>
     
