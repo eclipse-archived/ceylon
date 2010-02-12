@@ -831,7 +831,7 @@
         
         <programlisting>public class Range&lt;X&gt;(X first, X last) 
         satisfies List&lt;X&gt;, Case&lt;Object&gt;
-        where X>=Ordinal &amp; X>=Comparable { 
+        where X>=Ordinal &amp; X>=Comparable&lt;X&gt; { 
 
     public X first = first;
     public X last = last;
