@@ -1035,7 +1035,7 @@
 
 <programlisting>public interface Integral&lt;N, I&gt;
         satisfies Numeric&lt;N, I&gt;, Ordinal 
-        where I >= Number &amp; N >= Precise&lt;N, I&gt; {
+        where I >= Number &amp; N >= Integral&lt;N, I&gt; {
 
     doc "The binary % operator"
     public N remainder(N number);
