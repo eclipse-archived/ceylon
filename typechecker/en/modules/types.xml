@@ -1054,7 +1054,7 @@
         (including zero).</para>
         
         <programlisting>public final class Natural 
-        satisfies Integral&lt;Natural,Integer&gt;, Case&lt;Number&gt;, Bits { 
+        satisfies Integral&lt;Natural,Integer&gt;, Case&lt;Integral&gt;, Bits { 
     ... 
     
     public Natural leftShift(Natural digits) { return ... }
@@ -1065,7 +1065,7 @@
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting>public final class Integer
-        satisfies Integral&lt;Integer,Integer&gt;, Case&lt;Number&gt; {
+        satisfies Integral&lt;Integer,Integer&gt;, Case&lt;Integral&gt; {
     ...
     
     public override Natural magnitude;
