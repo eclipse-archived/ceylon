@@ -1383,7 +1383,7 @@ TypeConstraintList?
     return person.user; 
 }</programlisting>
         
-        <programlisting>public extension CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
+        <programlisting>public extension class CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
     
     public Collection&lt;T&gt; nonZeroElements() {
         return collection.elements() 
