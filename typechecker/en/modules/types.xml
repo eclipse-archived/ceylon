@@ -1069,7 +1069,22 @@
         satisfies Integral<Natural,Integer>, Case<Integral>, Bits<Natural> { 
     ... 
     
+    doc "Implicit type promotion to |Integer|"
+    override public extension Integer integer { return ... }
+    
+    doc "Implicit type promotion to |Whole|"
+    override public extension Whole whole { return ... }
+    
+    doc "Implicit type promotion to |Float|"
+    override public extension Float float { return ... }
+    
+    doc "Implicit type promotion to |Decimal|"
+    override public extension Decimal decimal { return ... }
+
+    doc "Shift bits left by the given number of places"
     public Natural leftShift(Natural digits) { return ... }
+    
+    doc "Shift bits right by the given number of places"
     public Natural rightShift(Natural digits) { return ... }
     
 }]]></programlisting>
@@ -1084,13 +1099,31 @@
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting><![CDATA[public final class Integer
-        satisfies Integral<Integer,Integer>, Case<Integral> { ... }]]></programlisting>
+        satisfies Integral<Integer,Integer>, Case<Integral> {
+    ...
+    
+    doc "Implicit type promotion to |Whole|"
+    override public extension Whole whole { return ... }
+    
+    doc "Implicit type promotion to |Float|"
+    override public extension Float float { return ... }
+
+    doc "Implicit type promotion to |Decimal|"
+    override public extension Decimal decimal { return ... }
+
+}]]></programlisting>
 
         <para><literal>lang.Whole</literal> represents arbitrary-magnitude
         signed integers.</para>
 
         <programlisting><![CDATA[public class Whole 
-        satisfies Integral<Whole,Whole> { ... }]]></programlisting>
+        satisfies Integral<Whole,Whole> {
+    ...
+    
+    doc "Implicit type promotion to |Decimal|"
+    override public extension Decimal decimal { return ... }
+
+}]]></programlisting>
         
         <para><literal>lang.Float</literal> represents 64 bit floating point
         values.</para>
@@ -1102,7 +1135,13 @@
         and arbitrary-magnitude decimals.</para>
 
         <programlisting><![CDATA[public class Decimal 
-        satisfies Numeric<Decimal,Decimal> { ... }]]></programlisting>
+        satisfies Numeric<Decimal,Decimal> {
+    ...
+
+    public Integer precision;
+    public Integer scale;
+
+}]]></programlisting>
 
         <para>Built in converters exist for the following type conversions:</para>
         
