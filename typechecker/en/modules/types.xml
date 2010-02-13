@@ -114,7 +114,7 @@
         <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
         operators from <literal>Bits</literal>.</para>
         
-        <programlisting><![CDATA[public final class Boolean 
+        <programlisting><![CDATA[public final class Boolean
         satisfies Case<Boolean>, Bits<Boolean> {
     instances true, false;
 
@@ -884,7 +884,7 @@
         
         <para>Characters are represented by the following class:</para>
 
-        <programlisting><![CDATA[public class Character 
+        <programlisting><![CDATA[public class Character(small Natural unicode)
         satisfies Ordinal, Comparable<Character>, Case<Character> { ... }]]></programlisting>
         
         <para>Strings implement <literal>List</literal>, therefore they 
@@ -1065,7 +1065,7 @@
         <para><literal>lang.Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
-        <programlisting><![CDATA[public final class Natural 
+        <programlisting><![CDATA[public final class Natural(Natural natural)
         satisfies Integral<Natural,Integer>, Case<Integral>, Bits<Natural> { 
     ... 
     
@@ -1098,7 +1098,7 @@
 
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
-        <programlisting><![CDATA[public final class Integer(String value)
+        <programlisting><![CDATA[public final class Integer(Boolean sign, Natural natural)
         satisfies Integral<Integer,Integer>, Case<Integral> {
     ...
     
@@ -1136,7 +1136,7 @@
         <para><literal>lang.Float</literal> represents 64 bit floating point
         values.</para>
 
-        <programlisting><![CDATA[public final class Float(String value)
+        <programlisting><![CDATA[public final class Float(Float float)
         satisfies Numeric<Float,Float> { 
     ... 
     
