@@ -200,8 +200,10 @@ VarargsParam?
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
-        <para>The special type <literal>subtype</literal> represents the concrete 
-        type of the current instance (the instance that is being invoked).</para>
+        <para>Every Ceylon class and interface has an implicit type parameter that never
+        needs to be declared. This special type parameter, referred to using the keyword 
+        <literal>subtype</literal>, represents the concrete type of the current instance 
+        (the instance that is being invoked).</para>
         
         <para>For example:</para>
         
