@@ -1578,6 +1578,9 @@
         <listitem><literal>small lang.Float</literal> to Java <literal>float</literal></listitem>
     </itemizedlist>
     
+    <para><literal>lang.Character</literal> may not be optimized to the Java <literal>char</literal>
+    type, since Java <literal>char</literal> represents a UTF-16 character.</para>
+    
     <para>However, these optimizations may never be performed for locals, attributes
     or method types declared <literal>optional</literal>.</para>
     
