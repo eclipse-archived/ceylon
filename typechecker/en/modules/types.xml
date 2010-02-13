@@ -1116,7 +1116,7 @@
         <para><literal>lang.Whole</literal> represents arbitrary-magnitude
         signed integers.</para>
 
-        <programlisting><![CDATA[public class Whole 
+        <programlisting><![CDATA[public final class Whole 
         satisfies Integral<Whole,Whole> {
     ...
     
@@ -1134,12 +1134,12 @@
         <para><literal>lang.Decimal</literal> represents arbitrary-precision
         and arbitrary-magnitude decimals.</para>
 
-        <programlisting><![CDATA[public class Decimal 
+        <programlisting><![CDATA[public final class Decimal 
         satisfies Numeric<Decimal,Decimal> {
     ...
 
-    public Integer precision;
-    public Integer scale;
+    public Integer precision = ...;
+    public Integer scale = ...;
 
 }]]></programlisting>
 
