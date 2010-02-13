@@ -882,7 +882,7 @@
     <section>
         <title>Characters and strings</title>
         
-        <para>Characters are represented by the following class:</para>
+        <para>UTF-32 Unicode Characters are represented by the following class:</para>
 
         <programlisting><![CDATA[public class Character(small Natural unicode)
         satisfies Ordinal, Comparable<Character>, Case<Character> { ... }]]></programlisting>
