@@ -1944,10 +1944,19 @@ if you prefer.";</programlisting>
                 <literal>lang.Whole</literal> and <literal>lang.Decimal</literal></para>
             </listitem>
             <listitem>
+                <para><literal>lang.Float</literal> to <literal>lang.Decimal</literal></para>
+            </listitem>
+            <listitem>
                 <para><literal>lang.Whole</literal> to <literal>lang.Decimal</literal></para>
             </listitem>
         </itemizedlist>
-
+        
+        <para>This means that <literal>x + y</literal> is defined for any combination 
+        of numeric types <literal>X</literal> and <literal>Y</literal>, except for 
+        the combination <literal>Float</literal> and <literal>Whole</literal>, and that
+        <literal>x + y</literal> always produces the same value, with the same type, as
+        <literal>y + x</literal>.</para>
+        
     </section>
     
    </section>
