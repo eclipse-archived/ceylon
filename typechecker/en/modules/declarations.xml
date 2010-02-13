@@ -44,19 +44,21 @@ Declaration?</programlisting>
 
         <para>Declarations may be preceded by a list of annotations.</para>
     
-        <programlisting>Annotation := MemberName ( Arguments | Literal )?</programlisting>
+        <programlisting>Annotation := MemberName ( Arguments | Literal+ )?</programlisting>
         
         <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
         
-        <para>An annotation is a static method call. For an annotation with no constructor 
-        parameters, or with a single literal-valued constructor parameter, the parentheses/braces 
-        may be omitted.</para>
+        <para>An annotation is a static method call. For an annotation with no 
+        parameters, or with only literal-valued parameters, the parentheses 
+        around, and commas between, the positional arguments may be omitted.</para>
         
         <para>For example:</para>
         
         <programlisting>doc "The user login action"
+throws #DatabaseException 
+       "if database access fails"
 author "Gavin King"
-see #LogoutAction
+see LogoutAction#logout
 scope(session) 
 action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
@@ -283,16 +285,19 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
     
-        <programlisting>TypeConstraint := TypeName ( ("&gt;="|"&lt;=") Type | FormalParams ) </programlisting>
+        <programlisting>TypeConstraint := TypeName ( ("&gt;="|"&lt;=") Type | '=' 'subtype' | FormalParams ) </programlisting>
         
-        <para>There are three kinds of type constraints:</para>
+        <para>There are four kinds of type constraints:</para>
         
         <itemizedlist>
             <listitem>
                 <para>upper bounds,</para>
             </listitem>
             <listitem>
-                <para>lower bounds, and</para>
+                <para>lower bounds</para>
+            </listitem>
+            <listitem>
+                <para>subtype bounds, and</para>
             </listitem>
             <listitem>
                 <para>initialization parameter specifications.</para>
@@ -301,12 +306,18 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>where X >= Number&lt;X&gt; &amp; Y >= Comparable&lt;Y&gt; &amp; Y(Integer count)</programlisting>
+        <programlisting>where X >= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Integer count)</programlisting>
+        
+        <para>Subtype bounds are needed since the special type <literal>subtype</literal>
+        cannot appear in a contravariant position.</para>
+        
+        <para>Initialization parameter specifications allow instantiation of the
+        generic type.</para>
         
         <comment><para>Should we use <literal>for</literal> instead of <literal>where</literal>?</para></comment>
         
         <comment><para>Should we use <literal>satisfies</literal> instead of <literal>>=</literal>? For
-        example <literal>where X satisfies Number&lt;X&gt; &amp; Y satisfies Comparable&lt;Y&gt;</literal>.</para></comment>
+        example <literal>where X satisfies Number&lt;X&gt;</literal>.</para></comment>
     
     </section>
     
