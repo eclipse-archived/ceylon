@@ -884,12 +884,24 @@
         
         <para>UTF-32 Unicode Characters are represented by the following class:</para>
 
-        <programlisting><![CDATA[public class Character(small Natural unicode)
-        satisfies Ordinal, Comparable<Character>, Case<Character> { ... }]]></programlisting>
+        <programlisting><![CDATA[public class Character(small Natural utf32)
+        satisfies Ordinal, Comparable<Character>, Case<Character> { 
+    ... 
+    
+    doc "The UTF-16 encoding"
+    public String utf16;
+    
+    doc "The UTF-8 encoding"
+    public String utf8;
+    
+    public Character parseUtf16(String utf16) { return ... }
+    
+    public Character parseUtf8(String utf8) { return ... }
+ 
+}]]></programlisting>
         
-        <para>Strings implement <literal>List</literal>, therefore they 
-        support the join, subrange, contains and lookup operators, 
-        among others.</para> 
+        <para>Strings implement <literal>List</literal>, therefore they support the 
+        join, subrange, contains and lookup operators, among others.</para> 
                 
         <programlisting><![CDATA[public class String(Character... characters) 
         satisfies Comparable<String>, List<Character>, Case<String> {
@@ -908,9 +920,14 @@
     public String join(Iterable<String> strings) { return ... }
     
 }]]></programlisting>
-
-        <comment><para>TODO: do we need character ranges, like <literal>'a'..'z'</literal>, or is 
-        it enough that we have regular expressions like <literal>`[a-z]`</literal>?</para></comment>
+        
+        <comment><para>What encoding is the default for Ceylon strings? Are there 
+        performance advantages to going with UTF-16 like Java? Can we easily abstract
+        this stuff? Does the JVM do all kinds of optimizations for 
+        <literal>java.lang.String</literal>?</para></comment>
+        
+        <!--comment><para>TODO: do we need character ranges, like <literal>'a'..'z'</literal>, or is 
+        it enough that we have regular expressions like <literal>`[a-z]`</literal>?</para></comment-->
 
     </section>
     
