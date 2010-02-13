@@ -1098,7 +1098,7 @@
 
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
-        <programlisting><![CDATA[public final class Integer
+        <programlisting><![CDATA[public final class Integer(String value)
         satisfies Integral<Integer,Integer>, Case<Integral> {
     ...
     
@@ -1111,54 +1111,54 @@
     doc "Implicit type promotion to |Decimal|"
     override public extension Decimal decimal { return ... }
 
+    doc "Parse the string representation of an |Integer| in the given radix"
+    public static Integer parse(String value, small Natural radix=10) { return ... }
+
 }]]></programlisting>
 
-        <para><literal>lang.Whole</literal> represents arbitrary-magnitude
+        <para><literal>lang.Whole</literal> represents arbitrary-precision
         signed integers.</para>
 
-        <programlisting><![CDATA[public final class Whole 
+        <programlisting><![CDATA[public final class Whole(Boolean sign, small Natural... digits)
         satisfies Integral<Whole,Whole> {
     ...
     
+    public small Integer precision = ...;
+    
     doc "Implicit type promotion to |Decimal|"
     override public extension Decimal decimal { return ... }
+    
+    doc "Parse the string representation of a |Whole| in the given radix"
+    public static Whole parse(String value, small Natural radix=10) { return ... }
 
 }]]></programlisting>
         
         <para><literal>lang.Float</literal> represents 64 bit floating point
         values.</para>
 
-        <programlisting><![CDATA[public final class Float 
-        satisfies Numeric<Float,Float> { ... }]]></programlisting>
-
-        <para><literal>lang.Decimal</literal> represents arbitrary-precision
-        and arbitrary-magnitude decimals.</para>
-
-        <programlisting><![CDATA[public final class Decimal 
-        satisfies Numeric<Decimal,Decimal> {
-    ...
-
-    public Integer precision = ...;
-    public Integer scale = ...;
+        <programlisting><![CDATA[public final class Float(String value)
+        satisfies Numeric<Float,Float> { 
+    ... 
+    
+    doc "Parse the string representation of a |Float| in the given radix"
+    public static Float parse(String value, small Natural radix=10) { return ... }
 
 }]]></programlisting>
 
-        <para>Built in converters exist for the following type conversions:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>lang.Natural</literal> to <literal>lang.Integer</literal>,
-                <literal>lang.Float</literal>, <literal>lang.Whole</literal> and 
-                <literal>lang.Decimal</literal></para>
-            </listitem>
-            <listitem>
-                <para><literal>lang.Integer</literal> to <literal>lang.Float</literal>,
-                <literal>lang.Whole</literal> and <literal>lang.Decimal</literal></para>
-            </listitem>
-            <listitem>
-                <para><literal>lang.Whole</literal> to <literal>lang.Decimal</literal></para>
-            </listitem>
-        </itemizedlist>
+        <para><literal>lang.Decimal</literal> represents arbitrary-precision
+        and arbitrary-scale decimals.</para>
+
+        <programlisting><![CDATA[public final class Decimal(Whole value, small Integer scale)
+        satisfies Numeric<Decimal,Decimal> {
+    ...
+
+    public small Integer precision = ...;
+    public small Integer scale = ...;
+    
+    doc "Parse the string representation of a |Decimal| in the given radix"
+    public static Decimal parse(String value, small Natural radix=10) { return ... }
+
+}]]></programlisting>
 
     </section>
     

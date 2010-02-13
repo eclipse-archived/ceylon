@@ -1930,9 +1930,24 @@ if you prefer.";</programlisting>
     </tgroup>
     </table>
     
-    <para>Note that there are several built-in converters allowing type promotion
-    of numeric types used in expressions.</para>
-    
+        <para>Built-in converters allow for type promotion of numeric values used in 
+        expressions. Coverters exist for the following numeric types:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>lang.Natural</literal> to <literal>lang.Integer</literal>,
+                <literal>lang.Float</literal>, <literal>lang.Whole</literal> and 
+                <literal>lang.Decimal</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>lang.Integer</literal> to <literal>lang.Float</literal>,
+                <literal>lang.Whole</literal> and <literal>lang.Decimal</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>lang.Whole</literal> to <literal>lang.Decimal</literal></para>
+            </listitem>
+        </itemizedlist>
+
     </section>
     
    </section>
