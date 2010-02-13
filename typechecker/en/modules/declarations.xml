@@ -677,48 +677,65 @@ public class Person { ... }</programlisting>
         <section>
         <title>Instance enumeration</title>
         
-        <para>The keyword <literal>instances</literal> is used to specify an enumerated 
-        list of predefined instances.</para>
+        <para>The keyword <literal>case</literal> is used to specify an enumerated 
+        named instance of the class. All <literal>case</literal>s must appear in
+        a list as the first line of a class definition.</para>
         
-        <programlisting>Instances := "instances" Instance ("," Instance)* ("..." | ";")</programlisting>
+        <programlisting>Instances := Instance ("," Instance)* ("..." | ";")</programlisting>
 
-        <programlisting>Instance := MemberName Arguments?</programlisting>
+        <programlisting>Instance := Annotation* "case" MemberName Arguments?</programlisting>
 
-        <para>If the instance list ends in <literal>;</literal> instead of <literal>...</literal>, 
-        additional instances of the class may not be instantiated.</para>
+        <para>If the <literal>case</literal> list ends in <literal>;</literal> instead of 
+        <literal>...</literal>, additional instances of the class may not be instantiated.</para>
         
-        <programlisting>public class DayOfWeek { instances mon, tues, wed, thurs, fri, sat, sun; }</programlisting>
+        <programlisting>public class DayOfWeek {
+    case sun,
+    case mon, 
+    case tues, 
+    case wed, 
+    case thurs, 
+    case fri, 
+    case sat; 
+}</programlisting>
 
         <programlisting>public class DayOfWeek(String name) {
-    instances
-        mon("Monday"), 
-        tues("Tuesday"),
-        wed("Wednesday"),
-        thurs("Thursday"),
-        fri("Friday"),
-        sat("Saturday"),
-        sun("Sunday");
+    doc "Sunday"
+        case sun("Sunday"),
+    doc "Monday" 
+        case mon("Monday"), 
+    doc "Tuesday"
+        case tues("Tuesday"),
+    doc "Wednesday"
+        case wed("Wednesday"),
+    doc "Thursday"
+        case thurs("Thursday"),
+    doc "Friday"
+        case fri("Friday"),
+    doc "Saturday"
+        case sat("Saturday");
        
     public String name = name;
     
 }</programlisting>
+
+        <comment><para>If we decide to support static attributes, then each 
+        <literal>case</literal> would be considered a static simple 
+        attribute.</para></comment>
         
-        <para>
-        A class with an <literal>instances</literal> declaration implicitly extends 
+        <para>A class with declared <literal>case</literal>s implicitly extends 
         <literal>lang.Selector</literal>, a subclass of <literal>java.lang.Enum</literal>. 
-        The above declarations are equivalent to the following Java declarations: 
-        </para>
+        The above declarations are equivalent to the following Java declarations:</para>
         
         <programlisting>public class DayOfWeek 
         extends Selector&lt;DayOfWeek&gt; { 
         
-    public DayOfWeek mon = new DayOfWeek("mon", 0); 
-    public DayOfWeek tues = new DayOfWeek("tues", 1);
-    public DayOfWeek wed = new DayOfWeek("wed, 2");
-    public DayOfWeek thurs = new DayOfWeek("thurs", 3);
-    public DayOfWeek fri = new DayOfWeek("fri", 4);
-    public DayOfWeek sat = new DayOfWeek("sat", 5);
-    public DayOfWeek sun = new DayOfWeek("sun", 6);
+    public static DayOfWeek mon = new DayOfWeek("mon", 0); 
+    public static DayOfWeek tues = new DayOfWeek("tues", 1);
+    public static DayOfWeek wed = new DayOfWeek("wed, 2");
+    public static DayOfWeek thurs = new DayOfWeek("thurs", 3);
+    public static DayOfWeek fri = new DayOfWeek("fri", 4);
+    public static DayOfWeek sat = new DayOfWeek("sat", 5);
+    public static DayOfWeek sun = new DayOfWeek("sun", 6);
     
     private DayOfWeek(String id, int ord) {
         super(id, ord);
@@ -731,13 +748,13 @@ public class Person { ... }</programlisting>
         
     private final ReadAttribute&lt;String&gt; name;
        
-    public DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
-    public DayOfWeek tues = new DayOfWeek("Tuesday", "tues", 1);
-    public DayOfWeek wed = new DayOfWeek("Wednesday", "wed, 2");
-    public DayOfWeek thurs = new DayOfWeek("Thursday", "thurs", 3);
-    public DayOfWeek fri = new DayOfWeek("Friday", "fri", 4);
-    public DayOfWeek sat = new DayOfWeek("Saturday", "sat", 5);
-    public DayOfWeek sun = new DayOfWeek("Sunday", "sun", 6);
+    public static DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
+    public static DayOfWeek tues = new DayOfWeek("Tuesday", "tues", 1);
+    public static DayOfWeek wed = new DayOfWeek("Wednesday", "wed, 2");
+    public static DayOfWeek thurs = new DayOfWeek("Thursday", "thurs", 3);
+    public static DayOfWeek fri = new DayOfWeek("Friday", "fri", 4);
+    public static DayOfWeek sat = new DayOfWeek("Saturday", "sat", 5);
+    public static DayOfWeek sun = new DayOfWeek("Sunday", "sun", 6);
      
     private DayOfWeek(String name, String id, int ord)
     {
@@ -748,11 +765,6 @@ public class Person { ... }</programlisting>
 }</programlisting>
 
         </section>
-
-        <!--
-        <para>A class with an <literal>instances</literal> declaration may not extend
-        a class with no <literal>instances</literal> declaration.</para>
-        -->
         
     </section>
     

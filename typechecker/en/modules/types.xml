@@ -116,7 +116,7 @@
         
         <programlisting><![CDATA[public final class Boolean
         satisfies Case<Boolean>, Bits<Boolean> {
-    instances true, false;
+    case true, case false;
 
     doc "The binary or operator x | y"
     override public Boolean or(Boolean boolean) {
@@ -330,7 +330,8 @@
     
 }]]></programlisting>
 
-        <para>Classes with enumerated instances implicitly extend <literal>lang.Selector</literal></para>
+        <para>Classes with enumerated <literal>case</literal>s implicitly extend 
+        <literal>lang.Selector</literal></para>
         
         <programlisting><![CDATA[public abstract class Selector(String name, int ordinal)
         satisfies Case<subtype> { ... }]]></programlisting>
@@ -795,8 +796,18 @@
 }]]></programlisting>
         
         <programlisting><![CDATA[public class Comparison {
-        
-    instances larger, smaller, equal;
+    
+    doc "The recieving object is larger than 
+         the given object"
+    case larger, 
+    
+    doc "The recieving object is smaller than 
+         the given object"
+    case smaller, 
+    
+    doc "The recieving object is exactly equal 
+         to the given object"
+    case equal;
         
     public Boolean larger return this==larger;
     public Boolean smaller return this==smaller;
@@ -1274,12 +1285,20 @@
         where X >= Instant {}]]></programlisting>
 
         <programlisting><![CDATA[public class DateGranularity 
-        satisfies Granularity<Date>
-        instances year, month, week, day {}]]></programlisting>
+        satisfies Granularity<Date> {
+    case year, 
+    case month, 
+    case week, 
+    case day;
+}]]></programlisting>
 
         <programlisting><![CDATA[public class TimeGranularity 
-        satisfies Granularity<Time>
-        instances hour, minute, second, millisecond {}]]></programlisting>
+        satisfies Granularity<Time> {
+    case hour, 
+    case minute, 
+    case second, 
+    case millisecond;
+}]]></programlisting>
         
     </section>
     
