@@ -366,7 +366,7 @@
 
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension Categories(Category category) {
+        <programlisting><![CDATA[public extension class Categories(Category category) {
         
     doc "Determine if all the given elements belong to the category."
     public Boolean contains(Iterable<Object> elements) {
@@ -386,7 +386,7 @@
 
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension OpenCategories<in X>(OpenCategory<X> category) {
+        <programlisting><![CDATA[public extension class OpenCategories<in X>(OpenCategory<X> category) {
         
     doc "Add the given elements to the category."
     public Boolean add(Iterable<X> elements) {
@@ -415,7 +415,7 @@
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
+        <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
 
     doc "Binary lookup operator x[keys]. Returns a list of values 
          associated with the given keys, in order."
@@ -459,7 +459,7 @@
 
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) {
+        <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) {
 
      doc "Assign the given values to the given keys."
      public void define(Iterable<Entry<U, V>> definitions) {
@@ -894,9 +894,15 @@
     doc "The UTF-8 encoding"
     public String utf8;
     
-    public Character parseUtf16(String utf16) { return ... }
+    public extension class StringToCharacter(String string) {
     
-    public Character parseUtf8(String utf8) { return ... }
+        doc "Parse the string representation of a |Character| in UTF-16"
+        public extension Character parseUtf16Character() { return ... }
+    
+        doc "Parse the string representation of a |Character| in UTF-8"
+        public extension Character parseUtf8Character() { return ... }
+    
+    }
  
 }]]></programlisting>
         
@@ -1104,6 +1110,13 @@
     doc "Shift bits right by the given number of places"
     public Natural rightShift(Natural digits) { return ... }
     
+    public extension class StringToNatural(String string) {
+    
+        doc "Parse the string representation of a |Natural| in the given radix"
+        public Natural parseNatural(small Natural radix=10) { return ... }
+        
+    }
+
 }]]></programlisting>
 
         <comment><para>TODO: the <literal>Numeric</literal> type is much more complicated
@@ -1128,8 +1141,12 @@
     doc "Implicit type promotion to |Decimal|"
     override public extension Decimal decimal { return ... }
 
-    doc "Parse the string representation of an |Integer| in the given radix"
-    public static Integer parse(String value, small Natural radix=10) { return ... }
+    public extension class StringToInteger(String string) {
+    
+        doc "Parse the string representation of an |Integer| in the given radix"
+        public Integer parseInteger(small Natural radix=10) { return ... }
+        
+    }
 
 }]]></programlisting>
 
@@ -1145,8 +1162,12 @@
     doc "Implicit type promotion to |Decimal|"
     override public extension Decimal decimal { return ... }
     
-    doc "Parse the string representation of a |Whole| in the given radix"
-    public static Whole parse(String value, small Natural radix=10) { return ... }
+    public extension class StringToWhole(String string) {
+    
+        doc "Parse the string representation of a |Whole| in the given radix"
+        public Whole parseWhole(small Natural radix=10) { return ... }
+        
+    }
 
 }]]></programlisting>
         
@@ -1157,8 +1178,13 @@
         satisfies Numeric<Float,Float> { 
     ... 
     
-    doc "Parse the string representation of a |Float| in the given radix"
-    public static Float parse(String value, small Natural radix=10) { return ... }
+    public extension class StringToFloat(String string) {
+    
+        doc "Parse the string representation of a |Float| in the given radix"
+        public Float parseFloat(small Natural radix=10) { return ... }
+        
+    }
+
 
 }]]></programlisting>
 
@@ -1172,8 +1198,13 @@
     public small Integer precision = ...;
     public small Integer scale = ...;
     
-    doc "Parse the string representation of a |Decimal| in the given radix"
-    public static Decimal parse(String value, small Natural radix=10) { return ... }
+    public extension class StringToDecimal(String string) {
+    
+        doc "Parse the string representation of a |Decimal| in the given radix"
+        public Decimal parseDecimal(small Natural radix=10) { return ... }
+        
+    }
+
 
 }]]></programlisting>
 
