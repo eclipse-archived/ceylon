@@ -1430,8 +1430,11 @@ Collection&lt;Integer&gt; result = ints.nullElements();</programlisting>
         <programlisting>Collection&lt;Integer&gt; ints = ...;
 Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
             
-        <para>An extension is only available in a source file that expicitly 
-        <literal>import</literal>s the extension.</para>
+        <para>An extension is only available in a source file that explicitly 
+        <literal>import</literal>s the extension (except for the extensions
+        defined in the package <literal>lang</literal>). A wildcard
+        <literal>.*</literal>-style import may not be used to import an 
+        extension.</para>
         
     </section>
         
