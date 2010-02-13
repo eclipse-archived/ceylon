@@ -49,15 +49,16 @@ Declaration?</programlisting>
         <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
         
         <para>An annotation is a static method call. For an annotation with no 
-        parameters, or with only literal-valued parameters, the parentheses 
-        around, and commas between, the positional arguments may be omitted.</para>
+        arguments, or with only literal-valued arguments, the parentheses around, 
+        and commas between, the positional arguments may be omitted.</para>
         
         <para>For example:</para>
         
         <programlisting>doc "The user login action"
 throws #DatabaseException 
        "if database access fails"
-author "Gavin King"
+by "Gavin King"
+   "Andrew Haley"
 see LogoutAction#logout
 scope(session) 
 action { description="Log In"; url="/login"; }
@@ -653,7 +654,7 @@ class Customer(Name name, optional Organization org = null)
         <para>Every annotation is a static (non-void) method call. This Ceylon class:</para>
         
         <programlisting>doc "Represents a person"
-author "Gavin"
+by "Gavin"
 public class Person { ... }</programlisting>
 
         <para>Is equivalent to this Java code:</para>
@@ -663,7 +664,7 @@ public class Person { ... }</programlisting>
     static {
         Type&lt;Person&gt; type = Type.get(Person.class);
         type.addAnnotation( doc("Represents a person") );
-        type.addAnnotation( author("Gavin") );
+        type.addAnnotation( by("Gavin") );
         type.addAnnotation( public() );
     }
 
@@ -1540,7 +1541,7 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements(
                 a program element.</para>
             </listitem>
             <listitem>
-                <para><literal>author</literal> specifies the author of a 
+                <para><literal>by</literal> specifies the authors of a 
                 program element.</para>
             </listitem>
             <listitem>
@@ -1553,8 +1554,8 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements(
             </listitem>
         </itemizedlist>
         
-        <para>The string value of the <literal>doc</literal> and 
-        <literal>author</literal> annotations is parsed by the documentation
+        <para>The string values of the <literal>doc</literal>, <literal>throws</literal> 
+        and <literal>by</literal> annotations are parsed by the documentation
         compiler as Seam Text, a simple ANTLR-based wiki text format.</para>
         
         <para>The following annotations are important to the Ceylon SDK.</para>
