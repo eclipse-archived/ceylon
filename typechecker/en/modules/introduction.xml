@@ -79,7 +79,7 @@
     <para>Ceylon's numeric type system is much simpler than C, C# or Java, 
     with exactly five built-in numeric types (compared to eight in Java and
     eleven in C#). The built-in types are classes representing natural numbers, 
-    integers, floating point numbers, arbitrary magnitude integers and 
+    integers, floating point numbers, arbitrary precision integers and 
     arbitrary precision decimals. <literal>Natural</literal>, 
     <literal>Integer</literal> and <literal>Float</literal> values are 64 bit 
     by default, and may be optimized for 32 bit architectures via use of the 
