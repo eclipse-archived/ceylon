@@ -4,7 +4,7 @@
     <para>There are no primitive types in Ceylon, however, there are certain
     important types provided by the package <literal>lang</literal>. Many
     of these types support <emphasis>operators</emphasis>.</para>
-        
+    
     <section>
         <title>The root type</title>
         
@@ -40,7 +40,8 @@
     see #id
     public Integer hash { return ... }
     
-    doc "Computes the hash code of the instance using the given attributes."
+    doc "Computes the hash code of the instance using the given 
+         attributes."
     public Integer hash(Attribute... attributes) { ... }
         
     doc "The unary render operator $x. A developer-friendly string 
@@ -49,24 +50,24 @@
          annotated |id|."
     public String string { return ... }
     
-    doc "Determine if the instance belongs to the given Category."
+    doc "Determine if the instance belongs to the given |Category|."
     see #Category
     public Boolean in(Category cat) {
         return cat.contains(this)
     }
     
-    doc "Determine if the instance belongs to the given Iterable
+    doc "Determine if the instance belongs to the given |Iterable|
          object."
     see #Iterable
     public Boolean in(Iterable<Object> iterable) {
         return forAny (Object elem in iterable) some elem == this
     }
     
-    doc "The Type of the instance."
+    doc "The |Type| of the instance."
     public Type<subtype> type { return ... }
     
-    doc "Binary assignability operator x is Y. Determine if the instance 
-         is of the given Type."
+    doc "Binary assignability operator x is Y. Determine if the 
+         instance is of the given |Type|."
     public Boolean instanceOf(Type<Object> type) {
         return this.type.assignableTo(type)
     }
@@ -77,6 +78,11 @@
     ...
         
 }]]></programlisting>
+
+        <comment><para>TODO: is this really the root type in Ceylon, 
+        or do we need some other type sitting above <literal>lang.Object</literal>
+        and <literal>java.lang.Object</literal>, to accommodate classes
+        from other languages?</para></comment>
 
 <!-- 
     doc "Return a reference to the instance, of the given
@@ -108,8 +114,8 @@
         <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
         operators from <literal>Bits</literal>.</para>
         
-        <programlisting>public final class Boolean 
-        satisfies Case&lt;Boolean&gt;, Bits&lt;Boolean&gt; {
+        <programlisting><![CDATA[public final class Boolean 
+        satisfies Case<Boolean>, Bits<Boolean> {
     instances true, false;
 
     doc "The binary or operator x | y"
@@ -122,7 +128,7 @@
         }
     }
     
-    doc "The binary and operator x &amp; y"
+    doc "The binary and operator x & y"
     override public Boolean and(Boolean boolean) {
         if (this) {
             return boolean
@@ -152,10 +158,10 @@
         }
     }
     
-    public List&lt;Boolean&gt; bits {
+    public List<Boolean> bits {
         return SingletonList(this)
     }
-}</programlisting>
+}]]></programlisting>
 
     </section>
     
@@ -165,74 +171,74 @@
         <para>The interface <literal>Callable</literal>
         represents a callable reference.</para>
         
-        <programlisting>public interface Callable&lt;out S&gt;
+        <programlisting><![CDATA[public interface Callable<out S>
         where S >= Functor {
     public S invoke;
-    public onCall( ... );
-}</programlisting>
+}]]></programlisting>
         
         <para>The interface <literal>Value</literal> models a 
         readable value.</para>
         
-        <programlisting>public interface Value&lt;out T&gt; {
+        <programlisting><![CDATA[public interface Value<out T> {
     public functor T() get;
-    public onGet( functor T(T value) interceptor );
-}</programlisting>
+}]]></programlisting>
 
         <para>The interface <literal>OpenValue</literal> models 
         a readable and writeable value.</para>
         
-        <programlisting>public interface OpenValue&lt;T&gt; 
-        satisfies Value&lt;T&gt; {
+        <programlisting><![CDATA[public interface OpenValue<T> 
+        satisfies Value<T> {
     public functor void(T value) set;
-    public onSet( functor T(T value) interceptor );
-}</programlisting>
+}]]></programlisting>
+
+        <comment><para>TODO: event listeners / interceptors for 
+        invocations!</para></comment>
 
     </section>
     
     <section>
         <title>Methods and attributes</title>
         
-        <programlisting>public interface Annotated {
-    public Boolean annotated(Type&lt;Object&gt; type);
-    public T annotation&lt;T&gt;(Type&lt;T&gt; type);
-    public Set&lt;Object&gt; annotations;
-}</programlisting>
+        <programlisting><![CDATA[public interface Annotated {
+    public Boolean annotated(Type<Object> type);
+    public T annotation<T>(Type<T> type);
+    public Set<Object> annotations;
+}]]></programlisting>
         
-        <programlisting>public interface Member&lt;in X&gt; 
+        <programlisting><![CDATA[public interface Member<in X> 
         satisfies Annotated {
-    public Type&lt;X&gt; declaringType;
+    public Type<X> declaringType;
     public String name;
     public Visibility visibility;
     public Boolean abstract;
     public Boolean override;
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>public interface Method&lt;in X, out S&gt;
+        <programlisting><![CDATA[public interface Method<in X, out S>
         where S >= Functor 
-        satisfies Member&lt;X&gt; {
-    public Type&lt;Object&gt; returnType;
-    public List&lt;Type&lt;Object&gt;&gt; parameterTypes;
-    public Callable&lt;S&gt; curry(X instance);
+        satisfies Member<X> {
+    public Type<Object> returnType;
+    public List<Type<Object>> parameterTypes;
+    public Callable<S> curry(X instance);
     public Boolean static;
     public Boolean once;
-    public onCall( ... );
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>public interface Attribute&lt;in X, out T&gt; 
-        satisfies Member&lt;X&gt; {
-    public Type&lt;T&gt; attributeType;
+        <programlisting><![CDATA[public interface Attribute<in X, out T> 
+        satisfies Member<X> {
+    public Type<T> attributeType;
     public boolean mutable;
-    public Value&lt;T&gt; curry(X instance);
-    public onGet( functor T(X instance, T value) interceptor );
-}</programlisting>
+    public Value<T> curry(X instance);
+}]]></programlisting>
                 
-        <programlisting>public interface MutableAttribute&lt;in X, T&gt;
-        satisfies Attribute&lt;X,T&gt; {
-    public override OpenValue&lt;T&gt; curry(X instance);
-    public onSet( functor T(X instance,T value) interceptor );
-}</programlisting>
+        <programlisting><![CDATA[public interface MutableAttribute<in X, T>
+        satisfies Attribute<X,T> {
+    public override OpenValue<T> curry(X instance);
+}]]></programlisting>
                 
+        <comment><para>TODO: event listeners / interceptors for 
+        invocations!</para></comment>
+
     </section>
     
     <section>
@@ -245,20 +251,20 @@
         <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
         (spread comparison)--> <!--and <literal>*~></literal> (all in).--></para>
         
-        <programlisting>public interface Iterable&lt;out X&gt; {
+        <programlisting><![CDATA[public interface Iterable<out X> {
     
     doc "Produce an iterator."
-    public Iterator&lt;X&gt; iterator();
+    public Iterator<X> iterator();
     
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public interface Iterator&lt;out X&gt; {
+        <programlisting><![CDATA[public interface Iterator<out X> {
 
     public Boolean more;
     public X current;
     public X next();
     
-}</programlisting>
+}]]></programlisting>
 
 <!--
         <para>The following decorator exists:</para>
@@ -287,20 +293,20 @@
 -->
         <para>Some iterable objects may support element removal during iteration.</para>
         
-        <programlisting>public mutable interface OpenIterable&lt;X&gt; 
-        satisfies Iterable&lt;X&gt; {
+        <programlisting><![CDATA[public mutable interface OpenIterable<X> 
+        satisfies Iterable<X> {
         
-    public override OpenIterator&lt;X&gt; iterator();
+    public override OpenIterator<X> iterator();
     
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public mutable interface OpenIterator&lt;X&gt; 
-        satisfies OpenIterator&lt;X&gt; {
+        <programlisting><![CDATA[public mutable interface OpenIterator<X> 
+        satisfies OpenIterator<X> {
 
     public void remove();
     public Boolean replace(X replacement);
     
-}</programlisting>
+}]]></programlisting>
 
         <!--programlisting><![CDATA[public decorator OpenIterables (OpenIterable iterable) {
 
@@ -318,16 +324,16 @@
         type that may be used as a case in the <literal>switch</literal>
         construct.</para>
         
-        <programlisting>public interface Case&lt;in X&gt; {
+        <programlisting><![CDATA[public interface Case<in X> {
 
     public Boolean test(X value);
     
-}</programlisting>
+}]]></programlisting>
 
         <para>Classes with enumerated instances implicitly extend <literal>lang.Selector</literal></para>
         
-        <programlisting>public abstract class Selector(String name, int ordinal)
-        satisfies Case&lt;subtype&gt; { ... }</programlisting>
+        <programlisting><![CDATA[public abstract class Selector(String name, int ordinal)
+        satisfies Case<subtype> { ... }]]></programlisting>
         
     </section>
     
@@ -337,13 +343,13 @@
         <para>The interface <literal>lang.Usable</literal> represents an
         object with a lifecycle controlled by <literal>try</literal>.</para>
         
-        <programlisting>public interface Usable {
+        <programlisting><![CDATA[public interface Usable {
 
     public void begin();
     public void end();
     public void end(Exception e);
     
-}</programlisting>        
+}]]></programlisting>        
        
     </section>
     
@@ -353,37 +359,37 @@
         <para>The interface <literal>lang.Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
         
-        <programlisting>public interface Category {
+        <programlisting><![CDATA[public interface Category {
     
     doc "Determine if the given element belongs to the category."
     public Boolean contains(Object element);
 
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public extension Categories(Category category) {
+        <programlisting><![CDATA[public extension Categories(Category category) {
         
     doc "Determine if all the given elements belong to the category."
-    public Boolean contains(Iterable&lt;Object&gt; elements) {
+    public Boolean contains(Iterable<Object> elements) {
         return forAll (Object elem in elements) every category.contains(elem)
     }
     
-}</programlisting>
+}]]></programlisting>
 
         <para>There is a mutable subtype, representing a category to which 
         objects may be added.</para>
         
-        <programlisting>public mutable interface OpenCategory&lt;in X&gt; 
+        <programlisting><![CDATA[public mutable interface OpenCategory<in X> 
         satisfies Category {
     
     doc "Add the given element to the category."
     public Boolean add(X element);
 
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public extension OpenCategories&lt;in X&gt;(OpenCategory&lt;X&gt; category) {
+        <programlisting><![CDATA[public extension OpenCategories<in X>(OpenCategory<X> category) {
         
     doc "Add the given elements to the category."
-    public Boolean add(Iterable&lt;X&gt; elements) {
+    public Boolean add(Iterable<X> elements) {
         Boolean added = false;
         for (X x in elements) {
             added |= category.add(x);
@@ -391,14 +397,14 @@
         return added
     }
     
-}</programlisting>
+}]]></programlisting>
 
         <para>The interface <literal>lang.Correspondence</literal> represents
         the abstract notion of an object that maps value of one type to values
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
         
-        <programlisting>public interface Correspondence&lt;in U, out V&gt; {
+        <programlisting><![CDATA[public interface Correspondence<in U, out V> {
     
     doc "Binary lookup operator x[key]. Returns the value associated 
          with the given key."
@@ -407,24 +413,24 @@
     doc "Determine if there is a value associated with the given key."
     public Boolean defines(U key);
     
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public extension Correspondences&lt;in U, out V&gt;(Correspondence&lt;U, V&gt; correspondence) {
+        <programlisting><![CDATA[public extension Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
 
     doc "Binary lookup operator x[keys]. Returns a list of values 
          associated with the given keys, in order."
-    public List&lt;V&gt; values(List&lt;U&gt; keys) {
+    public List<V> values(List<U> keys) {
         return from (U key in keys) select correspondence.lookup(key)
     }
     
     doc "Binary lookup operator x[keys]. Returns a set of values 
          associated with the given set of keys."
-    public Set&lt;V&gt; values(Set&lt;U&gt; keys) {
+    public Set<V> values(Set<U> keys) {
         return ( from (U key in keys) select correspondence.lookup(key) ).elements
     }
     
     doc "Determine if there are values associated with all the given keys."
-    public Boolean defines(Iterable&lt;U&gt; keys) {
+    public Boolean defines(Iterable<U> keys) {
         for (U key in keys) {
             if ( !correspondence.defines(key) ) {
                 return false
@@ -435,7 +441,7 @@
         }
     }
     
-}</programlisting>
+}]]></programlisting>
 
         <para>There is a mutable subtype, representing a correspondence
         for which new mappings may be defined, and existing mappings 
@@ -444,19 +450,19 @@
         
         <!-- Association? -->
 
-        <programlisting>public mutable interface OpenCorrespondence&lt;in U, V&gt; 
-        satisfies Correspondence&lt;U, V&gt; {
+        <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
+        satisfies Correspondence<U, V> {
         
      doc "Element assignment x[key] = value. Assign a value to the given 
           key."
      public optional V define(U key, V value);
 
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public extension OpenCorrespondences&lt;in U, V&gt;(OpenCorrespondence&lt;U, V&gt; correspondence) {
+        <programlisting><![CDATA[public extension OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) {
 
      doc "Assign the given values to the given keys."
-     public void define(Iterable&lt;Entry&lt;U, V&gt;&gt; definitions) {
+     public void define(Iterable<Entry<U, V>> definitions) {
          for (U key->V value) {
              correspondence.define(key, value);
          }
@@ -467,19 +473,19 @@
          correspondence.define(key, value);
      }
     
-}</programlisting>
+}]]></programlisting>
 
         <para>The interface <literal>lang.Container</literal> represents
         the abstract notion of an object that may be empty. It supports 
         the unary postfix operator <literal>nonempty</literal><!--and
         the binary operator <literal>??:</literal> (empty default)-->.</para>
         
-        <programlisting>public interface Container {
+        <programlisting><![CDATA[public interface Container {
         
     doc "Determine if the container is empty."
     public Boolean empty;
     
-}</programlisting>
+}]]></programlisting>
 
     </section>
     
@@ -780,15 +786,15 @@
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
         
-        <programlisting>public interface Comparable&lt;in T&gt; {
+        <programlisting><![CDATA[public interface Comparable<in T> {
     
-    doc "The binary compare operator &lt;=&gt;. Compares this 
+    doc "The binary compare operator <=>. Compares this 
          instance with the given instance."
     public Comparison compare(T other);
     
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>public class Comparison {
+        <programlisting><![CDATA[public class Comparison {
         
     instances larger, smaller, equal;
         
@@ -799,17 +805,17 @@
     public Boolean largeAs return this!=smaller;
     public Boolean smallAs return this!=larger;
     
-}</programlisting>
+}]]></programlisting>
 
-        <para>The <literal>lang.Ordinal</literal> interface 
-        represents objects in a sequence, and supports the binary
-        operator <literal>..</literal> (range) and postfix unary 
+        <para>The <literal>lang.Ordinal</literal> interface represents 
+        objects in a sequence, and supports the binary operator 
+        <literal>..</literal> (range). In addition, variables support 
+        the postfix unary operators <literal>++</literal> (increment) 
+        and <literal>--</literal> (decrement) and prefix unary 
         operators <literal>++</literal> (successor) and 
-        <literal>--</literal> (predecessor). In addition, variables 
-        support the prefix unary operators <literal>++</literal> 
-        (increment) and <literal>--</literal> (decrement).</para>
+        <literal>--</literal> (predecessor).</para>
         
-        <programlisting>public interface Ordinal {
+        <programlisting><![CDATA[public interface Ordinal {
 
     doc "The unary "++" operator. The successor of this instance."
     public subtype successor;
@@ -817,7 +823,7 @@
     doc "The unary "--" operator. The predecessor of this instance."
     public subtype predecessor;
     
-}</programlisting>
+}]]></programlisting>
 
     </section>
     
@@ -829,47 +835,47 @@
         among others. Ranges may be constructed using the <literal>..</literal> 
         operator:</para> 
         
-        <programlisting>public class Range&lt;X&gt;(X first, X last) 
-        satisfies List&lt;X&gt;, Case&lt;Object&gt;
-        where X>=Ordinal &amp; X>=Comparable&lt;X&gt; { 
+        <programlisting><![CDATA[public class Range<X>(X first, X last) 
+        satisfies List<X>, Case<Object>
+        where X>=Ordinal & X>=Comparable<X> { 
 
     public X first = first;
     public X last = last;
     
     ... 
     
-    List&lt;X&gt; by(Natural stepSize);  
+    List<X> by(Natural stepSize);  
     
-}</programlisting>
+}]]></programlisting>
 
         <para>Enumerations represent an explicit list of values and may be constructed 
         using a simplified syntax:</para>
         
-        <programlisting>public class Enumeration&lt;out X&gt;(X... values)
-        satisfies List&lt;X&gt;, Case&lt;Object&gt; {
+        <programlisting><![CDATA[public class Enumeration<out X>(X... values)
+        satisfies List<X>, Case<Object> {
     ...
 
     public static extension 
-    OpenMap&lt;U, V&gt; toOpenMap&lt;U, V&gt;(Enumeration&lt;Entry&lt;U,V&gt;&gt; enum) {
+    OpenMap<U, V> toOpenMap<U, V>(Enumeration<Entry<U,V>> enum) {
         return HashMap(enum)
     }
 
     public extension 
-    OpenSet&lt;X&gt; toOpenSet&lt;X&gt;() {
+    OpenSet<X> toOpenSet<X>() {
         return elements.copy()
     }
 
     public extension 
-    OpenList&lt;X&gt; toOpenList&lt;X&gt;() {
+    OpenList<X> toOpenList<X>() {
         return copy()
     }
 
     public static extension 
-    Enumeration&lt;T&gt; singleton&lt;T&gt;(T object) { 
+    Enumeration<T> singleton<T>(T object) { 
         return Enumeration(object)
     }
     
-}</programlisting>
+}]]></programlisting>
     
     </section>
     
@@ -878,30 +884,30 @@
         
         <para>Characters are represented by the following class:</para>
 
-        <programlisting>public class Character 
-        satisfies Ordinal, Comparable&lt;Character&gt;, Case&lt;Character&gt; { ... }</programlisting>
+        <programlisting><![CDATA[public class Character 
+        satisfies Ordinal, Comparable<Character>, Case<Character> { ... }]]></programlisting>
         
         <para>Strings implement <literal>List</literal>, therefore they 
         support the join, subrange, contains and lookup operators, 
         among others.</para> 
                 
-        <programlisting>public class String(Character... characters) 
-        satisfies Comparable&lt;String&gt;, List&lt;Character&gt;, Case&lt;String&gt; {
+        <programlisting><![CDATA[public class String(Character... characters) 
+        satisfies Comparable<String>, List<Character>, Case<String> {
     
     ... 
     
-    public Iterable&lt;String&gt; tokens(Iterable&lt;Character&gt; separators=" ,;\n\l\r\t") { return ... }
+    public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
     
     public String lowercase { return ... }
     public String uppercase { return ... }
     
-    public String strip(Iterable&lt;Character&gt; whitespace = " \n\l\r\t") { return ... }
-    public String normalize(Iterable&lt;Character&gt; whitespace = " \n\l\r\t") { return ... }
+    public String strip(Iterable<Character> whitespace = " \n\l\r\t") { return ... }
+    public String normalize(Iterable<Character> whitespace = " \n\l\r\t") { return ... }
     
     public String join(String... strings) { return ... }
-    public String join(Iterable&lt;String&gt; strings) { return ... }
+    public String join(Iterable<String> strings) { return ... }
     
-}</programlisting>
+}]]></programlisting>
 
         <comment><para>TODO: do we need character ranges, like <literal>'a'..'z'</literal>, or is 
         it enough that we have regular expressions like <literal>`[a-z]`</literal>?</para></comment>
@@ -911,12 +917,12 @@
     <section>
         <title>Regular expressions</title>
         
-        <programlisting>public class Regex 
-        satisfies Case&lt;String&gt; { 
-    public List&lt;Match&gt; matchList(String string) { return ... }
+        <programlisting><![CDATA[public class Regex 
+        satisfies Case<String> { 
+    public List<Match> matchList(String string) { return ... }
     public Boolean matches(String string) { return ... }
     ... 
-}</programlisting>
+}]]></programlisting>
         
         <comment><para>TODO: I assume these are just Java (Perl 5-style) regular expressions. Is
         there some other better syntax around?</para></comment>
@@ -931,13 +937,14 @@
         <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
         operators.</para>
         
-        <programlisting>public interface Bits&lt;T&gt; {
+        <programlisting><![CDATA[public interface Bits<T> 
+        where T = subtype {
     public T or(T bits);
     public T and(T bits);
     public T xor(T bits);
     public T complement;
-    public List&lt;Boolean&gt; bits;
-}</programlisting>
+    public List<Boolean> bits;
+}]]></programlisting>
         
     </section>
     
@@ -947,7 +954,7 @@
         <para>The <literal>lang.Number</literal> interface is the abstract supertype
         of all classes which represent numeric values.</para>
         
-        <programlisting>public interface Number {
+        <programlisting><![CDATA[public interface Number {
     
     doc "Determine if the number represents
          an integer value"
@@ -965,46 +972,59 @@
     doc "Determine if the number is one"
     public Boolean unit;
     
-    doc "The number, represented as an |Decimal|"
-    public Decimal exact;
+    doc "The number, represented as a |Decimal|"
+    public Decimal decimal;
 
     doc "The number, represented as a |Float|"
+    throws #FloatOverflowException
+           "if the number is too large to be
+            represented as a |Float|"
     public Float float;
     
     doc "The number, represented as an |Whole|,
-         after truncation of any fractional part"
+         after truncation of any fractional 
+         part"
     public Whole whole;
     
     doc "The number, represented as an |Integer|,
-         after truncation of any fractional part"
+         after truncation of any fractional 
+         part"
+    throws #IntegerOverflowException
+           "if the number is too large to be
+            represented as an |Integer|"
     public Integer integer;
     
-    doc "The magnitude of the number"
-    public Number magnitude;
+    doc "The number, represented as a |Natural|,
+         after truncation of any fractional 
+         part"
+    throws #NegativeNumberException
+           "if the number is negative"
+    public Natural natural;
     
-    doc "The fractional part of the number"
-    public Number fractionalPart;
+    doc "The magnitude of the number"
+    public subtype magnitude;
+    
+    doc "The fractional part of the number,
+         after truncation of the integral
+         part"
+    public subtype fractionalPart;
     
     doc "The integral value of the number 
          after truncation of the fractional
          part"
-    public Number wholePart;
+    public subtype wholePart;
 
-    doc "The additive inverse (negative) of the 
-         number"
-    public Number inverse;
-
-}</programlisting>
+}]]></programlisting>
 
         <para>The subtype <literal>lang.Numeric</literal> supports the binary 
         operators <literal>+,-, *, /, **</literal>, and the unary prefix 
-        operators <literal>-, +</literal>. In addition, mutable values of type 
-        <literal>lang.Number</literal> support <literal>+=, -=, /=, *=</literal>.
-        </para>
+        operators <literal>-, +</literal>. In addition, <literal>mutable</literal> 
+        values of type <literal>lang.Numeric</literal> support the compound
+        assignment operators <literal>+=, -=, /=, *=</literal>.</para>
 
-<programlisting>public interface Numeric&lt;N, I&gt;
-        satisfies Number, Comparable&lt;N&gt; 
-        where I >= Number &amp; N >= Numeric&lt;N, I&gt; {
+<programlisting><![CDATA[public interface Numeric<N, I>
+        satisfies Number, Comparable<N> 
+        where I >= Number & N = subtype {
 
     doc "The unary - operator"
     public I inverse;
@@ -1013,7 +1033,7 @@
     public N add(N number);
 
     doc "The binary - operator"
-    public N subtract(N number);
+    public I subtract(N number);
 
     doc "The binary * operator"
     public N multiply(N number);
@@ -1024,71 +1044,65 @@
     doc "The binary ** operator"
     public N exponentiate(N number);
     
-    public override N magnitude;
-    
-    public override N fractionalPart;
-    
-}</programlisting>
+}]]></programlisting>
 
         <para>The subtype <literal>lang.Integral</literal> supports the binary 
-        operator <literal>%</literal>.</para>
+        operator <literal>%</literal>, and inherits the unary operators 
+        <literal>++</literal> and <literal>--</literal> from 
+        <literal>Ordinal</literal>.</para>
 
-<programlisting>public interface Integral&lt;N, I&gt;
-        satisfies Numeric&lt;N, I&gt;, Ordinal 
-        where I >= Number &amp; N >= Integral&lt;N, I&gt; {
+<programlisting><![CDATA[public interface Integral<N, I>
+        satisfies Numeric<N, I>, Ordinal 
+        where I >= Number & N = subtype {
 
     doc "The binary % operator"
     public N remainder(N number);
-    
-    doc "Determine if the number is equal
-         to the given integer"
-    public Boolean equals(Integer that);
-    
-    public override N wholePart;
 
-}</programlisting>
+}]]></programlisting>
 
         <para>Five numeric types are built in:</para>
 
         <para><literal>lang.Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
-        <programlisting>public final class Natural 
-        satisfies Integral&lt;Natural,Integer&gt;, Case&lt;Integral&gt;, Bits&lt;Natural&gt; { 
+        <programlisting><![CDATA[public final class Natural 
+        satisfies Integral<Natural,Integer>, Case<Integral>, Bits<Natural> { 
     ... 
     
     public Natural leftShift(Natural digits) { return ... }
     public Natural rightShift(Natural digits) { return ... }
     
-}</programlisting>
+}]]></programlisting>
+
+        <comment><para>TODO: the <literal>Numeric</literal> type is much more complicated
+        because of <literal>Natural</literal>. As an alternative approach, we could replace
+        <literal>Natural</literal> with a <literal>Binary</literal> type, and have 
+        <literal>Integer</literal> literals instead of <literal>Natural</literal> 
+        literals. I don't love this, because natural numbers are especially common in real
+        applications.</para></comment>
 
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
-        <programlisting>public final class Integer
-        satisfies Integral&lt;Integer,Integer&gt;, Case&lt;Integral&gt; {
-    ...
-    
-    public override Natural magnitude;
-    
-}</programlisting>
+        <programlisting><![CDATA[public final class Integer
+        satisfies Integral<Integer,Integer>, Case<Integral> { ... }]]></programlisting>
 
         <para><literal>lang.Whole</literal> represents arbitrary-magnitude
         signed integers.</para>
 
-        <programlisting>public class Whole 
-        satisfies Integral&lt;Whole,Whole&gt; { ... }</programlisting>
+        <programlisting><![CDATA[public class Whole 
+        satisfies Integral<Whole,Whole> { ... }]]></programlisting>
         
         <para><literal>lang.Float</literal> represents 64 bit floating point
         values.</para>
 
-        <programlisting>public final class Float 
-        satisfies Numeric&lt;Float,Float&gt; { ... }</programlisting>
+        <programlisting><![CDATA[public final class Float 
+        satisfies Numeric<Float,Float> { ... }]]></programlisting>
 
         <para><literal>lang.Decimal</literal> represents arbitrary-precision
         and arbitrary-magnitude decimals.</para>
 
-        <programlisting>public class Decimal 
-        satisfies Numeric&lt;Decimal,Decimal&gt; { ... }</programlisting>
+        <programlisting><![CDATA[public class Decimal 
+        satisfies Numeric<Decimal,Decimal> { ... }]]></programlisting>
 
         <para>Built in converters exist for the following type conversions:</para>
         
@@ -1115,11 +1129,11 @@
         <comment><para>TODO: this stuff is just for illustration, the real
         date/time API will be much more complex and fully internationalized.</para></comment>
         
-        <programlisting>public class Instant {
+        <programlisting><![CDATA[public class Instant {
     ...
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public class Time(Integer hours, Integer minutes, 
+        <programlisting><![CDATA[public class Time(Integer hours, Integer minutes, 
         optional Integer seconds=null, optional Integer milliseconds=null,
         optional Integer timezone=null) 
         extends Instant {
@@ -1129,35 +1143,35 @@
     public optional Integer milliseconds = milliseconds;
     public optional Timezone timezone = timezone;
     ...
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>public class Date(Integer year, Integer month, Integer day) 
+        <programlisting><![CDATA[public class Date(Integer year, Integer month, Integer day) 
         extends Instant {
     public Integer year = year;
     public Integer month = month;
     public Integer day = day;
     ...
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>public class Datetime(Time time, Date date) 
+        <programlisting><![CDATA[public class Datetime(Time time, Date date) 
         extends Instant {
     public Time time = time;
     public Date date = date;
     ...
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>public class Interval&lt;X&gt;(X start, X end) 
+        <programlisting><![CDATA[public class Interval<X>(X start, X end) 
         where X >= Instant {
     public X start = start;
     public X end = end;
-    public Duration&lt;X&gt; duration { return ...; }
+    public Duration<X> duration { return ...; }
     ...
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public class Duration&lt;X&gt;(Map&lt;Granularity&lt;X&gt;, Integer&gt; magnitude) 
+        <programlisting><![CDATA[public class Duration<X>(Map<Granularity<X>, Integer> magnitude) 
         where X >= Instant {
 
-    public Map&lt;Granularity&lt;X&gt;, Integer&gt; magnitude = magnitude;
+    public Map<Granularity<X>, Integer> magnitude = magnitude;
     
     public X before(X instant) { ... }
     public X after(X instant) { ... }
@@ -1165,22 +1179,22 @@
     public Datetime before(Datetime instant) { ... }
     public Datetime after(Datetime instant) { ... }
     
-    public Duration&lt;X&gt; add(Duration&lt;X&gt; duration) { ... }
-    public Duration&lt;X&gt; subtract(Duration&lt;X&gt; duration) { ... }
+    public Duration<X> add(Duration<X> duration) { ... }
+    public Duration<X> subtract(Duration<X> duration) { ... }
     
     ...
-}</programlisting>
+}]]></programlisting>
 
-        <programlisting>public interface Granularity&lt;X&gt; 
-        where X >= Instant {}</programlisting>
+        <programlisting><![CDATA[public interface Granularity<X> 
+        where X >= Instant {}]]></programlisting>
 
-        <programlisting>public class DateGranularity 
-        satisfies Granularity&lt;Date&gt;
-        instances year, month, week, day {}</programlisting>
+        <programlisting><![CDATA[public class DateGranularity 
+        satisfies Granularity<Date>
+        instances year, month, week, day {}]]></programlisting>
 
-        <programlisting>public class DateGranularity 
-        satisfies Granularity&lt;Time&gt;
-        instances hour, minute, second, millisecond {}</programlisting>
+        <programlisting><![CDATA[public class TimeGranularity 
+        satisfies Granularity<Time>
+        instances hour, minute, second, millisecond {}]]></programlisting>
         
     </section>
     
