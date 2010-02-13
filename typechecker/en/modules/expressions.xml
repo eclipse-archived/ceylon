@@ -201,6 +201,14 @@ if you prefer.";</programlisting>
         <para>The first example is equivalent to this Java code:</para>
         
         <programlisting>person.name().set( new lang.String("Gavin") );</programlisting>
+        
+        <comment><para>TODO: we need to support that the embedded expressions
+        are evaluated lazily when the string literal appears as a method 
+        parameter. This is important for log messages and assertions. So 
+        should <literal>"${Time()} ${message}"</literal> actually be a
+        <literal>functor String()</literal> instead of a <literal>String</literal>?
+        (And we would have a built-in converter to do implicit conversion to
+        <literal>String</literal>.)</para></comment>
 
     </section>
     
@@ -744,7 +752,14 @@ if you prefer.";</programlisting>
     <section>
         <title>List of operators</title>
     
-        <para>The following table defines the semantics of the Ceylon operators:</para>
+        <para>The following tables define the semantics of the Ceylon operators:</para>
+    
+    <section>
+    <title>Basic invocation and assignment operators</title>
+    
+    <para>These operators support method invocation and attribute evaluation and
+    assignment. The <literal>$</literal> operator is a shortcut for converting
+    any expression to a <literal>String</literal>.</para>
     
     <table>
     <tgroup cols="7">
@@ -836,6 +851,52 @@ if you prefer.";</programlisting>
             <entry><literal>List</literal> of member type</entry>
         </row>
         
+        <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>$</literal></entry>
+            <entry><literal>$rhs</literal></entry>
+            <entry>render</entry>
+            <entry><literal>if (exists rhs) rhs.string else ""</literal></entry>
+            <entry></entry>
+            <entry><literal>optional Object</literal></entry>
+            <entry><literal>String</literal></entry>
+        </row>
+    
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+        
+    <section>
+    <title>Equality and comparison operators</title>
+    
+    <para>These operators compare values for equality, order, magnitude, or membership,
+    producing boolean values.</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
         <row><entry namest="first" nameend="last"><emphasis>Equality</emphasis></entry></row>
         
         <row>
@@ -913,7 +974,97 @@ if you prefer.";</programlisting>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Containment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>in</literal></entry>
+            <entry><literal>lhs in rhs</literal></entry>
+            <entry>in</entry>
+            <entry><literal>lhs.in(rhs)</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal>Category</literal> or <literal>Iterable&lt;Object&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>is</literal></entry>
+            <entry><literal>lhs is Rhs</literal></entry>
+            <entry>is</entry>
+            <entry><literal>lhs.instanceOf(#Rhs)</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry>Any type</entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <!--  
+        <row>
+            <entry><literal>~></literal> or <literal>in</literal></entry>
+            <entry><literal>lhs ~> rhs</literal> or <literal>lhs in rhs</literal></entry>
+            <entry>in</entry>
+            <entry><literal>lhs.in(rhs)</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>!~></literal></entry>
+            <entry><literal>lhs !~> rhs</literal></entry>
+            <entry>not in</entry>
+            <entry><literal>lhs.in(rhs).negation</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>*~></literal></entry>
+            <entry><literal>lhs *~> rhs</literal></entry>
+            <entry>all in</entry>
+            <entry><literal>for (X x in lhs: !x.in(rhs)) found false fail true</literal></entry>
+            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Category&lt;X&gt; or <literal>Iterable&lt;X&gt;</literal></literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        -->
+        
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
                 
+    <section>
+    <title>Logical and bitwise operators</title>
+    
+    <para>These are the usual logical operations for boolean values and bitwise
+    operations for bit strings (unsigned integers).</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
         <row><entry namest="first" nameend="last"><emphasis>Logical and bitwise operations</emphasis></entry></row>
         
         <row>
@@ -953,6 +1104,8 @@ if you prefer.";</programlisting>
             <entry><literal>X</literal></entry>
         </row>
 
+        <row><entry namest="first" nameend="last"><emphasis>Conditional logical operations</emphasis></entry></row>
+        
         <row>
             <entry><literal>||</literal></entry>
             <entry><literal>lhs || rhs</literal></entry>
@@ -987,7 +1140,7 @@ if you prefer.";</programlisting>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
-            <entry><literal>lhs = lhs.or(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.or(rhs)</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -996,7 +1149,7 @@ if you prefer.";</programlisting>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
-            <entry><literal>lhs = lhs.and(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.and(rhs)</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -1005,17 +1158,19 @@ if you prefer.";</programlisting>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
-            <entry><literal>lhs = lhs.xor(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.xor(rhs)</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
 
+        <row><entry namest="first" nameend="last"><emphasis>Conditional logical assignment</emphasis></entry></row>
+        
         <row>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>lhs = if (lhs) true else rhs</literal></entry>
+            <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -1025,13 +1180,50 @@ if you prefer.";</programlisting>
             <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>lhs = if (lhs) rhs else false</literal></entry>
+            <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Existence (null value handling)</emphasis></entry></row>
+    </tbody>
+    </tgroup>
+    </table>
+    
+    <comment><para>TODO: should we have logical <literal>!</literal> and bitwise
+    <literal>~</literal> for consistency with C and Java?</para></comment>
+    
+     </section>
+    
+    <section>
+    <title>Operators for handling null values</title>
+    
+    <para>These operators make it easy to work with <literal>optional</literal>
+    types.</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Existence</emphasis></entry></row>
         
         <row>
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
@@ -1052,6 +1244,8 @@ if you prefer.";</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
         
+        <row><entry namest="first" nameend="last"><emphasis>Default</emphasis></entry></row>
+        
         <row>
             <entry><literal>?</literal></entry>
             <entry><literal>lhs ? rhs</literal></entry>
@@ -1068,7 +1262,7 @@ if you prefer.";</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else lhs=rhs</literal></entry>
+            <entry><literal>if (exists lhs) lhs else lhs:=rhs</literal></entry>
             <entry><literal>optional T</literal></entry>
             <entry><literal>T</literal> or <literal>optional T</literal></entry>
             <entry><literal>T</literal> or <literal>optional T</literal></entry>
@@ -1142,64 +1336,40 @@ if you prefer.";</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
         -->
-        
-        <row><entry namest="first" nameend="last"><emphasis>Containment</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>in</literal></entry>
-            <entry><literal>lhs in rhs</literal></entry>
-            <entry>in</entry>
-            <entry><literal>lhs.in(rhs)</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>is</literal></entry>
-            <entry><literal>lhs is Rhs</literal></entry>
-            <entry>is</entry>
-            <entry><literal>lhs.instanceOf(#Rhs)</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry>Any type that is not a supertype of 
-            <literal>X</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        <!--  
-        <row>
-            <entry><literal>~></literal> or <literal>in</literal></entry>
-            <entry><literal>lhs ~> rhs</literal> or <literal>lhs in rhs</literal></entry>
-            <entry>in</entry>
-            <entry><literal>lhs.in(rhs)</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>!~></literal></entry>
-            <entry><literal>lhs !~> rhs</literal></entry>
-            <entry>not in</entry>
-            <entry><literal>lhs.in(rhs).negation</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>*~></literal></entry>
-            <entry><literal>lhs *~> rhs</literal></entry>
-            <entry>all in</entry>
-            <entry><literal>for (X x in lhs: !x.in(rhs)) found false fail true</literal></entry>
-            <entry><literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Category&lt;X&gt; or <literal>Iterable&lt;X&gt;</literal></literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        -->
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
 
+    <section>
+    <title>List and map operators</title>
+    
+    <para>These operators provide a simplified syntax for accessing values 
+    of a <literal>Correspondence</literal>, and for joining <literal>List</literal>s.</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
         <row><entry namest="first" nameend="last"><emphasis>Concatenation</emphasis></entry></row>
         
         <row>
@@ -1244,11 +1414,11 @@ if you prefer.";</programlisting>
         <row>
             <entry><literal>[,,]</literal></entry>
             <entry><literal>lhs[x, y, z]</literal></entry>
-            <entry>enumerated range</entry>
-            <entry><literal>Enumeration( lhs.lookup(x), lhs.lookup(y), lhs.lookup(z) )</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
-            <entry><literal>Enumeration&lt;X&gt;</literal></entry>
+            <entry>enumerated lookup</entry>
+            <entry><literal>{lhs.value(x), lhs.value(y), lhs.value(z)}</literal></entry>
+            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
+            <entry>Multiple <literal>X</literal> values</entry>
+            <entry><literal>Enumeration&lt;Y&gt;</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Subranges</emphasis></entry></row>
@@ -1259,7 +1429,7 @@ if you prefer.";</programlisting>
             <entry>subrange</entry>
             <entry><literal>lhs.range(x,y)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry>Two <literal>Integer</literal> values</entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         <row>
@@ -1394,15 +1564,48 @@ if you prefer.";</programlisting>
         </row>
         
         -->
-        
-        <row><entry namest="first" nameend="last"><emphasis>Constructors</emphasis></entry></row>
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+    
+    <section>
+    <title>Operators for constructing objects</title>
+    
+    <para>These operators simplify the syntax for constructing certain 
+    commonly used built-in types.</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Range and entry constructors</emphasis></entry></row>
 
         <row>
             <entry><literal>..</literal></entry>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
-            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>T where T &gt;= Ordinal &amp; T &gt;= Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Range&lt;T&gt;</literal></entry>
         </row>
@@ -1417,6 +1620,8 @@ if you prefer.";</programlisting>
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         
+        <row><entry namest="first" nameend="last"><emphasis>Datetime and interval constructors</emphasis></entry></row>
+
         <row>
             <entry><literal>@</literal></entry>
             <entry><literal>lhs @ rhs</literal></entry>
@@ -1432,23 +1637,45 @@ if you prefer.";</programlisting>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>interval</entry>
             <entry><literal>Interval(lhs, rhs)</literal></entry>
-            <entry><literal>Instant</literal></entry>
-            <entry><literal>Instant</literal></entry>
-            <entry><literal>Interval</literal></entry>
+            <entry><literal>T where T >= Instant</literal></entry>
+            <entry><literal>Instant&lt;T&gt;</literal></entry>
+            <entry><literal>Interval&lt;T&gt;</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
-        
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+    
+    <section>
+    <title>Arithmetic operators</title>
+    
+    <para>These are the usual mathematical operations for all kinds of
+    numeric values.</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
         <row>
-            <entry><literal>$</literal></entry>
-            <entry><literal>$rhs</literal></entry>
-            <entry>render</entry>
-            <entry><literal>if (exists rhs) rhs.string else ""</literal></entry>
-            <entry></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>String</literal></entry>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
         </row>
-        
+    </thead>
+    <tbody>
+    
         <row><entry namest="first" nameend="last"><emphasis>Increment, decrement</emphasis></entry></row>
         
         <!-- Prefix increment, decrement -->
@@ -1456,8 +1683,8 @@ if you prefer.";</programlisting>
         <row>
             <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
-            <entry>increment</entry>
-            <entry><literal>rhs = rhs.successor</literal></entry>
+            <entry>successor</entry>
+            <entry><literal>rhs := rhs.successor</literal></entry>
             <entry></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -1465,8 +1692,8 @@ if you prefer.";</programlisting>
         <row>
             <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
-            <entry>decrement</entry>
-            <entry><literal>rhs = rhs.predecessor</literal></entry>
+            <entry>predecessor</entry>
+            <entry><literal>rhs := rhs.predecessor</literal></entry>
             <entry></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -1477,8 +1704,8 @@ if you prefer.";</programlisting>
         <row>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
-            <entry>successor</entry>
-            <entry><literal>(lhs = lhs.successor).predecessor</literal></entry>
+            <entry>increment</entry>
+            <entry><literal>(lhs := lhs.successor).predecessor</literal></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -1486,8 +1713,8 @@ if you prefer.";</programlisting>
         <row>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
-            <entry>predecessor</entry>
-            <entry><literal>(lhs = lhs.predecessor).successor</literal></entry>
+            <entry>decrement</entry>
+            <entry><literal>(lhs := lhs.predecessor).successor</literal></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -1525,7 +1752,7 @@ if you prefer.";</programlisting>
             <entry><literal>lhs.subtract(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>I</literal></entry>
         </row>
         <row>
             <entry><literal>*</literal></entry>
@@ -1570,7 +1797,7 @@ if you prefer.";</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs = lhs.add(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.add(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1579,16 +1806,16 @@ if you prefer.";</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs = lhs.subtract(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.subtract(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>I</literal></entry>
         </row>
         <row>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs = lhs.multiply(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.multiply(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1597,7 +1824,7 @@ if you prefer.";</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs = lhs.divide(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.divide(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1606,7 +1833,7 @@ if you prefer.";</programlisting>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs = lhs.remainder(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.remainder(rhs)</literal></entry>
             <entry><literal>Integral&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1706,10 +1933,9 @@ if you prefer.";</programlisting>
     <para>Note that there are several built-in converters allowing type promotion
     of numeric types used in expressions.</para>
     
-    <comment><para>TODO: should we have logical <literal>!</literal> and bitwise
-    <literal>~</literal> for consistency with C/Java?</para></comment>
-    
     </section>
+    
+   </section>
     
     <section>
         <title>Operator precedence and associativity</title>
@@ -2131,6 +2357,21 @@ isFalse {
     log.debug("little");
     little(x);
 };</programlisting>
+
+        <comment><para>TODO: there is a small problem here. In <literal>x.foo(y) bar z</literal>, 
+        is <literal>bar</literal> the name of a method or of a parameter of 
+        <literal>foo()</literal>?</para> That's not such a big deal for the compiler, but
+        for the human reader I guess it's going to get confusing occasionally. So should we
+        play it safe and require the form <literal>x.foo(y).bar() baz z</literal> in the case 
+        that <literal>bar</literal> is the method name?</comment>
+
+        <comment><para>TODO: On the other hand, if we don't want to play things safe, should 
+        we allow this invocation protocol for methods with no parameters, or with arguments 
+        which are not functors (I have checked that this can be parsed), for example:</para></comment>
+        
+        <programlisting>Integer x = y integer;</programlisting>
+        <programlisting>log info "Hello World";</programlisting>
+        <programlisting>log.info(", " join org.employees*.name);</programlisting>
 
         <section>
             <title>Iteration</title>
