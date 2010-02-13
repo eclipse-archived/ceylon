@@ -40,6 +40,7 @@ localOrStatement
     ;
 
 localDeclaration
+    //TODO: type inference: (type|'def')
     : type memberName initializer? ';'
     ;
 
@@ -111,6 +112,7 @@ functorStart
 //special rule for syntactic predicates
 declarationStart
     :  declarationModifier 
+    //TODO: type inference: (type|'assign'|'void'|'def')
     | ( userAnnotation annotations? )? (type|'assign'|'void') LIDENTIFIER
     ;
 
@@ -147,7 +149,7 @@ directiveStatement
 directive
     : 'return' assignable? 
     | 'produce' assignable
-    | 'throw' expression 
+    | 'throw' expression? 
     | 'break' 
     | 'found'
     ;
@@ -262,7 +264,7 @@ extendedType
     ;
     
 instances
-    : 'instances' instance (',' instance)* ';'
+    : 'instances' instance (',' instance)* (';'|'...')
     ;
 
 instance 
@@ -270,10 +272,11 @@ instance
     ;
 
 typeConstraint
-    : typeName ((('>=' | '<=') type )| formalParameters)
+    : typeName ( ('>=' | '<=') type | '=' 'subtype' | formalParameters )
     ;
     
 typeConstraints
+    //TODO: should it be 'for'?
     : 'where' typeConstraint ('&' typeConstraint)*
     ;
     
@@ -305,7 +308,17 @@ annotation
 //kind of expressions that can appear as arguments to
 //the annotation
 userAnnotation 
-    : annotationName ( arguments | literal | reflectedBase (reflectedMember)* )?
+    : annotationName ( annotationArguments | arguments )?
+    ;
+
+annotationArguments
+    : ( literal | reflectedLiteral )+
+    ;
+
+//TODO: why can't I get the typeArguments in here??
+reflectedLiteral
+    : qualifiedTypeName reflectedMember
+    | reflectedBase
     ;
 
 qualifiedTypeName
@@ -353,7 +366,7 @@ specifier
     ;
 
 literal
-    : INTLITERAL
+    : NATURALLITERAL
     | FLOATLITERAL
     | CHARLITERAL
     | DATELITERAL
@@ -389,6 +402,24 @@ methodExpression
 specialMethodArgument
     :(  methodOrParameterName | 'case' '(' expressions ')' ) specialFunctor 
     ;
+
+//if we want to support Smalltalk-style invocation with no arguments
+/*methodExpression
+    : implicationExpression specialMethodInvocation?
+    ;
+
+specialMethodInvocation
+    : methodOrParameterName ( specialFunctor specialMethodArgument* )?
+    | caseMethodParameter specialFunctor specialMethodArgument*
+    ;
+
+specialMethodArgument
+    : ( methodOrParameterName | caseMethodParameter ) specialFunctor
+    ;
+
+caseMethodParameter
+    : 'case' '(' expressions ')'
+    ;*/
 
 methodOrParameterName
     : LIDENTIFIER
@@ -527,7 +558,7 @@ arguments
     ;
       
 namedArgument
-    : parameterName specifier ';'
+    : parameterName specifier /*(',' assignable)**/ ';'
     ;
     
 parameterName
@@ -665,7 +696,7 @@ variableStart
 
 // Lexer
 
-INTLITERAL
+NATURALLITERAL
     : ('0' .. '9')('0' .. '9')*
     | '\'' HexDigit HexDigit HexDigit HexDigit '\''
     | '\'' HexDigit HexDigit '\''
