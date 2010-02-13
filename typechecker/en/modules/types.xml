@@ -951,7 +951,7 @@
     <section>
         <title>Regular expressions</title>
         
-        <programlisting><![CDATA[public class Regex 
+        <programlisting><![CDATA[public class Regex(String expression)
         satisfies Case<String> { 
     public List<Match> matchList(String string) { return ... }
     public Boolean matches(String string) { return ... }
