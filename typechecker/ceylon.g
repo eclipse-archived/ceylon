@@ -954,6 +954,10 @@ THIS
     :   'this'
     ;
 
+SUBTYPE
+    :   'subtype'
+    ;
+
 THROW
     :   'throw'
     ;
@@ -1112,10 +1116,6 @@ RANGE
     
 COMPARE
     :   '<=>'
-    ;
-    
-INSTANCE
-    :   'instance'
     ;
     
 IN
