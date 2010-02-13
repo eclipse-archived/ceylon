@@ -256,7 +256,7 @@ classDeclaration
         extendedType?
         satisfiedTypes?
         typeConstraints?
-        '{' instances? memberOrStatement* '}'
+        '{' ((instanceStart)=>instances)? memberOrStatement* '}'
     ;
 
 extendedType
@@ -264,11 +264,16 @@ extendedType
     ;
     
 instances
-    : 'instances' instance (',' instance)* (';'|'...')
+    : instance (',' instance)* (';'|'...')
     ;
 
-instance 
-    : /*annotations?*/ memberName arguments?
+instance
+    : annotations? 'case' memberName arguments?
+    ;
+
+//special rule for syntactic predicate
+instanceStart
+    : annotations? 'case'
     ;
 
 typeConstraint
@@ -1107,6 +1112,10 @@ RANGE
     
 COMPARE
     :   '<=>'
+    ;
+    
+INSTANCE
+    :   'instance'
     ;
     
 IN
