@@ -675,12 +675,14 @@ public class Person { ... }</programlisting>
         
         </section>
 
-        <section>
-        <title>Instance enumeration</title>
+    </section>
+    
+    <section id="instanceenumeration">
+        <title>Class instance enumeration</title>
         
-        <para>The keyword <literal>case</literal> is used to specify an enumerated 
-        named instance of the class. All <literal>case</literal>s must appear in
-        a list as the first line of a class definition.</para>
+        <para>The keyword <literal>case</literal> is used to specify an enumerated named 
+        instance of a class. All <literal>case</literal>s must appear in a list as the 
+        first line of a class definition.</para>
         
         <programlisting>Instances := Instance ("," Instance)* ("..." | ";")</programlisting>
 
@@ -765,10 +767,8 @@ public class Person { ... }</programlisting>
     
 }</programlisting>
 
-        </section>
-        
     </section>
-    
+        
     <section id="interfaces">
         <title>Interfaces</title>
         
@@ -1517,6 +1517,8 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements(
         
         <comment><para>TODO: should there be an <literal>annotation</literal>
         modifier for static methods which can be used as annotations?</para></comment>
+            
+        <comment><para>TODO: does Ceylon support static attributes?</para></comment>
             
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
