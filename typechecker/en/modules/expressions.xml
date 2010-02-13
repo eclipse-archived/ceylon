@@ -307,9 +307,9 @@ if you prefer.";</programlisting>
                
         <para>For example:</para>
         
-        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;&gt;;</programlisting>
+        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
         <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person#name;</programlisting>
-        <programlisting>Method&lt;Person, (String) void&gt;&gt; sayMethod = Person#say;</programlisting>
+        <programlisting>Method&lt;Person, functor void(String)&gt;&gt; sayMethod = Person#say;</programlisting>
         
         <para>Note that the <literal>#</literal> curry operator may also be applied to an 
         arbitrary expression, to obtain a <literal>Callable&lt;functor R(P p, Q q,...)&gt;</literal> 
