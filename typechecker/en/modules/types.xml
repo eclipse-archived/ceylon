@@ -797,15 +797,15 @@
         
         <programlisting><![CDATA[public class Comparison {
     
-    doc "The recieving object is larger than 
+    doc "The receiving object is larger than 
          the given object"
     case larger, 
     
-    doc "The recieving object is smaller than 
+    doc "The receiving object is smaller than 
          the given object"
     case smaller, 
     
-    doc "The recieving object is exactly equal 
+    doc "The receiving object is exactly equal 
          to the given object"
     case equal;
         
