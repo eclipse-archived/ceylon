@@ -1185,7 +1185,6 @@
         
     }
 
-
 }]]></programlisting>
 
         <para><literal>lang.Decimal</literal> represents arbitrary-precision
@@ -1204,7 +1203,6 @@
         public Decimal parseDecimal(small Natural radix=10) { return ... }
         
     }
-
 
 }]]></programlisting>
 
