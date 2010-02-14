@@ -749,7 +749,7 @@ if you prefer.";</programlisting>
     
     <programlisting>optional String name = if (exists person) person.name else null;</programlisting>
     
-    <section>
+    <section id="operatorlist">
         <title>List of operators</title>
     
         <para>The following tables define the semantics of the Ceylon operators:</para>
@@ -1964,7 +1964,7 @@ if you prefer.";</programlisting>
     
     </section>
     
-    <section>
+    <section id="operatorprecedence">
         <title>Operator precedence and associativity</title>
         
         <para>This table defines operator precedence from highest to lowest,
@@ -2161,6 +2161,7 @@ if you prefer.";</programlisting>
                 <entry>Assignment:</entry> 
                 <entry>
                 <literal>:=</literal>, 
+                <literal>.=</literal>,
                 <literal>+=</literal>, 
                 <literal>-=</literal>, 
                 <literal>*=</literal>, 
