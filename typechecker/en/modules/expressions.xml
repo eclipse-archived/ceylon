@@ -851,6 +851,19 @@ if you prefer.";</programlisting>
             <entry><literal>List</literal> of member type</entry>
         </row>
         
+        <row><entry namest="first" nameend="last"><emphasis>Type, method or functor argument specification</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>(,,)</literal> or {;;;}</entry>
+            <entry><literal>lhs(x,y,z)</literal> or 
+            <literal>lhs { a=x; b=y; c=z; }</literal></entry>
+            <entry>arguments</entry>
+            <entry><literal></literal></entry>
+            <entry>Type, method or functor</entry>
+            <entry>Parameter types of type, method or functor</entry>
+            <entry>Type or return type of method or functor</entry>
+        </row>
+        
         <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
         
         <row>
@@ -1038,10 +1051,9 @@ if you prefer.";</programlisting>
     </section>
                 
     <section>
-    <title>Logical and bitwise operators</title>
+    <title>Logical operators</title>
     
-    <para>These are the usual logical operations for boolean values and bitwise
-    operations for bit strings (unsigned integers).</para>
+    <para>These are the usual logical operations for boolean values.</para>
     
     <table>
     <tgroup cols="7">
@@ -1065,47 +1077,17 @@ if you prefer.";</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Logical and bitwise operations</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Logical operations</emphasis></entry></row>
         
         <row>
-            <entry><literal>!</literal><!--or <literal>not</literal>--></entry>
-            <entry><literal>!rhs</literal><!--or <literal>not rhs</literal>--></entry>
-            <entry>complement</entry>
-            <entry><literal>rhs.complement</literal></entry>
+            <entry><literal>!</literal></entry>
+            <entry><literal>!rhs</literal></entry>
+            <entry>not</entry>
+            <entry><literal>if (rhs) false else true</literal></entry>
             <entry></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
-        <row>
-            <entry><literal>|</literal></entry>
-            <entry><literal>lhs | rhs</literal></entry>
-            <entry>or</entry>
-            <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-        <row>
-            <entry><literal>&amp;</literal></entry>
-            <entry><literal>lhs &amp; rhs</literal></entry>
-            <entry>and</entry>
-            <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-        <row>
-            <entry><literal>^</literal></entry>
-            <entry><literal>lhs ^ rhs</literal></entry>
-            <entry>exclusive or</entry>
-            <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-
-        <row><entry namest="first" nameend="last"><emphasis>Conditional logical operations</emphasis></entry></row>
-        
         <row>
             <entry><literal>||</literal></entry>
             <entry><literal>lhs || rhs</literal></entry>
@@ -1133,47 +1115,17 @@ if you prefer.";</programlisting>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
-        
-        <row><entry namest="first" nameend="last"><emphasis>Logical/bitwise assignment</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>|=</literal></entry>
-            <entry><literal>lhs |= rhs</literal></entry>
-            <entry>or</entry>
-            <entry><literal>lhs := lhs.or(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-        <row>
-            <entry><literal>&amp;=</literal></entry>
-            <entry><literal>lhs &amp;= rhs</literal></entry>
-            <entry>and</entry>
-            <entry><literal>lhs := lhs.and(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-        <row>
-            <entry><literal>^=</literal></entry>
-            <entry><literal>lhs ^= rhs</literal></entry>
-            <entry>exclusive or</entry>
-            <entry><literal>lhs := lhs.xor(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
 
-        <row><entry namest="first" nameend="last"><emphasis>Conditional logical assignment</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Logical assignment</emphasis></entry></row>
         
         <row>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
             <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
 
         <row>
@@ -1181,19 +1133,16 @@ if you prefer.";</programlisting>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>Boolean</literal></entry>
         </row>
         
     </tbody>
     </tgroup>
     </table>
     
-    <comment><para>TODO: should we have logical <literal>!</literal> and bitwise
-    <literal>~</literal> for consistency with C and Java?</para></comment>
-    
-     </section>
+    </section>
     
     <section>
     <title>Operators for handling null values</title>
@@ -1959,7 +1908,114 @@ if you prefer.";</programlisting>
         
     </section>
     
-   </section>
+    <section>
+    <title>Bitwise operators</title>
+    
+    <para>These are C-style bitwise operations for bit strings (unsigned integers).
+    A <literal>Boolean</literal> is considered a bit string of length one, so these
+    operators also apply to <literal>Boolean</literal> values. Note that in Ceylon
+    these operators have a higher precedence than they have in C or Java. There are
+    no bitshift operators in Ceylon.</para>
+    
+    <table>
+    <tgroup cols="7">
+        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="4.5*" align="center"/>
+        <colspec colnum="3" colwidth="4.0*" align="center"/>
+        <colspec colnum="4" colwidth="8.5*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="3.5*" align="center"/>
+        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Op</entry>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Equivalent</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Bitwise operations</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>~</literal></entry>
+            <entry><literal>~rhs</literal></entry>
+            <entry>complement</entry>
+            <entry><literal>rhs.complement</literal></entry>
+            <entry></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>|</literal></entry>
+            <entry><literal>lhs | rhs</literal></entry>
+            <entry>or</entry>
+            <entry><literal>lhs.or(rhs)</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&amp;</literal></entry>
+            <entry><literal>lhs &amp; rhs</literal></entry>
+            <entry>and</entry>
+            <entry><literal>lhs.and(rhs)</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>^</literal></entry>
+            <entry><literal>lhs ^ rhs</literal></entry>
+            <entry>exclusive or</entry>
+            <entry><literal>lhs.xor(rhs)</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+
+        
+        <row><entry namest="first" nameend="last"><emphasis>Bitwise assignment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>|=</literal></entry>
+            <entry><literal>lhs |= rhs</literal></entry>
+            <entry>or</entry>
+            <entry><literal>lhs := lhs.or(rhs)</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>&amp;=</literal></entry>
+            <entry><literal>lhs &amp;= rhs</literal></entry>
+            <entry>and</entry>
+            <entry><literal>lhs := lhs.and(rhs)</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        <row>
+            <entry><literal>^=</literal></entry>
+            <entry><literal>lhs ^= rhs</literal></entry>
+            <entry>exclusive or</entry>
+            <entry><literal>lhs := lhs.xor(rhs)</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+        </row>
+        
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+    
+    </section>
     
     <section>
         <title>Operator precedence and associativity</title>
@@ -1984,41 +2040,38 @@ if you prefer.";</programlisting>
     <tbody>
     
             <row>
-                <entry>Member invocation and lookup, subrange, reflection:</entry>
+                <entry>Member invocation and lookup, subrange, reflection,
+                postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>, 
                 <literal>^.</literal>, 
                 <literal>*.</literal>, 
                 <literal>?.</literal>, 
+                <literal>(,,)</literal>,
+                <literal>{;;;}</literal>,
                 <literal>[]</literal>, 
                 <literal>[..]</literal>, 
                 <literal>[...]</literal>, 
                 <literal>[,,]</literal>,
-                <literal>#</literal></entry>
-                <entry>Binary / ternary / N-ary</entry>
+                <literal>#</literal>,
+                <literal>++</literal>, 
+                <literal>--</literal></entry>
+                <entry>Binary / ternary / N-ary / unary postfix</entry>
                 <entry>Left</entry>
             </row>
+            
             <row>
-                <entry>Prefix increment, decrement,
-                negation, render<!--, bitwise complement-->:</entry>
+                <entry>Prefix increment, prefix decrement,
+                negation, render, bitwise complement:</entry>
                 <entry>
                 <literal>++</literal>, 
                 <literal>--</literal>, 
                 <literal>-</literal>, 
                 <literal>$</literal>,
-                <!--literal>~</literal--> 
+                <literal>~</literal> 
                 </entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
-            </row>
-            <row>
-                <entry>Postfix increment, decrement:</entry>
-                <entry>
-                <literal>++</literal>, 
-                <literal>--</literal>
-                </entry> 
-                <entry>Unary postfix</entry>
-                <entry>Left</entry>
             </row>
             <row>
                 <entry>Exponentiation:</entry>
@@ -2041,28 +2094,25 @@ if you prefer.";</programlisting>
             </row>
             -->
             <row>
-                <entry>Multiplication, division, remainder
-                <!--intersection--><!--, bitwise and--> for
-                numbers<!--, sets--><!--and durations-->:</entry> 
+                <entry>Multiplication, division, remainder,
+                bitwise and:</entry> 
                 <entry>
                 <literal>*</literal>, 
                 <literal>/</literal>, 
-                <literal>%</literal><!--,
-                <literal>~</literal>,
-                <literal>&amp;&amp;&amp;</literal>-->
+                <literal>%</literal>,
+                <literal>&amp;</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Addition, subtraction, concatenation 
-                <!--union, complement, join--><!--, bitwise or, bitwise xor-->
-                for numbers<!--, sets,--><!-- and durations--> and lists:</entry> 
+                <entry>Addition, subtraction, bitwise or,
+                bitwise xor, list concatenation:</entry> 
                 <entry>
                 <literal>+</literal>, 
-                <literal>-</literal><!--, 
-                <literal>|||</literal>, 
-                <literal>^^^</literal>-->
+                <literal>-</literal>, 
+                <literal>|</literal>, 
+                <literal>^</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
@@ -2105,6 +2155,7 @@ if you prefer.";</programlisting>
                 <entry>Binary</entry>
                 <entry>Right</entry>
             </row>
+
             <row>
                 <entry>Comparison, <!--set comparison,--> containment,
                 assignability:</entry> 
@@ -2135,41 +2186,38 @@ if you prefer.";</programlisting>
             </row>
         
             <row>
-                <entry>Logical/bitwise complement:</entry>
+                <entry>Logical not:</entry>
                 <entry><literal>!</literal></entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
             </row>
             <row>
-                <entry>Logical/bitwise and:</entry> 
+                <entry>Logical and:</entry> 
                 <entry>
-                <literal>&amp;&amp;</literal>, 
-                <literal>&amp;</literal>
+                <literal>&amp;&amp;</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Logical/bitwise or, xor:</entry>
+                <entry>Logical or:</entry>
                 <entry>
-                <literal>||</literal>, 
-                <literal>|</literal>, 
-                <literal>^</literal>
+                <literal>||</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Implication:</entry>
+                <entry>Logical implication:</entry>
                 <entry>
                 <literal>=></literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
             </row>
+            
             <row>
-                <entry>Assignment, numeric assignment, logical assignment,
-                default assignment:</entry> 
+                <entry>Assignment:</entry> 
                 <entry>
                 <literal>:=</literal>, 
                 <literal>+=</literal>, 
@@ -2194,12 +2242,8 @@ if you prefer.";</programlisting>
     
     <comment><para>TODO: should <literal>?</literal> have a higher precedence?</para></comment>
     
-    <comment><para>TODO: should <literal>|</literal> and <literal>&amp;</literal> have 
-    a higher precedence than <literal>||</literal> and <literal>&amp;&amp;</literal>, 
-    like in C and Java? What exactly is the reasoning behind that?</para></comment>
-    
     <comment><para>TODO: should <literal>^</literal> have a higher precedence than
-    <literal>|</literal>?</para></comment>
+    <literal>|</literal> like in C and Java?</para></comment>
     
     </section>
     
