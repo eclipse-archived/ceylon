@@ -572,11 +572,11 @@ class Customer(Name name, optional Organization org = null)
         <programlisting>public class DiagonalPoint extends Point {
         
     public DiagonalPoint(final Decimal position) {
-        final Decimal displacement = position.exponentiate(2).divide(2);
+        final Decimal displacement = position.power(2).divided(2);
         final Integer sign = position.negative ? -1 : 1;
         
-        x = sqrt(displacement).multiply(sign);
-        y = sqrt(displacement).multiply(sign);
+        x = sqrt(displacement).times(sign);
+        y = sqrt(displacement).times(sign);
         
         assert_(new F0&lt;String&gt;() {
                    public String call() { 
@@ -585,8 +585,7 @@ class Customer(Name name, optional Organization org = null)
                 },
                 new F0&lt;Boolean&gt;() {
                    public Boolean call() { 
-                       return x.exponentiate(2) + y.exponentiate(2) 
-                              == position.exponentiate(2);
+                       return x.power(2) + y.power(2) == position.power(2);
                    }
                 });
     }

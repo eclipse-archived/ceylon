@@ -1064,19 +1064,19 @@
     public I inverse;
 
     doc "The binary + operator"
-    public N add(N number);
+    public N plus(N number);
 
     doc "The binary - operator"
-    public I subtract(N number);
+    public I minus(N number);
 
     doc "The binary * operator"
-    public N multiply(N number);
+    public N times(N number);
 
     doc "The binary / operator"
-    public N divide(N number);
+    public N divided(N number);
 
     doc "The binary ** operator"
-    public N exponentiate(N number);
+    public N power(N number);
     
 }]]></programlisting>
 
@@ -1093,6 +1093,9 @@
     public N remainder(N number);
 
 }]]></programlisting>
+
+        <comment><para>TODO: should <literal>plus()</literal> and <literal>times()</literal>
+        accept varargs, to minimize method calls?</para></comment>
 
         <para>Five numeric types are built in:</para>
 

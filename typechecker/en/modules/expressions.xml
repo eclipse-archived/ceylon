@@ -694,7 +694,7 @@ if you prefer.";</programlisting>
     
     <programlisting>Integer j = i++;</programlisting>
     
-    <programlisting>x *= 2;</programlisting>
+    <programlisting>x -= 2;</programlisting>
     
     <programlisting>if ( x > 100 ) { ... }</programlisting>
     
@@ -715,13 +715,13 @@ if you prefer.";</programlisting>
     
     <para>Are equivalent to the following (Ceylon) code:</para>
     
-    <programlisting>Float z = x.multiply(y);</programlisting>
+    <programlisting>Float z = x.times(y);</programlisting>
     
     <programlisting>count := count.successor;</programlisting>
     
     <programlisting>Integer j := ( i := i.successor ).predecessor;</programlisting>
     
-    <programlisting>z := z.multiply(2);</programlisting>
+    <programlisting>z := z.minus(2);</programlisting>
     
     <programlisting>if ( x.compare(100).larger ) { ... }</programlisting>
     
@@ -1689,7 +1689,7 @@ if you prefer.";</programlisting>
             <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>sum</entry>
-            <entry><literal>lhs.add(rhs)</literal></entry>
+            <entry><literal>lhs.plus(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1698,7 +1698,7 @@ if you prefer.";</programlisting>
             <entry><literal>-</literal></entry>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
-            <entry><literal>lhs.subtract(rhs)</literal></entry>
+            <entry><literal>lhs.minus(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
@@ -1707,7 +1707,7 @@ if you prefer.";</programlisting>
             <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>product</entry>
-            <entry><literal>lhs.multiply(rhs)</literal></entry>
+            <entry><literal>lhs.times(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1716,7 +1716,7 @@ if you prefer.";</programlisting>
             <entry><literal>/</literal></entry>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>quotient</entry>
-            <entry><literal>lhs.divide(rhs)</literal></entry>
+            <entry><literal>lhs.divided(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1733,8 +1733,8 @@ if you prefer.";</programlisting>
         <row>
             <entry><literal>**</literal></entry>
             <entry><literal>lhs ** rhs</literal></entry>
-            <entry>exponentiate</entry>
-            <entry><literal>lhs.exponentiate(rhs)</literal></entry>
+            <entry>power</entry>
+            <entry><literal>lhs.power(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1746,7 +1746,7 @@ if you prefer.";</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs := lhs.add(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.plus(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1755,7 +1755,7 @@ if you prefer.";</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs := lhs.subtract(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.minus(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
@@ -1764,7 +1764,7 @@ if you prefer.";</programlisting>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs := lhs.multiply(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.times(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1773,7 +1773,7 @@ if you prefer.";</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs := lhs.divide(rhs)</literal></entry>
+            <entry><literal>lhs := lhs.divided(rhs)</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
