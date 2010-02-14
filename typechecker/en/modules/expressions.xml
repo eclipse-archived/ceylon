@@ -839,8 +839,6 @@ if you prefer.";</programlisting>
             <entry><literal>optional</literal> member type</entry>
         </row>
         
-        <!-- Spread -->
-        
         <row>
             <entry><literal>*.</literal></entry>
             <entry><literal>lhs*.member</literal></entry>
@@ -849,19 +847,6 @@ if you prefer.";</programlisting>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
             <entry>Member of <literal>X</literal></entry>
             <entry><literal>List</literal> of member type</entry>
-        </row>
-        
-        <row><entry namest="first" nameend="last"><emphasis>Type, method or functor argument specification</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>(,,)</literal> or {;;;}</entry>
-            <entry><literal>lhs(x,y,z)</literal> or 
-            <literal>lhs { a=x; b=y; c=z; }</literal></entry>
-            <entry>arguments</entry>
-            <entry><literal></literal></entry>
-            <entry>Type, method or functor</entry>
-            <entry>Parameter types of type, method or functor</entry>
-            <entry>Type or return type of method or functor</entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
@@ -876,6 +861,32 @@ if you prefer.";</programlisting>
             <entry><literal>String</literal></entry>
         </row>
     
+        <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>.=</literal></entry>
+            <entry><literal>lhs.=member</literal></entry>
+            <entry>apply</entry>
+            <entry>lhs := lhs.member</entry>
+            <entry><literal>X</literal></entry>
+            <entry>Member of <literal>X</literal>, of
+            type <literal>X</literal></entry>
+            <entry>X</entry>
+        </row>
+
+        <row><entry namest="first" nameend="last"><emphasis>Type, method or functor argument specification</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>(,,)</literal> or {;;;}</entry>
+            <entry><literal>lhs(x,y,z)</literal> or 
+            <literal>lhs { a=x; b=y; c=z; }</literal></entry>
+            <entry>arguments</entry>
+            <entry><literal></literal></entry>
+            <entry>Type, method or functor</entry>
+            <entry>Parameter types of type, method or functor</entry>
+            <entry>Type or return type of method or functor</entry>
+        </row>
+        
     </tbody>
     </tgroup>
     </table>
@@ -1217,74 +1228,6 @@ if you prefer.";</programlisting>
             <entry><literal>T</literal> or <literal>optional T</literal></entry>
         </row>
         
-        <!--  
-        <row>
-            <entry><literal>?:</literal></entry>
-            <entry><literal>lhs ?: rhs</literal></entry>
-            <entry>null default</entry>
-            <entry><literal>if (lhs?) lhs else rhs</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>Object</literal></entry>
-            <entry><literal>Object</literal></entry>
-        </row>
-        -->
-        
-        <!--
-        <row>
-            <entry><literal>?=</literal></entry>
-            <entry><literal>lhs ?= rhs</literal></entry>
-            <entry>null assignment</entry>
-            <entry><literal>if (lhs?) false else (lhs=rhs)?</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        <row>
-            <entry><literal>=?</literal></entry>
-            <entry><literal>lhs =? rhs</literal></entry>
-            <entry>null assignment</entry>
-            <entry><literal>if (rhs?) (lhs=rhs)? else false</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        -->
-        <!--         
-        <row><entry namest="first" nameend="last"><emphasis>Emptiness</emphasis></entry></row>
-        --> 
-        
-        <!--  
-        <row>
-            <entry><literal>??:</literal></entry>
-            <entry><literal>lhs ??: rhs</literal></entry>
-            <entry>empty default</entry>
-            <entry><literal>if (lhs)? ( if (lhs.empty) rhs else lhs ) else rhs</literal></entry>
-            <entry><literal>optional Holder</literal></entry>
-            <entry><literal>Container</literal></entry>
-            <entry><literal>Container</literal></entry>
-        </row>
-        -->
-        
-        <!--  
-        <row>
-            <entry><literal>??=</literal></entry>
-            <entry><literal>lhs ??= rhs</literal></entry>
-            <entry>empty assignment</entry>
-            <entry><literal>if (lhs??) false else (lhs=rhs)??</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        <row>
-            <entry><literal>=??</literal></entry>
-            <entry><literal>lhs =?? rhs</literal></entry>
-            <entry>empty assignment</entry>
-            <entry><literal>if (rhs??) (lhs=rhs)?? else false</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        -->
     </tbody>
     </tgroup>
     </table>
@@ -1517,13 +1460,17 @@ if you prefer.";</programlisting>
     </tgroup>
     </table>
     
+    <comment><para>TODO: Should we overload <literal>*</literal> for lists, like
+    in some other languages? It is nice to be able to do stuff like 
+    <literal>"-"*n</literal>.</para></comment>
+    
     </section>
     
     <section>
     <title>Operators for constructing objects</title>
     
-    <para>These operators simplify the syntax for constructing certain 
-    commonly used built-in types.</para>
+    <para>These operators simplify the syntax for constructing certain commonly 
+    used built-in types.</para>
     
     <table>
     <tgroup cols="7">
@@ -2141,12 +2088,6 @@ if you prefer.";</programlisting>
                 <entry><literal>?</literal>, <literal>??</literal></entry> 
                 <entry>Unary postfix</entry>
                 <entry>None</entry>
-            </row>
-            <row>
-                <entry>Binary existence, emptiness:</entry> 
-                <entry><literal>?:</literal>, <literal>??:</literal></entry>
-                <entry>Binary</entry>
-                <entry>Right</entry>
             </row>
             -->
             <row>
