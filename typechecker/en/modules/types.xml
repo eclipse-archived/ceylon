@@ -266,6 +266,13 @@
     
 }]]></programlisting>
 
+        <para>An iterator is used according to the following idiom:</para>
+        
+        <programlisting>do ( Iterator i = list.iterator() )
+while (i.more) {
+    doSomething( i.next() );
+}</programlisting>
+
 <!--
         <para>The following decorator exists:</para>
 
@@ -610,6 +617,10 @@
     public X first;    
     public X last;
     
+    doc "The tail of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> rest;
+    
     public optional X firstOrNull;
     public optional X lastOrNull;
     
@@ -622,18 +633,45 @@
     public optional Integer firstIndexOrNull(functor Boolean(X element) having);
     public optional Integer lastIndexOrNull(functor Boolean(X element) having);
     
-    public List<X> head(Integer to=firstIndex);
-    public List<X> tail(Integer from=lastIndex);
-    
-    doc "The binary range operator x[from..to]"
-    public List<X> range(Integer from, Integer to);
+    doc "The ternary range operator x[from..to], along
+         with the binary upper range x[from...] and
+         lower range x[...to] operators.
+         The returned list does not reflect changes
+         to the original list."
+    public List<X> range(Integer from, Integer to=size);
 
-    doc "The binary join operator x + y"
+    doc "The binary join operator x + y. 
+         The returned list does not reflect changes
+         to the original lists."
     public List<T> join(List<T> elements) where T<=X;
     
-    public List<X> sublist(Integer from, Integer to);
+    doc "A sublist from the first given index (inclusive) to 
+         the second given index (exclusive). The size of the
+         returned sublist is the difference between the two
+         indexes. The returned list does reflect changes
+         to the original list."
+    public List<X> sublist(Integer from, Integer to=size);
+    
+    doc "A sublist of the given length beginning with the 
+         first element of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> leading(Integer length=1);
+    
+    doc "A sublist of the given length ending with the 
+         last element of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> trailing(Integer length=1);
+    
+    doc "The list in reverse order. The returned list does 
+         reflect changes to the original list."
     public List<X> reversed;
+    
+    doc "The unsorted elements of the list. The returned 
+         bag does reflect changes to the original list."
     public Bag<X> unsorted;
+    
+    doc "A map from list index to element. The returned 
+         map does reflect changes to the original list."
     public Map<Integer,X> map;
     
     public List<Y> transform<Y>(functor Y(X element) select);
@@ -642,6 +680,14 @@
 
 }]]></programlisting>
 
+            <para>It is possible to iterate lists without creating an iterator:</para>
+            
+            <programlisting><![CDATA[do ( List<Person> people := ... )
+while (people nonempty) {
+    doSomething(people.first);
+    people.=rest;
+}]]></programlisting>
+            
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenList<X> 
@@ -665,6 +711,10 @@
     public void resort();
     public void resort(functor Comparison(X x, X y) by);
     
+    override public OpenList<X> rest;
+
+    override public OpenList<X> leading(Integer length);
+    override public OpenList<X> trailing(Integer length);
     override public OpenList<X> sublist(Integer from, Integer to);
     override public OpenList<X> reversed;
     override public OpenMap<Integer,X> map;
