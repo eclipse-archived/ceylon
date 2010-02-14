@@ -437,13 +437,13 @@ implicationExpression
 
 //should '^' have a higher precedence?
 disjunctionExpression
-    :  conjunctionExpression 
-       (('||' | '|' '^') conjunctionExpression)?
+    : conjunctionExpression 
+      ('||' conjunctionExpression)?
     ;
 
 conjunctionExpression
     : logicalNegationExpression 
-      (('&&' | '&') logicalNegationExpression)*
+      ('&&' logicalNegationExpression)*
     ;
 
 logicalNegationExpression
@@ -486,20 +486,16 @@ dateCompositionExpression
 
 additiveExpression
     : multiplicativeExpression
-      (('+' | '-') multiplicativeExpression)*
+      (('+' | '-' | '|' | '^') multiplicativeExpression)*
     ;
 
 multiplicativeExpression 
     : exponentiationExpression
-      (('*' | '/' | '%') exponentiationExpression)*
+      (('*' | '/' | '%' | '&') exponentiationExpression)*
     ;
 
 exponentiationExpression
-    : postfixExpression ('**' postfixExpression)?
-    ;
-
-postfixExpression
-    : unaryExpression ('--' | '++')*
+    : unaryExpression ('**' unaryExpression)?
     ;
 
 unaryExpression 
@@ -535,6 +531,7 @@ selector
     | reflectedMember
     | arguments
     | elementSelector
+    | ('--' | '++')
     ;
 
 memberInvocation
