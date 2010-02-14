@@ -717,11 +717,11 @@ if you prefer.";</programlisting>
     
     <programlisting>Float z = x.multiply(y);</programlisting>
     
-    <programlisting>count = count.successor;</programlisting>
+    <programlisting>count := count.successor;</programlisting>
     
-    <programlisting>Integer j = ( i = i.successor ).predecessor;</programlisting>
+    <programlisting>Integer j := ( i := i.successor ).predecessor;</programlisting>
     
-    <programlisting>z = z.multiply(2);</programlisting>
+    <programlisting>z := z.multiply(2);</programlisting>
     
     <programlisting>if ( x.compare(100).larger ) { ... }</programlisting>
     
