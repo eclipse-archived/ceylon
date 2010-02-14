@@ -397,7 +397,7 @@ assignable
 //can be used to init locals
 expression 
     : methodExpression 
-      ( ('=' | ':=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
+      ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
     ;
 
 methodExpression
