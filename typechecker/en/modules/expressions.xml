@@ -1328,7 +1328,7 @@ if you prefer.";</programlisting>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
-            <entry><literal>lhs.tail(x)</literal></entry>
+            <entry><literal>lhs.range(x)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
             <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
@@ -1337,7 +1337,7 @@ if you prefer.";</programlisting>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[...y]</literal></entry>
             <entry>lower range</entry>
-            <entry><literal>lhs.head(y)</literal></entry>
+            <entry><literal>lhs.range(0,y)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
             <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
