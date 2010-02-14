@@ -2245,6 +2245,13 @@ if you prefer.";</programlisting>
     <comment><para>TODO: should <literal>^</literal> have a higher precedence than
     <literal>|</literal> like in C and Java?</para></comment>
     
+    <comment><para>TODO: should <literal>^,|,&amp;</literal> have a lower precedence
+    than <literal>+,-,*,/</literal> like in Ruby?</para></comment>
+    
+    <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
+    <literal>&gt;&gt;</literal> later, we could give them the same precedence
+    as <literal>**</literal>.</para></comment>
+    
     </section>
     
     </section>
