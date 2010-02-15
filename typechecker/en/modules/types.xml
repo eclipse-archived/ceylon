@@ -328,7 +328,7 @@ while (i.more) {
     doc "Replace the current element in the iterable
          object to which this iterator belongs with
          the given object."
-    public Boolean replace(X replacement);
+    public assign current;
     
 }]]></programlisting>
 
