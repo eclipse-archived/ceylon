@@ -390,14 +390,17 @@ while (i.more) {
         <programlisting><![CDATA[public mutable interface OpenCategory<in X> 
         satisfies Category {
     
-    doc "Add the given element to the category."
+    doc "Add the given element to the category. Return |true| if 
+         the element did not already belong to the category."
     public Boolean add(X element);
 
 }]]></programlisting>
 
         <programlisting><![CDATA[public extension class OpenCategories<in X>(OpenCategory<X> category) {
         
-    doc "Add the given elements to the category."
+    doc "Add the given elements to the category. Return |true| if 
+         at least one element did not already belong to the 
+         category."
     public Boolean add(X... elements) {
         Boolean added = false;
         for (X x in elements) {
@@ -415,11 +418,11 @@ while (i.more) {
         
         <programlisting><![CDATA[public interface Correspondence<in U, out V> {
     
-    doc "Binary lookup operator x[key]. Returns the value 
-         associated with the given key."
+    doc "Binary lookup operator x[key]. Returns the value defined
+         for the given key."
     public V value(U key);
     
-    doc "Determine if there is a value associated with the given key."
+    doc "Determine if there is a value defined for the given key."
     public Boolean defines(U key);
     
 }]]></programlisting>
@@ -427,19 +430,19 @@ while (i.more) {
         <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
 
     doc "Binary lookup operator x[keys]. Returns a list of values 
-         associated with the given keys, in order."
+         defined for the given keys, in order."
     public List<V> values(List<U> keys) {
         return from (U key in keys) select correspondence.lookup(key)
     }
     
     doc "Binary lookup operator x[keys]. Returns a set of values 
-         associated with the given set of keys."
+         defined for the given set of keys."
     public Set<V> values(Set<U> keys) {
         return ( from (U key in keys) select correspondence.lookup(key) ).elements
     }
     
-    doc "Determine if there are values associated with all the 
-         given keys."
+    doc "Determine if there are values defined for all the given 
+    keys."
     public Boolean defines(U... keys) {
         for (U key in keys) {
             if ( !correspondence.defines(key) ) {
@@ -545,6 +548,9 @@ while (i.more) {
     
     public Collection<T> with<T>(T... elements) where T <= X;
 
+    public Collection<X> without(Object... element);
+    public Collection<X> without(functor Boolean(X element) having);
+
     public OpenCollection<T> copy<T>() where T <= X;
     
 }]]></programlisting>
@@ -585,6 +591,9 @@ while (i.more) {
     public Boolean subset(Set<Object> set);
     
     public override Set<T> with<T>(T... elements) where T <= X;
+    
+    public override Set<X> without(Object... element);
+    public override Set<X> without(functor Boolean(X element) having);
     
     public override OpenSet<T> copy<T>() where T <= X;
 
@@ -724,7 +733,10 @@ while (i.more) {
          every element of the list."
     public List<Y> transform<Y>(functor Y(X element) select);
     
-    public OpenList<T> copy<T>() where T <= X;
+    public override List<X> without(Object... element);
+    public override List<X> without(functor Boolean(X element) having);
+    
+    public override OpenList<T> copy<T>() where T <= X;
 
 }]]></programlisting>
 
@@ -785,11 +797,14 @@ while (people nonempty) {
     
     public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
     
+    public override Map<U, V> without(Object... element);
+    public override Map<U, V> without(functor Boolean(U key -> V value) having);
+    
     public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
     
     public Map<U, V> entries(functor Boolean(U key -> V value) having);
     
-    public OpenMap<U,T> copy<U,T>() where T <= V;
+    public override OpenMap<U,T> copy<U,T>() where T <= V;
     
 }]]></programlisting>
 
@@ -819,7 +834,10 @@ while (people nonempty) {
     
     public override Bag<T> with<T>(T... elements) where T <= X;
     
-    public OpenBag<T> copy<T>() where T <= X;
+    public override Bag<X> without(Object... element);
+    public override Bag<X> without(functor Boolean(X element) having);
+    
+    public override OpenBag<T> copy<T>() where T <= X;
     
     public Map<X,Integer> map;
     
