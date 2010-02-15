@@ -706,7 +706,7 @@ while (i.more) {
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> push(X... elements);
+    public List<X> stack(X... elements);
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
