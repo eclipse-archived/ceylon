@@ -617,7 +617,7 @@ while (i.more) {
     
     public Boolean clear();
     
-    public Boolean remove(X element);
+    public Boolean remove(X... elements);
     public Integer remove(functor Boolean(X element) having);
     
 }]]></programlisting>
@@ -642,9 +642,6 @@ while (i.more) {
     public Boolean subset(Set<Object> set);
     
     public override Set<T> with<T>(T... elements) where T <= X;
-    
-    public Set<X> without(Object... element);
-    public Set<X> without(functor Boolean(X element) having);
     
     public override OpenSet<T> copy<T>() where T <= X;
 
@@ -844,9 +841,6 @@ while (people nonempty) {
     public optional V valueOrNull(U key);
     
     public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
-    
-    public Map<U, V> without(U... keys);
-    public Map<U, V> without(functor Boolean(U key -> V value) having);
     
     public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
     
