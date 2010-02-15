@@ -957,7 +957,7 @@ while (people nonempty) {
             <comment><para>TODO: is it OK that maps are not contravariant in U?</para></comment>
             
             <programlisting><![CDATA[public interface Map<U, out V>
-    satisfies Collection<Entry<U,V>>, Correspondence<U, V> {
+        satisfies Collection<Entry<U,V>>, Correspondence<U, V> {
     
     doc "The keys of the map, as a |Set|."
     public Set<U> keys;
