@@ -589,8 +589,8 @@ while (i.more) {
     
     public override Set<T> with<T>(T... elements) where T <= X;
     
-    public override Set<X> without(Object... element);
-    public override Set<X> without(functor Boolean(X element) having);
+    public Set<X> without(Object... element);
+    public Set<X> without(functor Boolean(X element) having);
     
     public override OpenSet<T> copy<T>() where T <= X;
 
@@ -791,8 +791,8 @@ while (people nonempty) {
     
     public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
     
-    public override Map<U, V> without(Object... element);
-    public override Map<U, V> without(functor Boolean(U key -> V value) having);
+    public Map<U, V> without(U... keys);
+    public Map<U, V> without(functor Boolean(U key -> V value) having);
     
     public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
     
