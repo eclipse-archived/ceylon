@@ -110,9 +110,9 @@
         
         <para>The <literal>lang.Boolean</literal> class represents
         boolean values, supports the binary <literal>||, &amp;&amp;</literal> 
-        and <literal>=></literal> operators and inherits the binary 
-        <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
-        operators from <literal>Bits</literal>.</para>
+        and <literal>=></literal> operators and unary <literal>!</literal>
+        operator and inherits the binary <literal>|, &amp;, ^</literal> and 
+        unary <literal>~</literal> operators from <literal>Bits</literal>.</para>
         
         <programlisting><![CDATA[public final class Boolean
         satisfies Case<Boolean>, Bits<Boolean> {
@@ -1297,7 +1297,7 @@ while (people nonempty) {
         
         <para>The interface <literal>Bits</literal> represents a fixed length
         string of boolean values, and supports the binary 
-        <literal>|, &amp;, ^</literal> and unary <literal>!</literal> 
+        <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
         operators.</para>
         
         <programlisting><![CDATA[public interface Bits<T> 
