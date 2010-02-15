@@ -548,9 +548,6 @@ while (i.more) {
     
     public Collection<T> with<T>(T... elements) where T <= X;
 
-    public Collection<X> without(Object... element);
-    public Collection<X> without(functor Boolean(X element) having);
-
     public OpenCollection<T> copy<T>() where T <= X;
     
 }]]></programlisting>
@@ -733,9 +730,6 @@ while (i.more) {
          every element of the list."
     public List<Y> transform<Y>(functor Y(X element) select);
     
-    public override List<X> without(Object... element);
-    public override List<X> without(functor Boolean(X element) having);
-    
     public override OpenList<T> copy<T>() where T <= X;
 
 }]]></programlisting>
@@ -833,9 +827,6 @@ while (people nonempty) {
         satisfies Collection<X>, Correspondence<Object, Integer> {
     
     public override Bag<T> with<T>(T... elements) where T <= X;
-    
-    public override Bag<X> without(Object... element);
-    public override Bag<X> without(functor Boolean(X element) having);
     
     public override OpenBag<T> copy<T>() where T <= X;
     
