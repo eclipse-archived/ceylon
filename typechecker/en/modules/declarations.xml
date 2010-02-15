@@ -250,6 +250,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>functor optional Object()</programlisting>
         <programlisting>functor Y(optional Y object, Factory&lt;Y&gt; factory)</programlisting>
         
+        <para>Functor types are covariant in the return type, and contravariant in the
+        parameter types. So <literal>functor String(Object o)</literal> is assignable to
+        <literal>functor Object(String s)</literal>.</para>
+        
     </section>
 
     <section>
