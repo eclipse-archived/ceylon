@@ -260,8 +260,19 @@
 
         <programlisting><![CDATA[public interface Iterator<out X> {
 
+    doc "The status of the iterator. |true|
+         indicates that the iterator contains
+         more elements."
     public Boolean more;
+    
+    doc "The current element."
     public X current;
+
+    doc "Advance to the next element, returning
+         the next element."
+    throw #ExhaustedIteratorException
+          "if the iterator contains no
+           more elements."
     public X next();
     
 }]]></programlisting>
@@ -302,15 +313,21 @@ while (i.more) {
         
         <programlisting><![CDATA[public mutable interface OpenIterable<X> 
         satisfies Iterable<X> {
-        
+    
     public override OpenIterator<X> iterator();
     
 }]]></programlisting>
 
         <programlisting><![CDATA[public mutable interface OpenIterator<X> 
         satisfies OpenIterator<X> {
-
+    
+    doc "Remove the current element from the iterable
+         object to which this iterator belongs."
     public void remove();
+    
+    doc "Replace the current element in the iterable
+         object to which this iterator belongs with
+         the given object."
     public Boolean replace(X replacement);
     
 }]]></programlisting>
@@ -333,6 +350,9 @@ while (i.more) {
         
         <programlisting><![CDATA[public interface Case<in X> {
 
+    doc "Determine if the given value matches
+         this case, returning |true| iff the
+         value matches."
     public Boolean test(X value);
     
 }]]></programlisting>
