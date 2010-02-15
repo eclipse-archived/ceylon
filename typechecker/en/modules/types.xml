@@ -376,7 +376,8 @@ while (i.more) {
 
         <programlisting><![CDATA[public extension class Categories(Category category) {
         
-    doc "Determine if all the given elements belong to the category."
+    doc "Determine if all the given elements belong to the 
+         category."
     public Boolean contains(Iterable<Object> elements) {
         return forAll (Object elem in elements) every category.contains(elem)
     }
@@ -414,8 +415,8 @@ while (i.more) {
         
         <programlisting><![CDATA[public interface Correspondence<in U, out V> {
     
-    doc "Binary lookup operator x[key]. Returns the value associated 
-         with the given key."
+    doc "Binary lookup operator x[key]. Returns the value 
+         associated with the given key."
     public V value(U key);
     
     doc "Determine if there is a value associated with the given key."
@@ -437,7 +438,8 @@ while (i.more) {
         return ( from (U key in keys) select correspondence.lookup(key) ).elements
     }
     
-    doc "Determine if there are values associated with all the given keys."
+    doc "Determine if there are values associated with all the 
+         given keys."
     public Boolean defines(Iterable<U> keys) {
         for (U key in keys) {
             if ( !correspondence.defines(key) ) {
@@ -461,8 +463,8 @@ while (i.more) {
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> {
         
-     doc "Element assignment x[key] = value. Assign a value to the given 
-          key."
+     doc "Element assignment x[key] = value. Assign a value to 
+          the given key."
      public optional V define(U key, V value);
 
 }]]></programlisting>
@@ -614,23 +616,58 @@ while (i.more) {
             <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X>, Correspondence<Integer, X> {
     
-    public X first;    
+    doc "The first element of the list."
+    throws #EmptyException
+           "if the list is empty"
+    public X first;
+    
+    doc "The last element of the list."
+    throws #EmptyException
+           "if the list is empty"
     public X last;
     
     doc "The tail of the list. The returned list does 
          reflect changes to the original list."
     public List<X> rest;
     
+    doc "The first element of the list, or null if the
+         list is empty."
     public optional X firstOrNull;
+
+    doc "The last element of the list, or null if the
+         list is empty."
     public optional X lastOrNull;
     
+    doc "The index of the first element of the list."
+    throws #EmptyException
+           "if the list is empty"
     public Integer firstIndex;
+
+    doc "The index of the last element of the list."
+    throws #EmptyException
+           "if the list is empty"
     public Integer lastIndex;
     
+    doc "The index of the first element of the list
+         which satisfies the condition."
+    throws #NotFoundException
+           "if no element satsfies the condition"
     public Integer firstIndex(functor Boolean(X element) having);
+
+    doc "The index of the last element of the list
+         which satisfies the condition."
+    throws #NotFoundException
+           "if no element satsfies the condition"
     public Integer lastIndex(functor Boolean(X element) having);
     
+    doc "The index of the first element of the list
+         which satisfies the condition, or null if 
+         no element satisfies the condition."
     public optional Integer firstIndexOrNull(functor Boolean(X element) having);
+    
+    doc "The index of the last element of the list
+         which satisfies the condition, or null if 
+         no element satisfies the condition."
     public optional Integer lastIndexOrNull(functor Boolean(X element) having);
     
     doc "The ternary range operator x[from..to], along
@@ -661,6 +698,16 @@ while (i.more) {
          reflect changes to the original list."
     public List<X> trailing(Integer length=1);
     
+    doc "An extension of the list with the given elements
+         at the end of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> queue(X... elements);
+    
+    doc "An extension of the list with the given elements
+         at the start of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> push(X... elements);
+    
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
     public List<X> reversed;
@@ -673,6 +720,8 @@ while (i.more) {
          map does reflect changes to the original list."
     public Map<Integer,X> map;
     
+    doc "Produce a new list by applying an operation to
+         every element of the list."
     public List<Y> transform<Y>(functor Y(X element) select);
     
     public OpenList<T> copy<T>() where T <= X;
@@ -692,16 +741,13 @@ while (people nonempty) {
             <programlisting><![CDATA[public mutable interface OpenList<X> 
         satisfies List<X>, OpenCollection<X>, OpenCorrespondence<Integer, X> {
 
-    public void prepend(X element);
-    public void prepend(List<X> elements);
-    public void append(X element);
-    public void append(List<X> elements);
+    public void prepend(X... elements);
+    public void append(X... elements);
 
-    public void insert(Integer at, X element);
+    public void insert(Integer at, X... elements);
     public X removeIndex(Integer at);
     
-    public void delete(Integer from, Integer to);
-    public void truncate(Integer from);
+    public void delete(Integer from, Integer to=size);
     
     public X removeFirst();
     public X removeLast();
@@ -712,9 +758,13 @@ while (people nonempty) {
     
     override public OpenList<X> rest;
 
+    override public OpenList<X> queue(X... elements);
+    override public OpenList<X> push(X... elements);
+
     override public OpenList<X> leading(Integer length);
     override public OpenList<X> trailing(Integer length);
     override public OpenList<X> sublist(Integer from, Integer to);
+    override public OpenList<X> extension(X... elements);
     override public OpenList<X> reversed;
     override public OpenMap<Integer,X> map;
     
