@@ -586,7 +586,7 @@ while (i.more) {
     public Boolean superset(Set<Object> set);
     public Boolean subset(Set<Object> set);
     
-    public Set<T> aggregate<T>(T... elements) where T <= X;
+    public Set<T> extension<T>(T... elements) where T <= X;
     
     public OpenSet<T> copy<T>() where T <= X;
 
@@ -790,6 +790,8 @@ while (people nonempty) {
     
     public optional V valueOrNull(U key);
     
+    public Map<U, T> extension<T>(U key, T value) where T <= V;
+    
     public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
     
     public Map<U, V> entries(functor Boolean(U key -> V value) having);
@@ -821,6 +823,8 @@ while (people nonempty) {
             
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X>, Correspondence<Object, Integer> {
+    
+    public Bag<T> extension<T>(T... elements) where T <= X;
     
     public OpenBag<T> copy<T>() where T <= X;
     
