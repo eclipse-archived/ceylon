@@ -634,10 +634,9 @@ while (i.more) {
     public optional Integer lastIndexOrNull(functor Boolean(X element) having);
     
     doc "The ternary range operator x[from..to], along
-         with the binary upper range x[from...] and
-         lower range x[...to] operators.
-         The returned list does not reflect changes
-         to the original list."
+         with the binary upper range x[from...] and lower 
+         range x[...to] operators. The returned list does 
+         not reflect changes to the original list."
     public List<X> range(Integer from, Integer to=size);
 
     doc "The binary join operator x + y. 
@@ -645,11 +644,11 @@ while (i.more) {
          to the original lists."
     public List<T> join(List<T> elements) where T<=X;
     
-    doc "A sublist from the first given index (inclusive) to 
-         the second given index (exclusive). The size of the
-         returned sublist is the difference between the two
-         indexes. The returned list does reflect changes
-         to the original list."
+    doc "A sublist from the first given index (inclusive) 
+         to the second given index (exclusive). The size 
+         of the returned sublist is the difference between 
+         the two indexes. The returned list does reflect 
+         changes to the original list."
     public List<X> sublist(Integer from, Integer to=size);
     
     doc "A sublist of the given length beginning with the 
