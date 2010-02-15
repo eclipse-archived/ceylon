@@ -99,7 +99,8 @@
         
         <comment><para>TODO: instead of <literal>break</literal> and <literal>found</literal>,
         we could support <literal>break success</literal> and 
-        <literal>break failure</literal>.</para></comment>
+        <literal>break failure</literal> or even <literal>break true</literal>
+        and <literal>break false</literal>.</para></comment>
         
         <comment><para>TODO: We could support <literal>for/fail</literal> loops that return a 
         value by adding a <literal>found expr</literal> directive. We could support

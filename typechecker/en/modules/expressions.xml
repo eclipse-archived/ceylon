@@ -884,6 +884,9 @@ if you prefer.";</programlisting>
     </tgroup>
     </table>
     
+    <comment><para>TODO: do we really want the <literal>.=</literal>
+    operator?</para></comment>
+    
     </section>
         
     <section>
