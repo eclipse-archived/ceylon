@@ -158,7 +158,7 @@
         }
     }
     
-    public List<Boolean> bits {
+    override public List<Boolean> bits {
         return SingletonList(this)
     }
 }]]></programlisting>
