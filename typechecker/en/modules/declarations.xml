@@ -1441,12 +1441,12 @@ User user = personToUser(person);</programlisting>
         <programlisting>import org.mydomain.myframework.CollectionUtils;
 ...
 Collection&lt;Integer&gt; ints = ...;
-Collection&lt;Integer&gt; result = ints.nullElements();</programlisting>
+Collection&lt;Integer&gt; result = ints.nonZeroElements();</programlisting>
             
         <para>Is equivalent to this Java code:</para>
     
         <programlisting>Collection&lt;Integer&gt; ints = ...;
-Collection&lt;Integer&gt; result = new CollectionUtils(collection).nullElements();</programlisting>
+Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElements();</programlisting>
             
         <para>An extension is only available in a source file that explicitly 
         <literal>import</literal>s the extension (except for the extensions
