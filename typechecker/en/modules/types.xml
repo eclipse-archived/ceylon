@@ -585,7 +585,9 @@ while (i.more) {
     
     public Boolean superset(Set<Object> set);
     public Boolean subset(Set<Object> set);
-        
+    
+    public Set<T> aggregate<T>(T... elements) where T <= X;
+    
     public OpenSet<T> copy<T>() where T <= X;
 
 }]]></programlisting>
@@ -701,12 +703,12 @@ while (i.more) {
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> queue(X... elements);
+    public List<T> queue<T>(T... elements) where T <= X;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> stack(X... elements);
+    public List<T> stack<T>(T... elements) where T <= X;
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
