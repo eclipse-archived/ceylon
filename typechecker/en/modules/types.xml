@@ -369,8 +369,10 @@ while (i.more) {
         
         <programlisting><![CDATA[public interface Category {
     
-    doc "Determine if the given elements belongs to the category."
-    public Boolean contains(Object... elements);
+    doc "Determine if the given objects belong to the category.
+         Return |true| iff all the given objects belong to the 
+         category."
+    public Boolean contains(Object... objects);
 
 }]]></programlisting>
         
@@ -399,9 +401,9 @@ while (i.more) {
         <programlisting><![CDATA[public mutable interface OpenCategory<in X> 
         satisfies Category {
     
-    doc "Add the given elements to the category. Return |true| if 
-         at least one element did not already belong to the category."
-    public Boolean add(X... element);
+    doc "Add the given objects to the category. Return the number of 
+         objects which did not already belong to the category."
+    public Integer add(X... objects);
 
 }]]></programlisting>
 
@@ -444,7 +446,9 @@ while (i.more) {
            "if no value is defined for the given key"
     public V value(U key);
     
-    doc "Determine if there are values defined for the given keys."
+    doc "Determine if there are values defined for the given keys.
+         Return |true| iff there are values defined for all the
+         given keys."
     public Boolean defines(U... keys);
     
 }]]></programlisting>
@@ -523,8 +527,8 @@ while (i.more) {
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> {
         
-     doc "Element assignment x[key] = value. Assign a value to 
-          the given key. Return the previous value for the key,
+     doc "Element assignment operator x[key] = value. Assign a value 
+          to the given key. Return the previous value for the key,
           or null if there was no value defined."
      public optional V define(U key, V value);
 
@@ -551,7 +555,7 @@ while (i.more) {
         
         <programlisting><![CDATA[public interface Container {
         
-    doc "Determine if the container is empty."
+    doc "The nonempty operator. Determine if the container is empty."
     public Boolean empty;
     
 }]]></programlisting>
@@ -568,8 +572,11 @@ while (i.more) {
         operator.</para>
 
             <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) {
-
+    
+    doc "The key used to access the entry."
     public U key = key;
+    
+    doc "The value associated with the key."
     public V value = value;
     
     override public Boolean equals(Object that) {
@@ -593,37 +600,75 @@ while (i.more) {
         <programlisting><![CDATA[public interface Collection<out X> 
         satisfies Iterable<X>, Category, Container {
     
+    doc "The number of elements or entries belonging to the 
+         collection."
     public Integer size;
     
+    doc "Determine the number of times the given element
+         appears in the collection."
     public Integer count(Object element);
+    
+    doc "Determine the number of elements or entries for
+         which the given condition evaluates to |true|."
     public Integer count(functor Boolean(X element) having);
     
+    doc "Determine if the given condition evaluates to |true|
+         for at least one element or entry."
     public Boolean contains(functor Boolean(X element) having);
     
+    doc "The elements of the collection, as a |Set|."
     public Set<X> elements;
+    
+    doc "The elements of the collection for which the given
+         condition evaluates to |true|, as a |Set|."
     public Set<X> elements(functor Boolean(X element) having);
     
-    public List<X> sort();
-    public List<X> sort(functor Comparison(X x, X y) by);
+    doc "The elements of the collection, sorted using the given
+         comparison."
+    public List<X> sortedElements(functor Comparison(X x, X y) by);
     
+    doc "An extension of the collection, with the given 
+         elements. The returned collection reflects changes 
+         made to the first collection."
     public Collection<T> with<T>(T... elements) where T <= X;
 
+    doc "A mutable copy of the collection."
     public OpenCollection<T> copy<T>() where T <= X;
     
 }]]></programlisting>
 
-<!--
-    public Collection<T> subcollection<T>(functor T(X element) restriction) where T >= X;
--->
+<!-- public Boolean containsAny(Object... objects); ??? -->
+
+        <para>A decorator provides the ability to sort collections of
+        <literal>Comparable</literal> values in natural order.</para>
+        
+        <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
+        where X>=Comparable<X> {
+        
+    doc "The elements of the collection, sorted in natural order."
+    public List<X> sortedElements() {
+        return collection.sortedElements() by (X x, X y) x<=>y;
+    }
+    
+}]]></programlisting>
         
         <para>Mutable collections implement <literal>lang.OpenCollection</literal>:</para>
         
         <programlisting><![CDATA[public mutable interface OpenCollection<X> 
         satisfies OpenIterable<X>, OpenCategory<X>, Collection<X> {
     
+    doc "Remove all elements or entries of the collection,
+         resulting in an empty collection."
     public Boolean clear();
     
-    public Boolean remove(X... elements);
+    doc "Remove the given elements from the collection.
+         Return the number of elements which belonged
+         to the collection."
+    public Integer remove(X... elements);
+    
+    doc "Remove all elements from the collection for which
+         the given condition evaluates to |true|. Return 
+         the number of elements which were removed."
     public Integer remove(functor Boolean(X element) having);
     
 }]]></programlisting>
@@ -644,11 +689,15 @@ while (i.more) {
             <programlisting><![CDATA[public interface Set<out X> 
         satisfies Collection<X>, Correspondence<Object, Boolean> {
     
+    doc "Determine if the set is a superset of the given set.
+         Return |true| if it is a superset."
     public Boolean superset(Set<Object> set);
+
+    doc "Determine if the set is a subset of the given set.
+         Return |true| if it is a subset."
     public Boolean subset(Set<Object> set);
     
     public override Set<T> with<T>(T... elements) where T <= X;
-    
     public override OpenSet<T> copy<T>() where T <= X;
 
 }]]></programlisting>
@@ -804,19 +853,49 @@ while (people nonempty) {
             <programlisting><![CDATA[public mutable interface OpenList<X> 
         satisfies List<X>, OpenCollection<X>, OpenCorrespondence<Integer, X> {
 
+    doc "Add the given elements at the end of the list."
     public void prepend(X... elements);
+    
+    doc "Add the given elements at the start of the list,
+         incrementing the index of every existing element
+         by the number of given elements."
     public void append(X... elements);
 
+    doc "Insert the given elements beginning at the given
+         index, incrementing the index of every existing 
+         element with that index or greater by the number 
+         of given elements."
     public void insert(Integer at, X... elements);
+    
+    doc "Remove the element at the given index, decrementing
+         the index of every element with an index greater
+         than the given index by one. Return the removed
+         element."
     public X removeIndex(Integer at);
     
+    doc "Remove elements beginning with the first given index 
+         which have an index less than the second given index,
+         decrementing the indexes of all elements beginning
+         with the second given index by the difference between
+         the two indexes."
     public void delete(Integer from, Integer to=size);
     
+    doc "Remove and return the first element, decrementing
+         the index of every other element by one."
+    throws #EmptyException
+           "if the list is empty"
     public X removeFirst();
+
+    doc "Remove and return the last element."
+    throws #EmptyException
+           "if the list is empty"
     public X removeLast();
     
+    doc "Reverse the order of the list."
     public void reverse();
-    public void resort();
+    
+    doc "Reorder the elements of the list, according to the 
+         given comparison."
     public void resort(functor Comparison(X x, X y) by);
     
     override public OpenList<X> rest;
@@ -828,6 +907,20 @@ while (people nonempty) {
     
 }]]></programlisting>
             
+        <para>A decorator provides the ability to resort lists of
+        <literal>Comparable</literal> values in natural order.</para>
+        
+        <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
+        where X>=Comparable<X> {
+        
+    doc "Reorder the elements of the list, according to the 
+         natural order."
+    public void resort() {
+        list.resort() by (X x, X y) x<=>y;
+    }
+    
+}]]></programlisting>
+        
         </section>
             
         <section>
@@ -840,18 +933,29 @@ while (people nonempty) {
             <programlisting><![CDATA[public interface Map<U, out V>
     satisfies Collection<Entry<U,V>>, Correspondence<U, V> {
     
+    doc "The keys of the map, as a |Set|."
     public Set<U> keys;
+    
+    doc "The values of the map, as a |Bag|."
     public Bag<V> values;
+    
+    doc "A |Map| of each value belonging to the map, to the 
+         |Set| of all keys at which that value occurs."
     public Map<V, Set<U>> inverse;
     
+    doc "Return the value defined for the given key, or null
+         if no value is defined for that key."
     public optional V valueOrNull(U key);
     
-    public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
-    
+    doc "Produce a new map by applying an operation to every 
+         element of the map."
     public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
     
+    doc "The entries of the map for which the given condition 
+         evaluates to |true|, as a |Map|."
     public Map<U, V> entries(functor Boolean(U key -> V value) having);
     
+    public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
     public override OpenMap<U,T> copy<U,T>() where T <= V;
     
 }]]></programlisting>
@@ -861,12 +965,20 @@ while (people nonempty) {
             <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
         satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> {
     
+    doc "Remove the entry for the given key, returning the 
+         value of the removed entry."
+    throws #UndefinedKeyException
+           "if no value is defined for the given key"    
+    public V remove(U key);
+    
+    doc "Remove all entries from the map which have keys for 
+         which the given condition evaluates to |true|. Return 
+         entries which were removed."
+    public Map<U,V> remove(functor Boolean(U key) having);
+    
     override public OpenSet<U> keys;
     override public OpenBag<V> values;
     override public OpenMap<V, Set<U>> inverse;
-    
-    public optional V removeKey(U key);
-    public Bag<V> removeKeys(functor Boolean(U key) having);
     
 }]]></programlisting>
             
@@ -880,11 +992,13 @@ while (people nonempty) {
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X>, Correspondence<Object, Integer> {
     
-    public override Bag<T> with<T>(T... elements) where T <= X;
-    
-    public override OpenBag<T> copy<T>() where T <= X;
-    
+    doc "A map from element to the number of occurrences of 
+         the element. The returned map reflects changes to 
+         the original bag."
     public Map<X,Integer> map;
+    
+    public override Bag<T> with<T>(T... elements) where T <= X;
+    public override OpenBag<T> copy<T>() where T <= X;
     
 }]]></programlisting>
 
@@ -1010,13 +1124,21 @@ while (people nonempty) {
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         satisfies List<X>, Case<Object>
         where X>=Ordinal & X>=Comparable<X> { 
-
+    
+    doc "The first value in the range."
     public X first = first;
+    
+    doc "The last value in the range."
     public X last = last;
     
     ... 
     
-    List<X> by(Natural stepSize);  
+    doc "Return a |List| of values in the range, 
+         beginning at the first value, and 
+         incrementing by a constant step size,
+         until a value outside the range is
+         reached."
+    public List<X> by(Natural stepSize);  
     
 }]]></programlisting>
 
@@ -1086,16 +1208,27 @@ while (people nonempty) {
     
     ... 
     
+    doc "Split the string into tokens, using the given
+         separator characters."
     public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
     
+    doc "The string, with all characters in lowercase."
     public String lowercase { return ... }
+    
+    doc "The string, with all characters in uppercase."
     public String uppercase { return ... }
     
-    public String strip(Iterable<Character> whitespace = " \n\l\r\t") { return ... }
-    public String normalize(Iterable<Character> whitespace = " \n\l\r\t") { return ... }
+    doc "Remove the given characters from the beginning 
+         and end of the string.
+    public String strip(Character... whitespace = " \n\l\r\t") { return ... }
     
+    doc "Collapse substrings of the given characters into
+         single space characters."
+    public String normalize(Character... whitespace = " \n\l\r\t") { return ... }
+    
+    doc "Join the given strings, using this string as
+         a separator."
     public String join(String... strings) { return ... }
-    public String join(Iterable<String> strings) { return ... }
     
 }]]></programlisting>
         
@@ -1114,9 +1247,18 @@ while (people nonempty) {
         
         <programlisting><![CDATA[public class Regex(String expression)
         satisfies Case<String> { 
-    public List<Match> matchList(String string) { return ... }
+        
+    doc "Return the substrings of the given string which
+         match the parenthesized groups of the regex,
+         ordered by the position of the opening parenthesis
+         of the group." 
+    public Iterator<Match> matchList(String string) { return ... }
+    
+    doc "Determine if the given string matches the regex."
     public Boolean matches(String string) { return ... }
+    
     ... 
+    
 }]]></programlisting>
         
         <comment><para>TODO: I assume these are just Java (Perl 5-style) regular expressions. Is
@@ -1134,11 +1276,22 @@ while (people nonempty) {
         
         <programlisting><![CDATA[public interface Bits<T> 
         where T = subtype {
+        
+    doc "Bitwise or operator x|y"
     public T or(T bits);
+    
+    doc "Bitwise and operator x&y"
     public T and(T bits);
+    
+    doc "Bitwise xor operator x^y"
     public T xor(T bits);
+    
+    doc "Bitwise complement operator ~x"
     public T complement;
+    
+    doc "A list of the bits."
     public List<Boolean> bits;
+    
 }]]></programlisting>
         
     </section>
