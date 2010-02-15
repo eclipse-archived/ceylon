@@ -121,6 +121,7 @@ VarargsParam?
         <programlisting>Specifier := "=" Expression</programlisting>
         
         <para>A varargs parameter accepts a lists of arguments or a single argument of type 
+        <literal>Iterable</literal>. Inside the method, it is available as a local of type
         <literal>Iterable</literal>.</para>
         
         <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
