@@ -57,10 +57,10 @@
     }
     
     doc "Determine if the instance belongs to the given |Iterable|
-         object."
+         object or listed objects."
     see #Iterable
-    public Boolean in(Iterable<Object> iterable) {
-        return forAny (Object elem in iterable) some elem == this
+    public Boolean in(Object... objects) {
+        return forAny (Object elem in objects) some elem == this
     }
     
     doc "The |Type| of the instance."
