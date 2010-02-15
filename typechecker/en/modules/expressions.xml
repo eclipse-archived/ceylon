@@ -708,7 +708,7 @@ if you prefer.";</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
-    <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.add(person1)^.add(person2)*.name;</programlisting>
+    <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.append(person1)^.append(person2)*.name;</programlisting>
     
     <programlisting>optional String name = person?.name;</programlisting>
     
@@ -740,9 +740,9 @@ if you prefer.";</programlisting>
         lhs = Chain&lt;String&gt; { 
             lhs = Chain&lt;String&gt; { 
                 lhs = ArrayList(); 
-                override void call() { lhs.add(person1); } }.lhs
+                override void call() { lhs.append(person1); } }.lhs
             }
-            override void call() { lhs.add(person2); } }.lhs
+            override void call() { lhs.append(person2); } }.lhs
         }
         override void call(String element) { element.name; } 
     }.result;</programlisting>

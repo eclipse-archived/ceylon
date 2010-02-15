@@ -1626,7 +1626,7 @@ while (people nonempty) {
         OpenList<Y> list = ArrayList<Y>();
         for (X x in elements) {
             if ( having(x) ) {
-                list.add( select(x) );
+                list.append( select(x) );
             }
         }
         if (exists by) {
