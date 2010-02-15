@@ -378,7 +378,7 @@ while (i.more) {
         
     doc "Determine if all the given elements belong to the 
          category."
-    public Boolean contains(Iterable<Object> elements) {
+    public Boolean contains(Object... elements) {
         return forAll (Object elem in elements) every category.contains(elem)
     }
     
@@ -398,7 +398,7 @@ while (i.more) {
         <programlisting><![CDATA[public extension class OpenCategories<in X>(OpenCategory<X> category) {
         
     doc "Add the given elements to the category."
-    public Boolean add(Iterable<X> elements) {
+    public Boolean add(X... elements) {
         Boolean added = false;
         for (X x in elements) {
             added |= category.add(x);
@@ -440,7 +440,7 @@ while (i.more) {
     
     doc "Determine if there are values associated with all the 
          given keys."
-    public Boolean defines(Iterable<U> keys) {
+    public Boolean defines(U... keys) {
         for (U key in keys) {
             if ( !correspondence.defines(key) ) {
                 return false
@@ -464,23 +464,19 @@ while (i.more) {
         satisfies Correspondence<U, V> {
         
      doc "Element assignment x[key] = value. Assign a value to 
-          the given key."
+          the given key. Return the previous value for the key,
+          or null if there was no value defined."
      public optional V define(U key, V value);
 
 }]]></programlisting>
 
         <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) {
 
-     doc "Assign the given values to the given keys."
-     public void define(Iterable<Entry<U, V>> definitions) {
+     doc "Add the given entries."
+     public void define(Entry<U, V>... definitions) {
          for (U key->V value) {
              correspondence.define(key, value);
          }
-     }
-    
-     doc "Add the given entry."
-     public void define(U key -> V value) {
-         correspondence.define(key, value);
      }
     
 }]]></programlisting>
@@ -547,6 +543,8 @@ while (i.more) {
     public List<X> sort();
     public List<X> sort(functor Comparison(X x, X y) by);
     
+    public Collection<T> with<T>(T... elements) where T <= X;
+
     public OpenCollection<T> copy<T>() where T <= X;
     
 }]]></programlisting>
@@ -586,9 +584,9 @@ while (i.more) {
     public Boolean superset(Set<Object> set);
     public Boolean subset(Set<Object> set);
     
-    public Set<T> extension<T>(T... elements) where T <= X;
+    public override Set<T> with<T>(T... elements) where T <= X;
     
-    public OpenSet<T> copy<T>() where T <= X;
+    public override OpenSet<T> copy<T>() where T <= X;
 
 }]]></programlisting>
 
@@ -703,12 +701,12 @@ while (i.more) {
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public List<T> queue<T>(T... elements) where T <= X;
+    public override List<T> with<T>(T... elements) where T <= X;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<T> stack<T>(T... elements) where T <= X;
+    public List<T> withInitial<T>(T... elements) where T <= X;
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
@@ -759,14 +757,9 @@ while (people nonempty) {
     public void resort(functor Comparison(X x, X y) by);
     
     override public OpenList<X> rest;
-
-    override public OpenList<X> queue(X... elements);
-    override public OpenList<X> push(X... elements);
-
     override public OpenList<X> leading(Integer length);
     override public OpenList<X> trailing(Integer length);
     override public OpenList<X> sublist(Integer from, Integer to);
-    override public OpenList<X> extension(X... elements);
     override public OpenList<X> reversed;
     override public OpenMap<Integer,X> map;
     
@@ -790,7 +783,7 @@ while (people nonempty) {
     
     public optional V valueOrNull(U key);
     
-    public Map<U, T> extension<T>(U key, T value) where T <= V;
+    public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
     
     public Map<U, W> transform<W>(functor optional W(U key -> V value) select);
     
@@ -824,7 +817,7 @@ while (people nonempty) {
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X>, Correspondence<Object, Integer> {
     
-    public Bag<T> extension<T>(T... elements) where T <= X;
+    public override Bag<T> with<T>(T... elements) where T <= X;
     
     public OpenBag<T> copy<T>() where T <= X;
     
