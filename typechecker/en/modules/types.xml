@@ -369,6 +369,14 @@ while (i.more) {
         
         <programlisting><![CDATA[public interface Category {
     
+    doc "Determine if the given elements belongs to the category."
+    public Boolean contains(Object... elements);
+
+}]]></programlisting>
+        
+        <!--
+        <programlisting><![CDATA[public interface Category {
+    
     doc "Determine if the given element belongs to the category."
     public Boolean contains(Object element);
 
@@ -383,10 +391,21 @@ while (i.more) {
     }
     
 }]]></programlisting>
-
+        -->
+        
         <para>There is a mutable subtype, representing a category to which 
         objects may be added.</para>
         
+        <programlisting><![CDATA[public mutable interface OpenCategory<in X> 
+        satisfies Category {
+    
+    doc "Add the given elements to the category. Return |true| if 
+         at least one element did not already belong to the category."
+    public Boolean add(X... element);
+
+}]]></programlisting>
+
+        <!--
         <programlisting><![CDATA[public mutable interface OpenCategory<in X> 
         satisfies Category {
     
@@ -410,12 +429,43 @@ while (i.more) {
     }
     
 }]]></programlisting>
-
+        -->
+        
         <para>The interface <literal>lang.Correspondence</literal> represents
         the abstract notion of an object that maps value of one type to values
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
-        
+
+        <programlisting><![CDATA[public interface Correspondence<in U, out V> {
+    
+    doc "Binary lookup operator x[key]. Returns the value defined
+         for the given key."
+    public V value(U key);
+    
+    doc "Determine if there are values defined for the given keys."
+    public Boolean defines(U... keys);
+    
+}]]></programlisting>
+
+        <para>A decorator allows retrieval of lists and sets of values.</para>
+
+        <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
+
+    doc "Binary lookup operator x[keys]. Returns a list of values 
+         defined for the given keys, in order."
+    public List<V> values(List<U> keys) {
+        return from (U key in keys) select correspondence.lookup(key)
+    }
+    
+    doc "Binary lookup operator x[keys]. Returns a set of values 
+         defined for the given set of keys."
+    public Set<V> values(Set<U> keys) {
+        return ( from (U key in keys) select correspondence.lookup(key) ).elements
+    }
+    
+}]]></programlisting>
+
+        <!--     
         <programlisting><![CDATA[public interface Correspondence<in U, out V> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
@@ -455,7 +505,8 @@ while (i.more) {
     }
     
 }]]></programlisting>
-
+        -->
+        
         <para>There is a mutable subtype, representing a correspondence
         for which new mappings may be defined, and existing mappings 
         modified. It provides for the use of element expressions in
@@ -473,9 +524,12 @@ while (i.more) {
 
 }]]></programlisting>
 
+        <para>A decorator allows addition of multiple <literal>Entry</literal>s.</para>
+
         <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) {
 
-     doc "Add the given entries."
+     doc "Add the given entries, overriding any definitions that 
+          already exist."
      public void define(Entry<U, V>... definitions) {
          for (U key->V value) {
              correspondence.define(key, value);
