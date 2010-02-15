@@ -322,10 +322,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>Initialization parameter specifications allow instantiation of the
         generic type.</para>
         
-        <comment><para>Should we use <literal>for</literal> instead of <literal>where</literal>?</para></comment>
+        <comment><para>TODO: Should we use <literal>for</literal> instead of <literal>where</literal>?</para></comment>
         
-        <comment><para>Should we use <literal>satisfies</literal> instead of <literal>>=</literal>? For
-        example <literal>where X satisfies Number&lt;X&gt;</literal>.</para></comment>
+        <comment><para>TODO: Should we use <literal>satisfies</literal> instead of <literal>>=</literal>? 
+        For example <literal>where X satisfies Number&lt;X&gt;</literal>.</para></comment>
     
     </section>
     
