@@ -449,10 +449,10 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>do (mutable Natural i:=0) {
-    log.info("count = " + $i);
+            <programlisting>do (mutable Natural n:=0) {
+    log.info("count = " + $n);
 }
-while (i&lt;=10) { i++; }</programlisting>
+while (n&lt;=10) { n++; }</programlisting>
             
             <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator)
 while (iter.more) {

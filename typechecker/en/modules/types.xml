@@ -1770,10 +1770,10 @@ while (people nonempty) {
 
     doc "Repeat the block the given number of times."
     public static void repeat(Natural repetitions, functor void() times) {
-        do(mutable Natural i:=0) 
-        while (i<repetitions) {
+        do(mutable Natural n:=0) 
+        while (n<repetitions) {
             times();
-            i++;
+            n++;
         }
     }
 

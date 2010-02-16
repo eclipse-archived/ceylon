@@ -151,14 +151,14 @@ Digit+ |
         
         <para>For example:</para>
         
-        <programlisting>Natural i = i + 10;</programlisting>
+        <programlisting>Natural m = n + 10;</programlisting>
         
         <programlisting>panel.backgroundColor = 'FF33';</programlisting>
         
         <para>Negative integer values can be produced using the unary
         <literal>-</literal> operator:</para>
         
-        <programlisting>Integer j = -1;</programlisting>
+        <programlisting>Integer i = -1;</programlisting>
         
     </section>
     
