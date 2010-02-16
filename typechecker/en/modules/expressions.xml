@@ -38,7 +38,7 @@ CharacterLiteral | StringLiteral | RegexLiteral |
 TypeLiteral | MemberLiteral |
 SpecialValue</programlisting>
 
-    <section>
+    <section id="specialvalues">
         <title><literal>this</literal>, <literal>super</literal>, 
         <literal>null</literal> and <literal>subtype</literal></title>
         
@@ -70,7 +70,7 @@ SpecialValue</programlisting>
         
     </section>
     
-    <section>
+    <section id="datetime">
         <title><literal>Date</literal> and <literal>Time</literal> literals</title>
         
         <para>A <literal>Date</literal> literal has the form:</para>
@@ -140,7 +140,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
     </section>
     
-    <section>
+    <section id="naturalnumber">
         <title>Natural number literals</title>
         
         <para>A <literal>Natural</literal> literal has this form:</para>
@@ -162,7 +162,7 @@ Digit+ |
         
     </section>
     
-    <section>
+    <section id="floatnumber">
         <title>Floating point number literals</title>
         
         <para>A <literal>Float</literal> literal has this form:</para>
@@ -181,7 +181,7 @@ Digit+ "." Digit+
 
     </section>
     
-    <section>
+    <section id="string">
         <title>String literals</title>
         
         <para>A <literal>String</literal> literal has this form:</para>
@@ -212,7 +212,7 @@ if you prefer.";</programlisting>
 
     </section>
     
-    <section>
+    <section id="character">
         <title>Character literals</title>
         
         <para>A <literal>Character</literal> literal has this form:</para>
@@ -252,7 +252,7 @@ if you prefer.";</programlisting>
         
     </section-->
     
-    <section>
+    <section id="regex">
         <title>Regex literals</title>
         
         <para>A <literal>Regex</literal> literal has this form:</para>
@@ -294,7 +294,7 @@ if you prefer.";</programlisting>
     </section>
     -->
 
-    <section>
+    <section id="typemember">
         <title>Type and member literals</title>
         
         <para>The <literal>Type</literal> object for a type, the <literal>Method</literal>
@@ -323,7 +323,7 @@ if you prefer.";</programlisting>
 
     </section>
 
-    <section>
+    <section id="objectscollections">
         <title>Objects and collections</title>
         
         <para>There are no true literals for user-defined classes. Rather, there is a 
@@ -412,7 +412,7 @@ if you prefer.";</programlisting>
         
         <para>A vararg argument may be an <literal>Iterable</literal>.</para>
         
-        <section>
+        <section id="methodinvocation">
             <title>Method invocation</title>
             
             <para>Method invocations follow the following schema.</para>
@@ -437,7 +437,7 @@ if you prefer.";</programlisting>
             
         </section>
         
-        <section>
+        <section id="staticmethodinvocation">
             <title>Static method invocation</title>
             
             <para>Static method invocations follow the following schema.</para>
@@ -454,7 +454,7 @@ if you prefer.";</programlisting>
             
         </section>
         
-        <section>
+        <section id="classinstantiation">
             <title>Class instantiation</title>
             
             <para>Classes may be instantiated according to the following schema:</para>
@@ -486,7 +486,7 @@ if you prefer.";</programlisting>
             
         </section>
         
-        <section>
+        <section id="functorinvocation">
             <title>Functor invocation</title>
             
             <para>Functor invocations follow the following schema.</para>
@@ -530,7 +530,7 @@ if you prefer.";</programlisting>
         </section>
         -->
         
-        <section>
+        <section id="attributeevaluationassignment">
             <title>Attribute evaluation and assignment</title>
             
             <para>Attribute evaluation follows this schema:</para>
@@ -747,7 +747,7 @@ if you prefer.";</programlisting>
     
         <para>The following tables define the semantics of the Ceylon operators:</para>
     
-    <section>
+    <section id="basic">
     <title>Basic invocation and assignment operators</title>
     
     <para>These operators support method invocation and attribute evaluation and
@@ -889,7 +889,7 @@ if you prefer.";</programlisting>
     
     </section>
         
-    <section>
+    <section id="equalitycomparison">
     <title>Equality and comparison operators</title>
     
     <para>These operators compare values for equality, order, magnitude, or membership,
@@ -1057,7 +1057,7 @@ if you prefer.";</programlisting>
     
     </section>
                 
-    <section>
+    <section id="logical">
     <title>Logical operators</title>
     
     <para>These are the usual logical operations for boolean values.</para>
@@ -1151,7 +1151,7 @@ if you prefer.";</programlisting>
     
     </section>
     
-    <section>
+    <section id="nullvalues">
     <title>Operators for handling null values</title>
     
     <para>These operators make it easy to work with <literal>optional</literal>
@@ -1230,7 +1230,7 @@ if you prefer.";</programlisting>
     
     </section>
 
-    <section>
+    <section id="listmap">
     <title>List and map operators</title>
     
     <para>These operators provide a simplified syntax for accessing values 
@@ -1462,7 +1462,7 @@ if you prefer.";</programlisting>
     
     </section>
     
-    <section>
+    <section id="constructors">
     <title>Operators for constructing objects</title>
     
     <para>These operators simplify the syntax for constructing certain commonly 
@@ -1540,7 +1540,7 @@ if you prefer.";</programlisting>
     
     </section>
     
-    <section>
+    <section id="arithmetic">
     <title>Arithmetic operators</title>
     
     <para>These are the usual mathematical operations for all kinds of
@@ -1851,7 +1851,7 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section>
+    <section id="bitwise">
     <title>Bitwise operators</title>
     
     <para>These are C-style bitwise operations for bit strings (unsigned integers).
@@ -2386,7 +2386,7 @@ isFalse {
         <programlisting>log info "Hello World";</programlisting>
         <programlisting>log.info(", " join org.employees*.name);</programlisting>
 
-        <section>
+        <section id="iteration">
             <title>Iteration</title>
             
         <para>A specialized invocation syntax is provided for methods which iterate 
@@ -2429,7 +2429,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                       
         </section>
         
-        <section>
+        <section id="localdefinition">
             <title>Local definition</title>
             
         <para>A specialized invocation syntax is also provided for methods which define 
@@ -2475,7 +2475,7 @@ Y using&lt;X,Y&gt;(specified X resource,
         
         </section>
         
-        <section>
+        <section id="caseslist">
             <title>Lists of cases</title>
         
         <para>Finally, a specialized invocation syntax is provided for methods which define 
