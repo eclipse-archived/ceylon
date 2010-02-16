@@ -304,7 +304,7 @@ else {
             <literal>else</literal> block may be specified.</para>
             
             <para>When the construct is executed, the switch expression value is tested 
-            against the case values (using <literal>Case.test()</literal>) , and the case 
+            against the case values using <literal>Case.test()</literal>, and the case 
             block for the first case value that tests true is executed. If no case value 
             tests true, and an <literal>else</literal> block is defined, the <literal>else</literal> 
             block is executed.</para>
@@ -434,9 +434,9 @@ fail {
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
             <para>Both blocks are executed repeatedly, until the termination condition 
-            first evaluates to false, at which point iteration ends. In each iteration, 
-            the first block is executed before the condition is evaluated, and the 
-            second block is executed after it is evaluated.</para>
+            first evaluates to <literal>false</literal>, at which point iteration ends. 
+            In each iteration, the first block is executed before the condition is 
+            evaluated, and the second block is executed after it is evaluated.</para>
             
             <comment><para>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
             but what is the real usecase?</para></comment>
