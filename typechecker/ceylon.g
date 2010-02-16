@@ -150,8 +150,7 @@ directive
     : 'return' assignable? 
     | 'produce' assignable
     | 'throw' expression? 
-    | 'break' 
-    | 'found'
+    | 'break' expression?
     ;
 
 // what I have here now allows method and attribute bodies 
@@ -897,10 +896,6 @@ FINALLY
 
 FOR
     :   'for'
-    ;
-
-FOUND
-    :   'found'
     ;
     
 IF
