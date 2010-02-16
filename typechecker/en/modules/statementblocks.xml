@@ -71,14 +71,11 @@
             or attribute getter,</listitem>
             <listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
             functor,</listitem>
-            <listitem>the <literal>found</literal> directive&mdash;to terminate a <literal>for/fail</literal> 
-            loop successfully,</listitem>
-            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop unsuccessfully, 
-            and</listitem>
+            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop, and</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>Directive := "return" Expression? | "produce" Expression | "throw" Expression? | "found" | "break"</programlisting>
+         <programlisting>Directive := "return" Expression? | "produce" Expression | "throw" Expression? | "break" Expression?</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter or method. A return value must be specified in 
@@ -89,22 +86,18 @@
         the body of a non-<literal>void</literal> functor expression.</para>
         
         <para>The <literal>break</literal> directive may not be used outside the 
-        body of a loop.</para>
-        
-        <para>The <literal>found</literal> directive may not be used outside the 
-        body of a <literal>for/fail</literal> loop.</para>
+        body of a loop. If the loop has a <literal>fail</literal> block, the
+        <literal>break</literal> directive must specify a boolean value. A value
+        of <literal>false</literal> specifies that the <literal>fail</literal> 
+        block should be executed. If the loop has no <literal>fail</literal> block,
+        the <literal>break</literal> directive may not specify a value.</para>
         
         <para>A <literal>throw</literal> directive which specifies no exception
         is equivalent to <literal>throw Exception()</literal>.</para>
         
-        <comment><para>TODO: instead of <literal>break</literal> and <literal>found</literal>,
-        we could support <literal>break success</literal> and 
-        <literal>break failure</literal> or even <literal>break true</literal>
-        and <literal>break false</literal>.</para></comment>
-        
-        <comment><para>TODO: We could support <literal>for/fail</literal> loops that return a 
-        value by adding a <literal>found expr</literal> directive. We could support
-        conditionals that return a value by adding a <literal>then expr</literal>
+        <comment><para>TODO: We could support <literal>for/fail</literal> loops that 
+        return a value by supporting a <literal>found expr</literal> directive. We 
+        could support conditionals that return a value by adding a <literal>then expr</literal>
         directive.</para></comment>
         
     </section>
@@ -117,9 +110,9 @@
         exception management. For many tasks, the use of these traditional control
         structures is considered bad style, and the use of expressions with functor 
         parameters is preferred. However, control structures support the use of the 
-        <literal>return</literal>, <literal>break</literal> and <literal>found</literal> 
-        directives, whereas functors do not. Therefore, some tasks may be accomplished
-        only with control structures.</para>
+        <literal>return</literal> and <literal>break</literal> directives, whereas 
+        functors do not. Therefore, some tasks may be accomplished only with control 
+        structures.</para>
 
         <para>Control structures are not considered to be expressions in Ceylon.</para>
         
@@ -225,7 +218,7 @@
         <comment><para>TODO: Should we support, like Java, single-statement control structure bodies 
         without the braces.</para></comment>
         
-        <section>
+        <section id="ifelse">
             <title><literal>if/else</literal></title>
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
@@ -279,7 +272,7 @@ else {
             
         </section>
         
-        <section>
+        <section id="switchcaseelse">
             <title><literal>switch/case/else</literal></title>
             
             <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
@@ -361,7 +354,7 @@ else {
 
         </section>
         
-        <section>
+        <section id="forfail">
             <title><literal>for/fail</literal></title>
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
@@ -395,9 +388,9 @@ else {
             iterated element<!--for which all constraint expressions are satisfied-->.</para>
             
             <para>If the loop exits early via execution of one of the control directives 
-            <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
+            <literal>break true</literal>, <literal>return</literal> or <literal>throw</literal>, 
             the fail block is not executed. Otherwise, if the loop completes, or if the
-            loop exits early via execution of the control directive <literal>break</literal>, 
+            loop exits early via execution of the control directive <literal>break false</literal>, 
             the fail block is executed, if it is defined.</para>
             
             <para>For example:</para>
@@ -412,7 +405,7 @@ else {
     log.debug("found ${p.name}");
     if (p.age >= 18) {
         log.info("found an adult: ${p.name}");
-        found
+        break true
     }
 }
 fail {
@@ -422,7 +415,7 @@ fail {
 
         </section>
         
-        <section>
+        <section id="dowhile">
             <title><literal>do/while</literal></title>
             
             <para>The <literal>do/while</literal> loop has the form:</para>
@@ -497,31 +490,8 @@ while (!person.parent.dead) {
         Java-like languages. Is this truly a good thing?</para></comment>
                 
         </section>
-        
-        <!--
-        <section>
-            <title><literal>using</literal></title>
-            
-            <para>The <literal>using</literal> resource manager has the form:</para>
-            
-            <programlisting>Using := "using" "(" Resource ("," Resource)* ")" ClosedBlock</programlisting>
-            
-            <para>TODO: do we really need a special syntax for using? Using functors, a 
-            using could look like this:</para>
-        
-            <programlisting>Transaction().perform() {
-    Session s = Session();
-    s.perform() { 
-        Person p = s.get(#Person, id)
-        ...
-        return p;
-    }
-};</programlisting>
 
-        </section>
-        -->
-
-        <section>
+        <section id="trycatchfinally">
             <title><literal>try/catch/finally</literal></title>
             
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
@@ -576,39 +546,7 @@ catch (NotFoundException e) {
 </programlisting>
             
          </section>
-
-<!--
-    <section>
-        <title>Assertions</title>
-            
-        <para>An assertion has the following form:</para>
-        
-        <programlisting>Assert := "assert" "(" Expression ("," Expression)* ")" Expression?</programlisting>
-        
-        <para>Assertions appearing in class declarations are checked after the class
-        is instantiated. Assertions appearing in other blocks are checked when the 
-        block is executed.</para>
-        
-        <para>The first expression is of type <literal>Boolean</literal>, and the second
-        of type <literal>String</literal>.</para>
-        
-        <para>The following assertion:</para>
-        
-        <programlisting>assert (input nonempty) "input may not be empty";</programlisting>
-        
-        <para>Is equivalent to this Java:</para>
-        
-        <programlisting>if (ASSERTIONS_ENABLED &amp;&amp; ( input!=null &amp;&amp; !input.empty().get() ) ) 
-    throw new AssertionFailedException(message);</programlisting>
-    
-        <para>TODO: do we really need a special syntax for assertions? They are barely 
-        used in Java ... Using functors, an assertion could look like this:</para>
-        
-        <programlisting>assert ("input may not be empty") that input nonempty;</programlisting>
-
-    </section>
--->
-
+         
     </section>
 
 </chapter>
