@@ -1311,15 +1311,6 @@ if you prefer.";</programlisting>
             <entry><literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Set&lt;Y&gt;</literal></entry>
         </row>
-        <row>
-            <entry><literal>[,,]</literal></entry>
-            <entry><literal>lhs[x, y, z]</literal></entry>
-            <entry>enumerated lookup</entry>
-            <entry><literal>{lhs.value(x), lhs.value(y), lhs.value(z)}</literal></entry>
-            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry>Multiple <literal>X</literal> values</entry>
-            <entry><literal>Enumeration&lt;Y&gt;</literal></entry>
-        </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Subranges</emphasis></entry></row>
         
