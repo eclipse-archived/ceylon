@@ -1285,6 +1285,15 @@ if you prefer.";</programlisting>
             <entry><literal>Y</literal></entry>
         </row>
         <row>
+            <entry><literal>?[]</literal></entry>
+            <entry><literal>lhs?[index]</literal></entry>
+            <entry>nullsafe lookup</entry>
+            <entry><literal>if (exists lhs) lhs.value(index) else null</literal></entry>
+            <entry><literal>optional Correspondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>optional Y</literal></entry>
+        </row>
+        <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
             <entry>lookup</entry>
