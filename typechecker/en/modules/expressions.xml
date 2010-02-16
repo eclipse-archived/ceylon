@@ -114,7 +114,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
         <literal>years</literal>, <literal>months</literal>, <literal>days</literal>, <literal>weeks</literal>
-        of the <literal>Integer</literal> class let us construct durations.</para>
+        of the <literal>Natural</literal> class let us construct durations.</para>
         
         <programlisting>Duration&lt;Time&gt; duration = 12.hours + 34.minutes;</programlisting>
         <programlisting>Duration&lt;Date&gt; duration = 1.year + 2.months + 3.days;</programlisting>
@@ -263,11 +263,11 @@ if you prefer.";</programlisting>
         
         <programlisting>Boolean isEmail = email.matches( `^\w+@((\w+)\.)+$` );</programlisting>
         
-        <programlisting>Integer quotedWords = `\W"w+"\W`.matcher(text).count();</programlisting>
+        <programlisting>Natural quotedWords = `\W"w+"\W`.matcher(text).count();</programlisting>
         
         <para>The second example is equivalent to this Java code:</para>
         
-        <programlisting>Integer quotedWords = new lang.Regex("\\W\"w+\"\\W").matcher(text).count();</programlisting>
+        <programlisting>Natural quotedWords = new lang.Regex("\\W\"w+\"\\W").matcher(text).count();</programlisting>
         
     </section>
     
@@ -356,7 +356,7 @@ if you prefer.";</programlisting>
         the convenient enumeration constructor syntax, and some built-in extensions 
         help us achieve the desired effect.</para>
 
-        <programlisting>List&lt;Integer&gt; numbers = 1..10;</programlisting>
+        <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
         <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
                 
         <para>Enumerations are transparently converted to sets or maps,
@@ -695,7 +695,7 @@ if you prefer.";</programlisting>
     
     <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
     
-    <programlisting>for ( Integer i in 1..10 ) { ... }</programlisting>
+    <programlisting>for ( Natural i in 1..10 ) { ... }</programlisting>
 
     <programlisting>if ( name == value ) return ... ;</programlisting>
     
@@ -722,7 +722,7 @@ if you prefer.";</programlisting>
         
     <programlisting>List&lt;Item&gt; firstPage = list.range(0..20);</programlisting>
     
-    <programlisting>for ( Integer i in Range(1,10) ) { ... }</programlisting>
+    <programlisting>for ( Natural i in Range(1,10) ) { ... }</programlisting>
 
     <programlisting>if ( nullsafeEquals(name, value) ) return ... ;</programlisting>
        
@@ -1320,7 +1320,7 @@ if you prefer.";</programlisting>
             <entry>subrange</entry>
             <entry><literal>lhs.range(x,y)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry>Two <literal>Integer</literal> values</entry>
+            <entry>Two <literal>Natural</literal> values</entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         <row>
@@ -1329,7 +1329,7 @@ if you prefer.";</programlisting>
             <entry>upper range</entry>
             <entry><literal>lhs.range(x)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry><literal>Natural</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         <!--
@@ -1339,7 +1339,7 @@ if you prefer.";</programlisting>
             <entry>lower range</entry>
             <entry><literal>lhs.range(0,y)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry><literal>Natural</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         -->
@@ -1353,7 +1353,7 @@ if you prefer.";</programlisting>
             <entry>left shift</entry>
             <entry><literal>lhs.shiftLeft(rhs)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry><literal>Natural</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         <row>
@@ -1362,7 +1362,7 @@ if you prefer.";</programlisting>
             <entry>right shift</entry>
             <entry><literal>lhs.shiftRight(rhs)</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry><literal>Natural</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         
@@ -1764,7 +1764,7 @@ if you prefer.";</programlisting>
             <entry>multiply</entry>
             <entry><literal>lhs.times(rhs)</literal></entry>
             <entry><literal>Duration</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry><literal>Natural</literal></entry>
             <entry><literal>Duration</literal></entry>
         </row>
         
@@ -1774,7 +1774,7 @@ if you prefer.";</programlisting>
             <entry>divide</entry>
             <entry><literal>lhs.divide(rhs)</literal></entry>
             <entry><literal>Duration</literal></entry>
-            <entry><literal>Integer</literal></entry>
+            <entry><literal>Natural</literal></entry>
             <entry><literal>Duration</literal></entry>
         </row>
         -->
@@ -2271,13 +2271,13 @@ if you prefer.";</programlisting>
     
         <para>The following code:</para>
         
-        <programlisting>(0..10).each( (Integer num) { log.info(num); } );</programlisting>
+        <programlisting>(0..10).each( (Natural num) { log.info(num); } );</programlisting>
         
         <para>Is equivalent to:</para>
         
-        <programlisting>new Range&lt;Integer&gt;(0, 10).each( 
-    new F1&lt;Integer,Boolean&gt;() {
-        @Override Boolean call(Integer x) { 
+        <programlisting>new Range&lt;Natural&gt;(0, 10).each( 
+    new F1&lt;Natural,Boolean&gt;() {
+        @Override Boolean call(Natural x) { 
             ParentClass.this.log.info(num); 
         } 
     } );</programlisting>

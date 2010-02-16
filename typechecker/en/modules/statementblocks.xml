@@ -397,7 +397,7 @@ else {
 
             <programlisting>for (Person p in people) { log.info(p.name); }</programlisting>
 
-            <programlisting>for (String key -> Integer value in map) { 
+            <programlisting>for (String key -> Natural value in map) { 
     log.info("${key} = ${value}"); 
 }</programlisting>
             
@@ -449,7 +449,7 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>do (mutable Integer i:=0) {
+            <programlisting>do (mutable Natural i:=0) {
     log.info("count = " + $i);
 }
 while (i&lt;=10) { i++; }</programlisting>

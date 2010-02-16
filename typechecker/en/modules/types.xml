@@ -289,7 +289,7 @@ while (i.more) {
         <programlisting><![CDATA[public decorator Iterables<X> (Iterable<X> iterable) {
 
     public void forEach(functor void(X) each) { ... }
-    public Integer count(functor Boolean(X) test) { ... }
+    public Natural count(functor Boolean(X) test) { ... }
     public Boolean forAll(functor Boolean(X) test) { ... }
     public Boolean forAny(functor Boolean(X) test) { ... }
     
@@ -333,8 +333,8 @@ while (i.more) {
 
         <!--programlisting><![CDATA[public decorator OpenIterables (OpenIterable iterable) {
 
-    public Integer remove((X) produce Boolean test) { ... }
-    public Integer retain((X) produce Boolean test) { ... }
+    public Natural remove((X) produce Boolean test) { ... }
+    public Natural retain((X) produce Boolean test) { ... }
     
 }]]></programlisting-->
 
@@ -428,7 +428,7 @@ while (i.more) {
     
     doc "Add the given objects to the category. Return the number of 
          objects which did not already belong to the category."
-    public Integer add(X... objects);
+    public Natural add(X... objects);
 
 }]]></programlisting>
 
@@ -627,15 +627,15 @@ while (i.more) {
     
     doc "The number of elements or entries belonging to the 
          collection."
-    public Integer size;
+    public Natural size;
     
     doc "Determine the number of times the given element
          appears in the collection."
-    public Integer count(Object element);
+    public Natural count(Object element);
     
     doc "Determine the number of elements or entries for
          which the given condition evaluates to |true|."
-    public Integer count(functor Boolean(X element) having);
+    public Natural count(functor Boolean(X element) having);
     
     doc "Determine if the given condition evaluates to |true|
          for at least one element or entry."
@@ -689,12 +689,12 @@ while (i.more) {
     doc "Remove the given elements from the collection.
          Return the number of elements which belonged
          to the collection."
-    public Integer remove(X... elements);
+    public Natural remove(X... elements);
     
     doc "Remove all elements from the collection for which
          the given condition evaluates to |true|. Return 
          the number of elements which were removed."
-    public Integer remove(functor Boolean(X element) having);
+    public Natural remove(functor Boolean(X element) having);
     
 }]]></programlisting>
 
@@ -751,7 +751,7 @@ while (i.more) {
             <literal>Correspondence</literal>:</para>
             
             <programlisting><![CDATA[public interface List<out X> 
-        satisfies Collection<X>, Correspondence<Integer, X> {
+        satisfies Collection<X>, Correspondence<Natural, X> {
     
     doc "The first element of the list."
     throws #EmptyException
@@ -774,44 +774,39 @@ while (i.more) {
     doc "The last element of the list, or null if the
          list is empty."
     public optional X lastOrNull;
-    
-    doc "The index of the first element of the list."
-    throws #EmptyException
-           "if the list is empty"
-    public Integer firstIndex;
 
     doc "The index of the last element of the list."
     throws #EmptyException
            "if the list is empty"
-    public Integer lastIndex;
+    public Natural lastIndex;
     
     doc "The index of the first element of the list
          which satisfies the condition."
     throws #NotFoundException
            "if no element satsfies the condition"
-    public Integer firstIndex(functor Boolean(X element) having);
+    public Natural firstIndex(functor Boolean(X element) having);
 
     doc "The index of the last element of the list
          which satisfies the condition."
     throws #NotFoundException
            "if no element satsfies the condition"
-    public Integer lastIndex(functor Boolean(X element) having);
+    public Natural lastIndex(functor Boolean(X element) having);
     
     doc "The index of the first element of the list
          which satisfies the condition, or null if 
          no element satisfies the condition."
-    public optional Integer firstIndexOrNull(functor Boolean(X element) having);
+    public optional Natural firstIndexOrNull(functor Boolean(X element) having);
     
     doc "The index of the last element of the list
          which satisfies the condition, or null if 
          no element satisfies the condition."
-    public optional Integer lastIndexOrNull(functor Boolean(X element) having);
+    public optional Natural lastIndexOrNull(functor Boolean(X element) having);
     
     doc "The ternary range operator x[from..to], along
          with the binary upper range x[from...] operator. 
          The returned list does not reflect changes to 
          the original list."
-    public List<X> range(Integer from, Integer to=size);
+    public List<X> range(Natural from, Natural to=size);
 
     doc "The binary join operator x + y. 
          The returned list does not reflect changes
@@ -823,17 +818,17 @@ while (i.more) {
          of the returned sublist is the difference between 
          the two indexes. The returned list does reflect 
          changes to the original list."
-    public List<X> sublist(Integer from, Integer to=size);
+    public List<X> sublist(Natural from, Natural to=size);
     
     doc "A sublist of the given length beginning with the 
          first element of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> leading(Integer length=1);
+    public List<X> leading(Natural length=1);
     
     doc "A sublist of the given length ending with the 
          last element of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> trailing(Integer length=1);
+    public List<X> trailing(Natural length=1);
     
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
@@ -855,7 +850,7 @@ while (i.more) {
     
     doc "A map from list index to element. The returned 
          map does reflect changes to the original list."
-    public Map<Integer,X> map;
+    public Map<Natural,X> map;
     
     doc "Produce a new list by applying an operation to
          every element of the list."
@@ -876,7 +871,7 @@ while (people nonempty) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenList<X> 
-        satisfies List<X>, OpenCollection<X>, OpenCorrespondence<Integer, X> {
+        satisfies List<X>, OpenCollection<X>, OpenCorrespondence<Natural, X> {
 
     doc "Add the given elements at the end of the list."
     public void prepend(X... elements);
@@ -890,20 +885,20 @@ while (people nonempty) {
          index, incrementing the index of every existing 
          element with that index or greater by the number 
          of given elements."
-    public void insert(Integer at, X... elements);
+    public void insert(Natural at, X... elements);
     
     doc "Remove the element at the given index, decrementing
          the index of every element with an index greater
          than the given index by one. Return the removed
          element."
-    public X removeIndex(Integer at);
+    public X removeIndex(Natural at);
     
     doc "Remove elements beginning with the first given index 
          which have an index less than the second given index,
          decrementing the indexes of all elements beginning
          with the second given index by the difference between
          the two indexes."
-    public void delete(Integer from, Integer to=size);
+    public void delete(Natural from, Natural to=size);
     
     doc "Remove and return the first element, decrementing
          the index of every other element by one."
@@ -924,11 +919,11 @@ while (people nonempty) {
     public void resort(functor Comparison(X x, X y) by);
     
     override public OpenList<X> rest;
-    override public OpenList<X> leading(Integer length);
-    override public OpenList<X> trailing(Integer length);
-    override public OpenList<X> sublist(Integer from, Integer to);
+    override public OpenList<X> leading(Natural length);
+    override public OpenList<X> trailing(Natural length);
+    override public OpenList<X> sublist(Natural from, Natural to);
     override public OpenList<X> reversed;
-    override public OpenMap<Integer,X> map;
+    override public OpenMap<Natural,X> map;
     
 }]]></programlisting>
             
@@ -1015,12 +1010,12 @@ while (people nonempty) {
             <para>Bags implement the following interface:</para>
             
             <programlisting><![CDATA[public interface Bag<out X> 
-        satisfies Collection<X>, Correspondence<Object, Integer> {
+        satisfies Collection<X>, Correspondence<Object, Natural> {
     
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
          the original bag."
-    public Map<X,Integer> map;
+    public Map<X,Natural> map;
     
     public override Bag<T> with<T>(T... elements) where T <= X;
     public override OpenBag<T> copy<T>() where T <= X;
@@ -1030,9 +1025,9 @@ while (people nonempty) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Integer> {
+        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> {
         
-    override public OpenMap<X,Integer> map;
+    override public OpenMap<X,Natural> map;
     
 }]]></programlisting>
             
@@ -1518,7 +1513,7 @@ while (people nonempty) {
         satisfies Integral<Whole,Whole> {
     ...
     
-    public small Integer precision = ...;
+    public small Natural precision = ...;
     
     doc "Implicit type promotion to |Decimal|"
     override public extension Decimal decimal { return ... }
@@ -1558,7 +1553,7 @@ while (people nonempty) {
         satisfies Numeric<Decimal,Decimal> {
     ...
 
-    public small Integer precision = ...;
+    public small Natural precision = ...;
     public small Integer scale = ...;
     
     public extension class StringToDecimal(String string) {
@@ -1582,23 +1577,23 @@ while (people nonempty) {
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[public class Time(Integer hours, Integer minutes, 
-        optional Integer seconds=null, optional Integer milliseconds=null,
-        optional Integer timezone=null) 
+        <programlisting><![CDATA[public class Time(Natural hours, Natural minutes, 
+        optional Natural seconds=null, optional Natural milliseconds=null,
+        optional Timezone timezone=null) 
         extends Instant {
-    public Integer hours = hours;
-    public Integer minutes = minutes;
-    public optional Integer seconds = seconds;
-    public optional Integer milliseconds = milliseconds;
+    public Natural hours = hours;
+    public Natural minutes = minutes;
+    public optional Natural seconds = seconds;
+    public optional Natural milliseconds = milliseconds;
     public optional Timezone timezone = timezone;
     ...
 }]]></programlisting>
         
-        <programlisting><![CDATA[public class Date(Integer year, Integer month, Integer day) 
+        <programlisting><![CDATA[public class Date(Integer year, Natural month, Natural day) 
         extends Instant {
     public Integer year = year;
-    public Integer month = month;
-    public Integer day = day;
+    public Natural month = month;
+    public Natural day = day;
     ...
 }]]></programlisting>
         
@@ -1617,10 +1612,10 @@ while (people nonempty) {
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[public class Duration<X>(Map<Granularity<X>, Integer> magnitude) 
+        <programlisting><![CDATA[public class Duration<X>(Map<Granularity<X>, Natural> magnitude) 
         where X >= Instant {
 
-    public Map<Granularity<X>, Integer> magnitude = magnitude;
+    public Map<Granularity<X>, Natural> magnitude = magnitude;
     
     public X before(X instant) { ... }
     public X after(X instant) { ... }
@@ -1775,7 +1770,7 @@ while (people nonempty) {
 
     doc "Repeat the block the given number of times."
     public static void repeat(Natural repetitions, functor void() times) {
-        do(mutable Integer i:=0) 
+        do(mutable Natural i:=0) 
         while (i<repetitions) {
             times();
             i++;
@@ -1787,9 +1782,9 @@ while (people nonempty) {
         <programlisting><![CDATA[public class Quantifiers {
 
     doc "Count the elements for with the block evaluates to true."
-    public static Integer count<X>(iterated Iterable<X> elements,
+    public static Natural count<X>(iterated Iterable<X> elements,
                                    coordinated functor Boolean(X x) having) {
-        mutable Integer count := 0;
+        mutable Natural count := 0;
         for (X x in elements) {
             if ( having(x) ) {
                 ++count;

@@ -135,7 +135,7 @@ VarargsParam?
         
         <para>For example:</para>
         
-        <programlisting>(Product product, Integer quantity=1)</programlisting>
+        <programlisting>(Product product, Natural quantity=1)</programlisting>
         
         <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
         
@@ -314,7 +314,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>where X >= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Integer count)</programlisting>
+        <programlisting>where X >= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Natural count)</programlisting>
         
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position.</para>
@@ -359,7 +359,7 @@ class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = {})
     ...
 }</programlisting>
 
-    <programlisting>Integer count = 0;</programlisting>
+    <programlisting>Natural count = 0;</programlisting>
     
     <programlisting>protected String firstName;</programlisting>
     
@@ -616,7 +616,7 @@ class Customer(Name name, optional Organization org = null)
         
         <para>This class:</para>
         
-        <programlisting>public class Counter(Integer initialCount=0) { ... }</programlisting>
+        <programlisting>public class Counter(Natural initialCount=0) { ... }</programlisting>
         
         <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
         
@@ -626,7 +626,7 @@ class Customer(Name name, optional Organization org = null)
         Counter(0);
     }
     
-    public Counter(Integer initialCount) {
+    public Counter(Natural initialCount) {
         ...;
     }
     
@@ -635,8 +635,8 @@ class Customer(Name name, optional Organization org = null)
     }
 
     public static class CounterParameters {
-        private Integer initialCount=0;
-        CounterParameters initialCount(Integer initialCount) { 
+        private Natural initialCount=0;
+        CounterParameters initialCount(Natural initialCount) { 
             this.initialCount = initialCount;
             return this;
         }
@@ -924,7 +924,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>public class Counter {
         
-    package void init(Integer initialCount=0) {
+    package void init(Natural initialCount=0) {
         count:=initialCount;
     }
     
@@ -940,7 +940,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         init(0);
     }
     
-    void init(Integer initialCount) {
+    void init(Natural initialCount) {
         count=initialCount;
     }
     
@@ -949,8 +949,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     }
 
     static class CounterInitParameters {
-        private Integer initialCount=0;
-        CounterInitParameters initialCount(Integer initialCount) { 
+        private Natural initialCount=0;
+        CounterInitParameters initialCount(Natural initialCount) { 
             this.initialCount = initialCount;
             return this;
         }
@@ -1019,7 +1019,7 @@ TypeConstraints?
         
         <programlisting>package mutable String firstName;</programlisting>
         
-        <programlisting>mutable Integer count := 0;</programlisting>
+        <programlisting>mutable Natural count := 0;</programlisting>
         
         <programlisting>public static Decimal pi = calculatePi();</programlisting>
         
@@ -1157,12 +1157,12 @@ Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
 
         <para>While:</para>
         
-        <programlisting>mutable Integer count := 0;</programlisting>
+        <programlisting>mutable Natural count := 0;</programlisting>
         
         <para>is equivalent to this Java code:</para>
         
-        <programlisting>private final Attribute&lt;Integer&gt; count = new SimpleAttribute&lt;Integer&gt;(0);
-private Attribute&lt;Integer&gt; count() { return count; }</programlisting>
+        <programlisting>private final Attribute&lt;Natural&gt; count = new SimpleAttribute&lt;Natural&gt;(0);
+private Attribute&lt;Natural&gt; count() { return count; }</programlisting>
 
         <para>And:</para>
         
