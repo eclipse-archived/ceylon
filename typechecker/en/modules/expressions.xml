@@ -1055,6 +1055,9 @@ if you prefer.";</programlisting>
     </tgroup>
     </table>
     
+    <comment><para>TODO: should we really have the equality operators accept null
+    values?</para></comment>
+    
     </section>
                 
     <section id="logical">
