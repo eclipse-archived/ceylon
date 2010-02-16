@@ -523,6 +523,8 @@ base
 
 enumeration
     : '{' assignables? '}'
+    //a special List literal syntax?
+    //| '[' assignables? ']' 
     ;
 
 selector 
@@ -550,7 +552,7 @@ elementSelector
     ;
 
 elementsSpec
-    : additiveExpression ( '...' | '..' additiveExpression | (',' additiveExpression)+ )?
+    : additiveExpression ( '...' | '..' additiveExpression )?
     |  '...' additiveExpression	
     ;
 
