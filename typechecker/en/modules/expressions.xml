@@ -1332,6 +1332,7 @@ if you prefer.";</programlisting>
             <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
+        <!--
         <row>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[...y]</literal></entry>
@@ -1341,7 +1342,7 @@ if you prefer.";</programlisting>
             <entry><literal>Integer</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
-        
+        -->
         <!--  
         
         <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
@@ -1997,8 +1998,7 @@ if you prefer.";</programlisting>
                 <literal>{;;;}</literal>,
                 <literal>[]</literal>, 
                 <literal>[..]</literal>, 
-                <literal>[...]</literal>, 
-                <literal>[,,]</literal>,
+                <literal>[...]</literal>,
                 <literal>#</literal>,
                 <literal>++</literal>, 
                 <literal>--</literal></entry>

@@ -743,12 +743,12 @@ while (i.more) {
         <section>
             <title>Lists</title>
             
-            <para>Lists implement the following interface, and support 
-            the binary operators <literal>+</literal> (join),
-            <literal>[...j], [i...]</literal> (lower, upper range) and the 
-            ternary operator <literal>[i..j]</literal> (subrange) in addition
-            to operators inherited from <literal>Collection</literal>
-            and <literal>Correspondence</literal>:</para>
+            <para>Lists implement the following interface, and support the binary 
+            operators <literal>+</literal> (join), <literal>[i...]</literal> 
+            (upper range) and the ternary operator <literal>[i..j]</literal> 
+            (subrange) in addition to operators inherited from 
+            <literal>Collection</literal> and 
+            <literal>Correspondence</literal>:</para>
             
             <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X>, Correspondence<Integer, X> {
@@ -808,9 +808,9 @@ while (i.more) {
     public optional Integer lastIndexOrNull(functor Boolean(X element) having);
     
     doc "The ternary range operator x[from..to], along
-         with the binary upper range x[from...] and lower 
-         range x[...to] operators. The returned list does 
-         not reflect changes to the original list."
+         with the binary upper range x[from...] operator. 
+         The returned list does not reflect changes to 
+         the original list."
     public List<X> range(Integer from, Integer to=size);
 
     doc "The binary join operator x + y. 
