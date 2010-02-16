@@ -687,15 +687,15 @@ if you prefer.";</programlisting>
     
     <programlisting>Integer j = i++;</programlisting>
     
-    <programlisting>x -= 2;</programlisting>
-    
     <programlisting>if ( x > 100 ) { ... }</programlisting>
     
     <programlisting>User gavin = users["Gavin"];</programlisting>
     
     <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
     
-    <programlisting>for ( Natural i in 1..10 ) { ... }</programlisting>
+    <programlisting>for ( Natural n in 1..10 ) { ... }</programlisting>
+    
+    <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
 
     <programlisting>if ( name == value ) return ... ;</programlisting>
     
@@ -714,15 +714,13 @@ if you prefer.";</programlisting>
     
     <programlisting>Integer j := ( i := i.successor ).predecessor;</programlisting>
     
-    <programlisting>z := z.minus(2);</programlisting>
-    
     <programlisting>if ( x.compare(100).larger ) { ... }</programlisting>
     
     <programlisting>User gavin = users.value("Gavin");</programlisting>
         
     <programlisting>List&lt;Item&gt; firstPage = list.range(0..20);</programlisting>
     
-    <programlisting>for ( Natural i in Range(1,10) ) { ... }</programlisting>
+    <programlisting>for ( Natural n in Range(1,10) ) { ... }</programlisting>
 
     <programlisting>if ( nullsafeEquals(name, value) ) return ... ;</programlisting>
        
@@ -742,6 +740,8 @@ if you prefer.";</programlisting>
     
     <programlisting>optional String name = if (exists person) person.name else null;</programlisting>
     
+    <programlisting>List&lt;Day&gt; nonworkDays = days.values(Enumeration(0,7));</programlisting>
+
     <section id="operatorlist">
         <title>List of operators</title>
     
@@ -883,9 +883,6 @@ if you prefer.";</programlisting>
     </tbody>
     </tgroup>
     </table>
-    
-    <comment><para>TODO: do we really want the <literal>.=</literal>
-    operator?</para></comment>
     
     </section>
         
