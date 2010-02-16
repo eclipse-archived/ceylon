@@ -1118,6 +1118,14 @@ while (people nonempty) {
     
 }]]></programlisting>
 
+        <comment><para>TODO: should we support partial orders? Give
+        <literal>Comparison</literal> an extra <literal>uncomparable</literal>
+        value, or let <literal>compare()</literal> return 
+        <literal>null</literal>?</para></comment>
+        
+        <comment><para>TODO: if so, why not just move <literal>compare()</literal>
+        up to <literal>Object</literal> to simplify things?</para></comment>
+
         <para>The <literal>lang.Ordinal</literal> interface represents 
         objects in a sequence, and supports the binary operator 
         <literal>..</literal> (range). In addition, variables support 
