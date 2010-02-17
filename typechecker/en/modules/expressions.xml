@@ -594,6 +594,13 @@ if you prefer.";</programlisting>
         
         <para>The value of a literal object expression is a new instance of the class.</para>
             
+        <comment><para>TODO: are you allowed to have arbitrary code inside a literal object 
+        specification?</para></comment>
+
+        <comment><para>TODO: is there some kind of solution for getting around access 
+        restrictions if you want to use a literal object specification for a class that
+        extends a superclass in another package/module?</para></comment>
+
         <para>The classes <literal>Serializer</literal> and <literal>Deserializer</literal>
         provide the ability to serialize and deserialize any object to its 
         <emphasis>canonical literal form</emphasis>.</para>
