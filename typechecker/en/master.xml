@@ -34,8 +34,8 @@
     refactoring support, code completion and code navigation. Ceylon aims to 
     retain the overall model of Java, while getting rid of some of Java's warts,
     including: primitive types, arrays, constructors, getters/setters, checked 
-    exceptions, raw types, wildcard types, thread synchronization, finalizers 
-    and the dreaded <literal>NullPointerException</literal>.</para> 
+    exceptions, raw types, wildcard types, thread synchronization, finalizers, 
+    serialization and the dreaded <literal>NullPointerException</literal>.</para> 
     
     <para>Ceylon has the following goals:</para>
     
