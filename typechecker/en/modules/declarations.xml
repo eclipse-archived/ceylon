@@ -560,9 +560,7 @@ class Customer(Name name, optional Organization org = null)
         <programlisting>public mutable class DiagonalPoint(Decimal position) 
         extends Point() {
     
-    Decimal displacement = sqrt(position**2/2) * position.sign;
-    
-    x := y := displacement;
+    x := y := sqrt(position**2/2) * position.sign;
     
     assert "must have distance ${position} from origin" 
         that x**2 + y**2 == position**2;
@@ -576,10 +574,7 @@ class Customer(Name name, optional Organization org = null)
         
     public DiagonalPoint(final Decimal position) {
     
-        final Decimal displacement = sqrt( position.power(2).divided(2) )
-                                           .times(position.sign);
-        
-        x = y = displacement;
+        x = y = sqrt( position.power(2).divided(2) ).times(position.sign);
         
         assert_(new F0&lt;String&gt;() {
                    public String call() { 
