@@ -323,51 +323,6 @@ if you prefer.";</programlisting>
 
     </section>
 
-    <section id="objectscollections">
-        <title>Objects and collections</title>
-        
-        <para>There are no true literals for user-defined classes. Rather, there is a 
-        nice syntax for calling the class constructor. For example:</para>
-        
-        <programlisting>Person gavin = Person { 
-    firstName = "Gavin";
-    initial = 'A';
-    lastName = "King";
-    address = Address { ... };
-    birthdate = Date { day = 25; month = MARCH; year = ... }
-    employer = jboss;
-};</programlisting>
-
-<!--  
-        <para>A similar syntax is supported for specifying the values of uninitialized 
-        attributes of a class at instantiation time.</para>
-
-        <programlisting>Person gavin = Person(jboss) { 
-    firstName = "Gavin";
-    initial = 'A';
-    lastName = "King";
-    address = Address { ... };
-    birthdate = Date { day = 25; month = MARCH; year = ... }
-};</programlisting>
--->
-
-        <para>Likewise, there are no true literals for lists, sets or maps. However, 
-        the <literal>..</literal> and <literal>-></literal> operators, together with
-        the convenient enumeration constructor syntax, and some built-in extensions 
-        help us achieve the desired effect.</para>
-
-        <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
-        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
-                
-        <para>Enumerations are transparently converted to sets or maps,
-        allowing sets and maps to be initialized as follows:</para>
-        
-        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
-        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
-        <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
-        
-    </section>
-    
     <section id="invocations">
         <title>Invocations</title>
         
@@ -572,6 +527,22 @@ if you prefer.";</programlisting>
         
     </section>
     
+    <section id="Inline classes and literal objects">
+        <title>Inline classes and literal objects</title>
+    
+        <para>Two additional kinds of expressions exist for inline instantiation of an object.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>Inline classes allow inline instantiation of an anonymous subclass of a
+                certain class.</para>
+            </listitem>
+            <listitem>
+                <para>Literal objects allow instantiation of a class without execution of the
+                constructor.</para>
+            </listitem>
+        </itemizedlist>
+    
         <section id="inlineclasses">
             <title>Inline classes</title>
             
@@ -596,12 +567,51 @@ if you prefer.";</programlisting>
     override void destroy() { close(); }
 };</programlisting>
             
-            <para>The value of an inline class instantiation is a new instance of the inline class.
-            The block may contain method and attribute declarations and arbitrary code.<!-- and may 
-            initialize uninitialized attributes of the superclass.--></para>
+            <para>The value of an inline class instantiation is a new instance of the inline 
+            class. The block may contain method and attribute declarations and arbitrary code.
+            <!-- and may initialize uninitialized attributes of the superclass.--></para>
             
         </section>
         
+    <section id="literalobjects">
+        <title>Literal objects</title>
+        
+        <para>An literal object is specified according to:</para>
+        
+        <programlisting>"object" Type "{" Assignment* "}"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Person gavin = object Person { 
+    firstName = "Gavin";
+    initial = 'A';
+    lastName = "King";
+    address = object Address { ... };
+    birthdate = object Date { day = 25; month = MARCH; year = ... };
+    employer = jboss;
+}</programlisting>
+
+        <para>A named object must be a concrete class and must specify values for each 
+        attribute of the class, including private attributes, except attributes annotated 
+        <literal>transient</literal>. Literal objects are created without execution of the 
+        body of the class to which they belong. Literal objects may refer to immutable 
+        locals and members of the containing class in the attribute initializer expressions. 
+        They may not refer to mutable locals.</para>
+        
+        <para>The classes <literal>Serializer</literal> and <literal>Deserializer</literal>
+        provide the ability to serialize and deserialize any object to its 
+        <emphasis>canonical literal form</emphasis>.</para>
+        
+        <programlisting>Person person = ...;
+Serializer&lt;Person&gt; srlz = Serializer(person);
+String serializedPerson = srlz; //using built-in converter
+Deserializer&lt;Person&gt; dsrlz = Deserializer&lt;Person&gt;(serializedPerson);
+Person deserialized = dsrlz; //using built-in converter</programlisting>
+
+    </section>
+    
+    </section>
+    
         <section id="enumerationinstantiation">
             <title>Enumeration instantiation</title>
             
@@ -624,6 +634,23 @@ if you prefer.";</programlisting>
             <comment><para>Note: <literal>none</literal> can appear as a functor body, but 
             <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment>
                         
+            <para>There are no true literals for lists, sets or maps. However, the 
+            <literal>..</literal> and <literal>-></literal> operators, together with the 
+            convenient enumeration constructor syntax, and some built-in extensions help 
+            us achieve the desired effect.</para>
+
+            <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
+            <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
+                
+            <para>Enumerations are transparently converted to sets or maps, allowing sets 
+            and maps to be initialized as follows:</para>
+        
+            <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
+            <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
+            <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
+            
+            <para>This representation is used as the canonical literal form for collections.</para>
+            
         </section>
             
     <section id="assignableexpressions">
