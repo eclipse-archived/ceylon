@@ -562,8 +562,7 @@ class Customer(Name name, optional Organization org = null)
     
     Decimal displacement = sqrt(position**2/2) * position.sign;
     
-    x := displacement;
-    y := displacement;
+    x := y := displacement;
     
     assert "must have distance ${position} from origin" 
         that x**2 + y**2 == position**2;
@@ -576,11 +575,11 @@ class Customer(Name name, optional Organization org = null)
         <programlisting>public class DiagonalPoint extends Point {
         
     public DiagonalPoint(final Decimal position) {
+    
         final Decimal displacement = sqrt( position.power(2).divided(2) )
                                            .times(position.sign);
         
-        x = displacement;
-        y = displacement;
+        x = y = displacement;
         
         assert_(new F0&lt;String&gt;() {
                    public String call() { 
