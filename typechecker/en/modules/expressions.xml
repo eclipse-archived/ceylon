@@ -527,10 +527,10 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section id="Inline classes and literal objects">
-        <title>Inline classes and literal objects</title>
+    <section id="inlineclassesliteralobjectsenumerations">
+        <title>Inline classes, literal objects and enumerations</title>
     
-        <para>Two additional kinds of expressions exist for inline instantiation of an object.</para>
+        <para>Three additional kinds of expressions exist for inline instantiation of an object.</para>
         
         <itemizedlist>
             <listitem>
@@ -540,6 +540,9 @@ if you prefer.";</programlisting>
             <listitem>
                 <para>Literal objects allow instantiation of a class without execution of the
                 constructor.</para>
+            </listitem>
+            <listitem>
+                <para>Enumerations allow instantiation of a collection via a simplified syntax.</para>
             </listitem>
         </itemizedlist>
     
@@ -578,7 +581,7 @@ if you prefer.";</programlisting>
         
         <para>An literal object is specified according to:</para>
         
-        <programlisting>"object" Type "{" Assignment* "}"</programlisting>
+        <programlisting>LiteralObject := "object" Type "{" Assignment* "}"</programlisting>
         
         <para>For example:</para>
         
@@ -610,17 +613,16 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
 
     </section>
     
-    </section>
-    
-        <section id="enumerationinstantiation">
-            <title>Enumeration instantiation</title>
+        <section id="enumerations">
+            <title>Enumerations</title>
             
-            <para>Enumerations may be instantiated according to the following 
-            simplified syntax:</para>
+            <para>Enumerations may be specified according to the following simplified 
+            syntax:</para>
             
-            <programlisting>EnumerationInstantiation := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+            <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
             
-            <para>In this case, there is no need to explicitly specify the type.</para>
+            <para>This is a shortcut for instantiation of the <literal>Enumeration</literal>
+            class, where there is no need to explicitly specify the type.</para>
             
             <para>For example:</para>
             
@@ -653,6 +655,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
         </section>
             
+    </section>
+    
     <section id="assignableexpressions">
         <title>Assignable expressions</title>
         
