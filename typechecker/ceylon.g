@@ -48,7 +48,7 @@ inlineClassDeclaration
     : 'new' 
       annotations?
       regularType
-      arguments
+      positionalArguments?
       satisfiedTypes?
       '{' memberOrStatement* '}'
     ;
@@ -259,7 +259,7 @@ classDeclaration
     ;
 
 extendedType
-    : 'extends' regularType arguments
+    : 'extends' regularType positionalArguments
     ;
     
 instances
