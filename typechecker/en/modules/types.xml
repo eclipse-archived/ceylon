@@ -1380,6 +1380,10 @@ while (people nonempty) {
     doc "The magnitude of the number"
     public subtype magnitude;
     
+    doc "1 if the number is positive, -1 if it
+         is negative, or 0 if it is zero."
+    public subtype sign;
+    
     doc "The fractional part of the number,
          after truncation of the integral
          part"
