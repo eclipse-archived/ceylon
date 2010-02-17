@@ -548,10 +548,10 @@ if you prefer.";</programlisting>
         
         <para>A literal object or inline class specification may bypass the constructor of the 
         class or superclass. In this case, the literal object or inline class specification takes 
-        on responsibility for initialization of attributes of the class or superclass. This means
-        that a literal object or inline class specification which bypasses the constructor must
-        exist in a scope in which all attributes of the class or superclass are visible. Use of
-        this feature does not bypass language level accessibility checks.</para>
+        on responsibility for initialization of simple attributes of the class or superclass. This 
+        means that a literal object or inline class specification which bypasses the constructor 
+        must exist in a scope in which all attributes of the class or superclass are visible. Use 
+        of this feature does not bypass language level accessibility checks.</para>
     
     <section id="literalobjects">
         <title>Literal objects</title>
@@ -582,8 +582,8 @@ if you prefer.";</programlisting>
             </listitem>
             <listitem>
                 <para>specify no initialization parameters, and specify values for each 
-                attribute of the class, including private attributes, except attributes 
-                annotated <literal>transient</literal>.</para>
+                simple attribute of the class, including private attributes, except 
+                attributes annotated <literal>transient</literal>.</para>
             </listitem>
         </itemizedlist>
         
