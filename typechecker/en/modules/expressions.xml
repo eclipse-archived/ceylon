@@ -414,7 +414,7 @@ if you prefer.";</programlisting>
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := RegularType TypeArguments? Arguments</programlisting>
+            <programlisting>Instantiation := RegularType Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -528,79 +528,72 @@ if you prefer.";</programlisting>
     </section>
     
     <section id="inlineclassesliteralobjectsenumerations">
-        <title>Inline classes, literal objects and enumerations</title>
+        <title>Literal objects, inline classes, and enumerations</title>
     
         <para>Three additional kinds of expressions exist for inline instantiation of an object.</para>
         
         <itemizedlist>
             <listitem>
-                <para>Inline classes allow inline instantiation of an anonymous subclass of a
-                certain class.</para>
+                <para>Literal objects allow instantiation and initialization of a class without 
+                execution of the constructor.</para>
             </listitem>
             <listitem>
-                <para>Literal objects allow instantiation of a class without execution of the
-                constructor.</para>
+                <para>Inline classes allow inline instantiation of an anonymous subclass of a
+                certain class.</para>
             </listitem>
             <listitem>
                 <para>Enumerations allow instantiation of a collection via a simplified syntax.</para>
             </listitem>
         </itemizedlist>
-    
-        <section id="inlineclasses">
-            <title>Inline classes</title>
-            
-            <para>Inline classes may be instantiated according to:</para>
-            
-            <programlisting>InlineClass := "new" Annotation* Instantiation Interfaces "{" Statement* "}"</programlisting>
-
-            <para>For example:</para>
-            
-            <programlisting>Task task = new Task() {
-    timeout := 1000;
-    override void run() { ... }
-    override void fail(Exception e) { ... }
-}</programlisting>
-
-            <programlisting>return new transactional Database() 
-        satisfies Resource {
-    url := "jdbc:hsqldb:.";
-    username := "gavin";
-    password = "foobar";
-    override void create() { open(); }
-    override void destroy() { close(); }
-};</programlisting>
-            
-            <para>The value of an inline class instantiation is a new instance of the inline 
-            class. The block may contain method and attribute declarations and arbitrary code.
-            <!-- and may initialize uninitialized attributes of the superclass.--></para>
-            
-        </section>
         
+        <para>A literal object or inline class specification may bypass the constructor of the 
+        class or superclass. In this case, the literal object or inline class specification takes 
+        on responsibility for initialization of attributes of the class or superclass. This means
+        that a literal object or inline class specification which bypasses the constructor must
+        exist in a scope in which all attributes of the class or superclass are visible. Use of
+        this feature does not bypass language level accessibility checks.</para>
+    
     <section id="literalobjects">
         <title>Literal objects</title>
         
-        <para>An literal object is specified according to:</para>
+        <para>A literal object is specified according to:</para>
         
-        <programlisting>LiteralObject := "object" Type "{" Assignment* "}"</programlisting>
+        <programlisting>LiteralObject := "new" RegularType PositionalArguments? "{" (Assignment | Specification)* "}"</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>Person gavin = object Person { 
+        <programlisting>Calculator calc = new Calculator() { currentValue := 1.0; };</programlisting>
+        
+        <programlisting>Person gavin = new Person { 
     firstName = "Gavin";
     initial = 'A';
     lastName = "King";
-    address = object Address { ... };
-    birthdate = object Date { day = 25; month = MARCH; year = ... };
-    employer = jboss;
-}</programlisting>
+    address := new Address { ... };
+    birthdate = new Date { day = 25; month = MARCH; year = ... };
+    employer := jboss;
+};</programlisting>
 
-        <para>A named object must be a concrete class and must specify values for each 
-        attribute of the class, including private attributes, except attributes annotated 
-        <literal>transient</literal>. Literal objects are created without execution of the 
-        body of the class to which they belong. Literal objects may refer to immutable 
-        locals and members of the containing class in the attribute initializer expressions. 
-        They may not refer to mutable locals.</para>
+        <para>A literal object must be of a concrete class and must either:</para>
         
+        <itemizedlist>
+            <listitem>
+                <para>specify initialization parameters, and then an arbitrary list of
+                mutable attribute assignments, or</para>
+            </listitem>
+            <listitem>
+                <para>specify no initialization parameters, and specify values for each 
+                attribute of the class, including private attributes, except attributes 
+                annotated <literal>transient</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Literal objects which specify no initialization parameters are created without 
+        execution of the body of the class to which they belong. Literal objects may refer to 
+        immutable locals and members of the containing class in the attribute initializer 
+        expressions. They may not refer to mutable locals.</para>
+        
+        <para>The value of a literal object expression is a new instance of the class.</para>
+            
         <para>The classes <literal>Serializer</literal> and <literal>Deserializer</literal>
         provide the ability to serialize and deserialize any object to its 
         <emphasis>canonical literal form</emphasis>.</para>
@@ -613,6 +606,53 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
 
     </section>
     
+        <section id="inlineclasses">
+            <title>Inline classes</title>
+            
+            <para>Inline classes may be specified according to:</para>
+            
+            <programlisting>InlineClass := "new" Annotation* RegularType PositionalArguments? Interfaces "{" Statement* "}"</programlisting>
+
+            <para>For example:</para>
+            
+            <programlisting>Task task = new Task() {
+    timeout := 1000;
+    override void run() { ... }
+    override void fail(Exception e) { ... }
+};</programlisting>
+
+            <programlisting>return new transactional Database 
+        satisfies Resource {
+    url = "jdbc:hsqldb:.";
+    username = "gavin";
+    password = "foobar";
+    override void create() { open(); }
+    override void destroy() { close(); }
+};</programlisting>
+            
+            <para>An inline class is a literal object expression which may additionally:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>include arbitrary code to be executed when the inline class is
+                    evaluated,</para>
+                </listitem>
+                <listitem>
+                    <para>declare and override members, and</para>
+                </listitem>
+                <listitem>
+                    <para>declare annotations.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The superclass of an inline class may be an abstract class. The inline
+            class itself must be concrete.</para>
+            
+            <para>The value of an inline class expression is a new instance of the inline 
+            class.</para>
+            
+        </section>
+        
         <section id="enumerations">
             <title>Enumerations</title>
             

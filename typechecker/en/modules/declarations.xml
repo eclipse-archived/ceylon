@@ -262,7 +262,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     
         <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
         
-        <programlisting>Supertype := "extends" Instantiation</programlisting>
+        <programlisting>Supertype := "extends" RegularType PositionalArguments</programlisting>
     
         <para>For example:</para>
         
