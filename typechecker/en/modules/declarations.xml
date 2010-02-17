@@ -583,7 +583,7 @@ class Customer(Name name, optional Organization org = null)
                 },
                 new F0&lt;Boolean&gt;() {
                    public Boolean call() { 
-                       return x.power(2) + y.power(2) == position.power(2);
+                       return ( x.power(2) + y.power(2) ).equals( position.power(2) );
                    }
                 });
     }
