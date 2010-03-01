@@ -25,19 +25,59 @@
     <section id="literals">
     <title>Literals</title>
     
-    <para>Ceylon supports a special literal value syntax for each of the following types: 
-    <!--literal>Boolean</literal--> <literal>Date</literal>, <literal>Time</literal>
-    <literal>Integer</literal>, <literal>Float</literal>, <literal>Character</literal>, 
-    <literal>String</literal> and <literal>Regex</literal>.
-    </para>
+    <para><!--Since Ceylon is a language for expressing not only instructions, but also 
+    structured data, the language supports parsed literals for dates and times
+    in addition to numeric and string datatypes.--> Ceylon supports literal values
+    of the following types:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para><literal>Natural</literal> and <literal>Float</literal>,</para>
+        </listitem>
+        <listitem>
+            <para><literal>Character</literal> and <literal>String</literal>,</para>
+        </listitem>
+        <listitem>
+            <para><literal>Type</literal>, <literal>Attribute</literal> and 
+            <literal>Method</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <!--itemizedlist>
+        <listitem>
+            <para><literal>Date</literal> and <literal>Time</literal>,</para>
+        </listitem>
+        <listitem>
+            <para><literal>Natural</literal> and <literal>Float</literal>,</para>
+        </listitem>
+        <listitem>
+            <para><literal>Character</literal>,</para>
+        </listitem>
+        <listitem>
+            <para><literal>String</literal> and <literal>Regex</literal>.</para>
+        </listitem>
+    </itemizedlist-->
     
     <programlisting>Literal :=
+NaturalLiteral | FloatLiteral |
+CharacterLiteral | StringLiteral |
+TypeLiteral | MemberLiteral |
+SpecialValue</programlisting>
+
+    <!--programlisting>Literal :=
 DateLiteral | TimeLiteral
 NaturalLiteral | FloatLiteral |
 CharacterLiteral | StringLiteral | RegexLiteral |
 TypeLiteral | MemberLiteral |
-SpecialValue</programlisting>
+SpecialValue</programlisting-->
 
+    <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
+    values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
+    with the enumerated instances <literal>true</literal> and <literal>false</literal>.</para>
+    
+    <comment><para>TODO: Should we have a literal syntax for version numbers, for use
+    in the module architecture, for example: <literal>@1.2.3BETA</literal>?</para></comment>
+    
     <section id="specialvalues">
         <title><literal>this</literal>, <literal>super</literal>, 
         <literal>null</literal> and <literal>subtype</literal></title>
@@ -70,14 +110,10 @@ SpecialValue</programlisting>
         
     </section>
     
-    <section id="datetime">
+    <!--section id="datetime">
         <title><literal>Date</literal> and <literal>Time</literal> literals</title>
         
         <para>A <literal>Date</literal> literal has the form:</para>
-        
-        <!--
-        <programlisting>DatetimeLiteral := "now"</programlisting>
-        -->
         
         <programlisting>DateLiteral := 
 "'" 
@@ -95,10 +131,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>For example:</para>
         
-        <!--
-        <programlisting>Datetime datetime = now;</programlisting>
-        -->
-        
         <programlisting>Date date = '25/03/2005';</programlisting>
         <programlisting>Time time = '12:00 AM PST';</programlisting>
         
@@ -107,9 +139,20 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <programlisting>Datetime datetime = '25/03/2005' @ '12:00 AM PST';</programlisting>
         
+        <comment><para>TODO: alternatively, we could follow RFC3339-style datetimes, for example:
+        <literal>1996-12-19T16:39:57-08:00</literal>.</para></comment>
+        
         <comment><para>TODO: should we allow wildcards and ranges, to get cron-style expressions 
         like <literal>'1/*/*' @ '00:00 GMT'</literal>?</para></comment>
         
+        <para>The <literal>..</literal> operator lets us construct intervals:</para>
+        
+        <programlisting>Interval&lt;Date&gt; timeRange = '0:0:00' .. '12:59:59 PM';</programlisting>
+        <programlisting>Interval&lt;Date&gt; dateRange = '1/1/2008' .. '31/12/2007';</programlisting>
+        <programlisting>Interval&lt;Datetime&gt; datetimeRange = '1/1/2008' @ '0:0:00' .. '31/12/2007' @ '12:59:59 PM';</programlisting>
+        
+    </section-->
+    
         <!--
         
         <para>The attributes <literal>hours</literal>, <literal>minutes</literal>, <literal>seconds</literal>,
@@ -132,28 +175,22 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         -->
         
-        <para>The <literal>..</literal> operator lets us construct intervals:</para>
-        
-        <programlisting>Interval&lt;Date&gt; timeRange = '0:0:00' .. '12:59:59 PM';</programlisting>
-        <programlisting>Interval&lt;Date&gt; dateRange = '1/1/2008' .. '31/12/2007';</programlisting>
-        <programlisting>Interval&lt;Datetime&gt; datetimeRange = '1/1/2008' @ '0:0:00' .. '31/12/2007' @ '12:59:59 PM';</programlisting>
-        
-    </section>
-    
     <section id="naturalnumber">
         <title>Natural number literals</title>
         
         <para>A <literal>Natural</literal> literal has this form:</para>
         
-        <programlisting>NaturalLiteral = 
-Digit+ | 
-"'" ( HexDigit{4} | HexDigit{8} ) "'"</programlisting>
+        <programlisting>NaturalLiteral = Digit+</programlisting>
         
+        <!--programlisting>NaturalLiteral = 
+Digit+ | 
+"'" ( HexDigit{4} | HexDigit{8} ) "'"</programlisting-->
+
         <para>For example:</para>
         
         <programlisting>Natural m = n + 10;</programlisting>
         
-        <programlisting>panel.backgroundColor = 'FF33';</programlisting>
+        <!--programlisting>panel.backgroundColor = 'FF33';</programlisting-->
         
         <para>Negative integer values can be produced using the unary
         <literal>-</literal> operator:</para>
@@ -210,6 +247,38 @@ if you prefer.";</programlisting>
         (And we would have a built-in converter to do implicit conversion to
         <literal>String</literal>.)</para></comment>
 
+    <comment>
+    <para>TODO: Very often, string literals are actually used to embed some
+    kind of mini-language. Therefore I would like to let you perform compile-time 
+    validation of string literals. Three options:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Annotation of string literals, for example 
+        <literal>url "http://jboss.org/ceylon"</literal>,
+        <literal>mail "mailto:gavin@hibernate.org"</literal>, 
+        <literal>regex "w+(d+)?"</literal>,
+        <literal>dt "25/03/2005 12:00 AM PST"</literal>,
+        <literal>color "FF3B"</literal>,
+        <literal>cron "0 0 23 ? * MON-FRI"</literal>.</para>
+      </listitem>
+      <listitem>
+        <para>Annotation of the parameter of a method or constructor, for example
+        <literal>Url("http://jboss.org/ceylon")</literal>, 
+        <literal>Mail("mailto:gavin@hibernate.org")</literal>, 
+        <literal>Regex("w+(d+)?")</literal>,
+        <literal>datetime("25/03/2005 12:00 AM PST")</literal>,
+        <literal>Color("FF3B")</literal>,
+        <literal>Cron("0 0 23 ? * MON-FRI")</literal>.</para>
+      </listitem>
+      <listitem>
+        <para>A special kind of <literal>extension</literal> for literal strings.</para>
+      </listitem>
+    </itemizedlist>
+    <para>This is a solution for literal dates and times, regexes, hexadecimal numbers,
+    etc, and even for more domain-specific things like names, cron expressions, internet
+    addresses, etc.</para>
+    </comment>
+    
     </section>
     
     <section id="character">
@@ -252,7 +321,7 @@ if you prefer.";</programlisting>
         
     </section-->
     
-    <section id="regex">
+    <!--section id="regex">
         <title>Regex literals</title>
         
         <para>A <literal>Regex</literal> literal has this form:</para>
@@ -269,7 +338,7 @@ if you prefer.";</programlisting>
         
         <programlisting>Natural quotedWords = new lang.Regex("\\W\"w+\"\\W").matcher(text).count();</programlisting>
         
-    </section>
+    </section-->
     
     <!--
     <section>
@@ -1591,6 +1660,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         
+        <!--
+        
         <row><entry namest="first" nameend="last"><emphasis>Datetime and interval constructors</emphasis></entry></row>
 
         <row>
@@ -1612,6 +1683,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>Instant&lt;T&gt;</literal></entry>
             <entry><literal>Interval&lt;T&gt;</literal></entry>
         </row>
+        
+        -->
         
     </tbody>
     </tgroup>
@@ -2138,14 +2211,14 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                 <entry>Binary</entry>
                 <entry>Left</entry>
             </row>
-            <row>
+            <!--row>
                 <entry>Date/time composition:</entry> 
                 <entry><literal>@</literal></entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
-            </row>
+            </row-->
             <row>
-                <entry>Range, interval and entry construction:</entry> 
+                <entry>Range<!--, interval--> and entry construction:</entry> 
                 <entry><literal>..</literal>, <literal>-></literal></entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
