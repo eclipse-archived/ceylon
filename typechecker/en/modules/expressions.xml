@@ -204,9 +204,7 @@ Digit+ |
         
         <para>A <literal>Float</literal> literal has this form:</para>
         
-        <programlisting>FloatLiteral := 
-Digit+ "." Digit+ 
-( ("E"|"e")? ("+"|"-")? Digit+ )?</programlisting>
+        <programlisting>FloatLiteral := Digit+ "." Digit+ ( ("E"|"e") ("+"|"-")? Digit+ )?</programlisting>
         
         <para>For example:</para>
         
