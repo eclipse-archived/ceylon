@@ -35,7 +35,7 @@
             <para><literal>Natural</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
-            <para><literal>Character</literal> and <literal>String</literal>,</para>
+            <para><literal>String</literal> and <literal>Quoted</literal>,</para>
         </listitem>
         <listitem>
             <para><literal>Type</literal>, <literal>Attribute</literal> and 
@@ -60,7 +60,7 @@
     
     <programlisting>Literal :=
 NaturalLiteral | FloatLiteral |
-CharacterLiteral | StringLiteral |
+StringLiteral | QuotedLiteral |
 TypeLiteral | MemberLiteral |
 SpecialValue</programlisting>
 
@@ -247,7 +247,7 @@ if you prefer.";</programlisting>
         (And we would have a built-in converter to do implicit conversion to
         <literal>String</literal>.)</para></comment>
 
-    <comment>
+    <!--comment>
     <para>TODO: Very often, string literals are actually used to embed some
     kind of mini-language. Therefore I would like to let you perform compile-time 
     validation of string literals. Three options:</para>
@@ -277,11 +277,44 @@ if you prefer.";</programlisting>
     <para>This is a solution for literal dates and times, regexes, hexadecimal numbers,
     etc, and even for more domain-specific things like names, cron expressions, internet
     addresses, etc.</para>
-    </comment>
+    </comment-->
     
     </section>
     
-    <section id="character">
+    <section id="quoted">
+        <title>Single quoted literals</title>
+        
+        <para>Single-quoted strings are used to express literal values for dates, 
+        times, regexes and hexadecimal numbers, and even for more domain-specific 
+        things like names, cron expressions, internet addresses, and phone numbers.
+        This is an important facility since Ceylon is a language for expressing 
+        structured data.</para>
+        
+        <para>A <literal>Quoted</literal> literal has this form:</para>
+        
+        <programlisting>QuotedLiteral := "'" Character* "'"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Date date = '25/03/2005';</programlisting>
+        <programlisting>Time time = '12:00 AM PST';</programlisting>
+        <programlisting>Boolean isEmail = email.matches( '^\w+@((\w+)\.)+$' );</programlisting>
+        <programlisting>Cron schedule = '0 0 23 ? * MON-FRI';</programlisting>
+        <programlisting>Color color = 'FF3B';</programlisting>
+        <programlisting>Url url = 'http://jboss.org/ceylon';</programlisting>
+        <programlisting>PhoneNumber ph = '+1 (404) 129 3456';</programlisting>
+        <programlisting>Character x = 'x';</programlisting>
+        
+        <para>Extensions that apply to the type <literal>Quoted</literal> are
+        evaluated at compile time for single-quoted literals, alowing compile-time
+        validation of the contents of the single-quoted string.</para>
+        
+        <programlisting>public extension Date date(Quoted dateString) { return ...; }</programlisting>
+        <programlisting>public extension class Regex(Quoted expression) { return ...; }</programlisting>
+        
+    </section>
+    
+    <!--section id="character">
         <title>Character literals</title>
         
         <para>A <literal>Character</literal> literal has this form:</para>
@@ -298,7 +331,7 @@ if you prefer.";</programlisting>
         
         <comment><para>TODO: do we really need character literals??</para></comment>
         
-    </section>
+    </section-->
     
     <!--section>
         <title>Byte literals</title>

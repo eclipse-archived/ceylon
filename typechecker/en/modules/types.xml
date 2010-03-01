@@ -1273,7 +1273,7 @@ while (people nonempty) {
     <section>
         <title>Regular expressions</title>
         
-        <programlisting><![CDATA[public class Regex(String expression)
+        <programlisting><![CDATA[public extension class Regex(Quoted expression)
         satisfies Case<String> { 
         
     doc "Return the substrings of the given string which
