@@ -1608,6 +1608,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     in some other languages? It is nice to be able to do stuff like 
     <literal>"-"*n</literal>.</para></comment>
     
+    <comment><para>TODO: Should we have operators for set union/intersection/complement
+    and set comparison?</para></comment>
+    
     </section>
     
     <section id="constructors">
@@ -1689,6 +1692,10 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     </tbody>
     </tgroup>
     </table>
+    
+    <comment><para>TODO: Should we have operators for performing arithmetic with
+    datetimes and durations, constructing intervals and combining dates and 
+    times?</para></comment>
     
     </section>
     
