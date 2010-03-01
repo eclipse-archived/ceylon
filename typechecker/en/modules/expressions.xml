@@ -298,7 +298,7 @@ if you prefer.";</programlisting>
         <programlisting>Time time = '12:00 AM PST';</programlisting>
         <programlisting>Boolean isEmail = email.matches( '^\w+@((\w+)\.)+$' );</programlisting>
         <programlisting>Cron schedule = '0 0 23 ? * MON-FRI';</programlisting>
-        <programlisting>Color color = 'FF3B';</programlisting>
+        <programlisting>Color color = 'FF3B66';</programlisting>
         <programlisting>Url url = 'http://jboss.org/ceylon';</programlisting>
         <programlisting>mail.to:='gavin@hibernate.org';</programlisting>
         <programlisting>PhoneNumber ph = '+1 (404) 129 3456';</programlisting>
