@@ -605,11 +605,11 @@ while (i.more) {
     public V value = value;
     
     override public Boolean equals(Object that) {
-        return equals(that, Entry#key, Entry#value)
+        return equals(that, #key, #value)
     }
     
     override public Integer hash {
-        return hash(Entry#key, Entry#value)
+        return hash(#key, #value)
     }
 
 }]]></programlisting>

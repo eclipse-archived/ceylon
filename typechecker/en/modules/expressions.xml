@@ -405,21 +405,13 @@ if you prefer.";</programlisting>
         
         <programlisting>TypeLiteral := HASH Type</programlisting>
         
-        <programlisting>MemberLiteral := (Type)? HASH MemberName</programlisting>
+        <programlisting>MemberLiteral := HASH (Type ".")? MemberName</programlisting>
                
         <para>For example:</para>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
-        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person#name;</programlisting>
-        <programlisting>Method&lt;Person, functor void(String)&gt;&gt; sayMethod = Person#say;</programlisting>
-        
-        <para>Note that the <literal>#</literal> curry operator may also be applied to an 
-        arbitrary expression, to obtain a <literal>Callable&lt;functor R(P p, Q q,...)&gt;</literal> 
-        where <literal>P p, Q q,...</literal> are the method parameter types and <literal>R</literal> 
-        is the method return type, or a <literal>Value&lt;T&gt;</literal> or 
-        <literal>OpenValue&lt;T&gt;</literal> where <literal>T</literal> is the attribute 
-        type.</para>
-        
+        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;</programlisting>
+        <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;</programlisting>
         
     </section>
 
@@ -476,7 +468,7 @@ if you prefer.";</programlisting>
             
             <programlisting>MethodInvocation := MemberReference TypeArguments? Arguments</programlisting>
             
-            <programlisting>MemberReference := (Expression DOT)? MemberName</programlisting>
+            <programlisting>MemberReference := (Expression ".")? MemberName</programlisting>
             
             <para>For example:</para>
             
@@ -499,7 +491,7 @@ if you prefer.";</programlisting>
             
             <para>Static method invocations follow the following schema.</para>
             
-            <programlisting>StaticMethodInvocation := (RegularType DOT)? MemberName TypeArguments? Arguments</programlisting>
+            <programlisting>StaticMethodInvocation := (RegularType ".")? MemberName TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -968,20 +960,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>X</literal> or <literal>optional X</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Member reference</emphasis></entry></row>
-
-        <row>
-            <entry><literal>#</literal></entry>
-            <entry><literal>lhs#member</literal></entry>
-            <entry>curry</entry>
-            <entry></entry>
-            <entry><literal>X</literal></entry>
-            <entry>Member of <literal>X</literal></entry>
-            <entry><literal>Callable&lt;functor R(P p, Q q,...)&gt;</literal>, 
-            <literal>Value&lt;T&gt;</literal> or
-            <literal>OpenValue&lt;T&gt;</literal></entry>
-        </row>
-
         <row><entry namest="first" nameend="last"><emphasis>Member invocation</emphasis></entry></row>
         
         <row>
@@ -989,7 +967,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>lhs.member</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal> or type <literal>X</literal></entry>
             <entry>Member of <literal>X</literal></entry>
             <entry>Member type</entry>
         </row>
@@ -1044,7 +1022,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>X</literal></entry>
             <entry>Member of <literal>X</literal>, of
             type <literal>X</literal></entry>
-            <entry>X</entry>
+            <entry><literal>X</literal></entry>
         </row>
 
         <row><entry namest="first" nameend="last"><emphasis>Type, method or functor argument specification</emphasis></entry></row>
@@ -2175,7 +2153,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     <tbody>
     
             <row>
-                <entry>Member invocation and lookup, subrange, reflection,
+                <entry>Member invocation and lookup, subrange,
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>, 
@@ -2187,7 +2165,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                 <literal>[]</literal>, 
                 <literal>[..]</literal>, 
                 <literal>[...]</literal>,
-                <literal>#</literal>,
                 <literal>++</literal>, 
                 <literal>--</literal></entry>
                 <entry>Binary / ternary / N-ary / unary postfix</entry>

@@ -59,7 +59,7 @@ throws #DatabaseException
        "if database access fails"
 by "Gavin King"
    "Andrew Haley"
-see LogoutAction#logout
+see #LogoutAction.logout
 scope(session) 
 action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
