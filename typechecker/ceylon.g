@@ -61,16 +61,31 @@ memberOrStatement
     | statement
     ;
 
-functorHeader
-    : 'functor' annotations? (type | 'void')
+reference
+    : 'ref' expression
     ;
 
 //a functor expression that can appear as the RHS of an 
 //assignment, in an argument list, or in parens
 functor 
+    : ( (functorWithParametersStart)=>functorWithParameters | functorWithoutParameters )
+    ;
+
+functorHeader
+    : 'op' declarationModifier* (type | 'void')
+    ;
+
+functorWithParameters
     : functorHeader? formalParameters functorBody
     ;
 
+functorWithParametersStart
+    :functorHeader? formalParameterStart
+    ;
+
+functorWithoutParameters
+    : 'op' functorBody
+    ;
 //a functor expression that can appear inside an expression
 //without the need for parens
 /*primaryFunctor 
@@ -101,12 +116,12 @@ formalParameterStart
 
 //special rule for syntactic predicates
 functorStart
-    : 'functor' | formalParameterStart
+    : 'op' | formalParameterStart
     ;
 
 //special rule for syntactic predicates
 /*primaryFunctorStart
-    : 'functor' | '(' (declarationStart | ')' '{')
+    : 'op' | '(' (declarationStart | ')' '{')
     ;*/
 
 //special rule for syntactic predicates
@@ -248,7 +263,7 @@ memberStub
 
 classDeclaration
     :
-        'class'
+        'class'?
         typeName
         typeParameters?
         formalParameters?
@@ -289,7 +304,7 @@ satisfiedTypes
     ;
 
 type
-    : regularType | functorType
+    : regularType | functorType | referenceType
     ;
 
 regularType
@@ -298,6 +313,10 @@ regularType
 
 functorType
     : functorHeader formalParameters
+    ;
+
+referenceType
+    : 'ref' declarationModifier* type
     ;
 
 annotations
@@ -312,17 +331,15 @@ annotation
 //kind of expressions that can appear as arguments to
 //the annotation
 userAnnotation 
-    : annotationName ( annotationArguments | arguments )?
+    : annotationName annotationArguments?
     ;
 
 annotationArguments
-    : ( literal | reflectedLiteral )+
+    : arguments | ( literal | reflectedLiteral )+
     ;
 
-//TODO: why can't I get the typeArguments in here??
-reflectedLiteral
-    : qualifiedTypeName reflectedMember
-    | reflectedBase
+reflectedLiteral 
+    : '#' ( memberName | (type ( '.' memberName )? ) )
     ;
 
 qualifiedTypeName
@@ -386,6 +403,8 @@ stringLiteral
 
 assignable 
     : (functorStart) => functor
+    | reference
+    | reflectedLiteral
     | expression
     ;
 
@@ -518,7 +537,6 @@ base
     | 'null'
     | 'none'
     | inlineClassDeclaration
-    | reflectedBase
     ;
 
 enumeration
@@ -529,7 +547,6 @@ enumeration
 
 selector 
     : memberInvocation
-    | reflectedMember
     | arguments
     | elementSelector
     | ('--' | '++')
@@ -539,13 +556,9 @@ memberInvocation
     : ('.' | '^.' | '?.' | '*.') memberName
     ;
 
-reflectedBase
-    : '#' ( regularType | memberName )
-    ;
-    
-reflectedMember
-    : '#' memberName
-    ;
+/*parameterTypes
+    : '(' ( type (',' type)* )? ')'
+    ;*/
 
 elementSelector
     : '[' elementsSpec ']'
@@ -559,7 +572,7 @@ elementsSpec
 arguments 
     : positionalArguments | namedArguments
     ;
-      
+    
 namedArgument
     : parameterName specifier /*(',' assignable)**/ ';'
     ;
@@ -926,6 +939,14 @@ NULL
 
 NONEMPTY
     :   'nonempty'
+    ;
+
+OP
+    :   'op'
+    ;
+
+REF
+    :   'ref'
     ;
 
 PRODUCE
