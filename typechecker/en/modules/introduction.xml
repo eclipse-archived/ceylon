@@ -30,8 +30,10 @@
     Ceylon methods are similar to Java methods. However, Ceylon does not
     feature any Java-like constructor declaration and so each Ceylon class 
     has exactly one "constructor". As an alternative to overloading, Ceylon 
-    supports method and constructor parameters with default values. In 
-    addition, Ceylon supports closures, called <emphasis>functors</emphasis>. 
+    supports method and constructor parameters with default values. Ceylon
+    does not support first-class function types, but references to methods 
+    may be passed to other methods and methods may declared inline in a 
+    method invocation. 
     </para>
     
     <para>
@@ -62,9 +64,9 @@
     
     <para>
     Ceylon control flow structures are enhanced versions of the traditional 
-    constructs found in C, C# and Java. Even better, functors can be used 
-    together with a special Smalltalk-style method invocation protocol to 
-    achieve more specialized flow control and other more functional-style 
+    constructs found in C, C# and Java. Even better, inline methods can be 
+    used together with a special Smalltalk-style method invocation protocol 
+    to achieve more specialized flow control and other more functional-style 
     constructs such as comprehensions.
     </para>
     
@@ -123,7 +125,7 @@
     Ceylon features language-level package and module constructs, and 
     language-level access control with four levels of visibility for 
     program elements: private (the default), <literal>package</literal>, 
-    <literal>module</literal> and <literal>public</literal>. There is no
+    <literal>module</literal> and <literal>public</literal>. There's no
     equivalent of Java's <literal>protected</literal>.
     </para>
     
@@ -136,45 +138,32 @@
         
         <programlisting>doc "The classic Hello World program"
 class Hello {
-
-    doc "Say hello"
-    main void hello() {
-        log.info("Hello, World!");
-    }
-
+    log.info("Hello, World!");
 }</programlisting>
 
         <para>
-        This code defines a Ceylon class named <literal>Hello</literal>, with 
-        a single method with no parameters and no return value, named 
-        <literal>hello</literal>. The <literal>main</literal> annotation appears 
-        on the method declaration. This annotation specifies that the method is 
-        called automatically when the virtual machine is started. The 
-        <literal>hello()</literal> method calls the <literal>info()</literal> 
+        This code defines a Ceylon class named <literal>Hello</literal>. When 
+        the class is instantiated, it calls the <literal>info()</literal> 
         method of an attribute named <literal>log</literal> defined by the 
-        <literal>lang.Object</literal> class. By default, this method displays 
-        its parameter on the console. The <literal>doc</literal> annotation 
+        <literal>lang.Object</literal> class. (By default, this method displays 
+        its parameter on the console.) The <literal>doc</literal> annotation 
         contains documentation that is included in the output of the Ceylon 
         documentation compiler.
         </para>
         
         <para>
-        This improved version of the program takes a name as input from the console:
+        This improved version of the program takes a name as input from the 
+        console:
         </para>
         
         <programlisting><![CDATA[doc "A more personalized greeting"
-class Hello {
-
-    doc "Say hello"
-    main void hello(Process process) {
-        String name = process.args.firstOrNull ? "World";
-        log.info("Hello, ${name}!");
-    }
-
+class Hello(Process process) {
+    String name = process.args.firstOrNull ? "World";
+    log.info("Hello, ${name}!");
 }]]></programlisting>
 
         <para>
-        This time, the <literal>hello()</literal> method has a parameter. <!--This
+        This time, the class has a parameter. <!--This
         parameter value is <emphasis>injected</emphasis> by Ceylon's built-in
         dependency management engine.--> The <literal>Process</literal> object
         has an attribute named <literal>args</literal>, which holds a 
@@ -185,7 +174,23 @@ class Hello {
         string.
         </para>
 
-        <para>Finally, lets rewrite this program as a web page:</para>
+        <para>
+        This looks a little cluttered. We can refactor the code and extract a 
+        private method:
+        </para>
+        
+        <programlisting><![CDATA[doc "A more personalized greeting"
+class Hello(Process process) {
+
+    sayHello( process.args.firstOrNull ? "World" );
+    
+    void sayHello(String name) {
+        log.info("Hello, ${name}!");
+    }
+    
+}]]></programlisting>
+
+        <para>Now, lets rewrite the program as a web page:</para>
 
         <programlisting><![CDATA[import html.*;
 

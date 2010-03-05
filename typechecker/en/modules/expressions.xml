@@ -1,8 +1,8 @@
 <chapter id="expressions">
     <title>Expressions</title>
     
-    <para>Ceylon expressions are significantly more powerful than Java, allowing a more
-    declarative style of programming.</para>
+    <para>Ceylon expressions are significantly more powerful than Java, allowing a 
+    more declarative style of programming.</para>
     
     <para>Expressions are formed from:</para>
     
@@ -11,14 +11,14 @@
             <para>literal values,</para>
         </listitem>
         <listitem>
-            <para>invocations of methods, attributes and functors, and instantiations
-            of classes and enumerations,</para>
+            <para>invocation of methods and instantiation of classes and 
+            enumerations,</para>
         </listitem>
         <listitem>
-            <para>operators, and</para>
+            <para>evaluation and assignment of attributes, and</para>
         </listitem>
         <listitem>
-            <para>functor expressions.</para>
+            <para>operators.</para>
         </listitem>
     </itemizedlist>
     
@@ -420,9 +420,8 @@ if you prefer.";</programlisting>
     <section id="invocations">
         <title>Invocations</title>
         
-        <para>Methods, classes, class instances and functors are <emphasis>invokable</emphasis>.
-        Invocation of a class is called <emphasis>instantiation</emphasis>. Invocation of a
-        class instance is called <emphasis>attribute configuration</emphasis>.</para>
+        <para>Methods, and classes are <emphasis>invokable</emphasis>. Invocation of a class is 
+        called <emphasis>instantiation</emphasis>.</para>
         
         <para>Any invocation must specify values for parameters, either by listing or naming 
         parameter values.</para>
@@ -432,24 +431,58 @@ if you prefer.";</programlisting>
         <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
         specified.</para>
         
-        <para>When parameter values are listed, required parameters are assigned first, in the order
-        in which they were declared, followed by defaulted parameters, in the order they were declared.
-        If there are any remaining defaulted parameters, they will be assigned their default values.
-        On the other hand, if any parameter values are unassigned, they will be treated as varargs.</para>
+        <para>When parameter values are listed, required parameters are assigned first, in the 
+        order in which they were declared, followed by defaulted parameters, in the order they 
+        were declared. If there are any remaining defaulted parameters, they will be assigned 
+        their default values. On the other hand, if any parameter values are unassigned, they 
+        will be treated as varargs.</para>
             
         <programlisting>PositionalArguments := "(" ( Expression ("," Expression)* )? ")"</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>(getProduct(id), 1)</programlisting>
                 
         <para>When parameter values are named, required and defaulted parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
         <programlisting>NamedArguments := "{" NamedArgument* VarargArguments? "}"</programlisting>
-
-        <para>Named arguments are followed by semicolons.</para>
-
-        <programlisting>NamedArgument := ParameterName Specifier ";"</programlisting>
         
+        <para>A named argument either:</para> 
+        
+        <itemizedlist>
+            <listitem>
+            <para>specifies its value using <literal>=</literal>, and is terminated by a semicolon, 
+            or</para>
+            </listitem>
+            <listitem>
+            <para>only for parameters which declare their own parameters, specifies a formal parameter 
+            list and a block of code (an inline method declaration).</para>
+            </listitem>
+        </itemizedlist>
+
+        <programlisting>NamedArgument := ParameterName ( FormalParams Block | Specifier ";" )</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>{ 
+    product = getProduct(id); 
+    quantity = 1; 
+}</programlisting>
+        
+        <programlisting>{ 
+    label = "Say Hello"; 
+    onClick() { 
+        say("Hello"); 
+    } 
+}</programlisting>
+        
+        <programlisting>{ 
+    by(X x, X y) { return x&lt;=&gt;y; } 
+}</programlisting>
+
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
-        thereby allowing the braces around an enumeration instantiation to be omitted?</para></comment>
+        thereby allowing the braces around an enumeration instantiation to be omitted in this case?</para></comment>
 
         <para>Vararg arguments are seperated by commas.</para>
 
@@ -457,9 +490,18 @@ if you prefer.";</programlisting>
 
         <programlisting>VarargArgument := Expression | Variable Specifier</programlisting>
         
+        <para>For example:</para>
+        
+        <programlisting>(1, 1, 2, 3, 5, 8)</programlisting>
+        
         <para>A vararg argument may be a local declaration.</para>
         
-        <para>A vararg argument may be an <literal>Iterable</literal>.</para>
+        <comment><para>TODO: figure this out. Is this only for varargs in a named parameter
+        invocation?</para></comment>
+        
+        <para>A vararg argument may be an <literal>Iterable</literal> of the parameter type.</para>
+        
+        <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
         
         <section id="methodinvocation">
             <title>Method invocation</title>
@@ -521,7 +563,7 @@ if you prefer.";</programlisting>
     Input i = Input(),
     Button {
         label = "Hello";
-        action = () {
+        action() {
             log.info(i.value);
         }
     }
@@ -535,7 +577,49 @@ if you prefer.";</programlisting>
             
         </section>
         
-        <section id="functorinvocation">
+        <section id="enumerations">
+            <title>Enumerations</title>
+            
+            <para>Enumerations may be instantiated according to the following simplified 
+            syntax:</para>
+            
+            <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+            
+            <para>This is a shortcut for instantiation of the <literal>Enumeration</literal>
+            class, where there is no need to explicitly specify the type.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+            
+            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
+            
+            <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
+            for a special value that can be assigned to any enumeration type.</para>
+            
+            <!--comment><para>Note: <literal>none</literal> can appear as a functor body, but 
+            <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment-->
+                        
+            <para>There are no true literals for lists, sets or maps. However, the 
+            <literal>..</literal> and <literal>-></literal> operators, together with the 
+            convenient enumeration constructor syntax, and some built-in extensions help 
+            us achieve the desired effect.</para>
+
+            <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
+            <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
+                
+            <para>Enumerations are transparently converted to sets or maps, allowing sets 
+            and maps to be initialized as follows:</para>
+        
+            <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
+            <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
+            <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
+            
+            <para>This representation is used as the canonical literal form for collections.</para>
+            
+        </section>
+        
+        <!--section id="functorinvocation">
             <title>Functor invocation</title>
             
             <para>Functor invocations follow the following schema.</para>
@@ -551,7 +635,7 @@ if you prefer.";</programlisting>
             The parameter values are passed to the formal parameters of the functor
             implementation.</para>
             
-        </section>
+        </section-->
         
         <!--  
         <section>
@@ -621,7 +705,28 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section id="inlineclassesliteralobjectsenumerations">
+    <section>
+        <title>Method references</title>
+        
+        <para>A method reference has the form:</para>
+        
+        <programlisting>MethodReference := MemberReference</programlisting>
+        
+        <para>where the member name is the name of a method. Method references
+        may appear on the RHS of a <literal>=</literal> specifier in a named
+        parameter invocation, when the parameter being specified declares its
+        own parameters, and the signature of the parameter matches the signature
+        of the method. For example:</para>
+        
+        <programlisting>//a method which accepts method references
+void sort&lt;X&gt;(List&lt;X&gt; list, Comparison by(X x, Y y)) { ... }</programlisting>
+        
+        <programlisting>Comparison reverseAlpha(X x, Y y) { return y&lt;=&gt;x; } //a local method declaration
+sort(names, reverseAlpha); //pass a reference to the method to another method</programlisting>
+        
+    </section>
+
+    <!--section id="inlineclassesliteralobjectsenumerations">
         <title>Literal objects, inline classes, and enumerations</title>
     
         <para>Three additional kinds of expressions exist for inline instantiation of an object.</para>
@@ -754,49 +859,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
         </section>
         
-        <section id="enumerations">
-            <title>Enumerations</title>
-            
-            <para>Enumerations may be specified according to the following simplified 
-            syntax:</para>
-            
-            <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
-            
-            <para>This is a shortcut for instantiation of the <literal>Enumeration</literal>
-            class, where there is no need to explicitly specify the type.</para>
-            
-            <para>For example:</para>
-            
-            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
-            
-            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
-            
-            <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
-            for a special value that can be assigned to any enumeration type.</para>
-            
-            <comment><para>Note: <literal>none</literal> can appear as a functor body, but 
-            <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment>
-                        
-            <para>There are no true literals for lists, sets or maps. However, the 
-            <literal>..</literal> and <literal>-></literal> operators, together with the 
-            convenient enumeration constructor syntax, and some built-in extensions help 
-            us achieve the desired effect.</para>
-
-            <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
-            <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
-                
-            <para>Enumerations are transparently converted to sets or maps, allowing sets 
-            and maps to be initialized as follows:</para>
-        
-            <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
-            <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
-            <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
-            
-            <para>This representation is used as the canonical literal form for collections.</para>
-            
-        </section>
-            
-    </section>
+    </section-->
     
     <section id="assignableexpressions">
         <title>Assignable expressions</title>
@@ -1025,7 +1088,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>X</literal></entry>
         </row>
 
-        <row><entry namest="first" nameend="last"><emphasis>Type, method or functor argument specification</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Type or method argument specification</emphasis></entry></row>
         
         <row>
             <entry><literal>(,,)</literal> or {;;;}</entry>
@@ -1033,9 +1096,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <literal>lhs { a=x; b=y; c=z; }</literal></entry>
             <entry>arguments</entry>
             <entry><literal></literal></entry>
-            <entry>Type, method or functor</entry>
-            <entry>Parameter types of type, method or functor</entry>
-            <entry>Type or return type of method or functor</entry>
+            <entry>Type or method</entry>
+            <entry>Parameter types of type or method</entry>
+            <entry>Type or return type of method</entry>
         </row>
         
     </tbody>
@@ -2362,7 +2425,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     
     </section>
 
-    <section id="functorexpressions">
+    <!--section id="functorexpressions">
         <title>Functor expressions</title>
         
         <para>A functor expression has this form:</para>
@@ -2463,7 +2526,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         } 
     } );</programlisting>
     
-    </section>
+    </section-->
                
     <section id="smalltalkprotocol">
         <title>Smalltalk-style method invocation</title>
@@ -2504,7 +2567,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
 
         <programlisting>int index = lineItems firstIndex (LineItem li) !li.product.available;</programlisting>
         
-        <programlisting>amounts sort (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
+        <programlisting>amounts sort (Float x, Float y) { return x&lt;=&gt;y };</programlisting>
         
         <programlisting>people sort (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
         

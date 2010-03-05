@@ -1,10 +1,10 @@
 <chapter id="statementblocks">
     <title>Blocks and control structures</title>
     
-    <para>Method, attribute, class and functor literal bodies contain procedural code 
-    that is executed when the method, functor or attribute is invoked, or when the
-    class is instantiated. The code contains expressions and control directives and is 
-    organized using blocks and control structures.</para>
+    <para>Method, attribute and class bodies contain procedural code that is executed 
+    when the method or attribute is invoked, or when the class is instantiated. The 
+    code contains expressions and control directives and is organized using blocks and 
+    control structures.</para>
     
     <section id="blocks">
         <title>Blocks and statements</title>
@@ -15,20 +15,20 @@
         specifiers and control structures are executed sequentially.</para>
 
         <para>A <emphasis>statement</emphasis> is an assignment, an invocation of a 
-        method or functor, an instantiation of a class, a control structure, a control 
-        directive, or a method, attribute or local declaration.</para>
+        method , an instantiation of a class, a control structure, a control directive, 
+        or a method, attribute or local declaration.</para>
 
         <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
 
         <programlisting>Statement := ExpressionStatement | DirectiveStatement | Specification | Declaration</programlisting>
 
         <para>Only certain expressions are valid statements: assignment, prefix or 
-        postfix increment or decrement, invocation of a method or functor and
-        instantiation of a class.</para>
+        postfix increment or decrement, invocation of a method and instantiation of 
+        a class.</para>
         
         <programlisting>ExpressionStatement := ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
         
-        <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | FunctorInvocation | Instantiation</programlisting>
+        <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | Instantiation</programlisting>
         
         <comment><para>TODO: it would be possible to say that any expression is a valid
         statement, but this seems to just open up more potential programming errors. So
@@ -69,21 +69,21 @@
         <itemizedlist>
             <listitem>the <literal>return</literal> directive&mdash;to return a value from a method 
             or attribute getter,</listitem>
-            <listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
-            functor,</listitem>
+            <!--listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
+            functor,</listitem-->
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop, and</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
         
-         <programlisting>Directive := "return" Expression? | "produce" Expression | "throw" Expression? | "break" Expression?</programlisting>
+         <programlisting>Directive := "return" Expression? | "throw" Expression? | "break" Expression?</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter or method. A return value must be specified in 
         a non-<literal>void</literal> method or attribute getter. A return value 
         may not be specified in a <literal>void</literal> method.</para>
         
-        <para>The <literal>produce</literal> directive may not be used outside
-        the body of a non-<literal>void</literal> functor expression.</para>
+        <!--para>The <literal>produce</literal> directive may not be used outside
+        the body of a non-<literal>void</literal> functor expression.</para-->
         
         <para>The <literal>break</literal> directive may not be used outside the 
         body of a loop. If the loop has a <literal>fail</literal> block, the
@@ -107,12 +107,12 @@
         
         <para>Control of execution flow may be achieved using control directives and 
         control structures. Control structures include conditionals, loops, and 
-        exception management. For many tasks, the use of these traditional control
+        exception management. <!--For many tasks, the use of these traditional control
         structures is considered bad style, and the use of expressions with functor 
         parameters is preferred. However, control structures support the use of the 
         <literal>return</literal> and <literal>break</literal> directives, whereas 
         functors do not. Therefore, some tasks may be accomplished only with control 
-        structures.</para>
+        structures.--></para>
 
         <para>Control structures are not considered to be expressions in Ceylon.</para>
         

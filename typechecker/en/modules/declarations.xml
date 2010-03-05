@@ -8,7 +8,7 @@
         
         <para>All declarations follow a general pattern.</para> 
       
-    <section>
+    <section id="abstractdeclaration">
         <title>Abstract declaration</title>
         
         <para>Declarations conform to the following general schema:</para>
@@ -18,7 +18,7 @@ keyword? Type? (TypeName|MemberName) TypeParams? FormalParams?
 Supertype?
 Interfaces? 
 TypeConstraints? 
-Declaration?</programlisting>
+Body?</programlisting>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
         be named with an initial uppercase. Members, parameters and locals must be 
@@ -107,10 +107,19 @@ VarargsParam?
 
         <programlisting>FormalParam := Param | EntryParamPair | RangeParamPair</programlisting>
         
-        <para>Each parameter is declared using with a type and name and may have annotations.</para>
+        <para>Each parameter is declared with a type and name and may have annotations and/or
+        parameters of its own.</para>
         
-        <programlisting>Param := Annotation* Type ParameterName</programlisting>
+        <programlisting>Param := Annotation* Type ParameterName FormalParams?</programlisting>
+        
+        <para>A parameter with its own parameter list is an abstract local method declaration.
+        The method must be defined by the caller when the method is invoked or the class is
+        instantiated. For example:</para>
             
+        <programlisting>(String label, void onClick())</programlisting>
+        
+        <programlisting>(Comparison by(X x, X y))</programlisting>
+        
         <para>Defaulted parameters specify a default value.</para>
     
         <programlisting>DefaultParam := FormalParam Specifier</programlisting>
@@ -120,11 +129,19 @@ VarargsParam?
         
         <programlisting>Specifier := "=" Expression</programlisting>
         
+        <para>For example:</para>
+        
+        <programlisting>(Product product, Natural quantity=1)</programlisting>
+        
         <para>A varargs parameter accepts a lists of arguments or a single argument of type 
         <literal>Iterable</literal>. Inside the method, it is available as a local of type
         <literal>Iterable</literal>.</para>
         
         <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
@@ -133,22 +150,16 @@ VarargsParam?
 
         <programlisting>RangeParamPair := Annotation* Type ParameterName ".." ParameterName</programlisting>
         
-        <para>For example:</para>
-        
-        <programlisting>(Product product, Natural quantity=1)</programlisting>
-        
-        <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
-        
-        <programlisting>(Key key -> Value value)</programlisting>
-        
         <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
         parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
         
-        <programlisting>(Float value, Integer min..max)</programlisting>
-    
+        <programlisting>(Key key -> Value value)</programlisting>
+        
         <para>A variable pair declaration of form <literal>T x .. y</literal> results in a single 
         parameter of type <literal>Range&lt;T&gt;</literal>.</para>
         
+        <programlisting>(Float value, Integer min..max)</programlisting>
+    
     </section>
     
     <section>
@@ -183,7 +194,7 @@ VarargsParam?
     
         <para>Method and attribute declarations must declare a type.</para>
         
-        <programlisting>Type := RegularType | FunctorType | "subtype"</programlisting>
+        <programlisting>Type := RegularType | "subtype"</programlisting>
         
         <para>Most types are classes or interfaces:</para>
         
@@ -231,7 +242,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
     </section>
     
-    <section>
+    <!--section>
         <title>Functor type declaration</title>
     
         <para>There are also functor types:</para>
@@ -255,7 +266,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         parameter types. So <literal>functor String(Object o)</literal> is assignable to
         <literal>functor Object(String s)</literal>.</para>
         
-    </section>
+    </section-->
 
     <section>
         <title>Extended class</title>
@@ -395,7 +406,7 @@ String join(Iterable&lt;String&gt; strings,
     <section id="classes">
         <title>Classes</title>
         
-        <para>A class is a stateful, instantiable type. Class are declared according 
+        <para>A class is a stateful, instantiable type. Classes are declared according 
         to the following:</para>
         
         <programlisting>Annotation*
@@ -887,8 +898,7 @@ TypeConstraints?
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
         <comment><para>TODO: should we allow a method or attribute getter/setter to omit the braces
-        if it consists of exactly one statement, just like we do for functor expressions? I have 
-        actually tried this and it parses.</para></comment>
+        if it consists of exactly one statement? I have actually tried this and it parses.</para></comment>
 
         <para>If there is no method body, the method must be declared <literal>abstract</literal>.</para>
         
@@ -1350,12 +1360,13 @@ TypeConstraintList?
        
        <programlisting>Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
-       <para>A type alias may satisfy either:</para>
+       <para>A type alias may satisfy any number of interfaces and at most one class.</para>
        
+       <!--para>A type alias may satisfy either:</para>
        <itemizedlist>
            <listitem><para>any number of interfaces and at most one class, or</para></listitem>
            <listitem><para>a single functor type.</para></listitem>
-       </itemizedlist>
+       </itemizedlist-->
        
        <para>Any expression which is assignable to all the satisfied types is assignable 
        to the alias type.</para>
@@ -1366,7 +1377,7 @@ TypeConstraintList?
        
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
-       <programlisting>alias Compare&lt;T&gt; satisfies functor Comparison(T x, T y);</programlisting>
+       <!--programlisting>alias Compare&lt;T&gt; satisfies functor Comparison(T x, T y);</programlisting-->
        
        <para>A shortcut is provided for definition of private aliases.</para>
        
