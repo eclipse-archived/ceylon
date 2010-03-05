@@ -714,18 +714,29 @@ if you prefer.";</programlisting>
         
         <programlisting>MethodReference :=  MemberReference | StaticMemberReference</programlisting>
         
-        <para>where the member name is the name of a method. Method references may appear on 
-        the RHS of a <literal>=</literal> specifier in a named parameter invocation, when the 
-        parameter being specified declares its own parameters, and the signature of the parameter 
-        matches the signature of the method. For example:</para>
+        <para>where the member name is the name of a method.</para>
         
-        <programlisting>//a method which accepts method references
-void sort&lt;X&gt;(List&lt;X&gt; list, Comparison by(X x, Y y)) { ... }</programlisting>
+        <para>Method references may appear on the RHS of a <literal>=</literal> specifier in a named 
+        parameter invocation, when the parameter being specified declares its own parameters, and the 
+        signature of the parameter matches the signature of the method. For example:</para>
         
-        <programlisting>Comparison reverseAlpha(X x, Y y) { return y&lt;=&gt;x; } //a local method declaration
+        <programlisting>//a method which accepts a method reference
+void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
+        
+        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; } //a local method declaration
 sort(names, reverseAlpha); //pass a reference to the method to another method</programlisting>
 
-        <comment><para>TODO: should we allow a method reference to be used to define a method,
+        <para>A method reference may be returned by a method with multiple parameter lists.</para>
+        
+        <programlisting>//a method that returns a method reference
+Comparison getOrdering()(Natural x, Natural y) {
+    Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+    return natural;
+}</programlisting>
+
+        <programlisting>Comparison order(Natural x, Natural y) = getOrdering();</programlisting>
+
+        <comment><para>TODO: We should allow a method reference to be used to define a method,
         for example:</para></comment>
         
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>

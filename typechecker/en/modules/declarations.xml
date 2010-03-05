@@ -14,7 +14,7 @@
         <para>Declarations conform to the following general schema:</para>
         
         <programlisting>Annotation* 
-keyword? Type? (TypeName|MemberName) TypeParams? FormalParams? 
+keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
 Supertype?
 Interfaces? 
 TypeConstraints? 
@@ -875,7 +875,7 @@ public User(String username, Person person);</programlisting>
         
         <programlisting>Method :=
 Annotation*
-(Type | "void") MemberName TypeParams? FormalParams
+(Type | "void") MemberName TypeParams? FormalParams+
 TypeConstraints?
 ( ";" | Block )</programlisting>
 
@@ -897,9 +897,10 @@ TypeConstraints?
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
-        <comment><para>TODO: should we allow a method or attribute getter/setter to 
-        omit the braces if it consists of exactly one statement? I have actually tried 
-        this and it parses.</para></comment>
+        <para>A method may declare multiple lists of parameters. Methods which declare
+        more than one parameter list return references to other methods.</para>
+        
+        <programlisting>Comparison getOrdering()(Natural x, Natural y) { .... }</programlisting>
 
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
