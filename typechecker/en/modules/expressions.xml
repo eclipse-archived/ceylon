@@ -461,7 +461,7 @@ if you prefer.";</programlisting>
             </listitem>
         </itemizedlist>
 
-        <programlisting>NamedArgument := ParameterName ( MethodSpecification | Specifier ";" )</programlisting>
+        <programlisting>NamedArgument := ParameterName (AttributeSpecification | MethodSpecification)</programlisting>
         
         <para>For example:</para>
         

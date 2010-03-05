@@ -412,8 +412,8 @@ String join(Iterable&lt;String&gt; strings,
     <section id="classes">
         <title>Classes</title>
         
-        <para>A class is a stateful, instantiable type. Classes are declared according 
-        to the following:</para>
+        <para>A <emphasis>class</emphasis> is a stateful, instantiable type. Classes 
+        are declared according to the following:</para>
         
         <programlisting>Class :=
 Annotation*
@@ -431,7 +431,7 @@ TypeConstraints?
         For example:
         </para>
         
-        <programlisting>public mutable entity
+        <programlisting>public mutable
 class Customer(Name name, optional Organization org = null) 
         extends Person(name, org) { 
     ... 
@@ -449,7 +449,7 @@ class Customer(Name name, optional Organization org = null)
         above declarations are equivalent to the following Java declarations: 
         </para>
         
-        <programlisting>@entity public class Customer 
+        <programlisting>public class Customer 
         extends Person {
     public Customer(Name name) { this(name, null); }
     public Customer(Name name, Organization org) { super(name, org); }
@@ -789,8 +789,9 @@ public class Person { ... }</programlisting>
     <section id="interfaces">
         <title>Interfaces</title>
         
-        <para>An interface is a type which does not specify implementation. Interfaces may 
-        not be directly instantiated. Interfaces are declared according to the following:</para>
+        <para>An <emphasis>interface</emphasis> is a type which does not specify 
+        implementation. Interfaces may not be directly instantiated. Interfaces 
+        are declared according to the following:</para>
         
         <programlisting>Interface :=
  Annotation*
@@ -878,8 +879,8 @@ public User(String username, Person person);</programlisting>
     <section id="methods">
         <title>Methods</title>
         
-        <para>A method is a callable block of code. Methods may have parameters and
-        may return a value. Methods are declared according to the following:</para>
+        <para>A <emphasis>method</emphasis> is a callable block of code. Methods may have 
+        parameters and may return a value. Methods are declared according to the following:</para>
         
         <programlisting>Method := MethodHeader Block | ("=" MethodReference)? ";"</programlisting>
 
@@ -1004,7 +1005,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     <section id="attributes">
         <title>Attributes</title>
         
-        <para>There are three kinds of declarations related to attribute definition:</para>
+        <para>There are three kinds of declarations related to <emphasis>attribute</emphasis> 
+        definition:</para>
         
         <itemizedlist>
             <listitem>
@@ -1380,7 +1382,8 @@ TypeConstraintList?
     <section id="typealiases">
        <title>Type aliases</title>
     
-       <para>A type alias allows a type to be referred to more compactly.</para>
+       <para>A <emphasis>type alias</emphasis> allows a type to be referred to more 
+       compactly.</para>
        
        <programlisting>Alias := Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
