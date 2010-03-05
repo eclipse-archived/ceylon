@@ -245,7 +245,7 @@ if you prefer.";</programlisting>
         (And we would have a built-in converter to do implicit conversion to
         <literal>String</literal>.)</para></comment>
         
-        <comment><para>TODO is <literal>"{Time()} {message}"</literal> a better 
+        <comment><para>TODO: is <literal>"{Time()} {message}"</literal> a better 
         syntax for interpolation?</para></comment>
 
     <!--comment>
