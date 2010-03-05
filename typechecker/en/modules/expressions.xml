@@ -726,18 +726,20 @@ void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</p
         <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; } //a local method declaration
 sort(names, reverseAlpha); //pass a reference to the method to another method</programlisting>
 
-        <para>A method reference may be returned by a method with multiple parameter lists.</para>
+        <para>A method reference may be returned by a method with multiple parameter lists.
+        The reference must be to a method with the same signature, after removal of the last
+        parameter list.</para>
         
         <programlisting>//a method that returns a method reference
-Comparison getOrdering()(Natural x, Natural y) {
+Comparison getOrdering(Natural x, Natural y)() {
     Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
     return natural;
 }</programlisting>
 
         <programlisting>Comparison order(Natural x, Natural y) = getOrdering();</programlisting>
 
-        <comment><para>TODO: We should allow a method reference to be used to define a method,
-        for example:</para></comment>
+        <para>Finally, a method reference may be used to define a method using <literal>=</literal>. 
+        The two methods must have exactly the same signature.</para>
         
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
         
@@ -2723,7 +2725,7 @@ Y using&lt;X,Y&gt;(specified X resource,
         
         </section>
         
-        <section id="caseslist">
+        <!--section id="caseslist">
             <title>Lists of cases</title>
         
         <para>Finally, a specialized invocation syntax is provided for methods which define 
@@ -2746,7 +2748,7 @@ Y select&lt;X, Y&gt;(X selector,
     case (card) payByCard(payment);
 </programlisting>
         
-        </section>
+        </section-->
         <!--  
         <para>Or, If the method has a parameter of type 
         <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,

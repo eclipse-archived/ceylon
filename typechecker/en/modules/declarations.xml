@@ -877,7 +877,7 @@ public User(String username, Person person);</programlisting>
 Annotation*
 (Type | "void") MemberName TypeParams? FormalParams+
 TypeConstraints?
-( ";" | Block )</programlisting>
+( ";" | Block | "=" MethodReference )</programlisting>
 
         <para>For example:</para>
         
@@ -897,10 +897,12 @@ TypeConstraints?
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
+        <programlisting>Float say(String words) = person.say;</programlisting>
+        
         <para>A method may declare multiple lists of parameters. Methods which declare
         more than one parameter list return references to other methods.</para>
         
-        <programlisting>Comparison getOrdering()(Natural x, Natural y) { .... }</programlisting>
+        <programlisting>Comparison getOrdering(Natural x, Natural y)() { .... }</programlisting>
 
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
@@ -1061,7 +1063,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         not refer to mutable locals.</para>
         
          <section>
-            <title>Attributes getters</title>
+            <title>Attribute getters</title>
             
             <para>An attribute getter is declared as follows:</para>
             
@@ -1086,7 +1088,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
         </section>
         
         <section>
-            <title>Attributes setters</title>
+            <title>Attribute setters</title>
                     
             <para>An attribute setter is declared as follows:</para>
             

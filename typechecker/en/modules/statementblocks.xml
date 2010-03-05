@@ -57,9 +57,10 @@
         
         <para>A statement may specify the implementation of a method or attribute.</para>
         
-        <programlisting>Specification := MemberName (MethodSpecification | Specifier ";")</programlisting>
+        <programlisting>Specification := MemberName (AttributeSpecification | MethodSpecification)</programlisting>
         
-        <programlisting>MethodSpecification := FormalParams Body</programlisting>
+        <programlisting>AttributeSpecification := Specifier ";"</programlisting>
+        <programlisting>MethodSpecification := FormalParams (Body | "=" MethodReference) </programlisting>
         
         <!--programlisting>GetterSpecification := Body</programlisting-->
         
