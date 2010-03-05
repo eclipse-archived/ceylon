@@ -897,31 +897,32 @@ TypeConstraints?
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
-        <comment><para>TODO: should we allow a method or attribute getter/setter to omit the braces
-        if it consists of exactly one statement? I have actually tried this and it parses.</para></comment>
+        <comment><para>TODO: should we allow a method or attribute getter/setter to 
+        omit the braces if it consists of exactly one statement? I have actually tried 
+        this and it parses.</para></comment>
 
-        <para>If there is no method body, the method must be declared <literal>abstract</literal>.</para>
-        
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
         
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
 
-        <para>
-        A Ceylon method invocation is equivalent to a Java method invocation. The semantics of 
-        method declarations are identical to Java, except that Ceylon methods may declare defaulted 
-        parameters. 
-        </para>
+        <para>A Ceylon method invocation is equivalent to a Java method invocation. The 
+        semantics of method declarations are identical to Java, except that Ceylon methods 
+        may declare defaulted parameters.</para>
+        
+        <para>A method may be declared inside the body of another method or attribute, in 
+        which case it may refer to any immutable local of the containing scope. It may not 
+        refer to mutable locals.</para>
         
        <section>
             <title>Defaulted parameters</title>
             
         <para>Methods with defaulted parameters may not be overloaded.</para>
         
-        <para>When a method with a defaulted parameter is called, and a value is not assigned to 
-        the defaulted parameter by the caller, the default value defined by the specifier is 
-        used.</para>
+        <para>When a method with a defaulted parameter is called, and a value is not 
+        assigned to the defaulted parameter by the caller, the default value defined by 
+        the specifier is used.</para>
         
         <para>This method:</para>
         
@@ -974,8 +975,12 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <section>
             <title>Interface methods and abstract methods</title>
             
-        <para>Methods declared by interfaces and methods marked <literal>abstract</literal> may 
-        not specify a body:</para>
+        <para>If there is no method body in a method declaration, the implementation 
+        of the method must be specified later in the block, or the class that declares 
+        the method must be annotated <literal>abstract</literal>.If no implementation 
+        is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
+        
+        <para>Methods declared by interfaces may not specify an implementation:</para>
         
         <programlisting>MethodStub :=
 Annotation*
@@ -986,10 +991,7 @@ TypeConstraints?
         <para>Interface methods and abstract methods must be implemented by every 
         non-<literal>abstract</literal> class that implements the interface or
         subclasses the abstract class.</para>
-        
-        <para>Classes which declare methods marked <literal>abstract</literal> must also be
-        declared <literal>abstract</literal>, and may not be instantiated.</para>
-        
+                
         </section>
         
     </section>
@@ -1001,15 +1003,16 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>Simple attribute declarations define state (very similar to a Java field).</para>
+                <para>Simple attribute declarations define state (very similar to a 
+                Java field).</para>
             </listitem>
             <listitem>
-                <para>Attribute getter declarations define how the value of a derived attribute
-                is obtained.</para>
+                <para>Attribute getter declarations define how the value of a derived 
+                attribute is obtained.</para>
             </listitem>
             <listitem>
-                <para>Attribute setter declarations define how the value of a derived attribute
-                is assigned.</para>
+                <para>Attribute setter declarations define how the value of a derived 
+                attribute is assigned.</para>
             </listitem>
         </itemizedlist>
         
@@ -1043,7 +1046,8 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         
-        <comment><para>TODO: Should we generate getters and setters, just for interop with Java?</para></comment>
+        <comment><para>TODO: Should we generate getters and setters, just for interop with 
+        Java?</para></comment>
         
         <para>
         The compiler is permitted to optimize private attributes to a simple Java field
@@ -1051,8 +1055,12 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         be accessed via reflection.
         </para>
         
-        <section>
-            <title>Attributes with getter/setter code</title>
+        <para>An attribute may be declared inside the body of another method or attribute, 
+        in which case it may refer to any immutable local of the containing scope. It may 
+        not refer to mutable locals.</para>
+        
+         <section>
+            <title>Attributes getters</title>
             
             <para>An attribute getter is declared as follows:</para>
             
@@ -1074,6 +1082,11 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
 };
 public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
+        </section>
+        
+        <section>
+            <title>Attributes setters</title>
+                    
             <para>An attribute setter is declared as follows:</para>
             
             <programlisting>AttributeSetter := Annotation* "assign" MemberName Block</programlisting>
@@ -1111,12 +1124,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>SimpleAttribute := Annotation* Type MemberName Initializer? ";"</programlisting>
+        <programlisting>SimpleAttribute := Annotation* Type MemberName (Specifier | Initializer)? ";"</programlisting>
         
         <para>The value of an immutable attribute is specified using <literal>=</literal>. Mutable 
         attributes may be initialized using the assignment operator <literal>:=</literal>.</para>
 
-        <programlisting>Initializer := ("="|":=") Expression</programlisting>
+        <programlisting>Initializer := ":=" Expression</programlisting>
 
         <comment><para>TODO: I would like to support <literal>def</literal> in place of the type
         for a simple attribute or local with an initializer. For example:</para></comment>
@@ -1181,8 +1194,14 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <section>
             <title>Interface attributes and abstract attributes</title>
             
-        <para>Attributes declared by interfaces and attributes marked <literal>abstract</literal> 
-        may not specify an initalizer, getter or setter:</para>
+        <para>If there is no initializer or getter implementation, and the attribute is not 
+        declared <literal>optional</literal>, the value or implementation of the attribute 
+        must be specified later in the block, or the class that declares the attribute must 
+        be annotated <literal>abstract</literal>. If no value or implementation is specified, 
+        and the attribute is not declared <literal>optional</literal>, the attribute is 
+        considered an <emphasis>abstract attribute</emphasis>.</para>
+        
+        <para>Attributes declared by interfaces may not specify an initalizer, getter or setter:</para>
         
         <programlisting>AttributeStub := Annotation* Type MemberName ";"</programlisting>
         
@@ -1192,9 +1211,6 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         
         <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
         in which case every subtype must also define the attribute to be mutable.</para>
-        
-        <para>Classes which declare methods marked <literal>abstract</literal> must also be declared 
-        <literal>abstract</literal>, and may not be instantiated.</para>
         
         </section>
                 
@@ -1475,8 +1491,8 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
             </listitem>
             <listitem>
                 <para><literal>abstract</literal> specifies that a class
-                cannot be instantiated, or that a method or attribute of 
-                an abstract class must be implemented by all subclasses.</para>
+                cannot be instantiated.<!--, or that a method or attribute of 
+                an abstract class must be implemented by all subclasses.--></para>
             </listitem>
             <listitem>
                 <para><literal>static</literal> specifies that a method

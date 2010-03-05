@@ -30,6 +30,13 @@
         
         <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | Instantiation</programlisting>
         
+        <para>For example:</para>
+        
+        <programlisting>x := 1;</programlisting>
+        <programlisting>x++;</programlisting>
+        <programlisting>log.info("Hello);</programlisting>
+        <programlisting>Main(p);</programlisting>
+        
         <comment><para>TODO: it would be possible to say that any expression is a valid
         statement, but this seems to just open up more potential programming errors. So
         I think it's better to limit statements to assignments, invocations
@@ -41,17 +48,47 @@
 
         <programlisting>DirectiveStatement := Directive ";"?</programlisting>
         
+        <para>For example:</para>
+        
+        <programlisting>throw Exception()</programlisting>
+        <programlisting>return x+y;</programlisting>
+        <programlisting>return "Hello"</programlisting>
+        <programlisting>break true</programlisting>
+        
+        <para>A statement may specify the implementation of a method or attribute.</para>
+        
+        <programlisting>Specification := MemberName (MethodSpecification | Specifier ";")</programlisting>
+        
+        <programlisting>MethodSpecification := FormalParams Body</programlisting>
+        
+        <!--programlisting>GetterSpecification := Body</programlisting-->
+        
+        <comment><para>TODO: Getter, setter specification?</para></comment>
+        
         <para>The Ceylon language distinguishes between assignment to a mutable value 
         (the <literal>:=</literal> operator) and specification of the value of an 
         immutable local or attribute (using <literal>=</literal>). A specification
         is not an expression.</para>
         
-        <programlisting>Specification := MemberName Specifier ";"</programlisting>
+        <para>A specification may appear inside an control structure, in which case the
+        compiler validates that all paths result in a properly specified method or 
+        attribute. For example:</para>
+        
+        <programlisting>String description;
+Comparison order(X x, X y);
+if (reverseOrder()) {
+    description = "Reverse order";
+    order(X x, Y y) { return y&lt;=&gt;x }
+}
+else {
+    description = "Natural order";
+    order(X x, Y y) { return x&lt;=&gt;y }
+}</programlisting>
         
         <para>Blocks may contain declarations, which are, by default, only visible inside
         the block:</para>
         
-        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Local</programlisting>
+        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Class</programlisting>
         
         <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
         
@@ -426,7 +463,7 @@ fail {
 
             <para>The loop may declare an iterator variable, which may be mutable.</para>
 
-            <programlisting>DoIterator := Annotation* Variable Initializer</programlisting>
+            <programlisting>DoIterator := Annotation* Variable (Specifier | Initializer)</programlisting>
             
             <!--programlisting>DoWhileFail := 
 ( "do" ("(" Variable Specifier ")")? OpenBlock? )?
