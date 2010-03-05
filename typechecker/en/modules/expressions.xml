@@ -912,9 +912,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     for a particular type. There is support for user-defined operator 
     <emphasis>overloading</emphasis>. However, the semantics of an operator 
     may be customized by the implementation of the type that the operator
-    applies to.</para>
+    applies to. This is called <emphasis>operator polymorphism</emphasis>.</para>
     
-    <para>For example, the following Ceylon code examples:</para>
+    <para>Some examples:</para>
     
     <programlisting>Float z = x * y;</programlisting>
     
@@ -941,7 +941,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     <programlisting>optional String name = person?.name;</programlisting>
     
     
-    <para>Are equivalent to the following (Ceylon) code:</para>
+    <!--para>Are equivalent to the following (Ceylon) code:</para>
     
     <programlisting>Float z = x.times(y);</programlisting>
     
@@ -975,7 +975,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     
     <programlisting>optional String name = if (exists person) person.name else null;</programlisting>
     
-    <programlisting>List&lt;Day&gt; nonworkDays = days.values(Enumeration(0,7));</programlisting>
+    <programlisting>List&lt;Day&gt; nonworkDays = days.values(Enumeration(0,7));</programlisting-->
 
     <section id="operatorlist">
         <title>List of operators</title>

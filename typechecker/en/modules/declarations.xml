@@ -39,7 +39,7 @@ Body?</programlisting>
 
     </section>
     
-    <section>
+    <section id="annotationlist">
     <title>Annotation list</title>
 
         <para>Declarations may be preceded by a list of annotations.</para>
@@ -92,7 +92,7 @@ public deprecated</programlisting>
         
     </section>
     
-    <section>
+    <section id="formalparameterlist">
         <title>Formal parameter list</title>
     
         <para>Method and class declarations may declare formal parameters, including
@@ -162,7 +162,7 @@ VarargsParam?
     
     </section>
     
-    <section>
+    <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
          <para>Method, class and interface declarations may declare generic type parameters.</para>
@@ -189,7 +189,7 @@ VarargsParam?
     </section>
 
 
-    <section>
+    <section id="typedeclaration">
         <title>Type declaration</title>
     
         <para>Method and attribute declarations must declare a type.</para>
@@ -268,7 +268,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
     </section-->
 
-    <section>
+    <section id="extendedclass">
         <title>Extended class</title>
     
         <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
@@ -281,8 +281,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     
     </section>
     
-    <section>
-        <title>Implemented interfaces</title>
+    <section id="satisfiedinterfaces">
+        <title>Satisfied interfaces</title>
     
         <para>Classes and interfaces may satisfy (implement or extend) interfaces, 
         using the <literal>satisfies</literal> clause.</para>
@@ -295,7 +295,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     
     </section>
 
-    <section>
+    <section id="generictypeconstraintlist">
     <title>Generic type constraint list</title>
 
         <para>Method, class and interface declarations which declare generic type 
