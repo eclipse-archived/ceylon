@@ -31,11 +31,17 @@ Body?</programlisting>
         
         <para>Toplevel declarations may declare imports:</para>
         
-        <programlisting>Import* Declaration+</programlisting>
+        <programlisting>Import* ToplevelDeclaration+</programlisting>
         
         <programlisting>Import := "import" ImportElement ("." ImportElement)* ('.' '*' | "alias" ImportElement)? ";"</programlisting>
         
         <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
+        
+        <para>A toplevel declaration declares a class, interface or type alias.</para>
+        
+        <programlisting>ToplevelDeclaration := Class | Interface | Alias</programlisting>
+        
+        <comment><para>TODO: Should we support toplevel static method declarations?</para></comment>
 
     </section>
     
@@ -409,7 +415,8 @@ String join(Iterable&lt;String&gt; strings,
         <para>A class is a stateful, instantiable type. Classes are declared according 
         to the following:</para>
         
-        <programlisting>Annotation*
+        <programlisting>Class :=
+Annotation*
 "class" TypeName TypeParams? FormalParams?
 Supertype?
 Interfaces?
@@ -785,11 +792,12 @@ public class Person { ... }</programlisting>
         <para>An interface is a type which does not specify implementation. Interfaces may 
         not be directly instantiated. Interfaces are declared according to the following:</para>
         
-        <programlisting>Annotation*
+        <programlisting>Interface :=
+ Annotation*
 "interface" TypeName TypeParams?
 Interfaces?
 TypeConstraints? 
-"{" ( MethodStub | AttributeStub )* "}"</programlisting>
+"{" ( AbstractMethod | AbstractAttribute )* "}"</programlisting>
 
         <para>For example:</para>
 
@@ -873,11 +881,9 @@ public User(String username, Person person);</programlisting>
         <para>A method is a callable block of code. Methods may have parameters and
         may return a value. Methods are declared according to the following:</para>
         
-        <programlisting>Method :=
-Annotation*
-(Type | "void") MemberName TypeParams? FormalParams+
-TypeConstraints?
-( ";" | Block | "=" MethodReference )</programlisting>
+        <programlisting>Method := MethodHeader Block | ("=" MethodReference)? ";"</programlisting>
+
+        <programlisting>MethodHeader := Annotation* (Type | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
 
         <para>For example:</para>
         
@@ -904,6 +910,10 @@ TypeConstraints?
         
         <programlisting>Comparison getOrdering(Natural x, Natural y)() { .... }</programlisting>
 
+        <para>A method may be declared inside the body of another method or attribute, in 
+        which case it may refer to any immutable local of the containing scope. It may not 
+        refer to mutable locals.</para>
+        
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
         
@@ -914,22 +924,18 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         semantics of method declarations are identical to Java, except that Ceylon methods 
         may declare defaulted parameters.</para>
         
-        <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any immutable local of the containing scope. It may not 
-        refer to mutable locals.</para>
-        
        <section>
             <title>Defaulted parameters</title>
             
-        <para>Methods with defaulted parameters may not be overloaded.</para>
+            <para>Methods with defaulted parameters may not be overloaded.</para>
         
-        <para>When a method with a defaulted parameter is called, and a value is not 
-        assigned to the defaulted parameter by the caller, the default value defined by 
-        the specifier is used.</para>
+            <para>When a method with a defaulted parameter is called, and a value is not 
+            assigned to the defaulted parameter by the caller, the default value defined by 
+            the specifier is used.</para>
         
-        <para>This method:</para>
+            <para>This method:</para>
         
-        <programlisting>public class Counter {
+            <programlisting>public class Counter {
         
     package void init(Natural initialCount=0) {
         count:=initialCount;
@@ -939,7 +945,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
 }</programlisting>
         
-        <para>Is equivalent to three Java method declarations and an inner class:</para>
+            <para>Is equivalent to three Java method declarations and an inner class:</para>
         
         <programlisting>public class Counter {
         
@@ -965,35 +971,31 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     
 }</programlisting>
 
-        <para>This named parameter call:</para>
+            <para>This named parameter call:</para>
         
-        <programlisting>counter.init { initialCount=10; }</programlisting>
+            <programlisting>counter.init { initialCount=10; }</programlisting>
         
-        <para>Is equivalent to this Java code:</para>
+            <para>Is equivalent to this Java code:</para>
         
-        <programlisting>counter.init ( new CounterInitParameters().initialCount(10) );</programlisting>
+            <programlisting>counter.init ( new CounterInitParameters().initialCount(10) );</programlisting>
 
         </section>
         
         <section>
             <title>Interface methods and abstract methods</title>
             
-        <para>If there is no method body in a method declaration, the implementation 
-        of the method must be specified later in the block, or the class that declares 
-        the method must be annotated <literal>abstract</literal>.If no implementation 
-        is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
+            <para>If there is no method body in a method declaration, the implementation 
+            of the method must be specified later in the block, or the class that declares 
+            the method must be annotated <literal>abstract</literal>. If no implementation 
+            is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
         
-        <para>Methods declared by interfaces may not specify an implementation:</para>
+            <para>Methods declared by interfaces may not specify an implementation:</para>
         
-        <programlisting>MethodStub :=
-Annotation*
-(Type | "void") MemberName TypeParams? FormalParams
-TypeConstraints? 
-";"</programlisting>
+            <programlisting>AbstractMethod := MethodHeader ";"</programlisting>
 
-        <para>Interface methods and abstract methods must be implemented by every 
-        non-<literal>abstract</literal> class that implements the interface or
-        subclasses the abstract class.</para>
+            <para>Interface methods and abstract methods must be implemented by every 
+            non-<literal>abstract</literal> class that implements the interface or
+            subclasses the abstract class.</para>
                 
         </section>
         
@@ -1043,83 +1045,29 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
     return sum;
 }</programlisting>
 
+        <para>An attribute may be declared inside the body of another method or attribute, 
+        in which case it may refer to any immutable local of the containing scope. It may 
+        not refer to mutable locals.</para>
+        
         <para>
         An attribute declaration is equivalent to a Java method declaration together with 
         a Java field declaration, both of type <literal>lang.Attribute</literal> or
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         
+        <para>The compiler is permitted to optimize private attributes to a simple Java field
+        declaration or a local variable in a Java constructor. Private attributes may not
+        be accessed via reflection.</para>
+        
         <comment><para>TODO: Should we generate getters and setters, just for interop with 
         Java?</para></comment>
         
-        <para>
-        The compiler is permitted to optimize private attributes to a simple Java field
-        declaration or a local variable in a Java constructor. Private attributes may not
-        be accessed via reflection.
-        </para>
+        <comment><para>TODO: I would like to support <literal>def</literal> in place of the type
+        for a private attribute or local with an initializer or getter. For example:</para></comment>
         
-        <para>An attribute may be declared inside the body of another method or attribute, 
-        in which case it may refer to any immutable local of the containing scope. It may 
-        not refer to mutable locals.</para>
-        
-         <section>
-            <title>Attribute getters</title>
-            
-            <para>An attribute getter is declared as follows:</para>
-            
-            <programlisting>AttributeGetter := Annotation* Type MemberName Block</programlisting>
-
-        <para>
-        When getter code is specified, the Java field is initialized to an instance 
-        of an anonymous inner subclass of <literal>lang.Attribute</literal> or
-        <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
-        method with the content of the getter block. For example:
-        </para>
-        
-        <programlisting>public Float total { return items.totalPrice; }</programlisting>
-        
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
-    @Override public Float get() { return items.get().totalPrice; }
-};
-public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
-
-        </section>
-        
-        <section>
-            <title>Attribute setters</title>
-                    
-            <para>An attribute setter is declared as follows:</para>
-            
-            <programlisting>AttributeSetter := Annotation* "assign" MemberName Block</programlisting>
-
-        <para>
-        When setter code is specified, the Java field is initialized to an instance 
-        of an anonymous inner subclass of <literal>lang.Attribute</literal> that 
-        overrides the <literal>set()</literal> method with the content of the 
-        setter block. For example:
-        </para>
-        
-        <programlisting>public String name { return join(firstName, lastName); }
-public assign name { firstName = first(name); lastName = last(name); }</programlisting>
-        
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final Attribute&lt;String&gt; name = new Attribute&lt;String&gt;() {
-    @Override public String get() { return join(firstName, lastName); }
-    @Override public void set(String name) { firstName = first(name); lastName = last(name); }
-};
-public Attribute&lt;String&gt; name() { return name; }</programlisting>
-
-        <para>The attribute name specified by the setter must correspond to a 
-        matching attribute getter.</para>
-        
-        <comment><para>TODO: should we allow overloaded attribute setters, for example:</para></comment>
-        
-        <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
-
-        </section>
+        <programlisting>def names = List&lt;String&gt;();</programlisting>
+        <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
+        <programlisting>def count:=0;</programlisting>
         
         <section>
             <title>Simple attributes and locals</title>
@@ -1127,18 +1075,15 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>Simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
-        <programlisting>SimpleAttribute := Annotation* Type MemberName (Specifier | Initializer)? ";"</programlisting>
+        <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
+        
+        <programlisting>AttributeHeader := Annotation* Type MemberName</programlisting>
         
         <para>The value of an immutable attribute is specified using <literal>=</literal>. Mutable 
         attributes may be initialized using the assignment operator <literal>:=</literal>.</para>
 
         <programlisting>Initializer := ":=" Expression</programlisting>
 
-        <comment><para>TODO: I would like to support <literal>def</literal> in place of the type
-        for a simple attribute or local with an initializer. For example:</para></comment>
-        
-        <programlisting>def names = List&lt;String&gt;();</programlisting>
-        
         <para>Formal parameters of classes and methods are also considered to be simple attributes.</para>
 
         <para>A local is really just a special case of a simple attribute declaration, but one that 
@@ -1194,26 +1139,86 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         </section>
         
+         <section>
+            <title>Attribute getters</title>
+            
+            <para>An attribute getter is declared as follows:</para>
+            
+            <programlisting>AttributeGetter := AttributeHeader Block</programlisting>
+            
+            <para>An attribute getter defines how the value of a derived attribute is
+            obtained.</para>
+
+            <para>For an attribute getter, the Java field is initialized to an instance 
+            of an anonymous inner subclass of <literal>lang.Attribute</literal> or
+            <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
+            method with the content of the getter block. For example: </para>
+        
+            <programlisting>public Float total { return items.totalPrice; }</programlisting>
+        
+            <para>is equivalent to this Java code:</para>
+        
+            <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
+    @Override public Float get() { return items.get().totalPrice; }
+};
+public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
+
+        </section>
+        
+        <section>
+            <title>Attribute setters</title>
+                    
+            <para>An attribute setter is declared as follows:</para>
+            
+            <programlisting>AttributeSetter := Annotation* "assign" MemberName Block</programlisting>
+
+            <para>An attribute getter defines how the value of a derived attribute is
+            assigned. Every attribute setter must have a corresponding getter with the
+            same name.</para>
+
+            <comment><para>TODO: should we allow overloaded attribute setters, for example:</para></comment>
+        
+            <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
+
+            <para>For an attribute with a setter, the Java field is initialized to an 
+            instance of an anonymous inner subclass of <literal>lang.Attribute</literal> 
+            that overrides the <literal>set()</literal> method with the content of the 
+            setter block. For example:
+            </para>
+        
+            <programlisting>public String name { return join(firstName, lastName); }
+public assign name { firstName = first(name); lastName = last(name); }</programlisting>
+        
+            <para>is equivalent to this Java code:</para>
+        
+            <programlisting>private final Attribute&lt;String&gt; name = new Attribute&lt;String&gt;() {
+    @Override public String get() { return join(firstName, lastName); }
+    @Override public void set(String name) { firstName = first(name); lastName = last(name); }
+};
+public Attribute&lt;String&gt; name() { return name; }</programlisting>
+        
+        </section>
+        
         <section>
             <title>Interface attributes and abstract attributes</title>
             
-        <para>If there is no initializer or getter implementation, and the attribute is not 
-        declared <literal>optional</literal>, the value or implementation of the attribute 
-        must be specified later in the block, or the class that declares the attribute must 
-        be annotated <literal>abstract</literal>. If no value or implementation is specified, 
-        and the attribute is not declared <literal>optional</literal>, the attribute is 
-        considered an <emphasis>abstract attribute</emphasis>.</para>
+            <para>If there is no initializer or getter implementation, and the attribute is not 
+            declared <literal>optional</literal>, the value or implementation of the attribute 
+            must be specified later in the block, or the class that declares the attribute must 
+            be annotated <literal>abstract</literal>. If no value or implementation is specified, 
+            and the attribute is not declared <literal>optional</literal>, the attribute is 
+            considered an <emphasis>abstract attribute</emphasis>.</para>
         
-        <para>Attributes declared by interfaces may not specify an initalizer, getter or setter:</para>
+            <para>Attributes declared by interfaces may not specify an initalizer, getter or setter:</para>
         
-        <programlisting>AttributeStub := Annotation* Type MemberName ";"</programlisting>
+            <programlisting>AbstractAttribute := AttributeHeader ";"</programlisting>
         
-        <para>Interface attributes and abstract attributes must be implemented by every 
-        non-<literal>abstract</literal> class that implements the interface or subclasses the 
-        abstract class.</para>
+            <para>Interface attributes and abstract attributes must be implemented by every 
+            non-<literal>abstract</literal> class that implements the interface or subclasses the 
+            abstract class.</para>
         
-        <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
-        in which case every subtype must also define the attribute to be mutable.</para>
+            <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
+            in which case every subtype must also define the attribute to be mutable.</para>
         
         </section>
                 
@@ -1377,7 +1382,7 @@ TypeConstraintList?
     
        <para>A type alias allows a type to be referred to more compactly.</para>
        
-       <programlisting>Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
+       <programlisting>Alias := Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
        <para>A type alias may satisfy any number of interfaces and at most one class.</para>
        
