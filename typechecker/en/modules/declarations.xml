@@ -121,9 +121,9 @@ VarargsParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* Type ParameterName FormalParams?</programlisting>
+        <programlisting>Param := Annotation* Type ParameterName FormalParams*</programlisting>
         
-        <para>A parameter with its own parameter list is called a 
+        <para>A parameter with its own parameter list (or lists) is called a 
         <emphasis>functional parameter</emphasis>. Think of it as an abstract local method that 
         must be defined by the caller when the method is invoked or the class is instantiated. 
         For example:</para>
@@ -145,7 +145,7 @@ VarargsParam?
         
         <programlisting>(Product product, Natural quantity=1)</programlisting>
         
-        <para>A varargs parameter accepts a lists of arguments or a single argument of type 
+        <para>A varargs parameter accepts a list of arguments or a single argument of type 
         <literal>Iterable</literal>. Inside the method, it is available as a local of type
         <literal>Iterable</literal>.</para>
         
@@ -154,6 +154,9 @@ VarargsParam?
         <para>For example:</para>
         
         <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
+        
+        <comment><para>TODO: should we just make <literal>X...</literal> a syntactic shorthand
+        for <literal>Iterable&lt;X&gt;</literal> everywhere?</para></comment>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
@@ -477,7 +480,8 @@ class Customer(Name name, optional Organization org = null)
         <para>
         Ceylon classes do not support a Java-like constructor declaration syntax. However, 
         Ceylon supports <emphasis>class initialization parameters</emphasis>. A class 
-        initialization parameter may be used anywhere in the class body.
+        initialization parameter may be used anywhere in the class body. The class body is
+        executed every time the class is instantiated.
         </para>
         
         <para>All non-<literal>optional</literal> attributes of the class must be explicitly
