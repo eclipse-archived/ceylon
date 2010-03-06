@@ -241,9 +241,9 @@ if you prefer.";</programlisting>
         are evaluated lazily when the string literal appears as a method 
         parameter. This is important for log messages and assertions. So 
         should <literal>"${Time()} ${message}"</literal> actually be a
-        <literal>functor String()</literal> instead of a <literal>String</literal>?
-        (And we would have a built-in converter to do implicit conversion to
-        <literal>String</literal>.)</para></comment>
+        method of type <literal>String()</literal> with no parameters, instead 
+        of a <literal>String</literal>? (And we would have a built-in converter 
+        to do implicit conversion to <literal>String</literal>.)</para></comment>
         
         <comment><para>TODO: is <literal>"{Time()} {message}"</literal> a better 
         syntax for interpolation?</para></comment>
@@ -2569,7 +2569,23 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         <title>Smalltalk-style method invocation</title>
         
         <para>Ceylon provides a special method invocation protocol inspired by Smalltalk 
-        for specifying arguments to functional parameters of a method.</para>
+        for specifying arguments to functional parameters of a method. This special
+        invocation protocol may be used to imitate the syntax of built-in control
+        structures. For example:</para>
+        
+        <programlisting>sort(amounts) by (Float x, Float y) { return x&lt;=&gt;y };</programlisting>
+        
+        <programlisting>people select (Person p) p.name having (Person p) p.age>18;</programlisting>
+        
+        <programlisting>x>10
+isTrue {
+    log.debug("big");
+    big(x);
+}
+isFalse {
+    log.debug("little");
+    little(x);
+};</programlisting>
         
         <para>In a Smalltalk-style method invocation, an argument to a functional 
         parameter may be specified with certain punctuation eliminated:</para>
@@ -2628,7 +2644,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
 ( MemberReference TypeArguments? PositionalArguments | Expression MemberName FunctionalBody ) 
 FunctionalArgument*</programlisting>
                 
-        <para>For example:</para>
+        <para>Some additional examples:</para>
         
         <programlisting>namedValues each (String name->Object value) { 
     log.info("${name} ${value}"); 
@@ -2638,28 +2654,12 @@ FunctionalArgument*</programlisting>
 
         <programlisting>int index = lineItems firstIndex (LineItem li) !li.product.available;</programlisting>
         
-        <programlisting>amounts sort (Float x, Float y) { return x&lt;=&gt;y };</programlisting>
-        
         <programlisting>people sort (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
         
-        <programlisting>optional String label = x>10 isTrue "big";</programlisting>
+        <programlisting>String label = x>10 isTrue "big" isFalse "little";</programlisting>
         
-       <programlisting>String label = x>10 isTrue "big" isFalse "little";</programlisting>
-        
-        <programlisting>people select (Person p) p.name having (Person p) p.age>18;</programlisting>
-
         <programlisting>optional specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
         
-        <programlisting>x>10
-isTrue {
-    log.debug("big");
-    big(x);
-}
-isFalse {
-    log.debug("little");
-    little(x);
-};</programlisting>
-
         <comment><para>TODO: there is a small problem here. In <literal>x.foo(y) bar z</literal>, 
         is <literal>bar</literal> the name of a method or of a parameter of 
         <literal>foo()</literal>?</para> That's not such a big deal for the compiler, but
@@ -2669,7 +2669,7 @@ isFalse {
 
         <comment><para>TODO: On the other hand, if we don't want to play things safe, should 
         we allow this invocation protocol for methods with no parameters, or with arguments 
-        which are not functors (I have checked that this can be parsed), for example:</para></comment>
+        which are not functional (I have checked that this can be parsed), for example:</para></comment>
         
         <programlisting>Integer x = y integer;</programlisting>
         <programlisting>log info "Hello World";</programlisting>
@@ -2686,15 +2686,15 @@ isFalse {
         <programlisting>MemberReference "(" ForIterator ")" BlockArguments</programlisting>
         
         <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
-        of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
-        declare its parameter. Instead, its parameter is declared by the iterator.</para>
+        with a single parameter of type <literal>X</literal> need not declare its formal
+        parameter. Instead, its parameter is declared by the iterator.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static
-List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
-                  coordinated functor Boolean(X x) having,
-                  coordinated functor Y(X x) select);</programlisting>
+List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
+                  coordinated Boolean having(X x),
+                  coordinated Y select(X x));</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2729,15 +2729,15 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         <programlisting>MemberReference "(" Variable Specifier ")" BlockArguments</programlisting>
         
         <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
-        of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
-        declare its parameter. Instead, its parameter is declared by the specifier.</para>
+        with a single parameter of type <literal>X</literal> need not declare its formal
+        parameter. Instead, its parameter is declared by the specifier.</para>
         
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public static
-Y ifExists&lt;X,Y&gt;(specified optional X value,
-                coordinated functor Y(X x) then, 
-                functor Y() otherwise);</programlisting>
+Y ifExists&lt;X,Y&gt;(specified optional X value, 
+                coordinated Y then(X x), 
+                Y otherwise());</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -2751,7 +2751,7 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
         
         <programlisting>public static
 Y using&lt;X,Y&gt;(specified X resource, 
-             coordinated functor Y(X x) seek)
+             coordinated Y seek(X x) )
   where X >= Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
