@@ -899,7 +899,7 @@ public User(String username, Person person);</programlisting>
         <para>A <emphasis>method</emphasis> is a callable block of code. Methods may have 
         parameters and may return a value. Methods are declared according to the following:</para>
         
-        <programlisting>Method := MethodHeader ( Block | ("=" MethodReference)? ";" )</programlisting>
+        <programlisting>Method := MethodHeader ( Block | Specifier? ";" )</programlisting>
 
         <programlisting>MethodHeader := Annotation* (Type | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
 
