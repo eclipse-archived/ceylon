@@ -431,7 +431,9 @@ Annotation*
 Supertype?
 Interfaces?
 TypeConstraints?
-"{" Instances? DeclarationOrStatement* "}"</programlisting>
+ClassBody</programlisting>
+
+        <programlisting>ClassBody := "{" Instances? DeclarationOrStatement* "}"</programlisting>
 
         <section>
              <title>Class inheritance</title>
@@ -811,7 +813,9 @@ public class Person { ... }</programlisting>
 "interface" TypeName TypeParams?
 Interfaces?
 TypeConstraints? 
-"{" ( AbstractMethod | AbstractAttribute )* "}"</programlisting>
+InterfaceBody</programlisting>
+
+        <programlisting>InterfaceBody := "{" ( AbstractMethod | AbstractAttribute )* "}"</programlisting>
 
         <para>For example:</para>
 
