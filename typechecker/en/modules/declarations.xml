@@ -32,17 +32,18 @@ Body?</programlisting>
    </section>
       
     <section id="topleveldeclaration">
-        <title>Toplevel declarations</title>
+        <title>Type declarations</title>
         
-        <para>A toplevel declaration declares a class, interface or type alias.</para>
+        <para>A type declaration declares a class, interface or type alias.</para>
         
-        <programlisting>ToplevelDeclaration := Class | Interface | Alias</programlisting>
+        <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
         <comment><para>TODO: Should we support toplevel static method declarations?</para></comment>
 
-        <para>Toplevel declarations may declare imports:</para>
+        <para>A compilation unit consists of a list of imported types, followed by
+        one or more type declarations:</para>
         
-        <programlisting>Import* ToplevelDeclaration+</programlisting>
+        <programlisting>Import* TypeDeclaration+</programlisting>
         
         <programlisting>Import := "import" ImportElement ("." ImportElement)* ('.' '*' | "alias" ImportElement)? ";"</programlisting>
         
