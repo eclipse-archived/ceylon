@@ -121,16 +121,16 @@ memberHeader
     ;
 
 memberParameters
-    : typeParameters? formalParameters typeConstraints?
+    : typeParameters? formalParameters+ typeConstraints?
     ;
 
 memberDefinition
     : functionalMemberDefinition
-    | initializer? ';'
+    | (specifier | initializer)? ';'
     ;
 
 functionalMemberDefinition
-    : memberParameters* block
+    : memberParameters? block
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
@@ -280,7 +280,7 @@ variance
     
 //for locals and attributes
 initializer
-    : ('=' | ':=') assignable
+    : ':=' assignable
     ;
 
 //for parameters
@@ -558,7 +558,7 @@ doWhile
 
 //do iterators are allowed to be mutable and/or optional
 doIterator
-    : annotations? variable initializer
+    : annotations? variable (specifier | initializer)
     ;
 
 tryCatchFinally
