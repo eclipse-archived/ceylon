@@ -29,13 +29,10 @@ Body?</programlisting>
         <programlisting>MemberName := LIdentifier</programlisting>
         <programlisting>ParameterName := LIdentifier</programlisting>
         
-        <para>Toplevel declarations may declare imports:</para>
-        
-        <programlisting>Import* ToplevelDeclaration+</programlisting>
-        
-        <programlisting>Import := "import" ImportElement ("." ImportElement)* ('.' '*' | "alias" ImportElement)? ";"</programlisting>
-        
-        <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
+   </section>
+      
+    <section id="topleveldeclaration">
+        <title>Toplevel declarations</title>
         
         <para>A toplevel declaration declares a class, interface or type alias.</para>
         
@@ -43,7 +40,15 @@ Body?</programlisting>
         
         <comment><para>TODO: Should we support toplevel static method declarations?</para></comment>
 
-    </section>
+        <para>Toplevel declarations may declare imports:</para>
+        
+        <programlisting>Import* ToplevelDeclaration+</programlisting>
+        
+        <programlisting>Import := "import" ImportElement ("." ImportElement)* ('.' '*' | "alias" ImportElement)? ";"</programlisting>
+        
+        <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
+    
+     </section>
     
     <section id="annotationlist">
     <title>Annotation list</title>
