@@ -748,9 +748,8 @@ public class Person { ... }</programlisting>
     
 }</programlisting>
 
-        <comment><para>If we decide to support static attributes, then each 
-        <literal>case</literal> would be considered a static simple 
-        attribute.</para></comment>
+        <comment><para>TODO: If we decide to support static attributes, then each 
+        <literal>case</literal> would be considered a static simple attribute.</para></comment>
         
         <para>A class with declared <literal>case</literal>s implicitly extends 
         <literal>lang.Selector</literal>, a subclass of <literal>java.lang.Enum</literal>. 
@@ -793,6 +792,9 @@ public class Person { ... }</programlisting>
     }
     
 }</programlisting>
+
+        <comment><para>TODO: let each <literal>case</literal> override methods,
+        like in Java.</para></comment>
 
     </section>
         
