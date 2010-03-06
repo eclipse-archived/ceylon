@@ -32,8 +32,8 @@
     has exactly one "constructor". As an alternative to overloading, Ceylon 
     supports method and constructor parameters with default values. Ceylon
     does not support first-class function types, but references to methods 
-    may be passed to other methods and methods may declared inline in a 
-    method invocation. 
+    may be passed to other methods and methods may declared inline in an 
+    invocation. 
     </para>
     
     <para>
