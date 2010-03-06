@@ -118,9 +118,10 @@ VarargsParam?
         
         <programlisting>Param := Annotation* Type ParameterName FormalParams?</programlisting>
         
-        <para>A parameter with its own parameter list is an abstract local method declaration.
-        The method must be defined by the caller when the method is invoked or the class is
-        instantiated. For example:</para>
+        <para>A parameter with its own parameter list is called a 
+        <emphasis>functional parameter</emphasis>. Think of it as an abstract local method that 
+        must be defined by the caller when the method is invoked or the class is instantiated. 
+        For example:</para>
             
         <programlisting>(String label, void onClick())</programlisting>
         
@@ -882,7 +883,7 @@ public User(String username, Person person);</programlisting>
         <para>A <emphasis>method</emphasis> is a callable block of code. Methods may have 
         parameters and may return a value. Methods are declared according to the following:</para>
         
-        <programlisting>Method := MethodHeader Block | ("=" MethodReference)? ";"</programlisting>
+        <programlisting>Method := MethodHeader ( Block | ("=" MethodReference)? ";" )</programlisting>
 
         <programlisting>MethodHeader := Annotation* (Type | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
 

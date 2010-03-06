@@ -423,7 +423,7 @@ if you prefer.";</programlisting>
     <section id="invocations">
         <title>Invocations</title>
         
-        <para>Methods, and classes are <emphasis>invokable</emphasis>. Invocation of a class is 
+        <para>Methods and classes are <emphasis>invokable</emphasis>. Invocation of a class is 
         called <emphasis>instantiation</emphasis>.</para>
         
         <para>Any invocation must specify values for parameters, either by listing or naming 
@@ -434,7 +434,10 @@ if you prefer.";</programlisting>
         <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
         specified.</para>
         
-        <para>When parameter values are listed, required parameters are assigned first, in the 
+        <section id="positionalarguments">
+            <title>Positional arguments</title>
+        
+        <para>When parameter values are listed, required parameters are specified first, in the 
         order in which they were declared, followed by defaulted parameters, in the order they 
         were declared. If there are any remaining defaulted parameters, they will be assigned 
         their default values. On the other hand, if any parameter values are unassigned, they 
@@ -446,6 +449,11 @@ if you prefer.";</programlisting>
         
         <programlisting>(getProduct(id), 1)</programlisting>
                 
+        </section>
+        
+        <section id="namedarguments">
+            <title>Named arguments</title>
+            
         <para>When parameter values are named, required and defaulted parameter values are specified 
         by name. Vararg parameter values are specified by listing them.</para>
 
@@ -459,8 +467,8 @@ if you prefer.";</programlisting>
             or</para>
             </listitem>
             <listitem>
-            <para>only for parameters which declare their own parameters, specifies a formal parameter 
-            list and a block of code (an inline method declaration).</para>
+            <para>only for functional parameters, specifies a formal parameter list and a block of 
+            code (an inline method declaration).</para>
             </listitem>
         </itemizedlist>
 
@@ -487,6 +495,11 @@ if you prefer.";</programlisting>
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
         thereby allowing the braces around an enumeration instantiation to be omitted in this case?</para></comment>
 
+        </section>
+
+        <section id="varargarguments">
+            <title>Vararg arguments</title>
+            
         <para>Vararg arguments are seperated by commas.</para>
 
         <programlisting>VarargArguments := VarargArgument ("," VarargArgument)*</programlisting>
@@ -506,10 +519,12 @@ if you prefer.";</programlisting>
         
         <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
         
+        </section>
+        
         <section id="methodinvocation">
             <title>Method invocation</title>
             
-            <para>Method invocations follow the following schema.</para>
+            <para>Method invocations follow this schema:</para>
             
             <programlisting>MethodInvocation := MemberReference TypeArguments? Arguments</programlisting>
             
@@ -534,7 +549,7 @@ if you prefer.";</programlisting>
         <section id="staticmethodinvocation">
             <title>Static method invocation</title>
             
-            <para>Static method invocations follow the following schema.</para>
+            <para>Static method invocations follow this schema:</para>
             
             <programlisting>StaticMethodInvocation := StaticMemberReference TypeArguments? Arguments</programlisting>
             
@@ -720,8 +735,8 @@ if you prefer.";</programlisting>
         <para>where the member name is the name of a method.</para>
         
         <para>Method references may appear on the RHS of a <literal>=</literal> specifier in a named 
-        parameter invocation, when the parameter being specified declares its own parameters, and the 
-        signature of the parameter matches the signature of the method. For example:</para>
+        parameter invocation, when a functional parameter is being specified. The signature of the 
+        functonal parameter must match the signature of the method. For example:</para>
         
         <programlisting>//a method which accepts a method reference
 void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
@@ -2553,32 +2568,66 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
     <section id="smalltalkprotocol">
         <title>Smalltalk-style method invocation</title>
         
-        <para>For parameters of a method which are of functor type, Ceylon provides a 
-        special method invocation protocol, inspired by Smalltalk:</para>
+        <para>Ceylon provides a special method invocation protocol inspired by Smalltalk 
+        for specifying arguments to functional parameters of a method.</para>
         
-        <programlisting>PartialMethodInvocation FunctorArguments | FunctorInvocation FunctorArguments?</programlisting>
+        <para>In a Smalltalk-style method invocation, an argument to a functional 
+        parameter may be specified with certain punctuation eliminated:</para>
         
-        <para>The protocol begins with either:</para>
+        <itemizedlist>
+            <listitem>
+                <para>if the functional parameter declares no parameters, the empty
+                parentheses may be eliminated, and</para>
+            </listitem>
+            <listitem>
+                <para>if the body of the method implementation consists of a single
+                <literal>return</literal> directive, the braces and <literal>return</literal>
+                keyword may be eliminated.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>These arguments are called <emphasis>functional arguments</emphasis> of
+        a positional parameter invocation.</para>
+        
+        <programlisting>FunctionalBody := FormalParameters? (Block | Expression)</programlisting>
+        
+        <programlisting>FunctionalArgument := ParameterName FunctionalBody</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>elements (Person p) p.age>18</programlisting>
+        
+        <programlisting>isTrue x+1</programlisting>
+        
+        <programlisting>each { count+=1; }</programlisting>
+        
+        <para>Functional arguments are listed without any seperating punctuation:</para>
+        
+        <programlisting>isTrue x+1 isFalse x-1</programlisting>
+        
+        <programlisting>select (Person p) p.name having (Person p) p.age>18</programlisting>
+        
+        <para>Arguments must be listed in the same order as the formal parameters are 
+        declared.</para>
+                
+        <para>The method invocation protocol begins with either:</para>
 
         <itemizedlist>
             <listitem>
                 <para>a normal method invocation with a period before the method name 
-                and an ordered list of parameters surrounded be parentheses, where
-                there must be at least one parameter, or</para>
+                and an ordered list of arguments surrounded be parentheses, or</para>
             </listitem>
             <listitem>
-                <para>a special method invocation with a functor argument, which omits 
-                the period and parentheses, where the functor parameter list may be 
-                omitted for functors with no parameters.</para>
+                <para>the receiving expression, followed by the the method name, without 
+                the period or parentheses, followed immediately by the first block 
+                argument.</para>
             </listitem>
         </itemizedlist>
         
-        <para>In neither case are all parameters of the method required.</para>
-        
-        <programlisting>PartialMethodInvocation := MemberReference TypeArguments? "(" Expression ("," Expression)* ")"</programlisting>
-        
-        <programlisting>FunctorInvocation := Expression ParameterName SimpleFunctorExpression</programlisting>
-        
+        <programlisting>MethodInvocationWithFunctionalArguments :=
+( MemberReference TypeArguments? PositionalArguments | Expression MemberName FunctionalBody ) 
+FunctionalArgument*</programlisting>
+                
         <para>For example:</para>
         
         <programlisting>namedValues each (String name->Object value) { 
@@ -2595,20 +2644,7 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
         
         <programlisting>optional String label = x>10 isTrue "big";</programlisting>
         
-        <para>Next, a named list of functor parameters may be specified:</para>
-        
-        <programlisting>FunctorArguments := (ParameterName SimpleFunctorExpression)+</programlisting>
-        
-        <para>The identifiers listed after the ordered parameter values are names of method 
-        parameters of functor type, in the order in which they appear in the method declaration. 
-        Each of these arguments is a functor expression, where the functor parameter list may 
-        be omitted for functors with no parameters:</para>
-        
-        <programlisting>SimpleFunctorExpression := FormalParams? FunctorBody</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>String label = x>10 isTrue "big" isFalse "little";</programlisting>
+       <programlisting>String label = x>10 isTrue "big" isFalse "little";</programlisting>
         
         <programlisting>people select (Person p) p.name having (Person p) p.age>18;</programlisting>
 
@@ -2644,12 +2680,12 @@ isFalse {
             
         <para>A specialized invocation syntax is provided for methods which iterate 
         collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
-        annotated <literal>iterated</literal>, and all remaining parameters are of functor 
-        type, then the method may be invoked according to the following protocol:</para>
+        annotated <literal>iterated</literal>, and all remaining parameters are functional
+        parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference "(" ForIterator ")" FunctorArguments</programlisting>
+        <programlisting>MemberReference "(" ForIterator ")" BlockArguments</programlisting>
         
-        <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
+        <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
         of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
         declare its parameter. Instead, its parameter is declared by the iterator.</para>
         
@@ -2687,12 +2723,12 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
             
         <para>A specialized invocation syntax is also provided for methods which define 
         a local. If the first parameter of the method is of type <literal>X</literal>,
-        annotated <literal>specified</literal>, and all remaining parameters are of functor 
-        type, then the method may be invoked according to the following protocol:</para>
+        annotated <literal>specified</literal>, and all remaining parameters are functional
+        parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference "(" Variable Specifier ")" FunctorArguments</programlisting>
+        <programlisting>MemberReference "(" Variable Specifier ")" BlockArguments</programlisting>
         
-        <para>And each functor expression for a parameter annotated <literal>coordinated</literal>
+        <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
         of type <literal>functor Y(X x)</literal> or <literal>functor void(X x)</literal> need not 
         declare its parameter. Instead, its parameter is declared by the specifier.</para>
         
@@ -2736,7 +2772,7 @@ Y using&lt;X,Y&gt;(specified X resource,
         <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
         <literal>cases</literal>, the parameter may be specified according to:</para>
         
-        <programlisting>(case "(" Case ")" SimpleFunctorExpression)+</programlisting>
+        <programlisting>(case "(" Case ")" SimpleBlockExpression)+</programlisting>
         
         <para>For example, for the following method declaration:</para>
         
@@ -2757,7 +2793,7 @@ Y select&lt;X, Y&gt;(X selector,
         <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,
         the parameter value may be specified according to:</para>
         
-        <programlisting>(LIdentifier FunctorExpression)+</programlisting>
+        <programlisting>(LIdentifier BlockExpression)+</programlisting>
         
         <para>For example, for the following method declaration:</para>
         
