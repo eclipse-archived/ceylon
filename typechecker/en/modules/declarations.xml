@@ -431,7 +431,7 @@ Annotation*
 Supertype?
 Interfaces?
 TypeConstraints?
-"{" Instances? Statement* "}"</programlisting>
+"{" Instances? DeclarationOrStatement* "}"</programlisting>
 
         <section>
              <title>Class inheritance</title>
@@ -703,8 +703,6 @@ public class Person { ... }</programlisting>
         
         </section>
 
-    </section>
-    
     <section id="instanceenumeration">
         <title>Class instance enumeration</title>
         
@@ -799,6 +797,8 @@ public class Person { ... }</programlisting>
 
     </section>
         
+    </section>
+    
     <section id="interfaces">
         <title>Interfaces</title>
         
