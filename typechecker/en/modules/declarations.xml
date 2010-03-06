@@ -921,13 +921,29 @@ public User(String username, Person person);</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
-        <programlisting>Float say(String words) = person.say;</programlisting>
-        
         <para>A method may declare multiple lists of parameters. Methods which declare
         more than one parameter list return references to other methods.</para>
         
-        <programlisting>Comparison getOrdering(Natural x, Natural y)() { .... }</programlisting>
+        <programlisting>Comparison getOrder(Natural x, Natural y)() {
+    Comparison order (Natural x, Natural y) { return x&lt;=&gt;y; }
+    return order;
+}</programlisting>
 
+        <para>A method implementation may be specified using either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a block of code, or</para>
+            </listitem>
+            <listitem>
+                <para>a reference to another method.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>Float say(String words) = person.say;</programlisting>
+        
+        <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
+        
         <para>A method may be declared inside the body of another method or attribute, in 
         which case it may refer to any immutable local of the containing scope. It may not 
         refer to mutable locals.</para>
