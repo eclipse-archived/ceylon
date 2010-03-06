@@ -91,8 +91,12 @@ declarationModifier
 //assignment, it is actually right associative because
 //assignable can be an assignment
 statement 
-    : expression ';'
+    : expressionStatement
     | controlStructure
+    ;
+
+expressionStatement
+    : expression ';'
     ;
 
 directiveStatement
@@ -125,15 +129,11 @@ memberParameters
     ;
 
 memberDefinition
-    : functionalMemberDefinition
-    | (specifier | initializer)? ';'
-    ;
-
-functionalMemberDefinition
     : memberParameters? block
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
+    | (specifier | initializer)? ';'
     ;
 
 //shortcut functor expression that makes the parameter list 
@@ -402,11 +402,16 @@ base
     | literal
     | parExpression
     | enumeration
-    | 'this' 
+    | specialValue
+    //| inlineClassDeclaration
+    ;
+    
+
+specialValue
+    : 'this' 
     | 'super' 
     | 'null'
     | 'none'
-    //| inlineClassDeclaration
     ;
 
 enumeration
