@@ -924,10 +924,13 @@ public User(String username, Person person);</programlisting>
         <para>A method may declare multiple lists of parameters. Methods which declare
         more than one parameter list return references to other methods.</para>
         
-        <programlisting>Comparison getOrder(Natural x, Natural y)() {
-    Comparison order (Natural x, Natural y) { return x&lt;=&gt;y; }
+        <programlisting>Comparison getOrder()(Natural x, Natural y) {
+    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y; }
     return order;
 }</programlisting>
+
+        <para>A method may <emphasis>only</emphasis> refer to parameters in the first
+        parameter list. It may not refer to parameters of other parameter lists.</para>
 
         <para>A method implementation may be specified using either:</para>
         
