@@ -58,11 +58,7 @@
         </listitem>
     </itemizedlist-->
     
-    <programlisting>Literal :=
-NaturalLiteral | FloatLiteral |
-StringLiteral | QuotedLiteral |
-TypeLiteral | MemberLiteral |
-SpecialValue</programlisting>
+    <programlisting>Literal := NaturalLiteral | FloatLiteral | StringLiteral | QuotedLiteral | TypeLiteral | MemberLiteral</programlisting>
 
     <!--programlisting>Literal :=
 DateLiteral | TimeLiteral
@@ -77,38 +73,6 @@ SpecialValue</programlisting-->
     
     <comment><para>TODO: Should we have a literal syntax for version numbers, for use
     in the module architecture, for example: <literal>@1.2.3BETA</literal>?</para></comment>
-    
-    <section id="specialvalues">
-        <title><literal>this</literal>, <literal>super</literal>, 
-        <literal>null</literal> and <literal>subtype</literal></title>
-        
-        <programlisting>SpecialValue := "this" | "super" | "null" | "none"</programlisting>
-        
-        <para>The keyword <literal>null</literal> refers to a special
-        value that is assignable to all <literal>optional</literal> 
-        types, and to no non-<literal>optional</literal> types. The
-        Ceylon language and compiler ensures that this value never
-        receives any invocation.</para>
-        
-        <para>The keyword <literal>super</literal> refers to the
-        current instance (the instance that is being invoked), and 
-        is of the same type as the immediate superclass of the class. 
-        Any invocation of this reference is processed by the method 
-        defined or inherited by this superclass, bypassing any method 
-        declaration that overrides the method on the current class or 
-        any subclass of the current class.</para>
-        
-        <para>The keyword <literal>this</literal> refers to the
-        current instance, and is assignable to both the type of the 
-        current class (the class which declares the method being 
-        invoked), and to the special type <literal>subtype</literal>, 
-        representing the concrete type of the current instance.</para>
-        
-        <para>The keyword <literal>none</literal> refers to a special
-        value that is assignable to all types that extend 
-        <literal>Enumeration</literal>. This value has no elements.</para>
-        
-    </section>
     
     <!--section id="datetime">
         <title><literal>Date</literal> and <literal>Time</literal> literals</title>
@@ -420,6 +384,38 @@ if you prefer.";</programlisting>
 
     </section>
 
+    <section id="specialvalues">
+        <title><literal>this</literal>, <literal>super</literal>, 
+        <literal>null</literal> and <literal>subtype</literal></title>
+        
+        <programlisting>SpecialValue := "this" | "super" | "null" | "none"</programlisting>
+        
+        <para>The keyword <literal>null</literal> refers to a special
+        value that is assignable to all <literal>optional</literal> 
+        types, and never to non-<literal>optional</literal> types. The 
+        Ceylon language and compiler ensures that this value never
+        receives any invocation.</para>
+        
+        <para>The keyword <literal>super</literal> refers to the
+        current instance (the instance that is being invoked), and 
+        is of the same type as the immediate superclass of the class. 
+        Any invocation of this reference is processed by the method 
+        defined or inherited by this superclass, bypassing any method 
+        declaration that overrides the method on the current class or 
+        any subclass of the current class.</para>
+        
+        <para>The keyword <literal>this</literal> refers to the
+        current instance, and is assignable to both the type of the 
+        current class (the class which declares the method being 
+        invoked), and to the special type <literal>subtype</literal>, 
+        representing the concrete type of the current instance.</para>
+        
+        <para>The keyword <literal>none</literal> refers to a special
+        value that is assignable to all types that extend 
+        <literal>Enumeration</literal>. This value has no elements.</para>
+        
+    </section>
+    
     <section id="invocations">
         <title>Invocations</title>
         
@@ -472,7 +468,7 @@ if you prefer.";</programlisting>
             </listitem>
         </itemizedlist>
 
-        <programlisting>NamedArgument := ParameterName (AttributeSpecification | MethodSpecification)</programlisting>
+        <programlisting>NamedArgument := ParameterName (Specifier ";" | FormalParams Body)</programlisting>
         
         <para>For example:</para>
         
@@ -492,6 +488,8 @@ if you prefer.";</programlisting>
     by(X x, X y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
+        <comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment>
+        
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
         thereby allowing the braces around an enumeration instantiation to be omitted in this case?</para></comment>
 
@@ -725,7 +723,7 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section>
+    <section id="methodreferences">
         <title>Method references</title>
         
         <para>A method reference has the form:</para>
@@ -734,9 +732,10 @@ if you prefer.";</programlisting>
         
         <para>where the member name is the name of a method.</para>
         
-        <para>Method references may appear on the RHS of a <literal>=</literal> specifier in a named 
-        parameter invocation, when a functional parameter is being specified. The signature of the 
-        functonal parameter must match the signature of the method. For example:</para>
+        <para>Method references may appear as an argument to a functional parameter, either as 
+        a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
+        parameter invocation. The signature of the functonal parameter must match the signature 
+        of the method. For example:</para>
         
         <programlisting>//a method which accepts a method reference
 void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
@@ -760,6 +759,10 @@ Comparison getOrdering(Natural x, Natural y)() {
         The two methods must have exactly the same signature.</para>
         
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
+        
+        <comment><para>TODO: attribute references <literal>ref person.name</literal>, which may
+        be specified to attributes or parameters declared <literal>reference</literal> or returned
+        by methods declared <literal>reference</literal>.</para></comment>
         
     </section>
 
