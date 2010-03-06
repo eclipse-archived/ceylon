@@ -29,14 +29,14 @@ block
     : '{' declarationOrStatement* directiveStatement? '}'
     ;
 
-inlineClassDeclaration
+/*inlineClassDeclaration
     : 'new' 
       annotations?
       type
       positionalArguments?
       satisfiedTypes?
       inlineClassBody
-    ;
+    ;*/
 
 inlineClassBody
     : '{' declarationOrStatement* '}'
@@ -101,7 +101,7 @@ directiveStatement
 
 directive
     : 'return' assignable? 
-    | 'produce' assignable
+    //| 'produce' assignable
     | 'throw' expression? 
     | 'break' expression?
     ;
@@ -130,7 +130,7 @@ memberDefinition
     ;
 
 functionalMemberDefinition
-    : memberParameters? block
+    : memberParameters* block
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
@@ -218,6 +218,7 @@ satisfiedTypes
 
 type
     : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
+    | 'subtype'
     ;
 
 annotations
@@ -405,7 +406,7 @@ base
     | 'super' 
     | 'null'
     | 'none'
-    | inlineClassDeclaration
+    //| inlineClassDeclaration
     ;
 
 enumeration
@@ -768,9 +769,9 @@ NONEMPTY
     :   'nonempty'
     ;
 
-PRODUCE
+/*PRODUCE
     :   'produce'
-    ;
+    ;*/
 
 RETURN
     :   'return'
