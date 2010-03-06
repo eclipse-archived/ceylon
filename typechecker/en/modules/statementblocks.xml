@@ -14,14 +14,22 @@
         by braces. Some blocks end in a control directive. The statements, local 
         specifiers and control structures are executed sequentially.</para>
 
-        <para>A <emphasis>statement</emphasis> is an assignment, an invocation of a 
-        method , an instantiation of a class, a control structure, a control directive, 
-        or a method, attribute or local declaration.</para>
+        <programlisting>Block := "{" DeclarationOrStatement* DirectiveStatement? "}"</programlisting>
+        
+        <programlisting>DeclarationOrStatement := Declaration | Statement</programlisting>
 
-        <programlisting>Block := "{" Statement* ControlStatement? "}"</programlisting>
+        <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
+        invocation of a method, an instantiation of a class, a control structure or a 
+        control directive.</para>
 
-        <programlisting>Statement := ExpressionStatement | DirectiveStatement | Specification | Declaration</programlisting>
-
+        <programlisting>Statement := ExpressionStatement | Specification | ControlStructure</programlisting>
+        
+        <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
+        
+        <programlisting>@doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
+        
+        <section>
+            <title>Expression statements</title>
         <para>Only certain expressions are valid statements: assignment, prefix or 
         postfix increment or decrement, invocation of a method and instantiation of 
         a class.</para>
@@ -42,6 +50,11 @@
         I think it's better to limit statements to assignments, invocations
         and instantiations.</para></comment>
         
+        </section>
+        
+        <section id="controldirectives">
+            <title>Control directives</title>
+            
         <para>Control directive statements end execution of the current block and force 
         the flow of execution to resume in some outer scope. They may only appear at the 
         end of a block, so the semicolon terminator is optional.</para>
@@ -55,53 +68,6 @@
         <programlisting>return "Hello"</programlisting>
         <programlisting>break true</programlisting>
         
-        <para>A statement may specify the implementation of a method or attribute.</para>
-        
-        <programlisting>Specification := MemberName (AttributeSpecification | MethodSpecification)</programlisting>
-        
-        <programlisting>AttributeSpecification := Specifier ";"</programlisting>
-        <programlisting>MethodSpecification := FormalParams (Body | "=" MethodReference) </programlisting>
-        
-        <!--programlisting>GetterSpecification := Body</programlisting-->
-        
-        <comment><para>TODO: Getter, setter specification?</para></comment>
-        
-        <para>The Ceylon language distinguishes between assignment to a mutable value 
-        (the <literal>:=</literal> operator) and specification of the value of an 
-        immutable local or attribute (using <literal>=</literal>). A specification
-        is not an expression.</para>
-        
-        <para>A specification may appear inside an control structure, in which case the
-        compiler validates that all paths result in a properly specified method or 
-        attribute. For example:</para>
-        
-        <programlisting>String description;
-Comparison order(X x, X y);
-if (reverseOrder()) {
-    description = "Reverse order";
-    order(X x, Y y) { return y&lt;=&gt;x }
-}
-else {
-    description = "Natural order";
-    order(X x, Y y) { return x&lt;=&gt;y }
-}</programlisting>
-        
-        <para>Blocks may contain declarations, which are, by default, only visible inside
-        the block:</para>
-        
-        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | Class</programlisting>
-        
-        <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
-        
-        <programlisting>doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
-        
-    </section>
-    
-    <section id="controldirectives">
-        <title>Control directives</title>
-        
-        <para>A control directive is a statement that affects the flow of execution.</para>
-
         <para>Ceylon provides the following control directives:</para>
         
         <itemizedlist>
@@ -137,6 +103,49 @@ else {
         return a value by supporting a <literal>found expr</literal> directive. We 
         could support conditionals that return a value by adding a <literal>then expr</literal>
         directive.</para></comment>
+
+        </section>
+        
+        <section id="specificationstatements">
+            <title>Specification statements</title>
+            
+        <para>A specification statement may specify the value of an immutable attribute 
+        or local that has already been declared earlier in the block. It may even specify
+        a method reference for a method that was declared earlier in the block.</para>
+        
+        <programlisting>Specification := MemberName Specifier ";"</programlisting>
+                
+        <para>The Ceylon language distinguishes between assignment to a mutable value 
+        (the <literal>:=</literal> operator) and specification of the value of an 
+        immutable local or attribute (using <literal>=</literal>). A specification
+        is not an expression.</para>
+        
+        <para>A specification may appear inside an control structure, in which case the
+        compiler validates that all paths result in a properly specified method or 
+        attribute. For example:</para>
+        
+        <programlisting>String description;
+Comparison order(X x, X y);
+if (reverseOrder()) {
+    description = "Reverse order";
+    order = Order.reverse;
+}
+else {
+    description = "Natural order";
+    order = Order.natural;
+}</programlisting>
+
+        </section>
+        
+        <section id="nesteddeclarations">
+            <title>Nested declarations</title>
+        
+        <para>Blocks may contain declarations, which are, by default, only visible inside
+        the block:</para>
+        
+        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
+        
+        </section>
         
     </section>
            
