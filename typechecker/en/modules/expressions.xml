@@ -2727,10 +2727,10 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         </section>
         
         <section id="localdefinition">
-            <title>Local definition</title>
+            <title>Variable definition</title>
             
         <para>A specialized invocation syntax is also provided for methods which define 
-        a local. If the first parameter of the method is of type <literal>X</literal>,
+        a variable. If the first parameter of the method is of type <literal>X</literal>,
         annotated <literal>specified</literal>, and all remaining parameters are functional
         parameters, then the method may be invoked according to the following protocol:</para>
         
@@ -2738,7 +2738,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         
         <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
         with a single parameter of type <literal>X</literal> need not declare its formal
-        parameter. Instead, its parameter is declared by the specifier.</para>
+        parameter. Instead, its parameter is declared by the variable specifier.</para>
         
         <para>For example, for the following method declaration:</para>
         

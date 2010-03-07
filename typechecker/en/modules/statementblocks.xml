@@ -190,10 +190,13 @@ else {
                 
         <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
        
-        <para>Some control structures allow embedded declaration of a local that is available
-        inside the control structure body.</para>
+        <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
+        that is available inside the control structure body.</para>
         
         <programlisting>Variable := Type MemberName</programlisting>
+        
+        <comment><para>TODO: Should we say that type declarations in control structure variables are 
+        optional? The compiler should be able to infer the type of the variable.</para></comment>
         
         <para>Some control structures expect conditions:</para>
         
@@ -215,19 +218,19 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>is</literal> modifier appears, the condition must be an 
-                expression or local specifier of type <literal>Object</literal>. The condition is 
+                expression or variable of type <literal>Object</literal>. The condition is 
                 satisfied if the expression or specifier evaluates to an instance of the specified 
                 type at runtime.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition must be an 
-                expression or local specifier of type <literal>optional Object</literal>. The
+                expression or variable of type <literal>optional Object</literal>. The
                 condition is satisfied if the expression or specifier evaluates to a non-null value
                 at runtime.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
-                expression or local specifier of type <literal>optional Container</literal>. The
+                expression or variable of type <literal>optional Container</literal>. The
                 condition is satisfied if the expression or specifier evaluates to a non-null value
                 at runtime, and if the resulting <literal>Container</literal> is non-empty.</para>
             </listitem>
@@ -237,12 +240,12 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>if the condition is a local variable specifier, the local variable may be
-                declared without the <literal>optional</literal> annotation, even though the 
-                specifier expression is of type <literal>optional</literal>, or</para>
+                <para>if the condition is a variable, the variable may be declared without the 
+                <literal>optional</literal> annotation, even though the specifier expression is of 
+                type <literal>optional</literal>, or</para>
             </listitem>
             <listitem>
-                <para>if the condition is a local variable, the local will be treated by the compiler 
+                <para>if the condition is a local, the local will be treated by the compiler 
                 as having non-null type inside the block that follows immediately, relaxing the usual 
                 compile-time restrictions upon <literal>optional</literal> types.</para>
             </listitem>
@@ -252,13 +255,12 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>if the condition is a local variable specifier, the local variable may be
-                declared with the specified type, even though the specifier expression is not of 
-                that type, or</para>
+                <para>if the condition is a variable, the variable may be declared with the given 
+                type, even though the specifier expression is not of that type, or</para>
             </listitem>
             <listitem>
-                <para>if the condition is a local variable, the local will be treated by the compiler 
-                as having the specified type inside the block that follows immediately.</para>
+                <para>if the condition is a local, the local will be treated by the compiler 
+                as having the given type inside the block that follows immediately.</para>
             </listitem>
         </itemizedlist>
                         
@@ -551,7 +553,7 @@ while (!person.parent.dead) {
             <para>When an exception occurs in the try block, the first matching catch block is 
             executed, if any. The finally block is always executed.</para>
             
-            <para>The type of each catch local must extend <literal>lang.Exception</literal>.</para>
+            <para>The type of each catch variable must extend <literal>lang.Exception</literal>.</para>
                         
             <para>Each resource expression must be of type <literal>Usable</literal>.</para>
             
