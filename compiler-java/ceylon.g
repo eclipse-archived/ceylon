@@ -7,15 +7,13 @@ options {
 
 compilationUnit
     : (importDeclaration)*
-      (annotations? toplevelDeclaration)+
+      (annotations? typeDeclaration)+
       EOF
     ;
     
-toplevelDeclaration
+typeDeclaration
     : classDeclaration 
-    | interfaceDeclaration 
-    //| converterDeclaration 
-    //| decoratorDeclaration
+    | interfaceDeclaration
     | aliasDeclaration
     ;
 
@@ -28,67 +26,32 @@ importElement
     ;
 
 block
-    : '{' localOrStatement* directiveStatement? '}'
+    : '{' declarationOrStatement* directiveStatement? '}'
     ;
 
-//we could eliminate the backtracking by requiring
-//local declarations to begin with a keyword
-localOrStatement
-    : //'local' annotations? localDeclaration
-      (declarationStart) => annotations? localDeclaration
-    | statement
-    ;
-
-localDeclaration
-    //TODO: type inference: (type|'def')
-    : type memberName initializer? ';'
-    ;
-
-inlineClassDeclaration
+/*inlineClassDeclaration
     : 'new' 
       annotations?
-      regularType
-      arguments
+      type
+      positionalArguments?
       satisfiedTypes?
-      '{' memberOrStatement* '}'
-    ;
-    
-//we could eliminate the backtracking by requiring
-//all member declarations to begin with a keyword
-memberOrStatement
-    : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-      (declarationStart) => annotations? ( memberDeclaration | toplevelDeclaration )
-    | statement
-    ;
-
-functorHeader
-    : 'functor' annotations? (type | 'void')
-    ;
-
-//a functor expression that can appear as the RHS of an 
-//assignment, in an argument list, or in parens
-functor 
-    : functorHeader? formalParameters functorBody
-    ;
-
-//a functor expression that can appear inside an expression
-//without the need for parens
-/*primaryFunctor 
-    : functorHeader? formalParameters block
+      inlineClassBody
     ;*/
 
-//shortcut functor expression that makes the parameter list 
-//optional, but can appear only using the special smalltalk
-//style method protocol
-specialFunctor
-    : ( (formalParameterStart) => formalParameters )? functorBody
+inlineClassBody
+    : '{' declarationOrStatement* '}'
     ;
 
-//we can support enumerations as functor bodies, but
-//I think that's just confusing to the reader
-functorBody
-    : ('{') => block
-    | implicationExpression
+typeParameterStart
+    : '<'
+    ;
+
+//we could eliminate the backtracking by requiring
+//all member declarations to begin with a keyword
+declarationOrStatement
+    : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
+      (declarationStart) => annotations? ( memberDeclaration | typeDeclaration )
+    | statement
     ;
 
 //special rule for syntactic predicates
@@ -98,16 +61,6 @@ functorBody
 formalParameterStart
     : '(' (declarationStart | ')')
     ;
-
-//special rule for syntactic predicates
-functorStart
-    : 'functor' | formalParameterStart
-    ;
-
-//special rule for syntactic predicates
-/*primaryFunctorStart
-    : 'functor' | '(' (declarationStart | ')' '{')
-    ;*/
 
 //special rule for syntactic predicates
 declarationStart
@@ -138,8 +91,12 @@ declarationModifier
 //assignment, it is actually right associative because
 //assignable can be an assignment
 statement 
-    : expression ';'
+    : expressionStatement
     | controlStructure
+    ;
+
+expressionStatement
+    : expression ';'
     ;
 
 directiveStatement
@@ -148,74 +105,45 @@ directiveStatement
 
 directive
     : 'return' assignable? 
-    | 'produce' assignable
+    //| 'produce' assignable
     | 'throw' expression? 
-    | 'break' 
-    | 'found'
+    | 'break' expression?
     ;
 
-// what I have here now allows method and attribute bodies 
-// to omit the braces, just like functor bodies. The cost
-// of doing that was the need to add a predicate, and we're
-// still not sure if we really want this feature
+abstractMemberDeclaration
+    : annotations?
+      memberHeader
+      memberParameters?
+    ;
+
 memberDeclaration
-    : voidMethodDeclaration 
-    | methodOrAttributeDeclaration 
-    | setterDeclaration
+    : memberHeader memberDefinition
     ;
 
-//TODO: we would not really need the syntactic predicate
-//here if we left off recognizing methods vs. attributes
-//until later
-methodOrAttributeDeclaration
-    : type memberName ( (typeParameterStart | formalParameterStart) => methodDefinition | attributeDefinition )
+memberHeader
+    : (type | 'void' | 'assign') memberName
     ;
 
-setterDeclaration
-    : 'assign' memberName setterDefinition
+memberParameters
+    : typeParameters? formalParameters+ typeConstraints?
     ;
 
-voidMethodDeclaration 
-    : 'void' memberName methodDefinition
+memberDefinition
+    : memberParameters? block
+    //allow omission of braces:
+    /*: ( (memberParameterStart) => memberParameters )? 
+      ( ('{') => block | implicationExpression ';' )*/
+    | (specifier | initializer)? ';'
     ;
 
-typeParameterStart
-    : '<'
+//shortcut functor expression that makes the parameter list 
+//optional, but can appear only using the special smalltalk
+//style method protocol
+undelimitedNamedArgumentDefinition
+    : ( (formalParameterStart) => formalParameters )? 
+      ( ('{') => block | implicationExpression )
     ;
-
-setterDefinition
-    : block
-    ;
-
-methodDefinition
-    : typeParameters? formalParameters typeConstraints? ( block | ';' )
-    ;
-
-attributeDefinition
-    : block | initializer ';'
-    ;
-
-/*decoratorDeclaration
-    :
-        'decorator'
-        typeName
-        typeParameters?
-        formalParameters?
-        satisfiedTypes?
-        typeConstraints?
-        '{' ( annotations? memberDeclaration )* '}'
-    ;
-
-converterDeclaration
-    :
-        'converter'
-        type
-        typeName
-        typeParameters?
-        typeConstraints?
-        '(' annotations? type parameterName ')'
-    ;*/
-
+    
 interfaceDeclaration
     :
         'interface'
@@ -223,7 +151,13 @@ interfaceDeclaration
         typeParameters?
         satisfiedTypes?
         typeConstraints?
-        '{' memberStub* '}'
+        interfaceBody
+    ;
+
+interfaceBody
+    //TODO: why can't we have toplevel declarations 
+    //      inside an interface dec?
+    : '{' ( abstractMemberDeclaration ';' )* '}'
     ;
 
 aliasDeclaration
@@ -236,17 +170,6 @@ aliasDeclaration
         ';'
     ;
 
-memberStub
-    :
-        annotations?
-        (type | 'void')
-        memberName
-        (typeParameters?
-         formalParameters
-         typeConstraints?)?
-        ';'
-        ;
-
 classDeclaration
     :
         'class'
@@ -256,11 +179,15 @@ classDeclaration
         extendedType?
         satisfiedTypes?
         typeConstraints?
-        '{' ((instanceStart)=>instances)? memberOrStatement* '}'
+        classBody
+    ;
+
+classBody
+    : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
     ;
 
 extendedType
-    : 'extends' regularType arguments
+    : 'extends' type positionalArguments
     ;
     
 instances
@@ -290,22 +217,15 @@ satisfiedTypes
     ;
 
 type
-    : regularType | functorType
-    ;
-
-regularType
     : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
-    ;
-
-functorType
-    : functorHeader formalParameters
+    | 'subtype'
     ;
 
 annotations
     : annotation+
     ;
 
-annotation 
+annotation
     : declarationModifier | userAnnotation
     ;
 
@@ -313,17 +233,15 @@ annotation
 //kind of expressions that can appear as arguments to
 //the annotation
 userAnnotation 
-    : annotationName ( annotationArguments | arguments )?
+    : annotationName annotationArguments?
     ;
 
 annotationArguments
-    : ( literal | reflectedLiteral )+
+    : arguments | ( literal | reflectedLiteral )+
     ;
 
-//TODO: why can't I get the typeArguments in here??
-reflectedLiteral
-    : qualifiedTypeName reflectedMember
-    | reflectedBase
+reflectedLiteral 
+    : '#' ( memberName | (type ( '.' memberName )? ) )
     ;
 
 qualifiedTypeName
@@ -362,7 +280,7 @@ variance
     
 //for locals and attributes
 initializer
-    : ('=' | ':=') assignable
+    : ':=' assignable
     ;
 
 //for parameters
@@ -373,10 +291,7 @@ specifier
 literal
     : NATURALLITERAL
     | FLOATLITERAL
-    | CHARLITERAL
-    | DATELITERAL
-    | TIMELITERAL
-    | REGEXPLITERAL
+    | QUOTEDLITERAL
     | stringLiteral
     ;   
 
@@ -386,7 +301,7 @@ stringLiteral
     ;
 
 assignable 
-    : (functorStart) => functor
+    : reflectedLiteral
     | expression
     ;
 
@@ -397,37 +312,16 @@ assignable
 //can be used to init locals
 expression 
     : methodExpression 
-      ( ('=' | ':=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
+      ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
     ;
 
 methodExpression
-    : implicationExpression specialMethodArgument*
+    : implicationExpression undelimitedNamedArgument*
     ;
 
-specialMethodArgument
-    :(  methodOrParameterName | 'case' '(' expressions ')' ) specialFunctor 
-    ;
-
-//if we want to support Smalltalk-style invocation with no arguments
-/*methodExpression
-    : implicationExpression specialMethodInvocation?
-    ;
-
-specialMethodInvocation
-    : methodOrParameterName ( specialFunctor specialMethodArgument* )?
-    | caseMethodParameter specialFunctor specialMethodArgument*
-    ;
-
-specialMethodArgument
-    : ( methodOrParameterName | caseMethodParameter ) specialFunctor
-    ;
-
-caseMethodParameter
-    : 'case' '(' expressions ')'
-    ;*/
-
-methodOrParameterName
-    : LIDENTIFIER
+undelimitedNamedArgument
+    : ( memberName | 'case' '(' expressions ')' ) 
+      undelimitedNamedArgumentDefinition 
     ;
 
 implicationExpression
@@ -437,13 +331,13 @@ implicationExpression
 
 //should '^' have a higher precedence?
 disjunctionExpression
-    :  conjunctionExpression 
-       (('||' | '|' '^') conjunctionExpression)?
+    : conjunctionExpression 
+      ('||' conjunctionExpression)?
     ;
 
 conjunctionExpression
     : logicalNegationExpression 
-      (('&&' | '&') logicalNegationExpression)*
+      ('&&' logicalNegationExpression)*
     ;
 
 logicalNegationExpression
@@ -475,31 +369,22 @@ existenceEmptinessExpression
 //I wonder if it would it be cleaner to give 
 //'..' a higher precedence than '->'
 rangeIntervalEntryExpression
-    : dateCompositionExpression
-      (('..'|'->') dateCompositionExpression)?
-    ;
-
-dateCompositionExpression
-    :  additiveExpression 
-       ('@' additiveExpression)?
+    : additiveExpression
+      (('..'|'->') additiveExpression)?
     ;
 
 additiveExpression
     : multiplicativeExpression
-      (('+' | '-') multiplicativeExpression)*
+      (('+' | '-' | '|' | '^') multiplicativeExpression)*
     ;
 
 multiplicativeExpression 
     : exponentiationExpression
-      (('*' | '/' | '%') exponentiationExpression)*
+      (('*' | '/' | '%' | '&') exponentiationExpression)*
     ;
 
 exponentiationExpression
-    : postfixExpression ('**' postfixExpression)?
-    ;
-
-postfixExpression
-    : unaryExpression ('--' | '++')*
+    : unaryExpression ('**' unaryExpression)?
     ;
 
 unaryExpression 
@@ -512,58 +397,59 @@ primary
     ;
     
 base 
-    : regularType
+    : type
     | memberName
     | literal
-    //| (primaryFunctorStart) => primaryFunctor
     | parExpression
     | enumeration
-    | 'this' 
+    | specialValue
+    //| inlineClassDeclaration
+    ;
+    
+
+specialValue
+    : 'this' 
     | 'super' 
     | 'null'
     | 'none'
-    | inlineClassDeclaration
-    | reflectedBase
     ;
 
 enumeration
     : '{' assignables? '}'
+    //a special List literal syntax?
+    //| '[' assignables? ']' 
     ;
 
 selector 
     : memberInvocation
-    | reflectedMember
     | arguments
     | elementSelector
+    | ('--' | '++')
     ;
 
 memberInvocation
     : ('.' | '^.' | '?.' | '*.') memberName
     ;
 
-reflectedBase
-    : '#' ( regularType | memberName )
-    ;
-    
-reflectedMember
-    : '#' memberName
-    ;
+/*parameterTypes
+    : '(' ( type (',' type)* )? ')'
+    ;*/
 
 elementSelector
     : '[' elementsSpec ']'
     ;
 
 elementsSpec
-    : additiveExpression ( '...' | '..' additiveExpression | (',' additiveExpression)+ )?
+    : additiveExpression ( '...' | '..' additiveExpression )?
     |  '...' additiveExpression	
     ;
 
 arguments 
     : positionalArguments | namedArguments
     ;
-      
+    
 namedArgument
-    : parameterName specifier /*(',' assignable)**/ ';'
+    : 'assign'? parameterName memberDefinition
     ;
     
 parameterName
@@ -608,7 +494,8 @@ formalParameters
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    :  annotations? type parameterName 
+    :  abstractMemberDeclaration 
+      //annotations? type parameterName 
       ( '->' type parameterName | '..' parameterName )? 
       (specifier | '...')?
     ;
@@ -676,7 +563,7 @@ doWhile
 
 //do iterators are allowed to be mutable and/or optional
 doIterator
-    : annotations? variable initializer
+    : annotations? variable (specifier | initializer)
     ;
 
 tryCatchFinally
@@ -702,33 +589,12 @@ variableStart
 // Lexer
 
 NATURALLITERAL
-    : ('0' .. '9')('0' .. '9')*
-    | '\'' HexDigit HexDigit HexDigit HexDigit '\''
-    | '\'' HexDigit HexDigit '\''
+    : Digit Digit*
     ;
 
 fragment
 Digit 
     : '0'..'9'
-    ;
-
-fragment
-Digit2
-    : Digit Digit
-    ;
-
-// FIXME: Doesn't allow ISO date format.
-DATELITERAL
-    : '\'' Digit Digit? '/' Digit Digit '/' Digit Digit Digit Digit  '\''
-    ;
-
-TIMELITERAL
-    : '\'' Digit Digit? ':' Digit Digit (':' Digit Digit ( ':' Digit Digit Digit)?)? '\''
-    ;
-
-fragment
-HexDigit
-    :   ('0'..'9'|'a'..'f'|'A'..'F')
     ;
 
 FLOATLITERAL
@@ -742,52 +608,39 @@ Exponent
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
-CHARLITERAL
-    :   '\'' 
-        (    ~( '\'' | '\r' | '\n' | '\\')
-        | EscapeSequence
-        ) 
-        '\''
-    ; 
-
-/*
-
-SIMPLESTRINGLITERAL
-    :   ('"' | '}$')
-        (    ~( '\r' | '\n' | '"' | '\\' | '$' | '{' )   
-        | EscapeSequence
-        )*
-        ('"' | '${')
-    ;
-*/
-
-SIMPLESTRINGLITERAL
-    :   ('"')
+QUOTEDLITERAL
+    :   '\''
         StringPart
-        ('"')
+        '\''
+    ;
+
+SIMPLESTRINGLITERAL
+    :   '"'
+        StringPart
+        '"'
     ;
 
 LEFTSTRINGLITERAL
-    : '"'
+    :   '"'
         StringPart
-        '${'
+        '{'
     ;
 
 RIGHTSTRINGLITERAL
-    : '}$'
+    :   '}'
         StringPart
         '"'
     ;
 
 MIDDLESTRINGLITERAL
-    : '}$'
+    :   '}'
         StringPart
-        '${'
+        '{'
     ;
 
 fragment
 NonStringChars
-    :    '$' | '{' | '\\' | '"'
+    :    '{' | '\\' | '"'
     ;
 
 fragment
@@ -809,15 +662,6 @@ EscapeSequence
         |   '{'
         |   '}' 
         )          
-    ;     
-
-REGEXPLITERAL
-    : '`' (~( '`' | '\\') | RegexEscapeSequence)* '`'
-    ;
-
-fragment
-RegexEscapeSequence
-    :    ('\\' ~ '\n')
     ;
 
 WS  
@@ -901,10 +745,6 @@ FINALLY
 FOR
     :   'for'
     ;
-
-FOUND
-    :   'found'
-    ;
     
 IF
     :   'if'
@@ -934,9 +774,9 @@ NONEMPTY
     :   'nonempty'
     ;
 
-PRODUCE
+/*PRODUCE
     :   'produce'
-    ;
+    ;*/
 
 RETURN
     :   'return'
