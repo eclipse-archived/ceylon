@@ -681,19 +681,19 @@ SIMPLESTRINGLITERAL
 LEFTSTRINGLITERAL
     :   '"'
         StringPart
-        '{'
+        '${'
     ;
 
 RIGHTSTRINGLITERAL
-    :   '}'
+    :   '}$'
         StringPart
         '"'
     ;
 
 MIDDLESTRINGLITERAL
-    :   '}'
+    :   '}$'
         StringPart
-        '{'
+        '${'
     ;
 
 fragment
