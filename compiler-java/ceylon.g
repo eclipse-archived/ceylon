@@ -1,8 +1,17 @@
-grammar ceylon;
+Lgrammar ceylon;
 
 options {
     //backtrack=true;
     memoize=true;
+    output=AST;
+}
+
+tokens {
+	DECLARE;
+	MEMBER_DECL;
+	TYPE_DECL;
+	ANNOTATION;
+	ANNOTATION_LIST;
 }
 
 compilationUnit
@@ -50,10 +59,18 @@ typeParameterStart
 //all member declarations to begin with a keyword
 declarationOrStatement
     : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-      (declarationStart) => annotations? ( memberDeclaration | typeDeclaration )
+      declaration
     | statement
     ;
 
+declaration
+    :
+    (declarationStart) => ann=annotations? 
+        (mem=memberDeclaration 
+                -> ^(MEMBER_DECL $mem ^(ANNOTATION_LIST $ann?))
+         | (typ=typeDeclaration 
+                -> ^(TYPE_DECL $typ $ann?)))
+    ;
 //special rule for syntactic predicates
 //be careful with this one, since it 
 //matches "()", which can also be an 
