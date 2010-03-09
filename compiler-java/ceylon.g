@@ -1,4 +1,4 @@
-Lgrammar ceylon;
+grammar ceylon;
 
 options {
     //backtrack=true;
@@ -11,23 +11,44 @@ tokens {
 	MEMBER_DECL;
 	TYPE_DECL;
 	ANNOTATION;
+    USER_ANNOTATION;
 	ANNOTATION_LIST;
+    TYPE_NAME;
+    MEMBER_NAME;
+    MEMBER_TYPE;
+    INIT_EXPR;
+    CLASS_DECL;
+    IMPORT_LIST;
+    IMPORT_DECL;
+    ALIAS_DECL;
 }
 
 compilationUnit
     : (importDeclaration)*
       (annotations? typeDeclaration)+
       EOF
+      -> ^(IMPORT_LIST importDeclaration*)
+      (annotations? typeDeclaration)+
     ;
     
 typeDeclaration
-    : classDeclaration 
+    : classDeclaration -> ^(CLASS_DECL classDeclaration)
     | interfaceDeclaration
     | aliasDeclaration
     ;
 
 importDeclaration  
-    : 'import' importElement ('.' importElement)* ('.' '*' | 'alias' typeName)? ';'
+    : 'import' importElement ('.' importElement)* ('.' wildcard | alias)? ';'
+    -> ^(IMPORT_DECL ^(TYPE_NAME importElement*) wildcard? alias?)
+    ;
+    
+wildcard:	'*'
+    ;
+    
+alias	
+    :
+    'alias' typeName
+    -> ^(ALIAS_DECL typeName)
     ;
     
 importElement
@@ -59,17 +80,17 @@ typeParameterStart
 //all member declarations to begin with a keyword
 declarationOrStatement
     : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-      declaration
+    (declarationStart) => declaration
     | statement
     ;
 
 declaration
     :
-    (declarationStart) => ann=annotations? 
-        (mem=memberDeclaration 
-                -> ^(MEMBER_DECL $mem ^(ANNOTATION_LIST $ann?))
-         | (typ=typeDeclaration 
-                -> ^(TYPE_DECL $typ $ann?)))
+    ann=annotations? 
+    (mem=memberDeclaration 
+            -> ^(MEMBER_DECL $mem ^(ANNOTATION_LIST $ann?)))
+    | (typ=typeDeclaration 
+            -> ^(TYPE_DECL $typ ^(ANNOTATION_LIST $ann?)))
     ;
 //special rule for syntactic predicates
 //be careful with this one, since it 
@@ -138,7 +159,8 @@ memberDeclaration
     ;
 
 memberHeader
-    : (type | 'void' | 'assign') memberName
+    : (t=type | 'void' | 'assign') name=memberName
+        -> ^(MEMBER_TYPE $t) ^(MEMBER_NAME $name)
     ;
 
 memberParameters
@@ -150,7 +172,11 @@ memberDefinition
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
-    | (specifier | initializer)? ';'
+    | (memberInitializer ';' -> memberInitializer)
+    ;
+
+memberInitializer
+    : (specifier | initializer)?
     ;
 
 //shortcut functor expression that makes the parameter list 
@@ -197,10 +223,19 @@ classDeclaration
         satisfiedTypes?
         typeConstraints?
         classBody
+        ->
+        typeName
+        typeParameters?
+        formalParameters?
+        extendedType?
+        satisfiedTypes?
+        typeConstraints?
+        classBody
     ;
 
 classBody
     : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
+//    -> instances? declarationOrStatement*
     ;
 
 extendedType
@@ -250,7 +285,9 @@ annotation
 //kind of expressions that can appear as arguments to
 //the annotation
 userAnnotation 
-    : annotationName annotationArguments?
+    : 
+    annotationName annotationArguments?
+//    name=annotationName args=annotationArguments?
     ;
 
 annotationArguments
@@ -263,11 +300,14 @@ reflectedLiteral
 
 qualifiedTypeName
     : //( identifier '.' )* 
+    // UIDENTIFIER ('.' UIDENTIFIER)*
     UIDENTIFIER ('.' UIDENTIFIER)*
+        ->^(TYPE_NAME UIDENTIFIER+)
     ;
 
 typeName
     : UIDENTIFIER
+        ->^(TYPE_NAME UIDENTIFIER+)
     ;
 
 annotationName
@@ -303,6 +343,7 @@ initializer
 //for parameters
 specifier
     : '=' assignable
+    -> ^(INIT_EXPR assignable)
     ;
 
 literal
