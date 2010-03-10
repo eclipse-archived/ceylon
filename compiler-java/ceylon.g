@@ -21,6 +21,10 @@ tokens {
     IMPORT_LIST;
     IMPORT_DECL;
     ALIAS_DECL;
+    STMT_LIST;
+    RET_STMT;
+    ARG_LIST;
+    METHOD_DECL;
 }
 
 compilationUnit
@@ -57,6 +61,7 @@ importElement
 
 block
     : '{' declarationOrStatement* directiveStatement? '}'
+    -> ^(STMT_LIST declarationOrStatement* directiveStatement?)
     ;
 
 /*inlineClassDeclaration
@@ -138,11 +143,11 @@ expressionStatement
     ;
 
 directiveStatement
-    : directive ';'?
+    : directive ';'? -> directive
     ;
 
 directive
-    : 'return' assignable? 
+    : 'return' assignable? -> ^(RET_STMT assignable?)
     //| 'produce' assignable
     | 'throw' expression? 
     | 'break' expression?
@@ -168,11 +173,13 @@ memberParameters
     ;
 
 memberDefinition
-    : memberParameters? block
+    : (memberParameters? block
+        -> ^(METHOD_DECL  memberParameters? block))
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
-    | (memberInitializer ';' -> memberInitializer)
+    | (init=memberInitializer ';'
+    	-> $init)
     ;
 
 memberInitializer
@@ -216,26 +223,20 @@ aliasDeclaration
 classDeclaration
     :
         'class'
-        typeName
-        typeParameters?
-        formalParameters?
-        extendedType?
-        satisfiedTypes?
-        typeConstraints?
-        classBody
-        ->
-        typeName
-        typeParameters?
-        formalParameters?
-        extendedType?
-        satisfiedTypes?
-        typeConstraints?
-        classBody
+        name=typeName
+        typeParms=typeParameters?
+        args=formalParameters?
+        ext=extendedType?
+        sat=satisfiedTypes?
+        constr=typeConstraints?
+        body=classBody
+     -> $name $typeParms? $args? $ext? $sat? $constr? $body
     ;
 
 classBody
-    : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
-//    -> instances? declarationOrStatement*
+    : ('{' ((instanceStart)=>inst=instances)? stmts=declarationOrStatement* '}')
+    -> $inst? ^(STMT_LIST $stmts*)
+ /*   -> instances? declarationOrStatement*  */
     ;
 
 extendedType
@@ -338,6 +339,7 @@ variance
 //for locals and attributes
 initializer
     : ':=' assignable
+    -> ^(INIT_EXPR assignable)
     ;
 
 //for parameters
@@ -545,6 +547,7 @@ special
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
+    -> ^(ARG_LIST formalParameter*)
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
