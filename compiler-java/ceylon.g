@@ -25,6 +25,9 @@ tokens {
     RET_STMT;
     ARG_LIST;
     METHOD_DECL;
+    INSTANCE_LIST;
+    CLASS_BODY;
+    EXPR;
 }
 
 compilationUnit
@@ -92,10 +95,13 @@ declarationOrStatement
 declaration
     :
     ann=annotations? 
-    (mem=memberDeclaration 
+    (((memberHeader memberParameters) => 
+            (mem=memberDeclaration 
+                -> ^(METHOD_DECL $mem ^(ANNOTATION_LIST $ann?))))
+    | (mem=memberDeclaration 
             -> ^(MEMBER_DECL $mem ^(ANNOTATION_LIST $ann?)))
     | (typ=typeDeclaration 
-            -> ^(TYPE_DECL $typ ^(ANNOTATION_LIST $ann?)))
+            -> ^(TYPE_DECL $typ ^(ANNOTATION_LIST $ann?))))
     ;
 //special rule for syntactic predicates
 //be careful with this one, since it 
@@ -140,6 +146,7 @@ statement
 
 expressionStatement
     : expression ';'
+    -> ^(EXPR expression)
     ;
 
 directiveStatement
@@ -173,8 +180,7 @@ memberParameters
     ;
 
 memberDefinition
-    : (memberParameters? block
-        -> ^(METHOD_DECL  memberParameters? block))
+    : (memberParameters? block)
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
@@ -234,8 +240,9 @@ classDeclaration
     ;
 
 classBody
-    : ('{' ((instanceStart)=>inst=instances)? stmts=declarationOrStatement* '}')
-    -> $inst? ^(STMT_LIST $stmts*)
+    : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
+    -> instances? ^(STMT_LIST declarationOrStatement*)
+ //    -> ^(CLASS_BODY $inst? ^(STMT_LIST $stmts))
  /*   -> instances? declarationOrStatement*  */
     ;
 
@@ -245,6 +252,8 @@ extendedType
     
 instances
     : instance (',' instance)* (';'|'...')
+    -> ^(INSTANCE_LIST instance*)
+    // FIXME: Need to add ellipsis
     ;
 
 instance
@@ -372,7 +381,7 @@ assignable
 //can be used to init locals
 expression 
     : methodExpression 
-      ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
+      ( op=('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?=') assignable )?
     ;
 
 methodExpression
@@ -386,33 +395,33 @@ undelimitedNamedArgument
 
 implicationExpression
     : disjunctionExpression 
-      ('=>' disjunctionExpression)?
+      ('=>'^ disjunctionExpression)?
     ;
 
 //should '^' have a higher precedence?
 disjunctionExpression
     : conjunctionExpression 
-      ('||' conjunctionExpression)?
+      ('||'^ conjunctionExpression)?
     ;
 
 conjunctionExpression
     : logicalNegationExpression 
-      ('&&' logicalNegationExpression)*
+      ('&&'^ logicalNegationExpression)*
     ;
 
 logicalNegationExpression
-    : '!' logicalNegationExpression
+    : '!'^ logicalNegationExpression
     | equalityExpression
     ;
 
 equalityExpression
     : comparisonExpression
-      (('=='|'!='|'===') comparisonExpression)?
+      (('=='^|'!='^|'==='^) comparisonExpression)?
     ;
 
 comparisonExpression
     : defaultExpression
-      (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') defaultExpression)?
+      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is') defaultExpression)?
     ;
 
 //should we reverse the precedence order 
@@ -430,17 +439,17 @@ existenceEmptinessExpression
 //'..' a higher precedence than '->'
 rangeIntervalEntryExpression
     : additiveExpression
-      (('..'|'->') additiveExpression)?
+      (('..'^ |'->') additiveExpression)?
     ;
 
 additiveExpression
     : multiplicativeExpression
-      (('+' | '-' | '|' | '^') multiplicativeExpression)*
+      (('+'^ | '-'^ | '|'^ | '^'^) multiplicativeExpression)*
     ;
 
 multiplicativeExpression 
     : exponentiationExpression
-      (('*' | '/' | '%' | '&') exponentiationExpression)*
+      (('*'^ | '/'^ | '%'^ | '&'^) exponentiationExpression)*
     ;
 
 exponentiationExpression
@@ -448,7 +457,7 @@ exponentiationExpression
     ;
 
 unaryExpression 
-    : ('$'|'-'|'++'|'--') unaryExpression
+    : ('$'^ |'-'^ |'++'^ |'--'^) unaryExpression
     | primary
     ;
 
