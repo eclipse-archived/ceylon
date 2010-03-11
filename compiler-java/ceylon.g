@@ -28,20 +28,34 @@ tokens {
     INSTANCE_LIST;
     CLASS_BODY;
     EXPR;
+    INTERFACE_DECL;
+    ABSTRACT_MEMBER_DECL;
+    ANNOTATION_NAME;
+    STRING_CST;
+    CALL_EXPR;
+    TYPE_PARAMETER_LIST;
+    TYPE_ARG_LIST;
+    DECL_MODIFIER;
+    THROW_STMT;
+    BREAK_STMT;
+    NAMED_ARG;
+    NIL;
+    ARG_NAME;
 }
 
 compilationUnit
-    : (importDeclaration)*
+    : importDeclaration*
       (annotations? typeDeclaration)+
       EOF
-      -> ^(IMPORT_LIST importDeclaration*)
+      ->
+      ^(IMPORT_LIST importDeclaration*)?
       (annotations? typeDeclaration)+
     ;
-    
+       
 typeDeclaration
     : classDeclaration -> ^(CLASS_DECL classDeclaration)
-    | interfaceDeclaration
-    | aliasDeclaration
+    | interfaceDeclaration -> ^(INTERFACE_DECL interfaceDeclaration)
+    | aliasDeclaration -> ^(ALIAS_DECL aliasDeclaration)
     ;
 
 importDeclaration  
@@ -97,11 +111,11 @@ declaration
     ann=annotations? 
     (((memberHeader memberParameters) => 
             (mem=memberDeclaration 
-                -> ^(METHOD_DECL $mem ^(ANNOTATION_LIST $ann?))))
+                -> ^(METHOD_DECL $mem $ann?)))
     | (mem=memberDeclaration 
-            -> ^(MEMBER_DECL $mem ^(ANNOTATION_LIST $ann?)))
+            -> ^(MEMBER_DECL $mem $ann?))
     | (typ=typeDeclaration 
-            -> ^(TYPE_DECL $typ ^(ANNOTATION_LIST $ann?))))
+            -> ^(TYPE_DECL $typ $ann?)))
     ;
 //special rule for syntactic predicates
 //be careful with this one, since it 
@@ -121,6 +135,12 @@ declarationStart
 //by making these things keywords, we reduce the amount of
 //backtracking
 declarationModifier 
+    :
+    modifier
+    -> ^(DECL_MODIFIER modifier)
+    ;
+
+modifier
     : 'public'
     | 'package'
     | 'module'
@@ -156,14 +176,15 @@ directiveStatement
 directive
     : 'return' assignable? -> ^(RET_STMT assignable?)
     //| 'produce' assignable
-    | 'throw' expression? 
-    | 'break' expression?
+    | 'throw' expression? -> ^(THROW_STMT expression?)
+    | 'break' expression? -> ^(BREAK_STMT expression?)
     ;
 
 abstractMemberDeclaration
     : annotations?
       memberHeader
       memberParameters?
+      -> ^(ABSTRACT_MEMBER_DECL annotations? memberHeader memberParameters?)
     ;
 
 memberDeclaration
@@ -171,9 +192,13 @@ memberDeclaration
     ;
 
 memberHeader
-    : (t=type | 'void' | 'assign') name=memberName
-        -> ^(MEMBER_TYPE $t) ^(MEMBER_NAME $name)
+    : t=memberType name=memberName
+        -> ^(MEMBER_TYPE $t $name)
     ;
+
+memberType
+    :	
+    type | 'void' | 'assign' ;
 
 memberParameters
     : typeParameters? formalParameters+ typeConstraints?
@@ -208,17 +233,24 @@ interfaceDeclaration
         satisfiedTypes?
         typeConstraints?
         interfaceBody
+        ->
+        typeName
+        typeParameters?
+        satisfiedTypes?
+        typeConstraints?
+        interfaceBody        
     ;
 
 interfaceBody
     //TODO: why can't we have toplevel declarations 
     //      inside an interface dec?
-    : '{' ( abstractMemberDeclaration ';' )* '}'
+    : '{' ( mem=abstractMemberDeclaration ';' )* '}'
+       -> $mem*
     ;
 
 aliasDeclaration
     :
-        'alias'
+        'alias'!
         typeName
         typeParameters?
         satisfiedTypes?
@@ -284,7 +316,7 @@ type
     ;
 
 annotations
-    : annotation+
+    : annotation+ -> ^(ANNOTATION_LIST annotation+)
     ;
 
 annotation
@@ -297,6 +329,7 @@ annotation
 userAnnotation 
     : 
     annotationName annotationArguments?
+    -> ^(USER_ANNOTATION ^(ANNOTATION_NAME annotationName) annotationArguments?)
 //    name=annotationName args=annotationArguments?
     ;
 
@@ -326,15 +359,17 @@ annotationName
     ;
 
 memberName 
-    : LIDENTIFIER
+    : LIDENTIFIER -> ^(MEMBER_NAME LIDENTIFIER)
     ;
 
 typeArguments
     : '<' type (',' type)* '>'
+    -> ^(TYPE_ARG_LIST type+)
     ;
 
 typeParameters
     : '<' typeParameter (',' typeParameter)* '>'
+    -> ^(TYPE_PARAMETER_LIST typeParameter+)
     ;
 
 typeParameter
@@ -361,7 +396,7 @@ literal
     : NATURALLITERAL
     | FLOATLITERAL
     | QUOTEDLITERAL
-    | stringLiteral
+    | stringLiteral -> ^(STRING_CST stringLiteral)
     ;   
 
 stringLiteral
@@ -381,7 +416,7 @@ assignable
 //can be used to init locals
 expression 
     : methodExpression 
-      ( op=('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?=') assignable )?
+      ( op=('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
     ;
 
 methodExpression
@@ -462,7 +497,11 @@ unaryExpression
     ;
 
 primary
-    : base selector*
+    : b=base 
+    (s=selector+
+     -> ^(CALL_EXPR $b $s+)
+    | -> $b
+    )
     ;
     
 base 
@@ -522,11 +561,12 @@ namedArgument
     ;
     
 parameterName
-    : LIDENTIFIER
+    : LIDENTIFIER -> ^(ARG_NAME LIDENTIFIER)
     ;
 
 namedArguments
     : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
+    -> ^(NAMED_ARG namedArgument)* ^(ARG_LIST varargArguments)?
     ;
 
 varargArguments
@@ -542,9 +582,16 @@ parExpression
     ;
     
 positionalArguments
-    : '(' ( positionalArgument (',' positionalArgument)* )? ')'
+    : '(' positionalArgumentList ')'
+   -> ^(ARG_LIST positionalArgumentList)
     ;
-    
+
+positionalArgumentList
+    :  
+    positionalArgument (',' positionalArgument)* -> positionalArgument+
+    | -> NIL
+    ;
+
 positionalArgument
     : (variableStart) => special 
     | assignable
