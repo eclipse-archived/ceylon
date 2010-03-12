@@ -41,6 +41,14 @@ tokens {
     NAMED_ARG;
     NIL;
     ARG_NAME;
+    TRY_STMT;
+    TRY_RESOURCE_LIST;
+    TRY_BLOCK;
+    CATCH_STMT;
+    CATCH_BLOCK;
+    FINALLY_BLOCK;
+    TRY_CATCH_STMT;
+    VAR_DECL;
 }
 
 compilationUnit
@@ -685,11 +693,30 @@ doIterator
 
 tryCatchFinally
     :
+    tryStmt
+    catchStmts
+    finallyStmt
+    -> ^(TRY_CATCH_STMT tryStmt catchStmts? finallyStmt?)
+    ;
+  
+tryStmt
+    :
     'try' ( '(' resource (',' resource)* ')' )? block
+    -> ^(TRY_STMT ^(TRY_RESOURCE_LIST resource)? ^(TRY_BLOCK block))
+    ;
+  
+catchStmts
+    :
     ('catch' '(' variable ')' block)*
-    ('finally' block)?
+    -> ^(CATCH_STMT variable ^(CATCH_BLOCK block))*
     ;
     
+finallyStmt
+    :	
+    ('finally' block)?
+    -> ^(FINALLY_BLOCK block)?
+    ;    	    
+
 resource
     : (variableStart) => variable specifier 
     | expression
@@ -697,6 +724,7 @@ resource
 
 variable
     : type memberName
+    -> ^(VAR_DECL type memberName)
     ;
 
 variableStart
