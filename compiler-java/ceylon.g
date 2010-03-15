@@ -7,52 +7,67 @@ options {
 }
 
 tokens {
+	ANNOTATION;
+	ANNOTATION_LIST;
 	DECLARE;
 	MEMBER_DECL;
 	TYPE_DECL;
-	ANNOTATION;
-    USER_ANNOTATION;
-	ANNOTATION_LIST;
-    TYPE_NAME;
+    ABSTRACT_MEMBER_DECL;
+    ALIAS_DECL;
+    ANNOTATION_NAME;
+    ARG_LIST;
+    ARG_NAME;
+    BREAK_STMT;
+    CALL_EXPR;
+    CATCH_BLOCK;
+    CATCH_STMT;
+    CLASS_BODY;
+    CLASS_DECL;
+    CONDITION;
+    DECL_MODIFIER;
+    DO_BLOCK;
+    DO_ITERATOR;
+    DO_ITERATOR;
+    EXPR;
+    FINALLY_BLOCK;
+    IF_FALSE;
+    IF_STMT;
+    IF_TRUE;
+    IMPORT_DECL;
+    IMPORT_LIST;
+    INIT_EXPR;
+    INSTANCE_LIST;
+    INTERFACE_DECL;
     MEMBER_NAME;
     MEMBER_TYPE;
-    INIT_EXPR;
-    CLASS_DECL;
-    IMPORT_LIST;
-    IMPORT_DECL;
-    ALIAS_DECL;
-    STMT_LIST;
-    RET_STMT;
-    ARG_LIST;
     METHOD_DECL;
-    INSTANCE_LIST;
-    CLASS_BODY;
-    EXPR;
-    INTERFACE_DECL;
-    ABSTRACT_MEMBER_DECL;
-    ANNOTATION_NAME;
-    STRING_CST;
-    CALL_EXPR;
-    TYPE_PARAMETER_LIST;
-    TYPE_ARG_LIST;
-    DECL_MODIFIER;
-    THROW_STMT;
-    BREAK_STMT;
     NAMED_ARG;
     NIL;
-    ARG_NAME;
-    TRY_STMT;
-    TRY_RESOURCE_LIST;
+    RET_STMT;
+    STMT_LIST;
+    STRING_CST;
+    THROW_STMT;
     TRY_BLOCK;
-    CATCH_STMT;
-    CATCH_BLOCK;
-    FINALLY_BLOCK;
     TRY_CATCH_STMT;
+    TRY_RESOURCE_LIST;
+    TRY_STMT;
+    TYPE_ARG_LIST;
+    TYPE_NAME;
+    TYPE_PARAMETER_LIST;
+    USER_ANNOTATION;
     VAR_DECL;
-    IF_STMT;
-    CONDITION;
-    IF_TRUE;
-    IF_FALSE;
+    WHILE_BLOCK;
+    WHILE_STMT;
+    SWITCH_STMT;
+    SWITCH_EXPR;
+    SWITCH_CASE_LIST;
+    CASE_ITEM;
+    EXPR_LIST;
+    CASE_DEFAULT;
+    TYPE_CONSTRAINT_LIST;
+    TYPE;
+    TYPE_ARGS;
+    TYPE_CONSTRAINT;
 }
 
 compilationUnit
@@ -310,12 +325,13 @@ instanceStart
     ;
 
 typeConstraint
-    : typeName ( ('>=' | '<=') type | '=' 'subtype' | formalParameters )
+    : typeName ( ('>='^ type) | ('<='^ type) | ('='^ 'subtype') | formalParameters )
     ;
     
 typeConstraints
     //TODO: should it be 'for'?
     : 'where' typeConstraint ('&' typeConstraint)*
+    -> ^(TYPE_CONSTRAINT_LIST ^(TYPE_CONSTRAINT typeConstraint)+)
     ;
     
 satisfiedTypes
@@ -323,8 +339,9 @@ satisfiedTypes
     ;
 
 type
-    : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
-    | 'subtype'
+    : (qualifiedTypeName ( (typeParameterStart) => typeArguments )?
+    | 'subtype')
+    -> 'subtype'? ^(TYPE qualifiedTypeName ^(TYPE_ARGS typeArguments)?)?
     ;
 
 annotations
@@ -648,26 +665,27 @@ controlStructure
     : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
     ;
     
-/*
-ifElse
-    :	    
-    'if'! ifBody;
-*/
-
 ifElse
     : 	
     'if' '(' condition ')' ifBlock=block 
-    ('else' (ifElse | elseBlock=block))?
+      ('else' (ifElse | elseBlock=block))?
     -> ^(IF_STMT ^(CONDITION condition) ^(IF_TRUE $ifBlock) ^(IF_FALSE $elseBlock? ifElse?)?)
     ;
 
 switchCaseElse
     : 'switch' '(' expression ')' ( '{' cases '}' | cases )
+    -> ^(SWITCH_STMT ^(SWITCH_EXPR expression) ^(SWITCH_CASE_LIST cases))
     ;
     
 cases 
-    : ('case' '(' caseCondition ')' block)+ ('else' block)?
+    : caseItem+ ('else' block)?
+    -> caseItem+ ^(CASE_DEFAULT  block)
     ;
+    
+caseItem
+    : ('case' '(' caseCondition ')' block)
+    -> ^(CASE_ITEM caseCondition block)
+    ;	 
     
 caseCondition
     : expressions | isCaseCondition
@@ -675,6 +693,7 @@ caseCondition
 
 expressions
     : expression (',' expression)*
+    -> ^(EXPR_LIST expression+)
     ;
 
 isCaseCondition
@@ -695,8 +714,10 @@ containment
     
 doWhile
     :   
-    ('do' ('(' doIterator ')')? block? )?  
-    'while' '(' condition ')' (block | ';')
+    ('do' ('(' doIterator ')')? b1=block? )?  
+    'while' '(' condition ')' (b2=block | ';')
+     -> ^(WHILE_STMT ^(CONDITION condition) ^(DO_ITERATOR doIterator)? ^(DO_BLOCK $b1)?
+         ^(WHILE_BLOCK $b2)?)
     ;
 
 //do iterators are allowed to be mutable and/or optional
