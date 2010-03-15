@@ -49,6 +49,10 @@ tokens {
     FINALLY_BLOCK;
     TRY_CATCH_STMT;
     VAR_DECL;
+    IF_STMT;
+    CONDITION;
+    IF_TRUE;
+    IF_FALSE;
 }
 
 compilationUnit
@@ -644,10 +648,19 @@ controlStructure
     : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
     ;
     
+/*
 ifElse
-    : 'if' '(' condition ')' block ('else' 'if' '(' condition ')' block)* ('else' block)?
+    :	    
+    'if'! ifBody;
+*/
+
+ifElse
+    : 	
+    'if' '(' condition ')' ifBlock=block 
+    ('else' (ifElse | elseBlock=block))?
+    -> ^(IF_STMT ^(CONDITION condition) ^(IF_TRUE $ifBlock) ^(IF_FALSE $elseBlock? ifElse?)?)
     ;
-    
+
 switchCaseElse
     : 'switch' '(' expression ')' ( '{' cases '}' | cases )
     ;
