@@ -68,6 +68,13 @@ tokens {
     TYPE;
     TYPE_ARGS;
     TYPE_CONSTRAINT;
+    TYPE_DECL;
+    SATISFIES_LIST;
+    ABSTRACT_METHOD_DECL;
+    SUBSCRIPT_EXPR;
+    LOWER_BOUND;
+    UPPER_BOUND;
+    SELECTOR_LIST;
 }
 
 compilationUnit
@@ -75,8 +82,8 @@ compilationUnit
       (annotations? typeDeclaration)+
       EOF
       ->
-      ^(IMPORT_LIST importDeclaration*)?
-      (annotations? typeDeclaration)+
+      ^(IMPORT_LIST importDeclaration)*
+      ^(TYPE_DECL annotations? typeDeclaration)+
     ;
        
 typeDeclaration
@@ -207,20 +214,32 @@ directive
     | 'break' expression? -> ^(BREAK_STMT expression?)
     ;
 
+
+abstractMemberDeclaration
+    : ann=annotations?
+    (((memberHeader memberParameters) => 
+        (memberHeader memberParameters ';'
+          -> ^(ABSTRACT_METHOD_DECL $ann? memberHeader memberParameters)))
+    | (mem=memberDeclaration 
+            -> ^(MEMBER_DECL $mem $ann?)))
+    ;
+
+
+/*
 abstractMemberDeclaration
     : annotations?
       memberHeader
       memberParameters?
-      -> ^(ABSTRACT_MEMBER_DECL annotations? memberHeader memberParameters?)
+//      -> ^(ABSTRACT_MEMBER_DECL annotations? memberHeader memberParameters?)
     ;
+*/
 
 memberDeclaration
     : memberHeader memberDefinition
     ;
 
 memberHeader
-    : t=memberType name=memberName
-        -> ^(MEMBER_TYPE $t $name)
+    : memberType memberName
     ;
 
 memberType
@@ -232,16 +251,16 @@ memberParameters
     ;
 
 memberDefinition
-    : (memberParameters? block)
+    : memberParameters? block
+    
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
-    | (init=memberInitializer ';'
-    	-> $init)
+    | memberInitializer? ';'!
     ;
 
 memberInitializer
-    : (specifier | initializer)?
+    : (specifier | initializer)
     ;
 
 //shortcut functor expression that makes the parameter list 
@@ -255,25 +274,27 @@ undelimitedNamedArgumentDefinition
 interfaceDeclaration
     :
         'interface'
-        typeName
-        typeParameters?
-        satisfiedTypes?
-        typeConstraints?
-        interfaceBody
+        a=typeName
+        b=typeParameters?
+        c=satisfiedTypes?
+        d=typeConstraints?
+        e=interfaceBody
         ->
-        typeName
-        typeParameters?
-        satisfiedTypes?
-        typeConstraints?
-        interfaceBody        
+        $a $b? $c? $d? $e?
+                
     ;
 
 interfaceBody
     //TODO: why can't we have toplevel declarations 
     //      inside an interface dec?
-    : '{' ( mem=abstractMemberDeclaration ';' )* '}'
-       -> $mem*
+    : '{' abstractMemberDeclaration* '}'
+       -> abstractMemberDeclaration*
     ;
+
+abstractMemberDeclarations
+    : abstractMemberDeclaration*
+    ;
+
 
 aliasDeclaration
     :
@@ -336,6 +357,7 @@ typeConstraints
     
 satisfiedTypes
     : 'satisfies' type (',' type)*
+    -> ^(SATISFIES_LIST type+)
     ;
 
 type
@@ -379,7 +401,7 @@ qualifiedTypeName
 
 typeName
     : UIDENTIFIER
-        ->^(TYPE_NAME UIDENTIFIER+)
+        ->^(TYPE_NAME UIDENTIFIER)
     ;
 
 annotationName
@@ -485,7 +507,7 @@ equalityExpression
 
 comparisonExpression
     : defaultExpression
-      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is') defaultExpression)?
+      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) defaultExpression)?
     ;
 
 //should we reverse the precedence order 
@@ -517,7 +539,7 @@ multiplicativeExpression
     ;
 
 exponentiationExpression
-    : unaryExpression ('**' unaryExpression)?
+    : unaryExpression ('**'^ unaryExpression)?
     ;
 
 unaryExpression 
@@ -527,8 +549,8 @@ unaryExpression
 
 primary
     : b=base 
-    (s=selector+
-     -> ^(CALL_EXPR $b $s+)
+    (selector+
+     -> ^(SELECTOR_LIST $b selector+)
     | -> $b
     )
     ;
@@ -559,13 +581,13 @@ enumeration
 
 selector 
     : memberInvocation
-    | arguments
+    | (arguments -> ^(CALL_EXPR arguments)) 
     | elementSelector
     | ('--' | '++')
     ;
 
 memberInvocation
-    : ('.' | '^.' | '?.' | '*.') memberName
+    : ('.'^ | '^.'^ | '?.'^ | '*.'^) memberName
     ;
 
 /*parameterTypes
@@ -574,11 +596,13 @@ memberInvocation
 
 elementSelector
     : '[' elementsSpec ']'
+    -> ^(SUBSCRIPT_EXPR elementsSpec)
     ;
 
 elementsSpec
-    : additiveExpression ( '...' | '..' additiveExpression )?
-    |  '...' additiveExpression	
+    : (lo=additiveExpression ( '...' | '..' hi=additiveExpression )?
+    |  '...' hi=additiveExpression)
+    -> ^(LOWER_BOUND $lo)? ^(UPPER_BOUND $hi)?	
     ;
 
 arguments 
@@ -612,13 +636,13 @@ parExpression
     
 positionalArguments
     : '(' positionalArgumentList ')'
-   -> ^(ARG_LIST positionalArgumentList)
+   -> ^(ARG_LIST positionalArgumentList?)
     ;
 
 positionalArgumentList
     :  
     positionalArgument (',' positionalArgument)* -> positionalArgument+
-    | -> NIL
+    | 
     ;
 
 positionalArgument
@@ -640,8 +664,9 @@ formalParameters
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    :  abstractMemberDeclaration 
-      //annotations? type parameterName 
+    : annotations?
+      memberHeader
+      memberParameters? 
       ( '->' type parameterName | '..' parameterName )? 
       (specifier | '...')?
     ;
