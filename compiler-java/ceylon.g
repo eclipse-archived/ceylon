@@ -42,6 +42,7 @@ tokens {
     MEMBER_TYPE;
     METHOD_DECL;
     NAMED_ARG;
+    UNNAMED_ARG;
     NIL;
     RET_STMT;
     STMT_LIST;
@@ -75,6 +76,17 @@ tokens {
     LOWER_BOUND;
     UPPER_BOUND;
     SELECTOR_LIST;
+    TYPE_VARIANCE;
+    TYPE_PARAMETER;
+    STRING_CONCAT;
+    INT_CST;
+    FLOAT_CST;
+    QUOTE_CST;
+    FOR_STMT;
+FOR_ITERATOR;
+FAIL_BLOCK;
+LOOP_BLOCK;
+FOR_CONTAINMENT;
 }
 
 compilationUnit
@@ -84,7 +96,7 @@ compilationUnit
       ->
       ^(IMPORT_LIST importDeclaration)*
       ^(TYPE_DECL annotations? typeDeclaration)+
-    ;
+     ;
        
 typeDeclaration
     : classDeclaration -> ^(CLASS_DECL classDeclaration)
@@ -200,7 +212,6 @@ statement
 
 expressionStatement
     : expression ';'
-    -> ^(EXPR expression)
     ;
 
 directiveStatement
@@ -240,6 +251,7 @@ memberDeclaration
 
 memberHeader
     : memberType memberName
+    -> ^(MEMBER_TYPE memberType) memberName
     ;
 
 memberType
@@ -273,15 +285,14 @@ undelimitedNamedArgumentDefinition
     
 interfaceDeclaration
     :
-        'interface'
-        a=typeName
-        b=typeParameters?
-        c=satisfiedTypes?
-        d=typeConstraints?
-        e=interfaceBody
-        ->
-        $a $b? $c? $d? $e?
-                
+        'interface'!
+        typeName
+        typeParameters?
+        satisfiedTypes?
+        typeConstraints?
+        interfaceBody
+ //       ->
+ //       typeName typeParameters? satisfiedTypes? typeConstraints? interfaceBody?
     ;
 
 interfaceBody
@@ -308,15 +319,14 @@ aliasDeclaration
 
 classDeclaration
     :
-        'class'
-        name=typeName
-        typeParms=typeParameters?
-        args=formalParameters?
-        ext=extendedType?
-        sat=satisfiedTypes?
-        constr=typeConstraints?
-        body=classBody
-     -> $name $typeParms? $args? $ext? $sat? $constr? $body
+        'class'!
+        typeName
+        typeParameters?
+        formalParameters?
+        extendedType?
+        satisfiedTypes?
+        typeConstraints?
+        classBody
     ;
 
 classBody
@@ -337,7 +347,7 @@ instances
     ;
 
 instance
-    : annotations? 'case' memberName arguments?
+    : annotations? 'case'! memberName arguments?
     ;
 
 //special rule for syntactic predicate
@@ -424,11 +434,11 @@ typeParameters
     ;
 
 typeParameter
-    : variance typeName
+    : variance? typeName -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     ;
 
-variance 
-    : ('in'|'out')?
+variance
+    : 'in' | 'out'
     ;
     
 //for locals and attributes
@@ -444,20 +454,43 @@ specifier
     ;
 
 literal
-    : NATURALLITERAL
-    | FLOATLITERAL
-    | QUOTEDLITERAL
-    | stringLiteral -> ^(STRING_CST stringLiteral)
+    : NATURALLITERAL -> ^(INT_CST NATURALLITERAL)
+    | FLOATLITERAL -> ^(FLOAT_CST FLOATLITERAL)
+    | QUOTEDLITERAL -> ^(QUOTE_CST QUOTEDLITERAL)
+    | SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
+    | stringExpr -> ^(STRING_CONCAT stringExpr)
     ;   
 
-stringLiteral
-    : SIMPLESTRINGLITERAL
-    | LEFTSTRINGLITERAL expression (MIDDLESTRINGLITERAL expression)* RIGHTSTRINGLITERAL 
+stringExpr
+    : 
+    leftStringLiteral innerStringExpr (middleStringLiteral innerStringExpr)* rightStringLiteral
     ;
 
+innerStringExpr
+    :
+    expression
+    ;
+
+leftStringLiteral
+    : LEFTSTRINGLITERAL -> ^(STRING_CST LEFTSTRINGLITERAL)
+    ;
+    
+middleStringLiteral
+    : MIDDLESTRINGLITERAL -> ^(STRING_CST MIDDLESTRINGLITERAL)
+    ;
+    
+rightStringLiteral
+    : RIGHTSTRINGLITERAL -> ^(STRING_CST RIGHTSTRINGLITERAL)
+    ;
+    
 assignable 
     : reflectedLiteral
     | expression
+    ;
+
+expression
+    : expr
+    -> ^(EXPR expr)
     ;
 
 //Even though it looks like this is non-associative
@@ -465,7 +498,7 @@ assignable
 //assignable can be an assignment
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
-expression 
+expr
     : methodExpression 
       ( op=('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
     ;
@@ -581,7 +614,7 @@ enumeration
 
 selector 
     : memberInvocation
-    | (arguments -> ^(CALL_EXPR arguments)) 
+    | (arguments -> ^(CALL_EXPR ^(ARG_LIST arguments))) 
     | elementSelector
     | ('--' | '++')
     ;
@@ -619,15 +652,20 @@ parameterName
 
 namedArguments
     : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
-    -> ^(NAMED_ARG namedArgument)* ^(ARG_LIST varargArguments)?
+    -> ^(NAMED_ARG namedArgument)* varargArguments?
     ;
 
 varargArguments
-    : assignables
+    : unnamedArg (','! unnamedArg)*
+    ;
+
+unnamedArg
+    : assignable
+    -> ^(UNNAMED_ARG assignable)
     ;
 
 assignables
-    : assignable (',' assignable)*
+    : assignable (','! assignable)*
     ;
 
 parExpression 
@@ -726,15 +764,18 @@ isCaseCondition
     ;
 
 forFail
-    : 'for' '(' forIterator ')' block ('fail' block)?
+    : 'for' '(' forIterator ')' loopBlock=block ('fail' failBlock=block)?
+    -> ^(FOR_STMT forIterator ^(LOOP_BLOCK $loopBlock) ^(FAIL_BLOCK $failBlock)?)
     ;
 
 forIterator
-    : variable ('->' variable)? containment
+    : v1=variable ('->' v2=variable)? containment
+    -> ^(FOR_ITERATOR $v1 $v2? containment)
     ;
     
 containment
     : 'in' expression
+    -> ^(FOR_CONTAINMENT expression)
     ;
     
 doWhile
@@ -844,7 +885,7 @@ MIDDLESTRINGLITERAL
 
 fragment
 NonStringChars
-    :    '{' | '\\' | '"'
+    :    '{' | '\\' | '"' | '$' | '\''
     ;
 
 fragment
