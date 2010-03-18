@@ -87,6 +87,9 @@ FOR_ITERATOR;
 FAIL_BLOCK;
 LOOP_BLOCK;
 FOR_CONTAINMENT;
+REFLECTED_LITERAL;
+ENUM_LIST;
+SUPERCLASS;
 }
 
 compilationUnit
@@ -211,7 +214,7 @@ statement
     ;
 
 expressionStatement
-    : expression ';'
+    : expression ';'!
     ;
 
 directiveStatement
@@ -337,7 +340,8 @@ classBody
     ;
 
 extendedType
-    : 'extends' type positionalArguments
+    : 'extends' type positionalArguments?
+    -> ^(SUPERCLASS type positionalArguments?) 
     ;
     
 instances
@@ -400,6 +404,7 @@ annotationArguments
 
 reflectedLiteral 
     : '#' ( memberName | (type ( '.' memberName )? ) )
+    -> ^(REFLECTED_LITERAL type? memberName)
     ;
 
 qualifiedTypeName
@@ -581,13 +586,21 @@ unaryExpression
     ;
 
 primary
+/*
     : b=base 
-    (selector+
-     -> ^(SELECTOR_LIST $b selector+)
+    ((selector+
+     -> ^(SELECTOR_LIST $b selector+))
     | -> $b
     )
+*/
+// This syntactic predicate really shouldn't be necessary, and the ANTLR
+// book seems to agree, but the above doesn't work.
+    : ((base selector) => base selector+ -> ^(SELECTOR_LIST base selector+))
+    | base
     ;
-    
+
+
+
 base 
     : type
     | memberName
@@ -608,6 +621,7 @@ specialValue
 
 enumeration
     : '{' assignables? '}'
+    -> ^(ENUM_LIST assignables?)
     //a special List literal syntax?
     //| '[' assignables? ']' 
     ;
@@ -742,7 +756,7 @@ switchCaseElse
     
 cases 
     : caseItem+ ('else' block)?
-    -> caseItem+ ^(CASE_DEFAULT  block)
+    -> caseItem+ ^(CASE_DEFAULT  block)?
     ;
     
 caseItem
