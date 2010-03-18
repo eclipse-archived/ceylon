@@ -462,7 +462,7 @@ literal
     : NATURALLITERAL -> ^(INT_CST NATURALLITERAL)
     | FLOATLITERAL -> ^(FLOAT_CST FLOATLITERAL)
     | QUOTEDLITERAL -> ^(QUOTE_CST QUOTEDLITERAL)
-    | SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
+    | stringLiteral -> ^(STRING_CST stringLiteral)
     | stringExpr -> ^(STRING_CONCAT stringExpr)
     ;   
 
@@ -487,7 +487,11 @@ middleStringLiteral
 rightStringLiteral
     : RIGHTSTRINGLITERAL -> ^(STRING_CST RIGHTSTRINGLITERAL)
     ;
-    
+
+stringLiteral
+    : SIMPLESTRINGLITERAL
+    ;
+
 assignable 
     : reflectedLiteral
     | expression
@@ -603,8 +607,8 @@ primary
 
 base 
     : type
-    | memberName
     | literal
+    | memberName
     | parExpression
     | enumeration
     | specialValue
