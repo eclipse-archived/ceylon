@@ -462,7 +462,7 @@ literal
     : NATURALLITERAL -> ^(INT_CST NATURALLITERAL)
     | FLOATLITERAL -> ^(FLOAT_CST FLOATLITERAL)
     | QUOTEDLITERAL -> ^(QUOTE_CST QUOTEDLITERAL)
-    | stringLiteral -> ^(STRING_CST stringLiteral)
+    | SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
     | stringExpr -> ^(STRING_CONCAT stringExpr)
     ;   
 
@@ -487,11 +487,7 @@ middleStringLiteral
 rightStringLiteral
     : RIGHTSTRINGLITERAL -> ^(STRING_CST RIGHTSTRINGLITERAL)
     ;
-
-stringLiteral
-    : SIMPLESTRINGLITERAL
-    ;
-
+    
 assignable 
     : reflectedLiteral
     | expression
@@ -508,10 +504,11 @@ expression
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
 expr
-    : methodExpression 
-      ( op=('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
+    : implicationExpression
+      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
     ;
 
+/*
 methodExpression
     : implicationExpression undelimitedNamedArgument*
     ;
@@ -519,7 +516,8 @@ methodExpression
 undelimitedNamedArgument
     : ( memberName | 'case' '(' expressions ')' ) 
       undelimitedNamedArgumentDefinition 
-    ;
+     ;
+*/
 
 implicationExpression
     : disjunctionExpression 
@@ -607,8 +605,8 @@ primary
 
 base 
     : type
-    | literal
     | memberName
+    | literal
     | parExpression
     | enumeration
     | specialValue
@@ -908,7 +906,9 @@ NonStringChars
 
 fragment
 StringPart
-    :    ( ~ NonStringChars | EscapeSequence) *
+    :    
+    ( ~ /* NonStringChars*/ ('{' | '\\' | '"' | '$' | '\'')
+     | EscapeSequence) *
     ;
     
 fragment
