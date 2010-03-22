@@ -90,6 +90,11 @@ FOR_CONTAINMENT;
 REFLECTED_LITERAL;
 ENUM_LIST;
 SUPERCLASS;
+PREFIX_EXPR;
+POSTFIX_EXPR;
+EXISTS_EXPR;
+NONEMPTY_EXPR;
+IS_EXPR;
 }
 
 compilationUnit
@@ -278,6 +283,7 @@ memberInitializer
     : (specifier | initializer)
     ;
 
+/*
 //shortcut functor expression that makes the parameter list 
 //optional, but can appear only using the special smalltalk
 //style method protocol
@@ -285,6 +291,7 @@ undelimitedNamedArgumentDefinition
     : ( (formalParameterStart) => formalParameters )? 
       ( ('{') => block | implicationExpression )
     ;
+*/
     
 interfaceDeclaration
     :
@@ -558,14 +565,16 @@ defaultExpression
     ;
 
 existenceEmptinessExpression
-    : rangeIntervalEntryExpression ('exists' | 'nonempty')?
+    : e=rangeIntervalEntryExpression 
+    (('exists' -> ^(EXISTS_EXPR $e) | 'nonempty' -> ^(NONEMPTY_EXPR $e))
+     | -> $e)
     ;
 
 //I wonder if it would it be cleaner to give 
 //'..' a higher precedence than '->'
 rangeIntervalEntryExpression
     : additiveExpression
-      (('..'^ |'->') additiveExpression)?
+      (('..'^ |'->'^) additiveExpression)?
     ;
 
 additiveExpression
@@ -583,11 +592,16 @@ exponentiationExpression
     ;
 
 unaryExpression 
-    : ('$'^ |'-'^ |'++'^ |'--'^) unaryExpression
+    : p=prefixOperator e=unaryExpression -> ^(PREFIX_EXPR $p $e)
     | primary
     ;
 
+prefixOperator
+    : '$' |'-' |'++' |'--'
+    ;
+    
 primary
+options {backtrack=true;}
 /*
     : b=base 
     ((selector+
@@ -595,13 +609,16 @@ primary
     | -> $b
     )
 */
-// This syntactic predicate really shouldn't be necessary, and the ANTLR
+// This backtracking predicate really shouldn't be necessary, and the ANTLR
 // book seems to agree, but the above doesn't work.
-    : ((base selector) => base selector+ -> ^(SELECTOR_LIST base selector+))
-    | base
+//    : base selector+ -> ^(SELECTOR_LIST base selector+)
+ //   | base
+    : base selector*
     ;
 
-
+postfixOperator
+    : ('--' | '++')
+    ;	
 
 base 
     : type
@@ -630,9 +647,9 @@ enumeration
 
 selector 
     : memberInvocation
-    | (arguments -> ^(CALL_EXPR ^(ARG_LIST arguments))) 
     | elementSelector
-    | ('--' | '++')
+    | (arguments -> ^(CALL_EXPR ^(ARG_LIST arguments)))
+    | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
 memberInvocation
@@ -694,9 +711,10 @@ positionalArguments
     ;
 
 positionalArgumentList
-    :  
-    positionalArgument (',' positionalArgument)* -> positionalArgument+
-    | 
+    :
+    (  
+    positionalArgument (',' positionalArgument)*
+    )? -> positionalArgument*
     ;
 
 positionalArgument
@@ -728,16 +746,25 @@ formalParameter
 // Control structures.
 
 condition
-    : expression | existsCondition | isCondition
+    : expression | existsCondition | nonemptyCondition | isCondition
     ;
 
 // Backtracking here is needed for exactly the same reason as localOrStatement.
 existsCondition
-    : ('exists' | 'nonempty') ( (variableStart) => variable specifier | expression )
+    : 'exists' ( (variableStart) => variable specifier | expression )
+    -> ^(EXISTS_EXPR variable? specifier? expression?)
+    ;
+    
+nonemptyCondition
+    : 'nonempty' ( (variableStart) => variable specifier | expression )
+    -> ^(NONEMPTY_EXPR variable? specifier? expression?)
     ;
     
 isCondition
-    : 'is' type ( (memberName '=') => memberName specifier | expression )
+    : 'is' type ( (memberName '=') => memberName specifier 
+                   -> ^(IS_EXPR type memberName specifier)
+        | expression -> ^(IS_EXPR type expression))
+    
     ;
     
 controlStructure
@@ -767,7 +794,7 @@ caseItem
     ;	 
     
 caseCondition
-    : expressions | isCaseCondition
+    : expressions | ('is' type -> ^(IS_EXPR type))
     ;
 
 expressions
@@ -776,7 +803,7 @@ expressions
     ;
 
 isCaseCondition
-    : 'is' type
+    : 
     ;
 
 forFail
@@ -843,6 +870,7 @@ variable
     -> ^(VAR_DECL type memberName)
     ;
 
+// FIXME: What is the point of 'in' here?
 variableStart
     : type memberName ('in'|'=')
     ;
