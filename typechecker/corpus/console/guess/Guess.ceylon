@@ -30,7 +30,7 @@ class Guess(Process process) {
 		}
 		catch (NumberFormatException nfe) {
 			process.writeLine("Please enter a number.");
-			retry
+			retry input = process.readLine()
 		}
 		
 	}
