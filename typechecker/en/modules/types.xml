@@ -754,7 +754,7 @@ while (i.more) {
 
             <para>It is possible to iterate lists without creating an iterator:</para>
             
-            <programlisting><![CDATA[do ( List<Person> people := ... )
+            <programlisting><![CDATA[do ( mutable List<Person> people := ... )
 while (people nonempty) {
     doSomething(people.first);
     people.=rest;
