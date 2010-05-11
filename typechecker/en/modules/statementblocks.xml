@@ -64,6 +64,7 @@
         <para>For example:</para>
         
         <programlisting>throw Exception()</programlisting>
+        <programlisting>retry</programlisting>
         <programlisting>return x+y;</programlisting>
         <programlisting>return "Hello"</programlisting>
         <programlisting>break true</programlisting>
@@ -75,11 +76,16 @@
             or attribute getter,</listitem>
             <!--listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
             functor,</listitem-->
-            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop, and</listitem>
-            <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
+            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
+            <listitem>the <literal>throw</literal> directive&mdash;to raise an exception, and</listitem>
+            <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> block.</listitem>
         </itemizedlist>
         
-         <programlisting>Directive := "return" Expression? | "throw" Expression? | "break" Expression?</programlisting>
+         <programlisting>Directive := 
+"return" Expression? | 
+"throw" Expression? | 
+"break" Expression? | 
+"retry" ( MemberName Specifier (", " MemberName Specifier)* )?</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter or method. A return value must be specified in 
@@ -96,14 +102,23 @@
         block should be executed. If the loop has no <literal>fail</literal> block,
         the <literal>break</literal> directive may not specify a value.</para>
         
+        <para>A <literal>retry</literal> directive may not be used outside of a
+        <literal>catch</literal> block. New values may be specified for any 
+        resources declared by the corresponding <literal>try</literal>.</para>
+        
         <para>A <literal>throw</literal> directive which specifies no exception
         is equivalent to <literal>throw Exception()</literal>.</para>
         
-        <comment><para>TODO: We could support <literal>for/fail</literal> loops that 
-        return a value by supporting a <literal>found expr</literal> directive. We 
-        could support conditionals that return a value by adding a <literal>then expr</literal>
-        directive.</para></comment>
+        <comment><para>TODO: Should we have a <literal>continue</literal> or 
+        <literal>redo</literal> for the <literal>do/while</literal> loop, which lets 
+        you specify the next value of the iterator variable? This would let us get rid 
+        of mutable iterator variables, which are a minor wart.</para></comment>
 
+        <comment><para>TODO: We could support <literal>for/fail</literal> loops 
+        that return a value by supporting a <literal>found expr</literal> directive. 
+        We could support conditionals that return a value by adding a 
+        <literal>then expr</literal> directive.</para></comment>
+        
         </section>
         
         <section id="specificationstatements">
