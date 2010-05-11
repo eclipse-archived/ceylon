@@ -11,7 +11,8 @@ class Guess(Process process) {
 		process.writeLine("I'm thinking of a number between ${min} and ${max}.");
 		process.writeLine("You have ${count} guesses.")
 
-		try ( String input = process.readLine() ) {
+		try {
+			String input = process.readLine();
 			Natural guess = input.parseNatural();
 			Comparison comparison = number <=> guess;
 			if (comparison.equal) {
@@ -30,7 +31,7 @@ class Guess(Process process) {
 		}
 		catch (NumberFormatException nfe) {
 			process.writeLine("Please enter a number.");
-			retry input = process.readLine()
+			retry
 		}
 		
 	}
