@@ -78,14 +78,11 @@
             functor,</listitem-->
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception, and</listitem>
-            <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> block.</listitem>
+            <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> 
+            block, reinitializing all resources.</listitem>
         </itemizedlist>
         
-         <programlisting>Directive := 
-"return" Expression? | 
-"throw" Expression? | 
-"break" Expression? | 
-"retry" ( MemberName Specifier (", " MemberName Specifier)* )?</programlisting>
+         <programlisting>Directive := "return" Expression? | "throw" Expression? | "break" Expression? | "retry"</programlisting>
         
         <para>The <literal>return</literal> directive may not be used outside the 
         body of an attribute getter or method. A return value must be specified in 
@@ -103,8 +100,7 @@
         the <literal>break</literal> directive may not specify a value.</para>
         
         <para>A <literal>retry</literal> directive may not be used outside of a
-        <literal>catch</literal> block. New values may be specified for any 
-        resources declared by the corresponding <literal>try</literal>.</para>
+        <literal>catch</literal> block.</para>
         
         <para>A <literal>throw</literal> directive which specifies no exception
         is equivalent to <literal>throw Exception()</literal>.</para>
@@ -608,6 +604,24 @@ catch (NotFoundException e) {
     return null
 }
 </programlisting>
+
+            <para>The <literal>retry</literal> directive re-evaluates the resource expressions,
+            and then re-executes the <literal>try</literal> block, calling <literal>begin()</literal>
+            and <literal>end()</literal> upon each resource.</para>
+
+            <programlisting>mutable Natural retries := 0;
+try ( Transaction() ) {
+    ...
+}
+catch (TransactonTimeoutException tte) {
+    if (retries &lt; 3) {
+        retries++;
+	    retry;
+    }
+    else {
+        throw tte;
+    }
+}</programlisting>
             
          </section>
          
