@@ -1,8 +1,6 @@
 doc "A text-based adventure game."
 package mutable class Adventure(Process process) {
 
-    package Random<Natural> rand = RandomNatural(1..10);
-	
 	doc "The player's current location."
 	mutable package Location currentLocation := World.initialLocation; 
 
@@ -11,6 +9,8 @@ package mutable class Adventure(Process process) {
 	package Location backpack = new Location("your backpack", "Contains the things you have picked up.");
 		
 	package mutable Natural life := 100;
+	
+    Random<Natural> rand = RandomNatural(1..10);
 	
 	package Float backpackWeight {
 		return Math.sum( backpack.things*.weight );
@@ -24,90 +24,122 @@ package mutable class Adventure(Process process) {
 		return rand.next();
 	}
 	
+	void go(String where) {
+		//TODO!
+	}
+	
+	void get(String name) {
+		String name = tokens.next();
+		optional Thing thing = currentLocation.thing(name);
+		if (exists thing) {
+			if (is Artifact thing) {
+				thing.get(this);
+			}
+			else {
+				out("You can't pick up a ${name}.);
+			}
+		}
+		else {
+			out("You don't see a ${name} here.);
+		}
+	}
+	
+	void drop(String name) {
+		optional Thing thing = backpack.thing(name);
+		if (exists thing) {
+			if (is Artifact thing) {
+				thing.drop(this);
+			}
+			else {
+				out("You can't drop a ${name}.);
+			}
+		}
+		else {
+			out("You don't have a ${name}.);
+		}
+	}
+	
+	void tell(String name, String where) {
+		//TODO!
+	}
+	
+	void kill(String name, String weaponName) {
+		optional Thing thing = currentLocation.thing(name);
+		if (exists thing) {
+			if (is Creature thing) {
+				optional Thing weapon = backpack.thing(name);
+				if (exists weapon) {
+					if (is Artifact weapon) {
+						thing.kill(this, weapon);
+					}
+					else {
+						out("You can't fight with a ${weaponName}.");
+					}
+				}
+				else {
+					out("You don't have a ${weaponName}.");
+				}		
+			}
+			else {
+				out("You can't kill a ${name}.");
+			}
+		}
+		else {
+			out("You don't see a ${name} here.");
+		}
+	}
+	
+	void use(String name) {
+		optional Thing thing = backpack.thing(name);
+		if (exists thing) {
+			if (is Artifact thing) {
+				thing.use(this);
+			}
+			else {
+				out("You can't use a ${name}.");
+			}
+		}
+		else {
+			out("You don't have a ${name}.");
+		}
+	}
+	
 	do {
 		String input = process.readLine();
 		Iterable<String> tokens = input.tokens();
-		String command = tokens.next();
-		switch(command)
-		case ("go") {
-			//TODO!
-		}
-		case ("get") {
-			String name = tokens.next();
-			optional Thing thing = currentLocation.thing(name);
-			if (exists thing) {
-				if (is Artifact thing) {
-					thing.get(this);
-				}
-				else {
-					out("You can't pick that up.);
-				}
+		try {
+			String command = tokens.next();
+			switch(command)
+			case ("go") {
+				go( tokens.next() );
+			}
+			case ("get") {
+				get( tokens.next() );
+			}
+			case ("drop") {
+				drop( tokens.next() );
+			}
+			case ("use") {
+				use( tokens.next() );
+			}
+			case ("tell") {
+				String name = tokens.next();
+				String go = tokens.next();
+				String where = tokens.next();
+				tell(name, where);
+			}
+			case ("kill") {
+				String name = tokens.next();
+				String with = tokens.next();
+				String weaponName = tokens.next();
+				kill(name, weaponName);
 			}
 			else {
-				out("You don't see it here.);
+				out("You don't know how to do that.");
 			}
 		}
-		case ("drop") {
-			String name = tokens.next();
-			optional Thing thing = backpack.thing(name);
-			if (exists thing) {
-				if (is Artifact thing) {
-					thing.drop(this);
-				}
-				else {
-					out("You can't drop that.);
-				}
-			}
-			else {
-				out("You don't have it.);
-			}
-		}
-		case ("tell") {
-			//TODO!
-		}
-		case ("kill") {
-			String name = tokens.next();
-			optional Thing thing = currentLocation.thing(name);
-			if (exists thing) {
-				if (is Creature thing) {
-					String with = tokens.next();
-					String weaponName = tokens.next();
-					optional Thing weapon = backpack.thing(name);
-					if (exists weapon) {
-						if (is Artifact weapon) {
-							thing.kill(this, weapon);
-						}
-						else {
-							out("You can't fight with that.);
-						}
-					}
-					else {
-						out("You don't have it.);
-					}
-					
-				}
-				else {
-					out("You can't kill that.);
-				}
-			}
-			else {
-				out("You don't see it here.);
-			}
-		}
-		case ("use") {
-			String name = tokens.next();
-			optional Thing thing = backpack.thing(name);
-			if (exists thing) {
-				if (is Artifact thing) {
-					thing.use(this);
-				}
-				else {
-					out("You can't use that.);
-				}
-			}
-			else {
-				out("You don't have it.);
-			}
+		catch (ExhaustedIteratorException eie) {
+			out("Give me a bit more information, please!");
 		}
 	}
 	while (life>0)
