@@ -1,3 +1,7 @@
+import orm.mapping.*;
+import orm.logical.*;
+import math.Math;
+
 entity table{ schema="orders"; name="order"; }
 by "Gavin King"
    "Andrew Haley"
@@ -28,6 +32,7 @@ public class Order {
 	}
 	
 	oneToMany{ mappedBy=#Item.order; }
+	cascade(persist, merge, remove) deleteOrphans
 	OpenList<Item> itemList = ArrayList<Item>();
 	
 	public mutable Status status := Status.draft;
@@ -35,7 +40,7 @@ public class Order {
 	generated id column{ name="id"; }
 	public mutable optional orderId;
 	
-	public Item addItem(Product product, Natural quantity) {
+	public Item addItem(Product product, Natural quantity=1) {
 		Item item = Item(this, product, quantity);
 		itemList.add(item);
 		return item;

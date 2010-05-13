@@ -1,3 +1,6 @@
+import orm.mapping.*;
+import orm.logical.*;
+
 entity table{ schema="orders"; name="item"; }
 by "Gavin King"
    "Andrew Haley"

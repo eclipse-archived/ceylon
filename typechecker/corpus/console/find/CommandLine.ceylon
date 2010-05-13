@@ -14,8 +14,7 @@ public class CommandLine(Process process) {
 				namedArgs[name]:=tokens.next();
 			}
 			else {
-				log.error("No parameter specified for ${name}.");
-				process.exit(1);
+				throw Exception("No parameter specified for ${name}.");
 			}
 		}
 		else {
