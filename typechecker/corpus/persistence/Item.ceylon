@@ -10,4 +10,10 @@ public class Item(Order order, Product product, Natural quantity) {
 	public Product product = product;
 	
 	public Natural quantity = quantity;
+	
+	transient
+	public Float price {
+		return product.price*quantity;
+	}
+	
 }

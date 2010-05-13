@@ -1,7 +1,7 @@
 entity table{ schema="orders"; name="product"; }
 by "Gavin King"
    "Andrew Haley"
-public class Product(String id, String shortDescription, String longDescription) {
+public class Product(String id, String shortDescription, String longDescription, Decimal price) {
 	
 	id
 	public String id = id;
@@ -11,4 +11,7 @@ public class Product(String id, String shortDescription, String longDescription)
 	
 	column { name="longDesc"; }
 	public String longDescription = longDescription;
+	
+	public mutable Decimal price := price;
+	
 }

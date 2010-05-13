@@ -1,5 +1,5 @@
 doc "A utility class for parsing unix-style
-     command line arguments."
+     command-line arguments."
 public class CommandLine(Process process) {
 
 	OpenMap<String,String> namedArgs = HashMap<String,String>();

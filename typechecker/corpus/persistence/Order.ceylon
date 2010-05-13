@@ -30,10 +30,10 @@ public class Order {
 	oneToMany{ mappedBy=#Item.order; }
 	OpenList<Item> itemList = ArrayList<Item>();
 	
-	mutable Status status = Status.draft;
+	public mutable Status status := Status.draft;
 	
 	generated id column{ name="id"; }
-	mutable optional orderId;
+	public mutable optional orderId;
 	
 	public Item addItem(Product product, Natural quantity) {
 		Item item = Item(this, product, quantity);
@@ -45,5 +45,11 @@ public class Order {
 	public List<Item> items {
 		return itemList;
 	}
+	
+	transient
+	public Float total {
+		return Math.sum(items*.price);
+	}
+	
 	
 }
