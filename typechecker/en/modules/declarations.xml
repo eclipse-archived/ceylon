@@ -157,7 +157,8 @@ VarargsParam?
         <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
         
         <comment><para>TODO: should we just make <literal>X...</literal> a syntactic shorthand
-        for <literal>Iterable&lt;X&gt;</literal> everywhere?</para></comment>
+        for <literal>Iterable&lt;X&gt;</literal> everywhere? Or, alternatively, should we also
+        allow <literal>Iterator&lt;X&gt;</literal> to be passed to <literal>X...</literal>?</para></comment>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
