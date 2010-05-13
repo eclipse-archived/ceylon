@@ -1,0 +1,14 @@
+entity table{ schema="orders"; name="product"; }
+by "Gavin King"
+   "Andrew Haley"
+public class Product(String id, String shortDescription, String longDescription) {
+	
+	id
+	public String id = id;
+	
+	column { name="shortDesc"; }
+	public String shortDescription = shortDescription;
+	
+	column { name="longDesc"; }
+	public String longDescription = longDescription;
+}
