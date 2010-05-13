@@ -174,7 +174,7 @@
         <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
         (spread comparison)--> <!--and <literal>*~></literal> (all in).--></para>
         
-        <programlisting><![CDATA[public interface Iterable<out X> {
+        <programlisting><![CDATA[public interface Iterable<out X> extends Container {
     
     doc "Produce an iterator."
     public Iterator<X> iterator();
@@ -515,7 +515,7 @@ while (i.more) {
         root of the Ceylon collections framework.</para>
         
         <programlisting><![CDATA[public interface Collection<out X> 
-        satisfies Iterable<X>, Category, Container {
+        satisfies Iterable<X>, Category {
     
     doc "The number of elements or entries belonging to the 
          collection."
