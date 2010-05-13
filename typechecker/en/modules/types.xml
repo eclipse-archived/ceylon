@@ -1150,6 +1150,14 @@ while (people nonempty) {
          a separator."
     public String join(String... strings) { return ... }
     
+    doc "A substring from the first given index (inclusive) 
+         to the second given index (exclusive). The size of 
+         the returned string is the difference between the 
+         two indexes."
+    String substring(Natural from, Natural to=size) {
+        return String(this[from,to]);
+    }
+    
 }]]></programlisting>
         
         <comment><para>What encoding is the default for Ceylon strings? Are there 
