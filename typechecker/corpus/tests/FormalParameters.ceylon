@@ -7,6 +7,8 @@ class FormalParameters {
 	
 		void singleParameter(Natural count) {}
 		
+		void annotatedParameter(deprecated doc "use something else" Natural count) {}
+		
 		void multipleParameters(Natural count, String description) {}
 		
 		void defaultValueParameters(Natural param=1, 
@@ -33,6 +35,8 @@ class FormalParameters {
 		class NoParameter() {}
 	
 		class SingleParameter(Natural count) {}
+		
+		class AnnotatedParameter(deprecated doc "use something else" Natural count) {}
 		
 		class MultipleParameters(Natural count, String description) {}
 		
