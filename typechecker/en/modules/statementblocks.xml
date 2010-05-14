@@ -616,7 +616,7 @@ try ( Transaction() ) {
 catch (TransactonTimeoutException tte) {
     if (retries &lt; 3) {
         retries++;
-	    retry;
+        retry;
     }
     else {
         throw tte;
