@@ -26,7 +26,7 @@ public class Login(Session session, Environment env) extends Window(env) {
 					},
 					TextInput {
 						size = 15;
-						onUpdate(String value) { 
+						onUpdate(String value) {
 							session.hashedPassword:=Util.hash(value); 
 						}
 					}
