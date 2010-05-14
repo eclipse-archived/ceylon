@@ -23,7 +23,7 @@ class Primaries {
 
 		List<String> empty = none;
 
-		Specials l = this;
+		Specials s = this;
 
 		class Subclass extends Specials {
 			Specials s = super;
