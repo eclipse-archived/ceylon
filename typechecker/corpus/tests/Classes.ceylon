@@ -38,6 +38,19 @@ class Classes {
 		Float tol = tolerance;
 	}
 	
+	class WithClosedInstanceList { case foo, case bar, case baz; }
+	
+	class WithOpenInstanceList { case foo, case bar, case baz... }
+	
+	class WithTypeParameters<X, Y> {}
+	
+	class WithTypeConstraints<X, Y> 
+		where X>=String & Y(Natural count) {}
+		
+	class WithNestedClass {
+		class NestedClass {}
+	}
+	
 	public interface Counter {
 		public Natural count;
 		public void inc();
