@@ -99,11 +99,8 @@ class ControlStructures {
 		{
 			if ("hello"==tokens.next().lowercase) {
 				log.info("found");
-				break true;
+				break;
 			}
-		}
-		fail {
-			log.info("not found");
 		}
 		
 	}
