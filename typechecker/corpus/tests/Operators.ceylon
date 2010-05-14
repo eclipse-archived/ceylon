@@ -43,7 +43,7 @@ class Operators {
 
 	String element = list[1];
 	optional String element = nullList?[666];
-	List<String> elements = list[3,2,1];
+	List<String> elements = list[{3,2,1}];
 	List<String> subrange = list[0..1];
 	List<String> upperRange = list[1...];
 	
