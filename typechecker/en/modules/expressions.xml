@@ -386,7 +386,7 @@ if you prefer.";</programlisting>
 
     <section id="specialvalues">
         <title><literal>this</literal>, <literal>super</literal>, 
-        <literal>null</literal> and <literal>subtype</literal></title>
+        <literal>null</literal> and <literal>none</literal></title>
         
         <programlisting>SpecialValue := "this" | "super" | "null" | "none"</programlisting>
         
