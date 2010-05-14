@@ -1,6 +1,6 @@
-abstract class Methods {
+class Methods {
 
-	class VoidMethods {
+	abstract class VoidMethods {
 
 		void simpleMethod() {}
 		
@@ -52,7 +52,7 @@ abstract class Methods {
 		
 	}
 	
-	class NonvoidMethods {
+	abstract class NonvoidMethods {
 	
 		String simpleMethod() { return "Hello"; }
 		
