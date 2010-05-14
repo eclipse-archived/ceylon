@@ -1538,18 +1538,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Concatenation</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>+</literal></entry>
-            <entry><literal>lhs + rhs</literal></entry>
-            <entry>join</entry>
-            <entry><literal>lhs.join(rhs)</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-        </row>
-
         <row><entry namest="first" nameend="last"><emphasis>Keyed element access</emphasis></entry></row>
         
         <row>
@@ -1589,25 +1577,25 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>Set&lt;Y&gt;</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Subranges</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Sequence subranges</emphasis></entry></row>
         
         <row>
             <entry><literal>[..]</literal></entry>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
             <entry><literal>lhs.range(x,y)</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>T where T>=Sequence&lt;X&gt;</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         <row>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
             <entry><literal>lhs.range(x)</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>T where T>=Sequence&lt;X&gt;</literal></entry>
             <entry><literal>Natural</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         <!--
         <row>
@@ -1620,6 +1608,19 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         -->
+
+        <row><entry namest="first" nameend="last"><emphasis>Sequence concatenation</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>+</literal></entry>
+            <entry><literal>lhs + rhs</literal></entry>
+            <entry>join</entry>
+            <entry><literal>lhs.join(rhs)</literal></entry>
+            <entry><literal>T where T>=Sequence&lt;X&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
+        </row>
+
         <!--  
         
         <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
