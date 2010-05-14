@@ -21,11 +21,14 @@ public class Login(Session session, Environment env) extends Window(env) {
 					margin = 5;
 					TextInput {
 						size = 15;
-						model = ref session.username;
+						onInit = get session.username;
+						onUpdate = set session.username;
 					},
 					TextInput {
 						size = 15;
-						model = ref session.password;
+						onUpdate(String value) { 
+							session.hashedPassword:=Util.hash(value); 
+						}
 					}
 				}
 			}
