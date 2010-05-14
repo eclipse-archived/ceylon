@@ -99,7 +99,7 @@ class Methods {
 		}
 		
 		String methodWithLocal() {
-			String hello = "Hello";
+			String hello = simpleMethod();
 			return hello;
 		}
 		
