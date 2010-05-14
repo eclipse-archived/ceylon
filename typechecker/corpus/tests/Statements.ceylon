@@ -24,18 +24,21 @@ class Statements {
 	
 	class Bar(Boolean b) {}
 	
-	Bar(true); //instantiation
-	Bar { b=false; } //instantiation
+	//instantiation
+	Bar(true); 
+	Bar { b=false; }
 	
 	class Foo {
 		void instanceMethod(Natural n) {}
 		static staticMethod(Float f) {}
 	}
 	
-	Foo().instanceMethod(2); //instance method invocation
-	Foo.staticMethod(1.0); //static method invocation
+	//instance method invocation
+	Foo().instanceMethod(2); 
+	Foo().instanceMethod { n=0; };
 
-	Foo().instanceMethod { n=0; }; //instance method invocation
-	Foo.staticMethod { f=2.5; }; //static method invocation
+	//static method invocation
+	Foo.staticMethod(1.0); 
+	Foo.staticMethod { f=2.5; };
 		
 }
