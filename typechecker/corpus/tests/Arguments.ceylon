@@ -63,8 +63,14 @@ class Arguments {
 		String joined1 = join(",", "foo", "bar"); 
 		String joined2 = join { sep=","; "one", "two" };
 		
+		String joined3 = join( ",", {"foo", "bar"} ); 
+		String joined4 = join { sep=","; strings={"one", "two"}; };
+		
 		List<String> tokens1 = List("foo", "bar", "baz");
 		List<String> tokens2 = List { "one", "two", "three" };
+		
+		List<String> tokens3 = List( {"foo", "bar", "baz"} );
+		List<String> tokens4 = List { strings={"one", "two", "three"}; };
 		
 	}
 	
@@ -96,6 +102,6 @@ class Arguments {
 			}
 		}.handle(1.25);
 		
-	}		
+	}
 
 }
