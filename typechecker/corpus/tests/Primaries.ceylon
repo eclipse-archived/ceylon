@@ -5,6 +5,8 @@ class Primaries {
 		String hello = "Hello";
 		Natural one = 1;
 		Float zero = 0.0;
+		Float big = 1.0e10;
+		Float small = 1.0e-10;
 		Quoted quoted = 'quoted literal';
 		
 		Type<Literals> primariesClass = #Primaries;
