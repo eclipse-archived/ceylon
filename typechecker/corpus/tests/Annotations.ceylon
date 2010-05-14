@@ -26,6 +26,8 @@ class Annotations {
 		see #ClassAnnotations
 		    #methodAnnotations
 		    #Object.equals
+		throws #DatabaseException
+	           "if database access fails"
 		void methodAnnotations(
 			deprecated
 			doc "use something else" 
@@ -45,6 +47,8 @@ class Annotations {
 		    #methodAnnotations
 		    #Object.equals
 		doc "The class doc"
+		throws #DatabaseException
+	           "if database access fails"
 		version '2.1.0'
 		by "Gavin King"
 		   "Andrew Haley"
@@ -65,6 +69,8 @@ class Annotations {
 
 	    doc { text="some text about the method"; }
 		lock { timeout=1000; }
+		throws { type = #DatabaseException;
+	             description = "if database access fails"; }
 		by { "Gavin King", "Andrew Haley" }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
 		void methodAnnotations(
@@ -81,6 +87,8 @@ class Annotations {
 		
 		by { "Gavin King", "Andrew Haley" }
 		doc { text="some text about the class"; }
+		throws { type = #DatabaseException;
+	             description = "if database access fails"; }
 		table { name="tableName"; schema="schemaName"; }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
 		scope { scopeType=session; }
@@ -95,6 +103,8 @@ class Annotations {
 	
 	class PositionalArguments {
 	
+		throws(#DatabaseException,
+	           "if database access fails")
 	    doc("some text about the method")
 		lock(1000)
 		version('2.1.0')
@@ -117,6 +127,8 @@ class Annotations {
 		see (#ClassAnnotations, #methodAnnotations, #Object.equals)
 		doc("some text about the class")
 		scope(session)
+		throws(#DatabaseException,
+	           "if database access fails")
 		class ClassAnnotations {}
 		
 		see (#ClassAnnotations, #methodAnnotations, #Object.equals)
