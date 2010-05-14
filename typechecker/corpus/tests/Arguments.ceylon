@@ -78,21 +78,23 @@ class Arguments {
 				process(String value) { return "value=" + value; },
 				format(Natural n) { return $n; });*/
 				
-		String result2 = stringify { 
+		String result = stringify { 
 			n=256; 
 			process(String value) { return "value=" + value; }
 			format(Natural n) { return $n; }
 		};
 		
 		class Processor<X,Y>(Y process(X x)) {
-			Y handle(X x) { return process(x); }
+			Y handle(X x) { 
+				return process(x).strip; 
+			}
 		}
 		
-		Processor<Float,String> ftos = Processor {
-			String process(Float f) {
+		String string = Processor<Float,String> {
+			process(Float f) {
 				return $f;
 			}
-		};
+		}.handle(1.25);
 		
 	}		
 
