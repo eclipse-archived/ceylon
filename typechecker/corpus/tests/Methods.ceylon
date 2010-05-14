@@ -44,6 +44,11 @@ class Methods {
 			NestedClass().hello();
 		}
 		
+		void methodWithLocal() {
+			String hello = "Hello";
+			log.info(hello);
+		}
+		
 		void methodWithFunctionalParameter(void method(String param)) {
 			method("Hello");
 		}
@@ -91,6 +96,11 @@ class Methods {
 				String hello = "Hello";
 			}
 			return NestedClass().hello;
+		}
+		
+		String methodWithLocal() {
+			String hello = "Hello";
+			return hello;
 		}
 		
 		String methodWithFunctionalParameter(String method()) {
