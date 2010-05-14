@@ -51,6 +51,10 @@ class Classes {
 		class NestedClass {}
 	}
 	
+	class WithNestedInterface {
+		interface NestedInterface {}
+	}
+	
 	public interface Counter {
 		public Natural count;
 		public void inc();
