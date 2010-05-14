@@ -431,6 +431,10 @@ if you prefer.";</programlisting>
             
         <para>where the member name is the name of a method.</para>
         
+        <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
+        <literal>get</literal> keyword after the member reference (and before the parameter
+        list)?</para></comment>
+        
         <para>A method reference may be used to define a method using <literal>=</literal>. 
         The two methods must have exactly the same signature.</para>
         
