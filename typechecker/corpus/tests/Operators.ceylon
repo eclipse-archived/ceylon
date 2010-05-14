@@ -27,6 +27,11 @@ class Operators {
 	Boolean largeAs = 1>=2;
 	Comparison compare = 1<=>2;
 	
+	Boolean complement = ~true;
+	Boolean bitwiseOr = true|false;
+	Boolean bitwiseAnd = true&true;
+	Boolean exclusiveOr = true^false
+	
 	Boolean instanceOf = 1 is Natural;
 	Boolean containedIn = 3 in range;
 	Boolean identical = 3===sum;

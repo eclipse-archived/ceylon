@@ -20,11 +20,11 @@ class Statements {
 	y%=7; //remainder
 	
 	mutable Boolean b := true;
-	b|=b; //or
-	b&=b; //and
+	b||=b; //or
+	b&&=b; //and
+	b|=b; //bitwise or
+	b&=b; //bitwise and
 	b^=false; //exclusive or
-	b||=b;
-	b&&=b;
 	
 	mutable optional String qux := null;
 	qux ?= "Hello";
