@@ -3,7 +3,7 @@ class Annotations {
 	class NoArguments {
 
 		public deprecated final
-		void methodAnnotations() {}
+		void methodAnnotations(deprecated Natural param=0) {}
 		
 		public deprecated final
 		Natural attributeAnnotations = 1;
@@ -26,7 +26,11 @@ class Annotations {
 		see #ClassAnnotations
 		    #methodAnnotations
 		    #Object.equals
-		void methodAnnotations() {}
+		void methodAnnotations(
+			deprecated
+			doc "use something else" 
+			see #otherMethod 
+			Natural param=0) {}
 		
 		doc "The attribute doc"
 		by "Gavin King"
@@ -63,7 +67,11 @@ class Annotations {
 		lock { timeout=1000; }
 		by { "Gavin King", "Andrew Haley" }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
-		void methodAnnotations() {}
+		void methodAnnotations(
+			deprecated
+			doc { text="use something else"; }
+			see { #otherMethod }
+			Natural param=0) {}
 		
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
 		doc { text="some text about the attribute"; }
@@ -92,7 +100,11 @@ class Annotations {
 		version('2.1.0')
 		by("Gavin King", "Andrew Haley")
 		see (#ClassAnnotations, #methodAnnotations, #Object.equals)
-		void methodAnnotations() {}
+		void methodAnnotations(
+			deprecated
+			doc("use something else") 
+			see(#otherMethod) 
+			Natural param=0) {}
 		
 		doc("some text about the attribute")
 		by("Gavin King", "Andrew Haley")
