@@ -1098,9 +1098,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         declaration or a local variable in a Java constructor. Private attributes may not
         be accessed via reflection.</para>
         
-        <comment><para>TODO: Should we generate getters and setters, just for interop with 
-        Java?</para></comment>
-        
         <comment><para>TODO: I would like to support <literal>def</literal> in place of the type
         for a private attribute or local with an initializer or getter. For example:</para></comment>
         
@@ -1211,7 +1208,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             
             <programlisting>AttributeSetter := Annotation* "assign" MemberName Block</programlisting>
 
-            <para>An attribute getter defines how the value of a derived attribute is
+            <para>An attribute setter defines how the value of a derived attribute is
             assigned. Every attribute setter must have a corresponding getter with the
             same name.</para>
 
@@ -1258,6 +1255,34 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
             <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
             in which case every subtype must also define the attribute to be mutable.</para>
+        
+        </section>
+        
+        <section>
+            <title>Getter and setter methods</title>
+            
+            <para>For each attribute, one or two methods exist implicitly:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a <emphasis>getter method</emphasis> with no parameters 
+                    which returns the attribute type, and</para>
+                </listitem>
+                <listitem>
+                    <para>a <literal>void</literal> <emphasis>setter method</emphasis> 
+                    with a single parameter of the attribute type, if the attribute is 
+                    mutable.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>These methods may be referred to using the <literal>get</literal> and 
+            <literal>set</literal> keywords, for example:</para>
+            
+            <programlisting>String name = get person.name();</programlisting>
+            <programlisting>set person.name(newName);</programlisting>
+            
+            <comment><para>TODO: spec out generated Java-style getters and setters, for interop 
+            with Java.</para></comment>
         
         </section>
                 

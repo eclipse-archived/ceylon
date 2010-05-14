@@ -416,6 +416,64 @@ if you prefer.";</programlisting>
         
     </section>
     
+    <section id="methodreferences">
+        <title>Method references</title>
+        
+        <para>A method reference has the form:</para>
+        
+        <programlisting>MethodReference :=  InstanceMethodReference | StaticMethodReference</programlisting>
+        
+        <programlisting>StaticMethodReference := ("set" | "get") (RegularType ".")? MemberName</programlisting>
+            
+        <programlisting>InstanceMethodReference := ("set" | "get")? MemberReference</programlisting>
+            
+        <programlisting>MemberReference :=  (Expression ".")? MemberName</programlisting>
+            
+        <para>where the member name is the name of a method.</para>
+        
+        <para>A method reference may be used to define a method using <literal>=</literal>. 
+        The two methods must have exactly the same signature.</para>
+        
+        <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
+        
+        <para>Method references may appear as an argument to a functional parameter, either as 
+        a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
+        parameter invocation. The signature of the functonal parameter must match the signature 
+        of the method. For example:</para>
+        
+        <programlisting>//a method which accepts a method reference
+void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
+        
+        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; } //a local method declaration
+sort(names, reverseAlpha); //pass a reference to the method to another method</programlisting>
+
+        <para>A method reference may be returned by a method with multiple parameter lists.
+        The reference must be to a method with the same signature, after removal of the first
+        parameter list.</para>
+        
+        <programlisting>//a method that returns a method reference
+Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
+    Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+    Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+    if (reverse) {
+        return reverse;
+    else {
+        return natural;
+    }
+}</programlisting>
+
+        <programlisting>Comparison order(Natural x, Natural y) = getOrder();</programlisting>
+        
+        <para>Getter and setter method references are especially useful.</para>
+        
+        <programlisting>TextInput { 
+    size=15; 
+    onInit = get person.name; 
+    onUpdate = set person.name; 
+}</programlisting>
+
+    </section>
+
     <section id="invocations">
         <title>Invocations</title>
         
@@ -524,9 +582,7 @@ if you prefer.";</programlisting>
             
             <para>Method invocations follow this schema:</para>
             
-            <programlisting>MethodInvocation := MemberReference TypeArguments? Arguments</programlisting>
-            
-            <programlisting>MemberReference := (Expression ".")? MemberName</programlisting>
+            <programlisting>MethodInvocation := InstanceMethodReference TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -534,6 +590,7 @@ if you prefer.";</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
             <programlisting>printer.print { "Names: ", from (Person p in people) select p.name }</programlisting>
+            <programlisting>set person.name("Gavin")</programlisting>
             
             <para>The value of a method invocation is the return value of the method.
             The parameter values are passed to the formal parameters of the method.</para>
@@ -549,14 +606,13 @@ if you prefer.";</programlisting>
             
             <para>Static method invocations follow this schema:</para>
             
-            <programlisting>StaticMethodInvocation := StaticMemberReference TypeArguments? Arguments</programlisting>
-            
-            <programlisting>StaticMemberReference := (RegularType ".")? MemberName</programlisting>
+            <programlisting>StaticMethodInvocation := StaticMethodReference TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
             <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
             <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
+            <programlisting>get Process.args()</programlisting>
             
             <para>The value of a static method invocation is the return value of the static method.
             The parameter values are passed to the formal parameters of the method.</para>
@@ -723,54 +779,6 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section id="methodreferences">
-        <title>Method references</title>
-        
-        <para>A method reference has the form:</para>
-        
-        <programlisting>MethodReference :=  MemberReference | StaticMemberReference</programlisting>
-        
-        <para>where the member name is the name of a method.</para>
-        
-        <para>Method references may appear as an argument to a functional parameter, either as 
-        a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
-        parameter invocation. The signature of the functonal parameter must match the signature 
-        of the method. For example:</para>
-        
-        <programlisting>//a method which accepts a method reference
-void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
-        
-        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; } //a local method declaration
-sort(names, reverseAlpha); //pass a reference to the method to another method</programlisting>
-
-        <para>A method reference may be returned by a method with multiple parameter lists.
-        The reference must be to a method with the same signature, after removal of the first
-        parameter list.</para>
-        
-        <programlisting>//a method that returns a method reference
-Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
-    Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
-    Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
-    if (reverse) {
-        return reverse;
-    else {
-        return natural;
-    }
-}</programlisting>
-
-        <programlisting>Comparison order(Natural x, Natural y) = getOrder();</programlisting>
-
-        <para>Finally, a method reference may be used to define a method using <literal>=</literal>. 
-        The two methods must have exactly the same signature.</para>
-        
-        <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
-        
-        <comment><para>TODO: attribute references <literal>ref person.name</literal>, which may
-        be specified to attributes or parameters declared <literal>reference</literal> or returned
-        by methods declared <literal>reference</literal>.</para></comment>
-        
-    </section>
-
     <!--section id="inlineclassesliteralobjectsenumerations">
         <title>Literal objects, inline classes, and enumerations</title>
     
@@ -1056,18 +1064,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
-    
-        <row>
-            <entry><literal>:=</literal></entry>
-            <entry><literal>lhs := rhs</literal></entry>
-            <entry>assign</entry>
-            <entry></entry>
-            <entry><literal>X</literal> or <literal>optional X</literal></entry>
-            <entry><literal>X</literal> or <literal>optional X</literal></entry>
-            <entry><literal>X</literal> or <literal>optional X</literal></entry>
-        </row>
-        
         <row><entry namest="first" nameend="last"><emphasis>Member invocation</emphasis></entry></row>
         
         <row>
@@ -1108,6 +1104,18 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>List</literal> of member type</entry>
         </row>
         
+        <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
+    
+        <row>
+            <entry><literal>:=</literal></entry>
+            <entry><literal>lhs := rhs</literal></entry>
+            <entry>assign</entry>
+            <entry><literal>set lhs(rhs)</literal></entry>
+            <entry><literal>X</literal> or <literal>optional X</literal></entry>
+            <entry><literal>X</literal> or <literal>optional X</literal></entry>
+            <entry><literal>X</literal> or <literal>optional X</literal></entry>
+        </row>
+        
         <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
         
         <row>
@@ -1126,7 +1134,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
             <entry>apply</entry>
-            <entry>lhs := lhs.member</entry>
+            <entry><literal>lhs := lhs.member</literal></entry>
             <entry><literal>X</literal></entry>
             <entry>Member of <literal>X</literal>, of
             type <literal>X</literal></entry>
