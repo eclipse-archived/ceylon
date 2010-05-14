@@ -703,7 +703,7 @@ while (i.more) {
     doc "The binary join operator x + y. 
          The returned list does not reflect changes
          to the original lists."
-    public List<T> join(List<T> elements) where T<=X;
+    public List<T> join<T>(List<T> elements) where T<=X;
     
     doc "A sublist from the first given index (inclusive) 
          to the second given index (exclusive). The size 
