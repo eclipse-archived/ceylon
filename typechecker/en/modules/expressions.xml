@@ -924,7 +924,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <title>Assignable expressions</title>
         
         <para>Certain expressions are <emphasis>assignable</emphasis>. An assignable
-        expression may appear as the LHS of the <emphasis>:=</emphasis> (assign) operator,
+        expression may appear as the LHS of the <literal>:=</literal> (assign) operator,
         and possibly, depending upon the type of the expression, as the LHS of the 
         numeric or logical assignment operators <literal>=, +=, -=, *=, /=, %=, &amp;=, 
         |=, ^=, &amp;&amp;=, ||=</literal> or as the subject of the increment or decrement
@@ -1116,7 +1116,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>:=</literal></entry>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
-            <entry><literal>set lhs(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,rhs)</literal></entry>
             <entry><literal>X</literal> or <literal>optional X</literal></entry>
             <entry><literal>X</literal> or <literal>optional X</literal></entry>
             <entry><literal>X</literal> or <literal>optional X</literal></entry>
@@ -1140,7 +1140,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
             <entry>apply</entry>
-            <entry><literal>lhs := lhs.member</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.member)</literal></entry>
             <entry><literal>X</literal></entry>
             <entry>Member of <literal>X</literal>, of
             type <literal>X</literal></entry>
@@ -1409,7 +1409,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
+            <entry><literal>if (lhs) true else Object.assign(set lhs,rhs)</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -1419,7 +1419,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
+            <entry><literal>if (lhs) Object.assign(set lhs,rhs) else false</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -1498,7 +1498,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else lhs:=rhs</literal></entry>
+            <entry><literal>if (exists lhs) lhs else Object.assign(set lhs,rhs)</literal></entry>
             <entry><literal>optional T</literal></entry>
             <entry><literal>T</literal> or <literal>optional T</literal></entry>
             <entry><literal>T</literal> or <literal>optional T</literal></entry>
@@ -1868,7 +1868,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
-            <entry><literal>rhs := rhs.successor</literal></entry>
+            <entry><literal>Object.assign(set rhs,rhs.successor)</literal></entry>
             <entry></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -1877,7 +1877,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
-            <entry><literal>rhs := rhs.predecessor</literal></entry>
+            <entry><literal>Object.assign(set rhs,rhs.predecessor)</literal></entry>
             <entry></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -1889,7 +1889,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>(lhs := lhs.successor).predecessor</literal></entry>
+            <entry><literal>(Object.assign(set lhs,lhs.successor)).predecessor</literal></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -1898,7 +1898,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>(lhs := lhs.predecessor).successor</literal></entry>
+            <entry><literal>(Object.assign(set lhs,lhs.predecessor)).successor</literal></entry>
             <entry><literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -1981,7 +1981,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs := lhs.plus(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.plus(rhs))</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -1990,7 +1990,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs := lhs.minus(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.minus(rhs))</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
@@ -1999,7 +1999,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs := lhs.times(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.times(rhs))</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2008,7 +2008,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs := lhs.divided(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.divided(rhs))</literal></entry>
             <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2017,7 +2017,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs := lhs.remainder(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.remainder(rhs))</literal></entry>
             <entry><literal>Integral&lt;N,I&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2220,7 +2220,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
-            <entry><literal>lhs := lhs.or(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.or(rhs))</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -2229,7 +2229,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
-            <entry><literal>lhs := lhs.and(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.and(rhs))</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -2238,7 +2238,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
-            <entry><literal>lhs := lhs.xor(rhs)</literal></entry>
+            <entry><literal>Object.assign(set lhs,lhs.xor(rhs))</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
