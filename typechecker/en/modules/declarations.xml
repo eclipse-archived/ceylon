@@ -321,7 +321,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
     
-        <programlisting>TypeConstraint := TypeName ( ("&gt;="|"&lt;=") Type | '=' 'subtype' | FormalParams ) </programlisting>
+        <programlisting>TypeConstraint := TypeName ( ("&gt;="|"&lt;=") Type | "&gt;=" "subtype" | FormalParams ) </programlisting>
         
         <para>There are four kinds of type constraints:</para>
         
@@ -333,7 +333,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>lower bounds</para>
             </listitem>
             <listitem>
-                <para>subtype bounds, and</para>
+                <para>subtype upper bounds, and</para>
             </listitem>
             <listitem>
                 <para>initialization parameter specifications.</para>
@@ -342,7 +342,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>where X >= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Natural count)</programlisting>
+        <programlisting>where X &gt;= Number&lt;X&gt; &amp; Y &gt;= subtype &amp; Y(Natural count)</programlisting>
         
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position.</para>
