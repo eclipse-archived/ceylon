@@ -279,7 +279,7 @@ while (i.more) {
     </section>
     
     <section>
-        <title>Category, Correspondence and Container</title>
+        <title>Category, Correspondence, Sequence and Container</title>
         
         <para>The interface <literal>lang.Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
@@ -465,6 +465,32 @@ while (i.more) {
     
 }]]></programlisting>
 
+        <para>A <literal>Sequence</literal> is a correspondence from 
+        a bounded progression of natural numbers. Sequences support 
+        the binary operators <literal>+</literal> (join), <literal>[i...]</literal> 
+        (upper range) and the ternary operator <literal>[i..j]</literal> 
+        (subrange) in addition to operators inherited from 
+        <literal>Correspondence</literal>:</para>
+
+        <programlisting><![CDATA[public interface Sequence<out X> extends Correspondence<Natural, out X> {
+
+    doc "The index of the last element of the sequence."
+    throws #EmptyException
+           "if the sequence has no elements"
+    public Natural lastIndex;
+    
+    doc "The ternary range operator x[from..to], along
+         with the binary upper range x[from...] operator. 
+         The returned sequence does not reflect changes to 
+         the original sequence."
+    public subtype range(Natural from, Natural to=lastIndex);
+
+    doc "The binary join operator x + y. 
+         The returned sequence does not reflect changes
+         to the original sequence."
+    public subtype join(S sequence) where S>=subtype;
+    
+}]]></programlisting>
         <para>The interface <literal>lang.Container</literal> represents
         the abstract notion of an object that may be empty. It supports 
         the unary postfix operator <literal>nonempty</literal><!--and
@@ -635,15 +661,12 @@ while (i.more) {
         <section>
             <title>Lists</title>
             
-            <para>Lists implement the following interface, and support the binary 
-            operators <literal>+</literal> (join), <literal>[i...]</literal> 
-            (upper range) and the ternary operator <literal>[i..j]</literal> 
-            (subrange) in addition to operators inherited from 
-            <literal>Collection</literal> and 
-            <literal>Correspondence</literal>:</para>
+            <para>Lists implement the following interface, and support the 
+            operators inherited from <literal>Collection</literal> and 
+            <literal>Sequence</literal>:</para>
             
             <programlisting><![CDATA[public interface List<out X> 
-        satisfies Collection<X>, Correspondence<Natural, X> {
+        satisfies Collection<X>, Sequence<X> {
     
     doc "The first element of the list."
     throws #EmptyException
@@ -667,11 +690,6 @@ while (i.more) {
          list is empty."
     public optional X lastOrNull;
 
-    doc "The index of the last element of the list."
-    throws #EmptyException
-           "if the list is empty"
-    public Natural lastIndex;
-    
     doc "The index of the first element of the list
          which satisfies the condition."
     throws #NotFoundException
@@ -694,23 +712,12 @@ while (i.more) {
          no element satisfies the condition."
     public optional Natural lastIndexOrNull(Boolean having(X element));
     
-    doc "The ternary range operator x[from..to], along
-         with the binary upper range x[from...] operator. 
-         The returned list does not reflect changes to 
-         the original list."
-    public List<X> range(Natural from, Natural to=size);
-
-    doc "The binary join operator x + y. 
-         The returned list does not reflect changes
-         to the original lists."
-    public List<T> join<T>(List<T> elements) where T<=X;
-    
-    doc "A sublist from the first given index (inclusive) 
-         to the second given index (exclusive). The size 
-         of the returned sublist is the difference between 
-         the two indexes. The returned list does reflect 
-         changes to the original list."
-    public List<X> sublist(Natural from, Natural to=size);
+    doc "A sublist beginning with the element at the first given 
+         index up to and including the element at the second given 
+         index. The size of the returned sublist is one more than 
+         the difference between the two indexes. The returned list 
+         does reflect changes to the original list."
+    public List<X> sublist(Natural from, Natural to=lastIndex);
     
     doc "A sublist of the given length beginning with the 
          first element of the list. The returned list does 
@@ -786,11 +793,11 @@ while (people nonempty) {
     public X removeIndex(Natural at);
     
     doc "Remove elements beginning with the first given index 
-         which have an index less than the second given index,
-         decrementing the indexes of all elements beginning
-         with the second given index by the difference between
-         the two indexes."
-    public void delete(Natural from, Natural to=size);
+         up to and including the second given index,
+         decrementing the indexes of all elements after
+         with the second given index by one more than the 
+         difference between the two indexes."
+    public void delete(Natural from, Natural to=lastIndex);
     
     doc "Remove and return the first element, decrementing
          the index of every other element by one."
