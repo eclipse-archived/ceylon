@@ -27,7 +27,11 @@ class FormalParameters {
 		                           Natural min..max = 1..10, 
 		                           Lock lock=null, 
 		                           String... strings) {}
-		                                 
+		
+		void functionalParameters(String produce(), void consume(String x)) { 
+			consume(produce()); 
+		}
+		
 	}
 	
 	class InitParameters {
@@ -41,8 +45,8 @@ class FormalParameters {
 		class MultipleParameters(Natural count, String description) {}
 		
 		class DefaultValueParameters(Natural param=1, 
-		                                  String description="", 
-		                                  Lock lock=null) {}
+		                             String description="", 
+		                             Lock lock=null) {}
 		
 		class VarargsParameter(String... strings) {}
 		
@@ -56,7 +60,11 @@ class FormalParameters {
 		                            Natural min..max = 1..10, 
 		                            Lock lock=null, 
 		                            String... strings) {}
-		                                 
+		
+		class FunctionalParameters(String produce(), void consume(String x)) { 
+			consume(produce()); 
+		}
+		
 	}
 	
 	
