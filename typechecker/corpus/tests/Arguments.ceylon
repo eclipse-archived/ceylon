@@ -36,7 +36,7 @@ class Arguments {
 		
 	}
 	
-	class MutipleArguments {
+	class MultipleArguments {
 	
 		String fullName(String firstName, String lastName) {
 			return firstName + " " + lastName;
