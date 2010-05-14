@@ -9,6 +9,13 @@ class Arguments {
 		greet();
 		greet {};
 		
+		class Greeting(String value="Hello") {
+			log.info(value);
+		}
+		
+		Greeting();
+		Greeting {};
+		
 	}
 	
 	class SingleArgument {
@@ -20,6 +27,13 @@ class Arguments {
 		out("Hello");
 		out { value="Hi"; };
 		
+		class Output(String value) {
+			log.info(value);
+		}
+		
+		Output("Hello");
+		Output { value="Hi"; };
+		
 	}
 	
 	class MutipleArguments {
@@ -28,8 +42,15 @@ class Arguments {
 			return firstName + " " + lastName;
 		}
 		
-		String gavin = fullName("Gavin", "King"); //positional param method invocation
-		String andrew = fullName { firstName="Andrew"; lastName="Haley"; }; //named param method invocation
+		String gavin = fullName("Gavin", "King");
+		String andrew = fullName { firstName="Andrew"; lastName="Haley"; };
+		
+		class FullName(String firstName, String lastName) {
+			String value = firstName + " " + lastName;
+		}
+		
+		String gk = FullName("Gavin", "King").value;
+		String ah = FullName { firstName="Andrew"; lastName="Haley"; }.value;
 		
 	}
 	
@@ -39,8 +60,11 @@ class Arguments {
 			return (sep+" ").join(strings);
 		}
 		
-		String joined1 = join(",", "foo", "bar"); //positional param method invocation with varargs
-		String joined2 = join { sep=","; "one", "two" }; //named param method invocation with varargs
+		String joined1 = join(",", "foo", "bar"); 
+		String joined2 = join { sep=","; "one", "two" };
+		
+		List<String> tokens1 = List("foo", "bar", "baz");
+		List<String> tokens2 = List { "one", "two", "three" };
 		
 	}
 	
@@ -58,6 +82,16 @@ class Arguments {
 			n=256; 
 			process(String value) { return "value=" + value; }
 			format(Natural n) { return $n; }
+		};
+		
+		class Processor<X,Y>(Y process(X x)) {
+			Y handle(X x) { return process(x); }
+		}
+		
+		Processor<Float,String> ftos = Processor {
+			String process(Float f) {
+				return $f;
+			}
 		};
 		
 	}		
