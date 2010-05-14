@@ -10,7 +10,9 @@ class Statements {
 	mutable Natural y := x; //initialization
 	y := y*x; //assignment
 	y++; //increment
-	y++; //decrement
+	y--; //decrement
+	++y; //increment
+	--y; //decrement
 	y+=5; //add
 	y-=5; //subtract
 	y*=2; //multiply
@@ -21,6 +23,11 @@ class Statements {
 	b|=b; //or
 	b&=b; //and
 	b^=false; //exclusive or
+	b||=b;
+	b&&=b;
+	
+	mutable optional String qux := null;
+	qux ?= "Hello";
 	
 	class Bar(Boolean b) {}
 	

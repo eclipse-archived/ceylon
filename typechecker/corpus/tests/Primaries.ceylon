@@ -17,16 +17,50 @@ class Primaries {
 		
 	}
 	
-	class Members {
+	class Specials {
 	
+		optional String nothing = null;
+
+		List<String> empty = none;
+
+		Specials l = this;
+
+		class Subclass extends Specials {
+			Specials s = super;
+		}
 		
-	
 	}
 	
 	class Enumerations {
-	}
 	
-	class Specials {
+		List<String> empty = {};
+		List<String> singleton = { "hello" };
+		List<String> enumeration = { "foo", "bar", "baz" };
+	
 	}
 
+	class MethodReferences {
+	
+		class Person(String name) {
+		
+			mutable String name := name;
+			
+			void hello() {
+				log.info("Hello ${name}");
+			}
+			
+			static void helloWorld() {
+				log.info("Hello World");
+			}
+			
+		}
+		
+		Person g = Person("Gavin King");
+		void hello() = g.hello;
+		void helloWorld() = Person.helloWorld;
+		String getName() = get g.name;
+		void setName(String val) = set g.name;
+		
+	}
+	
 }
