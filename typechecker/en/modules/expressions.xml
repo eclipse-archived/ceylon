@@ -948,7 +948,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
             <listitem>
                 <para>range expressions for the type <literal>OpenSequence</literal>, 
-                for example <literal>fibonacci[0..1] := {1,1}</literal>.</para>
+                for example <literal>fibonacci[0..1] := {0,1}</literal>.</para>
             </listitem>
         </itemizedlist>
         
