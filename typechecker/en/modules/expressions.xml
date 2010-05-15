@@ -935,16 +935,20 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <itemizedlist>
             <listitem>
                 <para>a local declared <literal>mutable</literal>, for example 
-                <literal>count</literal>,</para>
+                <literal>count := 0</literal>,</para>
             </listitem>
             <listitem>
                 <para>any attribute expression where the underlying attribute has a setter
                 or is a simple attribute declared <literal>mutable</literal>, for example 
-                <literal>person.name</literal>, and</para>
+                <literal>person.name := "Gavin"</literal>,</para>
             </listitem>
             <listitem>
                 <para>element expressions for the type <literal>OpenCorrespondence</literal>, 
-                for example <literal>order.lineItems[0]</literal></para>
+                for example <literal>order.lineItems[0] := lineItem</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>range expressions for the type <literal>OpenSequence</literal>, 
+                for example <literal>fibonacci[0..1] := {1,1}</literal>.</para>
             </listitem>
         </itemizedlist>
         
