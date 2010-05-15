@@ -1511,10 +1511,11 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     </section>
 
     <section id="listmap">
-    <title>List and map operators</title>
+    <title>Correspondence and sequence operators</title>
     
     <para>These operators provide a simplified syntax for accessing values 
-    of a <literal>Correspondence</literal>, and for joining <literal>List</literal>s.</para>
+    of a <literal>Correspondence</literal>, and for joining and obtaining
+    subranges of <literal>Sequences</literal>s.</para>
     
     <table>
     <tgroup cols="7">
@@ -1561,7 +1562,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
-            <entry>lookup</entry>
+            <entry>list lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>List&lt;X&gt;</literal></entry>
@@ -1570,7 +1571,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
-            <entry>lookup</entry>
+            <entry>set lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>Set&lt;X&gt;</literal></entry>
@@ -1583,19 +1584,19 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>[..]</literal></entry>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
-            <entry><literal>lhs.range(x,y)</literal></entry>
-            <entry><literal>T where T>=Sequence&lt;X&gt;</literal></entry>
+            <entry><literal>Sequences.range(lhs,x,y)</literal></entry>
+            <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>S</literal></entry>
         </row>
         <row>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
-            <entry><literal>lhs.range(x)</literal></entry>
-            <entry><literal>T where T>=Sequence&lt;X&gt;</literal></entry>
+            <entry><literal>Sequences.range(lhs,x)</literal></entry>
+            <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
             <entry><literal>Natural</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>S</literal></entry>
         </row>
         <!--
         <row>
@@ -1615,10 +1616,10 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>join</entry>
-            <entry><literal>lhs.join(rhs)</literal></entry>
-            <entry><literal>T where T>=Sequence&lt;X&gt;</literal></entry>
-            <entry><literal>T</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>Sequences.join(lhs, rhs)</literal></entry>
+            <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
+            <entry><literal>S</literal></entry>
+            <entry><literal>S</literal></entry>
         </row>
 
         <!--  
