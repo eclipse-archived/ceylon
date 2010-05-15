@@ -721,6 +721,9 @@ public class Person { ... }</programlisting>
         <para>If the <literal>case</literal> list ends in <literal>;</literal> instead of 
         <literal>...</literal>, additional instances of the class may not be instantiated.</para>
         
+        <para>A class annotated <literal>abstract</literal> may not specify enumerated named
+        instances.</para>
+        
         <programlisting>public class DayOfWeek {
     case sun,
     case mon, 
