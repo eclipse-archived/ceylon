@@ -15,6 +15,17 @@ class Classes {
 		assign countAsString { count := countAsString.parseNatural; }
 	}
 	
+	abstract class WithAbstractMethods {
+		void doNothing();
+		Natural returnZero();
+		String returnArgument(String arg);
+	}
+	
+	abstract class WithAbstractAttributes {
+		Natural count;
+		mutable String description;
+	}
+	
 	class WithInitParameters(Natural count, String description) {
 		Natural count = count;
 		mutable String description := description;

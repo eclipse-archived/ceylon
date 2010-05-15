@@ -1,4 +1,4 @@
-class Classes {
+class Interfaces {
 
 	interface Simple {}
 	
