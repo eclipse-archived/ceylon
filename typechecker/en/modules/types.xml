@@ -165,8 +165,66 @@
     </section>
     
     <section>
+        <title>Cases and Selectors</title>
+        
+        <para>The interface <literal>lang.Case</literal> represents a
+        type that may be used as a case in the <literal>switch</literal>
+        construct.</para>
+        
+        <programlisting><![CDATA[public interface Case<in X> {
+
+    doc "Determine if the given value matches
+         this case, returning |true| iff the
+         value matches."
+    public Boolean test(X value);
+    
+}]]></programlisting>
+
+        <para>Classes with enumerated <literal>case</literal>s implicitly extend 
+        <literal>lang.Selector</literal></para>
+        
+        <programlisting><![CDATA[public abstract class Selector(String name, int ordinal)
+        satisfies Case<subtype> { ... }]]></programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Usables</title>
+        
+        <para>The interface <literal>lang.Usable</literal> represents an
+        object with a lifecycle controlled by <literal>try</literal>.</para>
+        
+        <programlisting><![CDATA[public interface Usable {
+
+    doc "Called before entry into a |try| block."
+    public void begin();
+    
+    doc "Called before normal exit from a |try| block."
+    public void end();
+
+    doc "Called before exit from a |try| block when an
+         exception occurs."
+    public void end(Exception e);
+    
+}]]></programlisting>        
+       
+    </section>
+    
+    <section>
         <title>Iterable objects and iterators</title>
         
+        <para>The interface <literal>lang.Container</literal> represents
+        the abstract notion of an object that may be empty. It supports 
+        the unary postfix operator <literal>nonempty</literal><!--and
+        the binary operator <literal>??:</literal> (empty default)-->.</para>
+        
+        <programlisting><![CDATA[public interface Container {
+        
+    doc "The nonempty operator. Determine if the container is empty."
+    public Boolean empty;
+    
+}]]></programlisting>
+
         <para>The <literal>lang.Iterable&lt;X&gt;</literal> interface
         represents a type that may be iterated over using a
         <literal>lang.Iterator&lt;X&gt;</literal>. It supports the
@@ -233,53 +291,7 @@ while (i.more) {
     </section>
     
     <section>
-        <title>Cases and Selectors</title>
-        
-        <para>The interface <literal>lang.Case</literal> represents a
-        type that may be used as a case in the <literal>switch</literal>
-        construct.</para>
-        
-        <programlisting><![CDATA[public interface Case<in X> {
-
-    doc "Determine if the given value matches
-         this case, returning |true| iff the
-         value matches."
-    public Boolean test(X value);
-    
-}]]></programlisting>
-
-        <para>Classes with enumerated <literal>case</literal>s implicitly extend 
-        <literal>lang.Selector</literal></para>
-        
-        <programlisting><![CDATA[public abstract class Selector(String name, int ordinal)
-        satisfies Case<subtype> { ... }]]></programlisting>
-        
-    </section>
-    
-    <section>
-        <title>Usables</title>
-        
-        <para>The interface <literal>lang.Usable</literal> represents an
-        object with a lifecycle controlled by <literal>try</literal>.</para>
-        
-        <programlisting><![CDATA[public interface Usable {
-
-    doc "Called before entry into a |try| block."
-    public void begin();
-    
-    doc "Called before normal exit from a |try| block."
-    public void end();
-
-    doc "Called before exit from a |try| block when an
-         exception occurs."
-    public void end(Exception e);
-    
-}]]></programlisting>        
-       
-    </section>
-    
-    <section>
-        <title>Category, Correspondence, Sequence and Container</title>
+        <title>Categories</title>
         
         <para>The interface <literal>lang.Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
@@ -349,6 +361,11 @@ while (i.more) {
     
 }]]></programlisting>
         -->
+
+    </section>
+    
+    <section>
+        <title>Correspondences</title>
         
         <para>The interface <literal>lang.Correspondence</literal> represents
         the abstract notion of an object that maps value of one type to values
@@ -374,16 +391,16 @@ while (i.more) {
 
         <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
 
-    doc "Binary lookup operator x[keys]. Returns a list of values 
-         defined for the given keys, in order."
+    doc "Binary list lookup operator x[keys]. Returns a list of 
+         values defined for the given keys, in order."
     throws #UndefinedKeyException
            "if no value is defined for one of the given keys"
     public List<V> values(List<U> keys) {
         return from (U key in keys) select correspondence.lookup(key)
     }
     
-    doc "Binary lookup operator x[keys]. Returns a set of values 
-         defined for the given set of keys."
+    doc "Binary set lookup operator x[keys]. Returns a set of 
+         values defined for the given set of keys."
     throws #UndefinedKeyException
            "if no value is defined for one of the given keys"
     public Set<V> values(Set<U> keys) {
@@ -391,6 +408,10 @@ while (i.more) {
     }
     
 }]]></programlisting>
+
+         <comment><para>TODO: should we handle the list lookup and set
+         lookup operators using a helper class that calls a constructor
+         of the concrete subtype, like we do with <literal>Sequence</literal>?</para></comment>
 
         <!--     
         <programlisting><![CDATA[public interface Correspondence<in U, out V> {
@@ -464,44 +485,105 @@ while (i.more) {
      }
     
 }]]></programlisting>
-
-        <para>A <literal>Sequence</literal> is a correspondence from 
+       
+    </section>
+    
+    <section>
+        <title>Sequences</title>
+        
+        <para>A <literal>lang.Sequence</literal> is a correspondence from 
         a bounded progression of natural numbers. Sequences support 
         the binary operators <literal>+</literal> (join), <literal>[i...]</literal> 
         (upper range) and the ternary operator <literal>[i..j]</literal> 
         (subrange) in addition to operators inherited from 
         <literal>Correspondence</literal>:</para>
 
-        <programlisting><![CDATA[public interface Sequence<out X> extends Correspondence<Natural, out X> {
+        <programlisting><![CDATA[public interface Sequence<out X> 
+        satisfies Correspondence<Natural, out X>, Iterable<X> {
 
     doc "The index of the last element of the sequence."
     throws #EmptyException
            "if the sequence has no elements"
     public Natural lastIndex;
     
-    doc "The ternary range operator x[from..to], along
-         with the binary upper range x[from...] operator. 
-         The returned sequence does not reflect changes to 
-         the original sequence."
-    public subtype range(Natural from, Natural to=lastIndex);
+}]]></programlisting>
 
+        <para>A helper class defines the join and range operators, for 
+        sequence types which have an appropriate constructor, and
+        decorates <literal>Sequence</literal> with some convenience
+        attributes:</para>
+        
+        <programlisting><![CDATA[public extension class Sequences<out X>(Sequence<X> sequence) {
+        
     doc "The binary join operator x + y. 
          The returned sequence does not reflect changes
+         to the original sequences."
+    public static S join<S,T>(S... sequences) 
+            where S>=Sequence<T> & S(T... elements) {
+
+        class JoinedIterable<T>
+            implements Iterable<T> { ... }
+
+        return S( JoinedIterable() );
+    }
+        
+    doc "The ternary range operator x[from..to], along
+         with the binary upper range x[from...] operator. 
+         The returned sequence does not reflect changes 
          to the original sequence."
-    public subtype join(S sequence) where S>=subtype;
+    public static S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
+             where S>=Sequence<T> & S(T... elements) {
+
+        class SubrangeIterable<T>
+            implements Iterable<T> { ... }
+
+        return S( SubrangeIterable() );
+    }
+
+
+    doc "The first element of the sequence."
+    throws #EmptyException
+           "if the list is empty"
+    public X first {
+        return sequence[0];
+    }
     
-}]]></programlisting>
-        <para>The interface <literal>lang.Container</literal> represents
-        the abstract notion of an object that may be empty. It supports 
-        the unary postfix operator <literal>nonempty</literal><!--and
-        the binary operator <literal>??:</literal> (empty default)-->.</para>
-        
-        <programlisting><![CDATA[public interface Container {
-        
-    doc "The nonempty operator. Determine if the container is empty."
-    public Boolean empty;
+    doc "The last element of the sequence."
+    throws #EmptyException
+           "if the list is empty"
+    public X last {
+        return sequence[sequence.lastIndex];
+    }
     
+    doc "The first element of the sequence, or null if
+         the sequence is empty."
+    public optional X firstOrNull {
+        if (sequence.empty) {
+            return first;
+        }
+        else {
+            return null;
+        }
+    }
+
+    doc "The last element of the sequence, or null if
+         the sequence is empty."
+    public optional X lastOrNull {
+        if (sequence.empty) {
+            return last;
+        }
+        else {
+            return null;
+        }
+    }
+
 }]]></programlisting>
+        
+        <para>There is a mutable subtype which allows assignment to
+        an index.</para>
+        
+        <programlisting><![CDATA[public mutable interface OpenSequence<X>
+        satisfies Sequence<X>, OpenCorrespondence<Natural,X> {}]]></programlisting>
 
     </section>
     
@@ -668,28 +750,10 @@ while (i.more) {
             <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X>, Sequence<X> {
     
-    doc "The first element of the list."
-    throws #EmptyException
-           "if the list is empty"
-    public X first;
-    
-    doc "The last element of the list."
-    throws #EmptyException
-           "if the list is empty"
-    public X last;
-    
     doc "The tail of the list. The returned list does 
          reflect changes to the original list."
     public List<X> rest;
     
-    doc "The first element of the list, or null if the
-         list is empty."
-    public optional X firstOrNull;
-
-    doc "The last element of the list, or null if the
-         list is empty."
-    public optional X lastOrNull;
-
     doc "The index of the first element of the list
          which satisfies the condition."
     throws #NotFoundException
@@ -770,8 +834,14 @@ while (people nonempty) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenList<X> 
-        satisfies List<X>, OpenCollection<X>, OpenCorrespondence<Natural, X> {
+        satisfies List<X>, OpenCollection<X>, OpenSequence<X> {
 
+    doc "Remove the element at the given index, decrementing
+         the index of every element with an index greater
+         than the given index by one. Return the removed
+         element."
+    public X removeIndex(Natural at);
+    
     doc "Add the given elements at the end of the list."
     public void prepend(X... elements);
     
@@ -785,12 +855,6 @@ while (people nonempty) {
          element with that index or greater by the number 
          of given elements."
     public void insert(Natural at, X... elements);
-    
-    doc "Remove the element at the given index, decrementing
-         the index of every element with an index greater
-         than the given index by one. Return the removed
-         element."
-    public X removeIndex(Natural at);
     
     doc "Remove elements beginning with the first given index 
          up to and including the second given index,
@@ -1156,14 +1220,6 @@ while (people nonempty) {
     doc "Join the given strings, using this string as
          a separator."
     public String join(String... strings) { return ... }
-    
-    doc "A substring from the first given index (inclusive) 
-         to the second given index (exclusive). The size of 
-         the returned string is the difference between the 
-         two indexes."
-    String substring(Natural from, Natural to=size) {
-        return String(this[from,to]);
-    }
     
 }]]></programlisting>
         
