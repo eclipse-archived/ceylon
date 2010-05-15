@@ -1,6 +1,5 @@
 class FormalParameters {
 	
-	
 	class MethodParameters {
 	
 		void noParameter() {}
@@ -66,6 +65,5 @@ class FormalParameters {
 		}
 		
 	}
-	
 	
 }
