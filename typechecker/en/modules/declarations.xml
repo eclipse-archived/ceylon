@@ -630,7 +630,23 @@ class Customer(Name name, optional Organization org = null)
         declared <literal>public/package/module</literal>, allowing a shortcut
         simple attribute declaration like in Scala?</para></comment>
         
-        </section>
+        <comment>
+        
+        <para>TODO: I would really, really like to believe that one "constructor"
+        per class is sufficient, but somehow I'm not quite buying it. We can allow the
+        declaration of additional constructors, according to:</para>
+        
+        <programlisting>Constructor := Annotation* TypeName FormalParams Supertype Block</programlisting>
+        
+        <para>for example:</para>
+        
+        <programlisting>public class Person(Name name) {
+    public Person(String name) extends Person( Name(name) ) {}
+}</programlisting>
+        
+        </comment>
+        
+       </section>
 
        <section>
             <title>Defaulted parameters</title>
