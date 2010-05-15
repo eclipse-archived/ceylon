@@ -9,7 +9,7 @@ public class CommandLine(Process process) {
 	while (tokens.more) {
 		String token = tokens.next();
 		if ( '-w*'.matches(token) ) {
-			String name = token.substring(1);
+			String name = token[1...];
 			if (tokens.more) {
 				namedArgs[name]:=tokens.next();
 			}
