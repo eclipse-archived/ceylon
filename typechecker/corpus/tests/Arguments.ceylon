@@ -80,15 +80,29 @@ class Arguments {
 			return process(format(n));
 		}
 		
-		/*String result1 = stringify(256, 
-				process(String value) { return "value=" + value; },
-				format(Natural n) { return $n; });*/
-				
-		String result = stringify { 
-			n=256; 
-			process(String value) { return "value=" + value; }
-			format(Natural n) { return $n; }
-		};
+		//smalltalk-style invocation with braces
+		String result1 = 
+			stringify(256) 
+			process (String value) { 
+				return "value=" + value; 
+			}
+			format (Natural n) { 
+				return $n;
+			};
+		
+		//smalltalk-style invocation without braces
+		String result2 = 
+			stringify(256) 
+				process (String value) "value=" + value 
+				format (Natural n) $n;
+		
+		//named-parameter-style invocation
+		String result3 =
+			stringify { 
+				n=256; 
+				process(String value) { return "value=" + value; }
+				format(Natural n) { return $n; }
+			};
 		
 		class Processor<X,Y>(Y process(X x)) {
 			Y handle(X x) { 
@@ -96,11 +110,20 @@ class Arguments {
 			}
 		}
 		
-		String string = Processor<Float,String> {
-			process(Float f) {
-				return $f;
+		//smalltalk-style invocation with braces
+		String string1 = ( Processor<Float,String> (Float f) { return $f; } ).handle(1.25);
+		
+		//smalltalk-style invocation without braces
+		String string2 = ( Processor<Float,String> (Float f) $f ).handle(1.25);
+
+		//named-parameter-style invocation
+		String string3 = 
+			Processor<Float,String> {
+				process(Float f) {
+					return $f;
+				}
 			}
-		}.handle(1.25);
+			.handle(1.25);
 		
 	}
 
