@@ -545,7 +545,12 @@ while (i.more) {
     throws #EmptyException
            "if the list is empty"
     public X first {
-        return sequence[0];
+        if (sequence.empty) {
+            throw EmptyException();
+        }
+        else {
+            return sequence[0];
+        }
     }
     
     doc "The last element of the sequence."
