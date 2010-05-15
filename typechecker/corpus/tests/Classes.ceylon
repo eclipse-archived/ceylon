@@ -53,6 +53,18 @@ class Classes {
 	
 	class WithOpenInstanceList { case foo, case bar, case baz... }
 	
+	class WithInstanceListAndInitParameter(Integer i) {
+		case one(1), case two(2), case three(3); 
+		Integer value = i;
+	}
+	
+	class WithAnnotatedInstanceList(Integer i) {
+		doc "1" numericValue(1) case one(1), 
+		doc "2" numericValue(2) case two(2), 
+		doc "3" numericValue(3) case three(3); 
+		Integer value = i;
+	}
+	
 	class WithTypeParameters<X, Y> {}
 	
 	class WithTypeConstraints<X, Y> 
