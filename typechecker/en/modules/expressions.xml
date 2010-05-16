@@ -202,6 +202,14 @@ Digit+ |
         
         <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
         
+        <para>A character literal may contain an escape sequence.</para>
+        
+        <programlisting>List&lt;Character&gt; ws = { @\s, @\t, @\r, @\f, @\n };</programlisting>
+        
+        <para>Which is equivalent to this Java code:</para>
+        
+        <programlisting>List&lt;Character&gt; ws = new lang.Enumeration&lt;Character&gt;(' ', '\t', '\r', '\r', '\n');</programlisting>
+        
         <comment><para>TODO: do we really need character literals??</para></comment>
         
     </section>
@@ -215,17 +223,25 @@ Digit+ |
         
         <para>For example:</para>
         
-        <programlisting>person.name = "Gavin";</programlisting>
+        <programlisting>person.name := "Gavin";</programlisting>
         
         <programlisting>log.info("${Time()} ${message}");</programlisting>
         
-        <programlisting>String multilineString = "Strings may
+        <programlisting>String multiline = "Strings may
 span multiple lines
 if you prefer.";</programlisting>
+
+        <programlisting>out("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
         
-        <para>The first example is equivalent to this Java code:</para>
+        <para>Equivalent to the following Java code:</para>
         
         <programlisting>person.name().set( new lang.String("Gavin") );</programlisting>
+        
+        <programlisting>log.info( new lang.String( Time(), " ", message ) );</programlisting>
+        
+        <programlisting>final lang.String multiline = new lang.String("Strings may\nspan multiple lines\nif you prefer.");</programlisting>
+        
+        <programlisting>out( new lang.String( "Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n") );</programlisting>
         
         <comment><para>TODO: we need to support that the embedded expressions
         are evaluated lazily when the string literal appears as a method 
