@@ -94,11 +94,32 @@ class ControlStructures {
 			log.info("goodbye");
 		}
 		
-		do (Iterator<Character> tokens = "Hello World!".tokens().iterator) 
+		do (mutable Integer n:=0) {
+		while (n<10) {
+			log.info(n);
+			n++;
+		}
+		
+		do (mutable Integer n:=0) {
+			log.info(n);
+			n++;
+		}
+		while (n<10);
+		
+		do (mutable Integer n:=0) {
+			n++;
+		}
+		while (n<10) {
+			log.info(n);
+		}
+		
+		String text = "Hello World!";
+		do (Iterator<String> tokens = text.tokens().iterator()) 
 		while (tokens.more)
 		{
-			if ("hello"==tokens.next().lowercase) {
-				log.info("found");
+			String word = tokens.next().lowercase;
+			if ("hello"==word) {
+				log.info("found hello");
 				break;
 			}
 		}
