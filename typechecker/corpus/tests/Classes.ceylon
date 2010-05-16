@@ -58,6 +58,38 @@ class Classes {
 		Integer value = i;
 	}
 	
+	class WithInstanceListAndAbstractMethod {
+		
+		case foo {
+			override String name() { return "Foo"; }
+		}, 
+		case bar {
+			override String name() { return "Bar"; }
+		}, 
+		case baz {
+			override String name() { return "Baz"; }
+		}; 
+		
+		String name();
+		
+	}
+	
+	class WithInstanceListAndAbstractAttribute {
+		
+		case foo {
+			override String name = "Foo";
+		}, 
+		case bar {
+			override String name = "Bar";
+		}, 
+		case baz {
+			override String name = "Baz";
+		}; 
+		
+		String name;
+		
+	}
+	
 	class WithAnnotatedInstanceList(Integer i) {
 		doc "1" numericValue(1) case one(1), 
 		doc "2" numericValue(2) case two(2), 
