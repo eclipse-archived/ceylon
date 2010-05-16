@@ -58,35 +58,13 @@ class Classes {
 		Integer value = i;
 	}
 	
-	class WithInstanceListAndAbstractMethod {
+	class WithInstanceListAndFunctionalInitParameter(String name()) {
 		
-		case foo {
-			override String name() { return "Foo"; }
-		}, 
-		case bar {
-			override String name() { return "Bar"; }
-		}, 
-		case baz {
-			override String name() { return "Baz"; }
-		}; 
+		case foo { name() { return "Foo" } }, 
+		case bar { name() { return "Bar" } },
+		case baz { name() { return "Baz" } };
 		
-		String name();
-		
-	}
-	
-	class WithInstanceListAndAbstractAttribute {
-		
-		case foo {
-			override String name = "Foo";
-		}, 
-		case bar {
-			override String name = "Bar";
-		}, 
-		case baz {
-			override String name = "Baz";
-		}; 
-		
-		String name;
+		String name() = name;
 		
 	}
 	
