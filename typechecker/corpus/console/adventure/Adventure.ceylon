@@ -104,7 +104,7 @@ package mutable class Adventure(Process process) {
 		}
 	}
 	
-	do {
+	while (life>0) {
 		String input = process.readLine();
 		Iterable<String> tokens = input.tokens();
 		try {
@@ -142,6 +142,6 @@ package mutable class Adventure(Process process) {
 			out("Give me a bit more information, please!");
 		}
 	}
-	while (life>0)
+	
 
 }
