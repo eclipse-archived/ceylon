@@ -514,12 +514,12 @@ fail {
 }
 while (n&lt;=10) { n++; }</programlisting>
             
-            <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator)
+            <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator())
 while (iter.more) {
     log.info( iter.next().name );
 }</programlisting>
             
-            <programlisting>do (Iterator&lt;Person&gt; iter = people.iterator)
+            <programlisting>do (Iterator&lt;Person&gt; iter = people.iterator())
 while (iter.more) {
     Person p = iter.next();
     log.debug(p.name);
