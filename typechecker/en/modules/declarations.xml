@@ -45,7 +45,7 @@ Body?</programlisting>
         
         <programlisting>Import* TypeDeclaration+</programlisting>
         
-        <programlisting>Import := "import" ImportElement ("." ImportElement)* ('.' '*' | "alias" ImportElement)? ";"</programlisting>
+        <programlisting>Import := "import" ImportElement ("." ImportElement)* ("." "*" | "alias" ImportElement)? ";"</programlisting>
         
         <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
     

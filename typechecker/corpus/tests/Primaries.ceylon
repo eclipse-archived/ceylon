@@ -7,6 +7,7 @@ class Primaries {
 		Float zero = 0.0;
 		Float big = 1.0e10;
 		Float small = 1.0e-10;
+		Character x = @x;
 		Quoted quoted = 'quoted literal';
 		
 		Type<Literals> primariesClass = #Primaries;

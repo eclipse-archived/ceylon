@@ -35,7 +35,10 @@
             <para><literal>Natural</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
-            <para><literal>String</literal> and <literal>Quoted</literal>,</para>
+            <para><literal>String</literal> and <literal>Character</literal>,</para>
+        </listitem>
+        <listitem>
+            <para><literal>Quoted</literal>,</para>
         </listitem>
         <listitem>
             <para><literal>Type</literal>, <literal>Attribute</literal> and 
@@ -58,7 +61,11 @@
         </listitem>
     </itemizedlist-->
     
-    <programlisting>Literal := NaturalLiteral | FloatLiteral | StringLiteral | QuotedLiteral | TypeLiteral | MemberLiteral</programlisting>
+    <programlisting>Literal := 
+NaturalLiteral | FloatLiteral | 
+StringLiteral | CharacterLiteral | 
+QuotedLiteral | 
+TypeLiteral | MemberLiteral</programlisting>
 
     <!--programlisting>Literal :=
 DateLiteral | TimeLiteral
@@ -180,6 +187,25 @@ Digit+ |
 
     </section>
     
+    <section id="character">
+        <title>Character literals</title>
+        
+        <para>A <literal>Character</literal> literal has this form:</para>
+        
+        <programlisting>CharacterLiteral := "@" Character</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>if ( string[i] == @+ ) { ... }</programlisting>
+        
+        <para>Equivalent to this Java code:</para>
+        
+        <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
+        
+        <comment><para>TODO: do we really need character literals??</para></comment>
+        
+    </section>
+    
     <section id="string">
         <title>String literals</title>
         
@@ -269,7 +295,6 @@ if you prefer.";</programlisting>
         <programlisting>Url url = 'http://jboss.org/ceylon';</programlisting>
         <programlisting>mail.to:='gavin@hibernate.org';</programlisting>
         <programlisting>PhoneNumber ph = '+1 (404) 129 3456';</programlisting>
-        <programlisting>Character x = 'x';</programlisting>
         <programlisting>Duration duration = '1h 30m';</programlisting>
         
         <para>Extensions that apply to the type <literal>Quoted</literal> are
@@ -280,25 +305,6 @@ if you prefer.";</programlisting>
         <programlisting>public extension class Regex(Quoted expression) { return ...; }</programlisting>
         
     </section>
-    
-    <!--section id="character">
-        <title>Character literals</title>
-        
-        <para>A <literal>Character</literal> literal has this form:</para>
-        
-        <programlisting>CharacterLiteral := "'" Character "'"</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>if ( string[i] == '+' ) { ... }</programlisting>
-        
-        <para>Equivalent to this Java code:</para>
-        
-        <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
-        
-        <comment><para>TODO: do we really need character literals??</para></comment>
-        
-    </section-->
     
     <!--section>
         <title>Byte literals</title>

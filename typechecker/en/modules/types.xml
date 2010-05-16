@@ -1233,7 +1233,7 @@ while (people nonempty) {
         this stuff? Does the JVM do all kinds of optimizations for 
         <literal>java.lang.String</literal>?</para></comment>
         
-        <!--comment><para>TODO: do we need character ranges, like <literal>'a'..'z'</literal>, or is 
+        <!--comment><para>TODO: do we need character ranges, like <literal>@a..@z</literal>, or is 
         it enough that we have regular expressions like <literal>`[a-z]`</literal>?</para></comment-->
 
     </section>
