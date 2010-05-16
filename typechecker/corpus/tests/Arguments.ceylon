@@ -42,15 +42,15 @@ class Arguments {
 			return firstName + " " + lastName;
 		}
 		
-		String gavin = fullName("Gavin", "King");
-		String andrew = fullName { firstName="Andrew"; lastName="Haley"; };
+		String methodResultWithPositionalParams = fullName("Gavin", "King");
+		String methodResultWithNamedParams = fullName { firstName="Andrew"; lastName="Haley"; };
 		
 		class FullName(String firstName, String lastName) {
 			String value = firstName + " " + lastName;
 		}
 		
-		String gk = FullName("Gavin", "King").value;
-		String ah = FullName { firstName="Andrew"; lastName="Haley"; }.value;
+		FullName instantiationResultWithPositionalParams = FullName("Gavin", "King");
+		FullName instantiationResultWithNamedParams = FullName { firstName="Andrew"; lastName="Haley"; };
 		
 	}
 	
@@ -60,71 +60,78 @@ class Arguments {
 			return (sep+" ").join(strings);
 		}
 		
-		String joined1 = join(",", "foo", "bar"); 
-		String joined2 = join { sep=","; "one", "two" };
+		String methodResultWithPositionalVarargs = join(",", "foo", "bar"); 
+		String methodResultWithNamedVarargs = join { sep=","; "one", "two" };
 		
-		String joined3 = join( ",", {"foo", "bar"} ); 
-		String joined4 = join { sep=","; strings={"one", "two"}; };
+		String methodResultWithPositionalEnumerationParam = join( ",", {"foo", "bar"} ); 
+		String methodResultWithNamedEnumerationParam = join { sep=","; strings={"one", "two"}; };
 		
-		List<String> tokens1 = List("foo", "bar", "baz");
-		List<String> tokens2 = List { "one", "two", "three" };
+		List<String> instantiationResultWithPositionalVarargs = List("foo", "bar", "baz");
+		List<String> instantiationResultWithNamedVarargs = List { "one", "two", "three" };
 		
-		List<String> tokens3 = List( {"foo", "bar", "baz"} );
-		List<String> tokens4 = List { strings={"one", "two", "three"}; };
+		List<String> instantiationResultWithPositionalEnumerationParam = List( {"foo", "bar", "baz"} );
+		List<String> instantiationResultWithNamedEnumerationParam = List { strings={"one", "two", "three"}; };
 		
 	}
 	
 	class FunctionalArguments {
 	
-		String stringify(Natural n, String process(String value), String format(Natural n)) {
-			return process(format(n));
+		void logLazily(String message()) {
+			if (log.infoEnabled) { 
+				log.info( message() );
+			}
 		}
 		
-		//smalltalk-style invocation with braces
-		String result1 = 
-			stringify(256) 
-			process (String value) { 
-				return "value=" + value; 
+		logLazily() message "hello";
+		logLazily() message { return "hello" };
+		logLazily { message() { return "hello" } };
+	
+	
+		public static void from<Y>(Y initial, 
+								   Boolean until(Y y), 
+								   Y each(Y y), 
+								   void perform(Y y)) {
+			do (mutable Y y := initial)
+			while (!until(y)) {
+				perform(y);
+				y:=each(y);
 			}
-			format (Natural n) { 
-				return $n;
-			};
+		}
 		
-		//smalltalk-style invocation without braces
-		String result2 = 
-			stringify(256) 
-				process (String value) "value=" + value 
-				format (Natural n) $n;
+		from(0) 
+			until(Y y) y==10 
+			each(Y y) y+2 
+			perform(Y y) log.info(y);
 		
-		//named-parameter-style invocation
-		String result3 =
-			stringify { 
-				n=256; 
-				process(String value) { return "value=" + value; }
-				format(Natural n) { return $n; }
-			};
+		from(0) 
+			until(Y y) { return y==10 } 
+			each(Y y) { return y+2 } 
+			perform(Y y) { log.info(y); };
+		
+		from {
+			initial=0; 
+			until(Y y) { return y==10 } 
+			each(Y y) { return y+2 } 
+			perform(Y y) { log.info(y); }
+		};
 		
 		class Processor<X,Y>(Y process(X x)) {
-			Y handle(X x) { 
-				return process(x).strip; 
-			}
+			Y handle(X x) { return process(x).strip }
 		}
 		
-		//smalltalk-style invocation with braces
-		String string1 = ( Processor<Float,String> (Float f) { return $f; } ).handle(1.25);
+		Processor<Float,String> p = 
+			Processor<Float,String>() 
+				process (Float f) $f;
 		
-		//smalltalk-style invocation without braces
-		String string2 = ( Processor<Float,String> (Float f) $f ).handle(1.25);
-
-		//named-parameter-style invocation
-		String string3 = 
-			Processor<Float,String> {
-				process(Float f) {
-					return $f;
-				}
-			}
-			.handle(1.25);
+		Processor<Float,String> q = 
+			Processor<Float,String>() 
+				process (Float f) { return $f };
 		
+		Processor<Float,String> r = 
+			Processor<Float,String> { 
+				process(Float f) { return $f } 
+			};
+			
 	}
 
 }
