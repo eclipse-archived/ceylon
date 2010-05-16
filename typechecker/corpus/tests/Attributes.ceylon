@@ -1,6 +1,6 @@
 abstract class Attributes {
 
-	abstract String abstractAttribute;
+	String abstractAttribute;
 	
 	String immutableAttribute = "Hello World";
 	

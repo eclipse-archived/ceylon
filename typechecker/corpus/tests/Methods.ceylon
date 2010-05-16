@@ -6,7 +6,7 @@ class Methods {
 		
 		void methodWithParams(Whole amount, Object something) {}
 		
-		abstract void abstractMethod();
+		void abstractMethod();
 		
 		void methodReference() = this.voidMethod;
 		
@@ -65,7 +65,7 @@ class Methods {
 		
 		String methodWithParam(Whole amount) { return $amount; }
 		
-		abstract String abstractMethod();
+		String abstractMethod();
 		
 		String methodReference() = this.nonvoidMethod;
 		
