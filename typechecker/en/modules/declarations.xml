@@ -815,9 +815,6 @@ public class Person { ... }</programlisting>
     
 }</programlisting>
 
-        <comment><para>TODO: let each <literal>case</literal> override methods,
-        like in Java.</para></comment>
-
     </section>
         
     </section>
