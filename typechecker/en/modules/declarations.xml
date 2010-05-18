@@ -742,7 +742,7 @@ public User(String username, Person person);</programlisting>
         
     private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
         @Override public Lock get() { return _lock; }
-    }; 
+    };
     public ReadAttribute&lt;Lock&gt; lock() { return lock; }
     
     public Key(Lock lock) { 
