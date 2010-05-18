@@ -24,16 +24,20 @@
     Ceylon does not support Java-style wildcard type parameters. Instead,
     like Scala, a type parameter may be marked as covariant or 
     contravariant by the class or interface that declares the parameter.
+    Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style
+    <literal>typedef</literal>.
     </para>
     
     <para>
     Ceylon methods are similar to Java methods. However, Ceylon does not
     feature any Java-like constructor declaration and so each Ceylon class 
-    has exactly one "constructor". As an alternative to overloading, Ceylon 
-    supports method and constructor parameters with default values. Ceylon
-    does not support first-class function types, but references to methods 
-    may be passed to other methods and methods may declared inline in an 
-    invocation. 
+    has exactly one <emphasis>initializer</emphasis>. As an alternative to 
+    overloading, Ceylon supports method and constructor parameters with 
+    default values. Ceylon does not support first-class function types, but 
+    a method may accept another method as a formal parameter. The argument 
+    of such a formal parameter may be either a reference to a named method 
+    declared elsewhere, or a new method defined inline as part of the 
+    invocation.
     </para>
     
     <para>
@@ -47,8 +51,8 @@
     Mutable classes, attributes and locals must be explicitly declared
     using the <literal>mutable</literal> annotation. An immutable class may 
     not declare mutable attributes or extend a mutable class. An immutable 
-    attribute must be assigned when the class is instantiated. An immutable 
-    local may not be assigned more than once.
+    attribute or local may not be assigned after its initial value is 
+    specified.
     </para>
     
     <para>
@@ -98,7 +102,7 @@
     </para>
     
     <para>
-    Ceylon features an exceptions model inspired by Java and C#, but checked 
+    Ceylon features an exceptions model inspired by Java and C#. Checked 
     exceptions are not supported.
     </para>
     
@@ -106,10 +110,12 @@
     Ceylon introduces a set of syntax extensions that support the definition 
     of domain-specific languages and expression of structured data. These 
     extensions include specialized syntax for initializing objects and 
-    collections and expressing literal values. One application of this syntax 
-    is the support for Java/C#-like code annotations. The goal of this facility
+    collections and expressing literal values. The goal of this facility
     is to replace the use of XML for expressing hierarchical structures such
-    as documents, user interfaces, configuration and serialized data.
+    as documents, user interfaces, configuration and serialized data. An 
+    especially important application of this facility is Ceylon's built-in 
+    support for program element annotations. Ceylon annotations feature a more 
+    elegant syntax than that found in either Java or C#.
     </para>
     
     <para>
@@ -123,10 +129,11 @@
     
     <para>
     Ceylon features language-level package and module constructs, and 
-    language-level access control with four levels of visibility for 
-    program elements: private (the default), <literal>package</literal>, 
-    <literal>module</literal> and <literal>public</literal>. There's no
-    equivalent of Java's <literal>protected</literal>.
+    language-level access control with five levels of visibility for 
+    program elements: block local (the default), <literal>private</literal>, 
+    <literal>package</literal>, <literal>module</literal> and 
+    <literal>public</literal>. There's no equivalent to Java's 
+    <literal>protected</literal>.
     </para>
     
     <section>
@@ -163,20 +170,19 @@ class Hello(Process process) {
 }]]></programlisting>
 
         <para>
-        This time, the class has a parameter. <!--This
-        parameter value is <emphasis>injected</emphasis> by Ceylon's built-in
-        dependency management engine.--> The <literal>Process</literal> object
-        has an attribute named <literal>args</literal>, which holds a 
-        <literal>List</literal> of the program's command line arguments. The 
-        local <literal>name</literal> is initialized from these arguments. The 
-        <literal>?</literal> operator returns the first argument that is not 
-        null. Finally, the value of the local is interpolated into the message 
-        string.
+        This time, the class has a parameter. <!--This parameter value is 
+        <emphasis>injected</emphasis> by Ceylon's built-in dependency management 
+        engine.--> The <literal>Process</literal> object has an attribute named 
+        <literal>args</literal>, which holds a <literal>List</literal> of the 
+        program's command line arguments. The local <literal>name</literal> is 
+        initialized from these arguments. The <literal>?</literal> operator 
+        returns the first argument that is not null. Finally, the value of the 
+        local is interpolated into the message string.
         </para>
 
         <para>
         This looks a little cluttered. We can refactor the code and extract a 
-        private method:
+        method:
         </para>
         
         <programlisting><![CDATA[doc "A more personalized greeting"
