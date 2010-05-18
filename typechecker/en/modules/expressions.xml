@@ -422,9 +422,9 @@ if you prefer.";</programlisting>
         current instance (the instance that is being invoked), and 
         is of the same type as the immediate superclass of the class. 
         Any invocation of this reference is processed by the method 
-        defined or inherited by this superclass, bypassing any method 
-        declaration that overrides the method on the current class or 
-        any subclass of the current class.</para>
+        or attribute defined or inherited by this superclass, bypassing 
+        any method declaration that overrides the method on the current 
+        class or any subclass of the current class.</para>
         
         <para>The keyword <literal>this</literal> refers to the
         current instance, and is assignable to both the type of the 
