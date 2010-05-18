@@ -9,5 +9,5 @@ class Types {
 	Foo.Bar<Baz> nestedTypeWithTypeParameter;
 	Foo<Bar.Baz> typeWithNestedTypeParameter;
 	Foo<Bar.Baz<Qux>> anythingGoes;
-	
+	subtype theSubtype;
 }
