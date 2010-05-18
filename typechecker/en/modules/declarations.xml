@@ -1592,8 +1592,22 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
             </listitem>
             <listitem>
                 <para><literal>abstract</literal> specifies that a class
-                cannot be instantiated.<!--, or that a method or attribute of 
-                an abstract class must be implemented by all subclasses.--></para>
+                cannot be instantiated<!--, or that a method or attribute of 
+                an abstract class must be implemented by all 
+                non-<literal>abstract</literal> subclasses-->.</para>
+            </listitem>
+            <listitem>
+                <para><literal>default</literal> specifies that the 
+                implementation of a method or attribute may be overridden
+                by subclasses.</para>
+            </listitem>
+            <listitem>
+                <para><literal>override</literal> indicates that a method
+                or attribute overrides a method or attribute defined by a 
+                supertype. The method or attribute being overridden must
+                be abstract or annotated <literal>default</literal>, and 
+                must be visible to the method annotated 
+                <literal>override</literal>.</para>
             </listitem>
             <listitem>
                 <para><literal>static</literal> specifies that a method can 
@@ -1609,19 +1623,11 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
                 <para><literal>optional</literal> specifies that a value may
                 be null.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para><literal>final</literal> indicates that a class may not 
                 be extended, or that a method or attribute may not be 
                 overridden.</para>
-            </listitem>
-            <listitem>
-                <para><literal>override</literal> indicates that a method
-                or attribute overrides a method or attribute defined by a 
-                supertype. It is not legal to override a block local 
-                declaration, a method invoked during initialization of the 
-                superclass, or an attribute evaluated during initialization 
-                of the superclass.</para>
-            </listitem>
+            </listitem-->
             <listitem>
                 <para><literal>extension</literal> specifies that a method is 
                 a converter, or that a class is a decorator.</para>
