@@ -670,20 +670,46 @@ public User(String username, Person person);</programlisting>
     <section id="initializers">
         <title>Initializers</title>
         
-        <para>
-        Ceylon classes do not support a Java-like constructor declaration syntax. Instead,
-        the body of the class is called the <emphasis>initializer</emphasis> and may declare
-        <emphasis>initialization parameters</emphasis>. An initialization parameter may be 
-        used anywhere in the class body, including in method and attribute definitions. The 
-        initializer is executed every time the class is instantiated.
-        </para>
+        <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
+        Instead:</para>
         
-        <para>All simple attributes of the class must be explicitly initialized somewhere in 
-        the initializer of the class, unless the class is declared <literal>abstract</literal>, 
-        in which case they must be initialized by the initializer of every subclass definition. 
-        A simple attribute with no initializer is considered an <emphasis>abstract</emphasis> 
-        attribute. Abstract attributes may not be evaluated within the initializer of the 
-        class.</para>
+        <itemizedlist>
+           <listitem>
+              <para>The body of the class may declare <emphasis>initialization parameters</emphasis>.
+              An initialization parameter may be used anywhere in the class body, including in 
+              method and attribute definitions.</para>
+           </listitem>
+           <listitem>
+              <para>The initial part of the body of the class is called the <emphasis>initializer</emphasis> 
+              and contains a mix of declarations, statements and control structures. The initializer 
+              is executed every time the class is instantiated.</para>
+           </listitem>
+        </itemizedlist>
+        
+        <para>The following restrictions apply to statements and declarations that appear within
+        the initializer of the class:</para>
+        
+        <itemizedlist>
+           <listitem>
+              <para>They may not evaluate attributes or invoke methods that are declared later
+              in the body of the class upon the current object or <literal>this</literal>.</para>
+           </listitem>
+           <listitem>
+              <para>They may not pass <literal>this</literal> as an argument of a method invocation
+              or the value of an attribute assignment.</para>
+           </listitem>
+           <listitem>
+              <para>They may not declare an abstract method or attribute.</para>
+           </listitem>
+           <listitem>
+              <para>They may not declare a <literal>default</literal> method or attribute.</para>
+           </listitem>
+        </itemizedlist>
+        
+        <para>The remainder of the body of the class consists purely of declarations, including
+        abstract and <literal>default</literal> methods and attributes. It may not directly contain 
+        statements or control structures, but may freely use <literal>this</literal>, and may 
+        invoke any method or evaluate any attribute of the class.</para>
         
         <para>This declaration:</para>
         
@@ -748,7 +774,7 @@ public User(String username, Person person);</programlisting>
         list of attributes.</para></comment>
         
         <para>A subclass must pass values to each superclass initialization 
-        parameter.</para>
+        parameter in the <literal>extends</literal> clause.</para>
 
         <programlisting>public class SpecialKey1()
         extends Key( new SpecialLock() ) {
@@ -778,8 +804,8 @@ public User(String username, Person person);</programlisting>
     ... 
 }</programlisting>
 
-        <para>The body of a class may contain arbitrary code, which is
-        executed when the class is instantiated.</para>
+        <para>The class initializer is executed when the class is 
+        instantiated.</para>
         
         <programlisting>public mutable class DiagonalPoint(Decimal position) 
         extends Point() {
@@ -791,7 +817,7 @@ public User(String username, Person person);</programlisting>
     
 }</programlisting>
         
-        <para>The compiler is permitted to optimize private attribute 
+        <para>The compiler is permitted to optimize block local attribute 
         declarations. So the above class is equivalent to:</para>
         
         <programlisting>public class DiagonalPoint extends Point {
@@ -1116,12 +1142,13 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         
-        <para>The compiler is permitted to optimize private attributes to a simple Java field
-        declaration or a local variable in a Java constructor. Private attributes may not
-        be accessed via reflection.</para>
+        <para>The compiler is permitted to optimize block local attributes to a simple Java 
+        field declaration or a local variable in a Java constructor. Private attributes may 
+        not be accessed via reflection.</para>
         
-        <comment><para>TODO: I would like to support <literal>def</literal> in place of the type
-        for a private attribute or local with an initializer or getter. For example:</para></comment>
+        <comment><para>TODO: I would like to support <literal>def</literal> in place of the 
+        type for a block local attribute or local with an initializer or getter. For 
+        example:</para></comment>
         
         <programlisting>def names = List&lt;String&gt;();</programlisting>
         <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
@@ -1537,8 +1564,8 @@ TypeConstraintList?
         
         <comment><para>Note: I actually much prefer the readability of 
         <literal>User personToUser(extends Person person)</literal> and
-        <literal>CollectionUtils&lt;T&gt;(extends Collection&lt;T&gt; collection)</literal>, but 
-        this doesn't work for attributes and non-static methods.</para></comment>
+        <literal>CollectionUtils&lt;T&gt;(extends Collection&lt;T&gt; collection)</literal>, 
+        but this doesn't work for attributes and non-static methods.</para></comment>
         
         <para>The Ceylon compiler searches for an appropriate extension whenever a value of one
         type is assigned to a non-assignable type. If exactly one extension for the two types is 
