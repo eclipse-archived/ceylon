@@ -34,7 +34,7 @@ class Find(Process process) {
  	
  	doc "get the file paths listed on the command line"
 	List<File> files(CommandLine cl) {
-		List<String> paths = cl.listedArguments
+		CommandLine.ListedArguments paths = cl.listedArguments
 		if (paths.empty) {
 			log.error("No paths specified.");
 			process.exit(1);
