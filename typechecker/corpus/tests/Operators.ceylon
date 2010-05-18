@@ -38,6 +38,8 @@ class Operators {
 	
 	String render = $123;
 	
+	String join = "Gavin" + " " + "King";
+	
 	List<String> list = {"Gavin", "Andrew", "Emmanuel"};
 	optional List<String> nullList = null;
 
@@ -47,6 +49,6 @@ class Operators {
 	List<String> subrange = list[0..1];
 	List<String> upperRange = list[1...];
 	
-	//TODO: *. ^. ?. *. := .=
+	//TODO: ^. ?. *. := .=
 	
 }
