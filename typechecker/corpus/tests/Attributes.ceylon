@@ -6,7 +6,9 @@ abstract class Attributes {
 	
 	mutable String mutableAttribute := "Hello World";
 	
-	optional mutable String nullMutableAttribute;
+	optional String nullAttribute = null;
+	
+	optional mutable String nullMutableAttribute := null;
 	
 	String attribute { return mutableAttribute.uppercase; }
 	
