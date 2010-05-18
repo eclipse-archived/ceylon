@@ -1080,9 +1080,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             non-<literal>abstract</literal> class that implements the interface or
             subclasses the abstract class.</para>
             
-            <para>Abstract methods may not be called from within the initializer of the class. 
-            They may be called from other methods and attribute getters and setters.</para>
-                
         </section>
         
     </section>
@@ -1302,10 +1299,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>Interface attributes and abstract attributes must be implemented by every 
             non-<literal>abstract</literal> class that implements the interface or subclasses 
             the abstract class.</para>
-        
-            <para>Abstract attributes may not be evaluated or assigned from within the 
-            initializer of the class. They may be called from other methods and attribute 
-            getters and setters.</para>
                 
             <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
             in which case every subtype must also define the attribute to be mutable.</para>
