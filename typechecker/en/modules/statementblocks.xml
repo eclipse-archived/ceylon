@@ -50,6 +50,9 @@
         I think it's better to limit statements to assignments, invocations
         and instantiations.</para></comment>
         
+        <comment><para>TODO: should we let you leave off the <literal>;</literal> on the last
+        expression statement in the block, like we do for directives?</para></comment>
+        
         </section>
         
         <section id="controldirectives">
@@ -145,6 +148,10 @@ else {
     description = "Natural order";
     order = Order.natural;
 }</programlisting>
+
+        <comment><para>Support specification of an abstract method implementation, like
+        in a named parameter invocation, i.e. a simplified syntax where you can eliminate 
+        the return type of a method which was already declared.</para></comment>
 
         </section>
         

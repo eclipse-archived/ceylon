@@ -1672,11 +1672,18 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         recognize a member declaration a little bit more easily. But on the
         other hand it's a new special kind of thing.</para></comment>
         
+        <comment><para>TODO: should we require an <literal>abstract</literal>
+        modifier for abstract methods and attributes of abstract classes
+        like Java does?</para></comment>
+        
         <comment><para>TODO: should there be an <literal>annotation</literal>
         modifier for static methods which can be used as annotations?</para></comment>
-            
+        
         <comment><para>TODO: does Ceylon support static attributes?</para></comment>
             
+        <comment><para>TODO: should we support toplevel methods instead of
+        methods annotated <literal>static</literal>?</para></comment>
+
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
         
