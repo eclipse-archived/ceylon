@@ -1,4 +1,4 @@
-class Types {
+abstract class Types {
 	
 	Foo simpleType;
 	Foo<Bar> typeWithParameter;
