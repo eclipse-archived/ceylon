@@ -66,7 +66,7 @@ formalParameterStart
 declarationStart
     :  declarationModifier 
     //TODO: type inference: (type|'assign'|'void'|'def')
-    | ( userAnnotation annotations? )? (type|'assign'|'void') LIDENTIFIER
+    | ( userAnnotation annotations? )? ( (type|'assign'|'void') LIDENTIFIER | ('class'|'interface'|'alias') UIDENTIFIER )
     ;
 
 //by making these things keywords, we reduce the amount of
