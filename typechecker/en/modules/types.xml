@@ -1635,7 +1635,7 @@ while (people nonempty) {
          the block evaluates to false, throw an 
          |AssertionException| with the given message."
     public static void assert(String message(), Boolean that()) {
-        if ( assertionsEnabled() && !evaluate() ) {
+        if ( assertionsEnabled() && !that() ) {
             throw new AssertionException( message() )
         }
     }
