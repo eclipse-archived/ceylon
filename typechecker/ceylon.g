@@ -92,6 +92,7 @@ declarationModifier
 //assignable can be an assignment
 statement 
     : expressionStatement
+//    | eventListener
     | controlStructure
     ;
 
@@ -105,9 +106,9 @@ directiveStatement
 
 directive
     : 'return' assignable? 
-    //| 'produce' assignable
     | 'throw' expression? 
     | 'break' expression?
+    | 'retry'
     ;
 
 abstractMemberDeclaration
@@ -292,6 +293,7 @@ literal
     : NATURALLITERAL
     | FLOATLITERAL
     | QUOTEDLITERAL
+    | CHARLITERAL
     | stringLiteral
     ;   
 
@@ -299,6 +301,12 @@ stringLiteral
     : SIMPLESTRINGLITERAL
     | LEFTSTRINGLITERAL expression (MIDDLESTRINGLITERAL expression)* RIGHTSTRINGLITERAL 
     ;
+
+/*eventListener
+    : 'on' '(' expression ')' 
+      'assign'? memberName formalParameters?
+      block
+    ;*/
 
 assignable 
     : reflectedLiteral
@@ -323,7 +331,7 @@ undelimitedNamedArgument
     : ( memberName | 'case' '(' expressions ')' ) 
       undelimitedNamedArgumentDefinition 
     ;
-
+    
 implicationExpression
     : disjunctionExpression 
       ('=>' disjunctionExpression)?
@@ -393,7 +401,7 @@ unaryExpression
     ;
 
 primary
-    : base selector*
+    : ('get'|'set')? base selector*
     ;
     
 base 
@@ -410,6 +418,7 @@ base
 specialValue
     : 'this' 
     | 'super' 
+//    | 'delegate'
     | 'null'
     | 'none'
     ;
@@ -579,11 +588,12 @@ resource
     ;
 
 variable
-    : type memberName
+    : type/*?*/ memberName
     ;
 
+//special rule for syntactic predicate
 variableStart
-    : type memberName ('in'|'=')
+    : type/*?*/ memberName ('in'|'=')
     ;
 
 // Lexer
@@ -608,6 +618,10 @@ Exponent
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
+CHARLITERAL
+    :   '@' ( ~ NonCharacterChars | EscapeSequence )
+    ;
+
 QUOTEDLITERAL
     :   '\''
         StringPart
@@ -623,19 +637,19 @@ SIMPLESTRINGLITERAL
 LEFTSTRINGLITERAL
     :   '"'
         StringPart
-        '{'
+        '${'
     ;
 
 RIGHTSTRINGLITERAL
-    :   '}'
+    :   '}$'
         StringPart
         '"'
     ;
 
 MIDDLESTRINGLITERAL
-    :   '}'
+    :   '}$'
         StringPart
-        '{'
+        '${'
     ;
 
 fragment
@@ -644,8 +658,13 @@ NonStringChars
     ;
 
 fragment
+NonCharacterChars
+    :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
+    ;
+
+fragment
 StringPart
-    :    ( ~ NonStringChars | EscapeSequence) *
+    :    ( ~ NonStringChars | EscapeSequence ) *
     ;
     
 fragment
@@ -655,7 +674,8 @@ EscapeSequence
         |   't' 
         |   'n' 
         |   'f' 
-        |   'r' 
+        |   'r'
+        |   's' 
         |   '\"' 
         |   '\''
         |   '$'
@@ -774,9 +794,13 @@ NONEMPTY
     :   'nonempty'
     ;
 
-/*PRODUCE
-    :   'produce'
-    ;*/
+GET
+    :   'get'
+    ;
+
+SET
+    :   'set'
+    ;
 
 RETURN
     :   'return'
@@ -804,6 +828,10 @@ THROW
 
 TRY
     :   'try'
+    ;
+
+RETRY
+    : 'retry'
     ;
 
 VOID
@@ -928,10 +956,6 @@ CARET
 
 PERCENT
     :   '%'
-    ;
-
-AT
-    :   '@'
     ;
 
 BANGEQ
