@@ -33,7 +33,7 @@ class Statements {
 	
 	//instantiation
 	Bar(true); 
-	Bar { b=false; }
+	Bar { b=false; };
 	
 	class Foo {
 		void instanceMethod(Natural n) {}
