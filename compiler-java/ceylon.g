@@ -95,6 +95,8 @@ POSTFIX_EXPR;
 EXISTS_EXPR;
 NONEMPTY_EXPR;
 IS_EXPR;
+GET_EXPR;
+SET_EXPR;
 }
 
 compilationUnit
@@ -156,7 +158,7 @@ typeParameterStart
 //all member declarations to begin with a keyword
 declarationOrStatement
     : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-    (declarationStart) => declaration
+    (declaration) => declaration
     | statement
     ;
 
@@ -271,7 +273,8 @@ memberParameters
     ;
 
 memberDefinition
-    : memberParameters? block
+options {backtrack = true;}
+    : memberParameters? (block | '='! expression ';'!)
     
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
@@ -382,9 +385,14 @@ satisfiedTypes
     ;
 
 type
-    : (qualifiedTypeName ( (typeParameterStart) => typeArguments )?
-    | 'subtype')
-    -> 'subtype'? ^(TYPE qualifiedTypeName ^(TYPE_ARGS typeArguments)?)?
+    : (regularType | 'subtype')
+    -> 'subtype'? regularType?
+    ;
+
+regularType
+    :
+    qualifiedTypeName ((typeParameterStart) => typeArguments )?
+    -> ^(TYPE qualifiedTypeName ^(TYPE_ARGS typeArguments)?)
     ;
 
 annotations
@@ -411,7 +419,7 @@ annotationArguments
 
 reflectedLiteral 
     : '#' ( memberName | (type ( '.' memberName )? ) )
-    -> ^(REFLECTED_LITERAL type? memberName)
+    -> ^(REFLECTED_LITERAL type? memberName?)
     ;
 
 qualifiedTypeName
@@ -564,10 +572,20 @@ defaultExpression
       ('?' defaultExpression)?
     ;
 
+/*
 existenceEmptinessExpression
     : e=rangeIntervalEntryExpression 
-    (('exists' -> ^(EXISTS_EXPR $e) | 'nonempty' -> ^(NONEMPTY_EXPR $e))
+    ('exists' -> ^(EXISTS_EXPR $e) 
+     | 'nonempty' -> ^(NONEMPTY_EXPR $e)
      | -> $e)
+    ;
+*/
+
+existenceEmptinessExpression
+    : e=rangeIntervalEntryExpression
+       (('exists' -> ^(EXISTS_EXPR $e))
+        | ('nonempty' -> ^(NONEMPTY_EXPR $e)) )?
+     -> $e	
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -599,8 +617,13 @@ unaryExpression
 prefixOperator
     : '$' |'-' |'++' |'--'
     ;
-    
+
 primary
+    :
+    getterSetterMethodReference
+    | prim ;	
+    
+prim
 options {backtrack=true;}
 /*
     : b=base 
@@ -613,7 +636,14 @@ options {backtrack=true;}
 // book seems to agree, but the above doesn't work.
 //    : base selector+ -> ^(SELECTOR_LIST base selector+)
  //   | base
-    : base selector*
+    :    
+    base selector* -> ^(EXPR base selector*)
+    ;
+
+getterSetterMethodReference
+    :
+    ('set' prim -> ^(SET_EXPR prim))
+    | ('get' prim -> ^(GET_EXPR prim))
     ;
 
 postfixOperator
@@ -648,7 +678,7 @@ enumeration
 selector 
     : memberInvocation
     | elementSelector
-    | (arguments -> ^(CALL_EXPR ^(ARG_LIST arguments)))
+    | (arguments -> ^(CALL_EXPR ^(ARG_LIST arguments?)))
     | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
