@@ -12,7 +12,7 @@ class ControlStructures {
 		for (String name in names) {
 			if (name=="Gavin") {
 				log.info("found");
-				break true;
+				break true
 			}
 			fail {
 				log.info("not found");
@@ -120,7 +120,7 @@ class ControlStructures {
 			String word = tokens.next().lowercase;
 			if ("hello"==word) {
 				log.info("found hello");
-				break;
+				break
 			}
 		}
 		
@@ -140,10 +140,10 @@ class ControlStructures {
 		}
 		
 		try ( Transaction(), Session s = Session() ) {
-			throw Exception();
+			throw Exception()
 		}
 		catch (Exception e) {
-			throw e;
+			throw e
 		}
 		
 		try ( Session s = Session() ) {
