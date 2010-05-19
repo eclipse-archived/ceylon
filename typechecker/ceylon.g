@@ -450,7 +450,7 @@ elementSelector
 
 elementsSpec
     : additiveExpression ( '...' | '..' additiveExpression )?
-    |  '...' additiveExpression	
+    //|  '...' additiveExpression	
     ;
 
 arguments 
@@ -486,12 +486,14 @@ positionalArguments
     ;
     
 positionalArgument
-    : (variableStart) => special 
+    : (variableStart) => specialArgument
     | assignable
     ;
 
-special
+specialArgument
     : type memberName (containment|specifier)
+    //| isCondition
+    //| existsCondition
     ;
 
 formalParameters
