@@ -6,6 +6,10 @@ class Methods {
 		
 		void methodWithParams(Whole amount, Object something) {}
 		
+		void methodWithMultipleParamLists()(Whole amount, Object something) {
+			return this.methodWithParams
+		}
+		
 		void abstractMethod();
 		
 		void methodReference() = this.voidMethod;
@@ -64,6 +68,15 @@ class Methods {
 		String simpleMethod() { return "Hello"; }
 		
 		String methodWithParam(Whole amount) { return $amount; }
+		
+		String methodWithMultipleParamLists(Boolean b)(Whole amount) {
+			if (b) {
+				return this.methodWithParam
+			}
+			else {
+				throw
+			}
+		}
 		
 		String abstractMethod();
 		
