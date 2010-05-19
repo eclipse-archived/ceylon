@@ -14,9 +14,9 @@ class ControlStructures {
 				log.info("found");
 				break true
 			}
-			fail {
-				log.info("not found");
-			}
+		}
+		fail {
+			log.info("not found");
 		}
 		
 		for (String first->String last in fullNames) {
