@@ -230,8 +230,11 @@ VarargsParam?
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
         <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
-        <literal>List&lt;Item&gt;</literal> and <literal>Item[Key]</literal> as a 
-        shorthand for <literal>Map&lt;Item,Key&gt;</literal>?</para></comment>
+        <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
+        and <literal>Item[Key]</literal> as a shorthand for 
+        <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
+        <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
+        as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
     
         <para>Every Ceylon class and interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
