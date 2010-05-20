@@ -17,6 +17,7 @@ tokens {
     ANNOTATION_NAME;
     ARG_LIST;
     ARG_NAME;
+    ANON_METH;
     ATTRIBUTE_SETTER;
     BREAK_STMT;
     CALL_EXPR;
@@ -43,6 +44,7 @@ tokens {
     MEMBER_NAME;
     MEMBER_TYPE;
     METHOD_DECL;
+    METHOD_EXPR;
     NAMED_ARG;
     UNNAMED_ARG;
     NIL;
@@ -290,7 +292,7 @@ memberInitializer
     : (specifier | initializer)
     ;
 
-/*
+
 //shortcut functor expression that makes the parameter list 
 //optional, but can appear only using the special smalltalk
 //style method protocol
@@ -298,7 +300,7 @@ undelimitedNamedArgumentDefinition
     : ( (formalParameterStart) => formalParameters )? 
       ( ('{') => block | implicationExpression )
     ;
-*/
+
     
 interfaceDeclaration
     :
@@ -523,20 +525,22 @@ expression
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
 expr
-    : implicationExpression
+    : methodExpression
       (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
     ;
 
-/*
+
 methodExpression
     : implicationExpression undelimitedNamedArgument*
+    -> ^(METHOD_EXPR implicationExpression undelimitedNamedArgument*)
     ;
 
 undelimitedNamedArgument
     : ( memberName | 'case' '(' expressions ')' ) 
-      undelimitedNamedArgumentDefinition 
+      undelimitedNamedArgumentDefinition
+      -> ^(NAMED_ARG memberName? ^(ANON_METH undelimitedNamedArgumentDefinition) ^(EXPR_LIST expressions?))
      ;
-*/
+
 
 implicationExpression
     : disjunctionExpression 
