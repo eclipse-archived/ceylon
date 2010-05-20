@@ -218,8 +218,12 @@ satisfiedTypes
     ;
 
 type
-    : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
+    : parameterizedType ( '[' parameterizedType? ']' )?
     | 'subtype'
+    ;
+    
+parameterizedType
+    : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
     ;
 
 annotations
@@ -405,12 +409,12 @@ primary
     ;
     
 base 
-    : type
-    | memberName
+    : memberName
     | literal
     | parExpression
     | enumeration
     | specialValue
+    | type typeSelector
     //| inlineClassDeclaration
     ;
     
@@ -434,6 +438,11 @@ selector
     | arguments
     | elementSelector
     | ('--' | '++')
+    ;
+
+typeSelector
+    : memberInvocation
+    | arguments
     ;
 
 memberInvocation
