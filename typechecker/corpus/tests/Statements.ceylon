@@ -38,6 +38,7 @@ class Statements {
 	class Foo {
 		void instanceMethod(Natural n) {}
 		static staticMethod(Float f) {}
+		class Baz(String s) {}
 	}
 	
 	//instance method invocation
@@ -47,5 +48,9 @@ class Statements {
 	//static method invocation
 	Foo.staticMethod(1.0); 
 	Foo.staticMethod { f=2.5; };
+	
+	//nested instance instantiation
+	Foo().Baz("hello");
+	Foo().Baz { s="goodbye"; };
 		
 }
