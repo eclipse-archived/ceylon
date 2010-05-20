@@ -469,6 +469,8 @@ if you prefer.";</programlisting>
         
         <programlisting>void out(String message) = log.info;</programlisting>
         
+        <programlisting>String newString(Character... chars) = String;</programlisting>
+        
         <para>Method references may appear as an argument to a functional parameter, either as 
         a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
         parameter invocation. The signature of the functonal parameter must match the signature 
