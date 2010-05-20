@@ -1,5 +1,6 @@
 import java.io.*;
 import org.antlr.runtime.*;
+import org.antlr.runtime.tree.*;
 
 public class Test
 {
@@ -14,12 +15,13 @@ public class Test
     CommonTokenStream tokens = new CommonTokenStream(lexer);
 
     ceylonParser parser = new ceylonParser(tokens);
-    ceylonParser.program_return_r = parser.program();
+    ceylonParser.compilationUnit_return r = parser.compilationUnit();
 
     CommonTree t = (CommonTree)r.getTree();
-    System.out.println(t.toStringtree);
+    System.out.println(t.toStringTree());
 
     // lexer.mSIMPLESTRINGLITERAL();
     // parser.stringLiteral();
+    System.out.println(t);
   }
 }

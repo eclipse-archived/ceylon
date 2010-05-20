@@ -17,6 +17,7 @@ tokens {
     ANNOTATION_NAME;
     ARG_LIST;
     ARG_NAME;
+    ATTRIBUTE_SETTER;
     BREAK_STMT;
     CALL_EXPR;
     CATCH_BLOCK;
@@ -30,6 +31,7 @@ tokens {
     DO_ITERATOR;
     EXPR;
     FINALLY_BLOCK;
+    FORMAL_PARAMETER;
     IF_FALSE;
     IF_STMT;
     IF_TRUE;
@@ -260,13 +262,15 @@ memberDeclaration
     ;
 
 memberHeader
-    : memberType memberName
-    -> ^(MEMBER_TYPE memberType) memberName
+    : (memberType memberName
+       -> ^(MEMBER_TYPE memberType) memberName)
+    | ('assign' memberName
+       -> ^(ATTRIBUTE_SETTER memberName))
     ;
 
 memberType
     :	
-    type | 'void' | 'assign' ;
+    type | 'void' ;
 
 memberParameters
     : typeParameters? formalParameters+ typeConstraints?
@@ -274,8 +278,8 @@ memberParameters
 
 memberDefinition
 options {backtrack = true;}
-    : memberParameters? (block | '='! expression ';'!)
-    
+    : memberParameters? ';'
+    | memberParameters? (block | '='! expression ';'!)    
     //allow omission of braces:
     /*: ( (memberParameterStart) => memberParameters )? 
       ( ('{') => block | implicationExpression ';' )*/
@@ -761,16 +765,21 @@ formalParameters
     -> ^(ARG_LIST formalParameter*)
     ;
 
+formalParameter
+    :
+     formalParameter_ -> ^(FORMAL_PARAMETER formalParameter_)
+    ;
+    
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
-formalParameter
+formalParameter_
     : annotations?
-      memberHeader
+      memberType ('...')? memberName
       memberParameters? 
       ( '->' type parameterName | '..' parameterName )? 
-      (specifier | '...')?
+      specifier?
     ;
 
 // Control structures.
