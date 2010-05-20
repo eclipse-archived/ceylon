@@ -105,7 +105,7 @@ package mutable class Adventure(Process process) {
 	
 	while (life>0) {
 		String input = process.readLine();
-		Iterator<String> tokens = input.tokens();
+		Iterator<String> tokens = input.tokens().iterator();
 		try {
 			String command = tokens.next();
 			switch(command)
