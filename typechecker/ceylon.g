@@ -250,8 +250,7 @@ reflectedLiteral
     ;
 
 qualifiedTypeName
-    : //( identifier '.' )* 
-    UIDENTIFIER ('.' UIDENTIFIER)*
+    : typeName ('.' typeName)*
     ;
 
 typeName
@@ -259,8 +258,7 @@ typeName
     ;
 
 annotationName
-    : //( identifier '.' )* 
-    LIDENTIFIER
+    : LIDENTIFIER
     ;
 
 memberName 
@@ -404,27 +402,12 @@ unaryExpression
     | primary
     ;
 
-primary
-    : ('get'|'set')? base selector*
-    ;
-    
-base 
-    : literal
-    | parExpression
-    | enumeration
-    | specialValue
-    | memberName
-    | type typeSelector
-    //| inlineClassDeclaration
-    ;
-    
-
 specialValue
     : 'this' 
     | 'super' 
-//    | 'delegate'
     | 'null'
     | 'none'
+//    | 'delegate'
     ;
 
 enumeration
@@ -433,34 +416,32 @@ enumeration
     //| '[' assignables? ']' 
     ;
 
+primary
+    : ('get'|'set')? base selector* 
+    ;
+    
+base 
+    : literal
+    | parExpression
+    | enumeration
+    | specialValue
+    | memberName
+    | typeName
+    //| inlineClassDeclaration
+    ;
+    
 selector 
-    : memberInvocation
-    | memberInstantiation
+    : member
     | arguments
     | elementSelector
     | ('--' | '++')
     ;
 
-typeSelector
-    : staticInvocation
-    | arguments
+member
+    : ('.' | '^.' | '?.' | '*.') 
+      ( memberName | typeName ) 
+      ( (typeArguments '(') => typeArguments )?
     ;
-
-staticInvocation
-    : '.' memberName
-    ;
-
-memberInvocation
-    : ('.' | '^.' | '?.' | '*.') memberName 
-    ;
-
-memberInstantiation
-    : ('.' | '^.' | '?.' | '*.') type arguments
-    ;
-
-/*parameterTypes
-    : '(' ( type (',' type)* )? ')'
-    ;*/
 
 elementSelector
     : '[' elementsSpec ']'

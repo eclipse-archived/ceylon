@@ -443,22 +443,24 @@ if you prefer.";</programlisting>
         
         <para>A method reference has the form:</para>
         
-        <programlisting>MethodReference :=  InstanceMethodReference | StaticMethodReference</programlisting>
+        <programlisting>MethodReference :=  InstanceMethodReference | StaticMethodReference | AttributeReference | ConstructorReference</programlisting>
         
         <!-- No ("set" | "get") since we don't have static attributes -->
         <programlisting>StaticMethodReference := (RegularType ".")? MemberName</programlisting>
             
-        <programlisting>InstanceMethodReference := ("set" | "get")? MemberReference</programlisting>
-            
+        <programlisting>InstanceMethodReference := MemberReference</programlisting>
+        
+        <programlisting>AttributeReference := ("set" | "get")? MemberReference</programlisting>
+        
         <programlisting>MemberReference :=  (Expression ".")? MemberName</programlisting>
+            
+        <programlisting>ConstructorReference := (Expression ".")? TypeName</programlisting>
             
         <para>where the member name is the name of a method.</para>
         
-        <comment><para>TODO: Should we allow "method references" to type instantiations?</para></comment>
-        
         <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
         <literal>get</literal> keyword after the member reference (and before the parameter
-        list)?</para></comment>
+        list)? Do we really, truly need the keyword at all?</para></comment>
         
         <para>A method reference may be used to define a method using <literal>=</literal>. 
         The two methods must have exactly the same signature.</para>
@@ -466,13 +468,6 @@ if you prefer.";</programlisting>
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
         
         <programlisting>void out(String message) = log.info;</programlisting>
-        
-        <comment><para>Question: is there a problem here with overloaded methods? Should we require
-        a formal parameter list on a method reference? That would allow us to eliminate the
-        <literal>get</literal> and <literal>set</literal> keywords, I suppose. But then we would
-        have a problem with methods with no parameters, where the method reference would look
-        like an invocation. Answer: I don't think there is a problem, because the overloaded 
-        versions are considered to all be the "same" method.</para></comment>
         
         <para>Method references may appear as an argument to a functional parameter, either as 
         a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
@@ -620,7 +615,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <para>Method invocations follow this schema:</para>
             
-            <programlisting>MethodInvocation := InstanceMethodReference TypeArguments? Arguments</programlisting>
+            <programlisting>MethodInvocation := (InstanceMethodReference | AttributeReference) TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
@@ -662,7 +657,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := (Expression ".")? RegularType Arguments</programlisting>
+            <programlisting>Instantiation := ConstructorReference TypeArguments? Arguments</programlisting>
             
             <para>For example:</para>
             
