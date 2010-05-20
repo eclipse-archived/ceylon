@@ -409,11 +409,11 @@ primary
     ;
     
 base 
-    : memberName
-    | literal
+    : literal
     | parExpression
     | enumeration
     | specialValue
+    | memberName
     | type typeSelector
     //| inlineClassDeclaration
     ;
@@ -435,18 +435,27 @@ enumeration
 
 selector 
     : memberInvocation
+    | memberInstantiation
     | arguments
     | elementSelector
     | ('--' | '++')
     ;
 
 typeSelector
-    : memberInvocation
+    : staticInvocation
     | arguments
     ;
 
+staticInvocation
+    : '.' memberName
+    ;
+
 memberInvocation
-    : ('.' | '^.' | '?.' | '*.') memberName
+    : ('.' | '^.' | '?.' | '*.') memberName 
+    ;
+
+memberInstantiation
+    : ('.' | '^.' | '?.' | '*.') type arguments
     ;
 
 /*parameterTypes
