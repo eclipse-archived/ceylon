@@ -48,7 +48,7 @@ Body?</programlisting>
         <programlisting>Import := "import" ImportElement ("." ImportElement)* ("." "*" | "alias" ImportElement)? ";"</programlisting>
         
         <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
-    
+        
      </section>
     
     <section id="annotationlist">
@@ -229,6 +229,10 @@ VarargsParam?
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
+        <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
+        <literal>List&lt;Item&gt;</literal> and <literal>Item[Key]</literal> as a 
+        shorthand for <literal>Map&lt;Item,Key&gt;</literal>?</para></comment>
+    
         <para>Every Ceylon class and interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
         <literal>subtype</literal>, represents the concrete type of the current instance 
