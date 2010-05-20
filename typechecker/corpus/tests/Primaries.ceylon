@@ -63,6 +63,7 @@ class Primaries {
 		void helloWorld() = Person.helloWorld;
 		String getName() = get person.name;
 		void setName(String name) = set person.name;
+		Person newPerson(String name) = Person;
 		
 	}
 	
