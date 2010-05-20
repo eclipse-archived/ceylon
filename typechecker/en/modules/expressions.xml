@@ -445,13 +445,16 @@ if you prefer.";</programlisting>
         
         <programlisting>MethodReference :=  InstanceMethodReference | StaticMethodReference</programlisting>
         
-        <programlisting>StaticMethodReference := ("set" | "get") (RegularType ".")? MemberName</programlisting>
+        <!-- No ("set" | "get") since we don't have static attributes -->
+        <programlisting>StaticMethodReference := (RegularType ".")? MemberName</programlisting>
             
         <programlisting>InstanceMethodReference := ("set" | "get")? MemberReference</programlisting>
             
         <programlisting>MemberReference :=  (Expression ".")? MemberName</programlisting>
             
         <para>where the member name is the name of a method.</para>
+        
+        <comment><para>TODO: Should we allow "method references" to type instantiations?</para></comment>
         
         <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
         <literal>get</literal> keyword after the member reference (and before the parameter
@@ -463,6 +466,13 @@ if you prefer.";</programlisting>
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
         
         <programlisting>void out(String message) = log.info;</programlisting>
+        
+        <comment><para>Question: is there a problem here with overloaded methods? Should we require
+        a formal parameter list on a method reference? That would allow us to eliminate the
+        <literal>get</literal> and <literal>set</literal> keywords, I suppose. But then we would
+        have a problem with methods with no parameters, where the method reference would look
+        like an invocation. Answer: I don't think there is a problem, because the overloaded 
+        versions are considered to all be the "same" method.</para></comment>
         
         <para>Method references may appear as an argument to a functional parameter, either as 
         a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
@@ -652,13 +662,14 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <para>Classes may be instantiated according to the following schema:</para>
             
-            <programlisting>Instantiation := RegularType Arguments</programlisting>
+            <programlisting>Instantiation := (Expression ".")? RegularType Arguments</programlisting>
             
             <para>For example:</para>
             
             <programlisting>Map&lt;String, Person&gt;(entries)</programlisting>
             <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
             <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
+            <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
             
             <programlisting>Panel {
     label = "Hello";
