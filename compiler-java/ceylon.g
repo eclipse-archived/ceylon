@@ -318,8 +318,7 @@ interfaceDeclaration
 interfaceBody
     //TODO: why can't we have toplevel declarations 
     //      inside an interface dec?
-    : '{' abstractMemberDeclaration* '}'
-       -> abstractMemberDeclaration*
+    : '{'! (abstractMemberDeclaration|typeDeclaration)* '}'!
     ;
 
 abstractMemberDeclarations
@@ -626,7 +625,7 @@ unaryExpression
     ;
 
 prefixOperator
-    : '$' |'-' |'++' |'--'
+    : '$' |'-' |'++' |'--' | '~'
     ;
 
 primary
@@ -703,14 +702,14 @@ memberInvocation
     ;*/
 
 elementSelector
-    : '[' elementsSpec ']'
-    -> ^(SUBSCRIPT_EXPR elementsSpec)
+    : '?'? '[' elementsSpec ']'
+    -> ^(SUBSCRIPT_EXPR '?'? elementsSpec)
     ;
 
 elementsSpec
-    : (lo=additiveExpression ( '...' | '..' hi=additiveExpression )?
+    : (lo=additiveExpression ( foo='...' | '..' hi=additiveExpression )?
     |  '...' hi=additiveExpression)
-    -> ^(LOWER_BOUND $lo)? ^(UPPER_BOUND $hi)?	
+    -> ^(LOWER_BOUND $lo)? ^(UPPER_BOUND $foo)? ^(UPPER_BOUND $hi)?	
     ;
 
 arguments 
