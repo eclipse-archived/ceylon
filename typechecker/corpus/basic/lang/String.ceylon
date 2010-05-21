@@ -1,5 +1,5 @@
 public class String(Character... characters) 
-        satisfies Comparable<String>, List<Character>, Case<String> {
+        satisfies Comparable<String>, Sequence<Character>, Case<String> {
    
     doc "Split the string into tokens, using the given
          separator characters."
