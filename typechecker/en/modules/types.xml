@@ -1138,7 +1138,7 @@ while (people nonempty) {
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    public List<X> by(Natural stepSize) { return ... } 
+    public Sequence<X> by(Natural stepSize) { return ... } 
     
 }]]></programlisting>
 
@@ -1207,7 +1207,7 @@ while (people nonempty) {
         join, subrange, contains and lookup operators, among others.</para> 
                 
         <programlisting><![CDATA[public class String(Character... characters) 
-        satisfies Comparable<String>, List<Character>, Case<String> {
+        satisfies Comparable<String>, Sequence<Character>, Case<String> {
     
     ... 
     
