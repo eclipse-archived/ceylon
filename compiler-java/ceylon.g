@@ -39,6 +39,7 @@ tokens {
     IMPORT_DECL;
     IMPORT_LIST;
     INIT_EXPR;
+    INSTANCE;
     INSTANCE_LIST;
     INTERFACE_DECL;
     MEMBER_NAME;
@@ -362,7 +363,7 @@ extendedType
     
 instances
     : instance (',' instance)* (';'|'...')
-    -> ^(INSTANCE_LIST instance*)
+    -> ^(INSTANCE_LIST ^(INSTANCE instance)*)
     // FIXME: Need to add ellipsis
     ;
 
@@ -530,15 +531,17 @@ expr
     ;
 
 
+// Backtracking shouldnm't be needed here, but the official ANTLr way to do it doesn't work.
 methodExpression
-    : implicationExpression undelimitedNamedArgument*
-    -> ^(METHOD_EXPR implicationExpression undelimitedNamedArgument*)
+options {backtrack=true;}
+    : e=implicationExpression undelimitedNamedArgument+ -> ^(METHOD_EXPR $e undelimitedNamedArgument+)
+    | implicationExpression
     ;
 
 undelimitedNamedArgument
     : ( memberName | 'case' '(' expressions ')' ) 
       undelimitedNamedArgumentDefinition
-      -> ^(NAMED_ARG memberName? ^(ANON_METH undelimitedNamedArgumentDefinition) ^(EXPR_LIST expressions?))
+      -> ^(NAMED_ARG memberName? ^(ANON_METH undelimitedNamedArgumentDefinition) ^(EXPR_LIST expressions)?)
      ;
 
 
@@ -645,7 +648,8 @@ options {backtrack=true;}
 //    : base selector+ -> ^(SELECTOR_LIST base selector+)
  //   | base
     :    
-    base selector* -> ^(EXPR base selector*)
+    base selector+ -> ^(EXPR base selector*)
+    | base
     ;
 
 getterSetterMethodReference
@@ -686,7 +690,7 @@ enumeration
 selector 
     : memberInvocation
     | elementSelector
-    | (arguments -> ^(CALL_EXPR ^(ARG_LIST arguments?)))
+    | (arguments -> ^(CALL_EXPR arguments))
     | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
@@ -723,7 +727,7 @@ parameterName
 
 namedArguments
     : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
-    -> ^(NAMED_ARG namedArgument)* varargArguments?
+    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* varargArguments?)
     ;
 
 varargArguments
