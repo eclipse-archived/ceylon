@@ -433,8 +433,8 @@ if you prefer.";</programlisting>
         representing the concrete type of the current instance.</para>
         
         <para>The keyword <literal>none</literal> refers to a special
-        value that is assignable to all types that extend 
-        <literal>Enumeration</literal>. This value has no elements.</para>
+        value that is assignable to <literal>Sequence</literal>. This 
+        value has no elements.</para>
         
     </section>
     
@@ -688,19 +688,19 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         </section>
         
         <section id="enumerations">
-            <title>Enumerations</title>
+            <title>Sequences</title>
             
-            <para>Enumerations may be instantiated according to the following simplified 
+            <para>Sequences may be instantiated according to the following simplified 
             syntax:</para>
             
-            <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+            <programlisting>Sequence := "{" ( Expression ("," Expression)* )? "}"</programlisting>
             
-            <para>This is a shortcut for instantiation of the <literal>Enumeration</literal>
-            class, where there is no need to explicitly specify the type.</para>
+            <para>This is a shortcut for instantiation of the <literal>Sequence</literal>
+            interface, where there is no need to explicitly specify the type.</para>
             
             <para>For example:</para>
             
-            <programlisting>Enumeration&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+            <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
             
             <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
             
@@ -718,7 +718,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
             <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
                 
-            <para>Enumerations are transparently converted to sets or maps, allowing sets 
+            <para>Sequences are transparently converted to sets or maps, allowing sets 
             and maps to be initialized as follows:</para>
         
             <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>

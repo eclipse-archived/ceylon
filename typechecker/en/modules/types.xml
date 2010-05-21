@@ -1114,15 +1114,15 @@ while (people nonempty) {
     </section>
     
     <section>
-        <title>Ranges and enumerations</title>
+        <title>Ranges</title>
         
-        <para>Ranges and enumerations both implement <literal>List</literal>,
-        therefore they support the join, subrange, contains and lookup operators, 
-        among others. Ranges may be constructed using the <literal>..</literal> 
+        <para>Ranges implement <literal>Sequence</literal>, therefore they 
+        support the join, subrange, contains and lookup operators, among 
+        others. Ranges may be constructed using the <literal>..</literal> 
         operator:</para> 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
-        satisfies List<X>, Case<Object>
+        satisfies Sequence<X>, Case<Object>
         where X>=Ordinal & X>=Comparable<X> { 
     
     doc "The first value in the range."
@@ -1142,8 +1142,10 @@ while (people nonempty) {
     
 }]]></programlisting>
 
-        <para>Enumerations represent an explicit list of values and may be constructed 
-        using a simplified syntax:</para>
+
+        <!-- 
+        <para>Enumerations represent an explicit list of values and may be 
+        constructed using a simplified syntax:</para>
         
         <programlisting><![CDATA[public class Enumeration<out X>(X... values)
         satisfies List<X>, Case<Object> {
@@ -1170,6 +1172,7 @@ while (people nonempty) {
     }
     
 }]]></programlisting>
+     -->
     
     </section>
     
