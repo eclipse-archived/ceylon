@@ -21,6 +21,6 @@ public class String(Character... characters)
     
     doc "Join the given strings, using this string as
          a separator."
-    public String join(String... strings) { return ... }
+    public String join(String... strings) { throw }
     
 }

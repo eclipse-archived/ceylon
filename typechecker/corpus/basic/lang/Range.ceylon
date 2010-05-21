@@ -13,6 +13,6 @@ public class Range<X>(X first, X last)
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    public List<X> by(Natural stepSize);  
+    public List<X> by(Natural stepSize) { throw }
     
 }
