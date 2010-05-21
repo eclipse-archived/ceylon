@@ -1052,7 +1052,7 @@ while (people nonempty) {
         
         <programlisting><![CDATA[public interface Comparable<in T> {
     
-    doc "The binary compare operator <=>. Compares this 
+    doc "The binary compare operator |<=>|. Compares this 
          object with the given object."
     public Comparison compare(T other);
     
@@ -1099,12 +1099,12 @@ while (people nonempty) {
         
         <programlisting><![CDATA[public interface Ordinal {
 
-    doc "The unary "++" operator. The successor of this instance."
+    doc "The unary |++| operator. The successor of this instance."
     throws #OutOfRangeException
            "if this is the maximum value"
     public subtype successor;
     
-    doc "The unary "--" operator. The predecessor of this instance."
+    doc "The unary |--| operator. The predecessor of this instance."
     throws #OutOfRangeException
            "if this is the minimum value"
     public subtype predecessor;
@@ -1138,7 +1138,7 @@ while (people nonempty) {
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    public List<X> by(Natural stepSize);  
+    public List<X> by(Natural stepSize) { return ... } 
     
 }]]></programlisting>
 
