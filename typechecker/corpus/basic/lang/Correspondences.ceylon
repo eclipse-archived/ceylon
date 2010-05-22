@@ -5,7 +5,7 @@ public extension class Correspondences<in U, out V>(Correspondence<U, V> corresp
     throws #UndefinedKeyException
            "if no value is defined for one of the given keys"
     public List<V> values(List<U> keys) {
-        return from (U key in keys) select correspondence.lookup(key)
+        return from (U key in keys) select (correspondence.lookup(key))
     }
     
     doc "Binary set lookup operator x[keys]. Returns a set of 
@@ -13,7 +13,7 @@ public extension class Correspondences<in U, out V>(Correspondence<U, V> corresp
     throws #UndefinedKeyException
            "if no value is defined for one of the given keys"
     public Set<V> values(Set<U> keys) {
-        return ( from (U key in keys) select correspondence.lookup(key) ).elements
+        return ( from (U key in keys) select (correspondence.lookup(key)) ).elements
     }
     
 }
