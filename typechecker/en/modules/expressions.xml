@@ -518,7 +518,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <para>Any invocation must specify values for parameters, either by listing or naming 
         parameter values.</para>
         
-        <programlisting>Arguments := PositionalArguments | NamedArguments</programlisting>
+        <programlisting>Arguments := PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
         <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
         specified.</para>
@@ -526,11 +526,11 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <section id="positionalarguments">
             <title>Positional arguments</title>
         
-        <para>When parameter values are listed, required parameters are specified first, in the 
-        order in which they were declared, followed by defaulted parameters, in the order they 
-        were declared. If there are any remaining defaulted parameters, they will be assigned 
-        their default values. On the other hand, if any parameter values are unassigned, they 
-        will be treated as varargs.</para>
+        <para>When arguments are listed, the arguments list is enclosed in parentheses. 
+        Required parameters are specified first, in the order in which they were declared, 
+        followed by defaulted parameters, in the order they were declared. If there are any 
+        remaining defaulted parameters, they are be assigned their default values. On the 
+        other hand, if any arguments are unassigned, they will be treated as varargs.</para>
             
         <programlisting>PositionalArguments := "(" ( Expression ("," Expression)* )? ")"</programlisting>
         
@@ -543,8 +543,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <section id="namedarguments">
             <title>Named arguments</title>
             
-        <para>When parameter values are named, required and defaulted parameter values are specified 
-        by name. Vararg parameter values are specified by listing them.</para>
+        <para>When arguments are named, the argument list is enclosed in braces. Required and 
+        defaulted parameter arguments are specified by name. Varargs are specified by listing 
+        them.</para>
 
         <programlisting>NamedArguments := "{" NamedArgument* VarargArguments? "}"</programlisting>
         
@@ -612,6 +613,55 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         </section>
         
+        <section>
+            <title>Functional arguments</title>
+            
+        <para>After a positional argument list, arguments to functional parameters 
+        may be specified with certain punctuation eliminated:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the functional parameter declares no formal parameters, the 
+                empty parentheses may be eliminated, and</para>
+            </listitem>
+            <listitem>
+                <para>if the body of the method implementation consists of a single
+                <literal>return</literal> directive followed by a parenthesized
+                expression, the braces and <literal>return</literal> keyword may be 
+                eliminated.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>These arguments are called <emphasis>functional arguments</emphasis> of
+        a positional parameter invocation.</para>
+                
+        <programlisting>FunctionalBody := FormalParameters? ( Block | "(" Expression ")" )</programlisting>
+                
+        <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>having (Person p) (p.age>18)</programlisting>
+        
+        <programlisting>by (Float x, Float y) ( x&lt;=&gt;y )</programlisting>
+        
+        <programlisting>ifTrue (x+1)</programlisting>
+        
+        <programlisting>each { count+=1; }</programlisting>
+        
+        <programlisting>perform (Person p) { log.info(p.name); }</programlisting>
+        
+        <para>Functional arguments are listed without any additional punctuation:</para>
+        
+        <programlisting>ifTrue (x+1) ifFalse (x-1)</programlisting>
+        
+        <programlisting>select (Person p) (p.name) having (Person p) (p.age>18)</programlisting>
+        
+        <para>Arguments must be listed in the same order as the formal parameters are 
+        declared by the method declaration.</para>
+            
+        </section>
+        
         <section id="methodinvocation">
             <title>Method invocation</title>
             
@@ -624,8 +674,11 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
-            <programlisting>printer.print { "Names: ", from (Person p in people) select p.name }</programlisting>
+            <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
             <programlisting>set person.name("Gavin")</programlisting>
+            
+            <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y );</programlisting>
+            <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
             
             <para>The value of a method invocation is the return value of the method.
             The parameter values are passed to the formal parameters of the method.</para>
@@ -649,6 +702,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
             <programlisting>get Process.args()</programlisting>
             
+            <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
+            <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
+
             <para>The value of a static method invocation is the return value of the static method.
             The parameter values are passed to the formal parameters of the method.</para>
             
@@ -687,6 +743,149 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
         </section>
         
+        <section id="iteration">
+            <title>Iteration</title>
+            
+        <para>A specialized invocation syntax is provided for static methods which iterate 
+        collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
+        annotated <literal>iterated</literal>, and all remaining parameters are functional
+        parameters, then the method may be invoked according to the following protocol:</para>
+        
+        <programlisting>StaticMethodReference "(" ForIterator ")" FunctionalArguments</programlisting>
+        
+        <para>And then if a functional parameter has a formal parameter of type 
+        <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
+        not be declared by its argument. Instead, the parameter is declared by the iterator.</para>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static
+List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
+                  Boolean having(coordinated X x),
+                  Y select(coordinated X x));</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+                  
+        <programlisting>List&lt;String&gt; names = from (Person p in people) having (p>20) select (p.name);</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>List&lt;String&gt; names = from (people) having (Person p) (p>20) select (Person p) (p.name);</programlisting>
+        
+        <para>Or, we may invoke the method as follows:</para>
+                  
+        <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
+                      having (user.authorized(key)) 
+                      select ("${key} ${value}");</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>List&lt;String&gt; labels = from (namedValues)
+                      having (Key key -> Value value) (user.authorized(key)) 
+                      select (Key key -> Value value) ("${key} ${value}");</programlisting>
+                      
+        </section>
+        
+        <section id="localdefinition">
+            <title>Variable definition</title>
+            
+        <para>A specialized invocation syntax is also provided for static methods which define 
+        a variable. If the first parameter of the method is of type <literal>X</literal>,
+        annotated <literal>specified</literal>, and all remaining parameters are functional
+        parameters, then the method may be invoked according to the following protocol:</para>
+        
+        <programlisting>StaticMethodReference "(" Variable Specifier ")" FunctionalArguments</programlisting>
+        
+        <para>And then if a functional parameter has a formal parameter of type 
+        <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
+        not be declared by its argument. Instead, the parameter is declared by the variable 
+        specifier.</para>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static
+Y ifExists&lt;X,Y&gt;(specified optional X value, 
+                Y then(coordinated X x), 
+                Y otherwise());</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+                  
+        <programlisting>Decimal amount = ifExists(Payment p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>Decimal amount = ifExists(order.payment) then (Payment p) (p.amount) otherwise (0.0);</programlisting>
+        
+         <para>And for the following method declaration:</para>
+        
+        <programlisting>public static
+Y using&lt;X,Y&gt;(specified X resource, 
+             Y seek(coordinated X x) )
+  where X >= Usable;</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+                  
+        <programlisting>Order order = using (Session s = Session()) seek (s.get(#Order, oid));</programlisting>
+        
+        <para>Which is equivalent to:</para>
+        
+        <programlisting>Order order = using (Session()) seek (Session s) (s.get(#Order, oid));</programlisting>
+        
+        </section>
+        
+        <!--section id="caseslist">
+            <title>Lists of cases</title>
+        
+        <para>Finally, a specialized invocation syntax is provided for methods which define 
+        a list of cases. If the method has a parameter of type 
+        <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
+        <literal>cases</literal>, the parameter may be specified according to:</para>
+        
+        <programlisting>(case "(" Case ")" SimpleBlockExpression)+</programlisting>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static
+Y select&lt;X, Y&gt;(X selector,
+              cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... cases);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+        
+        <programlisting>return select (payment.type) 
+    case (check) payByCheck(payment)
+    case (card) payByCard(payment);
+</programlisting>
+        
+        </section-->
+        <!--  
+        <para>Or, If the method has a parameter of type 
+        <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,
+        the parameter value may be specified according to:</para>
+        
+        <programlisting>(LIdentifier BlockExpression)+</programlisting>
+        
+        <para>For example, for the following method declaration:</para>
+        
+        <programlisting>public static
+X attempt&lt;X&gt;(functor X() seek, 
+             cases functor X(E e) where E>=Exception... except);</programlisting>
+                  
+        <para>We may invoke the method as follows:</para>
+        
+        <programlisting>attempt() 
+seek { 
+    produce doSomething(); 
+} 
+except (SomethingWrong sw) {
+    log.info(sw);
+    produce -1;
+}
+except (SomethingElseWrong sew) {
+    log.warn(sew);
+    produce -2;
+}</programlisting>
+        -->
+
         <section id="enumerations">
             <title>Sequences</title>
             
@@ -2623,84 +2822,30 @@ List list = list.select( new F1&lt;Integer,Boolean&gt;() {
     
     </section-->
                
-    <section id="smalltalkprotocol">
+    <!--section id="smalltalkprotocol">
         <title>Smalltalk-style method invocation</title>
         
         <para>Ceylon provides a special method invocation protocol inspired by Smalltalk 
-        for specifying arguments to functional parameters of a method. This special
-        invocation protocol may be used to imitate the syntax of built-in control
+        This special invocation protocol may be used to imitate the syntax of built-in control
         structures. For example:</para>
         
-        <programlisting>sort(amounts) by (Float x, Float y) { return x&lt;=&gt;y };</programlisting>
-        
-        <programlisting>people select (Person p) p.name having (Person p) p.age>18;</programlisting>
+        <programlisting>people select (Person p) (p.name) having (Person p) (p.age>18);</programlisting>
         
         <programlisting>x>10
-isTrue {
+ifTrue {
     log.debug("big");
     big(x);
 }
-isFalse {
+ifFalse {
     log.debug("little");
     little(x);
 };</programlisting>
         
-        <para>In a Smalltalk-style method invocation, an argument to a functional 
-        parameter may be specified with certain punctuation eliminated:</para>
+        <para>In a Smalltalk-style method invocation, there no punctuation appears between
+        the reciever and the method name, and all arguments are functional arguments.
+        The first functional argument directly follows the method name.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>if the functional parameter declares no parameters, the empty
-                parentheses may be eliminated, and</para>
-            </listitem>
-            <listitem>
-                <para>if the body of the method implementation consists of a single
-                <literal>return</literal> directive, the braces and <literal>return</literal>
-                keyword may be eliminated.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>These arguments are called <emphasis>functional arguments</emphasis> of
-        a positional parameter invocation.</para>
-        
-        <programlisting>FunctionalBody := FormalParameters? (Block | Expression)</programlisting>
-        
-        <programlisting>FunctionalArgument := ParameterName FunctionalBody</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>elements (Person p) p.age>18</programlisting>
-        
-        <programlisting>isTrue x+1</programlisting>
-        
-        <programlisting>each { count+=1; }</programlisting>
-        
-        <para>Functional arguments are listed without any seperating punctuation:</para>
-        
-        <programlisting>isTrue x+1 isFalse x-1</programlisting>
-        
-        <programlisting>select (Person p) p.name having (Person p) p.age>18</programlisting>
-        
-        <para>Arguments must be listed in the same order as the formal parameters are 
-        declared.</para>
-                
-        <para>The method invocation protocol begins with either:</para>
-
-        <itemizedlist>
-            <listitem>
-                <para>a normal method invocation with a period before the method name 
-                and an ordered list of arguments surrounded be parentheses, or</para>
-            </listitem>
-            <listitem>
-                <para>the receiving expression, followed by the the method name, without 
-                the period or parentheses, followed immediately by the first block 
-                argument.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>MethodInvocationWithFunctionalArguments :=
-( MemberReference TypeArguments? PositionalArguments | Expression MemberName FunctionalBody ) 
-FunctionalArgument*</programlisting>
+        <programlisting>SmalltalkInvocation := (Expression MemberName FunctionalBody) FunctionalArguments?</programlisting>
                 
         <para>Some additional examples:</para>
         
@@ -2708,15 +2853,15 @@ FunctionalArgument*</programlisting>
     log.info("${name} ${value}"); 
 };</programlisting>
         
-        <programlisting>Set&lt;People&gt; adults = people elements (Person p) p.age>18;</programlisting>
+        <programlisting>Set&lt;People&gt; adults = people elements (Person p) (p.age>18);</programlisting>
 
-        <programlisting>int index = lineItems firstIndex (LineItem li) !li.product.available;</programlisting>
+        <programlisting>int index = lineItems firstIndex (LineItem li) (!li.product.available);</programlisting>
         
-        <programlisting>people sort (Person p, Person q) p.name&lt;=&gt;q.name;</programlisting>
+        <programlisting>people sort (Person p, Person q) (p.name&lt;=&gt;q.name);</programlisting>
         
-        <programlisting>String label = x>10 isTrue "big" isFalse "little";</programlisting>
+        <programlisting>String label = x>10 ifTrue ("big") ifFalse ("little");</programlisting>
         
-        <programlisting>optional specialPerson = search (people) findFirst (Person p) p.special orIfNoneFound null;</programlisting>
+        <programlisting>optional specialPerson = people findFirst (Person p) (p.special) orIfNoneFound (me);</programlisting>
         
         <comment><para>TODO: there is a small problem here. In <literal>x.foo(y) bar z</literal>, 
         is <literal>bar</literal> the name of a method or of a parameter of 
@@ -2732,150 +2877,8 @@ FunctionalArgument*</programlisting>
         <programlisting>Integer x = y integer;</programlisting>
         <programlisting>log info "Hello World";</programlisting>
         <programlisting>log.info(", " join org.employees*.name);</programlisting>
-
-        <section id="iteration">
-            <title>Iteration</title>
-            
-        <para>A specialized invocation syntax is provided for methods which iterate 
-        collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
-        annotated <literal>iterated</literal>, and all remaining parameters are functional
-        parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MemberReference "(" ForIterator ")" BlockArguments</programlisting>
-        
-        <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
-        with a single parameter of type <literal>X</literal> need not declare its formal
-        parameter. Instead, its parameter is declared by the iterator.</para>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>public static
-List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
-                  coordinated Boolean having(X x),
-                  coordinated Y select(X x));</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-                  
-        <programlisting>List&lt;String&gt; names = from (Person p in people) having p>20 select p.name;</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>List&lt;String&gt; names = from (people) having (Person p) p>20 select (Person p) p.name;</programlisting>
-        
-        <para>Or, we may invoke the method as follows:</para>
-                  
-        <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
-                      having user.authorized(key) 
-                      select "${key} ${value}";</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>List&lt;String&gt; labels = from (namedValues)
-                      having (Key key -> Value value) user.authorized(key) 
-                      select (Key key -> Value value) "${key} ${value}";</programlisting>
-                      
-        </section>
-        
-        <section id="localdefinition">
-            <title>Variable definition</title>
-            
-        <para>A specialized invocation syntax is also provided for methods which define 
-        a variable. If the first parameter of the method is of type <literal>X</literal>,
-        annotated <literal>specified</literal>, and all remaining parameters are functional
-        parameters, then the method may be invoked according to the following protocol:</para>
-        
-        <programlisting>MemberReference "(" Variable Specifier ")" BlockArguments</programlisting>
-        
-        <para>And each functional argument for a parameter annotated <literal>coordinated</literal>
-        with a single parameter of type <literal>X</literal> need not declare its formal
-        parameter. Instead, its parameter is declared by the variable specifier.</para>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>public static
-Y ifExists&lt;X,Y&gt;(specified optional X value, 
-                coordinated Y then(X x), 
-                Y otherwise());</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-                  
-        <programlisting>Decimal amount = ifExists(Payment p = order.payment) then p.amount otherwise 0.0;</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>Decimal amount = ifExists(order.payment) then (Payment p) p.amount otherwise 0.0;</programlisting>
-        
-         <para>And for the following method declaration:</para>
-        
-        <programlisting>public static
-Y using&lt;X,Y&gt;(specified X resource, 
-             coordinated Y seek(X x) )
-  where X >= Usable;</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-                  
-        <programlisting>Order order = using (Session s = Session()) seek s.get(#Order, oid);</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>Order order = using (Session()) seek (Session s) s.get(#Order, oid);</programlisting>
-        
-        </section>
-        
-        <!--section id="caseslist">
-            <title>Lists of cases</title>
-        
-        <para>Finally, a specialized invocation syntax is provided for methods which define 
-        a list of cases. If the method has a parameter of type 
-        <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
-        <literal>cases</literal>, the parameter may be specified according to:</para>
-        
-        <programlisting>(case "(" Case ")" SimpleBlockExpression)+</programlisting>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>public static
-Y select&lt;X, Y&gt;(X selector,
-              cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... cases);</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-        
-        <programlisting>return select (payment.type) 
-    case (check) payByCheck(payment)
-    case (card) payByCard(payment);
-</programlisting>
-        
-        </section-->
-        <!--  
-        <para>Or, If the method has a parameter of type 
-        <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,
-        the parameter value may be specified according to:</para>
-        
-        <programlisting>(LIdentifier BlockExpression)+</programlisting>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>public static
-X attempt&lt;X&gt;(functor X() seek, 
-             cases functor X(E e) where E>=Exception... except);</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-        
-        <programlisting>attempt() 
-seek { 
-    produce doSomething(); 
-} 
-except (SomethingWrong sw) {
-    log.info(sw);
-    produce -1;
-}
-except (SomethingElseWrong sew) {
-    log.warn(sew);
-    produce -2;
-}</programlisting>
-        -->
-        
-    </section>
+    </section-->
     
         <!--
         <section>
