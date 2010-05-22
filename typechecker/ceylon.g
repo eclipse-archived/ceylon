@@ -407,7 +407,7 @@ base
 selector 
     : member
     | arguments
-    | undelimitedNamedArgument
+    | functionalArgument
     | elementSelector
     | ('--' | '++')
     ;
@@ -467,10 +467,10 @@ positionalArgument
 
 //a smalltalk-style parameter to a positional parameter
 //invocation
-undelimitedNamedArgument
+functionalArgument
     : ( memberName | 'case' '(' expressions ')' )
     ( (formalParameterStart)=> formalParameters )? 
-    ( block | parExpression | literal | specialValue )
+    ( block | parExpression /*| literal | specialValue*/ )
     ;
     
 specialArgument
