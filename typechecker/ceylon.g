@@ -36,38 +36,50 @@ block
       positionalArguments?
       satisfiedTypes?
       inlineClassBody
-    ;*/
+    ;
 
 inlineClassBody
     : '{' declarationOrStatement* '}'
-    ;
+    ;*/
 
-//we could eliminate the backtracking by requiring
+//We could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
+//Note that this accepts more then the language spec
+//since it does not enforce that enumerated class
+//instances have to be listed together at the top
+//of the class body
 declarationOrStatement
     : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-      (declarationStart) => annotations? ( memberDeclaration | typeDeclaration )
+      (declarationStart) => annotations? ( memberDeclaration | typeDeclaration | instance )
     | statement
     ;
 
 //special rule for syntactic predicates
 declarationStart
     :  declarationModifier 
-    //TODO: type inference: (type|'assign'|'void'|'def')
-    | ( userAnnotation annotations? )? ( (type|'assign'|'void') LIDENTIFIER | ('class'|'interface'|'alias') UIDENTIFIER )
+    | ( userAnnotation annotations? )? ( memberDeclarationStart | typeDeclarationStart )
+    ;
+
+memberDeclarationStart
+    : (type|'assign'|'void'|'case') LIDENTIFIER
+    ;
+    
+typeDeclarationStart
+    : ('class'|'interface'|'alias') UIDENTIFIER
     ;
 
 //by making these things keywords, we reduce the amount of
 //backtracking
 declarationModifier 
     : 'public'
-    | 'package'
     | 'module'
+    | 'package'
+    | 'private'
+    | 'abstract'
+    | 'default'
     | 'override'
     | 'optional'
     | 'mutable'
-    | 'abstract'
-    | 'final'
     | 'static'
     | 'once'
     | 'deprecated'
@@ -77,8 +89,8 @@ declarationModifier
 
 statement 
     : expressionStatement
-//    | eventListener
     | controlStructure
+//    | eventListener
     ;
 
 expressionStatement
@@ -161,28 +173,16 @@ classDeclaration
         classBody
     ;
 
-//TODO: refactor, sucking instances into declarationOrStatement,
-//      to eliminate the backtracking. Or begin the instance list
-//      with a keyword
 classBody
-    : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
+    : '{' declarationOrStatement* '}'
     ;
 
 extendedType
     : 'extends' type positionalArguments
     ;
-    
-instances
-    : instance (',' instance)* (';'|'...')
-    ;
 
 instance
-    : annotations? 'case' memberName arguments?
-    ;
-
-//special rule for syntactic predicate
-instanceStart
-    : annotations? 'case'
+    : 'case' memberName arguments? (','|';'|'...')
     ;
 
 typeConstraint
