@@ -468,11 +468,18 @@ positionalArgument
 //a smalltalk-style parameter to a positional parameter
 //invocation
 functionalArgument
-    : ( memberName | 'case' '(' expressions ')' )
-    ( (formalParameterStart)=> formalParameters )? 
-    ( block | parExpression /*| literal | specialValue*/ )
+    : functionalArgumentHeader functionalArgumentDefinition
     ;
     
+functionalArgumentHeader
+    : parameterName | 'case' '(' expressions ')'
+    ;
+
+functionalArgumentDefinition
+    : ( (formalParameterStart) => formalParameters )? 
+      ( block | parExpression /*| literal | specialValue*/ )
+    ;
+
 specialArgument
     : type memberName (containment|specifier)
     //| isCondition
