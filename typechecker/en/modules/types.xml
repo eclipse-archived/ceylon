@@ -396,7 +396,7 @@ while (i.more) {
     throws #UndefinedKeyException
            "if no value is defined for one of the given keys"
     public List<V> values(List<U> keys) {
-        return from (U key in keys) select correspondence.lookup(key)
+        return from (U key in keys) select (correspondence.lookup(key))
     }
     
     doc "Binary set lookup operator x[keys]. Returns a set of 
@@ -404,7 +404,7 @@ while (i.more) {
     throws #UndefinedKeyException
            "if no value is defined for one of the given keys"
     public Set<V> values(Set<U> keys) {
-        return ( from (U key in keys) select correspondence.lookup(key) ).elements
+        return ( from (U key in keys) select (correspondence.lookup(key)) ).elements
     }
     
 }]]></programlisting>
@@ -677,7 +677,7 @@ while (i.more) {
         
     doc "The elements of the collection, sorted in natural order."
     public List<X> sortedElements() {
-        return collection.sortedElements() by (X x, X y) x<=>y;
+        return collection.sortedElements() by (X x, X y) (x<=>y);
     }
     
 }]]></programlisting>
@@ -904,7 +904,7 @@ while (people nonempty) {
     doc "Reorder the elements of the list, according to the 
          natural order."
     public void resort() {
-        list.resort() by (X x, X y) x<=>y;
+        list.resort() by (X x, X y) (x<=>y);
     }
     
 }]]></programlisting>
