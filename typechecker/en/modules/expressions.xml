@@ -11,8 +11,8 @@
             <para>literal values,</para>
         </listitem>
         <listitem>
-            <para>invocation of methods and instantiation of classes and 
-            enumerations,</para>
+            <para>invocation of methods, instantiation of classes and 
+            enumeration of sequences,</para>
         </listitem>
         <listitem>
             <para>evaluation and assignment of attributes, and</para>
@@ -585,7 +585,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment>
         
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
-        thereby allowing the braces around an enumeration instantiation to be omitted in this case?</para></comment>
+        thereby allowing the braces around a sequence enumeration to be omitted in this case?</para></comment>
 
         </section>
 
@@ -887,16 +887,12 @@ except (SomethingElseWrong sew) {
         -->
 
         <section id="enumerations">
-            <title>Sequences</title>
+            <title>Sequence enumeration</title>
             
-            <para>Sequences may be instantiated according to the following simplified 
-            syntax:</para>
+            <para>A sequence may be instantiated by enumerating the elements:</para>
             
-            <programlisting>Sequence := "{" ( Expression ("," Expression)* )? "}"</programlisting>
-            
-            <para>This is a shortcut for instantiation of the <literal>Sequence</literal>
-            interface, where there is no need to explicitly specify the type.</para>
-            
+            <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+                        
             <para>For example:</para>
             
             <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
@@ -904,14 +900,11 @@ except (SomethingElseWrong sew) {
             <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
             
             <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
-            for a special value that can be assigned to any enumeration type.</para>
-            
-            <!--comment><para>Note: <literal>none</literal> can appear as a functor body, but 
-            <literal>{ ... }</literal> cannot (unless surrounded by parentheses).</para></comment-->
-                        
+            for a special value that can be assigned to <literal>Sequence</literal>.</para>
+                                    
             <para>There are no true literals for lists, sets or maps. However, the 
             <literal>..</literal> and <literal>-></literal> operators, together with the 
-            convenient enumeration constructor syntax, and some built-in extensions help 
+            convenient sequence enumeration syntax, and some built-in extensions help 
             us achieve the desired effect.</para>
 
             <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
