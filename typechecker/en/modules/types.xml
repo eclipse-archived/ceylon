@@ -1682,7 +1682,7 @@ while (people nonempty) {
          and return the result. Otherwise, return a null
          value."
     public static optional Y ifExists<X,Y>(specified optional X value,
-                                           coordinated Y then(X x)) {
+                                           Y then(coordinated X x)) {
         if (exists value) {
             return then(value)
         }
@@ -1695,7 +1695,7 @@ while (people nonempty) {
          otherwise, evaluate second block. Return result
          of evaluation."
     public static Y ifExists<X,Y>(specified optional X value,
-                                  coordinated Y then(X x), 
+                                  Y then(coordinated X x), 
                                   Y otherwise()) {
         if (exists value) {
             return then(value)
@@ -1752,7 +1752,7 @@ while (people nonempty) {
 
     doc "Count the elements for with the block evaluates to true."
     public static Natural count<X>(iterated Iterable<X> elements,
-                                   coordinated Boolean having(X x)) {
+                                   Boolean having(coordinated X x)) {
         mutable Natural count := 0;
         for (X x in elements) {
             if ( having(x) ) {
@@ -1764,7 +1764,7 @@ while (people nonempty) {
     
     doc "Return true iff for every element, the block evaluates to true."
     public static Boolean forAll<X>(iterated Iterable<X> elements,
-                                    coordinated Boolean every(X x)) {
+                                    Boolean every(coordinated X x)) {
         for (X x in elements) {
             if ( !every(x) ) {
                 return false
@@ -1775,14 +1775,14 @@ while (people nonempty) {
     
     doc "Return true iff for some element, the block evaluates to true."
     public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                    coordinated Boolean some(X x)) { 
+                                    Boolean some(coordinated X x)) { 
         return !forAll(elements, (X x) !some(x)); 
     }
     
     doc "Return the first element for which the block evaluates to true,
          or a null value if no such element is found."
     public static optional X first<X>(iterated Iterable<X> elements,
-                                      coordinated Boolean having(X x)) {
+                                      Boolean having(coordinated X x)) {
         for (X x in elements) {
             if ( having(x) ) {
                 return x
@@ -1795,7 +1795,7 @@ while (people nonempty) {
          true, or the result of evaluating the second block, if no such
          element is found."
     public static X first<X>(iterated Iterable<X> elements,
-                             coordinated Boolean having(X x),
+                             Boolean having(coordinated X x),
                              X otherwise()) {
         if(exists X first = first(elements, having)) {
             return first
@@ -1813,8 +1813,8 @@ while (people nonempty) {
          block evaluates to true, ordered using the second block,
          if specified."
     public static List<X> from<X>(iterated Iterable<X> elements,
-                                  coordinated Boolean having(X x),
-                                  optional coordinated Comparison by(X x, X y) = null) {
+                                  Boolean having(coordinated X x),
+                                  optional Comparable by(coordinated X x) = null) {
         return from(elements, having, (X x) x, by)
     }
 
@@ -1822,8 +1822,8 @@ while (people nonempty) {
          Build a list of the resulting values, ordered using the second 
          block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
-                                    coordinated Y select(X x),
-                                    optional coordinated Comparable by(X x) = null)  {
+                                    Y select(coordinated X x),
+                                    optional Comparable by(coordinated X x) = null)  {
         return from(elements, (X x) true, select, by)
     }
 
@@ -1832,9 +1832,9 @@ while (people nonempty) {
          Build a list of the resulting values, ordered using the third 
          block, if specified."
     public static List<Y> from<X,Y>(iterated Iterable<X> elements,
-                                    coordinated Boolean having(X x), 
-                                    coordinated Y select(X x),
-                                    optional coordinated Comparable by(Y x, Y y) = null) {
+                                    Boolean having(coordinated X x), 
+                                    Y select(coordinated X x),
+                                    optional Comparable by(coordinated X x) = null) {
         OpenList<Y> list = ArrayList<Y>();
         for (X x in elements) {
             if ( having(x) ) {
@@ -1855,7 +1855,7 @@ while (people nonempty) {
          Each |Entry| is constructed from the key and the value result 
          of the evaluation."
     public static Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
-                                        coordinated V to(U key)) { 
+                                        V to(coordinated U key)) { 
         return map(keys, (U key) key->to(key))
     }
 
@@ -1863,14 +1863,14 @@ while (people nonempty) {
          Each |Entry| is constructed from the value and the key result 
          of the evaluation."
     public static Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
-                                      coordinated V from(U key)) { 
-        return map(values, (V value) value->from(value))
+                                      U from(coordinated V value)) { 
+        return map(values, (V value) from(value)->value)
     }
 
     doc "Construct a |Map| by evaluating the block for each given object
          and collecting the resulting |Entry|s."
     public static Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
-                                      coordinated Entry<U,V> of(X element)) {
+                                      Entry<U,V> of(coordinated X element)) {
         OpenMap<U,V> map = HashMap<U,V>();
         for (X x in elements) {
             map.add( of(x) );
@@ -1895,7 +1895,7 @@ while (people nonempty) {
     
     doc "Using the given resource, attempt to evaluate the first block."
     public static Y using<X,Y>(specified X resource,
-                               coordinated Y seek(X x))
+                               Y seek(coordinated X x))
                     where X >= Usable {
         try (resource) {
             return seek(resource)
@@ -1906,7 +1906,7 @@ while (people nonempty) {
          If an exception occurs that matches the block, evaluate the 
          second block."
     public static Y using<X,Y,E>(specified X resource,
-                                 coordinated Y seek(X x),
+                                 Y seek(coordinated X x),
                                  Y except(E e))
                     where X >= Usable {
         try (resource) {
