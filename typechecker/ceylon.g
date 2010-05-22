@@ -218,12 +218,12 @@ satisfiedTypes
     ;
 
 type
-    : parameterizedType ( '[' parameterizedType? ']' )?
+    : parameterizedType //( '[' parameterizedType? ']' )?
     | 'subtype'
     ;
     
 parameterizedType
-    : qualifiedTypeName ( (typeParameterStart) => typeArguments )?
+    : qualifiedTypeName typeArguments?
     ;
 
 annotations
@@ -381,6 +381,8 @@ existenceEmptinessExpression
 rangeIntervalEntryExpression
     : additiveExpression
       (('..'|'->') additiveExpression)?
+    //: additiveExpression ('->' additiveExpression)?
+    //| '[' additiveExpression ',' additiveExpression ']'
     ;
 
 additiveExpression
@@ -450,6 +452,7 @@ elementSelector
 elementsSpec
     : additiveExpression ( '...' | '..' additiveExpression )?
     //|  '...' additiveExpression	
+    //: additiveExpression ( ',' additiveExpression? )?
     ;
 
 arguments 
