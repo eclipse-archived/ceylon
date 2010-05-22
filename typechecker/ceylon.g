@@ -42,10 +42,6 @@ inlineClassBody
     : '{' declarationOrStatement* '}'
     ;
 
-typeParameterStart
-    : '<'
-    ;
-
 //we could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
 declarationOrStatement
