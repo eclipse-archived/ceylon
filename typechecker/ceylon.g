@@ -51,14 +51,6 @@ declarationOrStatement
     ;
 
 //special rule for syntactic predicates
-//be careful with this one, since it 
-//matches "()", which can also be an 
-//argument list
-formalParameterStart
-    : '(' (declarationStart | ')')
-    ;
-
-//special rule for syntactic predicates
 declarationStart
     :  declarationModifier 
     //TODO: type inference: (type|'assign'|'void'|'def')
@@ -83,9 +75,6 @@ declarationModifier
     | 'extension'
     ;
 
-//Even though it looks like this is non-associative
-//assignment, it is actually right associative because
-//assignable can be an assignment
 statement 
     : expressionStatement
 //    | eventListener
@@ -125,22 +114,15 @@ memberParameters
     : typeParameters? formalParameters+ typeConstraints?
     ;
 
+//TODO: should we allow the shortcut style of method
+//      definition for a method or getter which returns
+//      a parExpression, just like we do for smalltalk
+//      style parameters below?
 memberDefinition
     : memberParameters? block
-    //allow omission of braces:
-    /*: ( (memberParameterStart) => memberParameters )? 
-      ( ('{') => block | implicationExpression ';' )*/
     | (specifier | initializer)? ';'
     ;
 
-//shortcut functor expression that makes the parameter list 
-//optional, but can appear only using the special smalltalk
-//style method protocol
-undelimitedNamedArgumentDefinition
-    : ( (formalParameterStart) => formalParameters )? 
-      ( ('{') => block | implicationExpression )
-    ;
-    
 interfaceDeclaration
     :
         'interface'
@@ -179,6 +161,9 @@ classDeclaration
         classBody
     ;
 
+//TODO: refactor, sucking instances into declarationOrStatement,
+//      to eliminate the backtracking. Or begin the instance list
+//      with a keyword
 classBody
     : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
     ;
@@ -317,17 +302,8 @@ assignable
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
 expression 
-    : methodExpression 
+    : implicationExpression 
       ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
-    ;
-
-methodExpression
-    : implicationExpression undelimitedNamedArgument*
-    ;
-
-undelimitedNamedArgument
-    : ( memberName | 'case' '(' expressions ')' ) 
-      undelimitedNamedArgumentDefinition 
     ;
     
 implicationExpression
@@ -431,6 +407,7 @@ base
 selector 
     : member
     | arguments
+    | undelimitedNamedArgument
     | elementSelector
     | ('--' | '++')
     ;
@@ -488,6 +465,14 @@ positionalArgument
     | assignable
     ;
 
+//a smalltalk-style parameter to a positional parameter
+//invocation
+undelimitedNamedArgument
+    : ( memberName | 'case' '(' expressions ')' )
+    ( (formalParameterStart)=> formalParameters )? 
+    ( block | parExpression | literal | specialValue )
+    ;
+    
 specialArgument
     : type memberName (containment|specifier)
     //| isCondition
@@ -496,6 +481,14 @@ specialArgument
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
+    ;
+
+//special rule for syntactic predicates
+//be careful with this one, since it 
+//matches "()", which can also be an 
+//argument list
+formalParameterStart
+    : '(' (declarationStart | ')')
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
