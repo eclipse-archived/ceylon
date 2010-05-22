@@ -82,7 +82,7 @@ class Arguments {
 			}
 		}
 		
-		logLazily() message "hello";
+		logLazily() message ("hello");
 		logLazily() message { return "hello" };
 		logLazily { message() { return "hello" } };
 	
@@ -99,9 +99,9 @@ class Arguments {
 		}
 		
 		from(0) 
-			until(Y y) y==10 
-			each(Y y) y+2 
-			perform(Y y) log.info(y);
+			until (Y y) (y==10)
+			each (Y y) (y+2)
+			perform (Y y) { log.info(y) };
 		
 		from(0) 
 			until(Y y) { return y==10 } 
@@ -121,7 +121,7 @@ class Arguments {
 		
 		Processor<Float,String> p = 
 			Processor<Float,String>() 
-				process (Float f) $f;
+				process (Float f) ($f);
 		
 		Processor<Float,String> q = 
 			Processor<Float,String>() 
