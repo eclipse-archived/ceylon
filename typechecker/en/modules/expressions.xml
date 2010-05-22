@@ -1262,8 +1262,231 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     
     <programlisting>List&lt;Day&gt; nonworkDays = days.values(Enumeration(0,7));</programlisting-->
 
-    <section id="operatorlist">
-        <title>List of operators</title>
+       <para>This table defines operator precedence from highest to lowest,
+        along with associativity rules:</para>
+        
+    <table>
+    <tgroup cols="4">
+        <colspec colnum="1" colwidth="2.5*" align="center"/>
+        <colspec colnum="2" colwidth="2.0*" align="center"/>
+        <colspec colnum="3" colwidth="1.0*" align="center"/>
+        <colspec colnum="4" colwidth="0.7*" align="center"/>
+    <thead>
+        <row>
+            <entry>Operations</entry>
+            <entry>Operators</entry>
+            <entry>Type</entry>
+            <entry>Associativity</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+            <row>
+                <entry>Member invocation and lookup, subrange,
+                postfix increment, postfix decrement:</entry>
+                <entry>
+                <literal>.</literal>, 
+                <literal>^.</literal>, 
+                <literal>*.</literal>, 
+                <literal>?.</literal>, 
+                <literal>(,,)</literal>,
+                <literal>{;;;}</literal>,
+                <literal>[]</literal>, 
+                <literal>[..]</literal>, 
+                <literal>[...]</literal>,
+                <literal>++</literal>, 
+                <literal>--</literal></entry>
+                <entry>Binary / ternary / N-ary / unary postfix</entry>
+                <entry>Left</entry>
+            </row>
+            
+            <row>
+                <entry>Prefix increment, prefix decrement,
+                negation, render, bitwise complement:</entry>
+                <entry>
+                <literal>++</literal>, 
+                <literal>--</literal>, 
+                <literal>-</literal>, 
+                <literal>$</literal>,
+                <literal>~</literal> 
+                </entry>
+                <entry>Unary prefix</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
+                <entry>Exponentiation:</entry>
+                <entry>
+                <literal>**</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+            <!--  
+            <row>
+                <entry>Exponentiation, shift:</entry>
+                <entry>
+                <literal>**</literal>,
+                <literal>&lt;&lt;</literal>, 
+                <literal>>></literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            -->
+            <row>
+                <entry>Multiplication, division, remainder,
+                bitwise and:</entry> 
+                <entry>
+                <literal>*</literal>, 
+                <literal>/</literal>, 
+                <literal>%</literal>,
+                <literal>&amp;</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Addition, subtraction, bitwise or,
+                bitwise xor, list concatenation:</entry> 
+                <entry>
+                <literal>+</literal>, 
+                <literal>-</literal>, 
+                <literal>|</literal>, 
+                <literal>^</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <!--row>
+                <entry>Date/time composition:</entry> 
+                <entry><literal>@</literal></entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row-->
+            <row>
+                <entry>Range<!--, interval--> and entry construction:</entry> 
+                <entry><literal>..</literal>, <literal>-></literal></entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Existence, emptiness:</entry>
+                <entry><literal>exists</literal>, <literal>nonempty</literal></entry> 
+                <entry>Unary postfix</entry>
+                <entry>None</entry>
+            </row>
+            <!--
+            <row>
+                <entry>Existence, emptiness:</entry>
+                <entry><literal>?</literal>, <literal>??</literal></entry> 
+                <entry>Unary postfix</entry>
+                <entry>None</entry>
+            </row>
+            -->
+            <row>
+                <entry>Default:</entry> 
+                <entry><literal>?</literal></entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+
+            <row>
+                <entry>Comparison, <!--set comparison,--> containment,
+                assignability:</entry> 
+                <entry>
+                <literal>&lt;=&gt;</literal>,
+                <literal>&lt;</literal>, 
+                <literal>&gt;</literal>, 
+                <literal>&lt;=</literal>, 
+                <literal>&gt;=</literal>,
+                <!--<literal>~></literal>,
+                <literal>!~></literal>,
+                <literal>*~></literal>-->
+                <literal>in</literal>,
+                <literal>is</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            <row>
+                <entry>Equality:</entry>
+                <entry>
+                <literal>==</literal>, 
+                <literal>!=</literal>, 
+                <literal>===</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+        
+            <row>
+                <entry>Logical not:</entry>
+                <entry><literal>!</literal></entry>
+                <entry>Unary prefix</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
+                <entry>Logical and:</entry> 
+                <entry>
+                <literal>&amp;&amp;</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Logical or:</entry>
+                <entry>
+                <literal>||</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Logical implication:</entry>
+                <entry>
+                <literal>=></literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>None</entry>
+            </row>
+            
+            <row>
+                <entry>Assignment:</entry> 
+                <entry>
+                <literal>:=</literal>, 
+                <literal>.=</literal>,
+                <literal>+=</literal>, 
+                <literal>-=</literal>, 
+                <literal>*=</literal>, 
+                <literal>/=</literal>, 
+                <literal>%=</literal>, 
+                <literal>&amp;=</literal>, 
+                <literal>|=</literal>, 
+                <literal>^=</literal>, 
+                <literal>&amp;&amp;=</literal>, 
+                <literal>||=</literal>,
+                <literal>?=</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+            
+    </tbody>
+    </tgroup>
+    </table>
+    
+    <comment><para>TODO: should <literal>?</literal> have a higher precedence?</para></comment>
+    
+    <comment><para>TODO: should <literal>^</literal> have a higher precedence than
+    <literal>|</literal> like in C and Java?</para></comment>
+    
+    <comment><para>TODO: should <literal>^,|,&amp;</literal> have a lower precedence
+    than <literal>+,-,*,/</literal> like in Ruby?</para></comment>
+    
+    <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
+    <literal>&gt;&gt;</literal> later, we could give them the same precedence
+    as <literal>**</literal>.</para></comment>
+    
     
         <para>The following tables define the semantics of the Ceylon operators:</para>
     
@@ -2475,238 +2698,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     </tbody>
     </tgroup>
     </table>
-    
-    </section>
-    
-    </section>
-    
-    <section id="operatorprecedence">
-        <title>Operator precedence and associativity</title>
-        
-        <para>This table defines operator precedence from highest to lowest,
-        along with associativity rules:</para>
-        
-    <table>
-    <tgroup cols="4">
-        <colspec colnum="1" colwidth="2.5*" align="center"/>
-        <colspec colnum="2" colwidth="2.0*" align="center"/>
-        <colspec colnum="3" colwidth="1.0*" align="center"/>
-        <colspec colnum="4" colwidth="0.7*" align="center"/>
-    <thead>
-        <row>
-            <entry>Operations</entry>
-            <entry>Operators</entry>
-            <entry>Type</entry>
-            <entry>Associativity</entry>
-        </row>
-    </thead>
-    <tbody>
-    
-            <row>
-                <entry>Member invocation and lookup, subrange,
-                postfix increment, postfix decrement:</entry>
-                <entry>
-                <literal>.</literal>, 
-                <literal>^.</literal>, 
-                <literal>*.</literal>, 
-                <literal>?.</literal>, 
-                <literal>(,,)</literal>,
-                <literal>{;;;}</literal>,
-                <literal>[]</literal>, 
-                <literal>[..]</literal>, 
-                <literal>[...]</literal>,
-                <literal>++</literal>, 
-                <literal>--</literal></entry>
-                <entry>Binary / ternary / N-ary / unary postfix</entry>
-                <entry>Left</entry>
-            </row>
-            
-            <row>
-                <entry>Prefix increment, prefix decrement,
-                negation, render, bitwise complement:</entry>
-                <entry>
-                <literal>++</literal>, 
-                <literal>--</literal>, 
-                <literal>-</literal>, 
-                <literal>$</literal>,
-                <literal>~</literal> 
-                </entry>
-                <entry>Unary prefix</entry>
-                <entry>Right</entry>
-            </row>
-            <row>
-                <entry>Exponentiation:</entry>
-                <entry>
-                <literal>**</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Right</entry>
-            </row>
-            <!--  
-            <row>
-                <entry>Exponentiation, shift:</entry>
-                <entry>
-                <literal>**</literal>,
-                <literal>&lt;&lt;</literal>, 
-                <literal>>></literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Left</entry>
-            </row>
-            -->
-            <row>
-                <entry>Multiplication, division, remainder,
-                bitwise and:</entry> 
-                <entry>
-                <literal>*</literal>, 
-                <literal>/</literal>, 
-                <literal>%</literal>,
-                <literal>&amp;</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Left</entry>
-            </row>
-            <row>
-                <entry>Addition, subtraction, bitwise or,
-                bitwise xor, list concatenation:</entry> 
-                <entry>
-                <literal>+</literal>, 
-                <literal>-</literal>, 
-                <literal>|</literal>, 
-                <literal>^</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Left</entry>
-            </row>
-            <!--row>
-                <entry>Date/time composition:</entry> 
-                <entry><literal>@</literal></entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
-            </row-->
-            <row>
-                <entry>Range<!--, interval--> and entry construction:</entry> 
-                <entry><literal>..</literal>, <literal>-></literal></entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
-            </row>
-            <row>
-                <entry>Existence, emptiness:</entry>
-                <entry><literal>exists</literal>, <literal>nonempty</literal></entry> 
-                <entry>Unary postfix</entry>
-                <entry>None</entry>
-            </row>
-            <!--
-            <row>
-                <entry>Existence, emptiness:</entry>
-                <entry><literal>?</literal>, <literal>??</literal></entry> 
-                <entry>Unary postfix</entry>
-                <entry>None</entry>
-            </row>
-            -->
-            <row>
-                <entry>Default:</entry> 
-                <entry><literal>?</literal></entry>
-                <entry>Binary</entry>
-                <entry>Right</entry>
-            </row>
-
-            <row>
-                <entry>Comparison, <!--set comparison,--> containment,
-                assignability:</entry> 
-                <entry>
-                <literal>&lt;=&gt;</literal>,
-                <literal>&lt;</literal>, 
-                <literal>&gt;</literal>, 
-                <literal>&lt;=</literal>, 
-                <literal>&gt;=</literal>,
-                <!--<literal>~></literal>,
-                <literal>!~></literal>,
-                <literal>*~></literal>-->
-                <literal>in</literal>,
-                <literal>is</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
-            </row>
-            <row>
-                <entry>Equality:</entry>
-                <entry>
-                <literal>==</literal>, 
-                <literal>!=</literal>, 
-                <literal>===</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
-            </row>
-        
-            <row>
-                <entry>Logical not:</entry>
-                <entry><literal>!</literal></entry>
-                <entry>Unary prefix</entry>
-                <entry>Right</entry>
-            </row>
-            <row>
-                <entry>Logical and:</entry> 
-                <entry>
-                <literal>&amp;&amp;</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Left</entry>
-            </row>
-            <row>
-                <entry>Logical or:</entry>
-                <entry>
-                <literal>||</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Left</entry>
-            </row>
-            <row>
-                <entry>Logical implication:</entry>
-                <entry>
-                <literal>=></literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
-            </row>
-            
-            <row>
-                <entry>Assignment:</entry> 
-                <entry>
-                <literal>:=</literal>, 
-                <literal>.=</literal>,
-                <literal>+=</literal>, 
-                <literal>-=</literal>, 
-                <literal>*=</literal>, 
-                <literal>/=</literal>, 
-                <literal>%=</literal>, 
-                <literal>&amp;=</literal>, 
-                <literal>|=</literal>, 
-                <literal>^=</literal>, 
-                <literal>&amp;&amp;=</literal>, 
-                <literal>||=</literal>,
-                <literal>?=</literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Right</entry>
-            </row>
-            
-    </tbody>
-    </tgroup>
-    </table>
-    
-    <comment><para>TODO: should <literal>?</literal> have a higher precedence?</para></comment>
-    
-    <comment><para>TODO: should <literal>^</literal> have a higher precedence than
-    <literal>|</literal> like in C and Java?</para></comment>
-    
-    <comment><para>TODO: should <literal>^,|,&amp;</literal> have a lower precedence
-    than <literal>+,-,*,/</literal> like in Ruby?</para></comment>
-    
-    <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
-    <literal>&gt;&gt;</literal> later, we could give them the same precedence
-    as <literal>**</literal>.</para></comment>
     
     </section>
     
