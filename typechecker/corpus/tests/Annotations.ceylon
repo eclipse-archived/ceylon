@@ -2,13 +2,13 @@ class Annotations {
 
 	class NoArguments {
 
-		public deprecated final
+		public deprecated default
 		void methodAnnotations(deprecated Natural param=0) {}
 		
-		public deprecated final
+		public deprecated default
 		Natural attributeAnnotations = 1;
 		
-		package deprecated final
+		package deprecated abstract
 		class ClassAnnotations {}
 		
 		module
