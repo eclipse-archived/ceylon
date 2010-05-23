@@ -320,6 +320,10 @@ if you prefer.";</programlisting>
         <programlisting>public extension Date date(Quoted dateString) { return ...; }</programlisting>
         <programlisting>public extension class Regex(Quoted expression) { return ...; }</programlisting>
         
+        <comment><para>TODO: we should try to support embedded expressions using
+        the <literal>${...}</literal> escape sequence, like we do for string 
+        literals.</para></comment>
+        
     </section>
     
     <!--section>
