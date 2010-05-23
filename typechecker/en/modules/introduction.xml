@@ -29,21 +29,45 @@
     </para>
     
     <para>
-    Ceylon methods are similar to Java methods. However, Ceylon does not
-    feature any Java-like constructor declaration and so each Ceylon class 
-    has exactly one <emphasis>initializer</emphasis>. As an alternative to 
-    overloading, Ceylon supports method and constructor parameters with 
-    default values. Ceylon does not support first-class function types, but 
-    a method may accept another method as a formal parameter. The argument 
-    of such a formal parameter may be either a reference to a named method 
-    declared elsewhere, or a new method defined inline as part of the 
-    invocation.
+    The Ceylon compiler enforces the traditional Smalltalk naming convention:
+    type names begin with an initial uppercase letter, member names and local
+    names with an initial lowercase letter or underscore. This innovation 
+    allows a much cleaner syntax for program element annotations than the
+    syntax found in either Java or C#.
+    </para>
+    
+    <para>
+    Ceylon methods are similar to Java methods. Ceylon does not, strictly
+    speaking, support first-class function types. However, higher-order
+    functions are supported, with minimal extensions to the traditional
+    C syntax. A method declaration may specify a <emphasis>functional 
+    parameter</emphasis> that accepts references to other methods with a 
+    certain signature. The argument of such a functional parameter may be 
+    either a reference to a named method declared elsewhere, or a new 
+    method defined inline as part of the method invocation. A method may 
+    even return method references. Finally, nested method declarations 
+    receive a closure of immutable values in the surrounding scope.
+    </para>
+    
+    <para>
+    Ceylon does not feature any Java-like constructor declaration and so 
+    each Ceylon class has a formal parameter list, and exactly one 
+    <emphasis>initializer</emphasis>&mdash;the body of the class. In place
+    of constructor overloading, Ceylon allows class names to be overloaded.
+    Even better, member classes of a class may be overridden by subclasses.
+    Instantiation is therefore a polymorphic operation in Ceylon, eliminating
+    the need for factory methods.
+    </para>
+    
+    <para>
+    As an alternative to method or class overloading, Ceylon supports method 
+    and class initialization parameters with default values. 
     </para>
     
     <para>
     Ceylon classes do not contain fields, in the traditional sense. Instead, 
-    Ceylon supports only a higher-level construct: <emphasis>attributes</emphasis>, 
-    which are similar to C# properties.
+    Ceylon supports only a higher-level construct: polymorphic 
+    <emphasis>attributes</emphasis>, which are similar to C# properties.
     </para>
     
     <para>
@@ -89,8 +113,8 @@
     arbitrary precision decimals. <literal>Natural</literal>, 
     <literal>Integer</literal> and <literal>Float</literal> values are 64 bit 
     by default, and may be optimized for 32 bit architectures via use of the 
-    <literal>small</literal> annotation. Unlike Java and C#, Ceylon features
-    language-level support for dates and times.</para>
+    <literal>small</literal> annotation. <!--Unlike Java and C#, Ceylon features
+    language-level support for dates and times.--></para>
     
     <para>
     True open classes are not supported. However, Ceylon supports 
@@ -110,12 +134,11 @@
     Ceylon introduces a set of syntax extensions that support the definition 
     of domain-specific languages and expression of structured data. These 
     extensions include specialized syntax for initializing objects and 
-    collections and expressing literal values. The goal of this facility
-    is to replace the use of XML for expressing hierarchical structures such
-    as documents, user interfaces, configuration and serialized data. An 
-    especially important application of this facility is Ceylon's built-in 
-    support for program element annotations. Ceylon annotations feature a more 
-    elegant syntax than that found in either Java or C#.
+    collections and expressing literal values or user-defined types. The goal 
+    of this facility is to replace the use of XML for expressing hierarchical 
+    structures such as documents, user interfaces, configuration and serialized 
+    data. An especially important application of this facility is Ceylon's 
+    built-in support for program element annotations.
     </para>
     
     <para>
