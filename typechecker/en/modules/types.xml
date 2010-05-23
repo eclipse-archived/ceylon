@@ -113,7 +113,7 @@
         operator and inherits the binary <literal>|, &amp;, ^</literal> and 
         unary <literal>~</literal> operators from <literal>Bits</literal>.</para>
         
-        <programlisting><![CDATA[public final class Boolean
+        <programlisting><![CDATA[public class Boolean
         satisfies Case<Boolean>, Bits<Boolean> {
     case true, case false;
 
@@ -1423,7 +1423,7 @@ while (people nonempty) {
         <para><literal>lang.Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
-        <programlisting><![CDATA[public final class Natural(Natural natural)
+        <programlisting><![CDATA[public class Natural(Natural natural)
         satisfies Integral<Natural,Integer>, Case<Integral>, Bits<Natural> { 
     ... 
     
@@ -1463,7 +1463,7 @@ while (people nonempty) {
 
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
-        <programlisting><![CDATA[public final class Integer(Boolean sign, Natural natural)
+        <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
         satisfies Integral<Integer,Integer>, Case<Integral> {
     ...
     
@@ -1488,7 +1488,7 @@ while (people nonempty) {
         <para><literal>lang.Whole</literal> represents arbitrary-precision
         signed integers.</para>
 
-        <programlisting><![CDATA[public final class Whole(Boolean sign, small Natural... digits)
+        <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
         satisfies Integral<Whole,Whole> {
     ...
     
@@ -1509,7 +1509,7 @@ while (people nonempty) {
         <para><literal>lang.Float</literal> represents 64 bit floating point
         values.</para>
 
-        <programlisting><![CDATA[public final class Float(Float float)
+        <programlisting><![CDATA[public class Float(Float float)
         satisfies Numeric<Float,Float> { 
     ... 
     
@@ -1528,7 +1528,7 @@ while (people nonempty) {
         <para><literal>lang.Decimal</literal> represents arbitrary-precision
         and arbitrary-scale decimals.</para>
 
-        <programlisting><![CDATA[public final class Decimal(Whole value, small Integer scale)
+        <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
         satisfies Numeric<Decimal,Decimal> {
     ...
 
