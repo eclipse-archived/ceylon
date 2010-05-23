@@ -615,8 +615,8 @@ class Customer(Name name, optional Organization org = null)
     <section>
         <title>Overriding member classes</title>
         
-        <para>A member class annotated <emphasis>abstract</emphasis> or
-        <emphasis>default</emphasis> may be overridden by subclasses of the class 
+        <para>A member class annotated <literal>abstract</literal> or
+        <literal>default</literal> may be overridden by subclasses of the class 
         which contains the member class. The subclass must declare a member class:</para>
         
         <itemizedlist>
@@ -1794,17 +1794,16 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
                 non-<literal>abstract</literal> subclasses-->.</para>
             </listitem>
             <listitem>
-                <para><literal>default</literal> specifies that the 
-                implementation of a method or attribute may be overridden
-                by subclasses.</para>
+                <para><literal>default</literal> specifies that a method, 
+                attribute, or member class may be overridden by subclasses.</para>
             </listitem>
             <listitem>
-                <para><literal>override</literal> indicates that a method
-                or attribute overrides a method or attribute defined by a 
-                supertype. The method or attribute being overridden must
-                be abstract or annotated <literal>default</literal>, and 
-                must be visible to the method annotated 
-                <literal>override</literal>.</para>
+                <para><literal>override</literal> indicates that a method,
+                attribute, or member type overrides a method, attribute, 
+                or member type defined by a supertype. The method, 
+                attribute, or member type being overridden must be abstract 
+                or annotated <literal>default</literal>, and must be visible 
+                to the element annotated <literal>override</literal>.</para>
             </listitem>
             <listitem>
                 <para><literal>static</literal> specifies that a method can 
