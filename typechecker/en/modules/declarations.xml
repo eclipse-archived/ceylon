@@ -580,6 +580,38 @@ class Customer(Name name, optional Organization org = null)
 
     </section>
     
+        <section>
+            <title>Overloaded classes</title>
+            
+            <para>Multiple toplevel classes belonging to the same package, or
+            multiple member classes of the same containing class may declare 
+            the same name. The classes are called <emphasis>overloaded</emphasis>.
+            Overloaded classes:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>must extend and overload a common <emphasis>root</emphasis>
+                    type,</para>
+                </listitem>
+                <listitem>
+                    <para>must have different formal parameter types,</para>
+                </listitem>
+                <listitem>
+                    <para>may not declare default parameters, and</para>
+                </listitem>
+                <listitem>
+                    <para>except for the root type, may not declare any member
+                    with a visibility modifier.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Then the class name always refers to the root type, except in 
+            instantiations. In the case of instantiation, the correct overloaded 
+            class is resolved at compile time, using the mechanism that Java
+            uses to choose between overloaded constructors.</para>
+            
+        </section>
+        
     <section>
         <title>Overriding member classes</title>
         
@@ -607,6 +639,11 @@ class Customer(Name name, optional Organization org = null)
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
         
+        <para>By default, the member class annotated <literal>override</literal> 
+        has the same visibility modifier as the member class it overrides. The
+        member class may not declare a stricter visibility modifier than the member 
+        class it overrides.</para>
+            
         <comment><para>TODO: If we decide to support <literal>static</literal> member
         classes, they cannot be overridden.</para></comment>
     
@@ -1046,11 +1083,30 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         semantics of method declarations are identical to Java, except that Ceylon methods 
         may declare defaulted parameters.</para>
         
-       <section>
+        <section>
+            <title>Overloaded methods</title>
+            
+            <para>A class may declare or inherit multiple methods with the
+            same name. The methods are called <emphasis>overloaded</emphasis>.
+            Overloaded methods: </para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>must have different formal parameter types, and</para>
+                </listitem>
+                <listitem>
+                    <para>may not declare default parameters.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Like Java, Ceylon resolves overloaded methods at compile 
+            time.</para>
+        
+        </section>
+        
+        <section>
             <title>Defaulted parameters</title>
             
-            <para>Methods with defaulted parameters may not be overloaded.</para>
-        
             <para>When a method with a defaulted parameter is called, and a value is not 
             assigned to the defaulted parameter by the caller, the default value defined by 
             the specifier is used.</para>
@@ -1147,6 +1203,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>Then invocation of the method is polymorphic, and the actual
             method invoked depends upon the concrete type of the class instance.</para>
+            
+            <para>By default, the method annotated <literal>override</literal>
+            has the same visibility modifier as the method it overrides. The
+            method may not declare a stricter visibility modifier than the method 
+            it overrides.</para>
             
             <para><literal>static</literal> methods cannot be overridden, and so
             <literal>static</literal> method invocation is never polymorphic.</para>
@@ -1410,6 +1471,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>Then evaluation and assignment of the attribute is polymorphic, and 
             the actual attribute evaluated or assigned depends upon the concrete type 
             of the class instance.</para>
+            
+            <para>By default, the attribute annotated <literal>override</literal>
+            has the same visibility modifier as the attribute it overrides. The
+            method may not declare a stricter visibility modifier than the method 
+            it overrides.</para>
             
             <comment><para>TODO: if we decide to support <literal>static</literal> 
             attributes, they can not be overridden.</para></comment>
