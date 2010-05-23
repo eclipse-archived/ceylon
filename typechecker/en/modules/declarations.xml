@@ -1825,8 +1825,8 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
                 overridden.</para>
             </listitem-->
             <listitem>
-                <para><literal>extension</literal> specifies that a method is 
-                a converter, or that a class is a decorator.</para>
+                <para><literal>extension</literal> specifies that a method or
+                attribute getter is a converter, or that a class is a decorator.</para>
             </listitem>
             <listitem>
                 <para><literal>once</literal> indicates that a method or
