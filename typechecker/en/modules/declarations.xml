@@ -1079,13 +1079,39 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             the method must be annotated <literal>abstract</literal>. If no implementation 
             is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
         
-            <para>Methods declared by interfaces may not specify an implementation:</para>
+            <para>Methods declared by interfaces never specify an implementation:</para>
         
             <programlisting>AbstractMethod := MethodHeader ";"</programlisting>
 
-            <para>Interface methods and abstract methods must be implemented by every 
+            <para>Interface methods and abstract methods must be overridden by every 
             non-<literal>abstract</literal> class that implements the interface or
             subclasses the abstract class.</para>
+            
+        </section>
+        
+        <section>
+            <title>Overriding methods</title>
+            
+            <para>An abstract method, interface method, or a method annotated 
+            <literal>default</literal> may be overridden by subclasses of the class 
+            or interface which declares the method. The subclass must declare a method:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>annotated <literal>override</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>with the same name as the method it overrides,</para>
+                </listitem>
+                <listitem>
+                    <para>the same formal parameter types as the method it overrides,
+                    and</para>
+                </listitem>
+                 <listitem>
+                    <para>with a return type that is assignable to the return type 
+                    of the method it overrides.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         
@@ -1298,18 +1324,51 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <literal>optional</literal>, the attribute is considered an <emphasis>abstract 
             attribute</emphasis>.</para>
         
-            <para>Attributes declared by interfaces may not specify an initalizer, getter 
+            <para>Attributes declared by interfaces never specify an initalizer, getter 
             or setter:</para>
         
             <programlisting>AbstractAttribute := AttributeHeader ";"</programlisting>
         
-            <para>Interface attributes and abstract attributes must be implemented by every 
+            <para>Interface attributes and abstract attributes must be overidden by every 
             non-<literal>abstract</literal> class that implements the interface or subclasses 
             the abstract class.</para>
                 
-            <para>Interface attributes and abstract attributes may be specified <literal>mutable</literal>, 
-            in which case every subtype must also define the attribute to be mutable.</para>
+            <para>Interface attributes and abstract attributes may be annotated 
+            <literal>mutable</literal>, in which case every subtype must also define the 
+            attribute to be mutable.</para>
         
+        </section>
+        
+        <section>
+            <title>Overriding attributes</title>
+            
+            <para>An abstract attribute, interface attribute, or attribute annotated 
+            <literal>default</literal> may be overridden by subclasses of the class or 
+            interface which declares the method. An immutable attribute may be overridden 
+            by a simple attribute or attribute getter. A mutable attribute may be overridden 
+            by a mutable simple attribute or by an attribute getter and setter pair. The 
+            subclass must declare an attribute:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>annotated <literal>override</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>with the same name as the attribute it overrides,</para>
+                </listitem>
+                 <listitem>
+                    <para>with a type that is assignable to the type of the attribute 
+                    it overrides, if the attribute it overrides is immutable, or with 
+                    exactly the same type as the attribute it overrides, if the 
+                    attribute it overrides is mutable, and</para>
+                </listitem>
+                <listitem>
+                    <para>that is mutable, if the attribute it overrides is mutable.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>An immutable attribute may be overridden by a mutable attribute.</para>
+            
         </section>
         
         <section>
