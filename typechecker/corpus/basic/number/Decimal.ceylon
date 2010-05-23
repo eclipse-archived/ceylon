@@ -1,4 +1,4 @@
-public final class Decimal(Whole value, small Integer scale)
+public class Decimal(Whole value, small Integer scale)
         satisfies Numeric<Decimal,Decimal> {
 
     public small Natural precision { throw }

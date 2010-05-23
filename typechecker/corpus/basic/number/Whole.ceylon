@@ -1,4 +1,4 @@
-public final class Whole(Boolean sign, small Natural... digits)
+public class Whole(Boolean sign, small Natural... digits)
         satisfies Integral<Whole,Whole> {
     
     public small Natural precision { throw }

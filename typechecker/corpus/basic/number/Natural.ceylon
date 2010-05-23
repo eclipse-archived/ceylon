@@ -1,4 +1,4 @@
-public final class Natural(Natural natural)
+public class Natural(Natural natural)
         satisfies Integral<Natural,Integer>, Case<Integral>, Bits<Natural> { 
     
     doc "Implicit type promotion to |Integer|"

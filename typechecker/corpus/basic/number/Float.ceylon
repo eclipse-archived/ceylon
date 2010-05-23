@@ -1,4 +1,4 @@
-public final class Float(Float float)
+public class Float(Float float)
         satisfies Numeric<Float,Float> { 
     
     doc "Implicit type promotion to |Decimal|"

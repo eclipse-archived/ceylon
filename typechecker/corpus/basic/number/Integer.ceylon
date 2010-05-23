@@ -1,4 +1,4 @@
-public final class Integer(Boolean sign, Natural natural)
+public class Integer(Boolean sign, Natural natural)
         satisfies Integral<Integer,Integer>, Case<Integral> {
     
     doc "Implicit type promotion to |Whole|"
