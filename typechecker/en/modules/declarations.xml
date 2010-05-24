@@ -478,6 +478,23 @@ ClassBody</programlisting>
         declarations, instance initialization code, and, optionally, a list of enumerated 
         named instances of the class.</para>
 
+        <para>Ordinarily, a declaration that occurs in a block of code is a block local
+        declaration&mdash;it is visible only to statements and declarations that occur
+        later in the same block. This rule is relaxed for certain declarations that occur 
+        directly inside a class body:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>declarations with explicit visibility modifiers&mdash;whose visibility
+                is determined by the modifier, and</para>
+            </listitem>
+            <listitem>
+                <para>declarations that occur in the second part of the body of the class, 
+                after the last statement of the initializer&mdash;which are visible to all
+                other declarations in the second part of the body of the class.</para>
+            </listitem>
+        </itemizedlist>
+
     <section id="classinitializer">
         <title>Class initializer</title>
         
@@ -684,26 +701,10 @@ ClassBody</programlisting>
         <para>The remainder of the body of the class consists purely of declarations, including
         abstract and <literal>default</literal> methods and attributes. It may not directly contain 
         statements or control structures, but may freely use <literal>this</literal>, and may 
-        invoke any method or evaluate any attribute of the class. This section of the class body
-        contains no statements or control structures, so the usual restriction that a declaration
-        may only be used by code that appears later in the block containing the declaration is
-        relaxed.</para>
+        invoke any method or evaluate any attribute of the class. The usual restriction that a 
+        declaration may only be used by code that appears later in the block containing the 
+        declaration is relaxed.</para>
         
-        <para>Ordinarily, a declaration that occurs in a block of code is a block local
-        declaration&mdash;it is visible only to statements and declarations that occur
-        later in the same block. This rule is relaxed for certain declarations that occur 
-        directly inside a class body:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para>declarations with explicit visibility modifiers, and</para>
-            </listitem>
-            <listitem>
-                <para>declarations that occur in the second part of the body of the 
-                class, after the last statement of the initializer.</para>
-            </listitem>
-        </itemizedlist>
-
         <comment><para>TODO: should class initialization parameters be allowed to be
         declared <literal>mutable</literal>?</para></comment>
         
