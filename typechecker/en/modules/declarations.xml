@@ -1258,7 +1258,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>Simple attribute declarations define state (very similar to a 
-                Java field).</para>
+                Java field or local variable).</para>
             </listitem>
             <listitem>
                 <para>Attribute getter declarations define how the value of a derived 
@@ -1317,7 +1317,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <section>
             <title>Simple attributes and locals</title>
             
-        <para>Simple attribute defines state. Simple attributes are declared according to the 
+        <para>A simple attribute defines state. Simple attributes are declared according to the 
         following:</para>
         
         <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
@@ -1330,24 +1330,33 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <programlisting>Initializer := ":=" Expression</programlisting>
 
         <para>Formal parameters of classes and methods are also considered to be simple attributes.</para>
-
-        <para>A local is really just a special case of a simple attribute declaration, but one that 
-        is optimized by the compiler.</para> 
+        
+        <para>A simple attribute declared directly inside the body of a class represents state 
+        associated with the instance of the class. Repeated evaluation of the attribute of a 
+        particular instance of the class returns the same result until the attribute of the 
+        instance is assigned a new value.</para>
+        
+        <para>A <emphasis>local</emphasis> represents state associated with execution of a
+        particular block of code. A local is really just a special case of a simple attribute 
+        declaration, but one whose state is not held across multiple executions of the block
+        of code in which the local is defined.</para> 
         
         <itemizedlist>
             <listitem>
-                <para>An attribute declared inside the body of a class represents a local if it 
-                is not used inside a method, attribute setter or attribute getter declaration.</para>
+                <para>A simple attribute declared inside the body of a method, attribute getter
+                or attribute setter is a local.</para>
             </listitem>
-            <listitem>
-                <para>An attribute declared inside the body of a method represents a local.</para>
+             <listitem>
+                <para>A block local simple attribute declared inside the body of a class is a 
+                local if it is not used inside a method, attribute setter or attribute getter 
+                declaration.</para>
             </listitem>
-            <listitem>
-                <para>A formal parameter of a class represents a local if it is not used inside a 
+           <listitem>
+                <para>A formal parameter of a class is a local if it is not used inside a 
                 method, attribute setter or attribute getter declaration.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a method represents a local.</para>
+                <para>A formal parameter of a method is a local.</para>
             </listitem>
         </itemizedlist>
         
