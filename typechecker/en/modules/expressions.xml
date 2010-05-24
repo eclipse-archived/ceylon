@@ -83,22 +83,19 @@ OperatorExpression |
         </listitem>
     </itemizedlist-->
     
+    <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
+    values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
+    with the enumerated instances <literal>true</literal> and <literal>false</literal>.</para>
+    
     <programlisting>Literal := 
 NaturalLiteral | FloatLiteral | 
 StringLiteral | CharacterLiteral | 
 QuotedLiteral | 
 TypeLiteral | MemberLiteral</programlisting>
 
-    <!--programlisting>Literal :=
-DateLiteral | TimeLiteral
-NaturalLiteral | FloatLiteral |
-CharacterLiteral | StringLiteral | RegexLiteral |
-TypeLiteral | MemberLiteral |
-SpecialValue</programlisting-->
-
-    <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
-    values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
-    with the enumerated instances <literal>true</literal> and <literal>false</literal>.</para>
+    <para>All literal values are instances of immutable types. The value of a literal 
+    expression is an instance of the type. How this instance is produced is not specified 
+    here.</para>
     
     <comment><para>TODO: Should we have a literal syntax for version numbers, for use
     in the module architecture, for example: <literal>@1.2.3BETA</literal>?</para></comment>
