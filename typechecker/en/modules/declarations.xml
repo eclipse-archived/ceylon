@@ -49,6 +49,10 @@ Body?</programlisting>
         
         <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
         
+        <para>All toplevel types with a visibility modifier less strict than
+        <literal>private</literal> must have the same name as the compilation
+        unit filename (after removing the file suffix <literal>.ceylon</literal>).</para>
+        
      </section>
     
     <section id="annotationlist">
@@ -60,11 +64,9 @@ Body?</programlisting>
         
         <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
         
-        <para>An annotation is a static method call. For an annotation with no 
-        arguments, or with only literal-valued arguments, the parentheses around, 
-        and commas between, the positional arguments may be omitted.</para>
-        
-        <para>For example:</para>
+        <para>For an annotation with no arguments, or with only literal-valued arguments, 
+        the parentheses around, and commas between, the positional arguments may be 
+        omitted.</para>
         
         <programlisting>doc "The user login action"
 throws #DatabaseException 
@@ -76,6 +78,10 @@ scope(session)
 action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
 
+        <para>An annotation is a static method invocation that occurs when the type
+        is loaded by the virtual machine. The return value of the invocation is made 
+        available via reflection.</para>
+        
         <!--
         <comment>
         <para>TODO: to eliminate backtracking in the parser, we could do one of the
@@ -127,7 +133,7 @@ VarargsParam?
         <para>A parameter with its own parameter list (or lists) is called a 
         <emphasis>functional parameter</emphasis>. Think of it as an abstract local method that 
         must be defined by the caller when the method is invoked or the class is instantiated. 
-        For example:</para>
+        </para>
             
         <programlisting>(String label, void onClick())</programlisting>
         
@@ -142,7 +148,8 @@ VarargsParam?
         
         <programlisting>Specifier := "=" Expression</programlisting>
         
-        <para>For example:</para>
+        <para>Defaulted parameters must occur after non-defaulted parameters in the formal
+        parameter list.</para>
         
         <programlisting>(Product product, Natural quantity=1)</programlisting>
         
@@ -152,7 +159,7 @@ VarargsParam?
         
         <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
         
-        <para>For example:</para>
+        <para>The varargs parameter must be the last formal parameter in the list.</para>
         
         <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
         
@@ -182,18 +189,40 @@ VarargsParam?
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-         <para>Method, class and interface declarations may declare generic type parameters.</para>
+        <para>Method, class and interface declarations may declare generic type parameters.</para>
         
         <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
         
         <programlisting>TypeParam := Variance TypeName</programlisting>
         
-        <para>A covariant type parameter is indicated using <literal>out</literal>.
-        A contravariant type parameter is indicated using <literal>in</literal>.</para>
+        <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
+        A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
         
         <programlisting>Variance :=  ("out" | "in")?</programlisting>
-    
-        <para>For example:</para>
+        
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
+        and a subtype <literal>B</literal> of <literal>A</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a covariant type parameter, 
+                    <literal>T&lt;B&gt;</literal> is assignable to <literal>T&lt;A&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a contravariant type parameter, 
+                    <literal>T&lt;A&gt;</literal> is assignable to <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is neither covariant nor contravariant, there is no
+                    assignability between <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>Map&lt;K, V&gt;</programlisting>
         
@@ -209,7 +238,7 @@ VarargsParam?
     <section id="type">
         <title>Type</title>
     
-        <para>Method and attribute declarations must declare a type.</para>
+        <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
         <programlisting>Type := RegularType | "subtype"</programlisting>
         
@@ -225,23 +254,14 @@ VarargsParam?
         
         <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
-        <para>For example:</para>
+        <para>The arguments may themselves be generic types.</para>
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
-        <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
-        <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
-        and <literal>Item[Key]</literal> as a shorthand for 
-        <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
-        <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
-        as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
-    
         <para>Every Ceylon class and interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
         <literal>subtype</literal>, represents the concrete type of the current instance 
         (the instance that is being invoked).</para>
-        
-        <para>For example:</para>
         
         <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
         
@@ -267,6 +287,13 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>The type <literal>subtype</literal> is considered a covariant type parameter
         of the type, and may not appear in contravariant positions of the type declaration.</para>
         
+        <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
+        <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
+        and <literal>Item[Key]</literal> as a shorthand for 
+        <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
+        <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
+        as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
+    
     </section>
     
     <!--section>
@@ -302,7 +329,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>Supertype := "extends" RegularType PositionalArguments</programlisting>
     
-        <para>For example:</para>
+        <para>A class may extend only one superclass.</para>
         
         <programlisting>extends Person(name, org)</programlisting>
     
@@ -316,7 +343,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
     
-        <para>For example:</para>
+        <para>A class or interface may satisfy multiple interfaces.</para>
         
         <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
     
@@ -337,22 +364,18 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>upper bounds,</para>
+                <para>upper bounds, <literal>X &gt;= T</literal>,</para>
             </listitem>
             <listitem>
-                <para>lower bounds</para>
+                <para>lower bounds, <literal>X &lt;= T</literal></para>
             </listitem>
             <listitem>
-                <para>subtype bounds, and</para>
+                <para>subtype bounds, <literal>X = subtype</literal>, and</para>
             </listitem>
             <listitem>
-                <para>initialization parameter specifications.</para>
+                <para>initialization parameter specifications, <literal>X(...)</literal>.</para>
             </listitem>
         </itemizedlist>
-        
-        <para>For example:</para>
-        
-        <programlisting>where X &gt;= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Natural count)</programlisting>
         
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position. A subtype bound cannot be applied to
@@ -360,6 +383,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>Initialization parameter specifications allow instantiation of the
         generic type.</para>
+        
+        <para>Mutiple type constraints are seperated by <literal>&amp;</literal>.</para>
+        
+        <programlisting>where X &gt;= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Natural count)</programlisting>
         
         <comment><para>TODO: Should we use <literal>for</literal> instead of <literal>where</literal>?</para></comment>
         
@@ -446,13 +473,268 @@ TypeConstraints?
 ClassBody</programlisting>
 
         <programlisting>ClassBody := "{" Instances? DeclarationOrStatement* "}"</programlisting>
+        
+        <para>The body of a class contains member (method, attribute and nested type) 
+        declarations, instance initialization code, and, optionally, a list of enumerated 
+        named instances of the class.</para>
+
+    <section id="classinitializer">
+        <title>Class initializer</title>
+        
+        <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
+        Instead:</para>
+        
+        <itemizedlist>
+           <listitem>
+              <para>The body of the class may declare <emphasis>initialization parameters</emphasis>.
+              An initialization parameter may be used anywhere in the class body, including in 
+              method and attribute definitions.</para>
+           </listitem>
+           <listitem>
+              <para>The initial part of the body of the class is called the <emphasis>initializer</emphasis> 
+              and contains a mix of declarations, statements and control structures. The initializer 
+              is executed every time the class is instantiated.</para>
+           </listitem>
+        </itemizedlist>
+        
+        <para>An initialization parameter may be used to specify or initialize the value of an 
+        attrbute:</para>
+        
+        <programlisting>public class Key(Lock lock) {
+    public Lock lock = lock;
+}</programlisting>
+        
+        <programlisting>public class Counter(Natural start=0) {
+    public mutable Natural count := start;
+    public void inc() { count++; }
+}</programlisting>
+        
+        <!--
+        <para>Is equivalent to this Java class:</para>
+
+        <programlisting>public class Key {
+    private final ReadAttribute&lt;Lock&gt; lock;
+    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
+    
+    public Key(Lock lock) {
+        this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
+    }
+    
+}</programlisting>
+         -->
+        <para>An initialization parameter may even be used within the body of a method,
+        attribute getter, or attribute setter:</para>
+        
+        <programlisting>public class Key(Lock lock) {
+    public Lock lock { return lock }
+}</programlisting>
+
+        <programlisting>public class Key(Lock lock) {
+    public void lock() { lock.engage(this); }
+    public void unlock() { lock.disengage(this); }
+}</programlisting>
+
+        <!--
+        <para>Is equivalent to this Java class:</para>
+
+        <programlisting>public class Key {
+    private Lock _lock;
+        
+    private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
+        @Override public Lock get() { return _lock; }
+    };
+    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
+    
+    public Key(Lock lock) { 
+        _lock = lock; 
+    }
+    
+}</programlisting>
+        -->
+        
+        <para>Class initialization parameters are optional. The following class:</para>
+        
+        <programlisting>public mutable class Point {
+    public mutable Decimal x := 0.0;
+    public mutable Decimal y := 0.0;
+}</programlisting>
+
+        <para>Is assumed to have zero initialization parameters.</para>
+        
+        <!--
+        <para>Is equivalent to this Java class with a default constructor:</para>
+        
+        <programlisting>public class Point {
+    private final Attribute&lt;Decimal&gt; x = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
+    public SimpleAttribute&lt;Decimal&gt; x() { return x; }
+    
+    private final Attribute&lt;Decimal&gt; y = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
+    public SimpleAttribute&lt;Decimal&gt; y() { return y; }
+}</programlisting>
+        -->
+        
+        <comment><para>TODO: is this the right thing to say? Alternatively, we could say that 
+        classes without a parameter list can't have statements or initialized simple attributes
+        in the body of the class, and get the constructor automatically generated for the 
+        list of attributes.</para></comment>
+        
+        <para>A subclass must pass values to each superclass initialization 
+        parameter in the <literal>extends</literal> clause.</para>
+
+        <programlisting>public class SpecialKey1()
+        extends Key( new SpecialLock() ) {
+    ...
+}</programlisting>
+
+        <programlisting>public class SpecialKey2(Lock lock) 
+        extends Key(lock) {
+    ...
+}</programlisting>
+
+        <!--
+        <para>Which are equivalent to the Java:</para>
+        
+        <programlisting>public class SpecialKey1 
+        extends Key {
+    public SpecialKey1() { 
+        super( SpecialLock() );
+    }
+    ... 
+}</programlisting>
+
+        <programlisting>public class SpecialKey2 
+        extends Key {
+    public SpecialKey2(Lock lock) { 
+        super(lock);
+    }
+    ... 
+}</programlisting>
+        -->
+        
+        <para>The class initializer is responsible for initializing the state of a new instance
+        of the class, before a reference to the new instance is available to clients.</para>
+        
+        <programlisting>public mutable class DiagonalPoint(Decimal position) 
+        extends Point() {
+    
+    x := y := sqrt(position**2/2) * position.sign;
+    
+    assert ("must have distance ${position} from origin") 
+        that ( x**2 + y**2 == position**2 );
+    
+}</programlisting>
+        
+        <!--
+        <para>So the above class is equivalent to:</para>
+        
+        <programlisting>public class DiagonalPoint extends Point {
+        
+    public DiagonalPoint(final Decimal position) {
+    
+        x = y = sqrt( position.power(2).divided(2) ).times(position.sign);
+        
+        assert_(new F0&lt;String&gt;() {
+                   public String call() { 
+                       return "must have distance " + position + " from origin";
+                   }
+                },
+                new F0&lt;Boolean&gt;() {
+                   public Boolean call() { 
+                       return ( x.power(2) + y.power(2) ).equals( position.power(2) );
+                   }
+                });
+    }
+    
+}</programlisting>
+        -->
+        
+        <para>An initializer may invoke, evaluate or assign members of the current instance 
+        of the class which defines the method (the instance upon which the method was 
+        invoked) without explicitly specifying the receiver.</para>
+        
+        <para>The following restrictions apply to statements and declarations that appear within
+        the initializer of the class:</para>
+        
+        <itemizedlist>
+           <listitem>
+              <para>They may not evaluate attributes or invoke methods that are declared later
+              in the body of the class upon the current object or <literal>this</literal>.</para>
+           </listitem>
+           <listitem>
+              <para>They may not pass <literal>this</literal> as an argument of a method invocation
+              or the value of an attribute assignment.</para>
+           </listitem>
+           <listitem>
+              <para>They may not declare an abstract method or attribute.</para>
+           </listitem>
+           <listitem>
+              <para>They may not declare a <literal>default</literal> method or attribute.</para>
+           </listitem>
+        </itemizedlist>
+        
+        <para>The remainder of the body of the class consists purely of declarations, including
+        abstract and <literal>default</literal> methods and attributes. It may not directly contain 
+        statements or control structures, but may freely use <literal>this</literal>, and may 
+        invoke any method or evaluate any attribute of the class.</para>
+        
+        <comment><para>TODO: should class initialization parameters be allowed to be
+        declared <literal>mutable</literal>?</para></comment>
+        
+        <comment><para>TODO: should class initialization parameters be allowed to be
+        declared <literal>public/package/module</literal>, allowing a shortcut
+        simple attribute declaration like in Scala?</para></comment>
+        
+        <!-- comment>
+        
+        <para>TODO: I would really, really like to believe that one "constructor"
+        per class is sufficient, but somehow I'm not quite buying it. We can allow the
+        declaration of additional constructors, according to:</para>
+        
+        <programlisting>Constructor := Annotation* TypeName FormalParams Supertype Block</programlisting>
+        
+        <para>for example:</para>
+        
+        <programlisting>public class Person(Name name) {
+    public Person(String name) extends Person( Name(name) ) {}
+}</programlisting>
+        
+        </comment-->
+                
+        <!--
+        <section>
+        <title>Annotations</title>
+        
+        <para>Every annotation is a static (non-void) method call. This Ceylon class:</para>
+        
+        <programlisting>doc "Represents a person"
+by "Gavin"
+public class Person { ... }</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>public class Person { ... 
+
+    static {
+        Type&lt;Person&gt; type = Type.get(Person.class);
+        type.addAnnotation( doc("Represents a person") );
+        type.addAnnotation( by("Gavin") );
+        type.addAnnotation( public() );
+    }
+
+    ...
+
+}</programlisting>
+        
+        </section>
+        -->
+
+    </section>
 
         <section>
              <title>Class inheritance</title>
         
         <para>
         A class may extend another class, and implement any number of interfaces.
-        For example:
         </para>
         
         <programlisting>public mutable
@@ -469,7 +751,42 @@ class Customer(Name name, optional Organization org = null)
         <para>
         The types listed after the <literal>satisfies</literal> keyword are the implemented
         interfaces. The type specified after the <literal>extends</literal> keyword is a 
-        superclass. The semantics of class inheritance are exactly the same as Java, and the 
+        superclass.
+        </para>
+        
+        <para>
+        If a class does not explicitly specify a superclass using <literal>extends</literal>,
+        its superclass is <literal>lang.Object</literal>.
+        </para>
+        
+        <para>
+        The semantics of class inheritance are exactly the same as Java. A class:
+        </para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>inherits all members of its superclass,</para>
+            </listitem>
+            <listitem>
+                <para>is assignable to any type to which its superclass is assignable,</para>
+            </listitem>
+            <listitem>
+                <para> must override all members of every interface it implements (unless
+                the class is declared <literal>abstract</literal>), and</para>
+            </listitem>
+            <listitem>
+                <para>is assignable to any type to which any interface it implements is 
+                assignable.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>
+        Furthermore, the initializer of the superclass is always executed before the
+        initializer of the subclass whenever the subclass is instantiated.
+        </para>
+        
+        <!-- 
+        <para>and the 
         above declarations are equivalent to the following Java declarations: 
         </para>
         
@@ -486,7 +803,7 @@ class Customer(Name name, optional Organization org = null)
     public Token() { super(); }
     ... 
 }</programlisting>
-
+         -->
         </section>
        
     <section id="instanceenumeration">
@@ -540,8 +857,14 @@ class Customer(Name name, optional Organization org = null)
         <literal>case</literal> would be considered a static simple attribute.</para></comment>
         
         <para>A class with declared <literal>case</literal>s implicitly extends 
-        <literal>lang.Selector</literal>, a subclass of <literal>java.lang.Enum</literal>. 
-        The above declarations are equivalent to the following Java declarations:</para>
+        <literal>lang.Selector</literal>, a subclass of 
+        <literal>java.lang.Enum</literal>.</para>
+        
+        <para>Enumerated instances of a class are instantiated when the class is
+        loaded by the virtual machine, with the specified arguments.</para>
+        
+        <!--
+        <para>The above declarations are equivalent to the following Java declarations:</para>
         
         <programlisting>public class DayOfWeek 
         extends Selector&lt;DayOfWeek&gt; { 
@@ -580,7 +903,7 @@ class Customer(Name name, optional Organization org = null)
     }
     
 }</programlisting>
-
+        -->
     </section>
     
         <section>
@@ -658,11 +981,11 @@ class Customer(Name name, optional Organization org = null)
         <title>Interfaces</title>
         
         <para>An <emphasis>interface</emphasis> is a type which does not specify 
-        implementation. Interfaces may not be directly instantiated. Interfaces 
-        are declared according to the following:</para>
+        the implementation of its members. Interfaces may not be directly instantiated. 
+        Interfaces are declared according to the following:</para>
         
         <programlisting>Interface :=
- Annotation*
+Annotation*
 "interface" TypeName TypeParams?
 Interfaces?
 TypeConstraints? 
@@ -670,22 +993,28 @@ InterfaceBody</programlisting>
 
         <programlisting>InterfaceBody := "{" ( AbstractMethod | AbstractAttribute )* "}"</programlisting>
 
+        <para>The body of an interface contains member (method, attribute and nested type) 
+        declarations, but the method and attribute declarations may not specify 
+        implementation.</para>
+        
         <para>For example:</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
 }</programlisting>
 
-         <para>Which is equivalent to the following Java interface:</para>
+        <!-- 
+        <para>Which is equivalent to the following Java interface:</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
 }</programlisting>
-
+        -->
+          
         <section>
             <title>Interface inheritance</title>
             
-            <para>An interface may extend any number of other interfaces. For example:</para>
+            <para>An interface may extend any number of other interfaces.</para>
         
             <programlisting>public interface List&lt;T&gt;
         satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
@@ -694,8 +1023,29 @@ InterfaceBody</programlisting>
         
             <para>
             The types listed after the <literal>satisfies</literal> keyword are the supertypes. All 
-            supertypes of an interface must be interfaces. The semantics of interface inheritance 
-            are exactly the same as Java, and the above declaration is equivalent to the following 
+            supertypes of an interface must be interfaces.
+            </para>
+            
+            <para>
+            Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
+            the interface type itself is considered assignable to <literal>lang.Object</literal>.
+            </para>
+        
+        <para>
+        The semantics of interface inheritance are exactly the same as Java. An interface:
+        </para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>inherits all members of every supertype, and</para>
+            </listitem>
+            <listitem>
+                <para>is assignable to any type to which any supertype is assignable.</para>
+            </listitem>
+        </itemizedlist>
+        
+            <!--
+            <para>and the above declaration is equivalent to the following 
             Java declaration: 
             </para>
         
@@ -703,7 +1053,8 @@ InterfaceBody</programlisting>
         extends Sequence&lt;T&gt;, Collection&lt;T&gt; {
     ...
 }</programlisting>
-
+            -->
+            
         </section>
         
     </section>
@@ -746,278 +1097,6 @@ public User(String username, Person person);</programlisting>
     </section>
     -->
     
-    <section id="initializers">
-        <title>Initializers</title>
-        
-        <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
-        Instead:</para>
-        
-        <itemizedlist>
-           <listitem>
-              <para>The body of the class may declare <emphasis>initialization parameters</emphasis>.
-              An initialization parameter may be used anywhere in the class body, including in 
-              method and attribute definitions.</para>
-           </listitem>
-           <listitem>
-              <para>The initial part of the body of the class is called the <emphasis>initializer</emphasis> 
-              and contains a mix of declarations, statements and control structures. The initializer 
-              is executed every time the class is instantiated.</para>
-           </listitem>
-        </itemizedlist>
-        
-        <para>The following restrictions apply to statements and declarations that appear within
-        the initializer of the class:</para>
-        
-        <itemizedlist>
-           <listitem>
-              <para>They may not evaluate attributes or invoke methods that are declared later
-              in the body of the class upon the current object or <literal>this</literal>.</para>
-           </listitem>
-           <listitem>
-              <para>They may not pass <literal>this</literal> as an argument of a method invocation
-              or the value of an attribute assignment.</para>
-           </listitem>
-           <listitem>
-              <para>They may not declare an abstract method or attribute.</para>
-           </listitem>
-           <listitem>
-              <para>They may not declare a <literal>default</literal> method or attribute.</para>
-           </listitem>
-        </itemizedlist>
-        
-        <para>The remainder of the body of the class consists purely of declarations, including
-        abstract and <literal>default</literal> methods and attributes. It may not directly contain 
-        statements or control structures, but may freely use <literal>this</literal>, and may 
-        invoke any method or evaluate any attribute of the class.</para>
-        
-        <para>This declaration:</para>
-        
-        <programlisting>public class Key(Lock lock) {
-    public Lock lock = lock;
-}</programlisting>
-        
-        <para>Is equivalent to this Java class:</para>
-
-        <programlisting>public class Key {
-    private final ReadAttribute&lt;Lock&gt; lock;
-    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
-    
-    public Key(Lock lock) {
-        this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
-    }
-    
-}</programlisting>
-
-        <para>This declaration:</para>
-        
-        <programlisting>public class Key(Lock lock) {
-    public Lock lock { return lock };
-}</programlisting>
-        
-        <para>Is equivalent to this Java class:</para>
-
-        <programlisting>public class Key {
-    private Lock _lock;
-        
-    private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
-        @Override public Lock get() { return _lock; }
-    };
-    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
-    
-    public Key(Lock lock) { 
-        _lock = lock; 
-    }
-    
-}</programlisting>
-
-        <para>Class initialization parameters are optional. The following class:</para>
-        
-        <programlisting>public mutable class Point {
-    public mutable Decimal x := 0.0;
-    public mutable Decimal y := 0.0;
-}</programlisting>
-        
-        <para>Is equivalent to this Java class with a default constructor:</para>
-        
-        <programlisting>public class Point {
-    private final Attribute&lt;Decimal&gt; x = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
-    public SimpleAttribute&lt;Decimal&gt; x() { return x; }
-    
-    private final Attribute&lt;Decimal&gt; y = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
-    public SimpleAttribute&lt;Decimal&gt; y() { return y; }
-}</programlisting>
-
-        <comment><para>TODO: is this the right thing to say? Alternatively, we could say that 
-        classes without a parameter list can't have statements or initialized simple attributes
-        in the body of the class, and get the constructor automatically generated for the 
-        list of attributes.</para></comment>
-        
-        <para>A subclass must pass values to each superclass initialization 
-        parameter in the <literal>extends</literal> clause.</para>
-
-        <programlisting>public class SpecialKey1()
-        extends Key( new SpecialLock() ) {
-    ...
-}</programlisting>
-
-        <programlisting>public class SpecialKey2(Lock lock) 
-        extends Key(lock) {
-    ...
-}</programlisting>
-
-        <para>Which are equivalent to the Java:</para>
-        
-        <programlisting>public class SpecialKey1 
-        extends Key {
-    public SpecialKey1() { 
-        super( SpecialLock() );
-    }
-    ... 
-}</programlisting>
-
-        <programlisting>public class SpecialKey2 
-        extends Key {
-    public SpecialKey2(Lock lock) { 
-        super(lock);
-    }
-    ... 
-}</programlisting>
-
-        <para>The class initializer is executed when the class is 
-        instantiated.</para>
-        
-        <programlisting>public mutable class DiagonalPoint(Decimal position) 
-        extends Point() {
-    
-    x := y := sqrt(position**2/2) * position.sign;
-    
-    assert "must have distance ${position} from origin" 
-        that x**2 + y**2 == position**2;
-    
-}</programlisting>
-        
-        <para>The compiler is permitted to optimize block local attribute 
-        declarations. So the above class is equivalent to:</para>
-        
-        <programlisting>public class DiagonalPoint extends Point {
-        
-    public DiagonalPoint(final Decimal position) {
-    
-        x = y = sqrt( position.power(2).divided(2) ).times(position.sign);
-        
-        assert_(new F0&lt;String&gt;() {
-                   public String call() { 
-                       return "must have distance " + position + " from origin";
-                   }
-                },
-                new F0&lt;Boolean&gt;() {
-                   public Boolean call() { 
-                       return ( x.power(2) + y.power(2) ).equals( position.power(2) );
-                   }
-                });
-    }
-    
-}</programlisting>
-
-        <comment><para>TODO: should class initialization parameters be allowed to be
-        declared <literal>mutable</literal>?</para></comment>
-        
-        <comment><para>TODO: should class initialization parameters be allowed to be
-        declared <literal>public/package/module</literal>, allowing a shortcut
-        simple attribute declaration like in Scala?</para></comment>
-        
-        <comment>
-        
-        <para>TODO: I would really, really like to believe that one "constructor"
-        per class is sufficient, but somehow I'm not quite buying it. We can allow the
-        declaration of additional constructors, according to:</para>
-        
-        <programlisting>Constructor := Annotation* TypeName FormalParams Supertype Block</programlisting>
-        
-        <para>for example:</para>
-        
-        <programlisting>public class Person(Name name) {
-    public Person(String name) extends Person( Name(name) ) {}
-}</programlisting>
-        
-        </comment>
-        
-        <section>
-            <title>Defaulted parameters</title>
-            
-        <para>
-        When a class with a defaulted parameter is instantiated, and a value is not assigned to the
-        defaulted parameter by the caller, the default value defined by the specifier is used.
-        </para>
-        
-        <para>This class:</para>
-        
-        <programlisting>public class Counter(Natural initialCount=0) { ... }</programlisting>
-        
-        <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
-        
-        <programlisting>public class Counter {
-        
-    public Counter() {
-        Counter(0);
-    }
-    
-    public Counter(Natural initialCount) {
-        ...;
-    }
-    
-    public Counter(CounterParameters namedParameters) {
-        Counter( namedParameters.initialCount );
-    }
-
-    public static class CounterParameters {
-        private Natural initialCount=0;
-        CounterParameters initialCount(Natural initialCount) { 
-            this.initialCount = initialCount;
-            return this;
-        }
-    }
-    
-}</programlisting>
-
-        <para>This named parameter call:</para>
-        
-        <programlisting>Counter { initialCount=10; }</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>new Counter ( new CounterParameters().initialCount(10) );</programlisting>
-
-        </section>
-        
-        <section>
-        <title>Annotations</title>
-        
-        <para>Every annotation is a static (non-void) method call. This Ceylon class:</para>
-        
-        <programlisting>doc "Represents a person"
-by "Gavin"
-public class Person { ... }</programlisting>
-
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>public class Person { ... 
-
-    static {
-        Type&lt;Person&gt; type = Type.get(Person.class);
-        type.addAnnotation( doc("Represents a person") );
-        type.addAnnotation( by("Gavin") );
-        type.addAnnotation( public() );
-    }
-
-    ...
-
-}</programlisting>
-        
-        </section>
-
-    </section>
-
     <section id="methods">
         <title>Methods</title>
         
@@ -1027,8 +1106,10 @@ public class Person { ... }</programlisting>
         <programlisting>Method := MethodHeader ( Block | Specifier? ";" )</programlisting>
 
         <programlisting>MethodHeader := Annotation* (Type | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
-
-        <para>For example:</para>
+        
+        <para>A method body may invoke, evaluate or assign members of the current instance 
+        of the class which defines the method (the instance upon which the method was 
+        invoked) without explicitly specifying the receiver.</para>
         
         <programlisting>public Integer add(Integer x, Integer y) {
     return x + y;
@@ -1079,8 +1160,10 @@ public class Person { ... }</programlisting>
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
         
+        <!--
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
+        -->
 
         <para>A Ceylon method invocation is equivalent to a Java method invocation. The 
         semantics of method declarations are identical to Java, except that Ceylon methods 
@@ -1102,67 +1185,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>Like Java, Ceylon resolves overloaded methods at compile 
-            time.</para>
+            <para>Like Java, Ceylon resolves overloaded methods at compile time.</para>
         
         </section>
         
-        <section>
-            <title>Defaulted parameters</title>
-            
-            <para>When a method with a defaulted parameter is called, and a value is not 
-            assigned to the defaulted parameter by the caller, the default value defined by 
-            the specifier is used.</para>
-        
-            <para>This method:</para>
-        
-            <programlisting>public class Counter {
-        
-    package void init(Natural initialCount=0) {
-        count:=initialCount;
-    }
-    
-    ...
-
-}</programlisting>
-        
-            <para>Is equivalent to three Java method declarations and an inner class:</para>
-        
-        <programlisting>public class Counter {
-        
-    void init() {
-        init(0);
-    }
-    
-    void init(Natural initialCount) {
-        count=initialCount;
-    }
-    
-    void init(CounterInitParameters namedParameters) {
-        init( namedParameters.initialCount );
-    }
-
-    static class CounterInitParameters {
-        private Natural initialCount=0;
-        CounterInitParameters initialCount(Natural initialCount) { 
-            this.initialCount = initialCount;
-            return this;
-        }
-    }
-    
-}</programlisting>
-
-            <para>This named parameter call:</para>
-        
-            <programlisting>counter.init { initialCount=10; }</programlisting>
-        
-            <para>Is equivalent to this Java code:</para>
-        
-            <programlisting>counter.init ( new CounterInitParameters().initialCount(10) );</programlisting>
-
-        </section>
-        
-        <section>
+       <section>
             <title>Interface methods and abstract methods</title>
             
             <para>If there is no method body in a method declaration, the implementation 
@@ -1245,7 +1272,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <literal>optional</literal>, it may not be overridden or implemented by an
         attribute declared <literal>optional</literal>.</para>
             
-        <para>For example:</para>
+        <para>An attribute body may invoke, evaluate or assign members of the current 
+        instance of the class which defines the method (the instance upon which the 
+        method was invoked) without explicitly specifying the receiver.</para>
         
         <programlisting>package mutable String firstName;</programlisting>
         
@@ -1268,15 +1297,17 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         in which case it may refer to any immutable local of the containing scope. It may 
         not refer to mutable locals.</para>
         
+        <!--
         <para>
         An attribute declaration is equivalent to a Java method declaration together with 
         a Java field declaration, both of type <literal>lang.Attribute</literal> or
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
+        -->
         
         <para>The compiler is permitted to optimize block local attributes to a simple Java 
-        field declaration or a local variable in a Java constructor. Private attributes may 
-        not be accessed via reflection.</para>
+        field declaration or a local variable in a Java constructor. Block local attributes 
+        may not be accessed via reflection.</para>
         
         <comment><para>TODO: I would like to support <literal>def</literal> in place of the 
         type for a block local attribute or local with an initializer or getter. For 
@@ -1325,35 +1356,41 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         
         <para>The semantics of locals are identical to Java local variables.</para>
         
+        <!--
         <para>For a simple attribute that is not a local, the Java field is initialized to an 
         instance of <literal>lang.SimpleAttribute</literal> or 
         <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
+         -->
         
         <programlisting>package mutable String firstName;</programlisting>
 
+        <!--
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;String&gt; firstName = new SimpleAttribute&lt;String&gt;();
 Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
 
         <para>While:</para>
-        
+         -->
+         
         <programlisting>mutable Natural count := 0;</programlisting>
         
+        <!--
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final Attribute&lt;Natural&gt; count = new SimpleAttribute&lt;Natural&gt;(0);
 private Attribute&lt;Natural&gt; count() { return count; }</programlisting>
 
         <para>And:</para>
+        -->
         
         <programlisting>public Integer max = 99;</programlisting>
-        
+        <!--
         <para>is equivalent to this Java code:</para>
         
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
-
+        -->
         </section>
         
          <section>
@@ -1365,21 +1402,25 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             
             <para>An attribute getter defines how the value of a derived attribute is
             obtained.</para>
-
+            
+            <!--
             <para>For an attribute getter, the Java field is initialized to an instance 
             of an anonymous inner subclass of <literal>lang.Attribute</literal> or
             <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
             method with the content of the getter block. For example: </para>
+            -->
         
             <programlisting>public Float total { return items.totalPrice; }</programlisting>
-        
+            
+            <!--
             <para>is equivalent to this Java code:</para>
         
             <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
     @Override public Float get() { return items.get().totalPrice; }
 };
 public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
-
+            -->
+            
         </section>
         
         <section>
@@ -1393,19 +1434,22 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             assigned. Every attribute setter must have a corresponding getter with the
             same name.</para>
 
-            <comment><para>TODO: should we allow overloaded attribute setters, for example:</para></comment>
-        
-            <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
-
+            <programlisting>public String name { return join(firstName, lastName); }
+public assign name { firstName = first(name); lastName = last(name); }</programlisting>
+            
+            <!--
             <para>For an attribute with a setter, the Java field is initialized to an 
             instance of an anonymous inner subclass of <literal>lang.Attribute</literal> 
             that overrides the <literal>set()</literal> method with the content of the 
             setter block. For example:
             </para>
+            -->
+            
+            <comment><para>TODO: should we allow overloaded attribute setters, for example:</para></comment>
         
-            <programlisting>public String name { return join(firstName, lastName); }
-public assign name { firstName = first(name); lastName = last(name); }</programlisting>
-        
+            <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
+            
+            <!--
             <para>is equivalent to this Java code:</para>
         
             <programlisting>private final Attribute&lt;String&gt; name = new Attribute&lt;String&gt;() {
@@ -1413,7 +1457,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
     @Override public void set(String name) { firstName = first(name); lastName = last(name); }
 };
 public Attribute&lt;String&gt; name() { return name; }</programlisting>
-        
+            -->
         </section>
         
         <section>
@@ -1508,8 +1552,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <programlisting>String name = get person.name();</programlisting>
             <programlisting>set person.name(newName);</programlisting>
             
+            <!--
             <comment><para>TODO: spec out generated Java-style getters and setters, for interop 
             with Java.</para></comment>
+            -->
         
         </section>
                 
@@ -1686,9 +1732,7 @@ TypeConstraintList?
        
        <para>Any expression which is assignable to all the satisfied types is assignable 
        to the alias type.</para>
-       
-       <para>For example:</para>
-       
+              
        <programlisting>public alias People satisfies List&lt;Person&gt;;</programlisting>
        
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
@@ -1710,8 +1754,6 @@ TypeConstraintList?
         one parameter, or a non-static method with no parameters. An extension class must have 
         exactly one initialization parameter. An extension method or attribute must have a 
         non-<literal>optional</literal> type.</para>
-        
-        <para>For example:</para>
         
         <programlisting>public class Person {
     ...
@@ -1742,33 +1784,36 @@ TypeConstraintList?
         
         <para>The Ceylon compiler searches for an appropriate extension whenever a value of one
         type is assigned to a non-assignable type. If exactly one extension for the two types is 
-        found, the compiler inserts a call to the extension. For example, this Ceylon assignment:</para>
+        found, the compiler inserts a call to the extension.</para>
         
         <programlisting>import org.mydomain.myproject.Converters.personToUser;
 ...
 Person person = ...;
 User user = person;</programlisting>
-
+        
+        <!--
         <para>Is equivalent to the following Java code:</para>
         
         <programlisting>Person person = ...;
 User user = personToUser(person);</programlisting>
-
+        -->
+        
         <para>The Ceylon compiler also searches for an appropriate extension whenever a member
         is invoked that is not declared by the type. If exactly one extension that declares the
-        member is found for the type, the compiler inserts a call to the extension. For example, 
-        this Ceylon method call:</para>
+        member is found for the type, the compiler inserts a call to the extension.</para>
         
         <programlisting>import org.mydomain.myframework.CollectionUtils;
 ...
 Collection&lt;Integer&gt; ints = ...;
 Collection&lt;Integer&gt; result = ints.nonZeroElements();</programlisting>
-            
+        
+        <!--
         <para>Is equivalent to this Java code:</para>
     
         <programlisting>Collection&lt;Integer&gt; ints = ...;
 Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElements();</programlisting>
-            
+        -->
+        
         <para>An extension is only available in a source file that explicitly 
         <literal>import</literal>s the extension (except for the extensions
         defined in the package <literal>lang</literal>). A wildcard

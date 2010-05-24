@@ -8,19 +8,41 @@
     
     <itemizedlist>
         <listitem>
-            <para>literal values,</para>
+            <para>literal values and special values,</para>
         </listitem>
         <listitem>
-            <para>invocation of methods, instantiation of classes and 
-            enumeration of sequences,</para>
+            <para>enumerated instance references,</para>
         </listitem>
         <listitem>
-            <para>evaluation and assignment of attributes, and</para>
+            <para>method references,</para>
+        </listitem>
+        <listitem>
+            <para>invocation of methods and instantiation of classes,</para> 
+        </listitem>
+        <listitem>
+            <para>evaluation and assignment of attributes,</para>
+        </listitem>
+        <listitem>
+            <para>enumeration of sequences, and</para>
         </listitem>
         <listitem>
             <para>operators.</para>
         </listitem>
     </itemizedlist>
+    
+    <programlisting>Expression := 
+Literal | SpecialValue
+EnumeratedInstanceReference |
+MethodReference | 
+Invocation | 
+Evaluation | Assignment | 
+Enumeration |
+OperatorExpression | 
+"(" Expression ")"</programlisting>
+    
+    <para>Where <literal>OperatorExpression</literal>s are composed by combining 
+    other <literal>Expression</literal>s using operators. Parentheses are used to
+    group terms in an expression and override the usual operator precedence rules.</para>
     
     <section id="literals">
     <title>Literals</title>
@@ -181,9 +203,11 @@ Digit+ |
         
         <programlisting>public static Float pi = 3.14159;</programlisting>
         
+        <!--
         <para>Equivalent to this Java code:</para>
         
         <programlisting>public static final Float pi = new lang.Float(3.14159f);</programlisting>
+        -->
 
     </section>
     
@@ -198,18 +222,21 @@ Digit+ |
         
         <programlisting>if ( string[i] == @+ ) { ... }</programlisting>
         
+        <!--
         <para>Equivalent to this Java code:</para>
         
         <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
+        -->
         
         <para>A character literal may contain an escape sequence.</para>
         
         <programlisting>List&lt;Character&gt; ws = { @\s, @\t, @\r, @\f, @\n };</programlisting>
         
+        <!--
         <para>Which is equivalent to this Java code:</para>
         
         <programlisting>List&lt;Character&gt; ws = new lang.Enumeration&lt;Character&gt;(' ', '\t', '\r', '\r', '\n');</programlisting>
-        
+        -->
         <comment><para>TODO: do we really need character literals??</para></comment>
         
     </section>
@@ -233,6 +260,7 @@ if you prefer.";</programlisting>
 
         <programlisting>out("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
         
+        <!--
         <para>Equivalent to the following Java code:</para>
         
         <programlisting>person.name().set( new lang.String("Gavin") );</programlisting>
@@ -242,6 +270,7 @@ if you prefer.";</programlisting>
         <programlisting>final lang.String multiline = new lang.String("Strings may\nspan multiple lines\nif you prefer.");</programlisting>
         
         <programlisting>out( new lang.String( "Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n") );</programlisting>
+        -->
         
         <comment><para>TODO: we need to support that the embedded expressions
         are evaluated lazily when the string literal appears as a method 
@@ -442,12 +471,30 @@ if you prefer.";</programlisting>
         
     </section>
     
+    <section>
+        <title>Enumerated instance references</title>
+        
+        <para>An enumerated instance of a class is identified according to:</para> 
+        
+        <programlisting>EnumeratedInstanceReference := (RegularType ".")? MemberName</programlisting>
+        
+        <para>The value of an enumerated instance reference is the instance of
+        the class that was instantiated when the class was loaded by the virtual
+        machine.</para>
+        
+        <programlisting>DayOfWeek sunday = DayOfWeek.sun;</programlisting>
+        
+    </section>
+    
     <section id="methodreferences">
         <title>Method references</title>
         
         <para>A method reference has the form:</para>
         
-        <programlisting>MethodReference :=  InstanceMethodReference | StaticMethodReference | AttributeReference | ConstructorReference</programlisting>
+        <programlisting>MethodReference :=  
+InstanceMethodReference | StaticMethodReference | 
+AttributeReference | 
+ConstructorReference</programlisting>
         
         <!-- No ("set" | "get") since we don't have static attributes -->
         <programlisting>StaticMethodReference := (RegularType ".")? MemberName</programlisting>
@@ -459,9 +506,7 @@ if you prefer.";</programlisting>
         <programlisting>MemberReference :=  (Expression ".")? MemberName</programlisting>
             
         <programlisting>ConstructorReference := (Expression ".")? TypeName</programlisting>
-            
-        <para>where the member name is the name of a method.</para>
-        
+                
         <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
         <literal>get</literal> keyword after the member reference (and before the parameter
         list)? Do we really, truly need the keyword at all?</para></comment>
@@ -478,7 +523,7 @@ if you prefer.";</programlisting>
         <para>Method references may appear as an argument to a functional parameter, either as 
         a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
         parameter invocation. The signature of the functonal parameter must match the signature 
-        of the method. For example:</para>
+        of the method.</para>
         
         <programlisting>//a method which accepts a method reference
 void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
@@ -513,11 +558,13 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
 
     </section>
 
-    <section id="invocations">
-        <title>Invocations</title>
+    <section id="invocation">
+        <title>Invocation</title>
         
         <para>Methods and classes are <emphasis>invokable</emphasis>. Invocation of a class is 
         called <emphasis>instantiation</emphasis>.</para>
+        
+        <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | Instantiation</programlisting>
         
         <para>Any invocation must specify values for parameters, either by listing or naming 
         parameter values.</para>
@@ -530,15 +577,14 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <section id="positionalarguments">
             <title>Positional arguments</title>
         
-        <para>When arguments are listed, the arguments list is enclosed in parentheses. 
-        Required parameters are specified first, in the order in which they were declared, 
-        followed by defaulted parameters, in the order they were declared. If there are any 
-        remaining defaulted parameters, they are be assigned their default values. On the 
-        other hand, if any arguments are unassigned, they will be treated as varargs.</para>
+        <para>When arguments are listed, the arguments list is enclosed in parentheses.</para>
             
         <programlisting>PositionalArguments := "(" ( Expression ("," Expression)* )? ")"</programlisting>
         
-        <para>For example:</para>
+        <para>Required parameters are specified first, in the order in which they were declared, 
+        followed by defaulted parameters, in the order they were declared. If there are any 
+        remaining defaulted parameters, they are be assigned their default values. On the 
+        other hand, if any arguments are unassigned, they will be treated as varargs.</para>
         
         <programlisting>(getProduct(id), 1)</programlisting>
                 
@@ -547,12 +593,13 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <section id="namedarguments">
             <title>Named arguments</title>
             
-        <para>When arguments are named, the argument list is enclosed in braces. Required and 
-        defaulted parameter arguments are specified by name. Varargs are specified by listing 
-        them.</para>
-
+        <para>When arguments are named, the argument list is enclosed in braces.</para>
+        
         <programlisting>NamedArguments := "{" NamedArgument* VarargArguments? "}"</programlisting>
         
+        <para>Required and defaulted parameter arguments are specified by name. Varargs are 
+        specified by listing them.</para>
+
         <para>A named argument either:</para> 
         
         <itemizedlist>
@@ -617,6 +664,111 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         </section>
         
+        <section id="defaultarguments">
+            <title>Default arguments</title>
+        
+        <para>When no value is assigned to a defaulted parameter by the caller, the 
+        default value defined by the formal parameter declaration is used.</para>
+        
+        <para>This class:</para>
+        
+        <programlisting>public class Counter(Natural initialCount=0) { ... }</programlisting>
+        
+        <!--
+        <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
+        
+        <programlisting>public class Counter {
+        
+    public Counter() {
+        Counter(0);
+    }
+    
+    public Counter(Natural initialCount) {
+        ...;
+    }
+    
+    public Counter(CounterParameters namedParameters) {
+        Counter( namedParameters.initialCount );
+    }
+
+    public static class CounterParameters {
+        private Natural initialCount=0;
+        CounterParameters initialCount(Natural initialCount) { 
+            this.initialCount = initialCount;
+            return this;
+        }
+    }
+    
+}</programlisting>
+        -->
+        
+        <para>May be instantiated using any of the following:</para>
+        
+        <programlisting>Counter()</programlisting>
+        <programlisting>Counter(1)</programlisting>
+        <programlisting>Counter {}</programlisting>
+        <programlisting>Counter { initialCount=10; }</programlisting>
+        
+        <!--
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>new Counter ( new CounterParameters().initialCount(10) );</programlisting>
+        -->
+        
+            <para>This method:</para>
+        
+            <programlisting>public class Counter {
+        
+    package void init(Natural initialCount=0) {
+        count:=initialCount;
+    }
+    
+    ...
+
+}</programlisting>
+            <!--
+            <para>Is equivalent to three Java method declarations and an inner class:</para>
+        
+        <programlisting>public class Counter {
+        
+    void init() {
+        init(0);
+    }
+    
+    void init(Natural initialCount) {
+        count=initialCount;
+    }
+    
+    void init(CounterInitParameters namedParameters) {
+        init( namedParameters.initialCount );
+    }
+
+    static class CounterInitParameters {
+        private Natural initialCount=0;
+        CounterInitParameters initialCount(Natural initialCount) { 
+            this.initialCount = initialCount;
+            return this;
+        }
+    }
+    
+}</programlisting>
+            -->
+            
+            <para>May be invoked using any of the following:</para>
+        
+            <programlisting>counter.init()</programlisting>
+            <programlisting>counter.init(1)</programlisting>
+            <programlisting>counter.init {}</programlisting>
+            <programlisting>counter.init { initialCount=10; }</programlisting>
+            
+            <!--
+            <para>Is equivalent to this Java code:</para>
+        
+            <programlisting>counter.init ( new CounterInitParameters().initialCount(10) );</programlisting>
+            -->
+ 
+        </section>
+        
         <section>
             <title>Functional arguments</title>
             
@@ -673,8 +825,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>MethodInvocation := (InstanceMethodReference | AttributeReference) TypeArguments? Arguments</programlisting>
             
-            <para>For example:</para>
-            
+            <para>The value of a method invocation is the return value of the method.
+            The argument values are passed to the formal parameters of the method.</para>
+                        
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
@@ -683,9 +836,6 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y );</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
-            
-            <para>The value of a method invocation is the return value of the method.
-            The parameter values are passed to the formal parameters of the method.</para>
             
             <para>Methods may not be invoked using the <literal>.</literal> operator on an 
             expression of type <literal>optional</literal>. They may be invoked using 
@@ -700,7 +850,8 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>StaticMethodInvocation := StaticMethodReference TypeArguments? Arguments</programlisting>
             
-            <para>For example:</para>
+            <para>The value of a static method invocation is the return value of the static method.
+            The argument values are passed to the formal parameters of the method.</para>
             
             <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
             <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
@@ -708,10 +859,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
             <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
-
-            <para>The value of a static method invocation is the return value of the static method.
-            The parameter values are passed to the formal parameters of the method.</para>
-            
+    
         </section>
         
         <section id="classinstantiation">
@@ -721,8 +869,12 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>Instantiation := ConstructorReference TypeArguments? Arguments</programlisting>
             
-            <para>For example:</para>
-            
+            <para>The value of a class instantiation is a new instance of the class.
+            The argument values are passed to the initialization parameters of the 
+            class. If the class has no initialization parameters, they are assigned
+            directly to attributes of the class (in this case, named parameters must 
+            be used).</para>
+                        
             <programlisting>Map&lt;String, Person&gt;(entries)</programlisting>
             <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
             <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
@@ -739,13 +891,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     }
 }</programlisting>
             
-            <para>The value of a class instantiation is a new instance of the class.
-            The parameter values are passed to the initialization parameters of the 
-            class. If the class has no initialization parameters, they are assigned
-            directly to attributes of the class (in this case, named parameters must 
-            be used).</para>
-            
-        </section>
+       </section>
         
         <section id="iteration">
             <title>Iteration</title>
@@ -890,22 +1036,25 @@ except (SomethingElseWrong sew) {
 }</programlisting>
         -->
 
-        <section id="enumerations">
-            <title>Sequence enumeration</title>
+        </section>
+        
+        <section id="enumeration">
+            <title>Enumeration</title>
             
             <para>A sequence may be instantiated by enumerating the elements:</para>
             
             <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
                         
-            <para>For example:</para>
+            <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
+            containing the enumerated elements in the given order.</para>
             
             <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
-            
-            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
             
             <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
             for a special value that can be assigned to <literal>Sequence</literal>.</para>
                                     
+            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
+            
             <para>There are no true literals for lists, sets or maps. However, the 
             <literal>..</literal> and <literal>-></literal> operators, together with the 
             convenient sequence enumeration syntax, and some built-in extensions help 
@@ -923,8 +1072,6 @@ except (SomethingElseWrong sew) {
             
             <para>This representation is used as the canonical literal form for collections.</para>
             
-        </section>
-        
         <!--section id="functorinvocation">
             <title>Functor invocation</title>
             
@@ -943,6 +1090,8 @@ except (SomethingElseWrong sew) {
             
         </section-->
         
+    </section>
+    
         <!--  
         <section>
             <title>Attribute initialization</title>
@@ -969,48 +1118,6 @@ except (SomethingElseWrong sew) {
         </section>
         -->
         
-        <section id="attributeevaluationassignment">
-            <title>Attribute evaluation and assignment</title>
-            
-            <para>Attribute evaluation follows this schema:</para>
-            
-            <programlisting>AttributeGet := MemberReference</programlisting>
-            
-            <para>This attribute evaluation:</para>
-        
-            <programlisting>String name = person.name;</programlisting>
-        
-            <para>is equivalent to the following Java code:</para>
-
-            <programlisting>String name = person.name().get();</programlisting>
-        
-            <para>Attribute assignment follows the following schema:</para>
-            
-            <programlisting>AttributeSet := MemberReference AssignmentOperator Expression</programlisting>
-            
-            <para>This attribute assignment:</para>
-        
-            <programlisting>person.name := "Gavin";</programlisting>
-        
-            <para>is equivalent to the following Java code:</para>
-
-            <programlisting>person.name().set("Gavin");</programlisting>
-                        
-            <para>If getter code is specified, and <literal>assign</literal> is not specified,
-            the attribute is not settable, and any attempt to assign to the attribute will
-            result in a compiler error.</para>
-        
-            <para>Attributes may not be accessed using the <literal>.</literal> operator when 
-            the expression is of type <literal>optional</literal>. They may be accessed using 
-            <literal>?.</literal>.</para>
-            
-            <para>Attributes may not be assigned when the expression of type 
-            <literal>optional</literal>.</para>
-            
-        </section>
-        
-    </section>
-    
     <!--section id="inlineclassesliteralobjectsenumerations">
         <title>Literal objects, inline classes, and enumerations</title>
     
@@ -1146,15 +1253,41 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
     </section-->
     
-    <section id="assignableexpressions">
-        <title>Assignable expressions</title>
+    <section id="attributeevaluation">
+        <title>Evaluation</title>
+            
+        <para>Attribute evaluation follows this schema:</para>
+            
+        <programlisting>Evaluation := (Expression EvaluationOperator)? MemberName</programlisting>
+        
+        <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
+            
+        <para>The value of an attribute evaluation is the return value of the
+        attribute getter, or the current value of the simple attribute.</para>
+        
+        <programlisting>String name = person.name;</programlisting>
+        
+        <!--
+        <para>is equivalent to the following Java code:</para>
+
+        <programlisting>String name = person.name().get();</programlisting>
+        -->
+        
+        <para>Attributes may not be evaluated using the <literal>.</literal> operator 
+        when the recieving expression is of type <literal>optional</literal>. They 
+        may be evaluated using <literal>?.</literal>.</para>
+            
+    </section>
+        
+    <section id="assignment">
+        <title>Assignment</title>
         
         <para>Certain expressions are <emphasis>assignable</emphasis>. An assignable
         expression may appear as the LHS of the <literal>:=</literal> (assign) operator,
         and possibly, depending upon the type of the expression, as the LHS of the 
-        numeric or logical assignment operators <literal>=, +=, -=, *=, /=, %=, &amp;=, 
-        |=, ^=, &amp;&amp;=, ||=</literal> or as the subject of the increment or decrement
-        operators <literal>++, --</literal>.</para>
+        numeric or logical assignment operators <literal>+=, -=, *=, /=, %=, &amp;=, 
+        |=, ^=, &amp;&amp;=, ||=, ?=</literal> or as the subject of the increment and 
+        decrement operators <literal>++, --</literal>.</para>
         
         <para>The following expressions are assignable:</para>
         
@@ -1178,6 +1311,15 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>Assignment follows this schema:</para>
+            
+        <programlisting>Assignment := MemberReference ElementSpec? AssignmentOperator Expression</programlisting>
+        
+        <programlisting>AssignmentOperator := "+=" | "-=" | "*=" | "/=" | "%=" | "&amp;=" | "|=" | "^=" | "&amp;&amp;=" | "||=" | "?="</programlisting>
+        
+        <para>Attributes may not be assigned when the recieving expression is of type 
+        <literal>optional</literal>.</para>
+            
         <para>When an assignment expression is executed, the value of the local or
         attribute is set to the new value, or the <literal>define()</literal> method of
         <literal>OpenCorrespondence</literal> is called.</para>
@@ -1186,10 +1328,30 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>order.lineItems[0] := LineItem { product = prod; quantity = 1; };</programlisting>
         
+        <!--
         <para>Is equivalent to the Java:</para>
         
         <programlisting>order.lineItems.define( 0, new LineItem(prod, 1) );</programlisting>
+        -->
         
+        <para>This attribute assignment:</para>
+        
+        <programlisting>person.name := "Gavin";</programlisting>
+        
+        <!--
+        <para>is equivalent to the following Java code:</para>
+
+        <programlisting>person.name().set("Gavin");</programlisting>
+        -->
+        
+        <para>Unary increment and decrement and the apply aperator <literal>.=</literal> 
+        are also considered a kind of assignment.</para>
+                                
+        <programlisting>IncrementOrDecrement := 
+IncrementOrDecrementOperator MemberReference | 
+MemberReference ( IncrementOrDecrementOperator | ".=" MemberName Arguments? )</programlisting>
+
+        <programlisting>IncrementOrDecrementOperator := "++" | "--"</programlisting>
         
     </section>
     

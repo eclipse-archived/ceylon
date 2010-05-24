@@ -30,13 +30,12 @@
         
         <section>
             <title>Expression statements</title>
+            
         <para>Only certain expressions are valid statements: assignment, prefix or 
         postfix increment or decrement, invocation of a method and instantiation of 
         a class.</para>
         
         <programlisting>ExpressionStatement := ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
-        
-        <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | Instantiation</programlisting>
         
         <para>For example:</para>
         
