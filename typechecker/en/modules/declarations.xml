@@ -1268,9 +1268,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </itemizedlist>
         
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
-        definitions may be overridden by subclasses. If the attribute is not declared
-        <literal>optional</literal>, it may not be overridden or implemented by an
-        attribute declared <literal>optional</literal>.</para>
+        definitions may be overridden by subclasses.</para>
             
         <para>An attribute body may invoke, evaluate or assign members of the current 
         instance of the class which defines the method (the instance upon which the 
@@ -1304,10 +1302,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         -->
-        
-        <para>The compiler is permitted to optimize block local attributes to a simple Java 
-        field declaration or a local variable in a Java constructor. Block local attributes 
-        may not be accessed via reflection.</para>
         
         <comment><para>TODO: I would like to support <literal>def</literal> in place of the 
         type for a block local attribute or local with an initializer or getter. For 
@@ -1391,6 +1385,11 @@ private Attribute&lt;Natural&gt; count() { return count; }</programlisting>
         <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
 public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         -->
+
+        <para>The compiler is permitted to optimize block local simple attributes to a simple 
+        Java field declaration or local variable. Block local attributes may not be accessed 
+        via reflection.</para>
+        
         </section>
         
          <section>
@@ -1506,10 +1505,18 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>with a type that is assignable to the type of the attribute 
                     it overrides, if the attribute it overrides is immutable, or with 
                     exactly the same type as the attribute it overrides, if the 
-                    attribute it overrides is mutable, and</para>
+                    attribute it overrides is mutable,</para>
                 </listitem>
                 <listitem>
-                    <para>that is mutable, if the attribute it overrides is mutable.</para>
+                    <para>that is mutable, if the attribute it overrides is mutable,</para>
+                </listitem>
+                <listitem>
+                    <para>that is not <literal>optional</literal>, unless the attribute
+                    it overrides is <literal>optional</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>that is <literal>optional</literal>, if the attribute it overrides 
+                    is both mutable and <literal>optional</literal>.</para>
                 </listitem>
             </itemizedlist>
             
