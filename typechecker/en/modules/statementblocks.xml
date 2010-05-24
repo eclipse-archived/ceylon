@@ -24,6 +24,12 @@
 
         <programlisting>Statement := ExpressionStatement | Specification | ControlStructure</programlisting>
         
+        <para>A simple attribute may not be used in an expression until its value has
+        been explicitly specified or initialized. The Ceylon compiler guarantees this
+        by evaluating all conditional branches between the declaration of a simple 
+        attribute and its first use in an expression. Each conditional branch must
+        specify or assign a value to the simple attribute.</para>
+        
         <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
         
         <programlisting>@doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
