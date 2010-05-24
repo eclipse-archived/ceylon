@@ -157,10 +157,14 @@ else {
         <section id="nesteddeclarations">
             <title>Nested declarations</title>
         
-        <para>Blocks may contain declarations, which are, by default, only visible inside
-        the block:</para>
+            <para>Blocks may contain declarations:</para>
         
-        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
+            <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
+        
+            <para>A declaration that occurs in a block is a block local declaration&mdash;it 
+            is visible only to statements and declarations that occur later in the same block, 
+            and may not declare a visibility modifier. (Remember that special rules apply to 
+            declarations that occur directly inside class and interface bodies.)</para>
         
         </section>
         

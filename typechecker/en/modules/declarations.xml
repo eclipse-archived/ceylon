@@ -657,8 +657,9 @@ ClassBody</programlisting>
         was invoked) without explicitly specifying the receiver.</para>
         
         <para>A class may be declared inside the body of a method or attribute, in which case 
-        the initializer may refer to any immutable local declared earlier within the containing 
-        scope. It may not refer to mutable locals from the containing scope.</para>
+        the initializer may refer to any immutable local, block local attribute getter or block 
+        local method declared earlier within the containing scope. It may not refer to mutable 
+        locals from the containing scope.</para>
         
         <para>The following restrictions apply to statements and declarations that appear within
         the initializer of the class:</para>
@@ -688,6 +689,21 @@ ClassBody</programlisting>
         may only be used by code that appears later in the block containing the declaration is
         relaxed.</para>
         
+        <para>Ordinarily, a declaration that occurs in a block of code is a block local
+        declaration&mdash;it is visible only to statements and declarations that occur
+        later in the same block. This rule is relaxed for certain declarations that occur 
+        directly inside a class body:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>declarations with explicit visibility modifiers, and</para>
+            </listitem>
+            <listitem>
+                <para>declarations that occur in the second part of the body of the 
+                class, after the last statement of the initializer.</para>
+            </listitem>
+        </itemizedlist>
+
         <comment><para>TODO: should class initialization parameters be allowed to be
         declared <literal>mutable</literal>?</para></comment>
         
@@ -1007,8 +1023,6 @@ InterfaceBody</programlisting>
         <para>The body of an interface contains member (method, attribute and nested type) 
         declarations, but the method and attribute declarations may not specify 
         implementation.</para>
-        
-        <para>For example:</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
@@ -1021,6 +1035,10 @@ InterfaceBody</programlisting>
     Comparison compare(T other);
 }</programlisting>
         -->
+        
+        <para>Interface members inherit the visbility modifier of the interface.</para>
+        
+        <comment><para>TODO: refine this. Consider block-local interface declarations.</para></comment>
           
         <section>
             <title>Interface inheritance</title>
@@ -1138,8 +1156,9 @@ public User(String username, Person person);</programlisting>
         upon which the method was invoked) without explicitly specifying the receiver.</para>
         
         <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any immutable local declared earlier within the containing 
-        scope. It may not refer to mutable locals from the containing scope.</para>
+        which case it may refer to any immutable local, block local attribute getter or 
+        block local method declared earlier within the containing scope. It may not refer 
+        to mutable locals from the containing scope.</para>
         
         <programlisting>public Integer add(Integer x, Integer y) {
     return x + y;
@@ -1296,8 +1315,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         upon which the method was invoked) without explicitly specifying the receiver.</para>
         
         <para>An attribute may be declared inside the body of another method or attribute, in 
-        which case it may refer to any immutable local declared earlier withing the containing 
-        scope. It may not refer to mutable locals from the containing scope.</para>
+        which case it may refer to any immutable local, block local attribute getter or block 
+        local method declared earlier withing the containing scope. It may not refer to mutable 
+        locals from the containing scope.</para>
         
         <programlisting>package mutable String firstName;</programlisting>
         
