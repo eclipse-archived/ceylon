@@ -101,7 +101,7 @@ class Arguments {
 		from(0) 
 			until (Y y) (y==10)
 			each (Y y) (y+2)
-			perform (Y y) { log.info(y) };
+			perform (Y y) { log.info(y); };
 		
 		from(0) 
 			until(Y y) { return y==10 } 
