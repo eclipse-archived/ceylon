@@ -293,6 +293,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
         <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
         as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
+        
+        <para>The type of a program element determines what members and operations may be
+        applied and whether it is assignable to another program element. The type may be
+        modified by the <literal>optional</literal> annotation. An <literal>optional</literal>
+        program element is not usually assignable to a non-<literal>optional</literal> 
+        program element.</para>
     
     </section>
     
