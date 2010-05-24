@@ -1222,12 +1222,15 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>with the same name as the method it overrides,</para>
                 </listitem>
                 <listitem>
-                    <para>the same formal parameter types as the method it overrides,
-                    and</para>
+                    <para>the same formal parameter types as the method it overrides,</para>
                 </listitem>
                  <listitem>
                     <para>with a return type that is assignable to the return type 
-                    of the method it overrides.</para>
+                    of the method it overrides, and</para>
+                </listitem>
+                <listitem>
+                    <para>that is not annotated <literal>optional</literal>, unless the 
+                    method it overrides is annotated <literal>optional</literal>.</para>
                 </listitem>
             </itemizedlist>
             
