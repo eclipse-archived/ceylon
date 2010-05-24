@@ -392,10 +392,10 @@ satisfiedTypes
 
 type
     : (regularType | 'subtype')
-    -> 'subtype'? regularType?
+    -> 'subtype'? parameterizedType?
     ;
 
-regularType
+parameterizedType
     :
     qualifiedTypeName ((typeParameterStart) => typeArguments )?
     -> ^(TYPE qualifiedTypeName ^(TYPE_ARGS typeArguments)?)
@@ -431,8 +431,8 @@ reflectedLiteral
 qualifiedTypeName
     : //( identifier '.' )* 
     // UIDENTIFIER ('.' UIDENTIFIER)*
-    UIDENTIFIER ('.' UIDENTIFIER)*
-        ->^(TYPE_NAME UIDENTIFIER+)
+    typeName ('.' typeName)*
+        ->^(TYPE_NAME typeName+)
     ;
 
 typeName
@@ -441,8 +441,7 @@ typeName
     ;
 
 annotationName
-    : //( identifier '.' )* 
-    LIDENTIFIER
+    : LIDENTIFIER
     ;
 
 memberName 
@@ -693,13 +692,10 @@ selector
     | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
-memberInvocation
-    : ('.'^ | '^.'^ | '?.'^ | '*.'^) memberName
-    ;
-
-/*parameterTypes
-    : '(' ( type (',' type)* )? ')'
-    ;*/
+member
+    : ('.' | '^.' | '?.' | '*.') 
+      ( memberName | typeName ) 
+      ( (typeArguments '(') => typeArguments )?
 
 elementSelector
     : '?'? '[' elementsSpec ']'
