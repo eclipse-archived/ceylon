@@ -566,13 +566,33 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | Instantiation</programlisting>
         
-        <para>Any invocation must specify values for parameters, either by listing or naming 
+        <para>Any invocation must specify arguments for parameters, either by listing or naming 
         parameter values.</para>
         
         <programlisting>Arguments := PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
         <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
         specified.</para>
+        
+        <para>When an invocation is executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>each argument is evaluated in turn in the calling context, then</para>
+            </listitem>
+            <listitem>
+                <para>the recieving instance, if any, is determined by evaluating the reciever
+                expression, or using the current instance, and then</para>
+            </listitem>
+            <listitem>
+                <para>execution of the calling context pauses while the body of the method 
+                or initializer is executed with the argument values, then</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the method or initializer ends without a thrown 
+                exception, execution of the calling context resumes.</para>
+            </listitem>
+        </itemizedlist>
         
         <section id="positionalarguments">
             <title>Positional arguments</title>
@@ -581,6 +601,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
         <programlisting>PositionalArguments := "(" ( Expression ("," Expression)* )? ")"</programlisting>
         
+        <para>Positional arguments must be listed in the same order as the corresponding formal
+        parameters.</para>
+
         <para>Required parameters are specified first, in the order in which they were declared, 
         followed by defaulted parameters, in the order they were declared. If there are any 
         remaining defaulted parameters, they are be assigned their default values. On the 
@@ -597,8 +620,11 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         <programlisting>NamedArguments := "{" NamedArgument* VarargArguments? "}"</programlisting>
         
+        <para>Named arguments may be listed in a different order to the corresponding formal
+        parameters.</para>
+
         <para>Required and defaulted parameter arguments are specified by name. Varargs are 
-        specified by listing them.</para>
+        specified by listing them, without specifying a name, at the end of the argument list.</para>
 
         <para>A named argument either:</para> 
         
@@ -612,7 +638,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             code (an inline method declaration).</para>
             </listitem>
         </itemizedlist>
-
+        
         <programlisting>NamedArgument := ParameterName (Specifier ";" | FormalParams Body)</programlisting>
         
         <para>For example:</para>
@@ -825,8 +851,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>MethodInvocation := (InstanceMethodReference | AttributeReference) TypeArguments? Arguments</programlisting>
             
-            <para>The value of a method invocation is the return value of the method.
-            The argument values are passed to the formal parameters of the method.</para>
+            <para>The value of a method invocation is the return value of the method, as
+            specified by the <literal>return</literal> directive. The argument values are 
+            passed to the formal parameters of the method.</para>
                         
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
@@ -850,8 +877,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>StaticMethodInvocation := StaticMethodReference TypeArguments? Arguments</programlisting>
             
-            <para>The value of a static method invocation is the return value of the static method.
-            The argument values are passed to the formal parameters of the method.</para>
+            <para>The value of a static method invocation is the return value of the static 
+            method, as specified by the <literal>return</literal> directive. The argument 
+            values are passed to the formal parameters of the method.</para>
             
             <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
             <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
@@ -1046,7 +1074,10 @@ except (SomethingElseWrong sew) {
             <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
                         
             <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
-            containing the enumerated elements in the given order.</para>
+            containing the enumerated elements in the given order. When an enumeration is 
+            executed, each element expression is evaluated, and the resulting values 
+            collected together into an object that implements <literal>Sequence</literal>.
+            The concrete type of this object is not specified here.</para>
             
             <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
             
@@ -1262,8 +1293,42 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
             
-        <para>The value of an attribute evaluation is the return value of the
-        attribute getter, or the current value of the simple attribute.</para>
+        <para>When a simple attribute evaluation is executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the recieving instance is determined by evaluating the reciever 
+                expression, or using the current instance, and then</para>
+            </listitem>
+            <listitem>
+                <para>the current value of the simple attribute is retrieved from the 
+                recieving instance.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The value of the attribute evaluation is the current value of the simple
+        attribute.</para>
+        
+        <para>When evaluation of an attribute with an attribute getter is executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the recieving instance is determined by evaluating the reciever 
+                expression, or using the current instance, and then</para>
+            </listitem>
+            <listitem>
+                <para>execution of the calling context pauses while the body of the 
+                attribute getter is executed, then</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the method or initializer ends without 
+                a thrown exception, execution of the calling context resumes.</para>
+            </listitem>
+        </itemizedlist>
+        
+         
+        <para>The value of the attribute evaluation is the return value of the attribute 
+        getter, as specified by the <literal>return</literal> directive.</para>
         
         <programlisting>String name = person.name;</programlisting>
         
