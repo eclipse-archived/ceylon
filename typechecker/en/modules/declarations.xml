@@ -649,8 +649,16 @@ ClassBody</programlisting>
         -->
         
         <para>An initializer may invoke, evaluate or assign members of the current instance 
-        of the class which defines the method (the instance upon which the method was 
-        invoked) without explicitly specifying the receiver.</para>
+        of the class (the instance being initialized) without explicitly specifying the 
+        receiver.</para>
+        
+        <para>An initializer of a member class may invoke, evaluate or assign members of the 
+        current instance of the containing class (the instance upon which the constructor
+        was invoked) without explicitly specifying the receiver.</para>
+        
+        <para>A class may be declared inside the body of a method or attribute, in which case 
+        the initializer may refer to any immutable local declared earlier within the containing 
+        scope. It may not refer to mutable locals from the containing scope.</para>
         
         <para>The following restrictions apply to statements and declarations that appear within
         the initializer of the class:</para>
@@ -1107,9 +1115,28 @@ public User(String username, Person person);</programlisting>
 
         <programlisting>MethodHeader := Annotation* (Type | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
         
+        <para>A method implementation may be specified using either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a block of code, or</para>
+            </listitem>
+            <listitem>
+                <para>a reference to another method.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>A method body may invoke, evaluate or assign members of the current instance 
         of the class which defines the method (the instance upon which the method was 
         invoked) without explicitly specifying the receiver.</para>
+        
+        <para>A method body of a member class may invoke, evaluate or assign members of the 
+        current instance of the containing class (the containing instance of the instance 
+        upon which the method was invoked) without explicitly specifying the receiver.</para>
+        
+        <para>A method may be declared inside the body of another method or attribute, in 
+        which case it may refer to any immutable local declared earlier within the containing 
+        scope. It may not refer to mutable locals from the containing scope.</para>
         
         <programlisting>public Integer add(Integer x, Integer y) {
     return x + y;
@@ -1127,6 +1154,10 @@ public User(String username, Person person);</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
         
+        <programlisting>Float say(String words) = person.say;</programlisting>
+        
+        <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
+        
         <para>A method may declare multiple lists of parameters. Methods which declare
         more than one parameter list return references to other methods.</para>
         
@@ -1135,28 +1166,9 @@ public User(String username, Person person);</programlisting>
     return order;
 }</programlisting>
 
-        <para>A method may <emphasis>only</emphasis> refer to parameters in the first
-        parameter list. It may not refer to parameters of other parameter lists.</para>
+        <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
+        first parameter list. It may not refer to parameters of other parameter lists.</para>
 
-        <para>A method implementation may be specified using either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a block of code, or</para>
-            </listitem>
-            <listitem>
-                <para>a reference to another method.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>Float say(String words) = person.say;</programlisting>
-        
-        <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
-        
-        <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any immutable local of the containing scope. It may not 
-        refer to mutable locals.</para>
-        
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
         
@@ -1165,9 +1177,8 @@ public User(String username, Person person);</programlisting>
 public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
 
-        <para>A Ceylon method invocation is equivalent to a Java method invocation. The 
-        semantics of method declarations are identical to Java, except that Ceylon methods 
-        may declare defaulted parameters.</para>
+        <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
+        methods may declare defaulted parameters and functional parameters.</para>
         
         <section>
             <title>Overloaded methods</title>
@@ -1273,9 +1284,17 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
         definitions may be overridden by subclasses.</para>
             
-        <para>An attribute body may invoke, evaluate or assign members of the current 
-        instance of the class which defines the method (the instance upon which the 
-        method was invoked) without explicitly specifying the receiver.</para>
+        <para>An attribute body may invoke, evaluate or assign members of the current instance 
+        of the class which defines the method (the instance upon which the method was 
+        invoked) without explicitly specifying the receiver.</para>
+        
+        <para>An attribute body of a member class may invoke, evaluate or assign members of the 
+        current instance of the containing class (the containing instance of the instance 
+        upon which the method was invoked) without explicitly specifying the receiver.</para>
+        
+        <para>An attribute may be declared inside the body of another method or attribute, in 
+        which case it may refer to any immutable local declared earlier withing the containing 
+        scope. It may not refer to mutable locals from the containing scope.</para>
         
         <programlisting>package mutable String firstName;</programlisting>
         
@@ -1293,10 +1312,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
     }
     return sum;
 }</programlisting>
-
-        <para>An attribute may be declared inside the body of another method or attribute, 
-        in which case it may refer to any immutable local of the containing scope. It may 
-        not refer to mutable locals.</para>
         
         <!--
         <para>
@@ -1359,6 +1374,9 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
                 <para>A formal parameter of a method is a local.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A local may only be used by statements and declarations that appear later in the
+        block of code that contains the local declaration.</para>
         
         <para>The semantics of locals are identical to Java local variables.</para>
         
