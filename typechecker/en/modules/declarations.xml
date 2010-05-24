@@ -683,7 +683,10 @@ ClassBody</programlisting>
         <para>The remainder of the body of the class consists purely of declarations, including
         abstract and <literal>default</literal> methods and attributes. It may not directly contain 
         statements or control structures, but may freely use <literal>this</literal>, and may 
-        invoke any method or evaluate any attribute of the class.</para>
+        invoke any method or evaluate any attribute of the class. This section of the class body
+        contains no statements or control structures, so the usual restriction that a declaration
+        may only be used by code that appears later in the block containing the declaration is
+        relaxed.</para>
         
         <comment><para>TODO: should class initialization parameters be allowed to be
         declared <literal>mutable</literal>?</para></comment>
