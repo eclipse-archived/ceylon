@@ -29,7 +29,6 @@ package mutable class Adventure(Process process) {
 	}
 	
 	void get(String name) {
-		String name = tokens.next();
 		optional Thing thing = currentLocation.thing(name);
 		if (exists thing) {
 			if (is Artifact thing) {
@@ -106,7 +105,7 @@ package mutable class Adventure(Process process) {
 	
 	while (life>0) {
 		String input = process.readLine();
-		Iterable<String> tokens = input.tokens();
+		Iterator<String> tokens = input.tokens().iterator();
 		try {
 			String command = tokens.next();
 			switch(command)

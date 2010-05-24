@@ -3,10 +3,13 @@ class Primaries {
 	class Literals {
 	
 		String hello = "Hello";
+		String names = "Gavin\nAndrew\nEmmanuel\n";
 		Natural one = 1;
 		Float zero = 0.0;
 		Float big = 1.0e10;
 		Float small = 1.0e-10;
+		Character x = @x;
+		Character newline = @\n;
 		Quoted quoted = 'quoted literal';
 		
 		Type<Literals> primariesClass = #Primaries;
@@ -55,11 +58,12 @@ class Primaries {
 			
 		}
 		
-		Person g = Person("Gavin King");
-		void hello() = g.hello;
+		Person person = Person("Gavin King");
+		void hello() = person.hello;
 		void helloWorld() = Person.helloWorld;
-		String getName() = get g.name;
-		void setName(String val) = set g.name;
+		String getName() = get person.name;
+		void setName(String name) = set person.name;
+		Person newPerson(String name) = Person;
 		
 	}
 	

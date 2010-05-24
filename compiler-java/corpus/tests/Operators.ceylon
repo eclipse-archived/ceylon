@@ -8,7 +8,7 @@ class Operators {
 	Natural remainder = 3%2;
 	
 	Entry<String,String> name = "Gavin"->"King";
-	Range<Natural> range = 1..5;
+	Range<Natural> range = 1 ..5;
 	
 	String default = null ? "Hello";
 	Boolean nullExists = null exists;
@@ -30,7 +30,7 @@ class Operators {
 	Boolean complement = ~true;
 	Boolean bitwiseOr = true|false;
 	Boolean bitwiseAnd = true&true;
-	Boolean exclusiveOr = true^false;
+	Boolean exclusiveOr = true^false
 	
 	Boolean instanceOf = 1 is Natural;
 	Boolean containedIn = 3 in range;
@@ -38,15 +38,17 @@ class Operators {
 	
 	String render = $123;
 	
+	String join = "Gavin" + " " + "King";
+	
 	List<String> list = {"Gavin", "Andrew", "Emmanuel"};
 	optional List<String> nullList = null;
 
 	String element = list[1];
 	optional String element = nullList?[666];
 	List<String> elements = list[{3,2,1}];
-	List<String> subrange = list[0 .. 1];
+	List<String> subrange = list[0 ..1];
 	List<String> upperRange = list[1 ...];
 	
-	//TODO: *. ^. ?. *. := .=
+	//TODO: ^. ?. *. := .=
 	
 }

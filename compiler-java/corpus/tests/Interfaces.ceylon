@@ -32,7 +32,6 @@ class Interfaces {
 		where X>=String & Y(Natural count) {}
 		
 	interface WithNestedInterface {
-void foo();
 		interface NestedInterface {}
 	}
 	

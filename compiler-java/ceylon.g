@@ -23,6 +23,7 @@ tokens {
     CALL_EXPR;
     CATCH_BLOCK;
     CATCH_STMT;
+    CHAR_CST;
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
@@ -333,7 +334,7 @@ aliasDeclaration
         typeParameters?
         satisfiedTypes?
         typeConstraints?
-        ';'
+        ';'!
     ;
 
 classDeclaration
@@ -391,7 +392,7 @@ satisfiedTypes
     ;
 
 type
-    : (regularType | 'subtype')
+    : (parameterizedType | 'subtype')
     -> 'subtype'? parameterizedType?
     ;
 
@@ -429,10 +430,8 @@ reflectedLiteral
     ;
 
 qualifiedTypeName
-    : //( identifier '.' )* 
-    // UIDENTIFIER ('.' UIDENTIFIER)*
-    typeName ('.' typeName)*
-        ->^(TYPE_NAME typeName+)
+    :  UIDENTIFIER ('.' UIDENTIFIER)*
+        ->^(TYPE_NAME UIDENTIFIER+) 
     ;
 
 typeName
@@ -482,6 +481,7 @@ literal
     : NATURALLITERAL -> ^(INT_CST NATURALLITERAL)
     | FLOATLITERAL -> ^(FLOAT_CST FLOATLITERAL)
     | QUOTEDLITERAL -> ^(QUOTE_CST QUOTEDLITERAL)
+    | CHARLITERAL -> ^(CHAR_CST CHARLITERAL)
     | SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
     | stringExpr -> ^(STRING_CONCAT stringExpr)
     ;   
@@ -661,12 +661,12 @@ postfixOperator
     ;	
 
 base 
-    : type
-    | memberName
-    | literal
+    :  literal
     | parExpression
     | enumeration
     | specialValue
+    | memberName
+    | typeName
     //| inlineClassDeclaration
     ;
     
@@ -686,7 +686,7 @@ enumeration
     ;
 
 selector 
-    : memberInvocation
+    : member
     | elementSelector
     | (arguments -> ^(CALL_EXPR arguments))
     | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
@@ -696,7 +696,8 @@ member
     : ('.' | '^.' | '?.' | '*.') 
       ( memberName | typeName ) 
       ( (typeArguments '(') => typeArguments )?
-
+    ;
+    
 elementSelector
     : '?'? '[' elementsSpec ']'
     -> ^(SUBSCRIPT_EXPR '?'? elementsSpec)
@@ -938,6 +939,10 @@ fragment
 Exponent    
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
+    
+CHARLITERAL
+    :   '@' ( ~ NonCharacterChars | EscapeSequence )
+    ;
 
 QUOTEDLITERAL
     :   '\''
@@ -972,6 +977,11 @@ MIDDLESTRINGLITERAL
 fragment
 NonStringChars
     :    '{' | '\\' | '"' | '$' | '\''
+    ;
+
+fragment
+NonCharacterChars
+    :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
     ;
 
 fragment

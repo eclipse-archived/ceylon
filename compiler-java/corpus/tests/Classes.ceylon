@@ -58,6 +58,16 @@ class Classes {
 		Integer value = i;
 	}
 	
+	class WithInstanceListAndFunctionalInitParameter(String name()) {
+		
+		case foo { name() { return "Foo" } }, 
+		case bar { name() { return "Bar" } },
+		case baz { name() { return "Baz" } };
+		
+		String name() = name;
+		
+	}
+	
 	class WithAnnotatedInstanceList(Integer i) {
 		doc "1" numericValue(1) case one(1), 
 		doc "2" numericValue(2) case two(2), 

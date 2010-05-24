@@ -20,12 +20,12 @@ class Arguments {
 	
 	class SingleArgument {
 		
-		void owt(String value) {
+		void out(String value) {
 			log.info(value);
 		}
 		
-		owt("Hello");
-		owt { value="Hi"; };
+		out("Hello");
+		out { value="Hi"; };
 		
 		class Output(String value) {
 			log.info(value);

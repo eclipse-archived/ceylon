@@ -12,7 +12,7 @@ class ControlStructures {
 		for (String name in names) {
 			if (name=="Gavin") {
 				log.info("found");
-				break true;
+				break true
 			}
 		}
 		fail {
@@ -20,7 +20,7 @@ class ControlStructures {
 		}
 		
 		for (String first->String last in fullNames) {
-			log.info("${first}$ ${last}$");
+			log.info("${first} ${last}");
 		}
 		
 	}
@@ -94,7 +94,7 @@ class ControlStructures {
 			log.info("goodbye");
 		}
 		
-		do (mutable Integer n:=0)
+		do (mutable Integer n:=0) {
 		while (n<10) {
 			log.info(n);
 			n++;
@@ -120,7 +120,7 @@ class ControlStructures {
 			String word = tokens.next().lowercase;
 			if ("hello"==word) {
 				log.info("found hello");
-				break;
+				break
 			}
 		}
 		
@@ -140,10 +140,10 @@ class ControlStructures {
 		}
 		
 		try ( Transaction(), Session s = Session() ) {
-			throw Exception();
+			throw Exception()
 		}
 		catch (Exception e) {
-			throw e;
+			throw e
 		}
 		
 		try ( Session s = Session() ) {
@@ -151,7 +151,7 @@ class ControlStructures {
 		}
 		catch (Exception e) {
 			log.error(e);
-		}
+		};
 		
 		try {
 			doSomething();
@@ -235,7 +235,7 @@ class ControlStructures {
 			log.info("unknown color");
 		}
 		case (red, green, blue) {
-			log.info("known color ${cc}$");
+			log.info("known color ${cc}");
 		}
 		
 	}

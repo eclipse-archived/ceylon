@@ -1,12 +1,14 @@
 abstract class Attributes {
 
-	abstract String abstractAttribute;
+	String abstractAttribute;
 	
 	String immutableAttribute = "Hello World";
 	
 	mutable String mutableAttribute := "Hello World";
 	
-	optional mutable String nullMutableAttribute;
+	optional String nullAttribute = null;
+	
+	optional mutable String nullMutableAttribute := null;
 	
 	String attribute { return mutableAttribute.uppercase; }
 	
