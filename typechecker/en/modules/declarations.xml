@@ -931,7 +931,7 @@ public class Person { ... }</programlisting>
 
     </section>
 
-        <section>
+        <section id="classinheritance">
              <title>Class inheritance</title>
         
         <para>
@@ -966,7 +966,8 @@ class Customer(Name name, optional Organization org = null)
         
         <itemizedlist>
             <listitem>
-                <para>inherits all members of its superclass,</para>
+                <para>inherits all members (methods, attributes, and member types) of 
+                its superclass, except for members that it <emphasis>overrides</emphasis>,</para>
             </listitem>
             <listitem>
                 <para>is assignable to any type to which its superclass is assignable,</para>
@@ -1107,7 +1108,7 @@ class Customer(Name name, optional Organization org = null)
         -->
     </section>
     
-        <section>
+        <section id="overloadedclasses">
             <title>Overloaded classes</title>
             
             <para>Multiple toplevel classes belonging to the same package, or
@@ -1139,7 +1140,7 @@ class Customer(Name name, optional Organization org = null)
             
         </section>
         
-    <section>
+    <section id="overridingmemberclasses">
         <title>Overriding member classes</title>
         
         <para>A member class annotated <literal>abstract</literal> or
@@ -1214,7 +1215,7 @@ InterfaceBody</programlisting>
         
         <comment><para>TODO: refine this. Consider block-local interface declarations.</para></comment>
           
-        <section>
+        <section id="interfaceinheritance">
             <title>Interface inheritance</title>
             
             <para>An interface may extend any number of other interfaces.</para>
@@ -1376,7 +1377,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
         methods may declare defaulted parameters and functional parameters.</para>
         
-        <section>
+        <section id="overloadedmethods">
             <title>Overloaded methods</title>
             
             <para>A class may declare or inherit multiple methods with the
@@ -1396,7 +1397,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         </section>
         
-       <section>
+       <section id="abstractmethods">
             <title>Interface methods and abstract methods</title>
             
             <para>If there is no method body in a method declaration, the implementation 
@@ -1408,13 +1409,14 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
             <programlisting>AbstractMethod := MethodHeader ";"</programlisting>
 
-            <para>Interface methods and abstract methods must be overridden by every 
-            non-<literal>abstract</literal> class that implements the interface or
-            subclasses the abstract class.</para>
+            <para>An interface method or abstract method must be overridden by every 
+            non-<literal>abstract</literal> class that is assignable to the interface or 
+            abstract class type, unless the class inherits a non-abstract method from a 
+            superclass which overrides the interface method or abstract method.</para>
             
         </section>
         
-        <section>
+        <section id="overridingmethods">
             <title>Overriding methods</title>
             
             <para>An abstract method, interface method, or a method annotated 
@@ -1432,8 +1434,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>the same formal parameter types as the method it overrides,</para>
                 </listitem>
                  <listitem>
-                    <para>with a return type that is assignable to the return type 
-                    of the method it overrides, and</para>
+                    <para>with a return type that is assignable to the return type of 
+                    the method it overrides, and</para>
                 </listitem>
                 <listitem>
                     <para>that is not annotated <literal>optional</literal>, unless the 
@@ -1526,7 +1528,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
         <programlisting>def count:=0;</programlisting>
         
-        <section>
+        <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
             
         <para>A simple attribute defines state. Simple attributes are declared according to the 
@@ -1619,7 +1621,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         
         </section>
         
-         <section>
+         <section id="attributegetters">
             <title>Attribute getters</title>
             
             <para>An attribute getter is declared as follows:</para>
@@ -1649,7 +1651,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             
         </section>
         
-        <section>
+        <section id="attributesetters">
             <title>Attribute setters</title>
                     
             <para>An attribute setter is declared as follows:</para>
@@ -1686,7 +1688,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             -->
         </section>
         
-        <section>
+        <section id="abstractattributes">
             <title>Interface attributes and abstract attributes</title>
             
             <para>If there is no initializer or getter implementation, the value or 
@@ -1700,18 +1702,15 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             or setter:</para>
         
             <programlisting>AbstractAttribute := AttributeHeader ";"</programlisting>
-        
-            <para>Interface attributes and abstract attributes must be overidden by every 
-            non-<literal>abstract</literal> class that implements the interface or subclasses 
-            the abstract class.</para>
-                
-            <para>Interface attributes and abstract attributes may be annotated 
-            <literal>mutable</literal>, in which case every subtype must also define the 
-            attribute to be mutable.</para>
-        
+            
+            <para>An interface attribute or abstract attribute must be overridden by every 
+            non-<literal>abstract</literal> class that is assignable to the interface or 
+            abstract class type, unless the class inherits a non-abstract attribute from a 
+            superclass which overrides the interface attribute or abstract attribute.</para>
+            
         </section>
         
-        <section>
+        <section id="overridingattributes">
             <title>Overriding attributes</title>
             
             <para>An abstract attribute, interface attribute, or attribute annotated 
@@ -1763,7 +1762,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
         </section>
         
-        <section>
+        <section id="getterandsettermethods">
             <title>Getter and setter methods</title>
             
             <para>For each attribute, one or two methods exist implicitly:</para>
