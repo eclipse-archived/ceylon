@@ -281,25 +281,25 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>A method return type is a covariant position.</para>
+                <para>The return type of a method is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A method formal parameter type is a contravariant position.</para>
+                <para>A formal parameter type of a method is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A method type parameter is a contravariant position.</para>
+                <para>A type parameter of a method is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A member class formal parameter type is a contravariant position.</para>
+                <para>A formal parameter type of a member class initializer is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A member class type parameter is a contravariant position.</para>
+                <para>A type parameter of a member class is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>An immutable attribute type is a covariant position.</para>
+                <para>The type of an immutable attribute is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A mutable attribute type is a nonvariant position.</para>
+                <para>The type of a mutable attribute is a nonvariant position.</para>
             </listitem>
             <listitem>
                 <para>A lower bound of a type parameter in a covariant position is a contravariant position.</para>
@@ -329,10 +329,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A formal parameter of a functional parameter in a covariant position is contravariant.</para>
             </listitem>
             <listitem>
-                <para>A return type of a functional parameter in a contravariant position is contravariant.</para>
+                <para>The return type of a functional parameter in a contravariant position is contravariant.</para>
             </listitem>
             <listitem>
-                <para>A return type of a functional parameter in a covariant position is covariant.</para>
+                <para>The return type of a functional parameter in a covariant position is covariant.</para>
             </listitem>
         </itemizedlist>
         
