@@ -486,28 +486,66 @@ if you prefer.";</programlisting>
     <section id="methodreferences">
         <title>Method references</title>
         
-        <para>A method reference has the form:</para>
+        <para>A method reference is an invocable reference to an instance method, static
+        method, attribute getter or setter or type constructor:</para>
         
         <programlisting>MethodReference :=  
 InstanceMethodReference | StaticMethodReference | 
 AttributeReference | 
 ConstructorReference</programlisting>
         
+        <para>A constructor reference consists of a named type and, for member types
+        only, an expression that evaluates to a recieving instance of the containing
+        type.</para>
+                
+        <programlisting>ConstructorReference := (Expression ".")? TypeName</programlisting>
+        
+        <para>A static method reference consists of a named type and named method of
+        that type.</para>
+                
         <!-- No ("set" | "get") since we don't have static attributes -->
         <programlisting>StaticMethodReference := (RegularType ".")? MemberName</programlisting>
+        
+        <para>An instance method reference consists of a named method and an expression
+        that evaluates to a recieving instance or an <literal>Iterable</literal> set of
+        instances of the type that declares the method.</para>
             
         <programlisting>InstanceMethodReference := MemberReference</programlisting>
         
+        <para>An attribute setter or getter reference consists of a named attribute, 
+        the keyword <literal>get</literal> or <literal>set</literal>, and an expression 
+        that evaluates to a recieving instance or an <literal>Iterable</literal> set of
+        instances of the type that declares the attribute.</para>
+            
         <programlisting>AttributeReference := ("set" | "get")? MemberReference</programlisting>
         
-        <programlisting>MemberReference :=  (Expression ".")? MemberName</programlisting>
-            
-        <programlisting>ConstructorReference := (Expression ".")? TypeName</programlisting>
-                
         <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
         <literal>get</literal> keyword after the member reference (and before the parameter
         list)? Do we really, truly need the keyword at all?</para></comment>
         
+        <para>References to instance methods and attributes use one of three different
+        invocation operators.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>.</literal> if the expression is not <literal>optional</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>.?</literal> if the expression is <literal>optional</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>.*</literal> if the expression is an <literal>Iterable</literal>
+                set of instances</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>MemberReference := (Expression InvocationOperator)? MemberName</programlisting>
+        
+        <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
+            
+        <para>If no receiver expression is explicitly specified, the current object is
+        the receiver.</para>
+            
         <para>A method reference may be used to define a method using <literal>=</literal>. 
         The two methods must have exactly the same signature.</para>
         
@@ -558,18 +596,19 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     <section id="invocation">
         <title>Invocation</title>
         
-        <para>Methods and classes are <emphasis>invokable</emphasis>. Invocation of a class is 
-        called <emphasis>instantiation</emphasis>.</para>
+        <para>Methods references are <emphasis>invokable</emphasis>. An 
+        <emphasis>invocation</emphasis> consists of an expression that evaluates to a 
+        method reference, together with an argument list.</para>
         
-        <programlisting>Invocation := MethodInvocation | StaticMethodInvocation | Instantiation</programlisting>
-        
-        <para>Any invocation must specify arguments for parameters, either by listing or naming 
+        <programlisting>Invocation := Expression TypeArguments? Arguments</programlisting>
+            
+        <para>An invocation must specify arguments for parameters, either by listing or naming 
         parameter values.</para>
         
         <programlisting>Arguments := PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
-        <para>Required parameters must be specified. Defaulted parameters and varargs may also be 
-        specified.</para>
+        <para>Arguments to required parameters must be specified by the caller. Arguments to 
+        defaulted parameters and varargs may optionally be specified.</para>
         
         <para>When an invocation is executed:</para>
         
@@ -578,18 +617,74 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
                 <para>each argument is evaluated in turn in the calling context, then</para>
             </listitem>
             <listitem>
-                <para>the recieving instance, if any, is determined by evaluating the reciever
-                expression, or using the current instance, and then</para>
+                <para>the receiving instance, if any, and the name of the invoked member or
+                type is determined by evaluating the receiver expression and obtaining a method 
+                reference, and</para>
             </listitem>
             <listitem>
-                <para>execution of the calling context pauses while the body of the method 
-                or initializer is executed with the argument values, then</para>
+                <para>the actual member to be invoked is determined by considering the runtime
+                type of the receiving instance and the static types of the arguments, and then</para>
+            </listitem>
+            <listitem>
+                <para>execution of the calling context pauses while the body of the method or 
+                initializer is executed by the receiving instance with the argument values, 
+                then</para>
             </listitem>
             <listitem>
                 <para>finally, when execution of the method or initializer ends without a thrown 
                 exception, execution of the calling context resumes.</para>
             </listitem>
         </itemizedlist>
+        
+        <section id="methodinvocation">
+            <title>Method invocation</title>
+            
+            <para>The value of a method invocation is the return value of the method, as
+            specified by the <literal>return</literal> directive. The argument values are 
+            passed to the formal parameters of the method, and the body of the method is
+            executed.</para>
+                        
+            <programlisting>log.info("Hello world!")</programlisting>
+            <programlisting>log.info { message = "Hello world!"; }</programlisting>
+            <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
+            <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
+            <programlisting>set person.name("Gavin")</programlisting>
+            <programlisting>get process.args()</programlisting>
+            
+            <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y );</programlisting>
+            <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
+            
+            <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
+            <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
+            
+            <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
+            <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
+        </section>
+        
+        <section id="classinstantiation">
+            <title>Class instantiation</title>
+            
+            <para>Invocation of a constructor reference is called <emphasis>instantiation</emphasis> 
+            of the type. The value of a class instantiation is a new instance of the class. The argument 
+            values are passed to the initialization parameters of the class, and the initializer
+            is executed.</para>
+                        
+            <programlisting>Map&lt;String, Person&gt;(entries)</programlisting>
+            <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
+            <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
+            <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
+            
+            <programlisting>Panel {
+    label = "Hello";
+    Input i = Input(),
+    Button {
+        label = "Hello";
+        action() {
+            log.info(i.value);
+        }
+    }
+}</programlisting>
+        </section>
         
         <section id="positionalarguments">
             <title>Positional arguments</title>
@@ -840,83 +935,6 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         declared by the method declaration.</para>
             
         </section>
-        
-        <section id="methodinvocation">
-            <title>Method invocation</title>
-            
-            <para>Method invocations follow this schema:</para>
-            
-            <programlisting>MethodInvocation := (InstanceMethodReference | AttributeReference) TypeArguments? Arguments</programlisting>
-            
-            <para>The value of a method invocation is the return value of the method, as
-            specified by the <literal>return</literal> directive. The argument values are 
-            passed to the formal parameters of the method.</para>
-                        
-            <programlisting>log.info("Hello world!")</programlisting>
-            <programlisting>log.info { message = "Hello world!"; }</programlisting>
-            <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
-            <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
-            <programlisting>set person.name("Gavin")</programlisting>
-            
-            <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y );</programlisting>
-            <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
-            
-            <para>Methods may not be invoked using the <literal>.</literal> operator on an 
-            expression of type <literal>optional</literal>. They may be invoked using 
-            <literal>?.</literal>.</para>
-            
-        </section>
-        
-        <section id="staticmethodinvocation">
-            <title>Static method invocation</title>
-            
-            <para>Static method invocations follow this schema:</para>
-            
-            <programlisting>StaticMethodInvocation := StaticMethodReference TypeArguments? Arguments</programlisting>
-            
-            <para>The value of a static method invocation is the return value of the static 
-            method, as specified by the <literal>return</literal> directive. The argument 
-            values are passed to the formal parameters of the method.</para>
-            
-            <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
-            <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
-            <programlisting>get Process.args()</programlisting>
-            
-            <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
-            <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
-    
-        </section>
-        
-        <section id="classinstantiation">
-            <title>Class instantiation</title>
-            
-            <para>Classes may be instantiated according to the following schema:</para>
-            
-            <programlisting>Instantiation := ConstructorReference TypeArguments? Arguments</programlisting>
-            
-            <para>The value of a class instantiation is a new instance of the class.
-            The argument values are passed to the initialization parameters of the 
-            class. If the class has no initialization parameters, they are assigned
-            directly to attributes of the class (in this case, named parameters must 
-            be used).</para>
-                        
-            <programlisting>Map&lt;String, Person&gt;(entries)</programlisting>
-            <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
-            <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
-            <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
-            
-            <programlisting>Panel {
-    label = "Hello";
-    Input i = Input(),
-    Button {
-        label = "Hello";
-        action() {
-            log.info(i.value);
-        }
-    }
-}</programlisting>
-            
-       </section>
         
         <section id="iteration">
             <title>Iteration</title>
@@ -1284,38 +1302,34 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     <section id="attributeevaluation">
         <title>Evaluation</title>
             
-        <para>Attribute evaluation follows this schema:</para>
+        <para>An attribute evaluation consists of a named attribute an expression that 
+        evaluates to a recieving instance of the type that declares the attribute:</para>
             
         <programlisting>Evaluation := (Expression EvaluationOperator)? MemberName</programlisting>
         
         <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
+        
+        <para>If no receiver expression is explicitly specified, the current object is
+        the receiver.</para>
             
-        <para>When a simple attribute evaluation is executed:</para>
+        <para>When an attribute evaluation is executed:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the recieving instance is determined by evaluating the reciever 
-                expression, or using the current instance, and then</para>
+                <para>the receiving instance is determined by evaluating the receiver 
+                expression, and</para>
             </listitem>
             <listitem>
-                <para>the current value of the simple attribute is retrieved from the 
-                recieving instance.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The value of the attribute evaluation is the current value of the simple
-        attribute.</para>
-        
-        <para>When evaluation of an attribute with an attribute getter is executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the recieving instance is determined by evaluating the reciever 
-                expression, or using the current instance, and then</para>
+                <para>the actual member to be invoked is determined by considering the 
+                runtime type of the receiving instance, and then</para>
             </listitem>
             <listitem>
-                <para>execution of the calling context pauses while the body of the 
-                attribute getter is executed, then</para>
+                <para>if the member is a simple attribute, the current value of the 
+                simple attribute is retrieved from the recieving instance, or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, execution of the calling context pauses while the body 
+                of the attribute getter is executed by the receiving instance, then</para>
             </listitem>
             <listitem>
                 <para>finally, when execution of the method or initializer ends without 
@@ -1323,9 +1337,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
         </itemizedlist>
         
-         
-        <para>The value of the attribute evaluation is the return value of the attribute 
-        getter, as specified by the <literal>return</literal> directive.</para>
+        <para>The value of the attribute evaluation is the current value of the simple
+        attribute or the return value of the attribute getter, as specified by the 
+        <literal>return</literal> directive.</para>
         
         <programlisting>String name = person.name;</programlisting>
         
@@ -1422,7 +1436,7 @@ MemberReference ( IncrementOrDecrementOperator | ".=" MemberName Arguments? )</p
             
     <para>Operators are syntactic shorthand for more complex expressions
     involving method invocation or attribute access. Each operator is defined 
-    for a particular type. There is support for user-defined operator 
+    for a particular type. There is no support for user-defined operator 
     <emphasis>overloading</emphasis>. However, the semantics of an operator 
     may be customized by the implementation of the type that the operator
     applies to. This is called <emphasis>operator polymorphism</emphasis>.</para>
@@ -1716,7 +1730,7 @@ MemberReference ( IncrementOrDecrementOperator | ".=" MemberName Arguments? )</p
     as <literal>**</literal>.</para></comment>
     
     
-        <para>The following tables define the semantics of the Ceylon operators:</para>
+    <para>The following tables define the semantics of the Ceylon operators:</para>
     
     <section id="basic">
     <title>Basic invocation and assignment operators</title>
