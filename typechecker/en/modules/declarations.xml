@@ -974,8 +974,8 @@ class Customer(Name name, optional Organization org = null)
             </listitem>
             <listitem>
                 <para>must declare or inherit a member that overrides each member of 
-                every interface it implements, unless the class is declared 
-                <literal>abstract</literal>,</para>
+                every interface it implements directly or indirectly, unless the class 
+                is declared <literal>abstract</literal>,</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that overrides each abstract 
