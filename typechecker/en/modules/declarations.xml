@@ -110,6 +110,189 @@ public deprecated</programlisting>
         
     </section>
     
+    <section id="type">
+        <title>Type</title>
+    
+        <para>Method, attribute and formal parameter declarations must declare a type.</para>
+        
+        <programlisting>Type := RegularType | "subtype"</programlisting>
+        
+        <para>A type may be <emphasis>assignable</emphasis> to another type. If <literal>X</literal>
+        is assignable to <literal>Y</literal>, then:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>For each immutable attribute of <literal>Y</literal>, <literal>X</literal>
+                has an attribute with the same name, whose type is assignable to the
+                type of the attribute of <literal>Y</literal>. The attribute is not <literal>optional</literal> 
+                unless the attribute of <literal>Y</literal> is <literal>optional</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each mutable attribute of <literal>Y</literal>, <literal>X</literal>
+                has a mutable attribute with the same name and the same type. The
+                attribute is <literal>optional</literal> if and only if the attribute of  
+                <literal>Y</literal> is <literal>optional</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each method of <literal>Y</literal>, <literal>X</literal>
+                has a method with the same name, with the same formal parameter types, 
+                and whose return type is assignable to the return type of the method of 
+                <literal>Y</literal>. The method is not <literal>optional</literal> 
+                unless the method of <literal>Y</literal> is <literal>optional</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each member type of <literal>Y</literal>, <literal>X</literal>
+                has a member type of the same name, with the same formal parameter types,
+                that is assignable to the member type of <literal>Y</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Assignability obeys the following rules:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>identity: <literal>X</literal> is assignable to <literal>X</literal></para>
+            </listitem>
+            <listitem>
+                <para>transitivity: if <literal>X</literal> is assignable to <literal>Y</literal>
+                and <literal>Y</literal> is assignable to <literal>Z</literal> then
+                <literal>X</literal> is assignable to <literal>Z</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Most types are classes or interfaces:</para>
+        
+        <programlisting>RegularType := QualifiedTypeName TypeArguments?</programlisting>
+        
+        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
+        
+        <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
+        
+        <para>A generic type must specify arguments for the generic type parameters.</para>
+        
+        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+        
+        <para>The arguments may themselves be generic types.</para>
+        
+        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        
+        <para>Every Ceylon class and interface has an implicit type parameter that never
+        needs to be declared. This special type parameter, referred to using the keyword 
+        <literal>subtype</literal>, represents the concrete type of the current instance 
+        (the instance that is being invoked).</para>
+        
+        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
+        
+        <programlisting>public abstract class Wrappable {
+   public Wrapper&lt;subtype&gt; wrap() {
+       return Wrapper(this);
+   }
+}</programlisting>
+        
+        <programlisting>public class Special() extends Wrappable() {}</programlisting>
+
+        <programlisting>Special special = Special();
+Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
+
+        <para>For a class declared <literal>final</literal>, any instance of the class
+        may be assigned to the type <literal>subtype</literal>. For a class not declared
+        <literal>final</literal>, only the <literal>this</literal> reference is
+        assignable to <literal>subtype</literal>.</para>
+        
+        <comment><para>TODO: so this means we really need a <literal>final</literal>
+        modifier after all? Is there another solution?</para></comment>
+        
+        <para>The type <literal>subtype</literal> is considered a covariant type parameter
+        of the type, and may not appear in contravariant positions of the type declaration.</para>
+        
+        <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
+        <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
+        and <literal>Item[Key]</literal> as a shorthand for 
+        <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
+        <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
+        as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
+        
+        <para>The type of a program element determines what members and operators it has and 
+        to which other program elements it is assignable. The type may be modified by the 
+        <literal>optional</literal> annotation. An <literal>optional</literal> program element 
+        is not usually assignable to a non-<literal>optional</literal> program element.</para>
+    
+    </section>
+    
+    <section id="generictypeparameters">
+        <title>Generic type parameters</title>
+    
+        <para>Method, class and interface declarations may declare generic type parameters.</para>
+        
+        <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
+        
+        <programlisting>TypeParam := Variance TypeName</programlisting>
+        
+        <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
+        A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
+        
+        <programlisting>Variance :=  ("out" | "in")?</programlisting>
+        
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
+        and a subtype <literal>B</literal> of <literal>A</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a covariant type parameter, 
+                    <literal>T&lt;B&gt;</literal> is assignable to <literal>T&lt;A&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a contravariant type parameter, 
+                    <literal>T&lt;A&gt;</literal> is assignable to <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is neither covariant nor contravariant, there is no
+                    assignability between <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>Map&lt;K, V&gt;</programlisting>
+        
+        <programlisting>Sender&lt;in M&gt;</programlisting>
+        
+        <programlisting>Container&lt;out T&gt;</programlisting>
+        
+        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
+        
+    </section>
+
+    <!--section>
+        <title>Functor type declaration</title>
+    
+        <para>There are also functor types:</para>
+        
+        <programlisting>FunctorType := FunctorHeader FormalParams</programlisting>
+        
+        <programlisting>FunctorHeader := "functor" Annotation* (Type | "void")</programlisting>
+        
+        <para>The parameter names in a functor type declaration do not affect assignability
+        of the functor type. They are used when the functor is invoked using named parameters.</para>
+        
+        <para>For example:</para>
+        
+        <programlisting>functor Comparison(X x, X y)</programlisting>
+        <programlisting>functor Boolean(Payment payment)</programlisting>
+        <programlisting>functor void(Y element)</programlisting>
+        <programlisting>functor optional Object()</programlisting>
+        <programlisting>functor Y(optional Y object, Factory&lt;Y&gt; factory)</programlisting>
+        
+        <para>Functor types are covariant in the return type, and contravariant in the
+        parameter types. So <literal>functor String(Object o)</literal> is assignable to
+        <literal>functor Object(String s)</literal>.</para>
+        
+    </section-->
+
     <section id="formalparameterlist">
         <title>Formal parameter list</title>
     
@@ -186,147 +369,6 @@ VarargsParam?
     
     </section>
     
-    <section id="generictypeparameters">
-        <title>Generic type parameters</title>
-    
-        <para>Method, class and interface declarations may declare generic type parameters.</para>
-        
-        <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
-        
-        <programlisting>TypeParam := Variance TypeName</programlisting>
-        
-        <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
-        A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
-        
-        <programlisting>Variance :=  ("out" | "in")?</programlisting>
-        
-        <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
-        and a subtype <literal>B</literal> of <literal>A</literal>:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>
-                    If <literal>X</literal> is a covariant type parameter, 
-                    <literal>T&lt;B&gt;</literal> is assignable to <literal>T&lt;A&gt;</literal>.
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    If <literal>X</literal> is a contravariant type parameter, 
-                    <literal>T&lt;A&gt;</literal> is assignable to <literal>T&lt;B&gt;</literal>.
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    If <literal>X</literal> is neither covariant nor contravariant, there is no
-                    assignability between <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal>.
-                </para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>Map&lt;K, V&gt;</programlisting>
-        
-        <programlisting>Sender&lt;in M&gt;</programlisting>
-        
-        <programlisting>Container&lt;out T&gt;</programlisting>
-        
-        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
-        
-    </section>
-
-
-    <section id="type">
-        <title>Type</title>
-    
-        <para>Method, attribute and formal parameter declarations must declare a type.</para>
-        
-        <programlisting>Type := RegularType | "subtype"</programlisting>
-        
-        <para>Most types are classes or interfaces:</para>
-        
-        <programlisting>RegularType := QualifiedTypeName TypeArguments?</programlisting>
-        
-        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
-        
-        <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
-        
-        <para>A generic type must specify arguments for the generic type parameters.</para>
-        
-        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
-        
-        <para>The arguments may themselves be generic types.</para>
-        
-        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
-        
-        <para>Every Ceylon class and interface has an implicit type parameter that never
-        needs to be declared. This special type parameter, referred to using the keyword 
-        <literal>subtype</literal>, represents the concrete type of the current instance 
-        (the instance that is being invoked).</para>
-        
-        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
-        
-        <programlisting>public abstract class Wrappable {
-   public Wrapper&lt;subtype&gt; wrap() {
-       return Wrapper(this);
-   }
-}</programlisting>
-        
-        <programlisting>public class Special() extends Wrappable() {}</programlisting>
-
-        <programlisting>Special special = Special();
-Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
-
-        <para>For a class declared <literal>final</literal>, any instance of the class
-        may be assigned to the type <literal>subtype</literal>. For a class not declared
-        <literal>final</literal>, only the <literal>this</literal> reference is
-        assignable to <literal>subtype</literal>.</para>
-        
-        <comment><para>TODO: so this means we really need a <literal>final</literal>
-        modifier after all? Is there another solution?</para></comment>
-        
-        <para>The type <literal>subtype</literal> is considered a covariant type parameter
-        of the type, and may not appear in contravariant positions of the type declaration.</para>
-        
-        <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
-        <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
-        and <literal>Item[Key]</literal> as a shorthand for 
-        <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
-        <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
-        as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
-        
-        <para>The type of a program element determines what members and operators it has and 
-        to which other program elements it is assignable. The type may be modified by the 
-        <literal>optional</literal> annotation. An <literal>optional</literal> program element 
-        is not usually assignable to a non-<literal>optional</literal> program element.</para>
-    
-    </section>
-    
-    <!--section>
-        <title>Functor type declaration</title>
-    
-        <para>There are also functor types:</para>
-        
-        <programlisting>FunctorType := FunctorHeader FormalParams</programlisting>
-        
-        <programlisting>FunctorHeader := "functor" Annotation* (Type | "void")</programlisting>
-        
-        <para>The parameter names in a functor type declaration do not affect assignability
-        of the functor type. They are used when the functor is invoked using named parameters.</para>
-        
-        <para>For example:</para>
-        
-        <programlisting>functor Comparison(X x, X y)</programlisting>
-        <programlisting>functor Boolean(Payment payment)</programlisting>
-        <programlisting>functor void(Y element)</programlisting>
-        <programlisting>functor optional Object()</programlisting>
-        <programlisting>functor Y(optional Y object, Factory&lt;Y&gt; factory)</programlisting>
-        
-        <para>Functor types are covariant in the return type, and contravariant in the
-        parameter types. So <literal>functor String(Object o)</literal> is assignable to
-        <literal>functor Object(String s)</literal>.</para>
-        
-    </section-->
-
     <section id="extendedclass">
         <title>Extended class</title>
     
@@ -338,6 +380,29 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>extends Person(name, org)</programlisting>
     
+        <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
+    
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> extends <literal>Y</literal>, then
+            <literal>X</literal> is assignable to <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> extends <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is assignable to <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
     </section>
     
     <section id="satisfiedinterfaces">
@@ -351,7 +416,31 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>A class or interface may satisfy multiple interfaces.</para>
         
         <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
+        
+        <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
+        a class or interface.</para>
     
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> satisfies <literal>Y</literal>, then
+            <literal>X</literal> is assignable to <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> satisfies <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is assignable to <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
     </section>
 
     <section id="generictypeconstraintlist">
@@ -369,16 +458,24 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>upper bounds, <literal>X &gt;= T</literal>,</para>
+                <para>an upper bound, <literal>X &gt;= T</literal>, specifies that 
+                the type parameter <literal>X</literal> is assignable to a given
+                type <literal>T</literal>,</para>
             </listitem>
             <listitem>
-                <para>lower bounds, <literal>X &lt;= T</literal></para>
+                <para>a lower bound, <literal>X &lt;= T</literal>, specifies that 
+                a given type <literal>T</literal> is assignable to the type parameter 
+                <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para>subtype bounds, <literal>X = subtype</literal>, and</para>
+                <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
+                the type parameter <literal>X</literal> represents the concrete type
+                of the current instance, and</para>
             </listitem>
             <listitem>
-                <para>initialization parameter specifications, <literal>X(...)</literal>.</para>
+                <para>an initialization parameter specification, <literal>X(...)</literal>
+                specifies that the type parameter <literal>X</literal> is a class with
+                with the given formal parameter types.</para>
             </listitem>
         </itemizedlist>
         
