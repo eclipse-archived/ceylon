@@ -151,12 +151,15 @@ public deprecated</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>identity: <literal>X</literal> is assignable to <literal>X</literal></para>
+                <para>Identity: <literal>X</literal> is assignable to <literal>X</literal>.</para>
             </listitem>
             <listitem>
-                <para>transitivity: if <literal>X</literal> is assignable to <literal>Y</literal>
+                <para>Transitivity: if <literal>X</literal> is assignable to <literal>Y</literal>
                 and <literal>Y</literal> is assignable to <literal>Z</literal> then
                 <literal>X</literal> is assignable to <literal>Z</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Single root: all types are assignable to <literal>lang.Object</literal>.</para>
             </listitem>
         </itemizedlist>
         
