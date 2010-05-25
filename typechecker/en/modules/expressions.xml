@@ -97,6 +97,8 @@ TypeLiteral | MemberLiteral</programlisting>
     expression is an instance of the type. How this instance is produced is not specified 
     here.</para>
     
+    <para>All literal values are expressions of non-<literal>optional</literal> type.</para>
+    
     <comment><para>TODO: Should we have a literal syntax for version numbers, for use
     in the module architecture, for example: <literal>@1.2.3BETA</literal>?</para></comment>
     
@@ -449,22 +451,25 @@ if you prefer.";</programlisting>
         receives any invocation.</para>
         
         <para>The keyword <literal>super</literal> refers to the
-        current instance (the instance that is being invoked), and 
-        is of the same type as the immediate superclass of the class. 
-        Any invocation of this reference is processed by the method 
-        or attribute defined or inherited by this superclass, bypassing 
+        current instance (the instance that is being invoked), and is 
+        of the same type as the immediate superclass of the class. It 
+        is an expresion of non-<literal>optional</literal> type. Any 
+        invocation of this reference is processed by the method or 
+        attribute defined or inherited by this superclass, bypassing 
         any method declaration that overrides the method on the current 
         class or any subclass of the current class.</para>
         
-        <para>The keyword <literal>this</literal> refers to the
-        current instance, and is assignable to both the type of the 
-        current class (the class which declares the method being 
-        invoked), and to the special type <literal>subtype</literal>, 
-        representing the concrete type of the current instance.</para>
+        <para>The keyword <literal>this</literal> refers to the current 
+        instance, and is assignable to both the type of the current 
+        class (the class which declares the method being invoked), and 
+        to the special type <literal>subtype</literal>, representing 
+        the concrete type of the current instance. It is an expresion 
+        of non-<literal>optional</literal> type.</para>
         
         <para>The keyword <literal>none</literal> refers to a special
-        value that is assignable to <literal>Sequence</literal>. This 
-        value has no elements.</para>
+        value that is assignable to <literal>Sequence</literal>. It is 
+        an expresion of non-<literal>optional</literal> type. This value 
+        has no elements.</para>
         
     </section>
     
@@ -480,6 +485,9 @@ if you prefer.";</programlisting>
         machine.</para>
         
         <programlisting>DayOfWeek sunday = DayOfWeek.sun;</programlisting>
+        
+        <para>An enumerated instance reference is an expression of non-<literal>optional</literal> 
+        type.</para>
         
     </section>
     
@@ -610,6 +618,10 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <para>Arguments to required parameters must be specified by the caller. Arguments to 
         defaulted parameters and varargs may optionally be specified.</para>
         
+        <para>An attribute, local, or expression of type <literal>optional</literal> may not
+        appear as an argument of a formal parameter unless the formal parameter is declared
+        <literal>optional</literal>.</para>
+        
         <para>When an invocation is executed:</para>
         
         <itemizedlist>
@@ -659,6 +671,11 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
             <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
+            
+            <para>A method invocation is an expression of <literal>optional</literal> type 
+            if and only if the method is declared <literal>optional</literal>, or the 
+            <literal>?.</literal> operator is used.</para>
+            
         </section>
         
         <section id="classinstantiation">
@@ -684,6 +701,10 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         }
     }
 }</programlisting>
+
+            <para>An instantiation is an expression of non-<literal>optional</literal> 
+            type.</para>
+            
         </section>
         
         <section id="positionalarguments">
@@ -1101,6 +1122,9 @@ except (SomethingElseWrong sew) {
                                     
             <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
             
+            <para>An enumeration is an expression of non-<literal>optional</literal> 
+            type.</para>
+            
             <para>There are no true literals for lists, sets or maps. However, the 
             <literal>..</literal> and <literal>-></literal> operators, together with the 
             convenient sequence enumeration syntax, and some built-in extensions help 
@@ -1349,6 +1373,10 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>String name = person.name().get();</programlisting>
         -->
         
+        <para>An attribute evaluation is an expression of <literal>optional</literal> 
+        type if and only if the attribute is declared <literal>optional</literal>, or 
+        the <literal>?.</literal> operator is used.</para>
+            
         <para>Attributes may not be evaluated using the <literal>.</literal> operator 
         when the recieving expression is of type <literal>optional</literal>. They 
         may be evaluated using <literal>?.</literal>.</para>

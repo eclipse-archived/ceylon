@@ -218,7 +218,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>The type of a program element determines what members and operators it has and 
         to which other program elements it is assignable. The type may be modified by the 
         <literal>optional</literal> annotation. An <literal>optional</literal> program element 
-        is not usually assignable to a non-<literal>optional</literal> program element.</para>
+        is not usually assignable to a non-<literal>optional</literal> program element. A
+        non-<literal>optional</literal> program element is always assignable to an 
+        <literal>optional</literal> program element.</para>
     
     </section>
     
