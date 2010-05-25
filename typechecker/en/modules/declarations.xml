@@ -973,8 +973,14 @@ class Customer(Name name, optional Organization org = null)
                 <para>is assignable to any type to which its superclass is assignable,</para>
             </listitem>
             <listitem>
-                <para> must override all members of every interface it implements (unless
-                the class is declared <literal>abstract</literal>), and</para>
+                <para>must declare or inherit a member that overrides each member of 
+                every interface it implements, unless the class is declared 
+                <literal>abstract</literal>,</para>
+            </listitem>
+             <listitem>
+                <para>must declare or inherit a member that overrides each abstract 
+                member of its superclass, unless the class is declared 
+                <literal>abstract</literal>, and</para>
             </listitem>
             <listitem>
                 <para>is assignable to any type to which any interface it implements is 
@@ -1241,7 +1247,8 @@ InterfaceBody</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>inherits all members of every supertype, and</para>
+                <para>inherits all members (methods, attributes and member types) of every 
+                supertype, and</para>
             </listitem>
             <listitem>
                 <para>is assignable to any type to which any supertype is assignable.</para>
