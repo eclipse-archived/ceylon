@@ -203,7 +203,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         modifier after all? Is there another solution?</para></comment>
         
         <para>The type <literal>subtype</literal> is considered a covariant type parameter
-        of the type, and may not appear in contravariant positions of the type declaration.</para>
+        of the type, and may only appear in covariant positions of the type declaration.</para>
         
         <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
         <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
@@ -222,9 +222,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Method, class and interface declarations may declare generic type parameters.</para>
+        <para>Methods, classes, interfaces and aliases may declare one or more generic type 
+        parameters.</para>
         
         <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
+        
+        <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
         <programlisting>TypeParam := Variance TypeName</programlisting>
         
@@ -232,6 +235,17 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
         
         <programlisting>Variance :=  ("out" | "in")?</programlisting>
+        
+        <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> is
+        called <emphasis>nonvariant</emphasis>.</para>
+        
+        <programlisting>Map&lt;K, V&gt;</programlisting>
+        
+        <programlisting>Sender&lt;in M&gt;</programlisting>
+        
+        <programlisting>Container&lt;out T&gt;</programlisting>
+        
+        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
         
         <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
         and a subtype <literal>B</literal> of <literal>A</literal>:</para>
@@ -251,19 +265,73 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
             <listitem>
                 <para>
-                    If <literal>X</literal> is neither covariant nor contravariant, there is no
-                    assignability between <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal>.
+                    If <literal>X</literal> is nonvariant (neither covariant nor contravariant), 
+                    there is no assignability between <literal>T&lt;A&gt;</literal> and 
+                    <literal>T&lt;B&gt;</literal>.
                 </para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>Map&lt;K, V&gt;</programlisting>
+        <para>A covariant type parameter may only appear in covariant positions of the type
+        declaration. A contravariant type parameter may only appear in contravariant positions 
+        of the type declaration. Nonvariant type parameters may appear in any position.</para>
         
-        <programlisting>Sender&lt;in M&gt;</programlisting>
-        
-        <programlisting>Container&lt;out T&gt;</programlisting>
-        
-        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
+        <itemizedlist>
+            <listitem>
+                <para>A method return type is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A method formal parameter type is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A method type parameter is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A member class formal parameter type is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A member class type parameter is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>An immutable attribute type is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A mutable attribute type is a nonvariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A lower bound of a type parameter in a covariant position is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A lower bound of a type parameter in a contravariant position is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A covariant type parameter of a covariant position is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type parameter of a covariant position is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A covariant type parameter of a contravariant position is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type parameter of a contravariant position is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A nonvariant type parameter is a nonvariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter of a functional parameter in a contravariant position is covariant.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter of a functional parameter in a covariant position is contravariant.</para>
+            </listitem>
+            <listitem>
+                <para>A return type of a functional parameter in a contravariant position is contravariant.</para>
+            </listitem>
+            <listitem>
+                <para>A return type of a functional parameter in a covariant position is covariant.</para>
+            </listitem>
+        </itemizedlist>
         
     </section>
 
