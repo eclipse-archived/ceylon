@@ -103,7 +103,7 @@
     supported by C and Java. True operator overloading is not supported. 
     However, each operator is defined to act upon a certain class or interface 
     type, allowing application of the operator to any class which extends or 
-    implements that type.
+    implements that type. This is called <emphasis>operator polymorphism</emphasis>.
     </para>
     
     <para>Ceylon's numeric type system is much simpler than C, C# or Java, 
