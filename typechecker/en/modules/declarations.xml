@@ -949,6 +949,19 @@ public class Person { ... }</programlisting>
 
     </section>
 
+        <section id="optionalinitializationparameters">
+            <title>Optional initialization parameters</title>
+            
+        <para>An initialization parameter may be annotated <literal>optional</literal>, in 
+        which case the parameter accepts a <literal>null</literal> argument.</para>
+        
+        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the 
+        Ceylon compiler guarantees that the initialization parameter never receives a 
+        <literal>null</literal> argument. Every argument of the formal parameter must be an 
+        expression of non-<literal>optional</literal> type.</para>
+        
+        </section>
+        
         <section id="classinheritance">
              <title>Class inheritance</title>
         
