@@ -69,13 +69,7 @@
 
         <programlisting>DirectiveStatement := Directive ";"?</programlisting>
         
-        <para>For example:</para>
-        
-        <programlisting>throw Exception()</programlisting>
-        <programlisting>retry</programlisting>
-        <programlisting>return x+y;</programlisting>
-        <programlisting>return "Hello"</programlisting>
-        <programlisting>break true</programlisting>
+        <programlisting>Directive := Return | Throw | Break | Retry</programlisting>
         
         <para>Ceylon provides the following control directives:</para>
         
@@ -89,29 +83,49 @@
             <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> 
             block, reinitializing all resources.</listitem>
         </itemizedlist>
+                
+        <programlisting>throw Exception()</programlisting>
+        <programlisting>retry</programlisting>
+        <programlisting>return x+y;</programlisting>
+        <programlisting>return "Hello"</programlisting>
+        <programlisting>break true</programlisting>
         
-         <programlisting>Directive := "return" Expression? | "throw" Expression? | "break" Expression? | "retry"</programlisting>
+        <para>The <literal>return</literal> directive may not appear outside the body of 
+        a method or attribute getter. In the case of a <literal>void</literal> method, no 
+        expression may be specified. In the case of a non-<literal>void</literal> method 
+        or attribute getter, an expression must be specified. The expression type must be 
+        assignable to the return type of the method, and may not be <literal>optional</literal> 
+        unless the method is annotated <literal>optional</literal>. When the directive is 
+        executed, the expression is evaluated to determine the return value of the method 
+        or attribute getter.</para>
         
-        <para>The <literal>return</literal> directive may not be used outside the 
-        body of an attribute getter or method. A return value must be specified in 
-        a non-<literal>void</literal> method or attribute getter. A return value 
-        may not be specified in a <literal>void</literal> method.</para>
+        <programlisting>Return := "return" Expression?</programlisting>
         
         <!--para>The <literal>produce</literal> directive may not be used outside
         the body of a non-<literal>void</literal> functor expression.</para-->
         
-        <para>The <literal>break</literal> directive may not be used outside the 
-        body of a loop. If the loop has a <literal>fail</literal> block, the
-        <literal>break</literal> directive must specify a boolean value. A value
-        of <literal>false</literal> specifies that the <literal>fail</literal> 
-        block should be executed. If the loop has no <literal>fail</literal> block,
-        the <literal>break</literal> directive may not specify a value.</para>
+        <para>The <literal>break</literal> directive may not be appear outside the body 
+        of a loop. If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
+        directive may not specify an expression. If the loop has a <literal>fail</literal> 
+        block, the <literal>break</literal> directive must specify an expression of 
+        non-<literal>optional</literal> type <literal>lang.Boolean</literal>. When the 
+        directive is executed, the expression is evaluated and a value of <literal>false</literal> 
+        specifies that the <literal>fail</literal> block should be executed.</para>
         
-        <para>A <literal>retry</literal> directive may not be used outside of a
+        <programlisting>Break := "break" Expression?</programlisting>
+        
+        <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
+        expression of non-<literal>optional</literal> type <literal>lang.Exception</literal>.
+        When the directive is executed, the expression is evaluated and the resulting
+        exception is thrown. If no expression is specified, the directive is equivalent to 
+        <literal>throw Exception()</literal>.</para>
+        
+        <programlisting>Throw := "throw" Expression?</programlisting>
+        
+        <para>A <literal>retry</literal> directive may not appear outside of a
         <literal>catch</literal> block.</para>
         
-        <para>A <literal>throw</literal> directive which specifies no exception
-        is equivalent to <literal>throw Exception()</literal>.</para>
+        <programlisting>Retry := "retry"</programlisting>
         
         <comment><para>TODO: Should we have a <literal>continue</literal> or 
         <literal>redo</literal> for the <literal>do/while</literal> loop, which 
@@ -138,8 +152,12 @@
                 
         <para>The Ceylon language distinguishes between assignment to a <literal>mutable</literal> 
         value (the <literal>:=</literal> operator) and specification of the value of a 
-        non-<literal>mutable</literal> local or attribute (using <literal>=</literal>). A 
-        specification is not an expression.</para>
+        non-<literal>mutable</literal> local or attribute (using <literal>=</literal>). 
+        A specification is not an expression.</para>
+        
+        <para>The specified expression type must be assignable to the type of the 
+        attribute or local, and may not be of <literal>optional</literal> type unless
+        the attribute or local is declared <literal>optional</literal>.</para>
         
         <para>A specification may appear inside an control structure, in which case the
         compiler validates that all paths result in a properly specified method or 
