@@ -1553,6 +1553,19 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
         <programlisting>def count:=0;</programlisting>
         
+        <section id="optionalattributes">
+            <title>Optional attributes</title>
+            
+        <para>A simple attribute or attribute getter may be annotated <literal>optional</literal>,
+        in which case the attribute may evaluate to <literal>null</literal>, and, if the
+        attribute is also <literal>mutable</literal>, may have a null value assigned.</para>
+        
+        <para>Otherwise, if <literal>optional</literal> annotation does not appear, the 
+        Ceylon compiler guarantees that the attribute cannot evaluate to <literal>null</literal> 
+        or have a null value assigned.</para>
+        
+        </section>
+        
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
             
