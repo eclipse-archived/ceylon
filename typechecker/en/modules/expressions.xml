@@ -543,8 +543,8 @@ ConstructorReference</programlisting>
         <para>Instance method references, attribute getter and setter references, and
         member type constructor references specify a name of a member, an invocation 
         operator, and a <emphasis>receiver expression</emphasis> that evaluates to an 
-        instance or <literal>Iterable</literal> set of instances of the type that 
-        declares the member.</para>
+        instance or <literal>Iterable</literal> set of instances of a type that 
+        has a member with that name.</para>
         
         <para>A constructor reference for a toplevel type may not specify a receiver 
         expression.</para>
@@ -573,8 +573,8 @@ ConstructorReference</programlisting>
         <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
         
         <para>The invocation operator depends upon the type of the receiver expression. If 
-        <literal>X</literal> is the type that declares the instance method, attribute, or
-        member type, the invocation operator must be:</para>
+        <literal>X</literal> is the type that has the instance method, attribute, or member t
+        ype, the invocation operator must be:</para>
             
         <itemizedlist>
             <listitem>
@@ -1405,9 +1405,10 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     <section id="attributeevaluation">
         <title>Evaluation</title>
             
-        <para>An attribute evaluation consists of a named attribute, an evaluation operator,
+        <para>An attribute evaluation consists of an attribute name, an evaluation operator,
         and a <emphasis>receiver expression</emphasis> that evaluates to an instance or 
-        <literal>Iterable</literal> set of instances of the type that declares the attribute.</para>
+        <literal>Iterable</literal> set of instances of a type that has an attribute with
+        that name.</para>
             
         <para>If no receiver expression is explicitly specified, the current object is
         the receiver.</para>
@@ -1417,7 +1418,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
         
         <para>The evaluation operator depends upon the type of the receiver expression. If 
-        <literal>X</literal> is the type that declares the attribute, the evaluation operator 
+        <literal>X</literal> is the type that has the attribute, the evaluation operator 
         must be:</para>
             
         <itemizedlist>

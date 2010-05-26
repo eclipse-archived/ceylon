@@ -34,7 +34,7 @@ Body?</programlisting>
     <section id="topleveldeclaration">
         <title>Type declaration</title>
         
-        <para>A type declaration declares a class, interface or type alias.</para>
+        <para>A type declaration defines a class, interface or type alias.</para>
         
         <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
