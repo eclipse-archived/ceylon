@@ -390,7 +390,7 @@ VarargsParam?
         
         <programlisting>(Comparison by(X x, X y))</programlisting>
         
-        <para>Defaulted parameters specify a default value.</para>
+        <para>Defaulted parameters specify a default argument.</para>
     
         <programlisting>DefaultParam := FormalParam Specifier</programlisting>
         
@@ -403,6 +403,10 @@ VarargsParam?
         parameter list.</para>
         
         <programlisting>(Product product, Natural quantity=1)</programlisting>
+        
+        <para>The type of the default argument expression must be assignable to the declared
+        type of the formal parameter. It must be a non-<literal>optional</literal> expression,
+        unless the parameter is annotated <literal>optional</literal>.</para>
         
         <para>A varargs parameter accepts a list of arguments or a single argument of type 
         <literal>Iterable</literal>. Inside the method, it is available as a local of type
