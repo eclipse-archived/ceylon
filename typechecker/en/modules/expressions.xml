@@ -542,7 +542,7 @@ ConstructorReference</programlisting>
         
         <para>Instance method references, attribute getter and setter references, and
         member type constructor references specify a name of a member, an invocation 
-        operator, and a <emphasis>receiver expression</emphasis> that evaluated to an 
+        operator, and a <emphasis>receiver expression</emphasis> that evaluates to an 
         instance or <literal>Iterable</literal> set of instances of the type that 
         declares the member.</para>
         
