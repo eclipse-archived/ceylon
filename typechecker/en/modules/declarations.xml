@@ -177,6 +177,11 @@ public deprecated</programlisting>
         
         <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
+        <para>A type argument is substituted for every appearance of the corresponding
+        type parameter in the schema of the parameterized type declaration, including 
+        attribute types, method return types, method formal parameter types, and 
+        initializer formal parameter types.</para>
+        
         <para>The arguments may themselves be generic types.</para>
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
@@ -555,8 +560,34 @@ VarargsParam?
         cannot appear in a contravariant position. A subtype bound cannot be applied to
         a covariant or contravariant type parameter.</para>
         
-        <para>Initialization parameter specifications allow instantiation of the
-        generic type.</para>
+        <para>Initialization parameter specifications allow instantiation of the generic 
+        type.</para>
+        
+        <para>A constraints affects the type arguments that can be assigned to a type
+        parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type argument to a type parameter with a lower bound must be a type 
+                which is assignable to the lower bounds.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with an upper bound must be a type to
+                which the upper bound is assignable.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A constraint affects the assignability of a type parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type parameter is considered assignable to its lower bound.</para>
+            </listitem>
+            <listitem>
+                <para>The upper bound of a type parameter is considered assignable to the
+                type parameter.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>Mutiple type constraints are seperated by <literal>&amp;</literal>.</para>
         
