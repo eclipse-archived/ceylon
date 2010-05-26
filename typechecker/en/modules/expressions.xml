@@ -704,6 +704,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
             <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
             
+            <para>The type of a method invocation expression is the declared return type 
+            of the method.</para>
+            
             <para>A method invocation is an expression of <literal>optional</literal> type 
             if and only if the method is declared <literal>optional</literal>, or the 
             <literal>?.</literal> operator is used.</para>
@@ -733,6 +736,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         }
     }
 }</programlisting>
+
+            <para>The type of an instantiation expression is the concrete type of the 
+            class.</para>
 
             <para>An instantiation is an expression of non-<literal>optional</literal> 
             type.</para>
@@ -1146,8 +1152,9 @@ except (SomethingElseWrong sew) {
             <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
             containing the enumerated elements in the given order. When an enumeration is 
             executed, each element expression is evaluated, and the resulting values 
-            collected together into an object that implements <literal>Sequence</literal>.
-            The concrete type of this object is not specified here.</para>
+            collected together into an object that implements <literal>Sequence&lt;T&gt;</literal>
+            where <literal>T</literal> is a superype of all the enumerated element expression
+            types. The concrete type of this object is not specified here.</para>
             
             <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
             
@@ -1406,6 +1413,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
 
         <programlisting>String name = person.name().get();</programlisting>
         -->
+        
+        <para>The type of an attribute evaluation expression is the declared type of
+        the attribute.</para>
         
         <para>An attribute evaluation is an expression of <literal>optional</literal> 
         type if and only if the attribute is declared <literal>optional</literal>, or 
