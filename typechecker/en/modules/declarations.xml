@@ -122,16 +122,18 @@ public deprecated</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>For each immutable attribute of <literal>Y</literal>, <literal>X</literal>
-                has an attribute with the same name, whose type is assignable to the
-                type of the attribute of <literal>Y</literal>. The attribute is not <literal>optional</literal> 
-                unless the attribute of <literal>Y</literal> is <literal>optional</literal>.</para>
+                <para>For each non-<literal>mutable</literal> attribute of <literal>Y</literal>, 
+                <literal>X</literal> has an attribute with the same name, whose type is 
+                assignable to the type of the attribute of <literal>Y</literal>. The 
+                attribute is not <literal>optional</literal> unless the attribute of 
+                <literal>Y</literal> is <literal>optional</literal>.</para>
             </listitem>
             <listitem>
-                <para>For each mutable attribute of <literal>Y</literal>, <literal>X</literal>
-                has a mutable attribute with the same name and the same type. The
-                attribute is <literal>optional</literal> if and only if the attribute of  
-                <literal>Y</literal> is <literal>optional</literal>.</para>
+                <para>For each <literal>mutable</literal> attribute of <literal>Y</literal>, 
+                <literal>X</literal> has a <literal>mutable</literal> attribute with the 
+                same name and the same type. The attribute is <literal>optional</literal> 
+                if and only if the attribute of <literal>Y</literal> is 
+                <literal>optional</literal>.</para>
             </listitem>
             <listitem>
                 <para>For each method of <literal>Y</literal>, <literal>X</literal>
@@ -214,13 +216,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
         <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
         as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
-        
-        <para>The type of a program element determines what members and operators it has and 
-        to which other program elements it is assignable. The type may be modified by the 
-        <literal>optional</literal> annotation. An <literal>optional</literal> program element 
-        is not usually assignable to a non-<literal>optional</literal> program element. A
-        non-<literal>optional</literal> program element is always assignable to an 
-        <literal>optional</literal> program element.</para>
     
     </section>
     
@@ -298,10 +293,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A type parameter of a member class is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>The type of an immutable attribute is a covariant position.</para>
+                <para>The type of a non-<literal>mutable</literal> attribute is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>The type of a mutable attribute is a nonvariant position.</para>
+                <para>The type of a <literal>mutable</literal> attribute is a nonvariant position.</para>
             </listitem>
             <listitem>
                 <para>A lower bound of a type parameter in a covariant position is a contravariant position.</para>
@@ -849,9 +844,9 @@ ClassBody</programlisting>
         was invoked) without explicitly specifying the receiver.</para>
         
         <para>A class may be declared inside the body of a method or attribute, in which case 
-        the initializer may refer to any immutable local, block local attribute getter or block 
-        local method declared earlier within the containing scope. It may not refer to mutable 
-        locals from the containing scope.</para>
+        the initializer may refer to any non-<literal>mutable</literal> local, block local 
+        attribute getter or block local method declared earlier within the containing scope. 
+        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
         <para>The following restrictions apply to statements and declarations that appear within
         the initializer of the class:</para>
@@ -1340,9 +1335,9 @@ public User(String username, Person person);</programlisting>
         upon which the method was invoked) without explicitly specifying the receiver.</para>
         
         <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any immutable local, block local attribute getter or 
-        block local method declared earlier within the containing scope. It may not refer 
-        to mutable locals from the containing scope.</para>
+        which case it may refer to any non-<literal>mutable</literal> local, block local 
+        attribute getter or block local method declared earlier within the containing scope. 
+        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
         <programlisting>public Integer add(Integer x, Integer y) {
     return x + y;
@@ -1500,9 +1495,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         upon which the method was invoked) without explicitly specifying the receiver.</para>
         
         <para>An attribute may be declared inside the body of another method or attribute, in 
-        which case it may refer to any immutable local, block local attribute getter or block 
-        local method declared earlier withing the containing scope. It may not refer to mutable 
-        locals from the containing scope.</para>
+        which case it may refer to any non-<literal>mutable</literal> local, block local 
+        attribute getter or block local method declared earlier withing the containing scope. 
+        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
         <programlisting>package mutable String firstName;</programlisting>
         
@@ -1547,8 +1542,9 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         
         <programlisting>AttributeHeader := Annotation* Type MemberName</programlisting>
         
-        <para>The value of an immutable attribute is specified using <literal>=</literal>. Mutable 
-        attributes may be initialized using the assignment operator <literal>:=</literal>.</para>
+        <para>The value of a non-<literal>mutable</literal> attribute is specified using 
+        <literal>=</literal>. A <literal>mutable</literal> attribute may be initialized using 
+        the assignment operator <literal>:=</literal>.</para>
 
         <programlisting>Initializer := ":=" Expression</programlisting>
 
@@ -1724,10 +1720,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <para>An abstract attribute, interface attribute, or attribute annotated 
             <literal>default</literal> may be overridden by subclasses of the class or 
-            interface which declares the method. An immutable attribute may be overridden 
-            by a simple attribute or attribute getter. A mutable attribute may be overridden 
-            by a mutable simple attribute or by an attribute getter and setter pair. The 
-            subclass must declare an attribute:</para>
+            interface which declares the method. A non-<literal>mutable</literal> 
+            attribute may be overridden by a simple attribute or attribute getter. A 
+            <literal>mutable</literal> attribute may be overridden by a 
+            <literal>mutable</literal> simple attribute or by an attribute getter and 
+            setter pair. The subclass must declare an attribute:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1737,13 +1734,14 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>with the same name as the attribute it overrides,</para>
                 </listitem>
                  <listitem>
-                    <para>with a type that is assignable to the type of the attribute 
-                    it overrides, if the attribute it overrides is immutable, or with 
-                    exactly the same type as the attribute it overrides, if the 
-                    attribute it overrides is mutable,</para>
+                    <para>with a type that is assignable to the type of the attribute it 
+                    overrides, if the attribute it overrides is non-<literal>mutable</literal>, 
+                    or with exactly the same type as the attribute it overrides, if the 
+                    attribute it overrides is <literal>mutable</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>that is mutable, if the attribute it overrides is mutable,</para>
+                    <para>that is <literal>mutable</literal>, if the attribute it overrides 
+                    is <literal>mutable</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>that is not <literal>optional</literal>, unless the attribute
@@ -1751,11 +1749,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 </listitem>
                 <listitem>
                     <para>that is <literal>optional</literal>, if the attribute it overrides 
-                    is both mutable and <literal>optional</literal>.</para>
+                    is both <literal>mutable</literal> and <literal>optional</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>An immutable attribute may be overridden by a mutable attribute.</para>
+            <para>A non-<literal>mutable</literal> attribute may be overridden by a 
+            <literal>mutable</literal> attribute.</para>
             
             <para>Then evaluation and assignment of the attribute is polymorphic, and 
             the actual attribute evaluated or assigned depends upon the concrete type 
@@ -1784,7 +1783,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <listitem>
                     <para>a <literal>void</literal> <emphasis>setter method</emphasis> 
                     with a single parameter of the attribute type, if the attribute is 
-                    mutable.</para>
+                    <literal>mutable</literal>.</para>
                 </listitem>
             </itemizedlist>
             

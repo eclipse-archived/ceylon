@@ -74,9 +74,9 @@
     By default, Ceylon classes, attributes and locals are immutable. 
     Mutable classes, attributes and locals must be explicitly declared
     using the <literal>mutable</literal> annotation. An immutable class may 
-    not declare mutable attributes or extend a mutable class. An immutable 
-    attribute or local may not be assigned after its initial value is 
-    specified.
+    not declare <literal>mutable</literal> attributes or extend a 
+    <literal>mutable</literal> class. An immutable attribute or local may 
+    not be assigned after its initial value is specified.
     </para>
     
     <para>

@@ -114,9 +114,10 @@
         is equivalent to <literal>throw Exception()</literal>.</para>
         
         <comment><para>TODO: Should we have a <literal>continue</literal> or 
-        <literal>redo</literal> for the <literal>do/while</literal> loop, which lets 
-        you specify the next value of the iterator variable? This would let us get rid 
-        of mutable iterator variables, which are a minor wart.</para></comment>
+        <literal>redo</literal> for the <literal>do/while</literal> loop, which 
+        lets you specify the next value of the iterator variable? This would let 
+        us get rid of <literal>mutable</literal> iterator variables, which are a 
+        minor wart.</para></comment>
 
         <comment><para>TODO: We could support <literal>for/fail</literal> loops 
         that return a value by supporting a <literal>found expr</literal> directive. 
@@ -128,16 +129,17 @@
         <section id="specificationstatements">
             <title>Specification statements</title>
             
-        <para>A specification statement may specify the value of an immutable attribute 
-        or local that has already been declared earlier in the block. It may even specify
-        a method reference for a method that was declared earlier in the block.</para>
+        <para>A specification statement may specify the value of a non-<literal>mutable</literal> 
+        attribute or local that has already been declared earlier in the block. It may 
+        even specify a method reference for a method that was declared earlier in the 
+        block.</para>
         
         <programlisting>Specification := MemberName Specifier ";"</programlisting>
                 
-        <para>The Ceylon language distinguishes between assignment to a mutable value 
-        (the <literal>:=</literal> operator) and specification of the value of an 
-        immutable local or attribute (using <literal>=</literal>). A specification
-        is not an expression.</para>
+        <para>The Ceylon language distinguishes between assignment to a <literal>mutable</literal> 
+        value (the <literal>:=</literal> operator) and specification of the value of a 
+        non-<literal>mutable</literal> local or attribute (using <literal>=</literal>). A 
+        specification is not an expression.</para>
         
         <para>A specification may appear inside an control structure, in which case the
         compiler validates that all paths result in a properly specified method or 
@@ -269,12 +271,13 @@ else {
             <listitem>
                 <para>if the condition is a variable, the variable may be declared without the 
                 <literal>optional</literal> annotation, even though the specifier expression is of 
-                type <literal>optional</literal>, or</para>
+                <literal>optional</literal> type, or</para>
             </listitem>
             <listitem>
                 <para>if the condition is a local, the local will be treated by the compiler 
-                as having non-null type inside the block that follows immediately, relaxing the usual 
-                compile-time restrictions upon <literal>optional</literal> types.</para>
+                as having non-<literal>optional</literal> type inside the block that follows 
+                immediately, relaxing the usual compile-time restrictions upon 
+                <literal>optional</literal> types.</para>
             </listitem>
         </itemizedlist>
                         
@@ -365,10 +368,10 @@ else {
 
             <programlisting>Case := Expression ("," Expression)* | "is" Type | "null"</programlisting>
 
-            <para>If a <literal>case (null)</literal> is defined, the switch expression type must 
-            be <literal>optional</literal>.</para>
+            <para>If a <literal>case (null)</literal> is defined, the switch expression must be 
+            of <literal>optional</literal> type.</para>
 
-            <para>If the switch expression type is <literal>optional</literal>, there must be 
+            <para>If the switch expression is of <literal>optional</literal> type, there must be 
             an explicit <literal>case (null)</literal> defined. </para> 
             
             <para>If no <literal>else</literal> block is defined, the switch expression must be 
@@ -500,7 +503,8 @@ fail {
 ( "do" ("(" DoIterator ")")? Block? )?
 "while" "(" Condition ")" (";" | Block)</programlisting>
 
-            <para>The loop may declare an iterator variable, which may be mutable.</para>
+            <para>The loop may declare an iterator variable, which may be 
+            <literal>mutable</literal>.</para>
 
             <programlisting>DoIterator := Annotation* Variable (Specifier | Initializer)</programlisting>
             

@@ -44,6 +44,38 @@ OperatorExpression |
     other <literal>Expression</literal>s using operators. Parentheses are used to
     group terms in an expression and override the usual operator precedence rules.</para>
     
+    <para>To determine whether an expression is assignable to a program element 
+    such as an attribute, local or formal parameter, Ceylon considers:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the <emphasis>type</emphasis> of the expression (the type of the
+            objects that are produced when the expression is evaluated), and</para>
+        </listitem>
+        <listitem>
+            <para>the nullability of the expression (whether it can evaluate to 
+            <literal>null</literal>).</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>If an expression can evaluate to <literal>null</literal>, we say it is
+    of <literal>optional</literal> type. Otherwise, we say it is of 
+    non-<literal>optional</literal> type. For a nullable expression of type 
+    <literal>T</literal> we often say that its type is <literal>optional T</literal>.</para>
+    
+    <para>An expression is assignable to a program element if:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the type of the expression is assignable to the declared type of 
+            the program element, and</para>
+        </listitem>
+        <listitem>
+            <para>the expression is non-<literal>optional</literal>, or the program 
+            element is declared <literal>optional</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
     <section id="literals">
     <title>Literals</title>
     
