@@ -1645,6 +1645,10 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         
             <programlisting>public Float total { return items.totalPrice; }</programlisting>
             
+            <para>If an attribute getter has a matching attribute setter, we say that 
+            the attribute is <literal>mutable</literal>. Otherwise we say it is 
+            non-<literal>mutable</literal>.</para>
+            
             <!--
             <para>is equivalent to this Java code:</para>
         
