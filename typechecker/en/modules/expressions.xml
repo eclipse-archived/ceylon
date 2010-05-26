@@ -534,58 +534,63 @@ InstanceMethodReference | StaticMethodReference |
 AttributeReference | 
 ConstructorReference</programlisting>
         
-        <para>A constructor reference consists of a named type and, for member types
-        only, an expression that evaluates to a recieving instance of the containing
-        type.</para>
-                
-        <programlisting>ConstructorReference := (Expression ".")? TypeName</programlisting>
-        
         <para>A static method reference consists of a named type and named method of
         that type.</para>
                 
         <!-- No ("set" | "get") since we don't have static attributes -->
         <programlisting>StaticMethodReference := (RegularType ".")? MemberName</programlisting>
         
-        <para>An instance method reference consists of a named method and an expression
-        that evaluates to a recieving instance or an <literal>Iterable</literal> set of
-        instances of the type that declares the method.</para>
-            
-        <programlisting>InstanceMethodReference := MemberReference</programlisting>
+        <para>Instance method references, attribute getter and setter references, and
+        member type constructor references specify a name of a member, an invocation 
+        operator, and a <emphasis>receiver expression</emphasis> that evaluated to an 
+        instance or <literal>Iterable</literal> set of instances of the type that 
+        declares the member.</para>
         
-        <para>An attribute setter or getter reference consists of a named attribute, 
-        the keyword <literal>get</literal> or <literal>set</literal>, and an expression 
-        that evaluates to a recieving instance or an <literal>Iterable</literal> set of
-        instances of the type that declares the attribute.</para>
+        <para>A constructor reference for a toplevel type may not specify a receiver 
+        expression.</para>
+        
+        <para>Otherwise, if no receiver expression is explicitly specified, the current 
+        object is the receiver.</para>
             
+        <programlisting>MemberReference := (Expression InvocationOperator)? MemberName</programlisting>
+        
+        <programlisting>ConstructorReference := (Expression InvocationOperator)? TypeName</programlisting>
+
+        <programlisting>InstanceMethodReference := MemberReference</programlisting>
+
         <programlisting>AttributeReference := ("set" | "get")? MemberReference</programlisting>
         
+        <para>The keyword <literal>get</literal> or <literal>set</literal> in an attribute 
+        reference determines if it is the attribute getter or setter that is referred to.</para>
+            
         <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
         <literal>get</literal> keyword after the member reference (and before the parameter
         list)? Do we really, truly need the keyword at all?</para></comment>
         
-        <para>References to instance methods and attributes use one of three different
-        invocation operators.</para>
+        <para>References to instance methods, attributes, and member types use one of three 
+        different invocation operators.</para>
         
+        <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
+        
+        <para>The invocation operator depends upon the type of the receiver expression. If 
+        <literal>X</literal> is the type that declares the instance method, attribute, or
+        member type, the invocation operator must be:</para>
+            
         <itemizedlist>
             <listitem>
-                <para><literal>.</literal> if the expression is not <literal>optional</literal></para>
+                <para><literal>.</literal> if the expression is of non-<literal>optional</literal>
+                type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>.?</literal> if the expression is <literal>optional</literal></para>
+                <para><literal>.?</literal> if the expression is of type <literal>optional X</literal>,
+                or</para>
             </listitem>
             <listitem>
-                <para><literal>.*</literal> if the expression is an <literal>Iterable</literal>
-                set of instances</para>
+                <para><literal>.*</literal> if the expression is of non-<literal>optional</literal> 
+                type <literal>Iterable&lt;X&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>MemberReference := (Expression InvocationOperator)? MemberName</programlisting>
-        
-        <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
-            
-        <para>If no receiver expression is explicitly specified, the current object is
-        the receiver.</para>
-            
         <para>A method reference may be used to define a method using <literal>=</literal>. 
         The two methods must have exactly the same signature.</para>
         
@@ -704,12 +709,29 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
             <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
             
-            <para>The type of a method invocation expression is the declared return type 
-            of the method.</para>
+            <para>The type of a method invocation expression depends upon the invocation
+            operator. If <literal>X</literal> is the declared return type of the method:</para>
             
-            <para>A method invocation is an expression of <literal>optional</literal> type 
-            if and only if the method is declared <literal>optional</literal>, or the 
-            <literal>?.</literal> operator is used.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>If the invocation operator is <literal>.</literal>, the expression
+                    is of type <literal>X</literal>. It is of <literal>optional</literal> type
+                    if and only if the method is declared <literal>optional</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If the invocation operator is <literal>?.</literal>, the expression
+                    is of type <literal>optional X</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If the invocation operator is <literal>*.</literal>, the expression
+                    is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If no receiver expression is specified, the expression is of type 
+                    <literal>X</literal>. It is of <literal>optional</literal> type if and 
+                    only if the method is declared <literal>optional</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         
@@ -737,11 +759,27 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     }
 }</programlisting>
 
-            <para>The type of an instantiation expression is the concrete type of the 
-            class.</para>
-
-            <para>An instantiation is an expression of non-<literal>optional</literal> 
-            type.</para>
+            <para>The type of a method invocation expression depends upon the invocation
+            operator. If <literal>X</literal> is class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the invocation operator is <literal>.</literal>, the expression
+                    is of non-<literal>optional</literal> type <literal>X</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If the invocation operator is <literal>?.</literal>, the expression
+                    is of type <literal>optional X</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If the invocation operator is <literal>*.</literal>, the expression
+                    is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If no receiver expression is specified, the expression is of 
+                    non-<literal>optional</literal> type <literal>X</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         
@@ -1367,16 +1405,36 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     <section id="attributeevaluation">
         <title>Evaluation</title>
             
-        <para>An attribute evaluation consists of a named attribute an expression that 
-        evaluates to a recieving instance of the type that declares the attribute:</para>
+        <para>An attribute evaluation consists of a named attribute, an evaluation operator,
+        and a <emphasis>receiver expression</emphasis> that evaluates to an instance or 
+        <literal>Iterable</literal> set of instances of the type that declares the attribute.</para>
+            
+        <para>If no receiver expression is explicitly specified, the current object is
+        the receiver.</para>
             
         <programlisting>Evaluation := (Expression EvaluationOperator)? MemberName</programlisting>
         
         <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
         
-        <para>If no receiver expression is explicitly specified, the current object is
-        the receiver.</para>
+        <para>The evaluation operator depends upon the type of the receiver expression. If 
+        <literal>X</literal> is the type that declares the attribute, the evaluation operator 
+        must be:</para>
             
+        <itemizedlist>
+            <listitem>
+                <para><literal>.</literal> if the expression is of non-<literal>optional</literal>
+                type <literal>X</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>.?</literal> if the expression is of type <literal>optional X</literal>,
+                or</para>
+            </listitem>
+            <listitem>
+                <para><literal>.*</literal> if the expression is of non-<literal>optional</literal> 
+                type <literal>Iterable&lt;X&gt;</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>When an attribute evaluation is executed:</para>
         
         <itemizedlist>
@@ -1414,16 +1472,29 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>String name = person.name().get();</programlisting>
         -->
         
-        <para>The type of an attribute evaluation expression is the declared type of
-        the attribute.</para>
-        
-        <para>An attribute evaluation is an expression of <literal>optional</literal> 
-        type if and only if the attribute is declared <literal>optional</literal>, or 
-        the <literal>?.</literal> operator is used.</para>
+            <para>The type of an attribute invocation expression depends upon the evaluation
+            operator. If <literal>X</literal> is the declared type of the attribute:</para>
             
-        <para>Attributes may not be evaluated using the <literal>.</literal> operator 
-        when the recieving expression is of type <literal>optional</literal>. They 
-        may be evaluated using <literal>?.</literal>.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>If the evaluation operator is <literal>.</literal>, the expression
+                    is of type <literal>X</literal>. It is of <literal>optional</literal> type
+                    if and only if the attribute is <literal>optional</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If the evaluation operator is <literal>?.</literal>, the expression
+                    is of type <literal>optional X</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If the evaluation operator is <literal>*.</literal>, the expression
+                    is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If no receiver expression is specified, the expression is of type 
+                    <literal>X</literal>. It is of <literal>optional</literal> type if and 
+                    only if the attribute is <literal>optional</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
     </section>
         
