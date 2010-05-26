@@ -2147,8 +2147,8 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
                 attributes.</para>
             </listitem>
             <listitem>
-                <para><literal>optional</literal> specifies that a value may
-                be null.</para>
+                <para><literal>optional</literal> specifies that an attribute,
+                local, parameter, or method return value may be null.</para>
             </listitem>
             <!--listitem>
                 <para><literal>final</literal> indicates that a class may not 
