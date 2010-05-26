@@ -664,7 +664,28 @@ ClassBody</programlisting>
                 other declarations in the second part of the body of the class.</para>
             </listitem>
         </itemizedlist>
-
+        
+    <section id="mutableandimmutableclasses">
+        <title>Mutable and immutable classes</title>
+        
+        <para>A class may be annotated <literal>mutable</literal>. If a class is not 
+        annotated <literal>mutable</literal> it is called an <emphasis>immutable type</emphasis>, 
+        and it may not:</para> 
+        
+        <itemizedlist>
+            <listitem>
+                <para>declare or inherit <literal>mutable</literal> attributes,</para>
+            </listitem>
+            <listitem>
+                <para>extend a <literal>mutable</literal> superclass, or</para>
+            </listitem>
+            <listitem>
+                <para>implement an interface annotated <literal>mutable</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+    </section>
+    
     <section id="classinitializer">
         <title>Class initializer</title>
         
@@ -1541,6 +1562,10 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
         
         <programlisting>AttributeHeader := Annotation* Type MemberName</programlisting>
+        
+        <para>A simple attribute or local annotated <literal>mutable</literal> represents a
+        value that can be assigned multiple times. A simple attribute or local not annotated
+        <literal>mutable</literal> represents a value that can be specified exactly once.</para>
         
         <para>The value of a non-<literal>mutable</literal> attribute is specified using 
         <literal>=</literal>. A <literal>mutable</literal> attribute may be initialized using 
