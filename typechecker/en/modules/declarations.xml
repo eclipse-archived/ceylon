@@ -232,6 +232,18 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
         
+        <para>A class or interface declaration with no type parameters defines exactly one 
+        type. A class or interface declaration with type parameters defines a template for
+        producing types: one type for each possible combination of type arguments that 
+        satisfy the type constraints specified by the class or interface. The types of 
+        members of the this type are determined by replacing every appearance of each type 
+        parameter in the schema of the parameterized type declaration with its type argument.</para>
+        
+        <para>A method declaration with no type parameters defines exactly one operation 
+        per type. A method declaration with type parameters defines a template for producing
+        overloaded operations: one operation for each possible combination of type arguments 
+        that satisfy the type constraints specified by the method declaration.</para>
+        
         <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
         <programlisting>TypeParam := Variance TypeName</programlisting>
