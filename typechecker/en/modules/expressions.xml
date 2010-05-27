@@ -1503,13 +1503,14 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <title>Assignment</title>
         
         <para>Certain expressions are <emphasis>assignable</emphasis>. An assignable
-        expression may appear as the LHS of the <literal>:=</literal> (assign) operator,
-        and possibly, depending upon the type of the expression, as the LHS of the 
-        numeric or logical assignment operators <literal>+=, -=, *=, /=, %=, &amp;=, 
-        |=, ^=, &amp;&amp;=, ||=, ?=</literal> or as the subject of the increment and 
-        decrement operators <literal>++, --</literal>.</para>
+        expression may appear to the left of the <literal>:=</literal> (assign) operator,
+        and possibly, depending upon the type of the expression, to the left of the 
+        numeric, logical or bitwise compound assignment operators 
+        <literal>+=, -=, *=, /=, %=, &amp;=, |=, ^=, &amp;&amp;=, ||=, ?=</literal> or 
+        as the subject of the increment and decrement operators <literal>++, --</literal>,
+        or apply operator <literal>.=</literal>.</para>
         
-        <para>The following expressions are assignable:</para>
+        <para>For example, the following expressions are assignable:</para>
         
         <itemizedlist>
             <listitem>
@@ -1531,30 +1532,73 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>Assignment follows this schema:</para>
+        <section>
+            <title>Assignable expressions</title>
             
-        <programlisting>Assignment := MemberReference ElementSpec? AssignmentOperator Expression</programlisting>
+        <para>An assignable expression consists of an attribute name, and, optionally, in
+        the case of an attribute of type <literal>OpenCorrespondence</literal>, a 
+        specification of the element keys to be assigned to, together with a receiver 
+        expression that evaluates to an instance of a type with an attribute with that 
+        name.</para>
         
-        <programlisting>AssignmentOperator := "+=" | "-=" | "*=" | "/=" | "%=" | "&amp;=" | "|=" | "^=" | "&amp;&amp;=" | "||=" | "?="</programlisting>
-        
-        <para>Attributes may not be assigned when the recieving expression is of type 
-        <literal>optional</literal>.</para>
+        <para>If no receiver expression is explicitly specified, the current object is the 
+        receiver.</para>
             
-        <para>When an assignment expression is executed, the value of the local or
-        attribute is set to the new value, or the <literal>define()</literal> method of
-        <literal>OpenCorrespondence</literal> is called.</para>
+        <programlisting>AssignableExpression := (Expression ".")? MemberName ElementSpec?</programlisting>
         
-        <para>Thus, the following statement:</para>
+        <para>When an assignment expression or unary assignment expression is executed, the 
+        new value to be assigned is computed, the recieving object is obtained by evaluating 
+        the receiver expression, and then:</para>
         
-        <programlisting>order.lineItems[0] := LineItem { product = prod; quantity = 1; };</programlisting>
+        <itemizedlist>
+            <listitem>
+                <para>if the assignable expression is a simple attribute or local, the value 
+                of the simple attribute of local is set to the new value,</para>
+            </listitem>
+            <listitem>
+                <para>if the assignable expression is an attribute with a setter, the setter
+                is executed with the new value, or</para>
+            </listitem>
+            <listitem>
+                <para>if the assignable expression is an attribute of type 
+                <literal>OpenCorrespondence</literal> together with an element key specification,
+                the key expression is evaluates, and the <literal>define()</literal> method is
+                invoked with the resulting key and the new value.</para>
+            </listitem>
+        </itemizedlist>
         
-        <!--
-        <para>Is equivalent to the Java:</para>
+        </section>
         
-        <programlisting>order.lineItems.define( 0, new LineItem(prod, 1) );</programlisting>
-        -->
+        <section>
+            <title>Assignment</title>
+            
+        <para>An assignment consists of an assignable expression, an assignment operator
+        and an expression to be assigned.</para>
         
-        <para>This attribute assignment:</para>
+        <programlisting>Assignment := AssignableExpression AssignmentOperator Expression</programlisting>
+        
+        <programlisting>AssignmentOperator := 
+":=" | 
+NumericAssignmentOperator | 
+BitwiseAssignmentOperator | 
+LogicalAssignmentOperator | 
+DefaultAssignmentOperator</programlisting>
+        
+        <programlisting>NumericAssignmentOperator := "+=" | "-=" | "*=" | "/=" | "%="</programlisting>
+        
+        <programlisting>BitwiseAssignmentOperator := "&amp;=" | "|=" | "^="</programlisting>
+        
+        <programlisting>LogicalAssignmentOperator := "&amp;&amp;=" | "||="</programlisting>
+        
+        <programlisting>DefaultAssignmentOperator := "?="</programlisting>
+        
+        <para>The assignment operator might be <literal>:=</literal>, which simply evaluates 
+        the expression to be assigned and assigns the resulting value to the assignable 
+        expression, or it might be a compound assignment operator, which evaluates both
+        expressions, computes a single value from the two resulting values, and assigns this
+        value to the assignable expression.</para>
+        
+        <para>This statement sets the value of an attribute:</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
@@ -1564,14 +1608,101 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>person.name().set("Gavin");</programlisting>
         -->
         
+        <para>This statement assigns to a keyed element of a <literal>Sequence</literal>, resulting 
+        in a call to the <literal>define()</literal> method of <literal>OpenCorrespondence</literal>:</para>
+        
+        <programlisting>order.lineItems[0] := LineItem { product = prod; quantity = 1; };</programlisting>
+        
+        <!--
+        <para>Is equivalent to the Java:</para>
+        
+        <programlisting>order.lineItems.define( 0, new LineItem(prod, 1) );</programlisting>
+        -->
+        
+        <para>The following rules must be satisfied:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the assignable expression must be a <literal>mutable</literal>
+                attribute with no element key specification, or an attribute of type 
+                <literal>OpenCorrespondence</literal> together with an element key 
+                specification,</para>
+            </listitem>
+            <listitem>
+                <para>the receiver expression must not be of <literal>optional</literal> 
+                type,</para>
+            </listitem>
+            <listitem>
+                <para>the type of the expression to be assigned must be assignable to 
+                the type of the assignable expression, and</para>
+            </listitem>
+            <listitem>
+                <para>if the expression to be assigned is of <literal>optional</literal> 
+                type, then the assignable expression must be of <literal>optional</literal> 
+                type,</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: fix to account for range assignment!</para></comment>
+        
+        <para>The whole assignment construct is itself an expression. The type of the assignment 
+        expression is the type of the assignable expression. The assignment expression is of 
+        <literal>optional</literal> type if and only if the expression to be assigned is of
+        <literal>optional</literal> type.</para>
+        
+        <para>When the assignment is executed, the assignment expression evaluates to the new 
+        value that was assigned.</para>
+        
+        </section>
+        
+        <section>
+            <title>Unary assignment</title>
+            
         <para>Unary increment and decrement and the apply aperator <literal>.=</literal> 
-        are also considered a kind of assignment.</para>
-                                
-        <programlisting>IncrementOrDecrement := 
-IncrementOrDecrementOperator MemberReference | 
-MemberReference ( IncrementOrDecrementOperator | ".=" MemberName Arguments? )</programlisting>
-
+        are also considered a kind of assignment, called <emphasis>unary assignment</emphasis>.</para>
+        
+        <programlisting>IncrementOrDecrement := PrefixIncrementOrDecrement | PostfixIncrementOrDecrement | Apply</programlisting>
+        
+        <programlisting>PrefixIncrementOrDecrement := IncrementOrDecrementOperator AssignableExpression</programlisting>
+        <programlisting>PostfixIncrementOrDecrement := AssignableExpression IncrementOrDecrementOperator</programlisting>
+        
         <programlisting>IncrementOrDecrementOperator := "++" | "--"</programlisting>
+        
+        <programlisting>Apply := AssignableExpression ".=" MemberName Arguments?</programlisting>
+        
+        <para>Unary assignment evaluates the assignable expression, computes a new value by
+        applying an operation to the result, and then assigns this new value to the assignable
+        expression.</para>
+        
+        <para>The following rules must be satisfied:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the assignable expression must be a <literal>mutable</literal>
+                attribute with no element key specification, or an attribute of type 
+                <literal>OpenCorrespondence</literal> together with an element key 
+                specification,</para>
+            </listitem>
+            <listitem>
+                <para>the receiver expression must not be of <literal>optional</literal> 
+                type, and</para>
+            </listitem>
+            <listitem>
+                <para>the assignable expression must not be of <literal>optional</literal>
+                type.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The whole unary assignment construct is itself an expression. The type of the 
+        unary assignment expression is the type of the assignable expression. The unary 
+        assignment expression is of non-<literal>optional</literal> type.</para>
+        
+         <para>When the assignment is executed, the unary assignment expression evaluates to 
+         the new value that was assigned, except in the case of postfix increment or decrement, 
+         in which case the unary assignment expression evaluates to the previous value of the
+         assignable expression, before the unary assignment was executed.</para>
+        
+        </section>
         
     </section>
     
