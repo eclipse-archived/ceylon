@@ -1002,7 +1002,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
  
         </section>
         
-        <section>
+        <section id="functionalarguments">
             <title>Functional arguments</title>
             
         <para>After a positional argument list, arguments to functional parameters 
@@ -1193,6 +1193,97 @@ except (SomethingElseWrong sew) {
     produce -2;
 }</programlisting>
         -->
+
+            <section id="resolvingoverloadedmethodsandtypes">
+                <title>Resolving overloaded methods and types</title>
+                
+                <para>For invocations of overloaded methods, and instantiation of overloaded 
+                types, the specific overloaded declaration is resolved by the Ceylon compiler at 
+                compile time.</para>
+                
+                <para>Overloaded declarations are resolved by considering the <emphasis>erased
+                signature</emphasis> of the method or type declarations.</para> 
+                
+                <para>The erased signature of a type is a obtained by taking the declared parameter 
+                types and:</para>
+                
+                <itemizedlist>
+                    <listitem>
+                        <para>if type arguments were explicitly specified by the instantiation, 
+                        substituting the type arguments explicitly specified for type parameters 
+                        that appear in the parameter types, or, otherwise,</para>
+                    </listitem>
+                    <listitem>
+                        <para>if type arguments were not explicitly specified, substituting the 
+                        lower bound of the type parameter for each type parameter that appears 
+                        in the parameter types (or <literal>lang.Object</literal> if the type 
+                        parameter has no lower bound).</para>
+                    </listitem>
+                </itemizedlist>
+                
+                <para>The erased signature of a method is obtained by taking the declared parameter 
+                types and:</para>
+                
+                <itemizedlist>
+                    <listitem>
+                        <para>first, substituting type arguments of the receiving type for the
+                        corresponding type parameter wherever it appears in the method parameter
+                        types, and then</para>
+                    </listitem>
+                    <listitem>
+                        <para>if type arguments were explicitly specified by the invocation, 
+                        substituting the type arguments explicitly specified for method type 
+                        parameters that appear in the parameter types, or, otherwise,</para>
+                    </listitem>
+                    <listitem>
+                        <para>if type arguments were not explicitly specified, substituting the 
+                        lower bound of the type parameter for each method type parameter that
+                        appears in the parameter types (or <literal>lang.Object</literal> if the
+                        type parameter has no lower bound).</para>
+                    </listitem>
+                </itemizedlist>
+                
+                <para>An invocation or instantiation resolves to a particular overloaded method
+                or type declaration if there is exactly one overloaded declaration of the named 
+                method or type with an erased signature to which the given arguments expression
+                types are assignable.</para> 
+                
+                <para>If more than one overloaded declaration has an erased signature to which 
+                the arguments are assignable, or if there is no declaration with an erased 
+                signature to which the arguments are assignable, the invocation or instantiation 
+                is illegal. (Note that Ceylon is stricter and simpler than Java with this rule.)</para>
+                
+                <para>Note that method references are not resolved to a specific overloaded
+                declaration of the method or type except in the context of an invocation of the
+                method reference. However, the compiler does check that an appropriate overloaded
+                declaration exists before permitting specification of the method reference in the
+                declaration of another method or functional argument.</para>
+                
+                <para>Finally, if type arguments were not explicitly specified, there must be a
+                combination of type arguments that can be substituted for the type parameters of
+                the method or type, respecting constraints upon the type parameters, that results
+                in a method signature such that:</para>
+                
+                <itemizedlist>
+                    <listitem>
+                        <para>the given argument expression types are assignable to the method
+                        parameter types after substitution of the type arguments, and</para>
+                    </listitem>
+                    <listitem>
+                        <para>the expression type of the invocation or instantiation, after 
+                        substitution of the type arguments is assignable to the surrounding
+                        context.</para>
+                    </listitem>
+                </itemizedlist>
+                
+                <comment><para>TODO: Figure out the details of the type inference implied by this 
+                last bit!</para></comment>
+                
+                <para>If no such combination of type arguments exists, the invocation or 
+                instantiation is illegal. (Note that Ceylon is less strict than Java with this 
+                rule.)</para>
+                
+            </section>
 
         </section>
         
