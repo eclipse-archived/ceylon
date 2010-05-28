@@ -32,16 +32,22 @@ Body?</programlisting>
    </section>
       
     <section id="topleveldeclaration">
-        <title>Type declaration</title>
+        <title>Imports and toplevel declarations</title>
         
-        <para>A type declaration defines a class, interface or type alias.</para>
+        <para>A toplevel declaration defines a type: a class, interface or type alias.</para>
         
         <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
         <comment><para>TODO: Should we support toplevel static method declarations?</para></comment>
 
+        <para>All toplevel types with a visibility modifier less strict than
+        <literal>private</literal> must have the same name as the compilation
+        unit filename (after removing the file suffix <literal>.ceylon</literal>).
+        Unlike Java, a compilation unit may contain multiple toplevel class 
+        declarations with the same name.</para>
+        
         <para>A compilation unit consists of a list of imported types, followed by
-        one or more type declarations:</para>
+        one or more type definitions:</para>
         
         <programlisting>Import* TypeDeclaration+</programlisting>
         
@@ -49,9 +55,11 @@ Body?</programlisting>
         
         <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
         
-        <para>All toplevel types with a visibility modifier less strict than
-        <literal>private</literal> must have the same name as the compilation
-        unit filename (after removing the file suffix <literal>.ceylon</literal>).</para>
+        <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>. 
+        A package is a namespace. Code in one compilation unit may refer to a toplevel type 
+        defined in another compilation unit in the same package without explicitly importing
+        the type. It may refer to a toplevel type defined in a compilation in another package
+        only if it explicitly imports the type.</para>
         
      </section>
     
@@ -117,6 +125,20 @@ public deprecated</programlisting>
         
         <programlisting>Type := RegularType | "subtype"</programlisting>
         
+        <para>A type is a set of:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>attributes,</para>
+            </listitem>
+            <listitem>
+                <para>non-<literal>static</literal> methods, and</para>
+            </listitem>
+            <listitem>
+                <para>member classes.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>A type may be <emphasis>assignable</emphasis> to another type. If <literal>X</literal>
         is assignable to <literal>Y</literal>, then:</para>
         
@@ -161,11 +183,14 @@ public deprecated</programlisting>
                 <literal>X</literal> is assignable to <literal>Z</literal>.</para>
             </listitem>
             <listitem>
-                <para>Single root: all types are assignable to <literal>lang.Object</literal>.</para>
+                <para>Single root: all types are assignable to <literal>lang.Object</literal>,
+                including classes, interfaces, aliases and type parameters.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Most types are classes or interfaces:</para>
+        <para>Types are identified by the name of the type (a class, interface, alias or 
+        type parameter), together with a list of type arguments if the type definition 
+        specifies formal parameters.</para>
         
         <programlisting>RegularType := QualifiedTypeName TypeArguments?</programlisting>
         
@@ -178,11 +203,27 @@ public deprecated</programlisting>
         <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
         <para>A type argument is substituted for every appearance of the corresponding
-        type parameter in the schema of the parameterized type declaration, including 
-        attribute types, method return types, method formal parameter types, and 
-        initializer formal parameter types.</para>
+        type parameter in the schema of the parameterized type definition, including:</para>
         
-        <para>The arguments may themselves be generic types.</para>
+        <itemizedlist>
+            <listitem>
+                <para>attribute types,</para>
+            </listitem>
+            <listitem>
+                <para>method return types,</para>
+            </listitem>
+            <listitem>
+                <para>method formal parameter types,</para>
+            </listitem>
+            <listitem>
+                <para>initializer formal parameter types, and</para>
+            </listitem>
+            <listitem>
+                <para>type arguments of extended classes and satisfied interfaces.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A type argument may itself be a parameterized type or type parameter.</para>
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
@@ -213,7 +254,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         modifier after all? Is there another solution?</para></comment>
         
         <para>The type <literal>subtype</literal> is considered a covariant type parameter
-        of the type, and may only appear in covariant positions of the type declaration.</para>
+        of the type, and may only appear in covariant positions of the type definition.</para>
         
         <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
         <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
@@ -228,7 +269,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <title>Generic type parameters</title>
     
         <para>Methods, classes, interfaces and aliases may declare one or more generic type 
-        parameters.</para>
+        parameters. A class, interface or alias that declares type parameters is called a
+        <emphasis>parameterized type</emphasis>. A method that declares type parameters is
+        called a parameterized method.</para>
         
         <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
         
@@ -237,12 +280,27 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         producing types: one type for each possible combination of type arguments that 
         satisfy the type constraints specified by the class or interface. The types of 
         members of the this type are determined by replacing every appearance of each type 
-        parameter in the schema of the parameterized type declaration with its type argument.</para>
+        parameter in the schema of the parameterized type definition with its type argument.</para>
         
         <para>A method declaration with no type parameters defines exactly one operation 
         per type. A method declaration with type parameters defines a template for producing
         overloaded operations: one operation for each possible combination of type arguments 
         that satisfy the type constraints specified by the method declaration.</para>
+        
+        <para>A class declaration with no type parameters defines exactly one instantiation 
+        operation. A class declaration with type parameters defines a template for producing 
+        overloaded instantiation operations: one instantiation operation for each possible 
+        combination of type arguments that satisfy the type constraints specified by the 
+        class declaration. The type of the object produced by an instantiation operation is 
+        determined by substituting the same combination of type arguments for the type 
+        parameters of the parameterized class.</para>
+        
+        <comment><para>TODO: this leaves totally open the whole question of type argument
+        inference from method invocation arguments or type instantiation arguments.</para></comment>
+        
+        <para>A type parameter is itself a type, visible within the body of the declaration
+        it parameterizes. A type parameter is assignable to every lower bound of the type 
+        parameter.</para>
         
         <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
@@ -289,9 +347,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A covariant type parameter may only appear in covariant positions of the type
-        declaration. A contravariant type parameter may only appear in contravariant positions 
-        of the type declaration. Nonvariant type parameters may appear in any position.</para>
+        <para>A covariant type parameter may only appear in covariant positions of the type 
+        definition. A contravariant type parameter may only appear in contravariant positions 
+        of the type definition. Nonvariant type parameters may appear in any position.</para>
         
         <itemizedlist>
             <listitem>
@@ -461,11 +519,12 @@ VarargsParam?
     <section id="extendedclass">
         <title>Extended class</title>
     
-        <para>Classes may extend other classes using the <literal>extends</literal> clause.</para>
+        <para>A class may extend another class using the <literal>extends</literal> clause.</para>
         
         <programlisting>Supertype := "extends" RegularType PositionalArguments</programlisting>
     
-        <para>A class may extend only one superclass.</para>
+        <para>A class may extend only one superclass. If the superclass is a parameterized
+        type, the <literal>extends</literal> clause must specify type arguments.</para>
         
         <programlisting>extends Person(name, org)</programlisting>
     
@@ -502,7 +561,9 @@ VarargsParam?
         
         <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
     
-        <para>A class or interface may satisfy multiple interfaces.</para>
+        <para>A class or interface may satisfy multiple interfaces. If a satisfied 
+        interface is a parameterized type, the <literal>satisfies</literal> clause 
+        must specify type arguments.</para>
         
         <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
         
@@ -691,9 +752,23 @@ ClassBody</programlisting>
 
         <programlisting>ClassBody := "{" Instances? DeclarationOrStatement* "}"</programlisting>
         
-        <para>The body of a class contains member (method, attribute and nested type) 
-        declarations, instance initialization code, and, optionally, a list of enumerated 
-        named instances of the class.</para>
+        <para>The body of a class contains:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>member (method, attribute and member class) declarations,</para>
+            </listitem>
+            <listitem>
+                <para><literal>static</literal> method declarations and nested 
+                interface declarations,</para>
+            </listitem>
+            <listitem>
+                <para>instance initialization code, and,</para>
+            </listitem>
+            <listitem>
+                <para>optionally, a list of enumerated named instances of the class.</para>
+            </listitem>
+        </itemizedlist>
 
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
@@ -1047,23 +1122,23 @@ class Customer(Name name, optional Organization org = null)
                 <para>inherits all members (methods, attributes, and member types) of 
                 its superclass, except for members that it <emphasis>overrides</emphasis>,</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>is assignable to any type to which its superclass is assignable,</para>
-            </listitem>
+            </listitem-->
             <listitem>
                 <para>must declare or inherit a member that overrides each member of 
                 every interface it implements directly or indirectly, unless the class 
-                is declared <literal>abstract</literal>,</para>
+                is declared <literal>abstract</literal>, and</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that overrides each abstract 
                 member of its superclass, unless the class is declared 
-                <literal>abstract</literal>, and</para>
+                <literal>abstract</literal>.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>is assignable to any type to which any interface it implements is 
                 assignable.</para>
-            </listitem>
+            </listitem-->
         </itemizedlist>
         
         <para>
@@ -1247,6 +1322,9 @@ class Customer(Name name, optional Organization org = null)
             </listitem>
         </itemizedlist>
         
+        <para>Finally, the overridden member class must be visible to the member
+        class annotated <literal>override</literal>.</para>
+        
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
@@ -1279,9 +1357,18 @@ InterfaceBody</programlisting>
 
         <programlisting>InterfaceBody := "{" ( AbstractMethod | AbstractAttribute )* "}"</programlisting>
 
-        <para>The body of an interface contains member (method, attribute and nested type) 
-        declarations, but the method and attribute declarations may not specify 
-        implementation.</para>
+        <para>The body of an interface contains:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>member (method, attribute and member class) declarations, and</para>
+            </listitem>
+            <listitem>
+                <para>nested interface declarations.</para>
+            </listitem>
+        </itemizedlist>
+
+        <para>Interface method and attribute declarations may not specify implementation.</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
@@ -1295,7 +1382,7 @@ InterfaceBody</programlisting>
 }</programlisting>
         -->
         
-        <para>Interface members inherit the visbility modifier of the interface.</para>
+        <para>Interface members inherit the visibility modifier of the interface.</para>
         
         <comment><para>TODO: refine this. Consider block-local interface declarations.</para></comment>
           
@@ -1314,24 +1401,15 @@ InterfaceBody</programlisting>
             supertypes of an interface must be interfaces.
             </para>
             
-            <para>
+            <!--para>
             Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
             the interface type itself is considered assignable to <literal>lang.Object</literal>.
-            </para>
+            </para-->
         
-        <para>
-        The semantics of interface inheritance are exactly the same as Java. An interface:
+            <para>
+            The semantics of interface inheritance are exactly the same as Java. An interface inherits 
+            all members (methods, attributes and member types) of every supertype.
         </para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>inherits all members (methods, attributes and member types) of every 
-                supertype, and</para>
-            </listitem>
-            <listitem>
-                <para>is assignable to any type to which any supertype is assignable.</para>
-            </listitem>
-        </itemizedlist>
         
             <!--
             <para>and the above declaration is equivalent to the following 
@@ -1549,6 +1627,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>Finally, the overridden methos class must be visible to the method
+            annotated <literal>override</literal>.</para>
+        
             <para>Then invocation of the method is polymorphic, and the actual
             method invoked depends upon the concrete type of the class instance.</para>
             
@@ -1682,8 +1763,8 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         
         <itemizedlist>
             <listitem>
-                <para>A simple attribute declared inside the body of a method, attribute getter
-                or attribute setter is a local.</para>
+                <para>A simple attribute declared inside a block (the body of a method, attribute 
+                getter or attribute setter) is a local.</para>
             </listitem>
              <listitem>
                 <para>A block local simple attribute declared inside the body of a class is a 
@@ -1691,16 +1772,17 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
                 declaration.</para>
             </listitem>
            <listitem>
-                <para>A formal parameter of a class is a local if it is not used inside a 
-                method, attribute setter or attribute getter declaration.</para>
+                <para>A formal parameter of a class is a local if it is not used inside a method, 
+                attribute setter or attribute getter declaration.</para>
             </listitem>
             <listitem>
                 <para>A formal parameter of a method is a local.</para>
             </listitem>
         </itemizedlist>
         
-        <para>A local may only be used by statements and declarations that appear later in the
-        block of code that contains the local declaration.</para>
+        <para>A local is a block local declaration&mdash;it is visible only to statements and 
+        declarations that occur later in the same block or class body, and therefore it may not 
+        declare a visibility modifier.</para>
         
         <para>The semantics of locals are identical to Java local variables.</para>
         
@@ -1877,6 +1959,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>Finally, the overridden attribute must be visible to the attribute
+            annotated <literal>override</literal>.</para>
+        
             <para>A non-<literal>mutable</literal> attribute may be overridden by a 
             <literal>mutable</literal> attribute.</para>
             
@@ -2095,9 +2180,11 @@ TypeConstraintList?
            <listitem><para>a single functor type.</para></listitem>
        </itemizedlist-->
        
+       <para>The alias type is assignable to all of the satisfied types.</para>
+              
        <para>Any expression which is assignable to all the satisfied types is assignable 
        to the alias type.</para>
-              
+       
        <programlisting>public alias People satisfies List&lt;Person&gt;;</programlisting>
        
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
@@ -2108,6 +2195,89 @@ TypeConstraintList?
        
        <programlisting>import java.util.List alias JavaList;</programlisting>
     
+    </section>
+    
+    <section id="visibility">
+        <title>Visibility and name resolution</title>
+        
+        <para>Classes, interfaces, aliases, methods, attributes, locals, formal parameters 
+        and type parameters have names. Occurrence of a name in code implies a hard 
+        dependency from the code in which the name occurs to the schema of the named 
+        declaration. We say that a class, interface, alias, method, attribute, formal 
+        parameter or type parameter is <emphasis>visible</emphasis> to a certain program 
+        element if its name may occur in the code that defines that program element.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A formal parameter or type parameter is never visible outside the 
+                declaration it belongs to.</para> 
+            </listitem>
+            <listitem>
+                <para>Any declaration that occurs inside a block (the body of a method, 
+                attribute getter or attribute setter) is not visible to code outside the 
+                block.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The visibility of any other declaration depends upon its <emphasis>visibility
+        modifier</emphasis>, if any. By default:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a declaration that occurs directly inside a class body is not
+                visible to code outside the class definition, and</para>
+            </listitem>
+            <listitem>
+                <para>a toplevel declaration is not visible to code outside the 
+                package containing its compilation unit.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The visibility of a declaration with a visibility modifier annotation
+        is determined by the visibility modifier:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>private</literal> specifies that the declaration is 
+                visible to all code in the same compilation unit,</para>
+            </listitem>
+            <listitem>
+                <para><literal>package</literal> specifies that the declaration is 
+                visible to all code in any compilation unit in the same package,</para>
+            </listitem>
+            <listitem>
+                <para><literal>module</literal> specifies that the declaration is 
+                visible to all code in any package in the same module,</para>
+            </listitem>
+            <listitem>
+                <para><literal>public</literal> specifies that the declaration is 
+                visible to all code in any module.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If two named declarations visible to some program element have the same 
+        name, and if they are not overloaded forms of the same class or method, then 
+        that name may not be used inside the program element unless:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>One declaration occurs in a block, class body, or interface body
+                that is contained, directly or indirectly, inside the block, class 
+                body, or interface body that directly contains the other declaration. 
+                In this case, the name resolves to the inner declaration inside the 
+                block, class body, or interface body in which it occurs. We say that
+                the inner declaration name <emphasis>hides</emphasis> the outer 
+                declaration name.</para>
+            </listitem>
+            <listitem>
+                <para>One declaration is a class initialization parameter, and the other 
+                declares a member of the class. In this case the name resolves to the 
+                class initialization parameter inside the body of the class. We say that
+                the initialization parameter name <emphasis>hides</emphasis> the class
+                member name.</para>
+            </listitem>
+        </itemizedlist>
+        
     </section>
     
     <section id="extensions">
@@ -2261,16 +2431,17 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         recognize a member declaration a little bit more easily. But on the
         other hand it's a new special kind of thing.</para></comment>
         
-        <comment><para>TODO: should we require an <literal>abstract</literal>
+        <comment><para>TODO: Should we require an <literal>abstract</literal>
         modifier for abstract methods and attributes of abstract classes
         like Java does?</para></comment>
         
-        <comment><para>TODO: should there be an <literal>annotation</literal>
+        <comment><para>TODO: Should there be an <literal>annotation</literal>
         modifier for static methods which can be used as annotations?</para></comment>
         
-        <comment><para>TODO: does Ceylon support static attributes?</para></comment>
+        <comment><para>TODO: Does Ceylon support <literal>static</literal> 
+        attributes? What about <literal>static</literal> member classes?</para></comment>
             
-        <comment><para>TODO: should we support toplevel methods instead of
+        <comment><para>TODO: Should we support toplevel methods instead of
         methods annotated <literal>static</literal>?</para></comment>
 
         <para>The following annotation is a hint to the compiler that lets 

@@ -189,9 +189,8 @@ else {
         
             <para>A declaration that occurs in a block is a block local declaration&mdash;it 
             is visible only to statements and declarations that occur later in the same block, 
-            and may not declare a visibility modifier. (Remember that special rules apply to 
-            declarations that occur directly inside class and interface bodies.)</para>
-        
+            and therefore it may not declare a visibility modifier.</para>
+            
         </section>
         
     </section>
