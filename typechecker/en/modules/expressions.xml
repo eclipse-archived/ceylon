@@ -570,7 +570,8 @@ ConstructorReference</programlisting>
         <para>References to instance methods, attributes, and member types use one of three 
         different invocation operators.</para>
         
-        <programlisting>InvocationOperator := "." | "?." | "*." | "^."</programlisting>
+        <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
+        <!--programlisting>InvocationOperator := "." | "?." | "*." | "^."</programlisting-->
         
         <para>The invocation operator depends upon the type of the receiver expression. If 
         <literal>X</literal> is the type that has the instance method, attribute, or member 
@@ -578,8 +579,8 @@ ConstructorReference</programlisting>
             
         <itemizedlist>
             <listitem>
-                <para><literal>.</literal> or <literal>^.</literal> if the expression is of 
-                non-<literal>optional</literal> type <literal>X</literal>,</para>
+                <para><literal>.</literal> <!--or <literal>^.</literal>--> if the expression 
+                is of non-<literal>optional</literal> type <literal>X</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>.?</literal> if the expression is of type <literal>optional X</literal>,
@@ -689,9 +690,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <title>Method invocation</title>
             
             <para>A method invocation evaluates to the return value of the method, as specified 
-            by the <literal>return</literal> directive, unless the invocation operator is 
+            by the <literal>return</literal> directive.<!-- unless the invocation operator is 
             <literal>^.</literal>, in which case the invocation evaluates to the receiving 
-            instance. The argument values are passed to the formal parameters of the method, and 
+            instance--> The argument values are passed to the formal parameters of the method, and 
             the body of the method is executed.</para>
                         
             <programlisting>log.info("Hello world!")</programlisting>
@@ -723,10 +724,10 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
                     <para>If the invocation operator is <literal>?.</literal>, the expression
                     is of type <literal>optional X</literal>.</para>
                 </listitem>
-                <listitem>
+                <!--listitem>
                     <para>If the invocation operator is <literal>^.</literal>, the expression
                     is of the same type as the receiver expression.</para>
-                </listitem>
+                </listitem-->
                 <listitem>
                     <para>If the invocation operator is <literal>*.</literal>, the expression
                     is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
@@ -1743,7 +1744,7 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
-    <programlisting>List&lt;String&gt; names = ArrayList&lt;Person&gt;()^.append(person1)^.append(person2)*.name;</programlisting>
+    <programlisting>List&lt;String&gt; names = { person1, person2 }*.name;</programlisting>
     
     <programlisting>optional String name = person?.name;</programlisting>
     
@@ -1808,7 +1809,7 @@ DefaultAssignmentOperator</programlisting>
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>, 
-                <literal>^.</literal>, 
+                <!--<literal>^.</literal>,-->
                 <literal>*.</literal>, 
                 <literal>?.</literal>, 
                 <literal>(,,)</literal>,
@@ -2052,7 +2053,7 @@ DefaultAssignmentOperator</programlisting>
             <entry>Member of <literal>X</literal></entry>
             <entry>Member type</entry>
         </row>
-        <row>
+        <!--row>
             <entry><literal>^.</literal></entry>
             <entry><literal>lhs^.member</literal></entry>
             <entry>chain invoke</entry>
@@ -2060,7 +2061,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>X</literal></entry>
             <entry>Member of <literal>X</literal></entry>
             <entry><literal>X</literal></entry>
-        </row>
+        </row-->
         <row>
             <entry><literal>?.</literal></entry>
             <entry><literal>lhs?.member</literal></entry>

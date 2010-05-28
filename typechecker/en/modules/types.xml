@@ -11,7 +11,7 @@
         <para>The <literal>lang.Object</literal> class is the root of the type 
         hierarchy and supports the binary operators <literal>==</literal> (equals),
         <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
-        <literal>.</literal> (invoke), <literal>^.</literal> (chain invoke),
+        <literal>.</literal> (invoke), <!--<literal>^.</literal> (chain invoke),-->
         <literal>in</literal> (in), <literal>is</literal> (is), the unary prefix 
         operator <literal>$</literal> (render), and the binary operator 
         <literal>:=</literal> (assign).</para>
@@ -21,7 +21,7 @@
         and <literal>?</literal> (default) and the unary operator
         <literal>exists</literal>, along with the binary operators 
         <literal>==</literal> (equals), <literal>!=</literal> (not equals), 
-        <literal>===</literal> (identity equals) and <literal>=</literal> (assign).</para>
+        <literal>===</literal> (identity equals) and <literal>:=</literal> (assign).</para>
         
         <programlisting><![CDATA[public abstract class Object {
         
