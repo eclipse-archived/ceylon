@@ -2283,12 +2283,75 @@ TypeConstraintList?
     <section id="extensions">
         <title>Extensions</title>
         
-        <para>An extension allows values of one type to be transparently converted to values 
-        of another type. Extensions are declared by annotating a method, attribute or class
-        <literal>extension</literal>. An extension method must be a static method with exactly 
-        one parameter, or a non-static method with no parameters. An extension class must have 
-        exactly one initialization parameter. An extension method or attribute must have a 
-        non-<literal>optional</literal> type.</para>
+        <para>An extension allows values of one type to be transparently converted to 
+        values of another type. Extensions are declared by annotating a method, attribute 
+        or class <literal>extension</literal>. An extension must be:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a <literal>static</literal>, non-<literal>optional</literal> method 
+                with exactly one formal parameter,</para>
+            </listitem>
+            <listitem>
+                <para>a non-<literal>static</literal>, non-<literal>optional</literal> 
+                method with no formal parameters,</para>
+            </listitem>
+            <listitem>
+                <para>a toplevel class with exactly one initialization parameter,</para>
+            </listitem>
+            <listitem>
+                <para>a member class with no initialization parameters, or</para>
+            </listitem>
+            <listitem>
+                <para>a non-<literal>optional</literal> attribute.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>An <literal>static</literal> extension method is called a <emphasis>converter</emphasis>. 
+        An extension class is called a <emphasis>decorator</emphasis>.</para>
+        
+        <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>for static extension methods, the extended type is the declared
+                type of the formal parameter,</para>
+            </listitem>
+            <listitem>
+                <para>for non-<literal>static</literal> extension methods, the extended 
+                type is the type that declares the extension method,</para>
+            </listitem>
+            <listitem>
+                <para>for toplevel extension classes, the extended type is the declared 
+                type of the initialization parameter,</para>
+            </listitem>
+            <listitem>
+                <para>for member extension classes, the extended type is the type that 
+                contains the member class, and</para>
+            </listitem>
+            <listitem>
+                <para>for extension attributes, the extended type is the type that 
+                declares the attribute.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Extensions define an <emphasis>introduced type</emphasis>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>for extension methods, the introduced type is the declared
+                return type of the method,</para>
+            </listitem>
+            <listitem>
+                <para>for extension classes, the introduced type is the class, and</para>
+            </listitem>
+            <listitem>
+                <para>for extension attributes, the introduced type is the declared
+                type of the attribute.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The introduced type may not be a <literal>mutable</literal> type.</para>
         
         <programlisting>public class Person {
     ...
@@ -2309,17 +2372,26 @@ TypeConstraintList?
     ...   
 }</programlisting>
         
-        <para>An extension method is called a converter. An extension class is called a 
-        decorator.</para>
-        
         <comment><para>Note: I actually much prefer the readability of 
         <literal>User personToUser(extends Person person)</literal> and
         <literal>CollectionUtils&lt;T&gt;(extends Collection&lt;T&gt; collection)</literal>, 
-        but this doesn't work for attributes and non-static methods.</para></comment>
+        but this doesn't work for attributes and non-<literal>static</literal> methods.</para></comment>
         
-        <para>The Ceylon compiler searches for an appropriate extension whenever a value of one
-        type is assigned to a non-assignable type. If exactly one extension for the two types is 
-        found, the compiler inserts a call to the extension.</para>
+        <para>We say that an extension class or <literal>static</literal> method is 
+        <emphasis>enabled</emphasis> in a compilation unit if the class or <literal>static</literal> 
+        method is imported by that compilation unit.</para>
+        
+        <programlisting>import org.domain.app.Extensions.personToUser;
+import org.domain.utils.CollectionUtils;</programlisting>
+
+        <para>A wildcard <literal>.*</literal>-style import may not be used to import an 
+        extension.</para>
+        
+        <para>An extension attribute, member class or non-<literal>static</literal> method is 
+        enabled in every compilation unit.</para>
+        
+        <para>If an extension is enabled in a compilation unit, the extended type is assignable
+        to the introduced type in that compilation unit.</para>
         
         <programlisting>import org.mydomain.myproject.Converters.personToUser;
 ...
@@ -2333,10 +2405,6 @@ User user = person;</programlisting>
 User user = personToUser(person);</programlisting>
         -->
         
-        <para>The Ceylon compiler also searches for an appropriate extension whenever a member
-        is invoked that is not declared by the type. If exactly one extension that declares the
-        member is found for the type, the compiler inserts a call to the extension.</para>
-        
         <programlisting>import org.mydomain.myframework.CollectionUtils;
 ...
 Collection&lt;Integer&gt; ints = ...;
@@ -2349,11 +2417,31 @@ Collection&lt;Integer&gt; result = ints.nonZeroElements();</programlisting>
 Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElements();</programlisting>
         -->
         
-        <para>An extension is only available in a source file that explicitly 
-        <literal>import</literal>s the extension (except for the extensions
-        defined in the package <literal>lang</literal>). A wildcard
-        <literal>.*</literal>-style import may not be used to import an 
-        extension.</para>
+        <para>An introduced type may result in an ambiguity:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the extended type may have an attribute with the same name as an attribute
+                of the introduced type, or</para>
+            </listitem>
+            <listitem>
+                <para>the extended type may have a method with the same name and parameter types 
+                as a method of the introduced type.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: What about ambiguities with multiple introduced types?</para></comment>
+        
+        <para>In this case, the attribute or method of the extended type is considered to override
+        the method of the introduced type.</para>
+        
+        <comment><para>TODO: Or should we say the opposite?! What about using the <literal>override</literal>
+        annotation to decide?</para></comment>
+        
+        <para>When an invocation of an introduced method or evaluation of an introduced attribute 
+        is executed, or when an instance of the extended type is assigned to a program element
+        of the introduced type, the extension is invoked to produce an instance of the introduced
+        type that will receive the invocation or evaluation.</para>
         
     </section>
         
