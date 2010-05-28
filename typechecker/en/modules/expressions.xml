@@ -505,7 +505,7 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section>
+    <section id="enumeratedinstancereferences">
         <title>Enumerated instance references</title>
         
         <para>An enumerated instance of a class is identified according to:</para> 
@@ -694,6 +694,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             <literal>^.</literal>, in which case the invocation evaluates to the receiving 
             instance--> The argument values are passed to the formal parameters of the method, and 
             the body of the method is executed.</para>
+            
+            <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
+            The receiving instance?</para></comment>
                         
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
