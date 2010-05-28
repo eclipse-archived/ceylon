@@ -76,6 +76,9 @@ OperatorExpression |
         </listitem>
     </itemizedlist>
     
+    <comment><para>TODO: We need to allow some way to have an expression to be 
+    specified as a toplevel element, for DSLs.</para></comment>
+    
     <section id="literals">
     <title>Literals</title>
     
