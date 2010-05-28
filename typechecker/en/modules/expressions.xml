@@ -555,6 +555,10 @@ ConstructorReference</programlisting>
         <para>Otherwise, if no receiver expression is explicitly specified, the current 
         object is the receiver.</para>
             
+        <para>A reference to a block local method, block local type constructor, or local
+        getter/setter is a special case. There is no receiving instance or invocation 
+        operator.</para>
+        
         <programlisting>MemberReference := (Expression InvocationOperator)? MemberName</programlisting>
         
         <programlisting>ConstructorReference := (Expression InvocationOperator)? TypeName</programlisting>
@@ -1425,6 +1429,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <para>If no receiver expression is explicitly specified, the current object is
         the receiver.</para>
             
+        <para>Evaluation of a local is a special case. There is no receiving instance or
+        evaluation operator.</para>
+        
         <programlisting>Evaluation := (Expression EvaluationOperator)? MemberName</programlisting>
         
         <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
@@ -1479,36 +1486,41 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>String name = person.name;</programlisting>
         
+        <para>The value of the local evaluation is the current value of the local.</para>
+        
         <!--
         <para>is equivalent to the following Java code:</para>
 
         <programlisting>String name = person.name().get();</programlisting>
         -->
         
-            <para>The type of an attribute invocation expression depends upon the evaluation
-            operator. If <literal>X</literal> is the declared type of the attribute:</para>
+        <para>The type of an attribute invocation expression depends upon the evaluation
+        operator. If <literal>X</literal> is the declared type of the attribute:</para>
             
-            <itemizedlist>
-                <listitem>
-                    <para>If the evaluation operator is <literal>.</literal>, the expression
-                    is of type <literal>X</literal>. It is of <literal>optional</literal> type
-                    if and only if the attribute is <literal>optional</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para>If the evaluation operator is <literal>?.</literal>, the expression
-                    is of type <literal>optional X</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para>If the evaluation operator is <literal>*.</literal>, the expression
-                    is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para>If no receiver expression is specified, the expression is of type 
-                    <literal>X</literal>. It is of <literal>optional</literal> type if and 
-                    only if the attribute is <literal>optional</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
+        <itemizedlist>
+            <listitem>
+                <para>If the evaluation operator is <literal>.</literal>, the expression
+                is of type <literal>X</literal>. It is of <literal>optional</literal> type
+                if and only if the attribute is <literal>optional</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If the evaluation operator is <literal>?.</literal>, the expression
+                is of type <literal>optional X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If the evaluation operator is <literal>*.</literal>, the expression
+                is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If no receiver expression is specified, the expression is of type 
+                <literal>X</literal>. It is of <literal>optional</literal> type if and 
+                only if the attribute is <literal>optional</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The type of a local evaluation expression is the type of the local. It is of 
+        <literal>optional</literal> type if and only if the local is <literal>optional</literal>.</para>
+        
     </section>
         
     <section id="assignment">
@@ -1556,11 +1568,14 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <para>If no receiver expression is explicitly specified, the current object is the 
         receiver.</para>
             
+        <para>Assignment to a local is a special case. There is no receiving instance.</para>
+        
         <programlisting>AssignableExpression := (Expression ".")? MemberName ElementSpec?</programlisting>
         
         <para>When an assignment expression or unary assignment expression is executed, the 
-        new value to be assigned is computed, the recieving object is obtained by evaluating 
-        the receiver expression, and then:</para>
+        new value to be assigned is computed, the receiving object is obtained by evaluating 
+        the receiver expression, the actual member to be invoked is determined by considering 
+        the runtime type of the receiving instance, and then:</para>
         
         <itemizedlist>
             <listitem>
@@ -1568,8 +1583,11 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                 of the simple attribute of local is set to the new value,</para>
             </listitem>
             <listitem>
-                <para>if the assignable expression is an attribute with a setter, the setter
-                is executed with the new value, or</para>
+                <para>if the assignable expression is an attribute with a setter, execution 
+                of the calling context pauses while the body of the attribute setter is executed 
+                by the receiving instance with the new value, and then, when execution of the
+                setterends without a thrown exception, execution of the calling context resumes, 
+                or</para>
             </listitem>
             <listitem>
                 <para>if the assignable expression is an attribute of type 
