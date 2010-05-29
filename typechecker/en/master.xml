@@ -85,11 +85,14 @@
             to reflection,</para>
         </listitem>
         <listitem>
-            <para>to provide language-level modularity, and</para>
+            <para>to provide language-level modularity,</para>
         </listitem>
         <listitem>
             <para>to improve on Java's very primitive facilities for meta-programming, 
-            thus making it easier to write frameworks.</para>
+            thus making it easier to write frameworks, and</para>
+        </listitem>
+        <listitem>
+            <para>to make it easy to <emphasis>get things done</emphasis>.</para>
         </listitem>
     </itemizedlist>
     
