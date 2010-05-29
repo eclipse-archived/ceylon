@@ -90,6 +90,9 @@ public deprecated</programlisting>
         is loaded by the virtual machine. The return value of the invocation is made 
         available via reflection.</para>
         
+        <para>Unlike Java, the same annotation may appear multiple times for the same
+        program element.</para>
+        
         <!--
         <comment>
         <para>TODO: to eliminate backtracking in the parser, we could do one of the
@@ -2506,7 +2509,8 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
             </listitem>
             <listitem>
                 <para><literal>deprecated</literal> indicates that a method, 
-                attribute or type is deprecated.</para>
+                attribute or type is deprecated. It accepts an optional
+                <literal>String</literal> argument.</para>
             </listitem>
             <listitem>
                 <para><literal>volatile</literal> indicates a volatile simple 
@@ -2552,25 +2556,35 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         <itemizedlist>
             <listitem>
                 <para><literal>doc</literal> specifies the documentation for
-                a program element.</para>
+                a program element. It accepts a single <literal>String</literal>
+                argument.</para>
             </listitem>
             <listitem>
                 <para><literal>by</literal> specifies the authors of a program 
-                element.</para>
+                element. It accepts one or more <literal>String</literal>
+                arguments.</para>
             </listitem>
             <listitem>
-                <para><literal>see</literal> specifies a related member or 
-                type.</para>
+                <para><literal>see</literal> specifies a related member or type. 
+                It accepts a type or member literal and an optional 
+                <literal>String</literal> description.</para>
             </listitem>
             <listitem>
                 <para><literal>throws</literal> specifies a thrown exception
-                type.</para>
+                type. It accepts a type literal and an optional 
+                <literal>String</literal> description.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The string values of the <literal>doc</literal>, <literal>throws</literal> 
-        and <literal>by</literal> annotations are parsed by the documentation
-        compiler as Seam Text, a simple ANTLR-based wiki text format.</para>
+        <para>The <literal>String</literal> arguments to the <literal>deprecated</literal>, 
+        <literal>doc</literal>, <literal>throws</literal> and <literal>by</literal> 
+        annotations are parsed by the documentation compiler as Seam Text, a 
+        simple ANTLR-based wiki text format.</para>
+        
+        <comment><para>TODO: should <literal>see</literal> and <literal>throws</literal>
+        accept a list of <literal>Entry</literal> instead? For example:</para>
+<programlisting>see #Ruby->"if you are bored with Java" 
+    #Ceylon->"if you want to get some real work done"</programlisting></comment>
         
         <para>The following annotations are important to the Ceylon SDK.</para>
         
