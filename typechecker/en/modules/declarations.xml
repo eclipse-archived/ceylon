@@ -38,7 +38,7 @@ Body?</programlisting>
         
         <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
-        <comment><para>TODO: Should we support toplevel static method declarations?</para></comment>
+        <comment><para>TODO: Should we support toplevel method declarations?</para></comment>
 
         <para>All toplevel types with a visibility modifier less strict than
         <literal>private</literal> must have the same name as the compilation
@@ -302,9 +302,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         class declaration. The type of the object produced by an instantiation operation is 
         determined by substituting the same combination of type arguments for the type 
         parameters of the parameterized class.</para>
-        
-        <comment><para>TODO: this leaves totally open the whole question of type argument
-        inference from method invocation arguments or type instantiation arguments.</para></comment>
         
         <para>A type parameter is itself a type, visible within the body of the declaration
         it parameterizes. A type parameter is assignable to every lower bound of the type 
@@ -1394,7 +1391,7 @@ InterfaceBody</programlisting>
         
         <para>Interface members inherit the visibility modifier of the interface.</para>
         
-        <comment><para>TODO: refine this. Consider block-local interface declarations.</para></comment>
+        <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
           
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
@@ -1507,8 +1504,8 @@ public User(String username, Person person);</programlisting>
         <para>A <literal>static</literal> method body may not refer to <literal>this</literal>
         or <literal>super</literal>, since there is no current instance.</para>
         
-        <comment><para>TODO: Should we support toplevel methods instead of
-        methods annotated <literal>static</literal>?</para></comment>
+        <comment><para>TODO: Should we support toplevel methods instead of methods annotated 
+        <literal>static</literal>?</para></comment>
         
         <para>A method may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 

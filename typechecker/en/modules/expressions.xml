@@ -134,9 +134,6 @@ TypeLiteral | MemberLiteral</programlisting>
     
     <para>All literal values are expressions of non-<literal>optional</literal> type.</para>
     
-    <comment><para>TODO: Should we have a literal syntax for version numbers, for use
-    in the module architecture, for example: <literal>@1.2.3BETA</literal>?</para></comment>
-    
     <!--section id="datetime">
         <title><literal>Date</literal> and <literal>Time</literal> literals</title>
         
@@ -387,6 +384,9 @@ if you prefer.";</programlisting>
         the <literal>${...}</literal> escape sequence, like we do for string 
         literals.</para></comment>
         
+        <comment><para>TODO: Quoted literals are used for version numbers and version 
+        constraints in the module architecture, for example: <literal>'1.2.3BETA'</literal>.</para></comment>
+    
     </section>
     
     <!--section>
@@ -2860,7 +2860,7 @@ DefaultAssignmentOperator</programlisting>
     </tgroup>
     </table>
     
-    <comment><para>TODO: Should we overload <literal>*</literal> for lists, like
+    <comment><para>TODO: Should we overload <literal>*</literal> for sequences, like
     in some other languages? It is nice to be able to do stuff like 
     <literal>"-"*n</literal>.</para></comment>
     
