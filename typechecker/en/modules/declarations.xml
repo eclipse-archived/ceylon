@@ -2446,25 +2446,25 @@ TypeConstraintList?
     
     doc "The |public| visibility modifier 
          annotation."
-    public static Visibility public() { 
+    public static oncePerElement Visibility public() { 
         return public 
     }
     
     doc "The |module| visibility modifier 
          annotation."
-    public static Visibility module() { 
+    public static oncePerElement Visibility module() { 
         return module
     }
     
     doc "The |package| visibility modifier 
          annotation."
-    public static Visibility package() { 
+    public static oncePerElement Visibility package() { 
         return package 
     }
     
     doc "The |private| visibility modifier 
          annotation."
-    public static Visibility private() { 
+    public static oncePerElement Visibility private() { 
         return private 
     }
     
