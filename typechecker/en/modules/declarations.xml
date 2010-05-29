@@ -90,6 +90,11 @@ public deprecated</programlisting>
         is loaded by the virtual machine. The return value of the invocation is made 
         available via reflection.</para>
         
+        <para>For example, the built-in <literal>doc</literal> annotation is declared
+        as follows:</para>
+        
+        <programlisting>public Description doc(String description) { ... }</programlisting>
+        
         <para>Unlike Java, the same annotation may appear multiple times for the same
         program element.</para>
         
@@ -2200,6 +2205,136 @@ TypeConstraintList?
     
     </section>
     
+   <section id="declaration modifiers">
+        <title>Declaration modifiers</title>
+        
+        <para>In Ceylon, all declaration modifiers are ordinary annotations.</para>
+        
+    <section id="compilerinstructions">
+        <title>Summary of compiler instructions</title>
+        
+        <para>The following annotations are compiler instructions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>public</literal>, <literal>module</literal>,
+                <literal>package</literal> and <literal>private</literal> 
+                determine the visibility of a declaration (by default, the 
+                declaration is visible only to statements and declarations 
+                that appear later inside the same block).</para>
+            </listitem>
+            <listitem>
+                <para><literal>abstract</literal> specifies that a class
+                cannot be instantiated<!--, or that a method or attribute of 
+                an abstract class must be implemented by all 
+                non-<literal>abstract</literal> subclasses-->.</para>
+            </listitem>
+            <listitem>
+                <para><literal>default</literal> specifies that a method, 
+                attribute, or member class may be overridden by subclasses.</para>
+            </listitem>
+            <listitem>
+                <para><literal>override</literal> indicates that a method,
+                attribute, or member type overrides a method, attribute, 
+                or member type defined by a supertype. The method, 
+                attribute, or member type being overridden must be abstract 
+                or annotated <literal>default</literal>, and must be visible 
+                to the element annotated <literal>override</literal>.</para>
+            </listitem>
+            <listitem>
+                <para><literal>static</literal> specifies that a method can 
+                be called without an instance of the type that defines the 
+                method.</para>
+            </listitem>
+            <listitem>
+                <para><literal>mutable</literal> specifies that an attribute
+                or local may be assigned, or that a class has assignable
+                attributes.</para>
+            </listitem>
+            <listitem>
+                <para><literal>optional</literal> specifies that an attribute,
+                local, parameter, or method return value may be null.</para>
+            </listitem>
+            <!--listitem>
+                <para><literal>final</literal> indicates that a class may not 
+                be extended, or that a method or attribute may not be 
+                overridden.</para>
+            </listitem-->
+            <listitem>
+                <para><literal>extension</literal> specifies that a method or
+                attribute getter is a converter, or that a class is a decorator.</para>
+            </listitem>
+            <listitem>
+                <para><literal>once</literal> indicates that a method or
+                attribute getter is executed at most once, and the resulting 
+                value is cached.</para>
+            </listitem>
+            <listitem>
+                <para><literal>deprecated</literal> indicates that a method, 
+                attribute or type is deprecated. It accepts an optional
+                <literal>String</literal> argument.</para>
+            </listitem>
+            <listitem>
+                <para><literal>volatile</literal> indicates a volatile simple 
+                attribute.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: We can minimize backtracking in the parser by 
+        making all these "annotations" be keywords. It lets the parser 
+        recognize a member declaration a little bit more easily. But on the
+        other hand it's a new special kind of thing.</para></comment>
+        
+        <comment><para>TODO: Should we require an <literal>abstract</literal>
+        modifier for abstract methods and attributes of abstract classes
+        like Java does?</para></comment>
+        
+        <comment><para>TODO: Should there be an <literal>annotation</literal>
+        modifier for static methods which can be used as annotations?</para></comment>
+        
+        <comment><para>TODO: Does Ceylon support <literal>static</literal> 
+        attributes? What about <literal>static</literal> member classes?</para></comment>
+            
+        <comment><para>TODO: Should we support toplevel methods instead of
+        methods annotated <literal>static</literal>?</para></comment>
+        
+        <para>The following annotation is a hint to the compiler that lets 
+        the compiler optimize compiled bytecode for non-64 bit architectures:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>small</literal> specifies that a value of type
+                <literal>Natural</literal>, <literal>Integer</literal> or
+                <literal>Float</literal> contains 32-bit values.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>By default, <literal>Natural</literal>, <literal>Integer</literal>
+        and <literal>Float</literal> are assumed to represent 64-bit values.</para>
+        
+    </section>
+       
+       <!--
+       <para>The following annotations are important to the Ceylon SDK.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>id</literal> specifies that an attribute should
+                be tested by the <literal>equals()</literal> method, and included
+                in the <literal>hash</literal>.</para>
+            </listitem>
+            <listitem>
+                <para><literal>transient</literal> specifies that an attribute 
+                is not included in the serialized form of the object.</para>
+            </listitem>
+            <listitem>
+                <para><literal>read</literal> and <literal>write</literal>
+                indicate methods or attributes that are protected from multithreaded
+                access using a reentrant read/write lock with deadlock detection.</para>
+            </listitem>
+        </itemizedlist>
+        -->
+        
     <section id="visibility">
         <title>Visibility and name resolution</title>
         
@@ -2281,6 +2416,60 @@ TypeConstraintList?
             </listitem>
         </itemizedlist>
         
+        <para>The class <literal>lang.Visibility</literal> defines the visibility 
+        levels:</para>
+        
+        <programlisting>public class Visibility {
+        
+    doc "A program element visible to all 
+         compilation units."
+    case public, 
+    
+    doc "A program element visible to  
+         compilation units in the same
+         module."
+    case module, 
+
+    doc "A program element visible to  
+         compilation units in the same
+         package."
+    case package, 
+
+    doc "A program element visible to  
+         the compilation unit in which
+         its is declared."
+    case private, 
+    
+    doc "A program element local to the
+         block in which it is defined."
+    case local; 
+    
+    doc "The |public| visibility modifier 
+         annotation."
+    public static Visibility public() { 
+        return public 
+    }
+    
+    doc "The |module| visibility modifier 
+         annotation."
+    public static Visibility module() { 
+        return module
+    }
+    
+    doc "The |package| visibility modifier 
+         annotation."
+    public static Visibility package() { 
+        return package 
+    }
+    
+    doc "The |private| visibility modifier 
+         annotation."
+    public static Visibility private() { 
+        return private 
+    }
+    
+}</programlisting>
+                
     </section>
     
     <section id="extensions">
@@ -2447,132 +2636,77 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         type that will receive the invocation or evaluation.</para>
         
     </section>
+    
+    <section id="annotationconstraints">
+        <title>Annotation constraints</title>
         
-    <section id="declaration modifiers">
-        <title>Declaration modifiers</title>
-        
-        <para>The following annotations are compiler instructions:</para>
+        <para>The following annotations constrain the occurence of an annotation. By default, 
+        an annotation may appear multiple times on any program element.</para>
         
         <itemizedlist>
             <listitem>
-                <para><literal>public</literal>, <literal>module</literal>,
-                <literal>package</literal> and <literal>private</literal> 
-                determine the visibility of a declaration (by default, the 
-                declaration is visible only to statements and declarations 
-                that appear later inside the same block).</para>
+                <para><literal>inherited</literal> specifies that the annotation is automatically 
+                inherited by subtypes.</para>
             </listitem>
             <listitem>
-                <para><literal>abstract</literal> specifies that a class
-                cannot be instantiated<!--, or that a method or attribute of 
-                an abstract class must be implemented by all 
-                non-<literal>abstract</literal> subclasses-->.</para>
+                <para><literal>oncePerElement</literal> specifies that the annotation may occur 
+                at most once per program element.</para>
             </listitem>
             <listitem>
-                <para><literal>default</literal> specifies that a method, 
-                attribute, or member class may be overridden by subclasses.</para>
+                <para><literal>oncePerClass</literal> specifies that the annotation may occur 
+                at most once in a class definition.</para>
             </listitem>
             <listitem>
-                <para><literal>override</literal> indicates that a method,
-                attribute, or member type overrides a method, attribute, 
-                or member type defined by a supertype. The method, 
-                attribute, or member type being overridden must be abstract 
-                or annotated <literal>default</literal>, and must be visible 
-                to the element annotated <literal>override</literal>.</para>
+                <para><literal>targetElements</literal> specifies the kinds of program element 
+                at which the annotation occurs.</para>
             </listitem>
             <listitem>
-                <para><literal>static</literal> specifies that a method can 
-                be called without an instance of the type that defines the 
-                method.</para>
+                <para><literal>targetType</literal> specifies that the annotation may only 
+                be applied to types that are assignable to the specified type.</para>
             </listitem>
             <listitem>
-                <para><literal>mutable</literal> specifies that an attribute
-                or local may be assigned, or that a class has assignable
-                attributes.</para>
+                <para><literal>targetMethodSignature</literal> specifies that the annotation 
+                may only be applied to methods whose signature conforms to the given 
+                constraints.</para>
             </listitem>
             <listitem>
-                <para><literal>optional</literal> specifies that an attribute,
-                local, parameter, or method return value may be null.</para>
-            </listitem>
-            <!--listitem>
-                <para><literal>final</literal> indicates that a class may not 
-                be extended, or that a method or attribute may not be 
-                overridden.</para>
-            </listitem-->
-            <listitem>
-                <para><literal>extension</literal> specifies that a method or
-                attribute getter is a converter, or that a class is a decorator.</para>
+                <para><literal>targetAttributeType</literal> specifies that the annotation may 
+                only be applied to attributes or locals that are assignable to the specified 
+                type.</para>
             </listitem>
             <listitem>
-                <para><literal>once</literal> indicates that a method or
-                attribute getter is executed at most once, and the resulting 
-                value is cached.</para>
-            </listitem>
-            <listitem>
-                <para><literal>deprecated</literal> indicates that a method, 
-                attribute or type is deprecated. It accepts an optional
-                <literal>String</literal> argument.</para>
-            </listitem>
-            <listitem>
-                <para><literal>volatile</literal> indicates a volatile simple 
-                attribute.</para>
+                <para><literal>targetAnnotation</literal> specifies that the may only be 
+                applied to program elements at which the specified annotation occurs.</para>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: We can minimize backtracking in the parser by 
-        making all these "annotations" be keywords. It lets the parser 
-        recognize a member declaration a little bit more easily. But on the
-        other hand it's a new special kind of thing.</para></comment>
-        
-        <comment><para>TODO: Should we require an <literal>abstract</literal>
-        modifier for abstract methods and attributes of abstract classes
-        like Java does?</para></comment>
-        
-        <comment><para>TODO: Should there be an <literal>annotation</literal>
-        modifier for static methods which can be used as annotations?</para></comment>
-        
-        <comment><para>TODO: Does Ceylon support <literal>static</literal> 
-        attributes? What about <literal>static</literal> member classes?</para></comment>
+        <para>These annotations are applied to the static method declaration, and the 
+        constraints are checked by the compiler.</para>
             
-        <comment><para>TODO: Should we support toplevel methods instead of
-        methods annotated <literal>static</literal>?</para></comment>
-
-        <para>The following annotation is a hint to the compiler that lets 
-        the compiler optimize compiled bytecode for non-64 bit architectures:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>small</literal> specifies that a value of type
-                <literal>Natural</literal>, <literal>Integer</literal> or
-                <literal>Float</literal> contains 32-bit values.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>By default, <literal>Natural</literal>, <literal>Integer</literal>
-        and <literal>Float</literal> are assumed to represent 64-bit values.</para>
-        
+    </section>
+    
+    <section id="documentationcompiler">
+        <title>Documentation compiler</title>
+    
         <para>The following annotations are instructions to the documentation
         compiler:</para>
         
         <itemizedlist>
             <listitem>
-                <para><literal>doc</literal> specifies the documentation for
-                a program element. It accepts a single <literal>String</literal>
-                argument.</para>
+                <para><literal>doc</literal> specifies the description of a 
+                program element.</para>
             </listitem>
             <listitem>
                 <para><literal>by</literal> specifies the authors of a program 
-                element. It accepts one or more <literal>String</literal>
-                arguments.</para>
+                element.</para>
             </listitem>
             <listitem>
-                <para><literal>see</literal> specifies a related member or type. 
-                It accepts a type or member literal and an optional 
-                <literal>String</literal> description.</para>
+                <para><literal>see</literal> specifies a related member or 
+                type.</para>
             </listitem>
             <listitem>
                 <para><literal>throws</literal> specifies a thrown exception
-                type. It accepts a type literal and an optional 
-                <literal>String</literal> description.</para>
+                type.</para>
             </listitem>
         </itemizedlist>
         
@@ -2581,30 +2715,36 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         annotations are parsed by the documentation compiler as Seam Text, a 
         simple ANTLR-based wiki text format.</para>
         
+        <para>These annotations are defined by the class 
+        <literal>doc.Documentation</literal>:</para>
+        
+        <programlisting>public class Documentation {
+        
+        public static Description doc(String description) { 
+            return Description(description) 
+        }
+        
+        public static Sequence&lt;Author&gt; by(String... authors) {
+            return from (String author in authors) select Author(author)
+        }
+        
+        public static RelatedElement see(ProgramElement pe, String description=null) {
+            return Related(pe, description)
+        }
+        
+        public static ThrownException see(Type type&lt;Exception&gt;, String description=null) {
+            return Related(type, description)
+        }        
+        
+}</programlisting>
+        
         <comment><para>TODO: should <literal>see</literal> and <literal>throws</literal>
         accept a list of <literal>Entry</literal> instead? For example:</para>
 <programlisting>see #Ruby->"if you are bored with Java" 
     #Ceylon->"if you want to get some real work done"</programlisting></comment>
         
-        <para>The following annotations are important to the Ceylon SDK.</para>
+     </section>
         
-        <itemizedlist>
-            <listitem>
-                <para><literal>id</literal> specifies that an attribute should
-                be tested by the <literal>equals()</literal> method, and included
-                in the <literal>hash</literal>.</para>
-            </listitem>
-            <listitem>
-                <para><literal>transient</literal> specifies that an attribute 
-                is not included in the serialized form of the object.</para>
-            </listitem>
-            <listitem>
-                <para><literal>read</literal> and <literal>write </literal>
-                indicate methods or attributes that are protected from multithreaded
-                access using a reentrant read/write lock with deadlock detection.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section>
+     </section>
 
 </chapter>
