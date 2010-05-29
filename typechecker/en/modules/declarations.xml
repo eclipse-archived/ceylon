@@ -93,7 +93,11 @@ public deprecated</programlisting>
         <para>For example, the built-in <literal>doc</literal> annotation is declared
         as follows:</para>
         
-        <programlisting>public Description doc(String description) { ... }</programlisting>
+        <programlisting>public Description doc(String description) { return Description(description) }</programlisting>
+        
+        <para>And its value may be obtained as like this:</para>
+        
+        <programlisting>Description description = (#Person).annotations(#Description).first;</programlisting>
         
         <para>Unlike Java, the same annotation may appear multiple times for the same
         program element.</para>
