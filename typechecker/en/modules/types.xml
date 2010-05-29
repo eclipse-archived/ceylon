@@ -1203,8 +1203,8 @@ while (people nonempty) {
  
 }]]></programlisting>
         
-        <para>Strings implement <literal>List</literal>, therefore they support the 
-        join, subrange, contains and lookup operators, among others.</para> 
+        <para>Strings implement <literal>Sequence</literal>, therefore they support 
+        the join, subrange, contains and lookup operators, among others.</para> 
                 
         <programlisting><![CDATA[public class String(Character... characters) 
         satisfies Comparable<String>, Sequence<Character>, Case<String> {
