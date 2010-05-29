@@ -43,7 +43,7 @@
     retain the overall model of Java, while getting rid of some of Java's warts,
     including: primitive types, arrays, constructors, getters/setters, checked 
     exceptions, raw types, wildcard types, thread synchronization, finalizers, 
-    serialization, unsafe typecasts, and the dreaded 
+    serialization, unsafe typecasts and reflection, and the dreaded 
     <literal>NullPointerException</literal>.</para> 
     
     <para>Ceylon has the following goals:</para>
