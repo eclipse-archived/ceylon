@@ -23,6 +23,14 @@
     <preface>
     <title>A work in progress</title>
     
+    <para>This project is the work of a team of people who are fans of Java,
+    and of the Java ecosystem, of its practical orientation, of its culture of 
+    openness, of its developer community, of its unashamed participation in the 
+    world of business computing, and of its strong commitment to portability. 
+    However, we recognize that the language and class libraries designed more 
+    than 15 years ago are now no longer the best foundation for solving today's
+    business computing problems.</para>
+    
     <para>The goal of this project is to make a clean break with the legacy 
     Java SE platform, by improving upon the Java language and class libraries, 
     and by providing a modular architecture for a new platform based upon the 
