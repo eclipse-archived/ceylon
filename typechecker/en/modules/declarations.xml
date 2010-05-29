@@ -2308,7 +2308,7 @@ TypeConstraintList?
         </itemizedlist>
         
         <para>An <literal>static</literal> extension method is called a <emphasis>converter</emphasis>. 
-        An extension class is called a <emphasis>decorator</emphasis>.</para>
+        An toplevel extension class is called a <emphasis>decorator</emphasis>.</para>
         
         <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
         
