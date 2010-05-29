@@ -6,7 +6,7 @@ options {
 }
 
 compilationUnit
-    : (importDeclaration)*
+    : importDeclaration*
       (annotations? typeDeclaration)+
       EOF
     ;
@@ -17,8 +17,16 @@ typeDeclaration
     | aliasDeclaration
     ;
 
-importDeclaration  
-    : 'import' importElement ('.' importElement)* ('.' '*' | 'alias' typeName)? ';'
+importDeclaration
+    : 'import' importPath ('.' '*' | alias)? ';'
+    ;
+
+importPath
+    : importElement ('.' importElement)*
+    ;
+
+alias
+    : 'alias' typeName
     ;
     
 importElement
@@ -419,7 +427,7 @@ member
     ;
 
 elementSelector
-    : '[' elementsSpec ']'
+    : '?'? '[' elementsSpec ']'
     ;
 
 elementsSpec
