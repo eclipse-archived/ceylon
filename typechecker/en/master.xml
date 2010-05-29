@@ -80,8 +80,9 @@
             familiar imperative mode,</para>
         </listitem>
         <listitem>
-            <para>to improve compile-time typesafety using special handling for 
-            null values,</para>
+            <para>to expand compile-time typesafety with compile-time safe handling 
+            of null values, compile-time safe typecasts, and a more typesafe approach 
+            to reflection,</para>
         </listitem>
         <listitem>
             <para>to provide language-level modularity, and</para>
