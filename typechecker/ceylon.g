@@ -57,9 +57,11 @@ inlineClassBody
 //instances have to be listed together at the top
 //of the class body
 declarationOrStatement
-    : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-      (declarationStart) => annotations? ( memberDeclaration | typeDeclaration | instance )
-    | statement
+    : (declarationStart) => declaration | statement
+    ;
+
+declaration
+    : annotations? ( memberDeclaration | typeDeclaration | instance )
     ;
 
 //special rule for syntactic predicates
