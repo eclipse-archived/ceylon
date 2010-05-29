@@ -663,9 +663,26 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <para>Arguments to required parameters must be specified by the caller. Arguments to 
         defaulted parameters and varargs may optionally be specified.</para>
         
-        <para>The type of an argument expression must be assignable to the declared type of 
-        the corresponding formal parameter. It must be a non-<literal>optional</literal> 
-        expression, unless the parameter is annotated <literal>optional</literal>.</para>
+        <para>For a required or defaulted formal parameter of declared type <literal>T</literal>, 
+        the type of the argument expression must be assignable to <literal>T</literal>. The
+        argument expression must be of non-<literal>optional</literal> type, unless the formal
+        parameter is annotated <literal>optional</literal>.</para>
+        
+        <para>For a varargs parameter of declared type <literal>T...</literal>, there may either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>be a single argument expression of non-<literal>optional</literal> type 
+                assignable to <literal>Iterable&lt;T&gt;</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>an arbitrary number of argument expressions of non-<literal>optional</literal> 
+                type assignable to <literal>T</literal>.</para>
+            </listitem>
+        </itemizedlist>
+         
+        <para>In the second case, the argument expressions are evaluated and collected into an 
+        instance of <literal>Iterable&lt;T&gt;</literal> when the invocation is executed.</para>
         
         <para>When an invocation is executed:</para>
         
@@ -808,11 +825,28 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         <para>Positional arguments must be listed in the same order as the corresponding formal
         parameters.</para>
-
-        <para>Required parameters are specified first, in the order in which they were declared, 
-        followed by defaulted parameters, in the order they were declared. If there are any 
-        remaining defaulted parameters, they are be assigned their default values. On the 
-        other hand, if any arguments are unassigned, they will be treated as varargs.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>First, an argument of each required parameters must be specified, in the 
+                order in which the required parameters were declared. There must be at least as 
+                many arguments as required formal parameters.</para>
+            </listitem>
+            <listitem>
+                <para>Next, arguments of the first arbitrary number of defaulted parameters may 
+                be specified, in the order in which the defaulted parameters were declared. If 
+                there are fewer arguments than defaulted parameters, the remaining defaulted 
+                parameters are assigned their default values.</para>
+            </listitem>
+            <listitem>
+                <para>Finally, if arguments to all defaulted parameters have been specified,
+                and if the method declares a varargs parameter, an arbitrary number of arguments 
+                to the varargs parameter may be specified. 
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For example:</para>
         
         <programlisting>(getProduct(id), 1)</programlisting>
                 
