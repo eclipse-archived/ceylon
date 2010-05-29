@@ -522,6 +522,9 @@ VarargsParam?
         
         <programlisting>(Float value, Integer min..max)</programlisting>
     
+        <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
+        assigned to within the body of the method or class.</para>
+        
     </section>
     
     <section id="extendedclass">
@@ -994,6 +997,8 @@ ClassBody</programlisting>
         current instance of the containing class (the instance upon which the constructor
         was invoked) without explicitly specifying the receiver.</para>
         
+        <comment><para>TODO: Does Ceylon support <literal>static</literal> member classes?</para></comment>
+            
         <para>A class may be declared inside the body of a method or attribute, in which case 
         the initializer may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier within the containing scope. 
@@ -1025,9 +1030,6 @@ ClassBody</programlisting>
         invoke any method or evaluate any attribute of the class. The usual restriction that a 
         declaration may only be used by code that appears later in the block containing the 
         declaration is relaxed.</para>
-        
-        <comment><para>TODO: should class initialization parameters be allowed to be
-        declared <literal>mutable</literal>?</para></comment>
         
         <comment><para>TODO: should class initialization parameters be allowed to be
         declared <literal>public/package/module</literal>, allowing a shortcut
@@ -1493,13 +1495,20 @@ public User(String username, Person person);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A method body may invoke, evaluate or assign members of the current instance 
-        of the class which defines the method (the instance upon which the method was 
-        invoked) without explicitly specifying the receiver.</para>
-        
-        <para>A method body of a member class may invoke, evaluate or assign members of the 
-        current instance of the containing class (the containing instance of the instance 
+        <para>A non-<literal>static</literal> method body may invoke, evaluate or assign 
+        members of the current instance of the class which defines the method (the instance 
         upon which the method was invoked) without explicitly specifying the receiver.</para>
+        
+        <para>A non-<literal>static</literal> method body of a member class may invoke, 
+        evaluate or assign members of the current instance of the containing class (the 
+        containing instance of the instance upon which the method was invoked) without 
+        explicitly specifying the receiver.</para>
+        
+        <para>A <literal>static</literal> method body may not refer to <literal>this</literal>
+        or <literal>super</literal>, since there is no current instance.</para>
+        
+        <comment><para>TODO: Should we support toplevel methods instead of
+        methods annotated <literal>static</literal>?</para></comment>
         
         <para>A method may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 
@@ -1677,14 +1686,18 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
         definitions may be overridden by subclasses.</para>
             
-        <para>An attribute body may invoke, evaluate or assign members of the current instance 
-        of the class which defines the method (the instance upon which the method was 
-        invoked) without explicitly specifying the receiver.</para>
+        <para>An attribute body may invoke, evaluate or assign members of the current 
+        instance of the class which defines the method (the instance upon which the 
+        attribute was invoked) without explicitly specifying the receiver.</para>
         
-        <para>An attribute body of a member class may invoke, evaluate or assign members of the 
-        current instance of the containing class (the containing instance of the instance 
-        upon which the method was invoked) without explicitly specifying the receiver.</para>
+        <para>An attribute body of a member class may invoke, evaluate or assign members 
+        of the current instance of the containing class (the containing instance of the 
+        instance upon which the attribute was invoked) without explicitly specifying the 
+        receiver.</para>
         
+        <comment><para>TODO: Does Ceylon support <literal>static</literal> attributes?
+        Perhaps just non-<literal>mutable</literal> <literal>static</literal> attributes?</para></comment>
+            
         <para>An attribute may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier withing the containing scope. 
@@ -2289,15 +2302,6 @@ TypeConstraintList?
         modifier for abstract methods and attributes of abstract classes
         like Java does?</para></comment>
         
-        <comment><para>TODO: Should there be an <literal>annotation</literal>
-        modifier for static methods which can be used as annotations?</para></comment>
-        
-        <comment><para>TODO: Does Ceylon support <literal>static</literal> 
-        attributes? What about <literal>static</literal> member classes?</para></comment>
-            
-        <comment><para>TODO: Should we support toplevel methods instead of
-        methods annotated <literal>static</literal>?</para></comment>
-        
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
         
@@ -2649,40 +2653,46 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
                 inherited by subtypes.</para>
             </listitem>
             <listitem>
-                <para><literal>oncePerElement</literal> specifies that the annotation may occur 
-                at most once per program element.</para>
-            </listitem>
-            <listitem>
-                <para><literal>oncePerClass</literal> specifies that the annotation may occur 
-                at most once in a class definition.</para>
+                <para><literal>multiplicity</literal> specifies that the annotation may occur at 
+                most once in a certain scope. Its accepts one or more arguments of type
+                <literal>Multiplicity</literal>: <literal>onceEachElement</literal>, 
+                <literal>onceEachType</literal>.</para>
             </listitem>
             <listitem>
                 <para><literal>ofElements</literal> specifies the kinds of program element 
-                at which the annotation occurs.</para>
+                at which the annotation occurs. Its accepts one or more arguments of type
+                <literal>Element</literal>: <literal>class</literal>, <literal>interface</literal>,
+                <literal>method</literal>, <literal>attribute</literal>, <literal>alias</literal>,
+                <literal>parameter</literal>.</para>
             </listitem>
             <listitem>
-                <para><literal>ofType</literal> specifies that the annotation may only 
-                be applied to types that are assignable to the specified type.</para>
+                <para><literal>withType</literal> specifies that the annotation may only 
+                be applied to types that are assignable to the specified type, to
+                attributes or parameters of the specified type, or to methods with the
+                specified return type.</para>
             </listitem>
             <listitem>
-                <para><literal>ofMethodSignature</literal> specifies that the annotation 
-                may only be applied to methods whose signature conforms to the given 
-                constraints.</para>
+                <para><literal>withParameterTypes</literal> specifies that the annotation 
+                may only be applied to methods with the specified formal parameter types.</para>
             </listitem>
             <listitem>
-                <para><literal>ofAttributeType</literal> specifies that the annotation may 
-                only be applied to attributes or locals that are assignable to the specified 
-                type.</para>
-            </listitem>
-            <listitem>
-                <para><literal>ofElementAnnotated</literal> specifies that the may only be 
+                <para><literal>withAnnotation</literal> specifies that the may only be 
                 applied to program elements at which the specified annotation occurs.</para>
             </listitem>
         </itemizedlist>
         
-        <para>These annotations are applied to the static method declaration, and the 
-        constraints are checked by the compiler.</para>
+        <para>These annotations are applied to the static method declaration that defines an
+        annotation, and the constraints are checked by the compiler.</para>
+        
+        <programlisting>public static ofElements(class) multiplicity(onceEachType)
+Entity entity(LockMode lockMode) { return Entity(lockMode) }</programlisting>
+
+        <programlisting>public static ofElements(attribute, parameter) withType(String) multiplicity(onceEachElement)
+Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
             
+        <comment><para>TODO: Should there be an <literal>annotation</literal>
+        modifier for static methods which can be used as annotations?</para></comment>
+        
     </section>
     
     <section id="documentationcompiler">
