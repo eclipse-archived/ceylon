@@ -2657,25 +2657,25 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
                 at most once in a class definition.</para>
             </listitem>
             <listitem>
-                <para><literal>targetElements</literal> specifies the kinds of program element 
+                <para><literal>ofElements</literal> specifies the kinds of program element 
                 at which the annotation occurs.</para>
             </listitem>
             <listitem>
-                <para><literal>targetType</literal> specifies that the annotation may only 
+                <para><literal>ofType</literal> specifies that the annotation may only 
                 be applied to types that are assignable to the specified type.</para>
             </listitem>
             <listitem>
-                <para><literal>targetMethodSignature</literal> specifies that the annotation 
+                <para><literal>ofMethodSignature</literal> specifies that the annotation 
                 may only be applied to methods whose signature conforms to the given 
                 constraints.</para>
             </listitem>
             <listitem>
-                <para><literal>targetAttributeType</literal> specifies that the annotation may 
+                <para><literal>ofAttributeType</literal> specifies that the annotation may 
                 only be applied to attributes or locals that are assignable to the specified 
                 type.</para>
             </listitem>
             <listitem>
-                <para><literal>targetAnnotation</literal> specifies that the may only be 
+                <para><literal>ofElementAnnotated</literal> specifies that the may only be 
                 applied to program elements at which the specified annotation occurs.</para>
             </listitem>
         </itemizedlist>
