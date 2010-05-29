@@ -1829,7 +1829,7 @@ DefaultAssignmentOperator</programlisting>
     
     <section id="operators">
     <title>Operators</title>
-            
+    
     <para>Operators are syntactic shorthand for more complex expressions
     involving method invocation or attribute access. Each operator is defined 
     for a particular type. There is no support for user-defined operator 
@@ -2194,7 +2194,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
             <entry>Member of <literal>X</literal></entry>
-            <entry><literal>List</literal> of member type</entry>
+            <entry><literal>Sequence</literal> of member type</entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
@@ -2652,8 +2652,8 @@ DefaultAssignmentOperator</programlisting>
             <entry>list lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>List&lt;Y&gt;</literal></entry>
+            <entry><literal>Sequence&lt;X&gt;</literal></entry>
+            <entry><literal>Sequence&lt;Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
@@ -2661,8 +2661,8 @@ DefaultAssignmentOperator</programlisting>
             <entry>set lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;Y&gt;</literal></entry>
+            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>Iterable&lt;Y&gt;</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Sequence subranges</emphasis></entry></row>
