@@ -882,7 +882,7 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         <programlisting>SpecifiedNamedArgument := ParameterName Specifier ";"</programlisting>
         
-        <programlisting>FunctionalNamedArgument := (Type | "void") ParameterName FormalParams Body</programlisting>
+        <programlisting>FunctionalNamedArgument := (Type | "void") ParameterName FormalParams Block</programlisting>
         
         <para>For example:</para>
         
