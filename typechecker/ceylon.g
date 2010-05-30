@@ -620,7 +620,11 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try' ( '(' resource (',' resource)* ')' )? block
+    : 'try' resourceList? block
+    ;
+
+resourceList
+    : '(' resource (',' resource)* ')'
     ;
 
 catchBlock
