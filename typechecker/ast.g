@@ -266,11 +266,17 @@ retryDirective
     -> ^(RETRY_STMT)
     ;
 
+abstractDeclaration
+    : abstractMemberDeclaration
+    //TODO: nested type declarations
+    ;
+
 abstractMemberDeclaration
     : ann=annotations?
       head=memberHeader
       param=memberParameters?
       -> ^(ABSTRACT_MEMBER_DECL $head $param? $ann?)
+      ';'
 /*    (((memberHeader memberParameters) => 
         (memberHeader memberParameters ';'
           -> ^(ABSTRACT_METHOD_DECL $ann? memberHeader memberParameters)))
@@ -323,9 +329,7 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    //TODO: this is not quite right, since type declarations
-    //      can have annotations
-    : '{'! (abstractMemberDeclaration | typeDeclaration)* '}'!
+    : '{'! abstractDeclaration* '}'!
     ;
 
 aliasDeclaration

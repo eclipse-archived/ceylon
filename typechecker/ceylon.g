@@ -131,10 +131,16 @@ retryDirective
     : 'retry'
     ;
 
+abstractDeclaration
+    : abstractMemberDeclaration
+    //TODO: nested type declarations
+    ;
+
 abstractMemberDeclaration
     : annotations?
       memberHeader
       memberParameters?
+      ';'
     ;
 
 memberDeclaration
@@ -169,9 +175,7 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    //TODO: why can't we have toplevel declarations 
-    //      inside an interface dec?
-    : '{' ( abstractMemberDeclaration ';' )* '}'
+    : '{' abstractDeclaration* '}'
     ;
 
 aliasDeclaration
