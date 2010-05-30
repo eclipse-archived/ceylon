@@ -704,9 +704,17 @@ arguments
     ;
     
 namedArgument
-    : parameterName specifier ';'! | memberDeclaration
+    : namedSpecifiedArgument | namedFunctionalArgument
     ;
-    
+
+namedFunctionalArgument
+    : formalParameterType parameterName formalParameters* block
+    ;
+
+namedSpecifiedArgument
+    : parameterName specifier ';'!
+    ;
+
 parameterName
     : LIDENTIFIER
     -> ^(ARG_NAME LIDENTIFIER)
@@ -779,7 +787,7 @@ formalParameters
 //matches "()", which can also be an 
 //argument list
 formalParameterStart
-    : '(' (declarationStart | ')')
+    : '(' ( declarationModifier | ( userAnnotation annotations? )? formalParameterType LIDENTIFIER | ')')
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
@@ -787,11 +795,13 @@ formalParameterStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    : annotations?
-      memberType ('...')? memberName
-      memberParameters? 
+    : annotations? formalParameterType parameterName formalParameters*
       ( '->' type parameterName | '..' parameterName )? 
       specifier?
+    ;
+
+formalParameterType
+    : (type|'void') '...'?
     ;
 
 // Control structures.
