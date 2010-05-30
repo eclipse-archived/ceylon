@@ -37,7 +37,7 @@ class Statements {
 	
 	class Foo {
 		void instanceMethod(Natural n) {}
-		static staticMethod(Float f) {}
+		static void staticMethod(Float f) {}
 		class Baz(String s) {}
 	}
 	

@@ -49,7 +49,7 @@ class Primaries {
 			mutable String name := name;
 			
 			void hello() {
-				log.info("Hello ${name}");
+				log.info("Hello ${name}$");
 			}
 			
 			static void helloWorld() {
