@@ -12,7 +12,7 @@ compilationUnit
     ;
     
 typeDeclaration
-    : classDeclaration 
+    : classDeclaration
     | interfaceDeclaration
     | aliasDeclaration
     ;
@@ -112,10 +112,23 @@ directiveStatement
     ;
 
 directive
-    : 'return' assignable? 
-    | 'throw' expression? 
-    | 'break' expression?
-    | 'retry'
+    : return | throw | break | retry
+    ;
+
+return
+    : 'return' assignable?
+    ;
+
+throw
+    : 'throw' expression?
+    ;
+
+break
+    : 'break' expression?
+    ;
+    
+retry
+    : 'retry'
     ;
 
 abstractMemberDeclaration
@@ -212,7 +225,7 @@ type
     : parameterizedType //( '[' parameterizedType? ']' )?
     | 'subtype'
     ;
-    
+
 parameterizedType
     : qualifiedTypeName typeArguments?
     ;
@@ -222,7 +235,8 @@ annotations
     ;
 
 annotation
-    : declarationModifier | userAnnotation
+    : declarationModifier
+    | userAnnotation
     ;
 
 //TODO: we could minimize backtracking by limiting the 
@@ -306,12 +320,16 @@ assignable
     | expression
     ;
 
+expression
+    : assignmentExpression
+    ;
+
 //Even though it looks like this is non-associative
 //assignment, it is actually right associative because
 //assignable can be an assignment
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
-expression 
+assignmentExpression 
     : implicationExpression 
       ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
     ;
@@ -482,7 +500,8 @@ functionalArgument
     ;
     
 functionalArgumentHeader
-    : parameterName | 'case' '(' expressions ')'
+    : parameterName
+    | 'case' '(' expressions ')'
     ;
 
 functionalArgumentDefinition
@@ -547,9 +566,17 @@ switchCaseElse
     ;
     
 cases 
-    : ('case' '(' caseCondition ')' block)+ ('else' block)?
+    : caseItem+ defaultCaseItem?
     ;
-    
+
+caseItem
+    : 'case' '(' caseCondition ')' block
+    ;
+
+defaultCaseItem
+    : 'else' block
+    ;
+
 caseCondition
     : expressions | isCaseCondition
     ;
@@ -575,9 +602,8 @@ containment
     ;
     
 doWhile
-    :   
-    ('do' ('(' doIterator ')')? block? )?  
-    'while' '(' condition ')' (block | ';')
+    : ('do' ('(' doIterator ')')? block? )?  
+      'while' '(' condition ')' (block | ';')
     ;
 
 //do iterators are allowed to be mutable and/or optional
@@ -586,10 +612,19 @@ doIterator
     ;
 
 tryCatchFinally
-    :
-    'try' ( '(' resource (',' resource)* ')' )? block
-    ('catch' '(' variable ')' block)*
-    ('finally' block)?
+    : tryBlock catchBlock* finallyBlock?
+    ;
+
+tryBlock
+    : 'try' ( '(' resource (',' resource)* ')' )? block
+    ;
+
+catchBlock
+    : 'catch' '(' variable ')' block
+    ;
+
+finallyBlock
+    : 'finally' block
     ;
     
 resource
