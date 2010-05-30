@@ -168,8 +168,7 @@ inlineClassBody
 //instances have to be listed together at the top
 //of the class body
 declarationOrStatement
-    : (declarationStart) => declaration
-    | statement
+    : (declarationStart) => declaration | statement
     ;
 
 //TODO: I don't understand why we need to distinguish
