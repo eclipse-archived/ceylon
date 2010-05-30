@@ -160,8 +160,8 @@ memberParameters
 //      a parExpression, just like we do for smalltalk
 //      style parameters below?
 memberDefinition
-    : memberParameters? block
-    | (specifier | initializer)? ';'
+    : memberParameters?
+      ( block | (specifier | initializer)? ';'! )
     ;
 
 interfaceDeclaration
@@ -431,8 +431,7 @@ base
     | parExpression
     | enumeration
     | specialValue
-    | memberName
-    | typeName
+    | nameAndTypeArguments
     //| inlineClassDeclaration
     ;
     
@@ -445,9 +444,12 @@ selector
     ;
 
 member
-    : ('.' | '^.' | '?.' | '*.') 
-      ( memberName | typeName ) 
-      ( (typeArguments '(') => typeArguments )?
+    : ('.' | '^.' | '?.' | '*.') nameAndTypeArguments
+    ;
+
+nameAndTypeArguments
+    : ( memberName | typeName ) 
+      ( ( typeArguments ('('|'{') ) => typeArguments )?
     ;
 
 elementSelector
@@ -465,7 +467,7 @@ arguments
     ;
     
 namedArgument
-    : 'assign'? parameterName memberDefinition
+    : parameterName memberDefinition
     ;
     
 parameterName
