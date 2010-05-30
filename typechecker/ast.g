@@ -306,7 +306,7 @@ memberParameters
 
 //TODO: should we allow the shortcut style of method
 //      definition for a method or getter which returns
-//      a parExpression, just like we do for smalltalk
+//      a parExpression, just like we do for Smalltalk
 //      style parameters below?
 memberDefinition
     : memberParameters?
@@ -704,7 +704,7 @@ arguments
     ;
     
 namedArgument
-    : parameterName memberDefinition
+    : parameterName specifier ';'! | memberDeclaration
     ;
     
 parameterName
