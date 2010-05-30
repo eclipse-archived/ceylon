@@ -275,8 +275,8 @@ abstractMemberDeclaration
     : ann=annotations?
       head=memberHeader
       param=memberParameters?
-      -> ^(ABSTRACT_MEMBER_DECL $head $param? $ann?)
       ';'
+      -> ^(ABSTRACT_MEMBER_DECL $head $param? $ann?)
 /*    (((memberHeader memberParameters) => 
         (memberHeader memberParameters ';'
           -> ^(ABSTRACT_METHOD_DECL $ann? memberHeader memberParameters)))
