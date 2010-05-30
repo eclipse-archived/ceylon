@@ -599,8 +599,7 @@ ConstructorReference</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A method reference may be used to define a method using <literal>=</literal>. 
-        The two methods must have exactly the same signature.</para>
+        <para>A method reference may be used to define a method using <literal>=</literal>.</para>
         
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
         
@@ -610,8 +609,7 @@ ConstructorReference</programlisting>
         
         <para>Method references may appear as an argument to a functional parameter, either as 
         a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
-        parameter invocation. The signature of the functonal parameter must match the signature 
-        of the method.</para>
+        parameter invocation.</para>
         
         <programlisting>//a method which accepts a method reference
 void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
@@ -644,6 +642,29 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     onUpdate = set person.name; 
 }</programlisting>
 
+        <para>A method reference is considered assignable to a method signature if:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the return type of the method reference is assignable to the return
+                type of the method signature,</para>
+            </listitem>
+            <listitem>
+                <para>the method reference is of non-<literal>optional</literal> return 
+                type, unless the method signature is of <literal>optional</literal> type, and</para>
+            </listitem>
+            <listitem>
+                <para> the method reference has exactly the same number of formal parameters, 
+                with the same types, as the method signature.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Thus, a method reference is covariant in its return type, and nonvariant in its
+        parameter types.</para>
+        
+        <comment><para>TODO: could we make method references contravariant in the parameter
+        types? If so, we should use the same rule for overriding.</para></comment>
+        
     </section>
 
     <section id="invocation">
