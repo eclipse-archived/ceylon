@@ -383,7 +383,7 @@ satisfiedTypes
 
 type
     : parameterizedType //( '[' parameterizedType? ']' )?
-    -> parameterizedType
+    -> parameterizedType //FIXME: unnecessary?
     | 'subtype'
     -> ^(TYPE 'subtype')
     ;

@@ -333,7 +333,7 @@ expression
 //assignable can be an assignment
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
-assignmentExpression 
+assignmentExpression
     : implicationExpression 
       ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
     ;
