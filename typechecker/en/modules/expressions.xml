@@ -635,7 +635,8 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         <para>Calling a method with multiple parameter lists is similar to the operation of
         "currying" in a functional programming language.</para>
         
-        <programlisting>Comparison order(Natural x, Natural y) = getOrder();</programlisting>
+        <programlisting>Comparison order(Natural x, Natural y) = getOrder();
+Comparison comp = order(1,-1);</programlisting>
         
         <para>Getter and setter method references are especially useful.</para>
         
