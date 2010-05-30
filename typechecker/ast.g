@@ -48,7 +48,7 @@ tokens {
     MEMBER_TYPE;
     METHOD_EXPR;
     NAMED_ARG;
-    UNNAMED_ARG;
+    VARARG;
     NIL;
     RET_STMT;
     STMT_LIST;
@@ -113,9 +113,12 @@ compilationUnit
      ;
        
 typeDeclaration
-    : classDeclaration -> ^(CLASS_DECL classDeclaration)
-    | interfaceDeclaration -> ^(INTERFACE_DECL interfaceDeclaration)
-    | aliasDeclaration -> ^(ALIAS_DECL aliasDeclaration)
+    : classDeclaration
+    -> ^(CLASS_DECL classDeclaration)
+    | interfaceDeclaration
+    -> ^(INTERFACE_DECL interfaceDeclaration)
+    | aliasDeclaration
+    -> ^(ALIAS_DECL aliasDeclaration)
     ;
 
 importDeclaration  
@@ -240,10 +243,27 @@ directiveStatement
     ;
 
 directive
-    : 'return' assignable? -> ^(RET_STMT assignable?)
-    | 'throw' expression? -> ^(THROW_STMT expression?)
-    | 'break' expression? -> ^(BREAK_STMT expression?)
-    | 'retry' -> ^(RETRY_STMT)
+    : return | throw | break | retry
+    ;
+
+return
+    : 'return' assignable?
+    -> ^(RET_STMT assignable?)
+    ;
+
+throw
+    : 'throw' expression?
+    -> ^(THROW_STMT expression?)
+    ;
+
+break
+    : 'break' expression?
+    -> ^(BREAK_STMT expression?)
+    ;
+    
+retry
+    : 'retry'
+    -> ^(RETRY_STMT)
     ;
 
 abstractMemberDeclaration
@@ -263,8 +283,10 @@ memberDeclaration
     ;
 
 memberHeader
-    : memberType memberName -> ^(MEMBER_TYPE memberType) memberName
-    | 'assign' memberName -> ^(ATTRIBUTE_SETTER memberName)
+    : memberType memberName
+    -> ^(MEMBER_TYPE memberType) memberName
+    | 'assign' memberName
+    -> ^(ATTRIBUTE_SETTER memberName)
     ;
 
 memberType
@@ -361,8 +383,10 @@ satisfiedTypes
     ;
 
 type
-    : parameterizedType -> parameterizedType
-    | 'subtype' -> ^(TYPE 'subtype')
+    : parameterizedType //( '[' parameterizedType? ']' )?
+    -> parameterizedType
+    | 'subtype'
+    -> ^(TYPE 'subtype')
     ;
 
 parameterizedType
@@ -376,7 +400,8 @@ annotations
     ;
 
 annotation
-    : declarationModifier -> ^(ANNOTATION declarationModifier) 
+    : declarationModifier
+    -> ^(ANNOTATION declarationModifier) 
     | userAnnotation
     ;
 
@@ -449,12 +474,18 @@ specifier
     ;
 
 literal
-    : NATURALLITERAL -> ^(INT_CST NATURALLITERAL)
-    | FLOATLITERAL -> ^(FLOAT_CST FLOATLITERAL)
-    | QUOTEDLITERAL -> ^(QUOTE_CST QUOTEDLITERAL)
-    | CHARLITERAL -> ^(CHAR_CST CHARLITERAL)
-    | SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
-    | stringExpr -> ^(STRING_CONCAT stringExpr)
+    : NATURALLITERAL
+    -> ^(INT_CST NATURALLITERAL)
+    | FLOATLITERAL
+    -> ^(FLOAT_CST FLOATLITERAL)
+    | QUOTEDLITERAL
+    -> ^(QUOTE_CST QUOTEDLITERAL)
+    | CHARLITERAL
+    -> ^(CHAR_CST CHARLITERAL)
+    | SIMPLESTRINGLITERAL
+    -> ^(STRING_CST SIMPLESTRINGLITERAL)
+    | stringExpr
+    -> ^(STRING_CONCAT stringExpr)
     ;   
 
 stringExpr
@@ -466,15 +497,18 @@ innerStringExpr
     ;
 
 leftStringLiteral
-    : LEFTSTRINGLITERAL -> ^(STRING_CST LEFTSTRINGLITERAL)
+    : LEFTSTRINGLITERAL
+    -> ^(STRING_CST LEFTSTRINGLITERAL)
     ;
     
 middleStringLiteral
-    : MIDDLESTRINGLITERAL -> ^(STRING_CST MIDDLESTRINGLITERAL)
+    : MIDDLESTRINGLITERAL
+    -> ^(STRING_CST MIDDLESTRINGLITERAL)
     ;
     
 rightStringLiteral
-    : RIGHTSTRINGLITERAL -> ^(STRING_CST RIGHTSTRINGLITERAL)
+    : RIGHTSTRINGLITERAL
+    -> ^(STRING_CST RIGHTSTRINGLITERAL)
     ;
     
 assignable 
@@ -573,12 +607,25 @@ exponentiationExpression
     ;
 
 unaryExpression 
-    : p=prefixOperator e=unaryExpression -> ^(PREFIX_EXPR $p $e)
+    : p=prefixOperator e=unaryExpression
+    -> ^(PREFIX_EXPR $p $e)
     | primary
     ;
 
 prefixOperator
     : '$' |'-' |'++' |'--' | '~'
+    ;
+
+specialValue
+    : 'this' 
+    | 'super' 
+    | 'null'
+    | 'none'
+    ;
+
+enumeration
+    : '{' assignables? '}'
+    -> ^(ENUM_LIST assignables?)
     ;
 
 primary
@@ -600,18 +647,18 @@ options {backtrack=true;}
 //    : base selector+ -> ^(SELECTOR_LIST base selector+)
 //    | base
     :    
-    base selector+ -> ^(EXPR base selector*)
+    base selector+
+    -> ^(EXPR base selector*)
     | base
     ;
 
 getterSetterMethodReference
-    :
-    ('set' prim -> ^(SET_EXPR prim))
-    | ('get' prim -> ^(GET_EXPR prim))
+    : 'set' prim -> ^(SET_EXPR prim)
+    | 'get' prim -> ^(GET_EXPR prim)
     ;
 
 postfixOperator
-    : ('--' | '++')
+    : '--' | '++'
     ;	
 
 base 
@@ -624,25 +671,14 @@ base
     //| inlineClassDeclaration
     ;
     
-
-specialValue
-    : 'this' 
-    | 'super' 
-    | 'null'
-    | 'none'
-    ;
-
-enumeration
-    : '{' assignables? '}'
-    -> ^(ENUM_LIST assignables?)
-    ;
-
 selector 
     : member
-    | arguments -> ^(CALL_EXPR arguments)
+    | arguments
+    -> ^(CALL_EXPR arguments)
     | functionalArgument
     | elementSelector
-    | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
+    | postfixOperator 
+    -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
 member
@@ -671,7 +707,8 @@ namedArgument
     ;
     
 parameterName
-    : LIDENTIFIER -> ^(ARG_NAME LIDENTIFIER)
+    : LIDENTIFIER
+    -> ^(ARG_NAME LIDENTIFIER)
     ;
 
 namedArguments
@@ -680,12 +717,12 @@ namedArguments
     ;
 
 varargArguments
-    : unnamedArg (','! unnamedArg)*
+    : vararg (','! vararg)*
     ;
 
-unnamedArg
+vararg
     : assignable
-    -> ^(UNNAMED_ARG assignable)
+    -> ^(VARARG assignable)
     ;
 
 assignables
@@ -697,14 +734,8 @@ parExpression
     ;
     
 positionalArguments
-    : '(' positionalArgumentList ')'
-   -> ^(ARG_LIST positionalArgumentList?)
-    ;
-
-positionalArgumentList
-    :
-    ( positionalArgument (',' positionalArgument)* )? 
-    -> positionalArgument*
+    : '(' ( positionalArgument (',' positionalArgument)* )? ')'
+    -> ^(ARG_LIST positionalArgument*)
     ;
 
 positionalArgument
@@ -720,8 +751,10 @@ functionalArgument
     ;
     
 functionalArgumentHeader
-    : parameterName -> ^(ARG_NAME parameterName)
-    | 'case' '(' expressions ')' -> ^(CASE_ITEM ^(EXPR_LIST expressions))
+    : parameterName
+    -> ^(ARG_NAME parameterName)
+    | 'case' '(' expressions ')'
+    -> ^(CASE_ITEM ^(EXPR_LIST expressions))
     ;
 
 functionalArgumentDefinition
@@ -737,7 +770,7 @@ specialArgument
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(ARG_LIST formalParameter*)
+    -> ^(ARG_LIST ^(FORMAL_PARAMETER formalParameter)*)
     ;
 
 //special rule for syntactic predicates
@@ -748,16 +781,11 @@ formalParameterStart
     : '(' (declarationStart | ')')
     ;
     
-formalParameter
-    :
-     formalParameter_ -> ^(FORMAL_PARAMETER formalParameter_)
-    ;
-    
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
-formalParameter_
+formalParameter
     : annotations?
       memberType ('...')? memberName
       memberParameters? 
@@ -784,11 +812,11 @@ nonemptyCondition
     
 isCondition
     : 'is' type ( (memberName '=') => memberName specifier 
-                 -> ^(IS_EXPR type memberName specifier)
-    | expression -> ^(IS_EXPR type expression))
-    
+    -> ^(IS_EXPR type memberName specifier)
+    | expression 
+    -> ^(IS_EXPR type expression))
     ;
-    
+
 controlStructure
     : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
     ;
@@ -805,22 +833,31 @@ switchCaseElse
     ;
     
 cases 
-    : caseItem+ ('else' block)?
-    -> caseItem+ ^(CASE_DEFAULT block)?
+    : caseItem+ defaultCaseItem?
     ;
     
 caseItem
-    : ('case' '(' caseCondition ')' block)
+    : 'case' '(' caseCondition ')' block
     -> ^(CASE_ITEM caseCondition block)
-    ;	 
-    
+    ;
+
+defaultCaseItem
+    : 'else' block
+    -> ^(CASE_DEFAULT block)
+    ;
+
 caseCondition
-    : expressions | ('is' type -> ^(IS_EXPR type))
+    : expressions | isCaseCondition
     ;
 
 expressions
     : expression (',' expression)*
     -> ^(EXPR_LIST expression+)
+    ;
+
+isCaseCondition
+    : 'is' type
+    -> ^(IS_EXPR type)
     ;
 
 forFail
@@ -851,24 +888,24 @@ doIterator
     ;
 
 tryCatchFinally
-    : tryStmt catchStmts finallyStmt
-    -> ^(TRY_CATCH_STMT tryStmt catchStmts? finallyStmt?)
+    : tryBlock catchBlock* finallyBlock?
+    -> ^(TRY_CATCH_STMT tryBlock catchBlock* finallyBlock?)
     ;
-  
-tryStmt
+
+tryBlock
     : 'try' ( '(' resource (',' resource)* ')' )? block
     -> ^(TRY_STMT ^(TRY_RESOURCE_LIST resource)? ^(TRY_BLOCK block))
     ;
-  
-catchStmts
-    : ('catch' '(' variable ')' block)*
-    -> ^(CATCH_STMT variable ^(CATCH_BLOCK block))*
+
+catchBlock
+    : 'catch' '(' variable ')' block
+    -> ^(CATCH_STMT variable ^(CATCH_BLOCK block))
     ;
-    
-finallyStmt
-    : ('finally' block)?
-    -> ^(FINALLY_BLOCK block)?
-    ;    	    
+
+finallyBlock
+    : 'finally' block
+    -> ^(FINALLY_BLOCK block)
+    ;
 
 resource
     : (variableStart) => variable specifier 
