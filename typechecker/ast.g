@@ -40,6 +40,7 @@ tokens {
     IMPORT_DECL;
     IMPORT_LIST;
     IMPORT_WILDCARD;
+    IMPORT_PATH;
     INIT_EXPR;
     INST_DECL;
     INTERFACE_DECL;
@@ -119,8 +120,13 @@ typeDeclaration
     ;
 
 importDeclaration  
-    : 'import' importElement ('.' importElement)* ('.' wildcard | alias)? ';'
+    : 'import' importPath ('.' wildcard | alias)? ';'
     -> ^(IMPORT_DECL ^(TYPE_NAME importElement*) wildcard? alias?)
+    ;
+    
+importPath
+    : importElement ('.' importElement)*
+    -> ^(IMPORT_PATH importElement*)
     ;
     
 wildcard
