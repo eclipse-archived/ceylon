@@ -34,6 +34,7 @@ tokens {
     EXPR;
     FINALLY_BLOCK;
     FORMAL_PARAMETER;
+    FORMAL_PARAMETER_LIST;
     IF_FALSE;
     IF_STMT;
     IF_TRUE;
@@ -774,7 +775,7 @@ specialArgument
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(ARG_LIST ^(FORMAL_PARAMETER formalParameter)*)
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
     ;
 
 //special rule for syntactic predicates
