@@ -1554,7 +1554,7 @@ public User(String username, Person person);</programlisting>
         <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
         
         <para>A method may declare multiple lists of parameters. Methods which declare
-        more than one parameter list return references to other methods.</para>
+        more than one parameter list return method references.</para>
         
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
     Comparison order(Natural x, Natural y) { return x&lt;=&gt;y; }
@@ -1563,6 +1563,10 @@ public User(String username, Person person);</programlisting>
 
         <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
         first parameter list. It may not refer to parameters of other parameter lists.</para>
+        
+        <para>A method reference returned by a method with multiple parameter lists 
+        must be assignable to the signature of the method multiple parameter lists, 
+        after eliminating the first parameter list.</para>
 
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
