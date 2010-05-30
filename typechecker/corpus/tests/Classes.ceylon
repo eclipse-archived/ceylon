@@ -42,7 +42,7 @@ class Classes {
 	entity table { name="someTable"; schema="someSchema"; }
 	class WithAnnotations {}
 	
-	class Extends extends Simple {}
+	class Extends extends Simple() {}
 	
 	class ExtendsWithInitParameters(Natural count, String description, Float tolerance) 
 			extends WithInitParameters(count, description) {

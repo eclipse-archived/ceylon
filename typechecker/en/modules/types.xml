@@ -232,7 +232,7 @@
         <literal>*&lt;, *&gt;, *&lt;=, *&gt;=, *==, *!=</literal>
         (spread comparison)--> <!--and <literal>*~></literal> (all in).--></para>
         
-        <programlisting><![CDATA[public interface Iterable<out X> extends Container {
+        <programlisting><![CDATA[public interface Iterable<out X> satisfies Container {
     
     doc "Produce an iterator."
     public Iterator<X> iterator();
@@ -1559,7 +1559,7 @@ while (people nonempty) {
         <programlisting><![CDATA[public class Time(Natural hours, Natural minutes, 
         optional Natural seconds=null, optional Natural milliseconds=null,
         optional Timezone timezone=null) 
-        extends Instant {
+        extends Instant() {
     public Natural hours = hours;
     public Natural minutes = minutes;
     public optional Natural seconds = seconds;
@@ -1569,7 +1569,7 @@ while (people nonempty) {
 }]]></programlisting>
         
         <programlisting><![CDATA[public class Date(Integer year, Natural month, Natural day) 
-        extends Instant {
+        extends Instant() {
     public Integer year = year;
     public Natural month = month;
     public Natural day = day;
@@ -1577,7 +1577,7 @@ while (people nonempty) {
 }]]></programlisting>
         
         <programlisting><![CDATA[public class Datetime(Time time, Date date) 
-        extends Instant {
+        extends Instant() {
     public Time time = time;
     public Date date = date;
     ...

@@ -54,7 +54,7 @@ class ControlStructures {
 		}
 		
 		class Foo {}
-		class Bar extends Foo {}
+		class Bar extends Foo() {}
 		
 		Foo foo = Bar();
 		
