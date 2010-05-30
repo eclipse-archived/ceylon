@@ -13,11 +13,11 @@ public class String(Character... characters)
     
     doc "Remove the given characters from the beginning 
          and end of the string.
-    public String strip(Character... whitespace = " \n\l\r\t") { throw }
+    public String strip(Sequence<Character> whitespace = " \n\l\r\t") { throw }
     
     doc "Collapse substrings of the given characters into
          single space characters."
-    public String normalize(Character... whitespace = " \n\l\r\t") { throw }
+    public String normalize(Sequence<Character> whitespace = " \n\l\r\t") { throw }
     
     doc "Join the given strings, using this string as
          a separator."
