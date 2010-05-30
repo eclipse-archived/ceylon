@@ -191,6 +191,11 @@ else {
             is visible only to statements and declarations that occur later in the same block, 
             and therefore it may not declare a visibility modifier.</para>
             
+            <comment><para>TODO: Note that Java does not let you define an interface inside
+            a method, so we should either add the same restriction, or figure out workaround.
+            Note that Java doesn't let you define a method inside a method either, but we can
+            wrap the nested method in an anonymous class.</para></comment>
+            
         </section>
         
     </section>
