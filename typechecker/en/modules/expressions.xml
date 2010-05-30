@@ -873,12 +873,12 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             or</para>
             </listitem>
             <listitem>
-            <para>only for functional parameters, specifies a formal parameter list and a block of 
-            code (an inline method declaration).</para>
+            <para>only for functional parameters, specifies the type, a formal parameter list and a 
+            block of code (an inline method declaration).</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>NamedArgument := ParameterName (Specifier ";" | FormalParams Body)</programlisting>
+        <programlisting>NamedArgument := ParameterName Specifier ";" | (Type | "void") ParameterName FormalParams Body</programlisting>
         
         <para>For example:</para>
         
@@ -889,13 +889,13 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
         
         <programlisting>{ 
     label = "Say Hello"; 
-    onClick() { 
+    void onClick() { 
         say("Hello"); 
     } 
 }</programlisting>
         
         <programlisting>{ 
-    by(X x, X y) { return x&lt;=&gt;y; } 
+    Comparison by(X x, X y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
         <comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment>

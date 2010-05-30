@@ -60,9 +60,9 @@ class Classes {
 	
 	class WithInstanceListAndFunctionalInitParameter(String name()) {
 		
-		case foo { name() { return "Foo" } }, 
-		case bar { name() { return "Bar" } },
-		case baz { name() { return "Baz" } };
+		case foo { String name() { return "Foo" } }, 
+		case bar { String name() { return "Bar" } },
+		case baz { String name() { return "Baz" } };
 		
 		String name() = name;
 		

@@ -58,7 +58,7 @@ class Methods {
 		}
 		
 		methodWithFunctionalParameter { 
-			method(String x) { log.info(x); } 
+			void method(String x) { log.info(x); } 
 		};
 		
 	}
@@ -124,7 +124,7 @@ class Methods {
 		
 		log.info { 
 			methodWithFunctionalParameter { 
-				method() { return "Hello"; } 
+				String method() { return "Hello"; } 
 			} 
 		};
 		
