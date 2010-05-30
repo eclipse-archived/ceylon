@@ -2279,11 +2279,6 @@ TypeConstraintList?
                 attribute getter is a converter, or that a class is a decorator.</para>
             </listitem>
             <listitem>
-                <para><literal>once</literal> indicates that a method or
-                attribute getter is executed at most once, and the resulting 
-                value is cached.</para>
-            </listitem>
-            <listitem>
                 <para><literal>deprecated</literal> indicates that a method, 
                 attribute or type is deprecated. It accepts an optional
                 <literal>String</literal> argument.</para>
@@ -2336,6 +2331,11 @@ TypeConstraintList?
                 <para><literal>read</literal> and <literal>write</literal>
                 indicate methods or attributes that are protected from multithreaded
                 access using a reentrant read/write lock with deadlock detection.</para>
+            </listitem>
+            <listitem>
+                <para><literal>once</literal> indicates that a method or
+                attribute getter is executed at most once, and the resulting 
+                value is cached.</para>
             </listitem>
         </itemizedlist>
         -->
