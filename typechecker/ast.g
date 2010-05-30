@@ -240,8 +240,7 @@ expressionStatement
     ;
 
 directiveStatement
-    : directive ';'?
-    -> directive
+    : directive ';'!
     ;
 
 directive
@@ -363,7 +362,6 @@ extendedType
 
 instance
     : 'case'! memberName arguments? (','|';'|'...')
-    // FIXME: Need to add ellipsis
     ;
     
 
