@@ -546,7 +546,7 @@ formalParameterStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    :  annotations? formalParameterType parameterName formalParameters*
+    : annotations? formalParameterType parameterName formalParameters*
       ( '->' type parameterName | '..' parameterName )? 
       specifier?
     ;
