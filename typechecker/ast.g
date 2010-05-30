@@ -1,4 +1,4 @@
-grammar ceylon;
+grammar ast;
 
 options {
     //backtrack=true;
@@ -62,7 +62,6 @@ tokens {
     TYPE_ARG_LIST;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
-    USER_ANNOTATION;
     VAR_DECL;
     WHILE_BLOCK;
     WHILE_STMT;
@@ -121,7 +120,7 @@ typeDeclaration
 
 importDeclaration  
     : 'import' importPath ('.' wildcard | alias)? ';'
-    -> ^(IMPORT_DECL ^(TYPE_NAME importElement*) wildcard? alias?)
+    -> ^(IMPORT_DECL importPath wildcard? alias?)
     ;
     
 importPath
@@ -209,12 +208,7 @@ typeDeclarationStart
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-declarationModifier 
-    : modifier
-    -> ^(DECL_MODIFIER modifier)
-    ;
-
-modifier
+declarationModifier
     : 'public'
     | 'module'
     | 'package'
@@ -382,7 +376,8 @@ annotations
     ;
 
 annotation
-    : declarationModifier | userAnnotation
+    : declarationModifier -> ^(ANNOTATION declarationModifier) 
+    | userAnnotation
     ;
 
 //TODO: we could minimize backtracking by limiting the 
@@ -390,7 +385,7 @@ annotation
 //the annotation
 userAnnotation 
     : annotationName annotationArguments?
-    -> ^(USER_ANNOTATION annotationName annotationArguments?)
+    -> ^(ANNOTATION annotationName annotationArguments?)
     ;
 
 annotationArguments
