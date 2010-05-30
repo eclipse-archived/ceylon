@@ -1562,7 +1562,9 @@ public User(String username, Person person);</programlisting>
 }</programlisting>
 
         <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
-        first parameter list. It may not refer to parameters of other parameter lists.</para>
+        first parameter list. It may not refer to parameters of other parameter lists.
+        Parameters declared by parameter lists other than the first parameter list are 
+        not considered visible inside the body of the method.</para>
         
         <para>A method reference returned by a method with multiple parameter lists 
         must be assignable to the signature of the method multiple parameter lists, 
