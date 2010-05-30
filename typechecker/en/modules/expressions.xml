@@ -608,7 +608,7 @@ ConstructorReference</programlisting>
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
         <para>Method references may appear as an argument to a functional parameter, either as 
-        a positional argument, or on the RHS of an <literal>=</literal> specifier in a named 
+        a positional argument, or as an argument specified using <literal>=</literal> in a named 
         parameter invocation.</para>
         
         <programlisting>//a method which accepts a method reference
@@ -642,25 +642,33 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     onUpdate = set person.name; 
 }</programlisting>
 
-        <para>A method reference is considered assignable to a method signature if:</para>
+        <para>Method references to not, strictly speaking, have types. However, the signature
+        of a method reference determines if it can appear to the right of the <literal>=</literal>
+        specifier in a method declaration, or as an argument to a functional parameter. In this
+        case we say the method reference <emphasis>conforms</emphasis> to the signature of the
+        method or functional parameter.</para>
+
+        <para>A method reference <emphasis>conforms</emphasis> to a method or functional parameter 
+        signature if:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the return type of the method reference is assignable to the return
-                type of the method signature,</para>
+                <para>the return type of the method reference is assignable to the declared
+                return type of the method or functional parameter,</para>
             </listitem>
             <listitem>
                 <para>the method reference is of non-<literal>optional</literal> return 
-                type, unless the method signature is of <literal>optional</literal> type, and</para>
+                type, unless the method or functional parameter is declared <literal>optional</literal> 
+                type, and</para>
             </listitem>
             <listitem>
                 <para> the method reference has exactly the same number of formal parameters, 
-                with the same types, as the method signature.</para>
+                with the same types, as the method or functional parameter.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Thus, a method reference is covariant in its return type, and nonvariant in its
-        parameter types.</para>
+        <para>Thus, method signatures are covariant in return type, and nonvariant in parameter 
+        types.</para>
         
         <comment><para>TODO: could we make method references contravariant in the parameter
         types? If so, we should use the same rule for overriding.</para></comment>

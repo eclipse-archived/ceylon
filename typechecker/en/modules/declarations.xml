@@ -1567,7 +1567,7 @@ public User(String username, Person person);</programlisting>
         not considered visible inside the body of the method.</para>
         
         <para>A method reference returned by a method with multiple parameter lists 
-        must be assignable to the signature of the method multiple parameter lists, 
+        must conform to the signature of the method with multiple parameter lists, 
         after eliminating the first parameter list.</para>
 
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
