@@ -84,7 +84,7 @@ class Arguments {
 		
 		logLazily() message ("hello");
 		logLazily() message { return "hello" };
-		logLazily { message() { return "hello" } };
+		logLazily { String message() { return "hello" } };
 	
 	
 		public static void from<Y>(Y initial, 
@@ -99,20 +99,20 @@ class Arguments {
 		}
 		
 		from(0) 
-			until (Y y) (y==10)
-			each (Y y) (y+2)
-			perform (Y y) { log.info(y); };
+			until (Natural y) (y==10)
+			each (Natural y) (y+2)
+			perform (Natural y) { log.info(y); };
 		
 		from(0) 
-			until(Y y) { return y==10 } 
-			each(Y y) { return y+2 } 
-			perform(Y y) { log.info(y); };
+			until(Natural y) { return y==10 } 
+			each(Natural y) { return y+2 } 
+			perform(Natural y) { log.info(y); };
 		
 		from {
 			initial=0; 
-			until(Y y) { return y==10 } 
-			each(Y y) { return y+2 } 
-			perform(Y y) { log.info(y); }
+			Boolean until(Natural y) { return y==10 } 
+			Natural each(Natural y) { return y+2 } 
+			void perform(Natural y) { log.info(y); }
 		};
 		
 		class Processor<X,Y>(Y process(X x)) {
@@ -129,7 +129,7 @@ class Arguments {
 		
 		Processor<Float,String> r = 
 			Processor<Float,String> { 
-				process (Float f) { return $f }
+				String process (Float f) { return $f }
 			};
 			
 	}
