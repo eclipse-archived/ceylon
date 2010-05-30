@@ -132,15 +132,11 @@ retryDirective
     ;
 
 abstractDeclaration
-    : abstractMemberDeclaration
-    //TODO: nested type declarations
+    : annotations? ( abstractMemberDeclaration | typeDeclaration )
     ;
 
 abstractMemberDeclaration
-    : annotations?
-      memberHeader
-      memberParameters?
-      ';'
+    : memberHeader memberParameters? ';'
     ;
 
 memberDeclaration
