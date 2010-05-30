@@ -174,9 +174,9 @@ else {
     order = Order.natural;
 }</programlisting>
 
-        <comment><para>Support specification of an abstract method implementation, like
+        <!--comment><para>TODO: Support specification of an abstract method implementation, like
         in a named parameter invocation, i.e. a simplified syntax where you can eliminate 
-        the return type of a method which was already declared.</para></comment>
+        the return type of a method which was already declared.</para></comment-->
 
         </section>
         
