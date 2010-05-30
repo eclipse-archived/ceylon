@@ -618,8 +618,8 @@ void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</p
 sort(names, reverseAlpha); //pass a reference to the method to another method</programlisting>
 
         <para>A method reference may be returned by a method with multiple parameter lists.
-        The reference must be to a method with the same signature, after removal of the first
-        parameter list.</para>
+        The reference must conform to the signature of the method, after elimination of the 
+        first parameter list.</para>
         
         <programlisting>//a method that returns a method reference
 Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
@@ -632,6 +632,9 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     }
 }</programlisting>
 
+        <para>Calling a method with multiple parameter lists is similar to the operation of
+        "currying" in a functional programming language.</para>
+        
         <programlisting>Comparison order(Natural x, Natural y) = getOrder();</programlisting>
         
         <para>Getter and setter method references are especially useful.</para>
