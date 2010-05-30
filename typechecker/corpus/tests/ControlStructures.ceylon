@@ -20,7 +20,7 @@ class ControlStructures {
 		}
 		
 		for (String first->String last in fullNames) {
-			log.info("${first} ${last}");
+			log.info("${first}$ ${last}$");
 		}
 		
 	}
@@ -94,7 +94,7 @@ class ControlStructures {
 			log.info("goodbye");
 		}
 		
-		do (mutable Integer n:=0) {
+		do (mutable Integer n:=0)
 		while (n<10) {
 			log.info(n);
 			n++;
@@ -151,7 +151,7 @@ class ControlStructures {
 		}
 		catch (Exception e) {
 			log.error(e);
-		};
+		}
 		
 		try {
 			doSomething();
@@ -235,7 +235,7 @@ class ControlStructures {
 			log.info("unknown color");
 		}
 		case (red, green, blue) {
-			log.info("known color ${cc}");
+			log.info("known color ${cc}$");
 		}
 		
 	}
