@@ -123,7 +123,7 @@ typeDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
     ;
 
-importDeclaration  
+importDeclaration
     : 'import' importPath ('.' wildcard | alias)? ';'
     -> ^(IMPORT_DECL importPath wildcard? alias?)
     ;
