@@ -878,7 +878,11 @@ Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
             </listitem>
         </itemizedlist>
         
-        <programlisting>NamedArgument := ParameterName Specifier ";" | (Type | "void") ParameterName FormalParams Body</programlisting>
+        <programlisting>NamedArgument := SpecifiedNamedArgument | FunctionalNamedArgument</programlisting>
+        
+        <programlisting>SpecifiedNamedArgument := ParameterName Specifier ";"</programlisting>
+        
+        <programlisting>FunctionalNamedArgument := (Type | "void") ParameterName FormalParams Body</programlisting>
         
         <para>For example:</para>
         
