@@ -117,7 +117,7 @@ Description doc(String description) {
         
         <programlisting>doc "the name" String name;</programlisting>
         
-        <para>And its value may be obtained as like this:</para>
+        <para>And its value may be obtained like this:</para>
         
         <programlisting>Description description = (#Person).annotations(#Description).first;</programlisting>
         
