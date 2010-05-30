@@ -546,6 +546,14 @@ VarargsParam?
         
         <programlisting>(Float value, Integer min..max)</programlisting>
     
+        <para>An formal parameter may be annotated <literal>optional</literal>, in which case the 
+        parameter accepts a <literal>null</literal> argument.</para>
+        
+        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the Ceylon 
+        compiler guarantees that the formal parameter never receives a <literal>null</literal> 
+        argument. Every argument of the formal parameter must be an expression of 
+        non-<literal>optional</literal> type.</para>
+
         <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
         assigned to within the body of the method or class.</para>
         
@@ -1105,19 +1113,6 @@ public class Person { ... }</programlisting>
 
     </section>
 
-        <section id="optionalinitializationparameters">
-            <title>Optional initialization parameters</title>
-            
-        <para>An initialization parameter may be annotated <literal>optional</literal>, in 
-        which case the parameter accepts a <literal>null</literal> argument.</para>
-        
-        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the 
-        Ceylon compiler guarantees that the initialization parameter never receives a 
-        <literal>null</literal> argument. Every argument of the formal parameter must be an 
-        expression of non-<literal>optional</literal> type.</para>
-        
-        </section>
-        
         <section id="classinheritance">
              <title>Class inheritance</title>
         
@@ -1578,12 +1573,6 @@ public User(String username, Person person);</programlisting>
 public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
 
-        <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
-        methods may declare defaulted parameters and functional parameters.</para>
-        
-        <section id="optionalparameterandreturntypes">
-            <title>Optional parameters and return types</title>
-            
         <para>A non-<literal>void</literal> method may be annotated <literal>optional</literal>, 
         in which case the method may return a <literal>null</literal> value.</para>
         
@@ -1591,16 +1580,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         Ceylon compiler guarantees that the method never returns <literal>null</literal>.
         Every <literal>return</literal> directive must specify an expression of 
         non-<literal>optional</literal> type</para>
-        
-        <para>A formal parameter may be annotated <literal>optional</literal>, in which 
-        case the parameter accepts a <literal>null</literal> argument.</para>
-        
-        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the 
-        Ceylon compiler guarantees that the parameter never receives a <literal>null</literal> 
-        argument. Every argument of the formal parameter must be an expression of 
-        non-<literal>optional</literal> type.</para>
-        
-        </section>
+                
+        <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
+        methods may declare defaulted parameters and functional parameters.</para>
         
         <section id="overloadedmethods">
             <title>Overloaded methods</title>
@@ -1752,17 +1734,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         </para>
         -->
         
-        <comment><para>TODO: I would like to support <literal>def</literal> in place of the 
-        type for a block local attribute or local with an initializer or getter. For 
-        example:</para></comment>
-        
-        <programlisting>def names = List&lt;String&gt;();</programlisting>
-        <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
-        <programlisting>def count:=0;</programlisting>
-        
-        <section id="optionalattributes">
-            <title>Optional attributes</title>
-            
         <para>A simple attribute or attribute getter may be annotated <literal>optional</literal>,
         in which case the attribute may evaluate to <literal>null</literal>, and, if the
         attribute is also <literal>mutable</literal>, may have a null value assigned.</para>
@@ -1772,7 +1743,13 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         or have a null value assigned. Every assignment to the attribute must specify an
         expression of non-<literal>optional</literal> type.</para>
         
-        </section>
+        <comment><para>TODO: I would like to support <literal>def</literal> in place of the 
+        type for a block local attribute or local with an initializer or getter. For 
+        example:</para></comment>
+        
+        <programlisting>def names = List&lt;String&gt;();</programlisting>
+        <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
+        <programlisting>def count:=0;</programlisting>
         
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
