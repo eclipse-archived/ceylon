@@ -102,6 +102,7 @@ tokens {
     IS_EXPR;
     GET_EXPR;
     SET_EXPR;
+    //PRIMARY;
 }
 
 compilationUnit
@@ -630,6 +631,7 @@ enumeration
 primary
     : getterSetterMethodReference
     | prim
+    //-> ^(PRIMARY prim)
     ;	
     
 prim
@@ -645,7 +647,7 @@ options {backtrack=true;}
 // book seems to agree, but the above doesn't work.
 //    : base selector+ -> ^(SELECTOR_LIST base selector+)
 //    | base
-    :    
+    : //base selector* 
     base selector+
     -> ^(EXPR base selector*)
     | base
