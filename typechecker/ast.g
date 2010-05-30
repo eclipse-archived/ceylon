@@ -739,7 +739,7 @@ assignables
     ;
 
 parExpression 
-    : '(' assignable ')'
+    : '('! assignable ')'!
     ;
     
 positionalArguments
