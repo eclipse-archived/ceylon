@@ -466,7 +466,7 @@ VarargsParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* Type ParameterName FormalParams*</programlisting>
+        <programlisting>Param := Annotation* (Type|"void") ParameterName FormalParams*</programlisting>
         
         <para>A parameter with its own parameter list (or lists) is called a 
         <emphasis>functional parameter</emphasis>. Think of it as an abstract local method that 
