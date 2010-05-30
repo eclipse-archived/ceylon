@@ -92,10 +92,30 @@ public deprecated</programlisting>
         when the type is loaded by the virtual machine. The return value of the invocation 
         is made available via reflection.</para>
         
-        <para>For example, the built-in <literal>doc</literal> annotation is declared
-        as follows:</para>
+        <para>For example, the built-in <literal>doc</literal> annotation is declared as 
+        follows:</para>
         
-        <programlisting>public Description doc(String description) { return Description(description) }</programlisting>
+        <programlisting>public multiplicity(onceEachElement) 
+Description doc(String description) { 
+    return Description(description) 
+}</programlisting>
+        
+        <para>The annotation may be specified at a program element using any one of three 
+        forms.</para>
+        
+        <para>Using a positional parameter invocation of the <literal>static</literal> 
+        method:</para>
+        
+        <programlisting>doc("the name") String name;</programlisting>
+        
+        <para>Using a named parameter invocation of the <literal>static</literal> method:</para>
+        
+        <programlisting>doc {description="the name";} String name;</programlisting>
+        
+        <para>Or using the special abbreviated form for annotations with literal value
+        arguments:</para>
+        
+        <programlisting>doc "the name" String name;</programlisting>
         
         <para>And its value may be obtained as like this:</para>
         
