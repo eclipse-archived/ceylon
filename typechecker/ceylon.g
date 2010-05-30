@@ -80,7 +80,7 @@ typeDeclarationStart
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-declarationModifier 
+declarationModifier
     : 'public'
     | 'module'
     | 'package'
