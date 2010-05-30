@@ -240,7 +240,7 @@ expressionStatement
     ;
 
 directiveStatement
-    : directive ';'!
+    : directive (';'!)?
     ;
 
 directive
