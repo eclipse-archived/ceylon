@@ -7,7 +7,7 @@ public class Decimal(Whole value, small Integer scale)
     public extension class StringToDecimal(String string) {
     
         doc "Parse the string representation of a |Decimal| in the given radix"
-        public Decimal parseDecimal(small Natural radix=10) { return ... }
+        public Decimal parseDecimal(small Natural radix=10) { throw }
         
     }
 
