@@ -797,10 +797,6 @@ CLASS
     :   'class'
     ;
 
-DECORATOR
-    :   'decorator'
-    ;
-
 DO
     :   'do'
     ;
