@@ -898,8 +898,13 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try' ( '(' resource (',' resource)* ')' )? block
-    -> ^(TRY_STMT ^(TRY_RESOURCE_LIST resource)? ^(TRY_BLOCK block))
+    : 'try' resourceList? block
+    -> ^(TRY_STMT resourceList? ^(TRY_BLOCK block))
+    ;
+
+resourceList
+    : '(' resource (',' resource)* ')'
+    -> ^(TRY_RESOURCE_LIST resource+)
     ;
 
 catchBlock
