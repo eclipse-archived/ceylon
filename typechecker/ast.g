@@ -483,8 +483,8 @@ assignable
     ;
 
 expression
-    : expr
-    -> ^(EXPR expr)
+    : assignmentExpression
+    -> ^(EXPR assignmentExpression)
     ;
 
 //Even though it looks like this is non-associative
@@ -492,7 +492,7 @@ expression
 //assignable can be an assignment
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
-expr
+assignmentExpression
     : implicationExpression
       (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
     ;
