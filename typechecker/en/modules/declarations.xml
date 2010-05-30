@@ -813,6 +813,22 @@ ClassBody</programlisting>
             </listitem>
         </itemizedlist>
 
+        <para>A class may be annotated <literal>mutable</literal>. If a class is not 
+        annotated <literal>mutable</literal> it is called an <emphasis>immutable type</emphasis>, 
+        and it may not:</para> 
+        
+        <itemizedlist>
+            <listitem>
+                <para>declare or inherit <literal>mutable</literal> attributes,</para>
+            </listitem>
+            <listitem>
+                <para>extend a <literal>mutable</literal> superclass, or</para>
+            </listitem>
+            <listitem>
+                <para>implement an interface annotated <literal>mutable</literal>.</para>
+            </listitem>
+        </itemizedlist>
+    
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
         later in the same block. This rule is relaxed for certain declarations that occur 
@@ -830,27 +846,6 @@ ClassBody</programlisting>
             </listitem>
         </itemizedlist>
         
-    <section id="mutableandimmutableclasses">
-        <title>Mutable and immutable classes</title>
-        
-        <para>A class may be annotated <literal>mutable</literal>. If a class is not 
-        annotated <literal>mutable</literal> it is called an <emphasis>immutable type</emphasis>, 
-        and it may not:</para> 
-        
-        <itemizedlist>
-            <listitem>
-                <para>declare or inherit <literal>mutable</literal> attributes,</para>
-            </listitem>
-            <listitem>
-                <para>extend a <literal>mutable</literal> superclass, or</para>
-            </listitem>
-            <listitem>
-                <para>implement an interface annotated <literal>mutable</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section>
-    
     <section id="classinitializer">
         <title>Class initializer</title>
         
@@ -2250,10 +2245,7 @@ TypeConstraintList?
             <listitem>
                 <para><literal>override</literal> indicates that a method,
                 attribute, or member type overrides a method, attribute, 
-                or member type defined by a supertype. The method, 
-                attribute, or member type being overridden must be abstract 
-                or annotated <literal>default</literal>, and must be visible 
-                to the element annotated <literal>override</literal>.</para>
+                or member type defined by a supertype.</para>
             </listitem>
             <listitem>
                 <para><literal>static</literal> specifies that a method can 
