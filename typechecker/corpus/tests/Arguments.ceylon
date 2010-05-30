@@ -129,7 +129,7 @@ class Arguments {
 		
 		Processor<Float,String> r = 
 			Processor<Float,String> { 
-				process(Float f) { return $f } 
+				process (Float f) { return $f }
 			};
 			
 	}
