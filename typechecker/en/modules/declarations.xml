@@ -793,7 +793,7 @@ Interfaces?
 TypeConstraints?
 ClassBody</programlisting>
 
-        <programlisting>ClassBody := "{" Instances? DeclarationOrStatement* "}"</programlisting>
+        <programlisting>ClassBody := "{" Instances? (Declaration | Statement)* "}"</programlisting>
         
         <para>The body of a class contains:</para>
         
@@ -813,6 +813,8 @@ ClassBody</programlisting>
             </listitem>
         </itemizedlist>
 
+        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
+        
         <para>A class may be annotated <literal>mutable</literal>. If a class is not 
         annotated <literal>mutable</literal> it is called an <emphasis>immutable type</emphasis>, 
         and it may not:</para> 
@@ -1379,7 +1381,7 @@ Interfaces?
 TypeConstraints? 
 InterfaceBody</programlisting>
 
-        <programlisting>InterfaceBody := "{" ( AbstractMethod | AbstractAttribute )* "}"</programlisting>
+        <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
 
         <para>The body of an interface contains:</para>
         
@@ -1391,6 +1393,8 @@ InterfaceBody</programlisting>
                 <para>nested interface declarations.</para>
             </listitem>
         </itemizedlist>
+        
+        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | TypeDeclaration</programlisting>
 
         <para>Interface method and attribute declarations may not specify implementation.</para>
 

@@ -14,10 +14,8 @@
         by braces. Some blocks end in a control directive. The statements, local 
         specifiers and control structures are executed sequentially.</para>
 
-        <programlisting>Block := "{" DeclarationOrStatement* DirectiveStatement? "}"</programlisting>
+        <programlisting>Block := "{" (Declaration | Statement)* DirectiveStatement? "}"</programlisting>
         
-        <programlisting>DeclarationOrStatement := Declaration | Statement</programlisting>
-
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
         invocation of a method, an instantiation of a class, a control structure or a 
         control directive.</para>
@@ -183,13 +181,10 @@ else {
         <section id="nesteddeclarations">
             <title>Nested declarations</title>
         
-            <para>Blocks may contain declarations:</para>
-        
-            <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
-        
-            <para>A declaration that occurs in a block is a block local declaration&mdash;it 
-            is visible only to statements and declarations that occur later in the same block, 
-            and therefore it may not declare a visibility modifier.</para>
+            <para>Blocks may contain declarations. A declaration that occurs in a block is a 
+            block local declaration&mdash;it is visible only to statements and declarations 
+            that occur later in the same block, and therefore it may not declare a visibility 
+            modifier.</para>
             
             <comment><para>TODO: Note that Java does not let you define an interface inside
             a method, so we should either add the same restriction, or figure out workaround.
