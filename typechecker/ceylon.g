@@ -112,22 +112,22 @@ directiveStatement
     ;
 
 directive
-    : return | throw | break | retry
+    : returnDirective | throwDirective | breakDirective | retryDirective
     ;
 
-return
+returnDirective
     : 'return' assignable?
     ;
 
-throw
+throwDirective
     : 'throw' expression?
     ;
 
-break
+breakDirective
     : 'break' expression?
     ;
     
-retry
+retryDirective
     : 'retry'
     ;
 

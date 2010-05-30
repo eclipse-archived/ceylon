@@ -243,25 +243,25 @@ directiveStatement
     ;
 
 directive
-    : return | throw | break | retry
+    : returnDirective | throwDirective | breakDirective | retryDirective
     ;
 
-return
+returnDirective
     : 'return' assignable?
     -> ^(RET_STMT assignable?)
     ;
 
-throw
+throwDirective
     : 'throw' expression?
     -> ^(THROW_STMT expression?)
     ;
 
-break
+breakDirective
     : 'break' expression?
     -> ^(BREAK_STMT expression?)
     ;
     
-retry
+retryDirective
     : 'retry'
     -> ^(RETRY_STMT)
     ;
