@@ -1223,11 +1223,11 @@ while (people nonempty) {
     
     doc "Remove the given characters from the beginning 
          and end of the string.
-    public String strip(Character... whitespace = " \n\l\r\t") { return ... }
+    public String strip(Sequence<Character> whitespace = " \n\l\r\t") { return ... }
     
     doc "Collapse substrings of the given characters into
          single space characters."
-    public String normalize(Character... whitespace = " \n\l\r\t") { return ... }
+    public String normalize(Sequence<Character> whitespace = " \n\l\r\t") { return ... }
     
     doc "Join the given strings, using this string as
          a separator."
