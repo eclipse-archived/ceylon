@@ -481,6 +481,9 @@ if you prefer.";</programlisting>
         <title><literal>this</literal>, <literal>super</literal>, 
         <literal>null</literal> and <literal>none</literal></title>
         
+        <para>The type of the following special values depends upon
+        the context in which they appear.</para>
+        
         <programlisting>SpecialValue := "this" | "super" | "null" | "none"</programlisting>
         
         <para>The keyword <literal>null</literal> refers to a special
@@ -492,7 +495,7 @@ if you prefer.";</programlisting>
         <para>The keyword <literal>super</literal> refers to the
         current instance (the instance that is being invoked), and is 
         of the same type as the immediate superclass of the class. It 
-        is an expresion of non-<literal>optional</literal> type. Any 
+        is an expression of non-<literal>optional</literal> type. Any 
         invocation of this reference is processed by the method or 
         attribute defined or inherited by this superclass, bypassing 
         any method declaration that overrides the method on the current 
@@ -502,12 +505,12 @@ if you prefer.";</programlisting>
         instance, and is assignable to both the type of the current 
         class (the class which declares the method being invoked), and 
         to the special type <literal>subtype</literal>, representing 
-        the concrete type of the current instance. It is an expresion 
+        the concrete type of the current instance. It is an expression 
         of non-<literal>optional</literal> type.</para>
         
         <para>The keyword <literal>none</literal> refers to a special
         value that is assignable to <literal>Sequence</literal>. It is 
-        an expresion of non-<literal>optional</literal> type. This value 
+        an expression of non-<literal>optional</literal> type. This value 
         has no elements.</para>
         
     </section>
