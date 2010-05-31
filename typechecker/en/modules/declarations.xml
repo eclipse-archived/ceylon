@@ -1210,6 +1210,8 @@ class Customer(Name name, optional Organization org = null)
         <para>A class annotated <literal>abstract</literal> may not specify enumerated named
         instances.</para>
         
+        <para>A class with type parameters may not specify enumerated named instances.</para>
+        
         <programlisting>public class DayOfWeek {
     case sun,
     case mon, 
@@ -2006,7 +2008,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
         </section>
         
-        <section id="getterandsettermethods">
+        <!--section id="getterandsettermethods">
             <title>Getter and setter methods</title>
             
             <para>For each attribute, one or two methods exist implicitly:</para>
@@ -2029,12 +2031,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <programlisting>String name = get person.name();</programlisting>
             <programlisting>set person.name(newName);</programlisting>
             
-            <!--
-            <comment><para>TODO: spec out generated Java-style getters and setters, for interop 
-            with Java.</para></comment>
-            -->
         
-        </section>
+        </section-->
                 
     </section>
     
