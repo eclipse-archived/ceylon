@@ -173,11 +173,14 @@ declarationOrStatement
 //      methods from attributes at this stage. Why not
 //      do it later?
 declaration
-    : ann=annotations? 
+    : annotations? 
     ( 
-        membd=memberDeclaration -> ^(MEMBER_DECL $membd $ann?)
-      | typed=typeDeclaration -> ^(TYPE_DECL $typed $ann?)
-      | instd=instance -> ^(INST_DECL $instd $ann?)
+        memberDeclaration 
+      -> ^(MEMBER_DECL memberDeclaration annotations?)
+      | typeDeclaration 
+      -> ^(TYPE_DECL typeDeclaration annotations?)
+      | instance 
+      -> ^(INST_DECL instance annotations?)
     )
 /*    (((memberHeader memberParameters) => 
             (mem=memberDeclaration 
@@ -258,10 +261,12 @@ retryDirective
     ;
 
 abstractDeclaration
-    : ann=annotations? 
+    : annotations? 
     ( 
-        membd=abstractMemberDeclaration -> ^(ABSTRACT_MEMBER_DECL $membd $ann?)
-      | typed=typeDeclaration -> ^(TYPE_DECL $typed $ann?)
+        abstractMemberDeclaration 
+      -> ^(ABSTRACT_MEMBER_DECL abstractMemberDeclaration annotations?)
+      | typeDeclaration 
+      -> ^(TYPE_DECL typeDeclaration annotations?)
     )
 /*    (((memberHeader memberParameters) => 
         (memberHeader memberParameters ';'
