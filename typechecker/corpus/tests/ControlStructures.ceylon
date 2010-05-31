@@ -219,6 +219,19 @@ class ControlStructures {
 			log.info($m);
 		}
 		
+		Natural o = 2;
+		switch(m) {
+		    case (0) {
+			    log.info("Zero");
+		    }
+		    case (1) {
+			    log.info("Unity");
+		    }
+		    else {
+			    log.info($m);
+		    }
+		}
+		
 		class Color { case red, case green, case blue; }
 		Color c = red;
 		switch(c)
