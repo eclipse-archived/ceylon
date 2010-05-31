@@ -207,8 +207,6 @@ else {
         functors do not. Therefore, some tasks may be accomplished only with control 
         structures.--></para>
 
-        <para>Control structures are not considered to be expressions in Ceylon.</para>
-        
         <para>Ceylon provides the following control structures:</para>
         
         <itemizedlist>
@@ -236,49 +234,82 @@ else {
                 
         <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
        
+        <para>Control structures are not considered to be expressions, and therefore do not evaluate
+        to a value.</para>
+        
+        <comment><para>TODO: Should we support, like Java, single-statement control structure bodies 
+        without the braces.</para></comment>
+        
+        <section>
+            <title>Control structure variables</title>
+       
         <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
         that is available inside the control structure body.</para>
         
         <programlisting>Variable := Type MemberName</programlisting>
         
+        <para>A variable is treated as a formal parameter of the control structure body.</para>
+        
         <comment><para>TODO: Should we say that type declarations in control structure variables are 
         optional? The compiler should be able to infer the type of the variable.</para></comment>
         
+        </section>
+        
+        <section>
+            <title>Control structure conditions</title>
+            
         <para>Some control structures expect conditions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a <emphasis>boolean condition</emphasis> is satisfied when a boolean expression
+                evaluates to <literal>true</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>an <emphasis>existence condition</emphasis> is satisfied when an expression of
+                <literal>optional</literal> type evaluates to any value other than 
+                <literal>null</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
+                of type <literal>optional Container</literal> evaluates to a non-empty instance,
+                and</para>
+            </listitem>
+            <listitem>
+                <para>a <emphasis>subtype condition</emphasis> is satisfied when an expression
+                evaluates to an instance of a specified type.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
        
         <programlisting>ExistsCondition := ("exists" | "nonempty") (Variable Specifier | Expression)</programlisting>
        
         <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
+        
+        <para>Any condition contains an expression. In the case of existence, nonemptiness and 
+        subtype conditions, the expression may be a specifier of a variable declaration.</para>
 
-        <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
+        <para>The type of a condition expression depend upon whether the <literal>exists</literal>, 
         <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
 
         <itemizedlist>
             <listitem>
                 <para>If no <literal>is</literal>, <literal>exists</literal> or <literal>nonempty</literal> 
-                modifier appears, the condition must be an expression of type <literal>Boolean</literal>. 
-                The condition is satisfied if the expression evaluates to <literal>true</literal> at 
-                runtime.</para>
+                modifier appears, the condition must be an expression of non-<literal>optional</literal> 
+                type <literal>Boolean</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the <literal>is</literal> modifier appears, the condition must be an 
-                expression or variable of type <literal>Object</literal>. The condition is 
-                satisfied if the expression or specifier evaluates to an instance of the specified 
-                type at runtime.</para>
+                <para>If the <literal>is</literal> modifier appears, the condition expression must 
+                be of non-<literal>optional</literal> type.</para>
             </listitem>
             <listitem>
-                <para>If the <literal>exists</literal> modifier appears, the condition must be an 
-                expression or variable of type <literal>optional Object</literal>. The
-                condition is satisfied if the expression or specifier evaluates to a non-null value
-                at runtime.</para>
+                <para>If the <literal>exists</literal> modifier appears, the condition expression 
+                must be of <literal>optional</literal> type.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
-                expression or variable of type <literal>optional Container</literal>. The
-                condition is satisfied if the expression or specifier evaluates to a non-null value
-                at runtime, and if the resulting <literal>Container</literal> is non-empty.</para>
+                expression of type <literal>optional Container</literal>.</para>
             </listitem>
         </itemizedlist>
 
@@ -286,14 +317,15 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>if the condition is a variable, the variable may be declared without the 
-                <literal>optional</literal> annotation, even though the specifier expression is of 
-                <literal>optional</literal> type, or</para>
+                <para>If the condition declares a variable, the variable may be declared without 
+                the <literal>optional</literal> annotation, even though the specifier expression 
+                is of <literal>optional</literal> type. The type of the specifier expression must
+                be assignable to the declared type of the variable.</para>
             </listitem>
             <listitem>
-                <para>if the condition is a local, the local will be treated by the compiler 
-                as having non-<literal>optional</literal> type inside the block that follows 
-                immediately, relaxing the usual compile-time restrictions upon 
+                <para>If the condition expression is a local, the local will be treated by the 
+                compiler as having non-<literal>optional</literal> type inside the block that 
+                follows immediately, relaxing the usual compile-time restrictions upon 
                 <literal>optional</literal> types.</para>
             </listitem>
         </itemizedlist>
@@ -302,17 +334,42 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>if the condition is a variable, the variable may be declared with the given 
-                type, even though the specifier expression is not of that type, or</para>
+                <para>If the condition declares a variable, the specifier expression type need 
+                not be assignable to the declared type of the variable, or</para>
             </listitem>
             <listitem>
                 <para>if the condition is a local, the local will be treated by the compiler 
-                as having the given type inside the block that follows immediately.</para>
+                as having the specified type inside the block that follows immediately.</para>
             </listitem>
         </itemizedlist>
                         
-        <comment><para>TODO: Should we support, like Java, single-statement control structure bodies 
-        without the braces.</para></comment>
+        <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
+        <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
+
+        <itemizedlist>
+            <listitem>
+                <para>If no <literal>is</literal>, <literal>exists</literal> or <literal>nonempty</literal> 
+                modifier appears, the condition is satisfied if the expression evaluates to 
+                <literal>true</literal> when the control structure is executed.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>is</literal> modifier appears, the condition is satisfied 
+                if the expression evaluates to an instance of the specified type when the control 
+                structure is executed.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
+                if the expression evaluates to a non-null value when the control structure is 
+                executed.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>nonempty</literal> modifier appears, the condition is satisfied 
+                if the expression evaluates to a non-null, non-empty instance of <literal>Container</literal>
+                when the control structure is executed.</para>
+            </listitem>
+        </itemizedlist>
+
+        </section>
         
         <section id="ifelse">
             <title><literal>if/else</literal></title>
@@ -328,8 +385,9 @@ else {
 "if" "(" Condition ("," Condition)* ")"
 ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting-->
 
-            <para>If the condition is satisfied, the first block is executed. Otherwise, the 
-            second block is executed, if it is defined.</para>
+            <para>When the construct is executed, the condition is evaluated. If the condition is 
+            satisfied, the <literal>if</literal> block is executed. Otherwise, the <literal>else</literal> 
+            block, if any, is executed.</para>
 
             <!--para>Condition expressions may refer to any local variable defined by a previous
             condition.</para-->
@@ -379,38 +437,37 @@ else {
 ("case" "(" Case ")" Block)+ 
 ("else" Block)?</programlisting>
 
-            <para>The switch expression may be of any type. The case values must be 
-            expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
-            is the switch expression type, or an explicit <literal>null</literal>.</para>
+            <para>The <literal>switch</literal> expression may be of any type. The <literal>case</literal> 
+            values must be expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
+            is the <literal>switch</literal> expression type, or an explicit <literal>null</literal>.
+            Alternatively, the <literal>case</literal>s may be subtype conditions.</para>
 
             <programlisting>Case := Expression ("," Expression)* | "is" Type | "null"</programlisting>
 
-            <para>If a <literal>case (null)</literal> is defined, the switch expression must be 
-            of <literal>optional</literal> type.</para>
+            <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
+            must be of <literal>optional</literal> type.</para>
 
-            <para>If the switch expression is of <literal>optional</literal> type, there must be 
-            an explicit <literal>case (null)</literal> defined. </para> 
+            <para>If the <literal>switch</literal> expression is of <literal>optional</literal> type, 
+            there must be an explicit <literal>case (null)</literal>.</para> 
             
-            <para>If no <literal>else</literal> block is defined, the switch expression must be 
-            of type <literal>Selector</literal>, and all enumerated <literal>case</literal>s of 
-            the class must be explicitly listed.</para>
+            <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
+            expression type must be a class with a closed enumerated instance list, and all enumerated 
+            <literal>case</literal>s of the class must be explicitly listed.</para>
             
-            <para>If the switch expression is of type <literal>Selector</literal>, and all 
-            enumerated <literal>case</literal>s of the class are explicitly listed, no 
-            <literal>else</literal> block may be specified.</para>
+            <para>If the <literal>switch</literal> expression type is a class with a closed enumerated 
+            instance list, and all enumerated <literal>case</literal>s of the class are explicitly 
+            listed, no <literal>else</literal> block may be specified.</para>
             
-            <para>When the construct is executed, the switch expression value is tested 
-            against the case values using <literal>Case.test()</literal>, and the case 
-            block for the first case value that tests true is executed. If no case value 
-            tests true, and an <literal>else</literal> block is defined, the <literal>else</literal> 
-            block is executed.</para>
+            <para>When the construct is executed, the <literal>switch</literal> expression is evaluated, 
+            and the resulting value is tested against the <literal>case</literal> values using 
+            <literal>Case.test()</literal>. The <literal>case</literal> block for the first 
+            <literal>case</literal> value that tests <literal>true</literal> is executed. If no 
+            <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
+            block is defined, the <literal>else</literal> block is executed.</para>
             
-            <para>For an <literal>is</literal> type case, if the switch expression is a local, 
-            then the local will be treated by the compiler as having the specified type inside 
-            the <literal>case</literal> block.</para>
-            
-            <comment><para>TODO: support <literal>catch</literal>-style syntax instead of 
-            <literal>case (is ...)</literal>?</para></comment>
+            <para>For a subtype condition <literal>case</literal>, if the <literal>switch</literal> 
+            expression is a local, then the local will be treated by the compiler as having the specified 
+            type inside the <literal>case</literal> block.</para>
             
             <para>For example:</para>
 
@@ -448,6 +505,9 @@ else {
     }
 }</programlisting>
 
+            <comment><para>TODO: should it be a <literal>catch</literal>-style syntax 
+            instead of <literal>case (is ...)</literal>?</para></comment>
+            
         </section>
         
         <section id="forfail">
