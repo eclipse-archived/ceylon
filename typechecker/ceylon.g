@@ -251,7 +251,7 @@ annotationArguments
     ;
 
 reflectedLiteral 
-    : '#' ( memberName | (type ( '.' memberName )? ) )
+    : '#' ( memberName | (parameterizedType ( '.' memberName )? ) )
     ;
 
 qualifiedTypeName
