@@ -908,11 +908,11 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try' resourceList? block
-    -> ^(TRY_STMT resourceList? ^(TRY_BLOCK block))
+    : 'try' resources? block
+    -> ^(TRY_STMT resources? ^(TRY_BLOCK block))
     ;
 
-resourceList
+resources
     : '(' resource (',' resource)* ')'
     -> ^(TRY_RESOURCE_LIST resource+)
     ;
@@ -928,7 +928,7 @@ finallyBlock
     ;
 
 resource
-    : (variableStart) => variable specifier 
+    : (variableStart) => variable specifier
     | expression
     ;
 
