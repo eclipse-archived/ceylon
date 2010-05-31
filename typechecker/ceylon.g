@@ -276,11 +276,11 @@ typeParameters
     ;
 
 typeParameter
-    : variance typeName
+    : variance? typeName
     ;
 
-variance 
-    : ('in'|'out')?
+variance
+    : 'in' | 'out'
     ;
     
 //for locals and attributes
@@ -322,7 +322,7 @@ expression
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
 assignmentExpression
-    : implicationExpression 
+    : implicationExpression
       ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') expression )?
     ;
     
