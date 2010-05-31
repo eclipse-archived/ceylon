@@ -116,7 +116,7 @@ directive
     ;
 
 returnDirective
-    : 'return' assignable?
+    : 'return' expression?
     ;
 
 throwDirective
@@ -288,12 +288,12 @@ variance
     
 //for locals and attributes
 initializer
-    : ':=' assignable
+    : ':=' expression
     ;
 
 //for parameters
 specifier
-    : '=' assignable
+    : '=' expression
     ;
 
 literal
@@ -315,11 +315,6 @@ stringLiteral
       block
     ;*/
 
-assignable 
-    : reflectedLiteral
-    | expression
-    ;
-
 expression
     : assignmentExpression
     ;
@@ -331,7 +326,7 @@ expression
 //can be used to init locals
 assignmentExpression
     : implicationExpression 
-      ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') assignable )?
+      ( ('=' | ':=' | '.=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '&&=' | '||=' | '?=') expression )?
     ;
     
 implicationExpression
@@ -363,6 +358,7 @@ equalityExpression
 comparisonExpression
     : defaultExpression
       (('<=>'|'<'|'>'|'<='|'>='|'in'|'is') defaultExpression)?
+    | reflectedLiteral //needs to be here since it can contain type args
     ;
 
 //should we reverse the precedence order 
@@ -413,7 +409,7 @@ specialValue
     ;
 
 enumeration
-    : '{' assignables? '}'
+    : '{' expressions? '}'
     //a special List literal syntax?
     //| '[' assignables? ']' 
     ;
@@ -483,15 +479,11 @@ namedArguments
     ;
 
 varargArguments
-    : assignables
-    ;
-
-assignables
-    : assignable (',' assignable)*
+    : expressions
     ;
 
 parExpression 
-    : '(' assignable ')'
+    : '(' expression ')'
     ;
     
 positionalArguments
@@ -500,7 +492,7 @@ positionalArguments
     
 positionalArgument
     : (variableStart) => specialArgument
-    | assignable
+    | expression
     ;
 
 //a smalltalk-style parameter to a positional parameter

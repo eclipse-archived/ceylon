@@ -247,8 +247,8 @@ directive
     ;
 
 returnDirective
-    : 'return' assignable?
-    -> ^(RET_STMT assignable?)
+    : 'return' expression?
+    -> ^(RET_STMT expression?)
     ;
 
 throwDirective
@@ -459,14 +459,14 @@ variance
     
 //for locals and attributes
 initializer
-    : ':=' assignable
-    -> ^(INIT_EXPR assignable)
+    : ':=' expression
+    -> ^(INIT_EXPR expression)
     ;
 
 //for parameters
 specifier
-    : '=' assignable
-    -> ^(INIT_EXPR assignable)
+    : '=' expression
+    -> ^(INIT_EXPR expression)
     ;
 
 literal
@@ -506,11 +506,6 @@ rightStringLiteral
     : RIGHTSTRINGLITERAL
     -> ^(STRING_CST RIGHTSTRINGLITERAL)
     ;
-    
-assignable 
-    : reflectedLiteral
-    | expression
-    ;
 
 expression
     : assignmentExpression
@@ -524,7 +519,7 @@ expression
 //can be used to init locals
 assignmentExpression
     : implicationExpression
-      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
+      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
     ;
 
 implicationExpression
@@ -556,6 +551,7 @@ equalityExpression
 comparisonExpression
     : defaultExpression
       (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) defaultExpression)?
+    | reflectedLiteral //needs to be here since it can contain type args
     ;
 
 //should we reverse the precedence order 
@@ -578,7 +574,7 @@ existenceEmptinessExpression
     : e=rangeIntervalEntryExpression
        (('exists' -> ^(EXISTS_EXPR $e))
         | ('nonempty' -> ^(NONEMPTY_EXPR $e)) )?
-     -> $e	
+     -> $e
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -620,8 +616,8 @@ specialValue
     ;
 
 enumeration
-    : '{' assignables? '}'
-    -> ^(ENUM_LIST assignables?)
+    : '{' expressions? '}'
+    -> ^(ENUM_LIST expressions?)
     ;
 
 primary
@@ -728,16 +724,12 @@ varargArguments
     ;
 
 vararg
-    : assignable
-    -> ^(VARARG assignable)
-    ;
-
-assignables
-    : assignable (','! assignable)*
+    : expression
+    -> ^(VARARG expression)
     ;
 
 parExpression 
-    : '('! assignable ')'!
+    : '('! expression ')'!
     ;
     
 positionalArguments
@@ -747,7 +739,7 @@ positionalArguments
 
 positionalArgument
     : (variableStart) => specialArgument
-    | assignable
+    | expression
     ;
 
 //a smalltalk-style parameter to a positional parameter
@@ -761,7 +753,7 @@ functionalArgumentHeader
     : parameterName
     -> ^(ARG_NAME parameterName)
     | 'case' '(' expressions ')'
-    -> ^(CASE_ITEM ^(EXPR_LIST expressions))
+    -> ^(CASE_ITEM expressions)
     ;
 
 functionalArgumentDefinition
