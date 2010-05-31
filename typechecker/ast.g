@@ -104,10 +104,9 @@ compilationUnit
     : importDeclaration*
       (annotations? typeDeclaration)+
       EOF
-      ->
-      ^(IMPORT_LIST importDeclaration*)
-      ^(TYPE_DECL annotations? typeDeclaration)+
-     ;
+    -> ^(IMPORT_LIST importDeclaration*)
+       ^(TYPE_DECL annotations? typeDeclaration)+
+    ;
        
 typeDeclaration
     : classDeclaration
