@@ -728,7 +728,7 @@ MIDDLESTRINGLITERAL
 
 fragment
 NonStringChars
-    :    '{' | '\\' | '"'
+    :    '{' | '\\' | '"' | '$' | '\''
     ;
 
 fragment
