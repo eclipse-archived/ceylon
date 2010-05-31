@@ -376,10 +376,11 @@ else {
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse := 
-"if" "(" Condition ")" Block
-("else" "if" "(" Condition ")" Block)* 
-("else" Block)?</programlisting>
+            <programlisting>IfElse := If Else?</programlisting>
+
+            <programlisting>If := "if" "(" Condition ")" Block</programlisting>
+            
+            <programlisting>Else := "else" (Block | IfElse)</programlisting>
 
             <!--programlisting>IfElse := 
 "if" "(" Condition ("," Condition)* ")"
@@ -431,11 +432,14 @@ else {
             
             <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
             
-            <programlisting>SwitchCaseElse := "switch" "(" Expression ")" (Cases | "{" Cases "}")</programlisting>
+            <programlisting>SwitchCaseElse := Switch ( Cases | "{" Cases "}" )</programlisting>
             
-            <programlisting>Cases := 
-("case" "(" Case ")" Block)+ 
-("else" Block)?</programlisting>
+            <programlisting>Switch := "switch" "(" Expression ")"</programlisting>
+            
+            <programlisting>Cases := CaseItem+ DefaultCaseItem?</programlisting>
+
+            <programlisting>CaseItem := "case" "(" Case ")" Block</programlisting>
+            <programlisting>DefaultCaseItem := "else" Block</programlisting>
 
             <para>The <literal>switch</literal> expression may be of any type. The <literal>case</literal> 
             values must be expressions of type <literal>Case&lt;X&gt;</literal>, where <literal>X</literal> 
@@ -515,9 +519,11 @@ else {
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
-            <programlisting>ForFail := 
-"for" "(" ForIterator ")" Block 
-("fail" Block)?</programlisting>
+            <programlisting>ForFail := For Fail?</programlisting>
+
+            <programlisting>For := "for" "(" ForIterator ")" Block</programlisting>
+            
+            <programlisting>Fail := "fail" Block</programlisting>
 
             <!--programlisting>ForFail :=
 "for" "(" Iteration (";" Iteration)* ")" 
@@ -601,9 +607,11 @@ fail {
             
             <para>The <literal>do/while</literal> loop has the form:</para>
             
-            <programlisting>DoWhile := 
-( "do" ("(" DoIterator ")")? Block? )?
-"while" "(" Condition ")" (";" | Block)</programlisting>
+            <programlisting>DoWhile := Do? While</programlisting>
+
+            <programlisting>Do := "do" ("(" DoIterator ")")? Block?</programlisting>
+            
+            <programlisting>While := "while" "(" Condition ")" (";" | Block)</programlisting>
 
             <para>The loop may declare an iterator variable of any type, which may be 
             <literal>mutable</literal>.</para>
@@ -679,13 +687,22 @@ while (!person.parent.dead) {
             
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
-            <programlisting>TryCatchFinally := 
-"try" ( "(" Resource ("," Resource)* ")" )? Block 
-("catch" "(" Variable ")" Block)* 
-("finally" Block)?</programlisting>
+            <programlisting>TryCatchFinally := Try Catch* Finally?</programlisting>
+
+            <programlisting>Try := "try" Resources? Block</programlisting>
+            
+            <programlisting>Catch := "catch" "(" Variable ")" Block</programlisting>
+            
+            <programlisting>Finally := "finally" Block</programlisting>
 
             <para>The type of each <literal>catch</literal> variable must be assignable to 
             <literal>lang.Exception</literal>.</para>
+            
+            <para>The <literal>try</literal> block may declare a list of <emphasis>resource</emphasis>
+            expressions. A resource expresson produces a heavyweight object that must be 
+            released when execution of the <literal>try</literal> terminates.</para>
+            
+            <programlisting>Resources := "(" Resource ("," Resource)* ")"</programlisting>
                         
             <para>Each resource expression must be assignable to <literal>lang.Usable</literal>.</para>
             
