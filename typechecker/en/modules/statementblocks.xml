@@ -524,30 +524,55 @@ else {
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting-->
 
-            <para>An iteration variable declaration must specify an iterated expression 
-            that contains the range of values to be iterated. <!--It may optionally specify 
-            one or more iteration constraint expressions (conditions).--></para>
+            <para>An iteration variable declaration must specify one or two iteration
+            variables, and an iterated expression that contains the range of values to 
+            be iterated. <!--It may optionally specify one or more iteration constraint 
+            expressions (conditions).--></para>
 
             <programlisting>ForIterator := Variable ("->" Variable)? "in" Expression</programlisting>
 
             <!--programlisting>Iteration := FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
-            <para>Each iterated expression must be of type <literal>Iterable</literal>
-            or <literal>Iterator</literal>. If two iteration variables are defined, it 
-            must be of type <literal>Iterable&lt;Entry&gt;</literal> or 
-            <literal>Iterator&lt;Entry&gt;</literal>.</para>
+            <para>The type of the iterated expression depends upon the iterarion variable 
+            declarations:</para>
+            
+            <itemizedlist>
+            <listitem>
+            <para>The iterated expression must be an expression of type assignable to 
+            <literal>Iterable&lt;X&gt;</literal> or <literal>Iterator&lt;X&gt;</literal> 
+            where <literal>&lt;X&gt;</literal> is the declared type of the iteration
+            variable.</para> 
+            </listitem>
+            <listitem>
+            <para>If two iteration variables are defined, the iterated expression type 
+            must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> or 
+            <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal> where <literal>U</literal>
+            and <literal>V</literal> are the declared types of the iteration variables.</para>
+            </listitem>
+            </itemizedlist>
             
             <!--para>Iterated and constraint expressions may refer to any local variable 
             defined by a previous iteration.</para-->
             
-            <para>The body of the loop is executed once for each <!--combination of--> 
-            iterated element<!--for which all constraint expressions are satisfied-->.</para>
+            <para>When the construct is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the iterated expression is of type <literal>Iterable</literal>,
+                    the <literal>Iterator</literal> is obtained by calling 
+                    <literal>iterator()</literal>, and then</para>
+                </listitem>
+                <listitem>
+                    <para>the <literal>for</literal> block is executed once for each element 
+                    of the <literal>Iterator</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>break true</literal>, <literal>return</literal> or <literal>throw</literal>, 
-            the fail block is not executed. Otherwise, if the loop completes, or if the
-            loop exits early via execution of the control directive <literal>break false</literal>, 
-            the fail block is executed, if it is defined.</para>
+            the <literal>fail</literal> block is not executed. Otherwise, if the loop completes, 
+            or if the loop exits early via execution of the control directive <literal>break false</literal>, 
+            the <literal>fail</literal> block, if any, is executed.</para>
             
             <para>For example:</para>
 
@@ -580,7 +605,7 @@ fail {
 ( "do" ("(" DoIterator ")")? Block? )?
 "while" "(" Condition ")" (";" | Block)</programlisting>
 
-            <para>The loop may declare an iterator variable, which may be 
+            <para>The loop may declare an iterator variable of any type, which may be 
             <literal>mutable</literal>.</para>
 
             <programlisting>DoIterator := Annotation* Variable (Specifier | Initializer)</programlisting>
@@ -590,10 +615,11 @@ fail {
 "while" "(" Condition ("," Condition)* ")" 
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
-            <para>Both blocks are executed repeatedly, until the termination condition 
-            first evaluates to <literal>false</literal>, at which point iteration ends. 
-            In each iteration, the first block is executed before the condition is 
-            evaluated, and the second block is executed after it is evaluated.</para>
+            <para>When the construct is executed, both blocks are executed repeatedly, 
+            until the termination condition first evaluates to <literal>false</literal>, 
+            at which point iteration ends. In each iteration, the first block is executed 
+            before the condition is evaluated, and the second block is executed after it 
+            is evaluated.</para>
             
             <comment><para>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
             but what is the real usecase?</para></comment>
@@ -658,18 +684,39 @@ while (!person.parent.dead) {
 ("catch" "(" Variable ")" Block)* 
 ("finally" Block)?</programlisting>
 
-            <para>When an exception occurs in the try block, the first matching catch block is 
-            executed, if any. The finally block is always executed.</para>
-            
-            <para>The type of each catch variable must extend <literal>lang.Exception</literal>.</para>
+            <para>The type of each <literal>catch</literal> variable must be assignable to 
+            <literal>lang.Exception</literal>.</para>
                         
-            <para>Each resource expression must be of type <literal>Usable</literal>.</para>
+            <para>Each resource expression must be assignable to <literal>lang.Usable</literal>.</para>
             
             <programlisting>Resource := Variable Specifier | Expression</programlisting>
             
-            <para>When the construct is executed, <literal>begin()</literal> is called upon the 
-            resource, the try block is executed, and then <literal>end()</literal> is called upon 
-            the resource, with the thrown exception, if any.</para>
+            <para>When the construct is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>each resource expression is evaluated, and then 
+                    <literal>begin()</literal> is called upon each resulting
+                    resource instance, then</para>
+                </listitem>
+                <listitem>
+                    <para>the <literal>try</literal> block is executed, then</para>
+                </listitem>
+                <listitem>
+                    <para><literal>end()</literal> is called upon each resource 
+                    instance, with the exception that propagated out of the 
+                    <literal>try</literal> block, if any, then</para>
+                </listitem>
+                <listitem>
+                    <para>if an exception did propagate out of the <literal>try</literal> 
+                    block block, the first matching <literal>catch</literal> block, 
+                    if any is executed, and then</para>
+                </listitem>
+                <listitem>
+                    <para>the <literal>finally</literal> block, if any, is 
+                    executed.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>For example:</para>
             
