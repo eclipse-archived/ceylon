@@ -1204,8 +1204,23 @@ class Customer(Name name, optional Organization org = null)
 
         <programlisting>Instance := Annotation* "case" MemberName Arguments?</programlisting>
 
-        <para>If the <literal>case</literal> list ends in <literal>;</literal> instead of 
-        <literal>...</literal>, additional instances of the class may not be instantiated.</para>
+        <para>If the <literal>case</literal> list ends in <literal>;</literal>, the instance
+        list is called <emphasis>closed</emphasis>. If the <literal>case</literal> list ends 
+        in <literal>...</literal>, the instance list is called <emphasis>open</emphasis>.</para>
+        
+        <para>If a class has a closed instance list, the class may not:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>be instantiated</para>
+            </listitem>
+            <listitem>
+                <para>have subclasses, or</para>
+            </listitem>
+            <listitem>
+                <para>have members annotated <literal>default</literal>.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>A class annotated <literal>abstract</literal> may not specify enumerated named
         instances.</para>
