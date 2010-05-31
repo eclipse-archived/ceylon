@@ -1741,7 +1741,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>
     
         <programlisting>public Float total {
-    Float sum = 0.0;
+    Float sum := 0.0;
     for (LineItem li in lineItems) {
         sum += li.amount;
     }
