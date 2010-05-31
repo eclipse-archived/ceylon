@@ -139,4 +139,13 @@ class Annotations {
 	
 	}
 	
+	class ComplexArguments {
+	    
+	    queries( Query('select p.name from Person p'), 
+	             Query('select p.name from Person p where p.age>18') )
+	    see #List<String>
+	    class ClassAnnotations {}
+	
+	}
+	
 }
