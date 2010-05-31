@@ -2730,23 +2730,23 @@ Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
         <literal>doc.Documentation</literal>:</para>
         
         <programlisting>public class Documentation {
-        
-        public static Description doc(String description) { 
-            return Description(description) 
-        }
-        
-        public static Sequence&lt;Author&gt; by(String... authors) {
-            return from (String author in authors) select Author(author)
-        }
-        
-        public static RelatedElement see(ProgramElement pe, String description=null) {
-            return Related(pe, description)
-        }
-        
-        public static ThrownException see(Type type&lt;Exception&gt;, String description=null) {
-            return Related(type, description)
-        }        
-        
+    
+    public static Description doc(String description) {
+        return Description(description)
+    }
+    
+    public static Sequence&lt;Author&gt; by(String... authors) {
+        return from (String author in authors) select Author(author)
+    }
+    
+    public static RelatedElement see(ProgramElement pe, String description=null) {
+        return Related(pe, description)
+    }
+    
+    public static ThrownException see(Type type&lt;Exception&gt;, String description=null) {
+        return Related(type, description)
+    }
+    
 }</programlisting>
         
         <comment><para>TODO: should <literal>see</literal> and <literal>throws</literal>
