@@ -1771,7 +1771,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         
         <programlisting>def names = List&lt;String&gt;();</programlisting>
         <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
-        <programlisting>def count:=0;</programlisting>
+        <programlisting>mutable def count:=0;</programlisting>
         
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
