@@ -556,17 +556,29 @@ controlStructure
     ;
     
 ifElse
-    : 'if' '(' condition ')' block ('else' 'if' '(' condition ')' block)* ('else' block)?
+    : ifBlock elseBlock?
     ;
-    
+
+ifBlock
+    : 'if' '(' condition ')' block
+    ;
+
+elseBlock
+    : 'else' (ifElse | block)
+    ;
+
 switchCaseElse
-    : 'switch' '(' expression ')' ( '{' cases '}' | cases )
+    : switchHeader ( '{' cases '}' | cases )
     ;
-    
+
+switchHeader
+    : 'switch' '(' expression ')'
+    ;
+
 cases 
     : caseItem+ defaultCaseItem?
     ;
-
+    
 caseItem
     : 'case' '(' caseCondition ')' block
     ;
@@ -588,7 +600,15 @@ isCaseCondition
     ;
 
 forFail
-    : 'for' '(' forIterator ')' block ('fail' block)?
+    : forBlock failBlock?
+    ;
+
+forBlock
+    : 'for' '(' forIterator ')' block
+    ;
+
+failBlock
+    : 'fail' block
     ;
 
 forIterator
@@ -600,8 +620,15 @@ containment
     ;
     
 doWhile
-    : ('do' ('(' doIterator ')')? block? )?  
-      'while' '(' condition ')' (block | ';')
+    : doBlock? whileBlock
+    ;
+
+doBlock
+    : 'do' ('(' doIterator ')')? block?
+    ;
+
+whileBlock
+    : 'while' '(' condition ')' (block | ';')
     ;
 
 //do iterators are allowed to be mutable and/or optional
