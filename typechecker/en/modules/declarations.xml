@@ -2225,7 +2225,7 @@ TypeConstraintList?
    <section id="declaration modifiers">
         <title>Declaration modifiers</title>
         
-        <para>In Ceylon, all declaration modifiers are ordinary annotations.</para>
+        <para>In Ceylon, all declaration modifiers are annotations.</para>
         
     <section id="compilerinstructions">
         <title>Summary of compiler instructions</title>
@@ -2289,15 +2289,6 @@ TypeConstraintList?
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: We can minimize backtracking in the parser by 
-        making all these "annotations" be keywords. It lets the parser 
-        recognize a member declaration a little bit more easily. But on the
-        other hand it's a new special kind of thing.</para></comment>
-        
-        <comment><para>TODO: Should we require an <literal>abstract</literal>
-        modifier for abstract methods and attributes of abstract classes
-        like Java does?</para></comment>
-        
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
         
@@ -2311,6 +2302,14 @@ TypeConstraintList?
         
         <para>By default, <literal>Natural</literal>, <literal>Integer</literal>
         and <literal>Float</literal> are assumed to represent 64-bit values.</para>
+        
+        <para>The annotation names in this section are treated as keywords by 
+        the Celon compiler. This is a performance optimization to minimize 
+        the need for lookahead in the parser.</para>
+        
+        <comment><para>TODO: Should we require an <literal>abstract</literal>
+        modifier for abstract methods and attributes of abstract classes
+        like Java does?</para></comment>
         
     </section>
        
