@@ -31,6 +31,10 @@ class FormalParameters {
 			consume(produce()); 
 		}
 		
+		void multipleParameterLists()(Natural min..max) {
+		    return rangeParameter
+		}
+		
 	}
 	
 	class InitParameters {
