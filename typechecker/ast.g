@@ -9,7 +9,6 @@ options {
 tokens {
     ANNOTATION;
     ANNOTATION_LIST;
-    DECLARE;
     MEMBER_DECL;
     TYPE_DECL;
     ABSTRACT_MEMBER_DECL;
@@ -27,9 +26,7 @@ tokens {
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
-    DECL_MODIFIER;
     DO_BLOCK;
-    DO_ITERATOR;
     DO_ITERATOR;
     EXPR;
     FINALLY_BLOCK;
@@ -47,7 +44,6 @@ tokens {
     INTERFACE_DECL;
     MEMBER_NAME;
     MEMBER_TYPE;
-    METHOD_EXPR;
     NAMED_ARG;
     VARARGS;
     NIL;
@@ -63,7 +59,6 @@ tokens {
     TYPE_ARG_LIST;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
-    VAR_DECL;
     WHILE_BLOCK;
     WHILE_STMT;
     SWITCH_STMT;
