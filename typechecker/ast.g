@@ -795,10 +795,8 @@ nonemptyCondition
     ;
     
 isCondition
-    : 'is' type ( (memberName '=') => memberName specifier 
-    -> ^(IS_EXPR type memberName specifier)
-    | expression 
-    -> ^(IS_EXPR type expression))
+    : 'is' type ( (memberName '=') => memberName specifier | expression )
+    -> ^(IS_EXPR type memberName? specifier? expression?)
     ;
 
 controlStructure
