@@ -193,8 +193,7 @@ declaration
     
 //special rule for syntactic predicates
 declarationStart
-    :  declarationModifier 
-    | ( userAnnotation annotations? )? ( memberDeclarationStart | typeDeclarationStart )
+    :  userAnnotation* ( langAnnotation | memberDeclarationStart | typeDeclarationStart )
     ;
 
 memberDeclarationStart
@@ -207,7 +206,7 @@ typeDeclarationStart
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-declarationModifier
+langAnnotation
     : 'public'
     | 'module'
     | 'package'
@@ -218,10 +217,8 @@ declarationModifier
     | 'optional'
     | 'mutable'
     | 'static'
-    | 'once'
-    | 'deprecated'
-    | 'volatile'
     | 'extension'
+    | 'volatile'
     ;
 
 statement 
@@ -391,8 +388,8 @@ annotations
     ;
 
 annotation
-    : declarationModifier
-    -> ^(ANNOTATION declarationModifier) 
+    : langAnnotation
+    -> ^(ANNOTATION langAnnotation) 
     | userAnnotation
     ;
 
@@ -763,7 +760,7 @@ formalParameters
 //matches "()", which can also be an 
 //argument list
 formalParameterStart
-    : '(' ( declarationModifier | ( userAnnotation annotations? )? formalParameterType LIDENTIFIER | ')')
+    : '(' ( userAnnotation* ( langAnnotation | formalParameterType LIDENTIFIER ) | ')' )
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
