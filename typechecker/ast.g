@@ -806,18 +806,33 @@ controlStructure
     ;
     
 ifElse
-    : 'if' '(' condition ')' ifBlock=block 
-      ('else' (ifElse | elseBlock=block))?
-    -> ^(IF_STMT ^(CONDITION condition) ^(IF_TRUE $ifBlock) ^(IF_FALSE $elseBlock? ifElse?)?)
+    : ifBlock elseBlock?
+    -> ^(IF_STMT ifBlock elseBlock?)
+    ;
+
+ifBlock
+    : 'if' '(' condition ')' block
+    -> ^(CONDITION condition) ^(IF_TRUE block)
+    ;
+
+elseBlock
+    : 'else' (ifElse | block)
+    -> ^(IF_FALSE block? ifElse?)
     ;
 
 switchCaseElse
-    : 'switch' '(' expression ')' ( '{' cases '}' | cases )
-    -> ^(SWITCH_STMT ^(SWITCH_EXPR expression) ^(SWITCH_CASE_LIST cases))
+    : switchHeader ( '{' cases '}' | cases )
+    -> ^(SWITCH_STMT switchHeader cases)
     ;
-    
+
+switchHeader
+    : 'switch' '(' expression ')'
+    -> ^(SWITCH_EXPR expression)
+    ;
+
 cases 
     : caseItem+ defaultCaseItem?
+    -> ^(SWITCH_CASE_LIST caseItem+ defaultCaseItem?)
     ;
     
 caseItem
@@ -845,13 +860,23 @@ isCaseCondition
     ;
 
 forFail
-    : 'for' '(' forIterator ')' loopBlock=block ('fail' failBlock=block)?
-    -> ^(FOR_STMT forIterator ^(LOOP_BLOCK $loopBlock) ^(FAIL_BLOCK $failBlock)?)
+    : forBlock failBlock?
+    -> ^(FOR_STMT forBlock failBlock?)
+    ;
+
+forBlock
+    : 'for' '(' forIterator ')' block
+    -> forIterator ^(LOOP_BLOCK block)
+    ;
+
+failBlock
+    : 'fail' block
+    -> ^(FAIL_BLOCK block)
     ;
 
 forIterator
-    : v1=variable ('->' v2=variable)? containment
-    -> ^(FOR_ITERATOR $v1 $v2? containment)
+    : variable ('->' variable)? containment
+    -> ^(FOR_ITERATOR variable+ containment)
     ;
     
 containment
@@ -860,10 +885,18 @@ containment
     ;
     
 doWhile
-    : ('do' ('(' doIterator ')')? b1=block? )?  
-      'while' '(' condition ')' (b2=block | ';')
-    -> ^(WHILE_STMT ^(CONDITION condition) ^(DO_ITERATOR doIterator)? ^(DO_BLOCK $b1)?
-       ^(WHILE_BLOCK $b2)?)
+    : doBlock? whileBlock
+    -> ^(WHILE_STMT doBlock? whileBlock)
+    ;
+
+doBlock
+    : 'do' ('(' doIterator ')')? block?
+    -> ^(DO_ITERATOR doIterator)? ^(DO_BLOCK block)?
+    ;
+
+whileBlock
+    : 'while' '(' condition ')' (block | ';')
+    -> ^(CONDITION condition) ^(WHILE_BLOCK block)?
     ;
 
 //do iterators are allowed to be mutable and/or optional
