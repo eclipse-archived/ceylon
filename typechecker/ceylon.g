@@ -475,11 +475,7 @@ parameterName
     ;
 
 namedArguments
-    : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
-    ;
-
-varargArguments
-    : expressions
+    : '{' ((namedArgument) => namedArgument)* expressions? '}'
     ;
 
 parExpression 

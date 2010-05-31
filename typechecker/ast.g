@@ -49,7 +49,7 @@ tokens {
     MEMBER_TYPE;
     METHOD_EXPR;
     NAMED_ARG;
-    VARARG;
+    VARARGS;
     NIL;
     RET_STMT;
     STMT_LIST;
@@ -715,17 +715,8 @@ parameterName
     ;
 
 namedArguments
-    : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
-    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* varargArguments?)
-    ;
-
-varargArguments
-    : vararg (','! vararg)*
-    ;
-
-vararg
-    : expression
-    -> ^(VARARG expression)
+    : '{' ((namedArgument) => namedArgument)* expressions? '}'
+    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* ^(VARARGS expressions)?)
     ;
 
 parExpression 
