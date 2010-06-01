@@ -121,7 +121,7 @@ public deprecated</programlisting>
         
         <programlisting>public multiplicity(onceEachElement) 
 Description doc(String description) { 
-    return Description(description) 
+    return Description(description.normalize())
 }</programlisting>
         
         <para>The annotation may be specified at a program element using any one of three 
