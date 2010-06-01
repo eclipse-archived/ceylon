@@ -1142,38 +1142,6 @@ while (people nonempty) {
     public Sequence<X> by(Natural stepSize) { return ... } 
     
 }]]></programlisting>
-
-
-        <!-- 
-        <para>Enumerations represent an explicit list of values and may be 
-        constructed using a simplified syntax:</para>
-        
-        <programlisting><![CDATA[public class Enumeration<out X>(X... values)
-        satisfies List<X>, Case<Object> {
-    ...
-
-    public static extension 
-    OpenMap<U, V> toOpenMap<U, V>(Enumeration<Entry<U,V>> enum) {
-        return HashMap(enum)
-    }
-
-    public extension 
-    OpenSet<X> toOpenSet<X>() {
-        return elements.copy()
-    }
-
-    public extension 
-    OpenList<X> toOpenList<X>() {
-        return copy()
-    }
-
-    public static extension 
-    Enumeration<T> singleton<T>(T object) { 
-        return Enumeration(object)
-    }
-    
-}]]></programlisting>
-     -->
     
     </section>
     
