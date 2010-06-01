@@ -828,6 +828,10 @@ EXISTS
     :   'exists'
     ;
 
+EXTENDS
+    :   'extends'
+    ;
+
 FINALLY
     :   'finally'
     ;
