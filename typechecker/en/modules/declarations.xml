@@ -29,6 +29,15 @@ Body?</programlisting>
         <programlisting>MemberName := LIdentifier</programlisting>
         <programlisting>ParameterName := LIdentifier</programlisting>
         
+        <para>Identifiers may contain upper and lowercase letters, digits and 
+        underscore.</para>
+        
+        <programlisting>LIdentifier := LowercaseChar IdentifierChar*</programlisting>
+        <programlisting>UIdentifier := UppercaseChar IdentifierChar*</programlisting>
+        <programlisting>LowercaseChar := "a".."z" | "_"</programlisting>
+        <programlisting>UppercaseChar := "A".."Z"</programlisting>
+        <programlisting>IdentifierChar := LowercaseChar | UppercaseChar | '0'..'9'</programlisting>
+        
    </section>
       
     <section id="topleveldeclaration">
