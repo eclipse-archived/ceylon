@@ -44,8 +44,8 @@ Body?</programlisting>
         import
         class interface alias 
         satisfies extends 
-        in out subtype
-        assign def 
+        in out
+        void subtype def assign
         return break throw retry 
         this super null none
         get set
