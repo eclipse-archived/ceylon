@@ -1344,11 +1344,7 @@ HASH
 PLUSEQ
     :   '+='
     ;
-    
-CONVERTER
-    :  'converter'
-    ;
-    
+
 LIDENTIFIER 
     :   LIdentifierPart IdentifierPart*
     ;
