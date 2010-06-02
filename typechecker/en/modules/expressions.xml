@@ -104,21 +104,6 @@
         </listitem>
     </itemizedlist>
     
-    <!--itemizedlist>
-        <listitem>
-            <para><literal>Date</literal> and <literal>Time</literal>,</para>
-        </listitem>
-        <listitem>
-            <para><literal>Natural</literal> and <literal>Float</literal>,</para>
-        </listitem>
-        <listitem>
-            <para><literal>Character</literal>,</para>
-        </listitem>
-        <listitem>
-            <para><literal>String</literal> and <literal>Regex</literal>.</para>
-        </listitem>
-    </itemizedlist-->
-    
     <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
     values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
     with the enumerated instances <literal>true</literal> and <literal>false</literal>.</para>
@@ -283,38 +268,6 @@ if you prefer.";</programlisting>
         <comment><para>TODO: is <literal>"{Time()} {message}"</literal> a better 
         syntax for interpolation?</para></comment>
 
-    <!--comment>
-    <para>TODO: Very often, string literals are actually used to embed some
-    kind of mini-language. Therefore I would like to let you perform compile-time 
-    validation of string literals. Three options:</para>
-    <itemizedlist>
-      <listitem>
-        <para>Annotation of string literals, for example 
-        <literal>url "http://jboss.org/ceylon"</literal>,
-        <literal>mail "mailto:gavin@hibernate.org"</literal>, 
-        <literal>regex "w+(d+)?"</literal>,
-        <literal>dt "25/03/2005 12:00 AM PST"</literal>,
-        <literal>color "FF3B"</literal>,
-        <literal>cron "0 0 23 ? * MON-FRI"</literal>.</para>
-      </listitem>
-      <listitem>
-        <para>Annotation of the parameter of a method or constructor, for example
-        <literal>Url("http://jboss.org/ceylon")</literal>, 
-        <literal>Mail("mailto:gavin@hibernate.org")</literal>, 
-        <literal>Regex("w+(d+)?")</literal>,
-        <literal>datetime("25/03/2005 12:00 AM PST")</literal>,
-        <literal>Color("FF3B")</literal>,
-        <literal>Cron("0 0 23 ? * MON-FRI")</literal>.</para>
-      </listitem>
-      <listitem>
-        <para>A special kind of <literal>extension</literal> for literal strings.</para>
-      </listitem>
-    </itemizedlist>
-    <para>This is a solution for literal dates and times, regexes, hexadecimal numbers,
-    etc, and even for more domain-specific things like names, cron expressions, internet
-    addresses, etc.</para>
-    </comment-->
-    
     </section>
     
     <section id="quoted">
@@ -355,69 +308,6 @@ if you prefer.";</programlisting>
         constraints in the module architecture, for example: <literal>'1.2.3BETA'</literal>.</para></comment>
     
     </section>
-    
-    <!--section>
-        <title>Byte literals</title>
-        
-        <para>A byte literal has this form:</para>
-        
-        <programlisting>ByteLiteral := "'" ( BinaryDigit{8} | HexDigit{2} ) "'"</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>Byte masked = b &amp; '01101001';</programlisting>
-        
-        <programlisting>Byte byte = 'A0';</programlisting>
-        
-        <para>Equivalent to this Java code:</para>
-        
-        <programlisting>Byte masked = b.and( new lang.Byte("01101001") );</programlisting>
-        
-        <programlisting>Byte byte = new lang.Byte("A0")</programlisting>
-        
-    </section-->
-    
-    <!--section id="regex">
-        <title>Regex literals</title>
-        
-        <para>A <literal>Regex</literal> literal has this form:</para>
-        
-        <programlisting>RegexLiteral := "`" RegularExpression "`"</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>Boolean isEmail = email.matches( `^\w+@((\w+)\.)+$` );</programlisting>
-        
-        <programlisting>Natural quotedWords = `\W"w+"\W`.matcher(text).count();</programlisting>
-        
-        <para>The second example is equivalent to this Java code:</para>
-        
-        <programlisting>Natural quotedWords = new lang.Regex("\\W\"w+\"\\W").matcher(text).count();</programlisting>
-        
-    </section-->
-    
-    <!--
-    <section>
-        <title>Enumeration literals</title>
-        
-        <para>The following literal is supported, representing an empty enumeration:</para>
-        
-        <programlisting>"none"</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>Enumeration&lt;String&gt; enum = none;</programlisting>
-        
-        <para>Equivalent to this Java code:</para>
-        
-        <programlisting>Enumeration&lt;String&gt; enum = collections.Enumeration.emptyEnumeration&lt;String&gt;();</programlisting>
-
-        <comment><para>TODO: is this really a special literal, or is it just the single
-        enumerated instance of the <literal>EmptyEnumeration</literal> class,
-        which has a converter to <literal>Enumeration&lt;X&gt;</literal>?</para></comment>
-
-    </section>
-    -->
 
     </section>
 
@@ -604,7 +494,6 @@ ConstructorReference | MemberConstructorReference</programlisting>
         different invocation operators.</para>
         
         <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
-        <!--programlisting>InvocationOperator := "." | "?." | "*." | "^."</programlisting-->
         
         <para>The invocation operator depends upon the type of the receiver expression. If 
         <literal>X</literal> is the type that has the instance method, attribute, or member 
@@ -612,8 +501,8 @@ ConstructorReference | MemberConstructorReference</programlisting>
             
         <itemizedlist>
             <listitem>
-                <para><literal>.</literal> <!--or <literal>^.</literal>--> if the expression 
-                is of non-<literal>optional</literal> type <literal>X</literal>,</para>
+                <para><literal>.</literal> if the expression is of non-<literal>optional</literal> 
+                type <literal>X</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>.?</literal> if the expression is of type <literal>optional X</literal>,
@@ -798,10 +687,8 @@ Comparison comp = order(1,-1);</programlisting>
             <title>Method invocation</title>
             
             <para>A method invocation evaluates to the return value of the method, as specified 
-            by the <literal>return</literal> directive.<!-- unless the invocation operator is 
-            <literal>^.</literal>, in which case the invocation evaluates to the receiving 
-            instance--> The argument values are passed to the formal parameters of the method, and 
-            the body of the method is executed.</para>
+            by the <literal>return</literal> directive. The argument values are passed to the 
+            formal parameters of the method, and the body of the method is executed.</para>
             
             <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
             The receiving instance?</para></comment>
@@ -835,10 +722,6 @@ Comparison comp = order(1,-1);</programlisting>
                     <para>If the invocation operator is <literal>?.</literal>, the expression
                     is of type <literal>optional X</literal>.</para>
                 </listitem>
-                <!--listitem>
-                    <para>If the invocation operator is <literal>^.</literal>, the expression
-                    is of the same type as the receiver expression.</para>
-                </listitem-->
                 <listitem>
                     <para>If the invocation operator is <literal>*.</literal>, the expression
                     is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
@@ -1450,24 +1333,6 @@ except (SomethingElseWrong sew) {
             
             <para>This representation is used as the canonical literal form for collections.</para>
             
-        <!--section id="functorinvocation">
-            <title>Functor invocation</title>
-            
-            <para>Functor invocations follow the following schema.</para>
-            
-            <programlisting>FunctorInvocation := Expression Arguments</programlisting>
-            
-            <para>For example:</para>
-            
-            <programlisting>compare("AAA", "aaa")</programlisting>
-            <programlisting>compare { x = "AAA"; y = "aaa"; }</programlisting>
-            
-            <para>The value of a functor invocation is the return value of the functor.
-            The parameter values are passed to the formal parameters of the functor
-            implementation.</para>
-            
-        </section-->
-        
     </section>
     
         <!--  
@@ -2045,8 +1910,7 @@ DefaultAssignmentOperator</programlisting>
                 <entry>Member invocation and lookup, subrange,
                 postfix increment, postfix decrement:</entry>
                 <entry>
-                <literal>.</literal>, 
-                <!--<literal>^.</literal>,-->
+                <literal>.</literal>,
                 <literal>*.</literal>, 
                 <literal>?.</literal>, 
                 <literal>(,,)</literal>,
@@ -2291,15 +2155,6 @@ DefaultAssignmentOperator</programlisting>
             <entry>Member of <literal>X</literal></entry>
             <entry>Member type</entry>
         </row>
-        <!--row>
-            <entry><literal>^.</literal></entry>
-            <entry><literal>lhs^.member</literal></entry>
-            <entry>chain invoke</entry>
-            <entry></entry>
-            <entry><literal>X</literal></entry>
-            <entry>Member of <literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row-->
         <row>
             <entry><literal>?.</literal></entry>
             <entry><literal>lhs?.member</literal></entry>
@@ -2505,39 +2360,7 @@ DefaultAssignmentOperator</programlisting>
             <entry>Any type</entry>
             <entry><literal>Boolean</literal></entry>
         </row>
-        
-        <!--  
-        <row>
-            <entry><literal>~></literal> or <literal>in</literal></entry>
-            <entry><literal>lhs ~> rhs</literal> or <literal>lhs in rhs</literal></entry>
-            <entry>in</entry>
-            <entry><literal>lhs.in(rhs)</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>!~></literal></entry>
-            <entry><literal>lhs !~> rhs</literal></entry>
-            <entry>not in</entry>
-            <entry><literal>lhs.in(rhs).negation</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Category&lt;X&gt;</literal> or <literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>*~></literal></entry>
-            <entry><literal>lhs *~> rhs</literal></entry>
-            <entry>all in</entry>
-            <entry><literal>for (X x in lhs: !x.in(rhs)) found false fail true</literal></entry>
-            <entry><literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Category&lt;X&gt; or <literal>Iterable&lt;X&gt;</literal></literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        -->
-        
+                
     </tbody>
     </tgroup>
     </table>
@@ -3287,50 +3110,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>Duration</literal></entry>
         </row>
         -->
-        
-        <!--
-        
-        <row><entry namest="first" nameend="last"><emphasis>Bitwise operations</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>|||</literal></entry>
-            <entry><literal>lhs ||| rhs</literal></entry>
-            <entry>bitwise or</entry>
-            <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-        </row>
-        <row>
-            <entry><literal>&amp;&amp;&amp;</literal></entry>
-            <entry><literal>lhs &amp;&amp;&amp; rhs</literal></entry>
-            <entry>bitwise and</entry>
-            <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-        </row>
-        <row>
-            <entry><literal>^^^</literal></entry>
-            <entry><literal>lhs ^^^ rhs</literal></entry>
-            <entry>bitwise xor</entry>
-            <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-        </row>
-        <row>
-            <entry><literal>~</literal></entry>
-            <entry><literal>~rhs</literal></entry>
-            <entry>bitwise not</entry>
-            <entry><literal>rhs.not</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-            <entry><literal>Binary</literal></entry>
-        </row>
-        
-        -->
-        
+                
     </tbody>
     </tgroup>
     </table>
@@ -3472,229 +3252,5 @@ DefaultAssignmentOperator</programlisting>
     </section>
     
     </section>
-
-    <!--section id="functorexpressions">
-        <title>Functor expressions</title>
-        
-        <para>A functor expression has this form:</para>
-        
-        <programlisting>FunctorExpression := FunctorHeader? FormalParams FunctorBody</programlisting>
-        
-        <para>Functor expressions must specify a formal parameter list.</para>
-        
-        <para>A functor expression may optionally specify annotations and/or return type. 
-        In this case, the keyword <literal>functor</literal> is required.</para>
-        
-        <para>A functor body may be a single expression, or a block.</para>
-        
-        <programlisting>FunctorBody = Expression | Block</programlisting>
-        
-        <para>If the body of a non-<literal>void</literal> functor is a block, the value of 
-        the functor, when executed, is determined by the <literal>produce</literal> directive. 
-        A functor body may not contain a <literal>return</literal> directive.</para>
-                
-        <para>For example:</para>
-        
-        <programlisting>functor Comparison(Float x, Float y) order = functor Comparison(Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
-        
-        <para>The keyword <literal>functor</literal>, and the return type may be omitted:</para>
-
-        <programlisting>functor Comparison(Float x, Float y) order = (Float x, Float y) { produce x&lt;=&gt;y };</programlisting>
-        
-        <para>The braces around the functor body and the <literal>produce</literal> keyword 
-        may be omitted.</para>
-        
-        <programlisting>people.sort( (Person x, Person y) y.name &lt;=&gt; x.name );</programlisting>
-               
-        <programlisting>people.select( (Person p) p.age>18 )
-    .collect( (Person p) p.name );</programlisting>
-    
-        <para>The braces are required for a <literal>void</literal> functor.</para>
-        
-        <programlisting>namedValues.each( (String name->Object value) { log.info("${name} ${value}"); } );</programlisting>
-                 
-        <para>A functor expression can only appear as the right side of an assignment, initializer
-        or specifier, as an argument, in a control directive, as an element of an enumeration
-        instantiation, or surrounded by parentheses.</para>
-                        
-        <para>Consider the following functor expression:</para>
-        
-        <programlisting>functor Comparison(String x, String y) order = (String x, String y) { produce x &lt;=&gt; y }</programlisting>
-        
-        <para>Or, equivalently:</para>
-        
-        <programlisting>functor Comparison(String x, String y) order = (String x, String y) x &lt;=&gt; y;</programlisting>
-        
-        <para>These expressions are both equivalent to this Java code:</para>
-
-        <programlisting>F2&lt;String,String,Comparison&gt; order = 
-    new F2&lt;String,String,Comparison&gt;() {
-        public Comparison call(String x, String y) { 
-            return Comparison.compare(x,y); 
-        }
-    };</programlisting>
-        
-        <para>And this functor invocation:</para>
-        
-        <programlisting>Comparison result = order("Gavin", "Emmanuel");</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-
-        <programlisting>Comparison result = order.call("Gavin", "Emmanuel");</programlisting>
-        
-        <para>Functors may refer to immutable locals and members of the
-        containing class. They may not refer to mutable locals.</para>
-    
-        <para>The following code:</para>
-        
-        <programlisting>(0..10).each( (Natural num) { log.info(num); } );</programlisting>
-        
-        <para>Is equivalent to:</para>
-        
-        <programlisting>new Range&lt;Natural&gt;(0, 10).each( 
-    new F1&lt;Natural,Boolean&gt;() {
-        @Override Boolean call(Natural x) { 
-            ParentClass.this.log.info(num); 
-        } 
-    } );</programlisting>
-    
-        <para>This code:</para>
-        
-        <programlisting>Integer min = 0;
-Integer max = 10;
-List list = list.select( (Integer x) x &gt; min &amp;&amp; x &lt; max );</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>final Integer min = 0; 
-final Integer max = 10; 
-List list = list.select( new F1&lt;Integer,Boolean&gt;() { 
-        @Override Boolean call(Integer x) { 
-            return x > min &amp;&amp; x &lt; max; 
-        } 
-    } );</programlisting>
-    
-    </section-->
-               
-    <!--section id="smalltalkprotocol">
-        <title>Smalltalk-style method invocation</title>
-        
-        <para>Ceylon provides a special method invocation protocol inspired by Smalltalk 
-        This special invocation protocol may be used to imitate the syntax of built-in control
-        structures. For example:</para>
-        
-        <programlisting>people select (Person p) (p.name) having (Person p) (p.age>18);</programlisting>
-        
-        <programlisting>x>10
-ifTrue {
-    log.debug("big");
-    big(x);
-}
-ifFalse {
-    log.debug("little");
-    little(x);
-};</programlisting>
-        
-        <para>In a Smalltalk-style method invocation, there no punctuation appears between
-        the reciever and the method name, and all arguments are functional arguments.
-        The first functional argument directly follows the method name.</para>
-        
-        <programlisting>SmalltalkInvocation := (Expression MemberName FunctionalBody) FunctionalArguments?</programlisting>
-                
-        <para>Some additional examples:</para>
-        
-        <programlisting>namedValues each (String name->Object value) { 
-    log.info("${name} ${value}"); 
-};</programlisting>
-        
-        <programlisting>Set&lt;People&gt; adults = people elements (Person p) (p.age>18);</programlisting>
-
-        <programlisting>int index = lineItems firstIndex (LineItem li) (!li.product.available);</programlisting>
-        
-        <programlisting>people sort (Person p, Person q) (p.name&lt;=&gt;q.name);</programlisting>
-        
-        <programlisting>String label = x>10 ifTrue ("big") ifFalse ("little");</programlisting>
-        
-        <programlisting>optional specialPerson = people findFirst (Person p) (p.special) orIfNoneFound (me);</programlisting>
-        
-        <comment><para>TODO: there is a small problem here. In <literal>x.foo(y) bar z</literal>, 
-        is <literal>bar</literal> the name of a method or of a parameter of 
-        <literal>foo()</literal>?</para> That's not such a big deal for the compiler, but
-        for the human reader I guess it's going to get confusing occasionally. So should we
-        play it safe and require the form <literal>x.foo(y).bar() baz z</literal> in the case 
-        that <literal>bar</literal> is the method name?</comment>
-
-        <comment><para>TODO: On the other hand, if we don't want to play things safe, should 
-        we allow this invocation protocol for methods with no parameters, or with arguments 
-        which are not functional (I have checked that this can be parsed), for example:</para></comment>
-        
-        <programlisting>Integer x = y integer;</programlisting>
-        <programlisting>log info "Hello World";</programlisting>
-        <programlisting>log.info(", " join org.employees*.name);</programlisting>
-        
-    </section-->
-    
-        <!--
-        <section>
-        <title>TODO: assignment to local variables from surrounding scope</title>
-    
-        <para>The following code:</para>
-        
-        <programlisting>Integer min = 0;
-Integer max = 0;
-Integer count = 0;
-Integer size = list.each(Integer x) { 
-    if ( x > min ) count++; 
-    if ( x > max) max = x; 
-};</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>Integer min = 0; 
-Integer max = 0;
-Integer count = 0;
-final List list$1 = list;
-final F1&lt;Integer,Boolean&gt; functor$1 = 
-    new F1&lt;Integer,Boolean&gt;(min, max, count) { 
-        Integer min = (Integer) locals[0];
-        Integer max = (Integer) locals[1];
-        Integer count = (Integer) locals[2];
-        @Override Boolean call(Integer x) { 
-            if ( x > min ) count++; 
-            if ( x > max) max = x; 
-            locals[0] = min;
-            locals[1] = max;
-            locals[2] = count;
-        }
-    };
-final Integer result$1 = list$1.each(functor$1);
-final Object[] locals$1 = functor$1.locals();
-min = (Integer) locals[0];
-max = (Integer) locals[1];
-count = (Integer) locals[2];
-Integer size = result$1;</programlisting>
-
-        <para>Or, perhaps:</para>
-    
-        <programlisting>Integer min = 0; 
-Integer max = 0;
-Integer count = 0;
-final List list$1 = list;
-final F1&lt;Integer,Boolean&gt; functor$1 = 
-    new F1&lt;Integer,Boolean&gt;(min, max, count) { 
-        @Override Boolean call(Integer x) { 
-            if ( x > locals[0] ) locals[3]++; 
-            if ( x > locals[1] ) locals[1] = x; 
-        }
-    };
-final Integer result$1 = list$1.each(functor$1);
-final Object[] locals$1 = functor$1.locals();
-min = (Integer) locals[0];
-max = (Integer) locals[1];
-count = (Integer) locals[2];
-Integer size = result$1;</programlisting>
-
-        </section>
-    -->
     
 </chapter>
