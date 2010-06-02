@@ -98,6 +98,9 @@
         get set
         if else switch case for fail do while try catch finally
         exists nonempty is in
+        public module package private
+        abstract default override mutable optional static extension 
+        deprecated volatile small
         </literal></para>
         
         <comment><para>TODO: Eventually we will probably want to support identifiers 
@@ -195,7 +198,7 @@
         <para>The following character sequences are operators and/or punctuation:</para>
         
         <para><literal>
-        , ;
+        , ; ...
         { } ( ) [ ] 
         #
         . ?. *. 
