@@ -8,7 +8,7 @@
     
     <itemizedlist>
         <listitem>
-            <para>literal values and special values,</para>
+            <para>literal values, special values, and metamodel references,</para>
         </listitem>
         <listitem>
             <para>enumerated instance references,</para>
@@ -30,21 +30,23 @@
         </listitem>
     </itemizedlist>
     
-    <programlisting>Expression := 
-Literal | SpecialValue
-EnumeratedInstanceReference |
-MethodReference | 
-Invocation | 
-Evaluation | Assignment | 
-Enumeration |
-OperatorExpression | 
-"(" Expression ")"</programlisting>
+    <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
+    sequence of expressions, or a parenthesized expression.</para>
     
-    <para>Where <literal>OperatorExpression</literal>s are composed by combining 
-    other <literal>Expression</literal>s using operators. Parentheses are used to
-    group terms in an expression and override the usual operator precedence rules.</para>
+    <programlisting>Atom := Literal | SpecialValue | Enumeration | "(" Expression ")" </programlisting>
     
-    <para>To determine whether an expression is assignable to a program element 
+    <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
+    members of an atom or static members of a type.</para>
+    
+    <programlisting>Primary := Atom | EnumeratedInstanceReference | MethodReference | Invocation | Evaluation</programlisting>
+    
+    <para>More complex expressions are formed by combining expressions using operators, 
+    including assignment operators.</para>    
+    
+    <programlisting>Expression := Primary | Assignment | OperatorExpression | Meta</programlisting>
+    
+    <para>Ceylon expressions are validated for typesafety at compile time.
+    To determine whether an expression is assignable to a program element 
     such as an attribute, local or formal parameter, Ceylon considers:</para>
     
     <itemizedlist>
@@ -92,14 +94,13 @@ OperatorExpression |
             <para><literal>Natural</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
-            <para><literal>String</literal> and <literal>Character</literal>,</para>
+            <para><literal>Character</literal>,</para>
         </listitem>
         <listitem>
-            <para><literal>Quoted</literal>,</para>
+            <para><literal>String</literal>, and</para>
         </listitem>
         <listitem>
-            <para><literal>Type</literal>, <literal>Attribute</literal> and 
-            <literal>Method</literal>.</para>
+            <para><literal>Quoted</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -122,11 +123,7 @@ OperatorExpression |
     values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
     with the enumerated instances <literal>true</literal> and <literal>false</literal>.</para>
     
-    <programlisting>Literal := 
-NaturalLiteral | FloatLiteral | 
-StringLiteral | CharacterLiteral | 
-QuotedLiteral | 
-TypeLiteral | MemberLiteral</programlisting>
+    <programlisting>Literal := NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
 
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -202,22 +199,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="naturalnumber">
         <title>Natural number literals</title>
         
-        <para>A <literal>Natural</literal> literal has this form:</para>
-        
-        <programlisting>NaturalLiteral = Digit+</programlisting>
-        
-        <!--programlisting>NaturalLiteral = 
-Digit+ | 
-"'" ( HexDigit{4} | HexDigit{8} ) "'"</programlisting-->
-
-        <para>For example:</para>
+        <para>A natural number literal is an expression of type
+        <literal>lang.Natural</literal>.</para>
         
         <programlisting>Natural m = n + 10;</programlisting>
         
-        <!--programlisting>panel.backgroundColor = 'FF33';</programlisting-->
-        
-        <para>Negative integer values can be produced using the unary
-        <literal>-</literal> operator:</para>
+        <para>Negative <literal>Integer</literal> values can be 
+        produced using the unary <literal>-</literal> operator:</para>
         
         <programlisting>Integer i = -1;</programlisting>
         
@@ -226,13 +214,10 @@ Digit+ |
     <section id="floatnumber">
         <title>Floating point number literals</title>
         
-        <para>A <literal>Float</literal> literal has this form:</para>
+        <para>A floating point number literal is an expression of 
+        type <literal>lang.Float</literal>.</para>
         
-        <programlisting>FloatLiteral := Digit+ "." Digit+ ( ("E"|"e") ("+"|"-")? Digit+ )?</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>public static Float pi = 3.14159;</programlisting>
+       <programlisting>public static Float pi = 3.14159;</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
@@ -245,29 +230,16 @@ Digit+ |
     <section id="character">
         <title>Character literals</title>
         
-        <para>A <literal>Character</literal> literal has this form:</para>
-        
-        <programlisting>CharacterLiteral := "@" Character</programlisting>
-        
-        <para>For example:</para>
-        
+        <para>A single character literal is an expression of type 
+        <literal>lang.Character</literal>.</para>
+                
         <programlisting>if ( string[i] == @+ ) { ... }</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
         
         <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
-        -->
-        
-        <para>A character literal may contain an escape sequence.</para>
-        
-        <programlisting>List&lt;Character&gt; ws = { @\s, @\t, @\r, @\f, @\n };</programlisting>
-        
-        <!--
-        <para>Which is equivalent to this Java code:</para>
-        
-        <programlisting>List&lt;Character&gt; ws = new lang.Enumeration&lt;Character&gt;(' ', '\t', '\r', '\r', '\n');</programlisting>
-        -->
+        -->        
         <comment><para>TODO: do we really need character literals??</para></comment>
         
     </section>
@@ -275,11 +247,8 @@ Digit+ |
     <section id="string">
         <title>String literals</title>
         
-        <para>A <literal>String</literal> literal has this form:</para>
-        
-        <programlisting>StringLiteral = "&quot;" ( Character+ | "${" Expression "}" )* "&quot;"</programlisting>
-        
-        <para>For example:</para>
+        <para>A character string literal is an expression of type
+        <literal>lang.String</literal>.</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
@@ -357,12 +326,10 @@ if you prefer.";</programlisting>
         This is an important facility since Ceylon is a language for expressing 
         structured data.</para>
         
-        <para>A <literal>Quoted</literal> literal has this form:</para>
-        
-        <programlisting>QuotedLiteral := "'" Character* "'"</programlisting>
-        
-        <para>For example:</para>
-        
+        <para>A single quoted literal is an expression of type 
+        <literal>lang.Quoted</literal>. An extension is responsible for converting 
+        it to the appropriate type.</para>
+                
         <programlisting>Date date = '25/03/2005';</programlisting>
         <programlisting>Time time = '12:00 AM PST';</programlisting>
         <programlisting>Boolean isEmail = email.matches( '^\w+@((\w+)\.)+$' );</programlisting>
@@ -452,29 +419,6 @@ if you prefer.";</programlisting>
     </section>
     -->
 
-    <section id="typemember">
-        <title>Type and member literals</title>
-        
-        <para>The <literal>Type</literal> object for a type, the <literal>Method</literal>
-        object for a method, or the <literal>Attribute</literal> object for an attribute
-        may be referred to using a special literal syntax:</para>
-        
-        <programlisting>TypeLiteral := HASH RegularType</programlisting>
-        
-        <programlisting>MemberLiteral := HASH (RegularType ".")? MemberName</programlisting>
-               
-        <para>For example:</para>
-        
-        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
-        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;</programlisting>
-        <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;</programlisting>
-        
-        <comment><para>TODO: According to this, we can "curry" in type arguments of
-        the type. We need this. But if so, why can't we curry type arguments of the 
-        member?</para></comment>
-            
-    </section>
-
     </section>
 
     <section id="specialvalues">
@@ -515,6 +459,31 @@ if you prefer.";</programlisting>
         
     </section>
     
+    <section id="typemember">
+        <title>Metamodel references</title>
+        
+        <para>The <literal>Type</literal> object for a type, the <literal>Method</literal>
+        object for a method, or the <literal>Attribute</literal> object for an attribute
+        may be referred to using a special syntax.</para>
+        
+        <programlisting>Meta := TypeMeta | MemberMeta</programlisting>
+        
+        <programlisting>TypeMeta := HASH RegularType</programlisting>
+        
+        <programlisting>MemberMeta := HASH (RegularType ".")? MemberName</programlisting>
+               
+        <para>Metamodel references are compile-time typesafe.</para>
+        
+        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
+        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;</programlisting>
+        <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;</programlisting>
+        
+        <comment><para>TODO: According to this, we can "curry" in type arguments of
+        the type. We need this. But if so, why can't we curry type arguments of the 
+        member?</para></comment>
+            
+    </section>
+
     <section id="enumeratedinstancereferences">
         <title>Enumerated instance references</title>
         
@@ -611,7 +580,7 @@ ConstructorReference | MemberConstructorReference</programlisting>
         is evaluated and a reference to the resulting value is held with the method 
         reference.</para>
         
-        <programlisting>Receiver := (Expression InvocationOperator)?</programlisting>
+        <programlisting>Receiver := (Primary InvocationOperator)?</programlisting>
         
         <programlisting>InstanceMethodReference := Receiver MemberName</programlisting>
 
@@ -768,7 +737,7 @@ Comparison comp = order(1,-1);</programlisting>
         <emphasis>invocation</emphasis> consists of an expression that evaluates to a 
         method reference, together with an argument list.</para>
         
-        <programlisting>Invocation := Expression TypeArguments? Arguments</programlisting>
+        <programlisting>Invocation := Primary TypeArguments? Arguments</programlisting>
             
         <para>An invocation must specify arguments for parameters, either by listing or naming 
         parameter values.</para>
@@ -1676,7 +1645,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <para>Evaluation of a local is a special case. There is no receiving instance or
         evaluation operator.</para>
         
-        <programlisting>Evaluation := (Expression EvaluationOperator)? MemberName</programlisting>
+        <programlisting>Evaluation := (Primary EvaluationOperator)? MemberName</programlisting>
         
         <programlisting>EvaluationOperator := "." | "?." | "*."</programlisting>
         
@@ -1814,7 +1783,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
         <para>Assignment to a local is a special case. There is no receiving instance.</para>
         
-        <programlisting>AssignableExpression := (Expression ".")? MemberName ElementSpec?</programlisting>
+        <programlisting>AssignableExpression := (Primary ".")? MemberName ElementSpec?</programlisting>
         
         <para>When an assignment expression or unary assignment expression is executed, the 
         new value to be assigned is computed, the receiving object is obtained by evaluating 
