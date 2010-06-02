@@ -433,7 +433,7 @@ selector
     ;
 
 member
-    : ('.' | '^.' | '?.' | '*.') nameAndTypeArguments
+    : ('.' | '?.' | '*.') nameAndTypeArguments
     ;
 
 nameAndTypeArguments
@@ -960,15 +960,19 @@ EQ
     :   '='
     ;
 
-BANG
+RENDER
+    :   '$'
+    ;
+
+NOT
     :   '!'
     ;
 
-TILDE
+BITWISENOT
     :   '~'
     ;
 
-QUES
+DEFAULT
     :   '?'
     ;
 
@@ -984,19 +988,27 @@ EQEQ
     :   '=='
     ;
 
-AMPAMP
+IDENTICAL
+    :   '==='
+    ;
+
+AND
     :   '&&'
     ;
 
-BARBAR
+OR
     :   '||'
     ;
 
-PLUSPLUS
+IMPLIES
+    :   '=>'
+    ;
+
+INCREMENT
     :   '++'
     ;
 
-SUBSUB
+DECREMENT
     :   '--'
     ;
 
@@ -1004,35 +1016,35 @@ PLUS
     :   '+'
     ;
 
-SUB
+MINUS
     :   '-'
     ;
 
-STAR
+TIMES
     :   '*'
     ;
 
-SLASH
+DIVIDED
     :   '/'
     ;
 
-AMP
+BITWISEAND
     :   '&'
     ;
 
-BAR
+BITWISEOR
     :   '|'
     ;
 
-CARET
+BITWISEXOR
     :   '^'
     ;
 
-PERCENT
+REMAINDER
     :   '%'
     ;
 
-BANGEQ
+NOTEQ
     :   '!='
     ;
 
@@ -1042,6 +1054,14 @@ GT
 
 LT
     :   '<'
+    ;        
+
+GTEQ
+    :   '>='
+    ;
+
+LTEQ
+    :   '<='
     ;        
 
 ENTRY
@@ -1068,8 +1088,64 @@ HASH
     :   '#'
     ;
 
+QUESDOT
+    :    '?.'
+    ;
+
+STARDOT
+    :    '*.'
+    ;
+
+POWER
+    :    '**'
+    ;
+
+DOTEQ
+    :   '.='
+    ;
+
 PLUSEQ
     :   '+='
+    ;
+
+MINUSEQ
+    :   '-='
+    ;
+
+TIMESEQ
+    :   '*='
+    ;
+
+DIVIDEDEQ
+    :   '/='
+    ;
+
+BITWISEANDEQ
+    :   '&='
+    ;
+
+BITWISEOREQ
+    :   '|='
+    ;
+
+BITWISEXOREQ
+    :   '^='
+    ;
+
+REMAINDEREQ
+    :   '%='
+    ;
+
+DEFAULTEQ
+    :   '?='
+    ;
+
+ANDEQ
+    :   '&&='
+    ;
+
+OREQ
+    :   '||='
     ;
 
 LIDENTIFIER 
