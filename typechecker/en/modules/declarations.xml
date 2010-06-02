@@ -29,30 +29,6 @@ Body?</programlisting>
         <programlisting>MemberName := LIdentifier</programlisting>
         <programlisting>ParameterName := LIdentifier</programlisting>
         
-        <para>Identifiers may contain upper and lowercase letters, digits and 
-        underscore.</para>
-        
-        <programlisting>LIdentifier := LowercaseChar IdentifierChar*</programlisting>
-        <programlisting>UIdentifier := UppercaseChar IdentifierChar*</programlisting>
-        <programlisting>LowercaseChar := "a".."z" | "_"</programlisting>
-        <programlisting>UppercaseChar := "A".."Z"</programlisting>
-        <programlisting>IdentifierChar := LowercaseChar | UppercaseChar | "0".."9"</programlisting>
-        
-        <para>The following reserved words are not legal identifier names:</para>
-        
-        <para><literal>
-        import
-        class interface alias 
-        satisfies extends 
-        in out
-        void subtype def assign
-        return break throw retry 
-        this super null none
-        get set
-        if else switch case for fail do while try catch finally
-        exists nonempty is in
-        </literal></para>
-        
    </section>
       
     <section id="topleveldeclaration">
