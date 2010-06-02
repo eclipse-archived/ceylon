@@ -65,13 +65,18 @@
         <para>Identifiers may contain upper and lowercase letters, digits and 
         underscore.</para>
         
-        <programlisting>LIdentifier := LowercaseChar IdentifierChar*</programlisting>
-        <programlisting>UIdentifier := UppercaseChar IdentifierChar*</programlisting>
         <programlisting>IdentifierChar := LowercaseChar | UppercaseChar | Digit</programlisting>
         <programlisting>Digit := "0".."9"</programlisting>
         <programlisting>LowercaseChar := "a".."z" | "_"</programlisting>
         <programlisting>UppercaseChar := "A".."Z"</programlisting>
         
+        <para>The Ceylon lexer distinguishes identifiers which begin with an initial 
+        uppercase character from identifiers which begin with an initial lowercase
+        character or underscore.</para>
+        
+        <programlisting>LIdentifier := LowercaseChar IdentifierChar*</programlisting>
+        <programlisting>UIdentifier := UppercaseChar IdentifierChar*</programlisting>
+
         <para>The following examples are legal identifiers:</para>
         
         <programlisting>Person</programlisting>
@@ -95,6 +100,10 @@
         exists nonempty is in
         </literal></para>
         
+        <comment><para>TODO: Eventually we will probably want to support identifiers 
+        in non-european character sets. We can use an initial underscore to distinguish
+        "initial lowercase" identifiers.</para></comment>
+        
     </section>
     
     <section>
@@ -115,7 +124,14 @@
         
         <programlisting>69</programlisting>
         <programlisting>6.9</programlisting>
-        <programlisting>1.0e-10</programlisting>
+        <programlisting>0.999e-10</programlisting>
+        <programlisting>1.0E2</programlisting>
+        
+        <para>The following are <emphasis>not</emphasis> valid numeric literals:</para>
+        
+        <programlisting>.33</programlisting>
+        <programlisting>1.</programlisting>
+        <programlisting>99E+3</programlisting>
         
     </section>
     
@@ -129,7 +145,7 @@
         
         <programlisting>Character := ~(" " | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
         
-        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "s" | "&quot;" | "'" | "$" | "{" | "}" )</programlisting>
+        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "s" | "\" | "&quot;" | "'" | "$" | "{" | "}" )</programlisting>
         
         <para>The following are legal character literals:</para>
         
