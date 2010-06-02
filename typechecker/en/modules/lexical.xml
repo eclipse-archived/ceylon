@@ -1,9 +1,12 @@
 <chapter id="lexical">
     <title>Lexical structure</title>
     
-    <para>The lexical structure of Ceylon source files is very
-    similar to Java.</para>
-    
+    <para>The lexical structure of Ceylon source files is very similar to Java. 
+    Like Java, Unicode escape sequences <literal>\uXXXX</literal> are processed
+    first, to produce a raw stream of Unicode characters. This character stream 
+    is then processed by the lexer to produce a stream of terminal tokens of the 
+    Ceylon grammar.</para>
+        
     <section>
         <title>Whitespace</title>
         
@@ -104,7 +107,7 @@
         </literal></para>
         
         <comment><para>TODO: Eventually we will probably want to support identifiers 
-        in non-european character sets. We can use an initial underscore to distinguish
+        in non-European character sets. We can use an initial underscore to distinguish
         "initial lowercase" identifiers.</para></comment>
         
     </section>
@@ -155,6 +158,9 @@
         <programlisting>@A</programlisting>
         <programlisting>@#</programlisting>
         <programlisting>@\n</programlisting>
+        
+        <comment><para>TODO: should we support an escape sequence for Unicode character names
+        <literal>\N{name}</literal> like Python does?</para></comment>
         
     </section>
     
