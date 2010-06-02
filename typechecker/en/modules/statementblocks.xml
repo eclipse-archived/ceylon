@@ -99,9 +99,6 @@
         
         <programlisting>Return := "return" Expression?</programlisting>
         
-        <!--para>The <literal>produce</literal> directive may not be used outside
-        the body of a non-<literal>void</literal> functor expression.</para-->
-        
         <para>The <literal>break</literal> directive may not be appear outside the body 
         of a loop. If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
         directive may not specify an expression. If the loop has a <literal>fail</literal> 
@@ -171,10 +168,6 @@ else {
     description = "Natural order";
     order = Order.natural;
 }</programlisting>
-
-        <!--comment><para>TODO: Support specification of an abstract method implementation, like
-        in a named parameter invocation, i.e. a simplified syntax where you can eliminate 
-        the return type of a method which was already declared.</para></comment-->
 
         </section>
         
