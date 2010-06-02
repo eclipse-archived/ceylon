@@ -958,8 +958,8 @@ Digit
 
 FLOATLITERAL
     :   ('0' .. '9')+ '.' ('0' .. '9')+ Exponent?  
-    |   '.' ( '0' .. '9' )+ Exponent?  
-    |   ('0' .. '9')+ Exponent  
+    //|   '.' ( '0' .. '9' )+ Exponent?  
+    //|   ('0' .. '9')+ Exponent  
     ;
 
 fragment 
