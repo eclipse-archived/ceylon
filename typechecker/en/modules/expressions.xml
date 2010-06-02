@@ -481,9 +481,14 @@ ConstructorReference | MemberConstructorReference</programlisting>
         <para>The keyword <literal>get</literal> or <literal>set</literal> in an attribute 
         reference determines if it is the attribute getter or setter that is referred to.</para>
             
-        <comment><para>TODO: Would it be better to put the <literal>set</literal> or 
-        <literal>get</literal> keyword after the member reference (and before the parameter
-        list)? Do we really, truly need the keyword at all?</para></comment>
+        <comment><para>TODO: Here are a couple of alternative syntax possibilities for attribute
+        getter/setter references:</para>
+        <itemizedlist>
+            <listitem><literal>get(foo.bar)</literal> and <literal>set(foo.bar)</literal></listitem>
+            <listitem><literal>foo.get:bar</literal> and <literal>foo.set:bar</literal></listitem>
+            <listitem><literal>foo.bar get</literal> and <literal>foo.bar set</literal></listitem>
+        </itemizedlist>
+        </comment>
         
         </section>
         
