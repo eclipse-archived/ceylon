@@ -21,8 +21,8 @@ TypeConstraints?
 Body?</programlisting>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
-        be named with an initial uppercase. Members, parameters and locals must be 
-        named with an initial lowercase or underscore.</para>
+        be named with an initial uppercase. Members, parameters, locals and packages
+        must be named with an initial lowercase or underscore.</para>
         
         <programlisting>PackageName := LIdentifier</programlisting>
         <programlisting>TypeName := UIdentifier</programlisting>
@@ -124,32 +124,6 @@ Description doc(String description) {
         <para>Unlike Java, the same annotation may appear multiple times for the same
         program element. Furthermore, different annotations (<literal>static</literal> 
         methods) may return values of the same type.</para>
-        
-        <!--
-        <comment>
-        <para>TODO: to eliminate backtracking in the parser, we could do one of the
-        following things:</para>
-        <itemizedlist>
-            <listitem>
-                <para>require that member declarations with annotations be preceded
-                by a <literal>def</literal> keyword,</para>
-            </listitem>
-            <listitem>
-                <para>require that all member declarations be preceded by one of
-                <literal>public/module/package/private</literal> or <literal>override</literal>,
-                or</para>
-            </listitem>
-            <listitem>
-                <para>surround all the annotations in brackets, like C#.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>NOTE: we can get much of the value of the <literal>def</literal> keyword with
-        a recommendation to developers that they put one of <literal>public/module/package</literal> 
-        or <literal>override</literal>, first in the annotation list, and outlaw the use of those 
-        identifiers as names of members and local variables. This is enough of a hint to the 
-        compiler to eliminate backtracking in almost every case.</para></comment>
-        -->
         
     </section>
     
@@ -442,32 +416,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
     </section>
 
-    <!--section>
-        <title>Functor type declaration</title>
-    
-        <para>There are also functor types:</para>
-        
-        <programlisting>FunctorType := FunctorHeader FormalParams</programlisting>
-        
-        <programlisting>FunctorHeader := "functor" Annotation* (Type | "void")</programlisting>
-        
-        <para>The parameter names in a functor type declaration do not affect assignability
-        of the functor type. They are used when the functor is invoked using named parameters.</para>
-        
-        <para>For example:</para>
-        
-        <programlisting>functor Comparison(X x, X y)</programlisting>
-        <programlisting>functor Boolean(Payment payment)</programlisting>
-        <programlisting>functor void(Y element)</programlisting>
-        <programlisting>functor optional Object()</programlisting>
-        <programlisting>functor Y(optional Y object, Factory&lt;Y&gt; factory)</programlisting>
-        
-        <para>Functor types are covariant in the return type, and contravariant in the
-        parameter types. So <literal>functor String(Object o)</literal> is assignable to
-        <literal>functor Object(String s)</literal>.</para>
-        
-    </section-->
-
     <section id="formalparameterlist">
         <title>Formal parameter list</title>
     
@@ -715,67 +663,6 @@ VarargsParam?
         For example <literal>where X satisfies Number&lt;X&gt;</literal>.</para></comment>
     
     </section>
-    
-    <!--
-    <section>
-        <title>Declaration examples</title>
-        
-    <para>For example:</para>
-    
-    <programlisting>Comparable&lt;Person&gt; Person person = Person(name);</programlisting>
-    
-    <programlisting>public entity 
-class Customer(Name name, optional Organization org = null) 
-    extends Person(name, org) 
-{
-   ... 
-}</programlisting>
-
-    <programlisting>public
-class HashMap&lt;T&gt;(Iterable&lt;Entry&lt;T&gt;&gt; entries = {})
-    extends AbstractCollection&lt;Entry&lt;T&gt;&gt;(entries)
-    satisfies Map&lt;T&gt; 
-    where T >= Comparable 
-{ 
-    ... 
-}</programlisting>
-    
-    <programlisting>public interface List&lt;T&gt;
-    satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; 
-{
-    ...
-}</programlisting>
-
-    <programlisting>Natural count = 0;</programlisting>
-    
-    <programlisting>protected String firstName;</programlisting>
-    
-    <programlisting>public Boolean login() { ... }</programlisting>
-    
-    <programlisting>public 
-String join(Iterable&lt;String&gt; strings, 
-            String delimiter = ", ") 
-{ 
-   ... 
-}</programlisting>
-    
-    <programlisting>public Boolean functor Order&lt;T&gt;(T x, T y);</programlisting>
-
-    <programlisting>public decorator ComparablePerson(Person person) 
-    satisfies Comparable&lt;Person&gt; 
-{
-   ... 
-}</programlisting>
-               
-    <programlisting>public Float converter IntegerToFloat(Integer int) 
-{
-   return Float(int);
-}</programlisting>
-    
-    <para>Thus, the syntax of Ceylon declarations is more regular than Java or C#.</para>
-    
-    </section>
-    -->
     
     </section>
     
@@ -2056,160 +1943,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         </section-->
                 
     </section>
-    
-    <!--  
-    <section>
-        <title>Selectors</title>
         
-        <para>Selectors are declared according to the following:</para>
-        
-        <programlisting>Annotation* Type* 
-"selector" Identifier
-FormalParams?
-"{" 
-SelectorValue ("," SelectorValue)*
-( ";" ( Attribute | Method )* )? 
-"}"</programlisting>
-        
-        <para>Where:</para>
-        
-        <programlisting>SelectorValue := Identifier ( "(" ( Expression ("," Expression)* )? ")" )?</programlisting>
-        
-        <para>
-        For example:
-        </para>
-        
-        <programlisting>Public: 
-selector DayOfWeek 
-{ 
-    MON, TUES, WED, THURS, FRI, SAT, SUN 
-}</programlisting>
-
-        <programlisting>Public: 
-selector DayOfWeek(String name) 
-{ 
-    MON("Monday"), TUES("Tuesday"), ...
-    
-    Public Constant: String name = name;
-     
-}</programlisting>
-        
-        <programlisting>Public: 
-Comparator&lt;String&gt; 
-selector ComparisonOperation { 
-    ... 
-}</programlisting>
-        
-        <para>
-        The types listed before the <literal>selector</literal> keyword are the supertypes.
-        All supertypes of a selector must be interfaces. Any constructors must be private. The 
-        semantics of selector declarations and selector interface implementation are exactly the 
-        same as for Java <literal>enum</literal>s, except that a Ceylon selector implicitly 
-        implements <literal>lang.Selector</literal>, and the above declarations are equivalent to 
-        the following Java declarations: 
-        </para>
-        
-        <programlisting>public enum DayOfWeek 
-    implements Selector&lt;DayOfWeek&gt; 
-{ 
-    MON, TUES, WED, THURS, FRI, SAT, SUN 
-}</programlisting>
-        
-        <programlisting>public enum DayOfWeek 
-    implements Selector&lt;DayOfWeek&gt; 
-{
-         
-    MON("Monday"), TUES("Tuesday"), ...
-     
-    private DayOfWeek(String name) { ... }
-    
-    ...
-    
-}</programlisting>
-        <programlisting>public enum Comparison 
-    implements Comparator&lt;String&gt;, Selector&lt;Comparison&gt; 
-{ 
-    ... 
-}</programlisting>
-        
-        <para>TODO: let selectors have abstract methods that are overridden by the selector values!</para>
-        
-    </section>
-    -->
-    <!--  
-    <section id="functors">
-        <title>Functors</title>
-        
-        <para>A functor represents a typed block of code. Functors are declared according to 
-        the following:</para>
-        
-        <programlisting>Annotation* ( Type | "void" ) 
-"functor" Identifier TypeParams? 
-FormalParams 
-TypeConstraintList? 
-";"</programlisting>
-
-        <para>TODO: instead of having explicitly declared functor types like <literal>Order&lt;Person&gt;</literal>, 
-        we can just provide built-in functor types. If we want more compact type names, we can 
-        provide some kind of typedef.</para>
-
-        <para>TODO: let's wait and see what Java 7 does with closures. It will be easier for
-        developers to learn something that is aligned with what Java does.</para>
-        
-        <para>For example:</para>
-        
-        <programlisting>public Comparison functor Order&lt;T&gt;(T x, T y);</programlisting>
-        
-        <para>
-        A functor declaration is equivalent to a Java abstract class declaration that extends
-        <literal>lang.Functor</literal> with a single abstract method declaration. For the example
-        above, the equivalent Java declaration is:
-        </para>
-        
-        <programlisting>public abstract class Order&lt;T&gt; 
-        extends Functor&lt;Comparison&gt; {
-        
-    public abstract Comparison call(T x, T y);
-    
-    protected Order(Object... locals) 
-    { 
-        super(locals); 
-    }
-    
-}</programlisting>
-
-        <section>
-            <title>Functor literals</title>
-            
-        <para>Consider the following functor literal:</para>
-        
-        <programlisting>Order&lt;String&gt; order = (String x, String y) { x &lt;=&gt; y }</programlisting>
-        
-        <para>Or:</para>
-        
-        <programlisting>Order&lt;String&gt; order = (String x, String y) x &lt;=&gt; y;</programlisting>
-        
-        <para>These literals are equivalent to this Java code:</para>
-
-        <programlisting>Order&lt;String&gt; order = new Order&lt;String&gt;() {
-    public Comparison call(String x, String y) { 
-        return Comparison.compare(x,y); 
-    }
-};</programlisting>
-        
-        <para>And this functor invocation:</para>
-        
-        <programlisting>Boolean result = order("Gavin", "Emmanuel");</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-
-        <programlisting>Boolean result = order.call("Gavin", "Emmanuel");</programlisting>
-        
-        </section>
-        
-    </section>
-    -->
-    
     <section id="typealiases">
        <title>Type aliases</title>
     
