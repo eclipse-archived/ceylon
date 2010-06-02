@@ -1,0 +1,200 @@
+<chapter id="lexical">
+    <title>Lexical structure</title>
+    
+    <para>The lexical structure of Ceylon source files is very
+    similar to Java.</para>
+    
+    <section>
+        <title>Whitespace</title>
+        
+        <para>Whitespace characters are the ASCII <literal>SP</literal>, 
+        <literal>HT</literal> <literal>FF</literal>, <literal>LF</literal> and 
+        <literal>CR</literal> characters.</para>
+        
+        <programlisting>Whitespace := " " | Tab | Formfeed | Newline | Return</programlisting>
+        
+        <para>Outside of a comment, string literal, or single quoted literal,
+        whitespace acts as a token separator and is immediately discarded by
+        the lexer. Whitespace is not used as a statement separator.</para>
+        
+    </section>
+    
+    <section>
+        <title>Comments</title>
+        
+        <para>There are two kinds of comments:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a multiline comment that begins with <literal>/*</literal> 
+                and extends until <literal>*/</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>an end-of-line comment begins with <literal>//</literal> and 
+                extends until a line terminator: an ASCII <literal>LF</literal>,
+                <literal>CR</literal> or <literal>CR LF</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Both kinds of comments can be nested.</para>
+        
+        <programlisting>LineComment := "//" ~(Newline|Return)* (Return Newline | Return | Newline)</programlisting>
+        
+        <programlisting>MultilineComment := "/*" ( MultilineCommmentCharacter | MultilineComment )* "*/"</programlisting>
+        
+        <programlisting>MultilineCommmentCharacter := ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</programlisting>
+        
+        <para>The following examples are legal comments:</para>
+        
+        <programlisting>//this comment stops at the end of the line</programlisting>
+        
+        <programlisting>/*
+   but this is a comment that spans
+   multiple lines
+*/</programlisting>
+  
+        <para>Comments are treated as whitespace by both the compiler and documentation
+        compiler. Comments may act as token separators, but their content is immediately 
+        discarded by the lexer.</para>
+  
+    </section>
+    
+    <section>
+        <title>Identifiers and keywords</title>
+        
+        <para>Identifiers may contain upper and lowercase letters, digits and 
+        underscore.</para>
+        
+        <programlisting>LIdentifier := LowercaseChar IdentifierChar*</programlisting>
+        <programlisting>UIdentifier := UppercaseChar IdentifierChar*</programlisting>
+        <programlisting>IdentifierChar := LowercaseChar | UppercaseChar | Digit</programlisting>
+        <programlisting>Digit := "0".."9"</programlisting>
+        <programlisting>LowercaseChar := "a".."z" | "_"</programlisting>
+        <programlisting>UppercaseChar := "A".."Z"</programlisting>
+        
+        <para>The following examples are legal identifiers:</para>
+        
+        <programlisting>Person</programlisting>
+        <programlisting>name</programlisting>
+        <programlisting>personName</programlisting>
+        <programlisting>_id</programlisting>
+        <programlisting>x2</programlisting>
+        
+        <para>The following reserved words are not legal identifier names:</para>
+        
+        <para><literal>
+        import
+        class interface alias 
+        satisfies extends 
+        in out
+        void subtype def assign
+        return break throw retry 
+        this super null none
+        get set
+        if else switch case for fail do while try catch finally
+        exists nonempty is in
+        </literal></para>
+        
+    </section>
+    
+    <section>
+        <title>Literals</title>
+        
+    <section>
+        <title>Numeric literals</title>
+        
+        <para>A natural number literal has this form:</para>
+        
+        <programlisting>NaturalLiteral = Digit+</programlisting>
+        
+        <para>A floating point number literal has this form:</para>
+        
+        <programlisting>FloatLiteral := Digit+ "." Digit+ ( ("E"|"e") ("+"|"-")? Digit+ )?</programlisting>
+        
+        <para>The following examples are legal numeric literals:</para>
+        
+        <programlisting>69</programlisting>
+        <programlisting>6.9</programlisting>
+        <programlisting>1.0e-10</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Character literals</title>
+        
+        <para>A single character literal consists of a character, preceded by 
+        a <literal>@</literal>:</para>
+        
+        <programlisting>CharacterLiteral := "@" Character</programlisting>
+        
+        <programlisting>Character := ~(" " | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
+        
+        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "s" | "&quot;" | "'" | "$" | "{" | "}" )</programlisting>
+        
+        <para>The following are legal character literals:</para>
+        
+        <programlisting>@A</programlisting>
+        <programlisting>@#</programlisting>
+        <programlisting>@\n</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>String literals</title>
+        
+        <para>A character string literal is a character sequence surrounded by 
+        double quotes, and may contain embedded expressions:</para>
+        
+        <programlisting>StringLiteral := "&quot;" ( StringCharacter+ | "${" Expression "}" )* "&quot;"</programlisting>
+        
+        <programlisting>StringCharacter := ~( "{" | "\" | "&quot;" | "$" | "'" ) | EscapeSequence</programlisting>
+        
+        <para>The following are legal strings:</para>
+        
+        <programlisting>"Hello!"</programlisting>
+        
+        <programlisting>" \t\n\f\r,;"</programlisting>
+        
+        <programlisting>"Hi there, ${name}!"</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Single quoted literals</title>
+        
+        <para>Single-quoted strings are used to express literal values for 
+        user-defined types. A single quoted literal is a character sequence 
+        surrounded by single quotes:</para>
+        
+        <programlisting>QuotedLiteral := "'" StringCharacter* "'"</programlisting>
+        
+    </section>
+    
+        
+    </section>
+    
+    <section>
+        <title>Operators and delimiters</title>
+        
+        <para>The following character sequences are operators and/or punctuation:</para>
+        
+        <para><literal>
+        , ;
+        { } ( ) [ ] 
+        #
+        . ?. *. 
+        =
+        + - / * % **
+        ++ --
+        .. ->
+        $
+        ?
+        ! &amp;&amp; || =>
+        ~ &amp; | ^
+        == != === &lt; &gt; &lt;= &gt;= &lt;=&gt;
+        := .= += -= /= *= %= |= &amp;= ^= ||= &amp;&amp;= ?=
+        </literal></para>
+        
+    </section>
+
+</chapter>
