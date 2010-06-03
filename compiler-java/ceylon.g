@@ -578,7 +578,7 @@ comparisonExpression
 //of '?' and 'exists'/'nonempty'?
 defaultExpression
     : existenceEmptinessExpression 
-      ('?' defaultExpression)?
+      ('?'^ defaultExpression)?
     ;
 
 /*
@@ -740,7 +740,7 @@ assignables
     ;
 
 parExpression 
-    : '(' assignable ')'
+    : '('! assignable ')'!
     ;
     
 positionalArguments
@@ -919,9 +919,9 @@ variableStart
     ;
 
 // Lexer
-
+fragment
 NATURALLITERAL
-    : Digit Digit*
+    :
     ;
 
 fragment
@@ -929,10 +929,38 @@ Digit
     : '0'..'9'
     ;
 
+fragment
+Digits
+    :   ('0'..'9')+
+    ;
+
+fragment
+DOT
+    :
+    ;
+
 FLOATLITERAL
-    :   ('0' .. '9')+ '.' ('0' .. '9')+ Exponent?  
-    |   '.' ( '0' .. '9' )+ Exponent?  
-    |   ('0' .. '9')+ Exponent  
+    :
+        Digits Digits?
+            (
+               { input.LA(2) != '.'}?=>
+                      '.' Digits? Exponent?
+                    ( { $type = FLOATLITERAL; } )
+                |   
+                    (
+                        Exponent { $type = FLOATLITERAL; }
+                        | { $type = NATURALLITERAL;}
+                    )
+            )
+    |
+        '.'
+            (
+                  Digits Exponent? { $type = FLOATLITERAL; }
+                | '..' { $type = ELLIPSIS; }
+                | '.'  { $type = RANGE; }
+                |      { $type = DOT; }
+            )
+    
     ;
 
 fragment 
@@ -1189,14 +1217,6 @@ COMMA
     :   ','
     ;
 
-DOT
-    :   '.'
-    ;
-
-ELLIPSIS
-    :   '...'
-    ;
-
 EQ
     :   '='
     ;
@@ -1293,8 +1313,14 @@ ENTRY
     :   '->'
     ;
 
+fragment
 RANGE
-    :   '..'
+    :
+    ;
+    
+fragment
+ELLIPSIS
+    :
     ;
     
 COMPARE
