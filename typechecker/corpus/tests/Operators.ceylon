@@ -10,7 +10,7 @@ class Operators {
 	Entry<String,String> name = "Gavin"->"King";
 	Range<Natural> range = 1..5;
 	
-	String default = null ? "Hello";
+	String defaulted = null ? "Hello";
 	Boolean nullExists = null exists;
 	Boolean noneNonempty = none nonempty;
 	
