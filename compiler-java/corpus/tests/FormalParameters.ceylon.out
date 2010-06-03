@@ -1,0 +1,324 @@
+# FormalParameters.ceylon
+
+(TYPE_DECL 
+  (CLASS_DECL 
+    (TYPE_NAME FormalParameters) 
+    (STMT_LIST 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME MethodParameters) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME noParameter) ARG_LIST STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME singleParameter) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME count))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME annotatedParameter) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (ANNOTATION_LIST 
+                    (DECL_MODIFIER deprecated) 
+                    (USER_ANNOTATION 
+                      (ANNOTATION_NAME doc) 
+                      (STRING_CST "use something else"))) 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME count))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME multipleParameters) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME count)) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME description))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME defaultValueParameters) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME param) 
+                  (INIT_EXPR 
+                    (EXPR 
+                      (INT_CST 1)))) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME description) 
+                  (INIT_EXPR 
+                    (EXPR 
+                      (STRING_CST "")))) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Lock)) 
+                  (MEMBER_NAME lock) 
+                  (INIT_EXPR 
+                    (EXPR null)))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME varargsParameter) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) ... 
+                  (MEMBER_NAME strings))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME entryParameter) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME name) -> 
+                  (TYPE 
+                    (TYPE_NAME Person)) 
+                  (ARG_NAME person))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME rangeParameter) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME min) .. 
+                  (ARG_NAME max))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME combinationParameters) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME name) -> 
+                  (TYPE 
+                    (TYPE_NAME Person)) 
+                  (ARG_NAME person)) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME count)) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME description) 
+                  (INIT_EXPR 
+                    (EXPR 
+                      (STRING_CST "")))) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME min) .. 
+                  (ARG_NAME max) 
+                  (INIT_EXPR 
+                    (EXPR 
+                      (.. 
+                        (INT_CST 1) 
+                        (INT_CST 10))))) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Lock)) 
+                  (MEMBER_NAME lock) 
+                  (INIT_EXPR 
+                    (EXPR null))) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) ... 
+                  (MEMBER_NAME strings))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME functionalParameters) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME produce) ARG_LIST) 
+                (FORMAL_PARAMETER void 
+                  (MEMBER_NAME consume) 
+                  (ARG_LIST 
+                    (FORMAL_PARAMETER 
+                      (TYPE 
+                        (TYPE_NAME String)) 
+                      (MEMBER_NAME x))))) 
+              (STMT_LIST 
+                (EXPR 
+                  (EXPR 
+                    (MEMBER_NAME consume) 
+                    (CALL_EXPR 
+                      (ARG_LIST 
+                        (EXPR 
+                          (EXPR 
+                            (MEMBER_NAME produce) 
+                            (CALL_EXPR ARG_LIST)))))))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME InitParameters) 
+          (STMT_LIST 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME NoParameter) ARG_LIST STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME SingleParameter) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME count))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME AnnotatedParameter) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (ANNOTATION_LIST 
+                      (DECL_MODIFIER deprecated) 
+                      (USER_ANNOTATION 
+                        (ANNOTATION_NAME doc) 
+                        (STRING_CST "use something else"))) 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME count))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME MultipleParameters) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME count)) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME description))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME DefaultValueParameters) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME param) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (INT_CST 1)))) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME description) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (STRING_CST "")))) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Lock)) 
+                    (MEMBER_NAME lock) 
+                    (INIT_EXPR 
+                      (EXPR null)))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME VarargsParameter) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) ... 
+                    (MEMBER_NAME strings))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME EntryParameter) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME name) -> 
+                    (TYPE 
+                      (TYPE_NAME Person)) 
+                    (ARG_NAME person))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME RangeParameter) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME min) .. 
+                    (ARG_NAME max))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME CombinationParameters) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME name) -> 
+                    (TYPE 
+                      (TYPE_NAME Person)) 
+                    (ARG_NAME person)) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME count)) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME description) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (STRING_CST "")))) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Natural)) 
+                    (MEMBER_NAME min) .. 
+                    (ARG_NAME max) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (.. 
+                          (INT_CST 1) 
+                          (INT_CST 10))))) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Lock)) 
+                    (MEMBER_NAME lock) 
+                    (INIT_EXPR 
+                      (EXPR null))) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) ... 
+                    (MEMBER_NAME strings))) STMT_LIST)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME FunctionalParameters) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME produce) ARG_LIST) 
+                  (FORMAL_PARAMETER void 
+                    (MEMBER_NAME consume) 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME String)) 
+                        (MEMBER_NAME x))))) 
+                (STMT_LIST 
+                  (EXPR 
+                    (EXPR 
+                      (MEMBER_NAME consume) 
+                      (CALL_EXPR 
+                        (ARG_LIST 
+                          (EXPR 
+                            (EXPR 
+                              (MEMBER_NAME produce) 
+                              (CALL_EXPR ARG_LIST))))))))))))))))

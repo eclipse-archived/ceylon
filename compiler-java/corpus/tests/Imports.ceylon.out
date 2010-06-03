@@ -1,0 +1,26 @@
+# Imports.ceylon
+
+(nil 
+  (IMPORT_LIST 
+    (IMPORT_DECL 
+      (TYPE_NAME math Math) *)) 
+  (IMPORT_LIST 
+    (IMPORT_DECL 
+      (TYPE_NAME persistence query) *)) 
+  (IMPORT_LIST 
+    (IMPORT_DECL 
+      (TYPE_NAME persistence query QueryBuilder createQuery))) 
+  (IMPORT_LIST 
+    (IMPORT_DECL 
+      (TYPE_NAME persistence Session) 
+      (ALIAS_DECL 
+        (TYPE_NAME PersistenceSession)))) 
+  (IMPORT_LIST 
+    (IMPORT_DECL 
+      (TYPE_NAME persistence mapping Table))) 
+  (IMPORT_LIST 
+    (IMPORT_DECL 
+      (TYPE_NAME persistence mapping Column))) 
+  (TYPE_DECL 
+    (CLASS_DECL 
+      (TYPE_NAME Imports) STMT_LIST)))

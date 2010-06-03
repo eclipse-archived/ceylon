@@ -1,0 +1,156 @@
+# Aliases.ceylon
+
+(TYPE_DECL 
+  (CLASS_DECL 
+    (TYPE_NAME Aliases) 
+    (STMT_LIST 
+      (TYPE_DECL 
+        (INTERFACE_DECL 
+          (TYPE_NAME Foo) 
+          (TYPE_PARAMETER_LIST 
+            (TYPE_PARAMETER 
+              (TYPE_NAME X)) 
+            (TYPE_PARAMETER 
+              (TYPE_NAME Y)) 
+            (TYPE_PARAMETER 
+              (TYPE_NAME Z))))) 
+      (TYPE_DECL 
+        (INTERFACE_DECL 
+          (TYPE_NAME Bar) 
+          (TYPE_PARAMETER_LIST 
+            (TYPE_PARAMETER 
+              (TYPE_NAME X))))) 
+      (TYPE_DECL 
+        (INTERFACE_DECL 
+          (TYPE_NAME Baz) 
+          (TYPE_PARAMETER_LIST 
+            (TYPE_PARAMETER 
+              (TYPE_NAME X))))) 
+      (TYPE_DECL 
+        (ALIAS_DECL 
+          (TYPE_NAME Simple) 
+          (SATISFIES_LIST 
+            (TYPE 
+              (TYPE_NAME Bar) 
+              (TYPE_ARGS 
+                (TYPE_ARG_LIST 
+                  (TYPE 
+                    (TYPE_NAME Baz) 
+                    (TYPE_ARGS 
+                      (TYPE_ARG_LIST 
+                        (TYPE 
+                          (TYPE_NAME String))))))))))) 
+      (TYPE_DECL 
+        (ALIAS_DECL 
+          (TYPE_NAME WithTypeParameter) 
+          (TYPE_PARAMETER_LIST 
+            (TYPE_PARAMETER 
+              (TYPE_NAME X))) 
+          (SATISFIES_LIST 
+            (TYPE 
+              (TYPE_NAME Bar) 
+              (TYPE_ARGS 
+                (TYPE_ARG_LIST 
+                  (TYPE 
+                    (TYPE_NAME Baz) 
+                    (TYPE_ARGS 
+                      (TYPE_ARG_LIST 
+                        (TYPE 
+                          (TYPE_NAME X))))))))))) 
+      (TYPE_DECL 
+        (ALIAS_DECL 
+          (TYPE_NAME WithTypeConstraint) 
+          (TYPE_PARAMETER_LIST 
+            (TYPE_PARAMETER 
+              (TYPE_NAME X))) 
+          (SATISFIES_LIST 
+            (TYPE 
+              (TYPE_NAME Bar) 
+              (TYPE_ARGS 
+                (TYPE_ARG_LIST 
+                  (TYPE 
+                    (TYPE_NAME Baz) 
+                    (TYPE_ARGS 
+                      (TYPE_ARG_LIST 
+                        (TYPE 
+                          (TYPE_NAME X))))))))) 
+          (TYPE_CONSTRAINT_LIST 
+            (TYPE_CONSTRAINT 
+              (>= 
+                (TYPE_NAME X) 
+                (TYPE 
+                  (TYPE_NAME String))))))) 
+      (TYPE_DECL 
+        (ALIAS_DECL 
+          (TYPE_NAME Multiple) 
+          (SATISFIES_LIST 
+            (TYPE 
+              (TYPE_NAME Foo) 
+              (TYPE_ARGS 
+                (TYPE_ARG_LIST 
+                  (TYPE 
+                    (TYPE_NAME Bar) 
+                    (TYPE_ARGS 
+                      (TYPE_ARG_LIST 
+                        (TYPE 
+                          (TYPE_NAME Baz) 
+                          (TYPE_ARGS 
+                            (TYPE_ARG_LIST 
+                              (TYPE 
+                                (TYPE_NAME String)))))))) 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (TYPE 
+                    (TYPE_NAME Character))))) 
+            (TYPE 
+              (TYPE_NAME Bar) 
+              (TYPE_ARGS 
+                (TYPE_ARG_LIST 
+                  (TYPE 
+                    (TYPE_NAME Baz) 
+                    (TYPE_ARGS 
+                      (TYPE_ARG_LIST 
+                        (TYPE 
+                          (TYPE_NAME String))))))))))) 
+      (TYPE_DECL 
+        (ALIAS_DECL 
+          (TYPE_NAME WithAnnotations) 
+          (SATISFIES_LIST 
+            (TYPE 
+              (TYPE_NAME Foo) 
+              (TYPE_ARGS 
+                (TYPE_ARG_LIST 
+                  (TYPE 
+                    (TYPE_NAME Bar) 
+                    (TYPE_ARGS 
+                      (TYPE_ARG_LIST 
+                        (TYPE 
+                          (TYPE_NAME Baz) 
+                          (TYPE_ARGS 
+                            (TYPE_ARG_LIST 
+                              (TYPE 
+                                (TYPE_NAME String)))))))) 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (TYPE 
+                    (TYPE_NAME Character))))))) 
+        (ANNOTATION_LIST 
+          (USER_ANNOTATION 
+            (ANNOTATION_NAME doc) 
+            (STRING_CST "an alias")) 
+          (USER_ANNOTATION 
+            (ANNOTATION_NAME by) 
+            (STRING_CST "Gavin King") 
+            (STRING_CST "Andrew Haley")) 
+          (USER_ANNOTATION 
+            (ANNOTATION_NAME see) 
+            (REFLECTED_LITERAL 
+              (TYPE 
+                (TYPE_NAME Foo))) 
+            (REFLECTED_LITERAL 
+              (TYPE 
+                (TYPE_NAME Bar))) 
+            (REFLECTED_LITERAL 
+              (TYPE 
+                (TYPE_NAME Baz)))) 
+          (DECL_MODIFIER public))))))

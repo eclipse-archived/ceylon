@@ -1,0 +1,90 @@
+# Types.ceylon
+
+(TYPE_DECL 
+  (ANNOTATION_LIST 
+    (DECL_MODIFIER abstract)) 
+  (CLASS_DECL 
+    (TYPE_NAME Types) 
+    (STMT_LIST 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo))) 
+        (MEMBER_NAME simpleType) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo) 
+            (TYPE_ARGS 
+              (TYPE_ARG_LIST 
+                (TYPE 
+                  (TYPE_NAME Bar)))))) 
+        (MEMBER_NAME typeWithParameter) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo) 
+            (TYPE_ARGS 
+              (TYPE_ARG_LIST 
+                (TYPE 
+                  (TYPE_NAME Bar)) 
+                (TYPE 
+                  (TYPE_NAME Baz)))))) 
+        (MEMBER_NAME typeWithMultipleParameters) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo) 
+            (TYPE_ARGS 
+              (TYPE_ARG_LIST 
+                (TYPE 
+                  (TYPE_NAME Bar) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Baz))))))))) 
+        (MEMBER_NAME typeWithNestedParameter) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo Bar))) 
+        (MEMBER_NAME nestedType) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo Bar Baz))) 
+        (MEMBER_NAME multiplyNestedType) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo Bar) 
+            (TYPE_ARGS 
+              (TYPE_ARG_LIST 
+                (TYPE 
+                  (TYPE_NAME Baz)))))) 
+        (MEMBER_NAME nestedTypeWithTypeParameter) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo) 
+            (TYPE_ARGS 
+              (TYPE_ARG_LIST 
+                (TYPE 
+                  (TYPE_NAME Bar Baz)))))) 
+        (MEMBER_NAME typeWithNestedTypeParameter) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Foo) 
+            (TYPE_ARGS 
+              (TYPE_ARG_LIST 
+                (TYPE 
+                  (TYPE_NAME Bar Baz) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Qux))))))))) 
+        (MEMBER_NAME anythingGoes) ;) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE subtype) 
+        (MEMBER_NAME theSubtype) ;))))

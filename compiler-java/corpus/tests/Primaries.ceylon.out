@@ -1,0 +1,344 @@
+# Primaries.ceylon
+
+(TYPE_DECL 
+  (CLASS_DECL 
+    (TYPE_NAME Primaries) 
+    (STMT_LIST 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME Literals) 
+          (STMT_LIST 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME hello) 
+              (EXPR 
+                (STRING_CST "Hello"))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME names) 
+              (EXPR 
+                (STRING_CST "Gavin\nAndrew\nEmmanuel\n"))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Natural))) 
+              (MEMBER_NAME one) 
+              (EXPR 
+                (INT_CST 1))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Float))) 
+              (MEMBER_NAME zero) 
+              (EXPR 
+                (FLOAT_CST 0.0))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Float))) 
+              (MEMBER_NAME big) 
+              (EXPR 
+                (FLOAT_CST 1.0e10))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Float))) 
+              (MEMBER_NAME small) 
+              (EXPR 
+                (FLOAT_CST 1.0e-10))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Character))) 
+              (MEMBER_NAME x) 
+              (EXPR 
+                (CHAR_CST @x))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Character))) 
+              (MEMBER_NAME newline) 
+              (EXPR 
+                (CHAR_CST @\n))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Quoted))) 
+              (MEMBER_NAME quoted) 
+              (EXPR 
+                (QUOTE_CST 'quoted literal'))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Type) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Literals)))))) 
+              (MEMBER_NAME primariesClass) 
+              (INIT_EXPR 
+                (REFLECTED_LITERAL 
+                  (TYPE 
+                    (TYPE_NAME Primaries))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Type) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Literals)))))) 
+              (MEMBER_NAME literalsClass) 
+              (INIT_EXPR 
+                (REFLECTED_LITERAL 
+                  (TYPE 
+                    (TYPE_NAME Primaries Literals))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Attribute) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Literals)) 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME helloAttribute) 
+              (INIT_EXPR 
+                (REFLECTED_LITERAL 
+                  (MEMBER_NAME hello)))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Attribute) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Literals)) 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME oneAttribute) 
+              (INIT_EXPR 
+                (REFLECTED_LITERAL 
+                  (TYPE 
+                    (TYPE_NAME Primaries Literals)) 
+                  (MEMBER_NAME one)))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Method) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME Object)) 
+                      (TYPE 
+                        (TYPE_NAME Boolean)))))) 
+              (MEMBER_NAME method) 
+              (INIT_EXPR 
+                (REFLECTED_LITERAL 
+                  (TYPE 
+                    (TYPE_NAME Object)) 
+                  (MEMBER_NAME equals))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME Specials) 
+          (STMT_LIST 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME nothing) 
+              (EXPR null) 
+              (ANNOTATION_LIST 
+                (DECL_MODIFIER optional))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME empty) 
+              (EXPR none)) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Specials))) 
+              (MEMBER_NAME s) 
+              (EXPR this)) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME Subclass) 
+                (SUPERCLASS 
+                  (TYPE 
+                    (TYPE_NAME Specials))) 
+                (STMT_LIST 
+                  (MEMBER_DECL 
+                    (MEMBER_TYPE 
+                      (TYPE 
+                        (TYPE_NAME Specials))) 
+                    (MEMBER_NAME s) 
+                    (EXPR super)))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME Enumerations) 
+          (STMT_LIST 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME empty) 
+              (EXPR ENUM_LIST)) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME singleton) 
+              (EXPR 
+                (ENUM_LIST 
+                  (EXPR 
+                    (STRING_CST "hello"))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME enumeration) 
+              (EXPR 
+                (ENUM_LIST 
+                  (EXPR 
+                    (STRING_CST "foo")) 
+                  (EXPR 
+                    (STRING_CST "bar")) 
+                  (EXPR 
+                    (STRING_CST "baz")))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME MethodReferences) 
+          (STMT_LIST 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME Person) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME name))) 
+                (STMT_LIST 
+                  (MEMBER_DECL 
+                    (MEMBER_TYPE 
+                      (TYPE 
+                        (TYPE_NAME String))) 
+                    (MEMBER_NAME name) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (MEMBER_NAME name))) 
+                    (ANNOTATION_LIST 
+                      (DECL_MODIFIER mutable))) 
+                  (METHOD_DECL 
+                    (MEMBER_TYPE void) 
+                    (MEMBER_NAME hello) ARG_LIST 
+                    (STMT_LIST 
+                      (EXPR 
+                        (EXPR 
+                          (MEMBER_NAME log) . 
+                          (MEMBER_NAME info) 
+                          (CALL_EXPR 
+                            (ARG_LIST 
+                              (EXPR 
+                                (STRING_CONCAT 
+                                  (STRING_CST "Hello ${) 
+                                  (EXPR 
+                                    (MEMBER_NAME name)) 
+                                  (STRING_CST }$"))))))))) 
+                  (METHOD_DECL 
+                    (MEMBER_TYPE void) 
+                    (MEMBER_NAME helloWorld) ARG_LIST 
+                    (STMT_LIST 
+                      (EXPR 
+                        (EXPR 
+                          (MEMBER_NAME log) . 
+                          (MEMBER_NAME info) 
+                          (CALL_EXPR 
+                            (ARG_LIST 
+                              (EXPR 
+                                (STRING_CST "Hello World"))))))) 
+                    (ANNOTATION_LIST 
+                      (DECL_MODIFIER static)))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Person))) 
+              (MEMBER_NAME person) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME Person) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (STRING_CST "Gavin King"))))))) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME hello) ARG_LIST 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME person) . 
+                  (MEMBER_NAME hello)))) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME helloWorld) ARG_LIST 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME Person) . 
+                  (MEMBER_NAME helloWorld)))) 
+            (METHOD_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME getName) ARG_LIST 
+              (EXPR 
+                (GET_EXPR 
+                  (EXPR 
+                    (MEMBER_NAME person) . 
+                    (MEMBER_NAME name))))) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME setName) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME name))) 
+              (EXPR 
+                (SET_EXPR 
+                  (EXPR 
+                    (MEMBER_NAME person) . 
+                    (MEMBER_NAME name))))) 
+            (METHOD_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME Person))) 
+              (MEMBER_NAME newPerson) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME name))) 
+              (EXPR 
+                (TYPE_NAME Person)))))))))

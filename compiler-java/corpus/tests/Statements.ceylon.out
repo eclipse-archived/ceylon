@@ -1,0 +1,264 @@
+# Statements.ceylon
+
+(TYPE_DECL 
+  (CLASS_DECL 
+    (TYPE_NAME Statements) 
+    (STMT_LIST 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME String))) 
+        (MEMBER_NAME hello) 
+        (EXPR 
+          (STRING_CST "Hello World"))) 
+      (METHOD_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME String))) 
+        (MEMBER_NAME getHello) ARG_LIST 
+        (EXPR 
+          (GET_EXPR 
+            (MEMBER_NAME hello)))) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME String))) 
+        (MEMBER_NAME string) 
+        (INIT_EXPR 
+          (EXPR 
+            (MEMBER_NAME hello))) 
+        (ANNOTATION_LIST 
+          (DECL_MODIFIER mutable))) 
+      (EXPR 
+        (:= 
+          (MEMBER_NAME string) 
+          (EXPR 
+            (STRING_CST "Hello Gavin")))) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Natural))) 
+        (MEMBER_NAME x) ;) 
+      (EXPR 
+        (= 
+          (MEMBER_NAME x) 
+          (EXPR 
+            (INT_CST 0)))) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Natural))) 
+        (MEMBER_NAME y) 
+        (INIT_EXPR 
+          (EXPR 
+            (MEMBER_NAME x))) 
+        (ANNOTATION_LIST 
+          (DECL_MODIFIER mutable))) 
+      (EXPR 
+        (:= 
+          (MEMBER_NAME y) 
+          (EXPR 
+            (* 
+              (MEMBER_NAME y) 
+              (MEMBER_NAME x))))) 
+      (EXPR 
+        (EXPR 
+          (MEMBER_NAME y) 
+          (POSTFIX_EXPR ++))) 
+      (EXPR 
+        (EXPR 
+          (MEMBER_NAME y) 
+          (POSTFIX_EXPR --))) 
+      (EXPR 
+        (PREFIX_EXPR ++ 
+          (MEMBER_NAME y))) 
+      (EXPR 
+        (PREFIX_EXPR -- 
+          (MEMBER_NAME y))) 
+      (EXPR 
+        (+= 
+          (MEMBER_NAME y) 
+          (EXPR 
+            (INT_CST 5)))) 
+      (EXPR 
+        (-= 
+          (MEMBER_NAME y) 
+          (EXPR 
+            (INT_CST 5)))) 
+      (EXPR 
+        (*= 
+          (MEMBER_NAME y) 
+          (EXPR 
+            (INT_CST 2)))) 
+      (EXPR 
+        (/= 
+          (MEMBER_NAME y) 
+          (EXPR 
+            (INT_CST 2)))) 
+      (EXPR 
+        (%= 
+          (MEMBER_NAME y) 
+          (EXPR 
+            (INT_CST 7)))) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME Boolean))) 
+        (MEMBER_NAME b) 
+        (INIT_EXPR 
+          (EXPR 
+            (MEMBER_NAME true))) 
+        (ANNOTATION_LIST 
+          (DECL_MODIFIER mutable))) 
+      (EXPR 
+        (||= 
+          (MEMBER_NAME b) 
+          (EXPR 
+            (MEMBER_NAME b)))) 
+      (EXPR 
+        (&&= 
+          (MEMBER_NAME b) 
+          (EXPR 
+            (MEMBER_NAME b)))) 
+      (EXPR 
+        (|= 
+          (MEMBER_NAME b) 
+          (EXPR 
+            (MEMBER_NAME b)))) 
+      (EXPR 
+        (&= 
+          (MEMBER_NAME b) 
+          (EXPR 
+            (MEMBER_NAME b)))) 
+      (EXPR 
+        (^= 
+          (MEMBER_NAME b) 
+          (EXPR 
+            (MEMBER_NAME false)))) 
+      (MEMBER_DECL 
+        (MEMBER_TYPE 
+          (TYPE 
+            (TYPE_NAME String))) 
+        (MEMBER_NAME qux) 
+        (INIT_EXPR 
+          (EXPR null)) 
+        (ANNOTATION_LIST 
+          (DECL_MODIFIER mutable) 
+          (DECL_MODIFIER optional))) 
+      (EXPR 
+        (?= 
+          (MEMBER_NAME qux) 
+          (EXPR 
+            (STRING_CST "Hello")))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME Bar) 
+          (ARG_LIST 
+            (FORMAL_PARAMETER 
+              (TYPE 
+                (TYPE_NAME Boolean)) 
+              (MEMBER_NAME b))) STMT_LIST)) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Bar) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (EXPR 
+                (MEMBER_NAME true)))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Bar) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (NAMED_ARG 
+                (ARG_NAME b) 
+                (EXPR 
+                  (MEMBER_NAME false))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME Foo) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME instanceMethod) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Natural)) 
+                  (MEMBER_NAME n))) STMT_LIST) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME staticMethod) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Float)) 
+                  (MEMBER_NAME f))) STMT_LIST 
+              (ANNOTATION_LIST 
+                (DECL_MODIFIER static))) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME Baz) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME s))) STMT_LIST))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Foo) 
+          (CALL_EXPR ARG_LIST) . 
+          (MEMBER_NAME instanceMethod) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (EXPR 
+                (INT_CST 2)))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Foo) 
+          (CALL_EXPR ARG_LIST) . 
+          (MEMBER_NAME instanceMethod) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (NAMED_ARG 
+                (ARG_NAME n) 
+                (EXPR 
+                  (INT_CST 0))))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Foo) . 
+          (MEMBER_NAME staticMethod) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (EXPR 
+                (FLOAT_CST 1.0)))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Foo) . 
+          (MEMBER_NAME staticMethod) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (NAMED_ARG 
+                (ARG_NAME f) 
+                (EXPR 
+                  (FLOAT_CST 2.5))))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Foo) 
+          (CALL_EXPR ARG_LIST) . 
+          (TYPE_NAME Baz) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (EXPR 
+                (STRING_CST "hello")))))) 
+      (EXPR 
+        (EXPR 
+          (TYPE_NAME Foo) 
+          (CALL_EXPR ARG_LIST) . 
+          (TYPE_NAME Baz) 
+          (CALL_EXPR 
+            (ARG_LIST 
+              (NAMED_ARG 
+                (ARG_NAME s) 
+                (EXPR 
+                  (STRING_CST "goodbye"))))))))))

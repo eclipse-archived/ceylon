@@ -1,0 +1,776 @@
+# Arguments.ceylon
+
+(TYPE_DECL 
+  (CLASS_DECL 
+    (TYPE_NAME Arguments) 
+    (STMT_LIST 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME NoArguments) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME greet) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME value) 
+                  (INIT_EXPR 
+                    (EXPR 
+                      (STRING_CST "Hello"))))) 
+              (STMT_LIST 
+                (EXPR 
+                  (EXPR 
+                    (MEMBER_NAME log) . 
+                    (MEMBER_NAME info) 
+                    (CALL_EXPR 
+                      (ARG_LIST 
+                        (EXPR 
+                          (MEMBER_NAME value)))))))) 
+            (EXPR 
+              (EXPR 
+                (MEMBER_NAME greet) 
+                (CALL_EXPR ARG_LIST))) 
+            (EXPR 
+              (EXPR 
+                (MEMBER_NAME greet) 
+                (CALL_EXPR ARG_LIST))) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME Greeting) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME value) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (STRING_CST "Hello"))))) 
+                (STMT_LIST 
+                  (EXPR 
+                    (EXPR 
+                      (MEMBER_NAME log) . 
+                      (MEMBER_NAME info) 
+                      (CALL_EXPR 
+                        (ARG_LIST 
+                          (EXPR 
+                            (MEMBER_NAME value))))))))) 
+            (EXPR 
+              (EXPR 
+                (TYPE_NAME Greeting) 
+                (CALL_EXPR ARG_LIST))) 
+            (EXPR 
+              (EXPR 
+                (TYPE_NAME Greeting) 
+                (CALL_EXPR ARG_LIST)))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME SingleArgument) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME owt) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME value))) 
+              (STMT_LIST 
+                (EXPR 
+                  (EXPR 
+                    (MEMBER_NAME log) . 
+                    (MEMBER_NAME info) 
+                    (CALL_EXPR 
+                      (ARG_LIST 
+                        (EXPR 
+                          (MEMBER_NAME value)))))))) 
+            (EXPR 
+              (EXPR 
+                (MEMBER_NAME owt) 
+                (CALL_EXPR 
+                  (ARG_LIST 
+                    (EXPR 
+                      (STRING_CST "Hello")))))) 
+            (EXPR 
+              (EXPR 
+                (MEMBER_NAME owt) 
+                (CALL_EXPR 
+                  (ARG_LIST 
+                    (NAMED_ARG 
+                      (ARG_NAME value) 
+                      (EXPR 
+                        (STRING_CST "Hi"))))))) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME Output) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME value))) 
+                (STMT_LIST 
+                  (EXPR 
+                    (EXPR 
+                      (MEMBER_NAME log) . 
+                      (MEMBER_NAME info) 
+                      (CALL_EXPR 
+                        (ARG_LIST 
+                          (EXPR 
+                            (MEMBER_NAME value))))))))) 
+            (EXPR 
+              (EXPR 
+                (TYPE_NAME Output) 
+                (CALL_EXPR 
+                  (ARG_LIST 
+                    (EXPR 
+                      (STRING_CST "Hello")))))) 
+            (EXPR 
+              (EXPR 
+                (TYPE_NAME Output) 
+                (CALL_EXPR 
+                  (ARG_LIST 
+                    (NAMED_ARG 
+                      (ARG_NAME value) 
+                      (EXPR 
+                        (STRING_CST "Hi")))))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME MultipleArguments) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME fullName) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME firstName)) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME lastName))) 
+              (STMT_LIST 
+                (RET_STMT 
+                  (EXPR 
+                    (+ 
+                      (+ 
+                        (MEMBER_NAME firstName) 
+                        (STRING_CST " ")) 
+                      (MEMBER_NAME lastName)))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME methodResultWithPositionalParams) 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME fullName) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (STRING_CST "Gavin")) 
+                      (EXPR 
+                        (STRING_CST "King"))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME methodResultWithNamedParams) 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME fullName) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (NAMED_ARG 
+                        (ARG_NAME firstName) 
+                        (EXPR 
+                          (STRING_CST "Andrew"))) 
+                      (NAMED_ARG 
+                        (ARG_NAME lastName) 
+                        (EXPR 
+                          (STRING_CST "Haley")))))))) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME FullName) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME firstName)) 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME String)) 
+                    (MEMBER_NAME lastName))) 
+                (STMT_LIST 
+                  (MEMBER_DECL 
+                    (MEMBER_TYPE 
+                      (TYPE 
+                        (TYPE_NAME String))) 
+                    (MEMBER_NAME value) 
+                    (EXPR 
+                      (+ 
+                        (+ 
+                          (MEMBER_NAME firstName) 
+                          (STRING_CST " ")) 
+                        (MEMBER_NAME lastName))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME FullName))) 
+              (MEMBER_NAME instantiationResultWithPositionalParams) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME FullName) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (STRING_CST "Gavin")) 
+                      (EXPR 
+                        (STRING_CST "King"))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME FullName))) 
+              (MEMBER_NAME instantiationResultWithNamedParams) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME FullName) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (NAMED_ARG 
+                        (ARG_NAME firstName) 
+                        (EXPR 
+                          (STRING_CST "Andrew"))) 
+                      (NAMED_ARG 
+                        (ARG_NAME lastName) 
+                        (EXPR 
+                          (STRING_CST "Haley"))))))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME Varargs) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME join) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME sep)) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) ... 
+                  (MEMBER_NAME strings))) 
+              (STMT_LIST 
+                (RET_STMT 
+                  (EXPR 
+                    (EXPR 
+                      (EXPR 
+                        (+ 
+                          (MEMBER_NAME sep) 
+                          (STRING_CST " "))) . 
+                      (MEMBER_NAME join) 
+                      (CALL_EXPR 
+                        (ARG_LIST 
+                          (EXPR 
+                            (MEMBER_NAME strings))))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME methodResultWithPositionalVarargs) 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME join) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (STRING_CST ",")) 
+                      (EXPR 
+                        (STRING_CST "foo")) 
+                      (EXPR 
+                        (STRING_CST "bar"))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME methodResultWithNamedVarargs) 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME join) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (NAMED_ARG 
+                        (ARG_NAME sep) 
+                        (EXPR 
+                          (STRING_CST ","))) 
+                      (UNNAMED_ARG 
+                        (EXPR 
+                          (STRING_CST "one"))) 
+                      (UNNAMED_ARG 
+                        (EXPR 
+                          (STRING_CST "two")))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME methodResultWithPositionalEnumerationParam) 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME join) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (STRING_CST ",")) 
+                      (EXPR 
+                        (ENUM_LIST 
+                          (EXPR 
+                            (STRING_CST "foo")) 
+                          (EXPR 
+                            (STRING_CST "bar"))))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME String))) 
+              (MEMBER_NAME methodResultWithNamedEnumerationParam) 
+              (EXPR 
+                (EXPR 
+                  (MEMBER_NAME join) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (NAMED_ARG 
+                        (ARG_NAME sep) 
+                        (EXPR 
+                          (STRING_CST ","))) 
+                      (NAMED_ARG 
+                        (ARG_NAME strings) 
+                        (EXPR 
+                          (ENUM_LIST 
+                            (EXPR 
+                              (STRING_CST "one")) 
+                            (EXPR 
+                              (STRING_CST "two")))))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME instantiationResultWithPositionalVarargs) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME List) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (STRING_CST "foo")) 
+                      (EXPR 
+                        (STRING_CST "bar")) 
+                      (EXPR 
+                        (STRING_CST "baz"))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME instantiationResultWithNamedVarargs) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME List) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (UNNAMED_ARG 
+                        (EXPR 
+                          (STRING_CST "one"))) 
+                      (UNNAMED_ARG 
+                        (EXPR 
+                          (STRING_CST "two"))) 
+                      (UNNAMED_ARG 
+                        (EXPR 
+                          (STRING_CST "three")))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME instantiationResultWithPositionalEnumerationParam) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME List) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (ENUM_LIST 
+                          (EXPR 
+                            (STRING_CST "foo")) 
+                          (EXPR 
+                            (STRING_CST "bar")) 
+                          (EXPR 
+                            (STRING_CST "baz"))))))))) 
+            (MEMBER_DECL 
+              (MEMBER_TYPE 
+                (TYPE 
+                  (TYPE_NAME List) 
+                  (TYPE_ARGS 
+                    (TYPE_ARG_LIST 
+                      (TYPE 
+                        (TYPE_NAME String)))))) 
+              (MEMBER_NAME instantiationResultWithNamedEnumerationParam) 
+              (EXPR 
+                (EXPR 
+                  (TYPE_NAME List) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (NAMED_ARG 
+                        (ARG_NAME strings) 
+                        (EXPR 
+                          (ENUM_LIST 
+                            (EXPR 
+                              (STRING_CST "one")) 
+                            (EXPR 
+                              (STRING_CST "two")) 
+                            (EXPR 
+                              (STRING_CST "three"))))))))))))) 
+      (TYPE_DECL 
+        (CLASS_DECL 
+          (TYPE_NAME FunctionalArguments) 
+          (STMT_LIST 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME logLazily) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME String)) 
+                  (MEMBER_NAME message) ARG_LIST)) 
+              (STMT_LIST 
+                (IF_STMT 
+                  (CONDITION 
+                    (EXPR 
+                      (EXPR 
+                        (MEMBER_NAME log) . 
+                        (MEMBER_NAME infoEnabled)))) 
+                  (IF_TRUE 
+                    (STMT_LIST 
+                      (EXPR 
+                        (EXPR 
+                          (MEMBER_NAME log) . 
+                          (MEMBER_NAME info) 
+                          (CALL_EXPR 
+                            (ARG_LIST 
+                              (EXPR 
+                                (EXPR 
+                                  (MEMBER_NAME message) 
+                                  (CALL_EXPR ARG_LIST)))))))))))) 
+            (EXPR 
+              (METHOD_EXPR 
+                (EXPR 
+                  (MEMBER_NAME logLazily) 
+                  (CALL_EXPR ARG_LIST)) 
+                (NAMED_ARG 
+                  (MEMBER_NAME message) 
+                  (ANON_METH 
+                    (STRING_CST "hello"))))) 
+            (EXPR 
+              (METHOD_EXPR 
+                (EXPR 
+                  (MEMBER_NAME logLazily) 
+                  (CALL_EXPR ARG_LIST)) 
+                (NAMED_ARG 
+                  (MEMBER_NAME message) 
+                  (ANON_METH 
+                    (STMT_LIST 
+                      (RET_STMT 
+                        (EXPR 
+                          (STRING_CST "hello")))))))) 
+            (EXPR 
+              (EXPR 
+                (MEMBER_NAME logLazily) 
+                (CALL_EXPR 
+                  (ARG_LIST 
+                    (NAMED_ARG 
+                      (ARG_NAME message) ARG_LIST 
+                      (STMT_LIST 
+                        (RET_STMT 
+                          (EXPR 
+                            (STRING_CST "hello"))))))))) 
+            (METHOD_DECL 
+              (MEMBER_TYPE void) 
+              (MEMBER_NAME from) 
+              (TYPE_PARAMETER_LIST 
+                (TYPE_PARAMETER 
+                  (TYPE_NAME Y))) 
+              (ARG_LIST 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Y)) 
+                  (MEMBER_NAME initial)) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Boolean)) 
+                  (MEMBER_NAME until) 
+                  (ARG_LIST 
+                    (FORMAL_PARAMETER 
+                      (TYPE 
+                        (TYPE_NAME Y)) 
+                      (MEMBER_NAME y)))) 
+                (FORMAL_PARAMETER 
+                  (TYPE 
+                    (TYPE_NAME Y)) 
+                  (MEMBER_NAME each) 
+                  (ARG_LIST 
+                    (FORMAL_PARAMETER 
+                      (TYPE 
+                        (TYPE_NAME Y)) 
+                      (MEMBER_NAME y)))) 
+                (FORMAL_PARAMETER void 
+                  (MEMBER_NAME perform) 
+                  (ARG_LIST 
+                    (FORMAL_PARAMETER 
+                      (TYPE 
+                        (TYPE_NAME Y)) 
+                      (MEMBER_NAME y))))) 
+              (STMT_LIST 
+                (WHILE_STMT 
+                  (CONDITION 
+                    (EXPR 
+                      (! 
+                        (EXPR 
+                          (MEMBER_NAME until) 
+                          (CALL_EXPR 
+                            (ARG_LIST 
+                              (EXPR 
+                                (MEMBER_NAME y)))))))) 
+                  (DO_ITERATOR 
+                    (ANNOTATION_LIST 
+                      (DECL_MODIFIER mutable)) 
+                    (VAR_DECL 
+                      (TYPE 
+                        (TYPE_NAME Y)) 
+                      (MEMBER_NAME y)) 
+                    (INIT_EXPR 
+                      (EXPR 
+                        (MEMBER_NAME initial)))) 
+                  (WHILE_BLOCK 
+                    (STMT_LIST 
+                      (EXPR 
+                        (EXPR 
+                          (MEMBER_NAME perform) 
+                          (CALL_EXPR 
+                            (ARG_LIST 
+                              (EXPR 
+                                (MEMBER_NAME y)))))) 
+                      (EXPR 
+                        (:= 
+                          (MEMBER_NAME y) 
+                          (EXPR 
+                            (EXPR 
+                              (MEMBER_NAME each) 
+                              (CALL_EXPR 
+                                (ARG_LIST 
+                                  (EXPR 
+                                    (MEMBER_NAME y)))))))))))) 
+              (ANNOTATION_LIST 
+                (DECL_MODIFIER public) 
+                (DECL_MODIFIER static))) 
+            (EXPR 
+              (METHOD_EXPR 
+                (EXPR 
+                  (MEMBER_NAME from) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (INT_CST 0))))) 
+                (NAMED_ARG 
+                  (MEMBER_NAME until) 
+                  (ANON_METH 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME Y)) 
+                        (MEMBER_NAME y))) 
+                    (== 
+                      (MEMBER_NAME y) 
+                      (INT_CST 10)))) 
+                (NAMED_ARG 
+                  (MEMBER_NAME each) 
+                  (ANON_METH 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME Y)) 
+                        (MEMBER_NAME y))) 
+                    (+ 
+                      (MEMBER_NAME y) 
+                      (INT_CST 2)))) 
+                (NAMED_ARG 
+                  (MEMBER_NAME perform) 
+                  (ANON_METH 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME Y)) 
+                        (MEMBER_NAME y))) 
+                    (EXPR 
+                      (MEMBER_NAME log) . 
+                      (MEMBER_NAME info) 
+                      (CALL_EXPR 
+                        (ARG_LIST 
+                          (EXPR 
+                            (MEMBER_NAME y))))))))) 
+            (EXPR 
+              (METHOD_EXPR 
+                (EXPR 
+                  (MEMBER_NAME from) 
+                  (CALL_EXPR 
+                    (ARG_LIST 
+                      (EXPR 
+                        (INT_CST 0))))) 
+                (NAMED_ARG 
+                  (MEMBER_NAME until) 
+                  (ANON_METH 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME Y)) 
+                        (MEMBER_NAME y))) 
+                    (STMT_LIST 
+                      (RET_STMT 
+                        (EXPR 
+                          (== 
+                            (MEMBER_NAME y) 
+                            (INT_CST 10))))))) 
+                (NAMED_ARG 
+                  (MEMBER_NAME each) 
+                  (ANON_METH 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME Y)) 
+                        (MEMBER_NAME y))) 
+                    (STMT_LIST 
+                      (RET_STMT 
+                        (EXPR 
+                          (+ 
+                            (MEMBER_NAME y) 
+                            (INT_CST 2))))))) 
+                (NAMED_ARG 
+                  (MEMBER_NAME perform) 
+                  (ANON_METH 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME Y)) 
+                        (MEMBER_NAME y))) 
+                    (STMT_LIST 
+                      (EXPR 
+                        (EXPR 
+                          (MEMBER_NAME log) . 
+                          (MEMBER_NAME info) 
+                          (CALL_EXPR 
+                            (ARG_LIST 
+                              (EXPR 
+                                (MEMBER_NAME y))))))))))) 
+            (EXPR 
+              (EXPR 
+                (MEMBER_NAME from) 
+                (CALL_EXPR 
+                  (ARG_LIST 
+                    (NAMED_ARG 
+                      (ARG_NAME initial) 
+                      (EXPR 
+                        (INT_CST 0))) 
+                    (NAMED_ARG 
+                      (ARG_NAME until) 
+                      (ARG_LIST 
+                        (FORMAL_PARAMETER 
+                          (TYPE 
+                            (TYPE_NAME Y)) 
+                          (MEMBER_NAME y))) 
+                      (STMT_LIST 
+                        (RET_STMT 
+                          (EXPR 
+                            (== 
+                              (MEMBER_NAME y) 
+                              (INT_CST 10)))))) 
+                    (NAMED_ARG 
+                      (ARG_NAME each) 
+                      (ARG_LIST 
+                        (FORMAL_PARAMETER 
+                          (TYPE 
+                            (TYPE_NAME Y)) 
+                          (MEMBER_NAME y))) 
+                      (STMT_LIST 
+                        (RET_STMT 
+                          (EXPR 
+                            (+ 
+                              (MEMBER_NAME y) 
+                              (INT_CST 2)))))) 
+                    (NAMED_ARG 
+                      (ARG_NAME perform) 
+                      (ARG_LIST 
+                        (FORMAL_PARAMETER 
+                          (TYPE 
+                            (TYPE_NAME Y)) 
+                          (MEMBER_NAME y))) 
+                      (STMT_LIST 
+                        (EXPR 
+                          (EXPR 
+                            (MEMBER_NAME log) . 
+                            (MEMBER_NAME info) 
+                            (CALL_EXPR 
+                              (ARG_LIST 
+                                (EXPR 
+                                  (MEMBER_NAME y)))))))))))) 
+            (TYPE_DECL 
+              (CLASS_DECL 
+                (TYPE_NAME Processor) 
+                (TYPE_PARAMETER_LIST 
+                  (TYPE_PARAMETER 
+                    (TYPE_NAME X)) 
+                  (TYPE_PARAMETER 
+                    (TYPE_NAME Y))) 
+                (ARG_LIST 
+                  (FORMAL_PARAMETER 
+                    (TYPE 
+                      (TYPE_NAME Y)) 
+                    (MEMBER_NAME process) 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME X)) 
+                        (MEMBER_NAME x))))) 
+                (STMT_LIST 
+                  (METHOD_DECL 
+                    (MEMBER_TYPE 
+                      (TYPE 
+                        (TYPE_NAME Y))) 
+                    (MEMBER_NAME handle) 
+                    (ARG_LIST 
+                      (FORMAL_PARAMETER 
+                        (TYPE 
+                          (TYPE_NAME X)) 
+                        (MEMBER_NAME x))) 
+                    (STMT_LIST 
+                      (RET_STMT 
+                        (EXPR 
+                          (EXPR 
+                            (MEMBER_NAME process) 
+                            (CALL_EXPR 
+                              (ARG_LIST 
+                                (EXPR 
+                                  (MEMBER_NAME x)))) . 
+                            (MEMBER_NAME strip)))))))))))))))
