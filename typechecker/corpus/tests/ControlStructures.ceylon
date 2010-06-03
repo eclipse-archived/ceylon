@@ -53,12 +53,34 @@ class ControlStructures {
 			log.info("never exists");
 		}
 		
+		if (nonempty s) {
+			log.info(s);
+		}
+		else {
+			log.info("never exists");
+		}
+		
+		if (exists String str = s) {
+		    log.info(str);
+		}
+		
+		if (nonempty String str = s) {
+		    log.info(str);
+		}
+		
 		class Foo {}
 		class Bar extends Foo() {}
 		
 		Foo foo = Bar();
 		
 		if (is Bar foo) {
+			log.info("it is a Bar");
+		}
+		else {
+			log.info("it is not a Bar");
+		}
+		
+		if (is Bar b = foo) {
 			log.info("it is a Bar");
 		}
 		else {
