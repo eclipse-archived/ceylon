@@ -539,12 +539,15 @@ formalParameterType
 // Control structures.
 
 condition
-    : expression | existsCondition | isCondition
+    : expression | existsCondition | nonemptyCondition | isCondition
     ;
 
-// Backtracking here is needed for exactly the same reason as localOrStatement.
 existsCondition
-    : ('exists' | 'nonempty') ( (variableStart) => variable specifier | expression )
+    : 'exists' controlVariableOrExpression
+    ;
+    
+nonemptyCondition
+    : 'nonempty' controlVariableOrExpression
     ;
     
 isCondition
@@ -657,7 +660,11 @@ finallyBlock
     ;
     
 resource
-    : (variableStart) => variable specifier
+    : controlVariableOrExpression
+    ;
+
+controlVariableOrExpression
+    : (variableStart) => variable specifier 
     | expression
     ;
 
@@ -667,29 +674,29 @@ variable
 
 //special rule for syntactic predicate
 variableStart
-    : type/*?*/ memberName ('in'|'=')
+    : variable ('in'|'=')
     ;
 
 // Lexer
 
-NATURALLITERAL
-    : Digit Digit*
-    ;
-
 fragment
-Digit 
-    : '0'..'9'
-    ;
-
-FLOATLITERAL
-    :   ('0' .. '9')+ '.' ('0' .. '9')+ Exponent?  
-    //|   '.' ( '0' .. '9' )+ Exponent?  
-    //|   ('0' .. '9')+ Exponent  
+Digits
+    : ('0'..'9')+
     ;
 
 fragment 
 Exponent    
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
+    ;
+
+fragment FLOATLITERAL :;
+fragment ELLIPSIS :;
+fragment RANGE :;
+fragment DOT :;
+NATURALLITERAL
+    : Digits 
+      ( { input.LA(2) != '.' }? => '.' Digits Exponent? { $type = FLOATLITERAL; } )?
+    | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
 
 CHARLITERAL
@@ -794,7 +801,6 @@ MULTI_COMMENT
                 )*
                 '*/'
         ;
-
 
 ASSIGN
     :   'assign'
@@ -948,14 +954,6 @@ COMMA
     :   ','
     ;
 
-DOT
-    :   '.'
-    ;
-
-ELLIPSIS
-    :   '...'
-    ;
-
 EQ
     :   '='
     ;
@@ -1068,10 +1066,6 @@ ENTRY
     :   '->'
     ;
 
-RANGE
-    :   '..'
-    ;
-    
 COMPARE
     :   '<=>'
     ;
