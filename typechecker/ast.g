@@ -595,8 +595,8 @@ exponentiationExpression
     ;
 
 unaryExpression 
-    : p=prefixOperator e=unaryExpression
-    -> ^(PREFIX_EXPR $p $e)
+    : prefixOperator unaryExpression
+    -> ^(PREFIX_EXPR prefixOperator unaryExpression)
     | primary
     ;
 
