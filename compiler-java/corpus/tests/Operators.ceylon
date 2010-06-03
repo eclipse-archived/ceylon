@@ -30,7 +30,7 @@ class Operators {
 	Boolean complement = ~true;
 	Boolean bitwiseOr = true|false;
 	Boolean bitwiseAnd = true&true;
-	Boolean exclusiveOr = true^false
+	Boolean exclusiveOr = true^false;
 	
 	Boolean instanceOf = 1 is Natural;
 	Boolean containedIn = 3 in range;
