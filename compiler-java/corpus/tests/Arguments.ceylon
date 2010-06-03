@@ -20,12 +20,12 @@ class Arguments {
 	
 	class SingleArgument {
 		
-		void out(String value) {
+		void owt(String value) {
 			log.info(value);
 		}
 		
-		out("Hello");
-		out { value="Hi"; };
+		owt("Hello");
+		owt { value="Hi"; };
 		
 		class Output(String value) {
 			log.info(value);
@@ -119,6 +119,7 @@ class Arguments {
 			Y handle(X x) { return process(x).strip }
 		}
 		
+/*
 		Processor<Float,String> p = 
 			Processor<Float,String>() 
 				process (Float f) $f;
@@ -131,7 +132,7 @@ class Arguments {
 			Processor<Float,String> { 
 				process(Float f) { return $f } 
 			};
-			
+*/			
 	}
 
 }
