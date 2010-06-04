@@ -1062,16 +1062,16 @@ LINE_COMMENT
     ;   
 
 MULTI_COMMENT
-        :       '/*'
-                {
-                        $channel=HIDDEN;
-                }
-                (       ~('/'|'*')
-                        |       ('/' ~'*') => '/'
-                        |       ('*' ~'/') => '*'
-                        |       MULTI_COMMENT
-                )*
-                '*/'
+    :   '/*'
+        {
+            $channel=HIDDEN;
+        }
+        (    ~('/'|'*')
+        |    ('/' ~'*') => '/'
+        |    ('*' ~'/') => '*'
+        |    MULTI_COMMENT
+        )*
+        '*/'
         ;
 
 ASSIGN
