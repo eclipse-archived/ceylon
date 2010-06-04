@@ -1863,6 +1863,8 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>for ( Natural n in 1..10 ) { ... }</programlisting>
     
+    <programlisting>if (char in @A..@Z) { ... }</programlisting>
+    
     <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
 
     <programlisting>if ( name == value ) return ... ;</programlisting>
