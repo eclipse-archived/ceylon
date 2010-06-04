@@ -1849,13 +1849,15 @@ DefaultAssignmentOperator</programlisting>
     
     <para>Some examples:</para>
     
-    <programlisting>Float z = x * y;</programlisting>
+    <programlisting>Float z = x * y + 1.0;</programlisting>
+    
+    <programlisting>even := n % 2 == 0;</programlisting>
     
     <programlisting>++count;</programlisting>
     
     <programlisting>Integer j = i++;</programlisting>
     
-    <programlisting>if ( x > 100 ) { ... }</programlisting>
+    <programlisting>if ( x > 100 || x &lt; 0 ) { ... }</programlisting>
     
     <programlisting>User gavin = users["Gavin"];</programlisting>
     
@@ -1866,8 +1868,10 @@ DefaultAssignmentOperator</programlisting>
     <programlisting>if (char in @A..@Z) { ... }</programlisting>
     
     <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
+    
+    <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
 
-    <programlisting>if ( name == value ) return ... ;</programlisting>
+    <programlisting>if ( exists name => name == "Gavin" ) return ... ;</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
@@ -1875,6 +1879,13 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>optional String name = person?.name;</programlisting>
     
+    <programlisting>this.total += item.price;</programlisting>
+    
+    <programlisting>if ( nonempty args[i] &amp;&amp; !args[i].first == @- ) { ... }</programlisting>
+    
+    <programlisting>Float vol = length**3;</programlisting>
+    
+    <programlisting>map.define(person.name->person);</programlisting>
     
     <!--para>Are equivalent to the following (Ceylon) code:</para>
     
