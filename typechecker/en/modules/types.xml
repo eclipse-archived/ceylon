@@ -1180,6 +1180,15 @@ while (people nonempty) {
     
     ... 
     
+    doc "Evaluate all interpolated expressions, producing 
+         a constant character string with no interpolated
+         expressions."
+    public String freeze() { return ... }
+    
+    doc "Determine if this a constant character string with 
+         no interpolated expressions."
+    public Boolean frozen { return ... } 
+    
     doc "Split the string into tokens, using the given
          separator characters."
     public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
