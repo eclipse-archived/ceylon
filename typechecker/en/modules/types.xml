@@ -1123,7 +1123,7 @@ while (people nonempty) {
         operator:</para> 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
-        satisfies Sequence<X>, Case<Object>
+        satisfies Category, Sequence<X>, Case<Object>
         where X>=Ordinal & X>=Comparable<X> { 
     
     doc "The first value in the range."
@@ -1209,9 +1209,6 @@ while (people nonempty) {
         this stuff? Does the JVM do all kinds of optimizations for 
         <literal>java.lang.String</literal>?</para></comment>
         
-        <!--comment><para>TODO: do we need character ranges, like <literal>@a..@z</literal>, or is 
-        it enough that we have regular expressions like <literal>`[a-z]`</literal>?</para></comment-->
-
     </section>
     
     <section>
