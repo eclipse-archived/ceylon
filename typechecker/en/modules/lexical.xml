@@ -171,11 +171,21 @@
         <title>String literals</title>
         
         <para>A character string literal is a character sequence surrounded by 
-        double quotes, and may contain embedded expressions:</para>
+        double quotes.</para>
         
-        <programlisting>StringLiteral := "&quot;" ( StringCharacter+ | "${" Expression "}" )* "&quot;"</programlisting>
+        <programlisting>SimpleStringLiteral := "&quot;" StringCharacter* "&quot;"</programlisting>
         
         <programlisting>StringCharacter := ~( "{" | "\" | "&quot;" | "$" | "'" ) | EscapeSequence</programlisting>
+        
+        <para>Character strings may contain interpolated expressions delimited 
+        using <literal>${...}</literal>. The lexer is responsible for identifying 
+        and tokenizing interpolated expressions.</para>
+        
+        <programlisting>LStringLiteral := "&quot;" StringCharacter* "${"</programlisting>
+        
+        <programlisting>MStringLiteral := "}" StringCharacter* "${"</programlisting>
+        
+        <programlisting>RStringLiteral := "}" StringCharacter* "&quot;"</programlisting>
         
         <para>The following are legal strings:</para>
         
@@ -184,6 +194,9 @@
         <programlisting>" \t\n\f\r,;"</programlisting>
         
         <programlisting>"Hi there, ${name}!"</programlisting>
+        
+        <comment><para>TODO: ANTLR has problems lexing <literal>RStringLiteral</literal>
+        and <literal>MStringLiteral</literal>.</para></comment>
         
     </section>
     
