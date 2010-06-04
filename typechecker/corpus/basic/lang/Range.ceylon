@@ -1,5 +1,5 @@
 public class Range<X>(X first, X last) 
-        satisfies Sequence<X>, Case<Object>
+        satisfies Category, Sequence<X>, Case<Object>
         where X>=Ordinal & X>=Comparable<X> { 
     
     doc "The first value in the range."
