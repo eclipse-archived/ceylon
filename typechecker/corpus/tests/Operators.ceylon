@@ -9,6 +9,7 @@ class Operators {
 	
 	Entry<String,String> name = "Gavin"->"King";
 	Range<Natural> range = 1..5;
+	Range<Character> charRange = @A..@Z;
 	
 	String defaulted = null ? "Hello";
 	Boolean nullExists = null exists;
