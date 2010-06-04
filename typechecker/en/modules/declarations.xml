@@ -1335,6 +1335,9 @@ InterfaceBody</programlisting>
         
         <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
           
+        <comment><para>TODO: if methods of interfaces can define defaulted parameters,
+        precisely how do we implement that?</para></comment>
+            
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
             
@@ -1345,20 +1348,17 @@ InterfaceBody</programlisting>
     ...
 }</programlisting>
         
-            <para>
-            The types listed after the <literal>satisfies</literal> keyword are the supertypes. All 
-            supertypes of an interface must be interfaces.
-            </para>
+            <para>The types listed after the <literal>satisfies</literal> keyword are the 
+            supertypes. All supertypes of an interface must be interfaces.</para>
             
             <!--para>
             Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
             the interface type itself is considered assignable to <literal>lang.Object</literal>.
             </para-->
         
-            <para>
-            The semantics of interface inheritance are exactly the same as Java. An interface inherits 
-            all members (methods, attributes and member types) of every supertype.
-        </para>
+            <para>The semantics of interface inheritance are exactly the same as Java. An 
+            interface inherits all members (methods, attributes and member types) of every 
+            supertype.</para>
         
             <!--
             <para>and the above declaration is equivalent to the following 
@@ -1589,6 +1589,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para><literal>static</literal> methods cannot be overridden, and so
             <literal>static</literal> method invocation is never polymorphic.</para>
+            
+            <comment><para>TODO: are you allowed to override the default value of
+            a defaulted parameter?</para></comment>
             
             <comment><para>TODO: are you required to have the same formal parameter
             names in the two methods? I don't see that this would be necessary. In
