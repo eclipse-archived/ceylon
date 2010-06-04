@@ -29,6 +29,23 @@ Body?</programlisting>
         <programlisting>MemberName := LIdentifier</programlisting>
         <programlisting>ParameterName := LIdentifier</programlisting>
         
+        <para>Ceylon defines three identifier namespaces:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>Classes, interfaces and aliases share a single namespace.</para>
+            </listitem>
+            <listitem>
+                <para>Methods, attributes and locals share a single namespace.</para>
+            </listitem>
+            <listitem>
+                <para>Packages have their own dedicated namespace.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The Ceylon parser is able to unambiguously identify which namespace an 
+        identifier belongs to.</para>
+        
    </section>
       
     <section id="topleveldeclaration">
