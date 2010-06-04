@@ -33,13 +33,13 @@ Body?</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>Classes, interfaces and aliases share a single namespace.</para>
+                <para>classes, interfaces and aliases share a single namespace,</para>
             </listitem>
             <listitem>
-                <para>Methods, attributes and locals share a single namespace.</para>
+                <para>methods, attributes and locals share a single namespace, and</para>
             </listitem>
             <listitem>
-                <para>Packages have their own dedicated namespace.</para>
+                <para>packages have their own dedicated namespace.</para>
             </listitem>
         </itemizedlist>
         
