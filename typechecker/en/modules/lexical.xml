@@ -162,6 +162,9 @@
         <comment><para>TODO: should we support an escape sequence for Unicode character names
         <literal>\N{name}</literal> like Python does?</para></comment>
         
+        <comment><para>TODO: would it be better to quote character literals using backticks, 
+        for example, <literal>`A`</literal>?</para></comment>
+        
     </section>
     
     <section>
