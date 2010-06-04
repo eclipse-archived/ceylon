@@ -196,7 +196,8 @@
         <programlisting>"Hi there, ${name}!"</programlisting>
         
         <comment><para>TODO: ANTLR has problems lexing <literal>RStringLiteral</literal>
-        and <literal>MStringLiteral</literal>.</para></comment>
+        and <literal>MStringLiteral</literal>. We could use <literal>&lt;{...}&gt;</literal> 
+        instead.</para></comment>
         
     </section>
     
