@@ -257,13 +257,29 @@ if you prefer.";</programlisting>
         <programlisting>display( new lang.String( "Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n") );</programlisting>
         -->
         
-        <comment><para>TODO: we need to support that the embedded expressions
-        are evaluated lazily when the string literal appears as a method 
-        parameter. This is important for log messages and assertions. So 
-        should <literal>"${Time()} ${message}"</literal> actually be a
-        method of type <literal>String()</literal> with no parameters, instead 
-        of a <literal>String</literal>? (And we would have a built-in converter 
-        to do implicit conversion to <literal>String</literal>.)</para></comment>
+        <para>Character strings may contain interpolated expressions.</para>
+        
+        <para>An interpolated expression in a <literal>String</literal> literal may 
+        invoke or evaluate:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>any class member that is visible to the containing scope in 
+                which the literal appears, and</para>
+            </listitem>
+            <listitem>
+                <para>any non-<literal>mutable</literal> local, block local attribute 
+                getter or block local method declared earlier within the containing 
+                scope.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>An interpolated expression in a <literal>String</literal> literal may 
+        not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        
+        <para>Interpolated expressions are evaluated when the <literal>freeze()</literal>
+        method of <literal>String</literal> is called to produce a constant character
+        string.</para>
         
         <comment><para>TODO: is <literal>"{Time()} {message}"</literal> a better 
         syntax for interpolation?</para></comment>
