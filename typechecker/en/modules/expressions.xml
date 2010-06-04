@@ -367,6 +367,11 @@ if you prefer.";</programlisting>
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
         <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;</programlisting>
         <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;</programlisting>
+        <programlisting>Attribute&lt;Counter, Natural&gt; countAttribute = #count;</programlisting>
+        
+        <comment><para>Would it be better to require the <literal>#</literal> before the 
+        member name even when qualified by the type, for example, 
+        <literal>#Person.#name</literal>?</para></comment>
         
         <comment><para>TODO: According to this, we can "curry" in type arguments of
         the type. We need this. But if so, why can't we curry type arguments of the 
