@@ -7,6 +7,8 @@ class Operators {
 	Natural quotient = 2/2;
 	Natural remainder = 3%2;
 	
+	Float parenthesized = (1.0 + 2.0)/3.0 + 0.5;
+	
 	Entry<String,String> name = "Gavin"->"King";
 	Range<Natural> range = 1..5;
 	Range<Character> charRange = @A..@Z;
@@ -50,6 +52,10 @@ class Operators {
 	List<String> subrange = list[0..1];
 	List<String> upperRange = list[1...];
 	
-	//TODO: ^. ?. *. := .=
+	optional String input = null;
+	optional Iterable<String> tokens = input?.tokens();
+	Sequence<Natural> sizes = tokens*.size;
+	
+	//TODO: := .=
 	
 }
