@@ -1,15 +1,6 @@
 public class String(Character... characters) 
         satisfies Comparable<String>, Sequence<Character>, Case<String> {
         
-    doc "Evaluate all interpolated expressions, producing 
-         a constant character string with no interpolated
-         expressions."
-    public String freeze() { throw }
-    
-    doc "Determine if this a constant character string with 
-         no interpolated expressions."
-    public Boolean frozen { throw } 
-    
     doc "Split the string into tokens, using the given
          separator characters."
     public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { throw }
