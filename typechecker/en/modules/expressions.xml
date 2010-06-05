@@ -2833,11 +2833,6 @@ DefaultAssignmentOperator</programlisting>
     <comment><para>TODO: Should we have operators for set union/intersection/complement
     and set comparison?</para></comment>
     
-    <comment><para>TODO: Apparently there is an issue with correctly lexing
-    <literal>[1..2]</literal> and <literal>[1...]</literal>, so we might need to go with 
-    <literal>[1,2]</literal> and <literal>[1,.]</literal> or <literal>[1:2]</literal> 
-    and <literal>[1:.]</literal> instead.</para></comment>
-    
     </section>
     
     <section id="constructors">
