@@ -80,6 +80,7 @@ tokens {
     STRING_CONCAT;
     INT_CST;
     FLOAT_CST;
+    STRING_CST;
     QUOTE_CST;
     FOR_STMT;
     FOR_ITERATOR;
@@ -474,11 +475,21 @@ literal
     | CHARLITERAL
     -> ^(CHAR_CST CHARLITERAL)
     | stringExpression
-    -> ^(STRING_CONCAT stringExpression)
     ;
 
 stringExpression
-    : SIMPLESTRINGLITERAL ( ('$') => ('$'! primary)+ SIMPLESTRINGLITERAL )*
+options {backtrack=true;}
+    : stringTemplate
+    -> ^(STRING_CONCAT stringTemplate)
+    | SIMPLESTRINGLITERAL
+    -> ^(STRING_CST SIMPLESTRINGLITERAL)
+    ;
+
+//the syntactic predicate is only needed if 
+//we allow multiple $expressions without
+//intervening strings
+stringTemplate
+    : SIMPLESTRINGLITERAL ( ('$') => ('$'! primary)+ SIMPLESTRINGLITERAL )+
     ;
 
 expression
