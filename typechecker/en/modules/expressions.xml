@@ -257,7 +257,7 @@ if you prefer.";</programlisting>
         
         <para>Character strings may contain interpolated expressions.</para>
         
-        <programlisting>StringLiteral := SimpleStringLiteral ( "$" Primary SimpleStringLiteral )*</programlisting>
+        <programlisting>StringLiteral := SimpleStringLiteral ( ("$" Primary)+ SimpleStringLiteral )*</programlisting>
         
         <!--
         <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
