@@ -2919,10 +2919,6 @@ DefaultAssignmentOperator</programlisting>
     datetimes and durations, constructing intervals and combining dates and 
     times?</para></comment>
     
-    <comment><para>TODO: Apparently there is an issue with correctly lexing
-    <literal>1..2</literal>, so we might need to go with <literal>[1,2]</literal>
-    or <literal>[1:2]</literal> instead.</para></comment>
-    
     </section>
     
     <section id="arithmetic">
