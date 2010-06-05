@@ -177,6 +177,7 @@
         
         <programlisting>StringCharacter := ~( "{" | "\" | "&quot;" | "$" | "'" ) | EscapeSequence</programlisting>
         
+        <!-- 
         <para>Character strings may contain interpolated expressions delimited 
         using <literal>${...}</literal>. The lexer is responsible for identifying 
         and tokenizing interpolated expressions.</para>
@@ -186,18 +187,17 @@
         <programlisting>MStringLiteral := "}" StringCharacter* "${"</programlisting>
         
         <programlisting>RStringLiteral := "}" StringCharacter* "&quot;"</programlisting>
+        -->
         
         <para>The following are legal strings:</para>
         
         <programlisting>"Hello!"</programlisting>
         
-        <programlisting>" \t\n\f\r,;"</programlisting>
+        <programlisting>" \t\n\f\r,;:"</programlisting>
         
+        <!-- 
         <programlisting>"Hi there, ${name}!"</programlisting>
-        
-        <comment><para>TODO: ANTLR has problems lexing <literal>RStringLiteral</literal>
-        and <literal>MStringLiteral</literal>. We could use <literal>&lt;{...}&gt;</literal> 
-        instead.</para></comment>
+        -->
         
     </section>
     

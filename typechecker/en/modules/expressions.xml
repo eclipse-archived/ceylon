@@ -235,9 +235,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A character string literal is an expression of type
         <literal>lang.String</literal>.</para>
         
-        <programlisting>person.name := "Gavin";</programlisting>
-        
-        <programlisting>log.info("${Time()} ${message}");</programlisting>
+        <programlisting>person.name := "Gavin King";</programlisting>
         
         <programlisting>String multiline = "Strings may
 span multiple lines
@@ -259,9 +257,11 @@ if you prefer.";</programlisting>
         
         <para>Character strings may contain interpolated expressions.</para>
         
-        <programlisting>StringLiteral := SimpleStringLiteral | InterpolatedStringLiteral</programlisting>
+        <programlisting>StringLiteral := SimpleStringLiteral ( "$" Primary SimpleStringLiteral )*</programlisting>
         
+        <!--
         <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
+        -->
         
         <para>An interpolated expression in a <literal>String</literal> literal may 
         invoke or evaluate:</para>
@@ -281,12 +281,11 @@ if you prefer.";</programlisting>
         <para>An interpolated expression in a <literal>String</literal> literal may 
         not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
+        <programlisting>log.info("Hello, " $person.name ", the time is " $Time() ".");</programlisting>
+        
         <para>Interpolated expressions are evaluated when the <literal>freeze()</literal>
         method of <literal>String</literal> is called to produce a constant character
         string.</para>
-        
-        <comment><para>TODO: is <literal>"{Time()} {message}"</literal> a better 
-        syntax for interpolation?</para></comment>
 
     </section>
     
@@ -320,9 +319,8 @@ if you prefer.";</programlisting>
         <programlisting>public extension Date date(Quoted dateString) { return ...; }</programlisting>
         <programlisting>public extension class Regex(Quoted expression) { return ...; }</programlisting>
         
-        <comment><para>TODO: we should try to support embedded expressions using
-        the <literal>${...}</literal> escape sequence, like we do for string 
-        literals.</para></comment>
+        <comment><para>TODO: we should try to support interpolated expressions, 
+        just like we do for string literals.</para></comment>
         
         <comment><para>TODO: Quoted literals are used for version numbers and version 
         constraints in the module architecture, for example: <literal>'1.2.3BETA'</literal>.</para></comment>
@@ -737,7 +735,7 @@ Comparison comp = order(1,-1);</programlisting>
             <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
             
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
-            <programlisting>iterate (map) perform (String name->Object value) { log.info("${name} ${value}"); };</programlisting>
+            <programlisting>iterate (map) perform (String name->Object value) { log.info("Entry: " $name "->" $value ""); };</programlisting>
             
             <para>The type of a method invocation expression depends upon the invocation
             operator. If <literal>X</literal> is the declared return type of the method:</para>
@@ -1127,13 +1125,13 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                   
         <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
                       having (user.authorized(key)) 
-                      select ("${key} ${value}");</programlisting>
+                      select (""$key": "$value"");</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>List&lt;String&gt; labels = from (namedValues)
                       having (Key key -> Value value) (user.authorized(key)) 
-                      select (Key key -> Value value) ("${key} ${value}");</programlisting>
+                      select (Key key -> Value value) (""$key": "$value"");</programlisting>
         
         <comment>
         <para>TODO: again, with type inference, this gets even simpler:</para>

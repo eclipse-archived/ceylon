@@ -189,7 +189,7 @@ class Hello {
         <programlisting><![CDATA[doc "A more personalized greeting"
 class Hello(Process process) {
     String name = process.args.firstOrNull ? "World";
-    log.info("Hello, ${name}!");
+    log.info("Hello, " $name "!");
 }]]></programlisting>
 
         <para>
@@ -214,7 +214,7 @@ class Hello(Process process) {
     sayHello( process.args.firstOrNull ? "World" );
     
     void sayHello(String name) {
-        log.info("Hello, ${name}!");
+        log.info("Hello, " $name "!");
     }
     
 }]]></programlisting>
@@ -236,7 +236,7 @@ class Hello(Request request)
     body = Body {
         Div {
             cssClass = "greeting";
-            "Hello, ${name}!"
+            "Hello, " $name "!"
         },
         Div {
             cssClass = "footer";
