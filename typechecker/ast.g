@@ -49,7 +49,6 @@ tokens {
     NIL;
     RET_STMT;
     STMT_LIST;
-    STRING_CST;
     THROW_STMT;
     RETRY_STMT;
     TRY_BLOCK;
@@ -474,33 +473,12 @@ literal
     -> ^(QUOTE_CST QUOTEDLITERAL)
     | CHARLITERAL
     -> ^(CHAR_CST CHARLITERAL)
-    | SIMPLESTRINGLITERAL
-    -> ^(STRING_CST SIMPLESTRINGLITERAL)
-    | stringExpr
-    -> ^(STRING_CONCAT stringExpr)
-    ;   
-
-stringExpr
-    : leftStringLiteral innerStringExpr (middleStringLiteral innerStringExpr)* rightStringLiteral
+    | stringExpression
+    -> ^(STRING_CONCAT stringExpression)
     ;
 
-innerStringExpr
-    : expression
-    ;
-
-leftStringLiteral
-    : LEFTSTRINGLITERAL
-    -> ^(STRING_CST LEFTSTRINGLITERAL)
-    ;
-    
-middleStringLiteral
-    : MIDDLESTRINGLITERAL
-    -> ^(STRING_CST MIDDLESTRINGLITERAL)
-    ;
-    
-rightStringLiteral
-    : RIGHTSTRINGLITERAL
-    -> ^(STRING_CST RIGHTSTRINGLITERAL)
+stringExpression
+    : SIMPLESTRINGLITERAL ( ('$') => '$'! primary SIMPLESTRINGLITERAL )*
     ;
 
 expression
@@ -975,33 +953,11 @@ CHARLITERAL
     ;
 
 QUOTEDLITERAL
-    :   '\''
-        StringPart
-        '\''
+    :   '\'' StringPart '\''
     ;
 
 SIMPLESTRINGLITERAL
-    :   '"'
-        StringPart
-        '"'
-    ;
-
-LEFTSTRINGLITERAL
-    :   '"'
-        StringPart
-        '${'
-    ;
-
-RIGHTSTRINGLITERAL
-    :   '}$'
-        StringPart
-        '"'
-    ;
-
-MIDDLESTRINGLITERAL
-    :   '}$'
-        StringPart
-        '${'
+    :   '"' StringPart '"'
     ;
 
 fragment
