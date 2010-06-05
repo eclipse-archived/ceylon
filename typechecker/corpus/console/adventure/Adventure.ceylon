@@ -35,11 +35,11 @@ package mutable class Adventure(Process process) {
 				thing.get(this);
 			}
 			else {
-				display("You can't pick up a ${name}.);
+				display("You can't pick up a ${name}.");
 			}
 		}
 		else {
-			display("You don't see a ${name} here.);
+			display("You don't see a ${name} here.");
 		}
 	}
 	
@@ -50,11 +50,11 @@ package mutable class Adventure(Process process) {
 				thing.drop(this);
 			}
 			else {
-				display("You can't drop a ${name}.);
+				display("You can't drop a ${name}.");
 			}
 		}
 		else {
-			display("You don't have a ${name}.);
+			display("You don't have a ${name}.");
 		}
 	}
 	
