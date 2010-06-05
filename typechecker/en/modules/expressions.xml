@@ -314,8 +314,7 @@ if you prefer.";</programlisting>
         
         <programlisting>log.info("Hello, " $person.firstName " " $person.lastName ", the time is " $Time() ".");</programlisting>
         
-        <para>An interpolated expression in a <literal>String</literal> literal may 
-        invoke or evaluate:</para>
+        <para>An interpolated expression in a string template may invoke or evaluate:</para>
         
         <itemizedlist>
             <listitem>
@@ -329,8 +328,8 @@ if you prefer.";</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>An interpolated expression in a <literal>String</literal> literal may 
-        not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        <para>An interpolated expression in a string template may not refer to 
+        <literal>mutable</literal> locals from the containing scope.</para>
         
         <para>Interpolated expressions are evaluated when the <literal>interpolate()</literal>
         method of <literal>StringTemplate</literal> is called to produce a constant 
