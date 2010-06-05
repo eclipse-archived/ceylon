@@ -1180,15 +1180,6 @@ while (people nonempty) {
     
     ... 
     
-    doc "Evaluate all interpolated expressions, producing 
-         a constant character string with no interpolated
-         expressions."
-    public String freeze() { return ... }
-    
-    doc "Determine if this a constant character string with 
-         no interpolated expressions."
-    public Boolean frozen { return ... } 
-    
     doc "Split the string into tokens, using the given
          separator characters."
     public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
@@ -1217,6 +1208,17 @@ while (people nonempty) {
         performance advantages to going with UTF-16 like Java? Can we easily abstract
         this stuff? Does the JVM do all kinds of optimizations for 
         <literal>java.lang.String</literal>?</para></comment>
+        
+        <para>A string template is represented by an instance of <literal>StringTemplate</literal>.</para>
+        
+        <programlisting>public class StringTemplate(...) {
+        
+    doc "Evaluate all interpolated expressions, producing 
+         a constant character string with no interpolated
+         expressions."
+    public extension String interpolate() { return ... }
+
+}</programlisting>
         
     </section>
     

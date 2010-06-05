@@ -173,7 +173,7 @@
         <para>A character string literal is a character sequence surrounded by 
         double quotes.</para>
         
-        <programlisting>SimpleStringLiteral := "&quot;" StringCharacter* "&quot;"</programlisting>
+        <programlisting>StringLiteral := "&quot;" StringCharacter* "&quot;"</programlisting>
         
         <programlisting>StringCharacter := ~( "{" | "\" | "&quot;" | "$" | "'" ) | EscapeSequence</programlisting>
         

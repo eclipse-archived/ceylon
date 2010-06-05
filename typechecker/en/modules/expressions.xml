@@ -33,7 +33,7 @@
     <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
     sequence of expressions, or a parenthesized expression.</para>
     
-    <programlisting>Atom := Literal | SpecialValue | Enumeration | "(" Expression ")" </programlisting>
+    <programlisting>Atom := Literal | StringTemplate | SpecialValue | Enumeration | "(" Expression ")" </programlisting>
     
     <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
     members of an atom or static members of a type.</para>
@@ -230,7 +230,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section id="string">
-        <title>String literals</title>
+        <title>Character string literals</title>
         
         <para>A character string literal is an expression of type
         <literal>lang.String</literal>.</para>
@@ -255,38 +255,6 @@ if you prefer.";</programlisting>
         <programlisting>display( new lang.String( "Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n") );</programlisting>
         -->
         
-        <para>Character strings may contain interpolated expressions.</para>
-        
-        <programlisting>StringLiteral := SimpleStringLiteral ( ("$" Primary)+ SimpleStringLiteral )*</programlisting>
-        
-        <!--
-        <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
-        -->
-        
-        <para>An interpolated expression in a <literal>String</literal> literal may 
-        invoke or evaluate:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any class member that is visible to the containing scope in 
-                which the literal appears, and</para>
-            </listitem>
-            <listitem>
-                <para>any non-<literal>mutable</literal> local, block local attribute 
-                getter or block local method declared earlier within the containing 
-                scope.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>An interpolated expression in a <literal>String</literal> literal may 
-        not refer to <literal>mutable</literal> locals from the containing scope.</para>
-        
-        <programlisting>log.info("Hello, " $person.name ", the time is " $Time() ".");</programlisting>
-        
-        <para>Interpolated expressions are evaluated when the <literal>freeze()</literal>
-        method of <literal>String</literal> is called to produce a constant character
-        string.</para>
-
     </section>
     
     <section id="quoted">
@@ -329,6 +297,47 @@ if you prefer.";</programlisting>
 
     </section>
 
+    <section>
+        <title>String templates</title>
+        
+        <para>A character string <emphasis>template</emphasis> contains interpolated 
+        expressions, surrounded by character string fragments.</para>
+        
+        <programlisting>StringTemplate := SimpleStringLiteral ( ("$" Primary)+ SimpleStringLiteral )+</programlisting>
+        
+        <para>A character string template is an expression of non-<literal>optional</literal> 
+        type <literal>StringTemplate</literal>.</para>
+        
+        <!--
+        <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
+        -->
+        
+        <programlisting>log.info("Hello, " $person.name ", the time is " $Time() ".");</programlisting>
+        
+        <para>An interpolated expression in a <literal>String</literal> literal may 
+        invoke or evaluate:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>any class member that is visible to the containing scope in 
+                which the literal appears, and</para>
+            </listitem>
+            <listitem>
+                <para>any non-<literal>mutable</literal> local, block local attribute 
+                getter or block local method declared earlier within the containing 
+                scope.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>An interpolated expression in a <literal>String</literal> literal may 
+        not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        
+        <para>Interpolated expressions are evaluated when the <literal>interpolate()</literal>
+        method of <literal>StringTemplate</literal> is called to produce a constant 
+        character string.</para>
+
+    </section>
+    
     <section id="specialvalues">
         <title><literal>this</literal>, <literal>super</literal>, 
         <literal>null</literal> and <literal>none</literal></title>
