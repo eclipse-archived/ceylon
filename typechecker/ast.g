@@ -478,7 +478,7 @@ literal
     ;
 
 stringExpression
-    : SIMPLESTRINGLITERAL ( ('$') => '$'! primary SIMPLESTRINGLITERAL )*
+    : SIMPLESTRINGLITERAL ( ('$') => ('$'! primary)+ SIMPLESTRINGLITERAL )*
     ;
 
 expression
