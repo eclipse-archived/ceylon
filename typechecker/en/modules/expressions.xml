@@ -1907,7 +1907,7 @@ DefaultAssignmentOperator</programlisting>
 
     <programlisting>if ( exists name => name == "Gavin" ) return ... ;</programlisting>
     
-    <programlisting>log.info( "Hello " + person.string + "!")</programlisting>
+    <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
     <programlisting>List&lt;String&gt; names = { person1, person2 }*.name;</programlisting>
     
@@ -2002,7 +2002,7 @@ DefaultAssignmentOperator</programlisting>
                 <literal>++</literal>, 
                 <literal>--</literal>, 
                 <literal>-</literal>, 
-                <!--literal>$</literal-->
+                <literal>$</literal>,
                 <literal>~</literal> 
                 </entry>
                 <entry>Unary prefix</entry>
@@ -2189,10 +2189,8 @@ DefaultAssignmentOperator</programlisting>
     <title>Basic invocation and assignment operators</title>
     
     <para>These operators support method invocation and attribute evaluation and
-    assignment.</para>
-    
-    <!--The <literal>$</literal> operator is a shortcut for converting
-    any expression to a <literal>String</literal>.-->
+    assignment. The <literal>$</literal> operator is a shortcut for converting
+    any expression to a <literal>String</literal>.</para>
     
     <table>
     <tgroup cols="7">
@@ -2259,7 +2257,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>X</literal> or <literal>optional X</literal></entry>
         </row>
         
-        <!--row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
         
         <row>
             <entry><literal>$</literal></entry>
@@ -2269,7 +2267,7 @@ DefaultAssignmentOperator</programlisting>
             <entry></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>String</literal></entry>
-        </row-->
+        </row>
     
         <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
         

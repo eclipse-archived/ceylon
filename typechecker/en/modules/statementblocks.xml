@@ -634,7 +634,7 @@ fail {
             <para>For example:</para>
             
             <programlisting>do (mutable Natural n:=0) {
-    log.info("count = " + n.string);
+    log.info("count = " + $n);
 }
 while (n&lt;=10) { n++; }</programlisting>
             

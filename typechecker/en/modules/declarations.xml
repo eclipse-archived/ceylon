@@ -1465,7 +1465,7 @@ public User(String username, Person person);</programlisting>
         <programlisting>public optional U get(optional V key);</programlisting>
         
         <programlisting>public void print(Object... objects) {
-    for (Object object in objects) { log.info(object.string); }
+    for (Object object in objects) { log.info($object); }
 }</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
