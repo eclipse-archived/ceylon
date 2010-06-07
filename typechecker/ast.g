@@ -466,6 +466,11 @@ specifier
     ;
 
 literal
+    : nonstringLiteral
+    | stringExpression
+    ;
+
+nonstringLiteral
     : NATURALLITERAL
     -> ^(INT_CST NATURALLITERAL)
     | FLOATLITERAL
@@ -474,25 +479,39 @@ literal
     -> ^(QUOTE_CST QUOTEDLITERAL)
     | CHARLITERAL
     -> ^(CHAR_CST CHARLITERAL)
-    | stringExpression
     ;
 
 stringExpression
-    : (SIMPLESTRINGLITERAL interpolatedExpressionStart) => stringTemplate
+    : (SIMPLESTRINGLITERAL (interpolatedExpressionStart|SIMPLESTRINGLITERAL)) 
+        => stringTemplate
     -> ^(STRING_CONCAT stringTemplate)
     | SIMPLESTRINGLITERAL
     -> ^(STRING_CST SIMPLESTRINGLITERAL)
     ;
 
-//the syntactic predicate is only needed if 
-//we allow multiple $expressions without
-//intervening strings
 stringTemplate
-    : SIMPLESTRINGLITERAL ( (interpolatedExpressionStart) => primary SIMPLESTRINGLITERAL )+
+    : SIMPLESTRINGLITERAL 
+    ( (interpolatedExpressionStart|SIMPLESTRINGLITERAL) => 
+        ( (interpolatedExpressionStart) => expression )? 
+        SIMPLESTRINGLITERAL 
+    )+
     ;
 
+//special rule for syntactic predicates
+//this includes every token that could be 
+//the beginning of an expression, except 
+//for SIMPLESTRINGLITERAL and '['
 interpolatedExpressionStart
-    : '(' | '{' | LIDENTIFIER | UIDENTIFIER | specialValue
+    : '(' 
+    | '{'
+    | '#' 
+    | LIDENTIFIER 
+    | UIDENTIFIER 
+    | specialValue 
+    | nonstringLiteral
+    | prefixOperator
+    | 'get'
+    | 'set'
     ;
 
 expression
