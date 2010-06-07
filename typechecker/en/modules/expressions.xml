@@ -67,7 +67,7 @@
     <para>If an expression can evaluate to <literal>null</literal>, we say it is
     of <literal>optional</literal> type. Otherwise, we say it is of 
     non-<literal>optional</literal> type. For a nullable expression of type 
-    <literal>T</literal> we often say that its type is <literal>optional T</literal>.</para>
+    <literal>T</literal>, we often say that its type is <literal>optional T</literal>.</para>
     
     <para>An expression is assignable to a program element if:</para>
     

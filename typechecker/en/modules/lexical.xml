@@ -135,9 +135,9 @@
         
         <para>The following are <emphasis>not</emphasis> valid numeric literals:</para>
         
-        <programlisting>.33</programlisting>
-        <programlisting>1.</programlisting>
-        <programlisting>99E+3</programlisting>
+        <programlisting>.33  //Error: floating point literals may not begin with a decimal point</programlisting>
+        <programlisting>1.  //Error: floating point literals may not end with a decimal point</programlisting>
+        <programlisting>99E+3   //Error: floating point literals with an exponent must contain a decimal point</programlisting>
         
     </section>
     
