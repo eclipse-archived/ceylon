@@ -905,6 +905,8 @@ Comparison comp = order(1,-1);</programlisting>
     Comparison by(X x, X y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
+        <comment><para>TODO: should the named parameter block be allowed to contain arbitrary statements?</para></comment>
+
         <comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment>
         
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
