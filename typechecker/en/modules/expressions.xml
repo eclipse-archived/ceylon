@@ -307,9 +307,7 @@ if you prefer.";</programlisting>
         <para>A character string <emphasis>template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <programlisting>StringTemplate := SimpleStringLiteral ( InterpolatedExpression SimpleStringLiteral )+</programlisting>
-        
-        <programlisting>InterpolatedExpression := ParExpression | EnumeratedInstanceReference | Invocation | Evaluation | Enumeration</programlisting>
+        <programlisting>StringTemplate := SimpleStringLiteral ( Expression? SimpleStringLiteral )+</programlisting>
         
         <para>A character string template is an expression of non-<literal>optional</literal> 
         type <literal>StringTemplate</literal>.</para>
@@ -319,6 +317,8 @@ if you prefer.";</programlisting>
         -->
         
         <programlisting>log.info("Hello, " person.firstName " " person.lastName ", the time is " Time() ".");</programlisting>
+        
+        <programlisting>log.info("1 + 1 = " 1 + 1 "");</programlisting>
         
         <para>An interpolated expression in a string template may invoke or evaluate:</para>
         
@@ -2263,7 +2263,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>$</literal></entry>
             <entry><literal>$rhs</literal></entry>
             <entry>render</entry>
-            <entry><literal>if (exists rhs) rhs.string else ""</literal></entry>
+            <entry><literal>this.string(rhs)</literal></entry>
             <entry></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>String</literal></entry>
