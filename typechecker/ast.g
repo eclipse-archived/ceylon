@@ -478,8 +478,7 @@ literal
     ;
 
 stringExpression
-options {backtrack=true;}
-    : stringTemplate
+    : (SIMPLESTRINGLITERAL interpolatedExpressionStart) => stringTemplate
     -> ^(STRING_CONCAT stringTemplate)
     | SIMPLESTRINGLITERAL
     -> ^(STRING_CST SIMPLESTRINGLITERAL)
@@ -489,7 +488,11 @@ options {backtrack=true;}
 //we allow multiple $expressions without
 //intervening strings
 stringTemplate
-    : SIMPLESTRINGLITERAL ( ('$') => ('$'! primary)+ SIMPLESTRINGLITERAL )+
+    : SIMPLESTRINGLITERAL ( (interpolatedExpressionStart) => primary SIMPLESTRINGLITERAL )+
+    ;
+
+interpolatedExpressionStart
+    : '(' | '{' | LIDENTIFIER | UIDENTIFIER | specialValue
     ;
 
 expression
