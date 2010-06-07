@@ -17,7 +17,7 @@ package class Connection(String description, Direction direction, Location to) {
 	package void go(Adventure game) {
 		if ( open() ) {
 			game.currentLocation = to;
-			game.display("You went ${direction} and arrived at ${to.name}.");
+			game.display("You went " direction " and arrived at " to.name ".");
 		}
 		else {
 			game.display("You can't go that way right now.");

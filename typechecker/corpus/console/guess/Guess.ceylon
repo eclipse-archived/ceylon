@@ -8,8 +8,8 @@ class Guess(Process process) {
 	
 	for ( Natural count in (0..9).reversed ) {
 
-		process.writeLine("I'm thinking of a number between ${min} and ${max}.");
-		process.writeLine("You have ${count} guesses.")
+		process.writeLine("I'm thinking of a number between " min " and " max ".");
+		process.writeLine("You have " count " guesses.")
 
 		try {
 			String input = process.readLine();
@@ -20,7 +20,7 @@ class Guess(Process process) {
 				break true
 			}
 			else {
-				process.writeLine("The number is ${comparison}.");
+				process.writeLine("The number is " comparison ".");
 				if (comparison.smaller && guess<max) {
 					max := guess;
 				}

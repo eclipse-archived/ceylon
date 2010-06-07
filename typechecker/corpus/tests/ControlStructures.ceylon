@@ -20,7 +20,7 @@ class ControlStructures {
 		}
 		
 		for (String first->String last in fullNames) {
-			log.info("${first}$ ${last}$");
+			log.info(first + " " + last);
 		}
 		
 	}
@@ -270,7 +270,7 @@ class ControlStructures {
 			log.info("unknown color");
 		}
 		case (red, green, blue) {
-			log.info("known color ${cc}$");
+			log.info("known color " cc "");
 		}
 		
 	}

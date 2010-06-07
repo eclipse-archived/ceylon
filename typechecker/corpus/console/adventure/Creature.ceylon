@@ -15,10 +15,10 @@ mutable package class Creature(String name, String description, Location locatio
 			location.remove(this);
 			newLocation.put(this);
 			game.currentLocation := newLocation;
-			game.display("${name} went ${direction}.");
+			game.display("" name " went " direction ".");
 		}
 		else {
-		    game.display("${name} doesn't move an inch.");
+		    game.display("" name " doesn't move an inch.");
 		}
 	}
 	
@@ -27,7 +27,7 @@ mutable package class Creature(String name, String description, Location locatio
 			Natural attack = game.random();
 			if ( attack>agility ) {
 				life -= weapon.damage;
-				game.display("You did ${weapon.damage} points of damage.");
+				game.display("You did " weapon.damage " points of damage.");
 				
 			}
 			else {
@@ -36,17 +36,17 @@ mutable package class Creature(String name, String description, Location locatio
 			Natural defense = game.random();
 			if ( defense+agility > game.level ) {
 				game.life -= damage;
-				game.display("The ${name} did ${damage} points of damage.");
+				game.display("The " name " did " damage " points of damage.");
 				if (game.life<=0) {
 					game.display("You are dead.");
 				}
 			}
 			else {
-				game.display("The ${name} missed.");
+				game.display("The " name " missed.");
 			}
 		}
 		while (life>0)
-		game.display("You killed the ${name}.");
+		game.display("You killed the " name ".");
 		dead();
 	}
 		

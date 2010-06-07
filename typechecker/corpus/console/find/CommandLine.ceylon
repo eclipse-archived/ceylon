@@ -17,7 +17,7 @@ public class CommandLine(Process process) {
 				namedArgs[name]:=tokens.next();
 			}
 			else {
-				throw Exception("No parameter specified for ${name}.");
+				throw Exception("No parameter specified for " name ".");
 			}
 		}
 		else {
