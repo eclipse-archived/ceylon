@@ -177,28 +177,12 @@
         
         <programlisting>StringCharacter := ~( "\" | "&quot;" | "'" ) | EscapeSequence</programlisting>
         
-        <!-- 
-        <para>Character strings may contain interpolated expressions delimited 
-        using <literal>${...}</literal>. The lexer is responsible for identifying 
-        and tokenizing interpolated expressions.</para>
-        
-        <programlisting>LStringLiteral := "&quot;" StringCharacter* "${"</programlisting>
-        
-        <programlisting>MStringLiteral := "}" StringCharacter* "${"</programlisting>
-        
-        <programlisting>RStringLiteral := "}" StringCharacter* "&quot;"</programlisting>
-        -->
-        
         <para>The following are legal strings:</para>
         
         <programlisting>"Hello!"</programlisting>
         
         <programlisting>" \t\n\f\r,;:"</programlisting>
-        
-        <!-- 
-        <programlisting>"Hi there, ${name}!"</programlisting>
-        -->
-        
+    
     </section>
     
     <section>
