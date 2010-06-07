@@ -976,7 +976,7 @@ SIMPLESTRINGLITERAL
 
 fragment
 NonStringChars
-    :    '{' | '\\' | '"' | '$' | '\''
+    :    '\\' | '"' | '\''
     ;
 
 fragment
@@ -986,7 +986,7 @@ NonCharacterChars
 
 fragment
 StringPart
-    : ( ~ /* NonStringChars*/ ('{' | '\\' | '"' | '$' | '\'')
+    : ( ~ /* NonStringChars*/ ('\\' | '"' | '\'')
     | EscapeSequence) *
     ;
     
@@ -1001,9 +1001,6 @@ EscapeSequence
         |   's' 
         |   '\"' 
         |   '\''
-        |   '$'
-        |   '{'
-        |   '}' 
         )          
     ;
 
