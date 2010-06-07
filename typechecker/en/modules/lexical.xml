@@ -151,7 +151,7 @@
         
         <programlisting>Character := ~(" " | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
         
-        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "s" | "\" | "&quot;" | "'" | "$" | "{" | "}" )</programlisting>
+        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "s" | "\" | "&quot;" | "'" )</programlisting>
         
         <para>The following are legal character literals:</para>
         
@@ -175,7 +175,7 @@
         
         <programlisting>StringLiteral := "&quot;" StringCharacter* "&quot;"</programlisting>
         
-        <programlisting>StringCharacter := ~( "{" | "\" | "&quot;" | "$" | "'" ) | EscapeSequence</programlisting>
+        <programlisting>StringCharacter := ~( "\" | "&quot;" | "'" ) | EscapeSequence</programlisting>
         
         <!-- 
         <para>Character strings may contain interpolated expressions delimited 
@@ -229,7 +229,6 @@
         + - / * % **
         ++ --
         .. ->
-        $
         ?
         ! &amp;&amp; || =>
         ~ &amp; | ^

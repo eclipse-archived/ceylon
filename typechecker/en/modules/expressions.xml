@@ -33,7 +33,7 @@
     <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
     sequence of expressions, or a parenthesized expression.</para>
     
-    <programlisting>Atom := Literal | StringTemplate | SpecialValue | Enumeration | "(" Expression ")" </programlisting>
+    <programlisting>Atom := Literal | StringTemplate | SpecialValue | Enumeration | ParExpression</programlisting>
     
     <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
     members of an atom or static members of a type.</para>
@@ -44,6 +44,10 @@
     including assignment operators.</para>    
     
     <programlisting>Expression := Primary | Assignment | OperatorExpression | Meta</programlisting>
+    
+    <para>Parentheses are used for grouping:</para>
+    
+    <programlisting>ParExpression := "(" Expression ")"</programlisting>
     
     <para>Ceylon expressions are validated for typesafety at compile time.
     To determine whether an expression is assignable to a program element 
@@ -297,13 +301,15 @@ if you prefer.";</programlisting>
 
     </section>
 
-    <section>
+    <section id="stringtemplates">
         <title>String templates</title>
         
         <para>A character string <emphasis>template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <programlisting>StringTemplate := SimpleStringLiteral ( ("$" Primary)+ SimpleStringLiteral )+</programlisting>
+        <programlisting>StringTemplate := SimpleStringLiteral ( InterpolatedExpression SimpleStringLiteral )+</programlisting>
+        
+        <programlisting>InterpolatedExpression := ParExpression | EnumeratedInstanceReference | Invocation | Evaluation | Enumeration</programlisting>
         
         <para>A character string template is an expression of non-<literal>optional</literal> 
         type <literal>StringTemplate</literal>.</para>
@@ -312,7 +318,7 @@ if you prefer.";</programlisting>
         <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
         -->
         
-        <programlisting>log.info("Hello, " $person.firstName " " $person.lastName ", the time is " $Time() ".");</programlisting>
+        <programlisting>log.info("Hello, " person.firstName " " person.lastName ", the time is " Time() ".");</programlisting>
         
         <para>An interpolated expression in a string template may invoke or evaluate:</para>
         
@@ -743,7 +749,7 @@ Comparison comp = order(1,-1);</programlisting>
             <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
             
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
-            <programlisting>iterate (map) perform (String name->Object value) { log.info("Entry: " $name "->" $value ""); };</programlisting>
+            <programlisting>iterate (map) perform (String name->Object value) { log.info("Entry: " name "->" value ""); };</programlisting>
             
             <para>The type of a method invocation expression depends upon the invocation
             operator. If <literal>X</literal> is the declared return type of the method:</para>
@@ -1135,13 +1141,13 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                   
         <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
                       having (user.authorized(key)) 
-                      select (""$key": "$value"");</programlisting>
+                      select ("" key ": " value "");</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>List&lt;String&gt; labels = from (namedValues)
                       having (Key key -> Value value) (user.authorized(key)) 
-                      select (Key key -> Value value) (""$key": "$value"");</programlisting>
+                      select (Key key -> Value value) ("" key ": " value "");</programlisting>
         
         <comment>
         <para>TODO: again, with type inference, this gets even simpler:</para>
@@ -1901,7 +1907,7 @@ DefaultAssignmentOperator</programlisting>
 
     <programlisting>if ( exists name => name == "Gavin" ) return ... ;</programlisting>
     
-    <programlisting>log.info( "Hello " + $person + "!")</programlisting>
+    <programlisting>log.info( "Hello " + person.string + "!")</programlisting>
     
     <programlisting>List&lt;String&gt; names = { person1, person2 }*.name;</programlisting>
     
@@ -1996,7 +2002,7 @@ DefaultAssignmentOperator</programlisting>
                 <literal>++</literal>, 
                 <literal>--</literal>, 
                 <literal>-</literal>, 
-                <literal>$</literal>,
+                <!--literal>$</literal-->
                 <literal>~</literal> 
                 </entry>
                 <entry>Unary prefix</entry>
@@ -2183,8 +2189,10 @@ DefaultAssignmentOperator</programlisting>
     <title>Basic invocation and assignment operators</title>
     
     <para>These operators support method invocation and attribute evaluation and
-    assignment. The <literal>$</literal> operator is a shortcut for converting
-    any expression to a <literal>String</literal>.</para>
+    assignment.</para>
+    
+    <!--The <literal>$</literal> operator is a shortcut for converting
+    any expression to a <literal>String</literal>.-->
     
     <table>
     <tgroup cols="7">
@@ -2251,7 +2259,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>X</literal> or <literal>optional X</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
+        <!--row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
         
         <row>
             <entry><literal>$</literal></entry>
@@ -2261,7 +2269,7 @@ DefaultAssignmentOperator</programlisting>
             <entry></entry>
             <entry><literal>optional Object</literal></entry>
             <entry><literal>String</literal></entry>
-        </row>
+        </row-->
     
         <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
         

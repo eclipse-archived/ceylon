@@ -398,7 +398,7 @@ else {
 
             <programlisting>public void welcome(optional User user) {
     if (exists user) {
-        log.info("Hi " $user.name "!");
+        log.info("Hi " user.name "!");
     }
     else {
         log.info("Hello World!");
@@ -578,13 +578,13 @@ else {
             <programlisting>for (Person p in people) { log.info(p.name); }</programlisting>
 
             <programlisting>for (String key -> Natural value in map) { 
-    log.info(""$key" = "$value""); 
+    log.info("" key " = " value ""); 
 }</programlisting>
             
             <programlisting>for (Person p in people) {
-    log.debug("found "$p.name"");
+    log.debug("found " p.name "");
     if (p.age >= 18) {
-        log.info("found an adult: "$p.name"");
+        log.info("found an adult: " p.name "");
         break true
     }
 }
@@ -634,7 +634,7 @@ fail {
             <para>For example:</para>
             
             <programlisting>do (mutable Natural n:=0) {
-    log.info("count = " + $n);
+    log.info("count = " + n.string);
 }
 while (n&lt;=10) { n++; }</programlisting>
             
@@ -735,10 +735,10 @@ while (!person.parent.dead) {
     ...
 }
 catch (FileNotFoundException fnfe) {
-    log.info("file not found: "$name"");
+    log.info("file not found: " name "");
 }
 catch (FileReadException fre) {
-    log.info("could not read from file: "$name"");
+    log.info("could not read from file: " name "");
 }
 finally {
     if (file.open) file.close();

@@ -893,7 +893,7 @@ ClassBody</programlisting>
     
     x := y := sqrt(position**2/2) * position.sign;
     
-    assert ("must have distance " $position " from origin") 
+    assert ("must have distance " position " from origin") 
         that ( x**2 + y**2 == position**2 );
     
 }</programlisting>
@@ -1465,7 +1465,7 @@ public User(String username, Person person);</programlisting>
         <programlisting>public optional U get(optional V key);</programlisting>
         
         <programlisting>public void print(Object... objects) {
-    for (Object object in objects) { log.info($object); }
+    for (Object object in objects) { log.info(object.string); }
 }</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>

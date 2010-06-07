@@ -12,8 +12,8 @@
         hierarchy and supports the binary operators <literal>==</literal> (equals),
         <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
         <literal>.</literal> (invoke), <!--<literal>^.</literal> (chain invoke),-->
-        <literal>in</literal> (in), <literal>is</literal> (is), the unary prefix 
-        operator <literal>$</literal> (render), and the binary operator 
+        <literal>in</literal> (in), <literal>is</literal> (is), <!--the unary prefix 
+        operator <literal>$</literal> (render),--> and the binary operator 
         <literal>:=</literal> (assign).</para>
         
         <para>In addition, references of type <literal>optional Object</literal>
@@ -43,10 +43,9 @@
          attributes."
     public Integer hash(Attribute... attributes) { ... }
         
-    doc "The unary render operator $x. A developer-friendly string 
-         representing the instance. By default, the string contains
-         the name of the type, and the values of all attributes 
-         annotated |id|."
+    doc "A developer-friendly string representing the instance. 
+         By default, the string contains the name of the type, 
+         and the values of all attributes annotated |id|."
     public String string { return ... }
     
     doc "Determine if the instance belongs to the given |Category|."
