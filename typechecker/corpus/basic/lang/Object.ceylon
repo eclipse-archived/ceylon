@@ -49,4 +49,11 @@ public abstract class Object {
     doc "A log obect for the type."
     public static Log log = Log(type);
         
+    doc "Transform the given object to a string. Override to 
+         customize the render operator and character string 
+         template expression interpolation."
+    public string(optional Object object) { 
+        return (object ? "null").string;
+    }
+
 }
