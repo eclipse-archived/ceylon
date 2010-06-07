@@ -52,8 +52,13 @@ public abstract class Object {
     doc "Transform the given object to a string. Override to 
          customize the render operator and character string 
          template expression interpolation."
-    public string(optional Object object) { 
-        return (object ? "null").string;
+    public String string(optional Object object) { 
+        return (object ? nullString).string;
     }
+    
+    doc "The string representation of a null value. Override 
+         to customize the render operator and character string 
+         template expression interpolation."
+    public String nullString = "null";
 
 }
