@@ -672,9 +672,8 @@ base
     
 selector 
     : member
-    | arguments
+    | argumentsWithFunctionalArguments
     -> ^(CALL_EXPR arguments)
-    | functionalArgument
     | elementSelector
     | postfixOperator 
     -> ^(POSTFIX_EXPR postfixOperator)
@@ -700,7 +699,11 @@ elementsSpec
     -> ^(LOWER_BOUND $lo)? ^(UPPER_BOUND $hi)?	
     ;
 
-arguments 
+argumentsWithFunctionalArguments
+    : arguments functionalArgument*
+    ;
+	
+arguments
     : positionalArguments | namedArguments
     ;
     
