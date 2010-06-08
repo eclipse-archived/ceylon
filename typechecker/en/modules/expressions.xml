@@ -2299,6 +2299,8 @@ DefaultAssignmentOperator</programlisting>
     </tgroup>
     </table>
     
+    <comment><para>TODO: do we really need the <literal>$</literal> operator?</para></comment>
+    
     </section>
         
     <section id="equalitycomparison">
