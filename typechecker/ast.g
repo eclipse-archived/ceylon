@@ -716,13 +716,18 @@ namedSpecifiedArgument
     : parameterName specifier ';'!
     ;
 
+namedArgumentStart
+    : LIDENTIFIER '=' 
+    | formalParameterType LIDENTIFIER
+    ;
+
 parameterName
     : LIDENTIFIER
     -> ^(ARG_NAME LIDENTIFIER)
     ;
 
 namedArguments
-    : '{' ((namedArgument) => namedArgument)* expressions? '}'
+    : '{' ((namedArgumentStart) => namedArgument)* expressions? '}'
     -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* ^(VARARGS expressions)?)
     ;
 
