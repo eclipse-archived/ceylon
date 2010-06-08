@@ -701,7 +701,7 @@ elementsSpec
 argumentsWithFunctionalArguments
     : arguments functionalArgument*
     ;
-	
+    
 arguments
     : positionalArguments | namedArguments
     ;
