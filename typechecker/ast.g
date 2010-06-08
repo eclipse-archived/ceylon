@@ -694,9 +694,8 @@ elementSelector
     ;
 
 elementsSpec
-    : lo=additiveExpression ( '...' | '..' hi=additiveExpression )?
-    //|  '...' hi=additiveExpression)
-    -> ^(LOWER_BOUND $lo)? ^(UPPER_BOUND $hi)?	
+    : additiveExpression ( '...' | '..' additiveExpression )?
+    -> ^(LOWER_BOUND additiveExpression) ^(UPPER_BOUND additiveExpression)?	
     ;
 
 argumentsWithFunctionalArguments
