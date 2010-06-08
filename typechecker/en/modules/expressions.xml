@@ -1141,13 +1141,13 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                   
         <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
                       having (user.authorized(key)) 
-                      select ("" key ": " value "");</programlisting>
+                      select ($key + ": " + $value);</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>List&lt;String&gt; labels = from (namedValues)
                       having (Key key -> Value value) (user.authorized(key)) 
-                      select (Key key -> Value value) ("" key ": " value "");</programlisting>
+                      select (Key key -> Value value) ($key + ": " + $value);</programlisting>
         
         <comment>
         <para>TODO: again, with type inference, this gets even simpler:</para>
