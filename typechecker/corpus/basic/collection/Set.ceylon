@@ -9,7 +9,7 @@ public interface Set<out X>
          Return |true| if it is a subset."
     public Boolean subset(Set<Object> set);
     
-    public override Set<T> with<T>(T... elements) where T <= X;
-    public override OpenSet<T> copy<T>() where T <= X;
+    public override Set<T> with<T>(T... elements) where X satisfies T;
+    public override OpenSet<T> copy<T>() where X satisfies T;
 
 }

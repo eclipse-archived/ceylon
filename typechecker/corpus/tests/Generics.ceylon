@@ -30,7 +30,7 @@ class Generics {
     }
 
     class TypeWithUpperBoundParameter<X>(void accept(X x), X xx)
-            where X <= String {
+            where String satisfies X {
         accept(xx);
     }
         

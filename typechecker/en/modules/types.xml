@@ -672,10 +672,10 @@ while (i.more) {
     doc "An extension of the collection, with the given 
          elements. The returned collection reflects changes 
          made to the first collection."
-    public Collection<T> with<T>(T... elements) where T <= X;
+    public Collection<T> with<T>(T... elements) where X satisfies T;
 
     doc "A mutable copy of the collection."
-    public OpenCollection<T> copy<T>() where T <= X;
+    public OpenCollection<T> copy<T>() where X satisfies T;
     
 }]]></programlisting>
 
@@ -739,13 +739,13 @@ while (i.more) {
          Return |true| if it is a subset."
     public Boolean subset(Set<Object> set);
     
-    public override Set<T> with<T>(T... elements) where T <= X;
-    public override OpenSet<T> copy<T>() where T <= X;
+    public override Set<T> with<T>(T... elements) where X satisfies T;
+    public override OpenSet<T> copy<T>() where X satisfies T;
 
 }]]></programlisting>
 
             <!--    
-    public Set<T> union(Set<T> set) where T<=X;
+    public Set<T> union(Set<T> set) where X satisfies T;
     public Set<X> intersection(Set<Object> set);
     public Set<X> complement(Set<Object> set);
             -->
@@ -813,12 +813,12 @@ while (i.more) {
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public override List<T> with<T>(T... elements) where T <= X;
+    public override List<T> with<T>(T... elements) where X satisfies T;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<T> withInitial<T>(T... elements) where T <= X;
+    public List<T> withInitial<T>(T... elements) where X satisfies T;
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
@@ -836,7 +836,7 @@ while (i.more) {
          every element of the list."
     public List<Y> transform<Y>(Y select(X element));
     
-    public override OpenList<T> copy<T>() where T <= X;
+    public override OpenList<T> copy<T>() where X satisfies T;
 
 }]]></programlisting>
 
@@ -955,8 +955,8 @@ while (people nonempty) {
          evaluates to |true|, as a |Map|."
     public Map<U, V> entries(Boolean having(U key -> V value));
     
-    public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
-    public override OpenMap<U,T> copy<U,T>() where T <= V;
+    public override Map<U, T> with<T>(Entry<U, T>... entries) where V satisfies T;
+    public override OpenMap<U,T> copy<T>() where V satisfies T;
     
 }]]></programlisting>
 
@@ -997,8 +997,8 @@ while (people nonempty) {
          the original bag."
     public Map<X,Natural> map;
     
-    public override Bag<T> with<T>(T... elements) where T <= X;
-    public override OpenBag<T> copy<T>() where T <= X;
+    public override Bag<T> with<T>(T... elements) where X satisfies T;
+    public override OpenBag<T> copy<T>() where X satisfies T;
     
 }]]></programlisting>
 

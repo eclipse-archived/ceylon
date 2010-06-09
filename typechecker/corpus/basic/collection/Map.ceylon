@@ -23,7 +23,7 @@ public interface Map<U, out V>
          evaluates to |true|, as a |Map|."
     public Map<U, V> entries(Boolean having(U key -> V value));
     
-    public override Map<U, T> with<T>(Entry<U, T>... entries) where T <= V;
-    public override OpenMap<U,T> copy<U,T>() where T <= V;
+    public override Map<U, T> with<T>(Entry<U, T>... entries) where V satisfies T;
+    public override OpenMap<U,T> copy<T>() where V satisfies T;
     
 }
