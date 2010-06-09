@@ -74,8 +74,6 @@
         <itemizedlist>
             <listitem>the <literal>return</literal> directive&mdash;to return a value from a method 
             or attribute getter,</listitem>
-            <!--listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
-            functor,</listitem-->
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
             <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
             of a loop,</listitem>
@@ -130,16 +128,10 @@
         
         <programlisting>Retry := "retry"</programlisting>
         
-        <comment><para>TODO: Should we have a <literal>continue</literal> or 
-        <literal>redo</literal> for the <literal>do/while</literal> loop, which 
-        lets you specify the next value of the iterator variable? This would let 
-        us get rid of <literal>mutable</literal> iterator variables, which are a 
-        minor wart.</para></comment>
-
-        <comment><para>TODO: We could support <literal>for/fail</literal> loops 
+        <!--comment><para>TODO: We could support <literal>for/fail</literal> loops 
         that return a value by supporting a <literal>found expr</literal> directive. 
         We could support conditionals that return a value by adding a 
-        <literal>then expr</literal> directive.</para></comment>
+        <literal>then expr</literal> directive.</para></comment-->
         
         </section>
         
