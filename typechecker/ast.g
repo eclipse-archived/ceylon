@@ -218,7 +218,6 @@ langAnnotation
     | 'override'
     | 'optional'
     | 'mutable'
-    | 'static'
     | 'extension'
     | 'volatile'
     ;
@@ -237,7 +236,11 @@ directiveStatement
     ;
 
 directive
-    : returnDirective | throwDirective | breakDirective | retryDirective
+    : returnDirective
+    | throwDirective
+    | breakDirective
+    | continueDirective
+    | retryDirective
     ;
 
 returnDirective
@@ -254,7 +257,11 @@ breakDirective
     : 'break' expression?
     -> ^(BREAK_STMT expression?)
     ;
-    
+
+continueDirective
+    : 'continue'
+    ;
+
 retryDirective
     : 'retry'
     -> ^(RETRY_STMT)
@@ -476,8 +483,8 @@ nonstringLiteral
     -> ^(FLOAT_CST FLOATLITERAL)
     | QUOTEDLITERAL
     -> ^(QUOTE_CST QUOTEDLITERAL)
-    | CHARLITERAL
-    -> ^(CHAR_CST CHARLITERAL)
+    /*| CHARLITERAL
+    -> ^(CHAR_CST CHARLITERAL)*/
     ;
 
 stringExpression
@@ -992,9 +999,14 @@ NATURALLITERAL
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
 
-CHARLITERAL
+/*CHARLITERAL
     :   '@' ( ~ NonCharacterChars | EscapeSequence )
-    ;
+    ;*/
+
+/*fragment
+NonCharacterChars
+    :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
+    ;*/
 
 QUOTEDLITERAL
     :   '\'' StringPart '\''
@@ -1007,11 +1019,6 @@ SIMPLESTRINGLITERAL
 fragment
 NonStringChars
     :    '\\' | '"' | '\''
-    ;
-
-fragment
-NonCharacterChars
-    :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
     ;
 
 fragment
@@ -1028,7 +1035,7 @@ EscapeSequence
         |   'n' 
         |   'f' 
         |   'r'
-        |   's' 
+        //|   's' 
         |   '\"' 
         |   '\''
         )          
@@ -1089,6 +1096,10 @@ CATCH
 
 CLASS
     :   'class'
+    ;
+
+CONTINUE
+    :   'continue'
     ;
 
 DO
