@@ -336,7 +336,7 @@ classDeclaration
         'class'!
         typeName
         typeParameters?
-        formalParameters?
+        formalParameters
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -358,15 +358,14 @@ instance
     : 'case'! memberName arguments? (','|';'|'...')
     ;
     
-
 typeConstraint
-    : typeName ( ('>='^ type) | ('<='^ type) | ('='^ 'subtype') | formalParameters )
+    : 'where' type formalParameters? satisfiedTypes?
+    -> ^(TYPE_CONSTRAINT type formalParameters? satisfiedTypes?)
     ;
     
 typeConstraints
-    //TODO: should it be 'for'?
-    : 'where' typeConstraint ('&' typeConstraint)*
-    -> ^(TYPE_CONSTRAINT_LIST ^(TYPE_CONSTRAINT typeConstraint)+)
+    : typeConstraint+
+    -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
     ;
     
 satisfiedTypes
@@ -821,7 +820,7 @@ isCondition
     ;
 
 controlStructure
-    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
+    : ifElse | switchCaseElse | while | doWhile | forFail | tryCatchFinally
     ;
     
 ifElse
@@ -904,23 +903,28 @@ containment
     ;
     
 doWhile
-    : doBlock? whileBlock
-    -> ^(WHILE_STMT doBlock? whileBlock)
+    : doBlock loopCondition ';'
+    -> ^(WHILE_STMT doBlock loopCondition)
     ;
 
-doBlock
-    : 'do' ('(' doIterator ')')? block?
-    -> ^(DO_ITERATOR doIterator)? ^(DO_BLOCK block)?
+while
+    : loopCondition whileBlock
+    -> ^(WHILE_STMT loopCondition whileBlock)?
+    ;
+
+loopCondition
+    : 'while' '(' condition ')'
+    -> ^(CONDITION condition)
     ;
 
 whileBlock
-    : 'while' '(' condition ')' (block | ';')
-    -> ^(CONDITION condition) ^(WHILE_BLOCK block)?
+    : block
+    -> ^(WHILE_BLOCK block)
     ;
 
-//do iterators are allowed to be mutable and/or optional
-doIterator
-    : annotations? variable (specifier | initializer)
+doBlock
+    : 'do' block?
+    -> ^(DO_BLOCK block)?
     ;
 
 tryCatchFinally
