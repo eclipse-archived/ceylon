@@ -926,7 +926,7 @@ doWhile
 
 while
     : loopCondition whileBlock
-    -> ^(WHILE_STMT loopCondition whileBlock)?
+    -> ^(WHILE_STMT loopCondition whileBlock)
     ;
 
 loopCondition
@@ -940,8 +940,8 @@ whileBlock
     ;
 
 doBlock
-    : 'do' block?
-    -> ^(DO_BLOCK block)?
+    : 'do' block
+    -> ^(DO_BLOCK block)
     ;
 
 tryCatchFinally
