@@ -1946,6 +1946,8 @@ while (people nonempty) {
         
         <listitem><literal>lang.Float</literal> to Java <literal>double</literal></listitem>
         <listitem><literal>small lang.Float</literal> to Java <literal>float</literal></listitem>
+
+        <listitem><literal>lang.String</literal> to <literal>java.lang.String</literal></listitem>
     </itemizedlist>
     
     <para><literal>lang.Character</literal> may not be optimized to the Java <literal>char</literal>
