@@ -102,12 +102,22 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      (annotations? typeDeclaration)+
+      toplevelDeclaration+
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
-       ^(TYPE_DECL annotations? typeDeclaration)+
+       ^(TYPE_DECL toplevelDeclaration)+
     ;
-       
+
+toplevelDeclaration
+    : annotations? 
+    ( 
+        memberDeclaration 
+      -> ^(MEMBER_DECL memberDeclaration annotations?)
+      | typeDeclaration 
+      -> ^(TYPE_DECL typeDeclaration annotations?)
+    )
+    ;
+
 typeDeclaration
     : classDeclaration
     -> ^(CLASS_DECL classDeclaration)
