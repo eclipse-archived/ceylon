@@ -67,7 +67,7 @@
 
         <programlisting>DirectiveStatement := Directive ";"?</programlisting>
         
-        <programlisting>Directive := Return | Throw | Break | Retry</programlisting>
+        <programlisting>Directive := Return | Throw | Break | Continue | Retry</programlisting>
         
         <para>Ceylon provides the following control directives:</para>
         
@@ -77,6 +77,8 @@
             <!--listitem>the <literal>produce</literal> directive&mdash;to return a value from a 
             functor,</listitem-->
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
+            <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
+            of a loop,</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception, and</listitem>
             <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> 
             block, reinitializing all resources.</listitem>
@@ -87,6 +89,7 @@
         <programlisting>return x+y;</programlisting>
         <programlisting>return "Hello"</programlisting>
         <programlisting>break true</programlisting>
+        <programlisting>continue</programlisting>
         
         <para>The <literal>return</literal> directive may not appear outside the body of 
         a method or attribute getter. In the case of a <literal>void</literal> method, no 
@@ -108,6 +111,11 @@
         specifies that the <literal>fail</literal> block should be executed.</para>
         
         <programlisting>Break := "break" Expression?</programlisting>
+        
+        <para>The <literal>continue</literal> directive may not be appear outside the body 
+        of a loop.</para>
+        
+        <programlisting>Continue := "continue"</programlisting>
         
         <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
         expression of non-<literal>optional</literal> type <literal>lang.Exception</literal>.
@@ -212,8 +220,8 @@ else {
                 execution using an enumerated list of values,</para>
             </listitem>
             <listitem>
-                <para>the <literal>do/while</literal> loop&mdash;for loops which terminate based 
-                upon the value of a boolean expression,</para>
+                <para>the <literal>while</literal> and <literal>do/while</literal> loops&mdash;for 
+                loops which terminate based upon the value of a boolean expression,</para>
             </listitem>
             <listitem>
                 <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
@@ -225,7 +233,7 @@ else {
             </listitem>
         </itemizedlist>
                 
-        <programlisting>ControlStructure := IfElse | SwitchCaseElse | DoWhile | ForFail | TryCatchFinally</programlisting>
+        <programlisting>ControlStructure := IfElse | SwitchCaseElse | While | DoWhile | ForFail | TryCatchFinally</programlisting>
        
         <para>Control structures are not considered to be expressions, and therefore do not evaluate
         to a value.</para>
@@ -596,31 +604,30 @@ fail {
         </section>
         
         <section id="dowhile">
-            <title><literal>do/while</literal></title>
+            <title><literal>while</literal> and <literal>do/while</literal></title>
             
+            <para>The <literal>while</literal> loop has the form:</para>
+            
+            <programlisting>While := LoopCondition Block</programlisting>
+
             <para>The <literal>do/while</literal> loop has the form:</para>
             
-            <programlisting>DoWhile := Do? While</programlisting>
+            <programlisting>DoWhile := "do" Block LoopCondition ";"</programlisting>
 
-            <programlisting>Do := "do" ("(" DoIterator ")")? Block?</programlisting>
+            <para>The loop condition determines when the loop terminates.</para>
             
-            <programlisting>While := "while" "(" Condition ")" (";" | Block)</programlisting>
+            <programlisting>LoopCondition := "while" "(" Condition ")"</programlisting>
 
-            <para>The loop may declare an iterator variable of any type, which may be 
-            <literal>mutable</literal>.</para>
-
-            <programlisting>DoIterator := Annotation* Variable (Specifier | Initializer)</programlisting>
-            
             <!--programlisting>DoWhileFail := 
 ( "do" ("(" Variable Specifier ")")? OpenBlock? )?
 "while" "(" Condition ("," Condition)* ")" 
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
-            <para>When the construct is executed, both blocks are executed repeatedly, 
-            until the termination condition first evaluates to <literal>false</literal>, 
-            at which point iteration ends. In each iteration, the first block is executed 
-            before the condition is evaluated, and the second block is executed after it 
-            is evaluated.</para>
+            <para>When the construct is executed, the block is executed repeatedly, 
+            until the loop condition first evaluates to <literal>false</literal>, 
+            at which point iteration ends. In a <literal>while</literal> loop, the block 
+            is executed after the condition is evaluated. In a <literal>do/while</literal> 
+            loop, the second block is executed before it is evaluated.</para>
             
             <comment><para>TODO: does <literal>do/while</literal> need a fail block? Python has it, 
             but what is the real usecase?</para></comment>
@@ -633,17 +640,18 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>do (mutable Natural n:=0) {
+            <programlisting>mutable Natural n:=0
+do {
     log.info("count = " + $n);
 }
 while (n&lt;=10) { n++; }</programlisting>
             
-            <programlisting>do (Iterator&lt;Person&gt; iter = org.employees.iterator())
+            <programlisting>Iterator&lt;Person&gt; iter = org.employees.iterator();
 while (iter.more) {
     log.info( iter.next().name );
 }</programlisting>
             
-            <programlisting>do (Iterator&lt;Person&gt; iter = people.iterator())
+            <programlisting>Iterator&lt;Person&gt; iter = people.iterator();
 while (iter.more) {
     Person p = iter.next();
     log.debug(p.name);
@@ -662,17 +670,7 @@ do {
     person := person.parent;
 } 
 while (!person.dead);</programlisting>
-            
-            <programlisting>do (mutable Person person := ...) {
-    log.info(person.name);
-} 
-while (!person.parent.dead) {
-    person := person.parent;    
-}</programlisting>
-    
-        <comment><para>TODO: <literal>do/while</literal> is significantly enhanced compared to other 
-        Java-like languages. Is this truly a good thing?</para></comment>
-                
+
         </section>
 
         <section id="trycatchfinally">
