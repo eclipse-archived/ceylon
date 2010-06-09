@@ -52,15 +52,15 @@ class Primaries {
 				log.info("Hello " + name);
 			}
 			
-			static void helloWorld() {
-				log.info("Hello World");
-			}
-			
 		}
 		
+		void helloWorld() {
+			log.info("Hello World");
+		}
+			
 		Person person = Person("Gavin King");
 		void hello() = person.hello;
-		void helloWorld() = Person.helloWorld;
+		void helloWorld() = helloWorld;
 		String getName() = get person.name;
 		void setName(String name) = set person.name;
 		Person newPerson(String name) = Person;

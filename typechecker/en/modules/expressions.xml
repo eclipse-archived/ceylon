@@ -36,7 +36,7 @@
     <programlisting>Atom := Literal | StringTemplate | SpecialValue | Enumeration | ParExpression</programlisting>
     
     <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
-    members of an atom or static members of a type.</para>
+    members of an atom or toplevel method or class.</para>
     
     <programlisting>Primary := Atom | EnumeratedInstanceReference | MethodReference | Invocation | Evaluation</programlisting>
     
@@ -206,12 +206,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A floating point number literal is an expression of 
         type <literal>lang.Float</literal>.</para>
         
-       <programlisting>public static Float pi = 3.14159;</programlisting>
+       <programlisting>public Float pi = 3.14159;</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
         
-        <programlisting>public static final Float pi = new lang.Float(3.14159f);</programlisting>
+        <programlisting>public final Float pi = new lang.Float(3.14159f);</programlisting>
         -->
 
     </section>
@@ -433,14 +433,14 @@ if you prefer.";</programlisting>
         <title>Method references</title>
         
         <para>A <emphasis>method reference</emphasis> is an invocable reference to an 
-        instance method, static method, attribute getter or setter or type constructor:</para>
+        instance method, toplevel method, attribute getter or setter or type constructor:</para>
         
         <programlisting>MethodReference :=  
-InstanceMethodReference | StaticMethodReference | 
+InstanceMethodReference 
 AttributeReference | 
 ConstructorReference | MemberConstructorReference</programlisting>
 
-        <para>An ordinary method reference is a reference to an instance or static method.</para>
+        <para>An ordinary method reference is a reference to an instance or toplevel method.</para>
 
         <para>A <emphasis>constructor reference</emphasis> is a reference to an implicit method 
         with a signature that depends upon the formal parameters of the class. For a class 
@@ -465,37 +465,14 @@ ConstructorReference | MemberConstructorReference</programlisting>
             </listitem>
         </itemizedlist>
         
-        <section>
-            <title>Static method and toplevel class constructor references</title>
-            
-        <para>A constructor reference for a toplevel type consists of a named type.</para>
-                
-        <programlisting>ConstructorReference := RegularType</programlisting>
-        
-        <para>A static method reference consists of a named type and named method of
-        that type.</para>
-                
-        <!-- No ("set" | "get") since we don't have static attributes -->
-        <programlisting>StaticMethodReference := (RegularType ".")? MemberName</programlisting>
-        
-        <comment><para>TODO: According to this, we can "curry" in type arguments of
-        the type. Is this right? If so, why can't we curry type arguments of the 
-        member?</para></comment>
-            
-       </section>
-
-        <section>
-            <title>Instance method, attribute getter and setter, and member class
-            constructor references</title>
-            
         <para>Instance method references, attribute getter and setter references, and
         member class constructor references specify a name of a member, an invocation 
         operator, and a <emphasis>receiver expression</emphasis> that evaluates to an 
         instance or <literal>Iterable</literal> set of instances of a type that 
         has a member with that name.</para>
         
-        <para>Otherwise, if no receiver expression is explicitly specified, the current 
-        object is the receiver.</para>
+        <para>Otherwise, if no receiver expression is explicitly specified, the reference
+        is to a toplevel method or class, or the current object is the receiver.</para>
         
         <!--
         <para>A reference to a block local method, block local type constructor, or local
@@ -526,8 +503,6 @@ ConstructorReference | MemberConstructorReference</programlisting>
             <listitem><literal>foo.bar get</literal> and <literal>foo.bar set</literal></listitem>
         </itemizedlist>
         </comment>
-        
-        </section>
         
         <section>
             <title>Invocation operators</title>
@@ -1111,7 +1086,7 @@ Comparison comp = order(1,-1);</programlisting>
         <section id="iteration">
             <title>Iteration</title>
             
-        <para>A specialized invocation syntax is provided for static methods which iterate 
+        <para>A specialized invocation syntax is provided for toplevel methods which iterate 
         collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
         annotated <literal>iterated</literal>, and all remaining parameters are functional
         parameters, then the method may be invoked according to the following protocol:</para>
@@ -1124,7 +1099,7 @@ Comparison comp = order(1,-1);</programlisting>
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static
+        <programlisting>public
 List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
                   Boolean having(coordinated X x),
                   Y select(coordinated X x));</programlisting>
@@ -1159,7 +1134,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         <section id="localdefinition">
             <title>Variable definition</title>
             
-        <para>A specialized invocation syntax is also provided for static methods which define 
+        <para>A specialized invocation syntax is also provided for toplevel methods which define 
         a variable. If the first parameter of the method is of type <literal>X</literal>,
         annotated <literal>specified</literal>, and all remaining parameters are functional
         parameters, then the method may be invoked according to the following protocol:</para>
@@ -1173,7 +1148,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static
+        <programlisting>public
 Y ifExists&lt;X,Y&gt;(specified optional X value, 
                 Y then(coordinated X x), 
                 Y otherwise());</programlisting>
@@ -1188,7 +1163,7 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
         
          <para>And for the following method declaration:</para>
         
-        <programlisting>public static
+        <programlisting>public
 Y using&lt;X,Y&gt;(specified X resource, 
              Y seek(coordinated X x) )
   where X satisfies Usable;</programlisting>
@@ -1215,7 +1190,7 @@ Y using&lt;X,Y&gt;(specified X resource,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static
+        <programlisting>public
 Y select&lt;X, Y&gt;(X selector,
               cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... cases);</programlisting>
                   
@@ -1236,7 +1211,7 @@ Y select&lt;X, Y&gt;(X selector,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public static
+        <programlisting>public
 X attempt&lt;X&gt;(functor X() seek, 
              cases functor X(E e) where E satisfies Exception... except);</programlisting>
                   

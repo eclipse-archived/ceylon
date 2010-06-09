@@ -102,7 +102,7 @@
         if else switch case for fail do while try catch finally
         exists nonempty is in
         public module package private
-        abstract default override mutable optional static extension 
+        abstract default override mutable optional extension 
         deprecated volatile small
         </literal></para>
         

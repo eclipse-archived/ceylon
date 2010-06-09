@@ -46,8 +46,8 @@ public abstract class Object {
         return this.type.assignableTo(type)
     }
     
-    doc "A log obect for the type."
-    public static Log log = Log(type);
+    doc "A log object for the type."
+    public Log log = type.log;
         
     doc "Transform the given object to a string. Override to 
          customize the render operator and character string 

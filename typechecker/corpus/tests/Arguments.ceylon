@@ -87,7 +87,7 @@ class Arguments {
 		logLazily { String message() { return "hello" } };
 	
 	
-		public static void from<Y>(Y initial, 
+		public void from<Y>(Y initial, 
 								   Boolean until(Y y), 
 								   Y each(Y y), 
 								   void perform(Y y)) {

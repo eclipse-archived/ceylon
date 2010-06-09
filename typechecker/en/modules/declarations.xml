@@ -51,7 +51,10 @@ Body?</programlisting>
     <section id="topleveldeclaration">
         <title>Imports and toplevel declarations</title>
         
-        <para>A toplevel declaration defines a type: a class, interface or type alias.</para>
+        <para>A toplevel declaration defines a type&mdash;a class, interface or type 
+        alias&mdash;or a method.</para>
+        
+        <programlisting>ToplevelDeclaration := TypeDeclaration | Method</programlisting>
         
         <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
@@ -64,9 +67,9 @@ Body?</programlisting>
         declarations with the same name.</para>
         
         <para>A compilation unit consists of a list of imported types, followed by
-        one or more type definitions:</para>
+        one or more type or method definitions:</para>
         
-        <programlisting>Import* TypeDeclaration+</programlisting>
+        <programlisting>Import* ToplevelDeclaration+</programlisting>
         
         <programlisting>Import := "import" ImportPath ("." "*" | "alias" ImportElement)? ";"</programlisting>
         
@@ -80,6 +83,9 @@ Body?</programlisting>
         the type. It may refer to a toplevel type defined in a compilation in another package
         only if it explicitly imports the type.</para>
         
+        <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
+        non-<literal>mutable</literal> toplevel attributes?</para></comment>
+            
      </section>
     
     <section id="annotationlist">
@@ -105,9 +111,9 @@ scope(session)
 action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
 
-        <para>An annotation is a <literal>static</literal> method invocation that occurs 
-        when the type is loaded by the virtual machine. The return value of the invocation 
-        is made available via reflection.</para>
+        <para>An annotation is an invocation of a toplevel method that occurs when the 
+        type is loaded by the virtual machine. The return value of the invocation is 
+        made available via reflection.</para>
         
         <para>For example, the built-in <literal>doc</literal> annotation is declared as 
         follows:</para>
@@ -120,12 +126,11 @@ Description doc(String description) {
         <para>The annotation may be specified at a program element using any one of three 
         forms.</para>
         
-        <para>Using a positional parameter invocation of the <literal>static</literal> 
-        method:</para>
+        <para>Using a positional parameter invocation of the method:</para>
         
         <programlisting>doc("the name") String name;</programlisting>
         
-        <para>Using a named parameter invocation of the <literal>static</literal> method:</para>
+        <para>Using a named parameter invocation of the method:</para>
         
         <programlisting>doc {description="the name";} String name;</programlisting>
         
@@ -139,8 +144,8 @@ Description doc(String description) {
         <programlisting>Description description = (#Person).annotations(#Description).first;</programlisting>
         
         <para>Unlike Java, the same annotation may appear multiple times for the same
-        program element. Furthermore, different annotations (<literal>static</literal> 
-        methods) may return values of the same type.</para>
+        program element. Furthermore, different annotations (toplevel methods) may 
+        return values of the same type.</para>
         
     </section>
     
@@ -158,7 +163,7 @@ Description doc(String description) {
                 <para>attributes,</para>
             </listitem>
             <listitem>
-                <para>non-<literal>static</literal> methods, and</para>
+                <para>member methods, and</para>
             </listitem>
             <listitem>
                 <para>member classes.</para>
@@ -702,8 +707,7 @@ ClassBody</programlisting>
                 <para>member (method, attribute and member class) declarations,</para>
             </listitem>
             <listitem>
-                <para><literal>static</literal> method declarations and nested 
-                interface declarations,</para>
+                <para>nested interface declarations,</para>
             </listitem>
             <listitem>
                 <para>instance initialization code, and,</para>
@@ -926,8 +930,6 @@ ClassBody</programlisting>
         current instance of the containing class (the instance upon which the constructor
         was invoked) without explicitly specifying the receiver.</para>
         
-        <comment><para>TODO: Does Ceylon support <literal>static</literal> member classes?</para></comment>
-            
         <para>A class may be declared inside the body of a method or attribute, in which case 
         the initializer may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier within the containing scope. 
@@ -1157,9 +1159,6 @@ class Customer(Name name, optional Organization org = null)
     
 }</programlisting>
 
-        <comment><para>TODO: If we decide to support static attributes, then each 
-        <literal>case</literal> would be considered a static simple attribute.</para></comment>
-        
         <para>A class with declared <literal>case</literal>s implicitly extends 
         <literal>lang.Selector</literal>, a subclass of 
         <literal>java.lang.Enum</literal>.</para>
@@ -1276,9 +1275,6 @@ class Customer(Name name, optional Organization org = null)
         has the same visibility modifier as the member class it overrides. The
         member class may not declare a stricter visibility modifier than the member 
         class it overrides.</para>
-            
-        <comment><para>TODO: If we decide to support <literal>static</literal> member
-        classes, they cannot be overridden.</para></comment>
     
     </section>
         
@@ -1430,20 +1426,17 @@ public User(String username, Person person);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A non-<literal>static</literal> method body may invoke, evaluate or assign 
+        <para>A member method body may invoke, evaluate or assign 
         members of the current instance of the class which defines the method (the instance 
         upon which the method was invoked) without explicitly specifying the receiver.</para>
         
-        <para>A non-<literal>static</literal> method body of a member class may invoke, 
+        <para>A member method body of a member class may invoke, 
         evaluate or assign members of the current instance of the containing class (the 
         containing instance of the instance upon which the method was invoked) without 
         explicitly specifying the receiver.</para>
         
-        <para>A <literal>static</literal> method body may not refer to <literal>this</literal>
+        <para>A toplevel method body may not refer to <literal>this</literal>
         or <literal>super</literal>, since there is no current instance.</para>
-        
-        <comment><para>TODO: Should we support toplevel methods instead of methods annotated 
-        <literal>static</literal>?</para></comment>
         
         <para>A method may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 
@@ -1583,8 +1576,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             method may not declare a stricter visibility modifier than the method 
             it overrides.</para>
             
-            <para><literal>static</literal> methods cannot be overridden, and so
-            <literal>static</literal> method invocation is never polymorphic.</para>
+            <para>Toplevel methods cannot be overridden, and so toplevel method 
+            invocation is never polymorphic.</para>
             
             <comment><para>TODO: are you allowed to override the default value of
             a defaulted parameter?</para></comment>
@@ -1632,9 +1625,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         instance upon which the attribute was invoked) without explicitly specifying the 
         receiver.</para>
         
-        <comment><para>TODO: Does Ceylon support <literal>static</literal> attributes?
-        Perhaps just non-<literal>mutable</literal> <literal>static</literal> attributes?</para></comment>
-            
         <para>An attribute may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier withing the containing scope. 
@@ -1644,7 +1634,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>mutable Natural count := 0;</programlisting>
         
-        <programlisting>public static Decimal pi = calculatePi();</programlisting>
+        <programlisting>public Decimal pi = calculatePi();</programlisting>
         
         <programlisting>public String name { return join(firstName, lastName); }
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>
@@ -1927,9 +1917,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             method may not declare a stricter visibility modifier than the method 
             it overrides.</para>
             
-            <comment><para>TODO: if we decide to support <literal>static</literal> 
-            attributes, they can not be overridden.</para></comment>
-            
         </section>
         
         <!--section id="getterandsettermethods">
@@ -2025,11 +2012,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <para><literal>override</literal> indicates that a method,
                 attribute, or member type overrides a method, attribute, 
                 or member type defined by a supertype.</para>
-            </listitem>
-            <listitem>
-                <para><literal>static</literal> specifies that a method can 
-                be called without an instance of the type that defines the 
-                method.</para>
             </listitem>
             <listitem>
                 <para><literal>mutable</literal> specifies that an attribute
@@ -2219,32 +2201,32 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
          block in which it is defined."
     case local; 
     
-    doc "The |public| visibility modifier 
-         annotation."
-    public static oncePerElement Visibility public() { 
-        return public 
-    }
-    
-    doc "The |module| visibility modifier 
-         annotation."
-    public static oncePerElement Visibility module() { 
-        return module
-    }
-    
-    doc "The |package| visibility modifier 
-         annotation."
-    public static oncePerElement Visibility package() { 
-        return package 
-    }
-    
-    doc "The |private| visibility modifier 
-         annotation."
-    public static oncePerElement Visibility private() { 
-        return private 
-    }
-    
 }</programlisting>
-                
+    
+    <programlisting>doc "The |public| visibility modifier 
+     annotation."
+public oncePerElement Visibility public() { 
+    return public 
+}</programlisting>
+
+    <programlisting>doc "The |module| visibility modifier 
+     annotation."
+public oncePerElement Visibility module() { 
+    return module
+}</programlisting>
+
+    <programlisting>doc "The |package| visibility modifier 
+     annotation."
+public oncePerElement Visibility package() { 
+    return package 
+}</programlisting>
+
+    <programlisting>doc "The |private| visibility modifier 
+     annotation."
+public oncePerElement Visibility private() { 
+    return private 
+}</programlisting>
+       
     </section>
     
     <section id="extensions">
@@ -2256,12 +2238,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>a <literal>static</literal>, non-<literal>optional</literal> method 
-                with exactly one formal parameter,</para>
+                <para>a toplevel non-<literal>optional</literal> method with exactly one 
+                formal parameter,</para>
             </listitem>
             <listitem>
-                <para>a non-<literal>static</literal>, non-<literal>optional</literal> 
-                method with no formal parameters,</para>
+                <para>a member non-<literal>optional</literal> method with no formal 
+                parameters,</para>
             </listitem>
             <listitem>
                 <para>a toplevel class with exactly one initialization parameter,</para>
@@ -2274,18 +2256,18 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>An <literal>static</literal> extension method is called a <emphasis>converter</emphasis>. 
+        <para>An toplevel extension method is called a <emphasis>converter</emphasis>. 
         An toplevel extension class is called a <emphasis>decorator</emphasis>.</para>
         
         <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
         
         <itemizedlist>
             <listitem>
-                <para>for static extension methods, the extended type is the declared
+                <para>for toplevel extension methods, the extended type is the declared
                 type of the formal parameter,</para>
             </listitem>
             <listitem>
-                <para>for non-<literal>static</literal> extension methods, the extended 
+                <para>for member extension methods, the extended 
                 type is the type that declares the extension method,</para>
             </listitem>
             <listitem>
@@ -2320,12 +2302,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
         <para>The introduced type may not be a <literal>mutable</literal> type.</para>
         
-        <programlisting>public class Person {
+        <programlisting>public class Person() {
     ...
     public extension User user;
 }</programlisting>
         
-        <programlisting>public static extension User personToUser(Person person) { 
+        <programlisting>public extension User personToUser(Person person) { 
     return person.user; 
 }</programlisting>
         
@@ -2342,23 +2324,23 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <comment><para>Note: I actually much prefer the readability of 
         <literal>User personToUser(extends Person person)</literal> and
         <literal>CollectionUtils&lt;T&gt;(extends Collection&lt;T&gt; collection)</literal>, 
-        but this doesn't work for attributes and non-<literal>static</literal> methods.</para></comment>
+        but this doesn't work for attributes and member methods.</para></comment>
         
-        <para>We say that an extension class or <literal>static</literal> method is 
-        <emphasis>enabled</emphasis> in a compilation unit if the class or <literal>static</literal> 
-        method is imported by that compilation unit.</para>
+        <para>We say that an extension class or toplevel method is 
+        <emphasis>enabled</emphasis> in a compilation unit if the class or 
+        toplevel method is imported by that compilation unit.</para>
         
-        <programlisting>import org.domain.app.Extensions.personToUser;
+        <programlisting>import org.domain.app.extensions.personToUser;
 import org.domain.utils.CollectionUtils;</programlisting>
 
-        <para>A wildcard <literal>.*</literal>-style import may not be used to import an 
-        extension.</para>
+        <para>A wildcard <literal>.*</literal>-style import may not be used to 
+        import an extension.</para>
         
-        <para>An extension attribute, member class or non-<literal>static</literal> method is 
+        <para>An extension attribute, member class or member method is 
         enabled in every compilation unit.</para>
         
-        <para>If an extension is enabled in a compilation unit, the extended type is assignable
-        to the introduced type in that compilation unit.</para>
+        <para>If an extension is enabled in a compilation unit, the extended type 
+        is assignable to the introduced type in that compilation unit.</para>
         
         <programlisting>import org.mydomain.myproject.Converters.personToUser;
 ...
@@ -2452,17 +2434,17 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
             </listitem>
         </itemizedlist>
         
-        <para>These annotations are applied to the static method declaration that defines an
+        <para>These annotations are applied to the toplevel method declaration that defines an
         annotation, and the constraints are checked by the compiler.</para>
         
-        <programlisting>public static ofElements(class) multiplicity(onceEachType)
+        <programlisting>public ofElements(class) multiplicity(onceEachType)
 Entity entity(LockMode lockMode) { return Entity(lockMode) }</programlisting>
 
-        <programlisting>public static ofElements(attribute, parameter) withType(String) multiplicity(onceEachElement)
+        <programlisting>public ofElements(attribute, parameter) withType(String) multiplicity(onceEachElement)
 Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
             
         <comment><para>TODO: Should there be an <literal>annotation</literal>
-        modifier for static methods which can be used as annotations?</para></comment>
+        modifier for toplevel methods which can be used as annotations?</para></comment>
         
     </section>
     
@@ -2496,27 +2478,22 @@ Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
         annotations are parsed by the documentation compiler as Seam Text, a 
         simple ANTLR-based wiki text format.</para>
         
-        <para>These annotations are defined by the class 
-        <literal>doc.Documentation</literal>:</para>
+        <para>These annotations are defined by the package <literal>doc</literal>:</para>
         
-        <programlisting>public class Documentation {
-    
-    public static Description doc(String description) {
+        <programlisting>public Description doc(String description) {
         return Description(description)
-    }
+}</programlisting>
     
-    public static Sequence&lt;Author&gt; by(String... authors) {
-        return from (String author in authors) select Author(author)
-    }
+        <programlisting>public Sequence&lt;Author&gt; by(String... authors) {
+    return from (String author in authors) select Author(author)
+}</programlisting>
     
-    public static RelatedElement see(ProgramElement pe, String description=null) {
-        return Related(pe, description)
-    }
+        <programlisting>public RelatedElement see(ProgramElement pe, String description=null) {
+    return Related(pe, description)
+}</programlisting>
     
-    public static ThrownException see(Type type&lt;Exception&gt;, String description=null) {
-        return Related(type, description)
-    }
-    
+        <programlisting>public ThrownException see(Type type&lt;Exception&gt;, String description=null) {
+    return Related(type, description)
 }</programlisting>
         
         <comment><para>TODO: should <literal>see</literal> and <literal>throws</literal>
