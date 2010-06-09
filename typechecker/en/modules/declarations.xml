@@ -692,7 +692,7 @@ where Y(Natural count)</programlisting>
         
         <programlisting>Class :=
 Annotation*
-"class" TypeName TypeParams? FormalParams?
+"class" TypeName TypeParams? FormalParams
 Supertype?
 Interfaces?
 TypeConstraints?
@@ -760,7 +760,7 @@ ClassBody</programlisting>
         
         <itemizedlist>
            <listitem>
-              <para>The body of the class may declare <emphasis>initialization parameters</emphasis>.
+              <para>The body of the class declares <emphasis>initialization parameters</emphasis>.
               An initialization parameter may be used anywhere in the class body, including in 
               method and attribute definitions.</para>
            </listitem>
@@ -825,32 +825,6 @@ ClassBody</programlisting>
     
 }</programlisting>
         -->
-        
-        <para>Class initialization parameters are optional. The following class:</para>
-        
-        <programlisting>public mutable class Point {
-    public mutable Decimal x := 0.0;
-    public mutable Decimal y := 0.0;
-}</programlisting>
-
-        <para>Is assumed to have zero initialization parameters.</para>
-        
-        <!--
-        <para>Is equivalent to this Java class with a default constructor:</para>
-        
-        <programlisting>public class Point {
-    private final Attribute&lt;Decimal&gt; x = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
-    public SimpleAttribute&lt;Decimal&gt; x() { return x; }
-    
-    private final Attribute&lt;Decimal&gt; y = new SimpleAttribute&lt;Decimal&gt;( new Decimal(0.0) );
-    public SimpleAttribute&lt;Decimal&gt; y() { return y; }
-}</programlisting>
-        -->
-        
-        <comment><para>TODO: is this the right thing to say? Alternatively, we could say that 
-        classes without a parameter list can't have statements or initialized simple attributes
-        in the body of the class, and get the constructor automatically generated for the 
-        list of attributes.</para></comment>
         
         <para>A subclass must pass values to each superclass initialization 
         parameter in the <literal>extends</literal> clause.</para>
@@ -962,9 +936,9 @@ ClassBody</programlisting>
         declaration may only be used by code that appears later in the block containing the 
         declaration is relaxed.</para>
         
-        <comment><para>TODO: should class initialization parameters be allowed to be
-        declared <literal>public/package/module</literal>, allowing a shortcut
-        simple attribute declaration like in Scala?</para></comment>
+        <comment><para>TODO: should class initialization parameters be allowed to be declared 
+        <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 
+        like in Scala?</para></comment>
         
         <!-- comment>
         
@@ -1129,7 +1103,7 @@ class Customer(Name name, optional Organization org = null)
         
         <para>A class with type parameters may not specify enumerated named instances.</para>
         
-        <programlisting>public class DayOfWeek {
+        <programlisting>public class DayOfWeek() {
     case sun,
     case mon, 
     case tues, 
