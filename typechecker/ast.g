@@ -493,8 +493,8 @@ nonstringLiteral
     -> ^(FLOAT_CST FLOATLITERAL)
     | QUOTEDLITERAL
     -> ^(QUOTE_CST QUOTEDLITERAL)
-    /*| CHARLITERAL
-    -> ^(CHAR_CST CHARLITERAL)*/
+    | CHARLITERAL
+    -> ^(CHAR_CST CHARLITERAL)
     ;
 
 stringExpression
@@ -1009,14 +1009,14 @@ NATURALLITERAL
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
 
-/*CHARLITERAL
+CHARLITERAL
     :   '@' ( ~ NonCharacterChars | EscapeSequence )
-    ;*/
+    ;
 
-/*fragment
+fragment
 NonCharacterChars
     :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
-    ;*/
+    ;
 
 QUOTEDLITERAL
     :   '\'' StringPart '\''
@@ -1045,7 +1045,7 @@ EscapeSequence
         |   'n' 
         |   'f' 
         |   'r'
-        //|   's' 
+        |   's' 
         |   '\"' 
         |   '\''
         )          
