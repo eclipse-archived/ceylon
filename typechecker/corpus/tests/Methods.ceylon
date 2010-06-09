@@ -29,7 +29,7 @@ class Methods {
 		
 		void methodWithTypeParameter<X>(OpenList<X> list, X x) { list.add(x); }
 		
-		void methodWithTypeConstraint<X>(OpenList<X> list, X x) where X>=String { list.add(x); }
+		void methodWithTypeConstraint<X>(OpenList<X> list, X x) where X satisfies String { list.add(x); }
 		
 		void methodWithNestedMethod() {
 			void nestedMethod(String param) {
@@ -97,7 +97,7 @@ class Methods {
 		
 		List<X> methodWithTypeParameter<X>(X x) { return List(x); }
 		
-		List<X> methodWithTypeConstraint<X>(X x) where X>=String { return List(x); }
+		List<X> methodWithTypeConstraint<X>(X x) where X satisfies String { return List(x); }
 		
 		String methodWithNestedMethod() {
 			String nestedMethod(String param) {

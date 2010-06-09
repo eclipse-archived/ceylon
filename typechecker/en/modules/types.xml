@@ -531,7 +531,7 @@ while (i.more) {
          The returned sequence does not reflect changes
          to the original sequences."
     public static S join<S,T>(S... sequences) 
-            where S>=Sequence<T> & S(T... elements) {
+            where S(T... elements) satisfies Sequence<T> {
 
         class JoinedIterable<T>
             implements Iterable<T> { ... }
@@ -544,7 +544,7 @@ while (i.more) {
          The returned sequence does not reflect changes 
          to the original sequence."
     public static S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
-             where S>=Sequence<T> & S(T... elements) {
+             where S(T... elements) satisfies Sequence<T> {
 
         class SubrangeIterable<T>
             implements Iterable<T> { ... }
@@ -685,7 +685,7 @@ while (i.more) {
         <literal>Comparable</literal> values in natural order.</para>
         
         <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
-        where X>=Comparable<X> {
+        where X satisfies Comparable<X> {
         
     doc "The elements of the collection, sorted in natural order."
     public List<X> sortedElements() {
@@ -911,7 +911,7 @@ while (people nonempty) {
         <literal>Comparable</literal> values in natural order.</para>
         
         <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
-        where X>=Comparable<X> {
+        where X satisfies Comparable<X> {
         
     doc "Reorder the elements of the list, according to the 
          natural order."
@@ -1135,7 +1135,7 @@ while (people nonempty) {
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         satisfies Category, Sequence<X>, Case<Object>
-        where X>=Ordinal & X>=Comparable<X> { 
+        where X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
     public X first = first;
@@ -1367,7 +1367,8 @@ while (people nonempty) {
 
 <programlisting><![CDATA[public interface Numeric<N, I>
         satisfies Number, Comparable<N> 
-        where I >= Number & N = subtype {
+        where I satisfies Number
+        where N satisfies Number {
 
     doc "The unary - operator"
     public I inverse;
@@ -1396,7 +1397,8 @@ while (people nonempty) {
 
 <programlisting><![CDATA[public interface Integral<N, I>
         satisfies Numeric<N, I>, Ordinal 
-        where I >= Number & N = subtype {
+        where I satisfies Number 
+        where N satisfies Number {
 
     doc "The binary % operator"
     public N remainder(N number);
@@ -1572,7 +1574,7 @@ while (people nonempty) {
 }]]></programlisting>
         
         <programlisting><![CDATA[public class Interval<X>(X start, X end) 
-        where X >= Instant {
+        where X satisfies Instant {
     public X start = start;
     public X end = end;
     public Duration<X> duration { return ...; }
@@ -1580,7 +1582,7 @@ while (people nonempty) {
 }]]></programlisting>
 
         <programlisting><![CDATA[public class Duration<X>(Map<Granularity<X>, Natural> magnitude) 
-        where X >= Instant {
+        where X satisfies Instant {
 
     public Map<Granularity<X>, Natural> magnitude = magnitude;
     
@@ -1597,7 +1599,7 @@ while (people nonempty) {
 }]]></programlisting>
 
         <programlisting><![CDATA[public interface Granularity<X> 
-        where X >= Instant {}]]></programlisting>
+        where X satisfies Instant {}]]></programlisting>
 
         <programlisting><![CDATA[public class DateGranularity 
         satisfies Granularity<Date> {
@@ -1884,7 +1886,7 @@ while (people nonempty) {
     doc "Using the given resource, attempt to evaluate the first block."
     public static Y using<X,Y>(specified X resource,
                                Y seek(coordinated X x))
-                    where X >= Usable {
+                    where X satisfies Usable {
         try (resource) {
             return seek(resource)
         }
@@ -1896,7 +1898,7 @@ while (people nonempty) {
     public static Y using<X,Y,E>(specified X resource,
                                  Y seek(coordinated X x),
                                  Y except(E e))
-                    where X >= Usable {
+                    where X satisfies Usable {
         try (resource) {
             return seek(resource)
         }

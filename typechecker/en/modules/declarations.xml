@@ -608,28 +608,28 @@ VarargsParam?
         parameters may declare constraints upon the type parameters using the
         <literal>where</literal> clause.</para>
         
-        <programlisting>TypeConstraints = "where" TypeConstraint (AMPERSAND TypeConstraint)*</programlisting>
+        <programlisting>TypeConstraints = ("where" TypeConstraint)+</programlisting>
     
-        <programlisting>TypeConstraint := TypeName ( ("&gt;="|"&lt;=") Type | "=" "subtype" | FormalParams ) </programlisting>
+        <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? | Type "satisfies" TypeName FormalParams?</programlisting>
         
         <para>There are four kinds of type constraints:</para>
         
         <itemizedlist>
             <listitem>
-                <para>an upper bound, <literal>X &gt;= T</literal>, specifies that 
+                <para>an upper bound, <literal>X satisfies T</literal>, specifies that 
                 the type parameter <literal>X</literal> is assignable to a given
                 type <literal>T</literal>,</para>
             </listitem>
             <listitem>
-                <para>a lower bound, <literal>X &lt;= T</literal>, specifies that 
+                <para>a lower bound, <literal>T satisfies X</literal>, specifies that 
                 a given type <literal>T</literal> is assignable to the type parameter 
                 <literal>X</literal>,</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
                 the type parameter <literal>X</literal> represents the concrete type
                 of the current instance, and</para>
-            </listitem>
+            </listitem-->
             <listitem>
                 <para>an initialization parameter specification, <literal>X(...)</literal>
                 specifies that the type parameter <literal>X</literal> is a class with
@@ -637,9 +637,11 @@ VarargsParam?
             </listitem>
         </itemizedlist>
         
+        <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position. A subtype bound cannot be applied to
         a covariant or contravariant type parameter.</para>
+        -->
         
         <para>Initialization parameter specifications allow instantiation of the generic 
         type.</para>
@@ -670,14 +672,8 @@ VarargsParam?
             </listitem>
         </itemizedlist>
         
-        <para>Mutiple type constraints are seperated by <literal>&amp;</literal>.</para>
-        
-        <programlisting>where X &gt;= Number&lt;X&gt; &amp; Y = subtype &amp; Y(Natural count)</programlisting>
-        
-        <comment><para>TODO: Should we use <literal>for</literal> instead of <literal>where</literal>?</para></comment>
-        
-        <comment><para>TODO: Should we use <literal>satisfies</literal> instead of <literal>>=</literal>? 
-        For example <literal>where X satisfies Number&lt;X&gt;</literal>.</para></comment>
+        <programlisting>where X satisfies Number&lt;X&gt;
+where Y(Natural count)</programlisting>
     
     </section>
     

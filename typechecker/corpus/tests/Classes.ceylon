@@ -78,7 +78,8 @@ class Classes {
 	class WithTypeParameters<X, Y> {}
 	
 	class WithTypeConstraints<X, Y> 
-		where X>=String & Y(Natural count) {}
+		where X satisfies String 
+		where Y(Natural count) {}
 		
 	class WithNestedClass {
 		class NestedClass {}

@@ -29,7 +29,8 @@ class Interfaces {
 	interface WithTypeParameters<X, Y> {}
 	
 	interface WithTypeConstraints<X, Y> 
-		where X>=String & Y(Natural count) {}
+		where X satisfies String 
+		where Y(Natural count) {}
 		
 	interface WithNestedInterface {
 		interface NestedInterface {}

@@ -1191,7 +1191,7 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
         <programlisting>public static
 Y using&lt;X,Y&gt;(specified X resource, 
              Y seek(coordinated X x) )
-  where X >= Usable;</programlisting>
+  where X satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1238,7 +1238,7 @@ Y select&lt;X, Y&gt;(X selector,
         
         <programlisting>public static
 X attempt&lt;X&gt;(functor X() seek, 
-             cases functor X(E e) where E>=Exception... except);</programlisting>
+             cases functor X(E e) where E satisfies Exception... except);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
@@ -2690,7 +2690,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
             <entry><literal>Sequences.range(lhs,x,y)</literal></entry>
-            <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
+            <entry><literal>S where S(X... elements) satisfies Sequence&lt;X&gt;</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
             <entry><literal>S</literal></entry>
         </row>
@@ -2699,7 +2699,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
             <entry><literal>Sequences.range(lhs,x)</literal></entry>
-            <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
+            <entry><literal>S where S(X... elements) satisfies Sequence&lt;X&gt;</literal></entry>
             <entry><literal>Natural</literal></entry>
             <entry><literal>S</literal></entry>
         </row>
@@ -2922,7 +2922,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>interval</entry>
             <entry><literal>Interval(lhs, rhs)</literal></entry>
-            <entry><literal>T where T >= Instant</literal></entry>
+            <entry><literal>T where T satisfies Instant</literal></entry>
             <entry><literal>Instant&lt;T&gt;</literal></entry>
             <entry><literal>Interval&lt;T&gt;</literal></entry>
         </row>

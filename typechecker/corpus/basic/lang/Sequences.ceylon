@@ -4,7 +4,7 @@ public extension class Sequences<out X>(Sequence<X> sequence) {
          The returned sequence does not reflect changes
          to the original sequences."
     public static S join<S,T>(S... sequences) 
-            where S>=Sequence<T> & S(T... elements) {
+            where S(T... elements) satisfies Sequence<T> {
 
         class JoinedIterable<T>
             implements Iterable<T> {  }
@@ -17,7 +17,7 @@ public extension class Sequences<out X>(Sequence<X> sequence) {
          The returned sequence does not reflect changes 
          to the original sequence."
     public static S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
-             where S>=Sequence<T> & S(T... elements) {
+             where S(T... elements) satisfies Sequence<T> & S {
 
         class SubrangeIterable<T>
             implements Iterable<T> {  }

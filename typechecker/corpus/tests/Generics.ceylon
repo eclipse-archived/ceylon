@@ -25,7 +25,7 @@ class Generics {
     }
     
     class TypeWithLowerBoundParameter<X>(X produce())
-            where X >= String {
+            where X satisfies String {
         String s = produce();
     }
 
@@ -46,7 +46,7 @@ class Generics {
     }
 
     class TypeWithMultipleParameterConstraints<X>(String s, Natural n)
-            where X >= String & X(String s, Natural n) {
+            where X(String s, Natural n) satisfies String {
         String sn = X(s,n);
     }
 
@@ -56,16 +56,16 @@ class Generics {
     Entry<X,Y> methodWithMultipleParameters<X,Y>(X x, Y y) { return Entry(x, y) }
     
     String methodWithLowerBoundParameter<X>(X produce())
-        where X >= String { return produce() }
+        where X satisfies String { return produce() }
 
     void methodWithUpperBoundParameter<X>(void accept(X x), X xx)
-        where X <= String { accept(xx); }
+        where String satisfies X { accept(xx); }
         
     X methodWithConstructableParameter<X>(String s, Natural n)
         where X(String s, Natural n) { return X(s,n) }
 
     String methodWithMultipleParameterConstraints<X>(String s, Natural n)
-        where X >= String & X(String s, Natural n) { return X(s,n) }
+        where X(String s, Natural n) satisfies String { return X(s,n) }
 
 
     interface Processor<out X, in Y> {
@@ -78,13 +78,14 @@ class Generics {
         }
     }
     
-    String stringify<Y>(Y y) where Y>=Number { return $y }
+    String stringify<Y>(Y y) where Y satisfies Number { return $y }
     String zero = stringify<Natural>(0);
 
     Processor<String, Natural> p = ProcessorImpl<String, Natural>(stringify);
     String one = p.process(1);
     
-    void output<Y>(Y value, Processor<String,Y> p) where Y>=Number {
+    void output<Y>(Y value, Processor<String,Y> p) 
+            where Y satisfies Number {
         log.info(p.process(value));
     }
     
