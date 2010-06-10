@@ -192,7 +192,7 @@ public void hello(Process process) {
 public void hello(Process process) {
     optional String name = process.args.firstOrNull;
     String greeting;
-    if (exists String name) {
+    if (exists name) {
         greeting = "Hello, " name "!";
     }
     else {
