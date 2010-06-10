@@ -93,7 +93,7 @@
         <para><literal>
         import
         class interface alias 
-        satisfies extends 
+        satisfies extends abstracts
         in out
         void subtype def assign
         return break throw retry 

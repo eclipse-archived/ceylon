@@ -619,7 +619,9 @@ VarargsParam?
         
         <programlisting>TypeConstraints = ("where" TypeConstraint)+</programlisting>
     
-        <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? | Type "satisfies" TypeName FormalParams?</programlisting>
+        <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? Subtypes?</programlisting>
+        
+        <programlisting>Subtypes := "abstracts" Type ("," Type)*</programlisting>
         
         <para>There are three kinds of type constraint:</para>
         
@@ -630,7 +632,7 @@ VarargsParam?
                 type <literal>T</literal>,</para>
             </listitem>
             <listitem>
-                <para>a lower bound, <literal>T satisfies X</literal>, specifies that 
+                <para>a lower bound, <literal>X abstracts T</literal>, specifies that 
                 a given type <literal>T</literal> is assignable to the type parameter 
                 <literal>X</literal>,</para>
             </listitem>
