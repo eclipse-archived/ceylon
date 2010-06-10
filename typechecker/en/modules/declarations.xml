@@ -621,7 +621,7 @@ VarargsParam?
     
         <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? | Type "satisfies" TypeName FormalParams?</programlisting>
         
-        <para>There are four kinds of type constraints:</para>
+        <para>There are three kinds of type constraint:</para>
         
         <itemizedlist>
             <listitem>
