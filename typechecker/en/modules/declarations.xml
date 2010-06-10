@@ -60,10 +60,14 @@ Body?</programlisting>
         
         <comment><para>TODO: Should we support toplevel method declarations?</para></comment>
 
-        <para>All toplevel types with a visibility modifier less strict than
-        <literal>private</literal> must have the same name as the compilation
-        unit filename (after removing the file suffix <literal>.ceylon</literal>).
-        Unlike Java, a compilation unit may contain multiple toplevel class 
+        <para>All toplevel declarations with a visibility modifier less strict than
+        <literal>private</literal> must have the same name as the compilation unit 
+        filename (after removing the file suffix <literal>.ceylon</literal>). For 
+        example, a <literal>public</literal> toplevel class named <literal>Person</literal> 
+        must be defined in a file named <literal>Person.ceylon</literal>. A 
+        <literal>public</literal> toplevel method named <literal>hello()</literal> 
+        must be defined in a file named <literal>hello.ceylon</literal>. Unlike 
+        Java, a compilation unit may contain multiple toplevel class or method 
         declarations with the same name.</para>
         
         <para>A compilation unit consists of a list of imported types, followed by
