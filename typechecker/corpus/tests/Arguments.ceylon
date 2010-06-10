@@ -88,9 +88,9 @@ class Arguments {
 	
 	
 		public void from<Y>(Y initial, 
-								   Boolean until(Y y), 
-								   Y each(Y y), 
-								   void perform(Y y)) {
+							Boolean until(Y y), 
+							Y each(Y y), 
+							void perform(Y y)) {
 			do (mutable Y y := initial)
 			while (!until(y)) {
 				perform(y);
@@ -120,15 +120,13 @@ class Arguments {
 		}
 		
 		Processor<Float,String> p = 
-			Processor<Float,String>() 
-				process (Float f) ($f);
+			Processor() process (Float f) ($f);
 		
 		Processor<Float,String> q = 
-			Processor<Float,String>() 
-				process (Float f) { return $f };
+			Processor() process (Float f) { return $f };
 		
 		Processor<Float,String> r = 
-			Processor<Float,String> { 
+			Processor { 
 				String process (Float f) { return $f }
 			};
 			
