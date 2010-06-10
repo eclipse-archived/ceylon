@@ -167,18 +167,18 @@
         </para>
         
         <programlisting>doc "The classic Hello World program"
-class Hello {
-    log.info("Hello, World!");
+void hello(Process process) {
+    process.writeLine("Hello, World!");
 }</programlisting>
 
         <para>
-        This code defines a Ceylon class named <literal>Hello</literal>. When 
-        the class is instantiated, it calls the <literal>info()</literal> 
-        method of an attribute named <literal>log</literal> defined by the 
-        <literal>lang.Object</literal> class. (By default, this method displays 
-        its parameter on the console.) The <literal>doc</literal> annotation 
-        contains documentation that is included in the output of the Ceylon 
-        documentation compiler.
+        This code defines a Ceylon method named <literal>hello()</literal>
+        with a parameter of type <literal>lang.Process</literal>. When the 
+        method is invoked, it calls the <literal>writeLine()</literal> 
+        method of the class <literal>Process</literal>. (This method 
+        displays its parameter on the console.) The <literal>doc</literal> 
+        annotation contains documentation that is included in the output of 
+        the Ceylon documentation compiler.
         </para>
         
         <para>
@@ -186,16 +186,14 @@ class Hello {
         console:
         </para>
         
-        <programlisting><![CDATA[doc "A more personalized greeting"
-class Hello(Process process) {
+        <programlisting><![CDATA[doc "Print a personalized greeting"
+void hello(Process process) {
     String name = process.args.firstOrNull ? "World";
-    log.info("Hello, " name "!");
+    process.writeLine("Hello, " name "!");
 }]]></programlisting>
 
         <para>
-        This time, the class has a parameter. <!--This parameter value is 
-        <emphasis>injected</emphasis> by Ceylon's built-in dependency management 
-        engine.--> The <literal>Process</literal> object has an attribute named 
+        The <literal>Process</literal> class has an attribute named 
         <literal>args</literal>, which holds a <literal>List</literal> of the 
         program's command line arguments. The local <literal>name</literal> is 
         initialized from these arguments. The <literal>?</literal> operator 
@@ -204,22 +202,51 @@ class Hello(Process process) {
         </para>
 
         <para>
-        This looks a little cluttered. We can refactor the code and extract a 
-        method:
+        The method now has too many responsibilities. We can refactor the 
+        code and extract a class:
         </para>
         
-        <programlisting><![CDATA[doc "A more personalized greeting"
-class Hello(Process process) {
+        <programlisting><![CDATA[doc "Print a personalized greeting"
+void hello(Process process) {
+    Hello(process).say();
+}
 
-    sayHello( process.args.firstOrNull ? "World" );
+doc "A personalized greeting"
+class Hello(String name, OutputStream out) {
     
-    void sayHello(String name) {
-        log.info("Hello, " name "!");
+    doc "The greeting"
+    String greeting {
+        return "Hello, " name "!";
     }
     
-}]]></programlisting>
+    doc "Print the greeting"
+    private void say() { 
+        out.writeLine(greeting); 
+    }
+    
+}
 
-        <para>Now, lets rewrite the program as a web page:</para>
+doc "A command line greeting"
+class Hello(Process process) 
+    extends Hello(process.args.firstOrNull ? "World", process) {}
+
+]]></programlisting>
+
+        <para>Here we have two classes named <literal>Hello</literal>. The
+        class name is said to be <emphasis>overloaded</emphasis>. One class 
+        has two parameters, a string <literal>name</literal>, and an 
+        <literal>OutputStream</literal>, that must both be supplied when the 
+        class is instantiated. It defines an an attribute, 
+        <literal>greeting</literal>, that evaluates to the message, and a 
+        method, <literal>say()</literal>, that prints the message. The method 
+        <literal>say()</literal> is annotated <literal>private</literal>,
+        which makes it visible to other code in the same compilation unit. The
+        second class extends the first class, and defines just one parameter,
+        of type <literal>Process</literal>. The <literal>hello()</literal>
+        method instantiates this class, and calls the <literal>say()</literal>
+        method it inherits from its superclass.</para>
+
+        <para>Finally, lets rewrite the program as a web page:</para>
 
         <programlisting><![CDATA[import html.*;
 

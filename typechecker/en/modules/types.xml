@@ -71,7 +71,7 @@
     }
     
     doc "A log obect for the type."
-    public Log log = type.log;
+    public Log log { return type.log }
     
     doc "Transform the given object to a string. Override to
          customize the render operator and character string 
