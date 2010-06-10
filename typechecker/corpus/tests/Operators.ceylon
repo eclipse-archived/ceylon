@@ -1,4 +1,4 @@
-class Operators {
+class Operators() {
 
 	Natural sum = 1+2;
 	Integer difference = 1-2;

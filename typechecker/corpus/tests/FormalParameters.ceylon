@@ -1,6 +1,6 @@
-class FormalParameters {
+class FormalParameters() {
 	
-	class MethodParameters {
+	class MethodParameters() {
 	
 		void noParameter() {}
 	
@@ -37,7 +37,7 @@ class FormalParameters {
 		
 	}
 	
-	class InitParameters {
+	class InitParameters() {
 	
 		class NoParameter() {}
 	

@@ -1,6 +1,6 @@
-class Annotations {
+class Annotations() {
 
-	class NoArguments {
+	class NoArguments() {
 
 		public deprecated default
 		void methodAnnotations(deprecated Natural param=0) {}
@@ -16,7 +16,7 @@ class Annotations {
 		
 	}
 
-	class LiteralArguments {	
+	class LiteralArguments() {	
 
 		doc "The method doc"
 		by "Gavin King"
@@ -65,7 +65,7 @@ class Annotations {
 		
 	}
 
-	class NamedArguments {
+	class NamedArguments() {
 
 	    doc { text="some text about the method"; }
 		lock { timeout=1000; }
@@ -101,7 +101,7 @@ class Annotations {
 	
 	}
 	
-	class PositionalArguments {
+	class PositionalArguments() {
 	
 		throws(#DatabaseException,
 	           "if database access fails")
@@ -139,7 +139,7 @@ class Annotations {
 	
 	}
 	
-	class ComplexArguments {
+	class ComplexArguments() {
 	    
 	    queries( Query('select p.name from Person p'), 
 	             Query('select p.name from Person p where p.age>18') )

@@ -1,4 +1,4 @@
-class Statements {
+class Statements() {
 
 	String hello = "Hello World"; //specification
 	String getHello() = get hello; //method specification
@@ -35,7 +35,7 @@ class Statements {
 	Bar(true); 
 	Bar { b=false; };
 	
-	class Foo {
+	class Foo() {
 		void instanceMethod(Natural n) {}
 		class Baz(String s) {}
 	}

@@ -1,6 +1,6 @@
-class Arguments {
+class Arguments() {
 	
-	class NoArguments {
+	class NoArguments() {
 		
 		void greet(String value="Hello") {
 			log.info(value);
@@ -18,7 +18,7 @@ class Arguments {
 		
 	}
 	
-	class SingleArgument {
+	class SingleArgument() {
 		
 		void outp(String value) {
 			log.info(value);
@@ -36,7 +36,7 @@ class Arguments {
 		
 	}
 	
-	class MultipleArguments {
+	class MultipleArguments() {
 	
 		String fullName(String firstName, String lastName) {
 			return firstName + " " + lastName;
@@ -54,7 +54,7 @@ class Arguments {
 		
 	}
 	
-	class Varargs {
+	class Varargs() {
 	
 		String join(String sep, String... strings) {
 			return (sep+" ").join(strings);
@@ -74,7 +74,7 @@ class Arguments {
 		
 	}
 	
-	class FunctionalArguments {
+	class FunctionalArguments() {
 	
 		void logLazily(String message()) {
 			if (log.infoEnabled) { 

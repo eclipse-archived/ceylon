@@ -1,4 +1,4 @@
-class Interfaces {
+class Interfaces() {
 
 	interface Simple {}
 	
@@ -37,7 +37,7 @@ class Interfaces {
 	}
 	
 	interface WithNestedClass {
-		class NestedClass {}
+		class NestedClass() {}
 	}
 	
 }

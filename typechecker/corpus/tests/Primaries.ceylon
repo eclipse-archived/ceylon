@@ -1,6 +1,6 @@
-class Primaries {
+class Primaries() {
 
-	class Literals {
+	class Literals() {
 	
 		String hello = "Hello";
 		String names = "Gavin\nAndrew\nEmmanuel\n";
@@ -20,7 +20,7 @@ class Primaries {
 		
 	}
 	
-	class Specials {
+	class Specials() {
 	
 		optional String nothing = null;
 
@@ -34,7 +34,7 @@ class Primaries {
 		
 	}
 	
-	class Enumerations {
+	class Enumerations() {
 	
 		List<String> empty = {};
 		List<String> singleton = { "hello" };
@@ -42,7 +42,7 @@ class Primaries {
 	
 	}
 
-	class MethodReferences {
+	class MethodReferences() {
 	
 		class Person(String name) {
 		

@@ -1,4 +1,4 @@
-class Aliases {
+class Aliases() {
 	
 	interface Foo<X,Y,Z> {}
 	interface Bar<X> {}

@@ -1,4 +1,4 @@
-class Generics {
+class Generics() {
 
     class TypeWithParameter<X>(X init) {
         mutable X x := init;

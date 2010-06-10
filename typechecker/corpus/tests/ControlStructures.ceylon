@@ -1,6 +1,6 @@
-class ControlStructures {
+class ControlStructures() {
 	
-	class ForFail {
+	class ForFail() {
 	
 		List<String> names = { "Gavin", "Emmanuel", "Andrew", "Jason" };
 		Map<String,String> fullNames = { "Gavin"->"King", "Jason"->"Greene" };
@@ -25,7 +25,7 @@ class ControlStructures {
 		
 	}
 	
-	class IfElse {
+	class IfElse() {
 	
 		if (true) {
 			log.info("always true");
@@ -98,7 +98,7 @@ class ControlStructures {
 		
 	}
 	
-	class DoWhile {
+	class DoWhile() {
 		
 		while (true) {
 			log.info("hello");
@@ -148,7 +148,7 @@ class ControlStructures {
 		
 	}
 	
-	class TryCatchFinally {
+	class TryCatchFinally() {
 		
 		try ( Transaction() ) {
 			doSomething();
@@ -206,7 +206,7 @@ class ControlStructures {
 		
 	}
 	
-	class SwitchCaseElse {
+	class SwitchCaseElse() {
 		
 		Number n = 1;
 		switch(n)
