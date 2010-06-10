@@ -1059,7 +1059,7 @@ EscapeSequence
 
 WS  
     :   (
-            ' '
+             ' '
         |    '\r'
         |    '\t'
         |    '\u000C'
