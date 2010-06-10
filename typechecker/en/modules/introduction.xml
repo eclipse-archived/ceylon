@@ -246,7 +246,7 @@ class Hello(optional String name, OutputStream out) {
 
 doc "A command line greeting"
 class Hello(Process process) 
-    extends Hello(process.args.firstOrNull ? "World", process) {}
+    extends Hello(process.args.firstOrNull, process) {}
 
 ]]></programlisting>
 
