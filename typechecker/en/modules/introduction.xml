@@ -202,8 +202,7 @@ void hello(Process process) {
         </para>
 
         <para>
-        The method now has too many responsibilities. We can refactor the 
-        code and extract a class:
+        The method now has too many responsibilities. Let's refactor the code:
         </para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
