@@ -109,36 +109,22 @@ class ControlStructures() {
 		}
 		while (true);
 		
+        mutable Integer n:=0
+		while (n<10) {
+			log.info(n);
+			n++;
+		}
+		
+		mutable Integer m:=0
 		do {
-			log.info("hello");
+			log.info(m);
+			m++;
 		}
-		while (true) {
-			log.info("goodbye");
-		}
-		
-		do (mutable Integer n:=0)
-		while (n<10) {
-			log.info(n);
-			n++;
-		}
-		
-		do (mutable Integer n:=0) {
-			log.info(n);
-			n++;
-		}
-		while (n<10);
-		
-		do (mutable Integer n:=0) {
-			n++;
-		}
-		while (n<10) {
-			log.info(n);
-		}
-		
+		while (m<10);
+
 		String text = "Hello World!";
-		do (Iterator<String> tokens = text.tokens().iterator()) 
-		while (tokens.more)
-		{
+		Iterator<String> tokens = text.tokens().iterator();
+		while (tokens.more) {
 			String word = tokens.next().lowercase;
 			if ("hello"==word) {
 				log.info("found hello");
