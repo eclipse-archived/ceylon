@@ -71,6 +71,7 @@ tokens {
     TYPE_CONSTRAINT;
     TYPE_DECL;
     SATISFIES_LIST;
+    ABSTRACTS_LIST;
     SUBSCRIPT_EXPR;
     LOWER_BOUND;
     UPPER_BOUND;
@@ -371,12 +372,22 @@ extendedType
     -> ^(SUPERCLASS type positionalArguments) 
     ;
 
+satisfiedTypes
+    : 'satisfies' type (',' type)*
+    -> ^(SATISFIES_LIST type+)
+    ;
+
+abstractedTypes
+    : 'abstracts' type (',' type)*
+    -> ^(ABSTRACTS_LIST type+)
+    ;
+
 instance
     : 'case'! memberName arguments? (','|';'|'...')
     ;
     
 typeConstraint
-    : 'where' type formalParameters? satisfiedTypes?
+    : 'where' typeName formalParameters? satisfiedTypes? abstractedTypes?
     -> ^(TYPE_CONSTRAINT type formalParameters? satisfiedTypes?)
     ;
     
@@ -385,11 +396,6 @@ typeConstraints
     -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
     ;
     
-satisfiedTypes
-    : 'satisfies' type (',' type)*
-    -> ^(SATISFIES_LIST type+)
-    ;
-
 type
     : parameterizedType //( '[' parameterizedType? ']' )?
     -> parameterizedType //FIXME: unnecessary?
