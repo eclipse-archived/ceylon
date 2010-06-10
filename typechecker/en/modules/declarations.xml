@@ -960,7 +960,7 @@ ClassBody</programlisting>
         <section>
         <title>Annotations</title>
         
-        <para>Every annotation is a static (non-void) method call. This Ceylon class:</para>
+        <para>Every annotation is a toplevel (non-void) method call. This Ceylon class:</para>
         
         <programlisting>doc "Represents a person"
 by "Gavin"

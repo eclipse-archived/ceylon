@@ -520,37 +520,38 @@ while (i.more) {
     
 }]]></programlisting>
 
-        <para>A helper class defines the join and range operators, for 
-        sequence types which have an appropriate constructor, and
-        decorates <literal>Sequence</literal> with some convenience
-        attributes:</para>
+        <para>Toplevel methods define the join and range operators, for 
+        sequence types which have an appropriate constructor:</para>
 
 <programlisting><![CDATA[doc "The binary join operator x + y. 
      The returned sequence does not reflect changes
      to the original sequences."
-public static S join<S,T>(S... sequences) 
+public S join<S,T>(S... sequences) 
         where S(T... elements) satisfies Sequence<T> {
 
     class JoinedIterable<T>
         implements Iterable<T> {  }
 
-    return S( JoinedIterable() );
+    return S( JoinedIterable() )
 }]]></programlisting>
         
 <programlisting><![CDATA[doc "The ternary range operator x[from..to], along
      with the binary upper range x[from...] operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-public static S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
+public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
          where S(T... elements) satisfies Sequence<T> & S {
 
     class SubrangeIterable<T>
         implements Iterable<T> {  }
 
-    return S( SubrangeIterable() );
+    return S( SubrangeIterable() )
 }]]></programlisting>
 
         
+        <para>A helper class decorates <literal>Sequence</literal> with 
+        some convenience attributes:</para>
+
         <programlisting><![CDATA[public extension class Sequences<out X>(Sequence<X> sequence) {
 
     doc "The first element of the sequence."
@@ -1626,291 +1627,263 @@ while (people nonempty) {
     <section>
         <title>Control expressions</title>
         
-        <para>The <literal>lang</literal> package defines several classes
-        containing toplevel methods for building complex expressons.</para>
+        <para>The <literal>lang</literal> package defines a number of 
+        toplevel methods for building complex expressons.</para>
         
-        <programlisting><![CDATA[public class Assertions {
-
-    doc "Assert that the block evaluates to true. The block 
-         is executed only when assertions are enabled. If
-         the block evaluates to false, throw an 
-         |AssertionException| with the given message."
-    public static void assert(String message(), Boolean that()) {
-        if ( assertionsEnabled() && !that() ) {
-            throw new AssertionException( message() )
-        }
+        <programlisting><![CDATA[doc "Assert that the block evaluates to true. The block 
+     is executed only when assertions are enabled. If
+     the block evaluates to false, throw an 
+     |AssertionException| with the given message."
+public static void assert(String message(), Boolean that()) {
+    if ( assertionsEnabled() && !that() ) {
+        throw new AssertionException( message() )
     }
-
 }]]></programlisting>
     
-        <programlisting><![CDATA[public class Conditionals {
-        
-    doc "If the condition is true, evaluate first block,
-         and return the result. Otherwise, return a null
-         value."
-    public static optional Y ifTrue<Y>(Boolean condition,
-                                       Y then()) {
-        if (condition) {
-            return then()
-        }
-        else {
-            return null
-        }
+        <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
+     and return the result. Otherwise, return a null
+     value."
+public static optional Y ifTrue<Y>(Boolean condition,
+                               Y then()) {
+    if (condition) {
+        return then()
     }
-
-    doc "If the condition is true, evaluate first block,
-         otherwise, evaluate second block. Return result
-         of evaluation."
-    public static Y ifTrue<Y>(Boolean condition,
-                              Y then(), 
-                              Y otherwise()) {
-        if (condition) {
-            return then()
-        }
-        else {
-            return otherwise()
-        }
-    }
-
-    doc "If the value is non-null, evaluate first block,
-         and return the result. Otherwise, return a null
-         value."
-    public static optional Y ifExists<X,Y>(specified optional X value,
-                                           Y then(coordinated X x)) {
-        if (exists value) {
-            return then(value)
-        }
-        else {
-            return null
-        }
-    }
-
-    doc "If the value is non-null, evaluate first block,
-         otherwise, evaluate second block. Return result
-         of evaluation."
-    public static Y ifExists<X,Y>(specified optional X value,
-                                  Y then(coordinated X x), 
-                                  Y otherwise()) {
-        if (exists value) {
-            return then(value)
-        }
-        else {
-            return otherwise()
-        }
-    }
-    
-    doc "Evaluate the block which matches the selector value, and
-         return the result of the evaluation. If no block matches
-         the selector value, return a null value."
-    public static optional Y select<X,Y>(X selector,
-                                         cases Iterable<Entry<Case<X>, functor Y()>> value) {
-        for (Case<X> match -> X evaluate() in value) {
-            if ( match.test(selector) ) {
-                return evaluate(value)
-            }
-        }
-        return null;
-    }
-
-    doc "Evaluate the block which matches the selector value, and
-         return the result of the evaluation. If no block matches
-         the selector value, evaluate the last block and return
-         the result of the evaluation."
-    public static Y select<X,Y>(X selector,
-                                cases Iterable<Entry<Case<X>, functor Y()>> value,
-                                Y otherwise()) {
-        if (exists Y y = select(selector, value)) {
-            return y
-        }
-        else {
-            return otherwise()
-        }
-    }
-
-}]]></programlisting>
-
-        <programlisting><![CDATA[public class Loops {
-
-    doc "Repeat the block the given number of times."
-    public static void repeat(Natural repetitions, void times()) {
-        do(mutable Natural n:=0) 
-        while (n<repetitions) {
-            times();
-            n++;
-        }
-    }
-
-}]]></programlisting>
-    
-        <programlisting><![CDATA[public class Quantifiers {
-
-    doc "Count the elements for with the block evaluates to true."
-    public static Natural count<X>(iterated Iterable<X> elements,
-                                   Boolean having(coordinated X x)) {
-        mutable Natural count := 0;
-        for (X x in elements) {
-            if ( having(x) ) {
-                ++count;
-            }
-        }
-        return count;
-    }
-    
-    doc "Return true iff for every element, the block evaluates to true."
-    public static Boolean forAll<X>(iterated Iterable<X> elements,
-                                    Boolean every(coordinated X x)) {
-        for (X x in elements) {
-            if ( !every(x) ) {
-                return false
-            }
-        }
-        return true
-    }
-    
-    doc "Return true iff for some element, the block evaluates to true."
-    public static Boolean forAny<X>(iterated Iterable<X> elements,
-                                    Boolean some(coordinated X x)) { 
-        return !forAll(elements, (X x) !some(x)); 
-    }
-    
-    doc "Return the first element for which the block evaluates to true,
-         or a null value if no such element is found."
-    public static optional X first<X>(iterated Iterable<X> elements,
-                                      Boolean having(coordinated X x)) {
-        for (X x in elements) {
-            if ( having(x) ) {
-                return x
-            }
-        }
+    else {
         return null
     }
-    
-    doc "Return the first element for which the first block evaluates to 
-         true, or the result of evaluating the second block, if no such
-         element is found."
-    public static X first<X>(iterated Iterable<X> elements,
-                             Boolean having(coordinated X x),
-                             X otherwise()) {
-        if(exists X first = first(elements, having)) {
-            return first
-        }
-        else {
-            return otherwise()
-        }
-    }
-    
 }]]></programlisting>
-        
-        <programlisting><![CDATA[public class ListComprehensions {
-        
-    doc "Iterate elements and return those for which the first
-         block evaluates to true, ordered using the second block,
-         if specified."
-    public static List<X> from<X>(iterated Iterable<X> elements,
-                                  Boolean having(coordinated X x),
-                                  optional Comparable by(coordinated X x) = null) {
-        return from(elements, having, (X x) x, by)
-    }
 
-    doc "Iterate elements and for each element evaluate the first block. 
-         Build a list of the resulting values, ordered using the second 
-         block, if specified."
-    public static List<Y> from<X,Y>(iterated Iterable<X> elements,
-                                    Y select(coordinated X x),
-                                    optional Comparable by(coordinated X x) = null)  {
-        return from(elements, (X x) true, select, by)
+        <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
+     otherwise, evaluate second block. Return result
+     of evaluation."
+public static Y ifTrue<Y>(Boolean condition,
+                          Y then(), 
+                          Y otherwise()) {
+    if (condition) {
+        return then()
     }
-
-    doc "Iterate elements and select those for which the first block 
-         evaluates to true. For each of these, evaluate the second block. 
-         Build a list of the resulting values, ordered using the third 
-         block, if specified."
-    public static List<Y> from<X,Y>(iterated Iterable<X> elements,
-                                    Boolean having(coordinated X x), 
-                                    Y select(coordinated X x),
-                                    optional Comparable by(coordinated X x) = null) {
-        OpenList<Y> list = ArrayList<Y>();
-        for (X x in elements) {
-            if ( having(x) ) {
-                list.append( select(x) );
-            }
-        }
-        if (exists by) {
-            list.sort(by);
-        }
-        return list
+    else {
+        return otherwise()
     }
-
 }]]></programlisting>
-        
-        <programlisting><![CDATA[public class MapComprehensions {
-        
-    doc "Construct a |Map| by evaluating the block for each given key.
-         Each |Entry| is constructed from the key and the value result 
-         of the evaluation."
-    public static Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
-                                        V to(coordinated U key)) { 
-        return map(keys, (U key) key->to(key))
-    }
 
-    doc "Construct a |Map| by evaluating the block for each given value.
-         Each |Entry| is constructed from the value and the key result 
-         of the evaluation."
-    public static Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
-                                      U from(coordinated V value)) { 
-        return map(values, (V value) from(value)->value)
+        <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
+     and return the result. Otherwise, return a null
+     value."
+public static optional Y ifExists<X,Y>(specified optional X value,
+                                       Y then(coordinated X x)) {
+    if (exists value) {
+        return then(value)
     }
+    else {
+        return null
+    }
+}]]></programlisting>
 
-    doc "Construct a |Map| by evaluating the block for each given object
-         and collecting the resulting |Entry|s."
-    public static Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
-                                      Entry<U,V> of(coordinated X element)) {
-        OpenMap<U,V> map = HashMap<U,V>();
-        for (X x in elements) {
-            map.add( of(x) );
+        <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
+     otherwise, evaluate second block. Return result
+     of evaluation."
+public static Y ifExists<X,Y>(specified optional X value,
+                              Y then(coordinated X x), 
+                              Y otherwise()) {
+    if (exists value) {
+        return then(value)
+    }
+    else {
+        return otherwise()
+    }
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Evaluate the block which matches the selector value, and
+     return the result of the evaluation. If no block matches
+     the selector value, return a null value."
+public static optional Y select<X,Y>(X selector,
+                                     cases Iterable<Entry<Case<X>, functor Y()>> value) {
+    for (Case<X> match -> X evaluate() in value) {
+        if ( match.test(selector) ) {
+            return evaluate(value)
         }
     }
+    return null;
+}]]></programlisting>
 
+        <programlisting><![CDATA[doc "Evaluate the block which matches the selector value, and
+     return the result of the evaluation. If no block matches
+     the selector value, evaluate the last block and return
+     the result of the evaluation."
+public static Y select<X,Y>(X selector,
+                            cases Iterable<Entry<Case<X>, functor Y()>> value,
+                            Y otherwise()) {
+    if (exists Y y = select(selector, value)) {
+        return y
+    }
+    else {
+        return otherwise()
+    }
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Repeat the block the given number of times."
+public static void repeat(Natural repetitions, void times()) {
+    do(mutable Natural n:=0) 
+    while (n<repetitions) {
+        times();
+        n++;
+    }
 }]]></programlisting>
     
-        <programlisting><![CDATA[public class Handlers {
+        <programlisting><![CDATA[doc "Count the elements for with the block evaluates to true."
+public static Natural count<X>(iterated Iterable<X> elements,
+                               Boolean having(coordinated X x)) {
+    mutable Natural count := 0;
+    for (X x in elements) {
+        if ( having(x) ) {
+            ++count;
+        }
+    }
+    return count;
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Return true iff for every element, the block evaluates to true."
+public static Boolean forAll<X>(iterated Iterable<X> elements,
+                                Boolean every(coordinated X x)) {
+    for (X x in elements) {
+        if ( !every(x) ) {
+            return false
+        }
+    }
+    return true
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Return true iff for some element, the block evaluates to true."
+public static Boolean forAny<X>(iterated Iterable<X> elements,
+                                Boolean some(coordinated X x)) { 
+    return !forAll(elements, (X x) !some(x)); 
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Return the first element for which the block evaluates to true,
+     or a null value if no such element is found."
+public static optional X first<X>(iterated Iterable<X> elements,
+                                  Boolean having(coordinated X x)) {
+    for (X x in elements) {
+        if ( having(x) ) {
+            return x
+        }
+    }
+    return null
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Return the first element for which the first block evaluates to 
+     true, or the result of evaluating the second block, if no such
+     element is found."
+public static X first<X>(iterated Iterable<X> elements,
+                         Boolean having(coordinated X x),
+                         X otherwise()) {
+    if(exists X first = first(elements, having)) {
+        return first
+    }
+    else {
+        return otherwise()
+    }
+}]]></programlisting>
         
-    doc "Attempt to evaluate the first block. If an exception occurs that 
-         matches the second block, evaluate the block."
-    public static Y seek<Y,E>(Y seek(),
-                              Y except(E e)) {
-        try {
-            return seek()
-        }
-        catch (E e) {
-            return except(e)
-        }
-    }
-    
-    doc "Using the given resource, attempt to evaluate the first block."
-    public static Y using<X,Y>(specified X resource,
-                               Y seek(coordinated X x))
-                    where X satisfies Usable {
-        try (resource) {
-            return seek(resource)
-        }
-    }
-    
-    doc "Using the given resource, attempt to evaluate the first block.
-         If an exception occurs that matches the block, evaluate the 
-         second block."
-    public static Y using<X,Y,E>(specified X resource,
-                                 Y seek(coordinated X x),
-                                 Y except(E e))
-                    where X satisfies Usable {
-        try (resource) {
-            return seek(resource)
-        }
-        catch (E e) {
-            return except(e)
+        <programlisting><![CDATA[doc "Iterate elements and return those for which the first
+     block evaluates to true, ordered using the second block,
+     if specified."
+public static List<X> from<X>(iterated Iterable<X> elements,
+                              Boolean having(coordinated X x),
+                              optional Comparable by(coordinated X x) = null) {
+    return from(elements, having, (X x) x, by)
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Iterate elements and for each element evaluate the first block. 
+     Build a list of the resulting values, ordered using the second 
+     block, if specified."
+public static List<Y> from<X,Y>(iterated Iterable<X> elements,
+                                Y select(coordinated X x),
+                                optional Comparable by(coordinated X x) = null)  {
+    return from(elements, (X x) true, select, by)
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Iterate elements and select those for which the first block 
+     evaluates to true. For each of these, evaluate the second block. 
+     Build a list of the resulting values, ordered using the third 
+     block, if specified."
+public static List<Y> from<X,Y>(iterated Iterable<X> elements,
+                                Boolean having(coordinated X x), 
+                                Y select(coordinated X x),
+                                optional Comparable by(coordinated X x) = null) {
+    OpenList<Y> list = ArrayList<Y>();
+    for (X x in elements) {
+        if ( having(x) ) {
+            list.append( select(x) );
         }
     }
+    if (exists by) {
+        list.sort(by);
+    }
+    return list
+}]]></programlisting>
+        
+        <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for each given key.
+     Each |Entry| is constructed from the key and the value result 
+     of the evaluation."
+public static Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
+                                    V to(coordinated U key)) { 
+    return map(keys, (U key) key->to(key))
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for each given value.
+     Each |Entry| is constructed from the value and the key result 
+     of the evaluation."
+public static Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
+                                  U from(coordinated V value)) { 
+    return map(values, (V value) from(value)->value)
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for each given object
+     and collecting the resulting |Entry|s."
+public static Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
+                                  Entry<U,V> of(coordinated X element)) {
+    OpenMap<U,V> map = HashMap<U,V>();
+    for (X x in elements) {
+        map.add( of(x) );
+    }
+}]]></programlisting>
     
+        <programlisting><![CDATA[doc "Attempt to evaluate the first block. If an exception occurs that 
+     matches the second block, evaluate the block."
+public static Y seek<Y,E>(Y seek(),
+                          Y except(E e)) {
+    try {
+        return seek()
+    }
+    catch (E e) {
+        return except(e)
+    }
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "Using the given resource, attempt to evaluate the first block."
+public static Y using<X,Y>(specified X resource,
+                           Y seek(coordinated X x))
+                where X satisfies Usable {
+    try (resource) {
+        return seek(resource)
+    }]]></programlisting>
+}
+
+        <programlisting><![CDATA[doc "Using the given resource, attempt to evaluate the first block.
+     If an exception occurs that matches the block, evaluate the 
+     second block."
+public static Y using<X,Y,E>(specified X resource,
+                             Y seek(coordinated X x),
+                             Y except(E e))
+                where X satisfies Usable {
+    try (resource) {
+        return seek(resource)
+    }
+    catch (E e) {
+        return except(e)
+    }
 }]]></programlisting>
     
     </section>

@@ -2664,7 +2664,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>[..]</literal></entry>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
-            <entry><literal>Sequences.range(lhs,x,y)</literal></entry>
+            <entry><literal>range(lhs,x,y)</literal></entry>
             <entry><literal>S where S(X... elements) satisfies Sequence&lt;X&gt;</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
             <entry><literal>S</literal></entry>
@@ -2673,7 +2673,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
-            <entry><literal>Sequences.range(lhs,x)</literal></entry>
+            <entry><literal>range(lhs,x)</literal></entry>
             <entry><literal>S where S(X... elements) satisfies Sequence&lt;X&gt;</literal></entry>
             <entry><literal>Natural</literal></entry>
             <entry><literal>S</literal></entry>
@@ -2696,7 +2696,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>join</entry>
-            <entry><literal>Sequences.join(lhs, rhs)</literal></entry>
+            <entry><literal>join(lhs, rhs)</literal></entry>
             <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
             <entry><literal>S</literal></entry>
             <entry><literal>S</literal></entry>
