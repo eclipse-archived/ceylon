@@ -23,6 +23,11 @@ class ControlStructures() {
 			log.info(first + " " + last);
 		}
 		
+		for (Natural n in 1..5) {
+		    if (n==2) { continue }
+		    if (n==4) { break }
+		}
+		
 	}
 	
 	class IfElse() {
