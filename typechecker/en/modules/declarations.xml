@@ -2210,6 +2210,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     
 }</programlisting>
     
+    <para>The following declarations define the visibility 
+    modifier annotations:</para>
+    
     <programlisting>doc "The |public| visibility modifier 
      annotation."
 public oncePerElement Visibility public() { 
@@ -2488,7 +2491,7 @@ Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
         <para>These annotations are defined by the package <literal>doc</literal>:</para>
         
         <programlisting>public Description doc(String description) {
-        return Description(description)
+    return Description(description)
 }</programlisting>
     
         <programlisting>public Sequence&lt;Author&gt; by(String... authors) {
