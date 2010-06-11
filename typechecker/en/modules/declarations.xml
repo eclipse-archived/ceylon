@@ -700,6 +700,9 @@ where Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
 
         <programlisting>where T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
     
+        <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
+        down to the <literal>where</literal> clause?</para></comment>
+    
     </section>
     
     </section>
