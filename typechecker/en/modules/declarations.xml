@@ -1572,7 +1572,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>Finally, the overridden methos class must be visible to the method
+            <para>Finally, the overridden method must be visible to the method
             annotated <literal>override</literal>.</para>
         
             <para>Then invocation of the method is polymorphic, and the actual
