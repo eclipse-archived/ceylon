@@ -1481,13 +1481,27 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
 
         <para>A non-<literal>void</literal> method may be annotated <literal>optional</literal>, 
-        in which case the method may return a <literal>null</literal> value. A <literal>void</literal>
-        method may not be annotated <literal>optional</literal>.</para>
+        in which case:</para>
         
-        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the 
-        Ceylon compiler guarantees that the method never returns <literal>null</literal>.
-        Every <literal>return</literal> directive must specify an expression of 
-        non-<literal>optional</literal> type</para>
+        <itemizedlist>
+            <listitem>
+                <para>If the method has exactly one formal parameter list, the method may 
+                return a <literal>null</literal> value.</para>
+            </listitem>
+            <listitem>
+                <para>Otherwise, if the method has more than one parameter list, the method
+                may return a reference to a method declared <literal>optional</literal>.
+                Methods with multiple parameter lists never return <literal>null</literal> 
+                values.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If the <literal>optional</literal> annotation does not appear, or if the method 
+        has multiple parameter lists, the Ceylon compiler guarantees that the method never 
+        returns <literal>null</literal>. Every <literal>return</literal> directive must specify 
+        an expression of non-<literal>optional</literal> type.</para>
+        
+        <para>A <literal>void</literal> method may not be annotated <literal>optional</literal>.</para>
                 
         <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
         methods may declare defaulted parameters and functional parameters.</para>

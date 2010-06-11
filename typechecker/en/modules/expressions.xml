@@ -589,9 +589,9 @@ sort(names, reverseAlpha);</programlisting>
                 return type of the method or functional parameter,</para>
             </listitem>
             <listitem>
-                <para>the method reference is of non-<literal>optional</literal> return 
-                type, unless the method or functional parameter is declared <literal>optional</literal> 
-                type, and</para>
+                <para>the method reference is not declared <literal>optional</literal>, unless 
+                the method or functional parameter is declared <literal>optional</literal>, 
+                and</para>
             </listitem>
             <listitem>
                 <para> the method reference has exactly the same number of formal parameters, 
