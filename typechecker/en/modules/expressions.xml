@@ -1167,7 +1167,7 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
         
         <programlisting>public
 Y using&lt;X,Y&gt;(specified X resource, 
-             Y seek(coordinated X x) )
+             Y seek(coordinated X x))
   where X satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
