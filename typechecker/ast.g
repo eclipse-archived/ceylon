@@ -388,7 +388,7 @@ instance
     
 typeConstraint
     : 'where' typeName formalParameters? satisfiedTypes? abstractedTypes?
-    -> ^(TYPE_CONSTRAINT type formalParameters? satisfiedTypes?)
+    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedTypes?)
     ;
     
 typeConstraints
@@ -695,7 +695,7 @@ base
 selector 
     : member
     | argumentsWithFunctionalArguments
-    -> ^(CALL_EXPR arguments)
+    -> ^(CALL_EXPR argumentsWithFunctionalArguments)
     | elementSelector
     | postfixOperator 
     -> ^(POSTFIX_EXPR postfixOperator)
