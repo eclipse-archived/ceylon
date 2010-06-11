@@ -470,10 +470,18 @@ else {
 
             <programlisting>public PaymentProcessor processor {
     switch (payment.type) 
-    case (null) { throw NoPaymentTypeException() }
-    case (credit, debit) { return cardPaymentProcessor }
-    case (check) { return checkPaymentProcessor }
-    else { return interactivePaymentProcessor }
+    case (null) { 
+        throw NoPaymentTypeException()
+    }
+    case (credit, debit) { 
+        return cardPaymentProcessor
+    }
+    case (check) { 
+        return checkPaymentProcessor
+    }
+    else { 
+        return interactivePaymentProcessor
+    }
 }</programlisting>
             
             <programlisting>switch (payment.type) {
