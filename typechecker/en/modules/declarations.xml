@@ -520,13 +520,25 @@ VarargsParam?
         
         <programlisting>(Float value, Integer min..max)</programlisting>
     
-        <para>An formal parameter may be annotated <literal>optional</literal>, in which case the 
-        parameter accepts a <literal>null</literal> argument.</para>
+        <para>A formal parameter may be annotated <literal>optional</literal>, in which case:</para>
         
-        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the Ceylon 
-        compiler guarantees that the formal parameter never receives a <literal>null</literal> 
-        argument. Every argument of the formal parameter must be an expression of 
-        non-<literal>optional</literal> type.</para>
+        <itemizedlist>
+            <listitem>
+                <para>If the parameter is not a functional parameter, it accepts an argument
+                expression of <literal>optional</literal> type, and may receive a <literal>null</literal> 
+                argument.</para>
+            </listitem>
+            <listitem>
+                <para>Otherwise, if the parameter is a functional parameter, it accepts an argument 
+                method reference with <literal>optional</literal> return type. Functional parameters
+                never receive <literal>null</literal> arguments.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If the <literal>optional</literal> annotation does not appear, or if the formal parameter 
+        is a functional parameter, the Ceylon compiler guarantees that the formal parameter never 
+        receives a <literal>null</literal> argument. Every argument of the formal parameter must be an 
+        expression of non-<literal>optional</literal> type.</para>
 
         <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
         assigned to within the body of the method or class.</para>
@@ -1469,7 +1481,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
 
         <para>A non-<literal>void</literal> method may be annotated <literal>optional</literal>, 
-        in which case the method may return a <literal>null</literal> value.</para>
+        in which case the method may return a <literal>null</literal> value. A <literal>void</literal>
+        method may not be annotated <literal>optional</literal>.</para>
         
         <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the 
         Ceylon compiler guarantees that the method never returns <literal>null</literal>.
