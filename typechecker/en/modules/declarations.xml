@@ -1163,14 +1163,14 @@ class Customer(Name name, optional Organization org = null)
     
     case required { 
         void inProgress() {}
-        void notInProgress {
+        void notInProgress() {
             tx.begin();
         }
     },
     
     case supports {
         void inProgress() {}
-        void notInProgress {}
+        void notInProgress() {}
     },
     
     case mandatory { 
@@ -1184,14 +1184,14 @@ class Customer(Name name, optional Organization org = null)
         void inProgress() {
             throw TransactionNotSupported()
         }
-        void notInProgress {}
+        void notInProgress() {}
     },
     
     case requiresNew { 
         void inProgress() {
             throw TransactionRequiresNew()
         }
-        void notInProgress {
+        void notInProgress() {
             tx.begin();
         }
     };
