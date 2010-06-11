@@ -741,10 +741,14 @@ finally {
     if (file.open) file.close();
 }</programlisting>
             
-            <programlisting>try (semaphore) { map[key] := value; }</programlisting>
+            <programlisting>try (semaphore) {
+    if ( !map.defines(key) ) {
+        map[key] := value;
+    }
+}</programlisting>
 
-            <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
-            keyword.)</para>
+            <para>(This example shows a Ceylon-ified version of the Java's 
+            <literal>synchronized</literal> block.)</para>
             
             <programlisting>try ( Transaction() )
     try ( Session s = Session() ) {
@@ -757,9 +761,10 @@ finally {
     }
 }</programlisting>
 
-            <para>The <literal>retry</literal> directive re-evaluates the resource expressions,
-            and then re-executes the <literal>try</literal> block, calling <literal>begin()</literal>
-            and <literal>end()</literal> upon each resource.</para>
+            <para>The <literal>retry</literal> directive re-evaluates the resource 
+            expression, if any, and then re-executes the <literal>try</literal> block, 
+            calling <literal>begin()</literal> and <literal>end()</literal> upon the 
+            resource instance.</para>
 
             <programlisting>mutable Natural retries := 0;
 try ( Transaction() ) {
