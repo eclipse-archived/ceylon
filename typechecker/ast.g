@@ -53,7 +53,7 @@ tokens {
     RETRY_STMT;
     TRY_BLOCK;
     TRY_CATCH_STMT;
-    TRY_RESOURCE_LIST;
+    TRY_RESOURCE;
     TRY_STMT;
     TYPE_ARG_LIST;
     TYPE_NAME;
@@ -956,13 +956,8 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try' resources? block
-    -> ^(TRY_STMT resources? ^(TRY_BLOCK block))
-    ;
-
-resources
-    : '(' resource (',' resource)* ')'
-    -> ^(TRY_RESOURCE_LIST resource+)
+    : 'try' ('(' resource ')')? block
+    -> ^(TRY_STMT resource? ^(TRY_BLOCK block))
     ;
 
 catchBlock
@@ -977,6 +972,7 @@ finallyBlock
 
 resource
     : controlVariableOrExpression
+    -> ^(TRY_RESOURCE controlVariableOrExpression)
     ;
 
 controlVariableOrExpression

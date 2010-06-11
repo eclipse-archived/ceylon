@@ -680,22 +680,20 @@ while (!person.dead);</programlisting>
             
             <programlisting>TryCatchFinally := Try Catch* Finally?</programlisting>
 
-            <programlisting>Try := "try" Resources? Block</programlisting>
+            <programlisting>Try := "try" ("(" Resource ")")? Block</programlisting>
             
             <programlisting>Catch := "catch" "(" Variable ")" Block</programlisting>
             
             <programlisting>Finally := "finally" Block</programlisting>
 
-            <para>The type of each <literal>catch</literal> variable must be assignable to 
-            <literal>lang.Exception</literal>.</para>
+            <para>The type of each <literal>catch</literal> variable declaration must be 
+            assignable to <literal>lang.Exception</literal>.</para>
             
-            <para>The <literal>try</literal> block may declare a list of <emphasis>resource</emphasis>
-            expressions. A resource expresson produces a heavyweight object that must be 
-            released when execution of the <literal>try</literal> terminates.</para>
-            
-            <programlisting>Resources := "(" Resource ("," Resource)* ")"</programlisting>
-                        
-            <para>Each resource expression must be assignable to <literal>lang.Usable</literal>.</para>
+            <para>The <literal>try</literal> block may declare a <emphasis>resource</emphasis>
+            expression. A resource expresson produces a heavyweight object that must be 
+            released when execution of the <literal>try</literal> terminates. Each resource 
+            expression must be of non-<literal>optional</literal> type assignable to 
+            <literal>lang.Usable</literal>.</para>
             
             <programlisting>Resource := Variable Specifier | Expression</programlisting>
             
@@ -703,22 +701,23 @@ while (!person.dead);</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>each resource expression is evaluated, and then 
-                    <literal>begin()</literal> is called upon each resulting
+                    <para>the resource expression, if any, is evaluated, and then 
+                    <literal>begin()</literal> is called upon the resulting
                     resource instance, then</para>
                 </listitem>
                 <listitem>
                     <para>the <literal>try</literal> block is executed, then</para>
                 </listitem>
                 <listitem>
-                    <para><literal>end()</literal> is called upon each resource 
-                    instance, with the exception that propagated out of the 
+                    <para><literal>end()</literal> is called the resource instance, 
+                    if any, with the exception that propagated out of the 
                     <literal>try</literal> block, if any, then</para>
                 </listitem>
                 <listitem>
                     <para>if an exception did propagate out of the <literal>try</literal> 
-                    block block, the first matching <literal>catch</literal> block, 
-                    if any is executed, and then</para>
+                    block, the first <literal>catch</literal> block with a variable 
+                    to which the exception is assignable, if any, is executed, and 
+                    then</para>
                 </listitem>
                 <listitem>
                     <para>the <literal>finally</literal> block, if any, is 
@@ -747,15 +746,16 @@ finally {
             <para>(This example shows the Ceylon version of Java's <literal>synchronized</literal>
             keyword.)</para>
             
-            <programlisting>try ( Transaction(), Session s = Session() ) {
-    Person p = s.get(#Person, id)
-    ...
-    return p
-} 
-catch (NotFoundException e) { 
-    return null
-}
-</programlisting>
+            <programlisting>try ( Transaction() )
+    try ( Session s = Session() ) {
+        Person p = s.get(#Person, id)
+        ...
+        return p
+    } 
+    catch (NotFoundException e) { 
+        return null
+    }
+}</programlisting>
 
             <para>The <literal>retry</literal> directive re-evaluates the resource expressions,
             and then re-executes the <literal>try</literal> block, calling <literal>begin()</literal>
