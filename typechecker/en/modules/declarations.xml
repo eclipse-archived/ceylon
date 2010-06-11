@@ -1136,6 +1136,9 @@ class Customer(Name name, optional Organization org = null)
     case sat; 
 }</programlisting>
 
+        <comment><para>TODO: Should we make the parens on the class declaration optional in
+        this case: a closed instance list with no parameters?</para></comment>
+
         <programlisting>public class DayOfWeek(String name) {
     doc "Sunday"
         case sun("Sunday"),
