@@ -1855,7 +1855,7 @@ public X first<X>(iterated Iterable<X> elements,
      using the second block, if specified."
 public List<X> from<X>(iterated Iterable<X> elements,
                        Boolean having(coordinated X x),
-                       optional Comparable by(coordinated X x) = null) {
+                       optional Comparable by(coordinated X x) = naturalOrder) {
     X select(X x) { return x }
     return from(elements, having, select, by)
 }]]></programlisting>
@@ -1866,7 +1866,7 @@ public List<X> from<X>(iterated Iterable<X> elements,
      specified."
 public List<Y> from<X,Y>(iterated Iterable<X> elements,
                          Y select(coordinated X x),
-                         optional Comparable by(coordinated X x) = null)  {
+                         optional Comparable by(coordinated X x) = naturalOrder)  {
     Boolean having(X x) { return true }
     return from(elements, having, select, by)
 }]]></programlisting>
@@ -1879,7 +1879,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
 public List<Y> from<X,Y>(iterated Iterable<X> elements,
                          Boolean having(coordinated X x), 
                          Y select(coordinated X x),
-                         optional Comparable by(coordinated X x) = null) {
+                         optional Comparable by(coordinated X x) = naturalOrder) {
     OpenList<Y> list = ArrayList<Y>();
     for (X x in elements) {
         if ( having(x) ) {
