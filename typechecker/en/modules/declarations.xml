@@ -696,7 +696,9 @@ VarargsParam?
         </itemizedlist>
         
         <programlisting>where X satisfies Number&lt;X&gt;
-where Y(Natural count)</programlisting>
+where Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+
+        <programlisting>where T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
     
     </section>
     
