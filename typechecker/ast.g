@@ -998,7 +998,7 @@ Digits
 
 fragment 
 Exponent    
-    :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
+    : ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
 fragment FLOATLITERAL :;
