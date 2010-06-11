@@ -1159,6 +1159,54 @@ class Customer(Name name, optional Organization org = null)
     
 }</programlisting>
 
+        <programlisting>public class TransactionPropagation(void inProgress(), void notInProgress()) {
+    
+    case required { 
+        void inProgress() {}
+        void notInProgress {
+            tx.begin();
+        }
+    },
+    
+    case supports {
+        void inProgress() {}
+        void notInProgress {}
+    },
+    
+    case mandatory { 
+        void inProgress() {}
+        void notInProgress() {
+            throw TransactionMandatory()
+        }
+    },
+    
+    case notSupported { 
+        void inProgress() {
+            throw TransactionNotSupported()
+        }
+        void notInProgress {}
+    },
+    
+    case requiresNew { 
+        void inProgress() {
+            throw TransactionRequiresNew()
+        }
+        void notInProgress {
+            tx.begin();
+        }
+    };
+    
+    public void propagate(Transaction tx) {
+        if (tx.inProgress) {
+            inProgress();
+        }
+        else {
+            notInProgress();
+        }
+    }
+    
+}</programlisting>
+
         <para>A class with declared <literal>case</literal>s implicitly extends 
         <literal>lang.Selector</literal>, a subclass of 
         <literal>java.lang.Enum</literal>.</para>
