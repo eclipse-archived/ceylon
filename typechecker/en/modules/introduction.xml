@@ -273,8 +273,13 @@ page '/hello.html'
 class Hello(Request request) 
         extends Html(request) {
 
-    String name 
-        = request.parameters["name"]?.first ? "World";
+    String name;
+    if (exists String n = request.parameters["name"]) {
+        name = n;
+    }
+    else {
+        name = "World";
+    }
     
     head = Head { title="Hello World"; };
     
