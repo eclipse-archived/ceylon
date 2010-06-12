@@ -2305,14 +2305,15 @@ public oncePerElement Visibility private() {
         <itemizedlist>
             <listitem>
                 <para>a toplevel non-<literal>optional</literal> method with exactly one 
-                formal parameter,</para>
+                non-<literal>optional</literal> formal parameter,</para>
             </listitem>
             <listitem>
                 <para>a member non-<literal>optional</literal> method with no formal 
                 parameters,</para>
             </listitem>
             <listitem>
-                <para>a toplevel class with exactly one initialization parameter,</para>
+                <para>a toplevel class with exactly one non-<literal>optional</literal> 
+                initialization parameter,</para>
             </listitem>
             <listitem>
                 <para>a member class with no initialization parameters, or</para>
