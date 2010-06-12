@@ -233,7 +233,7 @@ else {
         <comment><para>TODO: Should we support, like Java, single-statement control structure bodies 
         without the braces.</para></comment>
         
-        <section>
+        <section id="controlstructurevariables">
             <title>Control structure variables</title>
        
         <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
@@ -242,7 +242,9 @@ else {
         <programlisting>Variable := Type MemberName</programlisting>
         
         <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
-        specifying the keyword local where the type usually appears.</para>
+        specifying the keyword <literal>local</literal> where the type usually appears. The type of 
+        the variable is inferred to be the type of the expression that follows. If the expression is 
+        of <literal>optional</literal> type, the variable is inferred to be <literal>optional</literal>.</para>
         
         <programlisting>InferableVariable := InferableType MemberName</programlisting>
         
@@ -250,7 +252,7 @@ else {
         
         </section>
         
-        <section>
+        <section id="controlstructureconditions">
             <title>Control structure conditions</title>
             
         <para>Some control structures expect conditions:</para>

@@ -1572,7 +1572,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         declared using the keyword <literal>local</literal> in place of the explicit return type 
         declaration. The type of the local or attribute is inferred to be the type of the returned 
         expression. If the returned expression is of <literal>optional</literal> type, the method 
-        is inferred to have <literal>optional</literal> return type.</para>
+        is inferred to be <literal>optional</literal>.</para>
         
         <programlisting>local add(Integer x, Integer y) {
     return x + y;

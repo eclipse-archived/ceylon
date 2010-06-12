@@ -1036,23 +1036,23 @@ Comparison comp = order(1,-1);</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>the return type may be eliminated,</para>
+                <para>the return type is not declared,</para>
             </listitem>
             <listitem>
                 <para>if the functional parameter declares no formal parameters, the 
-                empty parentheses may be eliminated,</para>
+                empty parentheses may be eliminated, and</para>
             </listitem>
             <listitem>
                 <para>if the body of the method implementation consists of a single
                 <literal>return</literal> directive followed by a parenthesized
                 expression, the braces and <literal>return</literal> keyword may be 
-                eliminated, and</para>
+                eliminated.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>formal parameter declarations may omit the explicit type, 
                 forcing the compiler to infer it, by specifying the keyword 
                 <literal>local</literal> where the type usually appears.</para>
-            </listitem>
+            </listitem-->
         </itemizedlist>
         
         <para>These arguments are called <emphasis>functional arguments</emphasis> of
@@ -1060,7 +1060,9 @@ Comparison comp = order(1,-1);</programlisting>
                 
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
         
-        <programlisting>FunctionalBody := InferableFormalParameters? ( Block | "(" Expression ")" )</programlisting>
+        <programlisting>FunctionalBody := FormalParameters? ( Block | "(" Expression ")" )</programlisting>
+        
+        <!--
                 
         <programlisting>InferableFormalParameters := "(" (InferableFormalParam ("," InferableFormalParam))? ")"</programlisting>
         
@@ -1071,6 +1073,8 @@ Comparison comp = order(1,-1);</programlisting>
         <programlisting>InferableEntryParamPair := Annotation* InferableType ParameterName "->" Type ParameterName</programlisting>
         
         <programlisting>InferableRangeParamPair := Annotation* InferableType ParameterName ".." ParameterName</programlisting>
+        
+        -->
         
         <para>For example:</para>
         
@@ -1090,15 +1094,16 @@ Comparison comp = order(1,-1);</programlisting>
         
         <programlisting>select (Person p) (p.name) having (Person p) (p.age>18)</programlisting>
         
-        <para>Type inference simplifies this:</para>
-        
-        <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
-        
-        <programlisting>having (local p) (p.age>18)</programlisting>
-
         <para>Arguments must be listed in the same order as the formal parameters are 
         declared by the method declaration.</para>
         
+        <comment>
+        <para>TODO: should we support type inference for the formal parameters? It 
+        gets complicated with method overloading. For example:</para>
+        <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
+        <programlisting>having (local p) (p.age>18)</programlisting>
+        </comment>
+
         </section>
         
         <section id="iteration">
@@ -1142,7 +1147,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                       having (Key key -> Value value) (user.authorized(key)) 
                       select (Key key -> Value value) ($key + ": " + $value);</programlisting>
         
-        <para>Type inference simplifies this:</para>
+        <para>Type inference simplifies this further:</para>
         
         <programlisting>local names = from (local p in people) having (p>20) select (p.name);</programlisting>
         
@@ -1179,7 +1184,7 @@ Y ifExists&lt;X,Y&gt;(specified optional X value,
         
         <programlisting>Decimal amount = ifExists(order.payment) then (Payment p) (p.amount) otherwise (0.0);</programlisting>
         
-         <para>And for the following method declaration:</para>
+        <para>And for the following method declaration:</para>
         
         <programlisting>public
 Y using&lt;X,Y&gt;(specified X resource, 
@@ -1193,6 +1198,11 @@ Y using&lt;X,Y&gt;(specified X resource,
         <para>Which is equivalent to:</para>
         
         <programlisting>Order order = using (Session()) seek (Session s) (s.get(#Order, oid));</programlisting>
+        
+        <para>Type inference simplifies this further:</para>
+        
+        <programlisting>local amount = ifExists(local p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
+        <programlisting>local order = using (local s = Session()) seek (s.get(#Order, oid));</programlisting>
         
         </section>
         
