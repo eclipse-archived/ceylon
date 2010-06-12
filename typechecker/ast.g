@@ -312,7 +312,7 @@ memberHeader
     ;
 
 memberType
-    : type | 'void'
+    : type | 'void' | 'local'
     ;
 
 memberParameters
@@ -792,7 +792,7 @@ functionalArgumentDefinition
     ;
 
 specialArgument
-    : type memberName (containment|specifier)
+    : (type|'local') memberName (containment|specifier)
     //| isCondition
     //| existsCondition
     ;
@@ -984,7 +984,7 @@ controlVariableOrExpression
     ;
 
 variable
-    : type/*?*/ memberName
+    : (type|'local') memberName
     ;
 
 //special rule for syntactic predicate
@@ -1156,7 +1156,11 @@ IMPORT
 INTERFACE
     :   'interface'
     ;
-    
+
+LOCAL
+    :   'local'
+    ;
+
 NONE
     :   'none'
     ;
