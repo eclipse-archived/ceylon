@@ -273,12 +273,16 @@ page '/hello.html'
 class Hello(Request request) 
         extends Html(request) {
 
-    String name;
-    if (exists String n = request.parameters["name"]) {
-        name = n;
-    }
-    else {
-        name = "World";
+    optional String name = request.parameters["name"];
+    
+    doc "The greeting"
+    String greeting {
+        if (exists name) {
+            return "Hello, " name "!";
+        }
+        else {
+            return "Hello, World!";
+        }
     }
     
     head = Head { title="Hello World"; };
@@ -286,7 +290,7 @@ class Hello(Request request)
     body = Body {
         Div {
             cssClass = "greeting";
-            "Hello, " name "!"
+            greeting
         },
         Div {
             cssClass = "footer";
