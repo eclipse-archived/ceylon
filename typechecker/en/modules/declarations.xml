@@ -291,6 +291,15 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>The type <literal>subtype</literal> is considered a covariant type parameter
         of the type, and may only appear in covariant positions of the type definition.</para>
         
+        <para>Certain declarations which usually require an explicit type may omit the type, 
+        forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
+        where the type usually appears.</para>
+        
+        <programlisting>InferableType := Type | "local"</programlisting>
+        
+        <para>Type inference is only allowed for block local declarations. The keyword
+        <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
+    
         <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
         <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
         and <literal>Item[Key]</literal> as a shorthand for 
@@ -1461,7 +1470,7 @@ public User(String username, Person person);</programlisting>
         
         <programlisting>Method := MethodHeader ( Block | Specifier? ";" )</programlisting>
 
-        <programlisting>MethodHeader := Annotation* (Type | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
+        <programlisting>MethodHeader := Annotation* (InferableType | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
         
         <para>A method implementation may be specified using either:</para>
         
@@ -1558,6 +1567,16 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         an expression of non-<literal>optional</literal> type.</para>
         
         <para>A <literal>void</literal> method may not be annotated <literal>optional</literal>.</para>
+                
+        <para>A block local method with a single <literal>return</literal> directive may be 
+        declared using the keyword <literal>local</literal> in place of the explicit return type 
+        declaration. The type of the local or attribute is inferred to be the type of the returned 
+        expression. If the returned expression is of <literal>optional</literal> type, the method 
+        is inferred to have <literal>optional</literal> return type.</para>
+        
+        <programlisting>local add(Integer x, Integer y) {
+    return x + y;
+}</programlisting>
                 
         <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
         methods may declare defaulted parameters and functional parameters.</para>
@@ -1727,14 +1746,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         or have a null value assigned. Every assignment to the attribute must specify an
         expression of non-<literal>optional</literal> type.</para>
         
-        <comment><para>TODO: I would like to support <literal>def</literal> in place of the 
-        type for a block local attribute or local with an initializer or getter. For 
-        example:</para></comment>
-        
-        <programlisting>def names = List&lt;String&gt;();</programlisting>
-        <programlisting>def name { return Name(firstName, initial, lastName); }</programlisting>
-        <programlisting>mutable def count:=0;</programlisting>
-        
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
             
@@ -1743,7 +1754,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         
         <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
         
-        <programlisting>AttributeHeader := Annotation* Type MemberName</programlisting>
+        <programlisting>AttributeHeader := Annotation* InferableType MemberName</programlisting>
         
         <para>A simple attribute or local annotated <literal>mutable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
@@ -1832,6 +1843,15 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         Java field declaration or local variable. Block local attributes may not be accessed 
         via reflection.</para>
         
+        <para>A block local simple attribute with a specifier or initializer may be declared 
+        using the keyword <literal>local</literal> in place of the explicit type declaration. 
+        The type of the local or attribute is inferred to be the type of the specifier or
+        initializer expression. If the expression is of <literal>optional</literal> type, the 
+        attribute is inferred to be <literal>optional</literal>.</para>
+        
+        <programlisting>local names = List&lt;String&gt;();</programlisting>
+        <programlisting>mutable local count:=0;</programlisting>
+                
         </section>
         
          <section id="attributegetters">
@@ -1866,6 +1886,17 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             -->
             
+        <para>A block local attribute getter with a single <literal>return</literal>
+        directive may be declared using the keyword <literal>local</literal> in place of 
+        the explicit type declaration. The type of the local or attribute is inferred to 
+        be the type of the returned expression. If the returned expression is of
+        <literal>optional</literal> type, the attribute is inferred to be 
+        <literal>optional</literal>.</para>
+        
+        <programlisting>local name { 
+    return Name(firstName, initial, lastName) 
+}</programlisting>
+                
         </section>
         
         <section id="attributesetters">

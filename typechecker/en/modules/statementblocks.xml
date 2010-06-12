@@ -241,10 +241,12 @@ else {
         
         <programlisting>Variable := Type MemberName</programlisting>
         
-        <para>A variable is treated as a formal parameter of the control structure body.</para>
+        <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
+        specifying the keyword local where the type usually appears.</para>
         
-        <comment><para>TODO: Should we say that type declarations in control structure variables are 
-        optional? The compiler should be able to infer the type of the variable.</para></comment>
+        <programlisting>InferableVariable := InferableType MemberName</programlisting>
+        
+        <para>A variable is treated as a formal parameter of the control structure body.</para>
         
         </section>
         
@@ -276,7 +278,7 @@ else {
         
         <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
        
-        <programlisting>ExistsCondition := ("exists" | "nonempty") (Variable Specifier | Expression)</programlisting>
+        <programlisting>ExistsCondition := ("exists" | "nonempty") (InferableVariable Specifier | Expression)</programlisting>
        
         <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
         
@@ -536,7 +538,7 @@ else {
             be iterated. <!--It may optionally specify one or more iteration constraint 
             expressions (conditions).--></para>
 
-            <programlisting>ForIterator := Variable ("->" Variable)? "in" Expression</programlisting>
+            <programlisting>ForIterator := InferableVariable ("->" InferableVariable)? "in" Expression</programlisting>
 
             <!--programlisting>Iteration := FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
@@ -695,7 +697,7 @@ while (!person.dead);</programlisting>
             expression must be of non-<literal>optional</literal> type assignable to 
             <literal>lang.Usable</literal>.</para>
             
-            <programlisting>Resource := Variable Specifier | Expression</programlisting>
+            <programlisting>Resource := InferableVariable Specifier | Expression</programlisting>
             
             <para>When the construct is executed:</para>
             

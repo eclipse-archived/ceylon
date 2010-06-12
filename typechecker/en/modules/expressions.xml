@@ -904,7 +904,7 @@ Comparison comp = order(1,-1);</programlisting>
 
         <programlisting>VarargArguments := VarargArgument ("," VarargArgument)*</programlisting>
 
-        <programlisting>VarargArgument := Expression | Variable Specifier</programlisting>
+        <programlisting>VarargArgument := Expression | InferableVariable Specifier</programlisting>
         
         <para>For example:</para>
         
@@ -1036,23 +1036,41 @@ Comparison comp = order(1,-1);</programlisting>
         
         <itemizedlist>
             <listitem>
+                <para>the return type may be eliminated,</para>
+            </listitem>
+            <listitem>
                 <para>if the functional parameter declares no formal parameters, the 
-                empty parentheses may be eliminated, and</para>
+                empty parentheses may be eliminated,</para>
             </listitem>
             <listitem>
                 <para>if the body of the method implementation consists of a single
                 <literal>return</literal> directive followed by a parenthesized
                 expression, the braces and <literal>return</literal> keyword may be 
-                eliminated.</para>
+                eliminated, and</para>
+            </listitem>
+            <listitem>
+                <para>formal parameter declarations may omit the explicit type, 
+                forcing the compiler to infer it, by specifying the keyword 
+                <literal>local</literal> where the type usually appears.</para>
             </listitem>
         </itemizedlist>
         
         <para>These arguments are called <emphasis>functional arguments</emphasis> of
         a positional parameter invocation.</para>
                 
-        <programlisting>FunctionalBody := FormalParameters? ( Block | "(" Expression ")" )</programlisting>
-                
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
+        
+        <programlisting>FunctionalBody := InferableFormalParameters? ( Block | "(" Expression ")" )</programlisting>
+                
+        <programlisting>InferableFormalParameters := "(" (InferableFormalParam ("," InferableFormalParam))? ")"</programlisting>
+        
+        <programlisting>InferableFormalParam := InferableParam | InferableEntryParamPair | InferableRangeParamPair</programlisting>
+        
+        <programlisting>InferableParam := Annotation* (InferableType|"void") ParameterName FormalParams*</programlisting>
+        
+        <programlisting>InferableEntryParamPair := Annotation* InferableType ParameterName "->" Type ParameterName</programlisting>
+        
+        <programlisting>InferableRangeParamPair := Annotation* InferableType ParameterName ".." ParameterName</programlisting>
         
         <para>For example:</para>
         
@@ -1072,17 +1090,15 @@ Comparison comp = order(1,-1);</programlisting>
         
         <programlisting>select (Person p) (p.name) having (Person p) (p.age>18)</programlisting>
         
+        <para>Type inference simplifies this:</para>
+        
+        <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
+        
+        <programlisting>having (local p) (p.age>18)</programlisting>
+
         <para>Arguments must be listed in the same order as the formal parameters are 
         declared by the method declaration.</para>
-            
-        <comment>
-        <para>TODO: this syntax is quite verbose compared to other languages with closures, 
-        but with type inference and the <literal>def</literal> keyword, we will be able to 
-        reduce it to:</para>
-        <programlisting>by (def x, def y) ( x&lt;=&gt;y )</programlisting>
-        <programlisting>having (def p) (p.age>18)</programlisting>
-        </comment>
-
+        
         </section>
         
         <section id="iteration">
@@ -1126,10 +1142,10 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                       having (Key key -> Value value) (user.authorized(key)) 
                       select (Key key -> Value value) ($key + ": " + $value);</programlisting>
         
-        <comment>
-        <para>TODO: again, with type inference, this gets even simpler:</para>
-        <programlisting>def names = from (def p in people) having (p>20) select (p.name);</programlisting>
-        </comment>
+        <para>Type inference simplifies this:</para>
+        
+        <programlisting>local names = from (local p in people) having (p>20) select (p.name);</programlisting>
+        
         
         </section>
         
@@ -1141,7 +1157,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         annotated <literal>specified</literal>, and all remaining parameters are functional
         parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>StaticMethodReference "(" Variable Specifier ")" FunctionalArguments</programlisting>
+        <programlisting>MethodReference "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
         
         <para>And then if a functional parameter has a formal parameter of type 
         <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 

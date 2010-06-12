@@ -95,7 +95,7 @@
         class interface alias 
         satisfies extends abstracts
         in out
-        void subtype def assign
+        void subtype local assign
         return break throw retry 
         this super null none
         get set
