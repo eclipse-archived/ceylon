@@ -24,13 +24,13 @@ class Generics() {
         mutable Z z;
     }
     
-    class TypeWithLowerBoundParameter<X>(X produce())
+    class TypeWithUpperBoundParameter<X>(X produce())
             where X satisfies String {
         String s = produce();
     }
 
-    class TypeWithUpperBoundParameter<X>(void accept(X x), X xx)
-            where String satisfies X {
+    class TypeWithLowerBoundParameter<X>(void accept(X x), X xx)
+            where X abstracts String {
         accept(xx);
     }
         
@@ -55,11 +55,11 @@ class Generics() {
     
     Entry<X,Y> methodWithMultipleParameters<X,Y>(X x, Y y) { return Entry(x, y) }
     
-    String methodWithLowerBoundParameter<X>(X produce())
+    String methodWithUpperBoundParameter<X>(X produce())
         where X satisfies String { return produce() }
 
-    void methodWithUpperBoundParameter<X>(void accept(X x), X xx)
-        where String satisfies X { accept(xx); }
+    void methodWithLowerBoundParameter<X>(void accept(X x), X xx)
+        where X abstracts String { accept(xx); }
         
     X methodWithConstructableParameter<X>(String s, Natural n)
         where X(String s, Natural n) { return X(s,n) }

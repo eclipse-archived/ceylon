@@ -152,7 +152,7 @@ class ControlStructures() {
 			retry;
 		}
 		
-		try ( Transaction(), Session s = Session() ) {
+		try ( Session s = Session() ) {
 			throw Exception()
 		}
 		catch (Exception e) {
