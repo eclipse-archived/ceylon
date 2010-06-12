@@ -387,10 +387,9 @@ while (i.more) {
         <programlisting><![CDATA[public interface Correspondence<in U, out V> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
+         for the given key, or |null| if there is no value defined
          for the given key."
-    throws #UndefinedKeyException
-           "if no value is defined for the given key"
-    public V value(U key);
+    public optional V value(U key);
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
@@ -480,6 +479,8 @@ while (i.more) {
      doc "Element assignment operator x[key] = value. Assign a value 
           to the given key. Return the previous value for the key,
           or null if there was no value defined."
+    throws #UndefinedKeyException
+           "if a value can not be defined for the given key"
      public optional V define(U key, V value);
 
 }]]></programlisting>
@@ -513,10 +514,9 @@ while (i.more) {
         <programlisting><![CDATA[public interface Sequence<out X> 
         satisfies Correspondence<Natural, out X>, Iterable<X> {
 
-    doc "The index of the last element of the sequence."
-    throws #EmptyException
-           "if the sequence has no elements"
-    public Natural lastIndex;
+    doc "The index of the last element of the sequence,
+         or |null| if the sequence has no elements."
+    public optional Natural lastIndex;
     
 }]]></programlisting>
 
@@ -554,44 +554,25 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
         <programlisting><![CDATA[public extension class Sequences<out X>(Sequence<X> sequence) {
 
-    doc "The first element of the sequence."
-    throws #EmptyException
-           "if the list is empty"
-    public X first {
+    doc "The first element of the sequence, or
+         |null| if the sequence has no elements."
+    public optional X first {
         if (sequence.empty) {
-            throw EmptyException();
+            return null
         }
         else {
-            return sequence[0];
+            return sequence[0]
         }
     }
     
-    doc "The last element of the sequence."
-    throws #EmptyException
-           "if the list is empty"
-    public X last {
-        return sequence[sequence.lastIndex];
-    }
-    
-    doc "The first element of the sequence, or null if
-         the sequence is empty."
-    public optional X firstOrNull {
+    doc "The last element of the sequence, or
+         |null| if the sequence has no elements.."
+    public optional X last {
         if (sequence.empty) {
-            return first;
+            return null
         }
         else {
-            return null;
-        }
-    }
-
-    doc "The last element of the sequence, or null if
-         the sequence is empty."
-    public optional X lastOrNull {
-        if (sequence.empty) {
-            return last;
-        }
-        else {
-            return null;
+            return sequence[lastIndex]
         }
     }
 
@@ -773,26 +754,14 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
     public List<X> rest;
     
     doc "The index of the first element of the list
-         which satisfies the condition."
-    throws #NotFoundException
-           "if no element satsfies the condition"
-    public Natural firstIndex(Boolean having(X element));
+         which satisfies the condition, or |null| if 
+         no element satsfies the condition."
+    public optional Natural firstIndex(Boolean having(X element));
 
     doc "The index of the last element of the list
-         which satisfies the condition."
-    throws #NotFoundException
-           "if no element satsfies the condition"
-    public Natural lastIndex(Boolean having(X element));
-    
-    doc "The index of the first element of the list
-         which satisfies the condition, or null if 
-         no element satisfies the condition."
-    public optional Natural firstIndexOrNull(Boolean having(X element));
-    
-    doc "The index of the last element of the list
-         which satisfies the condition, or null if 
-         no element satisfies the condition."
-    public optional Natural lastIndexOrNull(Boolean having(X element));
+         which satisfies the condition, or |null| if 
+         no element satsfies the condition."
+    public optional Natural lastIndex(Boolean having(X element));
     
     doc "A sublist beginning with the element at the first given 
          index up to and including the element at the second given 
@@ -858,6 +827,8 @@ while (people nonempty) {
          the index of every element with an index greater
          than the given index by one. Return the removed
          element."
+    throws #UndefinedKeyException
+           "if the index is not in the list"
     public X removeIndex(Natural at);
     
     doc "Add the given elements at the end of the list."
@@ -872,6 +843,8 @@ while (people nonempty) {
          index, incrementing the index of every existing 
          element with that index or greater by the number 
          of given elements."
+    throws #UndefinedKeyException
+           "if the index is not in the list"
     public void insert(Natural at, X... elements);
     
     doc "Remove elements beginning with the first given index 
@@ -879,6 +852,8 @@ while (people nonempty) {
          decrementing the indexes of all elements after
          with the second given index by one more than the 
          difference between the two indexes."
+    throws #UndefinedKeyException
+           "if the index is not in the list"
     public void delete(Natural from, Natural to=lastIndex);
     
     doc "Remove and return the first element, decrementing
@@ -943,10 +918,6 @@ while (people nonempty) {
     doc "A |Map| of each value belonging to the map, to the 
          |Set| of all keys at which that value occurs."
     public Map<V, Set<U>> inverse;
-    
-    doc "Return the value defined for the given key, or null
-         if no value is defined for that key."
-    public optional V valueOrNull(U key);
     
     doc "Produce a new map by applying an operation to every 
          element of the map."

@@ -1868,7 +1868,7 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>if ( x > 100 || x &lt; 0 ) { ... }</programlisting>
     
-    <programlisting>User gavin = users["Gavin"];</programlisting>
+    <programlisting>optional User gavin = users["Gavin"];</programlisting>
     
     <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
     
@@ -2628,7 +2628,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Y</literal></entry>
+            <entry><literal>optional Y</literal></entry>
         </row>
         <row>
             <entry><literal>?[]</literal></entry>

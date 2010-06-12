@@ -190,7 +190,7 @@ public void hello(Process process) {
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 public void hello(Process process) {
-    optional String name = process.args.firstOrNull;
+    optional String name = process.args.first;
     String greeting;
     if (exists name) {
         greeting = "Hello, " name "!";
@@ -246,7 +246,7 @@ class Hello(optional String name, OutputStream out) {
 
 doc "A command line greeting"
 class Hello(Process process) 
-    extends Hello(process.args.firstOrNull, process) {}
+    extends Hello(process.args.first, process) {}
 
 ]]></programlisting>
 
@@ -274,7 +274,7 @@ class Hello(Request request)
         extends Html(request) {
 
     String name 
-        = request.parameters["name"].firstOrNull ? "World";
+        = request.parameters["name"]?.first ? "World";
     
     head = Head { title="Hello World"; };
     
