@@ -5,6 +5,8 @@ public mutable interface OpenList<X>
          the index of every element with an index greater
          than the given index by one. Return the removed
          element."
+    throws #UndefinedKeyException 
+           "if the index is not in the list"
     public X removeIndex(Natural at);
     
     doc "Add the given elements at the end of the list."
@@ -19,6 +21,8 @@ public mutable interface OpenList<X>
          index, incrementing the index of every existing 
          element with that index or greater by the number 
          of given elements."
+    throws #UndefinedKeyException 
+           "if the index is not in the list"
     public void insert(Natural at, X... elements);
     
     doc "Remove elements beginning with the first given index 
@@ -26,6 +30,8 @@ public mutable interface OpenList<X>
          decrementing the indexes of all elements after
          with the second given index by one more than the 
          difference between the two indexes."
+    throws #UndefinedKeyException 
+           "if the index is not in the list"
     public void delete(Natural from, Natural to=lastIndex);
     
     doc "Remove and return the first element, decrementing
