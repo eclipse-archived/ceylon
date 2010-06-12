@@ -752,9 +752,7 @@ finally {
             
             <programlisting>try ( Transaction() )
     try ( Session s = Session() ) {
-        Person p = s.get(#Person, id)
-        ...
-        return p
+        return s.get(#Person, id)
     } 
     catch (NotFoundException e) { 
         return null
