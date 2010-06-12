@@ -557,22 +557,17 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
     public optional X first {
-        if (sequence.empty) {
-            return null
-        }
-        else {
-            return sequence[0]
-        }
+        return sequence[0]
     }
     
     doc "The last element of the sequence, or
          |null| if the sequence has no elements.."
     public optional X last {
-        if (sequence.empty) {
-            return null
+        if (exists Natural index = sequence.lastIndex) {
+            return sequence[index]
         }
         else {
-            return sequence[lastIndex]
+            return null
         }
     }
 
