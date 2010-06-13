@@ -615,11 +615,23 @@ sort(names, reverseAlpha);</programlisting>
         first parameter list.</para>
         
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
-    Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y }
-    Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x }
     if (reverse) {
+        Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x }
         return reverse
     else {
+        Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y }
+        return natural
+    }
+}</programlisting>
+
+        <para>This is slightly simpler using type inference:</para>
+
+        <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
+    if (reverse) {
+        local reverse(Natural x, Natural y) { return y&lt;=&gt;x }
+        return reverse
+    else {
+        local natural(Natural x, Natural y) { return x&lt;=&gt;y }
         return natural
     }
 }</programlisting>
