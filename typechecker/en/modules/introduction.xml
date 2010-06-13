@@ -91,6 +91,15 @@
     </para>
     
     <para>
+    Ceylon does not feature C-style typecasts or Java's 
+    <literal>instanceof</literal> operator. Instead, the 
+    <literal>if (is ... )</literal> and 
+    <literal>case (is ... )</literal> constructs may be used to narrow
+    the type of an object reference without risk of a 
+    <literal>ClassCastException</literal>.
+    </para>
+    
+    <para>
     Ceylon control flow structures are very similar to the traditional 
     constructs found in C, C# and Java. However, inline methods can be 
     used together with a special Smalltalk-style method invocation protocol 
