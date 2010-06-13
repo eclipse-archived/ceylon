@@ -558,7 +558,7 @@ if you prefer.";</programlisting>
         <para>This code passes a reference to a local method with a conforming signature to 
         the method.</para>
         
-        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; }
+        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x }
 sort(names, reverseAlpha);</programlisting>
         
         <para>This class has two functional parameters:</para>
@@ -615,12 +615,12 @@ sort(names, reverseAlpha);</programlisting>
         first parameter list.</para>
         
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
-    Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
-    Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+    Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y }
+    Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x }
     if (reverse) {
-        return reverse;
+        return reverse
     else {
-        return natural;
+        return natural
     }
 }</programlisting>
 
@@ -890,13 +890,13 @@ local comp = order(1,-1);</programlisting>
 }</programlisting>
         
         <programlisting>{ 
-    Comparison by(X x, X y) { return x&lt;=&gt;y; } 
+    Comparison by(X x, X y) { return x&lt;=&gt;y } 
 }</programlisting>
 
         <para>This is simpler using type inference:</para>
 
         <programlisting>{ 
-    local by(X x, X y) { return x&lt;=&gt;y; } 
+    local by(X x, X y) { return x&lt;=&gt;y } 
 }</programlisting>
 
         <comment><para>TODO: should the named parameter block be allowed to contain arbitrary statements?</para></comment>

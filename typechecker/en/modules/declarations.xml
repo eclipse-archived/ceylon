@@ -1524,7 +1524,7 @@ public User(String username, Person person);</programlisting>
         more than one parameter list return method references.</para>
         
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y; }
+    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
     return order;
 }</programlisting>
 
