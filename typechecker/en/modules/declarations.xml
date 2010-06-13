@@ -58,8 +58,6 @@ Body?</programlisting>
         
         <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
-        <comment><para>TODO: Should we support toplevel method declarations?</para></comment>
-
         <para>All toplevel declarations with a visibility modifier less strict than
         <literal>private</literal> must have the same name as the compilation unit 
         filename (after removing the file suffix <literal>.ceylon</literal>). For 

@@ -229,7 +229,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
         -->        
-        <comment><para>TODO: do we really need character literals??</para></comment>
+        <comment><para>TODO: do we really need character literals?</para></comment>
         
     </section>
     
