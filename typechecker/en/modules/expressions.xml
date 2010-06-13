@@ -630,10 +630,15 @@ sort(names, reverseAlpha);</programlisting>
         <programlisting>Comparison order(Natural x, Natural y) = getOrder();
 Comparison comp = order(1,-1);</programlisting>
 
+        <para>This is even simpler using type inference:</para>
+
+        <programlisting>local order(Natural x, Natural y) = getOrder();
+local comp = order(1,-1);</programlisting>
+
         <para>Of course, more than one argument list may be specified in a single expression:</para>
         
         <programlisting>Comparison comp = getOrder(true)(10, 100);</programlisting>
-
+        
         </section>
         
     </section>
