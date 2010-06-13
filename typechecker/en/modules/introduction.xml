@@ -230,10 +230,10 @@ class Hello(optional String name, OutputStream out) {
     doc "The greeting"
     String greeting {
         if (exists name) {
-            return "Hello, " name "!";
+            return "Hello, " name "!"
         }
         else {
-            return "Hello, World!";
+            return "Hello, World!"
         }
     }
     
@@ -278,10 +278,10 @@ class Hello(Request request)
     doc "The greeting"
     String greeting {
         if (exists name) {
-            return "Hello, " name "!";
+            return "Hello, " name "!"
         }
         else {
-            return "Hello, World!";
+            return "Hello, World!"
         }
     }
     

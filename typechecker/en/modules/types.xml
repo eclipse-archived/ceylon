@@ -77,7 +77,7 @@
          customize the render operator and character string 
          template expression interpolation."
     public String string(optional Object object) {
-        return (object ? nullString).string;
+        return (object ? nullString).string
     }
     
     doc "The string representation of a null value. Override 
@@ -669,7 +669,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
         
     doc "The elements of the collection, sorted in natural order."
     public List<X> sortedElements() {
-        return collection.sortedElements() by (X x, X y) (x<=>y);
+        return collection.sortedElements() by (X x, X y) (x<=>y)
     }
     
 }]]></programlisting>
@@ -1058,12 +1058,12 @@ while (people nonempty) {
          to the given object."
     case equal;
         
-    public Boolean larger return this==larger;
-    public Boolean smaller return this==smaller;
-    public Boolean equal return this==equal;
-    public Boolean unequal return this!=equal;
-    public Boolean largeAs return this!=smaller;
-    public Boolean smallAs return this!=larger;
+    public Boolean larger { return this==larger }
+    public Boolean smaller { return this==smaller }
+    public Boolean equal { return this==equal }
+    public Boolean unequal { return this!=equal }
+    public Boolean largeAs { return this!=smaller }
+    public Boolean smallAs { return this!=larger }
     
 }]]></programlisting>
 
@@ -1551,7 +1551,7 @@ while (people nonempty) {
         where X satisfies Instant {
     public X start = start;
     public X end = end;
-    public Duration<X> duration { return ...; }
+    public Duration<X> duration { return ... }
     ...
 }]]></programlisting>
 
@@ -1765,7 +1765,7 @@ public Natural count<X>(iterated Iterable<X> elements,
             ++count;
         }
     }
-    return count;
+    return count
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Return true iff for every element, the block 
@@ -1785,7 +1785,7 @@ public Boolean forAll<X>(iterated Iterable<X> elements,
 public Boolean forAny<X>(iterated Iterable<X> elements,
                          Boolean some(coordinated X x)) {
     Boolean having(X x) { return !some(x) }
-    return !forAll(elements, having); 
+    return !forAll(elements, having)
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Return the first element for which the block 
@@ -1910,7 +1910,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     <programlisting>Integer calc(Integer j) {
     Integer i = list.size;
     i++;
-    return i * j + 1000;
+    return i * j + 1000
 }</programlisting>
     
     <para>the following equivalent Java code is acceptable:</para>

@@ -84,7 +84,7 @@
                 
         <programlisting>throw Exception()</programlisting>
         <programlisting>retry</programlisting>
-        <programlisting>return x+y;</programlisting>
+        <programlisting>return x+y</programlisting>
         <programlisting>return "Hello"</programlisting>
         <programlisting>break true</programlisting>
         <programlisting>continue</programlisting>
@@ -419,7 +419,7 @@ else {
 }</programlisting>
             
             <programlisting>if (is CardPayment p = order.payment) {
-    return p.card;
+    return p.card
 }</programlisting>
             
         </section>

@@ -271,7 +271,7 @@ Description doc(String description) {
         
         <programlisting>public abstract class Wrappable {
    public Wrapper&lt;subtype&gt; wrap() {
-       return Wrapper(this);
+       return Wrapper(this)
    }
 }</programlisting>
         
@@ -1501,11 +1501,11 @@ public User(String username, Person person);</programlisting>
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
         <programlisting>public Integer add(Integer x, Integer y) {
-    return x + y;
+    return x + y
 }</programlisting>
     
         <programlisting>Identifier createToken() {
-    return Token();
+    return Token()
 }</programlisting>
 
         <programlisting>public optional U get(optional V key);</programlisting>
@@ -1525,7 +1525,7 @@ public User(String username, Person person);</programlisting>
         
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
     Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
-    return order;
+    return order
 }</programlisting>
 
         <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
@@ -1575,7 +1575,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         is inferred to be <literal>optional</literal>.</para>
         
         <programlisting>local add(Integer x, Integer y) {
-    return x + y;
+    return x + y
 }</programlisting>
                 
         <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
@@ -1718,7 +1718,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>public Decimal pi = calculatePi();</programlisting>
         
-        <programlisting>public String name { return join(firstName, lastName); }
+        <programlisting>public String name { return join(firstName, lastName) }
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>
     
         <programlisting>public Float total {
@@ -1726,7 +1726,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
     for (LineItem li in lineItems) {
         sum += li.amount;
     }
-    return sum;
+    return sum
 }</programlisting>
         
         <!--
@@ -1871,7 +1871,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             method with the content of the getter block. For example: </para>
             -->
         
-            <programlisting>public Float total { return items.totalPrice; }</programlisting>
+            <programlisting>public Float total { return items.totalPrice }</programlisting>
             
             <para>If an attribute getter has a matching attribute setter, we say that 
             the attribute is <literal>mutable</literal>. Otherwise we say it is 
@@ -1910,7 +1910,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             assigned. Every attribute setter must have a corresponding getter with the
             same name.</para>
 
-            <programlisting>public String name { return join(firstName, lastName); }
+            <programlisting>public String name { return join(firstName, lastName) }
 public assign name { firstName = first(name); lastName = last(name); }</programlisting>
             
             <!--
@@ -2406,7 +2406,7 @@ public oncePerElement Visibility private() {
 }</programlisting>
         
         <programlisting>public extension User personToUser(Person person) { 
-    return person.user; 
+    return person.user
 }</programlisting>
         
         <programlisting>public extension class CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {

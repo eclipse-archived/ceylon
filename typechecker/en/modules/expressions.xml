@@ -288,8 +288,8 @@ if you prefer.";</programlisting>
         evaluated at compile time for single-quoted literals, alowing compile-time
         validation of the contents of the single-quoted string.</para>
         
-        <programlisting>public extension Date date(Quoted dateString) { return ...; }</programlisting>
-        <programlisting>public extension class Regex(Quoted expression) { return ...; }</programlisting>
+        <programlisting>public extension Date date(Quoted dateString) { return ... }</programlisting>
+        <programlisting>public extension class Regex(Quoted expression) { return ... }</programlisting>
         
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
@@ -1917,7 +1917,7 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
 
-    <programlisting>if ( exists name => name == "Gavin" ) return ... ;</programlisting>
+    <programlisting>if ( exists name => name == "Gavin" ) { return ... }</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
