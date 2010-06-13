@@ -919,7 +919,9 @@ local comp = order(1,-1);</programlisting>
         <!--comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment-->
         
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
-        thereby allowing the braces around a sequence enumeration to be omitted in this case?</para></comment>
+        thereby allowing the braces around a sequence enumeration to be omitted in this case?
+        Perhaps we could do away with the brace syntax for enumerations altogether if we went down
+        this path.</para></comment>
         
         </section>
 
