@@ -1658,6 +1658,26 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             method may not declare a stricter visibility modifier than the method 
             it overrides.</para>
             
+            <programlisting>abstract class AbstractSquareRooter() {
+    Float squareRoot(Float x);
+}</programlisting>
+
+            <programlisting>class ConcreteSquareRooter()
+        extends AbstractSquareRooter() {
+    override Float squareRoot(Float x) { ... }
+}</programlisting>
+            
+            <para>For abstract methods, a special shortcut form of overriding is
+            permitted. A subclass initializer may simply specify a method reference 
+            for the method declared by the superclass. No method signature declaration 
+            or <literal>override</literal> annotation is necessary.</para>
+            
+            <programlisting>class ConcreteSquareRooter()
+        extends AbstractSquareRooter() {
+    Float sqrt(Float x) { ... }
+    squareRoot = sqrt;
+}</programlisting>
+            
             <para>Toplevel methods cannot be overridden, and so toplevel method 
             invocation is never polymorphic.</para>
             
@@ -1939,8 +1959,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <section id="abstractattributes">
             <title>Interface attributes and abstract attributes</title>
             
-            <para>If there is no initializer or getter implementation, the value or 
-            implementation of the attribute must be specified later in the block, or 
+            <para>If there is no specifier, initializer or getter implementation, the value 
+            or implementation of the attribute must be specified later in the block, or 
             the class that declares the attribute must be annotated <literal>abstract</literal>. 
             If no value or implementation is specified, and the attribute is not declared 
             <literal>optional</literal>, the attribute is considered an <emphasis>abstract 
@@ -2002,6 +2022,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>A non-<literal>mutable</literal> attribute may be overridden by a 
             <literal>mutable</literal> attribute.</para>
             
+            <comment><para>TODO: is that really allowed? It could break the superclass.</para></comment>
+            
             <para>Then evaluation and assignment of the attribute is polymorphic, and 
             the actual attribute evaluated or assigned depends upon the concrete type 
             of the class instance.</para>
@@ -2010,6 +2032,26 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             has the same visibility modifier as the attribute it overrides. The
             method may not declare a stricter visibility modifier than the method 
             it overrides.</para>
+            
+            <programlisting>abstract class AbstractPi() {
+    Float pi;
+}</programlisting>
+
+            <programlisting>class ConcretePi() 
+        extends AbstractPi() {
+    Float pi { ... }
+}</programlisting>
+            
+            <para>For abstract attributes, a special shortcut form of overriding is
+            permitted. A subclass initializer may simply specify or assign a value to 
+            the attribute declared by the superclass. No type declaration or 
+            <literal>override</literal> annotation is necessary.</para>
+            
+            <programlisting>class ConcretePi() 
+        extends AbstractPi() {
+    Float calculatePi() { ... }
+    pi = calculatePi();
+}</programlisting>
             
         </section>
         
