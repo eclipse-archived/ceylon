@@ -91,8 +91,8 @@
     </para>
     
     <para>
-    Ceylon control flow structures are enhanced versions of the traditional 
-    constructs found in C, C# and Java. Even better, inline methods can be 
+    Ceylon control flow structures are very similar to the traditional 
+    constructs found in C, C# and Java. However, inline methods can be 
     used together with a special Smalltalk-style method invocation protocol 
     to achieve more specialized flow control and other more functional-style 
     constructs such as comprehensions.
