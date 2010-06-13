@@ -918,11 +918,6 @@ local comp = order(1,-1);</programlisting>
 
         <!--comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment-->
         
-        <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
-        thereby allowing the braces around a sequence enumeration to be omitted in this case?
-        Perhaps we could do away with the brace syntax for enumerations altogether if we went down
-        this path.</para></comment>
-        
         </section>
 
         <section id="varargarguments">
@@ -1404,12 +1399,12 @@ except (SomethingElseWrong sew) {
             <para>An enumeration is an expression of non-<literal>optional</literal> 
             type.</para>
             
-            <para>There are no true literals for lists, sets or maps. However, the 
+            <para>There is no special syntax for constructing lists, sets or maps. However, the 
             <literal>..</literal> and <literal>-></literal> operators, together with the 
-            convenient sequence enumeration syntax, and some built-in extensions help 
-            us achieve the desired effect.</para>
+            convenient sequence enumeration syntax, and some built-in extensions help us achieve 
+            the desired effect.</para>
 
-            <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk" };</programlisting>
+            <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk", "C#" };</programlisting>
             <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
                 
             <para>Sequences are transparently converted to sets or maps, allowing sets 
@@ -1419,7 +1414,17 @@ except (SomethingElseWrong sew) {
             <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
             <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
             
-            <para>This representation is used as the canonical literal form for collections.</para>
+            <comment><para>TODO: an alternative to this syntax would be to allow a comma-separated
+            list of values without braces after <literal>=</literal>, <literal>in</literal> or 
+            <literal>return</literal> and after <literal>:=</literal> in an attribute initializer. 
+            The disadvantage to this approach is that enumerations would not be allowed in positional 
+            parameter invocations, or in expressions. It's also less regular. On the other hand, it 
+            is consistent with how we treat varargs.</para>
+            <programlisting>Map&lt;String, String&gt; map = "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!";</programlisting>
+            <programlisting>for (String lang in "Java", "Ceylon", "Scala", "C#") { ... }</programlisting>
+            <programlisting>join { sep=", "; strings=firstName, initial, lastName; };</programlisting>
+            </comment>
+        
             
     </section>
     
