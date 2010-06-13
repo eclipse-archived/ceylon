@@ -911,9 +911,12 @@ local comp = order(1,-1);</programlisting>
     local by(X x, X y) { return x&lt;=&gt;y } 
 }</programlisting>
 
-        <comment><para>TODO: should the named parameter block be allowed to contain arbitrary statements?</para></comment>
+        <comment><para>TODO: should the named parameter block be allowed to contain arbitrary statements?
+        This is more regular, since you can do it in the body of a class, and attribute/method overriding
+        is the model that we are following here. And it could be very useful when defining structured
+        data.</para></comment>
 
-        <comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment>
+        <!--comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment-->
         
         <comment><para>TODO: should we allow a comma-separated list of values to be specified here,
         thereby allowing the braces around a sequence enumeration to be omitted in this case?</para></comment>
