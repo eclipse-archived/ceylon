@@ -736,7 +736,7 @@ namedArgument
     ;
 
 namedFunctionalArgument
-    : formalParameterType parameterName formalParameters* block
+    : (formalParameterType|'local') parameterName formalParameters* block
     ;
 
 namedSpecifiedArgument
@@ -745,7 +745,7 @@ namedSpecifiedArgument
 
 namedArgumentStart
     : LIDENTIFIER '=' 
-    | formalParameterType LIDENTIFIER
+    | (formalParameterType|'local') LIDENTIFIER
     ;
 
 parameterName

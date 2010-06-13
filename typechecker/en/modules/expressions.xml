@@ -864,8 +864,8 @@ local comp = order(1,-1);</programlisting>
             or</para>
             </listitem>
             <listitem>
-            <para>only for functional parameters, specifies the type, a formal parameter list and a 
-            block of code (an inline method declaration).</para>
+            <para>only for functional parameters, specifies the type or <literal>local</literal>, a 
+            formal parameter list and a block of code (an inline method declaration).</para>
             </listitem>
         </itemizedlist>
         
@@ -873,7 +873,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>SpecifiedNamedArgument := ParameterName Specifier ";"</programlisting>
         
-        <programlisting>FunctionalNamedArgument := (Type | "void") ParameterName FormalParams Block</programlisting>
+        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams Block</programlisting>
         
         <para>For example:</para>
         
@@ -891,6 +891,12 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>{ 
     Comparison by(X x, X y) { return x&lt;=&gt;y; } 
+}</programlisting>
+
+        <para>This is simpler using type inference:</para>
+
+        <programlisting>{ 
+    local by(X x, X y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
         <comment><para>TODO: should the named parameter block be allowed to contain arbitrary statements?</para></comment>
