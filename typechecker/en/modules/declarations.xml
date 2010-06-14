@@ -68,22 +68,34 @@ Body?</programlisting>
         Java, a compilation unit may contain multiple toplevel class or method 
         declarations with the same name.</para>
         
-        <para>A compilation unit consists of a list of imported types, followed by
-        one or more type or method definitions:</para>
+        <para>A compilation unit consists of a list of imported toplevel types and 
+        toplevel methods, followed by one or more type or method definitions:</para>
         
         <programlisting>Import* ToplevelDeclaration+</programlisting>
         
-        <programlisting>Import := "import" ImportPath ("." "*" | "alias" ImportElement)? ";"</programlisting>
+        <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
+        An <literal>import</literal> statement allows the compilation unit to refer to a 
+        toplevel declaration in another package.</para>
         
-        <programlisting>ImportPath := ImportElement ("." ImportElement)*</programlisting>
+        <programlisting>Import := "import" FullPackageName "." ImportSpecification ";"</programlisting>
         
-        <programlisting>ImportElement := PackageName | TypeName | MemberName</programlisting>
+        <para>A package is a namespace. A full package name is a period-separated
+        list of initial lowercase identifiers.</para>
         
-        <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>. 
-        A package is a namespace. Code in one compilation unit may refer to a toplevel type 
-        defined in another compilation unit in the same package without explicitly importing
-        the type. It may refer to a toplevel type defined in a compilation in another package
-        only if it explicitly imports the type.</para>
+        <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
+        
+        <para>An <literal>import</literal> statement may import a single toplevel type, a 
+        single toplevel method, or all toplevel declarations of the specified package.</para>
+        
+        <programlisting>ImportSpecification := "*" | TypeName ("alias" TypeName)? | MemberName ("alias" MemberName)?</programlisting>
+        
+        <para>The optional <literal>alias</literal> clause allows resolution of 
+        cross-namespace declaration name collisions.</para>
+        
+        <para>Code in one compilation unit may refer to a toplevel declaration in another 
+        compilation unit in the same package without explicitly importing the declaration. 
+        It may refer to a toplevel declaration defined in a compilation unit in another 
+        package only if it explicitly imports the declaration.</para>
         
         <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
         non-<literal>mutable</literal> toplevel attributes?</para></comment>
@@ -117,7 +129,7 @@ public deprecated</programlisting>
         type is loaded by the virtual machine. The return value of the invocation is 
         made available via reflection.</para>
         
-        <para>For example, the built-in <literal>doc</literal> annotation is declared as 
+        <para>For example, the built-in <literal>doc</literal> annotation is defined as 
         follows:</para>
         
         <programlisting>public multiplicity(onceEachElement) 
@@ -231,7 +243,9 @@ Description doc(String description) {
         
         <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
         
-        <para>A generic type must specify arguments for the generic type parameters.</para>
+        <para>A type argument must be specified for every type parameter. If the type has
+        type parameters, an argument list must be specified. If the type has no type 
+        parameters, no argument list may be specified.</para>
         
         <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
@@ -278,13 +292,16 @@ Description doc(String description) {
         <programlisting>Special special = Special();
 Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
 
-        <para>For a class declared <literal>final</literal>, any instance of the class
-        may be assigned to the type <literal>subtype</literal>. For a class not declared
-        <literal>final</literal>, only the <literal>this</literal> reference is
-        assignable to <literal>subtype</literal>.</para>
+        <para>The only expression assignable to the type <literal>subtype</literal> is
+        the special value <literal>this</literal>.</para>
         
-        <comment><para>TODO: so this means we really need a <literal>final</literal>
-        modifier after all? Is there another solution?</para></comment>
+        <comment><para>TODO: should we have a new kind of type constraint like 
+        <literal>where subtype(....)</literal>, which allows an instance of the concrete
+        subtype to be instantiated by code in the superclass using <literal>subtype(....)</literal>?
+        This newly instantiated object would be assignable to <literal>subtype</literal>.
+        Or, should we allow a subclass to be declared <literal>final</literal>, in which 
+        case the subclass could assign any instance of itself to <literal>subtype</literal>?
+        </para></comment>
         
         <para>The type <literal>subtype</literal> is considered a covariant type parameter
         of the type, and may only appear in covariant positions of the type definition.</para>
@@ -298,7 +315,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>Type inference is only allowed for block local declarations. The keyword
         <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
     
-        <comment><para>Should we support <literal>Item[]</literal> as a shorthand for
+        <comment><para>TODO: Should we support <literal>Item[]</literal> as a shorthand for
         <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
         and <literal>Item[Key]</literal> as a shorthand for 
         <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
@@ -360,6 +377,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>Container&lt;out T&gt;</programlisting>
         
         <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
+        
+        <comment><para>TODO: Would <literal>produces</literal> and <literal>consumes</literal> 
+        be better?</para></comment>
         
         <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
         and a subtype <literal>B</literal> of <literal>A</literal>:</para>
@@ -446,6 +466,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>The return type of a functional parameter in a covariant position is covariant.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>These rules apply to members declared by the type, and to members inherited from supertypes.</para>
         
     </section>
 
@@ -964,7 +986,8 @@ ClassBody</programlisting>
         statements or control structures, but may freely use <literal>this</literal>, and may 
         invoke any method or evaluate any attribute of the class. The usual restriction that a 
         declaration may only be used by code that appears later in the block containing the 
-        declaration is relaxed.</para>
+        declaration is relaxed. The declarations in this section may not contain specifiers
+        or initializers (<literal>=</literal> or <literal>:=</literal>).</para>
         
         <comment><para>TODO: should class initialization parameters be allowed to be declared 
         <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 

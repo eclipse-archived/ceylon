@@ -233,6 +233,10 @@ public void hello(Process process) {
     Hello(process).say();
 }
 
+doc "A command line greeting"
+class Hello(Process process) 
+    extends Hello(process.args.first, process) {}
+
 doc "A personalized greeting"
 class Hello(optional String name, OutputStream out) {
     
@@ -251,13 +255,7 @@ class Hello(optional String name, OutputStream out) {
         out.writeLine(greeting); 
     }
     
-}
-
-doc "A command line greeting"
-class Hello(Process process) 
-    extends Hello(process.args.first, process) {}
-
-]]></programlisting>
+}]]></programlisting>
 
         <para>Here we have two classes named <literal>Hello</literal>. The
         class name is said to be <emphasis>overloaded</emphasis>. One class 
