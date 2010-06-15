@@ -77,20 +77,52 @@ Body?</programlisting>
         An <literal>import</literal> statement allows the compilation unit to refer to a 
         toplevel declaration in another package.</para>
         
-        <programlisting>Import := "import" FullPackageName "." ImportSpecification ";"</programlisting>
+        <programlisting>Import := "import" FullPackageName "." ImportSpec ";"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated
         list of initial lowercase identifiers.</para>
         
         <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
         
-        <para>An <literal>import</literal> statement may import a single toplevel type, a 
-        single toplevel method, or all toplevel declarations of the specified package.</para>
+        <para>An <literal>import</literal> statement may import either:</para>
         
-        <programlisting>ImportSpecification := "*" | TypeName ("alias" TypeName)? | MemberName ("alias" MemberName)?</programlisting>
+        <itemizedlist>
+            <listitem>
+                <para>a single (toplevel or member) type,</para>
+            </listitem>
+            <listitem>
+                <para>a single toplevel method,</para>
+            </listitem>
+            <listitem>
+                <para>a single named enumerated instance of a class,</para>
+            </listitem>
+            <listitem>
+                <para>all toplevel declarations of a specified package, or</para>
+            </listitem>
+            <listitem>
+                <para>all named enumerated instances and member types of a specified class
+                or interface.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>ImportSpec := TypeSpec | MethodSpec | InstanceSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
+        
+        <programlisting>TypeSpec := QualifiedTypeName ("alias" TypeName)?</programlisting>
+        <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
+        <programlisting>InstanceSpec := TypeName "." MemberName ("alias" MemberName)?</programlisting>
+        <programlisting>PackageMembersSpec := "*"</programlisting>
+        <programlisting>TypeMembersSpec := TypeName "." "*"</programlisting>
         
         <para>The optional <literal>alias</literal> clause allows resolution of 
         cross-namespace declaration name collisions.</para>
+        
+        <programlisting>import lang.collections.*;</programlisting>
+        
+        <programlisting>import transaction.propagation.TxPropagationType.*;</programlisting>
+        
+        <programlisting>import java.util.Map.Entry alias MapEntry;</programlisting>
+        
+        <programlisting>import my.math.fibonnacciNumber alias fib;</programlisting>
         
         <para>Code in one compilation unit may refer to a toplevel declaration in another 
         compilation unit in the same package without explicitly importing the declaration. 
