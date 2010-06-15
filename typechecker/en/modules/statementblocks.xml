@@ -549,16 +549,19 @@ else {
             
             <itemizedlist>
             <listitem>
-            <para>The iterated expression must be an expression of type assignable to 
-            <literal>Iterable&lt;X&gt;</literal> or <literal>Iterator&lt;X&gt;</literal> 
-            where <literal>&lt;X&gt;</literal> is the declared type of the iteration
-            variable.</para> 
+                <para>The iterated expression must be an expression of type assignable to 
+                <literal>Iterable&lt;X&gt;</literal> or <literal>Iterator&lt;X&gt;</literal> 
+                where <literal>&lt;X&gt;</literal> is the declared type of the iteration
+                variable.</para> 
             </listitem>
             <listitem>
-            <para>If two iteration variables are defined, the iterated expression type 
-            must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> or 
-            <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal> where <literal>U</literal>
-            and <literal>V</literal> are the declared types of the iteration variables.</para>
+                <para>If two iteration variables are defined, the iterated expression type 
+                must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> or 
+                <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal> where <literal>U</literal>
+                and <literal>V</literal> are the declared types of the iteration variables, or
+                of type <literal>Sequence&lt;X&gt;</literal> where <literal>Natural</literal> 
+                is the type of the first iteration variable, and <literal>X</literal> is the 
+                type of the second iteration variable.</para>
             </listitem>
             </itemizedlist>
             
@@ -588,9 +591,11 @@ else {
             <para>For example:</para>
 
             <programlisting>for (Person p in people) { log.info(p.name); }</programlisting>
+            
+            <programlisting>for (Natural month -> Float temp in monthlyTempsList) { plot(month,temp); }</programlisting>
 
-            <programlisting>for (String key -> Natural value in map) { 
-    log.info("" key " = " value ""); 
+            <programlisting>for (String word -> Natural freq in wordFrequencyMap) { 
+    log.info("frequency of " word " is " freq ""); 
 }</programlisting>
             
             <programlisting>for (Person p in people) {
