@@ -2573,15 +2573,11 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         <itemizedlist>
             <listitem>
                 <para>the extended type may have a member type with the same name as a member 
-                type of the introduced type,</para>
+                type of the introduced type, or</para>
             </listitem>
             <listitem>
-                <para>the extended type may have an attribute with the same name as an attribute
-                of the introduced type, or</para>
-            </listitem>
-            <listitem>
-                <para>the extended type may have a method with the same name and parameter types 
-                as a method of the introduced type.</para>
+                <para>the extended type may have an attribute or method with the same name as an 
+                attribute or method of the introduced type.</para>
             </listitem>
         </itemizedlist>
         
