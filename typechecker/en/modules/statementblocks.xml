@@ -45,7 +45,7 @@
         
         <programlisting>x := 1;</programlisting>
         <programlisting>x++;</programlisting>
-        <programlisting>log.info("Hello);</programlisting>
+        <programlisting>log.info("Hello");</programlisting>
         <programlisting>Main(p);</programlisting>
         
         <comment><para>TODO: it would be possible to say that any expression is a valid
