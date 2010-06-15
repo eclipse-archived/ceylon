@@ -1170,20 +1170,27 @@ class Customer(Name name, optional Organization org = null)
         this case: a closed instance list with no parameters?</para></comment>
 
         <programlisting>public class DayOfWeek(String name) {
+        
     doc "Sunday"
-        case sun("Sunday"),
+    case sun("Sunday"),
+    
     doc "Monday" 
-        case mon("Monday"), 
+    case mon("Monday"),
+    
     doc "Tuesday"
-        case tues("Tuesday"),
+    case tues("Tuesday"),
+    
     doc "Wednesday"
-        case wed("Wednesday"),
+    case wed("Wednesday"),
+    
     doc "Thursday"
-        case thurs("Thursday"),
+    case thurs("Thursday"),
+    
     doc "Friday"
-        case fri("Friday"),
+    case fri("Friday"),
+    
     doc "Saturday"
-        case sat("Saturday");
+    case sat("Saturday");
        
     public String name = name;
     
@@ -2216,7 +2223,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         and <literal>Float</literal> are assumed to represent 64-bit values.</para>
         
         <para>The annotation names in this section are treated as keywords by 
-        the Celon compiler. This is a performance optimization to minimize 
+        the Ceylon compiler. This is a performance optimization to minimize 
         the need for lookahead in the parser.</para>
         
         <comment><para>TODO: Should we require an <literal>abstract</literal>
@@ -2358,7 +2365,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     
     doc "A program element local to the
          block in which it is defined."
-    case local; 
+    case block; 
     
 }</programlisting>
     
@@ -2651,11 +2658,11 @@ Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
     return from (String author in authors) select Author(author)
 }</programlisting>
     
-        <programlisting>public RelatedElement see(ProgramElement pe, String description=null) {
+        <programlisting>public RelatedElement see(ProgramElement pe, optional String description=null) {
     return Related(pe, description)
 }</programlisting>
     
-        <programlisting>public ThrownException see(Type type&lt;Exception&gt;, String description=null) {
+        <programlisting>public ThrownException see(Type type&lt;Exception&gt;, optional String description=null) {
     return Related(type, description)
 }</programlisting>
         
