@@ -1340,7 +1340,7 @@ class Customer(Name name, optional Organization org = null)
                     type,</para>
                 </listitem>
                 <listitem>
-                    <para>must have different formal parameter types,</para>
+                    <para>must have distinct formal parameter types,</para>
                 </listitem>
                 <listitem>
                     <para>may not declare default parameters, and</para>
@@ -1650,7 +1650,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>must have different formal parameter types, and</para>
+                    <para>must have distinct formal parameter types, and</para>
                 </listitem>
                 <listitem>
                     <para>may not declare default parameters.</para>
