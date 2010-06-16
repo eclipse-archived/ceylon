@@ -742,8 +742,8 @@ local comp = order(1,-1);</programlisting>
             <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y );</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
             
-            <programlisting>HashCode.calculate(default, firstName, initial, lastName)</programlisting>
-            <programlisting>HashCode.calculate { algorithm=default; firstName, initial, lastName }</programlisting>
+            <programlisting>hash(default, firstName, initial, lastName)</programlisting>
+            <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
             
             <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
             <programlisting>iterate (map) perform (String name->Object value) { log.info("Entry: " name "->" value ""); };</programlisting>
@@ -1381,7 +1381,8 @@ except (SomethingElseWrong sew) {
         <section id="enumeration">
             <title>Enumeration</title>
             
-            <para>A sequence may be instantiated by enumerating the elements:</para>
+            <para>A sequence may be instantiated by enumerating the elements inside
+            braces:</para>
             
             <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
                         
