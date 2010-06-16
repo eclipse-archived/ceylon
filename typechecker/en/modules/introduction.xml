@@ -271,6 +271,92 @@ class Hello(optional String name, OutputStream out) {
         method instantiates this class, and calls the <literal>say()</literal>
         method it inherits from its superclass.</para>
 
+        <para>The definition of the attribute <literal>greeting</literal> works
+        well enough, but it's quite procedural, with two <literal>return</literal>
+        statements. That's not usually considered good style in Ceylon, though
+        there are certainly times when it's necessary. Instead, Ceylon lets you
+        write code like this using a more functional style. In procedural
+        programming we usually pass a list of values to a method, which performs 
+        computations using those values, and returns another value. In functional
+        programming, we can pass an operation to a method, which calls our
+        operation, and returns a value, or, perhaps, a different operation.</para>
+        
+        <para>For example, the Ceylon standard librares define a method called
+        <literal>ifExists()</literal> that accepts an object and two 
+        <emphasis>method references</emphasis>. (A method parameter that accepts 
+        a method reference is called a <emphasis>functional parameter</emphasis>.)
+        If the object is not null, <literal>ifExists()</literal> invokes the first
+        method. Otherwise, <literal>ifExists()</literal> invokes the second method.
+        We can use <literal>ifExists()</literal> to rewrite 
+        <literal>greeting</literal>:</para>
+
+<programlisting><![CDATA[    doc "The greeting"
+    String greeting {
+        return ifExists(name, helloName, helloWorld)
+    }
+    
+    String helloName() {
+        return "Hello, " name "!"
+    }
+    
+    String helloWorld() {
+        return "Hello, World!"
+    }]]></programlisting>
+
+        <para>Well, that's certainly more functional, but it's also a lot more
+        verbose. But this is not the way <literal>ifExists()</literal> is really
+        intended to be used. Ceylon provides a special method argument syntax
+        for defining a method that is passed to another method, inline, as part
+        of the invocation. An inline method definition is called a
+        <emphasis>functional argument</emphasis>. Functional arguments follow
+        the normal parenthesized argument list.</para>
+        
+        <para>Using functional arguments, we could write <literal>greeting</literal> 
+        as follows, to make it really clear that we are defining methods that are 
+        passed as arguments to the functional parameters <literal>then</literal> 
+        and <literal>otherwise</literal>.</para>
+
+<programlisting><![CDATA[    doc "The greeting"
+    String greeting {
+        return ifExists(name)
+            //inline definition of the first
+            //functional argument
+            then () {
+                return "Hello, " name "!"
+            }
+            //inline definition of the second
+            //functional argument
+            otherwise () {
+                return "Hello, World!"
+            }
+    }]]></programlisting>
+
+        <para>Usually, however, we would abbreviate the above code by:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>eliminating the empty formal parameter lists, and</para>
+            </listitem>
+            <listitem>
+                <para>specifying the method return values in parentheses, 
+                instead of writing <literal>return</literal> statements
+                surrounded by braces.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The abbreviated code looks like this:</para>
+
+<programlisting><![CDATA[    doc "The greeting"
+    String greeting {
+        return ifExists(name) 
+            then ("Hello, " name "!")
+            otherwise ("Hello, World!")
+    }]]></programlisting>
+    
+        <para>This syntax was chosen to make it possible to define new
+        control structures that closely mimic the syntactic form of the
+        traditional C-style built-in control structures.</para>
+
         <para>Finally, lets rewrite the program as a web page:</para>
 
         <programlisting><![CDATA[import html.*;
