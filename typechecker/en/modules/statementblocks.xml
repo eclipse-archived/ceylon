@@ -182,7 +182,15 @@ else {
             <comment><para>TODO: Note that Java does not let you define an interface inside
             a method, so we should either add the same restriction, or figure out workaround.
             Note that Java doesn't let you define a method inside a method either, but we can
-            wrap the nested method in an anonymous class.</para></comment>
+            wrap the nested method in an anonymous class. Note that Java has a funny semantic
+            for a class nested inside an interface nexte</para></comment>
+            
+            <comment><para>TODO: Note that Java has a funny semantic for a class nested inside 
+            an interface nested inside another class. All nested classes of interfaces are 
+            considered static inner classes, so this class does not have access to the members
+            of the containing class (unintuitively). We need to figure out how to treat this 
+            case. Also consider the related case of a class nested inside an interface nested
+            inside a method.</para></comment>
             
         </section>
         
