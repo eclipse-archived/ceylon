@@ -109,9 +109,9 @@ Body?</programlisting>
         
         <programlisting>TypeSpec := QualifiedTypeName ("alias" TypeName)?</programlisting>
         <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
-        <programlisting>InstanceSpec := TypeName "." MemberName ("alias" MemberName)?</programlisting>
+        <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
         <programlisting>PackageMembersSpec := "*"</programlisting>
-        <programlisting>TypeMembersSpec := TypeName "." "*"</programlisting>
+        <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
         
         <para>The optional <literal>alias</literal> clause allows resolution of 
         cross-namespace declaration name collisions.</para>
@@ -123,6 +123,8 @@ Body?</programlisting>
         <programlisting>import java.util.Map.Entry alias MapEntry;</programlisting>
         
         <programlisting>import my.math.fibonnacciNumber alias fib;</programlisting>
+        
+        <programlisting>import my.query.Order.descending alias desc;</programlisting>
         
         <para>Code in one compilation unit may refer to a toplevel declaration in another 
         compilation unit in the same package without explicitly importing the declaration. 
@@ -1183,10 +1185,19 @@ class Customer(Name name, optional Organization org = null)
             </listitem>
         </itemizedlist>
         
-        <para>A class annotated <literal>abstract</literal> may not specify enumerated named
-        instances.</para>
+        <para>A class may not specify enumerated named instances if it:</para>
         
-        <para>A class with type parameters may not specify enumerated named instances.</para>
+        <itemizedlist>
+            <listitem>
+                <para>is annotated <literal>abstract</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>has generic type parameters, or</para>
+            </listitem>
+            <listitem>
+                <para>is a member class nested inside another class.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>public class DayOfWeek() {
     case sun,
