@@ -1195,7 +1195,8 @@ class Customer(Name name, optional Organization org = null)
                 <para>has generic type parameters, or</para>
             </listitem>
             <listitem>
-                <para>is a member class nested inside another class.</para>
+                <para>is a member class nested directly or indirectly inside another 
+                class.</para>
             </listitem>
         </itemizedlist>
         
@@ -1209,8 +1210,8 @@ class Customer(Name name, optional Organization org = null)
     case sat; 
 }</programlisting>
 
-        <comment><para>TODO: Should we make the parens on the class declaration optional in
-        this case: a closed instance list with no parameters?</para></comment>
+        <comment><para>TODO: Should we make the parens on the class declaration optional 
+        in this case: a closed instance list with no parameters?</para></comment>
 
         <programlisting>public class DayOfWeek(String name) {
         
