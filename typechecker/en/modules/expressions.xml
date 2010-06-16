@@ -605,6 +605,9 @@ sort(names, reverseAlpha);</programlisting>
         <comment><para>TODO: could we make method references contravariant in the parameter
         types? If so, we should use the same rule for overriding.</para></comment>
         
+        <comment><para>TODO: does a method with a defaulted parameter conform to a method 
+        signature without that parameter?</para></comment>
+        
         </section>
         
         <section>
