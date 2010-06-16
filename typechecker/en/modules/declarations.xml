@@ -1195,8 +1195,8 @@ class Customer(Name name, optional Organization org = null)
                 <para>has generic type parameters, or</para>
             </listitem>
             <listitem>
-                <para>is a member class nested directly or indirectly inside another 
-                class.</para>
+                <para>is nested directly or indirectly inside another class or inside a 
+                block.</para>
             </listitem>
         </itemizedlist>
         
