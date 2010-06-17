@@ -279,7 +279,8 @@ Description doc(String description) {
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
         
-        <programlisting>Stack&lt;Variable&gt;.Entry</programlisting>
+        <programlisting>Entry&lt;String,Person&gt;</programlisting>
+        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
         
         <para>A type argument must be specified for every type parameter. If the type has
         type parameters, an argument list must be specified. If the type has no type 
