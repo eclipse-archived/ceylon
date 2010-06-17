@@ -34,11 +34,11 @@ class Generics() {
         accept(xx);
     }
         
-    interface TypeWithSubtypeParameter<X>
+    /*interface TypeWithSubtypeParameter<X>
             where X = subtype {
         X add(X x);
         X multiply(X x);
-    }
+    }*/
         
     class TypeWithConstructableParameter<X>(String s, Natural n)
             where X(String s, Natural n) {
