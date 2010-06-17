@@ -2255,6 +2255,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
         </itemizedlist>
         
+        <comment><para>TODO: should it be called <literal>overrides</literal>?</para></comment>
+        
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
         
@@ -2587,22 +2589,30 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         
         <itemizedlist>
             <listitem>
-                <para>the extended type may have a member type with the same name as a member 
-                type of the introduced type, or</para>
+                <para>the introduced type may have a member type with the same name and signature 
+                as a member type of the extended type, or of some other introduced type,</para>
             </listitem>
             <listitem>
-                <para>the extended type may have an attribute or method with the same name as an 
-                attribute or method of the introduced type.</para>
+                <para>the introduced type may have a method with the same name and signature as a 
+                method of the extended type, or of some other introduced type,</para>
+            </listitem>
+            <listitem>
+                <para>the introduced type may have an attribute with the same name as an attribute 
+                or method of the extended type, or of some other introduced type,</para>
+            </listitem>
+            <listitem>
+                <para>the introduced type may have a method with the same name as an attribute of 
+                the extended type, or of some other introduced type.</para>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: What about ambiguities with multiple introduced types?</para></comment>
+        <para>In this case, the member type, method or attribute may not be called. Any invocation
+        or evaluation of the member results in a compiler error.</para>
         
-        <para>In this case, the attribute or method of the extended type is considered to override
-        the method of the introduced type.</para>
-        
-        <comment><para>TODO: Or should we say the opposite?! What about using the <literal>override</literal>
-        annotation to decide?</para></comment>
+        <comment><para>TODO: We should allow an introduced type to specify 
+        <literal>override #ExtendedType.member</literal> or 
+        <literal>override #OtherIntroducedType.member</literal> to resolve an ambiguity like 
+        this.</para></comment>
         
         <para>When an invocation of an introduced method or evaluation of an introduced attribute 
         is executed, or when an instance of the extended type is assigned to a program element
@@ -2698,19 +2708,19 @@ Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
         <para>These annotations are defined by the package <literal>doc</literal>:</para>
         
         <programlisting>public Description doc(String description) {
-    return Description(description)
+    return Description(description.normalize())
 }</programlisting>
     
         <programlisting>public Sequence&lt;Author&gt; by(String... authors) {
-    return from (String author in authors) select Author(author)
+    return from (String author in authors) select Author(author.normalize())
 }</programlisting>
     
         <programlisting>public RelatedElement see(ProgramElement pe, optional String description=null) {
-    return Related(pe, description)
+    return Related(pe, description.normalize())
 }</programlisting>
     
         <programlisting>public ThrownException see(Type type&lt;Exception&gt;, optional String description=null) {
-    return Related(type, description)
+    return Related(type, description.normalize())
 }</programlisting>
         
         <comment><para>TODO: should <literal>see</literal> and <literal>throws</literal>
