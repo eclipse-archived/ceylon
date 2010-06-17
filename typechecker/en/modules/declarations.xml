@@ -1669,6 +1669,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>A class may not not declare of inherit a method with the same name as
+            an attribute it declares or inherits.</para>
+            
             <para>Like Java, Ceylon resolves overloaded methods at compile time.</para>
         
         </section>
