@@ -1062,6 +1062,9 @@ ClassBody</programlisting>
         declaration is relaxed. The declarations in this section may not contain specifiers
         or initializers (<literal>=</literal> or <literal>:=</literal>).</para>
         
+        <para>Superclass members may be invoked, evaluated or assigned anywhere inside the body of
+        the class. The superclass initializer is executed before the subclass initializer.</para>
+        
         <comment><para>TODO: should class initialization parameters be allowed to be declared 
         <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 
         like in Scala?</para></comment>
