@@ -169,7 +169,7 @@
     </para>
     
     <section>
-        <title>A simple example</title>
+        <title>Getting started</title>
         
         <para>
         Here's a classic example, implemented in Ceylon:
@@ -194,7 +194,10 @@ public void hello(Process process) {
         
         <para>
         This improved version of the program takes a name as input from the 
-        console:
+        command line. We have to account for the case where nothing was
+        specified at the command line, which gives us an opportunity to
+        explore how null values are treated in Ceylon, which is quite 
+        different to what you're probably used to in Java or C#.
         </para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
@@ -214,34 +217,142 @@ public void hello(Process process) {
         The <literal>Process</literal> class has an attribute named 
         <literal>args</literal>, which holds a <literal>List</literal> of the 
         program's command line arguments. The local <literal>name</literal> is 
-        initialized from these arguments. This local is annotated 
-        <literal>optional</literal> to indicate that it may contain a null
-        value. The <literal>if (exists ...)</literal> control structure is
-        used to initialize the value of the non-<literal>optional</literal> 
+        initialized with the first of these arguments, if any. This local is 
+        annotated <literal>optional</literal> to indicate that it may contain 
+        a null value. The <literal>if (exists ...)</literal> control structure 
+        is used to initialize the value of the non-<literal>optional</literal> 
         local named <literal>greeting</literal>, interpolating the value of 
         <literal>name</literal> into the message string whenever 
         <literal>name</literal> is not null. Finally, the message is printed
         to the console.
         </para>
-
+        
+        <para>Unlike Java, locals, parameters, and attributes that may contain 
+        null values must be explicitly declared using the <literal>optional</literal>
+        annotation. There's simply no way to assign <literal>null</literal> to
+        a local that isn't annotated <literal>optional</literal>. The compiler
+        won't let you.</para>
+        
         <para>
-        The method now has too many responsibilities. Let's refactor the code:
+        Nor will the Ceylon compiler let you do anything "dangerous" with a 
+        value declared <literal>optional</literal>&mdash;that is, anything that 
+        could cause a <literal>NullPointerException</literal> in 
+        Java&mdash;without first checking that the value is not null using 
+        <literal>if (exists ... )</literal>.
         </para>
         
-        <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello(Process process) {
-    Hello(process).say();
-}
+        </section>
+        
+        <section>
+            <title>Using objects</title>
 
-doc "A command line greeting"
-class Hello(Process process) 
-    extends Hello(process.args.first, process) {}
+        <para>
+        Our method now has too many responsibilities, and is not at all reusable. 
+        Let's refactor the code. Ceylon is an object oriented language, so we 
+        usually write most of our code in <emphasis>classes</emphasis>. A class
+        is a type that packages:
+        </para>
+        
+        <itemizedlist>
+            <listitem><para>operations&mdash;called <emphasis>methods</emphasis>,</para></listitem>
+            <listitem><para>state&mdash;held by <emphasis>attributes</emphasis>, and,</para></listitem>
+            <listitem><para>sometimes, other nested types.</para></listitem>
+        </itemizedlist>
+          
+        <para>
+        A Ceylon attribute is a bit different to a Java field&mdash;it's more like 
+        a getter method, or, sometimes, like a getter and setter method pair. In
+        Ceylon, you don't need to go around declaring all your attributes 
+        <literal>private</literal> and wrapping them in getter and setter methods.
+        Get out of that habit right now!
+        </para>
+        
+        <para>
+        Types (interfaces, classes, and aliases) have names that begin with uppercase 
+        letters. Members (methods and attributes) and locals have names that begin with 
+        lowercase letters. This is the rule you're used to from Java (it's different to, 
+        and much prettier than, the naming conventions in C#). Unlike Java, the Ceylon 
+        compiler enforces these rules. If you try to write <literal>class hello</literal>
+        or <literal>String Name</literal>, you'll get a compilation error.
+        </para>
+        
+        <para>
+        Just like in Java or C#, a class defines the accessibility of its members 
+        using <emphasis>visibility modifier annotations</emphasis>, allowing the 
+        class to hide its internal implementation from clients. Unlike Java, members 
+        are hidden from code outside the body of the class <emphasis>by 
+        default</emphasis>&mdash;only members with explicit visibility modifiers are
+        visible to other toplevel types or methods, other compilation units, other 
+        packages, or other modules.
+        </para>
+        
+        <para>Our first version of the <literal>Hello</literal> class has a
+        single attribute and a single method, both declared to have 
+        <literal>package</literal> visibility, making them accessible to other
+        code in the same package:</para>
+        
+        <programlisting><![CDATA[doc "A personalized greeting"
+class Hello(optional String name, OutputStream out) {
+    
+    package String greeting;
+    if (exists name) {
+        greeting = "Hello, " name "!";
+    }
+    else {
+        greeting = "Hello, World!";
+    }
+    
+    doc "Print the greeting"
+    package void say() { 
+        out.writeLine(greeting); 
+    }
+    
+}]]></programlisting>
 
-doc "A personalized greeting"
+        <para>The attribute <literal>greeting</literal> is a <emphasis>simple 
+        attribute</emphasis>, very similar to a Java field. Its value is
+        initialized immediately after it is declared.</para>
+        
+        <para>In Ceylon, classes don't have constructors. Instead:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the parameters needed to instantiate the class&mdash;the 
+                <emphasis>initialization parameters</emphasis>&mdash;are declared 
+                directly after the name of the class, and</para>
+            </listitem>
+            <listitem>
+                <para>code to initialize the new instance  of the class&mdash;the 
+                <emphasis>class initializer</emphasis>&mdash;goes directly in the 
+                body of the class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>You might wonder why we're allowed to use the parameter 
+        <literal>out</literal> inside the body of the method 
+        <literal>say()</literal>. Doesn't the parameter go out of scope 
+        as soon as the initializer terminates? Well, that's true, but 
+        Ceylon is a language with a very strict block structure, and the 
+        scope of declarations is governed by that block structure. In this 
+        case, the scope of <literal>out</literal> is the whole body of the 
+        class, and the definition of <literal>say()</literal> sits inside 
+        that scope, so <literal>say()</literal> is permitted to access 
+        <literal>out</literal>. We've just met our first example of 
+        <emphasis>closure</emphasis>, a concept from functional programming. 
+        We say that method and attribute definitions receive a closure of 
+        immutable values defined in the class body to which they belong.
+        That's just a fancy way of obfuscating the idea that 
+        <literal>say()</literal> holds onto the value of <literal>out</literal>, 
+        even after the initializer completes.</para>
+
+        <para>We could rewrite the attribute <literal>greeting</literal>
+        as a <emphasis>getter</emphasis>:</para>
+
+        <programlisting><![CDATA[doc "A personalized greeting"
 class Hello(optional String name, OutputStream out) {
     
     doc "The greeting"
-    String greeting {
+    package String greeting {
         if (exists name) {
             return "Hello, " name "!"
         }
@@ -251,27 +362,70 @@ class Hello(optional String name, OutputStream out) {
     }
     
     doc "Print the greeting"
-    private void say() { 
+    package void say() { 
         out.writeLine(greeting); 
     }
     
 }]]></programlisting>
 
-        <para>Here we have two classes named <literal>Hello</literal>. The
-        class name is said to be <emphasis>overloaded</emphasis>. One class 
-        has two parameters, a string <literal>name</literal>, and an 
-        <literal>OutputStream</literal>, that must both be supplied when the 
-        class is instantiated. It defines an an attribute, 
-        <literal>greeting</literal>, that evaluates to the message, and a 
-        method, <literal>say()</literal>, that prints the message. The method 
-        <literal>say()</literal> is annotated <literal>private</literal>,
-        which makes it accessible to other code in the same compilation unit. 
-        The second class extends the first class, and defines just one parameter,
-        of type <literal>Process</literal>. The <literal>hello()</literal>
-        method instantiates this class, and calls the <literal>say()</literal>
-        method it inherits from its superclass.</para>
+        <para>Notice that we're using the parameter <literal>name</literal> inside the
+        definition of <literal>greeting</literal>. That's closure at work again.</para>
+        
+        <para>Oops, I forgot to show you the code that uses <literal>Hello</literal>!</para>
+        
+        <programlisting><![CDATA[doc "Print a personalized greeting"
+public void hello(Process process) {
+    Hello(process.args.first, process).say();
+}]]></programlisting>
+        
+        <para>Our rewritten <literal>hello()</literal> method just creates a new instance
+        of <literal>Hello</literal>, and invokes <literal>say()</literal>. Ceylon doesn't 
+        need a <literal>new</literal> keyword to know when you're instantiating a class. 
+        No, we don't know why Java needs it. You'll have to ask James.</para>
+        
+        <para>I suppose you're worried that if Ceylon classes don't have constructors,
+        then they also can't have multiple constructors. Does that mean we can't overload
+        the initialization parameter list of a class? Well, not exactly. Ceylon doesn't
+        have constructor overloading, but it does have <emphasis>class overloading</emphasis>.
+        Believe it or not, Ceylon lets you write multiple classes with the same name! Let's
+        overload <literal>Hello</literal>:</para>
+        
+        <programlisting><![CDATA[doc "A command line greeting"
+class Hello(Process process) 
+    extends Hello(process.args.first, process) {}]]></programlisting>
+    
+        <para>A class can overload second class by extending it and declaring different
+        initialization parameters. In this case, the original class has two parameters, 
+        a string <literal>name</literal>, and an <literal>OutputStream</literal>. The 
+        second class extends the first class, and defines just one parameter, of type 
+        <literal>Process</literal>.</para>
+        
+        <para>Our <literal>hello()</literal> method is now looking <emphasis>really</emphasis>
+        simple:</para>
+        
+        <programlisting><![CDATA[doc "Print a personalized greeting"
+public void hello(Process process) {
+    Hello(process).say();
+}]]></programlisting>
+        
+        </section>
+        
+        <section>
+            <title>Taking advantage of functional-style programming</title>
+        
+        <para>Let's go back to the attribute <literal>greeting</literal> of
+        <literal>Hello</literal>:</para>
+        
+        <programlisting><![CDATA[package String greeting {
+    if (exists name) {
+        return "Hello, " name "!"
+    }
+    else {
+        return "Hello, World!"
+    }
+}]]></programlisting>
 
-        <para>The definition of the attribute <literal>greeting</literal> works
+        <para>This definition of  works
         well enough, but it's quite procedural, with two <literal>return</literal>
         statements. That's not usually considered good style in Ceylon, though
         there are certainly times when it's necessary. Instead, Ceylon lets you
@@ -290,18 +444,17 @@ class Hello(optional String name, OutputStream out) {
         We can use <literal>ifExists()</literal> to rewrite 
         <literal>greeting</literal>:</para>
 
-<programlisting><![CDATA[    doc "The greeting"
-    String greeting {
-        return ifExists(name, helloName, helloWorld)
-    }
-    
-    String helloName() {
-        return "Hello, " name "!"
-    }
-    
-    String helloWorld() {
-        return "Hello, World!"
-    }]]></programlisting>
+<programlisting><![CDATA[String greeting {
+    return ifExists(name, helloName, helloWorld)
+}
+
+String helloName() {
+    return "Hello, " name "!"
+}
+
+String helloWorld() {
+    return "Hello, World!"
+}]]></programlisting>
 
         <para>Well, that's certainly more functional, but it's also a lot more
         verbose. But this is not the way <literal>ifExists()</literal> is really
@@ -316,46 +469,60 @@ class Hello(optional String name, OutputStream out) {
         passed as arguments to the functional parameters <literal>then</literal> 
         and <literal>otherwise</literal>.</para>
 
-<programlisting><![CDATA[    doc "The greeting"
-    String greeting {
-        return ifExists(name)
-            //inline definition of the first
-            //functional argument
-            then () {
-                return "Hello, " name "!"
-            }
-            //inline definition of the second
-            //functional argument
-            otherwise () {
-                return "Hello, World!"
-            }
-    }]]></programlisting>
+<programlisting><![CDATA[String greeting {
+    return ifExists(name)
+        //inline definition of the first
+        //functional argument
+        then () {
+            return "Hello, " name "!"
+        }
+        //inline definition of the second
+        //functional argument
+        otherwise () {
+            return "Hello, World!"
+        }
+}]]></programlisting>
 
         <para>Usually, however, we would abbreviate the above code by:</para>
         
         <itemizedlist>
             <listitem>
-                <para>eliminating the empty formal parameter lists, and</para>
+                <para>eliminating the empty formal parameter lists&mdash;we 
+                can leave off the <literal>()</literal>, and</para>
             </listitem>
             <listitem>
                 <para>specifying the method return values in parentheses, 
                 instead of writing <literal>return</literal> statements
-                surrounded by braces.</para>
+                surrounded by braces&mdash;we can write
+                <literal>("Hello, World!")</literal> instead of 
+                <literal>{ return "Hello, World!" }</literal>.</para>
             </listitem>
         </itemizedlist>
         
         <para>The abbreviated code looks like this:</para>
 
-<programlisting><![CDATA[    doc "The greeting"
-    String greeting {
-        return ifExists(name) 
-            then ("Hello, " name "!")
-            otherwise ("Hello, World!")
-    }]]></programlisting>
+<programlisting><![CDATA[String greeting {
+    return ifExists(name) 
+        then ("Hello, " name "!")
+        otherwise ("Hello, World!")
+}]]></programlisting>
     
         <para>This syntax was chosen to make it possible to define new
         control structures that closely mimic the syntactic form of the
         traditional C-style built-in control structures.</para>
+        
+        <para>By the way, there's an even easier way to define 
+        <literal>greeting</literal>, using the <literal>?</literal>
+        operator.</para>
+        
+<programlisting><![CDATA[String greeting {
+    return "Hello, " (name ? "World") "!"
+}]]></programlisting>
+    
+        </section>
+        
+        <section>
+            <title>Defining user interfaces declaratively</title>
 
         <para>Finally, lets rewrite the program as a web page:</para>
 
@@ -370,12 +537,7 @@ class Hello(Request request)
     
     doc "The greeting"
     String greeting {
-        if (exists name) {
-            return "Hello, " name "!"
-        }
-        else {
-            return "Hello, World!"
-        }
+        return "Hello, " (name ? "World") "!"
     }
     
     head = Head { title="Hello World"; };
