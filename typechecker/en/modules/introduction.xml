@@ -444,7 +444,7 @@ public void hello(Process process) {
         We can use <literal>ifExists()</literal> to rewrite 
         <literal>greeting</literal>:</para>
 
-<programlisting><![CDATA[String greeting {
+<programlisting><![CDATA[package String greeting {
     return ifExists(name, helloName, helloWorld)
 }
 
@@ -469,7 +469,7 @@ String helloWorld() {
         passed as arguments to the functional parameters <literal>then</literal> 
         and <literal>otherwise</literal>.</para>
 
-<programlisting><![CDATA[String greeting {
+<programlisting><![CDATA[package String greeting {
     return ifExists(name)
         //inline definition of the first
         //functional argument
@@ -501,7 +501,7 @@ String helloWorld() {
         
         <para>The abbreviated code looks like this:</para>
 
-<programlisting><![CDATA[String greeting {
+<programlisting><![CDATA[package String greeting {
     return ifExists(name) 
         then ("Hello, " name "!")
         otherwise ("Hello, World!")
@@ -515,7 +515,7 @@ String helloWorld() {
         <literal>greeting</literal>, using the <literal>?</literal>
         operator.</para>
         
-<programlisting><![CDATA[String greeting {
+<programlisting><![CDATA[package String greeting {
     return "Hello, " (name ? "World") "!"
 }]]></programlisting>
     
@@ -534,11 +534,7 @@ class Hello(Request request)
         extends Html(request) {
 
     optional String name = request.parameters["name"];
-    
-    doc "The greeting"
-    String greeting {
-        return "Hello, " (name ? "World") "!"
-    }
+    String greeting = "Hello, " (name ? "World") "!";
     
     head = Head { title="Hello World"; };
     
