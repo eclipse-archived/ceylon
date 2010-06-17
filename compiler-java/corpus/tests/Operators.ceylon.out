@@ -1,394 +1,493 @@
 # Operators.ceylon
 
-(TYPE_DECL 
-  (CLASS_DECL 
-    (TYPE_NAME Operators) 
-    (STMT_LIST 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Natural))) 
-        (MEMBER_NAME sum) 
-        (EXPR 
-          (+ 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Integer))) 
-        (MEMBER_NAME difference) 
-        (EXPR 
-          (- 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Natural))) 
-        (MEMBER_NAME product) 
-        (EXPR 
-          (* 
-            (INT_CST 2) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Natural))) 
-        (MEMBER_NAME power) 
-        (EXPR 
-          (** 
-            (INT_CST 2) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Natural))) 
-        (MEMBER_NAME quotient) 
-        (EXPR 
-          (/ 
-            (INT_CST 2) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Natural))) 
-        (MEMBER_NAME remainder) 
-        (EXPR 
-          (% 
-            (INT_CST 3) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Entry) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME String)) 
-                (TYPE 
-                  (TYPE_NAME String)))))) 
-        (MEMBER_NAME name) 
-        (EXPR 
-          (-> 
-            (STRING_CST "Gavin") 
-            (STRING_CST "King")))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Range) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME Natural)))))) 
-        (MEMBER_NAME range) 
-        (EXPR 
-          (.. 
-            (INT_CST 1) 
-            (INT_CST 5)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME String))) 
-        (MEMBER_NAME default) 
-        (EXPR 
-          (? null 
-            (STRING_CST "Hello")))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME nullExists) 
-        (EXPR null)) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME noneNonempty) 
-        (EXPR none)) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME not) 
-        (EXPR 
-          (! 
-            (MEMBER_NAME true)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME or) 
-        (EXPR 
-          (|| 
-            (MEMBER_NAME true) 
-            (MEMBER_NAME false)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME and) 
-        (EXPR 
-          (&& 
-            (MEMBER_NAME or) 
-            (MEMBER_NAME not)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME implies) 
-        (EXPR 
-          (=> 
-            (MEMBER_NAME or) 
-            (MEMBER_NAME and)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME equal) 
-        (EXPR 
-          (== 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME notEqual) 
-        (EXPR 
-          (!= 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME smaller) 
-        (EXPR 
-          (< 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME larger) 
-        (EXPR 
-          (> 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME smallAs) 
-        (EXPR 
-          (<= 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME largeAs) 
-        (EXPR 
-          (>= 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Comparison))) 
-        (MEMBER_NAME compare) 
-        (EXPR 
-          (<=> 
-            (INT_CST 1) 
-            (INT_CST 2)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME complement) 
-        (EXPR 
-          (PREFIX_EXPR ~ 
-            (MEMBER_NAME true)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME bitwiseOr) 
-        (EXPR 
-          (| 
-            (MEMBER_NAME true) 
-            (MEMBER_NAME false)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME bitwiseAnd) 
-        (EXPR 
-          (& 
-            (MEMBER_NAME true) 
-            (MEMBER_NAME true)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME exclusiveOr) 
-        (EXPR 
-          (^ 
-            (MEMBER_NAME true) 
-            (MEMBER_NAME false)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME instanceOf) 
-        (EXPR 
-          (is 
-            (INT_CST 1) 
-            (TYPE_NAME Natural)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME containedIn) 
-        (EXPR 
-          (in 
-            (INT_CST 3) 
-            (MEMBER_NAME range)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME Boolean))) 
-        (MEMBER_NAME identical) 
-        (EXPR 
-          (=== 
-            (INT_CST 3) 
-            (MEMBER_NAME sum)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME String))) 
-        (MEMBER_NAME render) 
-        (EXPR 
-          (PREFIX_EXPR $ 
-            (INT_CST 123)))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME String))) 
-        (MEMBER_NAME join) 
-        (EXPR 
-          (+ 
-            (+ 
-              (STRING_CST "Gavin") 
-              (STRING_CST " ")) 
-            (STRING_CST "King")))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME List) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME String)))))) 
-        (MEMBER_NAME list) 
-        (EXPR 
-          (ENUM_LIST 
-            (EXPR 
-              (STRING_CST "Gavin")) 
-            (EXPR 
-              (STRING_CST "Andrew")) 
-            (EXPR 
-              (STRING_CST "Emmanuel"))))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME List) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME String)))))) 
-        (MEMBER_NAME nullList) 
-        (EXPR null) 
-        (ANNOTATION_LIST 
-          (DECL_MODIFIER optional))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME String))) 
-        (MEMBER_NAME element) 
-        (EXPR 
-          (EXPR 
-            (MEMBER_NAME list) 
-            (SUBSCRIPT_EXPR 
-              (LOWER_BOUND 
-                (INT_CST 1)))))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME String))) 
-        (MEMBER_NAME element) 
-        (EXPR 
-          (EXPR 
-            (MEMBER_NAME nullList) 
-            (SUBSCRIPT_EXPR ? 
-              (LOWER_BOUND 
-                (INT_CST 666))))) 
-        (ANNOTATION_LIST 
-          (DECL_MODIFIER optional))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME List) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME String)))))) 
-        (MEMBER_NAME elements) 
-        (EXPR 
-          (EXPR 
-            (MEMBER_NAME list) 
-            (SUBSCRIPT_EXPR 
-              (LOWER_BOUND 
-                (ENUM_LIST 
-                  (EXPR 
-                    (INT_CST 3)) 
-                  (EXPR 
-                    (INT_CST 2)) 
-                  (EXPR 
-                    (INT_CST 1)))))))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME List) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME String)))))) 
-        (MEMBER_NAME subrange) 
-        (EXPR 
-          (EXPR 
-            (MEMBER_NAME list) 
-            (SUBSCRIPT_EXPR 
-              (LOWER_BOUND 
-                (INT_CST 0)) 
-              (UPPER_BOUND 
-                (INT_CST 1)))))) 
-      (MEMBER_DECL 
-        (MEMBER_TYPE 
-          (TYPE 
-            (TYPE_NAME List) 
-            (TYPE_ARGS 
-              (TYPE_ARG_LIST 
-                (TYPE 
-                  (TYPE_NAME String)))))) 
-        (MEMBER_NAME upperRange) 
-        (EXPR 
-          (EXPR 
-            (MEMBER_NAME list) 
-            (SUBSCRIPT_EXPR 
-              (LOWER_BOUND 
-                (INT_CST 1)) 
-              (UPPER_BOUND ...))))))))
+(TYPE_DECL
+  (TYPE_DECL
+    (CLASS_DECL
+      (TYPE_NAME Operators)
+      (STMT_LIST
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Natural)))
+          (MEMBER_NAME sum)
+          (INIT_EXPR
+            (EXPR
+              (+
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Integer)))
+          (MEMBER_NAME difference)
+          (INIT_EXPR
+            (EXPR
+              (-
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Natural)))
+          (MEMBER_NAME product)
+          (INIT_EXPR
+            (EXPR
+              (*
+                (INT_CST 2)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Natural)))
+          (MEMBER_NAME power)
+          (INIT_EXPR
+            (EXPR
+              (**
+                (INT_CST 2)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Natural)))
+          (MEMBER_NAME quotient)
+          (INIT_EXPR
+            (EXPR
+              (/
+                (INT_CST 2)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Natural)))
+          (MEMBER_NAME remainder)
+          (INIT_EXPR
+            (EXPR
+              (%
+                (INT_CST 3)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Float)))
+          (MEMBER_NAME parenthesized)
+          (INIT_EXPR
+            (EXPR
+              (+
+                (/
+                  (EXPR
+                    (+
+                      (FLOAT_CST 1.0)
+                      (FLOAT_CST 2.0)))
+                  (FLOAT_CST 3.0))
+                (FLOAT_CST 0.5)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Entry)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String))
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME name)
+          (INIT_EXPR
+            (EXPR
+              (->
+                (STRING_CST "Gavin")
+                (STRING_CST "King")))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Range)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME Natural)))))
+          (MEMBER_NAME range)
+          (INIT_EXPR
+            (EXPR
+              (..
+                (INT_CST 1)
+                (INT_CST 5)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Range)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME Character)))))
+          (MEMBER_NAME charRange)
+          (INIT_EXPR
+            (EXPR
+              (..
+                (CHAR_CST @A)
+                (CHAR_CST @Z)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME String)))
+          (MEMBER_NAME defaulted)
+          (INIT_EXPR
+            (EXPR
+              (? null
+                (STRING_CST "Hello")))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME nullExists)
+          (INIT_EXPR
+            (EXPR null)))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME noneNonempty)
+          (INIT_EXPR
+            (EXPR none)))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME not)
+          (INIT_EXPR
+            (EXPR
+              (!
+                (MEMBER_NAME true)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME or)
+          (INIT_EXPR
+            (EXPR
+              (||
+                (MEMBER_NAME true)
+                (MEMBER_NAME false)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME and)
+          (INIT_EXPR
+            (EXPR
+              (&&
+                (MEMBER_NAME or)
+                (MEMBER_NAME not)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME implies)
+          (INIT_EXPR
+            (EXPR
+              (=>
+                (MEMBER_NAME or)
+                (MEMBER_NAME and)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME equal)
+          (INIT_EXPR
+            (EXPR
+              (==
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME notEqual)
+          (INIT_EXPR
+            (EXPR
+              (!=
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME smaller)
+          (INIT_EXPR
+            (EXPR
+              (<
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME larger)
+          (INIT_EXPR
+            (EXPR
+              (>
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME smallAs)
+          (INIT_EXPR
+            (EXPR
+              (<=
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME largeAs)
+          (INIT_EXPR
+            (EXPR
+              (>=
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Comparison)))
+          (MEMBER_NAME compare)
+          (INIT_EXPR
+            (EXPR
+              (<=>
+                (INT_CST 1)
+                (INT_CST 2)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME complement)
+          (INIT_EXPR
+            (EXPR
+              (PREFIX_EXPR ~
+                (MEMBER_NAME true)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME bitwiseOr)
+          (INIT_EXPR
+            (EXPR
+              (|
+                (MEMBER_NAME true)
+                (MEMBER_NAME false)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME bitwiseAnd)
+          (INIT_EXPR
+            (EXPR
+              (&
+                (MEMBER_NAME true)
+                (MEMBER_NAME true)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME exclusiveOr)
+          (INIT_EXPR
+            (EXPR
+              (^
+                (MEMBER_NAME true)
+                (MEMBER_NAME false)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME instanceOf)
+          (INIT_EXPR
+            (EXPR
+              (is
+                (INT_CST 1)
+                (TYPE_NAME Natural)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME containedIn)
+          (INIT_EXPR
+            (EXPR
+              (in
+                (INT_CST 3)
+                (MEMBER_NAME range)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Boolean)))
+          (MEMBER_NAME identical)
+          (INIT_EXPR
+            (EXPR
+              (===
+                (INT_CST 3)
+                (MEMBER_NAME sum)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME String)))
+          (MEMBER_NAME render)
+          (INIT_EXPR
+            (EXPR
+              (PREFIX_EXPR $
+                (INT_CST 123)))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME String)))
+          (MEMBER_NAME join)
+          (INIT_EXPR
+            (EXPR
+              (+
+                (+
+                  (STRING_CST "Gavin")
+                  (STRING_CST " "))
+                (STRING_CST "King")))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME List)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME list)
+          (INIT_EXPR
+            (EXPR
+              (ENUM_LIST
+                (EXPR_LIST
+                  (EXPR
+                    (STRING_CST "Gavin"))
+                  (EXPR
+                    (STRING_CST "Andrew"))
+                  (EXPR
+                    (STRING_CST "Emmanuel")))))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME List)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME nullList)
+          (INIT_EXPR
+            (EXPR null))
+          (ANNOTATION_LIST
+            (ANNOTATION optional)))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME String)))
+          (MEMBER_NAME element)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME list)
+                (SUBSCRIPT_EXPR
+                  (LOWER_BOUND
+                    (INT_CST 1)))))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME String)))
+          (MEMBER_NAME element)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME nullList)
+                (SUBSCRIPT_EXPR ?
+                  (LOWER_BOUND
+                    (INT_CST 666))))))
+          (ANNOTATION_LIST
+            (ANNOTATION optional)))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME List)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME elements)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME list)
+                (SUBSCRIPT_EXPR
+                  (LOWER_BOUND
+                    (ENUM_LIST
+                      (EXPR_LIST
+                        (EXPR
+                          (INT_CST 3))
+                        (EXPR
+                          (INT_CST 2))
+                        (EXPR
+                          (INT_CST 1))))))))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME List)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME subrange)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME list)
+                (SUBSCRIPT_EXPR
+                  (LOWER_BOUND
+                    (INT_CST 0))
+                  (UPPER_BOUND
+                    (INT_CST 1)))))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME List)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME upperRange)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME list)
+                (SUBSCRIPT_EXPR
+                  (LOWER_BOUND
+                    (INT_CST 1)))))))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME String)))
+          (MEMBER_NAME input)
+          (INIT_EXPR
+            (EXPR null))
+          (ANNOTATION_LIST
+            (ANNOTATION optional)))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Iterable)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME String)))))
+          (MEMBER_NAME tokens)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME input) ?.
+                (MEMBER_NAME tokens)
+                (CALL_EXPR ARG_LIST))))
+          (ANNOTATION_LIST
+            (ANNOTATION optional)))
+        (MEMBER_DECL
+          (MEMBER_TYPE
+            (TYPE
+              (TYPE_NAME Sequence)
+              (TYPE_ARG_LIST
+                (TYPE
+                  (TYPE_NAME Natural)))))
+          (MEMBER_NAME sizes)
+          (INIT_EXPR
+            (EXPR
+              (EXPR
+                (MEMBER_NAME tokens) *.
+                (MEMBER_NAME size)))))))))
