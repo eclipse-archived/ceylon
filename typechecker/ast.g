@@ -484,11 +484,6 @@ specifier
     -> ^(INIT_EXPR expression)
     ;
 
-literal
-    : nonstringLiteral
-    | stringExpression
-    ;
-
 nonstringLiteral
     : NATURALLITERAL
     -> ^(INT_CST NATURALLITERAL)
@@ -685,7 +680,8 @@ postfixOperator
     ;	
 
 base 
-    : literal
+    : nonstringLiteral
+    | stringExpression
     | parExpression
     | enumeration
     | specialValue
