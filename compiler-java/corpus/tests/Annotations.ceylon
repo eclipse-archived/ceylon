@@ -1,22 +1,22 @@
-class Annotations {
+class Annotations() {
 
-	class NoArguments {
+	class NoArguments() {
 
-		public deprecated final
+		public deprecated default
 		void methodAnnotations(deprecated Natural param=0) {}
 		
-		public deprecated final
+		public deprecated default
 		Natural attributeAnnotations = 1;
 		
-		package deprecated final
-		class ClassAnnotations {}
+		package deprecated abstract
+		class ClassAnnotations() {}
 		
 		module
 		interface InterfaceAnnotations {}
 		
 	}
 
-	class LiteralArguments {	
+	class LiteralArguments() {	
 
 		doc "The method doc"
 		by "Gavin King"
@@ -52,7 +52,7 @@ class Annotations {
 		version '2.1.0'
 		by "Gavin King"
 		   "Andrew Haley"
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		doc "The interface doc"
 		version '1.0.0 beta'
@@ -65,7 +65,7 @@ class Annotations {
 		
 	}
 
-	class NamedArguments {
+	class NamedArguments() {
 
 	    doc { text="some text about the method"; }
 		lock { timeout=1000; }
@@ -92,7 +92,7 @@ class Annotations {
 		table { name="tableName"; schema="schemaName"; }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
 		scope { scopeType=session; }
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		doc { text="some text about the interface"; }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
@@ -101,7 +101,7 @@ class Annotations {
 	
 	}
 	
-	class PositionalArguments {
+	class PositionalArguments() {
 	
 		throws(#DatabaseException,
 	           "if database access fails")
@@ -129,13 +129,22 @@ class Annotations {
 		scope(session)
 		throws(#DatabaseException,
 	           "if database access fails")
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		see (#ClassAnnotations, #methodAnnotations, #Object.equals)
 		version('1.0.0 beta')
 		doc("some text about the interface")
 		by("Gavin King", "Andrew Haley")
 		interface InterfaceAnnotations {}
+	
+	}
+	
+	class ComplexArguments() {
+	    
+	    queries( Query('select p.name from Person p'), 
+	             Query('select p.name from Person p where p.age>18') )
+	    see #List<String>
+	    class ClassAnnotations() {}
 	
 	}
 	

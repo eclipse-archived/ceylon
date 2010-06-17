@@ -1,4 +1,4 @@
-class Operators {
+class Operators() {
 
 	Natural sum = 1+2;
 	Integer difference = 1-2;
@@ -7,10 +7,13 @@ class Operators {
 	Natural quotient = 2/2;
 	Natural remainder = 3%2;
 	
-	Entry<String,String> name = "Gavin"->"King";
-	Range<Natural> range = 1 ..5;
+	Float parenthesized = (1.0 + 2.0)/3.0 + 0.5;
 	
-	String default = null ? "Hello";
+	Entry<String,String> name = "Gavin"->"King";
+	Range<Natural> range = 1..5;
+	Range<Character> charRange = @A..@Z;
+	
+	String defaulted = null ? "Hello";
 	Boolean nullExists = null exists;
 	Boolean noneNonempty = none nonempty;
 	
@@ -46,9 +49,13 @@ class Operators {
 	String element = list[1];
 	optional String element = nullList?[666];
 	List<String> elements = list[{3,2,1}];
-	List<String> subrange = list[0 ..1];
-	List<String> upperRange = list[1 ...];
+	List<String> subrange = list[0..1];
+	List<String> upperRange = list[1...];
 	
-	//TODO: ^. ?. *. := .=
+	optional String input = null;
+	optional Iterable<String> tokens = input?.tokens();
+	Sequence<Natural> sizes = tokens*.size;
+	
+	//TODO: := .=
 	
 }

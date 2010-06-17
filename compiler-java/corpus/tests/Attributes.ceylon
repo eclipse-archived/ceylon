@@ -1,4 +1,4 @@
-abstract class Attributes {
+abstract class Attributes() {
 
 	String abstractAttribute;
 	

@@ -1,27 +1,27 @@
-class Classes {
+class Classes() {
 
-	class Simple {}
+	class Simple() {}
 	
-	class WithMethods {
+	class WithMethods() {
 		void doNothing() {}
 		Natural returnZero() { return 0; }
 		String returnArgument(String arg) { return arg; }
 	}
 	
-	class WithAttributes {
+	class WithAttributes() {
 		Natural count = 0;
 		mutable String description := "";
 		String countAsString { return $count; }
 		assign countAsString { count := countAsString.parseNatural; }
 	}
 	
-	abstract class WithAbstractMethods {
+	abstract class WithAbstractMethods() {
 		void doNothing();
 		Natural returnZero();
 		String returnArgument(String arg);
 	}
 	
-	abstract class WithAbstractAttributes {
+	abstract class WithAbstractAttributes() {
 		Natural count;
 		mutable String description;
 	}
@@ -40,18 +40,18 @@ class Classes {
 	throws #DatabaseException
 	       "if database access fails"
 	entity table { name="someTable"; schema="someSchema"; }
-	class WithAnnotations {}
+	class WithAnnotations() {}
 	
-	class Extends extends Simple {}
+	class Extends() extends Simple() {}
 	
 	class ExtendsWithInitParameters(Natural count, String description, Float tolerance) 
 			extends WithInitParameters(count, description) {
 		Float tol = tolerance;
 	}
 	
-	class WithClosedInstanceList { case foo, case bar, case baz; }
+	class WithClosedInstanceList() { case foo, case bar, case baz; }
 	
-	class WithOpenInstanceList { case foo, case bar, case baz... }
+	class WithOpenInstanceList() { case foo, case bar, case baz... }
 	
 	class WithInstanceListAndInitParameter(Integer i) {
 		case one(1), case two(2), case three(3); 
@@ -60,9 +60,9 @@ class Classes {
 	
 	class WithInstanceListAndFunctionalInitParameter(String name()) {
 		
-		case foo { name() { return "Foo" } }, 
-		case bar { name() { return "Bar" } },
-		case baz { name() { return "Baz" } };
+		case foo { String name() { return "Foo" } }, 
+		case bar { String name() { return "Bar" } },
+		case baz { String name() { return "Baz" } };
 		
 		String name() = name;
 		
@@ -75,16 +75,17 @@ class Classes {
 		Integer value = i;
 	}
 	
-	class WithTypeParameters<X, Y> {}
+	class WithTypeParameters<X, Y>() {}
 	
-	class WithTypeConstraints<X, Y> 
-		where X>=String & Y(Natural count) {}
+	class WithTypeConstraints<X, Y>()
+		where X satisfies String 
+		where Y(Natural count) {}
 		
-	class WithNestedClass {
-		class NestedClass {}
+	class WithNestedClass() {
+		class NestedClass() {}
 	}
 	
-	class WithNestedInterface {
+	class WithNestedInterface() {
 		interface NestedInterface {}
 	}
 	
@@ -97,12 +98,12 @@ class Classes {
 		void reset();
 	}
 
-	class Satisfies satisfies Counter {
+	class Satisfies() satisfies Counter {
 		mutable Natural count := 0;
 		void inc() { count++; }
 	}
 	
-	class SatisfiesMultiple satisfies Counter, Resettable {
+	class SatisfiesMultiple() satisfies Counter, Resettable {
 		mutable Natural count := 0;
 		void inc() { count++; }
 		void reset() { count := 0; }

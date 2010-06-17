@@ -1,6 +1,6 @@
-class FormalParameters {
+class FormalParameters() {
 	
-	class MethodParameters {
+	class MethodParameters() {
 	
 		void noParameter() {}
 	
@@ -31,9 +31,13 @@ class FormalParameters {
 			consume(produce()); 
 		}
 		
+		void multipleParameterLists()(Natural min..max) {
+		    return rangeParameter
+		}
+		
 	}
 	
-	class InitParameters {
+	class InitParameters() {
 	
 		class NoParameter() {}
 	
