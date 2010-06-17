@@ -531,27 +531,33 @@ String helloWorld() {
         <programlisting>Html(
     Head("Hello World"),
     Body(
-        Div("Hello World"),
-        Div("Powered by Ceylon.")
+        Div("greeting", "Hello World"),
+        Div("footer", "Powered by Ceylon")
     )
 )</programlisting>
 
         <para>However, Ceylon provides an alternative way of writing
         argument lists that makes it much more natural to define heirarchical
         structures. A <emphasis>named argument list</emphasis> is a list of 
-        arguments surrounded by braces and separated by semicolons. For
-        example:</para>
+        arguments surrounded by braces and separated by semicolons. Varargs 
+        parameters in a named argument list don't need names, and are 
+        separated by commas. For example:</para>
 
         <programlisting>Html {
     head = Head { title = "Hello World" };
     body = Body {
-        Div { "Hello World" },
-        Div { "Powered by Ceylon." }
+        Div {
+            cssClass = "greeting";
+            "Hello World" 
+        },
+        Div {
+            cssClass = "footer";
+            "Powered by Ceylon." 
+        }
     };
 }</programlisting>
         
-        <para>Varargs parameters in a named argument list don't need names, and
-        are separated by commas.</para>
+        <para>We're going to use this syntax to define our web page.</para>
         
         <programlisting><![CDATA[import html.*;
 
@@ -563,7 +569,6 @@ class Hello(Request request)
     Hello hello = Hello(request.parameters["name"]);
     
     head = Head { title="Hello World"; };
-    
     body = Body {
         Div {
             cssClass = "greeting";
@@ -571,7 +576,7 @@ class Hello(Request request)
         },
         Div {
             cssClass = "footer";
-            "Powered by Ceylon."
+            "Powered by Ceylon"
         }
     };
 
