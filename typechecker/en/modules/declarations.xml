@@ -337,7 +337,8 @@ Description doc(String description) {
         <para>Every Ceylon class and interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
         <literal>subtype</literal>, represents the concrete type of the current instance 
-        (the instance that is being invoked).</para>
+        (the instance that is being invoked). It is considered a covariant type parameter
+        of the type, and may only appear in covariant positions of the type definition.</para>
         
         <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
         
@@ -370,9 +371,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         case the subclass could assign any instance of itself to <literal>subtype</literal>?
         </para></comment>
         -->
-        
-        <para>The type <literal>subtype</literal> is considered a covariant type parameter
-        of the type, and may only appear in covariant positions of the type definition.</para>
         
         <para>Certain declarations which usually require an explicit type may omit the type, 
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
