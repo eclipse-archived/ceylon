@@ -10,7 +10,7 @@ class Find(Process process) {
 			while (stream.more) {
 				String line = stream.readLine();
 				if ( pattern.matches(line) ) {
-					log.info("${file.name}:${stream.currentLineNumber} ${line}");
+					log.info("" file.name ":" stream.currentLineNumber " " line "");
 				}
 			}
 		}

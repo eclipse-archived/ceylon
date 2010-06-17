@@ -15,10 +15,10 @@ mutable package class Artifact(String name, String description, Location locatio
 			location.remove(this);
 			game.backpack.put(this);
 			location := game.backpack;
-			game.out("You put the ${name} in your backpack.);
+			game.display("You put the " name " in your backpack.);
 		}
 		else {
-			game.out("The ${name} is too heavy. Try dropping something else.");
+			game.display("The " name " is too heavy. Try dropping something else.");
 		}
 	}
 
@@ -30,10 +30,10 @@ mutable package class Artifact(String name, String description, Location locatio
 			game.backpack.remove(this);
 			game.currentLocation.put(this);
 			location := game.currentLocation;
-			game.out("You dropped the ${name}.");
+			game.display("You dropped the " name ".");
 		}
 		else {
-	    	game.out("You don't have the ${name} in your backpack.");
+	    	game.display("You don't have the " name " in your backpack.");
 	    }
 	}
 	
