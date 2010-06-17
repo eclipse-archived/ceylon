@@ -473,6 +473,11 @@ public void hello(Process process) {
         }
 }]]></programlisting>
 
+        <para>Note that there are three <literal>return</literal> statements
+        here. The nested <literal>return</literal> statements specify the 
+        return values of the two inline methods. They do not end the execution
+        of <literal>greeting</literal>!</para>
+
         <para>This syntax was chosen to make it possible to define new
         control structures that closely mimic the syntactic form of the
         traditional C-style built-in control structures.</para>
