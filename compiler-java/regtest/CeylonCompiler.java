@@ -5,8 +5,6 @@ import org.antlr.runtime.tree.*;
 
 public class CeylonCompiler
 {
-  int depth;
-
   final PrintStream out;
   final FileInputStream is;
 
@@ -34,44 +32,55 @@ public class CeylonCompiler
     if (comment != null)
       out.println("# "+ comment);
 
-    printTree(t);
+    new TreeVisitor().visit(t, new PrintTree());
     out.println();
   }
 
-  void indent()
+  class PrintTree implements TreeVisitorAction
   {
-    out.println();
-    for (int i = 0; i < depth; i++)
-      out.print("  ");
-  }
+    void indent()
+    {
+      out.println();
+      for (int i = 0; i < depth; i++)
+	out.print("  ");
+    }
 
-  void printTree(Tree t)
-  {
-    String s = null;
-    Token tok = ((CommonTree)t).getToken();
-    if (tok != null)
-      s = tok.getText();
-    if ( t.getChildCount() == 0 && s != null)
-      {
-	out.print(s);
-      }
-    else
-      {
-	indent();
-	out.print("(" + t + " ");
+    public Object pre (Object o)
+    {
+      Tree t = (Tree)o;
+      String s = null;
+      Token tok = ((CommonTree)o).getToken();
+      if (tok != null)
+        s = tok.getText();
+      if (t.getChildCount()==0 && s != null)
+        {
+          out.print(" " + s);
+        }
+      else
+        {
+          indent();
+          out.print("(" + t);
+        }
+      depth++;
 
-	for (int i = 0; i < t.getChildCount(); i++) {
-	  Tree tt = t.getChild(i);
-	  if (i > 0) {
-	    out.print(' ');
-	  }
-	  depth++;
-	  printTree(tt);
-	  depth--;
-	}
+      return o;
+    }
 
+    public Object post (Object o)
+    {
+      Tree t = (Tree)o;
+      String s = null;
+      Token tok = ((CommonTree)o).getToken();
+      if (tok != null)
+        s = tok.getText();
+      if (t.getChildCount()!=0 || s == null)
 	out.print(")");
-      }
+      depth--;
+
+      return o;
+    }
+
+    int depth;
   }
 
   public static void main(String[] argv)
@@ -83,12 +92,12 @@ public class CeylonCompiler
 
     for (int i = 0; i < args.size(); i++) {
       if (args.get(i).equals("-d"))
-	{
-	  args.remove(i);
-	  outputdir = args.get(i);
-	  args.remove(i);
-	  new File(outputdir).mkdir();
-	}
+        {
+          args.remove(i);
+          outputdir = args.get(i);
+          args.remove(i);
+          new File(outputdir).mkdir();
+        }
     }
 
     for (String filename: args) {
@@ -97,21 +106,21 @@ public class CeylonCompiler
       String infile = filename;
 
       if (outputdir != "")
-	{
-	  int slash = filename.lastIndexOf(File.separatorChar);
-	  if (slash >= 0)
-	    infile = filename.substring(slash + 1);
-	  theCeylonCompiler
-	    = new CeylonCompiler (new FileInputStream(filename),
-				  new PrintStream(new FileOutputStream
-						  (outputdir
-						   + File.separatorChar
-						   + infile + ".out")));
-	}
+        {
+          int slash = filename.lastIndexOf(File.separatorChar);
+          if (slash >= 0)
+            infile = filename.substring(slash + 1);
+          theCeylonCompiler
+            = new CeylonCompiler (new FileInputStream(filename),
+                                  new PrintStream(new FileOutputStream
+                                                  (outputdir
+                                                   + File.separatorChar
+                                                   + infile + ".out")));
+        }
       else
         {
           theCeylonCompiler
-	    = new CeylonCompiler (new FileInputStream(filename), System.out);
+            = new CeylonCompiler (new FileInputStream(filename), System.out);
         }
 
       System.err.println(infile);
