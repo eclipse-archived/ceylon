@@ -547,7 +547,7 @@ String helloWorld() {
     body = Body {
         Div { "Hello World" },
         Div { "Powered by Ceylon." }
-    }
+    };
 }</programlisting>
         
         <para>Varargs parameters in a named argument list don't need names, and
