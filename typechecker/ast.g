@@ -400,17 +400,16 @@ typeConstraints
     ;
     
 type
-    : parameterizedType //( '[' parameterizedType? ']' )?
-    -> parameterizedType //FIXME: unnecessary?
+    : parameterizedType ('.' parameterizedType)*//( '[' parameterizedType? ']' )?
+    -> ^(TYPE parameterizedType+)
     | 'subtype'
     -> ^(TYPE 'subtype')
     ;
 
 parameterizedType
-    : qualifiedTypeName typeArguments?
-    -> ^(TYPE qualifiedTypeName typeArguments?)
+    : typeName typeArguments?
     ;
-
+    
 annotations
     : annotation+
     -> ^(ANNOTATION_LIST annotation+)
@@ -437,11 +436,6 @@ annotationArguments
 reflectedLiteral 
     : '#' ( memberName | ( parameterizedType ('.' memberName)? ) )
     -> ^(REFLECTED_LITERAL parameterizedType? memberName?)
-    ;
-
-qualifiedTypeName
-    : UIDENTIFIER ('.' UIDENTIFIER)*
-    -> ^(TYPE_NAME UIDENTIFIER+) 
     ;
 
 typeName
@@ -846,7 +840,7 @@ isCondition
     ;
 
 controlStructure
-    : ifElse | switchCaseElse | while | doWhile | forFail | tryCatchFinally
+    : ifElse | switchCaseElse | simpleWhile | doWhile | forFail | tryCatchFinally
     ;
     
 ifElse
@@ -933,7 +927,7 @@ doWhile
     -> ^(WHILE_STMT doBlock loopCondition)
     ;
 
-while
+simpleWhile
     : loopCondition whileBlock
     -> ^(WHILE_STMT loopCondition whileBlock)
     ;
