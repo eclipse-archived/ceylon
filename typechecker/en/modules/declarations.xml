@@ -113,6 +113,9 @@ Body?</programlisting>
         <programlisting>PackageMembersSpec := "*"</programlisting>
         <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
         
+        <para>A the name of a member type must be qualified by the names of its containing
+        types.</para>
+        
         <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
         
         <para>The optional <literal>alias</literal> clause allows resolution of 
