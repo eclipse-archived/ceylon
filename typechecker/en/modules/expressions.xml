@@ -390,9 +390,9 @@ if you prefer.";</programlisting>
         
         <programlisting>Meta := TypeMeta | MemberMeta</programlisting>
         
-        <programlisting>TypeMeta := HASH RegularType</programlisting>
+        <programlisting>TypeMeta := HASH Type</programlisting>
         
-        <programlisting>MemberMeta := HASH (RegularType ".")? MemberName</programlisting>
+        <programlisting>MemberMeta := HASH (Type ".")? MemberName</programlisting>
                
         <para>Metamodel references are compile-time typesafe.</para>
         
@@ -446,7 +446,7 @@ if you prefer.";</programlisting>
         <literal>T</literal>, the constructor method has non-<literal>optional</literal> return 
         type <literal>T</literal> and the same formal parameters as the class.</para>
         
-        <programlisting>ConstructorReference := Receiver? RegularType</programlisting>
+        <programlisting>ConstructorReference := Receiver? Type</programlisting>
          
         <para>A <emphasis>getter or setter method reference</emphasis> is a reference to an 
         implicit method with a signature that depends upon the attribute type. For an attribute 
