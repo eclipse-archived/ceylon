@@ -210,8 +210,6 @@ Description doc(String description) {
     
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
-        <programlisting>Type := StaticType | "subtype"</programlisting>
-        
         <para>A type is a set of:</para>
         
         <itemizedlist>
@@ -296,7 +294,7 @@ Description doc(String description) {
         type parameter), together with a list of type arguments if the type definition 
         specifies formal parameters.</para>
         
-        <programlisting>StaticType := TypeNameWithArguments ("." TypeNameWithArguments)*</programlisting>
+        <programlisting>Type := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
         
         <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
         
@@ -652,7 +650,7 @@ VarargsParam?
     
         <para>A class may extend another class using the <literal>extends</literal> clause.</para>
         
-        <programlisting>Supertype := "extends" StaticType PositionalArguments</programlisting>
+        <programlisting>Supertype := "extends" Type PositionalArguments</programlisting>
     
         <para>A class may extend only one superclass. If the superclass is a parameterized
         type, the <literal>extends</literal> clause must specify type arguments.</para>
@@ -690,7 +688,7 @@ VarargsParam?
         <para>Classes and interfaces may satisfy (implement or extend) interfaces, 
         using the <literal>satisfies</literal> clause.</para>
         
-        <programlisting>Interfaces = "satisfies" StaticType ("," StaticType)*</programlisting>
+        <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
     
         <para>A class or interface may satisfy multiple interfaces. If a satisfied 
         interface is a parameterized type, the <literal>satisfies</literal> clause 
@@ -735,7 +733,7 @@ VarargsParam?
     
         <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? Subtypes?</programlisting>
         
-        <programlisting>Subtypes := "abstracts" StaticType ("," StaticType)*</programlisting>
+        <programlisting>Subtypes := "abstracts" Type ("," Type)*</programlisting>
         
         <para>There are three kinds of type constraint:</para>
         

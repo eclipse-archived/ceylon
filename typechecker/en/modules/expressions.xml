@@ -420,7 +420,7 @@ if you prefer.";</programlisting>
         
         <para>An enumerated instance of a class is identified according to:</para> 
         
-        <programlisting>EnumeratedInstanceReference := (StaticType ".")? MemberName</programlisting>
+        <programlisting>EnumeratedInstanceReference := (Type ".")? MemberName</programlisting>
         
         <para>The value of an enumerated instance reference is the instance of
         the class that was instantiated when the class was loaded by the virtual
@@ -1496,7 +1496,7 @@ except (SomethingElseWrong sew) {
         
         <para>A literal object is specified according to:</para>
         
-        <programlisting>LiteralObject := "new" StaticType PositionalArguments? "{" (Assignment | Specification)* "}"</programlisting>
+        <programlisting>LiteralObject := "new" Type PositionalArguments? "{" (Assignment | Specification)* "}"</programlisting>
         
         <para>For example:</para>
         
@@ -1556,7 +1556,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
             <para>Inline classes may be specified according to:</para>
             
-            <programlisting>InlineClass := "new" Annotation* StaticType PositionalArguments? Interfaces "{" Statement* "}"</programlisting>
+            <programlisting>InlineClass := "new" Annotation* Type PositionalArguments? Interfaces "{" Statement* "}"</programlisting>
 
             <para>For example:</para>
             

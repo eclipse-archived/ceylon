@@ -371,18 +371,18 @@ classBody
     ;
 
 extendedType
-    : 'extends' staticType positionalArguments
-    -> ^(SUPERCLASS staticType positionalArguments) 
+    : 'extends' type positionalArguments
+    -> ^(SUPERCLASS type positionalArguments) 
     ;
 
 satisfiedTypes
-    : 'satisfies' staticType (',' staticType)*
-    -> ^(SATISFIES_LIST staticType+)
+    : 'satisfies' type (',' type)*
+    -> ^(SATISFIES_LIST type+)
     ;
 
 abstractedTypes
-    : 'abstracts' staticType (',' staticType)*
-    -> ^(ABSTRACTS_LIST staticType+)
+    : 'abstracts' type (',' type)*
+    -> ^(ABSTRACTS_LIST type+)
     ;
 
 instance
@@ -398,18 +398,11 @@ typeConstraints
     : typeConstraint+
     -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
     ;
-    
-type
-    : staticType | subtype
-    ;
 
-staticType
+type
     : typeNameWithArguments ('.' typeNameWithArguments)*//( '[' parameterizedType? ']' )?
     -> ^(TYPE typeNameWithArguments+)
-    ;
-
-subtype
-    : 'subtype'
+    | 'subtype'
     -> ^(TYPE 'subtype')
     ;
 
