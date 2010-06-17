@@ -536,11 +536,11 @@ String helloWorld() {
     )
 )</programlisting>
 
-        <programlisting>However, Ceylon provides an alternative way of writing
+        <para>However, Ceylon provides an alternative way of writing
         argument lists that makes it much more natural to define heirarchical
         structures. A <emphasis>named argument list</emphasis> is a list of 
         arguments surrounded by braces and separated by semicolons. For
-        example:</programlisting>
+        example:</para>
 
         <programlisting>Html {
     head = Head { title = "Hello World" };
