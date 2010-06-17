@@ -294,6 +294,7 @@ public void hello(Process process) {
         <programlisting><![CDATA[doc "A personalized greeting"
 class Hello(optional String name) {
     
+    doc "The greeting"
     package String greeting;
     if (exists name) {
         greeting = "Hello, " name "!";
