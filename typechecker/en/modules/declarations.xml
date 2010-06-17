@@ -110,10 +110,13 @@ Body?</programlisting>
         <programlisting>TypeSpec := QualifiedTypeName ("alias" TypeName)?</programlisting>
         <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
         <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
+        
+        <para>The character <literal>*</literal> acts as a wildcard, just like in Java.</para>
+        
         <programlisting>PackageMembersSpec := "*"</programlisting>
         <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
         
-        <para>A the name of a member type must be qualified by the names of its containing
+        <para>The name of a member type must be qualified by the names of its containing
         types.</para>
         
         <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
