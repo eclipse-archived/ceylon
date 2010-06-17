@@ -9,5 +9,7 @@ abstract class Types() {
 	Foo.Bar<Baz> nestedTypeWithTypeParameter;
 	Foo<Bar.Baz> typeWithNestedTypeParameter;
 	Foo<Bar.Baz<Qux>> anythingGoes;
+	Foo<Bar>.Baz evenThis;
+	Foo<Bar>.Baz<Qux> orThis;
 	subtype theSubtype;
 }
