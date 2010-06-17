@@ -430,7 +430,7 @@ userAnnotation
     ;
 
 annotationArguments
-    : arguments | ( literal | reflectedLiteral )+
+    : arguments | ( nonstringLiteral | stringLiteral | reflectedLiteral )+
     ;
 
 reflectedLiteral 
@@ -504,7 +504,11 @@ stringExpression
     : (SIMPLESTRINGLITERAL (interpolatedExpressionStart|SIMPLESTRINGLITERAL)) 
         => stringTemplate
     -> ^(STRING_CONCAT stringTemplate)
-    | SIMPLESTRINGLITERAL
+    | stringLiteral
+    ;
+
+stringLiteral
+    : SIMPLESTRINGLITERAL
     -> ^(STRING_CST SIMPLESTRINGLITERAL)
     ;
 
