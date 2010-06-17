@@ -529,7 +529,7 @@ String helloWorld() {
         create a tree of objects as follows:</para>
         
         <programlisting>Html(
-    Head("Hello World"),
+    Head('hello.css', "Hello World"),
     Body(
         Div("greeting", "Hello World"),
         Div("footer", "Powered by Ceylon")
@@ -544,7 +544,10 @@ String helloWorld() {
         separated by commas. For example:</para>
 
         <programlisting>Html {
-    head = Head { title = "Hello World" };
+    head = Head { 
+        title = "Hello World";
+        cssStyleSheet = 'hello.css';
+    };
     body = Body {
         Div {
             cssClass = "greeting";
@@ -568,7 +571,10 @@ class Hello(Request request)
 
     Hello hello = Hello(request.parameters["name"]);
     
-    head = Head { title="Hello World"; };
+    head = Head { 
+        title = "Hello World";
+        cssStyleSheet = 'hello.css';
+    };
     body = Body {
         Div {
             cssClass = "greeting";
