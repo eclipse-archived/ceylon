@@ -9,7 +9,7 @@ class Annotations() {
 		Natural attributeAnnotations = 1;
 		
 		package deprecated abstract
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		module
 		interface InterfaceAnnotations {}
@@ -52,7 +52,7 @@ class Annotations() {
 		version '2.1.0'
 		by "Gavin King"
 		   "Andrew Haley"
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		doc "The interface doc"
 		version '1.0.0 beta'
@@ -92,7 +92,7 @@ class Annotations() {
 		table { name="tableName"; schema="schemaName"; }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
 		scope { scopeType=session; }
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		doc { text="some text about the interface"; }
 		see { #ClassAnnotations, #methodAnnotations, #Object.equals }
@@ -129,7 +129,7 @@ class Annotations() {
 		scope(session)
 		throws(#DatabaseException,
 	           "if database access fails")
-		class ClassAnnotations {}
+		class ClassAnnotations() {}
 		
 		see (#ClassAnnotations, #methodAnnotations, #Object.equals)
 		version('1.0.0 beta')
@@ -144,7 +144,7 @@ class Annotations() {
 	    queries( Query('select p.name from Person p'), 
 	             Query('select p.name from Person p where p.age>18') )
 	    see #List<String>
-	    class ClassAnnotations {}
+	    class ClassAnnotations() {}
 	
 	}
 	
