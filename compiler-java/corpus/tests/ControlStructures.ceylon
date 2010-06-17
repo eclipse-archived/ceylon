@@ -1,6 +1,6 @@
-class ControlStructures {
+class ControlStructures() {
 	
-	class ForFail {
+	class ForFail() {
 	
 		List<String> names = { "Gavin", "Emmanuel", "Andrew", "Jason" };
 		Map<String,String> fullNames = { "Gavin"->"King", "Jason"->"Greene" };
@@ -12,7 +12,7 @@ class ControlStructures {
 		for (String name in names) {
 			if (name=="Gavin") {
 				log.info("found");
-				break true;
+				break true
 			}
 		}
 		fail {
@@ -20,12 +20,17 @@ class ControlStructures {
 		}
 		
 		for (String first->String last in fullNames) {
-			log.info("${first}$ ${last}$");
+			log.info(first + " " + last);
+		}
+		
+		for (Natural n in 1..5) {
+		    if (n==2) { continue }
+		    if (n==4) { break }
 		}
 		
 	}
 	
-	class IfElse {
+	class IfElse() {
 	
 		if (true) {
 			log.info("always true");
@@ -53,12 +58,34 @@ class ControlStructures {
 			log.info("never exists");
 		}
 		
-		class Foo {}
-		class Bar extends Foo {}
+		if (nonempty s) {
+			log.info(s);
+		}
+		else {
+			log.info("never exists");
+		}
+		
+		if (exists String str = s) {
+		    log.info(str);
+		}
+		
+		if (nonempty String str = s) {
+		    log.info(str);
+		}
+		
+		class Foo() {}
+		class Bar() extends Foo() {}
 		
 		Foo foo = Bar();
 		
 		if (is Bar foo) {
+			log.info("it is a Bar");
+		}
+		else {
+			log.info("it is not a Bar");
+		}
+		
+		if (is Bar b = foo) {
 			log.info("it is a Bar");
 		}
 		else {
@@ -76,7 +103,7 @@ class ControlStructures {
 		
 	}
 	
-	class DoWhile {
+	class DoWhile() {
 		
 		while (true) {
 			log.info("hello");
@@ -87,36 +114,22 @@ class ControlStructures {
 		}
 		while (true);
 		
+        mutable Integer n:=0;
+		while (n<10) {
+			log.info(n);
+			n++;
+		}
+		
+		mutable Integer m:=0;
 		do {
-			log.info("hello");
+			log.info(m);
+			m++;
 		}
-		while (true) {
-			log.info("goodbye");
-		}
-		
-		do (mutable Integer n:=0)
-		while (n<10) {
-			log.info(n);
-			n++;
-		}
-		
-		do (mutable Integer n:=0) {
-			log.info(n);
-			n++;
-		}
-		while (n<10);
-		
-		do (mutable Integer n:=0) {
-			n++;
-		}
-		while (n<10) {
-			log.info(n);
-		}
-		
+		while (m<10);
+
 		String text = "Hello World!";
-		do (Iterator<String> tokens = text.tokens().iterator()) 
-		while (tokens.more)
-		{
+		Iterator<String> tokens = text.tokens().iterator();
+		while (tokens.more) {
 			String word = tokens.next().lowercase;
 			if ("hello"==word) {
 				log.info("found hello");
@@ -126,7 +139,7 @@ class ControlStructures {
 		
 	}
 	
-	class TryCatchFinally {
+	class TryCatchFinally() {
 		
 		try ( Transaction() ) {
 			doSomething();
@@ -139,11 +152,11 @@ class ControlStructures {
 			retry;
 		}
 		
-		try ( Transaction(), Session s = Session() ) {
+		try ( Session s = Session() ) {
 			throw Exception()
 		}
 		catch (Exception e) {
-			throw e;
+			throw e
 		}
 		
 		try ( Session s = Session() ) {
@@ -184,7 +197,7 @@ class ControlStructures {
 		
 	}
 	
-	class SwitchCaseElse {
+	class SwitchCaseElse() {
 		
 		Number n = 1;
 		switch(n)
@@ -219,7 +232,20 @@ class ControlStructures {
 			log.info($m);
 		}
 		
-		class Color { case red, case green, case blue; }
+		Natural o = 2;
+		switch(m) {
+		    case (0) {
+			    log.info("Zero");
+		    }
+		    case (1) {
+			    log.info("Unity");
+		    }
+		    else {
+			    log.info($m);
+		    }
+		}
+		
+		class Color() { case red, case green, case blue; }
 		Color c = red;
 		switch(c)
 		case (red) {
@@ -235,7 +261,7 @@ class ControlStructures {
 			log.info("unknown color");
 		}
 		case (red, green, blue) {
-			log.info("known color ${cc}$");
+			log.info("known color " cc "");
 		}
 		
 	}

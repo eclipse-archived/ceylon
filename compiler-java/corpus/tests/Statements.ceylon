@@ -1,4 +1,4 @@
-class Statements {
+class Statements() {
 
 	String hello = "Hello World"; //specification
 	String getHello() = get hello; //method specification
@@ -35,19 +35,20 @@ class Statements {
 	Bar(true); 
 	Bar { b=false; };
 	
-	class Foo {
+	class Foo() {
 		void instanceMethod(Natural n) {}
-		static void staticMethod(Float f) {}
 		class Baz(String s) {}
 	}
+
+	void method(Float f) {}
 	
 	//instance method invocation
 	Foo().instanceMethod(2); 
 	Foo().instanceMethod { n=0; };
 
-	//static method invocation
-	Foo.staticMethod(1.0); 
-	Foo.staticMethod { f=2.5; };
+	//method invocation
+	method(1.0); 
+	method { f=2.5; };
 	
 	//nested instance instantiation
 	Foo().Baz("hello");

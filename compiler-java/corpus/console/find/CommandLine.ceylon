@@ -11,13 +11,13 @@ public class CommandLine(Process process) {
 	do (Iterator<String> tokens = process.args.iterator())
 	while (tokens.more) {
 		String token = tokens.next();
-		if ( '-w*'.matches(token) ) {
+		if ( token.first==@- ) {
 			String name = token[1...];
 			if (tokens.more) {
 				namedArgs[name]:=tokens.next();
 			}
 			else {
-				throw Exception("No parameter specified for ${name}.");
+				throw Exception("No parameter specified for " name ".");
 			}
 		}
 		else {

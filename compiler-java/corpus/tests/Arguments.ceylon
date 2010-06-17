@@ -1,6 +1,6 @@
-class Arguments {
+class Arguments() {
 	
-	class NoArguments {
+	class NoArguments() {
 		
 		void greet(String value="Hello") {
 			log.info(value);
@@ -18,14 +18,14 @@ class Arguments {
 		
 	}
 	
-	class SingleArgument {
+	class SingleArgument() {
 		
-		void owt(String value) {
+		void outp(String value) {
 			log.info(value);
 		}
 		
-		owt("Hello");
-		owt { value="Hi"; };
+		outp("Hello");
+		outp { value="Hi"; };
 		
 		class Output(String value) {
 			log.info(value);
@@ -36,7 +36,7 @@ class Arguments {
 		
 	}
 	
-	class MultipleArguments {
+	class MultipleArguments() {
 	
 		String fullName(String firstName, String lastName) {
 			return firstName + " " + lastName;
@@ -54,7 +54,7 @@ class Arguments {
 		
 	}
 	
-	class Varargs {
+	class Varargs() {
 	
 		String join(String sep, String... strings) {
 			return (sep+" ").join(strings);
@@ -74,7 +74,7 @@ class Arguments {
 		
 	}
 	
-	class FunctionalArguments {
+	class FunctionalArguments() {
 	
 		void logLazily(String message()) {
 			if (log.infoEnabled) { 
@@ -82,16 +82,15 @@ class Arguments {
 			}
 		}
 		
-		logLazily() message "hello";
+		logLazily() message ("hello");
 		logLazily() message { return "hello" };
-		logLazily { message() { return "hello" } };
+		logLazily { String message() { return "hello" } };
 	
 	
-		public static void from<Y>(Y initial, 
-								   Boolean until(Y y), 
-								   Y each(Y y), 
-								   void perform(Y y)) {
-			do (mutable Y y := initial)
+		public void from<Y>(Y initial, 
+							Boolean until(Y y), 
+							Y each(Y y), 
+							void perform(Y y)) {
 			while (!until(y)) {
 				perform(y);
 				y:=each(y);
@@ -99,40 +98,37 @@ class Arguments {
 		}
 		
 		from(0) 
-			until(Y y) y==10 
-			each(Y y) y+2 
-			perform(Y y) log.info(y);
+			until (Natural y) (y==10)
+			each (Natural y) (y+2)
+			perform (Natural y) { log.info(y); };
 		
 		from(0) 
-			until(Y y) { return y==10 } 
-			each(Y y) { return y+2 } 
-			perform(Y y) { log.info(y); };
+			until(Natural y) { return y==10 } 
+			each(Natural y) { return y+2 } 
+			perform(Natural y) { log.info(y); };
 		
 		from {
 			initial=0; 
-			until(Y y) { return y==10 } 
-			each(Y y) { return y+2 } 
-			perform(Y y) { log.info(y); }
+			Boolean until(Natural y) { return y==10 } 
+			Natural each(Natural y) { return y+2 } 
+			void perform(Natural y) { log.info(y); }
 		};
 		
 		class Processor<X,Y>(Y process(X x)) {
 			Y handle(X x) { return process(x).strip }
 		}
 		
-/*
 		Processor<Float,String> p = 
-			Processor<Float,String>() 
-				process (Float f) $f;
+			Processor() process (Float f) ($f);
 		
 		Processor<Float,String> q = 
-			Processor<Float,String>() 
-				process (Float f) { return $f };
+			Processor() process (Float f) { return $f };
 		
 		Processor<Float,String> r = 
-			Processor<Float,String> { 
-				process(Float f) { return $f } 
+			Processor { 
+				String process (Float f) { return $f }
 			};
-*/			
+			
 	}
 
 }

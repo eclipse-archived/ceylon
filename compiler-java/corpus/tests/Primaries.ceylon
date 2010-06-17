@@ -1,6 +1,6 @@
-class Primaries {
+class Primaries() {
 
-	class Literals {
+	class Literals() {
 	
 		String hello = "Hello";
 		String names = "Gavin\nAndrew\nEmmanuel\n";
@@ -20,7 +20,7 @@ class Primaries {
 		
 	}
 	
-	class Specials {
+	class Specials() {
 	
 		optional String nothing = null;
 
@@ -28,13 +28,13 @@ class Primaries {
 
 		Specials s = this;
 
-		class Subclass extends Specials {
+		class Subclass() extends Specials() {
 			Specials s = super;
 		}
 		
 	}
 	
-	class Enumerations {
+	class Enumerations() {
 	
 		List<String> empty = {};
 		List<String> singleton = { "hello" };
@@ -42,25 +42,25 @@ class Primaries {
 	
 	}
 
-	class MethodReferences {
+	class MethodReferences() {
 	
 		class Person(String name) {
 		
 			mutable String name := name;
 			
 			void hello() {
-				log.info("Hello ${name}$");
-			}
-			
-			static void helloWorld() {
-				log.info("Hello World");
+				log.info("Hello " + name);
 			}
 			
 		}
 		
+		void helloWorld() {
+			log.info("Hello World");
+		}
+			
 		Person person = Person("Gavin King");
 		void hello() = person.hello;
-		void helloWorld() = Person.helloWorld;
+		void helloWorld() = helloWorld;
 		String getName() = get person.name;
 		void setName(String name) = set person.name;
 		Person newPerson(String name) = Person;

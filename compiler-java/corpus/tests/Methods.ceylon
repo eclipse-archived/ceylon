@@ -1,6 +1,6 @@
-class Methods {
+class Methods() {
 
-	abstract class VoidMethods {
+	abstract class VoidMethods() {
 
 		void simpleMethod() {}
 		
@@ -29,7 +29,7 @@ class Methods {
 		
 		void methodWithTypeParameter<X>(OpenList<X> list, X x) { list.add(x); }
 		
-		void methodWithTypeConstraint<X>(OpenList<X> list, X x) where X>=String { list.add(x); }
+		void methodWithTypeConstraint<X>(OpenList<X> list, X x) where X satisfies String { list.add(x); }
 		
 		void methodWithNestedMethod() {
 			void nestedMethod(String param) {
@@ -40,7 +40,7 @@ class Methods {
 		}
 		
 		void methodWithNestedClass() {
-			class NestedClass {
+			class NestedClass() {
 				void hello() {
 					log.info("Hello");
 				}
@@ -58,12 +58,12 @@ class Methods {
 		}
 		
 		methodWithFunctionalParameter { 
-			method(String x) { log.info(x); } 
+			void method(String x) { log.info(x); } 
 		};
 		
 	}
 	
-	abstract class NonvoidMethods {
+	abstract class NonvoidMethods() {
 	
 		String simpleMethod() { return "Hello"; }
 		
@@ -97,7 +97,7 @@ class Methods {
 		
 		List<X> methodWithTypeParameter<X>(X x) { return List(x); }
 		
-		List<X> methodWithTypeConstraint<X>(X x) where X>=String { return List(x); }
+		List<X> methodWithTypeConstraint<X>(X x) where X satisfies String { return List(x); }
 		
 		String methodWithNestedMethod() {
 			String nestedMethod(String param) {
@@ -107,7 +107,7 @@ class Methods {
 		}
 		
 		String methodWithNestedClass() {
-			class NestedClass {
+			class NestedClass() {
 				String hello = "Hello";
 			}
 			return NestedClass().hello;
@@ -124,7 +124,7 @@ class Methods {
 		
 		log.info { 
 			methodWithFunctionalParameter { 
-				method() { return "Hello"; } 
+				String method() { return "Hello"; } 
 			} 
 		};
 		

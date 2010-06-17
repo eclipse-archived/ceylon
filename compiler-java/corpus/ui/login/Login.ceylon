@@ -26,7 +26,7 @@ public class Login(Session session, Environment env) extends Window(env) {
 					},
 					TextInput {
 						size = 15;
-						onUpdate(String value) {
+						void onUpdate(String value) {
 							session.hashedPassword:=Util.hash(value); 
 						}
 					}
@@ -35,7 +35,7 @@ public class Login(Session session, Environment env) extends Window(env) {
 		},
 		Button {
 			description="Sign in";
-			onClick() {
+			void onClick() {
 				close();
 				session.begin();
 			}

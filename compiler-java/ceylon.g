@@ -7,11 +7,10 @@ options {
 }
 
 tokens {
-	ANNOTATION;
-	ANNOTATION_LIST;
-	DECLARE;
-	MEMBER_DECL;
-	TYPE_DECL;
+    ANNOTATION;
+    ANNOTATION_LIST;
+    MEMBER_DECL;
+    TYPE_DECL;
     ABSTRACT_MEMBER_DECL;
     ALIAS_DECL;
     ANNOTATION_NAME;
@@ -27,42 +26,38 @@ tokens {
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
-    DECL_MODIFIER;
     DO_BLOCK;
-    DO_ITERATOR;
     DO_ITERATOR;
     EXPR;
     FINALLY_BLOCK;
     FORMAL_PARAMETER;
+    FORMAL_PARAMETER_LIST;
     IF_FALSE;
     IF_STMT;
     IF_TRUE;
     IMPORT_DECL;
     IMPORT_LIST;
+    IMPORT_WILDCARD;
+    IMPORT_PATH;
     INIT_EXPR;
-    INSTANCE;
-    INSTANCE_LIST;
+    INST_DECL;
     INTERFACE_DECL;
     MEMBER_NAME;
     MEMBER_TYPE;
-    METHOD_DECL;
-    METHOD_EXPR;
     NAMED_ARG;
-    UNNAMED_ARG;
+    VARARGS;
     NIL;
     RET_STMT;
     STMT_LIST;
-    STRING_CST;
     THROW_STMT;
+    RETRY_STMT;
     TRY_BLOCK;
     TRY_CATCH_STMT;
-    TRY_RESOURCE_LIST;
+    TRY_RESOURCE;
     TRY_STMT;
     TYPE_ARG_LIST;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
-    USER_ANNOTATION;
-    VAR_DECL;
     WHILE_BLOCK;
     WHILE_STMT;
     SWITCH_STMT;
@@ -73,11 +68,10 @@ tokens {
     CASE_DEFAULT;
     TYPE_CONSTRAINT_LIST;
     TYPE;
-    TYPE_ARGS;
     TYPE_CONSTRAINT;
     TYPE_DECL;
     SATISFIES_LIST;
-    ABSTRACT_METHOD_DECL;
+    ABSTRACTS_LIST;
     SUBSCRIPT_EXPR;
     LOWER_BOUND;
     UPPER_BOUND;
@@ -87,50 +81,70 @@ tokens {
     STRING_CONCAT;
     INT_CST;
     FLOAT_CST;
+    STRING_CST;
     QUOTE_CST;
     FOR_STMT;
-FOR_ITERATOR;
-FAIL_BLOCK;
-LOOP_BLOCK;
-FOR_CONTAINMENT;
-REFLECTED_LITERAL;
-ENUM_LIST;
-SUPERCLASS;
-PREFIX_EXPR;
-POSTFIX_EXPR;
-EXISTS_EXPR;
-NONEMPTY_EXPR;
-IS_EXPR;
-GET_EXPR;
-SET_EXPR;
+    FOR_ITERATOR;
+    FAIL_BLOCK;
+    LOOP_BLOCK;
+    FOR_CONTAINMENT;
+    REFLECTED_LITERAL;
+    ENUM_LIST;
+    SUPERCLASS;
+    PREFIX_EXPR;
+    POSTFIX_EXPR;
+    EXISTS_EXPR;
+    NONEMPTY_EXPR;
+    IS_EXPR;
+    GET_EXPR;
+    SET_EXPR;
+    //PRIMARY;
 }
 
 compilationUnit
     : importDeclaration*
-      (annotations? typeDeclaration)+
+      toplevelDeclaration+
       EOF
-      ->
-      ^(IMPORT_LIST importDeclaration)*
-      ^(TYPE_DECL annotations? typeDeclaration)+
-     ;
-       
-typeDeclaration
-    : classDeclaration -> ^(CLASS_DECL classDeclaration)
-    | interfaceDeclaration -> ^(INTERFACE_DECL interfaceDeclaration)
-    | aliasDeclaration -> ^(ALIAS_DECL aliasDeclaration)
+    -> ^(IMPORT_LIST importDeclaration*)?
+       ^(TYPE_DECL toplevelDeclaration)+
     ;
 
-importDeclaration  
-    : 'import' importElement ('.' importElement)* ('.' wildcard | alias)? ';'
-    -> ^(IMPORT_DECL ^(TYPE_NAME importElement*) wildcard? alias?)
+toplevelDeclaration
+    : annotations? 
+    ( 
+        memberDeclaration 
+      -> ^(MEMBER_DECL memberDeclaration annotations?)
+      | typeDeclaration 
+      -> ^(TYPE_DECL typeDeclaration annotations?)
+    )
+    ;
+
+typeDeclaration
+    : classDeclaration
+    -> ^(CLASS_DECL classDeclaration)
+    | interfaceDeclaration
+    -> ^(INTERFACE_DECL interfaceDeclaration)
+    | aliasDeclaration
+    -> ^(ALIAS_DECL aliasDeclaration)
+    ;
+
+importDeclaration
+    : 'import' importPath ('.' wildcard | alias)? ';'
+    -> ^(IMPORT_DECL importPath wildcard? alias?)
     ;
     
-wildcard:	'*'
+importPath
+    : importElement ('.' importElement)*
+    -> ^(IMPORT_PATH importElement*)
     ;
     
-alias	
-    :
-    'alias' typeName
+wildcard
+    : '*'
+    -> ^(IMPORT_WILDCARD)
+    ;
+    
+alias
+    : 'alias' typeName
     -> ^(ALIAS_DECL typeName)
     ;
     
@@ -138,6 +152,9 @@ importElement
     : LIDENTIFIER | UIDENTIFIER
     ;
 
+//Note that this accepts more than the language spec
+//since it does not enforce that enumerated class 
+//instance lists are not allowed inside blocks
 block
     : '{' declarationOrStatement* directiveStatement? '}'
     -> ^(STMT_LIST declarationOrStatement* directiveStatement?)
@@ -150,77 +167,75 @@ block
       positionalArguments?
       satisfiedTypes?
       inlineClassBody
-    ;*/
+    ;
 
 inlineClassBody
     : '{' declarationOrStatement* '}'
-    ;
+    ;*/
 
-typeParameterStart
-    : '<'
-    ;
-
-//we could eliminate the backtracking by requiring
+//We could eliminate the backtracking by requiring
 //all member declarations to begin with a keyword
+//Note that this accepts more than the language spec
+//since it does not enforce that enumerated class
+//instances have to be listed together at the top
+//of the class body
 declarationOrStatement
-    : //modifier annotations? ( memberDeclaration | toplevelDeclaration )
-    (declaration) => declaration
-    | statement
+    : (declarationStart) => declaration | statement
     ;
 
+//TODO: I don't understand why we need to distinguish
+//      methods from attributes at this stage. Why not
+//      do it later?
 declaration
-    :
-    ann=annotations? 
-    (((memberHeader memberParameters) => 
+    : annotations? 
+    ( 
+        memberDeclaration 
+      -> ^(MEMBER_DECL memberDeclaration annotations?)
+      | typeDeclaration 
+      -> ^(TYPE_DECL typeDeclaration annotations?)
+      | instance 
+      -> ^(INST_DECL instance annotations?)
+    )
+/*    (((memberHeader memberParameters) => 
             (mem=memberDeclaration 
                 -> ^(METHOD_DECL $mem $ann?)))
     | (mem=memberDeclaration 
             -> ^(MEMBER_DECL $mem $ann?))
     | (typ=typeDeclaration 
-            -> ^(TYPE_DECL $typ $ann?)))
+            -> ^(TYPE_DECL $typ $ann?))
+    | (inst=instance
+            -> ^(INSTANCE $inst $ann?)))*/
     ;
-//special rule for syntactic predicates
-//be careful with this one, since it 
-//matches "()", which can also be an 
-//argument list
-formalParameterStart
-    : '(' (declarationStart | ')')
-    ;
-
+    
 //special rule for syntactic predicates
 declarationStart
-    :  declarationModifier 
-    //TODO: type inference: (type|'assign'|'void'|'def')
-    | ( userAnnotation annotations? )? (type|'assign'|'void') LIDENTIFIER
+    :  userAnnotation* ( langAnnotation | memberDeclarationStart | typeDeclarationStart )
+    ;
+
+memberDeclarationStart
+    : (type|'assign'|'void'|'case') LIDENTIFIER
+    ;
+    
+typeDeclarationStart
+    : ('class'|'interface'|'alias') UIDENTIFIER
     ;
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-declarationModifier 
-    :
-    modifier
-    -> ^(DECL_MODIFIER modifier)
-    ;
-
-modifier
+langAnnotation
     : 'public'
-    | 'package'
     | 'module'
+    | 'package'
+    | 'private'
+    | 'abstract'
+    | 'default'
     | 'override'
     | 'optional'
     | 'mutable'
-    | 'abstract'
-    | 'final'
-    | 'static'
-    | 'once'
-    | 'deprecated'
-    | 'volatile'
     | 'extension'
+    | 'volatile'
     ;
 
-//Even though it looks like this is non-associative
-//assignment, it is actually right associative because
-//assignable can be an assignment
 statement 
     : expressionStatement
     | controlStructure
@@ -231,78 +246,87 @@ expressionStatement
     ;
 
 directiveStatement
-    : directive ';'? -> directive
+    : directive (';'!)?
     ;
 
 directive
-    : 'return' assignable? -> ^(RET_STMT assignable?)
-    //| 'produce' assignable
-    | 'throw' expression? -> ^(THROW_STMT expression?)
-    | 'break' expression? -> ^(BREAK_STMT expression?)
+    : returnDirective
+    | throwDirective
+    | breakDirective
+    | continueDirective
+    | retryDirective
     ;
 
+returnDirective
+    : 'return' expression?
+    -> ^(RET_STMT expression?)
+    ;
 
-abstractMemberDeclaration
-    : ann=annotations?
-    (((memberHeader memberParameters) => 
+throwDirective
+    : 'throw' expression?
+    -> ^(THROW_STMT expression?)
+    ;
+
+breakDirective
+    : 'break' expression?
+    -> ^(BREAK_STMT expression?)
+    ;
+
+continueDirective
+    : 'continue'
+    ;
+
+retryDirective
+    : 'retry'
+    -> ^(RETRY_STMT)
+    ;
+
+abstractDeclaration
+    : annotations? 
+    ( 
+        abstractMemberDeclaration 
+      -> ^(ABSTRACT_MEMBER_DECL abstractMemberDeclaration annotations?)
+      | typeDeclaration 
+      -> ^(TYPE_DECL typeDeclaration annotations?)
+    )
+/*    (((memberHeader memberParameters) => 
         (memberHeader memberParameters ';'
           -> ^(ABSTRACT_METHOD_DECL $ann? memberHeader memberParameters)))
     | (mem=memberDeclaration 
-            -> ^(MEMBER_DECL $mem $ann?)))
+            -> ^(MEMBER_DECL $mem $ann?)))*/
     ;
 
-
-/*
 abstractMemberDeclaration
-    : annotations?
-      memberHeader
-      memberParameters?
-//      -> ^(ABSTRACT_MEMBER_DECL annotations? memberHeader memberParameters?)
+    : memberHeader memberParameters? ';'!
     ;
-*/
 
 memberDeclaration
     : memberHeader memberDefinition
     ;
 
 memberHeader
-    : (memberType memberName
-       -> ^(MEMBER_TYPE memberType) memberName)
-    | ('assign' memberName
-       -> ^(ATTRIBUTE_SETTER memberName))
+    : memberType memberName
+    -> ^(MEMBER_TYPE memberType) memberName
+    | 'assign' memberName
+    -> ^(ATTRIBUTE_SETTER memberName)
     ;
 
 memberType
-    :	
-    type | 'void' ;
+    : type | 'void' | 'local'
+    ;
 
 memberParameters
     : typeParameters? formalParameters+ typeConstraints?
     ;
 
+//TODO: should we allow the shortcut style of method
+//      definition for a method or getter which returns
+//      a parExpression, just like we do for Smalltalk
+//      style parameters below?
 memberDefinition
-options {backtrack = true;}
-    : memberParameters? ';'
-    | memberParameters? (block | '='! expression ';'!)    
-    //allow omission of braces:
-    /*: ( (memberParameterStart) => memberParameters )? 
-      ( ('{') => block | implicationExpression ';' )*/
-    | memberInitializer? ';'!
+    : memberParameters?
+      ( block | (specifier | initializer)? ';'! )
     ;
-
-memberInitializer
-    : (specifier | initializer)
-    ;
-
-
-//shortcut functor expression that makes the parameter list 
-//optional, but can appear only using the special smalltalk
-//style method protocol
-undelimitedNamedArgumentDefinition
-    : ( (formalParameterStart) => formalParameters )? 
-      ( ('{') => block | implicationExpression )
-    ;
-
     
 interfaceDeclaration
     :
@@ -312,20 +336,11 @@ interfaceDeclaration
         satisfiedTypes?
         typeConstraints?
         interfaceBody
- //       ->
- //       typeName typeParameters? satisfiedTypes? typeConstraints? interfaceBody?
     ;
 
 interfaceBody
-    //TODO: why can't we have toplevel declarations 
-    //      inside an interface dec?
-    : '{'! (abstractMemberDeclaration|typeDeclaration)* '}'!
+    : '{'! abstractDeclaration* '}'!
     ;
-
-abstractMemberDeclarations
-    : abstractMemberDeclaration*
-    ;
-
 
 aliasDeclaration
     :
@@ -342,7 +357,7 @@ classDeclaration
         'class'!
         typeName
         typeParameters?
-        formalParameters?
+        formalParameters
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -350,101 +365,101 @@ classDeclaration
     ;
 
 classBody
-    : '{' ((instanceStart)=>instances)? declarationOrStatement* '}'
-    -> instances? ^(STMT_LIST declarationOrStatement*)
- //    -> ^(CLASS_BODY $inst? ^(STMT_LIST $stmts))
- /*   -> instances? declarationOrStatement*  */
+    : '{' declarationOrStatement* '}'
+    -> ^(STMT_LIST declarationOrStatement*)
+ //    -> ^(CLASS_BODY ^(STMT_LIST $stmts))
     ;
 
 extendedType
-    : 'extends' type positionalArguments?
-    -> ^(SUPERCLASS type positionalArguments?) 
-    ;
-    
-instances
-    : instance (',' instance)* (';'|'...')
-    -> ^(INSTANCE_LIST ^(INSTANCE instance)*)
-    // FIXME: Need to add ellipsis
+    : 'extends' type positionalArguments
+    -> ^(SUPERCLASS type positionalArguments) 
     ;
 
-instance
-    : annotations? 'case'! memberName arguments?
-    ;
-
-//special rule for syntactic predicate
-instanceStart
-    : annotations? 'case'
-    ;
-
-typeConstraint
-    : typeName ( ('>='^ type) | ('<='^ type) | ('='^ 'subtype') | formalParameters )
-    ;
-    
-typeConstraints
-    //TODO: should it be 'for'?
-    : 'where' typeConstraint ('&' typeConstraint)*
-    -> ^(TYPE_CONSTRAINT_LIST ^(TYPE_CONSTRAINT typeConstraint)+)
-    ;
-    
 satisfiedTypes
     : 'satisfies' type (',' type)*
     -> ^(SATISFIES_LIST type+)
     ;
 
+abstractedTypes
+    : 'abstracts' type (',' type)*
+    -> ^(ABSTRACTS_LIST type+)
+    ;
+
+instance
+    : 'case'! memberName arguments? (','|';'|'...')
+    ;
+    
+typeConstraint
+    : 'where' typeName formalParameters? satisfiedTypes? abstractedTypes?
+    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedTypes?)
+    ;
+    
+typeConstraints
+    : typeConstraint+
+    -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
+    ;
+    
 type
-    : (parameterizedType | 'subtype')
-    -> 'subtype'? parameterizedType?
+    : parameterizedType //( '[' parameterizedType? ']' )?
+    -> parameterizedType //FIXME: unnecessary?
+    | 'subtype'
+    -> ^(TYPE 'subtype')
     ;
 
 parameterizedType
-    :
-    qualifiedTypeName ((typeParameterStart) => typeArguments )?
-    -> ^(TYPE qualifiedTypeName ^(TYPE_ARGS typeArguments)?)
+    : qualifiedTypeName typeArguments?
+    -> ^(TYPE qualifiedTypeName typeArguments?)
     ;
 
 annotations
-    : annotation+ -> ^(ANNOTATION_LIST annotation+)
+    : annotation+
+    -> ^(ANNOTATION_LIST annotation+)
     ;
 
 annotation
-    : declarationModifier | userAnnotation
+    : langAnnotation
+    -> ^(ANNOTATION langAnnotation) 
+    | userAnnotation
     ;
 
 //TODO: we could minimize backtracking by limiting the 
 //kind of expressions that can appear as arguments to
 //the annotation
 userAnnotation 
-    : 
-    annotationName annotationArguments?
-    -> ^(USER_ANNOTATION ^(ANNOTATION_NAME annotationName) annotationArguments?)
-//    name=annotationName args=annotationArguments?
+    : annotationName annotationArguments?
+    -> ^(ANNOTATION annotationName annotationArguments?)
     ;
 
 annotationArguments
-    : arguments | ( literal | reflectedLiteral )+
+    : arguments | 
+    ( 
+    (SIMPLESTRINGLITERAL) => SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
+    | literal | reflectedLiteral )+
     ;
 
 reflectedLiteral 
-    : '#' ( memberName | (type ( '.' memberName )? ) )
-    -> ^(REFLECTED_LITERAL type? memberName?)
+    : '#' ( memberName | (parameterizedType ( '.' memberName )? ) )
+    -> ^(REFLECTED_LITERAL parameterizedType? memberName?)
     ;
 
 qualifiedTypeName
-    :  UIDENTIFIER ('.' UIDENTIFIER)*
-        ->^(TYPE_NAME UIDENTIFIER+) 
+    : UIDENTIFIER ('.' UIDENTIFIER)*
+    -> ^(TYPE_NAME UIDENTIFIER+) 
     ;
 
 typeName
     : UIDENTIFIER
-        ->^(TYPE_NAME UIDENTIFIER)
+    -> ^(TYPE_NAME UIDENTIFIER)
     ;
 
 annotationName
     : LIDENTIFIER
+    -> ^(ANNOTATION_NAME LIDENTIFIER)
     ;
 
 memberName 
-    : LIDENTIFIER -> ^(MEMBER_NAME LIDENTIFIER)
+    : LIDENTIFIER
+    -> ^(MEMBER_NAME LIDENTIFIER)
     ;
 
 typeArguments
@@ -458,7 +473,8 @@ typeParameters
     ;
 
 typeParameter
-    : variance? typeName -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
+    : variance? typeName
+    -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     ;
 
 variance
@@ -467,55 +483,68 @@ variance
     
 //for locals and attributes
 initializer
-    : ':=' assignable
-    -> ^(INIT_EXPR assignable)
+    : ':=' expression
+    -> ^(INIT_EXPR expression)
     ;
 
 //for parameters
 specifier
-    : '=' assignable
-    -> ^(INIT_EXPR assignable)
+    : '=' expression
+    -> ^(INIT_EXPR expression)
     ;
 
 literal
-    : NATURALLITERAL -> ^(INT_CST NATURALLITERAL)
-    | FLOATLITERAL -> ^(FLOAT_CST FLOATLITERAL)
-    | QUOTEDLITERAL -> ^(QUOTE_CST QUOTEDLITERAL)
-    | CHARLITERAL -> ^(CHAR_CST CHARLITERAL)
-    | SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
-    | stringExpr -> ^(STRING_CONCAT stringExpr)
-    ;   
-
-stringExpr
-    : 
-    leftStringLiteral innerStringExpr (middleStringLiteral innerStringExpr)* rightStringLiteral
+    : nonstringLiteral
+    | stringExpression
     ;
 
-innerStringExpr
-    :
-    expression
+nonstringLiteral
+    : NATURALLITERAL
+    -> ^(INT_CST NATURALLITERAL)
+    | FLOATLITERAL
+    -> ^(FLOAT_CST FLOATLITERAL)
+    | QUOTEDLITERAL
+    -> ^(QUOTE_CST QUOTEDLITERAL)
+    | CHARLITERAL
+    -> ^(CHAR_CST CHARLITERAL)
     ;
 
-leftStringLiteral
-    : LEFTSTRINGLITERAL -> ^(STRING_CST LEFTSTRINGLITERAL)
+stringExpression
+    : (SIMPLESTRINGLITERAL (interpolatedExpressionStart|SIMPLESTRINGLITERAL)) 
+        => stringTemplate
+    -> ^(STRING_CONCAT stringTemplate)
+    | SIMPLESTRINGLITERAL
+    -> ^(STRING_CST SIMPLESTRINGLITERAL)
     ;
-    
-middleStringLiteral
-    : MIDDLESTRINGLITERAL -> ^(STRING_CST MIDDLESTRINGLITERAL)
+
+stringTemplate
+    : SIMPLESTRINGLITERAL 
+    ( (interpolatedExpressionStart|SIMPLESTRINGLITERAL) => 
+        ( (interpolatedExpressionStart) => expression )? 
+        SIMPLESTRINGLITERAL 
+    )+
     ;
-    
-rightStringLiteral
-    : RIGHTSTRINGLITERAL -> ^(STRING_CST RIGHTSTRINGLITERAL)
-    ;
-    
-assignable 
-    : reflectedLiteral
-    | expression
+
+//special rule for syntactic predicates
+//this includes every token that could be 
+//the beginning of an expression, except 
+//for SIMPLESTRINGLITERAL and '['
+interpolatedExpressionStart
+    : '(' 
+    | '{'
+    | '#' 
+    | LIDENTIFIER 
+    | UIDENTIFIER 
+    | specialValue 
+    | nonstringLiteral
+    | prefixOperator
+    | 'get'
+    | 'set'
     ;
 
 expression
-    : expr
-    -> ^(EXPR expr)
+    : assignmentExpression
+    -> ^(EXPR assignmentExpression)
     ;
 
 //Even though it looks like this is non-associative
@@ -523,25 +552,10 @@ expression
 //assignable can be an assignment
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
-expr
-    : methodExpression
-      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) assignable )?
+assignmentExpression
+    : implicationExpression
+      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
     ;
-
-
-// Backtracking shouldnm't be needed here, but the official ANTLr way to do it doesn't work.
-methodExpression
-options {backtrack=true;}
-    : e=implicationExpression undelimitedNamedArgument+ -> ^(METHOD_EXPR $e undelimitedNamedArgument+)
-    | implicationExpression
-    ;
-
-undelimitedNamedArgument
-    : ( memberName | 'case' '(' expressions ')' ) 
-      undelimitedNamedArgumentDefinition
-      -> ^(NAMED_ARG memberName? ^(ANON_METH undelimitedNamedArgumentDefinition) ^(EXPR_LIST expressions)?)
-     ;
-
 
 implicationExpression
     : disjunctionExpression 
@@ -572,6 +586,7 @@ equalityExpression
 comparisonExpression
     : defaultExpression
       (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) defaultExpression)?
+    | reflectedLiteral //needs to be here since it can contain type args
     ;
 
 //should we reverse the precedence order 
@@ -594,7 +609,7 @@ existenceEmptinessExpression
     : e=rangeIntervalEntryExpression
        (('exists' -> ^(EXISTS_EXPR $e))
         | ('nonempty' -> ^(NONEMPTY_EXPR $e)) )?
-     -> $e	
+     -> $e
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -619,18 +634,32 @@ exponentiationExpression
     ;
 
 unaryExpression 
-    : p=prefixOperator e=unaryExpression -> ^(PREFIX_EXPR $p $e)
+    : prefixOperator unaryExpression
+    -> ^(PREFIX_EXPR prefixOperator unaryExpression)
     | primary
     ;
 
 prefixOperator
-    : '$' |'-' |'++' |'--' | '~'
+    : '$' | '-' |'++' | '--' | '~'
+    ;
+
+specialValue
+    : 'this' 
+    | 'super' 
+    | 'null'
+    | 'none'
+    ;
+
+enumeration
+    : '{' expressions? '}'
+    -> ^(ENUM_LIST expressions?)
     ;
 
 primary
-    :
-    getterSetterMethodReference
-    | prim ;	
+    : getterSetterMethodReference
+    | prim
+    //-> ^(PRIMARY prim)
+    ;	
     
 prim
 options {backtrack=true;}
@@ -644,146 +673,158 @@ options {backtrack=true;}
 // This backtracking predicate really shouldn't be necessary, and the ANTLR
 // book seems to agree, but the above doesn't work.
 //    : base selector+ -> ^(SELECTOR_LIST base selector+)
- //   | base
-    :    
-    base selector+ -> ^(EXPR base selector*)
+//    | base
+    : //base selector* 
+    base selector+
+    -> ^(EXPR base selector*)
     | base
     ;
 
 getterSetterMethodReference
-    :
-    ('set' prim -> ^(SET_EXPR prim))
-    | ('get' prim -> ^(GET_EXPR prim))
+    : 'set' prim -> ^(SET_EXPR prim)
+    | 'get' prim -> ^(GET_EXPR prim)
     ;
 
 postfixOperator
-    : ('--' | '++')
+    : '--' | '++'
     ;	
 
 base 
-    :  literal
+    : literal
     | parExpression
     | enumeration
     | specialValue
-    | memberName
-    | typeName
+    | nameAndTypeArguments
     //| inlineClassDeclaration
     ;
     
-
-specialValue
-    : 'this' 
-    | 'super' 
-    | 'null'
-    | 'none'
-    ;
-
-enumeration
-    : '{' assignables? '}'
-    -> ^(ENUM_LIST assignables?)
-    //a special List literal syntax?
-    //| '[' assignables? ']' 
-    ;
-
 selector 
     : member
+    | argumentsWithFunctionalArguments
+    -> ^(CALL_EXPR argumentsWithFunctionalArguments)
     | elementSelector
-    | (arguments -> ^(CALL_EXPR arguments))
-    | postfixOperator -> ^(POSTFIX_EXPR postfixOperator)
+    | postfixOperator 
+    -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
 member
-    : ('.' | '^.' | '?.' | '*.') 
-      ( memberName | typeName ) 
-      ( (typeArguments '(') => typeArguments )?
+    : ('.' | '?.' | '*.') nameAndTypeArguments
     ;
-    
+
+nameAndTypeArguments
+    : ( memberName | typeName ) 
+      ( ( typeArguments ('('|'{') ) => typeArguments )?
+    ;
+
 elementSelector
     : '?'? '[' elementsSpec ']'
     -> ^(SUBSCRIPT_EXPR '?'? elementsSpec)
     ;
 
 elementsSpec
-    : (lo=additiveExpression ( foo='...' | '..' hi=additiveExpression )?
-    |  '...' hi=additiveExpression)
-    -> ^(LOWER_BOUND $lo)? ^(UPPER_BOUND $foo)? ^(UPPER_BOUND $hi)?	
+    : additiveExpression ( '...' | '..' additiveExpression )?
+    -> ^(LOWER_BOUND additiveExpression) ^(UPPER_BOUND additiveExpression)?	
     ;
 
-arguments 
+argumentsWithFunctionalArguments
+    : arguments functionalArgument*
+    ;
+    
+arguments
     : positionalArguments | namedArguments
     ;
     
 namedArgument
-    : 'assign'? parameterName memberDefinition
+    : namedSpecifiedArgument | namedFunctionalArgument
     ;
-    
+
+namedFunctionalArgument
+    : (formalParameterType|'local') parameterName formalParameters* block
+    ;
+
+namedSpecifiedArgument
+    : parameterName specifier ';'!
+    ;
+
+namedArgumentStart
+    : LIDENTIFIER '=' 
+    | (formalParameterType|'local') LIDENTIFIER
+    ;
+
 parameterName
-    : LIDENTIFIER -> ^(ARG_NAME LIDENTIFIER)
+    : LIDENTIFIER
+    -> ^(ARG_NAME LIDENTIFIER)
     ;
 
 namedArguments
-    : '{' ((namedArgument) => namedArgument)* varargArguments? '}'
-    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* varargArguments?)
-    ;
-
-varargArguments
-    : unnamedArg (','! unnamedArg)*
-    ;
-
-unnamedArg
-    : assignable
-    -> ^(UNNAMED_ARG assignable)
-    ;
-
-assignables
-    : assignable (','! assignable)*
+    : '{' ((namedArgumentStart) => namedArgument)* expressions? '}'
+    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* ^(VARARGS expressions)?)
     ;
 
 parExpression 
-    : '('! assignable ')'!
+    : '('! expression ')'!
     ;
     
 positionalArguments
-    : '(' positionalArgumentList ')'
-   -> ^(ARG_LIST positionalArgumentList?)
-    ;
-
-positionalArgumentList
-    :
-    (  
-    positionalArgument (',' positionalArgument)*
-    )? -> positionalArgument*
+    : '(' ( positionalArgument (',' positionalArgument)* )? ')'
+    -> ^(ARG_LIST positionalArgument*)
     ;
 
 positionalArgument
-    : (variableStart) => special 
-    | assignable
+    : (variableStart) => specialArgument
+    | expression
     ;
 
-special
-    : type memberName (containment|specifier)
+//a smalltalk-style parameter to a positional parameter
+//invocation
+functionalArgument
+    : functionalArgumentHeader functionalArgumentDefinition
+    -> ^(NAMED_ARG functionalArgumentHeader? ^(ANON_METH functionalArgumentDefinition))
+    ;
+    
+functionalArgumentHeader
+    : parameterName
+    -> ^(ARG_NAME parameterName)
+    | 'case' '(' expressions ')'
+    -> ^(CASE_ITEM expressions)
+    ;
+
+functionalArgumentDefinition
+    : ( (formalParameterStart) => formalParameters )? 
+      ( block | parExpression /*| literal | specialValue*/ )
+    ;
+
+specialArgument
+    : (type|'local') memberName (containment|specifier)
+    //| isCondition
+    //| existsCondition
     ;
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(ARG_LIST formalParameter*)
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)?
     ;
 
-formalParameter
-    :
-     formalParameter_ -> ^(FORMAL_PARAMETER formalParameter_)
+//special rule for syntactic predicates
+//be careful with this one, since it 
+//matches "()", which can also be an 
+//argument list
+formalParameterStart
+    : '(' ( userAnnotation* ( langAnnotation | formalParameterType LIDENTIFIER ) | ')' )
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
-formalParameter_
-    : annotations?
-      memberType ('...')? memberName
-      memberParameters? 
+formalParameter
+    : annotations? formalParameterType parameterName formalParameters*
       ( '->' type parameterName | '..' parameterName )? 
       specifier?
+    ;
+
+formalParameterType
+    : (type|'void') '...'?
     ;
 
 // Control structures.
@@ -792,52 +833,67 @@ condition
     : expression | existsCondition | nonemptyCondition | isCondition
     ;
 
-// Backtracking here is needed for exactly the same reason as localOrStatement.
 existsCondition
-    : 'exists' ( (variableStart) => variable specifier | expression )
-    -> ^(EXISTS_EXPR variable? specifier? expression?)
+    : 'exists' controlVariableOrExpression
+    -> ^(EXISTS_EXPR controlVariableOrExpression)
     ;
     
 nonemptyCondition
-    : 'nonempty' ( (variableStart) => variable specifier | expression )
-    -> ^(NONEMPTY_EXPR variable? specifier? expression?)
+    : 'nonempty' controlVariableOrExpression
+    -> ^(NONEMPTY_EXPR controlVariableOrExpression)
     ;
-    
+
 isCondition
-    : 'is' type ( (memberName '=') => memberName specifier 
-                   -> ^(IS_EXPR type memberName specifier)
-        | expression -> ^(IS_EXPR type expression))
-    
+    : 'is' type ( (memberName '=') => memberName specifier | expression )
+    -> ^(IS_EXPR type memberName? specifier? expression?)
     ;
-    
+
 controlStructure
-    : ifElse | switchCaseElse | doWhile | forFail | tryCatchFinally
+    : ifElse | switchCaseElse | whileStmt | doWhile | forFail | tryCatchFinally
     ;
     
 ifElse
-    : 	
-    'if' '(' condition ')' ifBlock=block 
-      ('else' (ifElse | elseBlock=block))?
-    -> ^(IF_STMT ^(CONDITION condition) ^(IF_TRUE $ifBlock) ^(IF_FALSE $elseBlock? ifElse?)?)
+    : ifBlock elseBlock?
+    -> ^(IF_STMT ifBlock elseBlock?)
+    ;
+
+ifBlock
+    : 'if' '(' condition ')' block
+    -> ^(CONDITION condition) ^(IF_TRUE block)
+    ;
+
+elseBlock
+    : 'else' (ifElse | block)
+    -> ^(IF_FALSE block? ifElse?)
     ;
 
 switchCaseElse
-    : 'switch' '(' expression ')' ( '{' cases '}' | cases )
-    -> ^(SWITCH_STMT ^(SWITCH_EXPR expression) ^(SWITCH_CASE_LIST cases))
+    : switchHeader ( '{' cases '}' | cases )
+    -> ^(SWITCH_STMT switchHeader cases)
     ;
-    
+
+switchHeader
+    : 'switch' '(' expression ')'
+    -> ^(SWITCH_EXPR expression)
+    ;
+
 cases 
-    : caseItem+ ('else' block)?
-    -> caseItem+ ^(CASE_DEFAULT  block)?
+    : caseItem+ defaultCaseItem?
+    -> ^(SWITCH_CASE_LIST caseItem+ defaultCaseItem?)
     ;
     
 caseItem
-    : ('case' '(' caseCondition ')' block)
+    : 'case' '(' caseCondition ')' block
     -> ^(CASE_ITEM caseCondition block)
-    ;	 
-    
+    ;
+
+defaultCaseItem
+    : 'else' block
+    -> ^(CASE_DEFAULT block)
+    ;
+
 caseCondition
-    : expressions | ('is' type -> ^(IS_EXPR type))
+    : expressions | isCaseCondition
     ;
 
 expressions
@@ -846,17 +902,28 @@ expressions
     ;
 
 isCaseCondition
-    : 
+    : 'is' type
+    -> ^(IS_EXPR type)
     ;
 
 forFail
-    : 'for' '(' forIterator ')' loopBlock=block ('fail' failBlock=block)?
-    -> ^(FOR_STMT forIterator ^(LOOP_BLOCK $loopBlock) ^(FAIL_BLOCK $failBlock)?)
+    : forBlock failBlock?
+    -> ^(FOR_STMT forBlock failBlock?)
+    ;
+
+forBlock
+    : 'for' '(' forIterator ')' block
+    -> forIterator ^(LOOP_BLOCK block)
+    ;
+
+failBlock
+    : 'fail' block
+    -> ^(FAIL_BLOCK block)
     ;
 
 forIterator
-    : v1=variable ('->' v2=variable)? containment
-    -> ^(FOR_ITERATOR $v1 $v2? containment)
+    : variable ('->' variable)? containment
+    -> ^(FOR_ITERATOR variable+ containment)
     ;
     
 containment
@@ -865,146 +932,93 @@ containment
     ;
     
 doWhile
-    :   
-    ('do' ('(' doIterator ')')? b1=block? )?  
-    'while' '(' condition ')' (b2=block | ';')
-     -> ^(WHILE_STMT ^(CONDITION condition) ^(DO_ITERATOR doIterator)? ^(DO_BLOCK $b1)?
-         ^(WHILE_BLOCK $b2)?)
+    : doBlock loopCondition ';'
+    -> ^(WHILE_STMT doBlock loopCondition)
     ;
 
-//do iterators are allowed to be mutable and/or optional
-doIterator
-    : annotations? variable (specifier | initializer)
+whileStmt
+    : loopCondition whileBlock
+    -> ^(WHILE_STMT loopCondition whileBlock)
+    ;
+
+loopCondition
+    : 'while' '(' condition ')'
+    -> ^(CONDITION condition)
+    ;
+
+whileBlock
+    : block
+    -> ^(WHILE_BLOCK block)
+    ;
+
+doBlock
+    : 'do' block
+    -> ^(DO_BLOCK block)
     ;
 
 tryCatchFinally
-    :
-    tryStmt
-    catchStmts
-    finallyStmt
-    -> ^(TRY_CATCH_STMT tryStmt catchStmts? finallyStmt?)
+    : tryBlock catchBlock* finallyBlock?
+    -> ^(TRY_CATCH_STMT tryBlock catchBlock* finallyBlock?)
     ;
-  
-tryStmt
-    :
-    'try' ( '(' resource (',' resource)* ')' )? block
-    -> ^(TRY_STMT ^(TRY_RESOURCE_LIST resource)? ^(TRY_BLOCK block))
+
+tryBlock
+    : 'try' ('(' resource ')')? block
+    -> ^(TRY_STMT resource? ^(TRY_BLOCK block))
     ;
-  
-catchStmts
-    :
-    ('catch' '(' variable ')' block)*
-    -> ^(CATCH_STMT variable ^(CATCH_BLOCK block))*
+
+catchBlock
+    : 'catch' '(' variable ')' block
+    -> ^(CATCH_STMT variable ^(CATCH_BLOCK block))
     ;
-    
-finallyStmt
-    :	
-    ('finally' block)?
-    -> ^(FINALLY_BLOCK block)?
-    ;    	    
+
+finallyBlock
+    : 'finally' block
+    -> ^(FINALLY_BLOCK block)
+    ;
 
 resource
+    : controlVariableOrExpression
+    -> ^(TRY_RESOURCE controlVariableOrExpression)
+    ;
+
+controlVariableOrExpression
     : (variableStart) => variable specifier 
     | expression
     ;
 
 variable
-    : type memberName
-    -> ^(VAR_DECL type memberName)
+    : (type|'local') memberName
     ;
 
-// FIXME: What is the point of 'in' here?
+//special rule for syntactic predicate
 variableStart
-    : type memberName ('in'|'=')
+    : variable ('in'|'=')
     ;
 
 // Lexer
-fragment
-NATURALLITERAL
-    :
-    ;
-
-fragment
-Digit 
-    : '0'..'9'
-    ;
 
 fragment
 Digits
-    :   ('0'..'9')+
-    ;
-
-fragment
-DOT
-    :
-    ;
-
-FLOATLITERAL
-    :
-        Digits Digits?
-            (
-               { input.LA(2) != '.'}?=>
-                      '.' Digits? Exponent?
-                    ( { $type = FLOATLITERAL; } )
-                |   
-                    (
-                        Exponent { $type = FLOATLITERAL; }
-                        | { $type = NATURALLITERAL;}
-                    )
-            )
-    |
-        '.'
-            (
-                  Digits Exponent? { $type = FLOATLITERAL; }
-                | '..' { $type = ELLIPSIS; }
-                | '.'  { $type = RANGE; }
-                |      { $type = DOT; }
-            )
-    
+    : ('0'..'9')+
     ;
 
 fragment 
 Exponent    
-    :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
+    : ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
-    
+
+fragment FLOATLITERAL :;
+fragment ELLIPSIS :;
+fragment RANGE :;
+fragment DOT :;
+NATURALLITERAL
+    : Digits 
+      ( { input.LA(2) != '.' }? => '.' Digits Exponent? { $type = FLOATLITERAL; } )?
+    | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
+    ;
+
 CHARLITERAL
     :   '@' ( ~ NonCharacterChars | EscapeSequence )
-    ;
-
-QUOTEDLITERAL
-    :   '\''
-        StringPart
-        '\''
-    ;
-
-SIMPLESTRINGLITERAL
-    :   '"'
-        StringPart
-        '"'
-    ;
-
-LEFTSTRINGLITERAL
-    :   '"'
-        StringPart
-        '${'
-    ;
-
-RIGHTSTRINGLITERAL
-    :   '}$'
-        StringPart
-        '"'
-    ;
-
-MIDDLESTRINGLITERAL
-    :   '}$'
-        StringPart
-        '${'
-    ;
-
-fragment
-NonStringChars
-    :    '{' | '\\' | '"' | '$' | '\''
     ;
 
 fragment
@@ -1012,11 +1026,23 @@ NonCharacterChars
     :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
     ;
 
+QUOTEDLITERAL
+    :   '\'' StringPart '\''
+    ;
+
+SIMPLESTRINGLITERAL
+    :   '"' StringPart '"'
+    ;
+
+fragment
+NonStringChars
+    :    '\\' | '"' | '\''
+    ;
+
 fragment
 StringPart
-    :    
-    ( ~ /* NonStringChars*/ ('{' | '\\' | '"' | '$' | '\'')
-     | EscapeSequence) *
+    : ( ~ /* NonStringChars*/ ('\\' | '"' | '\'')
+    | EscapeSequence) *
     ;
     
 fragment
@@ -1026,18 +1052,16 @@ EscapeSequence
         |   't' 
         |   'n' 
         |   'f' 
-        |   'r' 
+        |   'r'
+        |   's' 
         |   '\"' 
         |   '\''
-        |   '$'
-        |   '{'
-        |   '}' 
         )          
     ;
 
 WS  
     :   (
-            ' '
+             ' '
         |    '\r'
         |    '\t'
         |    '\u000C'
@@ -1060,18 +1084,17 @@ LINE_COMMENT
     ;   
 
 MULTI_COMMENT
-        :       '/*'
-                {
-                        $channel=HIDDEN;
-                }
-                (       ~('/'|'*')
-                        |       ('/' ~'*') => '/'
-                        |       ('*' ~'/') => '*'
-                        |       MULTI_COMMENT
-                )*
-                '*/'
+    :   '/*'
+        {
+            $channel=HIDDEN;
+        }
+        (    ~('/'|'*')
+        |    ('/' ~'*') => '/'
+        |    ('*' ~'/') => '*'
+        |    MULTI_COMMENT
+        )*
+        '*/'
         ;
-
 
 ASSIGN
     :   'assign'
@@ -1093,8 +1116,8 @@ CLASS
     :   'class'
     ;
 
-DECORATOR
-    :   'decorator'
+CONTINUE
+    :   'continue'
     ;
 
 DO
@@ -1107,6 +1130,10 @@ ELSE
 
 EXISTS
     :   'exists'
+    ;
+
+EXTENDS
+    :   'extends'
     ;
 
 FINALLY
@@ -1132,7 +1159,11 @@ IMPORT
 INTERFACE
     :   'interface'
     ;
-    
+
+LOCAL
+    :   'local'
+    ;
+
 NONE
     :   'none'
     ;
@@ -1145,9 +1176,13 @@ NONEMPTY
     :   'nonempty'
     ;
 
-/*PRODUCE
-    :   'produce'
-    ;*/
+GET
+    :   'get'
+    ;
+
+SET
+    :   'set'
+    ;
 
 RETURN
     :   'return'
@@ -1175,6 +1210,10 @@ THROW
 
 TRY
     :   'try'
+    ;
+
+RETRY
+    : 'retry'
     ;
 
 VOID
@@ -1221,15 +1260,19 @@ EQ
     :   '='
     ;
 
-BANG
+RENDER
+    :   '$'
+    ;
+
+NOT
     :   '!'
     ;
 
-TILDE
+BITWISENOT
     :   '~'
     ;
 
-QUES
+DEFAULT
     :   '?'
     ;
 
@@ -1245,19 +1288,27 @@ EQEQ
     :   '=='
     ;
 
-AMPAMP
+IDENTICAL
+    :   '==='
+    ;
+
+AND
     :   '&&'
     ;
 
-BARBAR
+OR
     :   '||'
     ;
 
-PLUSPLUS
+IMPLIES
+    :   '=>'
+    ;
+
+INCREMENT
     :   '++'
     ;
 
-SUBSUB
+DECREMENT
     :   '--'
     ;
 
@@ -1265,39 +1316,35 @@ PLUS
     :   '+'
     ;
 
-SUB
+MINUS
     :   '-'
     ;
 
-STAR
+TIMES
     :   '*'
     ;
 
-SLASH
+DIVIDED
     :   '/'
     ;
 
-AMP
+BITWISEAND
     :   '&'
     ;
 
-BAR
+BITWISEOR
     :   '|'
     ;
 
-CARET
+BITWISEXOR
     :   '^'
     ;
 
-PERCENT
+REMAINDER
     :   '%'
     ;
 
-AT
-    :   '@'
-    ;
-
-BANGEQ
+NOTEQ
     :   '!='
     ;
 
@@ -1309,18 +1356,16 @@ LT
     :   '<'
     ;        
 
-ENTRY
-    :   '->'
+GTEQ
+    :   '>='
     ;
 
-fragment
-RANGE
-    :
-    ;
-    
-fragment
-ELLIPSIS
-    :
+LTEQ
+    :   '<='
+    ;        
+
+ENTRY
+    :   '->'
     ;
     
 COMPARE
@@ -1339,14 +1384,66 @@ HASH
     :   '#'
     ;
 
+QUESDOT
+    :    '?.'
+    ;
+
+STARDOT
+    :    '*.'
+    ;
+
+POWER
+    :    '**'
+    ;
+
+DOTEQ
+    :   '.='
+    ;
+
 PLUSEQ
     :   '+='
     ;
-    
-CONVERTER
-    :  'converter'
+
+MINUSEQ
+    :   '-='
     ;
-    
+
+TIMESEQ
+    :   '*='
+    ;
+
+DIVIDEDEQ
+    :   '/='
+    ;
+
+BITWISEANDEQ
+    :   '&='
+    ;
+
+BITWISEOREQ
+    :   '|='
+    ;
+
+BITWISEXOREQ
+    :   '^='
+    ;
+
+REMAINDEREQ
+    :   '%='
+    ;
+
+DEFAULTEQ
+    :   '?='
+    ;
+
+ANDEQ
+    :   '&&='
+    ;
+
+OREQ
+    :   '||='
+    ;
+
 LIDENTIFIER 
     :   LIdentifierPart IdentifierPart*
     ;

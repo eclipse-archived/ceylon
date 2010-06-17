@@ -1,131 +1,129 @@
 # Interfaces.ceylon
 
-(TYPE_DECL 
-  (CLASS_DECL 
-    (TYPE_NAME Interfaces) 
-    (STMT_LIST 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME Simple))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithMethods) 
-          (ABSTRACT_METHOD_DECL 
-            (MEMBER_TYPE void) 
-            (MEMBER_NAME doNothing) ARG_LIST) 
-          (ABSTRACT_METHOD_DECL 
-            (MEMBER_TYPE 
-              (TYPE 
-                (TYPE_NAME Natural))) 
-            (MEMBER_NAME returnZero) ARG_LIST) 
-          (ABSTRACT_METHOD_DECL 
-            (MEMBER_TYPE 
-              (TYPE 
-                (TYPE_NAME String))) 
-            (MEMBER_NAME returnArgument) 
-            (ARG_LIST 
-              (FORMAL_PARAMETER 
-                (TYPE 
-                  (TYPE_NAME String)) 
-                (MEMBER_NAME arg)))))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithAttributes) 
-          (MEMBER_DECL 
-            (MEMBER_TYPE 
-              (TYPE 
-                (TYPE_NAME Natural))) 
-            (MEMBER_NAME count) ;) 
-          (MEMBER_DECL 
-            (MEMBER_TYPE 
-              (TYPE 
-                (TYPE_NAME String))) 
-            (MEMBER_NAME description) ; 
-            (ANNOTATION_LIST 
-              (DECL_MODIFIER mutable))))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithAnnotations)) 
-        (ANNOTATION_LIST 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME doc) 
-            (STRING_CST "This interface has annotations. Remember that literal
-	     strings can be spread across multiple lines.")) 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME by) 
-            (STRING_CST "Gavin King") 
-            (STRING_CST "Andrew Haley")) 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME scope) 
-            (ARG_LIST 
-              (EXPR 
-                (MEMBER_NAME session)))) 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME see) 
-            (REFLECTED_LITERAL 
-              (TYPE 
-                (TYPE_NAME Simple)))) 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME throws) 
-            (REFLECTED_LITERAL 
-              (TYPE 
-                (TYPE_NAME DatabaseException))) 
-            (STRING_CST "if database access fails")) 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME entity)) 
-          (USER_ANNOTATION 
-            (ANNOTATION_NAME table) 
-            (ARG_LIST 
-              (NAMED_ARG 
-                (ARG_NAME name) 
-                (EXPR 
-                  (STRING_CST "someTable"))) 
-              (NAMED_ARG 
-                (ARG_NAME schema) 
-                (EXPR 
-                  (STRING_CST "someSchema"))))))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME Satisfies) 
-          (SATISFIES_LIST 
-            (TYPE 
-              (TYPE_NAME Simple))))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithTypeParameters) 
-          (TYPE_PARAMETER_LIST 
-            (TYPE_PARAMETER 
-              (TYPE_NAME X)) 
-            (TYPE_PARAMETER 
-              (TYPE_NAME Y))))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithTypeConstraints) 
-          (TYPE_PARAMETER_LIST 
-            (TYPE_PARAMETER 
-              (TYPE_NAME X)) 
-            (TYPE_PARAMETER 
-              (TYPE_NAME Y))) 
-          (TYPE_CONSTRAINT_LIST 
-            (TYPE_CONSTRAINT 
-              (>= 
-                (TYPE_NAME X) 
-                (TYPE 
-                  (TYPE_NAME String)))) 
-            (TYPE_CONSTRAINT 
-              (TYPE_NAME Y) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Natural)) 
-                  (MEMBER_NAME count))))))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithNestedInterface) 
-          (INTERFACE_DECL 
-            (TYPE_NAME NestedInterface)))) 
-      (TYPE_DECL 
-        (INTERFACE_DECL 
-          (TYPE_NAME WithNestedClass) 
-          (CLASS_DECL 
-            (TYPE_NAME NestedClass) STMT_LIST))))))
+(TYPE_DECL
+  (TYPE_DECL
+    (CLASS_DECL
+      (TYPE_NAME Interfaces)
+      (STMT_LIST
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME Simple)))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithMethods)
+            (ABSTRACT_MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME doNothing))
+            (ABSTRACT_MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME returnZero))
+            (ABSTRACT_MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME returnArgument)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME arg))))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithAttributes)
+            (ABSTRACT_MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME count))
+            (ABSTRACT_MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME description)
+              (ANNOTATION_LIST
+                (ANNOTATION mutable)))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithAnnotations))
+          (ANNOTATION_LIST
+            (ANNOTATION
+              (ANNOTATION_NAME doc)
+              (STRING_CST "This interface has annotations. Remember that literal
+	     strings can be spread across multiple lines."))
+            (ANNOTATION
+              (ANNOTATION_NAME by)
+              (STRING_CST "Andrew Haley"))
+            (ANNOTATION
+              (ANNOTATION_NAME scope)
+              (ARG_LIST
+                (EXPR
+                  (MEMBER_NAME session))))
+            (ANNOTATION
+              (ANNOTATION_NAME see))
+            (ANNOTATION
+              (ANNOTATION_NAME throws)
+              (STRING_CST "if database access fails"))
+            (ANNOTATION
+              (ANNOTATION_NAME entity))
+            (ANNOTATION
+              (ANNOTATION_NAME table)
+              (ARG_LIST
+                (NAMED_ARG
+                  (ARG_NAME name)
+                  (INIT_EXPR
+                    (EXPR
+                      (STRING_CST "someTable"))))
+                (NAMED_ARG
+                  (ARG_NAME schema)
+                  (INIT_EXPR
+                    (EXPR
+                      (STRING_CST "someSchema"))))))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME Satisfies)
+            (SATISFIES_LIST
+              (TYPE
+                (TYPE_NAME Simple)))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithTypeParameters)
+            (TYPE_PARAMETER_LIST
+              (TYPE_PARAMETER
+                (TYPE_NAME X))
+              (TYPE_PARAMETER
+                (TYPE_NAME Y)))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithTypeConstraints)
+            (TYPE_PARAMETER_LIST
+              (TYPE_PARAMETER
+                (TYPE_NAME X))
+              (TYPE_PARAMETER
+                (TYPE_NAME Y)))
+            (TYPE_CONSTRAINT_LIST
+              (TYPE_CONSTRAINT
+                (TYPE_NAME X)
+                (SATISFIES_LIST
+                  (TYPE
+                    (TYPE_NAME String))))
+              (TYPE_CONSTRAINT
+                (TYPE_NAME Y)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Natural))
+                    (ARG_NAME count)))))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithNestedInterface)
+            (TYPE_DECL
+              (INTERFACE_DECL
+                (TYPE_NAME NestedInterface)))))
+        (TYPE_DECL
+          (INTERFACE_DECL
+            (TYPE_NAME WithNestedClass)
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME NestedClass) STMT_LIST))))))))

@@ -1,4 +1,4 @@
-class Aliases {
+class Aliases() {
 	
 	interface Foo<X,Y,Z> {}
 	interface Bar<X> {}
@@ -9,7 +9,7 @@ class Aliases {
 	alias WithTypeParameter<X> satisfies Bar<Baz<X>>;
 	
 	alias WithTypeConstraint<X> satisfies Bar<Baz<X>>
-		where X>=String;
+		where X satisfies String;
 	
 	alias Multiple satisfies Foo<Bar<Baz<String>>, Natural, Character>, Bar<Baz<String>>;
 	

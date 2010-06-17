@@ -1,549 +1,540 @@
 # Methods.ceylon
 
-(TYPE_DECL 
-  (CLASS_DECL 
-    (TYPE_NAME Methods) 
-    (STMT_LIST 
-      (TYPE_DECL 
-        (CLASS_DECL 
-          (TYPE_NAME VoidMethods) 
-          (STMT_LIST 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME simpleMethod) ARG_LIST STMT_LIST) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithParams) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Whole)) 
-                  (MEMBER_NAME amount)) 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Object)) 
-                  (MEMBER_NAME something))) STMT_LIST) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithMultipleParamLists) ARG_LIST 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Whole)) 
-                  (MEMBER_NAME amount)) 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Object)) 
-                  (MEMBER_NAME something))) 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR this . 
-                      (MEMBER_NAME methodWithParams)))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME abstractMethod) ARG_LIST ;) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodReference) ARG_LIST 
-              (EXPR 
-                (EXPR this . 
-                  (MEMBER_NAME voidMethod)))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodReferenceWithParams) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Whole)) 
-                  (MEMBER_NAME amount)) 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Object)) 
-                  (MEMBER_NAME something))) 
-              (EXPR 
-                (EXPR this . 
-                  (MEMBER_NAME voidMethodWithParam)))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME annotatedMethod) ARG_LIST 
-              (STMT_LIST 
-                (EXPR 
-                  (EXPR 
-                    (MEMBER_NAME simpleMethod) 
-                    (CALL_EXPR ARG_LIST)))) 
-              (ANNOTATION_LIST 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME doc) 
-                  (STRING_CST "This method has annotations. Remember that literal
-		     strings can be spread across multiple lines.")) 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME by) 
-                  (STRING_CST "Gavin King") 
-                  (STRING_CST "Andrew Haley")) 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME throws) 
-                  (REFLECTED_LITERAL 
-                    (TYPE 
-                      (TYPE_NAME Exception))) 
-                  (STRING_CST "if something goes wrong")) 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME see) 
-                  (REFLECTED_LITERAL 
-                    (TYPE 
-                      (TYPE_NAME Methods VoidMethods)) 
-                    (MEMBER_NAME simpleMethod))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithTypeParameter) 
-              (TYPE_PARAMETER_LIST 
-                (TYPE_PARAMETER 
-                  (TYPE_NAME X))) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME OpenList) 
-                    (TYPE_ARGS 
-                      (TYPE_ARG_LIST 
-                        (TYPE 
-                          (TYPE_NAME X))))) 
-                  (MEMBER_NAME list)) 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME X)) 
-                  (MEMBER_NAME x))) 
-              (STMT_LIST 
-                (EXPR 
-                  (EXPR 
-                    (MEMBER_NAME list) . 
-                    (MEMBER_NAME add) 
-                    (CALL_EXPR 
-                      (ARG_LIST 
-                        (EXPR 
-                          (MEMBER_NAME x)))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithTypeConstraint) 
-              (TYPE_PARAMETER_LIST 
-                (TYPE_PARAMETER 
-                  (TYPE_NAME X))) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME OpenList) 
-                    (TYPE_ARGS 
-                      (TYPE_ARG_LIST 
-                        (TYPE 
-                          (TYPE_NAME X))))) 
-                  (MEMBER_NAME list)) 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME X)) 
-                  (MEMBER_NAME x))) 
-              (TYPE_CONSTRAINT_LIST 
-                (TYPE_CONSTRAINT 
-                  (>= 
-                    (TYPE_NAME X) 
-                    (TYPE 
-                      (TYPE_NAME String))))) 
-              (STMT_LIST 
-                (EXPR 
-                  (EXPR 
-                    (MEMBER_NAME list) . 
-                    (MEMBER_NAME add) 
-                    (CALL_EXPR 
-                      (ARG_LIST 
-                        (EXPR 
-                          (MEMBER_NAME x)))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithNestedMethod) ARG_LIST 
-              (STMT_LIST 
-                (METHOD_DECL 
-                  (MEMBER_TYPE void) 
-                  (MEMBER_NAME nestedMethod) 
-                  (ARG_LIST 
-                    (FORMAL_PARAMETER 
-                      (TYPE 
-                        (TYPE_NAME String)) 
-                      (MEMBER_NAME param))) 
-                  (STMT_LIST 
-                    (EXPR 
-                      (EXPR 
-                        (MEMBER_NAME log) . 
-                        (MEMBER_NAME info) 
-                        (CALL_EXPR 
-                          (ARG_LIST 
-                            (EXPR 
-                              (MEMBER_NAME param)))))))) 
-                (EXPR 
-                  (EXPR 
-                    (MEMBER_NAME nestedMethod) 
-                    (CALL_EXPR 
-                      (ARG_LIST 
-                        (EXPR 
-                          (STRING_CST "Hello")))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithNestedClass) ARG_LIST 
-              (STMT_LIST 
-                (TYPE_DECL 
-                  (CLASS_DECL 
-                    (TYPE_NAME NestedClass) 
-                    (STMT_LIST 
-                      (METHOD_DECL 
-                        (MEMBER_TYPE void) 
-                        (MEMBER_NAME hello) ARG_LIST 
-                        (STMT_LIST 
-                          (EXPR 
-                            (EXPR 
-                              (MEMBER_NAME log) . 
-                              (MEMBER_NAME info) 
-                              (CALL_EXPR 
-                                (ARG_LIST 
-                                  (EXPR 
-                                    (STRING_CST "Hello"))))))))))) 
-                (EXPR 
-                  (EXPR 
-                    (TYPE_NAME NestedClass) 
-                    (CALL_EXPR ARG_LIST) . 
-                    (MEMBER_NAME hello) 
-                    (CALL_EXPR ARG_LIST))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithLocal) ARG_LIST 
-              (STMT_LIST 
-                (MEMBER_DECL 
-                  (MEMBER_TYPE 
-                    (TYPE 
-                      (TYPE_NAME String))) 
-                  (MEMBER_NAME hello) 
-                  (EXPR 
-                    (STRING_CST "Hello"))) 
-                (EXPR 
-                  (EXPR 
-                    (MEMBER_NAME log) . 
-                    (MEMBER_NAME info) 
-                    (CALL_EXPR 
-                      (ARG_LIST 
-                        (EXPR 
-                          (MEMBER_NAME hello)))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE void) 
-              (MEMBER_NAME methodWithFunctionalParameter) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER void 
-                  (MEMBER_NAME method) 
-                  (ARG_LIST 
-                    (FORMAL_PARAMETER 
-                      (TYPE 
-                        (TYPE_NAME String)) 
-                      (MEMBER_NAME param))))) 
-              (STMT_LIST 
-                (EXPR 
-                  (EXPR 
-                    (MEMBER_NAME method) 
-                    (CALL_EXPR 
-                      (ARG_LIST 
-                        (EXPR 
-                          (STRING_CST "Hello")))))))) 
-            (EXPR 
-              (EXPR 
-                (MEMBER_NAME methodWithFunctionalParameter) 
-                (CALL_EXPR 
-                  (ARG_LIST 
-                    (NAMED_ARG 
-                      (ARG_NAME method) 
-                      (ARG_LIST 
-                        (FORMAL_PARAMETER 
-                          (TYPE 
-                            (TYPE_NAME String)) 
-                          (MEMBER_NAME x))) 
-                      (STMT_LIST 
-                        (EXPR 
-                          (EXPR 
-                            (MEMBER_NAME log) . 
-                            (MEMBER_NAME info) 
-                            (CALL_EXPR 
-                              (ARG_LIST 
-                                (EXPR 
-                                  (MEMBER_NAME x)))))))))))))) 
-        (ANNOTATION_LIST 
-          (DECL_MODIFIER abstract))) 
-      (TYPE_DECL 
-        (CLASS_DECL 
-          (TYPE_NAME NonvoidMethods) 
-          (STMT_LIST 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME simpleMethod) ARG_LIST 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (STRING_CST "Hello"))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodWithParam) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Whole)) 
-                  (MEMBER_NAME amount))) 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (PREFIX_EXPR $ 
-                      (MEMBER_NAME amount)))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodWithMultipleParamLists) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Boolean)) 
-                  (MEMBER_NAME b))) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Whole)) 
-                  (MEMBER_NAME amount))) 
-              (STMT_LIST 
-                (IF_STMT 
-                  (CONDITION 
-                    (EXPR 
-                      (MEMBER_NAME b))) 
-                  (IF_TRUE 
-                    (STMT_LIST 
-                      (RET_STMT 
-                        (EXPR 
-                          (EXPR this . 
-                            (MEMBER_NAME methodWithParam)))))) 
-                  (IF_FALSE 
-                    (STMT_LIST THROW_STMT))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME abstractMethod) ARG_LIST ;) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodReference) ARG_LIST 
-              (EXPR 
-                (EXPR this . 
-                  (MEMBER_NAME nonvoidMethod)))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodReferenceWithParam) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME Whole)) 
-                  (MEMBER_NAME amount))) 
-              (EXPR 
-                (EXPR this . 
-                  (MEMBER_NAME nonvoidMethodWithParam)))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME annotatedMethod) ARG_LIST 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR 
-                      (MEMBER_NAME simpleMethod) 
-                      (CALL_EXPR ARG_LIST))))) 
-              (ANNOTATION_LIST 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME doc) 
-                  (STRING_CST "This method has annotations. Remember that literal
-		     strings can be spread across multiple lines.")) 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME by) 
-                  (STRING_CST "Gavin King") 
-                  (STRING_CST "Andrew Haley")) 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME throws) 
-                  (REFLECTED_LITERAL 
-                    (TYPE 
-                      (TYPE_NAME Exception))) 
-                  (STRING_CST "if something goes wrong")) 
-                (USER_ANNOTATION 
-                  (ANNOTATION_NAME see) 
-                  (REFLECTED_LITERAL 
-                    (TYPE 
-                      (TYPE_NAME Methods VoidMethods)) 
-                    (MEMBER_NAME simpleMethod))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME List) 
-                  (TYPE_ARGS 
-                    (TYPE_ARG_LIST 
-                      (TYPE 
-                        (TYPE_NAME X)))))) 
-              (MEMBER_NAME methodWithTypeParameter) 
-              (TYPE_PARAMETER_LIST 
-                (TYPE_PARAMETER 
-                  (TYPE_NAME X))) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME X)) 
-                  (MEMBER_NAME x))) 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR 
-                      (TYPE_NAME List) 
-                      (CALL_EXPR 
-                        (ARG_LIST 
-                          (EXPR 
-                            (MEMBER_NAME x))))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME List) 
-                  (TYPE_ARGS 
-                    (TYPE_ARG_LIST 
-                      (TYPE 
-                        (TYPE_NAME X)))))) 
-              (MEMBER_NAME methodWithTypeConstraint) 
-              (TYPE_PARAMETER_LIST 
-                (TYPE_PARAMETER 
-                  (TYPE_NAME X))) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME X)) 
-                  (MEMBER_NAME x))) 
-              (TYPE_CONSTRAINT_LIST 
-                (TYPE_CONSTRAINT 
-                  (>= 
-                    (TYPE_NAME X) 
-                    (TYPE 
-                      (TYPE_NAME String))))) 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR 
-                      (TYPE_NAME List) 
-                      (CALL_EXPR 
-                        (ARG_LIST 
-                          (EXPR 
-                            (MEMBER_NAME x))))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodWithNestedMethod) ARG_LIST 
-              (STMT_LIST 
-                (METHOD_DECL 
-                  (MEMBER_TYPE 
-                    (TYPE 
-                      (TYPE_NAME String))) 
-                  (MEMBER_NAME nestedMethod) 
-                  (ARG_LIST 
-                    (FORMAL_PARAMETER 
-                      (TYPE 
-                        (TYPE_NAME String)) 
-                      (MEMBER_NAME param))) 
-                  (STMT_LIST 
-                    (RET_STMT 
-                      (EXPR 
-                        (MEMBER_NAME param))))) 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR 
-                      (MEMBER_NAME nestedMethod) 
-                      (CALL_EXPR 
-                        (ARG_LIST 
-                          (EXPR 
-                            (STRING_CST "Hello"))))))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodWithNestedClass) ARG_LIST 
-              (STMT_LIST 
-                (TYPE_DECL 
-                  (CLASS_DECL 
-                    (TYPE_NAME NestedClass) 
-                    (STMT_LIST 
-                      (MEMBER_DECL 
-                        (MEMBER_TYPE 
-                          (TYPE 
-                            (TYPE_NAME String))) 
-                        (MEMBER_NAME hello) 
-                        (EXPR 
-                          (STRING_CST "Hello")))))) 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR 
-                      (TYPE_NAME NestedClass) 
-                      (CALL_EXPR ARG_LIST) . 
-                      (MEMBER_NAME hello)))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodWithLocal) ARG_LIST 
-              (STMT_LIST 
-                (MEMBER_DECL 
-                  (MEMBER_TYPE 
-                    (TYPE 
-                      (TYPE_NAME String))) 
-                  (MEMBER_NAME hello) 
-                  (EXPR 
-                    (EXPR 
-                      (MEMBER_NAME simpleMethod) 
-                      (CALL_EXPR ARG_LIST)))) 
-                (RET_STMT 
-                  (EXPR 
-                    (MEMBER_NAME hello))))) 
-            (METHOD_DECL 
-              (MEMBER_TYPE 
-                (TYPE 
-                  (TYPE_NAME String))) 
-              (MEMBER_NAME methodWithFunctionalParameter) 
-              (ARG_LIST 
-                (FORMAL_PARAMETER 
-                  (TYPE 
-                    (TYPE_NAME String)) 
-                  (MEMBER_NAME method) ARG_LIST)) 
-              (STMT_LIST 
-                (RET_STMT 
-                  (EXPR 
-                    (EXPR 
-                      (MEMBER_NAME method) 
-                      (CALL_EXPR ARG_LIST)))))) 
-            (EXPR 
-              (EXPR 
-                (MEMBER_NAME log) . 
-                (MEMBER_NAME info) 
-                (CALL_EXPR 
-                  (ARG_LIST 
-                    (UNNAMED_ARG 
-                      (EXPR 
-                        (EXPR 
-                          (MEMBER_NAME methodWithFunctionalParameter) 
-                          (CALL_EXPR 
-                            (ARG_LIST 
-                              (NAMED_ARG 
-                                (ARG_NAME method) ARG_LIST 
-                                (STMT_LIST 
-                                  (RET_STMT 
-                                    (EXPR 
-                                      (STRING_CST "Hello")))))))))))))))) 
-        (ANNOTATION_LIST 
-          (DECL_MODIFIER abstract))))))
+(TYPE_DECL
+  (TYPE_DECL
+    (CLASS_DECL
+      (TYPE_NAME Methods)
+      (STMT_LIST
+        (TYPE_DECL
+          (CLASS_DECL
+            (TYPE_NAME VoidMethods)
+            (STMT_LIST
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME simpleMethod) STMT_LIST)
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithParams)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Whole))
+                    (ARG_NAME amount))
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Object))
+                    (ARG_NAME something))) STMT_LIST)
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithMultipleParamLists)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Whole))
+                    (ARG_NAME amount))
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Object))
+                    (ARG_NAME something)))
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (EXPR this .
+                        (MEMBER_NAME methodWithParams))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME abstractMethod))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodReference)
+                (INIT_EXPR
+                  (EXPR
+                    (EXPR this .
+                      (MEMBER_NAME voidMethod)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodReferenceWithParams)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Whole))
+                    (ARG_NAME amount))
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Object))
+                    (ARG_NAME something)))
+                (INIT_EXPR
+                  (EXPR
+                    (EXPR this .
+                      (MEMBER_NAME voidMethodWithParam)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME annotatedMethod)
+                (STMT_LIST
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME simpleMethod)
+                      (CALL_EXPR ARG_LIST))))
+                (ANNOTATION_LIST
+                  (ANNOTATION
+                    (ANNOTATION_NAME doc)
+                    (STRING_CST "This method has annotations. Remember that literal
+		     strings can be spread across multiple lines."))
+                  (ANNOTATION
+                    (ANNOTATION_NAME by)
+                    (STRING_CST "Andrew Haley"))
+                  (ANNOTATION
+                    (ANNOTATION_NAME throws)
+                    (STRING_CST "if something goes wrong"))
+                  (ANNOTATION
+                    (ANNOTATION_NAME see))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithTypeParameter)
+                (TYPE_PARAMETER_LIST
+                  (TYPE_PARAMETER
+                    (TYPE_NAME X)))
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME OpenList)
+                      (TYPE_ARG_LIST
+                        (TYPE
+                          (TYPE_NAME X))))
+                    (ARG_NAME list))
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME X))
+                    (ARG_NAME x)))
+                (STMT_LIST
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME list) .
+                      (MEMBER_NAME add)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME x))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithTypeConstraint)
+                (TYPE_PARAMETER_LIST
+                  (TYPE_PARAMETER
+                    (TYPE_NAME X)))
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME OpenList)
+                      (TYPE_ARG_LIST
+                        (TYPE
+                          (TYPE_NAME X))))
+                    (ARG_NAME list))
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME X))
+                    (ARG_NAME x)))
+                (TYPE_CONSTRAINT_LIST
+                  (TYPE_CONSTRAINT
+                    (TYPE_NAME X)
+                    (SATISFIES_LIST
+                      (TYPE
+                        (TYPE_NAME String)))))
+                (STMT_LIST
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME list) .
+                      (MEMBER_NAME add)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME x))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithNestedMethod)
+                (STMT_LIST
+                  (MEMBER_DECL
+                    (MEMBER_TYPE void)
+                    (MEMBER_NAME nestedMethod)
+                    (FORMAL_PARAMETER_LIST
+                      (FORMAL_PARAMETER
+                        (TYPE
+                          (TYPE_NAME String))
+                        (ARG_NAME param)))
+                    (STMT_LIST
+                      (EXPR
+                        (EXPR
+                          (MEMBER_NAME log) .
+                          (MEMBER_NAME info)
+                          (CALL_EXPR
+                            (ARG_LIST
+                              (EXPR
+                                (MEMBER_NAME param))))))))
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME nestedMethod)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "Hello"))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithNestedClass)
+                (STMT_LIST
+                  (TYPE_DECL
+                    (CLASS_DECL
+                      (TYPE_NAME NestedClass)
+                      (STMT_LIST
+                        (MEMBER_DECL
+                          (MEMBER_TYPE void)
+                          (MEMBER_NAME hello)
+                          (STMT_LIST
+                            (EXPR
+                              (EXPR
+                                (MEMBER_NAME log) .
+                                (MEMBER_NAME info)
+                                (CALL_EXPR
+                                  (ARG_LIST
+                                    (EXPR
+                                      (STRING_CST "Hello")))))))))))
+                  (EXPR
+                    (EXPR
+                      (TYPE_NAME NestedClass)
+                      (CALL_EXPR ARG_LIST) .
+                      (MEMBER_NAME hello)
+                      (CALL_EXPR ARG_LIST)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithLocal)
+                (STMT_LIST
+                  (MEMBER_DECL
+                    (MEMBER_TYPE
+                      (TYPE
+                        (TYPE_NAME String)))
+                    (MEMBER_NAME hello)
+                    (INIT_EXPR
+                      (EXPR
+                        (STRING_CST "Hello"))))
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME hello))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE void)
+                (MEMBER_NAME methodWithFunctionalParameter)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER void
+                    (ARG_NAME method)
+                    (FORMAL_PARAMETER_LIST
+                      (FORMAL_PARAMETER
+                        (TYPE
+                          (TYPE_NAME String))
+                        (ARG_NAME param)))))
+                (STMT_LIST
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME method)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "Hello"))))))))
+              (EXPR
+                (EXPR
+                  (MEMBER_NAME methodWithFunctionalParameter)
+                  (CALL_EXPR
+                    (ARG_LIST
+                      (NAMED_ARG void
+                        (ARG_NAME method)
+                        (FORMAL_PARAMETER_LIST
+                          (FORMAL_PARAMETER
+                            (TYPE
+                              (TYPE_NAME String))
+                            (ARG_NAME x)))
+                        (STMT_LIST
+                          (EXPR
+                            (EXPR
+                              (MEMBER_NAME log) .
+                              (MEMBER_NAME info)
+                              (CALL_EXPR
+                                (ARG_LIST
+                                  (EXPR
+                                    (MEMBER_NAME x))))))))))))))
+          (ANNOTATION_LIST
+            (ANNOTATION abstract)))
+        (TYPE_DECL
+          (CLASS_DECL
+            (TYPE_NAME NonvoidMethods)
+            (STMT_LIST
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME simpleMethod)
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (STRING_CST "Hello")))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodWithParam)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Whole))
+                    (ARG_NAME amount)))
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (PREFIX_EXPR $
+                        (MEMBER_NAME amount))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodWithMultipleParamLists)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Boolean))
+                    (ARG_NAME b)))
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Whole))
+                    (ARG_NAME amount)))
+                (STMT_LIST
+                  (IF_STMT
+                    (CONDITION
+                      (EXPR
+                        (MEMBER_NAME b)))
+                    (IF_TRUE
+                      (STMT_LIST
+                        (RET_STMT
+                          (EXPR
+                            (EXPR this .
+                              (MEMBER_NAME methodWithParam))))))
+                    (IF_FALSE
+                      (STMT_LIST THROW_STMT)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME abstractMethod))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodReference)
+                (INIT_EXPR
+                  (EXPR
+                    (EXPR this .
+                      (MEMBER_NAME nonvoidMethod)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodReferenceWithParam)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME Whole))
+                    (ARG_NAME amount)))
+                (INIT_EXPR
+                  (EXPR
+                    (EXPR this .
+                      (MEMBER_NAME nonvoidMethodWithParam)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME annotatedMethod)
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME simpleMethod)
+                        (CALL_EXPR ARG_LIST)))))
+                (ANNOTATION_LIST
+                  (ANNOTATION
+                    (ANNOTATION_NAME doc)
+                    (STRING_CST "This method has annotations. Remember that literal
+		     strings can be spread across multiple lines."))
+                  (ANNOTATION
+                    (ANNOTATION_NAME by)
+                    (STRING_CST "Andrew Haley"))
+                  (ANNOTATION
+                    (ANNOTATION_NAME throws)
+                    (STRING_CST "if something goes wrong"))
+                  (ANNOTATION
+                    (ANNOTATION_NAME see))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME List)
+                    (TYPE_ARG_LIST
+                      (TYPE
+                        (TYPE_NAME X)))))
+                (MEMBER_NAME methodWithTypeParameter)
+                (TYPE_PARAMETER_LIST
+                  (TYPE_PARAMETER
+                    (TYPE_NAME X)))
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME X))
+                    (ARG_NAME x)))
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME List)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (MEMBER_NAME x)))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME List)
+                    (TYPE_ARG_LIST
+                      (TYPE
+                        (TYPE_NAME X)))))
+                (MEMBER_NAME methodWithTypeConstraint)
+                (TYPE_PARAMETER_LIST
+                  (TYPE_PARAMETER
+                    (TYPE_NAME X)))
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME X))
+                    (ARG_NAME x)))
+                (TYPE_CONSTRAINT_LIST
+                  (TYPE_CONSTRAINT
+                    (TYPE_NAME X)
+                    (SATISFIES_LIST
+                      (TYPE
+                        (TYPE_NAME String)))))
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME List)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (MEMBER_NAME x)))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodWithNestedMethod)
+                (STMT_LIST
+                  (MEMBER_DECL
+                    (MEMBER_TYPE
+                      (TYPE
+                        (TYPE_NAME String)))
+                    (MEMBER_NAME nestedMethod)
+                    (FORMAL_PARAMETER_LIST
+                      (FORMAL_PARAMETER
+                        (TYPE
+                          (TYPE_NAME String))
+                        (ARG_NAME param)))
+                    (STMT_LIST
+                      (RET_STMT
+                        (EXPR
+                          (MEMBER_NAME param)))))
+                  (RET_STMT
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME nestedMethod)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "Hello")))))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodWithNestedClass)
+                (STMT_LIST
+                  (TYPE_DECL
+                    (CLASS_DECL
+                      (TYPE_NAME NestedClass)
+                      (STMT_LIST
+                        (MEMBER_DECL
+                          (MEMBER_TYPE
+                            (TYPE
+                              (TYPE_NAME String)))
+                          (MEMBER_NAME hello)
+                          (INIT_EXPR
+                            (EXPR
+                              (STRING_CST "Hello")))))))
+                  (RET_STMT
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME NestedClass)
+                        (CALL_EXPR ARG_LIST) .
+                        (MEMBER_NAME hello))))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodWithLocal)
+                (STMT_LIST
+                  (MEMBER_DECL
+                    (MEMBER_TYPE
+                      (TYPE
+                        (TYPE_NAME String)))
+                    (MEMBER_NAME hello)
+                    (INIT_EXPR
+                      (EXPR
+                        (EXPR
+                          (MEMBER_NAME simpleMethod)
+                          (CALL_EXPR ARG_LIST)))))
+                  (RET_STMT
+                    (EXPR
+                      (MEMBER_NAME hello)))))
+              (MEMBER_DECL
+                (MEMBER_TYPE
+                  (TYPE
+                    (TYPE_NAME String)))
+                (MEMBER_NAME methodWithFunctionalParameter)
+                (FORMAL_PARAMETER_LIST
+                  (FORMAL_PARAMETER
+                    (TYPE
+                      (TYPE_NAME String))
+                    (ARG_NAME method)))
+                (STMT_LIST
+                  (RET_STMT
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME method)
+                        (CALL_EXPR ARG_LIST))))))
+              (EXPR
+                (EXPR
+                  (MEMBER_NAME log) .
+                  (MEMBER_NAME info)
+                  (CALL_EXPR
+                    (ARG_LIST
+                      (VARARGS
+                        (EXPR_LIST
+                          (EXPR
+                            (EXPR
+                              (MEMBER_NAME methodWithFunctionalParameter)
+                              (CALL_EXPR
+                                (ARG_LIST
+                                  (NAMED_ARG
+                                    (TYPE
+                                      (TYPE_NAME String))
+                                    (ARG_NAME method)
+                                    (STMT_LIST
+                                      (RET_STMT
+                                        (EXPR
+                                          (STRING_CST "Hello")))))))))))))))))
+          (ANNOTATION_LIST
+            (ANNOTATION abstract)))))))
