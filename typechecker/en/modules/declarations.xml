@@ -389,7 +389,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         parameters of the parameterized class.</para>
         
         <para>A type parameter is itself a type, visible within the body of the declaration
-        it parameterizes. A type parameter is assignable to every lower bound of the type 
+        it parameterizes. A type parameter is assignable to every upper bound of the type 
         parameter.</para>
         
         <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
@@ -467,25 +467,32 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>The type of a <literal>mutable</literal> attribute is a nonvariant position.</para>
             </listitem>
             <listitem>
-                <para>A lower bound of a type parameter in a covariant position is a contravariant position.</para>
+                <para>An upper bound of a type parameter in a contravariant position is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>An upper bound of a type parameter in a covariant position is a covariant position.</para>
             </listitem>
             <listitem>
                 <para>A lower bound of a type parameter in a contravariant position is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A covariant type parameter of a covariant position is a covariant position.</para>
+                <para>A type parameter in a covariant position cannot have a lower bound. <comment>TODO: is 
+                this correct?</comment></para>
             </listitem>
             <listitem>
-                <para>A contravariant type parameter of a covariant position is a contravariant position.</para>
+                <para>A covariant type parameter of a type in a covariant position is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A covariant type parameter of a contravariant position is a contravariant position.</para>
+                <para>A contravariant type parameter of a type in a covariant position is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A contravariant type parameter of a contravariant position is a covariant position.</para>
+                <para>A covariant type parameter of a type in a contravariant position is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A nonvariant type parameter is a nonvariant position.</para>
+                <para>A contravariant type parameter of a type in a contravariant position is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A nonvariant type parameter or a type is a nonvariant position.</para>
             </listitem>
             <listitem>
                 <para>A formal parameter of a functional parameter in a contravariant position is covariant.</para>
@@ -737,12 +744,12 @@ VarargsParam?
         
         <itemizedlist>
             <listitem>
-                <para>A type argument to a type parameter with a lower bound must be a type 
-                which is assignable to the lower bounds.</para>
+                <para>A type argument to a type parameter with an upper bound must be a type 
+                which is assignable to all upper bounds.</para>
             </listitem>
             <listitem>
-                <para>A type argument to a type parameter with an upper bound must be a type to
-                which the upper bound is assignable.</para>
+                <para>A type argument to a type parameter with a lower bound must be a type 
+                to which all lower bounds are assignable.</para>
             </listitem>
         </itemizedlist>
         
@@ -750,10 +757,10 @@ VarargsParam?
         
         <itemizedlist>
             <listitem>
-                <para>A type parameter is considered assignable to its lower bound.</para>
+                <para>A type parameter is considered assignable to its upper bound.</para>
             </listitem>
             <listitem>
-                <para>The upper bound of a type parameter is considered assignable to the
+                <para>The lower bound of a type parameter is considered assignable to the
                 type parameter.</para>
             </listitem>
         </itemizedlist>
@@ -2418,32 +2425,36 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     
 }</programlisting>
     
-    <para>The following declarations define the visibility 
-    modifier annotations:</para>
+        <para>The following declarations define the visibility 
+        modifier annotations:</para>
     
-    <programlisting>doc "The |public| visibility modifier 
+        <programlisting>doc "The |public| visibility modifier 
      annotation."
 public oncePerElement Visibility public() { 
     return public 
 }</programlisting>
 
-    <programlisting>doc "The |module| visibility modifier 
+        <programlisting>doc "The |module| visibility modifier 
      annotation."
 public oncePerElement Visibility module() { 
     return module
 }</programlisting>
 
-    <programlisting>doc "The |package| visibility modifier 
+        <programlisting>doc "The |package| visibility modifier 
      annotation."
 public oncePerElement Visibility package() { 
     return package 
 }</programlisting>
 
-    <programlisting>doc "The |private| visibility modifier 
+        <programlisting>doc "The |private| visibility modifier 
      annotation."
 public oncePerElement Visibility private() { 
     return private 
 }</programlisting>
+
+        <comment><para>TODO: how are we going to go about compiling these classes which
+        <emphasis>define</emphasis> the reserved-word annotations? A special compiler
+        switch to turn off these reserved words? (Seems reasonable.)</para></comment>
        
     </section>
     

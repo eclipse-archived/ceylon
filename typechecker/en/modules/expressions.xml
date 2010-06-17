@@ -1309,9 +1309,9 @@ except (SomethingElseWrong sew) {
                     </listitem>
                     <listitem>
                         <para>if type arguments were not explicitly specified, substituting the 
-                        lower bound of the type parameter for each type parameter that appears 
+                        upper bound of the type parameter for each type parameter that appears 
                         in the parameter types (or <literal>lang.Object</literal> if the type 
-                        parameter has no lower bound).</para>
+                        parameter has no upper bound).</para>
                     </listitem>
                 </itemizedlist>
                 
@@ -1331,9 +1331,9 @@ except (SomethingElseWrong sew) {
                     </listitem>
                     <listitem>
                         <para>if type arguments were not explicitly specified, substituting the 
-                        lower bound of the type parameter for each method type parameter that
+                        upper bound of the type parameter for each method type parameter that
                         appears in the parameter types (or <literal>lang.Object</literal> if the
-                        type parameter has no lower bound).</para>
+                        type parameter has no upper bound).</para>
                     </listitem>
                 </itemizedlist>
                 
