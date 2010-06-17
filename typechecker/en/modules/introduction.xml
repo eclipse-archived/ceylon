@@ -520,8 +520,39 @@ String helloWorld() {
             <title>Defining user interfaces declaratively</title>
 
         <para>Finally, lets create a web-based user interface for our
-        program:</para>
+        program.</para>
+        
+        <para>We've seen lots of examples of invoking a method or instantiating
+        a class using the traditional C-style argument list where arguments are
+        surrounded in parentheses and separated by commas. Arguments are matched
+        to parameters by their position in the list. Using this syntax, we could
+        create a tree of objects as follows:</para>
+        
+        <programlisting>Html(
+    Head("Hello World"),
+    Body(
+        Div("Hello World"),
+        Div("Powered by Ceylon.")
+    )
+)</programlisting>
 
+        <programlisting>However, Ceylon provides an alternative way of writing
+        argument lists that makes it much more natural to define heirarchical
+        structures. A <emphasis>named argument list</emphasis> is a list of 
+        arguments surrounded by braces and separated by semicolons. For
+        example:</programlisting>
+
+        <programlisting>Html {
+    head = Head { title = "Hello World" };
+    body = Body {
+        Div { "Hello World" },
+        Div { "Powered by Ceylon." }
+    }
+}</programlisting>
+        
+        <para>Varargs parameters in a named argument list don't need names, and
+        are separated by commas.</para>
+        
         <programlisting><![CDATA[import html.*;
 
 doc "A web page that displays a greeting"
