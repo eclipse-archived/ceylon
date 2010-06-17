@@ -220,6 +220,23 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
+        <para>A type may not have:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>two attributes with the same name,</para>
+            </listitem>
+            <listitem>
+                <para>a method and an attribute with the same name,</para>
+            </listitem>
+            <listitem>
+                <para>two methods with the same name and formal parameter types, or</para>
+            </listitem>
+            <listitem>
+                <para>two member classes with the same name and formal parameter types.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>A type may be <emphasis>assignable</emphasis> to another type. If <literal>X</literal>
         is assignable to <literal>Y</literal>, then:</para>
         
