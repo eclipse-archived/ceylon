@@ -519,7 +519,8 @@ String helloWorld() {
         <section>
             <title>Defining user interfaces declaratively</title>
 
-        <para>Finally, lets rewrite the program as a web page:</para>
+        <para>Finally, lets create a web-based user interface for our
+        program:</para>
 
         <programlisting><![CDATA[import html.*;
 
