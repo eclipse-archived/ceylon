@@ -480,6 +480,9 @@ if you prefer.";</programlisting>
         </itemizedlist>
         </comment>
         
+        <comment><para>TODO: do we even really, truly need attribute references? If we can't find
+        an elegant syntax, maybe we can simply live without them...</para></comment>
+        
         <section>
             <title>Receiver expressions</title>
         
