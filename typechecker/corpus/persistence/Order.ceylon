@@ -6,11 +6,11 @@ entity table{ schema="orders"; name="order"; }
 by "Gavin King"
    "Andrew Haley"
 see #OrderSystem
-public class Order {
+public class Order() {
 	
 	//TODO: address, payment, user
 	
-	public class Status {
+	public class Status() {
 	
 		doc "A draft order being edited"
 		charColumnValue "DR"
