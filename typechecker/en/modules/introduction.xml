@@ -555,7 +555,7 @@ String helloWorld() {
         },
         Div {
             cssClass = "footer";
-            "Powered by Ceylon." 
+            "Powered by Ceylon" 
         }
     };
 }</programlisting>
