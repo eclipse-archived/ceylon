@@ -1,4 +1,4 @@
-public class Boolean
+public class Boolean()
         satisfies Case<Boolean>, Bits<Boolean> {
     case true, case false;
 

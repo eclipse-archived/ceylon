@@ -1,4 +1,4 @@
-public class Comparison {
+public class Comparison() {
     
     doc "The receiving object is larger than 
          the given object."

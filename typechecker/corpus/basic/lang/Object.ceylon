@@ -1,4 +1,4 @@
-public abstract class Object {
+public abstract class Object() {
         
     doc "The equals operator x == y. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
