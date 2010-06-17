@@ -28,7 +28,7 @@ class Primaries() {
 
 		Specials s = this;
 
-		class Subclass extends Specials() {
+		class Subclass() extends Specials() {
 			Specials s = super;
 		}
 		

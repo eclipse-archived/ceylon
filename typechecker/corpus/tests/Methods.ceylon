@@ -40,7 +40,7 @@ class Methods() {
 		}
 		
 		void methodWithNestedClass() {
-			class NestedClass {
+			class NestedClass() {
 				void hello() {
 					log.info("Hello");
 				}
