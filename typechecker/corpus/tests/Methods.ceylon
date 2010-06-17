@@ -107,7 +107,7 @@ class Methods() {
 		}
 		
 		String methodWithNestedClass() {
-			class NestedClass {
+			class NestedClass() {
 				String hello = "Hello";
 			}
 			return NestedClass().hello;
