@@ -440,27 +440,21 @@ public void hello(Process process) {
         <literal>greeting</literal>:</para>
 
 <programlisting><![CDATA[package String greeting {
+    String helloName() { return "Hello, " name "!" }
+    String helloWorld() { return "Hello, World!" }
     return ifExists(name, helloName, helloWorld)
-}
-
-String helloName() {
-    return "Hello, " name "!"
-}
-
-String helloWorld() {
-    return "Hello, World!"
 }]]></programlisting>
 
         <para>Well, that's certainly more functional, but it's also a lot more
         verbose. But this is not the way <literal>ifExists()</literal> is really
         intended to be used. Ceylon provides a special method argument syntax
-        for defining a method that is passed to another method, inline, as part
+        for defining a method that is passed to another method inline, as part
         of the invocation. An inline method definition is called a
         <emphasis>functional argument</emphasis>. Functional arguments follow
         the normal parenthesized argument list.</para>
         
         <para>Using functional arguments, we could write <literal>greeting</literal> 
-        as follows, to make it really clear that we are defining methods that are 
+        as follows, to make it really clear that we're defining methods that are 
         passed as arguments to the functional parameters <literal>then</literal> 
         and <literal>otherwise</literal>.</para>
 
@@ -478,7 +472,11 @@ String helloWorld() {
         }
 }]]></programlisting>
 
-        <para>Usually, however, we would abbreviate the above code by:</para>
+        <para>This syntax was chosen to make it possible to define new
+        control structures that closely mimic the syntactic form of the
+        traditional C-style built-in control structures.</para>
+        
+        <para>Usually, we would abbreviate the above code by:</para>
         
         <itemizedlist>
             <listitem>
@@ -488,7 +486,7 @@ String helloWorld() {
             <listitem>
                 <para>specifying the method return values in parentheses, 
                 instead of writing <literal>return</literal> statements
-                surrounded by braces&mdash;we can write
+                surrounded by braces&mdash;we're allowed to write
                 <literal>("Hello, World!")</literal> instead of 
                 <literal>{ return "Hello, World!" }</literal>.</para>
             </listitem>
@@ -501,10 +499,53 @@ String helloWorld() {
         then ("Hello, " name "!")
         otherwise ("Hello, World!")
 }]]></programlisting>
-    
-        <para>This syntax was chosen to make it possible to define new
-        control structures that closely mimic the syntactic form of the
-        traditional C-style built-in control structures.</para>
+        
+        <para>This syntax might look a little unfamiliar at first, but 
+        you'll soon get used to it. In Ceylon, we use method invocations 
+        with functional arguments to express things that are difficult
+        to express without specialized syntax in other languages, for
+        example:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><emphasis>assertion</emphasis>, such as 
+                <literal>assert() that (x==0.0);</literal></para>
+            </listitem>
+            <listitem>
+                <para><emphasis>comprehension</emphasis>, such as 
+                <literal>List&lt;String&gt; names = from (people) select (Person p) (p.name);</literal></para>
+            </listitem>
+            <listitem>
+                <para><emphasis>quantification</emphasis>, such as
+                <literal>Boolean adults = forAll (people) every (Person p) (p.age>=18);</literal></para>
+            </listitem>
+            <listitem>
+                <para><emphasis>repetition</emphasis>, such as
+                <literal>repeat (3) times { stream.writeLine("Hello!"); }</literal></para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Look at each of these examples, and ask yourself:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>What is the name of the method that is being called?</para>
+            </listitem>
+            <listitem>
+                <para>Are there any ordinary arguments? Which are they?</para>
+            </listitem>
+            <listitem>
+                <para>Which is the functional argument? What is its name?</para>
+            </listitem>
+            <listitem>
+                <para>Are there any formal parameters of the functional argument? 
+                What are the parameter names?</para>
+            </listitem>
+            <listitem>
+                <para>Where is the implementation of the functional argument?
+                What happens when the functional argument is invoked?</para>
+            </listitem>
+        </itemizedlist>
         
         <para>By the way, there's an even easier way to define 
         <literal>greeting</literal>, using the <literal>?</literal>
