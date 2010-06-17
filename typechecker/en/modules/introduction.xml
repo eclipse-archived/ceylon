@@ -292,7 +292,7 @@ public void hello(Process process) {
         code in the same package:</para>
         
         <programlisting><![CDATA[doc "A personalized greeting"
-class Hello(optional String name, OutputStream out) {
+class Hello(optional String name) {
     
     package String greeting;
     if (exists name) {
@@ -303,8 +303,8 @@ class Hello(optional String name, OutputStream out) {
     }
     
     doc "Print the greeting"
-    package void say() { 
-        out.writeLine(greeting); 
+    package void say(OutputStream stream) { 
+        stream.writeLine(greeting); 
     }
     
 }]]></programlisting>
@@ -328,28 +328,11 @@ class Hello(optional String name, OutputStream out) {
             </listitem>
         </itemizedlist>
         
-        <para>You might wonder why we're allowed to use the parameter 
-        <literal>out</literal> inside the body of the method 
-        <literal>say()</literal>. Doesn't the parameter go out of scope 
-        as soon as the initializer terminates? Well, that's true, but 
-        Ceylon is a language with a very strict block structure, and the 
-        scope of declarations is governed by that block structure. In this 
-        case, the scope of <literal>out</literal> is the whole body of the 
-        class, and the definition of <literal>say()</literal> sits inside 
-        that scope, so <literal>say()</literal> is permitted to access 
-        <literal>out</literal>. We've just met our first example of 
-        <emphasis>closure</emphasis>, a concept from functional programming. 
-        We say that method and attribute definitions receive a closure of 
-        immutable values defined in the class body to which they belong.
-        That's just a fancy way of obfuscating the idea that 
-        <literal>say()</literal> holds onto the value of <literal>out</literal>, 
-        even after the initializer completes.</para>
-
-        <para>We could rewrite the attribute <literal>greeting</literal>
+       <para>We could rewrite the attribute <literal>greeting</literal>
         as a <emphasis>getter</emphasis>:</para>
 
         <programlisting><![CDATA[doc "A personalized greeting"
-class Hello(optional String name, OutputStream out) {
+class Hello(optional String name) {
     
     doc "The greeting"
     package String greeting {
@@ -362,20 +345,35 @@ class Hello(optional String name, OutputStream out) {
     }
     
     doc "Print the greeting"
-    package void say() { 
-        out.writeLine(greeting); 
+    package void say(OutputStream stream) { 
+        stream.writeLine(greeting); 
     }
     
 }]]></programlisting>
 
-        <para>Notice that we're using the parameter <literal>name</literal> inside the
-        definition of <literal>greeting</literal>. That's closure at work again.</para>
-        
+        <para>You might wonder why we're allowed to use the parameter 
+        <literal>name</literal> inside the body of the getter of
+        <literal>greeting</literal>. Doesn't the parameter go out of scope 
+        as soon as the initializer terminates? Well, that's true, but 
+        Ceylon is a language with a very strict block structure, and the 
+        scope of declarations is governed by that block structure. In this 
+        case, the scope of <literal>name</literal> is the whole body of the 
+        class, and the definition of <literal>greeting</literal> sits inside 
+        that scope, so <literal>greeting</literal> is permitted to access 
+        <literal>name</literal>. We've just met our first example of 
+        <emphasis>closure</emphasis>, a concept from functional programming. 
+        We say that method and attribute definitions receive a closure of 
+        immutable values defined in the class body to which they belong.
+        That's just a fancy way of obfuscating the idea that 
+        <literal>greeting</literal> holds onto the value of 
+        <literal>name</literal>, even after the initializer completes.</para>
+
+         
         <para>Oops, I forgot to show you the code that uses <literal>Hello</literal>!</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 public void hello(Process process) {
-    Hello(process.args.first, process).say();
+    Hello(process.args.first).say(process);
 }]]></programlisting>
         
         <para>Our rewritten <literal>hello()</literal> method just creates a new instance
@@ -392,20 +390,17 @@ public void hello(Process process) {
         
         <programlisting><![CDATA[doc "A command line greeting"
 class Hello(Process process) 
-    extends Hello(process.args.first, process) {}]]></programlisting>
+    extends Hello(process.args.first) {}]]></programlisting>
     
         <para>A class can overload second class by extending it and declaring different
-        initialization parameters. In this case, the original class has two parameters, 
-        a string <literal>name</literal>, and an <literal>OutputStream</literal>. The 
-        second class extends the first class, and defines just one parameter, of type 
-        <literal>Process</literal>.</para>
+        initialization parameters.</para>
         
         <para>Our <literal>hello()</literal> method is now looking <emphasis>really</emphasis>
         simple:</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 public void hello(Process process) {
-    Hello(process).say();
+    Hello(process).say(process);
 }]]></programlisting>
         
         </section>
@@ -533,15 +528,14 @@ page '/hello.html'
 class Hello(Request request) 
         extends Html(request) {
 
-    optional String name = request.parameters["name"];
-    String greeting = "Hello, " (name ? "World") "!";
+    Hello hello = Hello(request.parameters["name"]);
     
     head = Head { title="Hello World"; };
     
     body = Body {
         Div {
             cssClass = "greeting";
-            greeting
+            hello.greeting
         },
         Div {
             cssClass = "footer";
