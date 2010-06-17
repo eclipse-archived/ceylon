@@ -1,5 +1,4 @@
-public interface Bits<T> 
-        where T = subtype {
+public interface Bits<T> {
         
     doc "Bitwise or operator x|y"
     public T or(T bits);
