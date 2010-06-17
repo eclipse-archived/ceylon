@@ -758,7 +758,7 @@ VarargsParam?
             <listitem>
                 <para>an initialization parameter specification, <literal>X(...)</literal>
                 specifies that the type parameter <literal>X</literal> is a class with
-                with the given formal parameter types.</para>
+                the given formal parameter types.</para>
             </listitem>
         </itemizedlist>
         
