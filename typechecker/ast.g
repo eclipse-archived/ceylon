@@ -434,8 +434,8 @@ annotationArguments
     ;
 
 reflectedLiteral 
-    : '#' ( memberName | ( parameterizedType ('.' memberName)? ) )
-    -> ^(REFLECTED_LITERAL parameterizedType? memberName?)
+    : '#' ( memberName | ( type ('.' memberName)? ) )
+    -> ^(REFLECTED_LITERAL type? memberName?)
     ;
 
 typeName
