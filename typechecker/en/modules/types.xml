@@ -1240,8 +1240,7 @@ while (people nonempty) {
         <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
         operators.</para>
         
-        <programlisting><![CDATA[public interface Bits<T> 
-        where T = subtype {
+        <programlisting><![CDATA[public interface Bits<T> {
         
     doc "Bitwise or operator x|y"
     public T or(T bits);
