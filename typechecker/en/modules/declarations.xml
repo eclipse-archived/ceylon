@@ -355,8 +355,11 @@ Description doc(String description) {
 Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
 
         <para>The only expression assignable to the type <literal>subtype</literal> is
-        the special value <literal>this</literal>.</para>
+        the special value <literal>this</literal>, except inside the body of a method or
+        attribute annotated <literal>static</literal>, where the class that declares the
+        method or attribute is assignable to <literal>subtype</literal>.</para>
         
+        <!--
         <comment><para>TODO: should we have a new kind of type constraint like 
         <literal>where subtype(....)</literal>, which allows an instance of the concrete
         subtype to be instantiated by code in the superclass using <literal>subtype(....)</literal>?
@@ -364,6 +367,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         Or, should we allow a subclass to be declared <literal>final</literal>, in which 
         case the subclass could assign any instance of itself to <literal>subtype</literal>?
         </para></comment>
+        -->
         
         <para>The type <literal>subtype</literal> is considered a covariant type parameter
         of the type, and may only appear in covariant positions of the type definition.</para>
@@ -1723,19 +1727,32 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
             <programlisting>AbstractMethod := MethodHeader ";"</programlisting>
 
-            <para>An interface method or abstract method must be overridden by every 
-            non-<literal>abstract</literal> class that is assignable to the interface or 
-            abstract class type, unless the class inherits a non-abstract method from a 
-            superclass which overrides the interface method or abstract method.</para>
-            
         </section>
         
         <section id="overridingmethods">
             <title>Overriding methods</title>
             
-            <para>An abstract method, interface method, or a method annotated 
-            <literal>default</literal> may be overridden by subclasses of the class 
-            or interface which declares the method. The subclass must declare a method:</para>
+            <para>Method overriding is the foundation of polymorphism in Ceylon:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para>A method annotated <literal>default</literal> may be overridden by 
+                subclasses of the class or interface which declares the method.</para>
+            </listitem>
+            <listitem>
+                <para>A method annotated <literal>static</literal> <emphasis>must</emphasis> 
+                be overridden by every subclass of the class or interface which declares the
+                method.</para>
+            </listitem>
+            <listitem>
+                <para>An interface method or abstract method must be overridden by every 
+                non-<literal>abstract</literal> class that is assignable to the interface or 
+                abstract class type, unless the class inherits a non-abstract method from a 
+                superclass which overrides the interface method or abstract method.</para>
+            </listitem>
+            </itemizedlist>           
+            
+            <para>To override a method, a class must declare a method:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2080,24 +2097,38 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             or setter:</para>
         
             <programlisting>AbstractAttribute := AttributeHeader ";"</programlisting>
-            
-            <para>An interface attribute or abstract attribute must be overridden by every 
-            non-<literal>abstract</literal> class that is assignable to the interface or 
-            abstract class type, unless the class inherits a non-abstract attribute from a 
-            superclass which overrides the interface attribute or abstract attribute.</para>
-            
+                        
         </section>
         
         <section id="overridingattributes">
             <title>Overriding attributes</title>
             
-            <para>An abstract attribute, interface attribute, or attribute annotated 
-            <literal>default</literal> may be overridden by subclasses of the class or 
-            interface which declares the method. A non-<literal>mutable</literal> 
-            attribute may be overridden by a simple attribute or attribute getter. A 
-            <literal>mutable</literal> attribute may be overridden by a 
-            <literal>mutable</literal> simple attribute or by an attribute getter and 
-            setter pair. The subclass must declare an attribute:</para>
+            <para>Ceylon allows attributes to be overridden, just like methods:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para>An attribute annotated <literal>default</literal> may be overridden by 
+                subclasses of the class or interface which declares the method.</para>
+            </listitem>
+            <listitem>
+                <para>A method annotated <literal>static</literal> <emphasis>must</emphasis> 
+                be overridden by every subclass of the class or interface which declares the
+                method.</para>
+            </listitem>
+            <listitem>
+                <para>An interface attribute or abstract attribute must be overridden by every 
+                non-<literal>abstract</literal> class that is assignable to the interface or 
+                abstract class type, unless the class inherits a non-abstract attribute from a 
+                superclass which overrides the interface attribute or abstract attribute.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>A non-<literal>mutable</literal> attribute may be overridden by a simple 
+            attribute or attribute getter. A <literal>mutable</literal> attribute may be 
+            overridden by a <literal>mutable</literal> simple attribute or by an attribute 
+            getter and setter pair.</para>
+            
+            <para>A class which overrides an attribute must declare an attribute:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2269,6 +2300,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <listitem>
                 <para><literal>optional</literal> specifies that an attribute,
                 local, parameter, or method return value may be null.</para>
+            </listitem>
+            <listitem>
+                <para><literal>static</literal> specifies that a method or
+                attribute must be overridden by every subclass.</para>
             </listitem>
             <!--listitem>
                 <para><literal>final</literal> indicates that a class may not 
