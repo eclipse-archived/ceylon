@@ -73,8 +73,8 @@ class ControlStructures() {
 		    log.info(str);
 		}
 		
-		class Foo {}
-		class Bar extends Foo() {}
+		class Foo() {}
+		class Bar() extends Foo() {}
 		
 		Foo foo = Bar();
 		
@@ -245,7 +245,7 @@ class ControlStructures() {
 		    }
 		}
 		
-		class Color { case red, case green, case blue; }
+		class Color() { case red, case green, case blue; }
 		Color c = red;
 		switch(c)
 		case (red) {

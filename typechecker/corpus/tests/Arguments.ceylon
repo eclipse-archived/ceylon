@@ -57,7 +57,7 @@ class Arguments() {
 	class Varargs() {
 	
 		String join(String sep, String... strings) {
-			return (sep+" ").join(strings);
+			return (sep+" ").join(strings)
 		}
 		
 		String methodResultWithPositionalVarargs = join(",", "foo", "bar"); 
@@ -91,7 +91,7 @@ class Arguments() {
 							Boolean until(Y y), 
 							Y each(Y y), 
 							void perform(Y y)) {
-			do (mutable Y y := initial)
+			mutable Y y := initial;
 			while (!until(y)) {
 				perform(y);
 				y:=each(y);
