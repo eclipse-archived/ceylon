@@ -573,6 +573,11 @@ else {
             </listitem>
             </itemizedlist>
             
+            <comment><para>TODO: do we need the special case for <literal>Sequence</literal>?
+            For lists, we could just make you write:</para>
+            <programlisting>for (local i-&gt;local x in list.map) { ... }</programlisting>
+            </comment>
+            
             <!--para>Iterated and constraint expressions may refer to any local variable 
             defined by a previous iteration.</para-->
             
