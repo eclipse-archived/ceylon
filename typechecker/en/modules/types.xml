@@ -1517,7 +1517,7 @@ while (people nonempty) {
         <comment><para>TODO: this stuff is just for illustration, the real
         date/time API will be much more complex and fully internationalized.</para></comment>
         
-        <programlisting><![CDATA[public class Instant {
+        <programlisting><![CDATA[public class Instant() {
     ...
 }]]></programlisting>
 
@@ -1576,7 +1576,7 @@ while (people nonempty) {
         <programlisting><![CDATA[public interface Granularity<X> 
         where X satisfies Instant {}]]></programlisting>
 
-        <programlisting><![CDATA[public class DateGranularity 
+        <programlisting><![CDATA[public class DateGranularity()
         satisfies Granularity<Date> {
     case year, 
     case month, 
@@ -1584,7 +1584,7 @@ while (people nonempty) {
     case day;
 }]]></programlisting>
 
-        <programlisting><![CDATA[public class TimeGranularity 
+        <programlisting><![CDATA[public class TimeGranularity()
         satisfies Granularity<Time> {
     case hour, 
     case minute, 

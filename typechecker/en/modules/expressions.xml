@@ -1005,7 +1005,7 @@ local comp = order(1,-1);</programlisting>
         
             <para>This method:</para>
         
-            <programlisting>public class Counter {
+            <programlisting>public class Counter() {
         
     package void init(Natural initialCount=0) {
         count:=initialCount;

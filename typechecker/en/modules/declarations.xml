@@ -315,7 +315,7 @@ Description doc(String description) {
         
         <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
         
-        <programlisting>public abstract class Wrappable {
+        <programlisting>public abstract class Wrappable() {
    public Wrapper&lt;subtype&gt; wrap() {
        return Wrapper(this)
    }
