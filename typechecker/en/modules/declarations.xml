@@ -2141,9 +2141,12 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
             </para>
             -->
             
-            <comment><para>TODO: should we allow overloaded attribute setters, for example:</para></comment>
-        
+            <comment><para>TODO: should we require that the corresponding getter be 
+            annotated <literal>mutable</literal>?</para></comment>
+            
+            <comment><para>TODO: should we allow overloaded attribute setters, for example:</para>
             <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
+            </comment>
             
             <!--
             <para>is equivalent to this Java code:</para>
