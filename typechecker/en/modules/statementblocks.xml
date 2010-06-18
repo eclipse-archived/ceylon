@@ -22,11 +22,11 @@
 
         <programlisting>Statement := ExpressionStatement | Specification | ControlStructure</programlisting>
         
-        <para>A simple attribute or local may not be used in an expression until its value has
-        been explicitly specified or initialized. The Ceylon compiler guarantees this
-        by evaluating all conditional branches between the declaration of a simple 
-        attribute or local and its first use in an expression. Each conditional branch must
-        specify or assign a value to the simple attribute or local.</para>
+        <para>A simple attribute or local may not be used in an expression until its value 
+        has been explicitly specified or initialized. The Ceylon compiler guarantees this
+        by evaluating all conditional branches between the declaration of a simple attribute 
+        or local and its first use in an expression. Each conditional branch must specify or 
+        assign a value to the simple attribute or local before using it in an expression.</para>
         
         <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
         
