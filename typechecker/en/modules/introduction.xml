@@ -169,7 +169,7 @@
     </para>
     
     <section>
-        <title>Getting started</title>
+        <title>Writing a simple program in Ceylon</title>
         
         <para>
         Here's a classic example, implemented in Ceylon:
@@ -191,6 +191,25 @@ public void hello(Process process) {
         documentation that is included in the output of the Ceylon 
         documentation compiler.
         </para>
+        
+        <para>Copy this code into a file named <literal>hello.ceylon</literal>
+        and put the file in the <literal>ceylon/source/</literal> directory of 
+        your Ceylon SDK installation.</para>
+        
+        <para>Now, in the <literal>ceylon</literal> directory, run the 
+        following command:</para>
+        
+        <programlisting>ceylon hello</programlisting>
+        
+        <para>This command compiles the source to bytecode and runs the Java 
+        virtual machine. You should see the following output in the console:</para>
+        
+        <programlisting>Hello World!</programlisting>
+        
+    </section>
+        
+    <section>
+        <title>Dealing with objects that aren't there</title>
         
         <para>
         This improved version of the program takes a name as input from the 
@@ -241,10 +260,19 @@ public void hello(Process process) {
         <literal>if (exists ... )</literal>.
         </para>
         
+        <para>Copy this new version of the program into <literal>hello.ceylon</literal> 
+        and run:</para>
+        
+        <programlisting>ceylon hello everybody</programlisting>
+        
+        <para>You should see the following output:</para>
+        
+        <programlisting>Hello everybody!</programlisting>
+        
         </section>
         
         <section>
-            <title>Using objects</title>
+            <title>Creating your own classes</title>
 
         <para>
         Our method now has too many responsibilities, and is not at all reusable. 
@@ -259,14 +287,6 @@ public void hello(Process process) {
             <listitem><para>sometimes, other nested types.</para></listitem>
         </itemizedlist>
           
-        <para>
-        A Ceylon attribute is a bit different to a Java field&mdash;it's more like 
-        a getter method, or, sometimes, like a getter and setter method pair. In
-        Ceylon, you don't need to go around declaring all your attributes 
-        <literal>private</literal> and wrapping them in getter and setter methods.
-        Get out of that habit right now!
-        </para>
-        
         <para>
         Types (interfaces, classes, and aliases) have names that begin with uppercase 
         letters. Members (methods and attributes) and locals have names that begin with 
@@ -310,9 +330,75 @@ class Hello(optional String name) {
     
 }]]></programlisting>
 
-        <para>The attribute <literal>greeting</literal> is a <emphasis>simple 
-        attribute</emphasis>, very similar to a Java field. Its value is
-        initialized immediately after it is declared.</para>
+            <para>To understand this code completely, we're going to need to first
+            explore the concept of an attribute, and then discuss how object
+            initialization works in Ceylon.</para>
+
+        </section>
+        
+        <section>
+            <title>Abstracting state using attributes</title>
+            
+            <para>The attribute <literal>greeting</literal> is a <emphasis>simple 
+            attribute</emphasis>, very similar to a Java field. Its value is
+            specified immediately after it is declared. Usually we can declare
+            and specify the value of an attribute in a single line of code.</para>
+            
+            <programlisting>package String greeting = "Hello, " name "!";</programlisting>
+        
+            <para>An attribute is a bit different to a Java field. It's an abstraction
+            of the notion of a value. Some attributes are simple value holders like
+            the one we've just seen; others are more like a getter method, or, sometimes, 
+            like a getter and setter method pair. Like methods, attributes are 
+            polymorphic&mdash;an attribute definition may be overridden by a subclass.</para>
+            
+            <para>We could rewrite the attribute <literal>greeting</literal> as a 
+            <emphasis>getter</emphasis>:</para>
+
+            <programlisting><![CDATA[package String greeting {
+    if (exists name) {
+        return "Hello, " name "!"
+    }
+    else {
+        return "Hello, World!"
+    }
+}]]></programlisting>
+
+            <para>Clients of a class never need to know whether the attribute they 
+            access holds state directly, or is a getter that derives its value from
+            other attributes of the same object or other objects. In Ceylon, you don't 
+            need to go around declaring all your attributes <literal>private</literal> 
+            and wrapping them in getter and setter methods. Get out of that habit right 
+            now!</para>
+            
+            <para>Ceylon encourages you to use <emphasis>immutable</emphasis> attributes
+            as much as possible. An immutable attribute has its value specified when 
+            the object is initialized, and is never reassigned. If we want to be able to
+            assign a value to a simple attribute we need to annotate it 
+            <literal>mutable</literal>:</para>
+            
+            <programlisting>package mutable String greeting := "Hello World";
+if (exists name) {
+    greeting := "Hello, " name "!";
+}</programlisting>
+
+            <para>Notice the use of <literal>:=</literal> instead of <literal>=</literal>
+            here. This is important! In Ceylon, specification of immutable values uses 
+            <literal>=</literal>. Assignment to a <literal>mutable</literal> attribute 
+            or local is considered a different kind of thing, always performed using the
+            <literal>:=</literal> operator.</para>
+            
+            <para>A getter/setter pair is also a mutable attribute:</para>
+            
+            <programlisting>mutable String grtng := "Hello World";
+package String greeting { return grtng }
+private assign greeting { grtng = greeting; }</programlisting>
+            
+
+        </section>
+
+        <section>
+            <title>Understanding object initialization</title>
         
         <para>In Ceylon, classes don't have constructors. Instead:</para>
         
@@ -329,13 +415,30 @@ class Hello(optional String name) {
             </listitem>
         </itemizedlist>
         
-       <para>We could rewrite the attribute <literal>greeting</literal>
-        as a <emphasis>getter</emphasis>:</para>
+        <para>Take a close look at the following code fragment:</para>
+        
+<programlisting>String greeting;
+if (exists name) {
+    greeting = "Hello, " name "!";
+}
+else {
+    greeting = "Hello, World!";
+}</programlisting>
 
-        <programlisting><![CDATA[doc "A personalized greeting"
-class Hello(optional String name) {
+        <para>In Ceylon, this code could appear in the body of a class, where 
+        it would be declaring and specifying the value of an immutable attribute, 
+        or it could appear in the body of a method definition, where it would be 
+        declaring and specifying the value of an immutable local variable. That's
+        not the case in Java, where initialization of fields looks very different
+        to initialization of local variables! Thus the syntax of Ceylon is more
+        <emphasis>regular</emphasis> than Java. Regularity makes a language easy
+        to learn and easy to refactor.</para>
+        
+        <para>Now let's turn our attention to a different possible implementation
+        of <literal>greeting</literal>:</para>
+        
+        <programlisting><![CDATA[class Hello(optional String name) {
     
-    doc "The greeting"
     package String greeting {
         if (exists name) {
             return "Hello, " name "!"
@@ -345,10 +448,7 @@ class Hello(optional String name) {
         }
     }
     
-    doc "Print the greeting"
-    package void say(OutputStream stream) { 
-        stream.writeLine(greeting); 
-    }
+    ...
     
 }]]></programlisting>
 
@@ -368,7 +468,12 @@ class Hello(optional String name) {
         That's just a fancy way of obfuscating the idea that 
         <literal>greeting</literal> holds onto the value of 
         <literal>name</literal>, even after the initializer completes.</para>
-
+        
+        
+        </section>
+        
+        <section>
+            <title>Instantiating classes and overloading their initialization parameters</title>
          
         <para>Oops, I forgot to show you the code that uses <literal>Hello</literal>!</para>
         
@@ -393,8 +498,10 @@ public void hello(Process process) {
 class Hello(Process process) 
     extends Hello(process.args.first) {}]]></programlisting>
     
-        <para>A class can overload second class by extending it and declaring different
-        initialization parameters.</para>
+        <para>A class can overload a second class by extending it and declaring different
+        initialization parameters. An overloaded class with an empty body is the Ceylon
+        approach to "constructor" overloading. Of course, overloaded classes can do much
+        more than just this!</para>
         
         <para>Our <literal>hello()</literal> method is now looking <emphasis>really</emphasis>
         simple:</para>
@@ -409,8 +516,8 @@ public void hello(Process process) {
         <section>
             <title>Taking advantage of functional-style programming</title>
         
-        <para>Let's go back to the attribute <literal>greeting</literal> of
-        <literal>Hello</literal>:</para>
+        <para>Let's go back, once again, to the attribute <literal>greeting</literal> 
+        of <literal>Hello</literal>:</para>
         
         <programlisting><![CDATA[package String greeting {
     if (exists name) {
@@ -421,7 +528,7 @@ public void hello(Process process) {
     }
 }]]></programlisting>
 
-        <para>This definition of  works
+        <para>This definition works
         well enough, but it's quite procedural, with two <literal>return</literal>
         statements. That's not usually considered good style in Ceylon, though
         there are certainly times when it's necessary. Instead, Ceylon lets you
@@ -643,6 +750,13 @@ class Hello(Request request)
         string literal is used, allowing the format of the URL to be validated by
         the Ceylon compiler.</para>
 
+    </section>
+    
+    <section>
+        <title>Generic types and covariance</title>
+        
+        
+        
     </section>
     
 </chapter>
