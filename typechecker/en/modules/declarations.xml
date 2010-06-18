@@ -2727,6 +2727,13 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         of the introduced type, the extension is invoked to produce an instance of the introduced
         type that will receive the invocation or evaluation.</para>
         
+        <comment><para>TODO: extensions are nice, and quite powerful, but they aren't enough to
+        implement an embedded query language like in JPA. Dynamic languages let you implement a
+        method to respond to an unknown member invoked at runtime. Java 6 lets you do a similar
+        thing at compile time using a processor. I think we can take the best of both worlds and
+        let you write an extension method that returns a set of members to be introduced to the
+        extended type.</para></comment>
+        
     </section>
     
     <section id="annotationconstraints">
