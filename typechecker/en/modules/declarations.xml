@@ -569,10 +569,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         attribute annotated <literal>static</literal>, where the class that declares the
         method or attribute is assignable to <literal>subtype</literal>.</para>
         
-        <comment><para>TODO: You can't use <literal>subtype</literal> everywhere, for
-        example, you can't use it in an <literal>extends</literal> clause. What precisely
-        are the rules?</para></comment>
-        
         <!--
         <comment><para>TODO: should we have a new kind of type constraint like 
         <literal>where subtype(....)</literal>, which allows an instance of the concrete
