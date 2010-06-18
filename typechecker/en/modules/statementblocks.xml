@@ -769,7 +769,7 @@ finally {
     }
 }</programlisting>
 
-            <para>(This example shows a Ceylon-ified version of the Java's 
+            <para>(This example shows a Ceylon-ified version of the Java 
             <literal>synchronized</literal> block.)</para>
             
             <programlisting>try ( Transaction() )
