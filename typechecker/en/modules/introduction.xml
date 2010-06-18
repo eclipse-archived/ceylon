@@ -452,7 +452,7 @@ else {
     
 }]]></programlisting>
 
-        <para>You might wonder why we're allowed to use the parameter 
+        <para>You might be wondering why we're allowed to use the parameter 
         <literal>name</literal> inside the body of the getter of
         <literal>greeting</literal>. Doesn't the parameter go out of scope 
         as soon as the initializer terminates? Well, that's true, but 
@@ -461,7 +461,9 @@ else {
         case, the scope of <literal>name</literal> is the whole body of the 
         class, and the definition of <literal>greeting</literal> sits inside 
         that scope, so <literal>greeting</literal> is permitted to access 
-        <literal>name</literal>. We've just met our first example of 
+        <literal>name</literal>.</para>
+        
+        <para>We've just met our first example of 
         <emphasis>closure</emphasis>, a concept from functional programming. 
         We say that method and attribute definitions receive a closure of 
         immutable values defined in the class body to which they belong.
@@ -475,7 +477,8 @@ else {
         <section>
             <title>Instantiating classes and overloading their initialization parameters</title>
          
-        <para>Oops, I forgot to show you the code that uses <literal>Hello</literal>!</para>
+        <para>Oops, I got so excited about attributes and closure that I forgot to show 
+        you the code that uses <literal>Hello</literal>!</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 public void hello(Process process) {
@@ -532,7 +535,9 @@ public void hello(Process process) {
         well enough, but it's quite procedural, with two <literal>return</literal>
         statements. That's not usually considered good style in Ceylon, though
         there are certainly times when it's necessary. Instead, Ceylon lets you
-        write code like this using a more functional style. In procedural
+        write code like this using a more functional style.</para>
+        
+        <para>In procedural
         programming we usually pass a list of values to a method, which performs 
         computations using those values, and returns another value. In functional
         programming, we can pass an operation to a method, which calls our
@@ -770,8 +775,8 @@ class Hello(Request request)
         collections can be mutable, it turns out to be incorrect. Consider the
         following possible definition of <literal>Collection</literal>:</para>
         
-        <programlisting>interface Collection&lt;X&gt; satisfies Iterable&lt;X&gt; {
-    override Iterator&lt;X&gt; iterator();
+        <programlisting>interface Collection&lt;X&gt; {
+    Iterator&lt;X&gt; iterator();
     void add(X x);
 }</programlisting>
 
@@ -782,7 +787,7 @@ class Hello(Request request)
         
         <programlisting>Collection&lt;Geek&gt; geeks = ... ;
 Collection&lt;Person&gt; people = geeks;   //compiler error
-for (Person person in people) { ... }</programlisting>
+for (Person person in people.iterator()) { ... }</programlisting>
         
         <para>This code is, frankly, perfectly reasonable taken at face value. Yet
         in both Java and Ceylon, this code results in a compiler error at the 
@@ -807,6 +812,101 @@ people.add( Person("Fonzie") );</programlisting>
         wildcards to try and squeeze a covariant or contravariant type out of a 
         nonvariant type, but mainly succeeding in thoroughly confusing everybody.
         We're not going to follow Java down the hole.</para>
+        
+        <para>Instead, we're going to refactor <literal>Collection</literal> into
+        a pure producer interface and a pure consumer interface:</para>
+        
+        <programlisting>interface Producer&lt;out X&gt; {
+    Iterator&lt;X&gt; iterator();
+}</programlisting>
+
+        <programlisting>interface Consumer&lt;in X&gt; {
+    void add(X x);
+}</programlisting>
+
+        <para>Notice that we've annotated the type parameters of these interfaces.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The <literal>out</literal> annotation specifies that 
+                <literal>Producer</literal> is <emphasis>covariant</emphasis>
+                in <literal>X</literal>; that it produces instances of 
+                <literal>X</literal>, but never consumes instances of 
+                <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>The <literal>in</literal> annotation specifies that 
+                <literal>Consumer</literal> is <emphasis>contravariant</emphasis>
+                in <literal>X</literal>; that it consumes instances of 
+                <literal>X</literal>, but never produces instances of 
+                <literal>X</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        
+        <para>The Ceylon compiler validates the schema of the type declaration to 
+        ensure that the variance annotations are satisfied. If you try to declare 
+        an <literal>add()</literal> method on <literal>Producer</literal>, a
+        compilation error results. If you try to declare an <literal>iterate()</literal>
+        method on <literal>Consumer</literal>, you get a similar compilation 
+        error.</para>
+        
+        <para>Now, let's see what that buys us:</para>
+        
+        <itemizedlist>
+            <listitem>
+        <para>Since <literal>Producer</literal> is covariant in its type parameter
+        <literal>X</literal>, and since <literal>Geek</literal> is a subtype 
+        of <literal>Person</literal>, Ceylon lets you assign
+        <literal>Producer&lt;Geek&gt;</literal> to 
+        <literal>Producer&lt;Person&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+        <para>Furthermore, 
+        since <literal>Consumer</literal> is contravariant in its type parameter
+        <literal>X</literal>, and since <literal>Geek</literal> is a subtype 
+        of <literal>Person</literal>, Ceylon lets you assign
+        <literal>Consumer&lt;Person&gt;</literal> to 
+        <literal>Consumer&lt;Geek&gt;</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>We can define our <literal>Collection</literal> interface as a
+        mixin of <literal>Producer</literal> with <literal>Consumer</literal>.</para>
+        
+        <programlisting>interface Collection&lt;X&gt; 
+        satisfies Producer&lt;X&gt;, Consumer&lt;X&gt; {}</programlisting>
+        
+        <para>Notice that <literal>Collection</literal> remains nonvariant in
+        <literal>X</literal>.</para>
+        
+        <para>Now, the following code finally compiles:</para>
+
+        <programlisting>Collection&lt;Geek&gt; geeks = ... ;
+Producer&lt;Person&gt; people = geeks;
+for (Person person in people.iterator()) { ... }</programlisting>
+
+        <para>Which matches our original intuition.</para>
+
+        <para>The following code also compiles:</para>
+        
+        <programlisting>Collection&lt;Person&gt; people = ... ;
+Consumer&lt;Geek&gt; geekConsumer = people;
+geekConsumer.add( Person("James Gosling") );</programlisting>
+
+        <para>Which is also intuitively correct&mdash;James is most certainly
+        a <literal>Person</literal>!</para>
+        
+        <para>You're unlikely to spend much time writing your own collection
+        classes, since the Ceylon SDK has a powerful collections framework
+        built in. But you'll still appreciate Ceylon's approach to covariance
+        as a user of the built-in collection types.
+        The collections framework defines two interfaces for each 
+        basic kind of collection. For example, there is an interface 
+        <literal>List&lt;X&gt;</literal> which represents a read-only view of
+        a list, and is covariant in <literal>X</literal>, and 
+        <literal>OpenList&lt;X&gt;</literal>, which represents a mutable list,
+        and is nonvariant in <literal>X</literal>.</para>
         
     </section>
     
