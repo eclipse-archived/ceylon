@@ -609,6 +609,9 @@ sort(names, reverseAlpha);</programlisting>
         <para>Thus, method signatures are covariant in return type, and nonvariant in parameter 
         types.</para>
         
+        <para>Additionally, method references are assignable to <literal>Callable&lt;X&gt;</literal>
+        where <literal>X</literal> is the return type.</para>
+        
         <comment><para>TODO: could we make method references contravariant in the parameter
         types? If so, we should use the same rule for overriding.</para></comment>
         
