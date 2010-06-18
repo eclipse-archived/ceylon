@@ -235,7 +235,8 @@ Description doc(String description) {
                 <para>a method and an attribute with the same name,</para>
             </listitem>
             <listitem>
-                <para>two methods with the same name and formal parameter types, or</para>
+                <para>two methods with the same name and non-distinct initial signatures, 
+                or</para>
             </listitem>
             <listitem>
                 <para>two member classes with the same name and formal parameter types.</para>
@@ -253,11 +254,14 @@ Description doc(String description) {
                 <para>A <emphasis>method</emphasis> is a name (an initial lower case 
                 identifier) with a type and a list of one or more formal parameter lists. 
                 The <emphasis>signature</emphasis> of a method is its type, together with
-                the list of signatures of its formal parameter lists.</para>
+                the list of signatures of its formal parameter lists. The signature of the 
+                first formal parameter list of a method is called the <emphasis>initial 
+                signature</emphasis> of the method.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>member class</emphasis> is a type with a formal parameter 
-                list.</para>
+                list. The signature of the formal parameter list of a class is called the 
+                <emphasis>initial signature</emphasis> of the class.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
@@ -266,6 +270,12 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
+        <para>Two initial signatures are considered <emphasis>distinct</emphasis> if they 
+        have different lengths, or if at some position within the lists, the two types are 
+        non-identical.</para>
+        
+        <comment><para>TODO: non-identical, or non-assignable?</para></comment>
+            
         <para>A type may be <emphasis>assignable</emphasis> to another type. If <literal>X</literal>
         is assignable to <literal>Y</literal>, then:</para>
         
@@ -1461,12 +1471,6 @@ class Customer(Name name, optional Organization org = null)
                 </listitem>
             </itemizedlist>
             
-            <para>The signature of the formal parameter list of a class is called 
-            the <emphasis>initial signature</emphasis> of the class. Two initial 
-            signatures are considered <emphasis>distinct</emphasis> if they have 
-            different lengths, or if at some position within the lists, the two 
-            types are non-identical.</para>
-            
             <para>Then the class name always refers to the root type, except in 
             instantiations. In the case of instantiation, the correct overloaded 
             class is resolved at compile time, using the mechanism that Java
@@ -1772,12 +1776,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>may not declare default parameters.</para>
                 </listitem>
             </itemizedlist>
-            
-            <para>The signature of the first formal parameter list of a method is called 
-            the <emphasis>initial signature</emphasis> of the method. Two initial 
-            signatures are considered <emphasis>distinct</emphasis> if they have different 
-            lengths, or if at some position within the lists, the two types are 
-            non-identical.</para>
             
             <para>A class may not not declare of inherit a method with the same name as
             an attribute it declares or inherits.</para>
