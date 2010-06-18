@@ -28,7 +28,7 @@
     doc "The equals operator x == y. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see #id
-    public Boolean equals(Object that) { return ... }
+    public default Boolean equals(Object that) { return ... }
     
     doc "Compares the given attributes of this instance with the given
          attributes of the given instance."
@@ -37,7 +37,7 @@
     doc "The hash code of the instance. Default implementation compares
          attributes annotated |id|, or assumes identity equality."
     see #id
-    public Integer hash { return ... }
+    public default Integer hash { return ... }
     
     doc "Computes the hash code of the instance using the given 
          attributes."
@@ -46,7 +46,12 @@
     doc "A developer-friendly string representing the instance. 
          By default, the string contains the name of the type, 
          and the values of all attributes annotated |id|."
-    public String string { return ... }
+    public default String string { return ... }
+    
+    doc "A developer-friendly string representing the instance,
+         containing the name of the type, and the value of the
+         given attributes." 
+    public default String string(Attribute... attributes) { ... }
     
     doc "Determine if the instance belongs to the given |Category|."
     see #Category
@@ -71,7 +76,7 @@
     }
     
     doc "A log obect for the type."
-    public Log log { return type.log }
+    public default Log log { return type.log }
     
     doc "Transform the given object to a string. Override to
          customize the render operator and character string 
