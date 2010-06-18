@@ -471,7 +471,6 @@ else {
         <literal>greeting</literal> holds onto the value of 
         <literal>name</literal>, even after the initializer completes.</para>
         
-        
         </section>
         
         <section>
@@ -755,6 +754,147 @@ class Hello(Request request)
         string literal is used, allowing the format of the URL to be validated by
         the Ceylon compiler.</para>
 
+    </section>
+    
+    <section>
+        <title>Defining structured data formats</title>
+        
+        <para>Let's try and define our own structured data format, to personalize
+        our program a little. First, we'll create a class to represent people:</para>
+        
+        <programlisting>package class Person(String firstName, String lastName, Language lang) {
+    package String firstName = firstName;
+    package String lastName = lastName;
+    package Language lang = lang;
+}</programlisting>
+        
+        <para>Now, we'll create a class with an <emphasis>enumerated list of 
+        instances</emphasis>&mdash;almost exactly like a Java 
+        <literal>enum</literal>&mdash;to represent the built-in languages that
+        our program supports.</para>
+        
+        <programlisting>package class Language(String hello) {
+
+    english("Hello"),
+    french("Bonjour"),
+    spanish("Hola"),
+    italian("Ciao")...
+    
+    package String hello = hello;
+    
+}</programlisting>
+
+        <para>The use of <literal>...</literal> at the end of the list of enumerated
+        instances means that it's possible to create other <literal>Language</literal>s.
+        Very important in this case, since our list of languages is definitely not 
+        exhaustive! If our list of instances were exhaustive, we would terminate it
+        using <literal>;</literal>, thereby preventing other code from instantiating
+        additional <literal>Language</literal>s.</para>
+        
+        <para>Now we can define the set of people known to our application like
+        this:</para>
+        
+        <programlisting>Set&lt;Person&gt; people = {
+        Person {
+            firstName = "Gavin";
+            lastName = "King";
+            language = en;
+        },
+        Person {
+            firstName = "Emmanuel";
+            lastName = "Bernard";
+            lang = french;
+        },
+        Person {
+            firstName = "Pete";
+            lastName = "Muir
+            lang = english;
+        },
+        Person {
+            firstName = "Andrew";
+            lastName = "Haley";
+            lang = english;
+        }
+    };</programlisting>
+    
+        <para>But where should we put our list of people? Well, just for fun, let's
+        specify them using an annotation of <literal>Hello</literal>. First we'll 
+        need to learn how to define new annotations.</para>
+        
+    </section>
+    
+    <section>
+        <title>Defining annotations</title>
+        
+        <para>In Java, an annotation is a special kind of type. In Ceylon, an
+        annotation is just a method that produces an ordinary type. An 
+        annotation for specifying a set of people could be defined like this:</para>
+        
+        <programlisting>package Set&lt;People&gt; people(Person... people) {
+    return HashSet(people);
+}</programlisting>
+        
+        <para>We're already ready to use this annotation:</para>
+        
+        <programlisting>doc "A personalized greeting"
+people {
+    Person {
+        firstName = "Gavin";
+        lastName = "King";
+        language = en;
+    },
+    Person {
+        firstName = "Emmanuel";
+        lastName = "Bernard";
+        lang = french;
+    },
+    Person {
+        firstName = "Pete";
+        lastName = "Muir
+        lang = english;
+    },
+    Person {
+        firstName = "Andrew";
+        lastName = "Haley";
+        lang = english;
+    }
+}
+class Hello(optional String name) {
+
+    optional Set&lt;People&gt; annotation = type.annotations(#Set&lt;People&gt;).first
+    
+    doc "The list of people"
+    Set&lt;People&gt; people;
+    if (exists annotation) {
+        people = annotation;
+    }
+    else {
+        throw Exception("Not annotated people")
+    }
+    
+    doc "The greeting"
+    package String greeting {
+        if (exists name) {
+            optional Person p = first (people) having (Person p) (p.firstName==name);
+            if (exists p) {
+                return "" p.lang.hello ", " name "!"
+            }
+            else {
+                return "Hello, " name "!";
+            }
+        }
+        else {
+            return "Hello, World!";
+        }
+    }
+    
+    doc "Print the greeting"
+    package void say(OutputStream stream) { 
+        stream.writeLine(greeting); 
+    }
+    
+}</programlisting>
+        
     </section>
     
     <section>
