@@ -464,9 +464,9 @@ if you prefer.";</programlisting>
             </listitem>
             <listitem>
                 <para>If the attribute is <literal>mutable</literal>, the <literal>void</literal> 
-                setter method has a single formal parameter of type <literal>T</literal>
-                of <literal>optional</literal> type if and only if the attribute is declared 
-                <literal>optional</literal>.</para>
+                setter method has a single formal parameter, with the same name as the attribute,
+                of type <literal>T</literal>, of <literal>optional</literal> type if and only if 
+                the attribute is declared <literal>optional</literal>.</para>
             </listitem>
         </itemizedlist>
         

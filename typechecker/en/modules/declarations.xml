@@ -248,15 +248,15 @@ Description doc(String description) {
         <itemizedlist>
             <listitem>
                 <para>An <emphasis>attribute</emphasis> is a name (an initial lower case 
-                identifier) with a type.</para>
+                identifier) with a type, optionality, and mutability.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>method</emphasis> is a name (an initial lower case 
-                identifier) with a type and a list of one or more formal parameter lists. 
-                The <emphasis>signature</emphasis> of a method is its type, together with
-                the list of signatures of its formal parameter lists. The signature of the 
-                first formal parameter list of a method is called the <emphasis>initial 
-                signature</emphasis> of the method.</para>
+                identifier) with a type, optionality, and a list of one or more formal 
+                parameter lists. The <emphasis>signature</emphasis> of a method is its type, 
+                together with the list of signatures of its formal parameter lists. The 
+                signature of the first formal parameter list of a method is called the 
+                <emphasis>initial signature</emphasis> of the method.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>member class</emphasis> is a type with a formal parameter 
@@ -265,8 +265,9 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
-                (initial lower case identifiers) with types. The <emphasis>signature</emphasis> 
-                of a formal parameter list is the list of its types.</para>
+                (initial lower case identifiers) with types and optionalities. The 
+                <emphasis>signature</emphasis> of a formal parameter list is the list of 
+                its types and optionalities.</para>
             </listitem>
         </itemizedlist>
         
@@ -296,15 +297,17 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>For each method of <literal>Y</literal>, <literal>X</literal>
-                has a method with the same name, with the same formal parameter types, 
-                and whose return type is assignable to the return type of the method of 
-                <literal>Y</literal>. The method is not <literal>optional</literal> 
-                unless the method of <literal>Y</literal> is <literal>optional</literal>.</para>
+                has a method with the same name, with the same number of formal parameter 
+                lists, with the same signatures, and whose return type is assignable to the 
+                return type of the method of <literal>Y</literal>. The method is not 
+                <literal>optional</literal> unless the method of <literal>Y</literal> is 
+                <literal>optional</literal>.</para>
             </listitem>
             <listitem>
                 <para>For each member type of <literal>Y</literal>, <literal>X</literal>
-                has a member type of the same name, with the same formal parameter types,
-                that is assignable to the member type of <literal>Y</literal>.</para>
+                has a member type of the same name, with a formal parameter list with 
+                the same signature, that is assignable to the member type of 
+                <literal>Y</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1496,8 +1499,8 @@ class Customer(Name name, optional Organization org = null)
                 <para>that extends the member class it overrides, and</para>
             </listitem>
             <listitem>
-                <para>with the same formal parameter types as the member class it
-                overrides.</para>
+                <para>with a formal parameter list with the same signature as the 
+                member class it overrides.</para>
             </listitem>
         </itemizedlist>
         
@@ -1831,7 +1834,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>with the same name as the method it overrides,</para>
                 </listitem>
                 <listitem>
-                    <para>the same formal parameter types as the method it overrides,</para>
+                    <para>the same number of formal parameter lists, with the same
+                    signatures, as the method it overrides,</para>
                 </listitem>
                  <listitem>
                     <para>with a return type that is assignable to the return type of 
