@@ -762,7 +762,8 @@ class Hello(Request request)
         <para>Let's try and define our own structured data format, to personalize
         our program a little. First, we'll create a class to represent people:</para>
         
-        <programlisting>package class Person(String firstName, String lastName, Language lang) {
+        <programlisting>doc "Represents a person"
+package class Person(String firstName, String lastName, Language lang) {
     package String firstName = firstName;
     package String lastName = lastName;
     package Language lang = lang;
@@ -773,13 +774,15 @@ class Hello(Request request)
         <literal>enum</literal>&mdash;to represent the built-in languages that
         our program supports.</para>
         
-        <programlisting>package class Language(String hello) {
+        <programlisting>doc "Represents a language"
+package class Language(String hello) {
 
     english("Hello"),
     french("Bonjour"),
     spanish("Hola"),
     italian("Ciao")...
     
+    doc "The word for \"hello\" in the language"
     package String hello = hello;
     
 }</programlisting>
@@ -798,22 +801,22 @@ class Hello(Request request)
         Person {
             firstName = "Gavin";
             lastName = "King";
-            language = en;
+            language = Language.english;
         },
         Person {
             firstName = "Emmanuel";
             lastName = "Bernard";
-            lang = french;
+            lang = Language.french;
         },
         Person {
             firstName = "Pete";
             lastName = "Muir
-            lang = english;
+            lang = Language.english;
         },
         Person {
             firstName = "Andrew";
             lastName = "Haley";
-            lang = english;
+            lang = Language.english;
         }
     };</programlisting>
     
@@ -826,37 +829,58 @@ class Hello(Request request)
     <section>
         <title>Defining annotations</title>
         
-        <para>In Java, an annotation is a special kind of type. In Ceylon, an
-        annotation is just a method that produces an ordinary type. An 
-        annotation for specifying a set of people could be defined like this:</para>
+        <para>In Ceylon, an annotation is just a method that produces an ordinary 
+        type. An annotation for specifying a set of people could be defined like 
+        this:</para>
         
-        <programlisting>package Set&lt;People&gt; people(Person... people) {
+        <programlisting>doc "An annotation for specifying a list of 
+     people"
+ofElements(class) withType(#Greeting) 
+multiplicity(onceEachType)
+package Set&lt;People&gt; people(Person... people) {
     return HashSet(people);
 }</programlisting>
+
+        <para>The annotations <literal>ofElements</literal>, <literal>withType</literal>
+        and <literal>multiplicity</literal> specify that this annotation can only
+        occur an the class <literal>Greeting</literal>, and can only occur once.</para>
+
+        <para>We obtain the annotations of a program element&mdash;in this case, the 
+        class <literal>Greeting</literal>&mdash;using reflection upon the metamodel 
+        object&mdash;<literal>#Greeting</literal>&mdash;that represents the program 
+        element. We must specify the type returned by the annotation, by passing its 
+        metamodel object&mdash;in this case, <literal>#Set&lt;People&gt;</literal>.
+        Careful, there may be multiple annotations producing the same type of object!</para>
         
-        <para>We're already ready to use this annotation:</para>
+        <programlisting>Sequence&lt;Set&lt;People&gt;&gt; annotations = (#Greeting).annotations(#Set&lt;People&gt;);</programlisting>
+        
+        <para>We're already ready to use our new annotation. Just like with other 
+        method invocations, we have the choice between specifying the arguments of 
+        an annotation using a positional parameter list surrounded by parenthesis, 
+        or using a named parameter list surrounded by braces. In this case, the 
+        braces look more visually appealing:</para>
         
         <programlisting>doc "A personalized greeting"
 people {
     Person {
         firstName = "Gavin";
         lastName = "King";
-        language = en;
+        language = Language.english;
     },
     Person {
         firstName = "Emmanuel";
         lastName = "Bernard";
-        lang = french;
+        lang = Language.french;
     },
     Person {
         firstName = "Pete";
         lastName = "Muir
-        lang = english;
+        lang = Language.english;
     },
     Person {
         firstName = "Andrew";
         lastName = "Haley";
-        lang = english;
+        lang = Language.english;
     }
 }
 class Hello(optional String name) {
