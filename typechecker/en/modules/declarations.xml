@@ -549,7 +549,8 @@ Description doc(String description) {
         needs to be declared. This special type parameter, referred to using the keyword 
         <literal>subtype</literal>, represents the concrete type of the current instance 
         (the instance that is being invoked). It is considered a covariant type parameter
-        of the type, and may only appear in covariant positions of the type definition.</para>
+        of the type, and may only appear in covariant positions of the type definition.
+        It is upper bounded by the type (and is therefore assignable to the type).</para>
         
         <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
         
@@ -569,15 +570,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         attribute annotated <literal>static</literal>, where the class that declares the
         method or attribute is assignable to <literal>subtype</literal>.</para>
         
-        <!--
-        <comment><para>TODO: should we have a new kind of type constraint like 
-        <literal>where subtype(....)</literal>, which allows an instance of the concrete
-        subtype to be instantiated by code in the superclass using <literal>subtype(....)</literal>?
-        This newly instantiated object would be assignable to <literal>subtype</literal>.
-        Or, should we allow a subclass to be declared <literal>final</literal>, in which 
-        case the subclass could assign any instance of itself to <literal>subtype</literal>?
-        </para></comment>
-        -->
+        <comment><para>TODO: should we let you declare type constraints on 
+        <literal>subtype</literal>?</para></comment>
         
     </section>
 
