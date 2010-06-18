@@ -361,12 +361,12 @@ if you prefer.";</programlisting>
         <para>The keyword <literal>super</literal> refers to the
         current instance (the instance that is being invoked), and has
         the same members as the immediate superclass of the class,
-        except for <literal>static</literal> members. It is an expression 
+        except for <literal>fixed</literal> members. It is an expression 
         of non-<literal>optional</literal> type. Any invocation of this 
         reference is processed by the method or attribute defined or 
         inherited by this superclass, bypassing any method declaration 
         that overrides the method on the current class or any subclass 
-        of the current class. Invocation of <literal>static</literal> 
+        of the current class. Invocation of <literal>fixed</literal> 
         members upon <literal>super</literal> is not allowed. The 
         <literal>super</literal> reference is not assignable to any 
         type.</para>
