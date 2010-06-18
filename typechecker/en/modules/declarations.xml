@@ -2730,9 +2730,9 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         <comment><para>TODO: extensions are nice, and quite powerful, but they aren't enough to
         implement an embedded query language like in JPA. Dynamic languages let you implement a
         method to respond to an unknown member invoked at runtime. Java 6 lets you do a similar
-        thing at compile time using a processor. I think we can take the best of both worlds and
-        let you write an extension method that returns a set of members to be introduced to the
-        extended type.</para></comment>
+        thing at compile time using a processor (a compiler plugin). I think we can have the best
+        of both worlds and let you write an extension method that returns a set of members to be
+        introduced to the extended type.</para></comment>
         
     </section>
     
