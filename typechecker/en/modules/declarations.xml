@@ -210,7 +210,8 @@ Description doc(String description) {
     
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
-        <para>A type is a set of:</para>
+        <para>A <emphasis>type</emphasis> is name (an initial upper case identifier) with 
+        a set of:</para>
         
         <itemizedlist>
             <listitem>
@@ -238,6 +239,30 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>two member classes with the same name and formal parameter types.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Speaking formally:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>An <emphasis>attribute</emphasis> is a name (an initial lower case 
+                identifier) with a type.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>method</emphasis> is a name (an initial lower case 
+                identifier) with a type and a list of one or more formal parameter lists. 
+                The <emphasis>signature</emphasis> of a method is its type, together with
+                the list of signatures of its formal parameter lists.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>member class</emphasis> is a type with a formal parameter 
+                list.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>formal parameter list</emphasis> is a list of names 
+                (initial lower case identifiers) with types. The <emphasis>signature</emphasis> 
+                of a formal parameter list is the list of its types.</para>
             </listitem>
         </itemizedlist>
         
@@ -1425,7 +1450,7 @@ class Customer(Name name, optional Organization org = null)
                     type,</para>
                 </listitem>
                 <listitem>
-                    <para>must have distinct formal parameter types,</para>
+                    <para>must have distinct initial signatures,</para>
                 </listitem>
                 <listitem>
                     <para>may not declare default parameters, and</para>
@@ -1435,6 +1460,12 @@ class Customer(Name name, optional Organization org = null)
                     with a visibility modifier.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>The signature of the formal parameter list of a class is called 
+            the <emphasis>initial signature</emphasis> of the class. Two initial 
+            signatures are considered <emphasis>distinct</emphasis> if they have 
+            different lengths, or if at some position within the lists, the two 
+            types are non-identical.</para>
             
             <para>Then the class name always refers to the root type, except in 
             instantiations. In the case of instantiation, the correct overloaded 
@@ -1735,12 +1766,18 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>must have distinct formal parameter types, and</para>
+                    <para>must have distinct initial signatures, and</para>
                 </listitem>
                 <listitem>
                     <para>may not declare default parameters.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>The signature of the first formal parameter list of a method is called 
+            the <emphasis>initial signature</emphasis> of the method. Two initial 
+            signatures are considered <emphasis>distinct</emphasis> if they have different 
+            lengths, or if at some position within the lists, the two types are 
+            non-identical.</para>
             
             <para>A class may not not declare of inherit a method with the same name as
             an attribute it declares or inherits.</para>
@@ -2697,12 +2734,13 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         
         <itemizedlist>
             <listitem>
-                <para>the introduced type may have a member type with the same name and signature 
-                as a member type of the extended type, or of some other introduced type,</para>
+                <para>the introduced type may have a member type with the same name and initial
+                signature as a member type of the extended type, or of some other introduced 
+                type,</para>
             </listitem>
             <listitem>
-                <para>the introduced type may have a method with the same name and signature as a 
-                method of the extended type, or of some other introduced type,</para>
+                <para>the introduced type may have a method with the same name and initial 
+                signature as a method of the extended type, or of some other introduced type,</para>
             </listitem>
             <listitem>
                 <para>the introduced type may have an attribute with the same name as an attribute 
