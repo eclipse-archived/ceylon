@@ -755,7 +755,58 @@ class Hello(Request request)
     <section>
         <title>Generic types and covariance</title>
         
+        <para>Programming with generic types is one of the most difficult parts of
+        Java. That's also true, to some extent, in Ceylon. But because the Ceylon
+        language and SDK were designed for generics from the ground up, Ceylon
+        is able to eliminate one of the bits of Java generics that is really 
+        hard to get your head around: wildcard types. Wildcard types were Java's
+        solution to the problem of <emphasis>covariance</emphasis> in a generic
+        type system. Let's first explore the idea of covariance, and then see how
+        Ceylon's solution, copied from Scala, works.</para>
         
+        <para>It all starts with the intuitive expectation that a collection of
+        <literal>Geek</literal>s is a collection of <literal>Person</literal>s.
+        That's a reasonable intuition, but in procedural languages, where 
+        collections can be mutable, it turns out to be incorrect. Consider the
+        following possible definition of <literal>Collection</literal>:</para>
+        
+        <programlisting>interface Collection&lt;X&gt; satisfies Iterable&lt;X&gt; {
+    override Iterator&lt;X&gt; iterator();
+    void add(X x);
+}</programlisting>
+
+        <para>And let's suppose that <literal>Geek</literal> is a subtype of 
+        <literal>Person</literal>.</para>
+        
+        <para>The intuitive expectation is that the following code should work:</para>
+        
+        <programlisting>Collection&lt;Geek&gt; geeks = ... ;
+Collection&lt;Person&gt; people = geeks;   //compiler error
+for (Person person in people) { ... }</programlisting>
+        
+        <para>This code is, frankly, perfectly reasonable taken at face value. Yet
+        in both Java and Ceylon, this code results in a compiler error at the 
+        second line, where the <literal>Collection&lt;Geek&gt;</literal> is assigned 
+        to a <literal>Collection&lt;Person&gt;</literal>. Why? Well, because if we 
+        let the assignment through, the following code would also compile:</para>
+        
+        <programlisting>Collection&lt;Geek&gt; geeks = ... ;
+Collection&lt;Person&gt; people = geeks;   //compiler error
+people.add( Person("Fonzie") );</programlisting>
+
+        <para>We can't let that code by&mdash;Fonzie isn't a <literal>Geek</literal>!</para>
+        
+        <para>Using big words, we say that <literal>Collection</literal> is
+        <emphasis>nonvariant</emphasis> in <literal>X</literal>. Or, when we're not
+        trying to impress people with opaque terminology, we say that 
+        <literal>Collection</literal> both <emphasis>produces</emphasis>&mdash;via the
+        <literal>iterator()</literal> method&mdash;and <emphasis>consumes</emphasis>&mdash;via
+        the <literal>add()</literal> method&mdash;instances of <literal>X</literal>.</para>
+        
+        <para>Here's where Java goes off and dives down a rabbit hole, inventing 
+        wildcards to try and squeeze a covariant or contravariant type out of a 
+        nonvariant type, but mainly succeeding in thoroughly confusing everybody.
+        We're not going to follow Java down the hole.</para>
         
     </section>
     
