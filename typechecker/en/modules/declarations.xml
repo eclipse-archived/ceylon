@@ -545,7 +545,7 @@ Description doc(String description) {
         
         <para>These rules apply to members declared by the type, and to members inherited from supertypes.</para>
         
-        <para>Every Ceylon class and interface has an implicit type parameter that never
+        <para>Every Ceylon class or interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
         <literal>subtype</literal>, represents the concrete type of the current instance 
         (the instance that is being invoked). It is considered a covariant type parameter
