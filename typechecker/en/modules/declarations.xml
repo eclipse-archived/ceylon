@@ -374,44 +374,6 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
-        <para>Every Ceylon class and interface has an implicit type parameter that never
-        needs to be declared. This special type parameter, referred to using the keyword 
-        <literal>subtype</literal>, represents the concrete type of the current instance 
-        (the instance that is being invoked). It is considered a covariant type parameter
-        of the type, and may only appear in covariant positions of the type definition.</para>
-        
-        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
-        
-        <programlisting>public abstract class Wrappable() {
-   public Wrapper&lt;subtype&gt; wrap() {
-       return Wrapper(this)
-   }
-}</programlisting>
-        
-        <programlisting>public class Special() extends Wrappable() {}</programlisting>
-
-        <programlisting>Special special = Special();
-Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
-
-        <para>The only expression assignable to the type <literal>subtype</literal> is
-        the special value <literal>this</literal>, except inside the body of a method or
-        attribute annotated <literal>static</literal>, where the class that declares the
-        method or attribute is assignable to <literal>subtype</literal>.</para>
-        
-        <comment><para>TODO: You can't use <literal>subtype</literal> everywhere, for
-        example, you can't use it in an <literal>extends</literal> clause. What precisely
-        are the rules?</para></comment>
-        
-        <!--
-        <comment><para>TODO: should we have a new kind of type constraint like 
-        <literal>where subtype(....)</literal>, which allows an instance of the concrete
-        subtype to be instantiated by code in the superclass using <literal>subtype(....)</literal>?
-        This newly instantiated object would be assignable to <literal>subtype</literal>.
-        Or, should we allow a subclass to be declared <literal>final</literal>, in which 
-        case the subclass could assign any instance of itself to <literal>subtype</literal>?
-        </para></comment>
-        -->
-        
         <para>Certain declarations which usually require an explicit type may omit the type, 
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
         where the type usually appears.</para>
@@ -582,6 +544,44 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         </itemizedlist>
         
         <para>These rules apply to members declared by the type, and to members inherited from supertypes.</para>
+        
+        <para>Every Ceylon class and interface has an implicit type parameter that never
+        needs to be declared. This special type parameter, referred to using the keyword 
+        <literal>subtype</literal>, represents the concrete type of the current instance 
+        (the instance that is being invoked). It is considered a covariant type parameter
+        of the type, and may only appear in covariant positions of the type definition.</para>
+        
+        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
+        
+        <programlisting>public abstract class Wrappable() {
+   public Wrapper&lt;subtype&gt; wrap() {
+       return Wrapper(this)
+   }
+}</programlisting>
+        
+        <programlisting>public class Special() extends Wrappable() {}</programlisting>
+
+        <programlisting>Special special = Special();
+Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
+
+        <para>The only expression assignable to the type <literal>subtype</literal> is
+        the special value <literal>this</literal>, except inside the body of a method or
+        attribute annotated <literal>static</literal>, where the class that declares the
+        method or attribute is assignable to <literal>subtype</literal>.</para>
+        
+        <comment><para>TODO: You can't use <literal>subtype</literal> everywhere, for
+        example, you can't use it in an <literal>extends</literal> clause. What precisely
+        are the rules?</para></comment>
+        
+        <!--
+        <comment><para>TODO: should we have a new kind of type constraint like 
+        <literal>where subtype(....)</literal>, which allows an instance of the concrete
+        subtype to be instantiated by code in the superclass using <literal>subtype(....)</literal>?
+        This newly instantiated object would be assignable to <literal>subtype</literal>.
+        Or, should we allow a subclass to be declared <literal>final</literal>, in which 
+        case the subclass could assign any instance of itself to <literal>subtype</literal>?
+        </para></comment>
+        -->
         
     </section>
 
