@@ -21,11 +21,12 @@
     instances of the type hierarchy root <literal>lang.Object</literal>.
     However, the Ceylon compiler is permitted to optimize certain code to 
     take advantage of the better performance of primitive types on the JVM.
-    Ceylon does not support Java-style wildcard type parameters. Instead,
-    like Scala, a type parameter may be marked as covariant or 
+    Ceylon does not support Java-style wildcard type parameters or raw types. 
+    Instead, like Scala, a type parameter may be marked as covariant or 
     contravariant by the class or interface that declares the parameter.
-    Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style
-    <literal>typedef</literal>.
+    Type arguments are reified in Ceylon, eliminating many problems related
+    to type erasure in Java. Ceylon supports <emphasis>type aliases</emphasis>, 
+    similar to C-style <literal>typedef</literal>.
     </para>
     
     <para>
@@ -1074,6 +1075,55 @@ geekConsumer.add( Person("James Gosling") );</programlisting>
         a list, and is covariant in <literal>X</literal>, and 
         <literal>OpenList&lt;X&gt;</literal>, which represents a mutable list,
         and is nonvariant in <literal>X</literal>.</para>
+        
+    </section>
+    
+    <section>
+        <title>Testing the type of an object</title>
+        
+        <para>Ceylon doesn't have C-style typecasts. Instead, we must test and 
+        narrow the type in one step, using the <literal>if (is ... )</literal> 
+        construct. This construct is very, very similar to 
+        <literal>if (exists ... )</literal>, which we met earlier.</para>
+        
+        <programlisting>Object object = ... ;
+if (is Hello object) {
+    object.say();
+}</programlisting>
+        
+        <para>The <literal>switch</literal> statement supports a similar construct:</para>
+        
+        <programlisting>Object object = ... ;
+switch(object)
+case (is Hello) {
+    object.say();
+}
+case (is Person) {
+    stream.writeLine(object.firstName);
+}
+else {
+    stream.writeLine($object);
+}</programlisting>
+
+        <para>These constructs protect us from inadvertantly writing code that 
+        would cause a <literal>ClassCastException</literal> in Java, just like
+        <literal>if (exists ... )</literal> protects us from writing code that
+        would cause a <literal>NullPointerException</literal>.</para>
+        
+        <para>Another thing that causes problems when working with generic
+        types in Java is <emphasis>type erasure</emphasis>. Generic type 
+        arguments are discarded by the compiler, and simply aren't available
+        at runtime. So the following, perfectly sensible, code fragments 
+        simply wouldn't compile in Java:</para>
+        
+        <programlisting>if (is List&lt;Person&gt; list) { ... }</programlisting>
+        <programlisting>if (is T object) { ... }</programlisting>
+        <programlisting>Type&lt;T&gt; tType = #T;</programlisting>
+        
+        <para>(Where <literal>T</literal> is a generic type parameter.)</para>
+        
+        <para>You'll be pleased to know that in Ceylon, these three code
+        fragments compile and function as expected.</para>
         
     </section>
     
