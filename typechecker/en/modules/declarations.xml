@@ -348,7 +348,12 @@ Description doc(String description) {
                 <literal>X</literal> is assignable to <literal>Z</literal>.</para>
             </listitem>
             <listitem>
-                <para>Single root: all types are assignable to <literal>lang.Object</literal>,
+                <para>Nullsafety: the type <literal>lang.Optional</literal> is 
+                not assignable to <literal>lang.Object</literal>. Nor is its subtype
+                <literal>lang.Nonexistent</literal>.
+            </listitem>
+            <listitem>
+                <para>Single root: all other types are assignable to <literal>lang.Object</literal>,
                 including classes, interfaces, aliases and type parameters.</para>
             </listitem>
         </itemizedlist>
