@@ -263,6 +263,10 @@ Description doc(String description) {
                 or of the first formal parameter list of the method, and</para>
             </listitem>
             <listitem>
+                <para>replacing each occurrence of any type alias in the signature with the
+                aliased type, and</para>
+            </listitem>
+            <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
                 the upper bound of the type parameter, or <literal>lang.Object</literal> if 
                 there is no declared upper bound, and then</para>
@@ -272,8 +276,6 @@ Description doc(String description) {
                 list, leaving just the name of a class or interface.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: Aliases. Are they reified? Or do we need to erase them here?</para></comment>
         
         <para>Two erased signatures are considered <emphasis>distinct</emphasis> if they 
         have different lengths, or if at some position within the lists, the two types are 
@@ -2385,28 +2387,29 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        
        <programlisting>Alias := Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
        
-       <para>A type alias may satisfy any number of interfaces and at most one class.</para>
+       <para>A type alias may satisfy either a single interface or a single class.</para>
        
-       <!--para>A type alias may satisfy either:</para>
-       <itemizedlist>
-           <listitem><para>any number of interfaces and at most one class, or</para></listitem>
-           <listitem><para>a single functor type.</para></listitem>
-       </itemizedlist-->
-       
-       <para>The alias type is assignable to all of the satisfied types.</para>
-              
-       <para>Any expression which is assignable to all the satisfied types is assignable 
-       to the alias type.</para>
+       <para>The alias type is assignable to the satisfied type, and the satisfied type 
+       is assignable to the alias type.</para>
        
        <programlisting>public alias People satisfies List&lt;Person&gt;;</programlisting>
        
-       <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        
        <!--programlisting>alias Compare&lt;T&gt; satisfies functor Comparison(T x, T y);</programlisting-->
        
        <para>A shortcut is provided for definition of private aliases.</para>
        
        <programlisting>import java.util.List alias JavaList;</programlisting>
+       
+       <para>Type aliases are not reifed types. The metamodel reference for a type
+       alias&mdash;for example, <literal>#People</literal>&mdash;<literal> returns
+       the metamodel object for the aliased type&mdash;in this case, 
+       <literal>List&lt;Person&gt;</literal></literal>.</para>
+       
+       <comment><para>TODO: could we reify them? This would let us define type aliases
+       that satisfy multiple interfaces. For example:</para>
+       <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
+       </comment>
     
     </section>
     
