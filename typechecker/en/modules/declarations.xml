@@ -235,8 +235,9 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>A <emphasis>method schema</emphasis> is a name (an initial lower case 
-                identifier) with a type (often called the <emphasis>return type</emphasis>), 
-                optionality, and a list of one or more formal parameter lists.</para>
+                identifier) and an optional list of type parameters, with a type (often 
+                called the <emphasis>return type</emphasis>), optionality, and a list of one 
+                or more formal parameter lists.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>class schema</emphasis> is a type with a formal parameter 
@@ -251,8 +252,8 @@ Description doc(String description) {
         </itemizedlist>
         
         <para>Speaking slightly less formally, we usually refer to an attribute, method, or 
-        member class of a type, meaning a member attribute shema, method schema or member class 
-        schema.</para>
+        member class of a type, meaning an attribute shema, member method schema or member 
+        class schema.</para>
         
         <para>The <emphasis>erased signature</emphasis> of a method or class is formed by:</para>
         
