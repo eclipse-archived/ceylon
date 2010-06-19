@@ -1630,8 +1630,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                 <literal>count := 0</literal>,</para>
             </listitem>
             <listitem>
-                <para>any attribute expression where the underlying attribute has a setter
-                or is a simple attribute declared <literal>mutable</literal>, for example 
+                <para>any attribute expression where the underlying attribute is 
+                <literal>mutable</literal>, for example 
                 <literal>person.name := "Gavin"</literal>,</para>
             </listitem>
             <listitem>
