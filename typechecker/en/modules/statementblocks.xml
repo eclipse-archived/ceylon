@@ -272,8 +272,8 @@ else {
             </listitem>
             <listitem>
                 <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
-                of type <literal>Optional&lt;Container&gt;</literal> evaluates to a non-empty instance,
-                and</para>
+                of type <literal>Optional&lt;Container&gt;</literal> evaluates to a non-null, non-empty 
+                value, and</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>subtype condition</emphasis> is satisfied when an expression
@@ -358,15 +358,21 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to a non-null value when the control structure is 
-                executed.</para>
+                if the expression evaluates to an instance of <literal>Existent&lt;X&gt;</literal> 
+                when the control structure is executed.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to a non-null, non-empty instance of <literal>Container</literal>
+                if the expression evaluates to an instance of <literal>Existent&lt;Container&gt;</literal> 
+                for which <literal>value.empty</literal> evaluates to <literal>false</literal>
                 when the control structure is executed.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>Note that these are formal definitions. In fact, the compiler erases 
+        <literal>Optional&lt;T&gt;</literal> to <literal>T</literal> before generating bytecode.
+        So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
+        by the virtual machine.</para>
 
         </section>
         

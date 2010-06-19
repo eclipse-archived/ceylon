@@ -276,6 +276,13 @@ class Nonexistent<out X>(LiteralNull null) extends Optional<X>() {
     
 }]]></programlisting>
         
+        <para>Note that <literal>Optional</literal> is not a reified type. The compiler
+        erases all references to <literal>Optional&lt;X&gt;</literal> to 
+        <literal>X</literal> after performing type validation and before generating
+        bytecode. The compiler also replaces references to <literal>LiteralNull.null</literal>
+        with the Java <literal>null</literal>. Therefore, none of the extensions defined 
+        in this section are actually executed.</para>
+        
     </section>
     
     <section>
