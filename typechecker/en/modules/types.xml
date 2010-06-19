@@ -277,7 +277,7 @@
 
         <para>An iterator is used according to the following idiom:</para>
         
-        <programlisting>do ( Iterator i = list.iterator() )
+        <programlisting>Iterator i = list.iterator();
 while (i.more) {
     doSomething( i.next() );
 }</programlisting>
@@ -815,7 +815,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
             <para>It is possible to iterate lists without creating an iterator:</para>
             
-            <programlisting><![CDATA[do ( mutable List<Person> people := ... )
+            <programlisting><![CDATA[mutable List<Person> people := ... ;
 while (people nonempty) {
     doSomething(people.first);
     people.=rest;

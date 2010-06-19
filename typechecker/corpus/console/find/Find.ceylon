@@ -6,7 +6,7 @@ class Find(Process process) {
  		CommandLine commandLine = CommandLine(process);
 		String pattern = pattern(commandLine);
 		for ( File file in files(commandLine) ) {
-			do (Stream stream = file.stream)
+			Stream stream = file.stream;
 			while (stream.more) {
 				String line = stream.readLine();
 				if ( pattern.matches(line) ) {

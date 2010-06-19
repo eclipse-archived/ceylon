@@ -8,7 +8,7 @@ public class CommandLine(Process process) {
 	OpenMap<String,String> namedArgs = HashMap<String,String>();
 	OpenList<String> listedArgs = ArrayList<String>();
 	
-	do (Iterator<String> tokens = process.args.iterator())
+	Iterator<String> tokens = process.args.iterator();
 	while (tokens.more) {
 		String token = tokens.next();
 		if ( token.first==@- ) {
