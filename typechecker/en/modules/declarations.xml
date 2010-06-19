@@ -2269,11 +2269,14 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 </listitem>
                  <listitem>
                     <para>with a type that is assignable to the type of the attribute it 
-                    overrides, if the attribute it overrides is non-<literal>mutable</literal>, 
-                    or with exactly the same type as the attribute it overrides, if the 
-                    attribute it overrides is <literal>mutable</literal>, after substitution 
-                    of type arguments specified in the <literal>extends</literal> or 
-                    <literal>satisfies</literal> clause,</para>
+                    overrides, after substitution of type arguments specified in the 
+                    <literal>extends</literal> or <literal>satisfies</literal> clause,</para>
+                </listitem>
+                 <listitem>
+                    <para>or with <emphasis>exactly the same type</emphasis> as the attribute 
+                    it overrides, after substitution of type arguments specified in the 
+                    <literal>extends</literal> or <literal>satisfies</literal> clause, if the 
+                    attribute it overrides is <literal>mutable</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>that is <literal>mutable</literal>, if the attribute it overrides 
