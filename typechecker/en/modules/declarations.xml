@@ -256,7 +256,7 @@ Description doc(String description) {
         <itemizedlist>
             <listitem>
                 <para>taking the signature of the formal parameter list of the member class, 
-                or of the first formal parameter list of the the method, and</para>
+                or of the first formal parameter list of the method, and</para>
             </listitem>
             <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
