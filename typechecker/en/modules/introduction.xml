@@ -82,9 +82,8 @@
     
     <para>
     By default, Ceylon attributes and locals do not accept null values. 
-    Nullable locals and attributes must be explicitly declared using the 
-    <literal>optional</literal> annotation. Nullable expressions are not 
-    assignable to non-<literal>optional</literal> locals or attributes, 
+    Optional locals and attributes must be explicitly declared. Optional 
+    expressions are not assignable to non-optional locals or attributes, 
     except via use of the <literal>if (exists ... )</literal> construct. 
     Thus, the Ceylon compiler is able to detect illegal use of a null value 
     at compile time. Therefore, there is no equivalent to Java's 
@@ -222,7 +221,7 @@ public void hello(Process process) {
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 public void hello(Process process) {
-    optional String name = process.args.first;
+    String? name = process.args.first;
     String greeting;
     if (exists name) {
         greeting = "Hello, " name "!";
@@ -238,28 +237,37 @@ public void hello(Process process) {
         <literal>args</literal>, which holds a <literal>List</literal> of the 
         program's command line arguments. The local <literal>name</literal> is 
         initialized with the first of these arguments, if any. This local is 
-        annotated <literal>optional</literal> to indicate that it may contain 
-        a null value. The <literal>if (exists ...)</literal> control structure 
-        is used to initialize the value of the non-<literal>optional</literal> 
-        local named <literal>greeting</literal>, interpolating the value of 
+        declared to have type <literal>String?</literal>, to indicate that it 
+        may contain a null value. The <literal>if (exists ...)</literal> control 
+        structure is used to initialize the value of the non-null local named 
+        <literal>greeting</literal>, interpolating the value of 
         <literal>name</literal> into the message string whenever 
         <literal>name</literal> is not null. Finally, the message is printed
         to the console.
         </para>
         
         <para>Unlike Java, locals, parameters, and attributes that may contain 
-        null values must be explicitly declared using the <literal>optional</literal>
-        annotation. There's simply no way to assign <literal>null</literal> to
-        a local that isn't annotated <literal>optional</literal>. The compiler
+        null values must be explicitly declared as being of type 
+        <literal>Optional&lt;X&gt;</literal> where <literal>X</literal> is the
+        type of value they contain when not holding a null value. Ceylon lets
+        us abbreviate the type name <literal>Optional&lt;X&gt;</literal> to
+        <literal>X?</literal>. There's simply no way to assign <literal>null</literal> 
+        to a local that isn't of type <literal>Optional</literal>. The compiler
         won't let you.</para>
         
         <para>
         Nor will the Ceylon compiler let you do anything "dangerous" with a 
-        value declared <literal>optional</literal>&mdash;that is, anything that 
+        value of type <literal>Optional</literal>&mdash;that is, anything that 
         could cause a <literal>NullPointerException</literal> in 
         Java&mdash;without first checking that the value is not null using 
         <literal>if (exists ... )</literal>.
         </para>
+        
+        <para>(If you're worried about the performance implications of this,
+        don't be. <literal>Optional</literal> isn't a <emphasis>reified</emphasis>
+        type&mdash;the compiler eliminates it as part of the compilation 
+        process, allowing the resulting bytecode to take advantage of the
+        efficient handling of null values in the virtual machine.)</para>
         
         <para>Copy this new version of the program into <literal>hello.ceylon</literal> 
         and run:</para>
@@ -313,7 +321,7 @@ public void hello(Process process) {
         code in the same package:</para>
         
         <programlisting><![CDATA[doc "A personalized greeting"
-class Hello(optional String name) {
+class Hello(String? name) {
     
     doc "The greeting"
     package String greeting;
@@ -438,7 +446,7 @@ else {
         <para>Now let's turn our attention to a different possible implementation
         of <literal>greeting</literal>:</para>
         
-        <programlisting><![CDATA[class Hello(optional String name) {
+        <programlisting><![CDATA[class Hello(String? name) {
     
     package String greeting {
         if (exists name) {
@@ -885,9 +893,9 @@ people {
         lang = Language.english;
     }
 }
-class Hello(optional String name) {
+class Hello(String? name) {
 
-    optional Set&lt;People&gt; annotation = type.annotations(#Set&lt;People&gt;).first
+    Set&lt;People&gt;? annotation = type.annotations(#Set&lt;People&gt;).first
     
     doc "The list of people"
     Set&lt;People&gt; people;
@@ -901,7 +909,7 @@ class Hello(optional String name) {
     doc "The greeting"
     package String greeting {
         if (exists name) {
-            optional Person person = first (people) 
+            Person? person = first (people) 
                     having (Person p) (p.firstName==name);
             if (exists person) {
                 return "" person.lang.hello ", " 
