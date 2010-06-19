@@ -210,8 +210,8 @@ Description doc(String description) {
     
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
-        <para>A <emphasis>type</emphasis> is name (an initial upper case identifier) with 
-        a set of:</para>
+        <para>A <emphasis>type</emphasis> is name (an initial upper case identifier) and 
+        an optional list of type parameters, with a set of:</para>
         
         <itemizedlist>
             <listitem>
@@ -222,24 +222,6 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>member classes.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A type may not have:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>two attributes with the same name,</para>
-            </listitem>
-            <listitem>
-                <para>a method and an attribute with the same name,</para>
-            </listitem>
-            <listitem>
-                <para>two methods with the same name and non-distinct initial signatures, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para>two member classes with the same name and formal parameter types.</para>
             </listitem>
         </itemizedlist>
         
@@ -254,14 +236,11 @@ Description doc(String description) {
                 <para>A <emphasis>method</emphasis> is a name (an initial lower case 
                 identifier) with a type, optionality, and a list of one or more formal 
                 parameter lists. The <emphasis>signature</emphasis> of a method is its type, 
-                together with the list of signatures of its formal parameter lists. The 
-                signature of the first formal parameter list of a method is called the 
-                <emphasis>initial signature</emphasis> of the method.</para>
+                together with the list of signatures of its formal parameter lists.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>member class</emphasis> is a type with a formal parameter 
-                list. The signature of the formal parameter list of a class is called the 
-                <emphasis>initial signature</emphasis> of the class.</para>
+                list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
@@ -271,12 +250,47 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
-        <para>Two initial signatures are considered <emphasis>distinct</emphasis> if they 
+        <para>A method or member class has an <emphasis>erased signature</emphasis>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The erased signature of a method is formed by taking the signature the 
+                first formal parameter list of the method and replacing each type parameter in
+                the signature with the upper bound of the type parameter, or 
+                <literal>lang.Object</literal> if there is no declared upper bound.</para>
+            </listitem>
+            <listitem>
+                <para>The erased signature of a member class is formed by taking the signature 
+                the formal parameter list of the class and replacing each type parameter in
+                the signature with the upper bound of the type parameter, or 
+                <literal>lang.Object</literal> if there is no declared upper bound.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Two erased signatures are considered <emphasis>distinct</emphasis> if they 
         have different lengths, or if at some position within the lists, the two types are 
         non-identical.</para>
         
         <comment><para>TODO: non-identical, or non-assignable?</para></comment>
             
+        <para>A type may not have:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>two attributes with the same name,</para>
+            </listitem>
+            <listitem>
+                <para>a method and an attribute with the same name,</para>
+            </listitem>
+            <listitem>
+                <para>two methods with the same name and non-distinct erased signatures, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>two member classes with the same name and non-distinct erased signatures.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>A type may be <emphasis>assignable</emphasis> to another type. If <literal>X</literal>
         is assignable to <literal>Y</literal>, then:</para>
         
@@ -334,84 +348,8 @@ Description doc(String description) {
         
         <programlisting>Type := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
         
-        <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
-        
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
-        
-        <programlisting>Entry&lt;String,Person&gt;</programlisting>
-        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
-        
-        <para>A type argument must be specified for every type parameter. If the type has
-        type parameters, an argument list must be specified. If the type has no type 
-        parameters, no argument list may be specified.</para>
-        
-        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
-        
-        <para>A type argument is substituted for every appearance of the corresponding
-        type parameter in the schema of the parameterized type definition, including:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>attribute types,</para>
-            </listitem>
-            <listitem>
-                <para>method return types,</para>
-            </listitem>
-            <listitem>
-                <para>method formal parameter types,</para>
-            </listitem>
-            <listitem>
-                <para>initializer formal parameter types, and</para>
-            </listitem>
-            <listitem>
-                <para>type arguments of extended classes and satisfied interfaces.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A type argument may itself be a parameterized type or type parameter.</para>
-        
-        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
-        
-        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a generic type
-        holds a reference to its type arguments. Therefore, the following are legal in Ceylon:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>testing the runtime value of a type argument of an instance, for 
-                example, <literal>objectList is List&lt;Person&gt;</literal> or 
-                <literal>case (is List&lt;Person&gt;)</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>filtering exceptions based on type arguments, for example,
-                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>testing the runtime value of an instance against a type parameter,
-                for example <literal>x is T</literal>, or against a type with a type 
-                parameter as an argument, for example, 
-                <literal>objectList is List&lt;T&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing a type with 
-                type arguments, for example, <literal>#List&lt;Person&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the runtime 
-                value of a type parameter, for example, <literal>#T</literal>, or of a 
-                type with a type parameter as an argument, for example, 
-                <literal>#List&lt;T&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the
-                runtime value of a type argument of an instance using reflection, for 
-                example, <literal>objectList.type.arguments.first</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>T(parent)</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
+
         <para>Certain declarations which usually require an explicit type may omit the type, 
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
         where the type usually appears.</para>
@@ -429,9 +367,9 @@ Description doc(String description) {
         as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
     
     </section>
-    
-    <section id="generictypeparameters">
-        <title>Generic type parameters</title>
+        
+    <section id="generictypeparameterlist">
+        <title>Generic type parameter list</title>
     
         <para>Methods, classes, interfaces and aliases may declare one or more generic type 
         parameters. A class, interface or alias that declares type parameters is called a
@@ -613,6 +551,110 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
     </section>
 
+    <section id="typeargumentlist">
+        <title>Type argument list</title>
+            
+        <para>A list of type arguments produces a new type from a parameterized type, or
+        a new method signature from a method with type parameters.</para>
+        
+        <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
+        
+        <programlisting>Entry&lt;String,Person&gt;</programlisting>
+        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
+        
+        <para>A type argument must be specified for every type parameter. If the type has
+        type parameters, an argument list must be specified. If the type has no type 
+        parameters, no argument list may be specified.</para>
+        
+        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+        
+        <para>A type argument is substituted for every appearance of the corresponding
+        type parameter in the schema of the parameterized type definition, including:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>attribute types,</para>
+            </listitem>
+            <listitem>
+                <para>method return types,</para>
+            </listitem>
+            <listitem>
+                <para>method formal parameter types,</para>
+            </listitem>
+            <listitem>
+                <para>initializer formal parameter types, and</para>
+            </listitem>
+            <listitem>
+                <para>type arguments of extended classes and satisfied interfaces.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A type argument may itself be a parameterized type or type parameter.</para>
+        
+        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        
+        <para>Substitution of type arguments may result in an ambiguity:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>two methods of the parameterized type with the same name may now
+                also have the same erased signature, or</para>
+            </listitem>
+            <listitem>
+                <para>two member classes of the parameterized type with the same name may 
+                now also have the same erased signature.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In this case, the member class or method may not be called. Any invocation of the 
+        member results in a compiler error.</para>
+        
+        <para>A type with an ambiguity may never be extended or implemented by another type.
+        It may not appear in an <literal>extends</literal>, <literal>satisfies</literal> or
+        <literal>abstracts</literal> clause.</para>
+        
+        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a generic type
+        holds a reference to its type arguments. Therefore, the following are legal in Ceylon:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>testing the runtime value of a type argument of an instance, for 
+                example, <literal>objectList is List&lt;Person&gt;</literal> or 
+                <literal>case (is List&lt;Person&gt;)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>filtering exceptions based on type arguments, for example,
+                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>testing the runtime value of an instance against a type parameter,
+                for example <literal>x is T</literal>, or against a type with a type 
+                parameter as an argument, for example, 
+                <literal>objectList is List&lt;T&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing a type with 
+                type arguments, for example, <literal>#List&lt;Person&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the runtime 
+                value of a type parameter, for example, <literal>#T</literal>, or of a 
+                type with a type parameter as an argument, for example, 
+                <literal>#List&lt;T&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the
+                runtime value of a type argument of an instance using reflection, for 
+                example, <literal>objectList.type.arguments.first</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>instantiating a type parameter with an initialization parameter
+                specification, for example, <literal>T(parent)</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+    </section>
+    
     <section id="formalparameterlist">
         <title>Formal parameter list</title>
     
@@ -1463,7 +1505,7 @@ class Customer(Name name, optional Organization org = null)
                     type,</para>
                 </listitem>
                 <listitem>
-                    <para>must have distinct initial signatures,</para>
+                    <para>must have distinct erased signatures,</para>
                 </listitem>
                 <listitem>
                     <para>may not declare default parameters, and</para>
@@ -1773,7 +1815,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>must have distinct initial signatures, and</para>
+                    <para>must have distinct erased signatures, and</para>
                 </listitem>
                 <listitem>
                     <para>may not declare default parameters.</para>
@@ -2739,12 +2781,12 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         
         <itemizedlist>
             <listitem>
-                <para>the introduced type may have a member type with the same name and initial
+                <para>the introduced type may have a member type with the same name and erased
                 signature as a member type of the extended type, or of some other introduced 
                 type,</para>
             </listitem>
             <listitem>
-                <para>the introduced type may have a method with the same name and initial 
+                <para>the introduced type may have a method with the same name and erased 
                 signature as a method of the extended type, or of some other introduced type,</para>
             </listitem>
             <listitem>
