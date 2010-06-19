@@ -1164,12 +1164,12 @@ while (people nonempty) {
          to the given object."
     case equal;
         
-    public Boolean larger { return this==larger }
-    public Boolean smaller { return this==smaller }
-    public Boolean equal { return this==equal }
-    public Boolean unequal { return this!=equal }
-    public Boolean largeAs { return this!=smaller }
-    public Boolean smallAs { return this!=larger }
+    public Boolean larger { return this===larger }
+    public Boolean smaller { return this===smaller }
+    public Boolean equal { return this===equal }
+    public Boolean unequal { return !this===equal }
+    public Boolean largeAs { return !this===smaller }
+    public Boolean smallAs { return !this===larger }
     
 }]]></programlisting>
 
