@@ -1082,9 +1082,9 @@ geekConsumer.add( Person("James Gosling") );</programlisting>
         <title>Testing the type of an object</title>
         
         <para>Ceylon doesn't have C-style typecasts. Instead, we must test and 
-        narrow the type in one step, using the <literal>if (is ... )</literal> 
-        construct. This construct is very, very similar to 
-        <literal>if (exists ... )</literal>, which we met earlier.</para>
+        narrow the type of an object in one step, using the <literal>if (is ... )</literal> 
+        construct. This construct is very, very similar to <literal>if (exists ... )</literal>, 
+        which we met earlier.</para>
         
         <programlisting>Object object = ... ;
 if (is Hello object) {
