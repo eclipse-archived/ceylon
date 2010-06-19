@@ -1358,7 +1358,8 @@ class Customer(Name name, Organization? org = null)
         
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>lang.Object</literal>.
+        its superclass is <literal>lang.Object</literal>. There are two exceptions to this
+        rule: the built-in classes <literal>lang.Object</literal> and <literal>lang.Optional</literal>.
         </para>
         
         <para>
