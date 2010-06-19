@@ -219,6 +219,9 @@
     T default(T defaultValue) where T abstracts X;
     
 }]]></programlisting>
+
+        <para>Note that <literal>lang.Optional</literal> is not a subtype
+        of <literal>lang.Object</literal>.</para>
         
         <para>If an optional value is not null, it is represented by an
         instance of the subclass <literal>lang.Existent</literal>.</para>
