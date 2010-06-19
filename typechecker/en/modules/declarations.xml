@@ -268,14 +268,17 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
-                the upper bound of the type parameter, or <literal>lang.Object</literal> if 
-                there is no declared upper bound, and then</para>
+                the first declared upper bound of the type parameter, or <literal>lang.Object</literal> 
+                if there is no declared upper bound, and then</para>
             </listitem>
             <listitem>
                 <para>discarding the type arguments and optionality of each element of the
                 list, leaving just the name of a class or interface.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>Note: I really, really hate this stuff. Is there any way we can do 
+        better than Java here?</para></comment>
         
         <para>Two erased signatures are considered <emphasis>distinct</emphasis> if they 
         have different lengths, or if at some position within the lists, the two types are 
