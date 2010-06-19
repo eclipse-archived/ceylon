@@ -1613,12 +1613,16 @@ class Customer(Name name, Organization? org = null)
         list of member subclasses using <literal>case class</literal>, for example:</para>
         <programlisting>abstract class Node(String name) {
         
-    case class Root() extends Node("root") { ... }, 
-    case class Leaf(String name) extends Node(name) { ... };
+    case root("root"), 
+    case class Branch(String name, Node parent) extends Node(name) { ... },
+    case class Leaf(String name, Node parent) extends Node(name) { ... };
     
     ...
     
 }</programlisting>
+        <programlisting>Node root = Node.root;
+Node branch = Node.Branch("Furry", root);
+Node leaf = Node.Leaf("Kittens", branch);</programlisting>
         </comment>
         
     </section>
