@@ -1311,8 +1311,8 @@ except (SomethingElseWrong sew) {
                         if type arguments were explicitly specified,</para>
                     </listitem>
                     <listitem>
-                        <para>specifies type parameter upper bounds to which the type arguments
-                        are assignable, if type arguments were explicitly specified, and which,</para>
+                        <para>specifies generic type constraints which are satisfied by the type 
+                        arguments, if type arguments were explicitly specified, and which,</para>
                     </listitem>
                     <listitem>
                         <para>after substitution of explicitly specified type arguments, if
