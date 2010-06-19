@@ -250,22 +250,26 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
-        <para>A method or member class has an <emphasis>erased signature</emphasis>:</para>
+        <para>The <emphasis>erased signature</emphasis> of a method or member class is
+        formed by:</para>
         
         <itemizedlist>
             <listitem>
-                <para>The erased signature of a method is formed by taking the signature the 
-                first formal parameter list of the method and replacing each type parameter in
-                the signature with the upper bound of the type parameter, or 
-                <literal>lang.Object</literal> if there is no declared upper bound.</para>
+                <para>taking the signature of the formal parameter list of the member class, 
+                or of the first formal parameter list of the the method, and</para>
             </listitem>
             <listitem>
-                <para>The erased signature of a member class is formed by taking the signature 
-                the formal parameter list of the class and replacing each type parameter in
-                the signature with the upper bound of the type parameter, or 
-                <literal>lang.Object</literal> if there is no declared upper bound.</para>
+                <para>replacing each occurrence of any type parameter in the signature with 
+                the upper bound of the type parameter, or <literal>lang.Object</literal> if 
+                there is no declared upper bound, and then</para>
+            </listitem>
+            <listitem>
+                <para>discarding the type arguments and optionality of each element of the
+                list, leaving just the name of a class or interface.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: Aliases. Are they reified? Or do we need to erase them here?</para></comment>
         
         <para>Two erased signatures are considered <emphasis>distinct</emphasis> if they 
         have different lengths, or if at some position within the lists, the two types are 
