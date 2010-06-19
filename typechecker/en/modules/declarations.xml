@@ -350,7 +350,7 @@ Description doc(String description) {
             <listitem>
                 <para>Nullsafety: the type <literal>lang.Optional</literal> is 
                 not assignable to <literal>lang.Object</literal>. Nor is its subtype
-                <literal>lang.Nonexistent</literal>.
+                <literal>lang.Nonexistent</literal>.</para>
             </listitem>
             <listitem>
                 <para>Single root: all other types are assignable to <literal>lang.Object</literal>,
