@@ -935,11 +935,100 @@ where Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     
     </section>
     
+    <section id="interfaces">
+        <title>Interfaces</title>
+        
+        <para>An <emphasis>interface</emphasis> is a type schema. Interfaces do not 
+        specify the implementation of their members and may not be directly instantiated.</para>
+        
+        <programlisting>Interface :=
+Annotation*
+"interface" TypeName TypeParams?
+Interfaces?
+TypeConstraints? 
+InterfaceBody</programlisting>
+
+        <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
+
+        <para>The body of an interface contains:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>member (method, attribute and member class) declarations, and</para>
+            </listitem>
+            <listitem>
+                <para>nested interface declarations.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | TypeDeclaration</programlisting>
+
+        <para>Interface method and attribute declarations may not specify implementation.</para>
+
+        <programlisting>public interface Comparable&lt;T&gt; {
+    Comparison compare(T other);
+}</programlisting>
+
+        <!-- 
+        <para>Which is equivalent to the following Java interface:</para>
+
+        <programlisting>public interface Comparable&lt;T&gt; {
+    Comparison compare(T other);
+}</programlisting>
+        -->
+        
+        <para>Interface members inherit the visibility modifier of the interface.</para>
+        
+        <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
+          
+        <comment><para>TODO: if methods of interfaces can define defaulted parameters,
+        precisely how do we implement that?</para></comment>
+            
+        <section id="interfaceinheritance">
+            <title>Interface inheritance</title>
+            
+            <para>An interface may extend any number of other interfaces.</para>
+        
+            <programlisting>public interface List&lt;T&gt;
+        satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
+    ...
+}</programlisting>
+        
+            <para>The types listed after the <literal>satisfies</literal> keyword are the 
+            supertypes. All supertypes of an interface must be interfaces.</para>
+            
+            <!--para>
+            Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
+            the interface type itself is considered assignable to <literal>lang.Object</literal>.
+            </para-->
+        
+            <para>The semantics of interface inheritance are exactly the same as Java. An 
+            interface inherits all members (methods, attributes and member types) of every 
+            supertype.</para>
+        
+            <para>The schema of the inherited members is formed by substituting type arguments
+            specified in the <literal>satisfies</literal> clause.</para>
+        
+            <!--
+            <para>and the above declaration is equivalent to the following 
+            Java declaration: 
+            </para>
+        
+            <programlisting>public interface List&lt;T&gt; 
+        extends Sequence&lt;T&gt;, Collection&lt;T&gt; {
+    ...
+}</programlisting>
+            -->
+            
+        </section>
+        
+    </section>
+    
     <section id="classes">
         <title>Classes</title>
         
-        <para>A <emphasis>class</emphasis> is a stateful, instantiable type. Classes 
-        are declared according to the following:</para>
+        <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
+        type schema, together with implementation details of the members of the type.</para>
         
         <programlisting>Class :=
 Annotation*
@@ -1582,96 +1671,6 @@ class Customer(Name name, optional Organization org = null)
         
     </section>
     
-    <section id="interfaces">
-        <title>Interfaces</title>
-        
-        <para>An <emphasis>interface</emphasis> is a type which does not specify 
-        the implementation of its members. Interfaces may not be directly instantiated. 
-        Interfaces are declared according to the following:</para>
-        
-        <programlisting>Interface :=
-Annotation*
-"interface" TypeName TypeParams?
-Interfaces?
-TypeConstraints? 
-InterfaceBody</programlisting>
-
-        <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
-
-        <para>The body of an interface contains:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>member (method, attribute and member class) declarations, and</para>
-            </listitem>
-            <listitem>
-                <para>nested interface declarations.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | TypeDeclaration</programlisting>
-
-        <para>Interface method and attribute declarations may not specify implementation.</para>
-
-        <programlisting>public interface Comparable&lt;T&gt; {
-    Comparison compare(T other);
-}</programlisting>
-
-        <!-- 
-        <para>Which is equivalent to the following Java interface:</para>
-
-        <programlisting>public interface Comparable&lt;T&gt; {
-    Comparison compare(T other);
-}</programlisting>
-        -->
-        
-        <para>Interface members inherit the visibility modifier of the interface.</para>
-        
-        <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
-          
-        <comment><para>TODO: if methods of interfaces can define defaulted parameters,
-        precisely how do we implement that?</para></comment>
-            
-        <section id="interfaceinheritance">
-            <title>Interface inheritance</title>
-            
-            <para>An interface may extend any number of other interfaces.</para>
-        
-            <programlisting>public interface List&lt;T&gt;
-        satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
-    ...
-}</programlisting>
-        
-            <para>The types listed after the <literal>satisfies</literal> keyword are the 
-            supertypes. All supertypes of an interface must be interfaces.</para>
-            
-            <!--para>
-            Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
-            the interface type itself is considered assignable to <literal>lang.Object</literal>.
-            </para-->
-        
-            <para>The semantics of interface inheritance are exactly the same as Java. An 
-            interface inherits all members (methods, attributes and member types) of every 
-            supertype.</para>
-        
-            <para>The schema of the inherited members is formed by substituting type arguments
-            specified in the <literal>satisfies</literal> clause.</para>
-        
-            <!--
-            <para>and the above declaration is equivalent to the following 
-            Java declaration: 
-            </para>
-        
-            <programlisting>public interface List&lt;T&gt; 
-        extends Sequence&lt;T&gt;, Collection&lt;T&gt; {
-    ...
-}</programlisting>
-            -->
-            
-        </section>
-        
-    </section>
-    
     <!--  
     <section>
         <title>Constructors</title>
@@ -1714,7 +1713,7 @@ public User(String username, Person person);</programlisting>
         <title>Methods</title>
         
         <para>A <emphasis>method</emphasis> is a callable block of code. Methods may have 
-        parameters and may return a value. Methods are declared according to the following:</para>
+        parameters and may return a value.</para>
         
         <programlisting>Method := MethodHeader ( Block | Specifier? ";" )</programlisting>
 
@@ -2039,8 +2038,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
             
-        <para>A simple attribute defines state. Simple attributes are declared according to the 
-        following:</para>
+        <para>A simple attribute defines state.</para>
         
         <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
         
@@ -2147,7 +2145,8 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
          <section id="attributegetters">
             <title>Attribute getters</title>
             
-            <para>An attribute getter is declared as follows:</para>
+            <para>An attribute getter is a callable block of code with no parameters,
+            that returns a value.</para>
             
             <programlisting>AttributeGetter := AttributeHeader Block</programlisting>
             
@@ -2192,7 +2191,8 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
         <section id="attributesetters">
             <title>Attribute setters</title>
                     
-            <para>An attribute setter is declared as follows:</para>
+            <para>An attribute setter is a callable block of code that accepts a
+            single value and does not return a value.</para>
             
             <programlisting>AttributeSetter := Annotation* "assign" MemberName Block</programlisting>
 
