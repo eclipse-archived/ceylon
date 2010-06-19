@@ -29,7 +29,7 @@ package mutable class Adventure(Process process) {
 	}
 	
 	void get(String name) {
-		optional Thing thing = currentLocation.thing(name);
+		Thing? thing = currentLocation.thing(name);
 		if (exists thing) {
 			if (is Artifact thing) {
 				thing.get(this);
@@ -44,7 +44,7 @@ package mutable class Adventure(Process process) {
 	}
 	
 	void drop(String name) {
-		optional Thing thing = backpack.thing(name);
+		Thing? thing = backpack.thing(name);
 		if (exists thing) {
 			if (is Artifact thing) {
 				thing.drop(this);
@@ -63,10 +63,10 @@ package mutable class Adventure(Process process) {
 	}
 	
 	void kill(String name, String weaponName) {
-		optional Thing thing = currentLocation.thing(name);
+		Thing? thing = currentLocation.thing(name);
 		if (exists thing) {
 			if (is Creature thing) {
-				optional Thing weapon = backpack.thing(name);
+				Thing? weapon = backpack.thing(name);
 				if (exists weapon) {
 					if (is Artifact weapon) {
 						thing.kill(this, weapon);
@@ -89,7 +89,7 @@ package mutable class Adventure(Process process) {
 	}
 	
 	void use(String name) {
-		optional Thing thing = backpack.thing(name);
+		Thing? thing = backpack.thing(name);
 		if (exists thing) {
 			if (is Artifact thing) {
 				thing.use(this);

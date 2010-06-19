@@ -6,6 +6,6 @@ public mutable interface OpenCorrespondence<in U, V>
           or null if there was no value defined."
      throws #UndefinedKeyException 
             "if a value can not be defined for the given key"
-     public optional V define(U key, V value);
+     public V? define(U key, V value);
 
 }

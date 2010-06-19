@@ -3,6 +3,6 @@ public interface Sequence<out X>
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
-    public optional Natural lastIndex;
+    public Natural? lastIndex;
     
 }

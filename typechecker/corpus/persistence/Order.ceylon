@@ -38,7 +38,7 @@ public class Order() {
 	public mutable Status status := Status.draft;
 	
 	generated id column{ name="id"; }
-	public mutable optional orderId;
+	public mutable String? orderId;
 	
 	public Item addItem(Product product, Natural quantity=1) {
 		Item item = Item(this, product, quantity);

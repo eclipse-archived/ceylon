@@ -27,7 +27,7 @@ package class Location(String name, String description, Connection... connection
 		return thingByName.values;
 	}
 		
-	package optional Thing thing(String name) {
+	package Thing? thing(String name) {
 		return thingByName.valueOrNull(name);
 	}
 		

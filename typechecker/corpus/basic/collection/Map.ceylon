@@ -13,11 +13,11 @@ public interface Map<U, out V>
     
     doc "Return the value defined for the given key, or null
          if no value is defined for that key."
-    public optional V valueOrNull(U key);
+    public V? valueOrNull(U key);
     
     doc "Produce a new map by applying an operation to every 
          element of the map."
-    public Map<U, W> transform<W>(optional W select(U key -> V value));
+    public Map<U, W> transform<W>(W? select(U key -> V value));
     
     doc "The entries of the map for which the given condition 
          evaluates to |true|, as a |Map|."

@@ -43,13 +43,13 @@ class ControlStructures() {
 			log.info("always false");
 		}
 		
-		optional String hello = "Hello";
+		String? hello = "Hello";
 		
 		if (exists hello) {
 			log.info(hello);
 		}
 		
-		optional String s = null;
+		String? s = null;
 		
 		if (exists s) {
 			log.info(s);
@@ -92,7 +92,7 @@ class ControlStructures() {
 			log.info("it is not a Bar");
 		}
 		
-		optional List<Foo> foos = { Foo(), Bar() };
+		List<Foo>? foos = { Foo(), Bar() };
 		
 		if (nonempty foos) {
 			log.info($foos);
@@ -255,7 +255,7 @@ class ControlStructures() {
 			log.info("never anything else");
 		}
 		
-		optional Color cc = null;
+		Color? cc = null;
 		switch (cc) 
 		case (null) {
 			log.info("unknown color");

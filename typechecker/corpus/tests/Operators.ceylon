@@ -44,16 +44,16 @@ class Operators() {
 	String join = "Gavin" + " " + "King";
 	
 	List<String> list = {"Gavin", "Andrew", "Emmanuel"};
-	optional List<String> nullList = null;
+	List<String>? nullList = null;
 
 	String element = list[1];
-	optional String element = nullList?[666];
+	String? element = nullList?[666];
 	List<String> elements = list[{3,2,1}];
 	List<String> subrange = list[0..1];
 	List<String> upperRange = list[1...];
 	
-	optional String input = null;
-	optional Iterable<String> tokens = input?.tokens();
+	String? input = null;
+	Iterable<String>? tokens = input?.tokens();
 	Sequence<Natural> sizes = tokens*.size;
 	
 	//TODO: := .=

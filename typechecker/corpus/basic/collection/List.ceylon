@@ -6,26 +6,14 @@ public interface List<out X>
     public List<X> rest;
     
     doc "The index of the first element of the list
-         which satisfies the condition."
-    throws #NotFoundException
-           "if no element satsfies the condition"
-    public Natural firstIndex(Boolean having(X element));
-
-    doc "The index of the last element of the list
-         which satisfies the condition."
-    throws #NotFoundException
-           "if no element satsfies the condition"
-    public Natural lastIndex(Boolean having(X element));
-    
-    doc "The index of the first element of the list
-         which satisfies the condition, or null if 
+         which satisfies the condition, or |null| if 
          no element satisfies the condition."
-    public optional Natural firstIndexOrNull(Boolean having(X element));
+    public Natural? firstIndex(Boolean having(X element));
     
     doc "The index of the last element of the list
-         which satisfies the condition, or null if 
+         which satisfies the condition, or |null| if 
          no element satisfies the condition."
-    public optional Natural lastIndexOrNull(Boolean having(X element));
+    public Natural? lastIndex(Boolean having(X element));
     
     doc "A sublist beginning with the element at the first given 
          index up to and including the element at the second given 

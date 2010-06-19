@@ -22,7 +22,7 @@ class Primaries() {
 	
 	class Specials() {
 	
-		optional String nothing = null;
+		String? nothing = null;
 
 		List<String> empty = none;
 
