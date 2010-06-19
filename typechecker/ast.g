@@ -230,7 +230,7 @@ langAnnotation
     | 'abstract'
     | 'default'
     | 'override'
-    | 'optional'
+    | 'fixed'
     | 'mutable'
     | 'extension'
     | 'volatile'
@@ -400,10 +400,14 @@ typeConstraints
     ;
 
 type
-    : typeNameWithArguments ('.' typeNameWithArguments)*//( '[' parameterizedType? ']' )?
-    -> ^(TYPE typeNameWithArguments+)
-    | 'subtype'
-    -> ^(TYPE 'subtype')
+    : typeNameWithArguments ('.' typeNameWithArguments)* abbreviation*
+    -> ^(TYPE typeNameWithArguments+ abbreviation*)
+    | 'subtype' abbreviation*
+    -> ^(TYPE 'subtype' abbreviation*)
+    ;
+
+abbreviation
+    : '[' ']' | '?'
     ;
 
 typeNameWithArguments
@@ -635,9 +639,7 @@ prefixOperator
 
 specialValue
     : 'this' 
-    | 'super' 
-    | 'null'
-    | 'none'
+    | 'super'
     ;
 
 enumeration
@@ -1153,14 +1155,6 @@ INTERFACE
 
 LOCAL
     :   'local'
-    ;
-
-NONE
-    :   'none'
-    ;
-
-NULL
-    :   'null'
     ;
 
 NONEMPTY
