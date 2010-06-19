@@ -1608,6 +1608,19 @@ class Customer(Name name, Organization? org = null)
     
 }</programlisting>
         -->
+        
+        <comment><para>TODO: should we have the ability to declare a restricted
+        list of member subclasses using <literal>case class</literal>, for example:</para>
+        <programlisting>abstract class Node(String name) {
+        
+    case class Root() extends Node("root") { ... }, 
+    case class Leaf(String name) extends Node(name) { ... };
+    
+    ...
+    
+}</programlisting>
+        </comment>
+        
     </section>
     
         <section id="overloadedclasses">
