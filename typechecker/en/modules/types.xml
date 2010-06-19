@@ -268,13 +268,22 @@ class Nonexistent<out X>(LiteralNull null) extends Optional<X>() {
         is an extension of <literal>LiteralNull</literal> enabled in every 
         compilation unit.</para>
         
-        <programlisting><![CDATA[public class LiteralNull() satisfies Case<Object> {
+        <programlisting><![CDATA[public class LiteralNull() {
         
     doc "Represents a null reference."
     case null;
     
-    override Boolean test(Object value) {
-        return value is Nonexistent<Object> || value===null;
+}]]></programlisting>
+
+        <para>The decorator <literal>lang.NullCase</literal> allows <literal>null</literal>
+        to appear as a <literal>case</literal> expression in a <literal>switch</literal>
+        statement.</para>
+        
+        <programlisting><![CDATA[public extension 
+class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
+
+    override Boolean test(Optional<X> value) {
+        return value is Nonexistent<X>;
     }
     
 }]]></programlisting>
