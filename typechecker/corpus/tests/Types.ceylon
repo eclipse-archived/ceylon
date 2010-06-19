@@ -12,4 +12,8 @@ abstract class Types() {
 	Foo<Bar>.Baz evenThis;
 	Foo<Bar>.Baz<Qux> orThis;
 	subtype theSubtype;
+	Foo[] sequenceType;
+	Foo? optionalType;
+	Foo[][] sequenceOfSequenceType;
+	//Foo word[]?;
 }
