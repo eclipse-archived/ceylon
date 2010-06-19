@@ -372,31 +372,38 @@ Description doc(String description) {
         <title>Generic type parameter list</title>
     
         <para>Methods, classes, interfaces and aliases may declare one or more generic type 
-        parameters. A class, interface or alias that declares type parameters is called a
-        <emphasis>parameterized type</emphasis>. A method that declares type parameters is
-        called a parameterized method.</para>
+        parameters.</para>
         
         <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
         
-        <para>A class or interface declaration with no type parameters defines exactly one 
-        type. A class or interface declaration with type parameters defines a template for
-        producing types: one type for each possible combination of type arguments that 
-        satisfy the type constraints specified by the class or interface. The types of 
-        members of the this type are determined by replacing every appearance of each type 
-        parameter in the schema of the parameterized type definition with its type argument.</para>
+        <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
+        <emphasis>parameterized</emphasis>.</para>
         
-        <para>A method declaration with no type parameters defines exactly one operation 
-        per type. A method declaration with type parameters defines a template for producing
-        overloaded operations: one operation for each possible combination of type arguments 
-        that satisfy the type constraints specified by the method declaration.</para>
-        
-        <para>A class declaration with no type parameters defines exactly one instantiation 
-        operation. A class declaration with type parameters defines a template for producing 
-        overloaded instantiation operations: one instantiation operation for each possible 
-        combination of type arguments that satisfy the type constraints specified by the 
-        class declaration. The type of the object produced by an instantiation operation is 
-        determined by substituting the same combination of type arguments for the type 
-        parameters of the parameterized class.</para>
+        <itemizedlist>
+        <listitem>
+          <para>A class or interface declaration with no type parameters defines exactly one 
+          type. A parameterized class or interface declaration defines a template for
+          producing types: one type for each possible combination of type arguments that 
+          satisfy the type constraints specified by the class or interface. The types of 
+          members of the this type are determined by replacing every appearance of each type 
+          parameter in the schema of the parameterized type definition with its type argument.</para>
+        </listitem>
+        <listitem>
+          <para>A method declaration with no type parameters defines exactly one operation 
+          per type. A parameterized method declaration defines a template for producing
+          overloaded operations: one operation for each possible combination of type arguments 
+          that satisfy the type constraints specified by the method declaration.</para>
+        </listitem>
+        <listitem>
+          <para>A class declaration with no type parameters defines exactly one instantiation 
+          operation. A parameterized class declaration defines a template for producing 
+          overloaded instantiation operations: one instantiation operation for each possible 
+          combination of type arguments that satisfy the type constraints specified by the 
+          class declaration. The type of the object produced by an instantiation operation is 
+          determined by substituting the same combination of type arguments for the type 
+          parameters of the parameterized class.</para>
+        </listitem>
+        </itemizedlist>
         
         <para>A type parameter is itself a type, visible within the body of the declaration
         it parameterizes. A type parameter is assignable to every upper bound of the type 
