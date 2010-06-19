@@ -2401,10 +2401,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        
        <programlisting>import java.util.List alias JavaList;</programlisting>
        
-       <para>Type aliases are not reifed types. The metamodel reference for a type
-       alias&mdash;for example, <literal>#People</literal>&mdash;<literal> returns
-       the metamodel object for the aliased type&mdash;in this case, 
-       <literal>List&lt;Person&gt;</literal></literal>.</para>
+       <para>Type aliases are not reified types. The metamodel reference for a type
+       alias&mdash;for example, <literal>#People</literal>&mdash; returns the metamodel 
+       object for the aliased type&mdash;in this case, <literal>List&lt;Person&gt;</literal>.</para>
        
        <comment><para>TODO: could we reify them? This would let us define type aliases
        that satisfy multiple interfaces. For example:</para>
