@@ -446,14 +446,14 @@ if you prefer.";</programlisting>
         <programlisting>OrdinaryMethodReference := Receiver? MemberName</programlisting>
 
         <para>A <emphasis>constructor reference</emphasis> is a reference to an implicit method 
-        with a signature that depends upon the formal parameters of the class. For a class 
+        with a schema that depends upon the formal parameters of the class. For a class 
         <literal>T</literal>, the constructor method has non-<literal>optional</literal> return 
         type <literal>T</literal> and the same formal parameters as the class.</para>
         
         <programlisting>ConstructorReference := Receiver? Type</programlisting>
          
         <para>A <emphasis>getter or setter method reference</emphasis> is a reference to an 
-        implicit method with a signature that depends upon the attribute type. For an attribute 
+        implicit method with a schema that depends upon the attribute type. For an attribute 
         of type <literal>T</literal>:</para>
         
         <itemizedlist>
@@ -554,15 +554,15 @@ if you prefer.";</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
-        <para>Method references may appear as an argument to a functional parameter, either as 
-        a positional argument, or as an argument specified using <literal>=</literal> in a named 
-        parameter invocation.</para>
+        <para>Method references may appear as an argument to a functional parameter, either 
+        as a positional argument, or as an argument specified using <literal>=</literal> in 
+        a named parameter invocation.</para>
         
         <para>This method has a functional parameter:</para>
         
         <programlisting>void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
 
-        <para>This code passes a reference to a local method with a conforming signature to 
+        <para>This code passes a reference to a local method with a conforming schema to 
         the method.</para>
         
         <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x }
@@ -581,14 +581,14 @@ sort(names, reverseAlpha);</programlisting>
     onUpdate = set person.name; 
 }</programlisting>
 
-        <para>Method references do not, strictly speaking, have types. However, the signature
+        <para>Method references do not, strictly speaking, have types. However, the schema
         of a method reference determines if it can appear to the right of the <literal>=</literal>
         specifier in a method declaration, or as an argument to a functional parameter. In this
-        case we say the method reference <emphasis>conforms</emphasis> to the signature of the
+        case we say the method reference <emphasis>conforms</emphasis> to the schema of the
         method or functional parameter.</para>
 
-        <para>A method reference <emphasis>conforms</emphasis> to a method or functional parameter 
-        signature if:</para>
+        <para>A method reference schema <emphasis>conforms</emphasis> to a method or functional 
+        parameter schema if:</para>
         
         <itemizedlist>
             <listitem>
@@ -606,7 +606,7 @@ sort(names, reverseAlpha);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>Thus, method signatures are covariant in return type, and nonvariant in parameter 
+        <para>Thus, method schemas are covariant in return type, and nonvariant in parameter 
         types.</para>
         
         <para>Additionally, method references are assignable to <literal>Callable&lt;X&gt;</literal>
@@ -615,8 +615,8 @@ sort(names, reverseAlpha);</programlisting>
         <comment><para>TODO: could we make method references contravariant in the parameter
         types? If so, we should use the same rule for overriding.</para></comment>
         
-        <comment><para>TODO: does a method with a defaulted parameter conform to a method 
-        signature without that parameter?</para></comment>
+        <comment><para>TODO: does a method schema with a defaulted parameter conform to a method 
+        schema without that parameter?</para></comment>
         
         </section>
         
@@ -624,7 +624,7 @@ sort(names, reverseAlpha);</programlisting>
             <title>Returning a method reference from a method</title>
             
         <para>A method reference may be returned by a method with multiple parameter lists.
-        The reference must conform to the signature of the method, after elimination of the 
+        The reference must conform to the schema of the method, after elimination of the 
         first parameter list.</para>
         
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
@@ -1341,7 +1341,7 @@ except (SomethingElseWrong sew) {
                 <para>Finally, if type arguments were not explicitly specified, there must be a
                 combination of type arguments that can be substituted for the type parameters of
                 the method or type, respecting constraints upon the type parameters, that results
-                in a method signature such that:</para>
+                in a method schema such that:</para>
                 
                 <itemizedlist>
                     <listitem>

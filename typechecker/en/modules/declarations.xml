@@ -210,18 +210,19 @@ Description doc(String description) {
     
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
-        <para>A <emphasis>type</emphasis> is name (an initial upper case identifier) and 
-        an optional list of type parameters, with a set of:</para>
+        <para>A <emphasis>type</emphasis> or <emphasis>type schema</emphasis> is name 
+        (an initial upper case identifier) and an optional list of type parameters, with 
+        a set of:</para>
         
         <itemizedlist>
             <listitem>
-                <para>attributes,</para>
+                <para>attribute schemas,</para>
             </listitem>
             <listitem>
-                <para>member methods, and</para>
+                <para>member method schemas, and</para>
             </listitem>
             <listitem>
-                <para>member classes.</para>
+                <para>member class schemas.</para>
             </listitem>
         </itemizedlist>
         
@@ -229,29 +230,31 @@ Description doc(String description) {
         
         <itemizedlist>
             <listitem>
-                <para>An <emphasis>attribute</emphasis> is a name (an initial lower case 
-                identifier) with a type, optionality, and mutability.</para>
+                <para>An <emphasis>attribute schema</emphasis> is a name (an initial lower 
+                case identifier) with a type, optionality, and mutability.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>method</emphasis> is a name (an initial lower case 
-                identifier) with a type, optionality, and a list of one or more formal 
-                parameter lists. The <emphasis>signature</emphasis> of a method is its type, 
-                together with the list of signatures of its formal parameter lists.</para>
+                <para>A <emphasis>method schema</emphasis> is a name (an initial lower case 
+                identifier) with a type (often called the <emphasis>return type</emphasis>), 
+                optionality, and a list of one or more formal parameter lists.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>member class</emphasis> is a type with a formal parameter 
+                <para>A <emphasis>class schema</emphasis> is a type with a formal parameter 
                 list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
                 (initial lower case identifiers) with types and optionalities. The 
-                <emphasis>signature</emphasis> of a formal parameter list is the list of 
-                its types and optionalities.</para>
+                <emphasis>signature</emphasis> of a formal parameter list is formed by 
+                discarding the names, leaving the list of types and optionalities.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The <emphasis>erased signature</emphasis> of a method or member class is
-        formed by:</para>
+        <para>Speaking slightly less formally, we usually refer to an attribute, method, or 
+        member class of a type, meaning a member attribute shema, method schema or member class 
+        schema.</para>
+        
+        <para>The <emphasis>erased signature</emphasis> of a method or class is formed by:</para>
         
         <itemizedlist>
             <listitem>
@@ -322,9 +325,9 @@ Description doc(String description) {
                 <literal>optional</literal>.</para>
             </listitem>
             <listitem>
-                <para>For each member type of <literal>Y</literal>, <literal>X</literal>
-                has a member type of the same name, with a formal parameter list with 
-                the same signature, that is assignable to the member type of 
+                <para>For each member class of <literal>Y</literal>, <literal>X</literal>
+                has a member class of the same name, with a formal parameter list with 
+                the same signature, that is assignable to the member class of 
                 <literal>Y</literal>.</para>
             </listitem>
         </itemizedlist>
@@ -566,7 +569,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <title>Type argument list</title>
             
         <para>A list of type arguments produces a new type from a parameterized type, or
-        a new method signature from a method with type parameters.</para>
+        a new method schema from a method schema with type parameters.</para>
         
         <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
         
@@ -609,11 +612,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <itemizedlist>
             <listitem>
                 <para>two methods of the parameterized type with the same name may now
-                also have the non-distinct erased signature, or</para>
+                also have non-distinct erased signatures, or</para>
             </listitem>
             <listitem>
                 <para>two member classes of the parameterized type with the same name may 
-                now also have the non-distinct erased signature.</para>
+                now also have non-distinct erased signatures.</para>
             </listitem>
         </itemizedlist>
         
@@ -1778,8 +1781,8 @@ public User(String username, Person person);</programlisting>
         not considered visible inside the body of the method.</para>
         
         <para>A method reference returned by a method with multiple parameter lists 
-        must conform to the signature of the method with multiple parameter lists, 
-        after eliminating the first parameter list.</para>
+        must conform to the schema of the method with multiple parameter lists, after 
+        eliminating the first parameter list.</para>
 
         <para>The Ceylon compiler preserves the names of method parameters, using a Java
         annotation.</para>
@@ -1934,8 +1937,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>For abstract methods, a special shortcut form of overriding is
             permitted. A subclass initializer may simply specify a method reference 
-            for the method declared by the superclass. No method signature declaration 
-            or <literal>override</literal> annotation is necessary.</para>
+            for the method declared by the superclass. No formal parameter list or 
+            return type declaration or <literal>override</literal> annotation is 
+            necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
