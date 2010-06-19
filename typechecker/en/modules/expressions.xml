@@ -1296,16 +1296,19 @@ except (SomethingElseWrong sew) {
         -->
 
             <section id="resolvingoverloadedmethodsandtypes">
-                <title>Resolving overloaded methods and types</title>
+                <title>Resolving invoked methods and instantiated classes</title>
                 
-                <para>An overloaded method invocation, or overloaded class instantiation
-                is resolved to a specific overloaded declaration at compile time.</para>
+                <para>A method invocation or class instantiation is resolved to a specific 
+                toplevel declaration or member of the receiving type at compile time, even 
+                if the method or class name is overloaded.</para>
                 
-                <para>An invocation or instantiation resolves to a particular overloaded method
-                or type declaration if there is exactly one overloaded declaration of the named 
-                method or type which:</para>
+                <para>An invocation or instantiation is <emphasis>resolveable</emphasis> if 
+                there is exactly one method or type declaration which:</para>
                 
                 <itemizedlist>
+                    <listitem>
+                        <para>has the specified name,</para>
+                    </listitem>
                     <listitem>
                         <para>has the same number of parameters as specified argument expressions,</para>
                     </listitem>
@@ -1347,7 +1350,7 @@ except (SomethingElseWrong sew) {
                     </listitem>
                     <listitem>
                         <para>the expression type of the invocation or instantiation, after 
-                        substitution of the type arguments is assignable to the surrounding
+                        substitution of the type arguments, is assignable to the surrounding
                         context.</para>
                     </listitem>
                 </itemizedlist>
