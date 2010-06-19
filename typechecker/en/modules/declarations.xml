@@ -1283,6 +1283,9 @@ class Customer(Name name, optional Organization org = null)
             </listitem-->
         </itemizedlist>
         
+        <para>The schema of the inherited members is formed by substituting type arguments
+        specified in the <literal>extends</literal> clause.</para>
+        
         <para>
         Furthermore, the initializer of the superclass is always executed before the
         initializer of the subclass whenever the subclass is instantiated.
@@ -1542,7 +1545,9 @@ class Customer(Name name, optional Organization org = null)
             </listitem>
             <listitem>
                 <para>with a formal parameter list with the same signature as the 
-                member class it overrides.</para>
+                member class it overrides, after substitution of type arguments
+                specified in the <literal>extends</literal> or <literal>satisfies</literal>
+                clause.</para>
             </listitem>
         </itemizedlist>
         
@@ -1633,6 +1638,9 @@ InterfaceBody</programlisting>
             <para>The semantics of interface inheritance are exactly the same as Java. An 
             interface inherits all members (methods, attributes and member types) of every 
             supertype.</para>
+        
+            <para>The schema of the inherited members is formed by substituting type arguments
+            specified in the <literal>satisfies</literal> clause.</para>
         
             <!--
             <para>and the above declaration is equivalent to the following 
@@ -1877,11 +1885,15 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
                 <listitem>
                     <para>the same number of formal parameter lists, with the same
-                    signatures, as the method it overrides,</para>
+                    signatures, as the method it overrides, after substitution of 
+                    type arguments specified in the <literal>extends</literal> or 
+                    <literal>satisfies</literal> clause,</para>
                 </listitem>
                  <listitem>
                     <para>with a return type that is assignable to the return type of 
-                    the method it overrides, and</para>
+                    the method it overrides, after substitution of type arguments 
+                    specified in the <literal>extends</literal> or 
+                    <literal>satisfies</literal> clause, and</para>
                 </listitem>
                 <listitem>
                     <para>that is not annotated <literal>optional</literal>, unless the 
@@ -2259,7 +2271,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>with a type that is assignable to the type of the attribute it 
                     overrides, if the attribute it overrides is non-<literal>mutable</literal>, 
                     or with exactly the same type as the attribute it overrides, if the 
-                    attribute it overrides is <literal>mutable</literal>,</para>
+                    attribute it overrides is <literal>mutable</literal>, after substitution 
+                    of type arguments specified in the <literal>extends</literal> or 
+                    <literal>satisfies</literal> clause,</para>
                 </listitem>
                 <listitem>
                     <para>that is <literal>mutable</literal>, if the attribute it overrides 
