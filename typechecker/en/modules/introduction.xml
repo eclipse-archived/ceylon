@@ -264,7 +264,7 @@ public void hello(Process process) {
         </para>
         
         <para>If you're worried about the performance implications of wrapping
-        values in instances of <literal>Optional</literal>,don't be. 
+        values in instances of <literal>Optional</literal>, don't be. 
         <literal>Optional</literal> isn't a <emphasis>reified</emphasis>
         type&mdash;it exists at compile time, when the compiler is validating
         your code for typesafety, but then the compiler eliminates it as part of 
