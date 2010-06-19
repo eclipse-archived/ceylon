@@ -1298,56 +1298,28 @@ except (SomethingElseWrong sew) {
             <section id="resolvingoverloadedmethodsandtypes">
                 <title>Resolving overloaded methods and types</title>
                 
-                <para>For invocations of overloaded methods, and instantiation of overloaded 
-                types, the specific overloaded declaration is resolved by the Ceylon compiler at 
-                compile time.</para>
-                
-                <para>Overloaded declarations are resolved by considering the <emphasis>erased
-                signature</emphasis> of the method or type declarations.</para> 
-                
-                <para>The erased signature of a type is a obtained by taking the declared parameter 
-                types and:</para>
-                
-                <itemizedlist>
-                    <listitem>
-                        <para>if type arguments were explicitly specified by the instantiation, 
-                        substituting the type arguments explicitly specified for type parameters 
-                        that appear in the parameter types, or, otherwise,</para>
-                    </listitem>
-                    <listitem>
-                        <para>if type arguments were not explicitly specified, substituting the 
-                        upper bound of the type parameter for each type parameter that appears 
-                        in the parameter types (or <literal>lang.Object</literal> if the type 
-                        parameter has no upper bound).</para>
-                    </listitem>
-                </itemizedlist>
-                
-                <para>The erased signature of a method is obtained by taking the declared parameter 
-                types and:</para>
-                
-                <itemizedlist>
-                    <listitem>
-                        <para>first, substituting type arguments of the receiving type for the
-                        corresponding type parameter wherever it appears in the method parameter
-                        types, and then</para>
-                    </listitem>
-                    <listitem>
-                        <para>if type arguments were explicitly specified by the invocation, 
-                        substituting the type arguments explicitly specified for method type 
-                        parameters that appear in the parameter types, or, otherwise,</para>
-                    </listitem>
-                    <listitem>
-                        <para>if type arguments were not explicitly specified, substituting the 
-                        upper bound of the type parameter for each method type parameter that
-                        appears in the parameter types (or <literal>lang.Object</literal> if the
-                        type parameter has no upper bound).</para>
-                    </listitem>
-                </itemizedlist>
+                <para>An overloaded method invocation, or overloaded class instantiation
+                is resolved to a specific overloaded declaration at compile time.</para>
                 
                 <para>An invocation or instantiation resolves to a particular overloaded method
                 or type declaration if there is exactly one overloaded declaration of the named 
-                method or type with an erased signature to which the given arguments expression
-                types are assignable.</para> 
+                method or type which:</para>
+                
+                <itemizedlist>
+                    <listitem>
+                        <para>has the same number of type parameters as specified type arguments, 
+                        if type arguments were explicitly specified,</para>
+                    </listitem>
+                    <listitem>
+                        <para>specifies type parameter upper bounds to which the type arguments
+                        are assignable, if type arguments were explicitly specified, and which,</para>
+                    </listitem>
+                    <listitem>
+                        <para>after substitution of explicitly specified type arguments, if
+                        any, has an erased signature to which the given argument expression types 
+                        are assignable.</para>
+                    </listitem>
+                </itemizedlist>
                 
                 <para>If more than one overloaded declaration has an erased signature to which 
                 the arguments are assignable, or if there is no declaration with an erased 
@@ -1356,7 +1328,7 @@ except (SomethingElseWrong sew) {
                 
                 <para>Note that method references are not resolved to a specific overloaded
                 declaration of the method or type except in the context of an invocation of the
-                method reference. However, the compiler does check that an appropriate overloaded
+                method reference. However, the compiler does check that a conforming overloaded
                 declaration exists before permitting specification of the method reference in the
                 declaration of another method or functional argument.</para>
                 
