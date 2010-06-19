@@ -801,6 +801,10 @@ VarargsParam?
         </listitem>
         </itemizedlist>
         
+        <para>A user-defined class may not extend <literal>Optional</literal>,
+        <literal>Existent</literal> or <literal>Nonexistent</literal>, since these
+        classes are not reified types.</para>
+        
     </section>
     
     <section id="satisfiedinterfaces">

@@ -263,11 +263,13 @@ public void hello(Process process) {
         <literal>if (exists ... )</literal>.
         </para>
         
-        <para>(If you're worried about the performance implications of this,
-        don't be. <literal>Optional</literal> isn't a <emphasis>reified</emphasis>
-        type&mdash;the compiler eliminates it as part of the compilation 
-        process, allowing the resulting bytecode to take advantage of the
-        efficient handling of null values in the virtual machine.)</para>
+        <para>If you're worried about the performance implications of wrapping
+        values in instances of <literal>Optional</literal>,don't be. 
+        <literal>Optional</literal> isn't a <emphasis>reified</emphasis>
+        type&mdash;it exists at compile time, when the compiler is validating
+        your code for typesafety, but then the compiler eliminates it as part of 
+        the compilation process, allowing the resulting bytecode to take advantage 
+        of the efficient handling of null values in the virtual machine.</para>
         
         <para>Copy this new version of the program into <literal>hello.ceylon</literal> 
         and run:</para>
