@@ -231,13 +231,13 @@ Description doc(String description) {
         <itemizedlist>
             <listitem>
                 <para>An <emphasis>attribute schema</emphasis> is a name (an initial lower 
-                case identifier) with a type, optionality, and mutability.</para>
+                case identifier) with a type and mutability.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>method schema</emphasis> is a name (an initial lower case 
                 identifier) and an optional list of type parameters, with a type (often 
-                called the <emphasis>return type</emphasis>), optionality, and a list of one 
-                or more formal parameter lists.</para>
+                called the <emphasis>return type</emphasis>) and a list of one or more formal 
+                parameter lists.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>class schema</emphasis> is a type with a formal parameter 
@@ -245,9 +245,9 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
-                (initial lower case identifiers) with types and optionalities. The 
+                (initial lower case identifiers) with types. The 
                 <emphasis>signature</emphasis> of a formal parameter list is formed by 
-                discarding the names, leaving the list of types and optionalities.</para>
+                discarding the names, leaving the list of types.</para>
             </listitem>
         </itemizedlist>
         
@@ -267,13 +267,17 @@ Description doc(String description) {
                 aliased type, and</para>
             </listitem>
             <listitem>
+                <para>replacing each occurrence of <literal>Optional&lt;T&gt;</literal> in 
+                the signature with <literal>T</literal>, and</para>
+            </listitem>
+            <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
                 the first declared upper bound of the type parameter, or <literal>lang.Object</literal> 
                 if there is no declared upper bound, and then</para>
             </listitem>
             <listitem>
-                <para>discarding the type arguments and optionality of each element of the
-                list, leaving just the name of a class or interface.</para>
+                <para>discarding the type arguments of each element of the list, leaving just 
+                the name of a class or interface.</para>
             </listitem>
         </itemizedlist>
         
@@ -311,24 +315,18 @@ Description doc(String description) {
             <listitem>
                 <para>For each non-<literal>mutable</literal> attribute of <literal>Y</literal>, 
                 <literal>X</literal> has an attribute with the same name, whose type is 
-                assignable to the type of the attribute of <literal>Y</literal>. The 
-                attribute is not <literal>optional</literal> unless the attribute of 
-                <literal>Y</literal> is <literal>optional</literal>.</para>
+                assignable to the type of the attribute of <literal>Y</literal>.</para>
             </listitem>
             <listitem>
                 <para>For each <literal>mutable</literal> attribute of <literal>Y</literal>, 
                 <literal>X</literal> has a <literal>mutable</literal> attribute with the 
-                same name and the same type. The attribute is <literal>optional</literal> 
-                if and only if the attribute of <literal>Y</literal> is 
-                <literal>optional</literal>.</para>
+                same name and the same type.</para>
             </listitem>
             <listitem>
                 <para>For each method of <literal>Y</literal>, <literal>X</literal>
                 has a method with the same name, with the same number of formal parameter 
                 lists, with the same signatures, and whose return type is assignable to the 
-                return type of the method of <literal>Y</literal>. The method is not 
-                <literal>optional</literal> unless the method of <literal>Y</literal> is 
-                <literal>optional</literal>.</para>
+                return type of the method of <literal>Y</literal>.</para>
             </listitem>
             <listitem>
                 <para>For each member class of <literal>Y</literal>, <literal>X</literal>
@@ -359,7 +357,7 @@ Description doc(String description) {
         type parameter), together with a list of type arguments if the type definition 
         specifies formal parameters.</para>
         
-        <programlisting>Type := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
+        <programlisting>Type := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) Abbreviation?</programlisting>
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
 
@@ -371,13 +369,24 @@ Description doc(String description) {
         
         <para>Type inference is only allowed for block local declarations. The keyword
         <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
-    
-        <comment><para>TODO: Should we support <literal>Item[]</literal> as a shorthand for
-        <literal>Sequence&lt;Item&gt;</literal> or perhaps <literal>List&lt;Item&gt;</literal> 
-        and <literal>Item[Key]</literal> as a shorthand for 
-        <literal>Correspondence&lt;Item,Key&gt;</literal> or perhaps 
-        <literal>Map&lt;Item,Key&gt;</literal>? Should we support <literal>Item...</literal>
-        as a shorthand for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
+        
+        <para>The following type name abbreviations are supported:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>X?</literal> means <literal>Optional&lt;X&gt;</literal> for
+                any type <literal>X</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>X[]</literal> means <literal>Sequence&lt;X&gt;</literal> for
+                any type <literal>X</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>Abbreviation := "?" | "[" "]"</programlisting>
+        
+        <comment><para>TODO: Should we support <literal>Item...</literal>
+        as an abbreviation for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
     
     </section>
         
@@ -719,8 +728,7 @@ VarargsParam?
         <programlisting>(Product product, Natural quantity=1)</programlisting>
         
         <para>The type of the default argument expression must be assignable to the declared
-        type of the formal parameter. It must be a non-<literal>optional</literal> expression,
-        unless the parameter is annotated <literal>optional</literal>.</para>
+        type of the formal parameter.</para>
         
         <para>A varargs parameter accepts a list of arguments or a single argument of type 
         <literal>Iterable</literal>. Inside the method, it is available as a local of type
@@ -730,7 +738,7 @@ VarargsParam?
         
         <para>The varargs parameter must be the last formal parameter in the list.</para>
         
-        <programlisting>(Name name, optional Organization org=null, Address... addresses)</programlisting>
+        <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
         
         <comment><para>TODO: should we just make <literal>X...</literal> a syntactic shorthand
         for <literal>Iterable&lt;X&gt;</literal> everywhere? Or, alternatively, should we also
@@ -752,27 +760,7 @@ VarargsParam?
         parameter of type <literal>Range&lt;T&gt;</literal>.</para>
         
         <programlisting>(Float value, Integer min..max)</programlisting>
-    
-        <para>A formal parameter may be annotated <literal>optional</literal>, in which case:</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>If the parameter is not a functional parameter, it accepts an argument
-                expression of <literal>optional</literal> type, and may receive a <literal>null</literal> 
-                argument.</para>
-            </listitem>
-            <listitem>
-                <para>Otherwise, if the parameter is a functional parameter, it accepts an argument 
-                method reference with <literal>optional</literal> return type. Functional parameters
-                never receive <literal>null</literal> arguments.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If the <literal>optional</literal> annotation does not appear, or if the formal parameter 
-        is a functional parameter, the Ceylon compiler guarantees that the formal parameter never 
-        receives a <literal>null</literal> argument. Every argument of the formal parameter must be an 
-        expression of non-<literal>optional</literal> type.</para>
-
         <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
         assigned to within the body of the method or class.</para>
         
@@ -1343,7 +1331,7 @@ public class Person { ... }</programlisting>
         </para>
         
         <programlisting>public mutable
-class Customer(Name name, optional Organization org = null) 
+class Customer(Name name, Organization? org = null) 
         extends Person(name, org) { 
     ... 
 }</programlisting>
@@ -1760,7 +1748,7 @@ public User(String username, Person person);</programlisting>
     return Token()
 }</programlisting>
 
-        <programlisting>public optional U get(optional V key);</programlisting>
+        <programlisting>public U? get(V? key);</programlisting>
         
         <programlisting>public void print(Object... objects) {
     for (Object object in objects) { log.info($object); }
@@ -1796,35 +1784,11 @@ public User(String username, Person person);</programlisting>
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
-
-        <para>A non-<literal>void</literal> method may be annotated <literal>optional</literal>, 
-        in which case:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>If the method has exactly one formal parameter list, the method may 
-                return a <literal>null</literal> value.</para>
-            </listitem>
-            <listitem>
-                <para>Otherwise, if the method has more than one parameter list, the method
-                may return a reference to a method declared <literal>optional</literal>.
-                Methods with multiple parameter lists never return <literal>null</literal> 
-                values.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If the <literal>optional</literal> annotation does not appear, or if the method 
-        has multiple parameter lists, the Ceylon compiler guarantees that the method never 
-        returns <literal>null</literal>. Every <literal>return</literal> directive must specify 
-        an expression of non-<literal>optional</literal> type.</para>
-        
-        <para>A <literal>void</literal> method may not be annotated <literal>optional</literal>.</para>
                 
         <para>A block local method with a single <literal>return</literal> directive may be 
         declared using the keyword <literal>local</literal> in place of the explicit return type 
         declaration. The type of the local or attribute is inferred to be the type of the returned 
-        expression. If the returned expression is of <literal>optional</literal> type, the method 
-        is inferred to be <literal>optional</literal>.</para>
+        expression.</para>
         
         <programlisting>local add(Integer x, Integer y) {
     return x + y
@@ -1906,17 +1870,13 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>the same number of formal parameter lists, with the same
                     signatures, as the method it overrides, after substitution of 
                     type arguments specified in the <literal>extends</literal> or 
-                    <literal>satisfies</literal> clause,</para>
+                    <literal>satisfies</literal> clause, and</para>
                 </listitem>
                  <listitem>
                     <para>with a return type that is assignable to the return type of 
                     the method it overrides, after substitution of type arguments 
                     specified in the <literal>extends</literal> or 
-                    <literal>satisfies</literal> clause, and</para>
-                </listitem>
-                <listitem>
-                    <para>that is not annotated <literal>optional</literal>, unless the 
-                    method it overrides is annotated <literal>optional</literal>.</para>
+                    <literal>satisfies</literal> clause.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2031,15 +1991,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         </para>
         -->
         
-        <para>A simple attribute or attribute getter may be annotated <literal>optional</literal>,
-        in which case the attribute may evaluate to <literal>null</literal>, and, if the
-        attribute is also <literal>mutable</literal>, may have a null value assigned.</para>
-        
-        <para>Otherwise, if the <literal>optional</literal> annotation does not appear, the 
-        Ceylon compiler guarantees that the attribute cannot evaluate to <literal>null</literal> 
-        or have a null value assigned. Every assignment to the attribute must specify an
-        expression of non-<literal>optional</literal> type.</para>
-        
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
             
@@ -2139,8 +2090,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         <para>A block local simple attribute with a specifier or initializer may be declared 
         using the keyword <literal>local</literal> in place of the explicit type declaration. 
         The type of the local or attribute is inferred to be the type of the specifier or
-        initializer expression. If the expression is of <literal>optional</literal> type, the 
-        attribute is inferred to be <literal>optional</literal>.</para>
+        initializer expression.</para>
         
         <programlisting>local names = List&lt;String&gt;();</programlisting>
         <programlisting>mutable local count:=0;</programlisting>
@@ -2183,9 +2133,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
         <para>A block local attribute getter with a single <literal>return</literal>
         directive may be declared using the keyword <literal>local</literal> in place of 
         the explicit type declaration. The type of the local or attribute is inferred to 
-        be the type of the returned expression. If the returned expression is of
-        <literal>optional</literal> type, the attribute is inferred to be 
-        <literal>optional</literal>.</para>
+        be the type of the returned expression.</para>
         
         <programlisting>local name { 
     return Name(firstName, initial, lastName) 
@@ -2240,9 +2188,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>If there is no specifier, initializer or getter implementation, the value 
             or implementation of the attribute must be specified later in the block, or 
             the class that declares the attribute must be annotated <literal>abstract</literal>. 
-            If no value or implementation is specified, and the attribute is not declared 
-            <literal>optional</literal>, the attribute is considered an <emphasis>abstract 
-            attribute</emphasis>.</para>
+            If no value or implementation is specified, the attribute is considered an 
+            <emphasis>abstract attribute</emphasis>.</para>
         
             <para>Attributes declared by interfaces never specify an initalizer, getter 
             or setter:</para>
@@ -2297,19 +2244,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>or with <emphasis>exactly the same type</emphasis> as the attribute 
                     it overrides, after substitution of type arguments specified in the 
                     <literal>extends</literal> or <literal>satisfies</literal> clause, if the 
-                    attribute it overrides is <literal>mutable</literal>,</para>
+                    attribute it overrides is <literal>mutable</literal>, and</para>
                 </listitem>
                 <listitem>
                     <para>that is <literal>mutable</literal>, if the attribute it overrides 
-                    is <literal>mutable</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para>that is not <literal>optional</literal>, unless the attribute
-                    it overrides is <literal>optional</literal>, and</para>
-                </listitem>
-                <listitem>
-                    <para>that is <literal>optional</literal>, if the attribute it overrides 
-                    is both <literal>mutable</literal> and <literal>optional</literal>.</para>
+                    is <literal>mutable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2452,10 +2391,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <para><literal>mutable</literal> specifies that an attribute
                 or local may be assigned, or that a class has assignable
                 attributes.</para>
-            </listitem>
-            <listitem>
-                <para><literal>optional</literal> specifies that an attribute,
-                local, parameter, or method return value may be null.</para>
             </listitem>
             <listitem>
                 <para><literal>fixed</literal> specifies that a method or
@@ -2686,22 +2621,19 @@ public oncePerElement Visibility private() {
         
         <itemizedlist>
             <listitem>
-                <para>a toplevel non-<literal>optional</literal> method with exactly one 
-                non-<literal>optional</literal> formal parameter,</para>
+                <para>a toplevel method with exactly one formal parameter,</para>
             </listitem>
             <listitem>
-                <para>a member non-<literal>optional</literal> method with no formal 
-                parameters,</para>
+                <para>a member method with no formal parameters,</para>
             </listitem>
             <listitem>
-                <para>a toplevel class with exactly one non-<literal>optional</literal> 
-                initialization parameter,</para>
+                <para>a toplevel class with exactly one initialization parameter,</para>
             </listitem>
             <listitem>
                 <para>a member class with no initialization parameters, or</para>
             </listitem>
             <listitem>
-                <para>a non-<literal>optional</literal> attribute.</para>
+                <para>an attribute.</para>
             </listitem>
         </itemizedlist>
         
@@ -2955,11 +2887,11 @@ Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
     return from (String author in authors) select Author(author.normalize())
 }</programlisting>
     
-        <programlisting>public RelatedElement see(ProgramElement pe, optional String description=null) {
+        <programlisting>public RelatedElement see(ProgramElement pe, String? description=null) {
     return Related(pe, description.normalize())
 }</programlisting>
     
-        <programlisting>public ThrownException see(Type type&lt;Exception&gt;, optional String description=null) {
+        <programlisting>public ThrownException see(Type type&lt;Exception&gt;, String? description=null) {
     return Related(type, description.normalize())
 }</programlisting>
         

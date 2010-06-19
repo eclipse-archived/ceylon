@@ -16,7 +16,7 @@
         operator <literal>$</literal> (render),--> and the binary operator 
         <literal>:=</literal> (assign).</para>
         
-        <para>In addition, references of type <literal>optional Object</literal>
+        <para>In addition, references of type <literal>Object?</literal>
         support the binary operators <literal>?.</literal> (nullsafe invoke) 
         and <literal>?</literal> (default) and the unary operator
         <literal>exists</literal>, along with the binary operators 
@@ -81,7 +81,7 @@
     doc "Transform the given object to a string. Override to
          customize the render operator and character string 
          template expression interpolation."
-    public default String string(optional Object object) {
+    public default String string(Object? object) {
         return (object ? nullString).string
     }
     
@@ -201,6 +201,80 @@
         
         <programlisting><![CDATA[public abstract class Selector(String name, int ordinal)
         satisfies Case<subtype> { ... }]]></programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Optional and null values</title>
+        
+        <para>The class <literal>lang.Optional</literal> represents a
+        value that may be null.</para>
+        
+        <programlisting><![CDATA[abstract class Optional<out X>() {
+    
+    doc "The unary postfix exists operator |x exists|."
+    Boolean valueExists;
+    
+    doc "The binary default operator |x ? y|."
+    T default(T defaultValue) where T abstracts X;
+    
+}]]></programlisting>
+        
+        <para>If an optional value is not null, it is represented by an
+        instance of the subclass <literal>lang.Existent</literal>.</para>
+        
+        <programlisting><![CDATA[public extension 
+class Existent<out X>(X x) extends Optional<X>() {
+
+    extension X value = x;
+    
+    override Boolean valueExists { 
+        return true 
+    }
+    
+    override T default(T defaultValue) where T abstracts X {
+        return value;
+    }
+    
+}]]></programlisting>
+
+        <para>Non-optional values are transparently assignable to optional
+        values, since <literal>Existent&lt;X&gt;</literal> is an extension of 
+        <literal>X</literal> enabled in every compilation unit. Likewise, 
+        instances of <literal>Existent&lt;X&gt;</literal> are transparently 
+        assignable to <literal>X</literal>.</para>
+        
+        <para>If an optional value is null, it is represented by an
+        instance of the subclass <literal>lang.Nonexistent</literal>.</para>
+        
+        <programlisting><![CDATA[public extension 
+class Nonexistent<out X>(LiteralNull null) extends Optional<X>() {
+
+    override Boolean valueExists { 
+        return false 
+    }
+    
+    override T default(T defaultValue) where T abstracts X {
+        return defaultValue;
+    }
+    
+}]]></programlisting>
+
+        <para>The value <literal>LiteralNull.null</literal> is transparently 
+        assignable to optional values, since <literal>Nonexistent&lt;X&gt;</literal> 
+        is an extension of <literal>LiteralNull</literal> enabled in every 
+        compilation unit.</para>
+        
+        <programlisting><![CDATA[public class LiteralNull() satisfies Case<Object> {
+        
+    doc "Represents a null reference."
+    case null;
+    
+    override Boolean test(Object value) {
+        return value is Nonexistent<Object> || value===null;
+    }
+    
+}]]></programlisting>
         
     </section>
     
@@ -394,7 +468,7 @@ while (i.more) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    public optional V value(U key);
+    public V? value(U key);
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
@@ -483,10 +557,10 @@ while (i.more) {
         
      doc "Element assignment operator x[key] = value. Assign a value 
           to the given key. Return the previous value for the key,
-          or null if there was no value defined."
+          or |null| if there was no value defined."
      throws #UndefinedKeyException
             "if a value can not be defined for the given key"
-     public optional V define(U key, V value);
+     public V? define(U key, V value);
 
 }]]></programlisting>
 
@@ -513,8 +587,8 @@ while (i.more) {
         <title>Sequences</title>
         
         <para>A <literal>lang.Sequence</literal> is a correspondence from 
-        a bounded progression of natural numbers. Sequences support 
-        the binary operators <literal>+</literal> (join), <literal>[i...]</literal> 
+        a bounded progression of natural numbers. Sequences support the 
+        binary operators <literal>+</literal> (join), <literal>[i...]</literal> 
         (upper range) and the ternary operator <literal>[i..j]</literal> 
         (subrange) in addition to operators inherited from 
         <literal>Correspondence</literal>:</para>
@@ -524,9 +598,26 @@ while (i.more) {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
-    public optional Natural lastIndex;
+    public Natural? lastIndex;
     
 }]]></programlisting>
+        
+        <para>The value <literal>LiteralNone.none</literal> is transparently
+        assignable to <literal>Sequence&lt;X&gt;</literal>.</para>
+        
+        <programlisting><![CDATA[public class LiteralNone() {
+        
+    doc "Represents an empty sequence. The value of 
+         the empty sequence enumeration |{}|."
+    case none;
+    
+    public extension 
+    class EmptySequence<X>() {
+        ...
+    }
+    
+}]]></programlisting>
+
 
         <para>Toplevel methods define the join and range operators, for 
         sequence types which have an appropriate constructor:</para>
@@ -555,7 +646,6 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
     return S( SubrangeIterable() )
 }]]></programlisting>
-
         
         <para>A helper class decorates <literal>Sequence</literal> with 
         some convenience attributes:</para>
@@ -564,13 +654,13 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
-    public optional X first {
+    public X? first {
         return sequence[0]
     }
     
     doc "The last element of the sequence, or
          |null| if the sequence has no elements.."
-    public optional X last {
+    public X? last {
         if (exists Natural index = sequence.lastIndex) {
             return sequence[index]
         }
@@ -759,12 +849,12 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    public optional Natural firstIndex(Boolean having(X element));
+    public Natural? firstIndex(Boolean having(X element));
 
     doc "The index of the last element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    public optional Natural lastIndex(Boolean having(X element));
+    public Natural? lastIndex(Boolean having(X element));
     
     doc "A sublist beginning with the element at the first given 
          index up to and including the element at the second given 
@@ -925,7 +1015,7 @@ while (people nonempty) {
     
     doc "Produce a new map by applying an operation to every 
          element of the map."
-    public Map<U, W> transform<W>(optional W select(U key -> V value));
+    public Map<U, W> transform<W>(W? select(U key -> V value));
     
     doc "The entries of the map for which the given condition 
          evaluates to |true|, as a |Map|."
@@ -1526,14 +1616,14 @@ while (people nonempty) {
 }]]></programlisting>
 
         <programlisting><![CDATA[public class Time(Natural hours, Natural minutes, 
-        optional Natural seconds=null, optional Natural milliseconds=null,
-        optional Timezone timezone=null) 
+        Natural? seconds=null, Natural? milliseconds=null,
+        Timezone? timezone=null) 
         extends Instant() {
     public Natural hours = hours;
     public Natural minutes = minutes;
-    public optional Natural seconds = seconds;
-    public optional Natural milliseconds = milliseconds;
-    public optional Timezone timezone = timezone;
+    public Natural? seconds = seconds;
+    public Natural? milliseconds = milliseconds;
+    public Timezone? timezone = timezone;
     ...
 }]]></programlisting>
         
@@ -1618,9 +1708,8 @@ public void assert(StringTemplate message, Boolean that()) {
         support for conditional expressions.</para>
         
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
-     and return the result. Otherwise, return a null
-     value."
-public optional Y ifTrue<Y>(Boolean condition,
+     and return the result. Otherwise, return |null|."
+public Y? ifTrue<Y>(Boolean condition,
                             Y then()) {
     if (condition) {
         return then()
@@ -1645,9 +1734,8 @@ public Y ifTrue<Y>(Boolean condition,
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
-     and return the result. Otherwise, return a null
-     value."
-public optional Y ifExists<X,Y>(specified optional X value,
+     and return the result. Otherwise, return |null|."
+public Y? ifExists<X,Y>(specified X? value,
                                 Y then(coordinated X x)) {
     if (exists value) {
         return then(value)
@@ -1660,7 +1748,7 @@ public optional Y ifExists<X,Y>(specified optional X value,
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y ifExists<X,Y>(specified optional X value,
+public Y ifExists<X,Y>(specified X? value,
                        Y then(coordinated X x), 
                        Y otherwise()) {
     if (exists value) {
@@ -1718,7 +1806,7 @@ public Y using<X,Y,E>(specified X resource,
         <programlisting><![CDATA[doc "Evaluate the block which matches the selector value, and
      return the result of the evaluation. If no block matches
      the selector value, return a null value."
-public optional Y select<X,Y>(X selector,
+public Y? select<X,Y>(X selector,
                               cases Iterable<Entry<Case<X>, functor Y()>> value) {
     for (Case<X> match -> X evaluate() in value) {
         if ( match.test(selector) ) {
@@ -1794,9 +1882,9 @@ public Boolean forAny<X>(iterated Iterable<X> elements,
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Return the first element for which the block 
-     evaluates to true, or a null value if no such 
-     element is found."
-public optional X first<X>(iterated Iterable<X> elements,
+     evaluates to true, or |null|if no such element 
+     is found."
+public X? first<X>(iterated Iterable<X> elements,
                            Boolean having(coordinated X x)) {
     for (X x in elements) {
         if ( having(x) ) {
@@ -1829,7 +1917,7 @@ public X first<X>(iterated Iterable<X> elements,
      using the second block, if specified."
 public List<X> from<X>(iterated Iterable<X> elements,
                        Boolean having(coordinated X x),
-                       optional Comparable by(coordinated X x) = naturalOrder) {
+                       Comparable by(coordinated X x) = naturalOrder) {
     X select(X x) { return x }
     return from(elements, having, select, by)
 }]]></programlisting>
@@ -1840,7 +1928,7 @@ public List<X> from<X>(iterated Iterable<X> elements,
      specified."
 public List<Y> from<X,Y>(iterated Iterable<X> elements,
                          Y select(coordinated X x),
-                         optional Comparable by(coordinated X x) = naturalOrder)  {
+                         Comparable by(coordinated X x) = naturalOrder)  {
     Boolean having(X x) { return true }
     return from(elements, having, select, by)
 }]]></programlisting>
@@ -1853,7 +1941,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
 public List<Y> from<X,Y>(iterated Iterable<X> elements,
                          Boolean having(coordinated X x), 
                          Y select(coordinated X x),
-                         optional Comparable by(coordinated X x) = naturalOrder) {
+                         Comparable by(coordinated X x) = naturalOrder) {
     OpenList<Y> list = ArrayList<Y>();
     for (X x in elements) {
         if ( having(x) ) {
@@ -1941,13 +2029,12 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         <listitem><literal>small lang.Float</literal> to Java <literal>float</literal></listitem>
 
         <listitem><literal>lang.String</literal> to <literal>java.lang.String</literal></listitem>
+        
+        <listitem><literal>lang.Optional&lt;X&gt;</literal> to <literal>X</literal></listitem>
     </itemizedlist>
     
     <para><literal>lang.Character</literal> may not be optimized to the Java <literal>char</literal>
     type, since Java <literal>char</literal> represents a UTF-16 character.</para>
-    
-    <para>However, these optimizations may never be performed for locals, attributes
-    or method types declared <literal>optional</literal>.</para>
     
     <para>The following operators may be optimized: 
     <literal>+, -, *, /, ++, --, +=, -=, *=, /=, 

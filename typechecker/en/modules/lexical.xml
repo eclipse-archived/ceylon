@@ -97,12 +97,12 @@
         in out
         void subtype local assign
         return break throw retry 
-        this super null none
+        this super
         get set
         if else switch case for fail do while try catch finally
         exists nonempty is
         public module package private
-        abstract default override mutable optional extension 
+        abstract default fixed override mutable extension 
         deprecated volatile small
         </literal></para>
         

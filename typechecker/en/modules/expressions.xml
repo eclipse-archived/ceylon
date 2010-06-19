@@ -33,7 +33,7 @@
     <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
     sequence of expressions, or a parenthesized expression.</para>
     
-    <programlisting>Atom := Literal | StringTemplate | SpecialValue | Enumeration | ParExpression</programlisting>
+    <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
     
     <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
     members of an atom or toplevel method or class.</para>
@@ -51,36 +51,11 @@
     
     <para>Ceylon expressions are validated for typesafety at compile time.
     To determine whether an expression is assignable to a program element 
-    such as an attribute, local or formal parameter, Ceylon considers:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para>the <emphasis>type</emphasis> of the expression (the type of the
-            objects that are produced when the expression is evaluated), and</para>
-        </listitem>
-        <listitem>
-            <para>the nullability of the expression (whether it can evaluate to 
-            <literal>null</literal>).</para>
-        </listitem>
-    </itemizedlist>
-    
-    <para>If an expression can evaluate to <literal>null</literal>, we say it is
-    of <literal>optional</literal> type. Otherwise, we say it is of 
-    non-<literal>optional</literal> type. For a nullable expression of type 
-    <literal>T</literal>, we often say that its type is <literal>optional T</literal>.</para>
-    
-    <para>An expression is assignable to a program element if:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para>the type of the expression is assignable to the declared type of 
-            the program element, and</para>
-        </listitem>
-        <listitem>
-            <para>the expression is non-<literal>optional</literal>, or the program 
-            element is declared <literal>optional</literal>.</para>
-        </listitem>
-    </itemizedlist>
+    such as an attribute, local or formal parameter, Ceylon considers the 
+    <emphasis>type</emphasis> of the expression (the type of the objects 
+    that are produced when the expression is evaluated). An expression is 
+    assignable to a program element if the type of the expression is 
+    assignable to the declared type of the program element.</para>
     
     <comment><para>TODO: We need to allow some way to have an expression to be 
     specified as a toplevel element, for DSLs.</para></comment>
@@ -117,8 +92,6 @@
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
     here.</para>
-    
-    <para>All literal values are expressions of non-<literal>optional</literal> type.</para>
     
     <!--section id="datetime">
         <title><literal>Date</literal> and <literal>Time</literal> literals</title>
@@ -309,8 +282,7 @@ if you prefer.";</programlisting>
         
         <programlisting>StringTemplate := StringLiteral (Expression? StringLiteral)+</programlisting>
         
-        <para>A character string template is an expression of non-<literal>optional</literal> 
-        type <literal>StringTemplate</literal>.</para>
+        <para>A character string template is an expression of type <literal>StringTemplate</literal>.</para>
         
         <!--
         <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
@@ -344,25 +316,17 @@ if you prefer.";</programlisting>
     </section>
     
     <section id="specialvalues">
-        <title><literal>this</literal>, <literal>super</literal>, 
-        <literal>null</literal> and <literal>none</literal></title>
+        <title>Self references</title>
         
         <para>The type of the following special values depends upon
         the context in which they appear.</para>
         
-        <programlisting>SpecialValue := "this" | "super" | "null" | "none"</programlisting>
-        
-        <para>The keyword <literal>null</literal> refers to a special
-        value that is assignable to all <literal>optional</literal> 
-        types, and never to non-<literal>optional</literal> types. The 
-        Ceylon language and compiler ensures that this value never
-        receives any invocation.</para>
-        
+        <programlisting>SelfReference := "this" | "super"</programlisting>
+
         <para>The keyword <literal>super</literal> refers to the
         current instance (the instance that is being invoked), and has
-        the same members as the immediate superclass of the class,
-        except for <literal>fixed</literal> members. It is an expression 
-        of non-<literal>optional</literal> type. Any invocation of this 
+        the same members as the immediate superclass of the class, except 
+        for <literal>fixed</literal> members. Any invocation of this 
         reference is processed by the method or attribute defined or 
         inherited by this superclass, bypassing any method declaration 
         that overrides the method on the current class or any subclass 
@@ -375,13 +339,7 @@ if you prefer.";</programlisting>
         instance, and is assignable to both the type of the current 
         class (the class which declares the method being invoked), and 
         to the special type <literal>subtype</literal>, representing 
-        the concrete type of the current instance. It is an expression 
-        of non-<literal>optional</literal> type.</para>
-        
-        <para>The keyword <literal>none</literal> refers to a special
-        value that is assignable to <literal>Sequence</literal>. It is 
-        an expression of non-<literal>optional</literal> type. This value 
-        has no elements.</para>
+        the concrete type of the current instance.</para>
         
     </section>
     
@@ -428,9 +386,6 @@ if you prefer.";</programlisting>
         
         <programlisting>DayOfWeek sunday = DayOfWeek.sun;</programlisting>
         
-        <para>An enumerated instance reference is an expression of non-<literal>optional</literal> 
-        type.</para>
-        
     </section>
     
     <section id="methodreferences">
@@ -445,10 +400,10 @@ if you prefer.";</programlisting>
 
         <programlisting>OrdinaryMethodReference := Receiver? MemberName</programlisting>
 
-        <para>A <emphasis>constructor reference</emphasis> is a reference to an implicit method 
-        with a schema that depends upon the formal parameters of the class. For a class 
-        <literal>T</literal>, the constructor method has non-<literal>optional</literal> return 
-        type <literal>T</literal> and the same formal parameters as the class.</para>
+        <para>A <emphasis>constructor reference</emphasis> is a reference to an implicit 
+        method with a schema that depends upon the formal parameters of the class. For a 
+        class <literal>T</literal>, the constructor method return type <literal>T</literal> 
+        and the same formal parameters as the class.</para>
         
         <programlisting>ConstructorReference := Receiver? Type</programlisting>
          
@@ -458,15 +413,13 @@ if you prefer.";</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>The getter method has no formal parameters, return type
-                <literal>T</literal>, and is of <literal>optional</literal> type if and
-                only if the attribute is declared <literal>optional</literal>.</para>
+                <para>The getter method has no formal parameters, and return type
+                <literal>T</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the attribute is <literal>mutable</literal>, the <literal>void</literal> 
                 setter method has a single formal parameter, with the same name as the attribute,
-                of type <literal>T</literal>, of <literal>optional</literal> type if and only if 
-                the attribute is declared <literal>optional</literal>.</para>
+                of type <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -527,16 +480,14 @@ if you prefer.";</programlisting>
             
         <itemizedlist>
             <listitem>
-                <para><literal>.</literal> if the expression is of non-<literal>optional</literal> 
-                type <literal>X</literal>,</para>
+                <para><literal>.</literal> if the expression is of type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>.?</literal> if the expression is of type <literal>optional X</literal>,
+                <para><literal>.?</literal> if the expression is of type <literal>Optional&lt;X&gt;</literal>,
                 or</para>
             </listitem>
             <listitem>
-                <para><literal>.*</literal> if the expression is of non-<literal>optional</literal> 
-                type <literal>Iterable&lt;X&gt;</literal>.</para>
+                <para><literal>.*</literal> if the expression is of type <literal>Iterable&lt;X&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -593,12 +544,7 @@ sort(names, reverseAlpha);</programlisting>
         <itemizedlist>
             <listitem>
                 <para>the return type of the method reference is assignable to the declared
-                return type of the method or functional parameter,</para>
-            </listitem>
-            <listitem>
-                <para>the method reference is not declared <literal>optional</literal>, unless 
-                the method or functional parameter is declared <literal>optional</literal>, 
-                and</para>
+                return type of the method or functional parameter, and</para>
             </listitem>
             <listitem>
                 <para> the method reference has exactly the same number of formal parameters, 
@@ -686,20 +632,18 @@ local comp = order(1,-1);</programlisting>
         defaulted parameters and varargs may optionally be specified.</para>
         
         <para>For a required or defaulted formal parameter of declared type <literal>T</literal>, 
-        the type of the argument expression must be assignable to <literal>T</literal>. The
-        argument expression must be of non-<literal>optional</literal> type, unless the formal
-        parameter is annotated <literal>optional</literal>.</para>
+        the type of the argument expression must be assignable to <literal>T</literal>.</para>
         
         <para>For a varargs parameter of declared type <literal>T...</literal>, there may either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>be a single argument expression of non-<literal>optional</literal> type 
-                assignable to <literal>Iterable&lt;T&gt;</literal>, or</para>
+                <para>be a single argument expression of type assignable to 
+                <literal>Iterable&lt;T&gt;</literal>, or</para>
             </listitem>
             <listitem>
-                <para>an arbitrary number of argument expressions of non-<literal>optional</literal> 
-                type assignable to <literal>T</literal>.</para>
+                <para>an arbitrary number of argument expressions of type assignable to 
+                <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
          
@@ -764,21 +708,19 @@ local comp = order(1,-1);</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>If the invocation operator is <literal>.</literal>, the expression
-                    is of type <literal>X</literal>. It is of <literal>optional</literal> type
-                    if and only if the method is declared <literal>optional</literal>.</para>
+                    is of type <literal>X</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If the invocation operator is <literal>?.</literal>, the expression
-                    is of type <literal>optional X</literal>.</para>
+                    is of type <literal>Optional&lt;X&gt;</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If the invocation operator is <literal>*.</literal>, the expression
-                    is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+                    is of type <literal>Sequence&lt;X&gt;</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If no receiver expression is specified, the expression is of type 
-                    <literal>X</literal>. It is of <literal>optional</literal> type if and 
-                    only if the method is declared <literal>optional</literal>.</para>
+                    <literal>X</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -814,19 +756,19 @@ local comp = order(1,-1);</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>If the invocation operator is <literal>.</literal>, the expression
-                    is of non-<literal>optional</literal> type <literal>X</literal>.</para>
+                    is of type <literal>X</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If the invocation operator is <literal>?.</literal>, the expression
-                    is of type <literal>optional X</literal>.</para>
+                    is of type <literal>Optional&lt;X&gt;</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If the invocation operator is <literal>*.</literal>, the expression
-                    is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+                    is of type <literal>Sequence&lt;X&gt;</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para>If no receiver expression is specified, the expression is of 
-                    non-<literal>optional</literal> type <literal>X</literal>.</para>
+                    <para>If no receiver expression is specified, the expression is of type 
+                    <literal>X</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1208,7 +1150,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         <para>For example, for the following method declaration:</para>
         
         <programlisting>public
-Y ifExists&lt;X,Y&gt;(specified optional X value, 
+Y ifExists&lt;X,Y&gt;(specified X? value, 
                 Y then(coordinated X x), 
                 Y otherwise());</programlisting>
                   
@@ -1383,13 +1325,9 @@ except (SomethingElseWrong sew) {
             
             <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
             
-            <para>Empty braces <literal>{}</literal> and <literal>none</literal> are synonyms
-            for a special value that can be assigned to <literal>Sequence</literal>.</para>
+            <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>LiteralNone.none</literal>.</para>
                                     
             <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
-            
-            <para>An enumeration is an expression of non-<literal>optional</literal> 
-            type.</para>
             
             <para>There is no special syntax for constructing lists, sets or maps. However, the 
             <literal>..</literal> and <literal>-></literal> operators, together with the 
@@ -1434,15 +1372,7 @@ except (SomethingElseWrong sew) {
             
             <para>The value of an attribute initialization is the instance being initialized.
             The named parameter values are assigned to uninitialized attributes of the instance.</para>
-            
-            <para>All non-<literal>optional</literal> attributes of a class must be explicitly
-            initialized when the class is instantiated, either in the body of the class, or using
-            attribute initialization. Uninitialized <literal>optional</literal> attributes are 
-            implicitly initialized to <literal>null</literal> if not explicitly initialized.</para>
-            
-            <comment><para>TODO: is this the right thing to say? Should we require explicit 
-            initialization even for <literal>optional</literal> attributes?</para></comment>
-                        
+                                   
         </section>
         -->
         
@@ -1603,15 +1533,15 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
         <itemizedlist>
             <listitem>
-                <para><literal>.</literal> if the expression is of non-<literal>optional</literal>
+                <para><literal>.</literal> if the expression is of
                 type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>.?</literal> if the expression is of type <literal>optional X</literal>,
+                <para><literal>.?</literal> if the expression is of type <literal>Optional&lt;X&gt;</literal>,
                 or</para>
             </listitem>
             <listitem>
-                <para><literal>.*</literal> if the expression is of non-<literal>optional</literal> 
+                <para><literal>.*</literal> if the expression is of 
                 type <literal>Iterable&lt;X&gt;</literal>.</para>
             </listitem>
         </itemizedlist-->
@@ -1661,26 +1591,23 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <itemizedlist>
             <listitem>
                 <para>If the evaluation operator is <literal>.</literal>, the expression
-                is of type <literal>X</literal>. It is of <literal>optional</literal> type
-                if and only if the attribute is <literal>optional</literal>.</para>
+                is of type <literal>X</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the evaluation operator is <literal>?.</literal>, the expression
-                is of type <literal>optional X</literal>.</para>
+                is of type <literal>Optional&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the evaluation operator is <literal>*.</literal>, the expression
-                is of non-<literal>optional</literal> type <literal>Sequence&lt;X&gt;</literal>.</para>
+                is of type <literal>Sequence&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>If no receiver expression is specified, the expression is of type 
-                <literal>X</literal>. It is of <literal>optional</literal> type if and 
-                only if the attribute is <literal>optional</literal>.</para>
+                <literal>X</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The type of a local evaluation expression is the type of the local. It is of 
-        <literal>optional</literal> type if and only if the local is <literal>optional</literal>.</para>
+        <para>The type of a local evaluation expression is the type of the local.</para>
         
     </section>
         
@@ -1817,29 +1744,18 @@ DefaultAssignmentOperator</programlisting>
                 <para>the assignable expression must be a <literal>mutable</literal>
                 attribute with no element key specification, or an attribute of type 
                 <literal>OpenCorrespondence</literal> together with an element key 
-                specification,</para>
-            </listitem>
-            <listitem>
-                <para>the receiver expression must not be of <literal>optional</literal> 
-                type,</para>
+                specification, and</para>
             </listitem>
             <listitem>
                 <para>the type of the expression to be assigned must be assignable to 
-                the type of the assignable expression, and</para>
-            </listitem>
-            <listitem>
-                <para>if the expression to be assigned is of <literal>optional</literal> 
-                type, then the assignable expression must be of <literal>optional</literal> 
-                type,</para>
+                the type of the assignable expression.</para>
             </listitem>
         </itemizedlist>
         
         <comment><para>TODO: fix to account for range assignment!</para></comment>
         
         <para>The whole assignment construct is itself an expression. The type of the assignment 
-        expression is the type of the assignable expression. The assignment expression is of 
-        <literal>optional</literal> type if and only if the expression to be assigned is of
-        <literal>optional</literal> type.</para>
+        expression is the type of the assignable expression.</para>
         
         <para>When the assignment is executed, the assignment expression evaluates to the new 
         value that was assigned.</para>
@@ -1865,28 +1781,12 @@ DefaultAssignmentOperator</programlisting>
         applying an operation to the result, and then assigns this new value to the assignable
         expression.</para>
         
-        <para>The following rules must be satisfied:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the assignable expression must be a <literal>mutable</literal>
-                attribute with no element key specification, or an attribute of type 
-                <literal>OpenCorrespondence</literal> together with an element key 
-                specification,</para>
-            </listitem>
-            <listitem>
-                <para>the receiver expression must not be of <literal>optional</literal> 
-                type, and</para>
-            </listitem>
-            <listitem>
-                <para>the assignable expression must not be of <literal>optional</literal>
-                type.</para>
-            </listitem>
-        </itemizedlist>
+        <para>The assignable expression must be a <literal>mutable</literal> attribute with no 
+        element key specification, or an attribute of type <literal>OpenCorrespondence</literal> 
+        together with an element key specification.</para>
         
         <para>The whole unary assignment construct is itself an expression. The type of the 
-        unary assignment expression is the type of the assignable expression. The unary 
-        assignment expression is of non-<literal>optional</literal> type.</para>
+        unary assignment expression is the type of the assignable expression.</para>
         
          <para>When the assignment is executed, the unary assignment expression evaluates to 
          the new value that was assigned, except in the case of postfix increment or decrement, 
@@ -1919,7 +1819,7 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>if ( x > 100 || x &lt; 0 ) { ... }</programlisting>
     
-    <programlisting>optional User gavin = users["Gavin"];</programlisting>
+    <programlisting>User? gavin = users["Gavin"];</programlisting>
     
     <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
     
@@ -1937,7 +1837,7 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>List&lt;String&gt; names = { person1, person2 }*.name;</programlisting>
     
-    <programlisting>optional String name = person?.name;</programlisting>
+    <programlisting>String? name = person?.name;</programlisting>
     
     <programlisting>this.total += item.price;</programlisting>
     
@@ -1979,7 +1879,7 @@ DefaultAssignmentOperator</programlisting>
         override void call(String element) { element.name; } 
     }.result;</programlisting>
     
-    <programlisting>optional String name = if (exists person) person.name else null;</programlisting>
+    <programlisting>String? name = if (exists person) person.name else null;</programlisting>
     
     <programlisting>List&lt;Day&gt; nonworkDays = days.values(Enumeration(0,7));</programlisting-->
 
@@ -2248,17 +2148,17 @@ DefaultAssignmentOperator</programlisting>
             <entry>invoke</entry>
             <entry></entry>
             <entry><literal>X</literal> or type <literal>X</literal></entry>
-            <entry>Member of <literal>X</literal></entry>
-            <entry>Member type</entry>
+            <entry>Member of <literal>X</literal>, of type <literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         <row>
             <entry><literal>?.</literal></entry>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe invoke</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
-            <entry><literal>optional X</literal></entry>
-            <entry>Member of <literal>X</literal></entry>
-            <entry><literal>optional</literal> member type</entry>
+            <entry><literal>X?</literal></entry>
+            <entry>Member of <literal>X</literal>, of type <literal>T</literal></entry>
+            <entry><literal>T?</literal></entry>
         </row>
         
         <row>
@@ -2267,8 +2167,8 @@ DefaultAssignmentOperator</programlisting>
             <entry>spread invoke</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
-            <entry>Member of <literal>X</literal></entry>
-            <entry><literal>Sequence</literal> of member type</entry>
+            <entry>Member of <literal>X</literal>, of type <literal>T</literal></entry>
+            <entry><literal>Sequence&lt;T&gt;</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
@@ -2278,9 +2178,9 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
             <entry><literal>Object.assign(set lhs,rhs)</literal></entry>
-            <entry><literal>X</literal> or <literal>optional X</literal></entry>
-            <entry><literal>X</literal> or <literal>optional X</literal></entry>
-            <entry><literal>X</literal> or <literal>optional X</literal></entry>
+            <entry><literal>X</literal> or <literal>X?</literal></entry>
+            <entry><literal>X</literal> or <literal>X?</literal></entry>
+            <entry><literal>X</literal> or <literal>X?</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
@@ -2291,7 +2191,7 @@ DefaultAssignmentOperator</programlisting>
             <entry>render</entry>
             <entry><literal>this.string(rhs)</literal></entry>
             <entry></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry><literal>String</literal></entry>
         </row>
     
@@ -2364,8 +2264,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>Object.identical(lhs, rhs)</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>Object?</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -2373,8 +2273,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs == rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>if (exists lhs) lhs.equals(rhs) else if (exists rhs) false else true</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>Object?</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -2382,8 +2282,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
             <entry><literal>if (exists lhs) lhs.equals(rhs).complement else if (exists rhs) true else false</literal></entry>
-            <entry><literal>optional Object</literal></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>Object?</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -2565,8 +2465,8 @@ DefaultAssignmentOperator</programlisting>
     <section id="nullvalues">
     <title>Operators for handling null values</title>
     
-    <para>These operators make it easy to work with <literal>optional</literal>
-    types.</para>
+    <para>These operators make it easy to work with <literal>Optional</literal>
+    values.</para>
     
     <table>
     <tgroup cols="7">
@@ -2597,7 +2497,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (exists lhs) true else false</literal></entry>
-            <entry><literal>optional Object</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2606,7 +2506,7 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (exists lhs) lhs.empty.complement else false</literal></entry>
-            <entry><literal>optional Container</literal></entry>
+            <entry><literal>Container?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2618,9 +2518,9 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs ? rhs</literal></entry>
             <entry>default</entry>
             <entry><literal>if (exists lhs) lhs else rhs</literal></entry>
-            <entry><literal>optional T</literal></entry>
-            <entry><literal>T</literal> or <literal>optional T</literal></entry>
-            <entry><literal>T</literal> or <literal>optional T</literal></entry>
+            <entry><literal>T?</literal></entry>
+            <entry><literal>T</literal> or <literal>T?</literal></entry>
+            <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
 
         <row><entry namest="first" nameend="last"><emphasis>Default assignment</emphasis></entry></row>
@@ -2630,9 +2530,9 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
             <entry><literal>if (exists lhs) lhs else Object.assign(set lhs,rhs)</literal></entry>
-            <entry><literal>optional T</literal></entry>
-            <entry><literal>T</literal> or <literal>optional T</literal></entry>
-            <entry><literal>T</literal> or <literal>optional T</literal></entry>
+            <entry><literal>T?</literal></entry>
+            <entry><literal>T</literal> or <literal>T?</literal></entry>
+            <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
         
     </tbody>
@@ -2679,16 +2579,16 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>optional Y</literal></entry>
+            <entry><literal>Y?</literal></entry>
         </row>
         <row>
             <entry><literal>?[]</literal></entry>
             <entry><literal>lhs?[index]</literal></entry>
             <entry>nullsafe lookup</entry>
             <entry><literal>if (exists lhs) lhs.value(index) else null</literal></entry>
-            <entry><literal>optional Correspondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>Correspondence&lt;X,Y&gt;?</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>optional Y</literal></entry>
+            <entry><literal>Y?</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
