@@ -392,8 +392,8 @@ Description doc(String description) {
         
         <para>Abbreviations may be combined:</para>
         
-        <programlisting>String?[] words = { "hello", "world", null };</programlisting>
-        <programlisting>String?? firstWord = words[0];</programlisting>
+        <programlisting>String?[] words = { "hello", "world", null };
+String?? firstWord = words[0];</programlisting>
         
         <comment><para>TODO: Should we support <literal>Item...</literal>
         as an abbreviation for <literal>Iterable&lt;Item&gt;</literal>?</para></comment>
