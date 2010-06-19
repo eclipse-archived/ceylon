@@ -1307,6 +1307,9 @@ except (SomethingElseWrong sew) {
                 
                 <itemizedlist>
                     <listitem>
+                        <para>has the same number of parameters as specified argument expressions,</para>
+                    </listitem>
+                    <listitem>
                         <para>has the same number of type parameters as specified type arguments, 
                         if type arguments were explicitly specified,</para>
                     </listitem>
