@@ -930,7 +930,7 @@ class Hello(optional String name) {
         <para>Programming with generic types is one of the most difficult parts of
         Java. That's still true, to some extent, in Ceylon. But because the Ceylon
         language and SDK were designed for generics from the ground up, Ceylon
-        is able to eliminate one of the bits of Java generics that is really 
+        is able to eliminate one of the bits of Java generics that's really 
         hard to get your head around: wildcard types. Wildcard types were Java's
         solution to the problem of <emphasis>covariance</emphasis> in a generic
         type system. Let's first explore the idea of covariance, and then see how
