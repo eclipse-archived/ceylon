@@ -251,9 +251,11 @@ public void hello(Process process) {
         <literal>Optional&lt;X&gt;</literal> where <literal>X</literal> is the
         type of value they contain when not holding a null value. Ceylon lets
         us abbreviate the type name <literal>Optional&lt;X&gt;</literal> to
-        <literal>X?</literal>. There's simply no way to assign <literal>null</literal> 
-        to a local that isn't of type <literal>Optional</literal>. The compiler
-        won't let you.</para>
+        <literal>X?</literal>. The value <literal>null</literal> is an instance
+        of type <literal>Optional&lt;X&gt;</literal>, but it's not an instance 
+        of <literal>Object</literal>. So there's simply no way to assign 
+        <literal>null</literal> to a local that isn't of type 
+        <literal>Optional</literal>. The compiler won't let you.</para>
         
         <para>
         Nor will the Ceylon compiler let you do anything "dangerous" with a 
