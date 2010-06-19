@@ -605,11 +605,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <itemizedlist>
             <listitem>
                 <para>two methods of the parameterized type with the same name may now
-                also have the same erased signature, or</para>
+                also have the non-distinct erased signature, or</para>
             </listitem>
             <listitem>
                 <para>two member classes of the parameterized type with the same name may 
-                now also have the same erased signature.</para>
+                now also have the non-distinct erased signature.</para>
             </listitem>
         </itemizedlist>
         
@@ -2805,21 +2805,23 @@ Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElemen
         
         <itemizedlist>
             <listitem>
-                <para>the introduced type may have a member type with the same name and erased
-                signature as a member type of the extended type, or of some other introduced 
-                type,</para>
+                <para>the introduced type may have a member type with the same name 
+                as a member type of the extended type, or of some other introduced 
+                type, and the two member types may have non-distinct erased signatures,</para>
             </listitem>
             <listitem>
-                <para>the introduced type may have a method with the same name and erased 
-                signature as a method of the extended type, or of some other introduced type,</para>
+                <para>the introduced type may have a method with the same name as a 
+                method of the extended type, or of some other introduced type, and 
+                the two methods may have non-distinct erased signatures,</para>
             </listitem>
             <listitem>
-                <para>the introduced type may have an attribute with the same name as an attribute 
-                or method of the extended type, or of some other introduced type,</para>
+                <para>the introduced type may have an attribute with the same name 
+                as an attribute or method of the extended type, or of some other 
+                introduced type,</para>
             </listitem>
             <listitem>
-                <para>the introduced type may have a method with the same name as an attribute of 
-                the extended type, or of some other introduced type.</para>
+                <para>the introduced type may have a method with the same name as 
+                an attribute of the extended type, or of some other introduced type.</para>
             </listitem>
         </itemizedlist>
         
