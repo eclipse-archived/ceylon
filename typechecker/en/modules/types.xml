@@ -229,10 +229,10 @@
         <programlisting><![CDATA[abstract class Optional<out X>() {
     
     doc "The unary postfix exists operator |x exists|."
-    Boolean valueExists;
+    public Boolean valueExists;
     
     doc "The binary default operator |x ? y|."
-    T default(T defaultValue) where T abstracts X;
+    public T default(T defaultValue) where T abstracts X;
     
 }]]></programlisting>
 
@@ -245,7 +245,7 @@
         <programlisting><![CDATA[public extension 
 class Existent<out X>(X x) extends Optional<X>() {
 
-    extension X value = x;
+    public extension X value = x;
     
     override Boolean valueExists { 
         return true 
