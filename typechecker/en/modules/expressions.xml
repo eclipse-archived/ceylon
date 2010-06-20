@@ -1530,6 +1530,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>Evaluation := Receiver? MemberName</programlisting>
                 
+        <para>When a local evaluation is executed, the current value of the local is 
+        immediately obtained. The resulting value is the current value of the local.</para>
+                
         <para>When an attribute evaluation is executed:</para>
         
         <itemizedlist>
@@ -1541,7 +1544,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                 <para>if the invocation operator is <literal>?.</literal> or
                 <literal>*.</literal>, an instance of <literal>Value&lt;X&gt;</literal> 
                 is obtained, containing references to the receiving instance and 
-                attribute name.  The <literal>get()</literal> method of 
+                attribute name. The <literal>get()</literal> method of 
                 <literal>Value</literal> obtains the attribute or local value or
                 values when called.</para>
             </listitem>
@@ -1556,6 +1559,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                 local value when called.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>The resulting value is the instance of <literal>Value&lt;X&gt;</literal> or 
+        <literal>MutableValue&lt;X&gt;</literal>.</para>
         
         <para>When an attribute value is obtained:</para>
         
@@ -1582,9 +1588,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         return value of the attribute getter, as specified by the <literal>return</literal> 
         directive.</para>
         
-        <para>When a local value is obtained, the resulting value is the current value 
-        of the local.</para>
-                
         <para>When an attribute value is assigned:</para>
         
         <itemizedlist>
@@ -1607,7 +1610,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>The type of an attribute invocation expression depends upon the evaluation
+        <para>The type of a local evaluation expression is the type of the local.</para>
+        
+        <para>The type of an attribute evaluation expression depends upon the evaluation
         operator. If <literal>X</literal> is the declared type of the attribute:</para>
             
         <itemizedlist>
@@ -1626,9 +1631,15 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
             <listitem>
                 <para>If no receiver expression is specified, the expression is of type 
-                <literal>X</literal>.</para>
+                <literal>Value&lt;X&gt;</literal> or <literal>MutableValue&lt;X&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
+
+        <para>When there is no invocation operator, or the invocation operator is 
+        <literal>.</literal>, the expression is of type <literal>MutableValue&lt;X&gt;</literal> 
+        if the named attribute of the receiver expression type is <literal>mutable</literal>,
+        and, in the case of a setter, if the setter is visible. Otherwise, the expression
+        is of type <literal>Value&lt;X&gt;</literal>.</para>
         
         <programlisting>String name = person.name;</programlisting>
         <programlisting>String? name = person?.name;</programlisting>
@@ -1636,16 +1647,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>MutableValue&lt;String&gt; name = person.name;</programlisting>
         <programlisting>String getPersonName() = person.name.get;</programlisting>
         <programlisting>Value&lt;String&gt;? name = person?.name;</programlisting>
-        
-        <!--
-        <para>The type of a local evaluation expression is the type of the local.</para>
-        -->
-        
-        <para>When the invocation operator is <literal>.</literal>,
-        the expression is of type <literal>MutableValue&lt;X&gt;</literal> if the
-        named attribute of the receiver expression type is <literal>mutable</literal>,
-        and, in the case of a setter, if the setter is visible. Otherwise, the expression
-        is of type <literal>Value&lt;X&gt;</literal>.</para>
         
     </section>
     
