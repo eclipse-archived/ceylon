@@ -107,8 +107,7 @@
         <para>The class <literal>lang.Referenceable</literal> represents a value
         for which a reference can be obtained, allowing pass by reference semantics.</para>
         
-        <programlisting><![CDATA[public abstract class Referenceable<out T>
-        where T satisfies Object {
+        <programlisting><![CDATA[public abstract class Referenceable<out T> {
         
     doc "Obtain and return the value."
     extension T getIt();
@@ -126,8 +125,7 @@
         values.</para>
         
         <programlisting><![CDATA[public abstract class Assignable<T>() 
-        extends Referenceable<T>() 
-        where T satisfies Object {
+        extends Referenceable<T>() {
         
     doc "Assign the value, returning the new
          value after assignment. The binary
