@@ -1514,7 +1514,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
     </section-->
     
-    <section id="attributeevaluation">
+    <section id="evaluation">
         <title>Evaluation</title>
             
         <para>An attribute evaluation consists of an attribute name, an evaluation operator,
@@ -1539,8 +1539,11 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
             <listitem>
                 <para>if the invocation operator is <literal>?.</literal> or
-                <literal>*.</literal>, the attribute or local value is immediately
-                obtained, or otherwise,</para>
+                <literal>*.</literal>, an instance of <literal>Value&lt;X&gt;</literal> 
+                is obtained, containing references to the receiving instance and 
+                attribute name.  The <literal>get()</literal> method of 
+                <literal>Value</literal> obtains the attribute or local value or
+                values when called.</para>
             </listitem>
             <listitem>
                 <para>if the invocation operator is <literal>.</literal>, an instance 
@@ -1615,11 +1618,11 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
             <listitem>
                 <para>If the invocation operator is <literal>?.</literal>, the expression
-                is of type <literal>Optional&lt;X&gt;</literal>.</para>
+                is of type <literal>Optional&lt;Value&lt;X&gt;&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the invocation operator is <literal>*.</literal>, the expression
-                is of type <literal>Sequence&lt;X&gt;</literal>.</para>
+                is of type <literal>Sequence&lt;Value&lt;X&gt;&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>If no receiver expression is specified, the expression is of type 
@@ -1632,6 +1635,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>String[] names = people*.name;</programlisting>
         <programlisting>MutableValue&lt;String&gt; name = person.name;</programlisting>
         <programlisting>String getPersonName() = person.name.get;</programlisting>
+        <programlisting>Value&lt;String&gt;? name = person?.name;</programlisting>
         
         <!--
         <para>The type of a local evaluation expression is the type of the local.</para>

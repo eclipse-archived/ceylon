@@ -99,26 +99,7 @@
         and <literal>java.lang.Object</literal>, to accommodate classes
         from other languages?</para></comment>
 
-<!-- 
-    doc "Return a reference to the instance, of the given
-         Type, or throw an exception if the instance is not
-         of the given type."
-    public T as<T>(Type<T> type) { ... }
--->
-
     </section>
-
-<!--
-    <section>
-        <title>Types</title>
-        
-        <programlisting><![CDATA[public interface Type<X> 
-        satisfies Case<Object> {
-    ...
-}]]></programlisting>
-
-    </section>
---> 
 
     <section>
         <title>Value references</title>
