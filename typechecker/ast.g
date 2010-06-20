@@ -632,7 +632,7 @@ unaryExpression
     ;
 
 prefixOperator
-    : '$' | '-' |'++' | '--' | '~' | '&'
+    : '$' | '-' |'++' | '--' | '~'
     ;
 
 specialValue
