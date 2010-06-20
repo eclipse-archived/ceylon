@@ -1847,6 +1847,8 @@ DefaultAssignmentOperator</programlisting>
     
     <programlisting>map.define(person.name->person);</programlisting>
     
+    <programlisting>order.lineItems[index] := LineItem { product = prod; quantity = 1; };</programlisting>
+    
     <!--para>Are equivalent to the following (Ceylon) code:</para>
     
     <programlisting>Float z = x.times(y);</programlisting>
