@@ -1566,7 +1566,7 @@ nameRef := "Gavin";</programlisting>
         </itemizedlist>
         
         <para>Note that the <literal>value()</literal> method of <literal>OpenCorrespondence</literal>
-        is also defined to return a <literal>Assignable</literal>.</para>
+        is also defined to return an <literal>Assignable</literal>.</para>
         
         <programlisting>people[index] := person;</programlisting>
         
