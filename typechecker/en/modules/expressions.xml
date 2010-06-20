@@ -525,8 +525,9 @@ sort(names, reverseAlpha);</programlisting>
         
         <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
-        <para>This code instantiates the class, passing references to the getter/setter method 
-        pair of an attribute:</para>
+        <para>This code instantiates the class, passing references to the <literal>get()</literal> 
+        and <literal>set()</literal> methods of the <literal>MutableValue</literal> for 
+        an attribute:</para>
         
         <programlisting>TextInput it = TextInput { 
     size=15; 
