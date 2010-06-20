@@ -395,15 +395,23 @@ if you prefer.";</programlisting>
         method or constructor:</para>
         
         <programlisting>MethodReference := (Receiver ".")? (MemberName | Type)</programlisting>
-
-        <para>If the method reference specifies a method name, it is a reference to a 
-        method.</para>
         
-        <para>If the method reference species a class, it is a <emphasis>constructor 
-        reference</emphasis>. A constructor reference is a reference to an implicit 
-        method with a schema that depends upon the formal parameters of the class. For 
-        a class <literal>T</literal>, the constructor method return type <literal>T</literal> 
-        and the same formal parameters as the class.</para>
+        <para>A method reference may be immediately <emphasis>invoked</emphasis>, or
+        it may be passed to other code which may invoke the reference.</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>If the method reference specifies a method name, it is a reference 
+            to a method.</para>
+        </listitem>
+        <listitem>
+            <para>If the method reference specifies a class name, it is a <emphasis>constructor 
+            reference</emphasis>. A constructor reference is a reference to an implicit 
+            method with a schema that depends upon the formal parameters of the class. 
+            For a class <literal>T</literal>, the constructor method has return type 
+            <literal>T</literal> and the same formal parameter list as the class.</para>
+        </listitem>
+        </itemizedlist>
         
         <para>A method reference may specify a receiver expression. When a method 
         reference is executed, the receiver expression, if any, is evaluated and a 
@@ -515,14 +523,14 @@ sort(names, reverseAlpha);</programlisting>
         
         <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
-        <para>This code instantiates the class, passing references to the <literal>get()</literal> 
-        and <literal>set()</literal> methods of the <literal>Assignable</literal> for 
-        an attribute:</para>
+        <para>This code instantiates the class, passing references to the <literal>getIt()</literal> 
+        and <literal>setIt()</literal> methods of the <literal>Assignable</literal> for 
+        the attribute <literal>person.name</literal>:</para>
         
         <programlisting>TextInput it = TextInput { 
     size=15; 
-    onInit = person.name.get; 
-    onUpdate = person.name.set;
+    onInit = person.name.getIt;
+    onUpdate = person.name.setIt;
 }</programlisting>
         
         <para>The schema of the method reference must conform to the declared schema of the
@@ -1227,55 +1235,6 @@ except (SomethingElseWrong sew) {
 
         </section>
         
-        <section id="enumeration">
-            <title>Enumeration</title>
-            
-            <para>A sequence may be instantiated by enumerating the elements inside braces:</para>
-            
-            <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
-                        
-            <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
-            containing the enumerated elements in the given order. When an enumeration is 
-            executed, each element expression is evaluated, and the resulting values collected 
-            together into an object that implements <literal>Sequence&lt;T&gt;</literal> where 
-            <literal>T</literal> is a superype of all the enumerated element expression types. 
-            The concrete type of this object is not specified here.</para>
-            
-            <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
-            
-            <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>LiteralNone.none</literal>.</para>
-                                    
-            <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
-            
-            <para>There is no special syntax for constructing lists, sets or maps. However, the 
-            <literal>..</literal> and <literal>-></literal> operators, together with the 
-            convenient sequence enumeration syntax, and some built-in extensions help us achieve 
-            the desired effect.</para>
-
-            <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk", "C#" };</programlisting>
-            <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
-                
-            <para>Sequences are transparently converted to sets or maps, allowing sets and maps 
-            to be initialized as follows:</para>
-        
-            <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
-            <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
-            <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
-            
-            <comment><para>TODO: an alternative to this syntax would be to allow a comma-separated
-            list of values without braces after <literal>=</literal>, <literal>in</literal> or 
-            <literal>return</literal> and after <literal>:=</literal> in an attribute initializer. 
-            The disadvantage to this approach is that enumerations would not be allowed in 
-            positional parameter invocations, or in expressions. It's also less regular. On the 
-            other hand, it is consistent with how we treat varargs.</para>
-            <programlisting>Map&lt;String, String&gt; map = "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!";</programlisting>
-            <programlisting>for (String lang in "Java", "Ceylon", "Scala", "C#") { ... }</programlisting>
-            <programlisting>join { sep=", "; strings=firstName, initial, lastName; };</programlisting>
-            </comment>
-        
-            
-    </section>
-    
         <!--  
         <section>
             <title>Attribute initialization</title>
@@ -1429,16 +1388,72 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
     </section-->
     
+    <section id="attributereferences">
+        <title>Attribute references, evaluation, and assignment</title>
+        
+        <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
+        of some object. A <emphasis>local reference</emphasis> is a reference to a 
+        local.</para> 
+        
+        <programlisting>AttributeReference := (Receiver ".")? MemberName</programlisting>
+        
+        <para>An attribute reference or local reference may be transparently converted to 
+        the actual current value of the attribute, or it may be passed, as a reference, 
+        to other code, which may invoke the reference to <emphasis>evaluate</emphasis> 
+        the current value of the attribute or local. A reference to a <literal>mutable</literal> 
+        attribute or local may be invoked to <emphasis>assign</emphasis> a new value to 
+        the attribute or local.</para>
+        
+        <para>The type of an attribute reference or local reference for an attribute or
+        local of declared type <literal>X</literal> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>X</literal>, if <literal>X</literal> is assignable
+                to <literal>Referenceable&lt;Object&gt;</literal>, or, otherwise,</para>
+            </listitem>
+            <listitem>
+                <para><literal>Referenceable&lt;X&gt;</literal>, if the attribute or 
+                local is not <literal>mutable</literal>, or if the setter is not visible
+                to the block containing the method reference, or</para>
+            </listitem>
+            <listitem>
+                <para><literal>Assignable&lt;X&gt;</literal>, if the attribute or local 
+                is <literal>mutable</literal> and the setter, if any, is visible to the 
+                block containing the method reference.</para>
+            </listitem>
+        </itemizedlist>
+                    
+        <comment><para>TODO: an alternative solution to the "recursion" problem would
+        be to require an explicit call to <literal>reference</literal> defined by an
+        intermediate interface to obtain the <literal>Referenceable</literal> instead 
+        of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
+        operator. That would allow us to pass references to references.</para></comment>
+        
+        <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
+        local may not be assigned to an attribute, passed as a method argument, passed to
+        a control directive, enumerated as the value of a sequence enumeration, or referred 
+        to by a nested method or class. It may be assigned to a local, or invoked directly 
+        inside the block that obtained it.</para>
+        
+        <comment><para>TODO: nail down these rules a little better. They also apply to 
+        <literal>Referenceable</literal>.</para></comment>
+        
     <section id="evaluation">
         <title>Evaluation</title>
-            
-        <para><emphasis>Evaluation</emphasis> is similar to invocation, but an evaluation 
-        does not specify an argument list.</para>
         
-        <programlisting>Evaluation := (Receiver ".")? MemberName</programlisting>
+        <para>Invocation of the <literal>getIt()</literal> method of an attribute reference
+        or local reference evaluates the attribute or local. The <literal>get()</literal> 
+        method is declared <literal>extension</literal>, so it does not need to be called 
+        explicitly.</para>
         
-        <comment><para>TODO: revise the following, since it is all lazy now!</para></comment>
-                
+        <programlisting>String name = person.name;</programlisting>
+        
+        <programlisting>Referenceable&lt;String&gt; nameRef = person.name;
+String name = nameRef.name;</programlisting>
+
+        <programlisting>String getName() = person.name.getIt;</programlisting>
+                        
         <para>When a local evaluation is executed, the current value of the local is 
         immediately obtained. The resulting value is the current value of the local.</para>
                 
@@ -1470,36 +1485,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <para>The resulting value is the current value of the simple attribute or the 
         return value of the attribute getter, as specified by the <literal>return</literal> 
         directive.</para>
-        
-        <para>The type of an attribute or local evaluation expression for an attribute or
-        local of declared type <literal>X</literal> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>X</literal>, if <literal>X</literal> is assignable
-                to <literal>Referenceable&lt;Object&gt;</literal>, or, otherwise,</para>
-            </listitem>
-            <listitem>
-                <para><literal>Referenceable&lt;X&gt;</literal>, if 
-                the attribute or local is not <literal>mutable</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para><literal>Assignable&lt;X&gt;</literal>, if 
-                the attribute or local is <literal>mutable</literal>.</para>
-            </listitem>
-        </itemizedlist>
-                    
-        <para>Invocation of the <literal>get()</literal> method of the <literal>Referenceable</literal>
-        for an attribute or local evaluates the attribute or local. The <literal>get()</literal> 
-        method is declared <literal>extension</literal>, so it does not need to be called explicitly.</para>
-        
-        <programlisting>String name = person.name;</programlisting>
-        
-        <programlisting>Referenceable&lt;String&gt; nameRef = person.name;
-String name = nameRef.name;</programlisting>
 
-        <programlisting>String getName() = person.name.get;</programlisting>
-        
         <para>Note that the <literal>value()</literal> method of <literal>Correspondence</literal>
         is also defined to return a <literal>Referenceable</literal>.</para>
         
@@ -1508,40 +1494,23 @@ String name = nameRef.name;</programlisting>
         <programlisting>Referenceable&lt;Person&gt; personRef = person[index];
 Person person = person;</programlisting>
 
-        <programlisting>Person getPerson() = people.[index].get;</programlisting>
-        
-        <comment><para>TODO: an alternative solution to the "recursion" problem would
-        be to require an explicit call to <literal>reference</literal> defined by an
-        intermediate interface to obtain the <literal>Referenceable</literal> instead 
-        of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
-        operator. That would allow us to pass references to references.</para></comment>
-        
-        <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
-        local may not be assigned to an attribute, passed as a method argument, passed to
-        a control directive, enumerated as the value of a sequence enumeration, or referred 
-        to by a nested method or class. It may be assigned to a local, or invoked directly 
-        inside the block that obtained it.</para>
-        
-        <comment><para>TODO: nail down these rules a little better. They also apply to 
-        <literal>Referenceable</literal>.</para></comment>
+        <programlisting>Person getPerson() = people.[index].getIt;</programlisting>
         
     </section>
     
     <section id="assignment">
         <title>Assignment</title>
             
-        <para>If the attribute or local is <literal>mutable</literal>,  an 
-        <literal>Assignable</literal> is produced by evaluating the attribute.</para>
-        
-        <para>Invocation of the <literal>set()</literal> method of the <literal>Assignable</literal>
-        for a mutable attribute or local results in assignment to the attribute or local.
-        We usually use an assignment operator instead of invoking <literal>set()</literal>
-        directly.</para>
+        <para>Invocation of the <literal>setIt()</literal> method of an attribute reference
+        of type <literal>Assignable</literal> assigns of the attribute or local. We usually 
+        use an assignment operator instead of invoking <literal>setIt()</literal> directly.</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
         <programlisting>Assignable&lt;String&gt; nameRef = person.name;
 nameRef := "Gavin";</programlisting>
+
+        <programlisting>String setName(String name) = person.name.setIt;</programlisting>
         
         <para>When an attribute value is assigned:</para>
         
@@ -1573,6 +1542,57 @@ nameRef := "Gavin";</programlisting>
         <programlisting>Assignable&lt;Person&gt; personRef = people[index];
 personRef := person;</programlisting>
         
+        <programlisting>Person setPerson(Person p) = people[index].setIt;</programlisting>
+    </section>
+    
+    </section>
+    
+    <section id="enumeration">
+        <title>Enumeration</title>
+        
+        <para>A sequence may be instantiated by enumerating the elements inside braces:</para>
+        
+        <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+                    
+        <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
+        containing the enumerated elements in the given order. When an enumeration is 
+        executed, each element expression is evaluated, and the resulting values collected 
+        together into an object that implements <literal>Sequence&lt;T&gt;</literal> where 
+        <literal>T</literal> is a superype of all the enumerated element expression types. 
+        The concrete type of this object is not specified here.</para>
+        
+        <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+        
+        <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>LiteralNone.none</literal>.</para>
+                                
+        <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
+        
+        <para>There is no special syntax for constructing lists, sets or maps. However, the 
+        <literal>..</literal> and <literal>-></literal> operators, together with the 
+        convenient sequence enumeration syntax, and some built-in extensions help us achieve 
+        the desired effect.</para>
+
+        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk", "C#" };</programlisting>
+        <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
+            
+        <para>Sequences are transparently converted to sets or maps, allowing sets and maps 
+        to be initialized as follows:</para>
+    
+        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
+        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
+        <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
+        
+        <comment><para>TODO: an alternative to this syntax would be to allow a comma-separated
+        list of values without braces after <literal>=</literal>, <literal>in</literal> or 
+        <literal>return</literal> and after <literal>:=</literal> in an attribute initializer. 
+        The disadvantage to this approach is that enumerations would not be allowed in 
+        positional parameter invocations, or in expressions. It's also less regular. On the 
+        other hand, it is consistent with how we treat varargs.</para>
+        <programlisting>Map&lt;String, String&gt; map = "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!";</programlisting>
+        <programlisting>for (String lang in "Java", "Ceylon", "Scala", "C#") { ... }</programlisting>
+        <programlisting>join { sep=", "; strings=firstName, initial, lastName; };</programlisting>
+        </comment>
+            
     </section>
     
     <section id="operators">
@@ -1939,7 +1959,7 @@ personRef := person;</programlisting>
             <entry><literal>:=</literal></entry>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
-            <entry><literal>lhs.set(rhs)</literal></entry>
+            <entry><literal>lhs.setIt(rhs)</literal></entry>
             <entry><literal>Assignable&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
@@ -1998,7 +2018,7 @@ personRef := person;</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
             <entry>apply</entry>
-            <entry><literal>lhs.set(lhs.member)</literal></entry>
+            <entry><literal>lhs.setIt(lhs.member)</literal></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
@@ -2008,7 +2028,7 @@ personRef := person;</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member(...)</literal></entry>
             <entry>apply method</entry>
-            <entry><literal>lhs.set(lhs.member(...))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.member(...))</literal></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
@@ -2275,7 +2295,7 @@ personRef := person;</programlisting>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else lhs.set(rhs)</literal></entry>
+            <entry><literal>if (lhs) true else lhs.setIt(rhs)</literal></entry>
             <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2285,7 +2305,7 @@ personRef := person;</programlisting>
             <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) lhs.set(rhs) else false</literal></entry>
+            <entry><literal>if (lhs) lhs.setIt(rhs) else false</literal></entry>
             <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2364,7 +2384,7 @@ personRef := person;</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else lhs.set(rhs)</literal></entry>
+            <entry><literal>if (exists lhs) lhs else lhs.setIt(rhs)</literal></entry>
             <entry><literal>Assignable&lt;T?&gt;</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
@@ -2736,7 +2756,7 @@ personRef := person;</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
-            <entry><literal>rhs.set(rhs.successor)</literal></entry>
+            <entry><literal>rhs.setIt(rhs.successor)</literal></entry>
             <entry></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -2745,7 +2765,7 @@ personRef := person;</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
-            <entry><literal>rhs.set(rhs.predecessor)</literal></entry>
+            <entry><literal>rhs.setIt(rhs.predecessor)</literal></entry>
             <entry></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -2757,7 +2777,7 @@ personRef := person;</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>(lhs.set(lhs.successor)).predecessor</literal></entry>
+            <entry><literal>(lhs.setIt(lhs.successor)).predecessor</literal></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2766,7 +2786,7 @@ personRef := person;</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>(lhs.set(lhs.predecessor)).successor</literal></entry>
+            <entry><literal>(lhs.setIt(lhs.predecessor)).successor</literal></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2849,7 +2869,7 @@ personRef := person;</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs.set(lhs.plus(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.plus(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2858,7 +2878,7 @@ personRef := person;</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs.set(lhs.minus(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.minus(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
@@ -2867,7 +2887,7 @@ personRef := person;</programlisting>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs.set(lhs.times(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.times(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2876,7 +2896,7 @@ personRef := person;</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs.set(lhs.divided(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.divided(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2885,7 +2905,7 @@ personRef := person;</programlisting>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs.set(lhs.remainder(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.remainder(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Integral&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -3045,7 +3065,7 @@ personRef := person;</programlisting>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
-            <entry><literal>lhs.set(lhs.or(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.or(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
@@ -3054,7 +3074,7 @@ personRef := person;</programlisting>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
-            <entry><literal>lhs.set(lhs.and(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.and(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
@@ -3063,7 +3083,7 @@ personRef := person;</programlisting>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
-            <entry><literal>lhs.set(lhs.xor(rhs))</literal></entry>
+            <entry><literal>lhs.setIt(lhs.xor(rhs))</literal></entry>
             <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>

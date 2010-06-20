@@ -111,7 +111,7 @@
         where T satisfies Object {
         
     doc "Obtain and return the value."
-    extension T get();
+    extension T getIt();
     
 }]]></programlisting>
         
@@ -132,7 +132,7 @@
     doc "Assign the value, returning the new
          value after assignment. The binary
          assign operator |:=|."
-    public T set(T t);
+    public T setIt(T t);
     
 }]]></programlisting>
     
