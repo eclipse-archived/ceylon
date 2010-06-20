@@ -523,7 +523,7 @@ sort(names, reverseAlpha);</programlisting>
         
         <para>This class has two functional parameters:</para>
         
-        <programlisting>public class TextInput(Natural size=30, String onInit(), void onUpdate(String s)) { ... }</programlisting>
+        <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
         <para>This code instantiates the class, passing references to the getter/setter method 
         pair of an attribute:</para>
