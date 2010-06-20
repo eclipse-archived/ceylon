@@ -392,7 +392,7 @@ if you prefer.";</programlisting>
         <title>Method references</title>
         
         <para>A <emphasis>method reference</emphasis> is an invocable reference to a
-        method, or class constructor:</para>
+        method or constructor:</para>
         
         <programlisting>MethodReference := (Receiver ".")? (MemberName | Type)</programlisting>
 
@@ -408,6 +408,10 @@ if you prefer.";</programlisting>
         <para>A method reference may specify a receiver expression. When a method 
         reference is executed, the receiver expression, if any, is evaluated and a 
         reference to the resulting value is held as part of the method reference.</para>
+        
+        <para>A method reference captures the return type and formal parameter lists
+        of the method or class, allowing compile-time validation of argument types
+        when a method reference is invoked.</para>
         
         <comment><para>TODO: some explanation of overloading in this context.</para></comment>
         
@@ -462,8 +466,13 @@ if you prefer.";</programlisting>
         <para>Thus, method schemas are covariant in return type, and nonvariant in parameter 
         types.</para>
         
+        <para>The schema also restricts the the argument list that can be specified when the
+        method reference is invoked.</para>
+        
         <para>Additionally, method references are assignable to <literal>Callable&lt;X&gt;</literal>
-        where <literal>X</literal> is the return type.</para>
+        where <literal>X</literal> is the return type. Note that <literal>Callable</literal>
+        does not capture formal parameter types, and so references of type 
+        <literal>Callable&lt;X&gt;</literal> are therefore not method references.</para>
         
         <comment><para>TODO: could we make method references contravariant in the parameter
         types? If so, we should use the same rule for overriding.</para></comment>
@@ -588,7 +597,7 @@ local comp = order(1,-1);</programlisting>
         defaulted parameters and varargs may optionally be specified.</para>
         
         <para>For a required or defaulted formal parameter of declared type <literal>T</literal>, 
-        the type of the argument expression must be assignable to <literal>T</literal>.</para>
+        the type of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
         
         <para>The type of an invocation expression is the return type of the invoked method
         reference.</para>
