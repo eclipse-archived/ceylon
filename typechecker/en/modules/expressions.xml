@@ -599,12 +599,6 @@ local comp = order(1,-1);</programlisting>
         <para>For a required or defaulted formal parameter of declared type <literal>T</literal>, 
         the type of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
         
-        <para>The type of an invocation expression is the return type of the invoked method
-        reference.</para>
-        
-        <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
-        The receiving instance?</para></comment>
-                        
         <para>For a varargs parameter of declared type <literal>T...</literal>, there may either:</para>
         
         <itemizedlist>
@@ -642,6 +636,12 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>The type of an invocation expression is the return type of the invoked method
+        reference.</para>
+        
+        <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
+        The receiving instance?</para></comment>
+                        
         <section id="methodinvocation">
             <title>Method invocation</title>
             
