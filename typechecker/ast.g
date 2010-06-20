@@ -532,8 +532,6 @@ interpolatedExpressionStart
     | specialValue 
     | nonstringLiteral
     | prefixOperator
-    | 'get'
-    | 'set'
     ;
 
 expression
@@ -646,14 +644,8 @@ enumeration
     : '{' expressions? '}'
     -> ^(ENUM_LIST expressions?)
     ;
-
-primary
-    : getterSetterMethodReference
-    | prim
-    //-> ^(PRIMARY prim)
-    ;	
     
-prim
+primary
 options {backtrack=true;}
 /*
     : b=base 
@@ -670,11 +662,6 @@ options {backtrack=true;}
     base selector+
     -> ^(EXPR base selector*)
     | base
-    ;
-
-getterSetterMethodReference
-    : 'set' prim -> ^(SET_EXPR prim)
-    | 'get' prim -> ^(GET_EXPR prim)
     ;
 
 postfixOperator
@@ -1159,14 +1146,6 @@ LOCAL
 
 NONEMPTY
     :   'nonempty'
-    ;
-
-GET
-    :   'get'
-    ;
-
-SET
-    :   'set'
     ;
 
 RETURN
