@@ -1534,7 +1534,9 @@ Person person = person;</programlisting>
         <literal>Assignable</literal> is produced by evaluating the attribute.</para>
         
         <para>Invocation of the <literal>set()</literal> method of the <literal>Assignable</literal>
-        for a mutable attribute or local results in assignment to the attribute or local.</para>
+        for a mutable attribute or local results in assignment to the attribute or local.
+        We usually use an assignment operator instead of invoking <literal>set()</literal>
+        directly.</para>
         
         <programlisting>Assignable&lt;String&gt; nameRef = person.name;
 nameRef := "Gavin";</programlisting>
