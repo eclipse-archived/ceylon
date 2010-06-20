@@ -1538,6 +1538,8 @@ Person person = person;</programlisting>
         We usually use an assignment operator instead of invoking <literal>set()</literal>
         directly.</para>
         
+        <programlisting>person.name := "Gavin";</programlisting>
+        
         <programlisting>Assignable&lt;String&gt; nameRef = person.name;
 nameRef := "Gavin";</programlisting>
         
@@ -1563,10 +1565,10 @@ nameRef := "Gavin";</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>person.name := "Gavin";</programlisting>
-        
         <para>Note that the <literal>value()</literal> method of <literal>OpenCorrespondence</literal>
         is also defined to return a <literal>Assignable</literal>.</para>
+        
+        <programlisting>people[index] := person;</programlisting>
         
         <programlisting>Assignable&lt;Person&gt; personRef = people[index];
 personRef := person;</programlisting>
