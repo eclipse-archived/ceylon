@@ -127,7 +127,10 @@
         potentially non-constant value, allowing pass by reference semantics.</para>
         
         <programlisting><![CDATA[public abstract class Value<out X>() {
+        
+    doc "Obtain the value."
     public extension X get();
+    
 }]]></programlisting>
 
         <para>Note that <literal>lang.Value</literal> is not a subtype of 
@@ -140,8 +143,14 @@
         to an assignable value, allowing pass by reference semantics for assignable
         values.</para>
         
-        <programlisting><![CDATA[public abstract class MutableValue<X>() extends Value<X>() {
+        <programlisting><![CDATA[public abstract class MutableValue<X>() 
+        extends Value<X>() {
+        
+    doc "Assign the value, returning the new
+         value after assignment. The binary
+         assign operator |:=|."
     public X set(X x);
+    
 }]]></programlisting>
     
     </section>
