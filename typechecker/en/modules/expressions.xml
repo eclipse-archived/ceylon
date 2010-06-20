@@ -1443,7 +1443,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <title>Evaluation</title>
         
         <para>Invocation of the <literal>getIt()</literal> method of an attribute reference
-        or local reference evaluates the attribute or local. The <literal>get()</literal> 
+        or local reference evaluates the attribute or local. The <literal>getIt()</literal> 
         method is declared <literal>extension</literal>, so it does not need to be called 
         explicitly.</para>
         
