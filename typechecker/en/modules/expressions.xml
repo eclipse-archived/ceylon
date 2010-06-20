@@ -394,7 +394,7 @@ if you prefer.";</programlisting>
         <para>A <emphasis>method reference</emphasis> is an invocable reference to an 
         instance method, toplevel method, attribute getter or setter or type constructor:</para>
         
-        <programlisting>MethodReference := OrdinaryMethodReference | AttributeReference | ConstructorReference</programlisting>
+        <programlisting>MethodReference := OrdinaryMethodReference | ConstructorReference</programlisting>
 
         <para>An ordinary method reference is a reference to an instance or toplevel method.</para>
 
@@ -406,7 +406,8 @@ if you prefer.";</programlisting>
         and the same formal parameters as the class.</para>
         
         <programlisting>ConstructorReference := Receiver? Type</programlisting>
-         
+        
+        <!--
         <para>A <emphasis>getter or setter method reference</emphasis> is a reference to an 
         implicit method with a schema that depends upon the attribute type. For an attribute 
         of type <literal>T</literal>:</para>
@@ -439,11 +440,12 @@ if you prefer.";</programlisting>
         
         <comment><para>TODO: do we even really, truly need attribute references? If we can't find
         an elegant syntax, maybe we can simply live without them...</para></comment>
+        -->
         
         <section>
             <title>Receiver expressions</title>
         
-        <para>Instance method references, attribute getter and setter references, and
+        <para>Instance method references and <!--, attribute getter and setter references,-->
         member class constructor references specify a name of a member, an invocation 
         operator, and a <emphasis>receiver expression</emphasis> that evaluates to an 
         instance or <literal>Iterable</literal> set of instances of a type that 
@@ -469,8 +471,8 @@ if you prefer.";</programlisting>
         <section>
             <title>Invocation operators</title>
             
-        <para>References to instance methods, attributes, and member classes use one of three 
-        different invocation operators.</para>
+        <para>References to instance methods<!--, attributes,--> and member classes use 
+        one of three different invocation operators.</para>
         
         <programlisting>InvocationOperator := "." | "?." | "*."</programlisting>
         
@@ -528,8 +530,8 @@ sort(names, reverseAlpha);</programlisting>
         
         <programlisting>TextInput it = TextInput { 
     size=15; 
-    onInit = get person.name; 
-    onUpdate = set person.name; 
+    onInit = person.name.get; 
+    onUpdate = person.name.set;
 }</programlisting>
 
         <para>Method references do not, strictly speaking, have types. However, the schema
@@ -1526,33 +1528,34 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         evaluation operator.</para>
         
         <programlisting>Evaluation := Receiver? MemberName</programlisting>
-        
-        <!--para>The evaluation operator depends upon the type of the receiver expression. If 
-        <literal>X</literal> is the type that has the attribute, the evaluation operator 
-        must be:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para><literal>.</literal> if the expression is of
-                type <literal>X</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>.?</literal> if the expression is of type <literal>Optional&lt;X&gt;</literal>,
-                or</para>
-            </listitem>
-            <listitem>
-                <para><literal>.*</literal> if the expression is of 
-                type <literal>Iterable&lt;X&gt;</literal>.</para>
-            </listitem>
-        </itemizedlist-->
-        
+                
         <para>When an attribute evaluation is executed:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the receiving instance is determined by evaluating the receiver 
-                expression, and</para>
+                <para>the receiving instance, if any, is determined by evaluating the 
+                receiver expression, and then</para>
             </listitem>
+            <listitem>
+                <para>if the invocation operator is <literal>?.</literal> or
+                <literal>*.</literal>, the attribute or local value is immediately
+                obtained, or otherwise,</para>
+            </listitem>
+            <listitem>
+                <para>if the invocation operator is <literal>.</literal>, an instance 
+                of <literal>Value&lt;X&gt;</literal> or 
+                <literal>MutableValue&lt;X&gt;</literal> is obtained, containing
+                references to the receiving instance and attribute name. The
+                <literal>get()</literal> method of <literal>Value</literal> obtains 
+                the attribute or local value when called. The <literal>set()</literal>
+                method of <literal>MutableValue</literal> assigns the attribute or
+                local value when called.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>When an attribute value is obtained:</para>
+        
+        <itemizedlist>
             <listitem>
                 <para>the actual member to be invoked is determined by considering the 
                 runtime type of the receiving instance, and then</para>
@@ -1563,42 +1566,58 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
             <listitem>
                 <para>otherwise, execution of the calling context pauses while the body 
-                of the attribute getter is executed by the receiving instance, then</para>
+                of the attribute getter is executed by the receiving instance, then,</para>
             </listitem>
             <listitem>
-                <para>finally, when execution of the method or initializer ends without 
-                a thrown exception, execution of the calling context resumes.</para>
+                <para>finally, when execution of the getter ends without a thrown 
+                exception, execution of the calling context resumes.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The value of the attribute evaluation is the current value of the simple
-        attribute or the return value of the attribute getter, as specified by the 
-        <literal>return</literal> directive.</para>
+        <para>The resulting value is the current value of the simple attribute or the 
+        return value of the attribute getter, as specified by the <literal>return</literal> 
+        directive.</para>
         
-        <programlisting>String name = person.name;</programlisting>
+        <para>When a local value is obtained, the resulting value is the current value 
+        of the local.</para>
+                
+        <para>When an attribute value is assigned:</para>
         
-        <para>The value of the local evaluation is the current value of the local.</para>
-        
-        <!--
-        <para>is equivalent to the following Java code:</para>
-
-        <programlisting>String name = person.name().get();</programlisting>
-        -->
+        <itemizedlist>
+            <listitem>
+                <para>the actual member to be invoked is determined by considering the 
+                runtime type of the receiving instance, and then</para>
+            </listitem>
+            <listitem>
+                <para>if the member is a simple attribute or local, the value of the 
+                simple attribute of local is set to the new value,</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, execution of the calling context pauses while the body 
+                of the attribute setter is executed by the receiving instance with the 
+                new value, then,</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the setter ends without a thrown 
+                exception, execution of the calling context resumes.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>The type of an attribute invocation expression depends upon the evaluation
         operator. If <literal>X</literal> is the declared type of the attribute:</para>
             
         <itemizedlist>
             <listitem>
-                <para>If the evaluation operator is <literal>.</literal>, the expression
-                is of type <literal>X</literal>.</para>
+                <para>If the invocation operator is <literal>.</literal>, the expression
+                is of type <literal>Value&lt;X&gt;</literal> or 
+                <literal>MutableValue&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the evaluation operator is <literal>?.</literal>, the expression
+                <para>If the invocation operator is <literal>?.</literal>, the expression
                 is of type <literal>Optional&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the evaluation operator is <literal>*.</literal>, the expression
+                <para>If the invocation operator is <literal>*.</literal>, the expression
                 is of type <literal>Sequence&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
@@ -1607,10 +1626,25 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             </listitem>
         </itemizedlist>
         
+        <programlisting>String name = person.name;</programlisting>
+        <programlisting>String? name = person?.name;</programlisting>
+        <programlisting>String[] names = people*.name;</programlisting>
+        <programlisting>MutableValue&lt;String&gt; name = person.name;</programlisting>
+        <programlisting>String getPersonName() = person.name.get;</programlisting>
+        
+        <!--
         <para>The type of a local evaluation expression is the type of the local.</para>
+        -->
+        
+        <para>When the invocation operator is <literal>.</literal>,
+        the expression is of type <literal>MutableValue&lt;X&gt;</literal> if the
+        named attribute of the receiver expression type is <literal>mutable</literal>,
+        and, in the case of a setter, if the setter is visible. Otherwise, the expression
+        is of type <literal>Value&lt;X&gt;</literal>.</para>
         
     </section>
-        
+    
+    <!--
     <section id="assignment">
         <title>Assignment</title>
         
@@ -1619,7 +1653,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         and possibly, depending upon the type of the expression, to the left of the 
         numeric, logical or bitwise compound assignment operators 
         <literal>+=, -=, *=, /=, %=, &amp;=, |=, ^=, &amp;&amp;=, ||=, ?=</literal> or 
-        as the subject of the increment and decrement operators <literal>++, --</literal>,
+        as the subject of the increment and decrement operators <literal>++, MINUSMINUS</literal>,
         or apply operator <literal>.=</literal>.</para>
         
         <para>For example, the following expressions are assignable:</para>
@@ -1660,31 +1694,6 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>AssignableExpression := (Primary ".")? MemberName ElementSpec?</programlisting>
         
-        <para>When an assignment expression or unary assignment expression is executed, the 
-        new value to be assigned is computed, the receiving object is obtained by evaluating 
-        the receiver expression, the actual member to be invoked is determined by considering 
-        the runtime type of the receiving instance, and then:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the assignable expression is a simple attribute or local, the value 
-                of the simple attribute of local is set to the new value,</para>
-            </listitem>
-            <listitem>
-                <para>if the assignable expression is an attribute with a setter, execution 
-                of the calling context pauses while the body of the attribute setter is executed 
-                by the receiving instance with the new value, and then, when execution of the
-                setterends without a thrown exception, execution of the calling context resumes, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para>if the assignable expression is an attribute of type 
-                <literal>OpenCorrespondence</literal> together with an element key specification,
-                the key expression is evaluates, and the <literal>define()</literal> method is
-                invoked with the resulting key and the new value.</para>
-            </listitem>
-        </itemizedlist>
-        
         </section>
         
         <section>
@@ -1719,23 +1728,12 @@ DefaultAssignmentOperator</programlisting>
         <para>This statement sets the value of an attribute:</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
-        
-        <!--
-        <para>is equivalent to the following Java code:</para>
 
-        <programlisting>person.name().set("Gavin");</programlisting>
-        -->
         
         <para>This statement assigns to a keyed element of a <literal>Sequence</literal>, resulting 
         in a call to the <literal>define()</literal> method of <literal>OpenCorrespondence</literal>:</para>
         
         <programlisting>order.lineItems[0] := LineItem { product = prod; quantity = 1; };</programlisting>
-        
-        <!--
-        <para>Is equivalent to the Java:</para>
-        
-        <programlisting>order.lineItems.define( 0, new LineItem(prod, 1) );</programlisting>
-        -->
         
         <para>The following rules must be satisfied:</para>
         
@@ -1773,7 +1771,7 @@ DefaultAssignmentOperator</programlisting>
         <programlisting>PrefixIncrementOrDecrement := IncrementOrDecrementOperator AssignableExpression</programlisting>
         <programlisting>PostfixIncrementOrDecrement := AssignableExpression IncrementOrDecrementOperator</programlisting>
         
-        <programlisting>IncrementOrDecrementOperator := "++" | "--"</programlisting>
+        <programlisting>IncrementOrDecrementOperator := "++" | "MINUSMINUS"</programlisting>
         
         <programlisting>Apply := AssignableExpression ".=" MemberName Arguments?</programlisting>
         
@@ -1796,6 +1794,7 @@ DefaultAssignmentOperator</programlisting>
         </section>
         
     </section>
+    -->
     
     <section id="operators">
     <title>Operators</title>
@@ -2177,10 +2176,10 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>:=</literal></entry>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
-            <entry><literal>Object.assign(set lhs,rhs)</literal></entry>
-            <entry><literal>X</literal> or <literal>X?</literal></entry>
-            <entry><literal>X</literal> or <literal>X?</literal></entry>
-            <entry><literal>X</literal> or <literal>X?</literal></entry>
+            <entry><literal>lhs.set(rhs)</literal></entry>
+            <entry><literal>MutableValue&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
@@ -2201,8 +2200,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
             <entry>apply</entry>
-            <entry><literal>Object.assign(set lhs,lhs.member)</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>lhs.set(lhs.get.member)</literal></entry>
+            <entry><literal>MutableValue&lt;X&gt;</literal></entry>
             <entry>Member of <literal>X</literal>, of
             type <literal>X</literal></entry>
             <entry><literal>X</literal></entry>
@@ -2440,8 +2439,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else Object.assign(set lhs,rhs)</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>if (lhs) true else lhs.set(rhs)</literal></entry>
+            <entry><literal>MutableValue&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2450,8 +2449,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) Object.assign(set lhs,rhs) else false</literal></entry>
-            <entry><literal>Boolean</literal></entry>
+            <entry><literal>if (lhs) lhs.set(rhs) else false</literal></entry>
+            <entry><literal>MutableValue&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2529,8 +2528,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else Object.assign(set lhs,rhs)</literal></entry>
-            <entry><literal>T?</literal></entry>
+            <entry><literal>if (exists lhs) lhs else lhs.set(rhs)</literal></entry>
+            <entry><literal>MutableValue&lt;T?&gt;</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
@@ -2901,18 +2900,18 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
-            <entry><literal>Object.assign(set rhs,rhs.successor)</literal></entry>
+            <entry><literal>rhs.set(rhs.successor)</literal></entry>
             <entry></entry>
-            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         <row>
             <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
-            <entry><literal>Object.assign(set rhs,rhs.predecessor)</literal></entry>
+            <entry><literal>rhs.set(rhs.predecessor)</literal></entry>
             <entry></entry>
-            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -2922,8 +2921,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>(Object.assign(set lhs,lhs.successor)).predecessor</literal></entry>
-            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>(lhs.set(lhs.successor)).predecessor</literal></entry>
+            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2931,8 +2930,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>(Object.assign(set lhs,lhs.predecessor)).successor</literal></entry>
-            <entry><literal>Ordinal&lt;T&gt;</literal></entry>
+            <entry><literal>(lhs.set(lhs.predecessor)).successor</literal></entry>
+            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -3014,8 +3013,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>Object.assign(set lhs,lhs.plus(rhs))</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.plus(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3023,8 +3022,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>Object.assign(set lhs,lhs.minus(rhs))</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.minus(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
         </row>
@@ -3032,8 +3031,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>Object.assign(set lhs,lhs.times(rhs))</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.times(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3041,8 +3040,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>Object.assign(set lhs,lhs.divided(rhs))</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.divided(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3050,8 +3049,8 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>Object.assign(set lhs,lhs.remainder(rhs))</literal></entry>
-            <entry><literal>Integral&lt;N,I&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.remainder(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Integral&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3181,7 +3180,7 @@ DefaultAssignmentOperator</programlisting>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         <row>
@@ -3190,7 +3189,7 @@ DefaultAssignmentOperator</programlisting>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         <row>
@@ -3199,7 +3198,7 @@ DefaultAssignmentOperator</programlisting>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
             <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
 
@@ -3210,27 +3209,27 @@ DefaultAssignmentOperator</programlisting>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
-            <entry><literal>Object.assign(set lhs,lhs.or(rhs))</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.or(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Bits&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
-            <entry><literal>Object.assign(set lhs,lhs.and(rhs))</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.and(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Bits&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
-            <entry><literal>Object.assign(set lhs,lhs.xor(rhs))</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.xor(rhs))</literal></entry>
+            <entry><literal>MutableValue&lt;Bits&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         

@@ -119,6 +119,32 @@
 
     </section>
 --> 
+
+    <section>
+        <title>Value references</title>
+        
+        <para>The class <literal>lang.Value</literal> represents a reference to a 
+        potentially non-constant value, allowing pass by reference semantics.</para>
+        
+        <programlisting><![CDATA[public abstract class Value<out X>() {
+    public extension X get();
+}]]></programlisting>
+
+        <para>Note that <literal>lang.Value</literal> is not a subtype of 
+        <literal>lang.Object</literal>.</para>
+        
+        <para>Instances of <literal>Value&lt;X&gt;</literal> are transparently
+        assignable to <literal>X</literal>, according to the <literal>extension</literal>.</para>
+    
+        <para>The subtype <literal>lang.MutableValue</literal> represents a reference
+        to an assignable value, allowing pass by reference semantics for assignable
+        values.</para>
+        
+        <programlisting><![CDATA[public abstract class MutableValue<X>() extends Value<X>() {
+    public X set(X x);
+}]]></programlisting>
+    
+    </section>
     
     <section>
         <title>Boolean values</title>
@@ -487,7 +513,7 @@ while (i.more) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    public V? value(U key);
+    public Value<V?> value(U key);
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
@@ -573,7 +599,9 @@ while (i.more) {
 
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> {
-        
+     
+     override public MutableValue<V?> value(U key);
+     
      doc "Element assignment operator x[key] = value. Assign a value 
           to the given key. Return the previous value for the key,
           or |null| if there was no value defined."
