@@ -94,15 +94,15 @@
         
 }]]></programlisting>
 
-        <comment><para>TODO: is this really the root type in Ceylon, 
-        or do we need some other type sitting above <literal>lang.Object</literal>
-        and <literal>java.lang.Object</literal>, to accommodate classes
-        from other languages?</para></comment>
+        <comment><para>TODO: is this really the root type in Ceylon, or do we 
+        need some other type sitting above <literal>lang.Object</literal> and 
+        <literal>java.lang.Object</literal>, to accommodate classes from other 
+        languages?</para></comment>
 
     </section>
 
     <section>
-        <title>Referenceable and Assignable values</title>
+        <title>Referenceable and assignable values</title>
         
         <para>The class <literal>lang.Referenceable</literal> represents a value
         for which a reference can be obtained, allowing pass by reference semantics.</para>
@@ -199,7 +199,7 @@
     </section>
     
     <section>
-        <title>Cases and Selectors</title>
+        <title>Cases and selectors</title>
         
         <para>The interface <literal>lang.Case</literal> represents a
         type that may be used as a case in the <literal>switch</literal>

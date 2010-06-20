@@ -1404,6 +1404,10 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         attribute or local may be invoked to <emphasis>assign</emphasis> a new value to 
         the attribute or local.</para>
         
+        <para>An attribute reference may specify a receiver expression. When an attribute 
+        reference is executed, the receiver expression, if any, is evaluated and a reference 
+        to the resulting value is held as part of the attribute reference.</para>
+        
         <para>The type of an attribute reference or local reference for an attribute or
         local of declared type <literal>X</literal> is:</para>
         
@@ -1460,10 +1464,6 @@ String name = nameRef.name;</programlisting>
         <para>When an attribute evaluation is executed:</para>
         
         <itemizedlist>
-            <listitem>
-                <para>the receiving instance, if any, is determined by evaluating the 
-                receiver expression, and then</para>
-            </listitem>
             <listitem>
                 <para>the actual member to be invoked is determined by considering the 
                 runtime type of the receiving instance, and then</para>
