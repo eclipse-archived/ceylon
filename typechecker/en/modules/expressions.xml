@@ -516,7 +516,7 @@ sort(names, reverseAlpha);</programlisting>
         <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
         <para>This code instantiates the class, passing references to the <literal>get()</literal> 
-        and <literal>set()</literal> methods of the <literal>MutableValue</literal> for 
+        and <literal>set()</literal> methods of the <literal>Assignable</literal> for 
         an attribute:</para>
         
         <programlisting>TextInput it = TextInput { 
@@ -1436,6 +1436,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         does not specify an argument list.</para>
         
         <programlisting>Evaluation := (Receiver ".")? MemberName</programlisting>
+        
+        <comment><para>TODO: revise the following, since it is all lazy now!</para></comment>
                 
         <para>When a local evaluation is executed, the current value of the local is 
         immediately obtained. The resulting value is the current value of the local.</para>
@@ -1469,25 +1471,73 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         return value of the attribute getter, as specified by the <literal>return</literal> 
         directive.</para>
         
-        <para>The type of a local evaluation expression is the type of the local.</para>
+        <para>The type of an attribute or local evaluation expression for an attribute or
+        local of declared type <literal>X</literal> is:</para>
         
-        <para>The type of an attribute evaluation expression is the declared type of the 
-        attribute.</para>
+        <itemizedlist>
+            <listitem>
+                <para><literal>X</literal>, if <literal>X</literal> is assignable
+                to <literal>Referenceable&lt;Object&gt;</literal>, or, otherwise,</para>
+            </listitem>
+            <listitem>
+                <para><literal>Referenceable&lt;X&gt;</literal>, if 
+                the attribute or local is not <literal>mutable</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para><literal>Assignable&lt;X&gt;</literal>, if 
+                the attribute or local is <literal>mutable</literal>.</para>
+            </listitem>
+        </itemizedlist>
                     
+        <para>Invocation of the <literal>get()</literal> method of the <literal>Referenceable</literal>
+        for an attribute or local evaluates the attribute or local. The <literal>get()</literal> 
+        method is declared <literal>extension</literal>, so it does not need to be called explicitly.</para>
+        
         <programlisting>String name = person.name;</programlisting>
+        
+        <programlisting>Referenceable&lt;String&gt; nameRef = person.name;
+String name = nameRef.name;</programlisting>
+
+        <programlisting>String getName() = person.name.get;</programlisting>
+        
+        <para>Note that the <literal>value()</literal> method of <literal>Correspondence</literal>
+        is also defined to return a <literal>Referenceable</literal>.</para>
+        
+        <programlisting>Person person = people[index];</programlisting>
+        
+        <programlisting>Referenceable&lt;Person&gt; personRef = person[index];
+Person person = person;</programlisting>
+
+        <programlisting>Person getPerson() = people.[index].get;</programlisting>
+        
+        <comment><para>TODO: an alternative solution to the "recursion" problem would
+        be to require an explicit call to <literal>reference</literal> defined by an
+        intermediate interface to obtain the <literal>Referenceable</literal> instead 
+        of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
+        operator. That would allow us to pass references to references.</para></comment>
+        
+        <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
+        local may not be assigned to an attribute, passed as a method argument, passed to
+        a control directive, enumerated as the value of a sequence enumeration, or referred 
+        to by a nested method or class. It may be assigned to a local, or invoked directly 
+        inside the block that obtained it.</para>
+        
+        <comment><para>TODO: nail down these rules a little better. They also apply to 
+        <literal>Referenceable</literal>.</para></comment>
+        
     </section>
     
     <section id="assignment">
         <title>Assignment</title>
             
-        <para>The <literal>&amp;</literal> operator obtains an instance of <literal>Value</literal>
-        representing an attribute or local. If the attribute or local is <literal>mutable</literal>,
-        the <literal>Value</literal> is a <literal>MutableValue</literal>.</para>
+        <para>If the attribute or local is <literal>mutable</literal>,  an 
+        <literal>Assignable</literal> is produced by evaluating the attribute.</para>
         
-        <programlisting>MutableValue&lt;String&gt; nameRef = &amp;person.name;</programlisting>
-        
-        <para>Invocation of the <literal>set()</literal> method of the <literal>MutableValue</literal>
+        <para>Invocation of the <literal>set()</literal> method of the <literal>Assignable</literal>
         for a mutable attribute or local results in assignment to the attribute or local.</para>
+        
+        <programlisting>Assignable&lt;String&gt; nameRef = person.name;
+nameRef := "Gavin";</programlisting>
         
         <para>When an attribute value is assigned:</para>
         
@@ -1513,11 +1563,11 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
-        <para>The <literal>Value</literal> object representing a <literal>mutable</literal> 
-        local may not be assigned to an attribute, passed as a method argument, passed to
-        a control directive, enumerated as the value of a sequence enumeration, or referred 
-        to by a nested method or class. It may be assigned to a local, or invoked directly 
-        inside the block that obtained it.</para>
+        <para>Note that the <literal>value()</literal> method of <literal>OpenCorrespondence</literal>
+        is also defined to return a <literal>Assignable</literal>.</para>
+        
+        <programlisting>Assignable&lt;Person&gt; personRef = people[index];
+personRef := person;</programlisting>
         
     </section>
     
@@ -1613,9 +1663,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
             <row>
                 <entry>Prefix increment, prefix decrement,
-                negation, render, bitwise complement, reference:</entry>
+                negation, render, bitwise complement:</entry>
                 <entry>
-                <literal>&amp;</literal>,
                 <literal>++</literal>, 
                 <literal>--</literal>, 
                 <literal>-</literal>, 
@@ -1865,18 +1914,20 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <literal>Sequence&lt;Callable&lt;T&gt;&gt;</literal></entry>
         </row>
         
+        <!--
         <row><entry namest="first" nameend="last"><emphasis>Reference</emphasis></entry></row>
         
         <row>
             <entry><literal>&amp;</literal></entry>
             <entry><literal>&amp;rhs</literal></entry>
-            <entry>reference</entry>
+            <entry>rhs.reference</entry>
             <entry></entry>
             <entry></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Referenceable&lt;X,V&gt;</literal></entry>
             <entry><literal>Value&lt;X&gt;</literal>
             or <literal>MutableValue&lt;X&gt;</literal></entry>
         </row>
+        -->
         
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
     
@@ -1884,8 +1935,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>:=</literal></entry>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
-            <entry><literal>(&amp;lhs).set(rhs)</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>lhs.set(rhs)</literal></entry>
+            <entry><literal>Assignable&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
@@ -1943,7 +1994,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
             <entry>apply</entry>
-            <entry><literal>(&amp;lhs).set(lhs.member)</literal></entry>
+            <entry><literal>lhs.set(lhs.member)</literal></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
@@ -1953,7 +2004,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member(...)</literal></entry>
             <entry>apply method</entry>
-            <entry><literal>(&amp;lhs).set(lhs.member(...))</literal></entry>
+            <entry><literal>lhs.set(lhs.member(...))</literal></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
@@ -2220,8 +2271,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else (&amp;lhs).set(rhs)</literal></entry>
-            <entry><literal>MutableValue&lt;Boolean&gt;</literal></entry>
+            <entry><literal>if (lhs) true else lhs.set(rhs)</literal></entry>
+            <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2230,8 +2281,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) (&amp;lhs).set(rhs) else false</literal></entry>
-            <entry><literal>MutableValue&lt;Boolean&gt;</literal></entry>
+            <entry><literal>if (lhs) lhs.set(rhs) else false</literal></entry>
+            <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2309,8 +2360,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else (&amp;lhs).set(rhs)</literal></entry>
-            <entry><literal>MutableValue&lt;T?&gt;</literal></entry>
+            <entry><literal>if (exists lhs) lhs else lhs.set(rhs)</literal></entry>
+            <entry><literal>Assignable&lt;T?&gt;</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
@@ -2681,18 +2732,18 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
-            <entry><literal>(&amp;rhs).set(rhs.successor)</literal></entry>
+            <entry><literal>rhs.set(rhs.successor)</literal></entry>
             <entry></entry>
-            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         <row>
             <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
-            <entry><literal>(&amp;rhs).set(rhs.predecessor)</literal></entry>
+            <entry><literal>rhs.set(rhs.predecessor)</literal></entry>
             <entry></entry>
-            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -2702,8 +2753,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>((&amp;lhs).set(lhs.successor)).predecessor</literal></entry>
-            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>(lhs.set(lhs.successor)).predecessor</literal></entry>
+            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2711,8 +2762,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>((&amp;lhs).set(lhs.predecessor)).successor</literal></entry>
-            <entry><literal>MutableValue&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>(lhs.set(lhs.predecessor)).successor</literal></entry>
+            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2794,8 +2845,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>(&amp;lhs).set(lhs.plus(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.plus(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -2803,8 +2854,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>(&amp;lhs).set(lhs.minus(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.minus(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
         </row>
@@ -2812,8 +2863,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>(&amp;lhs).set(lhs.times(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.times(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -2821,8 +2872,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>(&amp;lhs).set(lhs.divided(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.divided(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -2830,8 +2881,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>(&amp;lhs).set(lhs.remainder(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Integral&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.remainder(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Integral&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -2990,8 +3041,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
-            <entry><literal>(&amp;lhs).set(lhs.or(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Bits&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.or(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
@@ -2999,8 +3050,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
-            <entry><literal>(&amp;lhs).set(lhs.and(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Bits&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.and(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
@@ -3008,8 +3059,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
-            <entry><literal>(&amp;lhs).set(lhs.xor(rhs))</literal></entry>
-            <entry><literal>MutableValue&lt;Bits&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>lhs.set(lhs.xor(rhs))</literal></entry>
+            <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>

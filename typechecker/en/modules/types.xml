@@ -102,35 +102,37 @@
     </section>
 
     <section>
-        <title>Value references</title>
+        <title>Referenceable and Assignable values</title>
         
-        <para>The class <literal>lang.Value</literal> represents a reference to a 
-        potentially non-constant value, allowing pass by reference semantics.</para>
+        <para>The class <literal>lang.Referenceable</literal> represents a value
+        for which a reference can be obtained, allowing pass by reference semantics.</para>
         
-        <programlisting><![CDATA[public abstract class Value<out X>() {
+        <programlisting><![CDATA[public abstract class Referenceable<out T>
+        where T satisfies Object {
         
-    doc "Obtain the value."
-    public extension X get();
+    doc "Obtain and return the value."
+    extension T get();
     
 }]]></programlisting>
-
-        <para>Note that <literal>lang.Value</literal> is not a subtype of 
+        
+        <para>Note that <literal>lang.Referenceable</literal> is not a subclass of 
         <literal>lang.Object</literal>.</para>
         
-        <para>Instances of <literal>Value&lt;X&gt;</literal> are transparently
-        assignable to <literal>X</literal>, according to the <literal>extension</literal>.</para>
+        <para>Instances of <literal>Referenceable&lt;T&gt;</literal> are transparently
+        assignable to <literal>T</literal>, according to the <literal>extension</literal>.</para>
     
-        <para>The subtype <literal>lang.MutableValue</literal> represents a reference
+        <para>The subtype <literal>lang.Assignable</literal> represents a reference
         to an assignable value, allowing pass by reference semantics for assignable
         values.</para>
         
-        <programlisting><![CDATA[public abstract class MutableValue<X>() 
-        extends Value<X>() {
+        <programlisting><![CDATA[public abstract class Assignable<T>() 
+        extends Referenceable<T>() 
+        where T satisfies Object {
         
     doc "Assign the value, returning the new
          value after assignment. The binary
          assign operator |:=|."
-    public X set(X x);
+    public T set(T t);
     
 }]]></programlisting>
     
@@ -503,7 +505,7 @@ while (i.more) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    public Value<V?> value(U key);
+    public Referenceable<V?> value(U key);
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
@@ -590,7 +592,7 @@ while (i.more) {
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> {
      
-     override public MutableValue<V?> value(U key);
+     override public Assignable<V?> value(U key);
      
      doc "Element assignment operator x[key] = value. Assign a value 
           to the given key. Return the previous value for the key,
