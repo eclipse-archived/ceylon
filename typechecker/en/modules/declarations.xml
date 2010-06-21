@@ -2562,29 +2562,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>If two named declarations visible to some program element have the same 
-        name, and if they are not overloaded forms of the same class or method, then 
-        that name may not be used inside the program element unless:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para>One declaration occurs in a block, class body, or interface body
-                that is contained, directly or indirectly, inside the block, class 
-                body, or interface body that directly contains the other declaration. 
-                In this case, the name resolves to the inner declaration inside the 
-                block, class body, or interface body in which it occurs. We say that
-                the inner declaration name <emphasis>hides</emphasis> the outer 
-                declaration name.</para>
-            </listitem>
-            <listitem>
-                <para>One declaration is a class initialization parameter, and the other 
-                declares a member of the class. In this case the name resolves to the 
-                class initialization parameter inside the body of the class. We say that
-                the initialization parameter name <emphasis>hides</emphasis> the class
-                member name.</para>
-            </listitem>
-        </itemizedlist>
-        
         <para>The class <literal>lang.Visibility</literal> defines the visibility 
         levels:</para>
         

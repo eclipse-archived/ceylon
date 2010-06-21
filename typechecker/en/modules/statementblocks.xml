@@ -6,6 +6,119 @@
     code contains expressions and control directives and is organized using blocks and 
     control structures.</para>
     
+    <section>
+        <title>Name resolution</title>
+        
+        <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
+        <literal>*.</literal> or <literal>?.</literal>) that appears in a program 
+        element refers to a declaration elsewhere: a class, interface, alias, method, 
+        attribute, local or enumerated instance.</para>
+        
+        <para>A <emphasis>body</emphasis> is a block, class body or interface body.
+        A declaration is <emphasis>in scope</emphasis> at a program element if:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>it is a formal parameter, type parameter, or control structure 
+                variable of a body that contains the program element, or</para>
+            </listitem>
+            <listitem>
+                <para>it occurs earlier in a body that contains the program element, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>it occurs in the second part of a class body, after the last 
+                statement or declaration of the initializer, and the program element 
+                is contained in the second part of the class body, or</para>
+            </listitem>
+            <listitem>
+                <para>it is a declaration imported by the compilation unit containing 
+                the program element and is visible to the program element, or</para>
+            </listitem>
+            <listitem>
+                <para>it is a toplevel declaration in the package containing the program
+                element and is visible to the program element.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If there is no declaration with the specified name in scope at the program
+        element where the specified name occurs, a compilation error occurs.</para>
+        
+        <para>If multiple declarations with the specified name are in scope at the program
+        element where the specified name occurs, the name refers to the declaration which
+        is not <emphasis>hidden</emphasis> by another declaration:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if an inner body is contained (directly or indirectly) an outer body, 
+                a declaration, formal parameter, type parameter or control structure variable 
+                of the inner body hides a declaration, formal parameter, type parameter or 
+                control structure variable in the outer body,</para>
+            </listitem>
+            <listitem>
+                <para>a formal parameter of a class body hides an attribute of the class,</para>
+            </listitem>
+            <listitem>
+                <para>a declaration occurring in a body containing the program element 
+                hides a declaration imported by the compilation unit, and</para>
+            </listitem>
+            <listitem>
+                <para>a declaration imported by the compilation unit hides a toplevel 
+                declaration of the package containing the program element.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If there are multiple unhidden declarations with the specified name, and 
+        they are not all overloaded declarations of the same method or class, the name 
+        is ambiguous, and a compilation error occurs.</para>
+        
+        <para>A body may not contain two declarations with the same name unless they are 
+        overloaded versions of the same method or class, or unless one is a formal parameter 
+        of the class body and the other is an attribute of the class. A package may not 
+        contain two toplevel declarations with the same name unless they are overloaded 
+        versions of the same method or class.</para>
+        
+        <para>Note that this code is not legal:</para>
+        
+        <programlisting>String uppercase(String string) {
+    String string = string.uppercase;  //compiler error!
+    return string;
+}</programlisting>
+
+        <para>However, this code <emphasis>is</emphasis> legal, since class initialization 
+        parameters and attributes may share a name:</para>
+        
+        <programlisting>public class Person(String name) {
+    public String name = name;
+}</programlisting>
+
+        <para>Note that this code is not legal:</para>
+        
+        <programlisting>Entry&lt;Float,Float&gt; xy() {
+    Float x { return y }  //compiler error!
+    Float y { return x }
+    return x->y;
+}</programlisting>
+
+        <para>Nor is this code legal, since all three statements occur inside the
+        initializer of the class:</para>
+        
+        <programlisting>class Point() {
+    Float x { return y }  //compiler error!
+    Float y { return x }
+    Entry&lt;Float,Float&gt; xy = x->y;
+}</programlisting>
+
+        <para>However, this code <emphasis>is</emphasis> legal, since the statements do not 
+        occur in the initializer of the class:</para>
+        
+        <programlisting>public class Point() {
+    Float x { return y }
+    Float y { return x }
+}</programlisting>
+
+    </section>
+    
     <section id="blocks">
         <title>Blocks and statements</title>
             
