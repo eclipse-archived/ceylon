@@ -346,16 +346,27 @@ if you prefer.";</programlisting>
     <section id="typemember">
         <title>Metamodel references</title>
         
-        <para>The <literal>Type</literal> object for a type, the <literal>Method</literal>
-        object for a method, or the <literal>Attribute</literal> object for an attribute
-        may be referred to using a special syntax.</para>
+        <para>The metamodel object representing a type or program element in the reflection
+        API may be referred to using a special syntax.</para>
         
         <programlisting>Meta := TypeMeta | MemberMeta</programlisting>
         
+        <para>The <literal>Type</literal> object may be obtained by specifying the full
+        type, with type arguments. A <lteral>Class</lteral> or <literal>Interface</literal> 
+        object may be obtained by specifying a class or interface name, without arguments.</para>
+        
         <programlisting>TypeMeta := HASH Type</programlisting>
+        
+        <para>A <literal>Method</literal>, <literal>Attribute</literal> or <literal>Instance</literal>
+        object representing a member may be obtained by specifying the type and member name.
+        The <literal>Method</literal> object representing a toplevel method may be obtained
+        by specifying just the method name.</para>
         
         <programlisting>MemberMeta := HASH (Type ".")? MemberName</programlisting>
                
+        <para>The type is required unless the reference is to a member of to a containing class, 
+        or to a toplevel method.</para>
+        
         <para>Metamodel references are compile-time typesafe.</para>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
@@ -379,6 +390,12 @@ if you prefer.";</programlisting>
         <para>An enumerated instance of a class is identified according to:</para> 
         
         <programlisting>EnumeratedInstanceReference := (Type ".")? MemberName</programlisting>
+        
+        <para>The type is required unless the enumerated instance was explicitly 
+        imported or is a member of a containing class.</para>
+        
+        <para>The type of the enumerated instance reference is the class of which
+        the enumerated instance is a member.</para>
         
         <para>The value of an enumerated instance reference is the instance of
         the class that was instantiated when the class was loaded by the virtual
@@ -442,7 +459,7 @@ if you prefer.";</programlisting>
                 <para>the reference is to a local, or</para>
             </listitem>
             <listitem>
-                <para>the current object is the receiver.</para>
+                <para>the current instance of a containing class is the receiver.</para>
             </listitem>
         </itemizedlist>
         
