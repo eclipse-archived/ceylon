@@ -212,8 +212,8 @@
     
 }]]></programlisting>
 
-        <para>An extension allows <literal>Case&lt;X&gt; to function as
-        Case&lt;X?&gt;</literal>.</para>
+        <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
+        function as <literal>Case&lt;X?&gt;</literal>.</para>
         
         <programlisting><![CDATA[public extension
 class CaseOptional<X>(Case<X> c) 
@@ -230,12 +230,12 @@ class CaseOptional<X>(Case<X> c)
         
 }]]></programlisting>
 
-        <para>An extension allows <literal>Case&lt;X&gt; to function as
-        Case&lt;Y&gt;</literal> where <literal>X</literal> is assignable
-        to <literal>Y</literal>.</para>
+        <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
+        function as <literal>Case&lt;Y&gt;</literal> where <literal>X</literal> 
+        is assignable to <literal>Y</literal>.</para>
         
         <programlisting><![CDATA[public extension
-class CaseSuper<Y>(Case<X> c) 
+class CaseSuper<X,Y>(Case<X> c) 
         satisfies Case<Y> 
         where X satisfies Y {
         
