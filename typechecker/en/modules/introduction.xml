@@ -1139,4 +1139,125 @@ else {
         
     </section>
     
+    <section>
+        <title>Introducing a new type to an object</title>
+        
+        <para>Ceylon doesn't have multiple inheritance or mixins. If you're used
+        to the single-inheritance-with-interfaces model of Java, you'll find
+        that inheritance in Ceylon works pretty much the same.</para>
+        
+        <para>However, Ceylon does have something else, that's usually almost as
+        good as, and often better than, true multiple inheritance. An
+        <emphasis>extension</emphasis> adds a type, call an <emphasis>introduced</emphasis>
+        type, to an existing type, called the <emphasis>extended</emphasis> type.
+        An extension doesn't change the original definition of the extended type,
+        and it doesn't affect the internal workings of an object of that type in
+        any way. But from the point of view of a client of the object, the object
+        now has all the attributes and methods of the introduced type, and is
+        assignable to the introduced type.</para>
+        
+        <para>Let's introduce a type onto every object. Ceylon's
+        <literal>Object</literal> class defines an attribute named 
+        <literal>log</literal> of type <literal>Log</literal> that you can use
+        to log stuff. Usually, you use it like this:</para>
+        
+        <programlisting>log.debug("Hello, I'm a debug message");</programlisting>
+        
+        <para>But perhaps you don't like having to type the "<literal>log.</literal>"
+        bit every time you write out a log message, and suppose you don't expect
+        to ever need methods named <literal>info()</literal>, <literal>error()</literal>
+        <literal>warn()</literal> or <literal>debug()</literal> in your application.
+        If so, wouldn't it be nice to just write:</para>
+        
+        <programlisting>debug("Do you think anyone ever reads me?");</programlisting>
+        
+        <para>Obviously, one way to do this would be to copy and paste all the
+        <literal>info()</literal>, <literal>error()</literal>
+        <literal>warn()</literal> and <literal>debug()</literal> methods from
+        <literal>Log</literal> onto <literal>Object</literal>, and have them
+        delegate back to <literal>log</literal>. But we don't like copy/paste
+        programming here.</para>
+        
+        <para>Another way might be to make <literal>Object</literal> extend 
+        <literal>Log</literal>, but that way <literal>Log</literal>
+        would be the logical root of the Ceylon type system, instead of 
+        <literal>Object</literal>. That doesn't feel right.</para>
+        
+        <para>Instead, we're going to introduce <literal>Log</literal> onto
+        <literal>Object</literal> using an extension. If we were able to modify 
+        the code of <literal>Object</literal>, this would be as easy as adding 
+        an <literal>extension</literal> annotation to the <literal>log</literal>,
+        attribute like this:</para>
+        
+        <programlisting>public extension Log log { ... }</programlisting>
+        
+        <para>But since <literal>Object</literal> is built into the Ceylon SDK, 
+        we don't have control over its code, so we need to take a different 
+        approach. We'll write a toplevel <emphasis>extension method</emphasis>,
+        sometimes called a <emphasis>converter</emphasis>:</para>
+        
+        <programlisting>public extension Log objectToLog(Object o) { return o.log }</programlisting>
+        
+        <para>Now, we can't just have hundreds of third-party extensions all
+        vandalizing <literal>Object</literal> with their own introduced types,
+        and polluting the namespace with thousands of introduced methods and
+        attributes. So the client code that uses the extension is responsible
+        for explicitly activating the extension in the compilation unit where
+        it is used.</para>
+        
+        <programlisting>import com.domain.util.objectToLog;
+        
+public class Hello(String? name) {
+
+    ...
+    
+    info(greeting);
+    
+    ...
+
+}</programlisting>
+
+        <para>The compiler automatically inserts a call to 
+        <literal>objectToLog()</literal>. So the above code is equivalent to:</para>
+
+        <programlisting>public class Hello(String? name) {
+
+    ...
+    
+    objectToLog(this).info(greeting);
+    
+    ...
+
+}</programlisting>
+
+        <para>A compilation unit that doesn't explicitly import 
+        <literal>objectToLog</literal> won't be affected by the extension, and
+        won't be able to call the <literal>info()</literal> method without
+        explicitly invoking the <literal>log</literal> attribute.</para>
+        
+        <para>So you might think that extension are just a trivial trick that
+        saves a few keystrokes of typing effort. But the history of Java 
+        demonstrates why extension are an important feature. Java defines its
+        collections framework in terms of various interfaces, for example, 
+        <literal>List</literal>, each with very many methods, mostly convenience 
+        methods for the benefit of the user of these interfaces. Because 
+        implementing the whole interface from scratch is a daunting task, the 
+        collections framework includes abstract classes like 
+        <literal>AbstractList</literal> that define a smaller contract for
+        classes that implement the collection interfaces. But there's no way
+        for the collections framework to force you to implement 
+        <literal>AbstractList</literal> instead of implementing <literal>List</literal> 
+        directly. And, of course, the world is now full of Java code that does
+        exactly that. Which means that introducing a new method to the 
+        <literal>List</literal> interface is a huge breaking change that affects
+        a great deal of working, production code.</para>
+        
+        <para>Ceylon takes a different approach to its collection types. The 
+        basic collection interfaces like <literal>List</literal> define a small
+        set of operations. Convenience method for users of the collections 
+        framework are defined by built-in extensions. So we can add new convenience 
+        methods whenever we like. And so can you!</para>
+        
+    </section>
+    
 </chapter>
