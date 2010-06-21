@@ -60,6 +60,15 @@
     <comment><para>TODO: We need to allow some way to have an expression to be 
     specified as a toplevel element, for DSLs.</para></comment>
     
+    <comment><para>TODO: Do we need a definition of "constant expression"? We
+    might use it for:</para>
+    <itemizedlist>
+    <listitem><literal>case</literal> expressions (when are these evaluated?),</listitem>
+    <listitem>default parameter values (when are these evaluated?), and</listitem>
+    <listitem>initializer/specifier expressions in second part of class body.</listitem>
+    </itemizedlist>
+    </comment>
+
     <section id="literals">
     <title>Literals</title>
     
@@ -1664,8 +1673,8 @@ personRef := person;</programlisting>
     
     <programlisting>order.lineItems[index] := LineItem { product = prod; quantity = 1; };</programlisting>
 
-       <para>This table defines operator precedence from highest to lowest,
-        along with associativity rules:</para>
+    <para>This table defines the relative precedence of the various operators, 
+    from highest to lowest, along with associativity rules:</para>
         
     <table>
     <tgroup cols="4">
@@ -1690,8 +1699,8 @@ personRef := person;</programlisting>
                 <literal>.</literal>,
                 <literal>*.</literal>, 
                 <literal>?.</literal>, 
-                <literal>(,,)</literal>,
-                <literal>{;;;}</literal>,
+                <literal>()</literal>,
+                <literal>{}</literal>,
                 <literal>[]</literal>,
                 <literal>?[]</literal>,
                 <literal>[..]</literal>, 
@@ -1890,7 +1899,27 @@ personRef := person;</programlisting>
     as <literal>**</literal>.</para></comment>
     
     
-    <para>The following tables define the semantics of the Ceylon operators:</para>
+    <para>The following tables define the semantics of the Ceylon operators. Some
+    operators are defined in terms of other operators. There are three basic
+    operators which do not have a definintion in terms of other operators or method 
+    invocations:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the member selection <literal>.</literal> operator,</para>
+        </listitem>
+        <listitem>
+            <para>the argument specification <literal>()</literal> and 
+            <literal>{}</literal> operators, and</para>
+        </listitem>
+        <listitem>
+            <para>the identity <literal>===</literal> operator.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>The tables define semantics only, and are not intended to indicate anything
+    about the bytecode produced by the compiler. The compiler is permitted to optimize
+    the bytecode to erase unnecessary method invocations.</para>
     
     <section id="basic">
     <title>Basic invocation and assignment operators</title>
@@ -1921,7 +1950,7 @@ personRef := person;</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Member specification</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Invocation</emphasis></entry></row>
         
         <row>
             <entry><literal>.</literal></entry>
@@ -1930,29 +1959,19 @@ personRef := person;</programlisting>
             <entry></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
-            <entry><literal>T</literal> or
+            <entry><literal>Referenceable&lt;T&gt;</literal> or
             <literal>Callable&lt;T&gt;</literal></entry>
-        </row>
-        <row>
-            <entry><literal>?.</literal></entry>
-            <entry><literal>lhs?.member</literal></entry>
-            <entry>nullsafe member</entry>
-            <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
-            <entry><literal>X?</literal></entry>
-            <entry></entry>
-            <entry><literal>T?</literal> or
-            <literal>Callable&lt;T&gt;?</literal></entry>
         </row>
         
         <row>
-            <entry><literal>*.</literal></entry>
-            <entry><literal>lhs*.member</literal></entry>
-            <entry>spread member</entry>
-            <entry><literal>for (X x in lhs) x.member</literal></entry>
-            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>()</literal> or <literal>{}</literal></entry>
+            <entry><literal>lhs(x,y,z)</literal> or 
+            <literal>lhs{a=x;b=y;}</literal></entry>
+            <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Sequence&lt;T&gt;</literal> or
-            <literal>Sequence&lt;Callable&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Callable&lt;T&gt;</literal></entry>
+            <entry></entry>
+            <entry><literal>T</literal></entry>
         </row>
         
         <!--
@@ -1994,48 +2013,13 @@ personRef := person;</programlisting>
             <entry><literal>String</literal></entry>
         </row>
     
-       <row><entry namest="first" nameend="last"><emphasis>Invocation / argument specification</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>(,,)</literal> or {;;;}</entry>
-            <entry><literal>lhs(x,y,z)</literal> or 
-            <literal>lhs { a=x; b=y; c=z; }</literal></entry>
-            <entry>invoke</entry>
-            <entry></entry>
-            <entry><literal>Callable&lt;T&gt;</literal></entry>
-            <entry></entry>
-            <entry><literal>T</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>(,,)</literal> or {;;;}</entry>
-            <entry><literal>lhs(x,y,z)</literal> or 
-            <literal>lhs { a=x; b=y; c=z; }</literal></entry>
-            <entry>nullsafe invoke</entry>
-            <entry></entry>
-            <entry><literal>Callable&lt;T&gt;?</literal></entry>
-            <entry></entry>
-            <entry><literal>T?</literal></entry>
-        </row>
-        
-        <row>
-            <entry><literal>(,,)</literal> or {;;;}</entry>
-            <entry><literal>lhs(x,y,z)</literal> or 
-            <literal>lhs { a=x; b=y; c=z; }</literal></entry>
-            <entry>spread invoke</entry>
-            <entry></entry>
-            <entry><literal>Iterable&lt;Callable&lt;T&gt;&gt;</literal></entry>
-            <entry></entry>
-            <entry><literal>Sequence&lt;T&gt;</literal></entry>
-        </row>
-        
         <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
         
         <row>
             <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
-            <entry>apply</entry>
-            <entry><literal>lhs.setIt(lhs.member)</literal></entry>
+            <entry>follow</entry>
+            <entry><literal>lhs:=lhs.member</literal></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
@@ -2043,9 +2027,9 @@ personRef := person;</programlisting>
 
         <row>
             <entry><literal>.=</literal></entry>
-            <entry><literal>lhs.=member(...)</literal></entry>
-            <entry>apply method</entry>
-            <entry><literal>lhs.setIt(lhs.member(...))</literal></entry>
+            <entry><literal>lhs.=member(x,y,z)</literal></entry>
+            <entry>apply</entry>
+            <entry><literal>lhs:=lhs.member(x,y,z)</literal></entry>
             <entry><literal>X</literal></entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
@@ -2056,7 +2040,8 @@ personRef := person;</programlisting>
     </table>
     
         <comment><para>TODO: do we really need the <literal>$</literal> operator?</para></comment>
-    
+        
+        <!--
         <para>Member specification uses one of three different member specification operators:
         <literal>.</literal>, <literal>.?</literal> or <literal>.*</literal>.</para>
         
@@ -2098,6 +2083,7 @@ personRef := person;</programlisting>
         
         <para>The arguments specified in the argument specification must be assignable to the formal
         parameters of the method reference.</para>
+        -->
         
     </section>
         
@@ -2135,7 +2121,7 @@ personRef := person;</programlisting>
             <entry><literal>===</literal></entry>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
-            <entry><literal>Object.identical(lhs, rhs)</literal></entry>
+            <entry><literal></literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2174,7 +2160,7 @@ personRef := person;</programlisting>
             <entry><literal>&lt;</literal></entry>
             <entry><literal>lhs &lt; rhs</literal></entry>
             <entry>smaller</entry>
-            <entry><literal>lhs.compare(rhs).smaller</literal></entry>
+            <entry><literal>(lhs&lt;=&gt;rhs).smaller</literal></entry>
             <entry><literal>Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2183,7 +2169,7 @@ personRef := person;</programlisting>
             <entry><literal>&gt;</literal></entry>
             <entry><literal>lhs &gt; rhs</literal></entry>
             <entry>larger</entry>
-            <entry><literal>lhs.compare(rhs).larger</literal></entry>
+            <entry><literal>(lhs&lt;=&gt;rhs).larger</literal></entry>
             <entry><literal>Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2192,7 +2178,7 @@ personRef := person;</programlisting>
             <entry><literal>&lt;=</literal></entry>
             <entry><literal>lhs &lt;= rhs</literal></entry>
             <entry>small as</entry>
-            <entry><literal>lhs.compare(rhs).smallAs</literal></entry>
+            <entry><literal>(lhs&lt;=&gt;rhs).smallAs</literal></entry>
             <entry><literal>Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2201,7 +2187,7 @@ personRef := person;</programlisting>
             <entry><literal>&gt;=</literal></entry>
             <entry><literal>lhs &gt;= rhs</literal></entry>
             <entry>large as</entry>
-            <entry><literal>lhs.compare(rhs).largeAs</literal></entry>
+            <entry><literal>(lhs&lt;=&gt;rhs).largeAs</literal></entry>
             <entry><literal>Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2225,7 +2211,7 @@ personRef := person;</programlisting>
             <entry><literal>is</literal></entry>
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
-            <entry><literal>lhs.instanceOf(#Rhs)</literal></entry>
+            <entry><literal>(#Rhs).satisfiedBy(lhs)</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry>Any type</entry>
             <entry><literal>Boolean</literal></entry>
@@ -2312,7 +2298,7 @@ personRef := person;</programlisting>
             <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else lhs.setIt(rhs)</literal></entry>
+            <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
             <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2322,7 +2308,7 @@ personRef := person;</programlisting>
             <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) lhs.setIt(rhs) else false</literal></entry>
+            <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
             <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2368,7 +2354,7 @@ personRef := person;</programlisting>
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>if (exists lhs) true else false</literal></entry>
+            <entry><literal>(#Existent&lt;Object&gt;).satisfiedBy(lhs)</literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2377,7 +2363,7 @@ personRef := person;</programlisting>
             <entry><literal><!--??-->nonempty</literal></entry>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
-            <entry><literal>if (exists lhs) lhs.empty.complement else false</literal></entry>
+            <entry><literal>if (exists lhs) !lhs.empty else false</literal></entry>
             <entry><literal>Container?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2401,10 +2387,34 @@ personRef := person;</programlisting>
             <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else lhs.setIt(rhs)</literal></entry>
+            <entry><literal>if (exists lhs) lhs else lhs:=rhs</literal></entry>
             <entry><literal>Assignable&lt;T?&gt;</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Nullafe invocation</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>?.</literal></entry>
+            <entry><literal>lhs?.member</literal></entry>
+            <entry>nullsafe member</entry>
+            <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
+            <entry><literal>X?</literal></entry>
+            <entry></entry>
+            <entry><literal>T?</literal> or
+            <literal>Callable&lt;T&gt;?</literal></entry>
+        </row>
+
+        <row>
+            <entry><literal>()</literal> or <literal>{}</literal></entry>
+            <entry><literal>lhs(x,y,z)</literal> or 
+            <literal>lhs{a=x;b=y;}</literal></entry>
+            <entry>nullsafe invoke</entry>
+            <entry><literal>if (exists lhs) lhs(x,y,z) else null</literal></entry>
+            <entry><literal>Callable&lt;T&gt;?</literal></entry>
+            <entry></entry>
+            <entry><literal>T?</literal></entry>
         </row>
         
     </tbody>
@@ -2457,7 +2467,7 @@ personRef := person;</programlisting>
             <entry><literal>?[]</literal></entry>
             <entry><literal>lhs?[index]</literal></entry>
             <entry>nullsafe lookup</entry>
-            <entry><literal>if (exists lhs) lhs.value(index) else null</literal></entry>
+            <entry><literal>if (exists lhs) lhs[index] else null</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;?</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Y?</literal></entry>
@@ -2468,8 +2478,8 @@ personRef := person;</programlisting>
             <entry>list lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry><literal>Sequence&lt;X&gt;</literal></entry>
-            <entry><literal>Sequence&lt;Y&gt;</literal></entry>
+            <entry><literal>X[]</literal></entry>
+            <entry><literal>Y[]</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
@@ -2488,7 +2498,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
             <entry><literal>range(lhs,x,y)</literal></entry>
-            <entry><literal>S where S(X... elements) satisfies Sequence&lt;X&gt;</literal></entry>
+            <entry><literal>S where S(X... elements) satisfies X[]</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
             <entry><literal>S</literal></entry>
         </row>
@@ -2497,7 +2507,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
             <entry><literal>range(lhs,x)</literal></entry>
-            <entry><literal>S where S(X... elements) satisfies Sequence&lt;X&gt;</literal></entry>
+            <entry><literal>S where S(X... elements) satisfies X[]</literal></entry>
             <entry><literal>Natural</literal></entry>
             <entry><literal>S</literal></entry>
         </row>
@@ -2520,11 +2530,34 @@ personRef := person;</programlisting>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>join</entry>
             <entry><literal>join(lhs, rhs)</literal></entry>
-            <entry><literal>S where S>=Sequence&lt;X&gt; &amp; S(X... elements)</literal></entry>
+            <entry><literal>S(X... elements) where S satisfies X[]</literal></entry>
             <entry><literal>S</literal></entry>
             <entry><literal>S</literal></entry>
         </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Spread invocation</emphasis></entry></row>
 
+        <row>
+            <entry><literal>*.</literal></entry>
+            <entry><literal>lhs*.member</literal></entry>
+            <entry>spread member</entry>
+            <entry><literal>for (X x in lhs) x.member</literal></entry>
+            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry></entry>
+            <entry><literal>T[]</literal> or
+            <literal>Callable&lt;T&gt;[]</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>()</literal> or <literal>{}</literal></entry>
+            <entry><literal>lhs(x,y,z)</literal> or 
+            <literal>lhs{a=x;b=y;}</literal></entry>
+            <entry>spread invoke</entry>
+            <entry><literal>for (C c in lhs) c(x,y,z)</literal></entry>
+            <entry><literal>Iterable&lt;Callable&lt;T&gt;&gt;</literal></entry>
+            <entry><literal></literal></entry>
+            <entry><literal>T[]</literal></entry>
+        </row>
         <!--  
         
         <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
@@ -2641,6 +2674,9 @@ personRef := person;</programlisting>
     </tbody>
     </tgroup>
     </table>
+    
+    <comment><para>TODO: Is <literal>people[].name</literal> a better syntax than 
+    <literal>people*.name</literal>?</para></comment>
     
     <comment><para>TODO: Should we overload <literal>*</literal> for sequences, like
     in some other languages? It is nice to be able to do stuff like 
@@ -2773,7 +2809,7 @@ personRef := person;</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
-            <entry><literal>rhs.setIt(rhs.successor)</literal></entry>
+            <entry><literal>rhs:=rhs.successor</literal></entry>
             <entry></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -2782,7 +2818,7 @@ personRef := person;</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
-            <entry><literal>rhs.setIt(rhs.predecessor)</literal></entry>
+            <entry><literal>rhs:=rhs.predecessor</literal></entry>
             <entry></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -2794,7 +2830,7 @@ personRef := person;</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>(lhs.setIt(lhs.successor)).predecessor</literal></entry>
+            <entry><literal>(lhs:=lhs.successor).predecessor</literal></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2803,7 +2839,7 @@ personRef := person;</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>(lhs.setIt(lhs.predecessor)).successor</literal></entry>
+            <entry><literal>(lhs:=lhs.predecessor).successor</literal></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2886,7 +2922,7 @@ personRef := person;</programlisting>
             <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs.setIt(lhs.plus(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs+rhs</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2895,7 +2931,7 @@ personRef := person;</programlisting>
             <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs.setIt(lhs.minus(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs-rhs</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>I</literal></entry>
@@ -2904,7 +2940,7 @@ personRef := person;</programlisting>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs.setIt(lhs.times(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs*rhs</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2913,7 +2949,7 @@ personRef := person;</programlisting>
             <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs.setIt(lhs.divided(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs/rhs</literal></entry>
             <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -2922,7 +2958,7 @@ personRef := person;</programlisting>
             <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs.setIt(lhs.remainder(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs%rhs</literal></entry>
             <entry><literal>Assignable&lt;Integral&lt;N,I&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
@@ -3082,7 +3118,7 @@ personRef := person;</programlisting>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
-            <entry><literal>lhs.setIt(lhs.or(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs|rhs</literal></entry>
             <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
@@ -3091,7 +3127,7 @@ personRef := person;</programlisting>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
-            <entry><literal>lhs.setIt(lhs.and(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
             <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
@@ -3100,7 +3136,7 @@ personRef := person;</programlisting>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
-            <entry><literal>lhs.setIt(lhs.xor(rhs))</literal></entry>
+            <entry><literal>lhs:=lhs^rhs</literal></entry>
             <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
