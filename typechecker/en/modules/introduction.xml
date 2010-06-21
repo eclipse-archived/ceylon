@@ -858,9 +858,9 @@ package Set&lt;People&gt; people(Person... people) {
     return HashSet(people);
 }</programlisting>
 
-        <para>The annotations <literal>ofElements</literal>, <literal>withType</literal>
-        and <literal>multiplicity</literal> specify that this annotation can only
-        occur an the class <literal>Greeting</literal>, and can only occur once.</para>
+        <para>The meta-annotation <literal>annotation</literal> specifies that this 
+        annotation can only occur an the class <literal>Greeting</literal>, and can 
+        only occur once.</para>
 
         <para>We obtain the annotations of a program element&mdash;in this case, the 
         class <literal>Greeting</literal>&mdash;using reflection upon the metamodel 
