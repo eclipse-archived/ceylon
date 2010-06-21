@@ -531,8 +531,12 @@ else {
 }</programlisting>
             
             <programlisting>public Payment payment(Order order) {
-    if (exists Payment p = order.payment) { return p }
-    else { return Payment(order) }
+    if (exists Payment p = order.payment) {
+        return p
+    }
+    else { 
+        return Payment(order)
+    }
 }</programlisting>
 
             <programlisting>if (exists Payment p = order.payment) {
