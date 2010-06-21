@@ -64,9 +64,14 @@
     might use it for:</para>
     <itemizedlist>
     <listitem><literal>case</literal> expressions (when are these evaluated?),</listitem>
+    <listitem>annotations available at compile time,</listitem>
     <listitem>default parameter values (when are these evaluated?), and</listitem>
     <listitem>initializer/specifier expressions in second part of class body.</listitem>
     </itemizedlist>
+    <para>For example, a constant expression might be anything formed from
+    literals, enumerated instance references, metamodel references, the 
+    <literal>..</literal> and <literal>-></literal> operators, sequence
+    enumeration, and toplevel method references.</para>
     </comment>
 
     <section id="literals">
