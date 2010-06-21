@@ -1251,9 +1251,9 @@ public class Hello(String? name) {
         for the collections framework to force you to implement 
         <literal>AbstractList</literal> instead of implementing <literal>List</literal> 
         directly. And, of course, the world is now full of Java code that does
-        exactly that. Which means that introducing a new method to the 
-        <literal>List</literal> interface is a huge breaking change that affects
-        a great deal of working, production code.</para>
+        implement <literal>List</literal> directly. Which means that introducing 
+        a new method to the <literal>List</literal> interface is a huge breaking 
+        change that affects a great deal of working, production code.</para>
         
         <para>Ceylon takes a different approach to its collection types. The 
         basic collection interfaces like <literal>List</literal> define a small
