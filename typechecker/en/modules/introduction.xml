@@ -1198,6 +1198,9 @@ else {
         
         <programlisting>public extension Log objectToLog(Object o) { return o.log }</programlisting>
         
+        <para>The extended type is the type of the parameter of the converter.
+        The introduced type is the return type of the converter.</para>
+        
         <para>Now, we can't just have hundreds of third-party extensions all
         vandalizing <literal>Object</literal> with their own introduced types,
         and polluting the namespace with thousands of introduced methods and
