@@ -2865,8 +2865,8 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         
         <programlisting>public 
 annotation { 
-    of=classes; 
-    occurs=onceEachType; 
+    of = classes; 
+    occurs = onceEachType; 
 }
 Entity entity(LockMode lockMode) { 
     return Entity(lockMode) 
@@ -2874,12 +2874,12 @@ Entity entity(LockMode lockMode) {
 
         <programlisting>public 
 annotation { 
-    of = {attributes, parameters}; 
-    withType=#String; 
+    of = { attributes, parameters }; 
+    withType = #String; 
     occurs = onceEachElement; 
 }
-Pattern pattern(Regex regex) { 
-    return Pattern(regex)
+PatternValidator pattern(Regex regex) { 
+    return PatternValidator(regex)
 }</programlisting>
             
         <comment><para>TODO: Should <literal>annotation</literal> be required
