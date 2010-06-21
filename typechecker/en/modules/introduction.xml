@@ -1192,7 +1192,7 @@ else {
         <programlisting>public extension Log log { ... }</programlisting>
         
         <para>But since <literal>Object</literal> is built into the Ceylon SDK, 
-        we don't have control over its code, we need to take a different 
+        we don't have control over its code, and so we need to take a different 
         approach. We'll write a toplevel <emphasis>extension method</emphasis>,
         sometimes called a <emphasis>converter</emphasis>:</para>
         
