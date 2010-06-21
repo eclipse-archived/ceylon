@@ -850,7 +850,7 @@ package class Language(String hello) {
         <programlisting>doc "An annotation for specifying a list of 
      people"
 annotation { 
-    of = class; 
+    of = classes; 
     withType = #Greeting; 
     occurs = onceEachType; 
 }
