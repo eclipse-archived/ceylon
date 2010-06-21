@@ -869,7 +869,7 @@ package Set&lt;People&gt; people(Person... people) {
         metamodel object&mdash;in this case, <literal>#Set&lt;People&gt;</literal>.
         Careful, there may be multiple annotations producing the same type of object!</para>
         
-        <programlisting>Sequence&lt;Set&lt;People&gt;&gt; annotations = (#Greeting).annotations(#Set&lt;People&gt;);</programlisting>
+        <programlisting>Set&lt;People&gt;[] annotations = (#Greeting).annotations(#Set&lt;People&gt;);</programlisting>
         
         <para>We're already ready to use our new annotation. Just like with other 
         method invocations, we have the choice between specifying the arguments of 

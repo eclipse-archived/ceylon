@@ -832,7 +832,7 @@ VarargsParam?
         interface is a parameterized type, the <literal>satisfies</literal> clause 
         must specify type arguments.</para>
         
-        <programlisting>satisfies Sequence&lt;T&gt;, Collection&lt;T&gt;</programlisting>
+        <programlisting>satisfies T[], Collection&lt;T&gt;</programlisting>
         
         <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
         a class or interface.</para>
@@ -1000,7 +1000,7 @@ InterfaceBody</programlisting>
             <para>An interface may extend any number of other interfaces.</para>
         
             <programlisting>public interface List&lt;T&gt;
-        satisfies Sequence&lt;T&gt;, Collection&lt;T&gt; {
+        satisfies T[], Collection&lt;T&gt; {
     ...
 }</programlisting>
         
@@ -2923,7 +2923,7 @@ PatternValidator pattern(Regex regex) {
     return Description(description.normalize())
 }</programlisting>
     
-        <programlisting>public Sequence&lt;Author&gt; by(String... authors) {
+        <programlisting>public Author[] by(String... authors) {
     return from (String author in authors) select Author(author.normalize())
 }</programlisting>
     

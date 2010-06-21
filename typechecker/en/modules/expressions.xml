@@ -1592,7 +1592,7 @@ personRef := person;</programlisting>
         <literal>T</literal> is a superype of all the enumerated element expression types. 
         The concrete type of this object is not specified here.</para>
         
-        <programlisting>Sequence&lt;String&gt; names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+        <programlisting>String[] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
         
         <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>LiteralNone.none</literal>.</para>
                                 

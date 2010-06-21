@@ -687,7 +687,7 @@ while (i.more) {
     case none;
     
     public extension 
-    class EmptySequence<X>() {
+    class EmptySequence<out X>() satisfies X[] {
         ...
     }
     
