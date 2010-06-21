@@ -1917,6 +1917,41 @@ personRef := person;</programlisting>
         </listitem>
     </itemizedlist>
     
+    <para>In the tables, the following pseudo-code is used, which is not legal
+    Ceylon syntax:</para>
+    
+    <para>First,</para>
+    
+    <programlisting>if (b) then x else y   //pseudocode</programlisting>
+    
+    <!--
+    <para>means the value of <literal>result</literal> after execution of the
+    following:</para>
+    
+    <programlisting>X result; if (b) { result=x } else { result=y }</programlisting>
+    -->
+    
+    <para>means the same value produced by the Ceylon library method 
+    <literal>ifTrue()</literal>:</para>
+    
+    <programlisting>ifTrue (b) then (x) else (y)</programlisting>
+    
+    <para>Second,</para>
+    
+    <programlisting>for (X x in c) e      //pseudocode</programlisting>
+    
+    <!--
+    <para>means the value of <literal>result</literal> after execution of the
+    following:</para>
+    
+    <programlisting>OpenList&lt;E&gt; result = none; for (X x in c) { result.add(e); }</programlisting>
+    -->
+    
+    <para>means the same value produced by the Ceylon library method 
+    <literal>from()</literal>:</para>
+    
+    <programlisting>from (X x in c) select (e)</programlisting>
+    
     <para>The tables define semantics only, and are not intended to indicate anything
     about the bytecode produced by the compiler. The compiler is permitted to optimize
     the bytecode to erase unnecessary method invocations.</para>
@@ -2830,7 +2865,7 @@ personRef := person;</programlisting>
             <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>(lhs:=lhs.successor).predecessor</literal></entry>
+            <entry><literal>(++lhs).predecessor</literal></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2839,7 +2874,7 @@ personRef := person;</programlisting>
             <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>(lhs:=lhs.predecessor).successor</literal></entry>
+            <entry><literal>(--lhs).successor</literal></entry>
             <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
