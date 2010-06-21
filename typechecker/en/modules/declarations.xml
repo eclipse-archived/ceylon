@@ -2815,8 +2815,9 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
     <section id="annotationconstraints">
         <title>Annotation constraints</title>
         
-        <para>The following annotations constrain the occurence of an annotation. By default, 
-        an annotation may appear multiple times on any program element.</para>
+        <para>The following meta-annotations provide information to the compiler about the 
+        annotations upon which they appear. They are applied to a toplevel method declaration 
+        that defines an annotation.</para>
         
         <itemizedlist>
             <listitem>
@@ -2824,17 +2825,27 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
                 inherited by subtypes.</para>
             </listitem>
             <listitem>
-                <para><literal>multiplicity</literal> specifies that the annotation may occur at 
-                most once in a certain scope. Its accepts one or more arguments of type
-                <literal>Multiplicity</literal>: <literal>onceEachElement</literal>, 
+                <para><literal>annotation</literal> specifies constraints upon the occurence of 
+                an annotation. By default, an annotation may appear multiple times on any program 
+                element.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The meta-annotation <literal>annotation</literal> accepts the following parameters.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>occurs</literal> specifies that the annotation may occur at 
+                most once in a certain scope. Its accepts one argument of type
+                <literal>Occurrence</literal>: <literal>onceEachElement</literal>, 
                 <literal>onceEachType</literal>.</para>
             </listitem>
             <listitem>
-                <para><literal>ofElements</literal> specifies the kinds of program element 
+                <para><literal>of</literal> specifies the kinds of program element 
                 at which the annotation occurs. Its accepts one or more arguments of type
-                <literal>Element</literal>: <literal>class</literal>, <literal>interface</literal>,
-                <literal>method</literal>, <literal>attribute</literal>, <literal>alias</literal>,
-                <literal>parameter</literal>.</para>
+                <literal>Element</literal>: <literal>classes</literal>, <literal>interfaces</literal>,
+                <literal>methods</literal>, <literal>attributes</literal>, <literal>aliases</literal>,
+                <literal>parameters</literal>.</para>
             </listitem>
             <listitem>
                 <para><literal>withType</literal> specifies that the annotation may only 
@@ -2847,22 +2858,32 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
                 may only be applied to methods with the specified formal parameter types.</para>
             </listitem>
             <listitem>
-                <para><literal>withAnnotation</literal> specifies that the may only be 
-                applied to program elements at which the specified annotation occurs.</para>
+                <para><literal>withAnnotation</literal> specifies that the annotation may 
+                only be applied to program elements at which the specified annotation occurs.</para>
             </listitem>
         </itemizedlist>
         
-        <para>These annotations are applied to the toplevel method declaration that defines an
-        annotation, and the constraints are checked by the compiler.</para>
-        
-        <programlisting>public ofElements(class) multiplicity(onceEachType)
-Entity entity(LockMode lockMode) { return Entity(lockMode) }</programlisting>
+        <programlisting>public 
+annotation { 
+    of=classes; 
+    occurs=onceEachType; 
+}
+Entity entity(LockMode lockMode) { 
+    return Entity(lockMode) 
+}</programlisting>
 
-        <programlisting>public ofElements(attribute, parameter) withType(String) multiplicity(onceEachElement)
-Pattern pattern(Regex regex) { return Pattern(regex) }</programlisting>
+        <programlisting>public 
+annotation { 
+    of = {attributes, parameters}; 
+    withType=#String; 
+    occurs = onceEachElement; 
+}
+Pattern pattern(Regex regex) { 
+    return Pattern(regex)
+}</programlisting>
             
-        <comment><para>TODO: Should there be an <literal>annotation</literal>
-        modifier for toplevel methods which can be used as annotations?</para></comment>
+        <comment><para>TODO: Should <literal>annotation</literal> be required
+        for toplevel methods which can be used as annotations?</para></comment>
         
     </section>
     
