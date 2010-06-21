@@ -2756,7 +2756,7 @@ User user = personToUser(person);</programlisting>
         
         <programlisting>import org.domain.utils.SequenceUtils;
 ...
-Integer[] zeroToOneHundred = [0..100];
+Integer[] zeroToOneHundred = 0..100;
 Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);</programlisting>
         
         <!--
