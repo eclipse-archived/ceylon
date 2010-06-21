@@ -529,6 +529,101 @@ public void hello(Process process) {
         </section>
         
         <section>
+            <title>A quick overview of collections</title>
+            
+            <para>The collections package is one of the best features of Ceylon. Let's
+            briefly meet some of the main characters.</para>
+            
+            <para>There's no arrays in Ceylon, but you can write the following code:</para>
+            
+            <programlisting>String[] cities = { "Melbourne", "Atlanta", "San Francisco", "Guanajuato" };
+String sf = cities[2];
+String[] usCities = cities[1..2];
+String[] moreCities := cities + { "Rome", "Paris", "Edinburgh", "Cambridge" };</programlisting>
+            
+            <para>The syntax <literal>String[]</literal> is just an abbreviation for the 
+            built-in interface <literal>Sequence&lt;String&gt;</literal>. Don't be scared 
+            by the fancy syntax&mdash;it's just sugar. There's actually nothing much special 
+            about the interface <literal>Sequence</literal> from the point of view of the 
+            type system. But sequences of values are a common occurrence in computing, so 
+            Ceylon provides a streamlined syntax for dealing with them.</para>
+            
+            <para>Sequences of ordinal values are especially common, so there's an
+            operator for constructing them:</para>
+            
+            <programlisting>Natural[] from1To10 = 1..10;
+Integer[] fromNegative10To10 = -10..10;
+Character[] fromAToZ = @A..@Z;</programlisting>
+
+            <para>We can iterate a sequence like this:</para>
+            
+            <programlisting>for (String city in cities) {
+    stream.writeLine(city):
+}</programlisting>
+
+            <para>If, for some reason, we need access to the index of each element, we can
+            write the following:</para>
+            
+            <programlisting>for (Natural i -> String city in cities) {
+    stream.writeLine($i + ": " + city):
+}</programlisting>
+
+            <para>(The <literal>$</literal> operator converts an object to a string.)</para>
+            
+            <para>Sometimes the keys of our collection elements aren't natural numbers, 
+            so we need something other than a <literal>Sequence</literal>:</para>
+            
+            <programlisting>Correspondence&lt;String,String&gt; cities = 
+            { "Gavin"->"Guanajuato", 
+              "Pete"->"Edinburgh",
+              "Andrew"->"Cambridge",
+              "Emmanuel"->"Paris" };
+String paris = cities["Emmanuel"];</programlisting>
+
+            <para>We can iterate a correspondence like this:</para>
+
+            <programlisting>for (Entry&lt;String,String&gt; entry in cities) {
+    stream.writeLine(entry.key + " lives in " + entry.value);
+}</programlisting>
+
+            <para>Or, much more commonly:</para>
+            
+            <programlisting>for (String person -> String city in cities) {
+    stream.writeLine(name + " lives in " + city):
+}</programlisting>
+
+            <para>So far we havn't met anything from the collections package proper. 
+            <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
+            of the package <literal>lang</literal>. They're there to abstract away the
+            nice syntax we've just met from the (relatively) gory details of the collections 
+            package.</para>
+            
+            <para>Inside the collections package you'll find some interfaces with pretty
+            familiar names: <literal>Collection</literal>, <literal>Set</literal>, 
+            <literal>List</literal> and <literal>Map</literal>. (There's even a
+            <literal>Bag</literal>.) But these interfaces aren't quite what you're used 
+            to from Java. Most importantly, none of them provide operations to change
+            the elements of the collection. If you need to mutate a collection, you'll
+            need one of their evil twins: <literal>OpenCollection</literal>, 
+            <literal>OpenSet</literal>, <literal>OpenList</literal> and 
+            <literal>OpenMap</literal> (and we can't forget <literal>OpenBag</literal>).</para>
+            
+            <para>Splitting the collection interfaces into a "read-only" view and a
+            "writable" view has several advantages, but the most important is that you
+            now don't need to worry about exposing collections as part of the public 
+            contract of your classes. In Java, it's always difficult for a client to 
+            know if you're returning a copy of your internal list, a reference to your
+            internal list (which you might have done inadvertantly), or a reference 
+            wrapped in an <literal>immutableList()</literal>, you know, that wonderful 
+            beastie which helpfully throws exceptions at runtime to let you know that it 
+            is supposed to be "read-only". In Ceylon, you can protect the state of your 
+            internal data structures by simply not returning the "writable" view to 
+            clients. Send them back a <literal>List</literal>, and they know what they're 
+            allowed to do with it.</para>
+        
+        </section>
+        
+        <section>
             <title>Taking advantage of functional-style programming</title>
         
         <para>Let's go back, once again, to the attribute <literal>greeting</literal> 
@@ -638,19 +733,19 @@ public void hello(Process process) {
         
         <itemizedlist>
             <listitem>
-                <para><emphasis>assertion</emphasis>, such as 
+                <para><emphasis>assertion</emphasis>, such as: 
                 <literal>assert() that (x==0.0);</literal></para>
             </listitem>
             <listitem>
-                <para><emphasis>comprehension</emphasis>, such as 
-                <literal>List&lt;String&gt; names = from (people) select (Person p) (p.name);</literal></para>
+                <para><emphasis>comprehension</emphasis>, such as:
+                <literal>String[] names = from (people) select (Person p) (p.name);</literal></para>
             </listitem>
             <listitem>
-                <para><emphasis>quantification</emphasis>, such as
+                <para><emphasis>quantification</emphasis>, such as:
                 <literal>Boolean adults = forAll (people) every (Person p) (p.age>=18);</literal></para>
             </listitem>
             <listitem>
-                <para><emphasis>repetition</emphasis>, such as
+                <para><emphasis>repetition</emphasis>, such as:
                 <literal>repeat (3) times { stream.writeLine("Hello!"); }</literal></para>
             </listitem>
         </itemizedlist>
