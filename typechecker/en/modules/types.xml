@@ -212,6 +212,44 @@
     
 }]]></programlisting>
 
+        <para>An extension allows <literal>Case&lt;X&gt; to function as
+        Case&lt;X?&gt;</literal>.</para>
+        
+        <programlisting><![CDATA[public extension
+class CaseOptional<X>(Case<X> c) 
+        satisfies Case<X?> {
+        
+    override Boolean test(Case<X> x) {
+        if (exists value) {
+            return c.test(x)
+        }
+        else {
+            return false;
+        }
+    }
+        
+}]]></programlisting>
+
+        <para>An extension allows <literal>Case&lt;X&gt; to function as
+        Case&lt;Y&gt;</literal> where <literal>X</literal> is assignable
+        to <literal>Y</literal>.</para>
+        
+        <programlisting><![CDATA[public extension
+class CaseSuper<Y>(Case<X> c) 
+        satisfies Case<Y> 
+        where X satisfies Y {
+        
+    override Boolean test(Case<Y> y) {
+        if (is X y) {
+            return c.test(y)
+        }
+        else {
+            return false;
+        }
+    }
+        
+}]]></programlisting>
+
         <para>Classes with enumerated <literal>case</literal>s implicitly extend 
         <literal>lang.Selector</literal></para>
         
@@ -1241,7 +1279,7 @@ while (people nonempty) {
         operator:</para> 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
-        satisfies Category, Sequence<X>, Case<Object>
+        satisfies Category, Sequence<X>, Case<X>
         where X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
