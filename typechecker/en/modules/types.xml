@@ -701,7 +701,7 @@ while (i.more) {
      The returned sequence does not reflect changes
      to the original sequences."
 public S join<S,T>(S... sequences) 
-        where S(T... elements) satisfies Sequence<T> {
+        where S(T... elements) satisfies T[] {
 
     class JoinedIterable<T>
         implements Iterable<T> {  }
@@ -714,7 +714,7 @@ public S join<S,T>(S... sequences)
      The returned sequence does not reflect changes 
      to the original sequence."
 public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
-         where S(T... elements) satisfies Sequence<T> {
+         where S(T... elements) satisfies T[] {
 
     class SubrangeIterable<T>
         implements Iterable<T> {  }
@@ -725,7 +725,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
         <para>A helper class decorates <literal>Sequence</literal> with 
         some convenience attributes:</para>
 
-        <programlisting><![CDATA[public extension class Sequences<out X>(Sequence<X> sequence) {
+        <programlisting><![CDATA[public extension class Sequences<out X>(X[] sequence) {
 
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
@@ -750,7 +750,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
         an index.</para>
         
         <programlisting><![CDATA[public mutable interface OpenSequence<X>
-        satisfies Sequence<X>, OpenCorrespondence<Natural,X> {}]]></programlisting>
+        satisfies X[], OpenCorrespondence<Natural,X> {}]]></programlisting>
 
     </section>
     
@@ -915,7 +915,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
             <literal>Sequence</literal>:</para>
             
             <programlisting><![CDATA[public interface List<out X> 
-        satisfies Collection<X>, Sequence<X> {
+        satisfies Collection<X>, X[] {
     
     doc "The tail of the list. The returned list does 
          reflect changes to the original list."
@@ -1279,7 +1279,7 @@ while (people nonempty) {
         operator:</para> 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
-        satisfies Category, Sequence<X>, Case<X>
+        satisfies Category, X[], Case<X>
         where X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
@@ -1290,12 +1290,12 @@ while (people nonempty) {
     
     ... 
     
-    doc "Return a |List| of values in the range, 
+    doc "Return a |Sequence| of values in the range, 
          beginning at the first value, and 
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    public Sequence<X> by(Natural stepSize) { return ... } 
+    public X[] by(Natural stepSize) { return ... } 
     
 }]]></programlisting>
     
@@ -1332,7 +1332,7 @@ while (people nonempty) {
         the join, subrange, contains and lookup operators, among others.</para> 
                 
         <programlisting><![CDATA[public class String(Character... characters) 
-        satisfies Comparable<String>, Sequence<Character>, Case<String> {
+        satisfies Character[], Comparable<String>, Case<String> {
     
     ... 
     
@@ -1348,11 +1348,11 @@ while (people nonempty) {
     
     doc "Remove the given characters from the beginning 
          and end of the string.
-    public String strip(Sequence<Character> whitespace = " \n\l\r\t") { return ... }
+    public String strip(Character[] whitespace = " \n\l\r\t") { return ... }
     
     doc "Collapse substrings of the given characters into
          single space characters."
-    public String normalize(Sequence<Character> whitespace = " \n\l\r\t") { return ... }
+    public String normalize(Character[] whitespace = " \n\l\r\t") { return ... }
     
     doc "Join the given strings, using this string as
          a separator."
