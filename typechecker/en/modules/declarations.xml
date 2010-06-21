@@ -2707,10 +2707,14 @@ public oncePerElement Visibility private() {
 }</programlisting>
 
         <programlisting>public extension class SequenceUtils&lt;N&gt;(N[] seq) 
-        where N extends Number {
+        where N extends Number, Comparable&lt;N&gt; {
     
     public N[] positiveElements() {
-        return seq.elements() having (N n) (n.positive); 
+        return seq.elements() having (N n) (n&gt;0); 
+    }
+    
+    public N[] elementsLessThan(N limit) {
+        return seq.elements() having (N n) (n&lt;limit);
     }
     
     ...   
@@ -2737,7 +2741,7 @@ import org.domain.utils.SequenceUtils;</programlisting>
         <para>If an extension is enabled in a compilation unit, the extended type 
         is assignable to the introduced type in that compilation unit.</para>
         
-        <programlisting>import org.mydomain.myproject.Converters.objectToLog;
+        <programlisting>import org.mydomain.myproject.extensions.objectToLog;
 ...
 Person person = ...;
 User user = person;
@@ -2750,10 +2754,10 @@ info("person is a User and this is a Log!")</programlisting>
 User user = personToUser(person);</programlisting>
         -->
         
-        <programlisting>import org.mydomain.myframework.SequenceUtils;
+        <programlisting>import org.domain.utils.SequenceUtils;
 ...
-Integer[] zeroToTen = [0..10];
-Integer[] oneToTen = ints.positiveElements();</programlisting>
+Integer[] zeroToOneHundred = [0..100];
+Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);</programlisting>
         
         <!--
         <para>Is equivalent to this Java code:</para>
