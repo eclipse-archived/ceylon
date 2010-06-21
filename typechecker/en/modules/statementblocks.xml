@@ -727,13 +727,13 @@ else {
             <programlisting>for (Natural month -> Float temp in monthlyTempsList) { plot(month,temp); }</programlisting>
 
             <programlisting>for (String word -> Natural freq in wordFrequencyMap) { 
-    log.info("frequency of " word " is " freq ""); 
+    log.info("The frequency of the " word " is " freq "."); 
 }</programlisting>
             
             <programlisting>for (Person p in people) {
-    log.debug("found " p.name "");
+    log.debug("Testing person: " p.name ".");
     if (p.age >= 18) {
-        log.info("found an adult: " p.name "");
+        log.info("Found an adult: " p.name ".");
         break true
     }
 }
