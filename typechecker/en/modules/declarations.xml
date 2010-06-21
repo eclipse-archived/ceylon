@@ -2696,20 +2696,21 @@ public oncePerElement Visibility private() {
         
         <para>The introduced type may not be a <literal>mutable</literal> type.</para>
         
-        <programlisting>public class Person() {
+        <programlisting>public extension Log objectToLog(Object object) {
+    return object.log;
+}</programlisting>
+        
+        <programlisting>public class Person(User user) {
     ...
-    public extension User user;
+    public extension User user = user;
+    ...
 }</programlisting>
-        
-        <programlisting>public extension User personToUser(Person person) { 
-    return person.user
-}</programlisting>
-        
-        <programlisting>public extension class CollectionUtils&lt;T&gt;(Collection&lt;T&gt; collection) {
+
+        <programlisting>public extension class SequenceUtils&lt;N&gt;(N[] seq) 
+        where N extends Number {
     
-    public Collection&lt;T&gt; nonZeroElements() {
-        return collection.elements() 
-            having (T element) element!=0; 
+    public N[] positiveElements() {
+        return seq.elements() having (N n) (n.positive); 
     }
     
     ...   
@@ -2717,15 +2718,15 @@ public oncePerElement Visibility private() {
         
         <comment><para>Note: I actually much prefer the readability of 
         <literal>User personToUser(extends Person person)</literal> and
-        <literal>CollectionUtils&lt;T&gt;(extends Collection&lt;T&gt; collection)</literal>, 
+        <literal>SequenceUtils&lt;T&gt;(extends T[] collection)</literal>, 
         but this doesn't work for attributes and member methods.</para></comment>
         
         <para>We say that an extension class or toplevel method is 
         <emphasis>enabled</emphasis> in a compilation unit if the class or 
         toplevel method is imported by that compilation unit.</para>
         
-        <programlisting>import org.domain.app.extensions.personToUser;
-import org.domain.utils.CollectionUtils;</programlisting>
+        <programlisting>import org.domain.app.extensions.objectToLog;
+import org.domain.utils.SequenceUtils;</programlisting>
 
         <para>A wildcard <literal>.*</literal>-style import may not be used to 
         import an extension.</para>
@@ -2736,10 +2737,11 @@ import org.domain.utils.CollectionUtils;</programlisting>
         <para>If an extension is enabled in a compilation unit, the extended type 
         is assignable to the introduced type in that compilation unit.</para>
         
-        <programlisting>import org.mydomain.myproject.Converters.personToUser;
+        <programlisting>import org.mydomain.myproject.Converters.objectToLog;
 ...
 Person person = ...;
-User user = person;</programlisting>
+User user = person;
+info("person is a User and this is a Log!")</programlisting>
         
         <!--
         <para>Is equivalent to the following Java code:</para>
@@ -2748,16 +2750,16 @@ User user = person;</programlisting>
 User user = personToUser(person);</programlisting>
         -->
         
-        <programlisting>import org.mydomain.myframework.CollectionUtils;
+        <programlisting>import org.mydomain.myframework.SequenceUtils;
 ...
-Collection&lt;Integer&gt; ints = ...;
-Collection&lt;Integer&gt; result = ints.nonZeroElements();</programlisting>
+Integer[] zeroToTen = [0..10];
+Integer[] oneToTen = ints.positiveElements();</programlisting>
         
         <!--
         <para>Is equivalent to this Java code:</para>
     
         <programlisting>Collection&lt;Integer&gt; ints = ...;
-Collection&lt;Integer&gt; result = new CollectionUtils(collection).nonZeroElements();</programlisting>
+Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements();</programlisting>
         -->
         
         <para>An introduced type may result in an ambiguity:</para>
