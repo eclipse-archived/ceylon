@@ -801,7 +801,7 @@ while (iter.more) {
             
             <programlisting>mutable Person person := ....;
 while (exists Person parent = person.parent) {
-    log.info(parent.name);
+    log.info("The parent of " person.name " is " parent.name ".");
     person := parent;
 }</programlisting>
             
