@@ -352,7 +352,7 @@ if you prefer.";</programlisting>
         <programlisting>Meta := TypeMeta | MemberMeta</programlisting>
         
         <para>The <literal>Type</literal> object may be obtained by specifying the full
-        type, with type arguments. A <lteral>Class</lteral> or <literal>Interface</literal> 
+        type, with type arguments. A <literal>Class</literal> or <literal>Interface</literal> 
         object may be obtained by specifying a class or interface name, without arguments.</para>
         
         <programlisting>TypeMeta := HASH Type</programlisting>
