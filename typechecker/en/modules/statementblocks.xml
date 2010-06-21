@@ -808,7 +808,7 @@ while (exists Person parent = person.parent) {
             <programlisting>mutable Person person := ....;
 do {
     log.info(person.name);
-    person := person.parent;
+    person.=parent;
 } 
 while (!person.dead);</programlisting>
 
