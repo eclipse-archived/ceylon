@@ -364,7 +364,7 @@ if you prefer.";</programlisting>
         
         <programlisting>MemberMeta := HASH (Type ".")? MemberName</programlisting>
                
-        <para>The type is required unless the reference is to a member of to a containing class, 
+        <para>The type is required unless the reference is to a member of a containing class, 
         or to a toplevel method.</para>
         
         <para>Metamodel references are compile-time typesafe.</para>
