@@ -1240,7 +1240,7 @@ public class Hello(String? name) {
         
         <para>So you might think that extension are just a trivial trick that
         saves a few keystrokes of typing effort. But the history of Java 
-        demonstrates why extension are an important feature. Java defines its
+        demonstrates why extensions are an important feature. Java defines its
         collections framework in terms of various interfaces, for example, 
         <literal>List</literal>, each with very many methods, mostly convenience 
         methods for the benefit of the user of these interfaces. Because 
