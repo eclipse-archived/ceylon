@@ -849,8 +849,11 @@ package class Language(String hello) {
         
         <programlisting>doc "An annotation for specifying a list of 
      people"
-ofElements(class) withType(#Greeting) 
-multiplicity(onceEachType)
+annotation { 
+    of = class; 
+    withType = #Greeting; 
+    occurs = onceEachType; 
+}
 package Set&lt;People&gt; people(Person... people) {
     return HashSet(people);
 }</programlisting>
