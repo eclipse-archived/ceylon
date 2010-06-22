@@ -137,6 +137,20 @@
     </section>
     
     <section>
+        <title>Callable references</title>
+        
+        <para>The type <literal>lang.Callable</literal> represents an executable
+        operation.</para>
+        
+        <programlisting><![CDATA[public interface Callable<out R, P...> {
+    public R call(P... args);
+    public Type<R> returnType;
+    public Type<Object>[] parameterTypes;
+}]]></programlisting>
+    
+    </section>
+    
+    <section>
         <title>Boolean values</title>
         
         <para>The <literal>lang.Boolean</literal> class represents
