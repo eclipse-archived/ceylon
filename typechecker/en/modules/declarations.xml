@@ -273,7 +273,11 @@ Description doc(String description) {
             <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
                 the first declared upper bound of the type parameter, or <literal>lang.Object</literal> 
-                if there is no declared upper bound, and then</para>
+                if there is no declared upper bound, and</para>
+            </listitem>
+            <listitem>
+                <para>replacing the type of any varargs type parameter in the signature with 
+                <literal>lang.Object...</literal>, and then</para>
             </listitem>
             <listitem>
                 <para>discarding the type arguments of each element of the list, leaving just 
@@ -409,7 +413,7 @@ String?? firstWord = words[0];</programlisting>
         <para>Methods, classes, interfaces and aliases may declare one or more generic type 
         parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* VarargsTypeParam "&gt;"</programlisting>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
@@ -591,6 +595,23 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <comment><para>TODO: should we let you declare type constraints on 
         <literal>subtype</literal>?</para></comment>
         
+        <para>A <emphasis>varargs type parameter</emphasis>, identified by an elipsis
+        <literal>...</literal> accepts a list of zero or more type arguments.</para>
+        
+        <programlisting>VarargsTypeParam := TypeName "..."</programlisting>
+        
+        <para>Varargs type parameters are always non-variant.</para>
+        
+        <para>Inside the declaration of the parameterized type, a varargs type parameter 
+        may be used as a type argument to other types which accept a varargs type parameter, 
+        or it may be used as the type of the last formal parameter declared by a method.
+        It may not appear in any other position. The varargs type parameter acts as a 
+        pseudo-type. It is treated by the Ceylon compiler as if it were a type with no 
+        members, to which no other type may be assigned, and which can only by assigned to 
+        itself.</para>
+        
+        <programlisting>Method&lt;X, T, P...&gt;</programlisting>
+        
     </section>
 
     <section id="typeargumentlist">
@@ -605,8 +626,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
         
         <para>A type argument must be specified for every type parameter. If the type has
-        type parameters, an argument list must be specified. If the type has no type 
-        parameters, no argument list may be specified.</para>
+        type parameters, an argument list must be specified. In addition, An arbitrary list 
+        of zero or more type parameters may be specified for a varargs type parameter. If 
+        the type has no type parameters, and no varargs type parameter, no argument list 
+        may be specified.</para>        
         
         <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
@@ -630,6 +653,31 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>type arguments of extended classes and satisfied interfaces.</para>
             </listitem>
         </itemizedlist>
+        
+        <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        
+        <para>In the case of a varargs type parameter:</para>
+        
+        <itemizedlist>
+        <listitem> 
+            <para>the type arguments are appended to the list of type arguments in every 
+            parameterized type in which the varargs type parameter appears, and</para>
+        </listitem>
+        <listitem> 
+            <para>a list of formal parameters whose types are the type arguments is
+            appended to the list of formal parameters of every method declaration in
+            which the varargs type parameter appears.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
+        
+        <comment><para>TODO: do we need to let you fill in the formal parameter names?
+        If we don't, you won't be able to call this thing using named parameters, and
+        we need some special definition in the spec defining how method references
+        carry their parameter names with them.
+        <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
+        </para></comment>
         
         <para>A type argument may itself be a parameterized type or type parameter.</para>
         
@@ -655,8 +703,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         It may not appear in an <literal>extends</literal>, <literal>satisfies</literal> or
         <literal>abstracts</literal> clause.</para>
         
-        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a generic type
-        holds a reference to its type arguments. Therefore, the following are legal in Ceylon:</para>
+        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a generic 
+        type holds a reference to its type arguments. Therefore, the following are legal in Ceylon:</para>
         
         <itemizedlist>
             <listitem>
@@ -695,6 +743,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>Varargs type parameters are not reified. None of the above operations can be
+        performed with a vararg type parameter.</para>
+                
     </section>
     
     <section id="formalparameterlist">
@@ -743,15 +794,32 @@ VarargsParam?
         <para>The type of the default argument expression must be assignable to the declared
         type of the formal parameter.</para>
         
-        <para>A varargs parameter accepts a list of arguments or a single argument of type 
-        <literal>Iterable</literal>. Inside the method, it is available as a local of type
-        <literal>Iterable</literal>.</para>
+        <para>The elipsis <literal>...</literal> indicates that a formal parameter is 
+        either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A <emphasis>varargs parameter</emphasis>, which accepts a list of arguments 
+                of the specified type <literal>T</literal>, or a single argument of type 
+                <literal>Iterable&lt;T&gt;</literal>. Inside the method, the varargs parameter 
+                has type <literal>Iterable&lt;T&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
+                whose types are defined by a varargs type parameter. Inside the method, the 
+                argument has the pseudo type of the varargs type parameter and is assignable to 
+                any tuple parameter of the same pseudo-type.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
         
-        <para>The varargs parameter must be the last formal parameter in the list.</para>
+        <para>The varargs parameter or tuple parameter must be the last formal parameter in the 
+        list.</para>
         
         <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
+        
+        <programlisting>(T instance, P... args)</programlisting>
         
         <comment><para>TODO: should we just make <literal>X...</literal> a syntactic shorthand
         for <literal>Iterable&lt;X&gt;</literal> everywhere? Or, alternatively, should we also
@@ -897,6 +965,8 @@ VarargsParam?
                 the given formal parameter types.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A constraint may not refer to a varargs type parameter.</para>
         
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
@@ -1812,19 +1882,37 @@ public User(String username, Person person);</programlisting>
         <para>A method reference returned by a method with multiple parameter lists 
         must conform to the schema of the method with multiple parameter lists, after 
         eliminating the first parameter list.</para>
-
-        <para>The Ceylon compiler preserves the names of method parameters, using a Java
-        annotation.</para>
+        
+        <para>The <emphasis>operation type</emphasis> of a method captures the return
+        types and formal parameter types of the method.</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>The operation type of a method with a single parameter list is 
+            <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is
+            the declared type of the method, and <literal>P...</literal> are the formal
+            parameter types of the method.</para>
+        </listitem>
+        <listitem>
+            <para>The operation type of a method with multiple parameter lists is 
+            <literal>Callable&lt;O,P...&gt;</literal>, where <literal>O</literal> is the
+            operation type of a method produced by eliminating the first formal parameter
+            list, and <literal>P...</literal> are the formal parameter types of the first 
+            formal parameter list of the method.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>The Ceylon compiler preserves the names of method parameters.</para>
         
         <!--
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
                 
-        <para>A block local method with a single <literal>return</literal> directive may be 
-        declared using the keyword <literal>local</literal> in place of the explicit return type 
-        declaration. The type of the local or attribute is inferred to be the type of the returned 
-        expression.</para>
+        <para>A block local method with a single <literal>return</literal> directive may 
+        be declared using the keyword <literal>local</literal> in place of the explicit 
+        return type declaration. The type of the local or attribute is inferred to be the 
+        type of the returned expression.</para>
         
         <programlisting>local add(Integer x, Integer y) {
     return x + y

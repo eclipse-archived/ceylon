@@ -77,10 +77,7 @@
     <section id="literals">
     <title>Literals</title>
     
-    <para><!--Since Ceylon is a language for expressing not only instructions, but also 
-    structured data, the language supports parsed literals for dates and times
-    in addition to numeric and string datatypes.--> Ceylon supports literal values
-    of the following types:</para>
+    <para>Ceylon supports literal values of the following types:</para>
     
     <itemizedlist>
         <listitem>
@@ -99,7 +96,9 @@
     
     <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
     values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
-    with the enumerated instances <literal>true</literal> and <literal>false</literal>.</para>
+    with the enumerated instances <literal>true</literal> and <literal>false</literal>.
+    The <literal>null</literal> value is just the enumerated instance of the class
+    <literal>LiteralNull</literal>.</para>
     
     <programlisting>Literal := NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
 
@@ -450,7 +449,8 @@ if you prefer.";</programlisting>
         
         <para>A method reference captures the return type and formal parameter lists
         of the method or class, allowing compile-time validation of argument types
-        when a method reference is invoked.</para>
+        when a method reference is invoked. The type of a method reference expression
+        is assignable to the operation type of every overloaded version of the method.</para>
         
         <comment><para>TODO: some explanation of overloading in this context.</para></comment>
         
@@ -479,6 +479,7 @@ if you prefer.";</programlisting>
         
         </section>
         
+        <!--
         <section>
             <title>Method reference typing</title>
         
@@ -520,7 +521,8 @@ if you prefer.";</programlisting>
         schema without that parameter?</para></comment>
         
         </section>
-        
+         -->
+         
         <section>
             <title>Specifying a method reference as a method implementation or functional
             parameter argument</title>
@@ -533,8 +535,8 @@ if you prefer.";</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
-        <para>The schema of the method reference must conform to the declared schema of the
-        method.</para>
+        <para>The method reference must be assignable to the operation type of the method 
+        being defined.</para>
         
         <para>Method references may appear as an argument to a functional parameter, either 
         as a positional argument, or as an argument specified using <literal>=</literal> in 
@@ -544,8 +546,7 @@ if you prefer.";</programlisting>
         
         <programlisting>void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
 
-        <para>This code passes a reference to a local method with a conforming schema to 
-        the method.</para>
+        <para>This code passes a reference to a local method to the method.</para>
         
         <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x }
 sort(names, reverseAlpha);</programlisting>
@@ -564,7 +565,7 @@ sort(names, reverseAlpha);</programlisting>
     onUpdate = person.name.setIt;
 }</programlisting>
         
-        <para>The schema of the method reference must conform to the declared schema of the
+         <para>The method reference must be assignable to the operation type of the
         functional parameter.</para>
         
         </section>
@@ -596,11 +597,11 @@ sort(names, reverseAlpha);</programlisting>
     }
 }</programlisting>
 
-        <para>The method reference must conform to the schema of the method, after elimination 
-        of the first parameter list of the method.</para>
+        <para>The method reference must be assignable to the operation type of a method 
+        produced by eliminating the first parameter list of the method.</para>
 
-        <para>Calling a method with multiple parameter lists is similar to the operation of
-        "currying" in a functional programming language.</para>
+        <para>Calling a method with multiple parameter lists is similar to the operation 
+        of "currying" in a functional programming language.</para>
         
         <programlisting>Comparison order(Natural x, Natural y) = getOrder();
 Comparison comp = order(1,-1);</programlisting>
@@ -621,8 +622,9 @@ local comp = order(1,-1);</programlisting>
     <section id="invocation">
         <title>Invocation</title>
         
-        <para>Methods references are <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> 
-        consists of an expression that evaluates to a method reference, together with an argument 
+        <para>Methods references, and other instances of <literal>Callable</literal> are 
+        <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
+        expression of type <literal>Callable&lt;T,P...</literal>, together with an argument 
         list.</para>
         
         <programlisting>Invocation := Primary TypeArguments? Arguments</programlisting>
@@ -1998,9 +2000,9 @@ personRef := person;</programlisting>
             <entry>member</entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
-            <entry></entry>
+            <entry><literal>Member&lt;X,T&gt;</literal></entry>
             <entry><literal>Referenceable&lt;T&gt;</literal> or
-            <literal>Callable&lt;T&gt;</literal></entry>
+            <literal>T</literal></entry>
         </row>
         
         <row>
@@ -2009,8 +2011,8 @@ personRef := person;</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Callable&lt;T&gt;</literal></entry>
-            <entry></entry>
+            <entry><literal>Callable&lt;T,P...&gt;</literal></entry>
+            <entry><literal>P...</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -2061,7 +2063,7 @@ personRef := person;</programlisting>
             <entry>follow</entry>
             <entry><literal>lhs:=lhs.member</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry></entry>
+            <entry><literal>Attribute&lt;X,X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
 
@@ -2071,7 +2073,8 @@ personRef := person;</programlisting>
             <entry>apply</entry>
             <entry><literal>lhs:=lhs.member(x,y,z)</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry></entry>
+            <entry><literal>Method&lt;X,X,P..&gt;</literal>,
+            together with arguments <literal>P...</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
 
@@ -2441,9 +2444,8 @@ personRef := person;</programlisting>
             <entry>nullsafe member</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
             <entry><literal>X?</literal></entry>
-            <entry></entry>
-            <entry><literal>T?</literal> or
-            <literal>Callable&lt;T&gt;?</literal></entry>
+            <entry><literal>Member&lt;X,T&gt;</literal></entry>
+            <entry><literal>T?</literal></entry>
         </row>
 
         <row>
@@ -2452,8 +2454,8 @@ personRef := person;</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>nullsafe invoke</entry>
             <entry><literal>if (exists lhs) lhs(x,y,z) else null</literal></entry>
-            <entry><literal>Callable&lt;T&gt;?</literal></entry>
-            <entry></entry>
+            <entry><literal>Callable&lt;T,P...&gt;?</literal></entry>
+            <entry><literal>P...</literal></entry>
             <entry><literal>T?</literal></entry>
         </row>
         
@@ -2583,9 +2585,8 @@ personRef := person;</programlisting>
             <entry>spread member</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
-            <entry></entry>
-            <entry><literal>T[]</literal> or
-            <literal>Callable&lt;T&gt;[]</literal></entry>
+            <entry><literal>Member&lt;X,T&gt;</literal></entry>
+            <entry><literal>T[]</literal></entry>
         </row>
         
         <row>
@@ -2594,8 +2595,8 @@ personRef := person;</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>spread invoke</entry>
             <entry><literal>for (C c in lhs) c(x,y,z)</literal></entry>
-            <entry><literal>Iterable&lt;Callable&lt;T&gt;&gt;</literal></entry>
-            <entry><literal></literal></entry>
+            <entry><literal>Iterable&lt;Callable&lt;T,P...&gt;&gt;</literal></entry>
+            <entry><literal>P...</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
         <!--  
