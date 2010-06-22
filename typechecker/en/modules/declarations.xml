@@ -1083,7 +1083,8 @@ InterfaceBody</programlisting>
 }</programlisting>
         
             <para>The types listed after the <literal>satisfies</literal> keyword are the 
-            supertypes. All supertypes of an interface must be interfaces.</para>
+            supertypes. All supertypes of an interface must be interfaces. An interface 
+            may not extend the same interface twice (not even with distinct type arguments).</para>
             
             <!--para>
             Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
@@ -1445,7 +1446,8 @@ class Customer(Name name, Organization? org = null)
         <para>
         The types listed after the <literal>satisfies</literal> keyword are the implemented
         interfaces. The type specified after the <literal>extends</literal> keyword is a 
-        superclass.
+        superclass. A class may not implement the same interface twice (not even with distinct
+        type arguments).
         </para>
         
         <para>
@@ -1829,7 +1831,13 @@ public User(String username, Person person);</programlisting>
         parameters and may return a value.</para>
         
         <programlisting>Method := MethodHeader ( Block | Specifier? ";" )</programlisting>
-
+        
+        <para>All method declarations specify the method name and one or more formal 
+        parameter lists. A method declaration may specify a type, called the 
+        <emphasis>return type</emphasis>, to which the values the method returns is 
+        assignable, or it may specify that the method is a <literal>void</literal>
+        method&mdash;a method which does not return a value.</para>
+        
         <programlisting>MethodHeader := Annotation* (InferableType | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
         
         <para>A method implementation may be specified using either:</para>
@@ -2090,7 +2098,16 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
         definitions may be overridden by subclasses.</para>
+        
+        <para>All attributes have a type and name. The type of the attribute is specified
+        by the simple attribute declaration or attribute getter declaration. An attribute 
+        may be <literal>mutable</literal>, in which case its value can be assigned using 
+        the <literal>:=</literal> and compound assignment operators. This is the case for
+        simple attributes explicitly annotated <literal>mutable</literal>, or for 
+        attributes with a setter declaration.</para>
             
+        <programlisting>AttributeHeader := Annotation* InferableType MemberName</programlisting>
+        
         <para>An attribute body may invoke, evaluate or assign members of the current 
         instance of the class which defines the method (the instance upon which the 
         attribute was invoked) without explicitly specifying the receiver.</para>
@@ -2136,8 +2153,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         <para>A simple attribute defines state.</para>
         
         <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
-        
-        <programlisting>AttributeHeader := Annotation* InferableType MemberName</programlisting>
         
         <para>A simple attribute or local annotated <literal>mutable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
