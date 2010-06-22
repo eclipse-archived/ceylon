@@ -364,6 +364,67 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
     </section>
     
     <section>
+        <title>Metamodel</title>
+        
+        <programlisting><![CDATA[interface Type<out X> 
+        satisfies Annotated {
+        
+    String name;
+    
+    ...
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[interface Class<X, P...> 
+        satisfies Type<X> {
+    
+    X create(P...);
+    
+    Listener addListener( X onCreate(P... args, X proceed(P... args)) );
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[interface Member<in X, out T> 
+        satisfies Annotated {
+        
+    boolean mutable;
+    Type<T> type;
+    T evaluate(X instance);
+    Reference<T> reference(X instance);
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[interface Method<in X, R, P...> 
+        satisfies Member<Operation<R, P...>> {
+        
+    Type<R> returnType;
+    Type<Object>[] parameterTypes;
+    
+    Listener addListener( R onInvoke(X instance, P... args, R proceed(P... args)) );
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[interface Attribute<in X, out T> 
+        satisfies Member<X, T> {
+        
+    Listener addListener( T onGet(X instance, T proceed()) );
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[interface MutableAttribute<X, T> 
+        satisfies Attribute<X, T> {
+        
+    Listener addListener( X onSet(X instance, T value, X proceed(T value)) );
+    
+}]]></programlisting>
+
+       <programlisting>interface Listener {
+    void remove();
+}</programlisting>
+
+    </section>
+    
+    <section>
         <title>Usables</title>
         
         <para>The interface <literal>lang.Usable</literal> represents an
@@ -381,7 +442,7 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
          exception occurs."
     public void end(Exception e);
     
-}]]></programlisting>        
+}]]></programlisting>
        
     </section>
     
