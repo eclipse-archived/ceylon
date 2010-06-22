@@ -470,9 +470,9 @@ if you prefer.";</programlisting>
         <para>A callable reference may be invoked immediately, or it may be passed 
         to other code which may invoke the reference.</para>
         
-        <para>Callable reference expressions areassignable to 
+        <para>Callable reference expressions are assignable to 
         <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
-        <literal>P...</literal> depend upon the schema of the method or class</para>
+        <literal>P...</literal> depend upon the schema of the method or class.</para>
         
         <itemizedlist>
         <listitem>
