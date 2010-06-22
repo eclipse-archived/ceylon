@@ -1098,7 +1098,7 @@ local comp = order(1,-1);</programlisting>
         annotated <literal>iterated</literal>, and all remaining parameters are callable
         parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>CallableReference "(" ForIterator ")" FunctionalArguments</programlisting>
+        <programlisting>Primary "(" ForIterator ")" FunctionalArguments</programlisting>
         
         <para>And then if a callable parameter has a formal parameter of type 
         <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
@@ -1146,7 +1146,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         annotated <literal>specified</literal>, and all remaining parameters are callable
         parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>CallableReference "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
+        <programlisting>Primary "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
         
         <para>And then if a callable parameter has a formal parameter of type 
         <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
