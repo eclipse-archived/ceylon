@@ -425,16 +425,20 @@ if you prefer.";</programlisting>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
         
-        <programlisting>Class&lt;ArrayList&lt;String,Iterable&lt;String&gt;&gt;&gt; arrayListClass = #ArrayList&lt;String&gt;
-List list = arrayListClass.create("foo", "bar", "baz);</programlisting>
+        <programlisting>Class&lt;ArrayList&lt;String&gt;,Iterable&lt;String&gt;&gt; arrayListClass = #ArrayList&lt;String&gt;;
+        
+List list = arrayListClass("foo", "bar", "baz);</programlisting>
         
         <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;
-String personName = nameAttribute.evaluate(person);</programlisting>
         
-        <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;
-String result = sayMethod.evaluate(person)();</programlisting>
+String personName = nameAttribute(person);</programlisting>
+        
+        <programlisting>Method&lt;Person, String&gt; sayMethod = #Person.say;
+        
+String result = sayMethod(person)();</programlisting>
         
         <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
+
 countAttribute.addListener() 
     onGet (Counter c, Natural proceed()) {
         log.debug("getting");
@@ -445,9 +449,11 @@ countAttribute.addListener()
         log.debug("setting");
         return proceed(value);
     };
-countAttribute.evaluate(this)++;</programlisting>
+    
+countAttribute(this)++;</programlisting>
 
         <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = #Order.createItem;
+        
 createItemMethod.addListener() 
     onInvoke (Person p, 
               Item proceed(Product p, Natural n),  

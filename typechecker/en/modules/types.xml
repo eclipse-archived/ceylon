@@ -376,29 +376,28 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
 }]]></programlisting>
 
         <programlisting><![CDATA[interface Class<X, P...> 
-        satisfies Type<X> {
+        satisfies Type<X>, Callable<X,P...> {
     
     Boolean mutable;
     Boolean abstract;
-    
-    X create(P...);
     
     Listener addListener( X onCreate(P... args, X proceed(P... args)) );
     
 }]]></programlisting>
 
         <programlisting><![CDATA[interface Member<in X, out T> 
-        satisfies Annotated {
+        satisfies Annotated, Callable<T,X> {
     
     Boolean abstract;
     Boolean default;
     Boolean mutable;
     
     Type<T> type;
-    T evaluate(X instance);
-    Reference<T> reference(X instance);
     
 }]]></programlisting>
+
+        <!-- Reference<T> reference(X instance);
+             T evaluate(X instance)  -->
 
         <programlisting><![CDATA[interface Method<in X, R, P...> 
         satisfies Member<Callable<R, P...>> {
@@ -411,17 +410,16 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
 }]]></programlisting>
 
         <programlisting><![CDATA[interface Attribute<in X, out T> 
-        satisfies Member<X, T> {
+        satisfies Member<X, Reference<T>> {
         
     Listener addListener( T onGet(X instance, T proceed()) );
     
 }]]></programlisting>
 
         <programlisting><![CDATA[interface MutableAttribute<X, T> 
-        satisfies Attribute<X, T> {
-    
-    override Assignable<T> reference(X instance);
-    
+        satisfies Member<X, Assignable<T>> {
+        
+    Listener addListener( T onGet(X instance, T proceed()) );
     Listener addListener( X onSet(X instance, X proceed(T value), T value) );
     
 }]]></programlisting>
