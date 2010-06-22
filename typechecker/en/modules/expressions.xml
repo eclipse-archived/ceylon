@@ -1511,7 +1511,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         be to require an explicit call to <literal>reference</literal> defined by an
         intermediate interface to obtain the <literal>Referenceable</literal> instead 
         of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
-        operator. That would allow us to pass references to references.</para></comment>
+        operator. That would allow us to pass references to references. Yet another
+        alternative is let the method of an extended type "underride" the method of
+        the introduced type.</para></comment>
         
         <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
         local may not be assigned to an attribute, passed as a method argument, passed to
