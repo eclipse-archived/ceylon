@@ -570,8 +570,7 @@ if you prefer.";</programlisting>
          -->
          
         <section>
-            <title>Specifying a callable object as a method implementation or callable
-            parameter argument</title>
+            <title>Callable objects as method implementations</title>
             
         <para>An expression of type <literal>Callable</literal> may be used to define a 
         method using <literal>=</literal>. The expression type must be assignable to the 
@@ -583,6 +582,11 @@ if you prefer.";</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
+        </section>
+        
+        <section>
+            <title>Callable objects as callable parameter arguments</title>
+            
         <para>An expression of type <literal>Callable</literal> may appear as an argument 
         to a callable parameter, either as a positional argument, or as an argument 
         specified using <literal>=</literal> in a named parameter invocation. The expression 
@@ -614,7 +618,7 @@ sort(names, reverseAlpha);</programlisting>
         </section>
         
         <section>
-            <title>Returning a callable object from a method</title>
+            <title>Callable objects as method return values</title>
             
         <para>An expression of type <literal>Callable</literal> may be returned by a method 
         with multiple parameter lists. The expression must be assignable to the callable 
@@ -664,15 +668,15 @@ local comp = order(1,-1);</programlisting>
     <section id="invocation">
         <title>Invocation</title>
         
-        <para>Methods references, and other instances of <literal>Callable</literal> are 
+        <para>A callable object&mdash;anything that implements <literal>Callable</literal>&mdash;is 
         <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
         expression of type <literal>Callable&lt;T,P...</literal>, together with an argument 
         list.</para>
         
         <programlisting>Invocation := Primary TypeArguments? Arguments</programlisting>
             
-        <para>An invocation must specify arguments for parameters, either by listing or naming 
-        parameter values.</para>
+        <para>An invocation must specify arguments for parameters of the callable object, 
+        either by listing or naming parameter values.</para>
         
         <programlisting>Arguments := PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
@@ -698,7 +702,7 @@ local comp = order(1,-1);</programlisting>
         <para>In the second case, the argument expressions are evaluated and collected into an 
         instance of <literal>Iterable&lt;T&gt;</literal> when the invocation is executed.</para>
         
-        <para>When an invocation is executed:</para>
+        <para>When a method or constructor reference invocation expression is executed:</para>
         
         <itemizedlist>
             <listitem>
@@ -719,8 +723,8 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>The type of an invocation expression is the return type of the expression of type
-        <literal>Callable</literal>.</para>
+        <para>The type of an invocation expression is the type argument to the second type parameter
+        of the expression type <literal>Callable</literal> (the return type).</para>
         
         <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
         The receiving instance?</para></comment>
@@ -1009,7 +1013,7 @@ local comp = order(1,-1);</programlisting>
         </section>
         
         <section id="callablearguments">
-            <title>Callable arguments</title>
+            <title>Inline callable arguments</title>
             
         <para>After a positional argument list, arguments to callable parameters 
         may be specified with certain punctuation eliminated:</para>
@@ -1035,8 +1039,8 @@ local comp = order(1,-1);</programlisting>
             </listitem-->
         </itemizedlist>
         
-        <para>These arguments are called <emphasis>callable arguments</emphasis> of
-        a positional parameter invocation.</para>
+        <para>These arguments are called an <emphasis>inline callable arguments</emphasis> 
+        of a positional parameter invocation.</para>
                 
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
         
@@ -1280,7 +1284,7 @@ except (SomethingElseWrong sew) {
                 declaration of the method or type except in the context of an invocation of the
                 callable reference. However, the compiler does check that a conforming overloaded
                 declaration exists before permitting specification of the callable reference in 
-                the declaration of another method or callable argument.</para>
+                the declaration of another method or inline callable argument.</para>
                 
                 <para>Finally, if type arguments were not explicitly specified, there must be a
                 combination of type arguments that can be substituted for the type parameters of

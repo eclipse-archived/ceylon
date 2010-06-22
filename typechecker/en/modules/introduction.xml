@@ -669,24 +669,22 @@ String paris = cities["Emmanuel"];</programlisting>
         verbose. But this is not the way <literal>ifExists()</literal> is really
         intended to be used. Ceylon provides a special method argument syntax
         for defining a method that is passed to another method inline, as part
-        of the invocation. An inline method definition is called a
-        <emphasis>callable argument</emphasis>. Callable arguments follow the 
-        normal parenthesized argument list.</para>
+        of the invocation. An inline method definition is called an
+        <emphasis>inline callable argument</emphasis>. Inline callable arguments 
+        follow the normal parenthesized argument list.</para>
         
-        <para>Using callable arguments, we could write <literal>greeting</literal> 
+        <para>As a first step, we could rewrite <literal>greeting</literal> 
         as follows, to make it really clear that we're defining methods that are 
         passed as arguments to the callable parameters <literal>then</literal> 
         and <literal>otherwise</literal>.</para>
 
 <programlisting><![CDATA[package String greeting {
     return ifExists(name)
-        //inline definition of the first
-        //callable argument
+        //first inline callable argument
         then () {
             return "Hello, " name "!"
         }
-        //inline definition of the second
-        //callable argument
+        //second inline callable argument
         otherwise () {
             return "Hello, World!"
         }
@@ -727,7 +725,7 @@ String paris = cities["Emmanuel"];</programlisting>
         
         <para>This syntax might look a little unfamiliar at first, but 
         you'll soon get used to it. In Ceylon, we use method invocations 
-        with callable arguments to express things that are difficult
+        with inline callable arguments to express things that are difficult
         to express without specialized syntax in other languages, for
         example:</para>
         
@@ -760,15 +758,15 @@ String paris = cities["Emmanuel"];</programlisting>
                 <para>Are there any ordinary arguments? Which are they?</para>
             </listitem>
             <listitem>
-                <para>Which is the callable argument? What is its name?</para>
+                <para>Which is the inline callable argument? What is its name?</para>
             </listitem>
             <listitem>
-                <para>Are there any formal parameters of the callable argument? 
+                <para>Are there any formal parameters of the inline callable argument? 
                 What are the parameter names?</para>
             </listitem>
             <listitem>
-                <para>Where is the implementation of the callable argument?
-                What happens when the callable argument is invoked?</para>
+                <para>Where is the implementation of the inline callable argument?
+                What happens when the inline callable argument is invoked?</para>
             </listitem>
         </itemizedlist>
         
