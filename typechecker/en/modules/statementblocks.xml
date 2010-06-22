@@ -251,8 +251,8 @@
             
         <para>A specification statement may specify the value of a non-<literal>mutable</literal> 
         attribute or local that has already been declared earlier in the block. It may 
-        even specify a method reference for a method that was declared earlier in the 
-        block.</para>
+        even specify a value of type <literal>Callable</literal> for a method that was 
+        declared earlier in the block.</para>
         
         <programlisting>Specification := MemberName Specifier ";"</programlisting>
                 

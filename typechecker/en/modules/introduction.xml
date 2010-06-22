@@ -38,16 +38,16 @@
     </para>
     
     <para>
-    Ceylon methods are similar to Java methods. Ceylon does not, strictly
-    speaking, support first-class function types. However, higher-order
-    functions are supported, with minimal extensions to the traditional
-    C syntax. A method declaration may specify a <emphasis>functional 
-    parameter</emphasis> that accepts references to other methods with a 
-    certain signature. The argument of such a functional parameter may be 
-    either a reference to a named method declared elsewhere, or a new 
-    method defined inline as part of the method invocation. A method may 
-    even return method references. Finally, nested method declarations 
-    receive a closure of immutable values in the surrounding scope.
+    Ceylon methods are similar to Java methods. Ceylon supports first-class 
+    function types and higher-order functions, with minimal extensions to 
+    the traditional C syntax. A method declaration may specify a 
+    <emphasis>callable parameter</emphasis> that accepts references to 
+    other methods with a certain signature. The argument of such a callable 
+    parameter may be either a reference to a named method declared elsewhere, 
+    or a new method defined inline as part of the method invocation. A method 
+    may even return an invocable reference to another method. Finally, nested 
+    method declarations receive a closure of immutable values in the 
+    surrounding scope.
     </para>
     
     <para>
@@ -652,8 +652,8 @@ String paris = cities["Emmanuel"];</programlisting>
         
         <para>For example, the Ceylon standard librares define a method called
         <literal>ifExists()</literal> that accepts an object and two 
-        <emphasis>method references</emphasis>. (A method parameter that accepts 
-        a method reference is called a <emphasis>functional parameter</emphasis>.)
+        <emphasis>callable objects</emphasis>. (A method parameter that accepts 
+        a callable objects is called a <emphasis>callable parameter</emphasis>.)
         If the object is not null, <literal>ifExists()</literal> invokes the first
         method. Otherwise, <literal>ifExists()</literal> invokes the second method.
         We can use <literal>ifExists()</literal> to rewrite 
@@ -670,23 +670,23 @@ String paris = cities["Emmanuel"];</programlisting>
         intended to be used. Ceylon provides a special method argument syntax
         for defining a method that is passed to another method inline, as part
         of the invocation. An inline method definition is called a
-        <emphasis>functional argument</emphasis>. Functional arguments follow
-        the normal parenthesized argument list.</para>
+        <emphasis>callable argument</emphasis>. Callable arguments follow the 
+        normal parenthesized argument list.</para>
         
-        <para>Using functional arguments, we could write <literal>greeting</literal> 
+        <para>Using callable arguments, we could write <literal>greeting</literal> 
         as follows, to make it really clear that we're defining methods that are 
-        passed as arguments to the functional parameters <literal>then</literal> 
+        passed as arguments to the callable parameters <literal>then</literal> 
         and <literal>otherwise</literal>.</para>
 
 <programlisting><![CDATA[package String greeting {
     return ifExists(name)
         //inline definition of the first
-        //functional argument
+        //callable argument
         then () {
             return "Hello, " name "!"
         }
         //inline definition of the second
-        //functional argument
+        //callable argument
         otherwise () {
             return "Hello, World!"
         }
@@ -727,7 +727,7 @@ String paris = cities["Emmanuel"];</programlisting>
         
         <para>This syntax might look a little unfamiliar at first, but 
         you'll soon get used to it. In Ceylon, we use method invocations 
-        with functional arguments to express things that are difficult
+        with callable arguments to express things that are difficult
         to express without specialized syntax in other languages, for
         example:</para>
         
@@ -760,15 +760,15 @@ String paris = cities["Emmanuel"];</programlisting>
                 <para>Are there any ordinary arguments? Which are they?</para>
             </listitem>
             <listitem>
-                <para>Which is the functional argument? What is its name?</para>
+                <para>Which is the callable argument? What is its name?</para>
             </listitem>
             <listitem>
-                <para>Are there any formal parameters of the functional argument? 
+                <para>Are there any formal parameters of the callable argument? 
                 What are the parameter names?</para>
             </listitem>
             <listitem>
-                <para>Where is the implementation of the functional argument?
-                What happens when the functional argument is invoked?</para>
+                <para>Where is the implementation of the callable argument?
+                What happens when the callable argument is invoked?</para>
             </listitem>
         </itemizedlist>
         

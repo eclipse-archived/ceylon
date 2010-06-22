@@ -14,7 +14,7 @@
             <para>enumerated instance references,</para>
         </listitem>
         <listitem>
-            <para>method references,</para>
+            <para>callable references,</para>
         </listitem>
         <listitem>
             <para>invocation of methods and instantiation of classes,</para> 
@@ -38,7 +38,7 @@
     <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
     members of an atom or toplevel method or class.</para>
     
-    <programlisting>Primary := Atom | EnumeratedInstanceReference | MethodReference | Invocation | Evaluation</programlisting>
+    <programlisting>Primary := Atom | EnumeratedInstanceReference | CallableReference | Invocation | Evaluation</programlisting>
     
     <para>More complex expressions are formed by combining expressions using operators, 
     including assignment operators.</para>    
@@ -70,8 +70,8 @@
     </itemizedlist>
     <para>For example, a constant expression might be anything formed from
     literals, enumerated instance references, metamodel references, the 
-    <literal>..</literal> and <literal>-></literal> operators, sequence
-    enumeration, and toplevel method references.</para>
+    <literal>..</literal> and <literal>-></literal> operators and sequence
+    enumerations.</para>
     </comment>
 
     <section id="literals">
@@ -401,7 +401,7 @@ if you prefer.";</programlisting>
             <listitem>
                 <para>of type <literal>Method&lt;X,R,P...&gt;</literal> where 
                 <literal>X</literal> is the type that defines the method, 
-                and <literal>R</literal> is the operation type of a method
+                and <literal>R</literal> is the callable type of a method
                 produced by removing the first formal parameter list of the
                 method, and <literal>P...</literal> are the types of the 
                 first formal parameter lists of the method, or</para>
@@ -458,40 +458,47 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section id="methodreferences">
-        <title>Method references</title>
+    <section id="callablereferences">
+        <title>Callable references</title>
         
-        <para>A <emphasis>method reference</emphasis> is a callable reference to a
-        method or class:</para>
+        <para>A <emphasis>callable reference</emphasis> is a reference to 
+        something&mdash;a method or class&mdash;that can be <emphasis>invoked</emphasis>
+        by specifying a list of arguments.</para>
         
-        <programlisting>MethodReference := (Receiver ".")? (MemberName | Type)</programlisting>
+        <programlisting>CallableReference := (Receiver ".")? (MemberName | Type)</programlisting>
         
-        <para>A method reference may be immediately <emphasis>invoked</emphasis>, or
-        it may be passed to other code which may invoke the reference.</para>
+        <para>A callable reference may be invoked immediately, or it may be passed 
+        to other code which may invoke the reference.</para>
+        
+        <para>Callable reference expressions areassignable to 
+        <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
+        <literal>P...</literal> depend upon the schema of the method or class</para>
         
         <itemizedlist>
         <listitem>
-            <para>If the method reference specifies a method name, it is a reference 
-            to a method. The type of a method reference expression is assignable to 
-            the operation type of every overloaded version of the method. Calling
-            the method reference results in execution of the method.</para>
+            <para>If the callable reference specifies a method name, it is called a 
+            <emphasis>method reference</emphasis>. The type of a method reference 
+            expression is assignable to the callable type of every overloaded 
+            version of the method. Calling the callable reference results in execution 
+            of the method.</para>
         </listitem>
         <listitem>
-            <para>If the method reference specifies a class name, it is a 
-            <emphasis>constructor reference</emphasis>. The type of the constructor 
-            reference expression is assignable to the operation type of every
+            <para>If the callable reference specifies a class name, it is called a 
+            <emphasis>constructor reference</emphasis>. The type of a constructor 
+            reference expression is assignable to the callable type of every
             overloaded version of the class. Calling the constructor reference 
             results in instantiation of the method.</para>
         </listitem>
         </itemizedlist>
         
-        <para>A method reference may specify a receiver expression. When a method 
-        reference is executed, the receiver expression, if any, is evaluated and a 
-        reference to the resulting value is held as part of the method reference.</para>
+        <para>A callable reference may specify a receiver expression. When a callable 
+        reference with a receiver expression is executed, the receiver expresson is 
+        evaluated and a reference to the resulting value is held as part of the 
+        callable reference.</para>
         
-        <para>A method reference captures the return type and formal parameter lists
+        <para>A callable reference captures the return type and formal parameter lists
         of the method or class, allowing compile-time validation of argument types
-        when a method reference is invoked.</para>
+        when the callable reference is invoked.</para>
         
         <section>
             <title>Receiver expressions</title>
@@ -563,10 +570,12 @@ if you prefer.";</programlisting>
          -->
          
         <section>
-            <title>Specifying a method reference as a method implementation or functional
+            <title>Specifying a callable object as a method implementation or callable
             parameter argument</title>
             
-        <para>A method reference may be used to define a method using <literal>=</literal>.</para>
+        <para>An expression of type <literal>Callable</literal> may be used to define a 
+        method using <literal>=</literal>. The expression type must be assignable to the 
+        callable type of the method being defined.</para>
         
         <programlisting>Comparison order(X x, Y y) = Order.reverse;</programlisting>
         
@@ -574,14 +583,12 @@ if you prefer.";</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
-        <para>The method reference must be assignable to the operation type of the method 
-        being defined.</para>
+        <para>An expression of type <literal>Callable</literal> may appear as an argument 
+        to a callable parameter, either as a positional argument, or as an argument 
+        specified using <literal>=</literal> in a named parameter invocation. The expression 
+        type must be assignable to the callable type of the callable parameter.</para>
         
-        <para>Method references may appear as an argument to a functional parameter, either 
-        as a positional argument, or as an argument specified using <literal>=</literal> in 
-        a named parameter invocation.</para>
-        
-        <para>This method has a functional parameter:</para>
+        <para>This method has a callable parameter:</para>
         
         <programlisting>void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
 
@@ -590,7 +597,7 @@ if you prefer.";</programlisting>
         <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x }
 sort(names, reverseAlpha);</programlisting>
         
-        <para>This class has two functional parameters:</para>
+        <para>This class has two callable parameters:</para>
         
         <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
@@ -604,15 +611,14 @@ sort(names, reverseAlpha);</programlisting>
     onUpdate = person.name.setIt;
 }</programlisting>
         
-         <para>The method reference must be assignable to the operation type of the
-        functional parameter.</para>
-        
         </section>
         
         <section>
-            <title>Returning a method reference from a method</title>
+            <title>Returning a callable object from a method</title>
             
-        <para>A method reference may be returned by a method with multiple parameter lists.</para>
+        <para>An expression of type <literal>Callable</literal> may be returned by a method 
+        with multiple parameter lists. The expression must be assignable to the callable 
+        type of a method formed by eliminating the first parameter list of the method.</para>
         
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     if (reverse) {
@@ -635,9 +641,6 @@ sort(names, reverseAlpha);</programlisting>
         return natural
     }
 }</programlisting>
-
-        <para>The method reference must be assignable to the operation type of a method 
-        produced by eliminating the first parameter list of the method.</para>
 
         <para>Calling a method with multiple parameter lists is similar to the operation 
         of "currying" in a functional programming language.</para>
@@ -716,8 +719,8 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>The type of an invocation expression is the return type of the invoked method
-        reference.</para>
+        <para>The type of an invocation expression is the return type of the expression of type
+        <literal>Callable</literal>.</para>
         
         <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
         The receiving instance?</para></comment>
@@ -830,7 +833,7 @@ local comp = order(1,-1);</programlisting>
             or</para>
             </listitem>
             <listitem>
-            <para>only for functional parameters, specifies the type or <literal>local</literal>, a 
+            <para>only for callable parameters, specifies the type or <literal>local</literal>, a 
             formal parameter list and a block of code (an inline method declaration).</para>
             </listitem>
         </itemizedlist>
@@ -1005,10 +1008,10 @@ local comp = order(1,-1);</programlisting>
  
         </section>
         
-        <section id="functionalarguments">
-            <title>Functional arguments</title>
+        <section id="callablearguments">
+            <title>Callable arguments</title>
             
-        <para>After a positional argument list, arguments to functional parameters 
+        <para>After a positional argument list, arguments to callable parameters 
         may be specified with certain punctuation eliminated:</para>
         
         <itemizedlist>
@@ -1016,8 +1019,8 @@ local comp = order(1,-1);</programlisting>
                 <para>the return type is not declared,</para>
             </listitem>
             <listitem>
-                <para>if the functional parameter declares no formal parameters, the 
-                empty parentheses may be eliminated, and</para>
+                <para>if the callable parameter has an empty formal parameter list, 
+                the empty parentheses may be eliminated, and</para>
             </listitem>
             <listitem>
                 <para>if the body of the method implementation consists of a single
@@ -1032,7 +1035,7 @@ local comp = order(1,-1);</programlisting>
             </listitem-->
         </itemizedlist>
         
-        <para>These arguments are called <emphasis>functional arguments</emphasis> of
+        <para>These arguments are called <emphasis>callable arguments</emphasis> of
         a positional parameter invocation.</para>
                 
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
@@ -1088,12 +1091,12 @@ local comp = order(1,-1);</programlisting>
             
         <para>A specialized invocation syntax is provided for toplevel methods which iterate 
         collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
-        annotated <literal>iterated</literal>, and all remaining parameters are functional
+        annotated <literal>iterated</literal>, and all remaining parameters are callable
         parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>StaticMethodReference "(" ForIterator ")" FunctionalArguments</programlisting>
+        <programlisting>CallableReference "(" ForIterator ")" FunctionalArguments</programlisting>
         
-        <para>And then if a functional parameter has a formal parameter of type 
+        <para>And then if a callable parameter has a formal parameter of type 
         <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
         not be declared by its argument. Instead, the parameter is declared by the iterator.</para>
         
@@ -1136,12 +1139,12 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
             
         <para>A specialized invocation syntax is also provided for toplevel methods which define 
         a variable. If the first parameter of the method is of type <literal>X</literal>,
-        annotated <literal>specified</literal>, and all remaining parameters are functional
+        annotated <literal>specified</literal>, and all remaining parameters are callable
         parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>MethodReference "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
+        <programlisting>CallableReference "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
         
-        <para>And then if a functional parameter has a formal parameter of type 
+        <para>And then if a callable parameter has a formal parameter of type 
         <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
         not be declared by its argument. Instead, the parameter is declared by the variable 
         specifier.</para>
@@ -1273,11 +1276,11 @@ except (SomethingElseWrong sew) {
                 signature to which the arguments are assignable, the invocation or instantiation 
                 is illegal. (Note that Ceylon is stricter and simpler than Java with this rule.)</para>
                 
-                <para>Note that method references are not resolved to a specific overloaded
+                <para>Note that callable references are not resolved to a specific overloaded
                 declaration of the method or type except in the context of an invocation of the
-                method reference. However, the compiler does check that a conforming overloaded
-                declaration exists before permitting specification of the method reference in the
-                declaration of another method or functional argument.</para>
+                callable reference. However, the compiler does check that a conforming overloaded
+                declaration exists before permitting specification of the callable reference in 
+                the declaration of another method or callable argument.</para>
                 
                 <para>Finally, if type arguments were not explicitly specified, there must be a
                 combination of type arguments that can be substituted for the type parameters of
@@ -1491,12 +1494,12 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <listitem>
                 <para><literal>Referenceable&lt;X&gt;</literal>, if the attribute or 
                 local is not <literal>mutable</literal>, or if the setter is not visible
-                to the block containing the method reference, or</para>
+                to the block containing the attribute or local reference, or</para>
             </listitem>
             <listitem>
                 <para><literal>Assignable&lt;X&gt;</literal>, if the attribute or local 
                 is <literal>mutable</literal> and the setter, if any, is visible to the 
-                block containing the method reference.</para>
+                block containing the attribute or local reference.</para>
             </listitem>
         </itemizedlist>
                     

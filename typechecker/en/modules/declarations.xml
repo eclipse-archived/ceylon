@@ -364,11 +364,15 @@ Description doc(String description) {
         
         <para>Types are identified by the name of the type (a class, interface, alias or 
         type parameter), together with a list of type arguments if the type definition 
-        specifies formal parameters.</para>
+        specifies type parameters.</para>
         
         <programlisting>Type := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) Abbreviation*</programlisting>
         
-        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
+        <para>If a type has type parameters or a varargs type parameter, a type argument 
+        list must be specified. If a type has no type parameters, and no varargs type 
+        parameter, no type argument list may be specified.</para>        
+        
+         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
 
         <para>Certain declarations which usually require an explicit type may omit the type, 
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
@@ -552,16 +556,16 @@ String?? firstWord = words[0];</programlisting>
                 <para>A nonvariant type parameter or a type is a nonvariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a functional parameter in a contravariant position is covariant.</para>
+                <para>A formal parameter of a callable parameter in a contravariant position is covariant.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a functional parameter in a covariant position is contravariant.</para>
+                <para>A formal parameter of a callable parameter in a covariant position is contravariant.</para>
             </listitem>
             <listitem>
-                <para>The return type of a functional parameter in a contravariant position is contravariant.</para>
+                <para>The return type of a callable parameter in a contravariant position is contravariant.</para>
             </listitem>
             <listitem>
-                <para>The return type of a functional parameter in a covariant position is covariant.</para>
+                <para>The return type of a callable parameter in a covariant position is covariant.</para>
             </listitem>
         </itemizedlist>
         
@@ -625,13 +629,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>Entry&lt;String,Person&gt;</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
         
-        <para>A type argument must be specified for every type parameter. If the type has
-        type parameters, an argument list must be specified. In addition, An arbitrary list 
-        of zero or more type parameters may be specified for a varargs type parameter. If 
-        the type has no type parameters, and no varargs type parameter, no argument list 
-        may be specified.</para>        
+        <para> A type argument must be specified for every type parameter. In addition, an 
+        arbitrary list of zero or more type arguments may be specified for a varargs type 
+        parameter. Optionally, the last argument in this list may be another varargs type 
+        parameter.</para>
         
-        <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+       <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
         
         <para>A type argument is substituted for every appearance of the corresponding
         type parameter in the schema of the parameterized type definition, including:</para>
@@ -674,8 +677,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <comment><para>TODO: do we need to let you fill in the formal parameter names?
         If we don't, you won't be able to call this thing using named parameters, and
-        we need some special definition in the spec defining how method references
-        carry their parameter names with them.
+        we need some special definition in the spec defining how callable object
+        references carry their parameter names with them.
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
         </para></comment>
         
@@ -769,7 +772,7 @@ VarargsParam?
         <programlisting>Param := Annotation* (Type|"void") ParameterName FormalParams*</programlisting>
         
         <para>A parameter with its own parameter list (or lists) is called a 
-        <emphasis>functional parameter</emphasis>. Think of it as an abstract local method that 
+        <emphasis>callable parameter</emphasis>. Think of it as an abstract local method that 
         must be defined by the caller when the method is invoked or the class is instantiated. 
         </para>
             
@@ -777,8 +780,8 @@ VarargsParam?
         
         <programlisting>(Comparison by(X x, X y))</programlisting>
         
-        <para>A functional parameter declaration is equivalent to a formal parameter declaration 
-        with no parameter lists where the type is the operation type of the method declaration.
+        <para>A callable parameter declaration is equivalent to a formal parameter declaration 
+        with no parameter lists where the type is the callable type of the method declaration.
         So the above are equivalent to:</para>
         
         <programlisting>(String label, Callable&lt;Object&gt; onClick)</programlisting>
@@ -1374,8 +1377,8 @@ ClassBody</programlisting>
         <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 
         like in Scala?</para></comment>
         
-        <para>The <emphasis>operation type</emphasis> of a class captures the type and formal parameter 
-        types of the class. The operation type is <literal>Callable&lt;T,P...&gt;</literal>, where
+        <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
+        types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
         <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
         of the class.</para>
         
@@ -1889,7 +1892,8 @@ public User(String username, Person person);</programlisting>
         <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
         
         <para>A method may declare multiple lists of parameters. Methods which declare
-        more than one parameter list return method references.</para>
+        more than one parameter list return instances of <literal>Callable</literal>,
+        usually method references.</para>
         
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
     Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
@@ -1901,25 +1905,25 @@ public User(String username, Person person);</programlisting>
         Parameters declared by parameter lists other than the first parameter list are 
         not considered visible inside the body of the method.</para>
         
-        <para>A method reference returned by a method with multiple parameter lists 
-        must conform to the schema of the method with multiple parameter lists, after 
-        eliminating the first parameter list.</para>
+        <para>A callable object returned by a method with multiple parameter lists must 
+        have the same return type, and the same parameter types, as the method with 
+        multiple parameter lists, after eliminating its first parameter list.</para>
         
-        <para>The <emphasis>operation type</emphasis> of a method captures the return
+        <para>The <emphasis>callable type</emphasis> of a method captures the return
         types and formal parameter types of the method.</para>
         
         <itemizedlist>
         <listitem>
-            <para>The operation type of a method with a single parameter list is 
+            <para>The callable type of a method with a single parameter list is 
             <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is the 
             declared type of the method, or the type that declares the method if the
             method is <literal>void</literal>, and <literal>P...</literal> are the formal 
             parameter types of the method.</para>
         </listitem>
         <listitem>
-            <para>The operation type of a method with multiple parameter lists is 
+            <para>The callable type of a method with multiple parameter lists is 
             <literal>Callable&lt;O,P...&gt;</literal>, where <literal>O</literal> is the
-            operation type of a method produced by eliminating the first formal parameter
+            callable type of a method produced by eliminating the first formal parameter
             list, and <literal>P...</literal> are the formal parameter types of the first 
             formal parameter list of the method.</para>
         </listitem>
@@ -1942,7 +1946,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 }</programlisting>
                 
         <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
-        methods may declare defaulted parameters and functional parameters.</para>
+        methods may declare defaulted parameters and callable parameters.</para>
         
         <section id="overloadedmethods">
             <title>Overloaded methods</title>
@@ -2048,9 +2052,10 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 }</programlisting>
             
             <para>For abstract methods, a special shortcut form of overriding is
-            permitted. A subclass initializer may simply specify a method reference 
-            for the method declared by the superclass. No formal parameter list or 
-            return type declaration or <literal>override</literal> annotation is 
+            permitted. A subclass initializer may simply specify an instance of
+            <literal>Callable</literal> as the implementation of the abstract
+            method declared by the superclass. No formal parameter list, return 
+            type declaration, or <literal>override</literal> annotation is 
             necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
