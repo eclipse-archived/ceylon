@@ -421,8 +421,8 @@ if you prefer.";</programlisting>
     <section id="methodreferences">
         <title>Method references</title>
         
-        <para>A <emphasis>method reference</emphasis> is an invocable reference to a
-        method or constructor:</para>
+        <para>A <emphasis>method reference</emphasis> is a callable reference to a
+        method or class:</para>
         
         <programlisting>MethodReference := (Receiver ".")? (MemberName | Type)</programlisting>
         
@@ -432,14 +432,16 @@ if you prefer.";</programlisting>
         <itemizedlist>
         <listitem>
             <para>If the method reference specifies a method name, it is a reference 
-            to a method.</para>
+            to a method. The type of a method reference expression is assignable to 
+            the operation type of every overloaded version of the method. Calling
+            the method reference results in execution of the method.</para>
         </listitem>
         <listitem>
-            <para>If the method reference specifies a class name, it is a <emphasis>constructor 
-            reference</emphasis>. A constructor reference is a reference to an implicit 
-            method with a schema that depends upon the formal parameters of the class. 
-            For a class <literal>T</literal>, the constructor method has return type 
-            <literal>T</literal> and the same formal parameter list as the class.</para>
+            <para>If the method reference specifies a class name, it is a 
+            <emphasis>constructor reference</emphasis>. The type of the constructor 
+            reference expression is assignable to the operation type of every
+            overloaded version of the class. Calling the constructor reference 
+            results in instantiation of the method.</para>
         </listitem>
         </itemizedlist>
         
@@ -449,10 +451,7 @@ if you prefer.";</programlisting>
         
         <para>A method reference captures the return type and formal parameter lists
         of the method or class, allowing compile-time validation of argument types
-        when a method reference is invoked. The type of a method reference expression
-        is assignable to the operation type of every overloaded version of the method.</para>
-        
-        <comment><para>TODO: some explanation of overloading in this context.</para></comment>
+        when a method reference is invoked.</para>
         
         <section>
             <title>Receiver expressions</title>

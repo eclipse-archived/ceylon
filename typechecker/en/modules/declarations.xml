@@ -1180,14 +1180,15 @@ ClassBody</programlisting>
         
         <itemizedlist>
            <listitem>
-              <para>The body of the class declares <emphasis>initialization parameters</emphasis>.
-              An initialization parameter may be used anywhere in the class body, including in 
-              method and attribute definitions.</para>
+              <para>The body of the class declares <emphasis>initialization 
+              parameters</emphasis>. An initialization parameter may be used anywhere in 
+              the class body, including in method and attribute definitions.</para>
            </listitem>
            <listitem>
-              <para>The initial part of the body of the class is called the <emphasis>initializer</emphasis> 
-              and contains a mix of declarations, statements and control structures. The initializer 
-              is executed every time the class is instantiated.</para>
+              <para>The initial part of the body of the class is called the 
+              <emphasis>initializer</emphasis> and contains a mix of declarations, statements 
+              and control structures. The initializer is executed every time the class is 
+              instantiated.</para>
            </listitem>
         </itemizedlist>
         
@@ -1363,6 +1364,11 @@ ClassBody</programlisting>
         <comment><para>TODO: should class initialization parameters be allowed to be declared 
         <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 
         like in Scala?</para></comment>
+        
+        <para>The <emphasis>operation type</emphasis> of a class captures the type and formal parameter 
+        types of the class. The operation type is <literal>Callable&lt;T,P...&gt;</literal>, where
+        <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
+        of the class.</para>
         
         <!-- comment>
         
