@@ -378,6 +378,9 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
         <programlisting><![CDATA[interface Class<X, P...> 
         satisfies Type<X> {
     
+    Boolean mutable;
+    Boolean abstract;
+    
     X create(P...);
     
     Listener addListener( X onCreate(P... args, X proceed(P... args)) );
@@ -386,8 +389,11 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
 
         <programlisting><![CDATA[interface Member<in X, out T> 
         satisfies Annotated {
-        
-    boolean mutable;
+    
+    Boolean abstract;
+    Boolean default;
+    Boolean mutable;
+    
     Type<T> type;
     T evaluate(X instance);
     Reference<T> reference(X instance);
