@@ -376,15 +376,16 @@ if you prefer.";</programlisting>
                 <literal>X</literal> is the interface, or</para>
             </listitem>
             <listitem>
-                <para>of type <literal>Class&lt;X,P...&gt;</literal> where 
+                <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
                 <literal>X</literal> is the class and <literal>P...</literal> 
-                are the types of the formal parameter list of the class.</para>
+                are the types of the formal parameter list of the class, for every
+                overloaded version of the class.</para>
             </listitem>
         </itemizedlist>
         
         <programlisting>TypeMeta := HASH Type</programlisting>
         
-        <para>A <literal>Method</literal>, <literal>Attribute</literal> or <literal>Instance</literal>
+        <para>A <literal>Method</literal> or <literal>Attribute</literal> <!--or <literal>Instance</literal>-->
         object representing a member may be obtained by specifying the type and member name.
         The <literal>Method</literal> object representing a toplevel method may be obtained
         by specifying just the method name.</para>
@@ -398,15 +399,7 @@ if you prefer.";</programlisting>
         attribute is:</para>
         
         <itemizedlist>
-            <listitem>
-                <para>of type <literal>Method&lt;X,R,P...&gt;</literal> where 
-                <literal>X</literal> is the type that defines the method, 
-                and <literal>R</literal> is the callable type of a method
-                produced by removing the first formal parameter list of the
-                method, and <literal>P...</literal> are the types of the 
-                first formal parameter lists of the method, or</para>
-            </listitem>
-            <listitem>
+           <listitem>
                 <para>of type <literal>Attribute&lt;X,T&gt;</literal> where 
                 <literal>X</literal> is the type that defines the attribute, 
                 and <literal>T</literal> is the declared type of the attribute,
@@ -416,16 +409,41 @@ if you prefer.";</programlisting>
                 <para>of type <literal>MutableAttribute&lt;X,T&gt;</literal> where 
                 <literal>X</literal> is the type that defines the attribute, 
                 and <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>mutable</literal>.</para>
+                if the attribute is declared <literal>mutable</literal>, or</para>
             </listitem>
-        </itemizedlist>
+            <listitem>
+                <para>assignable to <literal>Method&lt;X,R,P...&gt;</literal> where 
+                <literal>X</literal> is the type that defines the method, and 
+                <literal>R</literal> is the callable type of a method produced by 
+                removing the first formal parameter list of the method, and 
+                <literal>P...</literal> are the types of the first formal parameter 
+                lists of the method, for every overloaded version of the method.</para>
+            </listitem>
+         </itemizedlist>
         
         <para>Metamodel references are compile-time typesafe.</para>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
-        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;</programlisting>
-        <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;</programlisting>
-        <programlisting>Attribute&lt;Counter, Natural&gt; countAttribute = #count;</programlisting>
+        
+        <programlisting>Class&lt;ArrayList&lt;String,Iterable&lt;String&gt;&gt;&gt; arrayListClass = #ArrayList&lt;String&gt;
+List list = arrayListClass.create("foo", "bar", "baz);</programlisting>
+        
+        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;
+String personName = nameAttribute.evaluate(person);</programlisting>
+        
+        <programlisting>Method&lt;Person, String&gt;&gt; sayMethod = #Person.say;
+String result = sayMethod.evaluate(person)();</programlisting>
+        
+        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
+countAttribute.evaluate(this)++;</programlisting>
+
+        <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = #Order.createItem;
+createItemMethod.addListener() 
+    onInvoke (Person p, 
+              Item proceed(Product p, Natural n),  
+              Product product, Natural quantity) {
+        return proceed(product,quantity);
+    };</programlisting>
         
         <comment><para>TODO: Would it be better to require the <literal>#</literal> 
         before the member name even when qualified by the type, for example, 

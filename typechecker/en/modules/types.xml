@@ -419,7 +419,9 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
 
         <programlisting><![CDATA[interface MutableAttribute<X, T> 
         satisfies Attribute<X, T> {
-        
+    
+    override Assignable<T> reference(X instance);
+    
     Listener addListener( X onSet(X instance, X proceed(T value), T value) );
     
 }]]></programlisting>
