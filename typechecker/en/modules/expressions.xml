@@ -368,6 +368,20 @@ if you prefer.";</programlisting>
         type, with type arguments. A <literal>Class</literal> or <literal>Interface</literal> 
         object may be obtained by specifying a class or interface name, without arguments.</para>
         
+        <para>The metamodel expression, <literal>#X</literal>, for a class or interface is:</para>
+        
+        <itemizedlist>
+             <listitem>
+                <para>of type <literal>Type&lt;X&gt;</literal> where 
+                <literal>X</literal> is the interface, or</para>
+            </listitem>
+            <listitem>
+                <para>of type <literal>Class&lt;X,P...&gt;</literal> where 
+                <literal>X</literal> is the class and <literal>P...</literal> 
+                are the types of the formal parameter list of the class.</para>
+            </listitem>
+        </itemizedlist>
+        
         <programlisting>TypeMeta := HASH Type</programlisting>
         
         <para>A <literal>Method</literal>, <literal>Attribute</literal> or <literal>Instance</literal>
@@ -379,6 +393,32 @@ if you prefer.";</programlisting>
                
         <para>The type is required unless the reference is to a member of a containing class, 
         or to a toplevel method.</para>
+        
+        <para>The metamodel expression, <literal>#X.member</literal>, for a member method or 
+        attribute is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>of type <literal>Method&lt;X,R,P...&gt;</literal> where 
+                <literal>X</literal> is the type that defines the method, 
+                and <literal>R</literal> is the operation type of a method
+                produced by removing the first formal parameter list of the
+                method, and <literal>P...</literal> are the types of the 
+                first formal parameter lists of the method, or</para>
+            </listitem>
+            <listitem>
+                <para>of type <literal>Attribute&lt;X,T&gt;</literal> where 
+                <literal>X</literal> is the type that defines the attribute, 
+                and <literal>T</literal> is the declared type of the attribute,
+                unless the attribute is declared <literal>mutable</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>of type <literal>MutableAttribute&lt;X,T&gt;</literal> where 
+                <literal>X</literal> is the type that defines the attribute, 
+                and <literal>T</literal> is the declared type of the attribute,
+                if the attribute is declared <literal>mutable</literal>.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>Metamodel references are compile-time typesafe.</para>
         
