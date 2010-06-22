@@ -435,6 +435,16 @@ String personName = nameAttribute.evaluate(person);</programlisting>
 String result = sayMethod.evaluate(person)();</programlisting>
         
         <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
+countAttribute.addListener() 
+    onGet (Counter c, Natural proceed()) {
+        log.debug("getting");
+        return proceed();
+    };
+countAttribute.addListener() 
+    onSet (Counter c, Natural proceed(Natural n), Natural value) {
+        log.debug("setting");
+        return proceed(value);
+    };
 countAttribute.evaluate(this)++;</programlisting>
 
         <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = #Order.createItem;
