@@ -406,7 +406,7 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
     Type<R> returnType;
     Type<Object>[] parameterTypes;
     
-    Listener addListener( R onInvoke(X instance, P... args, R proceed(P... args)) );
+    Listener addListener( R onInvoke(X instance, R proceed(P... args), P... args) );
     
 }]]></programlisting>
 
@@ -420,7 +420,7 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
         <programlisting><![CDATA[interface MutableAttribute<X, T> 
         satisfies Attribute<X, T> {
         
-    Listener addListener( X onSet(X instance, T value, X proceed(T value)) );
+    Listener addListener( X onSet(X instance, X proceed(T value), T value) );
     
 }]]></programlisting>
 
