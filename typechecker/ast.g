@@ -468,7 +468,7 @@ typeParameters
     ;
 
 typeParameter
-    : variance? typeName
+    : variance? typeName '...'?
     -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     ;
 
