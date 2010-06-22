@@ -1072,7 +1072,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>perform (Person p) { log.info(p.name); }</programlisting>
         
-        <para>Functional arguments are listed without any additional punctuation:</para>
+        <para>Inline callable arguments are listed without any additional punctuation:</para>
         
         <programlisting>ifTrue (x+1) ifFalse (x-1)</programlisting>
         
