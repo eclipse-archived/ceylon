@@ -781,9 +781,9 @@ VarargsParam?
         with no parameter lists where the type is the operation type of the method declaration.
         So the above are equivalent to:</para>
         
-        <programlisting>(String label, Operation&lt;Object&gt; onClick)</programlisting>
+        <programlisting>(String label, Callable&lt;Object&gt; onClick)</programlisting>
         
-        <programlisting>(Operation&lt;Comparison,X,X&gt; by)</programlisting>
+        <programlisting>(Callable&lt;Comparison,X,X&gt; by)</programlisting>
         
         <para>Defaulted parameters specify a default argument.</para>
     

@@ -401,7 +401,7 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
 }]]></programlisting>
 
         <programlisting><![CDATA[interface Method<in X, R, P...> 
-        satisfies Member<Operation<R, P...>> {
+        satisfies Member<Callable<R, P...>> {
         
     Type<R> returnType;
     Type<Object>[] parameterTypes;
