@@ -777,6 +777,14 @@ VarargsParam?
         
         <programlisting>(Comparison by(X x, X y))</programlisting>
         
+        <para>A functional parameter declaration is equivalent to a formal parameter declaration 
+        with no parameter lists where the type is the operation type of the method declaration.
+        So the above are equivalent to:</para>
+        
+        <programlisting>(String label, Operation&lt;Object&gt; onClick)</programlisting>
+        
+        <programlisting>(Operation&lt;Comparison,X,X&gt; by)</programlisting>
+        
         <para>Defaulted parameters specify a default argument.</para>
     
         <programlisting>DefaultParam := FormalParam Specifier</programlisting>
