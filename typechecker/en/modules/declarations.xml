@@ -1903,8 +1903,9 @@ public User(String username, Person person);</programlisting>
         <itemizedlist>
         <listitem>
             <para>The operation type of a method with a single parameter list is 
-            <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is
-            the declared type of the method, and <literal>P...</literal> are the formal
+            <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is the 
+            declared type of the method, or the type that declares the method if the
+            method is <literal>void</literal>, and <literal>P...</literal> are the formal 
             parameter types of the method.</para>
         </listitem>
         <listitem>
