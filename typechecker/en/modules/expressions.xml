@@ -2593,7 +2593,7 @@ personRef := person;</programlisting>
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>(#Existent&lt;Object&gt;).satisfiedBy(lhs)</literal></entry>
+            <entry><literal>lhs is Existent&lt;Object&gt;</literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
