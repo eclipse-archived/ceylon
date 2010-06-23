@@ -10,7 +10,7 @@
         <title>Name resolution</title>
         
         <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
-        <literal>*.</literal> or <literal>?.</literal>) that appears in a program 
+        <literal>[].</literal> or <literal>?.</literal>) that appears in a program 
         element refers to a declaration elsewhere: a class, interface, alias, method, 
         attribute, local or enumerated instance.</para>
         

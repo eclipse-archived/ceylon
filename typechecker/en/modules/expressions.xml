@@ -1822,7 +1822,7 @@ personRef := person;</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
-    <programlisting>List&lt;String&gt; names = { person1, person2 }*.name;</programlisting>
+    <programlisting>List&lt;String&gt; names = { person1, person2, person3 }[].name;</programlisting>
     
     <programlisting>String? name = person?.name;</programlisting>
     
@@ -1860,7 +1860,7 @@ personRef := person;</programlisting>
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>,
-                <literal>*.</literal>, 
+                <literal>[].</literal>, 
                 <literal>?.</literal>, 
                 <literal>()</literal>,
                 <literal>{}</literal>,
@@ -2736,8 +2736,8 @@ personRef := person;</programlisting>
         <row><entry namest="first" nameend="last"><emphasis>Spread invocation</emphasis></entry></row>
 
         <row>
-            <entry><literal>*.</literal></entry>
-            <entry><literal>lhs*.member</literal></entry>
+            <entry><literal>[].</literal></entry>
+            <entry><literal>lhs[].member</literal></entry>
             <entry>spread member</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>
@@ -2873,7 +2873,7 @@ personRef := person;</programlisting>
     </table>
     
     <comment><para>TODO: Is <literal>people[].name</literal> a better syntax than 
-    <literal>people*.name</literal>?</para></comment>
+    <literal>people[].name</literal>?</para></comment>
     
     <comment><para>TODO: Should we overload <literal>*</literal> for sequences, like
     in some other languages? It is nice to be able to do stuff like 
