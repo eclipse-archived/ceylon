@@ -1837,7 +1837,7 @@ personRef := person;</programlisting>
     
     <para>In all operator expressions, the arguments of the operator
     must be evaluated from left to right when the expression is executed. In
-    certain cases, depending upon the definition of the operators, evaluation 
+    certain cases, depending upon the definition of the operator, evaluation 
     of the leftmost argument expression results in a value that causes the final
     value of the operator expression to be produced immediately without evaluation
     of the remaining argument expressions. Optimizations performed by the
