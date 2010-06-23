@@ -1873,7 +1873,7 @@ public User(String username, Person person);</programlisting>
         
         <para>The Ceylon compiler preserves the names of method parameters.</para>
         
-        <section>
+        <section id="methodimplementation">
             <title>Method implementation</title>
             
         <para>A method body may be a block. If the method is a <literal>void</literal> 
@@ -1912,7 +1912,7 @@ public User(String username, Person person);</programlisting>
         
         </section>
         
-        <section>
+        <section id="callabletype">
             <title>Callable type of a method</title>
             
         <para>The <emphasis>callable type</emphasis> of a method captures the return
@@ -1934,6 +1934,9 @@ public User(String username, Person person);</programlisting>
             formal parameter list of the method.</para>
         </listitem>
         </itemizedlist>
+        
+        <para>A varargs parameter is considered of type <literal>Iterable&lt;T&gt;</literal>
+        where <literal>T</literal> is the declared vararg type.</para>
         
         <para>A method body may be an expression that evaluates to a callable object, 
         specified using <literal>=</literal>. The type of the callable object must be 
