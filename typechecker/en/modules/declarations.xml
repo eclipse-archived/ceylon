@@ -621,20 +621,34 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     <section id="typeargumentlist">
         <title>Type argument list</title>
             
-        <para>A list of type arguments produces a new type from a parameterized type, or
-        a new method schema from a method schema with type parameters.</para>
+        <para>A list of <emphasis>type arguments</emphasis> produces a new type from a 
+        parameterized type, or a new method schema from a method schema with type parameters.</para>
         
         <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
         
+        <para>A type argument list is a list of types, and an optional varargs type argument.</para>
+        
+        <programlisting>TypeArguments := "&lt;" Type ("," Type)* ("," VarargsType)? "&gt;"</programlisting>
+        
+        <programlisting>VarargsType := TypeName "..."</programlisting>
+        
+        <para>A type argument list <emphasis>conforms</emphasis> to a type parameter
+        list if:</para>
+        
+        <itemizedlist>
+             <listitem>
+                 <para>a type argument that satisfies the constraints of the type parameter 
+                 is specified for every type parameter, and.</para>
+             </listitem>
+             <listitem>
+                 <para>if the type parameter list has no varargs type parameter, then there
+                 are no additional type arguments, and no varargs type argument.</para>
+             </listitem>
+        </itemizedlist>
+        
         <programlisting>Entry&lt;String,Person&gt;</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
-        
-        <para> A type argument must be specified for every type parameter. In addition, an 
-        arbitrary list of zero or more type arguments may be specified for a varargs type 
-        parameter. Optionally, the last argument in this list may be another varargs type 
-        parameter.</para>
-        
-       <programlisting>TypeArguments := "&lt;" Type ("," Type)* "&gt;"</programlisting>
+        <programlisting>Callable&lt;X,T,P..&gt;</programlisting>
         
         <para>A type argument is substituted for every appearance of the corresponding
         type parameter in the schema of the parameterized type definition, including:</para>
@@ -818,7 +832,7 @@ VarargsParam?
             <listitem>
                 <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
                 whose types are defined by a varargs type parameter. Inside the method, the 
-                argument has the pseudo type of the varargs type parameter and is assignable to 
+                argument has the pseudo-type of the varargs type parameter and is assignable to 
                 any tuple parameter of the same pseudo-type.</para>
             </listitem>
         </itemizedlist>

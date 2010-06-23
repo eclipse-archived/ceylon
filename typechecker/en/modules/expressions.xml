@@ -760,10 +760,15 @@ local comp = order(1,-1);</programlisting>
         Otherwise, an argument must be specified for each defaulted parameter, and a 
         single argument must be specified for the varargs parameter.</para>
         
-        <para>For a required or defaulted formal parameter of declared type <literal>T</literal>, 
-        the type of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
+        <para>For a required or defaulted formal parameter of type <literal>T</literal>, 
+        the type of the corresponding argument expression must be assignable to 
+        <literal>T</literal>.</para>
         
-        <para>For a varargs parameter of declared type <literal>T...</literal>, there may 
+        <para>For a tuple parameter of psuedo-type <literal>P...</literal>, the type of the 
+        corresponding argument expression must be <literal>P...</literal>. (That is, it
+        must be a tuple parameter of declared type <literal>P...</literal>.)</para>
+        
+        <para>For a varargs parameter of type <literal>T...</literal>, there may 
         either:</para>
         
         <itemizedlist>
@@ -1368,12 +1373,12 @@ except (SomethingElseWrong sew) {
                         <para>has the same number of parameters as specified argument expressions,</para>
                     </listitem>
                     <listitem>
-                        <para>has the same number of type parameters as specified type arguments, 
+                        <para>has a type parameter list to which the type argument list conforms, 
                         if type arguments were explicitly specified,</para>
                     </listitem>
                     <listitem>
                         <para>specifies generic type constraints which are satisfied by the type 
-                        arguments, if type arguments were explicitly specified, and which,</para>
+                        arguments, if type arguments were explicitly specified, and which</para>
                     </listitem>
                     <listitem>
                         <para>has an initial signature to which the given argument expression types 
