@@ -356,7 +356,7 @@ if you prefer.";</programlisting>
         
     </section>
     
-    <section id="typemember">
+    <section id="metamodelreferences">
         <title>Metamodel references</title>
         
         <para>The metamodel object representing a type or program element in the reflection
@@ -459,8 +459,10 @@ createItemMethod.addListener()
     onInvoke (Person p, 
               Item proceed(Product p, Natural n),  
               Product product, Natural quantity) {
-        log.debug("invoking");
-        return proceed(product,quantity)
+        log.debug("invoking in transaction");
+        try (Transaction()) {
+            return proceed(product,quantity)
+        }
     };</programlisting>
         
         <comment><para>TODO: Would it be better to require the <literal>#</literal> 
