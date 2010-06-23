@@ -1854,22 +1854,33 @@ public User(String username, Person person);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A member method body may invoke, evaluate or assign 
-        members of the current instance of the class which defines the method (the instance 
-        upon which the method was invoked) without explicitly specifying the receiver.</para>
+        <para>A member method body may invoke, evaluate or assign members of the current 
+        instance of the class which defines the method (the instance upon which the method 
+        was invoked) without explicitly specifying the receiver.</para>
         
-        <para>A member method body of a member class may invoke, 
-        evaluate or assign members of the current instance of the containing class (the 
-        containing instance of the instance upon which the method was invoked) without 
-        explicitly specifying the receiver.</para>
+        <para>A member method body of a member class may invoke, evaluate or assign members 
+        of the current instance of the containing class (the containing instance of the 
+        instance upon which the method was invoked) without explicitly specifying the 
+        receiver.</para>
         
-        <para>A toplevel method body may not refer to <literal>this</literal>
-        or <literal>super</literal>, since there is no current instance.</para>
+        <para>A toplevel method body may not refer to <literal>this</literal> or 
+        <literal>super</literal>, since there is no current instance.</para>
         
         <para>A method may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier within the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        
+        <para>The Ceylon compiler preserves the names of method parameters.</para>
+        
+        <section>
+            <title>Method implementation</title>
+            
+        <para>A method body may be a block. If the method is a <literal>void</literal> 
+        method, the block may not contain a <literal>return</literal> directive that 
+        specifies an expression. Otherwise, every conditional execution path of the block 
+        must end in a <literal>return</literal> directive that specifies an expression
+        assignable to the return type of the method.</para>
         
         <programlisting>public Integer add(Integer x, Integer y) {
     return x + y
@@ -1879,36 +1890,31 @@ public User(String username, Person person);</programlisting>
     return Token()
 }</programlisting>
 
-        <programlisting>public U? get(V? key);</programlisting>
-        
         <programlisting>public void print(Object... objects) {
     for (Object object in objects) { log.info($object); }
 }</programlisting>
 
-        <programlisting>public void addEntry(V key -> U value) { ... }</programlisting>
-        
-        <programlisting>Float say(String words) = person.say;</programlisting>
-        
-        <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
-        
-        <para>A method may declare multiple lists of parameters. Methods which declare
-        more than one parameter list return instances of <literal>Callable</literal>,
-        usually method references.</para>
-        
-        <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
-    return order
+        <programlisting>public void addEntry(V key -> U value) {
+    map.define(key,value);
 }</programlisting>
-
-        <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
-        first parameter list. It may not refer to parameters of other parameter lists.
-        Parameters declared by parameter lists other than the first parameter list are 
-        not considered visible inside the body of the method.</para>
         
-        <para>A callable object returned by a method with multiple parameter lists must 
-        have the same return type, and the same parameter types, as the method with 
-        multiple parameter lists, after eliminating its first parameter list.</para>
+        <para>A block local method with a single <literal>return</literal> directive may 
+        be declared using the keyword <literal>local</literal> in place of the explicit 
+        return type declaration. The type of the method is inferred to be the type of the 
+        returned expression.</para>
         
+        <programlisting>local add(Integer x, Integer y) {
+    return x + y
+}</programlisting>
+                
+        <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
+        methods may declare defaulted parameters and callable parameters.</para>
+        
+        </section>
+        
+        <section>
+            <title>Callable type of a method</title>
+            
         <para>The <emphasis>callable type</emphasis> of a method captures the return
         types and formal parameter types of the method.</para>
         
@@ -1929,24 +1935,46 @@ public User(String username, Person person);</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>The Ceylon compiler preserves the names of method parameters.</para>
+        <para>A method body may be an expression that evaluates to a callable object, 
+        specified using <literal>=</literal>. The type of the callable object must be 
+        assignable to the callable type of the method.</para>
+        
+        <programlisting>Float say(String words) = person.say;</programlisting>
+        
+        <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
+        
+        <para>A method may declare multiple lists of formal parameters. A method which 
+        declares more than one formal parameter list returns instances of 
+        <literal>Callable</literal>, usually method references.</para>
+        
+        <programlisting>Comparison getOrder()(Natural x, Natural y) {
+    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
+    return order
+}</programlisting>
+
+        <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
+        first parameter list. It may not refer to parameters of other parameter lists.
+        Parameters declared by parameter lists other than the first parameter list are 
+        not considered visible inside the body of the method.</para>
+        
+        <para>The type of a callable object returned by a method with multiple parameter 
+        lists must be assignable to the callable type of a method formed by taking the 
+        method with multiple parameter lists and eliminating its first parameter list.</para>
         
         <!--
         <programlisting>@FormalParameterNames({"x", "y"}) 
 public Integer add(Integer x, Integer y) { ... }</programlisting>
         -->
                 
-        <para>A block local method with a single <literal>return</literal> directive may 
-        be declared using the keyword <literal>local</literal> in place of the explicit 
-        return type declaration. The type of the local or attribute is inferred to be the 
-        type of the returned expression.</para>
+        <para>A block local method which specifies a callable object expression may be 
+        declared using the keyword <literal>local</literal> in place of the explicit 
+        return type declaration. The return type of the method is inferred to be the
+        type of the type argument to the second type parameter of the expression type
+        <literal>Callable</literal> (the return type).</para>
         
-        <programlisting>local add(Integer x, Integer y) {
-    return x + y
-}</programlisting>
+        <programlisting>local sqrt(Integer x) = 2.root(x);</programlisting>
                 
-        <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
-        methods may declare defaulted parameters and callable parameters.</para>
+        </section>
         
         <section id="overloadedmethods">
             <title>Overloaded methods</title>
@@ -1978,6 +2006,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             of the method must be specified later in the block, or the class that declares 
             the method must be annotated <literal>abstract</literal>. If no implementation 
             is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
+        
+            <programlisting>public U? get(V? key);</programlisting>
         
             <para>Methods declared by interfaces never specify an implementation:</para>
         
@@ -2127,22 +2157,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         attribute getter or block local method declared earlier withing the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
-        <programlisting>package mutable String firstName;</programlisting>
-        
-        <programlisting>mutable Natural count := 0;</programlisting>
-        
-        <programlisting>public Decimal pi = calculatePi();</programlisting>
-        
-        <programlisting>public String name { return join(firstName, lastName) }
-public assign name { firstName = first(name); lastName = last(name); }</programlisting>
-    
-        <programlisting>public Float total {
-    Float sum := 0.0;
-    for (LineItem li in lineItems) {
-        sum += li.amount;
-    }
-    return sum
-}</programlisting>
         
         <!--
         <para>
@@ -2171,6 +2185,42 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
 
         <para>Formal parameters of classes and methods are also considered to be simple attributes.</para>
         
+        <!--
+        <para>For a simple attribute that is not a local, the Java field is initialized to an 
+        instance of <literal>lang.SimpleAttribute</literal> or 
+        <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
+         -->
+        
+        <!--
+        <para>is equivalent to this Java code:</para>
+        
+        <programlisting>private final Attribute&lt;String&gt; firstName = new SimpleAttribute&lt;String&gt;();
+Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
+
+        <para>While:</para>
+         -->
+         
+        <programlisting>mutable Natural count := 0;</programlisting>
+        
+        <!--
+        <para>is equivalent to this Java code:</para>
+        
+        <programlisting>private final Attribute&lt;Natural&gt; count = new SimpleAttribute&lt;Natural&gt;(0);
+private Attribute&lt;Natural&gt; count() { return count; }</programlisting>
+
+        <para>And:</para>
+        -->
+        
+        <programlisting>public Integer max = 99;</programlisting>
+        <!--
+        <para>is equivalent to this Java code:</para>
+        
+        <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
+public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
+        -->
+
+        <programlisting>public Decimal pi = calculatePi();</programlisting>
+
         <para>A simple attribute declared directly inside the body of a class represents state 
         associated with the instance of the class. Repeated evaluation of the attribute of a 
         particular instance of the class returns the same result until the attribute of the 
@@ -2206,42 +2256,6 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
         
         <para>The semantics of locals are identical to Java local variables.</para>
         
-        <!--
-        <para>For a simple attribute that is not a local, the Java field is initialized to an 
-        instance of <literal>lang.SimpleAttribute</literal> or 
-        <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
-         -->
-        
-        <programlisting>package mutable String firstName;</programlisting>
-
-        <!--
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final Attribute&lt;String&gt; firstName = new SimpleAttribute&lt;String&gt;();
-Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
-
-        <para>While:</para>
-         -->
-         
-        <programlisting>mutable Natural count := 0;</programlisting>
-        
-        <!--
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final Attribute&lt;Natural&gt; count = new SimpleAttribute&lt;Natural&gt;(0);
-private Attribute&lt;Natural&gt; count() { return count; }</programlisting>
-
-        <para>And:</para>
-        -->
-        
-        <programlisting>public Integer max = 99;</programlisting>
-        <!--
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
-public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
-        -->
-
         <para>The compiler is permitted to optimize block local simple attributes to a simple 
         Java field declaration or local variable. Block local attributes may not be accessed 
         via reflection.</para>
@@ -2273,14 +2287,21 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
             method with the content of the getter block. For example: </para>
             -->
+                    
+        <programlisting>public Float total {
+    Float sum := 0.0;
+    for (LineItem li in lineItems) {
+        sum += li.amount;
+    }
+    return sum
+}</programlisting>
         
-            <programlisting>public Float total { return items.totalPrice }</programlisting>
-            
             <para>If an attribute getter has a matching attribute setter, we say that 
             the attribute is <literal>mutable</literal>. Otherwise we say it is 
             non-<literal>mutable</literal>.</para>
             
             <!--
+            <programlisting>public Float total { return items.totalPrice }</programlisting>
             <para>is equivalent to this Java code:</para>
         
             <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
@@ -2350,6 +2371,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             If no value or implementation is specified, the attribute is considered an 
             <emphasis>abstract attribute</emphasis>.</para>
         
+            <programlisting>package mutable String firstName;</programlisting>
+
             <para>Attributes declared by interfaces never specify an initalizer, getter 
             or setter:</para>
         
