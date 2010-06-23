@@ -442,12 +442,13 @@ String result = sayMethod(person)();</programlisting>
 countAttribute.addListener() 
     onGet (Counter c, Natural proceed()) {
         log.debug("getting");
-        return proceed();
+        return proceed()
     };
+    
 countAttribute.addListener() 
     onSet (Counter c, Natural proceed(Natural n), Natural value) {
         log.debug("setting");
-        return proceed(value);
+        return proceed(value)
     };
     
 countAttribute(this)++;</programlisting>
@@ -458,7 +459,8 @@ createItemMethod.addListener()
     onInvoke (Person p, 
               Item proceed(Product p, Natural n),  
               Product product, Natural quantity) {
-        return proceed(product,quantity);
+        log.debug("invoking");
+        return proceed(product,quantity)
     };</programlisting>
         
         <comment><para>TODO: Would it be better to require the <literal>#</literal> 
