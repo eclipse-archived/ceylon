@@ -1380,7 +1380,8 @@ ClassBody</programlisting>
         <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
         types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
         <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
-        of the class.</para>
+        of the class. A varargs parameter is considered of type <literal>Iterable&lt;T&gt;</literal>
+        where <literal>T</literal> is the declared vararg type.</para>
         
         <!-- comment>
         
