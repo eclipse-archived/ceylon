@@ -425,6 +425,11 @@ if you prefer.";</programlisting>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
         
+        <programlisting>Method&lt;Log, Log, String&gt; infoMethod = #Log.info;</programlisting>
+        
+        <para>The metamodel object for a class, attribute or method implements 
+        <literal>Callable</literal> and is therefore invokable.</para>
+        
         <programlisting>Class&lt;ArrayList&lt;String&gt;,Iterable&lt;String&gt;&gt; arrayListClass = #ArrayList&lt;String&gt;;
         
 List list = arrayListClass("foo", "bar", "baz);</programlisting>
@@ -436,6 +441,13 @@ String personName = nameAttribute(person);</programlisting>
         <programlisting>Method&lt;Person, String&gt; sayMethod = #Person.say;
         
 String result = sayMethod(person)();</programlisting>
+
+        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
+
+countAttribute(this)++;</programlisting>        
+
+        <para>The metamodel object for a class, attribute or method supports registration 
+        of a listener, which intercepts invocations.</para>
         
         <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
 
@@ -449,9 +461,7 @@ countAttribute.addListener()
     onSet (Counter c, Natural proceed(Natural n), Natural value) {
         log.debug("setting");
         return proceed(value)
-    };
-    
-countAttribute(this)++;</programlisting>
+    };</programlisting>
 
         <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = #Order.createItem;
         
