@@ -2871,7 +2871,7 @@ personRef := person;</programlisting>
     </tbody>
     </tgroup>
     </table>
-        
+    
     <comment><para>TODO: Should we have operators for set union/intersection/complement
     and set comparison?</para></comment>
     
