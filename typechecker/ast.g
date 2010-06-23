@@ -688,7 +688,7 @@ selector
     ;
 
 member
-    : ('.' | '?.' | '*.') nameAndTypeArguments
+    : ('.' | '?.' | '[].') nameAndTypeArguments
     ;
 
 nameAndTypeArguments
@@ -1348,12 +1348,12 @@ HASH
     :   '#'
     ;
 
-QUESDOT
+NULLSAFE
     :    '?.'
     ;
 
-STARDOT
-    :    '*.'
+SPREAD
+    :    '[].'
     ;
 
 POWER
