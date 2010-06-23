@@ -524,11 +524,11 @@ createItemMethod.addListener()
         
         <itemizedlist>
         <listitem>
-            <para>If the callable reference specifies a method name, it is called a 
-            <emphasis>method reference</emphasis>. The type of a method reference 
-            expression is assignable to the callable type of every overloaded 
-            version of the method. Calling the callable reference results in execution 
-            of the method.</para>
+            <para>If the callable reference specifies a method name (or callable 
+            parameter name), it is called a <emphasis>method reference</emphasis>. 
+            The type of a method reference expression is assignable to the callable 
+            type of every overloaded version of the method. Calling the callable 
+            reference results in execution of the method.</para>
         </listitem>
         <listitem>
             <para>If the callable reference specifies a class name, it is called a 
@@ -545,8 +545,8 @@ createItemMethod.addListener()
         callable reference.</para>
         
         <para>A callable reference captures the return type and formal parameter lists
-        of the method or class, allowing compile-time validation of argument types
-        when the callable reference is invoked.</para>
+        of the method, callable parameter, or class it refers to, allowing compile-time 
+        validation of argument types when the callable reference is invoked.</para>
         
         <section>
             <title>Receiver expressions</title>
@@ -564,7 +564,7 @@ createItemMethod.addListener()
                 <para>the reference is to a toplevel method or class,</para>
             </listitem>
             <listitem>
-                <para>the reference is to a local, or</para>
+                <para>the reference is to a local or formal parameter, or</para>
             </listitem>
             <listitem>
                 <para>the current instance of a containing class is the receiver.</para>
@@ -718,23 +718,53 @@ local comp = order(1,-1);</programlisting>
         
         <para>A callable object&mdash;anything that implements <literal>Callable</literal>&mdash;is 
         <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
-        expression of type <literal>Callable&lt;T,P...</literal>, together with an argument 
-        list.</para>
+        <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;T,P...&gt;</literal>, 
+        together with an argument list and, optionally, an explicit type argument list.</para>
         
         <programlisting>Invocation := Primary TypeArguments? Arguments</programlisting>
             
+        <para>Any invocation expression where the invoked expression is a callable reference 
+        expression is called a <emphasis>direct invocation</emphasis> of the method, callable
+        parameter, or class. In the case of a direct invocation, the compiler has additional 
+        information about the schema of the method or class that is not reified by the 
+        <literal>Callable</literal> interface. The compiler is aware of:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>all the overloaded versions of the method (the various
+                <literal>Callable</literal> types to which the callable reference
+                expression is assignable),</para>
+            </listitem>
+            <listitem>
+                <para>the names of the formal parameters of the method or class,</para>
+            </listitem>
+            <listitem>
+                <para>which formal parameters are defaulted, and their default
+                values, and</para>
+            </listitem>
+            <listitem>
+                <para>whether the last formal parameter in the list is a varargs
+                parameter.</para>
+            </listitem>
+        </itemizedlist>
+                
         <para>An invocation must specify arguments for parameters of the callable object, 
-        either by listing or naming parameter values.</para>
+        either by listing parameter values in order or, in the case of a direct invocation, 
+        listing named parameter values.</para>
         
         <programlisting>Arguments := PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
-        <para>Arguments to required parameters must be specified by the caller. Arguments to 
-        defaulted parameters and varargs may optionally be specified.</para>
+        <para>Arguments to required parameters must be specified. If the invocation is a 
+        direct invocation, arguments to defaulted parameters may optionally be specified, 
+        and one or more arguments to a varargs parameter may optionally be specified. 
+        Otherwise, an argument must be specified for each defaulted parameter, and a 
+        single argument must be specified for the varargs parameter.</para>
         
         <para>For a required or defaulted formal parameter of declared type <literal>T</literal>, 
         the type of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
         
-        <para>For a varargs parameter of declared type <literal>T...</literal>, there may either:</para>
+        <para>For a varargs parameter of declared type <literal>T...</literal>, there may 
+        either:</para>
         
         <itemizedlist>
             <listitem>
@@ -742,15 +772,15 @@ local comp = order(1,-1);</programlisting>
                 <literal>Iterable&lt;T&gt;</literal>, or</para>
             </listitem>
             <listitem>
-                <para>an arbitrary number of argument expressions of type assignable to 
-                <literal>T</literal>.</para>
+                <para>in the case of a direct invocation, an arbitrary number of argument 
+                expressions of type assignable to <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
          
         <para>In the second case, the argument expressions are evaluated and collected into an 
         instance of <literal>Iterable&lt;T&gt;</literal> when the invocation is executed.</para>
         
-        <para>When a method or constructor reference invocation expression is executed:</para>
+        <para>When a invocation expression of a callable reference is executed:</para>
         
         <itemizedlist>
             <listitem>
@@ -770,6 +800,9 @@ local comp = order(1,-1);</programlisting>
                 exception, execution of the calling context resumes.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>When an invocation expression of any other invoked expression is executed, the 
+        <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para>
         
         <para>The type of an invocation expression is the type argument to the second type parameter
         of the expression type <literal>Callable</literal> (the return type).</para>
@@ -1292,14 +1325,40 @@ except (SomethingElseWrong sew) {
         -->
 
             <section id="resolvingoverloadedmethodsandtypes">
-                <title>Resolving invoked methods and instantiated classes</title>
+                <title>Resolving direct invocations of overloaded methods and classes</title>
                 
-                <para>A method invocation or class instantiation is resolved to a specific 
-                toplevel declaration or member of the receiving type at compile time, even 
-                if the method or class name is overloaded.</para>
+                <para>A direct invocation is resolved to a specific toplevel declaration or 
+                member of the receiving type at compile time, even if the method or class 
+                it refers to is overloaded.</para>
                 
-                <para>An invocation or instantiation is <emphasis>resolveable</emphasis> if 
-                there is exactly one method or type declaration which:</para>
+        <para>The <emphasis>initial signature</emphasis> of a method or class in a direct
+        invocation is formed by:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>taking the signature of the formal parameter list of the member class, 
+                or of the first formal parameter list of the method, and</para>
+            </listitem>
+            <!--listitem>
+                <para>replacing each occurrence of any type alias in the signature with the
+                aliased type, and</para>
+            </listitem-->
+            <listitem>
+                <para>replacing each occurrence of any type parameter of the receiving type
+                in the signature with the type argument of that parameter in the callable 
+                object expression type, and</para>
+            </listitem>
+            <listitem>
+                <para>replacing each occurrence of any type parameter of the method or class 
+                in the signature with the explicitly specified type argument, if type arguments 
+                were specified, or with the first declared upper bound of the type parameter, 
+                or <literal>lang.Object</literal> if the type parameter has no declared upper 
+                bound.</para>
+            </listitem>
+        </itemizedlist>
+        
+                <para>A direct invocation is <emphasis>resolveable</emphasis> if there is 
+                exactly one method, callable parameter, or class declaration which:</para>
                 
                 <itemizedlist>
                     <listitem>
@@ -1317,23 +1376,19 @@ except (SomethingElseWrong sew) {
                         arguments, if type arguments were explicitly specified, and which,</para>
                     </listitem>
                     <listitem>
-                        <para>after substitution of explicitly specified type arguments, if
-                        any, has an erased signature to which the given argument expression types 
+                        <para>has an initial signature to which the given argument expression types 
                         are assignable.</para>
                     </listitem>
                 </itemizedlist>
                 
-                <para>If more than one overloaded declaration has an erased signature to which 
-                the arguments are assignable, or if there is no declaration with an erased 
+                <para>In the case of a method with multiple formal parameter lists, only the first
+                formal parameter list is considered.</para>
+                
+                <para>If more than one overloaded declaration has an initial signature to which 
+                the arguments are assignable, or if there is no declaration with an initial 
                 signature to which the arguments are assignable, the invocation or instantiation 
                 is illegal. (Note that Ceylon is stricter and simpler than Java with this rule.)</para>
-                
-                <para>Note that callable references are not resolved to a specific overloaded
-                declaration of the method or type except in the context of an invocation of the
-                callable reference. However, the compiler does check that a conforming overloaded
-                declaration exists before permitting specification of the callable reference in 
-                the declaration of another method or inline callable argument.</para>
-                
+                                
                 <para>Finally, if type arguments were not explicitly specified, there must be a
                 combination of type arguments that can be substituted for the type parameters of
                 the method or type, respecting constraints upon the type parameters, that results
