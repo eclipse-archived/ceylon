@@ -465,9 +465,8 @@ countAttribute.addListener()
 
         <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = #Order.createItem;
         
-createItemMethod.addListener() 
-    onInvoke (Person p, 
-              Item proceed(Product p, Natural n),  
+createItemMethod.addListener(currentOrder) 
+    onInvoke (Item proceed(Product p, Natural n),  
               Product product, Natural quantity) {
         log.debug("invoking in transaction");
         try (Transaction()) {
