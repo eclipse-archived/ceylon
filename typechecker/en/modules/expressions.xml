@@ -2740,7 +2740,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs[].member</literal></entry>
             <entry>spread member</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
-            <entry><literal>Iterable&lt;X&gt;</literal></entry>
+            <entry><literal>X[]</literal></entry>
             <entry><literal>Member&lt;X,T&gt;</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
@@ -2871,14 +2871,7 @@ personRef := person;</programlisting>
     </tbody>
     </tgroup>
     </table>
-    
-    <comment><para>TODO: Is <literal>people[].name</literal> a better syntax than 
-    <literal>people[].name</literal>?</para></comment>
-    
-    <comment><para>TODO: Should we overload <literal>*</literal> for sequences, like
-    in some other languages? It is nice to be able to do stuff like 
-    <literal>"-"*n</literal>.</para></comment>
-    
+        
     <comment><para>TODO: Should we have operators for set union/intersection/complement
     and set comparison?</para></comment>
     
