@@ -1835,13 +1835,13 @@ personRef := person;</programlisting>
     
     <programlisting>order.lineItems[index] := LineItem { product = prod; quantity = 1; };</programlisting>
     
-    <programlisting>In all operator expressions, the arguments of the operator
+    <para>In all operator expressions, the arguments of the operator
     must be evaluated from left to right when the expression is executed. In
     certain cases, depending upon the definition of the operators, evaluation 
     of the leftmost argument expression results in a value that causes the final
     value of the operator expression to be produced immediately without evaluation
     of the remaining argument expressions. Optimizations performed by the
-    Ceylon compiler must not alter these behaviours.</programlisting>
+    Ceylon compiler must not alter these behaviours.</para>
 
     <para>This table defines the relative precedence of the various operators, 
     from highest to lowest, along with associativity rules:</para>
