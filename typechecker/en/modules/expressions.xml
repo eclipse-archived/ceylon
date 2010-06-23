@@ -2070,22 +2070,46 @@ personRef := person;</programlisting>
     
     
     <para>The following tables define the semantics of the Ceylon operators. Some
-    operators are defined in terms of other operators. There are three basic
-    operators which do not have a definintion in terms of other operators or method 
+    operators are defined in terms of other operators. There are four basic
+    operators which do not have a definition in terms of other operators or method 
     invocations:</para>
     
     <itemizedlist>
         <listitem>
-            <para>the member selection <literal>.</literal> operator,</para>
+            <para>the <emphasis>member selection</emphasis> 
+            <literal>.</literal> operator,</para>
         </listitem>
         <listitem>
-            <para>the argument specification <literal>()</literal> and 
-            <literal>{}</literal> operators, and</para>
+            <para>the <emphasis>argument specification</emphasis> 
+            <literal>()</literal> and <literal>{}</literal> 
+            operators,</para>
         </listitem>
         <listitem>
-            <para>the identity <literal>===</literal> operator.</para>
+            <para>the <emphasis>identity</emphasis> <literal>===</literal> 
+            operator, and</para>
+        </listitem>
+        <listitem>
+            <para>the <emphasis>assignability</emphasis> 
+            <literal>is</literal> operator.</para>
         </listitem>
     </itemizedlist>
+    
+    <para>The member selection operator separates the receiver expression
+    and member name in a callable reference expression or attribute
+    reference expression.</para>
+    
+    <para>The argument specification operators specify the argument list
+    of an invocation.</para>
+    
+    <para>The identity operator evaluates to <literal>true</literal> if its
+    argument expressions evaluate to references to the same object, and 
+    <literal>false</literal> otherwise. The argument expressions may be of 
+    any type.</para>
+    
+    <para>The assignability operator evaluates to <literal>true</literal> if
+    its argument expression evaluates to an instance assignable to the 
+    specified type, and <literal>false</literal> otherwise. The argument 
+    expression may be of any type.</para>
     
     <para>In the tables, the following pseudo-code is used, which is not legal
     Ceylon syntax:</para>
@@ -2107,6 +2131,15 @@ personRef := person;</programlisting>
     <programlisting>ifTrue (b) then (x) else (y)</programlisting>
     
     <para>Second,</para>
+    
+    <programlisting>if (exists o) then x else y   //pseudocode</programlisting>
+    
+    <para>means the same value produced by the Ceylon library method 
+    <literal>ifExists()</literal>:</para>
+    
+    <programlisting>ifExists (o) then (x) else (y)</programlisting>
+    
+    <para>Third,</para>
     
     <programlisting>for (X x in c) e      //pseudocode</programlisting>
     
@@ -2328,8 +2361,8 @@ personRef := person;</programlisting>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal></literal></entry>
-            <entry><literal>Object?</literal></entry>
-            <entry><literal>Object?</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Y</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -2417,9 +2450,9 @@ personRef := person;</programlisting>
             <entry><literal>is</literal></entry>
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
-            <entry><literal>(#Rhs).satisfiedBy(lhs)</literal></entry>
-            <entry><literal>Object</literal></entry>
-            <entry>Any type</entry>
+            <entry></entry>
+            <entry><literal>X</literal></entry>
+            <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
                 
