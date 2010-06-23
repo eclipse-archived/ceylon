@@ -405,22 +405,28 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
     Type<R> returnType;
     Type<Object>[] parameterTypes;
     
-    Listener addListener( R onInvoke(X instance, R proceed(P... args), P... args) );
+    Listener addListener<S>( R onInvoke(S instance, R proceed(P... args), P... args) )
+                   where S abstracts X;
+    Listener addListener( X instance, R onInvoke(R proceed(P... args), P... args) );
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[interface Attribute<in X, out T> 
+        <programlisting><![CDATA[interface Attribute<in X, T> 
         satisfies Member<X, Reference<T>> {
         
-    Listener addListener( T onGet(X instance, T proceed()) );
+    Listener addListener<S>( T onGet(S instance, T proceed()) );
+                   where S abstracts X;
+    Listener addListener( X instance, T onGet(T proceed()) );
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[interface MutableAttribute<X, T> 
-        satisfies Member<X, Assignable<T>> {
+        <programlisting><![CDATA[interface MutableAttribute<in X, T> 
+        extends Attribute<X, T>
+        satisfies Member<X, Assignable<T>> {  //this is OK since Member is covariant in T
         
-    Listener addListener( T onGet(X instance, T proceed()) );
-    Listener addListener( X onSet(X instance, X proceed(T value), T value) );
+    Listener addListener<S>( X onSet(S instance, X proceed(T value), T value) );
+                   where S abstracts X;
+    Listener addListener( X instance, X onSet(X proceed(T value), T value) );
     
 }]]></programlisting>
 
