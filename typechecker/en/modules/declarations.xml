@@ -686,10 +686,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
         
-        <comment><para>TODO: do we need to let you fill in the formal parameter names?
-        If we don't, you won't be able to call this thing using named parameters, and
-        we need some special definition in the spec defining how callable object
-        references carry their parameter names with them.
+        <comment><para>TODO: should we let you fill in the formal parameter names, so
+        you can call this thing using named parameters?
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
         </para></comment>
         
