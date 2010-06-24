@@ -466,8 +466,8 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>is</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to an instance of the specified type when the control 
-                structure is executed.</para>
+                if the expression evaluates to an instance of a class that is assignable to the 
+                specified type when the control structure is executed.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 

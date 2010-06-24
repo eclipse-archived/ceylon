@@ -1842,7 +1842,10 @@ personRef := person;</programlisting>
     value of the operator expression to be produced immediately without evaluation
     of the remaining argument expressions. Optimizations performed by the
     Ceylon compiler must not alter these behaviours.</para>
-
+    
+    <section>
+        <title>Operator precedence</title>
+        
     <para>This table defines the relative precedence of the various operators, 
     from highest to lowest, along with associativity rules:</para>
         
@@ -2068,48 +2071,48 @@ personRef := person;</programlisting>
     <literal>&gt;&gt;</literal> later, we could give them the same precedence
     as <literal>**</literal>.</para></comment>
     
+    </section>
     
-    <para>The following tables define the semantics of the Ceylon operators. Some
-    operators are defined in terms of other operators. There are four basic
-    operators which do not have a definition in terms of other operators or method 
-    invocations:</para>
+    <section>
+        <title>Operator definition</title>
+        
+    <para>The following tables define the semantics of the Ceylon operators. There 
+    are four basic operators which do not have a definition in terms of other 
+    operators or invocations:</para>
     
     <itemizedlist>
         <listitem>
-            <para>the <emphasis>member selection</emphasis> 
-            <literal>.</literal> operator,</para>
+            <para>the <emphasis>member selection</emphasis> operator
+            <literal>.</literal> separates the receiver expression and member 
+            name in a callable reference expression or attribute reference 
+            expression,</para>
         </listitem>
         <listitem>
-            <para>the <emphasis>argument specification</emphasis> 
-            <literal>()</literal> and <literal>{}</literal> 
-            operators,</para>
+            <para>the <emphasis>argument specification</emphasis> operators
+            <literal>()</literal> and <literal>{}</literal> specify the 
+            argument list of an invocation,</para>
         </listitem>
         <listitem>
-            <para>the <emphasis>identity</emphasis> <literal>===</literal> 
-            operator, and</para>
+            <para>the <emphasis>identity</emphasis> operator
+            <literal>===</literal> evaluates to <literal>true</literal> if 
+            its argument expressions evaluate to references to the same 
+            object, and <literal>false</literal> otherwise, and</para>
         </listitem>
         <listitem>
-            <para>the <emphasis>assignability</emphasis> 
-            <literal>is</literal> operator.</para>
+            <para>the <emphasis>assignability</emphasis> operator
+            <literal>is</literal> evaluates to <literal>true</literal> if 
+            its argument expression evaluates to an instance of a class
+            assignable to the specified type, and <literal>false</literal> 
+            otherwise.</para>
         </listitem>
     </itemizedlist>
     
-    <para>The member selection operator separates the receiver expression
-    and member name in a callable reference expression or attribute
-    reference expression.</para>
+    <para>The argument expressions of the identity operator and the argument 
+    expression of the assignability operator may be of any type, not limited
+    to types assignable to <literal>Object</literal>.</para>
     
-    <para>The argument specification operators specify the argument list
-    of an invocation.</para>
-    
-    <para>The identity operator evaluates to <literal>true</literal> if its
-    argument expressions evaluate to references to the same object, and 
-    <literal>false</literal> otherwise. The argument expressions may be of 
-    any type.</para>
-    
-    <para>The assignability operator evaluates to <literal>true</literal> if
-    its argument expression evaluates to an instance assignable to the 
-    specified type, and <literal>false</literal> otherwise. The argument 
-    expression may be of any type.</para>
+    <para>All other operators are defined in terms of other operators and/or
+    invocations.</para>
     
     <para>In the tables, the following pseudo-code is used, which is not legal
     Ceylon syntax:</para>
@@ -2158,6 +2161,8 @@ personRef := person;</programlisting>
     <para>The tables define semantics only, and are not intended to indicate anything
     about the bytecode produced by the compiler. The compiler is permitted to optimize
     the bytecode to erase unnecessary method invocations.</para>
+    
+    </section>
     
     <section id="basic">
     <title>Basic invocation and assignment operators</title>
