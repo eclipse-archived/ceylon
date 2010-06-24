@@ -123,9 +123,14 @@
         <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
-        method, attribute and local declarations, and control structures, surrounded 
-        by braces. Some blocks end in a control directive. The statements, local 
-        specifiers and control structures are executed sequentially.</para>
+        method, attribute and local declarations, and control structures, surrounded by 
+        braces. Some blocks end in a control directive. The statements, local specifiers 
+        and control structures belonging to a block are executed sequentially in the 
+        order that they appear inside the block. Execution of a block begins at the first 
+        statement, local specifier, or control structure of the block. Execution of a block 
+        terminates when the last statement, local specifier, or control structure of the 
+        block finishes executing, when a control directive that terminates the block is 
+        executed, or when an exception is thrown.</para>
 
         <programlisting>Block := "{" (Declaration | Statement)* DirectiveStatement? "}"</programlisting>
         
@@ -137,13 +142,37 @@
         
         <para>A simple attribute or local may not be used in an expression until its value 
         has been explicitly specified or initialized. The Ceylon compiler guarantees this
-        by evaluating all conditional branches between the declaration of a simple attribute 
-        or local and its first use in an expression. Each conditional branch must specify or 
-        assign a value to the simple attribute or local before using it in an expression.</para>
+        by evaluating all conditional branches that lead to the first use of an attribute
+        of local in an expression. Each conditional branch must specify or assign a value 
+        to the simple attribute or local before using it in an expression.</para>
         
-        <comment><para>TODO: should we allow statements to be annotated, for example:</para></comment>
+        <para>Every simple attribute of a non-<literal>abstract</literal> class must be 
+        explicitly specified or initialized by the initializer of the class or by the
+        initializer of one of its superclasses. The Ceylon compiler guarantees this by 
+        evaluating all conditional branches that lead to termination of the initializer
+        without an uncaught exception. Each conditional branch must specify or assign a value 
+        to the simple attribute before the initializer terminates without an uncaught exception.</para>
         
-        <programlisting>@doc "unsafe assignment" suppressWarnings(typesafety): apple = orange;</programlisting>
+        <para>A simple attribute or local may not be the target of a specifier expression if 
+        its value has already been specified. The Ceylon compiler guarantees this by evaluating 
+        all conditional branches that lead to the use of a simple attribute or local in a
+        specifier expression. No conditional branch may specify a value to the simple attribute 
+        or local before using it in a specifier expression.</para>
+        
+        <comment><para>TODO: chapter 16 of the JLS goes into way more detail about the notion
+        of "definite assignment" and "definite unassignment". We eventually need something
+        more like this level of detail, I suppose.</para></comment>
+        
+        <comment><para>TODO: should we allow blocks and control structures to be annotated, 
+        for example:</para>
+        <programlisting>doc "unsafe assignment" 
+suppressWarnings(typesafety)
+do { 
+    apple = orange;
+}</programlisting>
+<programlisting>doc "synchronize on the lock"
+try (lock) { ... }</programlisting>
+</comment>
         
         <section>
             <title>Expression statements</title>
