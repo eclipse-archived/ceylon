@@ -73,9 +73,91 @@
     <literal>..</literal> and <literal>-></literal> operators and sequence
     enumerations.</para>
     </comment>
+    
+    <section>
+        <title>Object instances, identity, and reference passing</title>
+        
+        <para>An <emphasis>object</emphasis> is a unique identifier, together with a 
+        reference to a class, and a value for each simple attribute of the class 
+        (including inherited simple attributes). The object is said to be an 
+        <emphasis>instance</emphasis> of the class.</para>
+        
+        <para>A <emphasis>value</emphasis> is a reference to an object (a copy of its 
+        unique identifier). At a particular point in the execution of the program, 
+        every attribute of every object that exists, and every initialized local of 
+        every method or initializer that is currently executing has a value. Furthermore, 
+        every time an expression is executed, it produces a value.</para>
+        
+        <para>Two values are said to be <emphasis>identical</emphasis> if they are
+        references to the same object&mdash;if they hold the same unique identifier. The 
+        program may determine the if two values are identical using the <literal>===</literal> 
+        operator. It may not directly obtain the unique identifier (which is a purely 
+        abstract construct).</para>
+        
+        <para>Invocation of a method or class initializer results in execution of the 
+        method with formal parameter values that are copies of the value produced by 
+        executing the argument expressions of the invocation, and a reference to the 
+        receiving instance that is a copy of the value produced by executing the receiver
+        expression. The value produced by the invocation expression is a copy of the value 
+        produced by execution of the <literal>return</literal> directive expression.</para>
+        
+        <programlisting>Person myself(Person me) { return me }
+Person p = ...;
+assert() that (myself(p)===p); //assertion never fails</programlisting>
+
+        <programlisting>Semaphore s = Semaphore();
+this.semaphore = s;
+assert() that (semaphore===s) //assertion never fails</programlisting>
+        
+        <para>A new object is produced by execution of a class instantiation expression.
+        The Ceylon compiler guarantees that if execution of a class initializer terminates
+        with no uncaught exception, then every simple attribute of the object has been
+        initialized. The value of an non-<literal>mutable</literal> simple attribute or 
+        local is initialized for the first time by execution of a specifier. Every class 
+        instantiation expression results in an object with a new unique identifier shared 
+        by no other existing object. The object exists from the point at which execution 
+        of its initializer terminates. <emphasis>Conceptually</emphasis>, the object exists 
+        until execution of the program terminates.</para>
+        
+        <para>In practice, the object exists at least until the point at which it is not 
+        reachable by recursively following references from a local in a method or
+        initializer currently being executed, or from an expression in a statement 
+        currently being executed. At this point, its simple attribute values are no 
+        longer accessible to expressions which subsequently execute and the object may 
+        be destroyed by the virtual machine. There is no way for the program to determine
+        that an object has been destroyed by the virtual machine (unlike Java, Ceylon
+        does not provide object finalizers).</para>
+        
+        <para>A a special exception to the rules defined above, the Ceylon compiler is 
+        permitted to emit bytecode that produces a new instance of one of the the built-in 
+        numeric types, of <literal>lang.Range</literal>, of <literal>lang.Entry</literal>, 
+        or of <literal>lang.String</literal>, without execution of the initializer of the 
+        class, whenever any expression is evaluated. Furthermore, it is permitted to use 
+        such a newly-produced instance as the value of the expression, as long as the 
+        newly-produced instance is equal to the value specified by the rules above, as 
+        determined using the <literal>==</literal> operator. Therefore, the behavior of the 
+        <literal>===</literal> operator is undefined for objects of these types.</para>
+        
+        <programlisting>Boolean identical(Natural x, Natural y) { return x==y }
+Natural n = 1;
+assert() that (identical(n,n)); //assertion may fail!</programlisting>
+        
+
+        <programlisting>String name = "Gavin";
+person.name := name;
+assert() that (person.name===name) //assertion may fail!</programlisting>
+        
+        <para>The execution of a Ceylon program complies with the rules laid out by the Java 
+        programming language's execution model (Chapter 17 of the Java Language Specification).
+        Ceylon attributes and locals are considered <emphasis>variables</emphasis> in the 
+        sense of the JLS. Evaluation is considered a <emphasis>use</emphasis> operation, 
+        and assignment is considered an <emphasis>assign</emphasis> operation, again in 
+        terms of the JLS.</para>
+        
+    </section>
 
     <section id="literals">
-    <title>Literals</title>
+        <title>Literals</title>
     
     <para>Ceylon supports literal values of the following types:</para>
     
@@ -2158,9 +2240,37 @@ personRef := person;</programlisting>
     
     <programlisting>from (X x in c) select (e)</programlisting>
     
-    <para>The tables define semantics only, and are not intended to indicate anything
-    about the bytecode produced by the compiler. The compiler is permitted to optimize
-    the bytecode to erase unnecessary method invocations.</para>
+    <para>The tables define semantics only. The compiler is permitted to emit equivalent 
+    bytecode that produces the same value as the pseudo-code that defines the operator, 
+    without actually executing any invocation, for the following operators:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>all arithmetic operators,</para>
+        </listitem>
+        <listitem>
+            <para>all bitwise operators,</para>
+        </listitem>
+        <listitem>
+            <para>the comparison and equality operators <literal>=</literal>,
+            <literal>!=</literal>, <literal>&lt;=&gt;</literal>, <literal>&lt;</literal>,
+            <literal>&gt;</literal>, <literal>&lt;=</literal>, <literal>&gt;=</literal>
+            when the argument expression types are built-in numeric types,</para>
+        </listitem>
+        <listitem>
+            <para>the <literal>Range</literal> and <literal>Entry</literal> construction 
+            operators <literal>..</literal> and <literal>-></literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the sequence concatenation operator <literal>+</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para>all assignment and compound assignment operators.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Therefore, listeners registered for the method invocations and class instantiations 
+    that define these operators may not be called when the operator expressions are executed.</para>
     
     </section>
     
@@ -2185,7 +2295,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -2351,7 +2461,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -2489,7 +2599,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -2584,7 +2694,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -2687,7 +2797,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -2942,7 +3052,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -3028,7 +3138,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
@@ -3299,7 +3409,7 @@ personRef := person;</programlisting>
             <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
-            <entry>Equivalent</entry>
+            <entry>Definition</entry>
             <entry>LHS type</entry>
             <entry>RHS type</entry>
             <entry>Return type</entry>
