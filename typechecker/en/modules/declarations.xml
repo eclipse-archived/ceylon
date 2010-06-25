@@ -354,7 +354,7 @@ Description doc(String description) {
             <listitem>
                 <para>Nullsafety: the type <literal>lang.Optional</literal> is 
                 not assignable to <literal>lang.Object</literal>. Nor is its subtype
-                <literal>lang.Nonexistent</literal>.</para>
+                <literal>lang.Nothing</literal>.</para>
             </listitem>
             <listitem>
                 <para>Single root: all other types are assignable to <literal>lang.Object</literal>,
@@ -903,7 +903,7 @@ VarargsParam?
         </itemizedlist>
         
         <para>A user-defined class may not extend <literal>Optional</literal>,
-        <literal>Existent</literal> or <literal>Nonexistent</literal>, since these
+        <literal>Something</literal> or <literal>Nothing</literal>, since these
         classes are not reified types.</para>
         
     </section>

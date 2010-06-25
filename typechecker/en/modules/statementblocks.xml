@@ -500,12 +500,12 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to an instance of <literal>Existent&lt;X&gt;</literal> 
+                if the expression evaluates to an instance of <literal>Something&lt;X&gt;</literal> 
                 when the control structure is executed.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to an instance of <literal>Existent&lt;Container&gt;</literal> 
+                if the expression evaluates to an instance of <literal>Something&lt;Container&gt;</literal> 
                 for which <literal>value.empty</literal> evaluates to <literal>false</literal>
                 when the control structure is executed.</para>
             </listitem>

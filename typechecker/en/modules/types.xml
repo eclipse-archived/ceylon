@@ -290,10 +290,10 @@ class CaseSuper<X,Y>(Case<X> c)
         of <literal>lang.Object</literal>.</para>
         
         <para>If an optional value is not null, it is represented by an
-        instance of the subclass <literal>lang.Existent</literal>.</para>
+        instance of the subclass <literal>lang.Something</literal>.</para>
         
         <programlisting><![CDATA[public extension 
-class Existent<out X>(X x) extends Optional<X>() {
+class Something<out X>(X x) extends Optional<X>() {
 
     public extension X value = x;
     
@@ -308,16 +308,16 @@ class Existent<out X>(X x) extends Optional<X>() {
 }]]></programlisting>
 
         <para>Non-optional values are transparently assignable to optional
-        values, since <literal>Existent&lt;X&gt;</literal> is an extension of 
+        values, since <literal>Something&lt;X&gt;</literal> is an extension of 
         <literal>X</literal> enabled in every compilation unit. Likewise, 
-        instances of <literal>Existent&lt;X&gt;</literal> are transparently 
+        instances of <literal>Something&lt;X&gt;</literal> are transparently 
         assignable to <literal>X</literal>.</para>
         
         <para>If an optional value is null, it is represented by an
-        instance of the subclass <literal>lang.Nonexistent</literal>.</para>
+        instance of the subclass <literal>lang.Nothing</literal>.</para>
         
         <programlisting><![CDATA[public extension 
-class Nonexistent<out X>(LiteralNull null) extends Optional<X>() {
+class Nothing<out X>(LiteralNull null) extends Optional<X>() {
 
     override Boolean valueExists { 
         return false 
@@ -330,7 +330,7 @@ class Nonexistent<out X>(LiteralNull null) extends Optional<X>() {
 }]]></programlisting>
 
         <para>The value <literal>LiteralNull.null</literal> is transparently 
-        assignable to optional values, since <literal>Nonexistent&lt;X&gt;</literal> 
+        assignable to optional values, since <literal>Nothing&lt;X&gt;</literal> 
         is an extension of <literal>LiteralNull</literal> enabled in every 
         compilation unit.</para>
         
@@ -349,7 +349,7 @@ class Nonexistent<out X>(LiteralNull null) extends Optional<X>() {
 class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
 
     override Boolean test(Optional<X> value) {
-        return value is Nonexistent<X>;
+        return value is Nothing<X>;
     }
     
 }]]></programlisting>
