@@ -180,7 +180,7 @@ assert() that (person.name===name) //assertion may fail!</programlisting>
     values, since <literal>Boolean</literal> is just a <literal>Selector</literal>
     with the enumerated instances <literal>true</literal> and <literal>false</literal>.
     The <literal>null</literal> value is just the enumerated instance of the class
-    <literal>LiteralNull</literal>.</para>
+    <literal>Null</literal>.</para>
     
     <programlisting>Literal := NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
 
@@ -1833,7 +1833,7 @@ personRef := person;</programlisting>
         
         <programlisting>String[] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
         
-        <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>LiteralNone.none</literal>.</para>
+        <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>None.none</literal>.</para>
                                 
         <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
         

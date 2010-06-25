@@ -317,7 +317,7 @@ class Something<out X>(X x) extends Optional<X>() {
         instance of the subclass <literal>lang.Nothing</literal>.</para>
         
         <programlisting><![CDATA[public extension 
-class Nothing<out X>(LiteralNull null) extends Optional<X>() {
+class Nothing<out X>(Null null) extends Optional<X>() {
 
     override Boolean valueExists { 
         return false 
@@ -329,12 +329,12 @@ class Nothing<out X>(LiteralNull null) extends Optional<X>() {
     
 }]]></programlisting>
 
-        <para>The value <literal>LiteralNull.null</literal> is transparently 
+        <para>The value <literal>Null.null</literal> is transparently 
         assignable to optional values, since <literal>Nothing&lt;X&gt;</literal> 
-        is an extension of <literal>LiteralNull</literal> enabled in every 
+        is an extension of <literal>Null</literal> enabled in every 
         compilation unit.</para>
         
-        <programlisting><![CDATA[public class LiteralNull() {
+        <programlisting><![CDATA[public class Null() {
         
     doc "Represents a null reference."
     case null;
@@ -346,7 +346,7 @@ class Nothing<out X>(LiteralNull null) extends Optional<X>() {
         statement.</para>
         
         <programlisting><![CDATA[public extension 
-class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
+class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 
     override Boolean test(Optional<X> value) {
         return value is Nothing<X>;
@@ -357,7 +357,7 @@ class NullCase<X>(LiteralNull null) satisfies Case<Optional<X>> {
         <para>Note that <literal>Optional</literal> is not a reified type. The compiler
         erases all references to <literal>Optional&lt;X&gt;</literal> to 
         <literal>X</literal> after performing type validation and before generating
-        bytecode. The compiler also replaces references to <literal>LiteralNull.null</literal>
+        bytecode. The compiler also replaces references to <literal>Null.null</literal>
         with the Java <literal>null</literal>. Therefore, none of the extensions defined 
         in this section are actually executed.</para>
         
@@ -762,10 +762,10 @@ while (i.more) {
     
 }]]></programlisting>
         
-        <para>The value <literal>LiteralNone.none</literal> is transparently
+        <para>The value <literal>None.none</literal> is transparently
         assignable to <literal>Sequence&lt;X&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public class LiteralNone() {
+        <programlisting><![CDATA[public class None() {
         
     doc "Represents an empty sequence. The value of 
          the empty sequence enumeration |{}|."
