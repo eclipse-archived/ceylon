@@ -903,9 +903,10 @@ local comp = order(1,-1);</programlisting>
             formal parameters of the method, and the body of the method is executed.</para>
             
             <para>The actual value that invocation of a <literal>void</literal> method returns
-            is not specified here. However, the <literal>is T</literal> operator always returns
-            false for any type <literal>T</literal> other than <literal>Void</literal> when 
-            applied to the return value of an invocation of a <literal>void</literal> method.</para>
+            is not specified here. However, the <literal>is T</literal> operator always evaluates
+            to <literal>false</literal> for any type <literal>T</literal> other than 
+            <literal>Void</literal> when applied to the return value of an invocation of a 
+            <literal>void</literal> method.</para>
             
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
