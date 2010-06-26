@@ -507,7 +507,7 @@ if you prefer.";</programlisting>
         
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
         
-        <programlisting>Method&lt;Log, Log, String&gt; infoMethod = #Log.info;</programlisting>
+        <programlisting>Method&lt;Log, Void, String&gt; infoMethod = #Log.info;</programlisting>
         
         <para>The metamodel object for a class, attribute or method implements 
         <literal>Callable</literal> and is therefore invokable.</para>
@@ -891,10 +891,9 @@ local comp = order(1,-1);</programlisting>
         <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para>
         
         <para>The type of an invocation expression is the type argument to the second type parameter
-        of the expression type <literal>Callable</literal> (the return type).</para>
-        
-        <comment><para>TODO: What does a <literal>void</literal> method invocation evaluate to?
-        The receiving instance?</para></comment>
+        of the expression type <literal>Callable</literal> (the return type). Thus, the type of a 
+        method invocation is the return type of the method and the type of a class instantation is 
+        the class. The type of a <literal>void</literal> method invocation is <literal>Void</literal>.</para>
                         
         <section id="methodinvocation">
             <title>Method invocation</title>

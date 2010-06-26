@@ -6,24 +6,28 @@
     of these types support <emphasis>operators</emphasis>.</para>
     
     <section>
-        <title>The root type</title>
+        <title>The void type</title>
         
-        <para>The <literal>lang.Object</literal> class is the root of the type 
-        hierarchy and supports the binary operators <literal>==</literal> (equals),
-        <literal>!=</literal> (not equals), <literal>===</literal> (identity equals), 
-        <literal>.</literal> (invoke), <!--<literal>^.</literal> (chain invoke),-->
-        <literal>in</literal> (in), <literal>is</literal> (is), <!--the unary prefix 
-        operator <literal>$</literal> (render),--> and the binary operator 
-        <literal>:=</literal> (assign).</para>
+        <para>The class <literal>lang.Void</literal> is the root of the type
+        system. All types are assignable to <literal>Void</literal>, which
+        supports the the binary operators <literal>===</literal> (identity equals)
+        and <literal>.</literal> (member selection), along with <literal>is</literal> 
+        (assignability).</para>
         
-        <para>In addition, references of type <literal>Object?</literal>
-        support the binary operators <literal>?.</literal> (nullsafe invoke) 
-        and <literal>?</literal> (default) and the unary operator
-        <literal>exists</literal>, along with the binary operators 
-        <literal>==</literal> (equals), <literal>!=</literal> (not equals), 
-        <literal>===</literal> (identity equals) and <literal>:=</literal> (assign).</para>
+        <programlisting>public abstract class Void {}</programlisting>
         
-        <programlisting><![CDATA[public abstract class Object() {
+    </section>
+    
+    <section>
+        <title>The Object type</title>
+        
+        <para>User-written classes extend <literal>lang.Object</literal> and 
+        all interface types are assignable to <literal>lang.Object</literal>.
+        Expressions of type <literal>Object</literal> may belong to collections 
+        and therefore support the binary operator <literal>in</literal> (in).</para>
+        
+        <programlisting><![CDATA[public abstract class Object() 
+        extends Void() {
         
     doc "The equals operator x == y. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
@@ -94,11 +98,6 @@
         
 }]]></programlisting>
 
-        <comment><para>TODO: is this really the root type in Ceylon, or do we 
-        need some other type sitting above <literal>lang.Object</literal> and 
-        <literal>java.lang.Object</literal>, to accommodate classes from other 
-        languages?</para></comment>
-
     </section>
 
     <section>
@@ -107,7 +106,8 @@
         <para>The class <literal>lang.Referenceable</literal> represents a value
         for which a reference can be obtained, allowing pass by reference semantics.</para>
         
-        <programlisting><![CDATA[public abstract class Referenceable<out T> {
+        <programlisting><![CDATA[public abstract class Referenceable<out T> 
+        extends Void() {
         
     doc "Obtain and return the value."
     extension T getIt();
@@ -133,6 +133,9 @@
     public T setIt(T t);
     
 }]]></programlisting>
+
+         <para>Expressions of type <literal>Assignable</literal> support the binary
+         operator <literal>:=</literal> (assign).</para>
     
     </section>
     
@@ -145,6 +148,9 @@
         <programlisting><![CDATA[public interface Callable<out R, P...> {
     public R call(P... args);
 }]]></programlisting>
+
+        <para>Expressions of type <literal>Callable</literal> may be the subject
+        of the argument specification operators.</para>
     
     </section>
     
@@ -276,7 +282,8 @@ class CaseSuper<X,Y>(Case<X> c)
         <para>The class <literal>lang.Optional</literal> represents a
         value that may be null.</para>
         
-        <programlisting><![CDATA[abstract class Optional<out X>() {
+        <programlisting><![CDATA[abstract class Optional<out X>() 
+        extends Void() {
     
     doc "The unary postfix exists operator |x exists|."
     public Boolean valueExists;
@@ -286,14 +293,22 @@ class CaseSuper<X,Y>(Case<X> c)
     
 }]]></programlisting>
 
-        <para>Note that <literal>lang.Optional</literal> is not a subtype
+        <para>Expressions of type <literal>Object?</literal> support the 
+        binary operators <literal>?.</literal> (nullsafe invoke) and 
+        <literal>?</literal> (default), the unary operator <literal>exists</literal>, 
+        the unary operator <literal>$</literal> (render) and the the binary 
+        operators <literal>==</literal> (equals) and <literal>!=</literal> 
+        (not equals).</para>
+        
+         <para>Note that <literal>lang.Optional</literal> is not a subtype
         of <literal>lang.Object</literal>.</para>
         
         <para>If an optional value is not null, it is represented by an
         instance of the subclass <literal>lang.Something</literal>.</para>
         
         <programlisting><![CDATA[public extension 
-class Something<out X>(X x) extends Optional<X>() {
+class Something<out X>(X x) 
+        extends Optional<X>() {
 
     public extension X value = x;
     
@@ -317,7 +332,8 @@ class Something<out X>(X x) extends Optional<X>() {
         instance of the subclass <literal>lang.Nothing</literal>.</para>
         
         <programlisting><![CDATA[public extension 
-class Nothing<out X>(Null null) extends Optional<X>() {
+class Nothing<out X>(Null null) 
+        extends Optional<X>() {
 
     override Boolean valueExists { 
         return false 

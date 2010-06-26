@@ -357,8 +357,9 @@ Description doc(String description) {
                 <literal>lang.Nothing</literal>.</para>
             </listitem>
             <listitem>
-                <para>Single root: all other types are assignable to <literal>lang.Object</literal>,
-                including classes, interfaces, aliases and type parameters.</para>
+                <para>Single root: all types are assignable to <literal>lang.Void</literal>.
+                Additionally, all user defined classes and all interfaces are 
+                assignable to <literal>lang.Object</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -902,9 +903,8 @@ VarargsParam?
         </listitem>
         </itemizedlist>
         
-        <para>A user-defined class may not extend <literal>Optional</literal>,
-        <literal>Something</literal> or <literal>Nothing</literal>, since these
-        classes are not reified types.</para>
+        <para>A user-defined class must extend <literal>lang.Object</literal>
+        or one of its subclasses.</para>
         
     </section>
     
@@ -1465,9 +1465,8 @@ class Customer(Name name, Organization? org = null)
         
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>lang.Object</literal>. There are three exceptions to this
-        rule: the built-in classes <literal>lang.Object</literal>, <literal>lang.Optional</literal>,
-        and <literal>lang.Referenceable</literal> which do not have superclasses.
+        its superclass is <literal>lang.Object</literal>. There are one exception to this
+        rule: the built-in class <literal>lang.Void</literal> which does not have a superclass.
         </para>
         
         <para>
@@ -1849,7 +1848,8 @@ public User(String username, Person person);</programlisting>
         parameter lists. A method declaration may specify a type, called the 
         <emphasis>return type</emphasis>, to which the values the method returns is 
         assignable, or it may specify that the method is a <literal>void</literal>
-        method&mdash;a method which does not return a value.</para>
+        method&mdash;a method which does not return a value. The return type of a
+        <literal>void</literal> method is considered to be <literal>Void</literal>.</para>
         
         <programlisting>MethodHeader := Annotation* (InferableType | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
         
@@ -1932,8 +1932,8 @@ public User(String username, Person person);</programlisting>
         <listitem>
             <para>The callable type of a method with a single parameter list is 
             <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is the 
-            declared type of the method, or the type that declares the method if the
-            method is <literal>void</literal>, and <literal>P...</literal> are the formal 
+            declared type of the method, or <literal>Void</literal> if the method is 
+            <literal>void</literal>, and <literal>P...</literal> are the formal 
             parameter types of the method.</para>
         </listitem>
         <listitem>
