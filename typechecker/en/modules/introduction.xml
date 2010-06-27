@@ -383,33 +383,9 @@ class Hello(String? name) {
             need to go around declaring all your attributes <literal>private</literal> 
             and wrapping them in getter and setter methods. Get out of that habit right 
             now!</para>
-            
-            <para>Ceylon encourages you to use <emphasis>immutable</emphasis> attributes
-            as much as possible. An immutable attribute has its value specified when 
-            the object is initialized, and is never reassigned. If we want to be able to
-            assign a value to a simple attribute we need to annotate it 
-            <literal>mutable</literal>:</para>
-            
-            <programlisting>package mutable String greeting := "Hello World";
-if (exists name) {
-    greeting := "Hello, " name "!";
-}</programlisting>
-
-            <para>Notice the use of <literal>:=</literal> instead of <literal>=</literal>
-            here. This is important! In Ceylon, specification of immutable values uses 
-            <literal>=</literal>. Assignment to a <literal>mutable</literal> attribute 
-            or local is considered a different kind of thing, always performed using the
-            <literal>:=</literal> operator.</para>
-            
-            <para>A getter/setter pair is also a mutable attribute:</para>
-            
-            <programlisting>mutable String grtng := "Hello World";
-package String greeting { return grtng }
-private assign greeting { grtng = greeting; }</programlisting>
-            
-
+        
         </section>
-
+        
         <section>
             <title>Understanding object initialization</title>
         
@@ -529,10 +505,221 @@ public void hello(Process process) {
         </section>
         
         <section>
+            <title>Inheritance and overriding</title>
+        
+            <para>In object-oriented programming, we often replace conditionals 
+            (<literal>if</literal>, and especially <literal>switch</literal>) with
+            subtyping. Let's try refactoring <literal>Hello</literal> into two classes,
+            with two different implementations of <literal>greeting</literal>:</para>
+            
+            <programlisting><![CDATA[doc "A default greeting"
+class DefaultHello() {
+    
+    doc "The greeting"
+    package default String greeting = "Hello, World!";
+    
+    doc "Print the greeting"
+    package void say(OutputStream stream) { 
+        stream.writeLine(greeting); 
+    }
+    
+}]]></programlisting>
+
+            <para>Notice that Ceylon forces as to declare attributes or methods that can be 
+            overridden by annotating them <literal>default</literal>.</para>
+            
+            <para>Subclasses specify their superclass using the <literal>extends</literal>
+            keyword, followed by the name of the superclass, followed by a list of arguments
+            to be sent to the superclass initialization parameters. It looks just like an
+            expression that instantiates the superclass:</para>
+            
+            <programlisting><![CDATA[doc "A personalized greeting"
+class PersonalizedHello() extends DefaultHello() {
+    
+    doc "The personalized greeting"
+    override String greeting { 
+        return "Hello, " name "!" 
+    }
+    
+}]]></programlisting>
+
+            <para>Ceylon also forces us to declare that an attribute or method overrides an 
+            attribute or method of a superclass by annotating it <literal>override</literal>. 
+            All this annotating stuff costs a few extra keystrokes, but it helps the compiler
+            detect errors. We can't inadvertantly override a member or the superclass, or
+            inadvertantly <emphasis>fail</emphasis> to override it.</para>
+            
+            <para>On the other hand, we don't need to declare the visibility of the attribute
+            annotated <literal>override</literal>. The <literal>package</literal> annotation
+            is inherited from the attribute it overrides.</para>
+            
+            <para>There's one problem with what we've just seen. A personalized greeting 
+            is not really a kind of default greeting. This is a case for introducing an
+            abstract superclass:</para>
+
+            <programlisting><![CDATA[doc "A greeting"
+abstract class Hello() {
+    
+    doc "The (abstract) greeting"
+    package String greeting;
+    
+    doc "Print the greeting"
+    package void say(OutputStream stream) { 
+        stream.writeLine(greeting); 
+    }
+    
+}]]></programlisting>
+
+            <para>Ceylon requires us to annotate abstract classes <literal>abstract</literal>,
+            just like Java. This annotation specifies that a class cannot be instantiated,
+            and can define abstract members. Unlike Java, Ceylon doesn't require us to annotate 
+            abstract members&mdash;simply leaving out the implementation of the member is 
+            perfectly sufficient for the compiler to realize that it is abstract. An attribute
+            which is never initialized is an abstract attribute. Ceylon doesn't have default
+            attribute values like Java does.</para>
+
+            <para>One way to define an implementation for an inherited abstract attribute is 
+            to simply assign a value to it in the subclass.</para>
+
+            <programlisting><![CDATA[doc "A default greeting"
+class DefaultHello() extends Hello() {
+    
+    greeting = "Hello, World!";
+    
+}]]></programlisting>
+
+        <para>Of course, we can also define an implementation for an inherited abstract 
+        attribute by overriding it.</para>
+
+        <programlisting><![CDATA[doc "A personalized greeting"
+class PersonalizedHello() extends Hello() {
+    
+    doc "The personalized greeting"
+    override String greeting { 
+        return "Hello, " name "!" 
+    }
+    
+}]]></programlisting>
+
+        </section>
+        
+        <section>
+            <title>Working with mutable state</title>
+
+            <para>Ceylon encourages you to use <emphasis>immutable</emphasis> attributes
+            as much as possible. An immutable attribute has its value specified when 
+            the object is initialized, and is never reassigned. If we want to be able to
+            assign a value to a simple attribute we need to annotate it 
+            <literal>mutable</literal>:</para>
+            
+            <programlisting>package mutable String greeting := "Hello World";
+if (exists name) {
+    greeting := "Hello, " name "!";
+}</programlisting>
+
+            <para>Notice the use of <literal>:=</literal> instead of <literal>=</literal>
+            here. This is important! In Ceylon, specification of an immutable value is 
+            done using <literal>=</literal>. Assignment to a <literal>mutable</literal> 
+            attribute or local is considered a different kind of thing, always performed 
+            using the <literal>:=</literal> operator.</para>
+            
+            <para>To force you to think twice before adding a <literal>mutable</literal>
+            attribute to your class, Ceylon requires that classes with mutable attributes
+            be explicitly annotated <literal>mutable</literal>. Hopefully, you'll find
+            yourself doing this less frequently than you would do it in Java.</para>
+            
+            <para>If we want to make an attribute with a getter mutable, we need to 
+            define a matching <emphasis>setter</emphasis>. Usually this is only useful
+            if you have some other internal attribute you're trying to set the value of
+            indirectly.</para>
+            
+            <para>Suppose our class has the following mutable simple attribute, intended
+            for internal consumption only:</para>
+            
+            <programlisting>mutable String grtng := "Hello World";</programlisting>
+            
+            <para>Then we can abstract the simple attribute using a mutable attribute
+            defined as a getter/setter pair:</para>
+            
+            <programlisting>doc "gets the greeting"
+public String greeting { 
+    return grtng 
+}
+
+doc "sets the greeting"
+package assign greeting { 
+    grtng = greeting; 
+}</programlisting>
+
+            <para>Yes, this is a <emphasis>lot</emphasis> like a Java get/set method pair.
+            But since Ceylon attributes are mutable, and since you can redefine a simple
+            attribute as a getter or getter/setter pair without affecting clients that
+            call the attribute, you rarely need to write this code unless you're doing
+            something special in the getter or setter. So here's a more realistic 
+            example:</para>
+       
+            <programlisting>doc "gets the greeting"
+public String greeting { 
+    return grtng 
+}
+
+doc "sets the greeting"
+package assign greeting {
+    if (empty greeting) {
+        throw IllegalArgumentException("greeting can not be empty)
+    }
+    else {
+        grtng = greeting.strip().normalize();
+    }
+}</programlisting>
+
+            <para>Get used to using <literal>empty</literal> to check that a value of type 
+            <literal>String</literal> or <literal>String?</literal> is an actual non-empty
+            string of characters. It's much more readable than the equivalent Java idiom
+            <literal>!"".equals(greeting)</literal>.</para>
+            
+        </section>
+        
+        <section>
+            <title>Using numeric types</title>
+            
+            <para>Ceylon doesn't have anything like Java's primitive types. The types that
+            represent numeric values are just ordinary classes. Ceylon has fewer numeric
+            types than other C-like languages:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Natural</literal> represents the unsigned integers 
+                    and zero,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Integer</literal> represents signed integers,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Float</literal> represents floating point 
+                    decimal numbers,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Whole</literal> represents represents 
+                    arbitrary-precision signed integers, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Decimal</literal> represents arbitrary-precision 
+                    and arbitrary-scale decimals.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para><literal>Natural</literal>, <literal>Integer</literal> and 
+            <literal>Float</literal> have 64-bit precision by default. You can specify that 
+            a value has 32-bit precision by annotating it <literal>small</literal>.</para>
+            
+        </section>
+
+        <section>
             <title>A quick overview of collections</title>
             
-            <para>The collections package is one of the best features of Ceylon. Let's
-            briefly meet some of the main characters.</para>
+            <para>The collections package is one of the best features of Ceylon. Let's briefly 
+            meet some of the main characters.</para>
             
             <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
@@ -542,18 +729,34 @@ String[] usCities = cities[1..2];
 String[] moreCities := cities + { "Rome", "Paris", "Edinburgh", "Cambridge" };</programlisting>
             
             <para>The syntax <literal>String[]</literal> is just an abbreviation for the 
-            built-in interface <literal>Sequence&lt;String&gt;</literal>. Don't be scared 
-            by the fancy syntax&mdash;it's just sugar. There's actually nothing much special 
-            about the interface <literal>Sequence</literal> from the point of view of the 
-            type system. But sequences of values are a common occurrence in computing, so 
-            Ceylon provides a streamlined syntax for dealing with them.</para>
+            type <literal>Sequence&lt;String&gt;</literal>. Don't be scared by the fancy 
+            syntax&mdash;it's just sugar. There's actually nothing much special about the 
+            interface <literal>Sequence</literal> from the point of view of the type system. 
+            But sequences of values are a common occurrence in computing, so Ceylon provides 
+            a streamlined syntax for dealing with them.</para>
+            
+            <para>Just like in Java, the collection types are <emphasis>parameterized</emphasis> 
+            or <emphasis>generic</emphasis> types. Unlike Java, there are no raw types&mdash;if
+            a type declares type parameters, a type argument for each parameter is required
+            everywhere the type is used. For example, the following declaration is not legal:</para>
+            
+            <programlisting>Sequence cities = { "Atlanta", "San Francisco", "Boston" };  //error! missing type argument</programlisting>
+            
+            <para>The closest thing to a raw type, in this case, would be to use a <literal>Sequence&lt;Object&gt;</literal>.</para>
+            
+            <programlisting>Sequence&lt;Object&gt; cities = { "Atlanta", "San Francisco", "Boston" };</programlisting>
+            
+            <para>Which we could abbreviate, of course:</para>
+            
+            <programlisting>Object[] cities = { "Atlanta", "San Francisco", "Boston" };</programlisting>
             
             <para>Sequences of ordinal values are especially common, so there's an
-            operator for constructing them:</para>
+            operator for constructing them, called the <emphasis>range</emphasis>
+            operator:</para>
             
-            <programlisting>Natural[] from1To10 = 1..10;
-Integer[] fromNegative10To10 = -10..10;
-Character[] fromAToZ = @A..@Z;</programlisting>
+            <programlisting>Natural[] from1To10 = 1..10;</programlisting>
+            <programlisting>Integer[] fromNegative10To10 = -10..10;</programlisting>
+            <programlisting>Character[] fromAToZ = @A..@Z;</programlisting>
 
             <para>We can iterate a sequence like this:</para>
             
@@ -573,11 +776,10 @@ Character[] fromAToZ = @A..@Z;</programlisting>
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
             so we need something other than a <literal>Sequence</literal>:</para>
             
-            <programlisting>Correspondence&lt;String,String&gt; cities = 
-            { "Gavin"->"Guanajuato", 
-              "Pete"->"Edinburgh",
-              "Andrew"->"Cambridge",
-              "Emmanuel"->"Paris" };
+            <programlisting>Correspondence&lt;String,String&gt; cities = { "Emmanuel"->"Paris",
+                                           "Andrew"->"Cambridge", 
+                                             "Pete"->"Edinburgh",
+                                            "Gavin"->"Guanajuato" };
 String paris = cities["Emmanuel"];</programlisting>
 
             <para>We can iterate a correspondence like this:</para>
@@ -608,13 +810,15 @@ String paris = cities["Emmanuel"];</programlisting>
             <literal>OpenSet</literal>, <literal>OpenList</literal> and 
             <literal>OpenMap</literal> (and we can't forget <literal>OpenBag</literal>).</para>
             
+            TODO: demo OpenMap
+            
             <para>Splitting the collection interfaces into a "read-only" view and a
             "writable" view has several advantages, but the most important is that you
             now don't need to worry about exposing collections as part of the public 
             contract of your classes. In Java, it's always difficult for a client to 
             know if you're returning a copy of your internal list, a reference to your
             internal list (which you might have done inadvertantly), or a reference 
-            wrapped in an <literal>immutableList()</literal>, you know, that wonderful 
+            wrapped in an <literal>immutableList()</literal>&mdash;you know, that wonderful 
             beastie which helpfully throws exceptions at runtime to let you know that it 
             is supposed to be "read-only". In Ceylon, you can protect the state of your 
             internal data structures by simply not returning the "writable" view to 
@@ -1168,7 +1372,7 @@ for (Person person in people.iterator()) { ... }</programlisting>
         
         <programlisting>Collection&lt;Person&gt; people = ... ;
 Consumer&lt;Geek&gt; geekConsumer = people;
-geekConsumer.add( Person("James Gosling") );</programlisting>
+geekConsumer.add( Geek("James Gosling") );</programlisting>
 
         <para>Which is also intuitively correct&mdash;James is most certainly
         a <literal>Person</literal>!</para>
@@ -1176,13 +1380,12 @@ geekConsumer.add( Person("James Gosling") );</programlisting>
         <para>You're unlikely to spend much time writing your own collection
         classes, since the Ceylon SDK has a powerful collections framework
         built in. But you'll still appreciate Ceylon's approach to covariance
-        as a user of the built-in collection types.
-        The collections framework defines two interfaces for each 
-        basic kind of collection. For example, there is an interface 
-        <literal>List&lt;X&gt;</literal> which represents a read-only view of
-        a list, and is covariant in <literal>X</literal>, and 
-        <literal>OpenList&lt;X&gt;</literal>, which represents a mutable list,
-        and is nonvariant in <literal>X</literal>.</para>
+        as a user of the built-in collection types. The collections framework 
+        defines two interfaces for each basic kind of collection. For example, 
+        there is an interface <literal>List&lt;X&gt;</literal> which represents 
+        a read-only view of a list, and is covariant in <literal>X</literal>, 
+        and <literal>OpenList&lt;X&gt;</literal>, which represents a mutable 
+        list, and is nonvariant in <literal>X</literal>.</para>
         
     </section>
     
@@ -1302,7 +1505,8 @@ else {
         and polluting the namespace with thousands of introduced methods and
         attributes. So the client code that uses the extension is responsible
         for explicitly activating the extension in the compilation unit where
-        it is used.</para>
+        it is used. To activate an extension we <literal>import</literal> 
+        it.</para>
         
         <programlisting>import com.domain.util.objectToLog;
         
@@ -1353,7 +1557,7 @@ public class Hello(String? name) {
         
         <para>Ceylon takes a different approach to its collection types. The 
         basic collection interfaces like <literal>List</literal> define a small
-        set of operations. Convenience method for users of the collections 
+        set of operations. Convenience methods for users of the collections 
         framework are defined by built-in extensions. So we can add new convenience 
         methods whenever we like. And so can you!</para>
         

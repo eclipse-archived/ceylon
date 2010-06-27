@@ -128,15 +128,28 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         that an object has been destroyed by the virtual machine (unlike Java, Ceylon
         does not provide object finalizers).</para>
         
-        <para>A a special exception to the rules defined above, the Ceylon compiler is 
-        permitted to emit bytecode that produces a new instance of one of the the built-in 
-        numeric types, of <literal>lang.Range</literal>, of <literal>lang.Entry</literal>, 
-        or of <literal>lang.String</literal>, without execution of the initializer of the 
-        class, whenever any expression is evaluated. Furthermore, it is permitted to use 
-        such a newly-produced instance as the value of the expression, as long as the 
-        newly-produced instance is equal to the value specified by the rules above, as 
-        determined using the <literal>==</literal> operator. Therefore, the behavior of the 
-        <literal>===</literal> operator is undefined for objects of these types.</para>
+        <para>A a special exception to the rules defined above:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>The compiler is permitted to emit bytecode that unexpectedly creates or avoids 
+            creating an actual instance of the erasable type <literal>lang.Optional</literal>, 
+            of <literal>lang.Referenceable</literal>, or of <literal>lang.Assignable</literal>,
+            when an expression is evaluated, as long as this does not affect the execution of 
+            the program. (Therefore, the <literal>===</literal> operator is undefined for these 
+            types.)</para>
+        </listitem>
+        <listitem>
+            <para>The compiler is permitted to emit bytecode that produces a new instance of one 
+            of the the built-in numeric types, of <literal>lang.Range</literal>, of 
+            <literal>lang.Entry</literal>, or of <literal>lang.String</literal> without execution 
+            of the initializer of the class, whenever any expression is evaluated. Furthermore, 
+            it is permitted to use such a newly-produced instance as the value of the expression, 
+            as long as the newly-produced instance is equal to the value expected according to 
+            the rules above, as determined using the <literal>==</literal> operator. Therefore, 
+            the <literal>===</literal> operator is unreliable for the listed types.</para>
+        </listitem>
+        </itemizedlist>
         
         <programlisting>Boolean identical(Natural x, Natural y) { return x==y }
 Natural n = 1;
@@ -508,6 +521,16 @@ if you prefer.";</programlisting>
         <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
         
         <programlisting>Method&lt;Log, Void, String&gt; infoMethod = #Log.info;</programlisting>
+        
+        <para>The metamodel object for a type allows its members to be iterated:</para>
+        
+        <programlisting>Type&lt;Object&gt; t = ...;
+for (Attribute&lt;Object,String&gt; a in t.attributes(#String)) {
+    log.info(a.name + "=" + a(person));
+}
+for (Method&lt;Object,String&gt; m in t.methods(#Callable&lt;String&gt;)) {
+    log.info(m.name + "=" + m(person)());
+}</programlisting>
         
         <para>The metamodel object for a class, attribute or method implements 
         <literal>Callable</literal> and is therefore invokable.</para>
@@ -1443,7 +1466,7 @@ except (SomethingElseWrong sew) {
                 <para>replacing each occurrence of any type parameter of the method or class 
                 in the signature with the explicitly specified type argument, if type arguments 
                 were specified, or with the first declared upper bound of the type parameter, 
-                or <literal>lang.Object</literal> if the type parameter has no declared upper 
+                or <literal>lang.Void</literal> if the type parameter has no declared upper 
                 bound.</para>
             </listitem>
         </itemizedlist>
@@ -1715,8 +1738,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         to by a nested method or class. It may be assigned to a local, or invoked directly 
         inside the block that obtained it.</para>
         
-        <comment><para>TODO: nail down these rules a little better. They also apply to 
-        <literal>Referenceable</literal>.</para></comment>
+        <comment><para>TODO: nail down these rules a little better.</para></comment>
         
     <section id="evaluation">
         <title>Evaluation</title>
@@ -2194,9 +2216,10 @@ personRef := person;</programlisting>
         </listitem>
     </itemizedlist>
     
-    <para>The argument expressions of the identity operator and the argument 
-    expression of the assignability operator may be of any type, not limited
-    to types assignable to <literal>Object</literal>.</para>
+    <para>The argument expressions of the identity operator must be of type
+    <literal>lang.Object</literal>. The argument expression of the assignability 
+    operator may be of any type, not limited to types assignable to 
+    <literal>Object</literal>.</para>
     
     <para>All other operators are defined in terms of other operators and/or
     invocations.</para>
@@ -2397,7 +2420,12 @@ personRef := person;</programlisting>
      </tbody>
     </tgroup>
     </table>
-    
+        
+        <comment><para>TODO: we could perhaps move the member selection operator <literal>.</literal>
+        down to <literal>Object</literal> from <literal>Void</literal> if we somehow turned
+        <literal>getIt()</literal> and <literal>setIt()</literal> into basic operators. Not
+        sure if this would be advantageous.</para></comment>
+        
         <comment><para>TODO: do we really need the <literal>$</literal> operator?</para></comment>
         
         <!--
@@ -2481,8 +2509,8 @@ personRef := person;</programlisting>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal></literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Y</literal></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal>Object</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>

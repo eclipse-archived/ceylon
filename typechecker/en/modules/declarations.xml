@@ -3,7 +3,7 @@
     
     <para>All classes, interfaces, methods, attributes and locals must be declared.</para>
     
-    <section id="generaldeclarations">
+    <section id="generaldeclarationsyntax">
         <title>General declaration syntax</title>
         
         <para>All declarations follow a general pattern.</para> 
@@ -174,7 +174,8 @@ public deprecated</programlisting>
         <para>For example, the built-in <literal>doc</literal> annotation is defined as 
         follows:</para>
         
-        <programlisting>public multiplicity(onceEachElement) 
+        <programlisting>public 
+annotation { occurs=onceEachElement; }
 Description doc(String description) { 
     return Description(description.normalize())
 }</programlisting>
@@ -252,7 +253,7 @@ Description doc(String description) {
         </itemizedlist>
         
         <para>Speaking slightly less formally, we usually refer to an attribute, method, or 
-        member class of a type, meaning an attribute shema, member method schema or member 
+        member class of a type, meaning an attribute schema, member method schema or member 
         class schema.</para>
         
         <para>The <emphasis>erased signature</emphasis> of a method or class is formed by:</para>
@@ -272,12 +273,12 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
-                the first declared upper bound of the type parameter, or <literal>lang.Object</literal> 
+                the first declared upper bound of the type parameter, or <literal>lang.Void</literal> 
                 if there is no declared upper bound, and</para>
             </listitem>
             <listitem>
                 <para>replacing the type of any varargs type parameter in the signature with 
-                <literal>lang.Object...</literal>, and then</para>
+                <literal>lang.Void...</literal>, and then</para>
             </listitem>
             <listitem>
                 <para>discarding the type arguments of each element of the list, leaving just 
@@ -293,6 +294,8 @@ Description doc(String description) {
         non-identical.</para>
         
         <comment><para>TODO: non-identical, or non-assignable?</para></comment>
+        
+        <comment><para>TODO: what about varargs parameters? what does Java do?</para></comment>
             
         <para>A type may not have:</para>
         
@@ -604,11 +607,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>Varargs type parameters are always non-variant.</para>
         
-        <para>Inside the declaration of the parameterized type, a varargs type parameter 
-        may be used as a type argument to other types which accept a varargs type parameter, 
-        or it may be used as the type of the last formal parameter declared by a method.
-        It may not appear in any other position. The varargs type parameter acts as a 
-        pseudo-type. It is treated by the Ceylon compiler as if it were a type with no 
+        <para>Inside the declaration of the parameterized type or method, a varargs type 
+        parameter may be used as a type argument to other types which accept a varargs type 
+        parameter, or it may be used as the type of the last formal parameter declared by a 
+        method. It may not appear in any other position. The varargs type parameter acts as 
+        a pseudo-type. It is treated by the Ceylon compiler as if it were a type with no 
         members, to which no other type may be assigned, and which can only by assigned to 
         itself.</para>
         
@@ -1027,6 +1030,9 @@ VarargsParam?
 where Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
 
         <programlisting>where T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
+    
+        <comment><para>TODO: Should the type parameter upper bound default to <literal>Object</literal>
+        instead of <literal>Void</literal>?</para></comment>
     
         <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
         down to the <literal>where</literal> clause?</para></comment>
@@ -1907,6 +1913,21 @@ public User(String username, Person person);</programlisting>
         <programlisting>public void addEntry(V key -> U value) {
     map.define(key,value);
 }</programlisting>
+
+        <para>Note that a method which declares the return type <literal>Void</literal>
+        is not a <literal>void</literal> method. A method with declared type 
+        <literal>Void</literal> must return a value of type <literal>Void</literal> 
+        (any value will do).</para>
+        
+        <programlisting>void say(String) { ... }
+
+void hello() {
+    say("hello");
+}
+        
+Void goodbye() {
+    return say("goodbye")
+}</programlisting>
         
         <para>A block local method with a single <literal>return</literal> directive may 
         be declared using the keyword <literal>local</literal> in place of the explicit 
@@ -2755,26 +2776,30 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         modifier annotations:</para>
     
         <programlisting>doc "The |public| visibility modifier 
-     annotation."
-public oncePerElement Visibility public() { 
+     annotation." 
+annotation { occurs=onceEachElement; } 
+public Visibility public() { 
     return public 
 }</programlisting>
 
         <programlisting>doc "The |module| visibility modifier 
      annotation."
-public oncePerElement Visibility module() { 
+annotation { occurs=onceEachElement; } 
+public Visibility module() { 
     return module
 }</programlisting>
 
         <programlisting>doc "The |package| visibility modifier 
      annotation."
-public oncePerElement Visibility package() { 
+annotation { occurs=onceEachElement; } 
+public Visibility package() { 
     return package 
 }</programlisting>
 
         <programlisting>doc "The |private| visibility modifier 
      annotation."
-public oncePerElement Visibility private() { 
+annotation { occurs=onceEachElement; } 
+public Visibility private() { 
     return private 
 }</programlisting>
 
