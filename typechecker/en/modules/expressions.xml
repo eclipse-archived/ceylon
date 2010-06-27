@@ -3233,7 +3233,7 @@ personRef := person;</programlisting>
             <entry>negation</entry>
             <entry><literal>rhs.inverse</literal></entry>
             <entry></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>Invertable&lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
         </row>
         
@@ -3244,7 +3244,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>sum</entry>
             <entry><literal>lhs.plus(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>Numeric&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3253,16 +3253,16 @@ personRef := person;</programlisting>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
             <entry><literal>lhs.minus(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>Numeric&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
-            <entry><literal>I</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>product</entry>
             <entry><literal>lhs.times(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>Numeric&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3271,7 +3271,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>quotient</entry>
             <entry><literal>lhs.divided(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>Numeric&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3280,7 +3280,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs % rhs</literal></entry>
             <entry>remainder</entry>
             <entry><literal>lhs.remainder(rhs)</literal></entry>
-            <entry><literal>Integral&lt;N,I&gt;</literal></entry>
+            <entry><literal>Integral&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3289,7 +3289,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs ** rhs</literal></entry>
             <entry>power</entry>
             <entry><literal>lhs.power(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N,I&gt;</literal></entry>
+            <entry><literal>Numeric&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3301,7 +3301,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
             <entry><literal>lhs:=lhs+rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3310,16 +3310,16 @@ personRef := person;</programlisting>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
             <entry><literal>lhs:=lhs-rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
-            <entry><literal>I</literal></entry>
+            <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
             <entry><literal>lhs:=lhs*rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3328,7 +3328,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
             <entry><literal>lhs:=lhs/rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3337,7 +3337,7 @@ personRef := person;</programlisting>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
             <entry><literal>lhs:=lhs%rhs</literal></entry>
-            <entry><literal>Assignable&lt;Integral&lt;N,I&gt;&gt;</literal></entry>
+            <entry><literal>Assignable&lt;Integral&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>

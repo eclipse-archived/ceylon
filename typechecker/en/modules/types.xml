@@ -1549,24 +1549,20 @@ while (people nonempty) {
 }]]></programlisting>
 
         <para>The subtype <literal>lang.Numeric</literal> supports the binary 
-        operators <literal>+,-, *, /, **</literal>, and the unary prefix 
-        operators <literal>-, +</literal>. In addition, <literal>mutable</literal> 
-        values of type <literal>lang.Numeric</literal> support the compound
-        assignment operators <literal>+=, -=, /=, *=</literal>.</para>
+        operators <literal>+,-, *, /, **</literal>. In addition, 
+        <literal>mutable</literal> values of type <literal>Numeric</literal> 
+        support the compound assignment operators 
+        <literal>+=, -=, /=, *=</literal>.</para>
 
-<programlisting><![CDATA[public interface Numeric<N, I>
-        satisfies Number, Comparable<N> 
-        where I satisfies Number
+<programlisting><![CDATA[public interface Numeric<N>
+        satisfies Number, Comparable<N>
         where N satisfies Number {
-
-    doc "The unary - operator"
-    public I inverse;
 
     doc "The binary + operator"
     public N plus(N number);
 
     doc "The binary - operator"
-    public I minus(N number);
+    public N minus(N number);
 
     doc "The binary * operator"
     public N times(N number);
@@ -1579,14 +1575,16 @@ while (people nonempty) {
     
 }]]></programlisting>
 
+        <comment><para>TODO: should <literal>plus()</literal> and <literal>times()</literal>
+        accept varargs, to minimize method calls?</para></comment>
+
         <para>The subtype <literal>lang.Integral</literal> supports the binary 
         operator <literal>%</literal>, and inherits the unary operators 
         <literal>++</literal> and <literal>--</literal> from 
         <literal>Ordinal</literal>.</para>
 
-<programlisting><![CDATA[public interface Integral<N, I>
-        satisfies Numeric<N, I>, Ordinal 
-        where I satisfies Number 
+<programlisting><![CDATA[public interface Integral<N>
+        satisfies Numeric<N>, Ordinal
         where N satisfies Number {
 
     doc "The binary % operator"
@@ -1594,16 +1592,24 @@ while (people nonempty) {
 
 }]]></programlisting>
 
-        <comment><para>TODO: should <literal>plus()</literal> and <literal>times()</literal>
-        accept varargs, to minimize method calls?</para></comment>
+        <para>The type <literal>lang.Invertable</literal> supports the unary
+        prefix <literal>-</literal> operator.</para>
+        
+        <programlisting><![CDATA[public interface Invertable<I> 
+    where I satisfies Number {
+    
+    doc "The unary - operator"
+    public I inverse;
 
+}]]></programlisting>
+        
         <para>Five numeric types are built in:</para>
 
         <para><literal>lang.Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
         <programlisting><![CDATA[public class Natural(Natural natural)
-        satisfies Integral<Natural,Integer>, Case<Integral>, Bits<Natural> { 
+        satisfies Integral<Natural>, Invertable<Integer>, Case<Integer>, Bits<Natural> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
@@ -1643,7 +1649,7 @@ while (people nonempty) {
         <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
-        satisfies Integral<Integer,Integer>, Case<Integral> {
+        satisfies Integral<Integer>, Invertable<Integer>, Case<Integer> {
     ...
     
     doc "Implicit type promotion to |Whole|"
@@ -1668,7 +1674,7 @@ while (people nonempty) {
         signed integers.</para>
 
         <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
-        satisfies Integral<Whole,Whole> {
+        satisfies Integral<Whole>, Invertable<Whole> {
     ...
     
     public small Natural precision = ...;
@@ -1689,7 +1695,7 @@ while (people nonempty) {
         values.</para>
 
         <programlisting><![CDATA[public class Float(Float float)
-        satisfies Numeric<Float,Float> { 
+        satisfies Numeric<Float>, Invertable<Float> { 
     ... 
     
     doc "Implicit type promotion to |Decimal|"
@@ -1708,7 +1714,7 @@ while (people nonempty) {
         and arbitrary-scale decimals.</para>
 
         <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
-        satisfies Numeric<Decimal,Decimal> {
+        satisfies Numeric<Decimal>, Invertable<Decimal> {
     ...
 
     public small Natural precision = ...;
