@@ -696,22 +696,94 @@ package assign greeting {
                     <para><literal>Integer</literal> represents signed integers,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Float</literal> represents floating point 
-                    decimal numbers,</para>
+                    <para><literal>Float</literal> represents floating point decimal 
+                    numbers,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Whole</literal> represents represents 
-                    arbitrary-precision signed integers, and</para>
+                    <para><literal>Whole</literal> represents arbitrary-precision signed 
+                    integers, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Decimal</literal> represents arbitrary-precision 
-                    and arbitrary-scale decimals.</para>
+                    <para><literal>Decimal</literal> represents arbitrary-precision and 
+                    arbitrary-scale decimals.</para>
                 </listitem>
             </itemizedlist>
             
             <para><literal>Natural</literal>, <literal>Integer</literal> and 
             <literal>Float</literal> have 64-bit precision by default. You can specify that 
             a value has 32-bit precision by annotating it <literal>small</literal>.</para>
+            
+            <para>There are only two kinds of numeric literals: literals for 
+            <literal>Natural</literal>s, and literals for <literal>Float</literal>s:</para>
+            
+            <programlisting>Natural one = 1;</programlisting>
+            <programlisting>Float oneHundredth = 0.01;</programlisting>
+            <programlisting>Float oneMillion = 1.0E+6;</programlisting>
+            
+            <para>Widening type conversions are implicit, since the <literal>lang</literal> 
+            package defines a set of built-in <emphasis>extensions</emphasis> (a concept 
+            we'll meet later) that take care of this:</para>
+            
+            <programlisting>Decimal oneTenth = 0.1;</programlisting>
+            <programlisting>Whole zero = 0;</programlisting>            
+            <programlisting>Integer minusOne = -1;</programlisting>
+            
+            <para>To perform a narrowing type conversion, you need to call one of the 
+            operations (well, they're attributes, actually) defined by the interface
+            <literal>Number</literal>:</para>
+            
+            <programlisting>Natural one = 1.003.natural;</programlisting>
+            <programlisting>Integer int = whole.integer;</programlisting>
+            
+            <para>Of course, a narrowing conversion can result in an exception at run 
+            time, so take care!</para>
+            
+            <para>You can use all the operators you're used to from other C-style languages
+            with the numeric types. You can also use the <literal>**</literal> operator to
+            raise a number to a power:</para>
+            
+            <programlisting>Float diagonal = sqrt(length**2+width**2);</programlisting>
+            
+            <para>Of course, if you want to use the increment <literal>++</literal> operator,
+            decrement <literal>--</literal> operator, or one of the compound assignment
+            operators such as <literal>+=</literal>, you'll have to declare the value 
+            <literal>mutable</literal>.</para>
+            
+            <programlisting>module class Counter() {
+            
+    mutable Natural count := 0;
+
+    module Natural next() {
+        return ++count
+    }
+
+}</programlisting>
+            
+            <para>You can even apply the bitwise and, or, xor, and complement operators
+            to the type <literal>Natural</literal>:</para>
+            
+            <programlisting>Natural result = color&amp;mask;</programlisting>
+            
+            <para>Operators in Ceylon are, in principle, just abbreviations for some expression
+            involving a method call. So the numeric types all implement the <literal>Numeric</literal> 
+            interface, which declares the methods <literal>plus()</literal>, <literal>minus()</literal>,
+            <literal>times()</literal>, <literal>divided()</literal> and <literal>power()</literal>.
+            The numeric operators are defined in terms of these methods of <literal>Numeric</literal>.
+            And <literal>Natural</literal> gets its bitwise operations from the <literal>Bits</literal>
+            interface.</para>
+            
+            <para>But don't worry about the performance implications of this&mdash;in practice, 
+            the compiler is permitted to optimize away the method invocations. In fact, the compiler
+            is permitted to optimize the built-in numeric types down to the virtual machine's native
+            numeric types.</para>
+            
+            <para>The real value of <literal>Numeric</literal> is that you can implement the
+            interface yourself, to introduce your own, more specialized numeric type. And you'll
+            be able to apply all the usual numeric operators to it. This is what we call 
+            <emphasis>operator polymorphism</emphasis>.
+            <!--It's not quite the same thing as operator
+            overloading, which refers to the ability to assign any arbitrary meaning to any symbol
+            on the keyboard.--></para>
             
         </section>
 
