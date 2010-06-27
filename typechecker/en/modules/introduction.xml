@@ -795,10 +795,10 @@ package assign greeting {
             
             <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
-            <programlisting>String[] cities = { "Melbourne", "Atlanta", "San Francisco", "Guanajuato" };
-String sf = cities[2];
-String[] usCities = cities[1..2];
-String[] moreCities := cities + { "Rome", "Paris", "Edinburgh", "Cambridge" };</programlisting>
+            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Atlanta", "Guanajuato" };
+String? sf = voyage[2];
+String[] usLeg = voyage[1..2];
+String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlisting>
             
             <para>The syntax <literal>String[]</literal> is just an abbreviation for the 
             type <literal>Sequence&lt;String&gt;</literal>. Don't be scared by the fancy 
@@ -812,15 +812,15 @@ String[] moreCities := cities + { "Rome", "Paris", "Edinburgh", "Cambridge" };</
             a type declares type parameters, a type argument for each parameter is required
             everywhere the type is used. For example, the following declaration is not legal:</para>
             
-            <programlisting>Sequence cities = { "Atlanta", "San Francisco", "Boston" };  //error! missing type argument</programlisting>
+            <programlisting>Sequence voyage = { "Atlanta", "Boston", "San Francisco" };  //error! missing type argument</programlisting>
             
             <para>The closest thing to a raw type, in this case, would be to use a <literal>Sequence&lt;Object&gt;</literal>.</para>
             
-            <programlisting>Sequence&lt;Object&gt; cities = { "Atlanta", "San Francisco", "Boston" };</programlisting>
+            <programlisting>Sequence&lt;Object&gt; voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
             <para>Which we could abbreviate, of course:</para>
             
-            <programlisting>Object[] cities = { "Atlanta", "San Francisco", "Boston" };</programlisting>
+            <programlisting>Object[] voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
             <para>Sequences of ordinal values are especially common, so there's an
             operator for constructing them, called the <emphasis>range</emphasis>
@@ -830,16 +830,16 @@ String[] moreCities := cities + { "Rome", "Paris", "Edinburgh", "Cambridge" };</
             <programlisting>Integer[] fromNegative10To10 = -10..10;</programlisting>
             <programlisting>Character[] fromAToZ = @A..@Z;</programlisting>
 
-            <para>We can iterate a sequence like this:</para>
+            <para>We can iterate a <literal>Sequence</literal> like this:</para>
             
-            <programlisting>for (String city in cities) {
+            <programlisting>for (String city in voyage) {
     stream.writeLine(city):
 }</programlisting>
 
             <para>If, for some reason, we need access to the index of each element, we can
             write the following:</para>
             
-            <programlisting>for (Natural i -> String city in cities) {
+            <programlisting>for (Natural i -> String city in voyage) {
     stream.writeLine($i + ": " + city):
 }</programlisting>
 
@@ -851,10 +851,18 @@ String[] moreCities := cities + { "Rome", "Paris", "Edinburgh", "Cambridge" };</
             <programlisting>Correspondence&lt;String,String&gt; cities = { "Emmanuel"->"Paris",
                                            "Andrew"->"Cambridge", 
                                              "Pete"->"Edinburgh",
-                                            "Gavin"->"Guanajuato" };
-String paris = cities["Emmanuel"];</programlisting>
+                                            "Gavin"->"Guanajuato" };</programlisting>
+                              
+            <para>We can extract values from a <literal>Correspondence</literal> by key 
+            using the lookup operator:</para>
 
-            <para>We can iterate a correspondence like this:</para>
+            <programlisting>String? paris = cities["Emmanuel"];</programlisting>
+            
+            <para>Notice that the lookup operator returns an <literal>Optional</literal>
+            result, to account for the possibility that there is no value defined for
+            the given key.</para>
+
+            <para>We can iterate a <literal>Correspondence</literal> like this:</para>
 
             <programlisting>for (Entry&lt;String,String&gt; entry in cities) {
     stream.writeLine(entry.key + " lives in " + entry.value);
@@ -882,7 +890,46 @@ String paris = cities["Emmanuel"];</programlisting>
             <literal>OpenSet</literal>, <literal>OpenList</literal> and 
             <literal>OpenMap</literal> (and we can't forget <literal>OpenBag</literal>).</para>
             
-            TODO: demo OpenMap
+            <para>A <literal>Map</literal> is the most important kind of 
+            <literal>Correspondence</literal>. We can add or override entries in an 
+            <literal>OpenMap</literal> using the assignment operator:</para>
+            
+            <programlisting><![CDATA[OpenMap<String,String> cities = {}
+cities["Gavin"] := "Guanajuato";
+cities["Emmanuel"] := "Paris";
+cities["Pete"] := "Edinburgh";
+cities["Andrew"] := "Cambridge";]]></programlisting>
+            
+            <para>It's even possible to define multiple entries at once:</para>
+            
+            <programlisting><![CDATA[OpenMap<String,String> cities = {}
+cities.define("Emmanuel"->"Paris",
+                 "Gavin"->"Guanajuato",
+                  "Pete"->"Edinburgh",
+                "Andrew"->"Cambridge");]]></programlisting>
+            
+            <para>The <literal>-></literal> operator constructs an <literal>Entry</literal>
+            from its operands. A <literal>Map</literal> is a <literal>Collection</literal> 
+            of <literal>Entry</literal>s.</para>
+            
+            <para>A <literal>List</literal> is the most important kind of 
+            <literal>Sequence</literal>. We usually add entries to an 
+            <literal>OpenList</literal> using the <literal>append()</literal> method:</para>
+            
+            <programlisting><![CDATA[OpenList<String> voyage = {}
+voyage.append("Melbourne");
+voyage.append("San Francisco");
+voyage.append("Atlanta);]]></programlisting>
+            
+            <para>It's even possible to add multiple elements at once:</para>
+            
+            <programlisting><![CDATA[OpenList<String> voyage = {}
+voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
+
+            <para>We can also change the value at a particular index in an 
+            <literal>OpenList</literal>:</para>
+            
+            <programlisting><![CDATA[voyage[1] := "Los Angeles";]]></programlisting>
             
             <para>Splitting the collection interfaces into a "read-only" view and a
             "writable" view has several advantages, but the most important is that you

@@ -1041,12 +1041,12 @@ while (people nonempty) {
     public X removeIndex(Natural at);
     
     doc "Add the given elements at the end of the list."
-    public void prepend(X... elements);
+    public void append(X... elements);
     
     doc "Add the given elements at the start of the list,
          incrementing the index of every existing element
          by the number of given elements."
-    public void append(X... elements);
+    public void prepend(X... elements);
 
     doc "Insert the given elements beginning at the given
          index, incrementing the index of every existing 
