@@ -20,6 +20,9 @@
        debug="true"
        classpath="${antlr}">
       <compilerarg file="CeylonCompiler.java"/>
+      <compilerarg file="CeylonTree.java"/>
+      <compilerarg file="CeylonTreeVisitor.java"/>
+      <compilerarg file="CeylonTreePrinter.java"/>
     </javac>
   </target>
 

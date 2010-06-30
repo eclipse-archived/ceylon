@@ -14,7 +14,7 @@ public class CeylonCompiler
     this.is = is;
   }
 
-  void run(String comment)
+  void run(String comment, boolean consumeTree)
     throws Exception
   {
     ANTLRInputStream input
@@ -34,6 +34,13 @@ public class CeylonCompiler
 
     new TreeVisitor().visit(t, new PrintTree());
     out.println();
+
+    if (consumeTree) {
+      out.println();
+      CeylonTree ct = CeylonTree.consume(t);
+      System.out.println(ct);
+      out.println();
+    }
   }
 
   class PrintTree implements TreeVisitorAction
@@ -89,6 +96,7 @@ public class CeylonCompiler
     Vector<String> args = new Vector<String> (Arrays.asList(argv));
 
     String outputdir = "";
+    boolean consumeTree = false;
 
     for (int i = 0; i < args.size(); i++) {
       if (args.get(i).equals("-d"))
@@ -97,6 +105,13 @@ public class CeylonCompiler
           outputdir = args.get(i);
           args.remove(i);
           new File(outputdir).mkdir();
+          i--;
+        }
+      else if (args.get(i).equals("-t"))
+        {
+          consumeTree = true;
+          args.remove(i);
+          i--;
         }
     }
 
@@ -124,7 +139,7 @@ public class CeylonCompiler
         }
 
       System.err.println(infile);
-      theCeylonCompiler.run(infile);
+      theCeylonCompiler.run(infile, consumeTree);
 
     }
   }
