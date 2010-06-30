@@ -1,4 +1,4 @@
-<project name="MyProject" default="compile" basedir=".">
+<project name="MyProject" default="test" basedir=".">
   <property name="src" location="output"/>
   <property name="build" location="classes"/>
   <property name="tmp" location="tmp"/>
@@ -21,7 +21,9 @@
        classpath="${antlr}">
       <compilerarg file="CeylonCompiler.java"/>
     </javac>
+  </target>
 
+  <target name="test" depends="compile">
     <apply executable="java">
       <arg value="-cp"/> <arg value="${antlr}:${build}"/>
       <arg value="CeylonCompiler"/>      
