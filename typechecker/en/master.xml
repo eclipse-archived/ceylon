@@ -28,14 +28,18 @@
     and of the Java ecosystem, of its practical orientation, of its culture of 
     openness, of its developer community, of its unashamed participation in the 
     world of business computing, and of its strong commitment to portability. 
-    However, we recognize that the language and class libraries designed more 
-    than 15 years ago are now no longer the best foundation for solving today's
+    However, we recognize that the language and class libraries, designed more 
+    than 15 years ago, are no longer the best foundation for a range of today's 
     business computing problems.</para>
     
     <para>The goal of this project is to make a clean break with the legacy 
     Java SE platform, by improving upon the Java language and class libraries, 
     and by providing a modular architecture for a new platform based upon the 
     Java Virtual Machine.</para>
+    
+    <para>Of course, we recognize that the ability to interoperate with existing 
+    Java code, and leverage existing investment in the Java ecosystem, is a 
+    critical requirement of any successor to the Java platform.</para>
     
     <para>Java is a simple language to learn and Java code is easy to read and
     understand. Java provides a level of typesafety that is appropriate for
