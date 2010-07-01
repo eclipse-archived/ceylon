@@ -15,19 +15,44 @@
     own native SDK as a replacement for the Java platform class libraries.
     </para>
     
+    <section>
+        <title>Language overview</title>
+    
+    <section>
+    <title>The type system</title>
+    
     <para>
     Ceylon features a similar inheritance and generic type model to Java. 
+    A type is either an <emphasis>interface</emphasis> or a 
+    <emphasis>class</emphasis>. An interface may extend an arbitrary number 
+    of other interfaces. A class may implement an arbitrary number of interfaces 
+    and must extend another class. 
+    </para>
+    
+    <para>
     There are no primitive types or arrays in Ceylon, so all values are
     instances of the type hierarchy root <literal>lang.Object</literal>.
     However, the Ceylon compiler is permitted to optimize certain code to 
     take advantage of the better performance of primitive types on the JVM.
+    </para>
+    
+    <para>
     Ceylon does not support Java-style wildcard type parameters or raw types. 
     Instead, like Scala, a type parameter may be marked as covariant or 
-    contravariant by the class or interface that declares the parameter.
-    Type arguments are reified in Ceylon, eliminating many problems related
-    to type erasure in Java. Ceylon supports <emphasis>type aliases</emphasis>, 
-    similar to C-style <literal>typedef</literal>.
+    contravariant by the class or interface that declares the parameter. Type 
+    arguments are reified in Ceylon, eliminating many problems related to 
+    type erasure in Java. 
     </para>
+    
+    <para>
+    Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style 
+    <literal>typedef</literal>.
+    </para>
+    
+    </section>
+    
+    <section>
+    <title>Compiler-enforced naming conventions</title>
     
     <para>
     The Ceylon compiler enforces the traditional Smalltalk naming convention:
@@ -37,8 +62,62 @@
     syntax found in either Java or C#.
     </para>
     
+    </section>
+    
+    <section>
+    <title>Class initialization and instantiation</title>
+    
     <para>
-    Ceylon methods are similar to Java methods. Ceylon supports first-class 
+    Ceylon does not feature any Java-like constructor declaration and so 
+    each Ceylon class has a formal parameter list, and exactly one 
+    <emphasis>initializer</emphasis>&mdash;the body of the class. This helps
+    reduce verbosity and results in a more regular block structure.
+    </para>
+    
+    <para>
+    In place of constructor overloading, Ceylon allows class names to be 
+    overloaded. Even better, member classes of a class may be overridden by 
+    subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
+    eliminating the need for factory methods.
+    </para>
+    
+    </section>
+    
+    <section>
+    <title>Methods and attributes</title>
+    
+    <para>
+    Ceylon types have members: <emphasis>methods</emphasis> and 
+    <emphasis>attributes</emphasis>. Ceylon methods are similar to Java methods. 
+    However, Ceylon classes do not contain fields, in the traditional sense. 
+    Instead, Ceylon supports only a higher-level construct: polymorphic 
+    attributes, which are similar to C# properties. Attributes abstract the
+    internal representation of the state of an object.
+    </para>
+    
+    <para>There are no <literal>static</literal> members. Instead, 
+    <emphasis>toplevel</emphasis> methods are declared as direct members of a 
+    package. This, along with certain other features, gives the language a more 
+    regular block structure.
+    </para>
+
+    </section>
+    
+    <section>
+    <title>Defaulted parameters</title>
+    
+    <para>
+    As an alternative to method or class overloading, Ceylon supports method 
+    and class initialization parameters with default values. 
+    </para>
+    
+    </section>
+    
+    <section>
+    <title>First-class functions</title>
+    
+    <para>
+    Ceylon supports first-class 
     function types and higher-order functions, with minimal extensions to 
     the traditional C syntax. A method declaration may specify a 
     <emphasis>callable parameter</emphasis> that accepts references to 
@@ -50,26 +129,10 @@
     surrounding scope.
     </para>
     
-    <para>
-    Ceylon does not feature any Java-like constructor declaration and so 
-    each Ceylon class has a formal parameter list, and exactly one 
-    <emphasis>initializer</emphasis>&mdash;the body of the class. In place
-    of constructor overloading, Ceylon allows class names to be overloaded.
-    Even better, member classes of a class may be overridden by subclasses.
-    Instantiation is therefore a polymorphic operation in Ceylon, eliminating
-    the need for factory methods.
-    </para>
+    </section>
     
-    <para>
-    As an alternative to method or class overloading, Ceylon supports method 
-    and class initialization parameters with default values. 
-    </para>
-    
-    <para>
-    Ceylon classes do not contain fields, in the traditional sense. Instead, 
-    Ceylon supports only a higher-level construct: polymorphic 
-    <emphasis>attributes</emphasis>, which are similar to C# properties.
-    </para>
+    <section>
+    <title>Immutability by default</title>
     
     <para>
     By default, Ceylon classes, attributes and locals are immutable. 
@@ -79,6 +142,11 @@
     <literal>mutable</literal> class. An immutable attribute or local may 
     not be assigned after its initial value is specified.
     </para>
+    
+    </section>
+    
+    <section>
+    <title>Compile-time safety for optional values and type narrowing</title>
     
     <para>
     By default, Ceylon attributes and locals do not accept null values. 
@@ -91,13 +159,17 @@
     </para>
     
     <para>
-    Ceylon does not feature C-style typecasts or Java's 
-    <literal>instanceof</literal> operator. Instead, the 
+    Ceylon does not feature C-style typecasts. Instead, the 
     <literal>if (is ... )</literal> and 
     <literal>case (is ... )</literal> constructs may be used to narrow
     the type of an object reference without risk of a 
     <literal>ClassCastException</literal>.
     </para>
+    
+    </section>
+    
+    <section>
+    <title>Control flow</title>
     
     <para>
     Ceylon control flow structures are very similar to the traditional 
@@ -108,12 +180,27 @@
     </para>
     
     <para>
+    Ceylon features an exceptions model inspired by Java and C#. Checked 
+    exceptions are not supported.
+    </para>
+    
+    </section>
+    
+    <section>
+    <title>Operators</title>
+    
+    <para>
     Ceylon features a rich set of operators, including most of the operators 
     supported by C and Java. True operator overloading is not supported. 
     However, each operator is defined to act upon a certain class or interface 
     type, allowing application of the operator to any class which extends or 
     implements that type. This is called <emphasis>operator polymorphism</emphasis>.
     </para>
+    
+    </section>
+    
+    <section>
+    <title>Numeric types</title>
     
     <para>Ceylon's numeric type system is much simpler than C, C# or Java, 
     with exactly five built-in numeric types (compared to eight in Java and
@@ -125,6 +212,11 @@
     <literal>small</literal> annotation. <!--Unlike Java and C#, Ceylon features
     language-level support for dates and times.--></para>
     
+    </section>
+    
+    <section>
+    <title>Extensions</title>
+    
     <para>
     True open classes are not supported. However, Ceylon supports 
     <emphasis>extensions</emphasis>, which allow addition of methods and 
@@ -134,10 +226,10 @@
     transparently interoperate and inter-compile with Java code.-->
     </para>
     
-    <para>
-    Ceylon features an exceptions model inspired by Java and C#. Checked 
-    exceptions are not supported.
-    </para>
+    </section>
+    
+    <section>
+    <title>Structured data</title>
     
     <para>
     Ceylon introduces a set of syntax extensions that support the definition 
@@ -150,6 +242,11 @@
     built-in support for program element annotations.
     </para>
     
+    </section>
+    
+    <section>
+    <title>Metaprogramming</title>
+    
     <para>
     Ceylon provides sophisticated support for meta-programming, including 
     a typesafe metamodel and events. This facility is inspired by similar 
@@ -159,14 +256,26 @@
     programming as a language feature.
     </para>
     
+    </section>
+    
+    <section>
+    <title>Modularity</title>
+    
     <para>
-    Ceylon features language-level package and module constructs, and 
-    language-level access control with five levels of visibility for 
-    program elements: block local (the default), <literal>private</literal>, 
-    <literal>package</literal>, <literal>module</literal> and 
-    <literal>public</literal>. There's no equivalent to Java's 
-    <literal>protected</literal>.
+    Ceylon features language-level <emphasis>package</emphasis> and 
+    <emphasis>module</emphasis> constructs, and language-level access control 
+    with five levels of visibility for program elements: block local (the 
+    default), <literal>private</literal>, <literal>package</literal>, 
+    <literal>module</literal> and <literal>public</literal>. There's no 
+    equivalent to Java's <literal>protected</literal>.
     </para>
+    
+    </section>
+    
+    </section>
+    
+    <section>
+    <title>A brief tutorial</title>
     
     <section>
         <title>Writing a simple program in Ceylon</title>
@@ -1680,6 +1789,8 @@ public class Hello(String? name) {
         framework are defined by built-in extensions. So we can add new convenience 
         methods whenever we like. And so can you!</para>
         
+    </section>
+    
     </section>
     
 </chapter>
