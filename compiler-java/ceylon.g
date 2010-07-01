@@ -708,7 +708,8 @@ selector
     ;
 
 member
-    : ('.' | '?.' | '*.') nameAndTypeArguments
+    : '.' nameAndTypeArguments -> DOT  nameAndTypeArguments
+    | ('?.' | '*.') nameAndTypeArguments
     ;
 
 nameAndTypeArguments

@@ -63,7 +63,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -89,7 +89,7 @@
                         (STMT_LIST
                           (EXPR
                             (EXPR
-                              (MEMBER_NAME log) .
+                              (MEMBER_NAME log) DOT
                               (MEMBER_NAME info)
                               (CALL_EXPR
                                 (ARG_LIST
@@ -102,7 +102,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -123,7 +123,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -173,7 +173,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -187,7 +187,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -197,7 +197,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -222,7 +222,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -246,7 +246,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -256,7 +256,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -271,7 +271,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -281,7 +281,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -300,7 +300,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -319,7 +319,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -355,7 +355,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -365,7 +365,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -384,7 +384,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -394,7 +394,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -431,7 +431,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -442,7 +442,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -460,7 +460,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -471,7 +471,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -500,7 +500,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -525,7 +525,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -559,16 +559,16 @@
                 (INIT_EXPR
                   (EXPR
                     (EXPR
-                      (MEMBER_NAME text) .
+                      (MEMBER_NAME text) DOT
                       (MEMBER_NAME tokens)
-                      (CALL_EXPR ARG_LIST) .
+                      (CALL_EXPR ARG_LIST) DOT
                       (MEMBER_NAME iterator)
                       (CALL_EXPR ARG_LIST)))))
               (WHILE_STMT
                 (CONDITION
                   (EXPR
                     (EXPR
-                      (MEMBER_NAME tokens) .
+                      (MEMBER_NAME tokens) DOT
                       (MEMBER_NAME more))))
                 (WHILE_BLOCK
                   (STMT_LIST
@@ -580,9 +580,9 @@
                       (INIT_EXPR
                         (EXPR
                           (EXPR
-                            (MEMBER_NAME tokens) .
+                            (MEMBER_NAME tokens) DOT
                             (MEMBER_NAME next)
-                            (CALL_EXPR ARG_LIST) .
+                            (CALL_EXPR ARG_LIST) DOT
                             (MEMBER_NAME lowercase)))))
                     (IF_STMT
                       (CONDITION
@@ -594,7 +594,7 @@
                         (STMT_LIST
                           (EXPR
                             (EXPR
-                              (MEMBER_NAME log) .
+                              (MEMBER_NAME log) DOT
                               (MEMBER_NAME info)
                               (CALL_EXPR
                                 (ARG_LIST
@@ -685,7 +685,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME error)
                           (CALL_EXPR
                             (ARG_LIST
@@ -720,7 +720,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -735,7 +735,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -747,7 +747,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -766,7 +766,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME error)
                           (CALL_EXPR
                             (ARG_LIST
@@ -776,7 +776,7 @@
                   (STMT_LIST
                     (EXPR
                       (EXPR
-                        (MEMBER_NAME log) .
+                        (MEMBER_NAME log) DOT
                         (MEMBER_NAME info)
                         (CALL_EXPR
                           (ARG_LIST
@@ -806,7 +806,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -819,7 +819,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -832,7 +832,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -845,7 +845,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -858,7 +858,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -868,7 +868,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -894,7 +894,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -907,7 +907,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -917,7 +917,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -944,7 +944,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -957,7 +957,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -967,7 +967,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -1004,7 +1004,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -1019,7 +1019,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -1045,7 +1045,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST
@@ -1062,7 +1062,7 @@
                     (STMT_LIST
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME log) .
+                          (MEMBER_NAME log) DOT
                           (MEMBER_NAME info)
                           (CALL_EXPR
                             (ARG_LIST

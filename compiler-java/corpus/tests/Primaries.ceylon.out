@@ -272,7 +272,7 @@
                       (STMT_LIST
                         (EXPR
                           (EXPR
-                            (MEMBER_NAME log) .
+                            (MEMBER_NAME log) DOT
                             (MEMBER_NAME info)
                             (CALL_EXPR
                               (ARG_LIST
@@ -286,7 +286,7 @@
                 (STMT_LIST
                   (EXPR
                     (EXPR
-                      (MEMBER_NAME log) .
+                      (MEMBER_NAME log) DOT
                       (MEMBER_NAME info)
                       (CALL_EXPR
                         (ARG_LIST
@@ -311,7 +311,7 @@
                 (INIT_EXPR
                   (EXPR
                     (EXPR
-                      (MEMBER_NAME person) .
+                      (MEMBER_NAME person) DOT
                       (MEMBER_NAME hello)))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
@@ -328,7 +328,7 @@
                   (EXPR
                     (GET_EXPR
                       (EXPR
-                        (MEMBER_NAME person) .
+                        (MEMBER_NAME person) DOT
                         (MEMBER_NAME name))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
@@ -342,7 +342,7 @@
                   (EXPR
                     (SET_EXPR
                       (EXPR
-                        (MEMBER_NAME person) .
+                        (MEMBER_NAME person) DOT
                         (MEMBER_NAME name))))))
               (MEMBER_DECL
                 (MEMBER_TYPE

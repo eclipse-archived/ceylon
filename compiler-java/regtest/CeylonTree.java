@@ -17,13 +17,13 @@ public abstract class CeylonTree {
   static {
     classes = new HashMap<Integer, Class<? extends CeylonTree>>();
 
-    // Tokens with explicit names
     classes.put(ceylonParser.ANNOTATION, Annotation.class);
     classes.put(ceylonParser.ANNOTATION_LIST, AnnotationList.class);
     classes.put(ceylonParser.ANNOTATION_NAME, AnnotationName.class);
     classes.put(ceylonParser.ARG_LIST, ArgumentList.class);
     classes.put(ceylonParser.CALL_EXPR, CallExpression.class);
     classes.put(ceylonParser.CLASS_DECL, ClassDeclaration.class);
+    classes.put(ceylonParser.DOT, Dot.class);
     classes.put(ceylonParser.EXPR, Expression.class);
     classes.put(ceylonParser.LIDENTIFIER, LIdentifier.class);
     classes.put(ceylonParser.MEMBER_NAME, MemberName.class);
@@ -33,14 +33,6 @@ public abstract class CeylonTree {
     classes.put(ceylonParser.TYPE_DECL, TypeDeclaration.class);
     classes.put(ceylonParser.TYPE_NAME, TypeName.class);
     classes.put(ceylonParser.UIDENTIFIER, UIdentifier.class);
-
-    // Tokens with implicit names
-    for (int i = 0; i < ceylonParser.tokenNames.length; i++) {
-      if ("'.'".equals(ceylonParser.tokenNames[i])) {
-        classes.put(i, Dot.class);
-        break;
-      }
-    }
   }
 
   /**
