@@ -56,10 +56,13 @@
     
     <para>
     The Ceylon compiler enforces the traditional Smalltalk naming convention:
-    type names begin with an initial uppercase letter, member names and local
-    names with an initial lowercase letter or underscore. This innovation 
-    allows a much cleaner syntax for program element annotations than the
-    syntax found in either Java or C#.
+    type names begin with an initial uppercase letter&mdash;for example, 
+    <literal>Liberty</literal> or <literal>RedWine</literal>&mdash;member names 
+    and local names with an initial lowercase letter or underscore&mdash;for
+    example, <literal>blonde</literal>, <literal>immanentize()</literal> or 
+    <literal>boldlyGo()</literal>. This innovation allows a much cleaner 
+    syntax for program element annotations than the syntax found in either Java 
+    or C#.
     </para>
     
     </section>
@@ -412,8 +415,8 @@ public void hello(Process process) {
         <para>
         Types (interfaces, classes, and aliases) have names that begin with uppercase 
         letters. Members (methods and attributes) and locals have names that begin with 
-        lowercase letters. This is the rule you're used to from Java (it's different to, 
-        and much prettier than, the naming conventions in C#). Unlike Java, the Ceylon 
+        lowercase letters. This is the rule you're used to from Java. <!--(it's different to, 
+        and much prettier than, the naming conventions in C#)--> Unlike Java, the Ceylon 
         compiler enforces these rules. If you try to write <literal>class hello</literal>
         or <literal>String Name</literal>, you'll get a compilation error.
         </para>
@@ -983,7 +986,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
     stream.writeLine(name + " lives in " + city):
 }</programlisting>
 
-            <para>So far we havn't met anything from the collections package proper. 
+            <para>So far we haven't met anything from the collections package proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
             of the package <literal>lang</literal>. They're there to abstract away the
             nice syntax we've just met from the (relatively) gory details of the collections 
