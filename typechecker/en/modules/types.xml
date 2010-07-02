@@ -1812,7 +1812,7 @@ while (people nonempty) {
         <para>An <literal>Attribute</literal> represents an attribute declaration.</para>
 
         <programlisting><![CDATA[public interface Attribute<in X, T> 
-        satisfies Member<X, Reference<T>> {
+        satisfies Member<X, Referenceable<T>> {
         
     public Boolean mutable;
 

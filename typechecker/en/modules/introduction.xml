@@ -1379,7 +1379,7 @@ package class Language(String hello) {
      people"
 annotation { 
     of = classes; 
-    withType = #Greeting; 
+    withType = #Greeting;
     occurs = onceEachType; 
 }
 package Set&lt;People&gt; people(Person... people) {
