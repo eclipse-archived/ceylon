@@ -668,8 +668,8 @@ createItemMethod.addListener(currentOrder)
         <title>Callable references</title>
         
         <para>A <emphasis>callable reference</emphasis> is a reference to 
-        something&mdash;a method or class&mdash;that can be <emphasis>invoked</emphasis>
-        by specifying a list of arguments.</para>
+        something&mdash;a method, callable parameter, or class&mdash;that can be 
+        <emphasis>invoked</emphasis> by specifying a list of arguments.</para>
         
         <programlisting>CallableReference := MethodReference | ConstructorReference</programlisting>
         
