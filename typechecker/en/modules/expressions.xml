@@ -671,40 +671,40 @@ createItemMethod.addListener(currentOrder)
         something&mdash;a method or class&mdash;that can be <emphasis>invoked</emphasis>
         by specifying a list of arguments.</para>
         
-        <programlisting>CallableReference := (Receiver ".")? (MemberName | TypeName)</programlisting>
+        <programlisting>CallableReference := MethodReference | ConstructorReference</programlisting>
         
         <para>A callable reference may be invoked immediately, or it may be passed 
-        to other code which may invoke the reference.</para>
+        to other code which may invoke the reference. A callable reference captures 
+        the return type and formal parameter lists of the method, callable parameter, 
+        or class it refers to, allowing compile-time validation of argument types when 
+        the callable reference is invoked.</para>
         
-        <para>Callable reference expressions are assignable to 
+        <para>A callable reference expression is assignable to 
         <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
         <literal>P...</literal> depend upon the schema of the method or class.</para>
         
-        <itemizedlist>
-        <listitem>
-            <para>If the callable reference specifies a method name (or callable 
-            parameter name), it is called a <emphasis>method reference</emphasis>. 
-            The type of a method reference expression is assignable to the callable 
-            type of every overloaded version of the method. Calling the callable 
-            reference results in execution of the method.</para>
-        </listitem>
-        <listitem>
-            <para>If the callable reference specifies a class name, it is called a 
-            <emphasis>constructor reference</emphasis>. The type of a constructor 
-            reference expression is assignable to the callable type of every
-            overloaded version of the class. Calling the constructor reference 
-            results in instantiation of the class.</para>
-        </listitem>
-        </itemizedlist>
+        <para>If the callable reference specifies a method name (or callable 
+        parameter name), it is called a <emphasis>method reference</emphasis>.</para>
+
+        <programlisting>MethodReference := (Receiver ".")? MemberName</programlisting>        
+
+        <para>The type of a method reference expression is assignable to the callable 
+        type of every overloaded version of the method. Calling the callable reference 
+        results in execution of the method.</para>
+
+        <para>If the callable reference specifies a class name, it is called a 
+        <emphasis>constructor reference</emphasis>.</para>
+        
+        <programlisting>ConstructorReference := (Receiver ".")? TypeName</programlisting>
+        
+        <para>The type of a constructor reference expression is assignable to the 
+        callable type of every overloaded version of the class. Calling the constructor 
+        reference results in instantiation of the class.</para>
         
         <para>A callable reference may specify a receiver expression. When a callable 
         reference with a receiver expression is executed, the receiver expresson is 
         evaluated and a reference to the resulting value is held as part of the 
         callable reference.</para>
-        
-        <para>A callable reference captures the return type and formal parameter lists
-        of the method, callable parameter, or class it refers to, allowing compile-time 
-        validation of argument types when the callable reference is invoked.</para>
         
         <section>
             <title>Receiver expressions</title>
