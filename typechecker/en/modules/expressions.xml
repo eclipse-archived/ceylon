@@ -491,7 +491,13 @@ if you prefer.";</programlisting>
             </listitem>
             <listitem>
                 <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
-                <literal>X</literal> is the class and <literal>P...</literal> 
+                <literal>X</literal> is the toplevel class and <literal>P...</literal> 
+                are the types of the formal parameter list of the class, for every
+                overloaded version of the class, or</para>
+            </listitem>
+            <listitem>
+                <para>assignable to <literal>MemberClass&lt;X,Y,P...&gt;</literal> where 
+                <literal>Y</literal> is the member class and <literal>P...</literal> 
                 are the types of the formal parameter list of the class, for every
                 overloaded version of the class.</para>
             </listitem>

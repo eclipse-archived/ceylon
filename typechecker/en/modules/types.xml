@@ -1859,6 +1859,20 @@ while (people nonempty) {
     
 }]]></programlisting>
 
+        <para>An instance of <literal>MemberClass</literal> represents a member 
+        class.</para>
+        
+        <programlisting><![CDATA[public interface MemberClass<X, Y, P...> 
+        satisfies Type<Y>, Member<Y, Callable<X,P...>> {
+    
+    public Parameter<Object>[] parameters;
+    
+    public Listener addListener<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )
+                          where S abstracts X;
+    public Listener addListener( X instance, Y onCreate(Y proceed(P... args), P... args) );
+    
+}]]></programlisting>
+
         <para>A <literal>Parameter</literal> represents a formal parameter of a method 
         or class.</para>
 
