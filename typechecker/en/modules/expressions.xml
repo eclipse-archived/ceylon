@@ -468,6 +468,10 @@ if you prefer.";</programlisting>
         <programlisting>Method&lt;Log, Void, String&gt; infoMethod = Log.info;</programlisting>
         
         <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
+        
+        <comment><para>TODO: are there metamodel objects for block local declarations? This
+        includes block local declarations inside a class body, and block local declarations
+        inside a method or attribute body.</para></comment>
                 
         <section>
             <title>Interface and class metamodel references</title>
