@@ -158,12 +158,12 @@ Body?</programlisting>
         omitted.</para>
         
         <programlisting>doc "The user login action"
-throws (DatabaseException ->
-       "if database access fails")
 by "Gavin King"
    "Andrew Haley"
+throws (DatabaseException 
+        -> "if database access fails")
 see (LogoutAction.logout)
-scope(session) 
+scope (session) 
 action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
 
