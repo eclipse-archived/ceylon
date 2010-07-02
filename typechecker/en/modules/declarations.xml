@@ -3119,11 +3119,11 @@ PatternValidator pattern(Regex regex) {
     return Related(pe, description.normalize())
 }</programlisting>
     
-        <programlisting>public Related see(Type&lt;Exception&gt; type) {
+        <programlisting>public Related throws(Type&lt;Exception&gt; type) {
     return ThrownException(type)
 }</programlisting>
         
-        <programlisting>public ThrownException see(Type&lt;Exception&gt; type -> String description) {
+        <programlisting>public ThrownException throws(Type&lt;Exception&gt; type -> String description) {
     return ThrownException(type, description.normalize())
 }</programlisting>
         
