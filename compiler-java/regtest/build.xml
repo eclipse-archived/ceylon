@@ -1,54 +1,95 @@
 <project name="MyProject" default="test" basedir=".">
-  <property name="src" location="output"/>
-  <property name="build" location="classes"/>
-  <property name="tmp" location="tmp"/>
-  <property name="antlr" location="../lib/antlrworks-1.3.1.jar"/>
 
-  <target name="compile" >
-    <mkdir dir="${build}"/>
+  <!-- The directory containing java source files -->
+  <property name="java.src" location="src"/>
 
+  <!-- The directory everything gets built into -->
+  <property name="build" location="build"/>
+  
+  <!-- The directory class files go into -->
+  <property name="classes" location="${build}/classes"/>
+
+  <!-- The ANTLR source file for the parser,
+       the directory the java files generated
+       from it end up in, and the ANTLR jar
+       file we'll use to generate one from
+       the other -->
+  <property name="antlr.src" location="../ceylon.g"/>
+  <property name="antlr.dst" location="${build}/antlr"/>
+  <property name="antlr.lib" location="../lib/antlrworks-1.3.1.jar"/>
+
+  <!-- The directory that tests live in, and the
+       directory test results get written into -->
+  <property name="test.src" location="../corpus/tests"/>
+  <property name="test.dst" location="${build}/test"/>
+
+  <!-- Rules to build parser classes from the ANTLR grammar -->
+  <condition property="antlr.needed">
+    <or>
+      <not>
+        <available file="${antlr.dst}/ceylonParser.java"/>
+      </not>
+      <not>
+        <uptodate
+           srcfile="${antlr.src}"
+           targetfile="${antlr.dst}/ceylonParser.java"/>
+      </not>
+    </or>
+  </condition>
+  <target name="antlr" if="antlr.needed">
+    <mkdir dir="${antlr.dst}"/>
     <java classname="org.antlr.Tool">
-      <arg value="-o"/> <arg value="${src}"/>
-      <arg value="ceylon.g"/>
+      <arg value="-o"/>
+      <arg value="${antlr.dst}"/>
+      <arg value="${antlr.src}"/>
       <classpath>
-        <pathelement location="${antlr}"/>
+        <pathelement location="${antlr.lib}"/>
       </classpath>
     </java>
-    
+  </target>
+  <target name="antlr.classes" depends="antlr">
+    <mkdir dir="${classes}"/>
     <javac
-       srcdir="${src}" destdir="${build}"
+       srcdir="${antlr.dst}"
+       destdir="${classes}"
        debug="true"
-       classpath="${antlr}">
-      <compilerarg file="CeylonCompiler.java"/>
-      <compilerarg file="CeylonTree.java"/>
-      <compilerarg file="CeylonTreeVisitor.java"/>
-      <compilerarg file="CeylonTreePrinter.java"/>
+       classpath="${antlr.lib}"/>
+  </target>
+
+  <!-- Rule to build test classes from their Java sources -->
+  <target name="test.classes" depends="antlr.classes">
+    <mkdir dir="${classes}"/>
+    <javac
+       srcdir="${java.src}"
+       destdir="${classes}"
+       debug="true"
+       classpath="${antlr.lib}">
     </javac>
   </target>
 
-  <target name="test" depends="compile">
+  <!-- Rule to run the regression tests -->
+  <target name="test" depends="test.classes">
     <apply executable="java">
-      <arg value="-cp"/> <arg value="${antlr}:${build}"/>
+      <arg value="-cp"/>
+      <arg value="${classes}:${antlr.lib}"/>
       <arg value="CeylonCompiler"/>      
       <arg value="-d"/>
-      <arg value="${tmp}"/>
-      <fileset dir="../corpus/tests">
+      <arg value="${test.dst}"/>
+      <fileset dir="${test.src}">
 	<include name="*.ceylon"/>
       </fileset>
     </apply>
-
     <apply executable="diff" failonerror="true">      
       <arg value="-w"/>
-      <arg value="${tmp}"/>
-      <fileset dir="../corpus/tests">
+      <arg value="${test.dst}"/>
+      <fileset dir="${test.src}">
 	<include name="*.ceylon.out"/>
       </fileset>
     </apply>
   </target>
 
+  <!-- Rule to clean everything up -->
   <target name="clean">
-    <delete dir="${src}"/>
     <delete dir="${build}"/>
-    <delete dir="${tmp}"/>
   </target>
 </project>

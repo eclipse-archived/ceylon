@@ -1,5 +1,4 @@
 syntax: glob
 output
-regtest/classes
-regtest/output
-regtest/tmp
+regtest/build
+
