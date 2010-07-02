@@ -38,12 +38,12 @@
     <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
     members of an atom or toplevel method or class.</para>
     
-    <programlisting>Primary := Atom | EnumeratedInstanceReference | CallableReference | Invocation | Evaluation</programlisting>
+    <programlisting>Primary := Atom | Meta | EnumeratedInstanceReference | CallableReference | Invocation | Evaluation</programlisting>
     
     <para>More complex expressions are formed by combining expressions using operators, 
     including assignment operators.</para>    
     
-    <programlisting>Expression := Primary | Assignment | OperatorExpression | Meta</programlisting>
+    <programlisting>Expression := Primary | Assignment | OperatorExpression</programlisting>
     
     <para>Parentheses are used for grouping:</para>
     
@@ -454,20 +454,39 @@ if you prefer.";</programlisting>
     <section id="metamodelreferences">
         <title>Metamodel references</title>
         
-        <para>The metamodel object representing a type or program element in the reflection
-        API may be referred to using a special syntax.</para>
+        <para>The metamodel object representing a type or program element may be obtained
+        using a completely typesafe syntax.</para>
         
-        <programlisting>Meta := TypeMeta | MemberMeta</programlisting>
+        <programlisting>Meta := TypeMeta | MemberMeta | FunctionMeta</programlisting>
         
+        <para>Metamodel references are compile-time typesafe.</para>
+        
+        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = List&lt;String&gt;;</programlisting>
+        
+        <programlisting>Class&lt;Person,Name&gt; personClass = Person;</programlisting>
+        
+        <programlisting>Method&lt;Log, Void, String&gt; infoMethod = Log.info;</programlisting>
+        
+        <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
+                
+        <section>
+            <title>Interface and class metamodel references</title>
+            
         <para>The <literal>Type</literal> object may be obtained by specifying the full
         type, with type arguments. A <literal>Class</literal> or <literal>Interface</literal> 
         object may be obtained by specifying a class or interface name, without arguments.</para>
         
-        <para>The metamodel expression, <literal>#X</literal>, for a class or interface is:</para>
+        <programlisting>TypeMeta := Type</programlisting>
+        
+        <para>The metamodel expression, <literal>X</literal>, for a type, class or interface is:</para>
         
         <itemizedlist>
              <listitem>
                 <para>of type <literal>Type&lt;X&gt;</literal> where 
+                <literal>X</literal> is the type, with type arguments, or</para>
+            </listitem>
+             <listitem>
+                <para>of type <literal>Interface&lt;X&gt;</literal> where 
                 <literal>X</literal> is the interface, or</para>
             </listitem>
             <listitem>
@@ -478,23 +497,55 @@ if you prefer.";</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>TypeMeta := HASH Type</programlisting>
+        <para>Note that for a toplevel class <literal>X</literal>, the expression <literal>X</literal>
+        is both a metamodel reference and a callable reference. This is consistent, since
+        <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
         
-        <para>A <literal>Method</literal> or <literal>Attribute</literal> <!--or <literal>Instance</literal>-->
-        object representing a member may be obtained by specifying the type and member name.
-        The <literal>Method</literal> object representing a toplevel method may be obtained
-        by specifying just the method name.</para>
+        <comment><para>TODO: what happens to the type parameters of the class or interface?
+        Do they get replaced by their upper bounds?</para></comment>
         
-        <programlisting>MemberMeta := HASH (Type ".")? MemberName</programlisting>
+        </section>
+        
+        <section>
+            <title>Toplevel method metamodel references</title>
+            
+        <para>A <literal>Function</literal> object representing a toplevel method may be 
+        obtained by specifying the method name.</para>
+        
+        <programlisting>FunctionMeta := MemberName</programlisting>
                
-        <para>The type is required unless the reference is to a member of a containing class, 
-        or to a toplevel method.</para>
-        
-        <para>The metamodel expression, <literal>#X.member</literal>, for a member method or 
-        attribute is:</para>
+        <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
+        is:</para>
         
         <itemizedlist>
-           <listitem>
+            <listitem>
+                <para>assignable to <literal>Function&lt;R,P...&gt;</literal> where 
+                <literal>R</literal> is the callable type of a method produced by 
+                removing the first formal parameter list of the method, and 
+                <literal>P...</literal> are the types of the first formal parameter 
+                lists of the method, for every overloaded version of the method.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that for a toplevel method <literal>x()</literal>, the expression <literal>x</literal>
+        is both a metamodel reference and a callable reference. This is consistent, since
+        <literal>Function&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
+           
+        </section>
+        
+        <section>
+            <title>Method and attribute metamodel references</title>
+            
+        <para>A <literal>Method</literal> or <literal>Attribute</literal> object 
+        representing a member may be obtained by specifying the type and member name.</para>
+        
+        <programlisting>MemberMeta := Type "." MemberName</programlisting>
+               
+        <para>The metamodel expression, <literal>X.member</literal>, for a member method 
+        or attribute is:</para>
+        
+        <itemizedlist>
+            <listitem>
                 <para>of type <literal>Attribute&lt;X,T&gt;</literal> where 
                 <literal>X</literal> is the type that defines the attribute, 
                 and <literal>T</literal> is the declared type of the attribute,
@@ -514,47 +565,46 @@ if you prefer.";</programlisting>
                 <literal>P...</literal> are the types of the first formal parameter 
                 lists of the method, for every overloaded version of the method.</para>
             </listitem>
-         </itemizedlist>
+        </itemizedlist>
+         
+        </section>
         
-        <para>Metamodel references are compile-time typesafe.</para>
-        
-        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = #List&lt;String&gt;;</programlisting>
-        
-        <programlisting>Method&lt;Log, Void, String&gt; infoMethod = #Log.info;</programlisting>
-        
+        <section>
+            <title>Using the metamodel</title>
+            
         <para>The metamodel object for a type allows its members to be iterated:</para>
         
         <programlisting>Type&lt;Object&gt; t = ...;
-for (Attribute&lt;Object,String&gt; a in t.attributes(#String)) {
+for (Attribute&lt;Object,String&gt; a in t.attributes(String)) {
     log.info(a.name + "=" + a(person));
 }
-for (Method&lt;Object,String&gt; m in t.methods(#Callable&lt;String&gt;)) {
+for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
     log.info(m.name + "=" + m(person)());
 }</programlisting>
         
         <para>The metamodel object for a class, attribute or method implements 
         <literal>Callable</literal> and is therefore invokable.</para>
         
-        <programlisting>Class&lt;ArrayList&lt;String&gt;,Iterable&lt;String&gt;&gt; arrayListClass = #ArrayList&lt;String&gt;;
+        <programlisting>Class&lt;ArrayList&lt;String&gt;,Iterable&lt;String&gt;&gt; arrayListClass = ArrayList&lt;String&gt;;
         
 List list = arrayListClass("foo", "bar", "baz);</programlisting>
         
-        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = #Person.name;
+        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person.name;
         
 String personName = nameAttribute(person);</programlisting>
         
-        <programlisting>Method&lt;Person, String&gt; sayMethod = #Person.say;
+        <programlisting>Method&lt;Person, String&gt; sayMethod = Person.say;
         
 String result = sayMethod(person)();</programlisting>
 
-        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
+        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
 
 countAttribute(this)++;</programlisting>        
 
         <para>The metamodel object for a class, attribute or method supports registration 
         of a listener, which intercepts invocations.</para>
         
-        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = #count;
+        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
 
 countAttribute.addListener() 
     onGet (Counter c, Natural proceed()) {
@@ -568,7 +618,7 @@ countAttribute.addListener()
         return proceed(value)
     };</programlisting>
 
-        <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = #Order.createItem;
+        <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
         
 createItemMethod.addListener(currentOrder) 
     onInvoke (Item proceed(Product p, Natural n),  
@@ -578,15 +628,13 @@ createItemMethod.addListener(currentOrder)
             return proceed(product,quantity)
         }
     };</programlisting>
-        
-        <comment><para>TODO: Would it be better to require the <literal>#</literal> 
-        before the member name even when qualified by the type, for example, 
-        <literal>#Person.#name</literal>?</para></comment>
-        
+    
+        </section>
+    
         <comment><para>TODO: According to this, we can "curry" in type arguments of
         the type. We need this. But if so, why can't we curry type arguments of the 
-        member?</para></comment>
-            
+        member? It's not a problem from the grammar point of view.</para></comment>
+        
     </section>
 
     <section id="enumeratedinstancereferences">
@@ -617,7 +665,7 @@ createItemMethod.addListener(currentOrder)
         something&mdash;a method or class&mdash;that can be <emphasis>invoked</emphasis>
         by specifying a list of arguments.</para>
         
-        <programlisting>CallableReference := (Receiver ".")? (MemberName | Type)</programlisting>
+        <programlisting>CallableReference := (Receiver ".")? (MemberName | TypeName)</programlisting>
         
         <para>A callable reference may be invoked immediately, or it may be passed 
         to other code which may invoke the reference.</para>
@@ -639,7 +687,7 @@ createItemMethod.addListener(currentOrder)
             <emphasis>constructor reference</emphasis>. The type of a constructor 
             reference expression is assignable to the callable type of every
             overloaded version of the class. Calling the constructor reference 
-            results in instantiation of the method.</para>
+            results in instantiation of the class.</para>
         </listitem>
         </itemizedlist>
         
@@ -1372,16 +1420,16 @@ Y using&lt;X,Y&gt;(specified X resource,
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>Order order = using (Session s = Session()) seek (s.get(#Order, oid));</programlisting>
+        <programlisting>Order order = using (Session s = Session()) seek (s.get(Order, oid));</programlisting>
         
         <para>Which is equivalent to:</para>
         
-        <programlisting>Order order = using (Session()) seek (Session s) (s.get(#Order, oid));</programlisting>
+        <programlisting>Order order = using (Session()) seek (Session s) (s.get(Order, oid));</programlisting>
         
         <para>Type inference simplifies this further:</para>
         
         <programlisting>local amount = ifExists(local p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
-        <programlisting>local order = using (local s = Session()) seek (s.get(#Order, oid));</programlisting>
+        <programlisting>local order = using (local s = Session()) seek (s.get(Order, oid));</programlisting>
         
         </section>
         

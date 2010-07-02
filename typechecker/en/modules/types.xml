@@ -32,7 +32,7 @@
         
     doc "The equals operator x == y. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
-    see #id
+    see (id)
     public default Boolean equals(Object that) { return ... }
     
     doc "Compares the given attributes of this instance with the given
@@ -41,7 +41,7 @@
     
     doc "The hash code of the instance. Default implementation compares
          attributes annotated |id|, or assumes identity equality."
-    see #id
+    see (id)
     public default Integer hash { return ... }
     
     doc "Computes the hash code of the instance using the given 
@@ -59,14 +59,14 @@
     public default String string(Attribute... attributes) { ... }
     
     doc "Determine if the instance belongs to the given |Category|."
-    see #Category
+    see (Category)
     public Boolean in(Category cat) {
         return cat.contains(this)
     }
     
     doc "Determine if the instance belongs to the given |Iterable|
          object or listed objects."
-    see #Iterable
+    see (Iterable)
     public Boolean in(Object... objects) {
         return forAny (Object elem in objects) some elem == this
     }
@@ -445,9 +445,9 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 
     doc "Advance to the next element, returning
          the next element."
-    throw #ExhaustedIteratorException
+    throw (ExhaustedIteratorException ->
           "if the iterator contains no
-           more elements."
+           more elements.")
     public X next();
     
 }]]></programlisting>
@@ -589,16 +589,16 @@ while (i.more) {
 
     doc "Binary list lookup operator x[keys]. Returns a list of 
          values defined for the given keys, in order."
-    throws #UndefinedKeyException
-           "if no value is defined for one of the given keys"
+    throws (UndefinedKeyException ->
+           "if no value is defined for one of the given keys")
     public List<V> values(List<U> keys) {
         return from (U key in keys) select (correspondence.lookup(key))
     }
     
     doc "Binary set lookup operator x[keys]. Returns a set of 
          values defined for the given set of keys."
-    throws #UndefinedKeyException
-           "if no value is defined for one of the given keys"
+    throws (UndefinedKeyException ->
+           "if no value is defined for one of the given keys")
     public Set<V> values(Set<U> keys) {
         return ( from (U key in keys) select (correspondence.lookup(key)) ).elements
     }
@@ -667,8 +667,8 @@ while (i.more) {
     doc "Element assignment operator x[key] = value. Assign a value 
          to the given key. Return the previous value for the key,
          or |null| if there was no value defined."
-    throws #UndefinedKeyException
-           "if a value can not be defined for the given key"
+    throws (UndefinedKeyException ->
+           "if a value can not be defined for the given key")
     public V? define(U key, V value);
 
 }]]></programlisting>
@@ -680,9 +680,9 @@ while (i.more) {
 
     doc "Add the given entries, overriding any definitions that 
          already exist."
-    throws #UndefinedKeyException
+    throws (UndefinedKeyException ->
            "if a value can not be defined for one of the given 
-            keys"
+            keys")
     public void define(Entry<U, V>... definitions) {
         for (U key->V value) {
             correspondence.define(key, value);
@@ -807,11 +807,11 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
     public V value = value;
     
     override public Boolean equals(Object that) {
-        return equals(that, #key, #value)
+        return equals(that, Entry.key, Entry.value)
     }
     
     override public Integer hash {
-        return hash(#key, #value)
+        return hash(Entry.key, Entry.value)
     }
 
 }]]></programlisting>
@@ -1036,8 +1036,8 @@ while (people nonempty) {
          the index of every element with an index greater
          than the given index by one. Return the removed
          element."
-    throws #UndefinedKeyException
-           "if the index is not in the list"
+    throws (UndefinedKeyException ->
+           "if the index is not in the list")
     public X removeIndex(Natural at);
     
     doc "Add the given elements at the end of the list."
@@ -1052,8 +1052,8 @@ while (people nonempty) {
          index, incrementing the index of every existing 
          element with that index or greater by the number 
          of given elements."
-    throws #UndefinedKeyException
-           "if the index is not in the list"
+    throws (UndefinedKeyException ->
+           "if the index is not in the list")
     public void insert(Natural at, X... elements);
     
     doc "Remove elements beginning with the first given index 
@@ -1061,19 +1061,19 @@ while (people nonempty) {
          decrementing the indexes of all elements after
          with the second given index by one more than the 
          difference between the two indexes."
-    throws #UndefinedKeyException
-           "if the index is not in the list"
+    throws (UndefinedKeyException ->
+           "if the index is not in the list")
     public void delete(Natural from, Natural to=lastIndex);
     
     doc "Remove and return the first element, decrementing
          the index of every other element by one."
-    throws #EmptyException
-           "if the list is empty"
+    throws (EmptyException ->
+           "if the list is empty")
     public X removeFirst();
 
     doc "Remove and return the last element."
-    throws #EmptyException
-           "if the list is empty"
+    throws (EmptyException ->
+           "if the list is empty")
     public X removeLast();
     
     doc "Reverse the order of the list."
@@ -1151,8 +1151,8 @@ while (people nonempty) {
     
     doc "Remove the entry for the given key, returning the 
          value of the removed entry."
-    throws #UndefinedKeyException
-           "if no value is defined for the given key"    
+    throws (UndefinedKeyException ->
+           "if no value is defined for the given key")   
     public V remove(U key);
     
     doc "Remove all entries from the map which have keys for 
@@ -1302,13 +1302,13 @@ while (people nonempty) {
         <programlisting><![CDATA[public interface Ordinal {
 
     doc "The unary |++| operator. The successor of this instance."
-    throws #OutOfRangeException
-           "if this is the maximum value"
+    throws (OutOfRangeException ->
+           "if this is the maximum value")
     public subtype successor;
     
     doc "The unary |--| operator. The predecessor of this instance."
-    throws #OutOfRangeException
-           "if this is the minimum value"
+    throws (OutOfRangeException ->
+           "if this is the minimum value")
     public subtype predecessor;
     
 }]]></programlisting>
@@ -1504,9 +1504,9 @@ while (people nonempty) {
     public Decimal decimal;
 
     doc "The number, represented as a |Float|"
-    throws #FloatOverflowException
+    throws (FloatOverflowException ->
            "if the number is too large to be
-            represented as a |Float|"
+            represented as a |Float|")
     public Float float;
     
     doc "The number, represented as an |Whole|,
@@ -1517,16 +1517,16 @@ while (people nonempty) {
     doc "The number, represented as an |Integer|,
          after truncation of any fractional 
          part"
-    throws #IntegerOverflowException
+    throws (IntegerOverflowException ->
            "if the number is too large to be
-            represented as an |Integer|"
+            represented as an |Integer|")
     public Integer integer;
     
     doc "The number, represented as a |Natural|,
          after truncation of any fractional 
          part"
-    throws #NegativeNumberException
-           "if the number is negative"
+    throws (NegativeNumberException ->
+           "if the number is negative")
     public Natural natural;
     
     doc "The magnitude of the number"
@@ -1740,6 +1740,24 @@ while (people nonempty) {
         <para>The metamodel (reflection API) reifies the schema of a type, making it
         available to the program at runtime.</para>
         
+        <para>A <literal>Function</literal> represents a toplevel method.</para>
+
+        <programlisting><![CDATA[public interface Function<R, P...> 
+        satisfies Callable<R, P...>, Annotated {
+        
+    public String name;
+    
+    public Boolean extension;
+    
+    public Visiblity visibility;
+    
+    public Type<R> returnType;
+    public Parameter<Object>[] parameters;
+    
+    public Listener addListener<S>( R onInvoke(R proceed(P... args), P... args) );
+    
+}]]></programlisting>
+
         <para>An instance of <literal>Type</literal> represent a type: an interface, class 
         or alias, together with type arguments.</para>
         
@@ -1754,7 +1772,7 @@ while (people nonempty) {
     
     doc "Return all the attributes that are declared  
          with the given type."
-    public Set<Attribute<X,T>> attributes<T>(Type<T> type = #Object);
+    public Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
     
     doc "Return all the methods that are declared  
          with the given callable type."
@@ -1764,16 +1782,22 @@ while (people nonempty) {
     
 }]]></programlisting>
         
+        <para>An instance of <literal>Interface</literal> represents an interface.</para>
+        
+        <programlisting><![CDATA[public interface Class<X, P...> 
+        satisfies Type<X> {}]]></programlisting>
+
         <para>An instance of <literal>Class</literal> represents a class.</para>
         
         <programlisting><![CDATA[public interface Class<X, P...> 
         satisfies Type<X>, Callable<X,P...> {
     
     public Boolean abstract;
+    public Boolean extension;
     
     public Parameter<Object>[] parameters;
     
-    public Listener addListener( X onCreate(P... args, X proceed(P... args)) );
+    public Listener addListener( X onCreate(X proceed(P... args), P... args) );
     
 }]]></programlisting>
 
@@ -1788,6 +1812,7 @@ while (people nonempty) {
     public Boolean default;
     public Boolean default;
     public Boolean override;
+    public Boolean extension;
     
     public Visiblity visibility;
     
@@ -1853,7 +1878,7 @@ while (people nonempty) {
         <programlisting><![CDATA[public interface Annotated {
     doc "Return all the annotation values that are 
          assignable to the given type."
-    public T[] annotations<T>(Type<T> type = #Object) where T satisfies Object;
+    public T[] annotations<T>(Type<T> type = Object) where T satisfies Object;
 }]]></programlisting>
 
     </section>

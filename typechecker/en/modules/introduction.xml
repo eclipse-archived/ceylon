@@ -1379,7 +1379,7 @@ package class Language(String hello) {
      people"
 annotation { 
     of = classes; 
-    withType = #Greeting;
+    withType = Greeting;
     occurs = onceEachType; 
 }
 package Set&lt;People&gt; people(Person... people) {
@@ -1389,15 +1389,36 @@ package Set&lt;People&gt; people(Person... people) {
         <para>The meta-annotation <literal>annotation</literal> specifies that this 
         annotation can only occur an the class <literal>Greeting</literal>, and can 
         only occur once.</para>
+        
+        <para>Ceylon provides a typesafe <emphasis>metamodel</emphasis> for types, 
+        classes, interfaces, methods and attributes. This is Ceylon's version of
+        Java's reflection API, but it's much, much easier to use and much more 
+        powerful. We'll need to use the metamodel to gain access to program element
+        annotations at runtime.</para>
+        
+        <para>We're not going to go into all the details of the metamodel here. All
+        you need to know is that in the code we're about to see, the expression 
+        <literal>Greeting</literal> evaluates to the metamodel object of type 
+        <literal>Class&lt;Greeting&gt;</literal>. We could write:</para>
+        
+        <programlisting>Class&lt;Greeting&gt; greetingClass = Greeting;</programlisting>
+        
+        <para>Similarly, the expression <literal>Set&lt;Person&gt;</literal> evaluates 
+        to the metamodel object of type <literal>Type&lt;Set&lt;Person&gt;&gt;</literal>.
+        We could write:</para>
+        
+        <programlisting>Type&lt;Set&lt;Person&gt;&gt; personSetType = Set&lt;Person&gt;;</programlisting>
 
         <para>We obtain the annotations of a program element&mdash;in this case, the 
         class <literal>Greeting</literal>&mdash;using reflection upon the metamodel 
-        object&mdash;<literal>#Greeting</literal>&mdash;that represents the program 
-        element. We must specify the type returned by the annotation, by passing its 
-        metamodel object&mdash;in this case, <literal>#Set&lt;People&gt;</literal>.
-        Careful, there may be multiple annotations producing the same type of object!</para>
+        object that represents the program element. We must specify the type returned by 
+        the annotation&mdash;in this case, <literal>Set&lt;People&gt;</literal>&mdash;by 
+        passing its metamodel object.</para>
         
-        <programlisting>Set&lt;People&gt;[] annotations = (#Greeting).annotations(#Set&lt;People&gt;);</programlisting>
+        <programlisting>Set&lt;Person&gt;[] annotations = Greeting.annotations(Set&lt;Person&gt;);</programlisting>
+        
+        <para>Careful, there may be multiple annotations producing the same type of 
+        object!</para>
         
         <para>We're already ready to use our new annotation. Just like with other 
         method invocations, we have the choice between specifying the arguments of 
@@ -1430,10 +1451,10 @@ people {
 }
 class Hello(String? name) {
 
-    Set&lt;People&gt;? annotation = type.annotations(#Set&lt;People&gt;).first
+    Set&lt;Person&gt;? annotation = type.annotations(Set&lt;Person&gt;).first
     
     doc "The list of people"
-    Set&lt;People&gt; people;
+    Set&lt;Person&gt; people;
     if (exists annotation) {
         people = annotation;
     }
@@ -1660,7 +1681,7 @@ else {
         
         <programlisting>if (is List&lt;Person&gt; list) { ... }</programlisting>
         <programlisting>if (is T object) { ... }</programlisting>
-        <programlisting>Type&lt;T&gt; tType = #T;</programlisting>
+        <programlisting>Type&lt;T&gt; tType = T;</programlisting>
         
         <para>(Where <literal>T</literal> is a generic type parameter.)</para>
         

@@ -158,11 +158,11 @@ Body?</programlisting>
         omitted.</para>
         
         <programlisting>doc "The user login action"
-throws #DatabaseException 
-       "if database access fails"
+throws (DatabaseException ->
+       "if database access fails")
 by "Gavin King"
    "Andrew Haley"
-see #LogoutAction.logout
+see (LogoutAction.logout)
 scope(session) 
 action { description="Log In"; url="/login"; }
 public deprecated</programlisting>
@@ -198,7 +198,7 @@ Description doc(String description) {
         
         <para>And its value may be obtained like this:</para>
         
-        <programlisting>Description description = (#Person).annotations(#Description).first;</programlisting>
+        <programlisting>Description description = Person.annotations(Description).first;</programlisting>
         
         <para>Unlike Java, the same annotation may appear multiple times for the same
         program element. Furthermore, different annotations (toplevel methods) may 
@@ -740,13 +740,13 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing a type with 
-                type arguments, for example, <literal>#List&lt;Person&gt;</literal>,</para>
+                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
             </listitem>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing the runtime 
-                value of a type parameter, for example, <literal>#T</literal>, or of a 
+                value of a type parameter, for example, <literal>T</literal>, or of a 
                 type with a type parameter as an argument, for example, 
-                <literal>#List&lt;T&gt;</literal>,</para>
+                <literal>List&lt;T&gt;</literal>,</para>
             </listitem>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing the
@@ -2560,7 +2560,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        <programlisting>import java.util.List alias JavaList;</programlisting>
        
        <para>Type aliases are not reified types. The metamodel reference for a type
-       alias&mdash;for example, <literal>#People</literal>&mdash; returns the metamodel 
+       alias&mdash;for example, <literal>People</literal>&mdash; returns the metamodel 
        object for the aliased type&mdash;in this case, <literal>List&lt;Person&gt;</literal>.</para>
        
        <comment><para>TODO: could we reify them? This would let us define type aliases
@@ -2978,8 +2978,8 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         or evaluation of the member results in a compiler error.</para>
         
         <comment><para>TODO: We should allow an introduced type to specify 
-        <literal>override #ExtendedType.member</literal> or 
-        <literal>override #OtherIntroducedType.member</literal> to resolve an ambiguity like 
+        <literal>override (ExtendedType.member)</literal> or 
+        <literal>override (OtherIntroducedType.member)</literal> to resolve an ambiguity like 
         this.</para></comment>
         
         <para>When an invocation of an introduced method or evaluation of an introduced attribute 
@@ -3059,7 +3059,7 @@ Entity entity(LockMode lockMode) {
         <programlisting>public 
 annotation { 
     of = { attributes, parameters }; 
-    withType = #String; 
+    withType = String; 
     occurs = onceEachElement; 
 }
 PatternValidator pattern(Regex regex) { 
@@ -3118,11 +3118,6 @@ PatternValidator pattern(Regex regex) {
         <programlisting>public ThrownException see(Type type&lt;Exception&gt;, String? description=null) {
     return Related(type, description.normalize())
 }</programlisting>
-        
-        <comment><para>TODO: should <literal>see</literal> and <literal>throws</literal>
-        accept a list of <literal>Entry</literal> instead? For example:</para>
-<programlisting>see #Ruby->"if you are bored with Java" 
-    #Ceylon->"if you want to get some real work done"</programlisting></comment>
         
      </section>
         

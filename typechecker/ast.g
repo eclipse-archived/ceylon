@@ -88,7 +88,6 @@ tokens {
     FAIL_BLOCK;
     LOOP_BLOCK;
     FOR_CONTAINMENT;
-    REFLECTED_LITERAL;
     ENUM_LIST;
     SUPERCLASS;
     PREFIX_EXPR;
@@ -434,12 +433,7 @@ userAnnotation
     ;
 
 annotationArguments
-    : arguments | ( nonstringLiteral | stringLiteral | reflectedLiteral )+
-    ;
-
-reflectedLiteral 
-    : '#' ( memberName | ( type ('.' memberName)? ) )
-    -> ^(REFLECTED_LITERAL type? memberName?)
+    : arguments | ( nonstringLiteral | stringLiteral )+
     ;
 
 typeName
@@ -578,7 +572,6 @@ equalityExpression
 comparisonExpression
     : defaultExpression
       (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) defaultExpression)?
-    | reflectedLiteral //needs to be here since it can contain type args
     ;
 
 //should we reverse the precedence order 
