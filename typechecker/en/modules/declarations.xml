@@ -3111,12 +3111,20 @@ PatternValidator pattern(Regex regex) {
     return from (String author in authors) select Author(author.normalize())
 }</programlisting>
     
-        <programlisting>public RelatedElement see(ProgramElement pe, String? description=null) {
+        <programlisting>public RelatedElement see(ProgramElement pe) {
+    return Related(pe)
+}</programlisting>
+    
+        <programlisting>public RelatedElement see(ProgramElement pe -> String description) {
     return Related(pe, description.normalize())
 }</programlisting>
     
-        <programlisting>public ThrownException see(Type type&lt;Exception&gt;, String? description=null) {
-    return Related(type, description.normalize())
+        <programlisting>public Related see(Type&lt;Exception&gt; type) {
+    return ThrownException(type)
+}</programlisting>
+        
+        <programlisting>public ThrownException see(Type&lt;Exception&gt; type -> String description) {
+    return ThrownException(type, description.normalize())
 }</programlisting>
         
      </section>
