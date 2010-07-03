@@ -669,7 +669,7 @@ createItemMethod.addListener(currentOrder)
     </section>
     
     <section id="callablereferences">
-        <title>Callable references and value references</title>
+        <title>Callable references</title>
         
         <para>A <emphasis>callable reference</emphasis> is a reference to 
         something&mdash;a method, callable parameter, or class&mdash;that can be 
@@ -686,30 +686,8 @@ createItemMethod.addListener(currentOrder)
         <para>A callable reference expression is assignable to 
         <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
         <literal>P...</literal> depend upon the schema of the method or class.</para>
-        
-        <para>A <emphasis>value reference</emphasis> is a reference to something&mdash;an 
-        attribute or local&mdash;that can be <emphasis>evaluated</emphasis>.</para>
-
-        <para>A value reference may be transparently converted to the actual current 
-        value of the attribute or local, or it may be passed, as a reference, to other 
-        code, which may invoke the reference to <emphasis>evaluate</emphasis> the current 
-        value of the attribute or local. A reference to a <literal>mutable</literal> 
-        attribute or local may be invoked to <emphasis>assign</emphasis> a new value to 
-        the attribute or local.</para>
-        
-        <para>A value reference expression is assignable to
-        <literal>Referenceable&lt;T&gt;</literal> or <literal>Assignable&lt;T&gt;</literal>
-        were <literal>T</literal> is the type of the attribute or local.</para>
-        
-        <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
-        local may not be assigned to an attribute, passed as a method argument, passed to
-        a control directive, enumerated as the value of a sequence enumeration, or referred 
-        to by a nested method or class. It may be assigned to a local, or invoked directly 
-        inside the block that obtained it.</para>
-        
-        <comment><para>TODO: nail down these rules a little better.</para></comment>
-        
-        <section>
+                
+        <section id="receiverexpressions">
             <title>Receiver expressions</title>
         
         <para>A callable reference or value reference may specify a <emphasis>receiver 
@@ -735,13 +713,13 @@ createItemMethod.addListener(currentOrder)
         
         <para>When a callable reference with a receiver expression is executed, the 
         receiver expresson is evaluated and a reference to the resulting value is 
-        held as part of the callable reference. When an attribute reference with a 
+        held as part of the callable reference. When a value reference with a 
         receiver expression is executed, the receiver expression is evaluated and a 
-        reference to the resulting value is held as part of the attribute reference.</para>
+        reference to the resulting value is held as part of the value reference.</para>
         
         </section>
         
-        <section>
+        <section id="methodreferences">
             <title>Method references</title>
         
         <para>If a callable reference specifies a method name (or callable parameter 
@@ -755,7 +733,7 @@ createItemMethod.addListener(currentOrder)
         
         </section>
 
-        <section>
+        <section id="constructorreferences">
             <title>Constructor references</title>
         
         <para>If a callable reference specifies a class name, it is called a 
@@ -766,46 +744,6 @@ createItemMethod.addListener(currentOrder)
         <para>The type of a constructor reference expression is assignable to the 
         callable type of every overloaded version of the class. Calling the constructor 
         reference results in instantiation of the class.</para>
-        
-        </section>
-        
-        <section>
-            <title>Attribute and local references</title>
-        
-        <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
-        of some object. A <emphasis>local reference</emphasis> is a reference to a 
-        local. An attribute reference specifies the name of the attribute. A local 
-        reference specifies the name of the local.</para>
-        
-        <programlisting>ValueReference := (Receiver ".")? MemberName</programlisting>
-        
-        <para>The type of an attribute reference or local reference expression for an 
-        attribute or local of declared type <literal>X</literal> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>X</literal>, if <literal>X</literal> is assignable
-                to <literal>Referenceable&lt;Object&gt;</literal>, or, otherwise,</para>
-            </listitem>
-            <listitem>
-                <para><literal>Referenceable&lt;X&gt;</literal>, if the attribute or 
-                local is not <literal>mutable</literal>, or if the setter is not visible
-                to the block containing the attribute or local reference, or</para>
-            </listitem>
-            <listitem>
-                <para><literal>Assignable&lt;X&gt;</literal>, if the attribute or local 
-                is <literal>mutable</literal> and the setter, if any, is visible to the 
-                block containing the attribute or local reference.</para>
-            </listitem>
-        </itemizedlist>
-                    
-        <comment><para>TODO: an alternative solution to the "recursion" problem would
-        be to require an explicit call to <literal>reference</literal> defined by an
-        intermediate interface to obtain the <literal>Referenceable</literal> instead 
-        of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
-        operator. That would allow us to pass references to references. Yet another
-        alternative is let the method of an extended type "underride" the method of
-        the introduced type.</para></comment>
         
         </section>
         
@@ -853,7 +791,7 @@ createItemMethod.addListener(currentOrder)
         </section>
          -->
          
-        <section>
+        <section id="callableobjectsasmethodimplementations">
             <title>Callable objects as method implementations</title>
             
         <para>An expression of type <literal>Callable</literal> may be used to define a 
@@ -868,7 +806,7 @@ createItemMethod.addListener(currentOrder)
         
         </section>
         
-        <section>
+        <section id="callableobjectsascallableparameterarguments">
             <title>Callable objects as callable parameter arguments</title>
             
         <para>An expression of type <literal>Callable</literal> may appear as an argument 
@@ -901,7 +839,7 @@ sort(names, reverseAlpha);</programlisting>
         
         </section>
         
-        <section>
+        <section id="callableobjectsasmethodreturnvalues">
             <title>Callable objects as method return values</title>
             
         <para>An expression of type <literal>Callable</literal> may be returned by a method 
@@ -944,6 +882,106 @@ local comp = order(1,-1);</programlisting>
         <para>Of course, more than one argument list may be specified in a single expression:</para>
         
         <programlisting>Comparison comp = getOrder(true)(10, 100);</programlisting>
+        
+        </section>
+        
+    </section>
+    
+    <section id="valuereferences">
+        <title>Value references</title>
+                
+        <para>A <emphasis>value reference</emphasis> is a reference to something&mdash;an 
+        attribute or local&mdash;that can be <emphasis>evaluated</emphasis>.</para>
+
+        <para>A value reference may be transparently converted to the actual current 
+        value of the attribute or local, or it may be passed, as a reference, to other 
+        code, which may invoke the reference to <emphasis>evaluate</emphasis> the current 
+        value of the attribute or local. A reference to a <literal>mutable</literal> 
+        attribute or local may be invoked to <emphasis>assign</emphasis> a new value to 
+        the attribute or local.</para>
+        
+        <para>A value reference expression is assignable to
+        <literal>Referenceable&lt;T&gt;</literal> or <literal>Assignable&lt;T&gt;</literal>
+        were <literal>T</literal> is the type of the attribute or local.</para>
+        
+        <section id="attributeandlocalreferences">
+            <title>Attribute and local references</title>
+        
+        <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
+        of some object. A <emphasis>local reference</emphasis> is a reference to a 
+        local or formal parameter. An attribute reference specifies the name of the 
+        attribute. A local reference specifies the name of the local or formal parameter.</para>
+        
+        <programlisting>ValueReference := (Receiver ".")? MemberName</programlisting>
+        
+        <para>The type of an attribute reference or local reference expression for an 
+        attribute, local, or formal parameter of declared type <literal>X</literal> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>X</literal>, if <literal>X</literal> is assignable
+                to <literal>Referenceable&lt;Object&gt;</literal>, or, otherwise,</para>
+            </listitem>
+            <listitem>
+                <para><literal>Referenceable&lt;X&gt;</literal>, if the attribute, 
+                local, or formal parameter is not <literal>mutable</literal>, or if 
+                the setter is not visible to the block containing the attribute or 
+                local reference, or</para>
+            </listitem>
+            <listitem>
+                <para><literal>Assignable&lt;X&gt;</literal>, if the attribute, local, 
+                or formal parameter is <literal>mutable</literal> and the setter, if 
+                any, is visible to the block containing the attribute or local 
+                reference.</para>
+            </listitem>
+        </itemizedlist>
+                    
+        <comment><para>TODO: an alternative solution to the "recursion" problem would
+        be to require an explicit call to <literal>reference</literal> defined by an
+        intermediate interface to obtain the <literal>Referenceable</literal> instead 
+        of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
+        operator. That would allow us to pass references to references. Yet another
+        alternative is let the method of an extended type "underride" the method of
+        the introduced type.</para></comment>
+        
+        </section>
+        
+        <section id="passbyreference">
+            <title>Pass by reference</title>
+            
+        <para>An expression of type <literal>Referenceable</literal> or <literal>Assignable</literal> 
+        may be assigned to an attribute or local, passed as an argument to a method or initializer, 
+        or returned by a method. If the attribute, local, or formal parameter to which the 
+        expression is assigned is of declared type <literal>Referenceable</literal> or 
+        <literal>Assignable</literal>, or if the method which returns the expression is of declared  
+        type <literal>Referenceable</literal> or <literal>Assignable</literal>, this is called 
+        <emphasis>pass by reference</emphasis>, since it does not result in immediate evaluation of 
+        the referenced value. Instead, the attribute, local, or formal parameter holds a 
+        <emphasis>reference</emphasis> to the value of some other attribute, local, or formal 
+        parameter.</para>
+        
+        <para>This local holds a reference:</para>
+        
+        <programlisting>Referenceable&lt;String&gt; nameRef = person.name;</programlisting>
+        
+        <para>This method returns a reference:</para>
+        
+        <programlisting>Assignable&lt;String&gt; getName(Person p) { return p.name }</programlisting>
+        
+        <para>This class has an initialization parameter which accepts a reference:</para>
+        
+        <programlisting>class Input(Assignable&lt;String&gt; model) { ... }</programlisting>
+        
+        <para>An attribute or local of type <literal>Referenceable</literal> or <literal>Assignable</literal> 
+        may not be declared <literal>mutable</literal>.</para>
+        
+        <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
+        local may not be assigned to an attribute, passed as a method argument, passed to
+        a control directive, enumerated as the value of a sequence enumeration, or referred 
+        to by a nested method or class. It may be assigned to a local, or invoked directly 
+        inside the block that obtained it.</para>
+        
+        <comment><para>TODO: nail down these rules a little better.</para></comment>
         
         </section>
         
@@ -1816,11 +1854,14 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
     </section-->
     
-    <section id="attributereferences">
+    <section id="evaluationandassignment">
         <title>Evaluation and assignment</title>
         
-        <para>Value references do not need to be explicitly invoked to evaluate or assign 
-        the referenced value. Instead:</para>
+        <para>A reference object&mdash;anything that implements 
+        <literal>Referenceable</literal>&mdash;can be <emphasis>evaluated</emphasis> to 
+        produce a value. If the reference object is of type <literal>Assignable</literal>,
+        its value may also be <emphasis>assigned</emphasis>. It is not necessary to explicitly 
+        invoke the reference object to evaluate or assign the referenced value. Instead:</para>
         
         <itemizedlist>
             <listitem>
@@ -1845,9 +1886,9 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>person.name.setIt("Gavin");   //discouraged</programlisting>        
         <programlisting>person.name := "Gavin";       //preferred</programlisting>
         
-        <para>Furthermore, the argument specification operators cannot be applied directly to 
-        a value reference, and a value reference is not a callable reference. However, it is 
-        possible to obtain a callable reference to:</para>
+        <para>Furthermore, the argument specification operators cannot be applied directly 
+        to a value reference, and so a value reference is not a callable reference. However, 
+        it is possible to obtain a callable reference to:</para>
         
         <itemizedlist>
             <listitem>
@@ -1948,10 +1989,13 @@ nameRef := "Gavin";</programlisting>
         <programlisting>String setName(String name) = person.name.setIt;
 setName("Gavin");</programlisting>
 
-        <para>Even the following is possible:</para>
+        <para>Even the following are possible:</para>
         
         <programlisting>Assignable&lt;String&gt; getName(Person p) { return p.name }
 getName(p) := "Gavin";</programlisting>
+
+        <programlisting> setName(Assignable&lt;String&gt; name, String value) { name:=value; }
+setName(p.name, "Gavin");</programlisting>
         
         <para>When an attribute value is assigned:</para>
         
