@@ -1947,6 +1947,11 @@ nameRef := "Gavin";</programlisting>
         
         <programlisting>String setName(String name) = person.name.setIt;
 setName("Gavin");</programlisting>
+
+        <para>Even the following is possible:</para>
+        
+        <programlisting>Assignable&lt;String&gt; getName(Person p) { return p.name }
+getName(p) := "Gavin";</programlisting>
         
         <para>When an attribute value is assigned:</para>
         
