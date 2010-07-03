@@ -779,8 +779,8 @@ createItemMethod.addListener(currentOrder)
         
         <programlisting>ValueReference := (Receiver ".")? MemberName</programlisting>
         
-        <para>The type of an attribute reference or local reference for an attribute or
-        local of declared type <literal>X</literal> is:</para>
+        <para>The type of an attribute reference or local reference expression for an 
+        attribute or local of declared type <literal>X</literal> is:</para>
         
         <itemizedlist>
             <listitem>
