@@ -43,7 +43,7 @@
     <para>More complex expressions are formed by combining expressions using operators, 
     including assignment operators.</para>    
     
-    <programlisting>Expression := Primary | Assignment | OperatorExpression</programlisting>
+    <programlisting>Expression := Primary | OperatorExpression</programlisting>
     
     <para>Parentheses are used for grouping:</para>
     
