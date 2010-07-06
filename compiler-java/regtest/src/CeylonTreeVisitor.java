@@ -23,6 +23,10 @@ public class CeylonTreeVisitor {
     visitDefault(that);
   }
 
+  public void visit(CeylonTree.CompilationUnit that) {
+    visitDefault(that);
+  }
+
   public void visit(CeylonTree.Dot that) {
     visitDefault(that);
   }

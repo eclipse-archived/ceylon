@@ -41,9 +41,17 @@ public abstract class CeylonTree {
   public static CeylonTree consume(Tree src) {
     // Create the node
     Token token = ((CommonTree) src).getToken();
-    int type = token.getType();
-    Class<? extends CeylonTree> klass = classes.get(type);
-    assert klass != null : type + ": " + ceylonParser.tokenNames[type];
+
+    Class<? extends CeylonTree> klass;
+    if (token == null) {
+      klass = CompilationUnit.class;
+    }
+    else {
+      int type = token.getType();
+      klass = classes.get(type);
+      assert klass != null : type + ": " + ceylonParser.tokenNames[type];
+    }
+
     CeylonTree dst;
     try {
       dst = klass.newInstance();
@@ -149,6 +157,13 @@ public abstract class CeylonTree {
    * A class declaration.
    */
   public static class ClassDeclaration extends CeylonTree {
+    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+  }
+
+  /**
+   * A compilation unit.
+   */
+  public static class CompilationUnit extends CeylonTree {
     public void accept(CeylonTreeVisitor v) { v.visit(this); }
   }
 
