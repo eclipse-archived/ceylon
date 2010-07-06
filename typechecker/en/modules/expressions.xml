@@ -990,7 +990,7 @@ local comp = order(1,-1);</programlisting>
     <section id="invocation">
         <title>Invocation</title>
         
-        <para>A callable object&mdash;anything that implements <literal>Callable</literal>&mdash;is 
+        <para>A callable object&mdash;any instance of <literal>Callable</literal>&mdash;is 
         <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
         <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;T,P...&gt;</literal>, 
         together with an argument list and, optionally, an explicit type argument list.</para>
@@ -1857,11 +1857,11 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     <section id="evaluationandassignment">
         <title>Evaluation and assignment</title>
         
-        <para>A reference object&mdash;anything that implements 
-        <literal>Referenceable</literal>&mdash;can be <emphasis>evaluated</emphasis> to 
-        produce a value. If the reference object is of type <literal>Assignable</literal>,
-        its value may also be <emphasis>assigned</emphasis>. It is not necessary to explicitly 
-        invoke the reference object to evaluate or assign the referenced value. Instead:</para>
+        <para>A reference object&mdash;any instance of <literal>Referenceable</literal>&mdash;can 
+        be <emphasis>evaluated</emphasis> to produce a value. If the reference object is of type 
+        <literal>Assignable</literal>, its value may also be <emphasis>assigned</emphasis>. It is 
+        not necessary to explicitly invoke the reference object to evaluate or assign the 
+        referenced value. Instead:</para>
         
         <itemizedlist>
             <listitem>
