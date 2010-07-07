@@ -55,10 +55,6 @@ public class CeylonTreeVisitor {
     visitDefault(that);
   }
 
-  public void visit(CeylonTree.TypeDeclaration that) {
-    visitDefault(that);
-  }
-
   public void visit(CeylonTree.TypeName that) {
     visitDefault(that);
   }

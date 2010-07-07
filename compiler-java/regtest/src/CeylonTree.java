@@ -30,7 +30,6 @@ public abstract class CeylonTree {
     classes.put(ceylonParser.STMT_LIST, StatementList.class);
     classes.put(ceylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
     classes.put(ceylonParser.STRING_CST, StringConstant.class);
-    classes.put(ceylonParser.TYPE_DECL, TypeDeclaration.class);
     classes.put(ceylonParser.TYPE_NAME, TypeName.class);
     classes.put(ceylonParser.UIDENTIFIER, UIdentifier.class);
   }
@@ -52,19 +51,11 @@ public abstract class CeylonTree {
     return consume(src);
   }
 
+  /**
+   * Create a CeylonTree from an ANTLR tree.
+   */
   private static CeylonTree consume(Tree src) {
-    // Create the node
-    Token token = ((CommonTree) src).getToken();
-
-    Class<? extends CeylonTree> klass;
-    if (token == null) {
-      klass = CompilationUnit.class;
-    }
-    else {
-      int type = token.getType();
-      klass = classes.get(type);
-      assert klass != null : type + ": " + ceylonParser.tokenNames[type];
-    }
+    Class<? extends CeylonTree> klass = classFor(src);
 
     CeylonTree dst;
     try {
@@ -76,7 +67,7 @@ public abstract class CeylonTree {
     catch (IllegalAccessException e) {
       throw new RuntimeException(e);
     }
-    dst.token = token;
+    dst.token = ((CommonTree) src).getToken();
     
     // Recurse into the children
     for (int i = 0; i < src.getChildCount(); i++)
@@ -84,6 +75,36 @@ public abstract class CeylonTree {
 
     return dst;
   }
+
+  /**
+   * Decide which class to use to represent this node
+   */
+  private static Class<? extends CeylonTree> classFor(Tree src) {
+    Token token = ((CommonTree) src).getToken();
+    if (token == null)
+      return CompilationUnit.class;
+
+    int type = token.getType();
+    if (type == ceylonParser.TYPE_DECL) {
+      // TYPE_DECL nodes are used to ensure that a type's
+      // annotations are grouped together with the type
+      // itself.  We rewrite them to bring the type (eg
+      // CLASS_DECL) to the top, and put the annotations
+      // as the child of the type.
+      Tree firstChild = src.getChild(0);
+      int childType = ((CommonTree) firstChild).getToken().getType();
+      assert childType == ceylonParser.TYPE_DECL
+          || childType == ceylonParser.CLASS_DECL
+           : ceylonParser.tokenNames[childType];
+      return classFor(firstChild);
+    }
+   
+    Class<? extends CeylonTree> klass = classes.get(type);
+    assert klass != null : type + ": " + ceylonParser.tokenNames[type];
+    return klass;
+  }
+
+  // XXX ///////////////////////////////////////////////////////////////
 
   private CeylonTree parent;
   private List<CeylonTree> children;
@@ -109,6 +130,8 @@ public abstract class CeylonTree {
   private Token token;
 
   public int getTokenType() {
+    if (token == null)
+      return 0;
     return token.getType();
   }
   public String getTokenTypeName() {
@@ -117,6 +140,8 @@ public abstract class CeylonTree {
   public String getTokenText() {
     return token.getText();
   }
+
+  // XXX ///////////////////////////////////////////////////////////////
 
   /**
    * Visit this tree with a given visitor.
@@ -227,13 +252,6 @@ public abstract class CeylonTree {
    * A string constant.
    */
   public static class StringConstant extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
-  }
-
-  /**
-   * A type declaration.
-   */
-  public static class TypeDeclaration extends CeylonTree {
     public void accept(CeylonTreeVisitor v) { v.visit(this); }
   }
 
