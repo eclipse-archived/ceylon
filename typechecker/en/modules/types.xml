@@ -1772,13 +1772,17 @@ while (people nonempty) {
     
     public Visiblity visibility;
     
-    doc "Return all the attributes that are declared  
-         with the given type."
+    doc "Return all the attributes of the given 
+         type."
     public Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
     
-    doc "Return all the methods that are declared  
-         with the given callable type."
-    public Set<Method<X,T,P...>> methods<T,P...>(Type<Callable<T,P...>> type);
+    doc "Return all the methods of the given 
+         callable type."
+    public Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
+    
+    doc "Return all the member classes of the 
+         given callable type."
+    public Set<MemberClass<X,Y,P...>> classes<Y,P...>(Type<Callable<Y,P...>> type);
     
     ...
     
