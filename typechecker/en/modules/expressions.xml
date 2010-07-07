@@ -457,7 +457,7 @@ if you prefer.";</programlisting>
         <para>The metamodel object representing a type or program element may be obtained
         using a completely typesafe syntax.</para>
         
-        <programlisting>Meta := TypeMeta | MemberMeta | FunctionMeta</programlisting>
+        <programlisting>Meta := TypeMeta | MethodMeta | AttributeMeta | FunctionMeta</programlisting>
         
         <para>Metamodel references are compile-time typesafe.</para>
         
@@ -469,6 +469,13 @@ if you prefer.";</programlisting>
         
         <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
         
+        <para>A metamodel reference that refers to a generic declaration must specify type
+        arguments.</para>
+        
+        <comment><para>TODO: can we just default the type arguments to the upper bounds of 
+        the type parameters if the type arguments are missing? Or do we need some kind of
+        <literal>GenericType</literal> object to represent generic declarations?</para></comment>
+        
         <comment><para>TODO: are there metamodel objects for block local declarations? This
         includes block local declarations inside a class body, and block local declarations
         inside a method or attribute body.</para></comment>
@@ -476,19 +483,14 @@ if you prefer.";</programlisting>
         <section>
             <title>Interface and class metamodel references</title>
             
-        <para>The <literal>Type</literal> object may be obtained by specifying the full
-        type, with type arguments. A <literal>Class</literal> or <literal>Interface</literal> 
-        object may be obtained by specifying a class or interface name, without arguments.</para>
+        <para>A <literal>Type</literal> object may be obtained by specifying the full
+        type, including type arguments if the type is generic.</para>
         
         <programlisting>TypeMeta := Type</programlisting>
         
         <para>The metamodel expression, <literal>X</literal>, for a type, class or interface is:</para>
         
         <itemizedlist>
-             <listitem>
-                <para>of type <literal>Type&lt;X&gt;</literal> where 
-                <literal>X</literal> is the type, with type arguments, or</para>
-            </listitem>
              <listitem>
                 <para>of type <literal>Interface&lt;X&gt;</literal> where 
                 <literal>X</literal> is the interface, or</para>
@@ -511,18 +513,16 @@ if you prefer.";</programlisting>
         is both a metamodel reference and a callable reference. This is consistent, since
         <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
         
-        <comment><para>TODO: what happens to the type parameters of the class or interface?
-        Do they get replaced by their upper bounds?</para></comment>
-        
         </section>
         
         <section>
             <title>Toplevel method metamodel references</title>
             
         <para>A <literal>Function</literal> object representing a toplevel method may be 
-        obtained by specifying the method name.</para>
+        obtained by specifying the method name, with type arguments if the toplevel method 
+        is generic.</para>
         
-        <programlisting>FunctionMeta := MemberName</programlisting>
+        <programlisting>FunctionMeta := MemberName TypeArguments?</programlisting>
                
         <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
         is:</para>
@@ -544,15 +544,40 @@ if you prefer.";</programlisting>
         </section>
         
         <section>
-            <title>Method and attribute metamodel references</title>
+            <title>Member method metamodel references</title>
             
-        <para>A <literal>Method</literal> or <literal>Attribute</literal> object 
-        representing a member may be obtained by specifying the type and member name.</para>
+        <para>A <literal>Method</literal> object representing a member method may be 
+        obtained by specifying the type (with type arguments) and member name, together 
+        with type arguments if the method is generic.</para>
         
-        <programlisting>MemberMeta := Type "." MemberName</programlisting>
+        <programlisting>MethodMeta := Type "." MemberName TypeArguments?</programlisting>
                
         <para>The metamodel expression, <literal>X.member</literal>, for a member method 
-        or attribute is:</para>
+        is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>assignable to <literal>Method&lt;X,R,P...&gt;</literal> where 
+                <literal>X</literal> is the type that defines the method, and 
+                <literal>R</literal> is the callable type of a method produced by 
+                removing the first formal parameter list of the method, and 
+                <literal>P...</literal> are the types of the first formal parameter 
+                lists of the method, for every overloaded version of the method.</para>
+            </listitem>
+        </itemizedlist>
+         
+        </section>
+        
+        <section>
+            <title>Attribute metamodel references</title>
+            
+        <para>An <literal>Attribute</literal> object representing an attribute may be 
+        obtained by specifying the type (with type arguments) and member name.</para>
+        
+        <programlisting>AttributeMeta := Type "." MemberName</programlisting>
+
+        <para>The metamodel expression, <literal>X.member</literal>, for an attribute 
+        is:</para>
         
         <itemizedlist>
             <listitem>
@@ -565,15 +590,7 @@ if you prefer.";</programlisting>
                 <para>of type <literal>MutableAttribute&lt;X,T&gt;</literal> where 
                 <literal>X</literal> is the type that defines the attribute, 
                 and <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>mutable</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>assignable to <literal>Method&lt;X,R,P...&gt;</literal> where 
-                <literal>X</literal> is the type that defines the method, and 
-                <literal>R</literal> is the callable type of a method produced by 
-                removing the first formal parameter list of the method, and 
-                <literal>P...</literal> are the types of the first formal parameter 
-                lists of the method, for every overloaded version of the method.</para>
+                if the attribute is declared <literal>mutable</literal>.</para>
             </listitem>
         </itemizedlist>
          
@@ -719,13 +736,31 @@ createItemMethod.addListener(currentOrder)
         
         </section>
         
+        <section>
+            <title>Type arguments</title>
+            
+            <para>If a callable reference expression refers to a generic declaration, 
+            either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>it must be immediately followed by an argument list, 
+                    allowing the compiler to infer the type arguments, or</para>
+                </listitem>
+                <listitem>
+                    <para>it must specify an explicit type argument list.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
         <section id="methodreferences">
             <title>Method references</title>
         
         <para>If a callable reference specifies a method name (or callable parameter 
         name), it is called a <emphasis>method reference</emphasis>.</para>
 
-        <programlisting>MethodReference := (Receiver ".")? MemberName</programlisting>        
+        <programlisting>MethodReference := (Receiver ".")? MemberName TypeArguments?</programlisting>        
 
         <para>The type of a method reference expression is assignable to the callable 
         type of every overloaded version of the method. Calling the callable reference 
@@ -739,7 +774,7 @@ createItemMethod.addListener(currentOrder)
         <para>If a callable reference specifies a class name, it is called a 
         <emphasis>constructor reference</emphasis>.</para>
         
-        <programlisting>ConstructorReference := (Receiver ".")? TypeName</programlisting>
+        <programlisting>ConstructorReference := (Receiver ".")? TypeName TypeArguments?</programlisting>
         
         <para>The type of a constructor reference expression is assignable to the 
         callable type of every overloaded version of the class. Calling the constructor 
@@ -995,7 +1030,7 @@ local comp = order(1,-1);</programlisting>
         <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;T,P...&gt;</literal>, 
         together with an argument list and, optionally, an explicit type argument list.</para>
         
-        <programlisting>Invocation := Primary TypeArguments? Arguments</programlisting>
+        <programlisting>Invocation := Primary Arguments</programlisting>
             
         <para>Any invocation expression where the invoked expression is a callable reference 
         expression is called a <emphasis>direct invocation</emphasis> of the method, callable
@@ -1005,7 +1040,7 @@ local comp = order(1,-1);</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>all the overloaded versions of the method (the various
+                <para>all the overloaded versions of the method or class (the various
                 <literal>Callable</literal> types to which the callable reference
                 expression is assignable),</para>
             </listitem>
@@ -1021,6 +1056,10 @@ local comp = order(1,-1);</programlisting>
                 parameter.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>(Furthermore, in the case of a direct invocation, type argument inference is 
+        possible, since the compiler is aware of the type parameters and constraints of
+        the method or class.)</para>
                 
         <para>An invocation must specify arguments for parameters of the callable object, 
         either by listing parameter values in order or, in the case of a direct invocation, 
@@ -1062,6 +1101,10 @@ local comp = order(1,-1);</programlisting>
         <para>When a invocation expression of a callable reference is executed:</para>
         
         <itemizedlist>
+            <listitem>
+                <para>first, the invoked expression is executed to obtain the callable 
+                object, then</para>
+            </listitem>
             <listitem>
                 <para>each argument is evaluated in turn in the calling context, then</para>
             </listitem>
@@ -1931,6 +1974,10 @@ String name = getName();</programlisting>
         
         <itemizedlist>
             <listitem>
+                <para>first, the reference expression is executed to obtain the reference 
+                object, then</para>
+            </listitem>
+            <listitem>
                 <para>the actual member to be invoked is determined by considering the 
                 runtime type of the receiving instance, and then</para>
             </listitem>
@@ -2000,6 +2047,10 @@ setName(p.name, "Gavin");</programlisting>
         <para>When an attribute value is assigned:</para>
         
         <itemizedlist>
+            <listitem>
+                <para>first, the reference expression is executed to obtain the reference 
+                object, then</para>
+            </listitem>
             <listitem>
                 <para>the actual member to be invoked is determined by considering the 
                 runtime type of the receiving instance, and then</para>
