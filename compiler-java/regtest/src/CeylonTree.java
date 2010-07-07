@@ -107,8 +107,9 @@ public abstract class CeylonTree {
   public List<CeylonTree> children;
 
   /**
-   * Process this node's children.  The default behaviour is to
-   * recursively consume the tree, though this may be overridden.
+   * Initialize this node's children.  The default behaviour is to
+   * recursively consume the tree, though this may be overridden or
+   * extended by subclasses.
    */
   protected List<CeylonTree> processChildren(Tree src) {
     ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
