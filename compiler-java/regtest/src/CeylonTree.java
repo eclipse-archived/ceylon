@@ -111,10 +111,10 @@ public abstract class CeylonTree {
    * recursively consume the tree, though this may be overridden.
    */
   protected List<CeylonTree> processChildren(Tree src) {
-    ListBuffer<CeylonTree> buf = new ListBuffer<CeylonTree>();
+    ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
     for (int i = 0; i < src.getChildCount(); i++)
-      buf.append(consume(src.getChild(i)));
-    return buf.toList();
+      children.append(consume(src.getChild(i)));
+    return children.toList();
   }
 
   /**
@@ -130,6 +130,62 @@ public abstract class CeylonTree {
     this.accept(new CeylonTreePrinter(s));
     return s.toString();
   }
+
+
+  // Node subclasses
+
+  /**
+   * A compilation unit represents one source file.
+   */
+  public static class CompilationUnit extends CeylonTree {
+    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+  }
+
+  /**
+   * A type declaration.  This abstract class is the parent
+   * class for items which may be wrapped in TYPE_DECL nodes
+   * in the parse tree, and contains the functionality to
+   * unwrap them.
+   */
+  public static abstract class TypeDeclaration extends CeylonTree {
+    protected List<CeylonTree> processChildren(Tree src) {
+      assert ((CommonTree) src).getToken().getType() == ceylonParser.TYPE_DECL;
+
+      // Firstly, remove TYPE_DECL nodes that have exactly
+      // one child that is also a TYPE_DECL node.
+      if (src.getChildCount() == 1) {
+        Tree child = src.getChild(0);
+        if (((CommonTree) child).getToken().getType() == ceylonParser.TYPE_DECL)
+          return processChildren(child);
+      }
+
+      // Secondly, rewrite:
+      //   TYPE_DECL
+      //     CLASS_DECL | INTERFACE_DECL | ALIAS_DECL | MEMBER_DECL
+      //       children*
+      //     ANNOTATION_LIST?
+      // as:
+      //     CLASS_DECL | INTERFACE_DECL | ALIAS_DECL | MEMBER_DECL
+      //       children*
+      //       ANNOTATION_LIST?
+      assert src.getChildCount() == 1 || src.getChildCount() == 2;
+      ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
+      children.appendList(super.processChildren(src.getChild(0)));
+      for (int i = 1; i < src.getChildCount(); i++)
+        children.append(consume(src.getChild(i)));
+      return children.toList();
+    }
+  }
+  
+  /**
+   * A class declaration.
+   */
+  public static class ClassDeclaration extends TypeDeclaration {
+    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+  }
+
+  
+  // XXX possibly rubbish node subclasses
 
   /**
    * An annotation.
@@ -163,20 +219,6 @@ public abstract class CeylonTree {
    * A call expression.
    */
   public static class CallExpression extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
-  }
-
-  /**
-   * A class declaration.
-   */
-  public static class ClassDeclaration extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
-  }
-
-  /**
-   * A compilation unit.
-   */
-  public static class CompilationUnit extends CeylonTree {
     public void accept(CeylonTreeVisitor v) { v.visit(this); }
   }
 
