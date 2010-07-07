@@ -36,7 +36,7 @@ public class CeylonCompiler
     out.println();
 
     if (consumeTree) {
-      CeylonTree ct = CeylonTree.consume(t);
+      CeylonTree ct = CeylonTree.build(t);
       System.out.println(ct);
       out.println();
     }

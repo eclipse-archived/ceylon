@@ -38,7 +38,21 @@ public abstract class CeylonTree {
   /**
    * Create a CeylonTree from an ANTLR tree.
    */
-  public static CeylonTree consume(Tree src) {
+  public static CeylonTree build(Tree src) {
+    Token token = ((CommonTree) src).getToken();
+    if (token != null) {
+      // ANTLR doesn't create a null top-level node when it
+      // would only have one child.  We want one always, to
+      // map to the compilation unit, so we create one where
+      // necessary.
+      Tree tmp = new CommonTree((Token) null);
+      tmp.addChild(src);
+      src = tmp;
+    }
+    return consume(src);
+  }
+
+  private static CeylonTree consume(Tree src) {
     // Create the node
     Token token = ((CommonTree) src).getToken();
 
