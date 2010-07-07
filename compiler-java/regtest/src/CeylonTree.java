@@ -1,8 +1,8 @@
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
@@ -67,11 +67,8 @@ public abstract class CeylonTree {
     catch (IllegalAccessException e) {
       throw new RuntimeException(e);
     }
-    dst.token = ((CommonTree) src).getToken();
-    
-    // Recurse into the children
-    for (int i = 0; i < src.getChildCount(); i++)
-      dst.addChild(consume(src.getChild(i)));
+
+    dst.children = dst.processChildren(src);
 
     return dst;
   }
@@ -104,44 +101,21 @@ public abstract class CeylonTree {
     return klass;
   }
 
-  // XXX ///////////////////////////////////////////////////////////////
+  /**
+   * This node's children.
+   */
+  public List<CeylonTree> children;
 
-  private CeylonTree parent;
-  private List<CeylonTree> children;
-
-  protected void addChild(CeylonTree child) {
-    if (children == null)
-      children = new LinkedList<CeylonTree>();
-    children.add(child);
-    assert child.parent == null;
-    child.parent = this;
+  /**
+   * Process this node's children.  The default behaviour is to
+   * recursively consume the tree, though this may be overridden.
+   */
+  protected List<CeylonTree> processChildren(Tree src) {
+    ListBuffer<CeylonTree> buf = new ListBuffer<CeylonTree>();
+    for (int i = 0; i < src.getChildCount(); i++)
+      buf.append(consume(src.getChild(i)));
+    return buf.toList();
   }
-
-  public int getChildCount() {
-    if (children == null)
-      return 0;
-    return children.size();
-  }
-
-  public CeylonTree getChild(int index) {
-    return children.get(index);
-  }
-
-  private Token token;
-
-  public int getTokenType() {
-    if (token == null)
-      return 0;
-    return token.getType();
-  }
-  public String getTokenTypeName() {
-    return ceylonParser.tokenNames[getTokenType()];
-  }
-  public String getTokenText() {
-    return token.getText();
-  }
-
-  // XXX ///////////////////////////////////////////////////////////////
 
   /**
    * Visit this tree with a given visitor.

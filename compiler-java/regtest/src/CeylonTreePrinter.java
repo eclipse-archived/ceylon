@@ -27,21 +27,26 @@ public class CeylonTreePrinter extends CeylonTreeVisitor {
       print("  ");
   }
 
+  private String getName(CeylonTree tree) {
+    String name = tree.getClass().getName();
+    return name.substring(name.indexOf('$') + 1);
+  }
+  
   public void visitDefault(CeylonTree tree) {
-    int child_count = tree.getChildCount();
+    int child_count = tree.children.size();
     if (child_count != 0) {
       newline();
       indent();
-      print("(" + tree.getTokenTypeName());
+      print("(" + getName(tree));
       depth++;
-      for (int i = 0; i < child_count; i++) {
-        tree.getChild(i).accept(this);
+      for (CeylonTree child : tree.children) {
+        child.accept(this);
       }
       print(")");
       depth--;
     }
     else {
-      print(" " + tree.getTokenText());
+      print(" " + getName(tree));
     }
   }
 }
