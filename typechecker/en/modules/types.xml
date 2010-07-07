@@ -1786,7 +1786,7 @@ while (people nonempty) {
         
         <para>An instance of <literal>Interface</literal> represents an interface.</para>
         
-        <programlisting><![CDATA[public interface Class<X, P...> 
+        <programlisting><![CDATA[public interface Interface<X> 
         satisfies Type<X> {}]]></programlisting>
 
         <para>An instance of <literal>Class</literal> represents a class.</para>
@@ -1818,14 +1818,14 @@ while (people nonempty) {
     
     public Visiblity visibility;
     
-    public Type<T> type;
+    public Type<T> memberType;
     
 }]]></programlisting>
 
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
         <programlisting><![CDATA[public interface Method<in X, R, P...> 
-        satisfies Member<Callable<R, P...>> {
+        satisfies Member<Function<R, P...>> {
         
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
@@ -1842,7 +1842,7 @@ while (people nonempty) {
         satisfies Member<X, Referenceable<T>> {
         
     public Boolean mutable;
-
+    
     public Listener addListener<S>( T onGet(S instance, T proceed()) );
                           where S abstracts X;
     public Listener addListener( X instance, T onGet(T proceed()) );
@@ -1863,7 +1863,7 @@ while (people nonempty) {
         class.</para>
         
         <programlisting><![CDATA[public interface MemberClass<X, Y, P...> 
-        satisfies Type<Y>, Member<Y, Callable<X,P...>> {
+        satisfies Type<Y>, Member<X, Class<Y,P...>> {
     
     public Parameter<Object>[] parameters;
     
