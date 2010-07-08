@@ -85,24 +85,29 @@ public abstract class CeylonTree {
     classes = new HashMap<Integer, Class<? extends CeylonTree>>();
 
     // NB CompilationUnit.class is handled in classFor(Tree)
-    classes.put(ceylonParser.CLASS_DECL, ClassDeclaration.class);
+    classes.put(ceylonParser.IMPORT_LIST,         ImportList.class);
+    classes.put(ceylonParser.IMPORT_DECL,         ImportDeclaration.class);
+    classes.put(ceylonParser.IMPORT_PATH,         ImportPath.class);
+    classes.put(ceylonParser.IMPORT_WILDCARD,     ImportWildcard.class);
+    classes.put(ceylonParser.ALIAS_DECL,          AliasDeclaration.class);
+    classes.put(ceylonParser.CLASS_DECL,          ClassDeclaration.class);
 
     // XXX possibly rubbish node subclasses    
     
-    classes.put(ceylonParser.ANNOTATION, Annotation.class);
-    classes.put(ceylonParser.ANNOTATION_LIST, AnnotationList.class);
-    classes.put(ceylonParser.ANNOTATION_NAME, AnnotationName.class);
-    classes.put(ceylonParser.ARG_LIST, ArgumentList.class);
-    classes.put(ceylonParser.CALL_EXPR, CallExpression.class);
-    classes.put(ceylonParser.DOT, Dot.class);
-    classes.put(ceylonParser.EXPR, Expression.class);
-    classes.put(ceylonParser.LIDENTIFIER, LIdentifier.class);
-    classes.put(ceylonParser.MEMBER_NAME, MemberName.class);
-    classes.put(ceylonParser.STMT_LIST, StatementList.class);
+    classes.put(ceylonParser.ANNOTATION,          Annotation.class);
+    classes.put(ceylonParser.ANNOTATION_LIST,     AnnotationList.class);
+    classes.put(ceylonParser.ANNOTATION_NAME,     AnnotationName.class);
+    classes.put(ceylonParser.ARG_LIST,            ArgumentList.class);
+    classes.put(ceylonParser.CALL_EXPR,           CallExpression.class);
+    classes.put(ceylonParser.DOT,                 Dot.class);
+    classes.put(ceylonParser.EXPR,                Expression.class);
+    classes.put(ceylonParser.LIDENTIFIER,         LIdentifier.class);
+    classes.put(ceylonParser.MEMBER_NAME,         MemberName.class);
+    classes.put(ceylonParser.STMT_LIST,           StatementList.class);
     classes.put(ceylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
-    classes.put(ceylonParser.STRING_CST, StringConstant.class);
-    classes.put(ceylonParser.TYPE_NAME, TypeName.class);
-    classes.put(ceylonParser.UIDENTIFIER, UIdentifier.class);
+    classes.put(ceylonParser.STRING_CST,          StringConstant.class);
+    classes.put(ceylonParser.TYPE_NAME,           TypeName.class);
+    classes.put(ceylonParser.UIDENTIFIER,         UIdentifier.class);
   }
 
   /**
@@ -127,6 +132,11 @@ public abstract class CeylonTree {
    */
   public static class Visitor {
     public void visit(CompilationUnit that)     { visitDefault(that); }
+    public void visit(ImportList that)          { visitDefault(that); }
+    public void visit(ImportDeclaration that)   { visitDefault(that); }
+    public void visit(ImportPath that)          { visitDefault(that); }
+    public void visit(ImportWildcard that)      { visitDefault(that); }
+    public void visit(AliasDeclaration that)    { visitDefault(that); }
     public void visit(ClassDeclaration that)    { visitDefault(that); }
 
     // XXX possibly rubbish node subclasses
@@ -176,6 +186,34 @@ public abstract class CeylonTree {
   }
 
   /**
+   * A list of import declarations.
+   */
+  public static class ImportList extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * An import declaration.
+   */
+  public static class ImportDeclaration extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * An import path.
+   */
+  public static class ImportPath extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A wildcard at the end of an import path.
+   */
+  public static class ImportWildcard extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
    * A type declaration.  This abstract class is the parent
    * class for items which may be wrapped in TYPE_DECL nodes
    * in the parse tree, and contains the functionality to
@@ -211,6 +249,13 @@ public abstract class CeylonTree {
     }
   }
   
+  /**
+   * An alias declaration.
+   */
+  public static class AliasDeclaration extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
   /**
    * A class declaration.
    */
