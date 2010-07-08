@@ -5,7 +5,7 @@
     important types provided by the package <literal>lang</literal>. Many
     of these types support <emphasis>operators</emphasis>.</para>
     
-    <section>
+    <section id="void">
         <title>The void type</title>
         
         <para>The class <literal>lang.Void</literal> is the root of the type
@@ -17,7 +17,7 @@
         
     </section>
     
-    <section>
+    <section id="object">
         <title>The Object type</title>
         
         <para>User-written classes extend <literal>lang.Object</literal> and 
@@ -101,7 +101,7 @@
 
     </section>
 
-    <section>
+    <section id="referenceableandassignable">
         <title>Referenceable and assignable values</title>
         
         <para>The class <literal>lang.Referenceable</literal> represents a value
@@ -138,7 +138,7 @@
 
     </section>
     
-    <section>
+    <section id="callable">
         <title>Callable references</title>
         
         <para>The type <literal>lang.Callable</literal> represents an executable
@@ -152,7 +152,7 @@
     
     </section>
     
-    <section>
+    <section id="boolean">
         <title>Boolean values</title>
         
         <para>The <literal>lang.Boolean</literal> class represents
@@ -213,7 +213,7 @@
 
     </section>
     
-    <section>
+    <section id="casesandselectors">
         <title>Cases and selectors</title>
         
         <para>The interface <literal>lang.Case</literal> represents a
@@ -280,7 +280,7 @@ class CaseSuper<X,Y>(Case<X> c)
         
     </section>
     
-    <section>
+    <section id="optionalandnull">
         <title>Optional and null values</title>
         
         <para>The class <literal>lang.Optional</literal> represents a
@@ -383,7 +383,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
         
     </section>
     
-    <section>
+    <section id="usable">
         <title>Usables</title>
         
         <para>The interface <literal>lang.Usable</literal> represents an
@@ -405,7 +405,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
        
     </section>
     
-    <section>
+    <section id="iterableanditerator">
         <title>Iterable objects and iterators</title>
         
         <para>The interface <literal>lang.Container</literal> represents
@@ -484,7 +484,7 @@ while (i.more) {
 
     </section>
     
-    <section>
+    <section id="category">
         <title>Categories</title>
         
         <para>The interface <literal>lang.Category</literal> represents
@@ -559,7 +559,7 @@ while (i.more) {
 
     </section>
     
-    <section>
+    <section id="correspondence">
         <title>Correspondences</title>
         
         <para>The interface <literal>lang.Correspondence</literal> represents
@@ -695,7 +695,7 @@ while (i.more) {
        
     </section>
     
-    <section>
+    <section id="sequence">
         <title>Sequences</title>
         
         <para>A <literal>lang.Sequence</literal> is a correspondence from 
@@ -791,7 +791,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
     </section>
     
-    <section>
+    <section id="entry">
         <title>Entries</title>
         
         <para>The <literal>Entry</literal> class represents a pair of 
@@ -820,7 +820,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
     </section>
     
-    <section>
+    <section id="collections">
         <title>Collections</title>
         
         <para>The interface <literal>lang.Collection</literal> is the 
@@ -1245,7 +1245,7 @@ while (people nonempty) {
         
     </section>
     
-    <section>
+    <section id="comparableandordinal">
         <title>Ordered values</title>
         
         <para>The <literal>lang.Comparable</literal> interface 
@@ -1317,7 +1317,7 @@ while (people nonempty) {
 
     </section>
     
-    <section>
+    <section id="range">
         <title>Ranges</title>
         
         <para>Ranges implement <literal>Sequence</literal>, therefore they 
@@ -1348,7 +1348,7 @@ while (people nonempty) {
     
     </section>
     
-    <section>
+    <section id="characterandstring">
         <title>Characters and strings</title>
         
         <para>UTF-32 Unicode Characters are represented by the following class:</para>
@@ -1425,7 +1425,7 @@ while (people nonempty) {
         
     </section>
     
-    <section>
+    <section id="regex">
         <title>Regular expressions</title>
         
         <programlisting><![CDATA[public extension class Regex(Quoted expression)
@@ -1449,7 +1449,7 @@ while (people nonempty) {
 
     </section>
     
-    <section>
+    <section id="bits">
         <title>Bit strings</title>
         
         <para>The interface <literal>Bits</literal> represents a fixed length
@@ -1478,7 +1478,7 @@ while (people nonempty) {
         
     </section>
     
-    <section>
+    <section id="number">
         <title>Numbers</title>
         
         <para>The <literal>lang.Number</literal> interface is the abstract supertype
@@ -1736,7 +1736,7 @@ while (people nonempty) {
 
     </section>
     
-    <section>
+    <section id="metamodel">
         <title>Metamodel</title>
         
         <para>The metamodel (reflection API) reifies the schema of a type, making it
@@ -1903,7 +1903,7 @@ while (people nonempty) {
 
     </section>
     
-    <section>
+    <section id="datetime">
         <title>Instants, intervals and durations</title>
         
         <comment><para>TODO: this stuff is just for illustration, the real
@@ -1986,7 +1986,7 @@ while (people nonempty) {
         
     </section>
     
-    <section>
+    <section id="control">
         <title>Control expressions</title>
         
         <para>The <literal>lang.assertion</literal> package defines 
