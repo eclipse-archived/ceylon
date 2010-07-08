@@ -252,7 +252,9 @@ public abstract class CeylonTree {
    */
   public static abstract class TypeDeclaration extends CeylonTree {
     protected List<CeylonTree> processChildren(Tree src) {
-      assert ((CommonTree) src).getToken().getType() == ceylonParser.TYPE_DECL;
+      // If the node is not a TYPE_DECL then we have nothing to do
+      if (((CommonTree) src).getToken().getType() != ceylonParser.TYPE_DECL)
+        return super.processChildren(src);
 
       // Firstly, remove TYPE_DECL nodes that have exactly
       // one child that is also a TYPE_DECL node.
@@ -283,7 +285,7 @@ public abstract class CeylonTree {
   /**
    * An alias declaration.
    */
-  public static class AliasDeclaration extends CeylonTree {
+  public static class AliasDeclaration extends TypeDeclaration {
     public void accept(Visitor v) { v.visit(this); }
   }
 
