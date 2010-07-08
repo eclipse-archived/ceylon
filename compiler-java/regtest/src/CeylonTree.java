@@ -201,6 +201,13 @@ public abstract class CeylonTree {
         return importList.getImports();
       return List.<ImportDeclaration> nil();
     }
+
+    public List<TypeDeclaration> getTypeDecls() {
+      List<CeylonTree> result = children;
+      if (result.head instanceof ImportList)
+        result = result.tail;
+      return List.convert(TypeDeclaration.class, result);
+    }
   }
 
   /**

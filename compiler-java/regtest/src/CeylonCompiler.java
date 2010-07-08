@@ -45,6 +45,11 @@ public class CeylonCompiler
         out.print("IMPORT:");
         out.print(id);
         out.println();
+      }
+      for (CeylonTree.TypeDeclaration td : cu.getTypeDecls()) {
+        out.print("TYPE:");
+        out.print(td);
+        out.println();
       }*/
     }
   }
