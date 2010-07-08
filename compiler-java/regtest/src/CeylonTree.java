@@ -10,31 +10,6 @@ import org.antlr.runtime.tree.Tree;
 public abstract class CeylonTree {
   
   /**
-   * Mapping of ANTLR tokens to CeylonTree subclasses.
-   */
-  private static Map<Integer, Class<? extends CeylonTree>> classes;
-
-  static {
-    classes = new HashMap<Integer, Class<? extends CeylonTree>>();
-
-    classes.put(ceylonParser.ANNOTATION, Annotation.class);
-    classes.put(ceylonParser.ANNOTATION_LIST, AnnotationList.class);
-    classes.put(ceylonParser.ANNOTATION_NAME, AnnotationName.class);
-    classes.put(ceylonParser.ARG_LIST, ArgumentList.class);
-    classes.put(ceylonParser.CALL_EXPR, CallExpression.class);
-    classes.put(ceylonParser.CLASS_DECL, ClassDeclaration.class);
-    classes.put(ceylonParser.DOT, Dot.class);
-    classes.put(ceylonParser.EXPR, Expression.class);
-    classes.put(ceylonParser.LIDENTIFIER, LIdentifier.class);
-    classes.put(ceylonParser.MEMBER_NAME, MemberName.class);
-    classes.put(ceylonParser.STMT_LIST, StatementList.class);
-    classes.put(ceylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
-    classes.put(ceylonParser.STRING_CST, StringConstant.class);
-    classes.put(ceylonParser.TYPE_NAME, TypeName.class);
-    classes.put(ceylonParser.UIDENTIFIER, UIdentifier.class);
-  }
-
-  /**
    * Create a CeylonTree from an ANTLR tree.
    */
   public static CeylonTree build(Tree src) {
@@ -102,6 +77,35 @@ public abstract class CeylonTree {
   }
 
   /**
+   * Mapping of ANTLR tokens to CeylonTree subclasses.
+   */
+  private static Map<Integer, Class<? extends CeylonTree>> classes;
+
+  static {
+    classes = new HashMap<Integer, Class<? extends CeylonTree>>();
+
+    // NB CompilationUnit.class is handled in classFor(Tree)
+    classes.put(ceylonParser.CLASS_DECL, ClassDeclaration.class);
+
+    // XXX possibly rubbish node subclasses    
+    
+    classes.put(ceylonParser.ANNOTATION, Annotation.class);
+    classes.put(ceylonParser.ANNOTATION_LIST, AnnotationList.class);
+    classes.put(ceylonParser.ANNOTATION_NAME, AnnotationName.class);
+    classes.put(ceylonParser.ARG_LIST, ArgumentList.class);
+    classes.put(ceylonParser.CALL_EXPR, CallExpression.class);
+    classes.put(ceylonParser.DOT, Dot.class);
+    classes.put(ceylonParser.EXPR, Expression.class);
+    classes.put(ceylonParser.LIDENTIFIER, LIdentifier.class);
+    classes.put(ceylonParser.MEMBER_NAME, MemberName.class);
+    classes.put(ceylonParser.STMT_LIST, StatementList.class);
+    classes.put(ceylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
+    classes.put(ceylonParser.STRING_CST, StringConstant.class);
+    classes.put(ceylonParser.TYPE_NAME, TypeName.class);
+    classes.put(ceylonParser.UIDENTIFIER, UIdentifier.class);
+  }
+
+  /**
    * This node's children.
    */
   public List<CeylonTree> children;
@@ -119,9 +123,38 @@ public abstract class CeylonTree {
   }
 
   /**
+   * Base class for visitors.
+   */
+  public static class Visitor {
+    public void visit(CompilationUnit that)     { visitDefault(that); }
+    public void visit(ClassDeclaration that)    { visitDefault(that); }
+
+    // XXX possibly rubbish node subclasses
+
+    public void visit(Annotation that)          { visitDefault(that); }
+    public void visit(AnnotationList that)      { visitDefault(that); }
+    public void visit(AnnotationName that)      { visitDefault(that); }
+    public void visit(ArgumentList that)        { visitDefault(that); }
+    public void visit(CallExpression that)      { visitDefault(that); }
+    public void visit(Dot that)                 { visitDefault(that); }
+    public void visit(Expression that)          { visitDefault(that); }
+    public void visit(LIdentifier that)         { visitDefault(that); }
+    public void visit(MemberName that)          { visitDefault(that); }
+    public void visit(StatementList that)       { visitDefault(that); }
+    public void visit(SimpleStringLiteral that) { visitDefault(that); }
+    public void visit(StringConstant that)      { visitDefault(that); }
+    public void visit(TypeName that)            { visitDefault(that); }
+    public void visit(UIdentifier that)         { visitDefault(that); }
+
+    public void visitDefault(CeylonTree tree) {
+      throw new RuntimeException();
+    }
+  }
+
+  /**
    * Visit this tree with a given visitor.
    */
-  public abstract void accept(CeylonTreeVisitor v);
+  public abstract void accept(Visitor v);
 
   /**
    * Convert a tree to a pretty-printed string
@@ -139,7 +172,7 @@ public abstract class CeylonTree {
    * A compilation unit represents one source file.
    */
   public static class CompilationUnit extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
@@ -182,7 +215,7 @@ public abstract class CeylonTree {
    * A class declaration.
    */
   public static class ClassDeclaration extends TypeDeclaration {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   
@@ -192,97 +225,97 @@ public abstract class CeylonTree {
    * An annotation.
    */
   public static class Annotation extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A list of annotations.
    */
   public static class AnnotationList extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * An annotation name.
    */
   public static class AnnotationName extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A list of arguments.
    */
   public static class ArgumentList extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A call expression.
    */
   public static class CallExpression extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A dot.
    */
   public static class Dot extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * An expression.
    */
   public static class Expression extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * An lowercase identifier.
    */
   public static class LIdentifier extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A member name.
    */
   public static class MemberName extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A list of statements.
    */
   public static class StatementList extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A simple string literal.
    */
   public static class SimpleStringLiteral extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A string constant.
    */
   public static class StringConstant extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A type name.
    */
   public static class TypeName extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * An uppercase identifier.
    */
   public static class UIdentifier extends CeylonTree {
-    public void accept(CeylonTreeVisitor v) { v.visit(this); }
+    public void accept(Visitor v) { v.visit(this); }
   }
 }

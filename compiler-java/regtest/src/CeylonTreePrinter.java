@@ -1,7 +1,7 @@
 import java.io.Writer;
 import java.io.IOException;
 
-public class CeylonTreePrinter extends CeylonTreeVisitor {
+public class CeylonTreePrinter extends CeylonTree.Visitor {
   private Writer out;
   private int depth;
 
