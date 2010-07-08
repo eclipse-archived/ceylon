@@ -10,9 +10,9 @@ import org.antlr.runtime.tree.Tree;
 public abstract class CeylonTree {
   
   /**
-   * Create a CeylonTree from an ANTLR tree.
+   * Create a Ceylon compilation unit from an ANTLR tree.
    */
-  public static CeylonTree build(Tree src) {
+  public static CompilationUnit build(Tree src) {
     Token token = ((CommonTree) src).getToken();
     if (token != null) {
       // ANTLR doesn't create a null top-level node when it
@@ -23,11 +23,11 @@ public abstract class CeylonTree {
       tmp.addChild(src);
       src = tmp;
     }
-    return consume(src);
+    return (CompilationUnit) consume(src);
   }
 
   /**
-   * Create a CeylonTree from an ANTLR tree.
+   * Create a Ceylon tree from an ANTLR tree.
    */
   private static CeylonTree consume(Tree src) {
     Class<? extends CeylonTree> klass = classFor(src);
