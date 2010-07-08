@@ -37,8 +37,16 @@ public class CeylonCompiler
 
     if (consumeTree) {
       CeylonTree ct = CeylonTree.build(t);
-      System.out.println(ct);
+      out.print(ct);
       out.println();
+      out.println();
+
+      /*CeylonTree.CompilationUnit cu = (CeylonTree.CompilationUnit) ct;
+      for (CeylonTree.ImportDeclaration id : cu.getImports()) {
+        out.print("IMPORT:");
+        out.print(id);
+        out.println();
+      }*/
     }
   }
 

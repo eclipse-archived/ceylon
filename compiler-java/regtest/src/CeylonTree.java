@@ -180,16 +180,40 @@ public abstract class CeylonTree {
 
   /**
    * A compilation unit represents one source file.
+   *
+   * CompilationUnit = ImportList? TypeDeclaration+
    */
   public static class CompilationUnit extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
+
+    public ImportList getImportList() {
+      if (children.nonEmpty()) {
+        CeylonTree firstChild = children.head;
+        if (firstChild instanceof ImportList)
+          return (ImportList) firstChild;
+      }
+      return null;
+    }
+
+    public List<ImportDeclaration> getImports() {
+      ImportList importList = getImportList();
+      if (importList != null)
+        return importList.getImports();
+      return List.<ImportDeclaration> nil();
+    }
   }
 
   /**
    * A list of import declarations.
+   *
+   * ImportList = ImportDeclaration*
    */
   public static class ImportList extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
+
+    public List<ImportDeclaration> getImports() {
+      return List.convert(ImportDeclaration.class, children);
+    }
   }
 
   /**
