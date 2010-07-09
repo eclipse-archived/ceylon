@@ -633,22 +633,22 @@ countAttribute(this)++;</programlisting>
         
         <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
 
-countAttribute.addListener() 
+countAttribute.intercept() 
     onGet (Counter c, Natural proceed()) {
         log.debug("getting");
         return proceed()
     };
     
-countAttribute.addListener() 
-    onSet (Counter c, Natural proceed(Natural n), Natural value) {
+countAttribute.intercept() 
+    onSet (Counter c, void proceed(Natural n), Natural value) {
         log.debug("setting");
-        return proceed(value)
+        proceed(value)
     };</programlisting>
 
         <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
         
-createItemMethod.addListener(currentOrder) 
-    onInvoke (Item proceed(Product p, Natural n),  
+createItemMethod.intercept()
+    onInvoke (Order o, Item proceed(Product p, Natural n),  
               Product product, Natural quantity) {
         log.debug("invoking in transaction");
         try (Transaction()) {

@@ -116,6 +116,8 @@
     doc "Obtain and return the value."
     extension T getIt();
     
+    public Removeable intercept( T onGet(T proceed()) );
+    
 }]]></programlisting>
         
         <para>Note that <literal>lang.Referenceable</literal> is not a subclass of 
@@ -134,7 +136,18 @@
          assign operator |:=|."
     public T setIt(T t);
     
+    public Removeable intercept( void onSet(void proceed(T value), T value) );
+    
 }]]></programlisting>
+
+        <comment><para>TODO: should <literal>onSet()</literal> return the new value of
+        the attribute instead of being <literal>void</literal>?</para></comment>
+
+        <para>A <literal>Removeable</literal> may be removed.</para>
+
+        <programlisting>interface Removeable {
+    public void remove();
+}</programlisting>
 
     </section>
     
@@ -148,6 +161,7 @@
         
         <programlisting><![CDATA[public interface Callable<out R, P...> {
     public R call(P... args);
+    public Removeable intercept( R onInvoke(R proceed(P... args), P... args) );
 }]]></programlisting>
     
     </section>
@@ -1756,8 +1770,6 @@ while (people nonempty) {
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
     
-    public Listener addListener<S>( R onInvoke(R proceed(P... args), P... args) );
-    
 }]]></programlisting>
 
         <para>An instance of <literal>Type</literal> represent a type: an interface, class 
@@ -1803,8 +1815,6 @@ while (people nonempty) {
     
     public Parameter<Object>[] parameters;
     
-    public Listener addListener( X onCreate(X proceed(P... args), P... args) );
-    
 }]]></programlisting>
 
         <para>An instance of <literal>Member</literal> represents a method or attribute.</para>
@@ -1834,9 +1844,8 @@ while (people nonempty) {
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
     
-    public Listener addListener<S>( R onInvoke(S instance, R proceed(P... args), P... args) )
-                          where S abstracts X;
-    public Listener addListener( X instance, R onInvoke(R proceed(P... args), P... args) );
+    public Removeable intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )
+                        where S abstracts X;
     
 }]]></programlisting>
 
@@ -1847,9 +1856,8 @@ while (people nonempty) {
         
     public Boolean mutable;
     
-    public Listener addListener<S>( T onGet(S instance, T proceed()) );
-                          where S abstracts X;
-    public Listener addListener( X instance, T onGet(T proceed()) );
+    public Removeable intercept<S>( T onGet(S instance, T proceed()) );
+                        where S abstracts X;
     
 }]]></programlisting>
 
@@ -1857,9 +1865,8 @@ while (people nonempty) {
         extends Attribute<X, T>
         satisfies Member<X, Assignable<T>> {  //this is OK since Member is covariant in T
         
-    public Listener addListener<S>( X onSet(S instance, X proceed(T value), T value) );
-                          where S abstracts X;
-    public Listener addListener( X instance, X onSet(X proceed(T value), T value) );
+    public Removeable intercept<S>( void onSet(S instance, void proceed(T value), T value) );
+                        where S abstracts X;
     
 }]]></programlisting>
 
@@ -1871,9 +1878,8 @@ while (people nonempty) {
     
     public Parameter<Object>[] parameters;
     
-    public Listener addListener<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )
-                          where S abstracts X;
-    public Listener addListener( X instance, Y onCreate(Y proceed(P... args), P... args) );
+    public Removeable intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )
+                        where S abstracts X;
     
 }]]></programlisting>
 
@@ -1885,12 +1891,6 @@ while (people nonempty) {
     public String name;
     public Type<T> type;
 }]]></programlisting>
-
-        <para>A <literal>Listener</literal> may be removed.</para>
-
-        <programlisting>interface Listener {
-    public void remove();
-}</programlisting>
 
         <para>An <literal>Annotated</literal> program element may be asked for a
         list of its annotation values.</para>
