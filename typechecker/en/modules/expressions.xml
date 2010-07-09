@@ -2096,13 +2096,17 @@ setPerson(person);</programlisting>
         <para>A sequence may be instantiated by enumerating the elements inside braces:</para>
         
         <programlisting>Enumeration := "{" ( Expression ("," Expression)* )? "}"</programlisting>
+        
+        <para>Each enumerated element expression type must be assignable to 
+        <literal>Object</literal>.</para>
                     
         <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
         containing the enumerated elements in the given order. When an enumeration is 
         executed, each element expression is evaluated, and the resulting values collected 
         together into an object that implements <literal>Sequence&lt;T&gt;</literal> where 
-        <literal>T</literal> is a superype of all the enumerated element expression types. 
-        The concrete type of this object is not specified here.</para>
+        <literal>T</literal> is a subtype of <literal>Object</literal> and a supertype of 
+        all the enumerated element expression types. The concrete type of this object is not 
+        specified here.</para>
         
         <programlisting>String[] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
         
