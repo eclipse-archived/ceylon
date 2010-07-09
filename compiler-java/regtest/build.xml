@@ -1,7 +1,7 @@
 <project name="MyProject" default="test" basedir=".">
 
   <!-- The directory containing java source files -->
-  <property name="java.src" location="src"/>
+  <property name="java.src" location="../src"/>
 
   <!-- The directory everything gets built into -->
   <property name="build" location="build"/>
@@ -14,8 +14,8 @@
        from it end up in, and the ANTLR jar
        file we'll use to generate one from
        the other -->
-  <property name="antlr.src" location="../ceylon.g"/>
-  <property name="antlr.dst" location="${build}/antlr"/>
+  <property name="antlr.src" location="../Ceylon.g"/>
+  <property name="antlr.dst" location="../src/com/redhat/ceylon/compiler/parser"/>
   <property name="antlr.lib" location="../lib/antlrworks-1.3.1.jar"/>
 
   <!-- The directory that tests live in, and the
@@ -72,7 +72,7 @@
     <apply executable="java">
       <arg value="-cp"/>
       <arg value="${classes}:${antlr.lib}"/>
-      <arg value="CeylonCompiler"/>      
+      <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>      
       <arg value="-d"/>
       <arg value="${test.dst}"/>
       <fileset dir="${test.src}">

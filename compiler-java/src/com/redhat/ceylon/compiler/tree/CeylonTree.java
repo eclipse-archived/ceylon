@@ -1,3 +1,5 @@
+package com.redhat.ceylon.compiler.tree;
+
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +8,8 @@ import com.sun.tools.javac.util.ListBuffer;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
+
+import com.redhat.ceylon.compiler.parser.*;
 
 public abstract class CeylonTree {
   
@@ -57,7 +61,7 @@ public abstract class CeylonTree {
       return CompilationUnit.class;
 
     int type = token.getType();
-    if (type == ceylonParser.TYPE_DECL) {
+    if (type == CeylonParser.TYPE_DECL) {
       // TYPE_DECL nodes are used to ensure that a type's
       // annotations are grouped together with the type
       // itself.  We rewrite them to bring the type (eg
@@ -65,16 +69,16 @@ public abstract class CeylonTree {
       // as the child of the type.
       Tree firstChild = src.getChild(0);
       int childType = ((CommonTree) firstChild).getToken().getType();
-      assert childType == ceylonParser.TYPE_DECL
-          || childType == ceylonParser.CLASS_DECL
-          || childType == ceylonParser.INTERFACE_DECL
-          || childType == ceylonParser.ALIAS_DECL
-           : ceylonParser.tokenNames[childType];
+      assert childType == CeylonParser.TYPE_DECL
+          || childType == CeylonParser.CLASS_DECL
+          || childType == CeylonParser.INTERFACE_DECL
+          || childType == CeylonParser.ALIAS_DECL
+           : CeylonParser.tokenNames[childType];
       return classFor(firstChild);
     }
    
     Class<? extends CeylonTree> klass = classes.get(type);
-    assert klass != null : type + ": " + ceylonParser.tokenNames[type];
+    assert klass != null : type + ": " + CeylonParser.tokenNames[type];
     return klass;
   }
 
@@ -87,43 +91,43 @@ public abstract class CeylonTree {
     classes = new HashMap<Integer, Class<? extends CeylonTree>>();
 
     // NB CompilationUnit.class is handled in classFor(Tree)
-    classes.put(ceylonParser.IMPORT_LIST,          ImportList.class);
-    classes.put(ceylonParser.IMPORT_DECL,          ImportDeclaration.class);
-    classes.put(ceylonParser.IMPORT_PATH,          ImportPath.class);
-    classes.put(ceylonParser.IMPORT_WILDCARD,      ImportWildcard.class);
-    classes.put(ceylonParser.CLASS_DECL,           ClassDeclaration.class);
-    classes.put(ceylonParser.INTERFACE_DECL,       InterfaceDeclaration.class);
-    classes.put(ceylonParser.ALIAS_DECL,           AliasDeclaration.class);
-    classes.put(ceylonParser.TYPE_NAME,            TypeName.class);
-    classes.put(ceylonParser.TYPE_PARAMETER_LIST,  TypeParameterList.class);
-    classes.put(ceylonParser.TYPE_PARAMETER,       TypeParameter.class);
-    classes.put(ceylonParser.MEMBER_DECL,          MemberDeclaration.class);
-    classes.put(ceylonParser.MEMBER_NAME,          MemberName.class);
-    classes.put(ceylonParser.MEMBER_TYPE,          MemberType.class);
+    classes.put(CeylonParser.IMPORT_LIST,          ImportList.class);
+    classes.put(CeylonParser.IMPORT_DECL,          ImportDeclaration.class);
+    classes.put(CeylonParser.IMPORT_PATH,          ImportPath.class);
+    classes.put(CeylonParser.IMPORT_WILDCARD,      ImportWildcard.class);
+    classes.put(CeylonParser.CLASS_DECL,           ClassDeclaration.class);
+    classes.put(CeylonParser.INTERFACE_DECL,       InterfaceDeclaration.class);
+    classes.put(CeylonParser.ALIAS_DECL,           AliasDeclaration.class);
+    classes.put(CeylonParser.TYPE_NAME,            TypeName.class);
+    classes.put(CeylonParser.TYPE_PARAMETER_LIST,  TypeParameterList.class);
+    classes.put(CeylonParser.TYPE_PARAMETER,       TypeParameter.class);
+    classes.put(CeylonParser.MEMBER_DECL,          MemberDeclaration.class);
+    classes.put(CeylonParser.MEMBER_NAME,          MemberName.class);
+    classes.put(CeylonParser.MEMBER_TYPE,          MemberType.class);
 
     // XXX possibly rubbish node subclasses    
     
-    classes.put(ceylonParser.LANG_ANNOTATION,      Annotation.class);
-    classes.put(ceylonParser.USER_ANNOTATION,      Annotation.class);
-    classes.put(ceylonParser.ANNOTATION_LIST,      AnnotationList.class);
-    classes.put(ceylonParser.ANNOTATION_NAME,      AnnotationName.class);
-    classes.put(ceylonParser.ABSTRACT,             Abstract.class);
-    classes.put(ceylonParser.ARG_LIST,             ArgumentList.class);
-    classes.put(ceylonParser.CALL_EXPR,            CallExpression.class);
-    classes.put(ceylonParser.DOT,                  Dot.class);
-    classes.put(ceylonParser.EXPR,                 Expression.class);
-    classes.put(ceylonParser.LIDENTIFIER,          LIdentifier.class);
-    classes.put(ceylonParser.PUBLIC,               Public.class);
-    classes.put(ceylonParser.SATISFIES_LIST,       SatisfiesList.class);
-    classes.put(ceylonParser.STMT_LIST,            StatementList.class);
-    classes.put(ceylonParser.SIMPLESTRINGLITERAL,  SimpleStringLiteral.class);
-    classes.put(ceylonParser.STRING_CST,           StringConstant.class);
-    classes.put(ceylonParser.SUBTYPE,              SubType.class);
-    classes.put(ceylonParser.TYPE,                 Type.class);
-    classes.put(ceylonParser.TYPE_ARG_LIST,        TypeArgumentList.class);
-    classes.put(ceylonParser.TYPE_CONSTRAINT,      TypeConstraint.class);
-    classes.put(ceylonParser.TYPE_CONSTRAINT_LIST, TypeConstraintList.class);
-    classes.put(ceylonParser.UIDENTIFIER,          UIdentifier.class);
+    classes.put(CeylonParser.LANG_ANNOTATION,      Annotation.class);
+    classes.put(CeylonParser.USER_ANNOTATION,      Annotation.class);
+    classes.put(CeylonParser.ANNOTATION_LIST,      AnnotationList.class);
+    classes.put(CeylonParser.ANNOTATION_NAME,      AnnotationName.class);
+    classes.put(CeylonParser.ABSTRACT,             Abstract.class);
+    classes.put(CeylonParser.ARG_LIST,             ArgumentList.class);
+    classes.put(CeylonParser.CALL_EXPR,            CallExpression.class);
+    classes.put(CeylonParser.DOT,                  Dot.class);
+    classes.put(CeylonParser.EXPR,                 Expression.class);
+    classes.put(CeylonParser.LIDENTIFIER,          LIdentifier.class);
+    classes.put(CeylonParser.PUBLIC,               Public.class);
+    classes.put(CeylonParser.SATISFIES_LIST,       SatisfiesList.class);
+    classes.put(CeylonParser.STMT_LIST,            StatementList.class);
+    classes.put(CeylonParser.SIMPLESTRINGLITERAL,  SimpleStringLiteral.class);
+    classes.put(CeylonParser.STRING_CST,           StringConstant.class);
+    classes.put(CeylonParser.SUBTYPE,              SubType.class);
+    classes.put(CeylonParser.TYPE,                 Type.class);
+    classes.put(CeylonParser.TYPE_ARG_LIST,        TypeArgumentList.class);
+    classes.put(CeylonParser.TYPE_CONSTRAINT,      TypeConstraint.class);
+    classes.put(CeylonParser.TYPE_CONSTRAINT_LIST, TypeConstraintList.class);
+    classes.put(CeylonParser.UIDENTIFIER,          UIdentifier.class);
   }
 
   /**
@@ -282,14 +286,14 @@ public abstract class CeylonTree {
   public static abstract class TypeDeclaration extends CeylonTree {
     protected List<CeylonTree> processChildren(Tree src) {
       // If the node is not a TYPE_DECL then we have nothing to do
-      if (((CommonTree) src).getToken().getType() != ceylonParser.TYPE_DECL)
+      if (((CommonTree) src).getToken().getType() != CeylonParser.TYPE_DECL)
         return super.processChildren(src);
 
       // Firstly, remove TYPE_DECL nodes that have exactly
       // one child that is also a TYPE_DECL node.
       if (src.getChildCount() == 1) {
         Tree child = src.getChild(0);
-        if (((CommonTree) child).getToken().getType() == ceylonParser.TYPE_DECL)
+        if (((CommonTree) child).getToken().getType() == CeylonParser.TYPE_DECL)
           return processChildren(child);
       }
 

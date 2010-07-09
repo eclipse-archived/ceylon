@@ -1,4 +1,4 @@
-grammar ceylon;
+grammar Ceylon;
 
 options {
     //backtrack=true;
@@ -101,6 +101,9 @@ tokens {
     SET_EXPR;
     //PRIMARY;
 }
+
+@parser::header { package com.redhat.ceylon.compiler.parser; }
+@lexer::header { package com.redhat.ceylon.compiler.parser; }
 
 compilationUnit
     : importDeclaration*

@@ -1,3 +1,5 @@
+package com.redhat.ceylon.compiler.tree;
+
 import java.io.Writer;
 import java.io.IOException;
 

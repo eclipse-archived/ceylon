@@ -1,7 +1,12 @@
+package com.redhat.ceylon.compiler.launcher;
+
 import java.io.*;
 import java.util.*;
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
+
+import com.redhat.ceylon.compiler.tree.*;
+import com.redhat.ceylon.compiler.parser.*;
 
 public class CeylonCompiler
 {
@@ -20,12 +25,12 @@ public class CeylonCompiler
     ANTLRInputStream input
       = new ANTLRInputStream(is);
 
-    ceylonLexer lexer = new ceylonLexer(input);
+    CeylonLexer lexer = new CeylonLexer(input);
 
     CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-    ceylonParser parser = new ceylonParser(tokens);
-    ceylonParser.compilationUnit_return r = parser.compilationUnit();
+    CeylonParser parser = new CeylonParser(tokens);
+    CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
     CommonTree t = (CommonTree)r.getTree();
 
