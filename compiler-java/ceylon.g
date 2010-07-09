@@ -223,11 +223,11 @@ typeDeclarationStart
 //by making these things keywords, we reduce the amount of
 //backtracking
 langAnnotation
-    : 'public' -> ^(PUBLIC)
+    : 'public'   -> ^(PUBLIC)
     | 'module'
     | 'package'
     | 'private'
-    | 'abstract'
+    | 'abstract' -> ^(ABSTRACT)
     | 'default'
     | 'override'
     | 'optional'
@@ -1447,6 +1447,10 @@ OREQ
 
 PUBLIC
     :   'public'
+    ;
+
+ABSTRACT
+    :   'abstract'
     ;
 
 LIDENTIFIER 
