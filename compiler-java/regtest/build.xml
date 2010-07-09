@@ -47,17 +47,9 @@
       </classpath>
     </java>
   </target>
-  <target name="antlr.classes" depends="antlr">
-    <mkdir dir="${classes}"/>
-    <javac
-       srcdir="${antlr.dst}"
-       destdir="${classes}"
-       debug="true"
-       classpath="${antlr.lib}"/>
-  </target>
 
   <!-- Rule to build test classes from their Java sources -->
-  <target name="test.classes" depends="antlr.classes">
+  <target name="test.classes" depends="antlr">
     <mkdir dir="${classes}"/>
     <javac
        srcdir="${java.src}"
