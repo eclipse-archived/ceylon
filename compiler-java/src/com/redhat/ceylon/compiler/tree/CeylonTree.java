@@ -3,13 +3,14 @@ package com.redhat.ceylon.compiler.tree;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
+
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
-import com.redhat.ceylon.compiler.parser.*;
+import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 
 public abstract class CeylonTree {
   
@@ -135,6 +136,8 @@ public abstract class CeylonTree {
    */
   public List<CeylonTree> children;
 
+  public CeylonTree parent;
+  
   /**
    * Initialize this node's children.  The default behaviour is to
    * recursively consume the tree, though this may be overridden or
@@ -142,8 +145,11 @@ public abstract class CeylonTree {
    */
   protected List<CeylonTree> processChildren(Tree src) {
     ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
-    for (int i = 0; i < src.getChildCount(); i++)
-      children.append(consume(src.getChild(i)));
+    for (int i = 0; i < src.getChildCount(); i++) {
+    	CeylonTree child = consume(src.getChild(i));
+    	child.parent = this;
+    	children.append(child);
+    }
     return children.toList();
   }
 
@@ -340,6 +346,9 @@ public abstract class CeylonTree {
    * A type name.
    */
   public static class TypeName extends CeylonTree {
+	  
+    public String name;
+	  	  
     public void accept(Visitor v) { v.visit(this); }
   }
 
