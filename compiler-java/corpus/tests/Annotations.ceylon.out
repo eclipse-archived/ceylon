@@ -24,7 +24,7 @@
                       (EXPR
                         (INT_CST 0))))) STMT_LIST
                 (ANNOTATION_LIST
-                  (ANNOTATION public)
+                  (ANNOTATION PUBLIC)
                   (ANNOTATION
                     (ANNOTATION_NAME deprecated))
                   (ANNOTATION default)))
@@ -37,7 +37,7 @@
                   (EXPR
                     (INT_CST 1)))
                 (ANNOTATION_LIST
-                  (ANNOTATION public)
+                  (ANNOTATION PUBLIC)
                   (ANNOTATION
                     (ANNOTATION_NAME deprecated))
                   (ANNOTATION default)))

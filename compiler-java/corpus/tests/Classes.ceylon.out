@@ -442,14 +442,14 @@
                   (TYPE_NAME Natural)))
               (MEMBER_NAME count)
               (ANNOTATION_LIST
-                (ANNOTATION public)))
+                (ANNOTATION PUBLIC)))
             (ABSTRACT_MEMBER_DECL
               (MEMBER_TYPE void)
               (MEMBER_NAME inc)
               (ANNOTATION_LIST
-                (ANNOTATION public))))
+                (ANNOTATION PUBLIC))))
           (ANNOTATION_LIST
-            (ANNOTATION public)))
+            (ANNOTATION PUBLIC)))
         (TYPE_DECL
           (INTERFACE_DECL
             (TYPE_NAME Resettable)
@@ -457,7 +457,7 @@
               (MEMBER_TYPE void)
               (MEMBER_NAME reset)))
           (ANNOTATION_LIST
-            (ANNOTATION public)))
+            (ANNOTATION PUBLIC)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME Satisfies)

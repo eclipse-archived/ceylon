@@ -266,6 +266,6 @@
                   (INIT_EXPR
                     (EXPR
                       (STRING_CST "some comment"))))))
-            (ANNOTATION public)))))
+            (ANNOTATION PUBLIC)))))
     (ANNOTATION_LIST
       (ANNOTATION abstract))))
