@@ -224,16 +224,16 @@ typeDeclarationStart
 //backtracking
 langAnnotation
     : PUBLIC
-    | 'module'
-    | 'package'
-    | 'private'
+    | MODULE
+    | PACKAGE
+    | PRIVATE
     | ABSTRACT
-    | 'default'
-    | 'override'
-    | 'optional'
-    | 'mutable'
-    | 'extension'
-    | 'volatile'
+    | DEFAULT
+    | OVERRIDE
+    | OPTIONAL
+    | MUTABLE
+    | EXTENSION
+    | VOLATILE
     ;
 
 statement 
@@ -1273,7 +1273,7 @@ BITWISENOT
     :   '~'
     ;
 
-DEFAULT
+QMARK
     :   '?'
     ;
 
@@ -1433,7 +1433,7 @@ REMAINDEREQ
     :   '%='
     ;
 
-DEFAULTEQ
+QMARKEQ
     :   '?='
     ;
 
@@ -1449,8 +1449,44 @@ PUBLIC
     :   'public'
     ;
 
+MODULE
+    :   'module'
+    ;
+
+PACKAGE
+    :   'package'
+    ;
+
+PRIVATE
+    :   'private'
+    ;
+
 ABSTRACT
     :   'abstract'
+    ;
+
+DEFAULT
+    :   'default'
+    ;
+
+OVERRIDE
+    :   'override'
+    ;
+
+OPTIONAL
+    :   'optional'
+    ;
+
+MUTABLE
+    :   'mutable'
+    ;
+
+EXTENSION
+    :   'extension'
+    ;
+
+VOLATILE
+    :   'volatile'
     ;
 
 LIDENTIFIER 
