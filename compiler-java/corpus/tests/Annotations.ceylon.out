@@ -48,7 +48,7 @@
                   (ANNOTATION package)
                   (ANNOTATION
                     (ANNOTATION_NAME deprecated))
-                  (ANNOTATION abstract)))
+                  (ANNOTATION ABSTRACT)))
               (TYPE_DECL
                 (INTERFACE_DECL
                   (TYPE_NAME InterfaceAnnotations))

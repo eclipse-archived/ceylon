@@ -268,4 +268,4 @@
                       (STRING_CST "some comment"))))))
             (ANNOTATION PUBLIC)))))
     (ANNOTATION_LIST
-      (ANNOTATION abstract))))
+      (ANNOTATION ABSTRACT))))

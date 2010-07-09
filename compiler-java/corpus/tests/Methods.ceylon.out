@@ -263,7 +263,7 @@
                                   (EXPR
                                     (MEMBER_NAME x))))))))))))))
           (ANNOTATION_LIST
-            (ANNOTATION abstract)))
+            (ANNOTATION ABSTRACT)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME NonvoidMethods)
@@ -537,4 +537,4 @@
                                         (EXPR
                                           (STRING_CST "Hello")))))))))))))))))
           (ANNOTATION_LIST
-            (ANNOTATION abstract)))))))
+            (ANNOTATION ABSTRACT)))))))
