@@ -130,4 +130,4 @@
               (STRING_CST "Andrew Haley"))
             (ANNOTATION
               (ANNOTATION_NAME see))
-            (ANNOTATION PUBLIC)))))))
+            (ANNOTATION public)))))))

@@ -223,11 +223,11 @@ typeDeclarationStart
 //by making these things keywords, we reduce the amount of
 //backtracking
 langAnnotation
-    : 'public'   -> ^(PUBLIC)
+    : PUBLIC
     | 'module'
     | 'package'
     | 'private'
-    | 'abstract' -> ^(ABSTRACT)
+    | ABSTRACT
     | 'default'
     | 'override'
     | 'optional'

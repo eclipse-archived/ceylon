@@ -104,7 +104,7 @@
                       (TYPE_NAME String))
                     (ARG_NAME arg))))))
           (ANNOTATION_LIST
-            (ANNOTATION ABSTRACT)))
+            (ANNOTATION abstract)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME WithAbstractAttributes)
@@ -122,7 +122,7 @@
                 (ANNOTATION_LIST
                   (ANNOTATION mutable)))))
           (ANNOTATION_LIST
-            (ANNOTATION ABSTRACT)))
+            (ANNOTATION abstract)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME WithInitParameters)
@@ -442,14 +442,14 @@
                   (TYPE_NAME Natural)))
               (MEMBER_NAME count)
               (ANNOTATION_LIST
-                (ANNOTATION PUBLIC)))
+                (ANNOTATION public)))
             (ABSTRACT_MEMBER_DECL
               (MEMBER_TYPE void)
               (MEMBER_NAME inc)
               (ANNOTATION_LIST
-                (ANNOTATION PUBLIC))))
+                (ANNOTATION public))))
           (ANNOTATION_LIST
-            (ANNOTATION PUBLIC)))
+            (ANNOTATION public)))
         (TYPE_DECL
           (INTERFACE_DECL
             (TYPE_NAME Resettable)
@@ -457,7 +457,7 @@
               (MEMBER_TYPE void)
               (MEMBER_NAME reset)))
           (ANNOTATION_LIST
-            (ANNOTATION PUBLIC)))
+            (ANNOTATION public)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME Satisfies)

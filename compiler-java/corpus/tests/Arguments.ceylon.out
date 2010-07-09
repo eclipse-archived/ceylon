@@ -600,7 +600,7 @@
                                     (EXPR
                                       (MEMBER_NAME y))))))))))))
                 (ANNOTATION_LIST
-                  (ANNOTATION PUBLIC)))
+                  (ANNOTATION public)))
               (EXPR
                 (EXPR
                   (MEMBER_NAME from)

@@ -24,7 +24,7 @@
                       (EXPR
                         (INT_CST 0))))) STMT_LIST
                 (ANNOTATION_LIST
-                  (ANNOTATION PUBLIC)
+                  (ANNOTATION public)
                   (ANNOTATION
                     (ANNOTATION_NAME deprecated))
                   (ANNOTATION default)))
@@ -37,7 +37,7 @@
                   (EXPR
                     (INT_CST 1)))
                 (ANNOTATION_LIST
-                  (ANNOTATION PUBLIC)
+                  (ANNOTATION public)
                   (ANNOTATION
                     (ANNOTATION_NAME deprecated))
                   (ANNOTATION default)))
@@ -48,7 +48,7 @@
                   (ANNOTATION package)
                   (ANNOTATION
                     (ANNOTATION_NAME deprecated))
-                  (ANNOTATION ABSTRACT)))
+                  (ANNOTATION abstract)))
               (TYPE_DECL
                 (INTERFACE_DECL
                   (TYPE_NAME InterfaceAnnotations))
