@@ -43,31 +43,31 @@
                   (TYPE_NAME String)))
               (MEMBER_NAME description)
               (ANNOTATION_LIST
-                (ANNOTATION mutable)))))
+                (LANG_ANNOTATION mutable)))))
         (TYPE_DECL
           (INTERFACE_DECL
             (TYPE_NAME WithAnnotations))
           (ANNOTATION_LIST
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME doc)
               (STRING_CST "This interface has annotations. Remember that literal
 	     strings can be spread across multiple lines."))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME by)
               (STRING_CST "Andrew Haley"))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME scope)
               (ARG_LIST
                 (EXPR
                   (MEMBER_NAME session))))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME see))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME throws)
               (STRING_CST "if database access fails"))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME entity))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME table)
               (ARG_LIST
                 (NAMED_ARG

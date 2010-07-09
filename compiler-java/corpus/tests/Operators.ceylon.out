@@ -372,7 +372,7 @@
           (INIT_EXPR
             (EXPR null))
           (ANNOTATION_LIST
-            (ANNOTATION optional)))
+            (LANG_ANNOTATION optional)))
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE
@@ -398,7 +398,7 @@
                   (LOWER_BOUND
                     (INT_CST 666))))))
           (ANNOTATION_LIST
-            (ANNOTATION optional)))
+            (LANG_ANNOTATION optional)))
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE
@@ -461,7 +461,7 @@
           (INIT_EXPR
             (EXPR null))
           (ANNOTATION_LIST
-            (ANNOTATION optional)))
+            (LANG_ANNOTATION optional)))
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE
@@ -477,7 +477,7 @@
                 (MEMBER_NAME tokens)
                 (CALL_EXPR ARG_LIST))))
           (ANNOTATION_LIST
-            (ANNOTATION optional)))
+            (LANG_ANNOTATION optional)))
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE

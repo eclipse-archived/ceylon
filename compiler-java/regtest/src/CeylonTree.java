@@ -103,10 +103,11 @@ public abstract class CeylonTree {
 
     // XXX possibly rubbish node subclasses    
     
-    classes.put(ceylonParser.ABSTRACT,             Abstract.class);
-    classes.put(ceylonParser.ANNOTATION,           Annotation.class);
+    classes.put(ceylonParser.LANG_ANNOTATION,      Annotation.class);
+    classes.put(ceylonParser.USER_ANNOTATION,      Annotation.class);
     classes.put(ceylonParser.ANNOTATION_LIST,      AnnotationList.class);
     classes.put(ceylonParser.ANNOTATION_NAME,      AnnotationName.class);
+    classes.put(ceylonParser.ABSTRACT,             Abstract.class);
     classes.put(ceylonParser.ARG_LIST,             ArgumentList.class);
     classes.put(ceylonParser.CALL_EXPR,            CallExpression.class);
     classes.put(ceylonParser.DOT,                  Dot.class);

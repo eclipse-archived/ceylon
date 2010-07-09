@@ -81,4 +81,4 @@
             (TYPE subtype))
           (MEMBER_NAME theSubtype))))
     (ANNOTATION_LIST
-      (ANNOTATION abstract))))
+      (LANG_ANNOTATION abstract))))

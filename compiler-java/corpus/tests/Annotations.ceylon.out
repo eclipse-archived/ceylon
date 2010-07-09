@@ -15,7 +15,7 @@
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (ANNOTATION_LIST
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME deprecated)))
                     (TYPE
                       (TYPE_NAME Natural))
@@ -24,10 +24,10 @@
                       (EXPR
                         (INT_CST 0))))) STMT_LIST
                 (ANNOTATION_LIST
-                  (ANNOTATION public)
-                  (ANNOTATION
+                  (LANG_ANNOTATION public)
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME deprecated))
-                  (ANNOTATION default)))
+                  (LANG_ANNOTATION default)))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -37,23 +37,23 @@
                   (EXPR
                     (INT_CST 1)))
                 (ANNOTATION_LIST
-                  (ANNOTATION public)
-                  (ANNOTATION
+                  (LANG_ANNOTATION public)
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME deprecated))
-                  (ANNOTATION default)))
+                  (LANG_ANNOTATION default)))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME ClassAnnotations) STMT_LIST)
                 (ANNOTATION_LIST
-                  (ANNOTATION package)
-                  (ANNOTATION
+                  (LANG_ANNOTATION package)
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME deprecated))
-                  (ANNOTATION abstract)))
+                  (LANG_ANNOTATION abstract)))
               (TYPE_DECL
                 (INTERFACE_DECL
                   (TYPE_NAME InterfaceAnnotations))
                 (ANNOTATION_LIST
-                  (ANNOTATION module))))))
+                  (LANG_ANNOTATION module))))))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME LiteralArguments)
@@ -64,12 +64,12 @@
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (ANNOTATION_LIST
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME deprecated))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME doc)
                         (STRING_CST "use something else"))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME see)))
                     (TYPE
                       (TYPE_NAME Natural))
@@ -78,19 +78,19 @@
                       (EXPR
                         (INT_CST 0))))) STMT_LIST
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "The method doc"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (STRING_CST "Andrew Haley"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME timeout))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (STRING_CST "if database access fails"))))
               (MEMBER_DECL
@@ -102,45 +102,45 @@
                   (EXPR
                     (INT_CST 1)))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "The attribute doc"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (STRING_CST "Andrew Haley"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version))))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME ClassAnnotations) STMT_LIST)
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "The class doc"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (STRING_CST "if database access fails"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (STRING_CST "Andrew Haley"))))
               (TYPE_DECL
                 (INTERFACE_DECL
                   (TYPE_NAME InterfaceAnnotations))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "The interface doc"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (STRING_CST "Andrew Haley")))))))
         (TYPE_DECL
@@ -153,9 +153,9 @@
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (ANNOTATION_LIST
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME deprecated))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME doc)
                         (ARG_LIST
                           (NAMED_ARG
@@ -163,7 +163,7 @@
                             (INIT_EXPR
                               (EXPR
                                 (STRING_CST "use something else"))))))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME see)
                         (ARG_LIST
                           (VARARGS
@@ -178,7 +178,7 @@
                       (EXPR
                         (INT_CST 0))))) STMT_LIST
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (NAMED_ARG
@@ -186,7 +186,7 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "some text about the method"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME lock)
                     (ARG_LIST
                       (NAMED_ARG
@@ -194,7 +194,7 @@
                         (INIT_EXPR
                           (EXPR
                             (INT_CST 1000))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (ARG_LIST
                       (NAMED_ARG
@@ -209,7 +209,7 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "if database access fails"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (VARARGS
@@ -218,7 +218,7 @@
                             (STRING_CST "Gavin King"))
                           (EXPR
                             (STRING_CST "Andrew Haley"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (VARARGS
@@ -244,7 +244,7 @@
                   (EXPR
                     (INT_CST 1)))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (VARARGS
@@ -261,7 +261,7 @@
                               (TYPE
                                 (TYPE_NAME Object))
                               (MEMBER_NAME equals)))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (NAMED_ARG
@@ -269,14 +269,14 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "some text about the attribute"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (VARARGS
                         (EXPR_LIST
                           (EXPR
                             (STRING_CST "Gavin King"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME column)
                     (ARG_LIST
                       (NAMED_ARG
@@ -293,7 +293,7 @@
                 (CLASS_DECL
                   (TYPE_NAME ClassAnnotations) STMT_LIST)
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (VARARGS
@@ -302,7 +302,7 @@
                             (STRING_CST "Gavin King"))
                           (EXPR
                             (STRING_CST "Andrew Haley"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (NAMED_ARG
@@ -310,7 +310,7 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "some text about the class"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (ARG_LIST
                       (NAMED_ARG
@@ -325,7 +325,7 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "if database access fails"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME table)
                     (ARG_LIST
                       (NAMED_ARG
@@ -338,7 +338,7 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "schemaName"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (VARARGS
@@ -355,7 +355,7 @@
                               (TYPE
                                 (TYPE_NAME Object))
                               (MEMBER_NAME equals)))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME scope)
                     (ARG_LIST
                       (NAMED_ARG
@@ -367,7 +367,7 @@
                 (INTERFACE_DECL
                   (TYPE_NAME InterfaceAnnotations))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (NAMED_ARG
@@ -375,7 +375,7 @@
                         (INIT_EXPR
                           (EXPR
                             (STRING_CST "some text about the interface"))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (VARARGS
@@ -392,7 +392,7 @@
                               (TYPE
                                 (TYPE_NAME Object))
                               (MEMBER_NAME equals)))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (VARARGS
@@ -409,14 +409,14 @@
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (ANNOTATION_LIST
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME deprecated))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME doc)
                         (ARG_LIST
                           (EXPR
                             (STRING_CST "use something else"))))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME see)
                         (ARG_LIST
                           (EXPR
@@ -429,7 +429,7 @@
                       (EXPR
                         (INT_CST 0))))) STMT_LIST
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (ARG_LIST
                       (EXPR
@@ -438,29 +438,29 @@
                             (TYPE_NAME DatabaseException))))
                       (EXPR
                         (STRING_CST "if database access fails"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "some text about the method"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME lock)
                     (ARG_LIST
                       (EXPR
                         (INT_CST 1000))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version)
                     (ARG_LIST
                       (EXPR
                         (QUOTE_CST '2.1.0'))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "Gavin King"))
                       (EXPR
                         (STRING_CST "Andrew Haley"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (EXPR
@@ -484,19 +484,19 @@
                   (EXPR
                     (INT_CST 1)))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "some text about the attribute"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "Gavin King"))
                       (EXPR
                         (STRING_CST "Andrew Haley"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (EXPR
@@ -511,7 +511,7 @@
                           (TYPE
                             (TYPE_NAME Object))
                           (MEMBER_NAME equals)))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version)
                     (ARG_LIST
                       (EXPR
@@ -520,19 +520,19 @@
                 (CLASS_DECL
                   (TYPE_NAME ClassAnnotations) STMT_LIST)
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version)
                     (ARG_LIST
                       (EXPR
                         (QUOTE_CST '1.0.0'))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "Gavin King"))
                       (EXPR
                         (STRING_CST "Andrew Haley"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (EXPR
@@ -547,17 +547,17 @@
                           (TYPE
                             (TYPE_NAME Object))
                           (MEMBER_NAME equals)))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "some text about the class"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME scope)
                     (ARG_LIST
                       (EXPR
                         (MEMBER_NAME session))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (ARG_LIST
                       (EXPR
@@ -570,7 +570,7 @@
                 (INTERFACE_DECL
                   (TYPE_NAME InterfaceAnnotations))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)
                     (ARG_LIST
                       (EXPR
@@ -585,17 +585,17 @@
                           (TYPE
                             (TYPE_NAME Object))
                           (MEMBER_NAME equals)))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME version)
                     (ARG_LIST
                       (EXPR
                         (QUOTE_CST '1.0.0 beta'))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (ARG_LIST
                       (EXPR
                         (STRING_CST "some text about the interface"))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (ARG_LIST
                       (EXPR
@@ -610,7 +610,7 @@
                 (CLASS_DECL
                   (TYPE_NAME ClassAnnotations) STMT_LIST)
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME queries)
                     (ARG_LIST
                       (EXPR
@@ -627,5 +627,5 @@
                             (ARG_LIST
                               (EXPR
                                 (QUOTE_CST 'select p.name from Person p where p.age>18'))))))))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see)))))))))))

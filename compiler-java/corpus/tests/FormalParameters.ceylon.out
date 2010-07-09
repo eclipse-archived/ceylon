@@ -26,9 +26,9 @@
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (ANNOTATION_LIST
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME deprecated))
-                      (ANNOTATION
+                      (USER_ANNOTATION
                         (ANNOTATION_NAME doc)
                         (STRING_CST "use something else")))
                     (TYPE
@@ -199,9 +199,9 @@
                   (FORMAL_PARAMETER_LIST
                     (FORMAL_PARAMETER
                       (ANNOTATION_LIST
-                        (ANNOTATION
+                        (USER_ANNOTATION
                           (ANNOTATION_NAME deprecated))
-                        (ANNOTATION
+                        (USER_ANNOTATION
                           (ANNOTATION_NAME doc)
                           (STRING_CST "use something else")))
                       (TYPE

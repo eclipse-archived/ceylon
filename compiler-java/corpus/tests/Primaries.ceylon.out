@@ -165,7 +165,7 @@
                 (INIT_EXPR
                   (EXPR null))
                 (ANNOTATION_LIST
-                  (ANNOTATION optional)))
+                  (LANG_ANNOTATION optional)))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -265,7 +265,7 @@
                         (EXPR
                           (MEMBER_NAME name)))
                       (ANNOTATION_LIST
-                        (ANNOTATION mutable)))
+                        (LANG_ANNOTATION mutable)))
                     (MEMBER_DECL
                       (MEMBER_TYPE void)
                       (MEMBER_NAME hello)

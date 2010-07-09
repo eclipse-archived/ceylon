@@ -76,17 +76,17 @@
                       (MEMBER_NAME simpleMethod)
                       (CALL_EXPR ARG_LIST))))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "This method has annotations. Remember that literal
 		     strings can be spread across multiple lines."))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (STRING_CST "Andrew Haley"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (STRING_CST "if something goes wrong"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
@@ -263,7 +263,7 @@
                                   (EXPR
                                     (MEMBER_NAME x))))))))))))))
           (ANNOTATION_LIST
-            (ANNOTATION abstract)))
+            (LANG_ANNOTATION abstract)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME NonvoidMethods)
@@ -360,17 +360,17 @@
                         (MEMBER_NAME simpleMethod)
                         (CALL_EXPR ARG_LIST)))))
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "This method has annotations. Remember that literal
 		     strings can be spread across multiple lines."))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME by)
                     (STRING_CST "Andrew Haley"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
                     (STRING_CST "if something goes wrong"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME see))))
               (MEMBER_DECL
                 (MEMBER_TYPE
@@ -537,4 +537,4 @@
                                         (EXPR
                                           (STRING_CST "Hello")))))))))))))))))
           (ANNOTATION_LIST
-            (ANNOTATION abstract)))))))
+            (LANG_ANNOTATION abstract)))))))

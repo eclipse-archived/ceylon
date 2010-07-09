@@ -212,7 +212,7 @@
                   (EXPR
                     (STRING_CST "Hello")))
                 (ANNOTATION_LIST
-                  (ANNOTATION optional)))
+                  (LANG_ANNOTATION optional)))
               (IF_STMT
                 (CONDITION
                   (EXISTS_EXPR
@@ -236,7 +236,7 @@
                 (INIT_EXPR
                   (EXPR null))
                 (ANNOTATION_LIST
-                  (ANNOTATION optional)))
+                  (LANG_ANNOTATION optional)))
               (IF_STMT
                 (CONDITION
                   (EXISTS_EXPR
@@ -421,7 +421,7 @@
                             (TYPE_NAME Bar)
                             (CALL_EXPR ARG_LIST)))))))
                 (ANNOTATION_LIST
-                  (ANNOTATION optional)))
+                  (LANG_ANNOTATION optional)))
               (IF_STMT
                 (CONDITION
                   (NONEMPTY_EXPR
@@ -489,7 +489,7 @@
                   (EXPR
                     (INT_CST 0)))
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable)))
+                  (LANG_ANNOTATION mutable)))
               (WHILE_STMT
                 (CONDITION
                   (EXPR
@@ -519,7 +519,7 @@
                   (EXPR
                     (INT_CST 0)))
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable)))
+                  (LANG_ANNOTATION mutable)))
               (WHILE_STMT
                 (DO_BLOCK
                   (STMT_LIST
@@ -1033,7 +1033,7 @@
                 (INIT_EXPR
                   (EXPR null))
                 (ANNOTATION_LIST
-                  (ANNOTATION optional)))
+                  (LANG_ANNOTATION optional)))
               (SWITCH_STMT
                 (SWITCH_EXPR
                   (EXPR

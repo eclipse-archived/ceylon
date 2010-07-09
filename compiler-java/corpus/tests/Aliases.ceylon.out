@@ -122,12 +122,12 @@
                   (TYPE
                     (TYPE_NAME Character))))))
           (ANNOTATION_LIST
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME doc)
               (STRING_CST "an alias"))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME by)
               (STRING_CST "Andrew Haley"))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME see))
-            (ANNOTATION public)))))))
+            (LANG_ANNOTATION public)))))))

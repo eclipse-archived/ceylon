@@ -31,7 +31,7 @@
             (EXPR
               (MEMBER_NAME hello)))
           (ANNOTATION_LIST
-            (ANNOTATION mutable)))
+            (LANG_ANNOTATION mutable)))
         (EXPR
           (:=
             (MEMBER_NAME string)
@@ -56,7 +56,7 @@
             (EXPR
               (MEMBER_NAME x)))
           (ANNOTATION_LIST
-            (ANNOTATION mutable)))
+            (LANG_ANNOTATION mutable)))
         (EXPR
           (:=
             (MEMBER_NAME y)
@@ -112,7 +112,7 @@
             (EXPR
               (MEMBER_NAME true)))
           (ANNOTATION_LIST
-            (ANNOTATION mutable)))
+            (LANG_ANNOTATION mutable)))
         (EXPR
           (||=
             (MEMBER_NAME b)
@@ -146,8 +146,8 @@
           (INIT_EXPR
             (EXPR null))
           (ANNOTATION_LIST
-            (ANNOTATION mutable)
-            (ANNOTATION optional)))
+            (LANG_ANNOTATION mutable)
+            (LANG_ANNOTATION optional)))
         (EXPR
           (?=
             (MEMBER_NAME qux)

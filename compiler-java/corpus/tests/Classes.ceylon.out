@@ -59,7 +59,7 @@
                   (EXPR
                     (STRING_CST "")))
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable)))
+                  (LANG_ANNOTATION mutable)))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -104,7 +104,7 @@
                       (TYPE_NAME String))
                     (ARG_NAME arg))))))
           (ANNOTATION_LIST
-            (ANNOTATION abstract)))
+            (LANG_ANNOTATION abstract)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME WithAbstractAttributes)
@@ -120,9 +120,9 @@
                     (TYPE_NAME String)))
                 (MEMBER_NAME description)
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable)))))
+                  (LANG_ANNOTATION mutable)))))
           (ANNOTATION_LIST
-            (ANNOTATION abstract)))
+            (LANG_ANNOTATION abstract)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME WithInitParameters)
@@ -153,31 +153,31 @@
                   (EXPR
                     (MEMBER_NAME description)))
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable))))))
+                  (LANG_ANNOTATION mutable))))))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME WithAnnotations) STMT_LIST)
           (ANNOTATION_LIST
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME doc)
               (STRING_CST "This class has annotations. Remember that literal
 	     strings can be spread across multiple lines."))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME by)
               (STRING_CST "Andrew Haley"))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME scope)
               (ARG_LIST
                 (EXPR
                   (MEMBER_NAME session))))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME see))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME throws)
               (STRING_CST "if database access fails"))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME entity))
-            (ANNOTATION
+            (USER_ANNOTATION
               (ANNOTATION_NAME table)
               (ARG_LIST
                 (NAMED_ARG
@@ -346,10 +346,10 @@
                   (EXPR
                     (INT_CST 1))) ,
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "1"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME numericValue)
                     (ARG_LIST
                       (EXPR
@@ -360,10 +360,10 @@
                   (EXPR
                     (INT_CST 2))) ,
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "2"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME numericValue)
                     (ARG_LIST
                       (EXPR
@@ -374,10 +374,10 @@
                   (EXPR
                     (INT_CST 3))) ;
                 (ANNOTATION_LIST
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "3"))
-                  (ANNOTATION
+                  (USER_ANNOTATION
                     (ANNOTATION_NAME numericValue)
                     (ARG_LIST
                       (EXPR
@@ -442,14 +442,14 @@
                   (TYPE_NAME Natural)))
               (MEMBER_NAME count)
               (ANNOTATION_LIST
-                (ANNOTATION public)))
+                (LANG_ANNOTATION public)))
             (ABSTRACT_MEMBER_DECL
               (MEMBER_TYPE void)
               (MEMBER_NAME inc)
               (ANNOTATION_LIST
-                (ANNOTATION public))))
+                (LANG_ANNOTATION public))))
           (ANNOTATION_LIST
-            (ANNOTATION public)))
+            (LANG_ANNOTATION public)))
         (TYPE_DECL
           (INTERFACE_DECL
             (TYPE_NAME Resettable)
@@ -457,7 +457,7 @@
               (MEMBER_TYPE void)
               (MEMBER_NAME reset)))
           (ANNOTATION_LIST
-            (ANNOTATION public)))
+            (LANG_ANNOTATION public)))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME Satisfies)
@@ -474,7 +474,7 @@
                   (EXPR
                     (INT_CST 0)))
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable)))
+                  (LANG_ANNOTATION mutable)))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME inc)
@@ -501,7 +501,7 @@
                   (EXPR
                     (INT_CST 0)))
                 (ANNOTATION_LIST
-                  (ANNOTATION mutable)))
+                  (LANG_ANNOTATION mutable)))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME inc)

@@ -7,7 +7,8 @@ options {
 }
 
 tokens {
-    ANNOTATION;
+    LANG_ANNOTATION;
+    USER_ANNOTATION;
     ANNOTATION_LIST;
     MEMBER_DECL;
     TYPE_DECL;
@@ -418,7 +419,7 @@ annotations
 
 annotation
     : langAnnotation
-    -> ^(ANNOTATION langAnnotation) 
+    -> ^(LANG_ANNOTATION langAnnotation) 
     | userAnnotation
     ;
 
@@ -427,7 +428,7 @@ annotation
 //the annotation
 userAnnotation 
     : annotationName annotationArguments?
-    -> ^(ANNOTATION annotationName annotationArguments?)
+    -> ^(USER_ANNOTATION annotationName annotationArguments?)
     ;
 
 annotationArguments
