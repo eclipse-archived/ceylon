@@ -223,7 +223,7 @@ typeDeclarationStart
 //by making these things keywords, we reduce the amount of
 //backtracking
 langAnnotation
-    : 'public'
+    : 'public' -> ^(PUBLIC)
     | 'module'
     | 'package'
     | 'private'
@@ -1443,6 +1443,10 @@ ANDEQ
 
 OREQ
     :   '||='
+    ;
+
+PUBLIC
+    :   'public'
     ;
 
 LIDENTIFIER 

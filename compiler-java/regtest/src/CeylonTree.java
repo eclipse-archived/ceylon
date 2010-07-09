@@ -67,6 +67,8 @@ public abstract class CeylonTree {
       int childType = ((CommonTree) firstChild).getToken().getType();
       assert childType == ceylonParser.TYPE_DECL
           || childType == ceylonParser.CLASS_DECL
+          || childType == ceylonParser.INTERFACE_DECL
+          || childType == ceylonParser.ALIAS_DECL
            : ceylonParser.tokenNames[childType];
       return classFor(firstChild);
     }
@@ -85,29 +87,38 @@ public abstract class CeylonTree {
     classes = new HashMap<Integer, Class<? extends CeylonTree>>();
 
     // NB CompilationUnit.class is handled in classFor(Tree)
-    classes.put(ceylonParser.IMPORT_LIST,         ImportList.class);
-    classes.put(ceylonParser.IMPORT_DECL,         ImportDeclaration.class);
-    classes.put(ceylonParser.IMPORT_PATH,         ImportPath.class);
-    classes.put(ceylonParser.IMPORT_WILDCARD,     ImportWildcard.class);
-    classes.put(ceylonParser.ALIAS_DECL,          AliasDeclaration.class);
-    classes.put(ceylonParser.CLASS_DECL,          ClassDeclaration.class);
+    classes.put(ceylonParser.IMPORT_LIST,          ImportList.class);
+    classes.put(ceylonParser.IMPORT_DECL,          ImportDeclaration.class);
+    classes.put(ceylonParser.IMPORT_PATH,          ImportPath.class);
+    classes.put(ceylonParser.IMPORT_WILDCARD,      ImportWildcard.class);
+    classes.put(ceylonParser.CLASS_DECL,           ClassDeclaration.class);
+    classes.put(ceylonParser.INTERFACE_DECL,       InterfaceDeclaration.class);
+    classes.put(ceylonParser.ALIAS_DECL,           AliasDeclaration.class);
+    classes.put(ceylonParser.TYPE_NAME,            TypeName.class);
+    classes.put(ceylonParser.TYPE_PARAMETER_LIST,  TypeParameterList.class);
+    classes.put(ceylonParser.TYPE_PARAMETER,       TypeParameter.class);
 
     // XXX possibly rubbish node subclasses    
     
-    classes.put(ceylonParser.ANNOTATION,          Annotation.class);
-    classes.put(ceylonParser.ANNOTATION_LIST,     AnnotationList.class);
-    classes.put(ceylonParser.ANNOTATION_NAME,     AnnotationName.class);
-    classes.put(ceylonParser.ARG_LIST,            ArgumentList.class);
-    classes.put(ceylonParser.CALL_EXPR,           CallExpression.class);
-    classes.put(ceylonParser.DOT,                 Dot.class);
-    classes.put(ceylonParser.EXPR,                Expression.class);
-    classes.put(ceylonParser.LIDENTIFIER,         LIdentifier.class);
-    classes.put(ceylonParser.MEMBER_NAME,         MemberName.class);
-    classes.put(ceylonParser.STMT_LIST,           StatementList.class);
-    classes.put(ceylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
-    classes.put(ceylonParser.STRING_CST,          StringConstant.class);
-    classes.put(ceylonParser.TYPE_NAME,           TypeName.class);
-    classes.put(ceylonParser.UIDENTIFIER,         UIdentifier.class);
+    classes.put(ceylonParser.ANNOTATION,           Annotation.class);
+    classes.put(ceylonParser.ANNOTATION_LIST,      AnnotationList.class);
+    classes.put(ceylonParser.ANNOTATION_NAME,      AnnotationName.class);
+    classes.put(ceylonParser.ARG_LIST,             ArgumentList.class);
+    classes.put(ceylonParser.CALL_EXPR,            CallExpression.class);
+    classes.put(ceylonParser.DOT,                  Dot.class);
+    classes.put(ceylonParser.EXPR,                 Expression.class);
+    classes.put(ceylonParser.LIDENTIFIER,          LIdentifier.class);
+    classes.put(ceylonParser.MEMBER_NAME,          MemberName.class);
+    classes.put(ceylonParser.PUBLIC,               Public.class);
+    classes.put(ceylonParser.SATISFIES_LIST,       SatisfiesList.class);
+    classes.put(ceylonParser.STMT_LIST,            StatementList.class);
+    classes.put(ceylonParser.SIMPLESTRINGLITERAL,  SimpleStringLiteral.class);
+    classes.put(ceylonParser.STRING_CST,           StringConstant.class);
+    classes.put(ceylonParser.TYPE,                 Type.class);
+    classes.put(ceylonParser.TYPE_ARG_LIST,        TypeArgumentList.class);
+    classes.put(ceylonParser.TYPE_CONSTRAINT,      TypeConstraint.class);
+    classes.put(ceylonParser.TYPE_CONSTRAINT_LIST, TypeConstraintList.class);
+    classes.put(ceylonParser.UIDENTIFIER,          UIdentifier.class);
   }
 
   /**
@@ -131,30 +142,39 @@ public abstract class CeylonTree {
    * Base class for visitors.
    */
   public static class Visitor {
-    public void visit(CompilationUnit that)     { visitDefault(that); }
-    public void visit(ImportList that)          { visitDefault(that); }
-    public void visit(ImportDeclaration that)   { visitDefault(that); }
-    public void visit(ImportPath that)          { visitDefault(that); }
-    public void visit(ImportWildcard that)      { visitDefault(that); }
-    public void visit(AliasDeclaration that)    { visitDefault(that); }
-    public void visit(ClassDeclaration that)    { visitDefault(that); }
+    public void visit(CompilationUnit that)      { visitDefault(that); }
+    public void visit(ImportList that)           { visitDefault(that); }
+    public void visit(ImportDeclaration that)    { visitDefault(that); }
+    public void visit(ImportPath that)           { visitDefault(that); }
+    public void visit(ImportWildcard that)       { visitDefault(that); }
+    public void visit(ClassDeclaration that)     { visitDefault(that); }
+    public void visit(InterfaceDeclaration that) { visitDefault(that); }
+    public void visit(AliasDeclaration that)     { visitDefault(that); }
+    public void visit(TypeName that)             { visitDefault(that); }
+    public void visit(TypeParameterList that)    { visitDefault(that); }
+    public void visit(TypeParameter that)        { visitDefault(that); }
 
     // XXX possibly rubbish node subclasses
 
-    public void visit(Annotation that)          { visitDefault(that); }
-    public void visit(AnnotationList that)      { visitDefault(that); }
-    public void visit(AnnotationName that)      { visitDefault(that); }
-    public void visit(ArgumentList that)        { visitDefault(that); }
-    public void visit(CallExpression that)      { visitDefault(that); }
-    public void visit(Dot that)                 { visitDefault(that); }
-    public void visit(Expression that)          { visitDefault(that); }
-    public void visit(LIdentifier that)         { visitDefault(that); }
-    public void visit(MemberName that)          { visitDefault(that); }
-    public void visit(StatementList that)       { visitDefault(that); }
-    public void visit(SimpleStringLiteral that) { visitDefault(that); }
-    public void visit(StringConstant that)      { visitDefault(that); }
-    public void visit(TypeName that)            { visitDefault(that); }
-    public void visit(UIdentifier that)         { visitDefault(that); }
+    public void visit(Annotation that)           { visitDefault(that); }
+    public void visit(AnnotationList that)       { visitDefault(that); }
+    public void visit(AnnotationName that)       { visitDefault(that); }
+    public void visit(ArgumentList that)         { visitDefault(that); }
+    public void visit(CallExpression that)       { visitDefault(that); }
+    public void visit(Dot that)                  { visitDefault(that); }
+    public void visit(Expression that)           { visitDefault(that); }
+    public void visit(LIdentifier that)          { visitDefault(that); }
+    public void visit(MemberName that)           { visitDefault(that); }
+    public void visit(Public that)               { visitDefault(that); }
+    public void visit(SatisfiesList that)        { visitDefault(that); }
+    public void visit(StatementList that)        { visitDefault(that); }
+    public void visit(SimpleStringLiteral that)  { visitDefault(that); }
+    public void visit(StringConstant that)       { visitDefault(that); }
+    public void visit(Type that)                 { visitDefault(that); }
+    public void visit(TypeArgumentList that)     { visitDefault(that); }
+    public void visit(TypeConstraint that)       { visitDefault(that); }
+    public void visit(TypeConstraintList that)   { visitDefault(that); }
+    public void visit(UIdentifier that)          { visitDefault(that); }
 
     public void visitDefault(CeylonTree tree) {
       throw new RuntimeException();
@@ -283,6 +303,20 @@ public abstract class CeylonTree {
   }
   
   /**
+   * A class declaration.
+   */
+  public static class ClassDeclaration extends TypeDeclaration {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A interface declaration.
+   */
+  public static class InterfaceDeclaration extends TypeDeclaration {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
    * An alias declaration.
    */
   public static class AliasDeclaration extends TypeDeclaration {
@@ -290,9 +324,23 @@ public abstract class CeylonTree {
   }
 
   /**
-   * A class declaration.
+   * A type name.
    */
-  public static class ClassDeclaration extends TypeDeclaration {
+  public static class TypeName extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A list of type parameters.
+   */
+  public static class TypeParameterList extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A type parameter.
+   */
+  public static class TypeParameter extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -363,6 +411,20 @@ public abstract class CeylonTree {
   }
 
   /**
+   * The word "public".
+   */
+  public static class Public extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A list of satisfies.
+   */
+  public static class SatisfiesList extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
    * A list of statements.
    */
   public static class StatementList extends CeylonTree {
@@ -384,9 +446,30 @@ public abstract class CeylonTree {
   }
 
   /**
-   * A type name.
+   * A type.
    */
-  public static class TypeName extends CeylonTree {
+  public static class Type extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A list of type arguments.
+   */
+  public static class TypeArgumentList extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A type constraint.
+   */
+  public static class TypeConstraint extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
+  }
+
+  /**
+   * A list of type constraints.
+   */
+  public static class TypeConstraintList extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
   }
 
