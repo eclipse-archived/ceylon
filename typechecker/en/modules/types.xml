@@ -447,6 +447,18 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     
 }]]></programlisting>
 
+        <comment><para>TODO: do we really need this to be an explicit 
+        interface, or could we just make it a "pattern" that iterable
+        objects declare an extension method that returns an
+        iterator?</para></comment>
+
+        <comment><para>TODO: is it really OK to make this an extension
+        method and pollute all iterable types with the members of 
+        <literal>Iterator</literal>?</para></comment>
+
+        <para>The interface <literal>lang.Iterable&lt;X&gt;</literal> 
+        produces a sequence of values.</para>
+        
         <programlisting><![CDATA[public interface Iterator<out X> {
 
     doc "The status of the iterator. |true|
@@ -468,7 +480,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 
         <para>An iterator is used according to the following idiom:</para>
         
-        <programlisting>Iterator i = list.iterator();
+        <programlisting>Iterator i = list;
 while (i.more) {
     doSomething( i.next() );
 }</programlisting>
