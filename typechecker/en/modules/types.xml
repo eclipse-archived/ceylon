@@ -756,7 +756,45 @@ while (i.more) {
         <para>The following extension provides access to the indices 
         of the sequence in a <literal>for</literal> loop.</para>
         
-        <programlisting><![CDATA[public extension Iterable<Entry<Natural,X>> sequenceEntries<X>(Sequence<X> sequence) { ... }]]></programlisting>
+        <programlisting><![CDATA[public extension Iterable<Entry<Natural,X>> sequenceEntries<X>(Sequence<X> sequence) {
+    
+    class SequenceEntryIterator()
+            satisfies Iterator<Entry<Natural,X>> {
+            
+        Iterator<X> iter = sequence.iterator();
+        mutable Natural index := 0;
+        mutable Entry<Natural,X>? entry := null;
+        
+        override Boolean more { 
+            return iter.more
+        }
+        override X next() {
+            index++;
+            return entry:=Entry(index,iter.next()) 
+        }
+        override X current {
+            if (exists entry) {
+                return entry
+            }
+            else {
+                throw IllegalStateException()
+            }
+        }
+        
+    }
+    
+    class SequenceEntryIterable()
+            satisfies Iterable<Entry<Natural,X>> {
+        override Boolean empty { 
+            return sequence.empty 
+        }
+        override Iterator<X> iterator() {
+            return SequenceEntryIterator();
+        }
+    }
+    
+    return SequenceEntryIterable();
+}]]></programlisting>
         
         <para>The compiler is permitted to optimize away the call to 
         this extension in a loop such as:</para>
@@ -772,8 +810,8 @@ while (i.more) {
 public S join<S,T>(S... sequences) 
         where S(T... elements) satisfies T[] {
 
-    class JoinedIterable<T>
-        implements Iterable<T> {  }
+    class JoinedIterable
+        implements Iterable<T> { ... }
 
     return S( JoinedIterable() )
 }]]></programlisting>
@@ -784,11 +822,52 @@ public S join<S,T>(S... sequences)
      to the original sequence."
 public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
          where S(T... elements) satisfies T[] {
+         
+    if (exists Natural last = sequence.lastIndex) {
+      
+      if (from>last || to>last || from>to) {
+          throw IllegalSubrangeException()
+      }
+      
+      class SubrangeIterator()
+            implements Iterator<T> {
+        Iterator<X> iter = sequence.iterator();
+        mutable Natural index := from;
+        repeat (from) times (iter.next());
+        override Boolean more { 
+            return index<to;
+        }
+        override X next() {
+            if (index<to) {
+                index++;       
+                return iter.next()
+            }
+            else {
+                throw ExhaustedIteratorException()
+            }
+        }
+        override X current {
+            return iter.current
+        }
+      }
+    
+      class SubrangeIterable()
+            implements Iterable<T> { 
+        override Boolean empty {
+            return from>to
+        }
+        override Iterator<X> iterator() {
+            return SubrangeIterator();
+        }
+      }
 
-    class SubrangeIterable<T>
-        implements Iterable<T> {  }
-
-    return S( SubrangeIterable() )
+      return S( SubrangeIterable() )
+      
+    }
+    else {
+      throw EmptySequenceException()
+    }
+    
 }]]></programlisting>
         
         <para>A helper class decorates <literal>Sequence</literal> with 
