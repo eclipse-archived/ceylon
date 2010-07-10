@@ -389,7 +389,15 @@ public void hello(Process process) {
         of the efficient handling of null values in the virtual machine.</para>
         
         <para>Copy this new version of the program into <literal>hello.ceylon</literal> 
-        and run:</para>
+        and run, as before:</para>
+        
+        <programlisting>ceylon hello</programlisting>
+        
+        <para>You should see the same output as before:</para>
+        
+        <programlisting>Hello, World!</programlisting>
+        
+        <para>Now, run the program again, with a command-line argument:</para>
         
         <programlisting>ceylon hello everybody</programlisting>
         
