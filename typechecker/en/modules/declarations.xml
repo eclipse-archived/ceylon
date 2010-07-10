@@ -46,6 +46,9 @@ Body?</programlisting>
         <para>The Ceylon parser is able to unambiguously identify which namespace an 
         identifier belongs to.</para>
         
+        <comment><para>TODO: should we specify that a package name must be an 
+        all-lowercase identifier?</para></comment>
+        
    </section>
       
     <section id="topleveldeclaration">
