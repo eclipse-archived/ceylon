@@ -592,11 +592,6 @@ while (i.more) {
          for the given key."
     public Referenceable<V?> value(U key);
     
-    doc "Determine if there are values defined for the given keys.
-         Return |true| iff there are values defined for all the
-         given keys."
-    public Boolean defines(U... keys);
-    
 }]]></programlisting>
 
         <para>A decorator allows retrieval of lists and sets of values.</para>
@@ -609,17 +604,24 @@ while (i.more) {
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    public List<V> values(List<U> keys) {
-        return from (U key in keys) select (correspondence.lookup(key))
+    public V[] values(U[] keys) {
+        return from (U key in keys) select (correspondence[key])
     }
     
-    doc "Binary set lookup operator x[keys]. Returns a set of 
-         values defined for the given set of keys."
+    doc "Binary set lookup operator x[keys]. Returns an iterator
+         of the values defined for the given keys."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    public Set<V> values(Set<U> keys) {
-        return ( from (U key in keys) select (correspondence.lookup(key)) ).elements
+    public Iterable<V> values(U... keys) {
+        return from (U key in keys) select (correspondence[key])
+    }
+    
+    doc "Determine if there are values defined for the given keys.
+         Return |true| iff there are values defined for all the
+         given keys."
+    public Boolean defines(U... keys) {
+        return forAll (U key in keys) every (correspondence[key] exists)
     }
     
 }]]></programlisting>
@@ -696,8 +698,8 @@ while (i.more) {
             -> "if a value can not be defined for one of the 
                 given keys")
     public void define(Entry<U, V>... definitions) {
-        for (U key->V value) {
-            correspondence.define(key, value);
+        for (U key->V value in definitions) {
+            correspondence[key] := value;
         }
     }
     
