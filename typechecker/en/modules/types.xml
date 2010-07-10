@@ -2017,7 +2017,7 @@ public void assert(StringTemplate message, Boolean that()) {
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      and return the result. Otherwise, return |null|."
 public Y? ifTrue<Y>(Boolean condition,
-                            Y then()) {
+                    Y then()) {
     if (condition) {
         return then()
     }
@@ -2043,7 +2043,7 @@ public Y ifTrue<Y>(Boolean condition,
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      and return the result. Otherwise, return |null|."
 public Y? ifExists<X,Y>(specified X? value,
-                                Y then(coordinated X x)) {
+                        Y then(coordinated X x)) {
     if (exists value) {
         return then(value)
     }
@@ -2192,7 +2192,7 @@ public Boolean forAny<X>(iterated Iterable<X> elements,
      evaluates to true, or |null|if no such element 
      is found."
 public X? first<X>(iterated Iterable<X> elements,
-                           Boolean having(coordinated X x)) {
+                   Boolean having(coordinated X x)) {
     for (X x in elements) {
         if ( having(x) ) {
             return x
