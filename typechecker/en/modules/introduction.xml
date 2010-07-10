@@ -942,14 +942,15 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <programlisting>Integer[] fromNegative10To10 = -10..10;</programlisting>
             <programlisting>Character[] fromAToZ = @A..@Z;</programlisting>
 
-            <para>We can iterate a <literal>Sequence</literal> like this:</para>
+            <para>The <literal>Sequence</literal> interface extends <literal>Iterable</literal>,
+            so we can iterate a <literal>Sequence</literal> like this:</para>
             
             <programlisting>for (String city in voyage) {
     stream.writeLine(city):
 }</programlisting>
 
-            <para>If, for some reason, we need access to the index of each element, we can
-            write the following:</para>
+            <para>If, for some reason, we need access to the index of each element, 
+            we can also do the following:</para>
             
             <programlisting>for (Natural i -> String city in voyage) {
     stream.writeLine($i + ": " + city):
@@ -958,7 +959,9 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <para>(The <literal>$</literal> operator converts an object to a string.)</para>
             
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
-            so we need something other than a <literal>Sequence</literal>:</para>
+            so we need something other than a <literal>Sequence</literal>. A
+            <literal>Correspondence&lt;U,V&gt;</literal> is a mapping from keys of type
+            <literal>U</literal> to values of type <literal>V</literal>.</para>
             
             <programlisting>Correspondence&lt;String,String&gt; cities = { "Emmanuel"->"Paris",
                                            "Andrew"->"Cambridge", 
@@ -973,18 +976,6 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <para>Notice that the lookup operator returns an <literal>Optional</literal>
             result, to account for the possibility that there is no value defined for
             the given key.</para>
-
-            <para>We can iterate a <literal>Correspondence</literal> like this:</para>
-
-            <programlisting>for (Entry&lt;String,String&gt; entry in cities) {
-    stream.writeLine(entry.key + " lives in " + entry.value);
-}</programlisting>
-
-            <para>Or, much more commonly:</para>
-            
-            <programlisting>for (String person -> String city in cities) {
-    stream.writeLine(name + " lives in " + city):
-}</programlisting>
 
             <para>So far we haven't met anything from the collections package proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
@@ -1021,12 +1012,32 @@ cities.define("Emmanuel"->"Paris",
                 "Andrew"->"Cambridge");]]></programlisting>
             
             <para>The <literal>-></literal> operator constructs an <literal>Entry</literal>
-            from its operands. A <literal>Map</literal> is a <literal>Collection</literal> 
-            of <literal>Entry</literal>s.</para>
+            from its operands. A <literal>Map</literal> is a collection of entries, a 
+            <literal>Collection&lt;Entry&gt;</literal>. This is a big improvement over 
+            Java, where, unaccountably, a <literal>Map</literal> isn't actually a 
+            <literal>Collection</literal>!</para>
+            
+            <para>Since <literal>Collection</literal>s are <literal>Iterable</literal>, 
+            we can iterate a <literal>Map</literal> like this:</para>
+
+            <programlisting>for (Entry&lt;String,String&gt; entry in cities) {
+    stream.writeLine(entry.key + " lives in " + entry.value);
+}</programlisting>
+
+            <para>Or, much more commonly:</para>
+            
+            <programlisting>for (String person -> String city in cities) {
+    stream.writeLine(name + " lives in " + city):
+}</programlisting>
+            
+            <para>(Note that in this case, the <literal>-&gt;</literal> symbol is not
+            really the entry construction operator we saw before. In this case it is
+            actually part of the syntax of the <literal>for</literal> loop.)</para>
             
             <para>A <literal>List</literal> is the most important kind of 
             <literal>Sequence</literal>. We usually add entries to an 
-            <literal>OpenList</literal> using the <literal>append()</literal> method:</para>
+            <literal>OpenList</literal> using the <literal>append()</literal> 
+            method:</para>
             
             <programlisting><![CDATA[OpenList<String> voyage = {}
 voyage.append("Melbourne");
