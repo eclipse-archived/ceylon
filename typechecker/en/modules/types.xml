@@ -435,10 +435,9 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     
 }]]></programlisting>
 
-        <para>The <literal>lang.Iterable&lt;X&gt;</literal> interface
-        represents a type that may be iterated over using a
-        <literal>lang.Iterator&lt;X&gt;</literal>, or using 
-        <literal>for</literal>.</para>
+        <para>The interface <literal>lang.Iterable</literal> represents a
+        container which may be iterated using a <literal>lang.Iterator</literal>, 
+        or using a <literal>for</literal> loop.</para>
         
         <programlisting><![CDATA[public interface Iterable<out X> satisfies Container {
     
@@ -447,17 +446,8 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     
 }]]></programlisting>
 
-        <comment><para>TODO: do we really need this to be an explicit 
-        interface, or could we just make it a "pattern" that iterable
-        objects declare an extension method that returns an
-        iterator?</para></comment>
-
-        <comment><para>TODO: is it really OK to make this an extension
-        method and pollute all iterable types with the members of 
-        <literal>Iterator</literal>?</para></comment>
-
-        <para>The interface <literal>lang.Iterable&lt;X&gt;</literal> 
-        produces a sequence of values.</para>
+        <para>The interface <literal>lang.Iterable</literal> produces a 
+        sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
 
@@ -480,12 +470,13 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 
         <para>An iterator is used according to the following idiom:</para>
         
-        <programlisting>Iterator i = list;
+        <programlisting>Iterator i = list.iterator();
 while (i.more) {
     doSomething( i.next() );
 }</programlisting>
 
-        <para>Some iterable objects may support element removal during iteration.</para>
+        <para>Some iterable objects support element removal and assignment 
+        during iteration.</para>
         
         <programlisting><![CDATA[public mutable interface OpenIterable<X> 
         satisfies Iterable<X> {
@@ -692,13 +683,6 @@ while (i.more) {
     
     override public Assignable<V?> value(U key);
     
-    doc "Element assignment operator x[key] = value. Assign a value 
-         to the given key. Return the previous value for the key,
-         or |null| if there was no value defined."
-    throws (UndefinedKeyException
-            -> "if a value can not be defined for the given key")
-    public V? define(U key, V value);
-
 }]]></programlisting>
 
         <para>A decorator allows addition of multiple <literal>Entry</literal>s.</para>
@@ -717,6 +701,17 @@ while (i.more) {
         }
     }
     
+    doc "Assign a value to the given key. Return the previous value 
+         for the key, or |null| if there was no value defined."
+    throws (UndefinedKeyException
+            -> "if a value can not be defined for the given key")
+    public V? define(U key, V value) {
+        Assignable<V?> definition = correspondence[key];
+        V? result = definition;
+        definition := value;
+        return result;
+    }
+
 }]]></programlisting>
        
     </section>
