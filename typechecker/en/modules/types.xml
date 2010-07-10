@@ -774,7 +774,7 @@ public S join<S,T>(S... sequences)
         where S(T... elements) satisfies T[] {
             
     class JoinedIterable()
-            implements Iterable<T> { 
+            satisfies Iterable<T> { 
         override Boolean empty {
             return forAll (Sequence<T> s in sequences) every (s.empty)
         }
@@ -805,7 +805,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
          where S(T... elements) satisfies T[] {
          
     class SubrangeIterable()
-            implements Iterable<T> {
+            satisfies Iterable<T> {
         override Boolean empty {
             return from>to
         }
