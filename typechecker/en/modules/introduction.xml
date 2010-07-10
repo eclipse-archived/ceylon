@@ -937,7 +937,8 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <programlisting>Sequence voyage = { "Atlanta", "Boston", "San Francisco" };  //error! missing type argument</programlisting>
             
-            <para>The closest thing to a raw type, in this case, would be to use a <literal>Sequence&lt;Object&gt;</literal>.</para>
+            <para>The closest thing to a raw type, in this case, would be a 
+            <literal>Sequence&lt;Object&gt;</literal>.</para>
             
             <programlisting>Sequence&lt;Object&gt; voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
@@ -954,20 +955,24 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <programlisting>Character[] fromAToZ = @A..@Z;</programlisting>
 
             <para>The <literal>Sequence</literal> interface extends <literal>Iterable</literal>,
-            so we can iterate a <literal>Sequence</literal> like this:</para>
+            so we can iterate a <literal>Sequence</literal> using a <literal>for</literal>
+            loop:</para>
             
             <programlisting>for (String city in voyage) {
-    stream.writeLine(city):
+    stream.writeLine(city);
 }</programlisting>
 
             <para>If, for some reason, we need access to the index of each element, 
             we can also do the following:</para>
             
             <programlisting>for (Natural i -> String city in voyage) {
-    stream.writeLine($i + ": " + city):
+    stream.writeLine($i + ": " + city);
 }</programlisting>
 
-            <para>(The <literal>$</literal> operator converts an object to a string.)</para>
+            <para>This works because there's a built-in extension method (a concept we'll
+            meet later) that produces an <literal>Iterable&lt;Entry&lt;Natural,X&gt;&gt;</literal>
+            for any <literal>Sequence&lt;X&gt;</literal>. (Oh, the <literal>$</literal> 
+            operator just converts an object to a printable string.)</para>
             
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
             so we need something other than a <literal>Sequence</literal>. A
@@ -978,6 +983,11 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
                                            "Andrew"->"Cambridge", 
                                              "Pete"->"Edinburgh",
                                             "Gavin"->"Guanajuato" };</programlisting>
+            
+            <para>In fact, a <literal>Sequence</literal> is just a special case of a 
+            <literal>Correspondence</literal> where the keys are <literal>Natural</literal> 
+            numbers. <literal>Sequence&lt;X&gt;</literal> is a subtype of 
+            <literal>Correspondence&lt;Natural, X&gt;</literal>.</para>
                               
             <para>We can extract values from a <literal>Correspondence</literal> by key 
             using the lookup operator:</para>
@@ -1025,7 +1035,7 @@ cities.define("Emmanuel"->"Paris",
             <para>The <literal>-></literal> operator constructs an <literal>Entry</literal>
             from its operands. A <literal>Map</literal> is a collection of entries, a 
             <literal>Collection&lt;Entry&gt;</literal>. This is a big improvement over 
-            Java, where, unaccountably, a <literal>Map</literal> isn't actually a 
+            Java where, unaccountably, a <literal>Map</literal> isn't actually a 
             <literal>Collection</literal>!</para>
             
             <para>Since <literal>Collection</literal>s are <literal>Iterable</literal>, 
@@ -1038,11 +1048,11 @@ cities.define("Emmanuel"->"Paris",
             <para>Or, much more commonly:</para>
             
             <programlisting>for (String person -> String city in cities) {
-    stream.writeLine(name + " lives in " + city):
+    stream.writeLine(name + " lives in " + city);
 }</programlisting>
             
-            <para>(Note that in this case, the <literal>-&gt;</literal> symbol is not
-            really the entry construction operator we saw before. In this case it is
+            <para>(Note that in this case, the <literal>-&gt;</literal> symbol isn't
+            really the entry construction operator we saw above. In this case it's
             actually part of the syntax of the <literal>for</literal> loop.)</para>
             
             <para>A <literal>List</literal> is the most important kind of 
