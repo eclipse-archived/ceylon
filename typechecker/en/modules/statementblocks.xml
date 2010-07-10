@@ -801,7 +801,7 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>mutable Natural n:=0
+            <programlisting>mutable Natural n:=0;
 while (n&lt;=10) {
     log.info("count = " + $n);
     n++;
