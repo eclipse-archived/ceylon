@@ -725,12 +725,12 @@ else {
             <itemizedlist>
                 <listitem>
                     <para><!--if the iterated expression is of type <literal>Iterable</literal>,-->
-                    the <literal>Iterator</literal> is obtained by calling 
-                    <literal>iterator()</literal>, and then</para>
+                    the iterator is obtained by calling <literal>iterator()</literal>, and 
+                    then</para>
                 </listitem>
                 <listitem>
                     <para>the <literal>for</literal> block is executed once for each value 
-                    produced by the <literal>Iterator</literal>.</para>
+                    produced by the iterator, until the iterator is exhausted.</para>
                 </listitem>
             </itemizedlist>
             
@@ -807,24 +807,11 @@ do {
 }
 while (n&lt;=10) { n++; }</programlisting>
             
-            <programlisting>Iterator&lt;Person&gt; iter = org.employees.iterator();
-while (iter.more) {
-    log.info( iter.next().name );
+            <programlisting>Person? next() = org.employees.iterator();
+while (exists Person p = next()) {
+    log.info(p.name);
 }</programlisting>
-            
-            <programlisting>Iterator&lt;Person&gt; iter = people.iterator();
-while (iter.more) {
-    Person p = iter.next();
-    log.debug(p.name);
-    p.greet();
-}</programlisting>
-            
-            <programlisting>mutable Person person := ....;
-while (exists Person parent = person.parent) {
-    log.info("The parent of " person.name " is " parent.name ".");
-    person := parent;
-}</programlisting>
-            
+                  
             <programlisting>mutable Person person := ....;
 do {
     log.info(person.name);

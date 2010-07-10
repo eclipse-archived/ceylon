@@ -436,67 +436,34 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 }]]></programlisting>
 
         <para>The interface <literal>lang.Iterable</literal> represents a
-        container which may be iterated using a <literal>lang.Iterator</literal>, 
-        or using a <literal>for</literal> loop.</para>
+        container which may be iterated using a <literal>for</literal> or
+        <literal>while</literal> loop.</para>
         
         <programlisting><![CDATA[public interface Iterable<out X> satisfies Container {
     
     doc "Produce an iterator."
-    public Iterator<X> iterator();
+    public X? iterator()();
     
 }]]></programlisting>
 
-        <para>The interface <literal>lang.Iterable</literal> produces a 
+        <!--
+        <para>The interface <literal>lang.Iterator</literal> produces a 
         sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
 
-    doc "The status of the iterator. |true|
-         indicates that the iterator contains
-         more elements."
-    public Boolean more;
-    
-    doc "The current element."
-    public X current;
-
-    doc "Advance to the next element, returning
-         the next element."
-    throw (ExhaustedIteratorException
-           -> "if the iterator contains no more 
-               elements.")
-    public X next();
+    doc "Return the next value, or |null| if the iterator 
+         is exhausted and can produce no more values."
+    public X? next();
     
 }]]></programlisting>
+         -->
 
         <para>An iterator is used according to the following idiom:</para>
         
-        <programlisting>Iterator i = list.iterator();
-while (i.more) {
-    doSomething( i.next() );
-}</programlisting>
-
-        <para>Some iterable objects support element removal and assignment 
-        during iteration.</para>
-        
-        <programlisting><![CDATA[public mutable interface OpenIterable<X> 
-        satisfies Iterable<X> {
-    
-    public override OpenIterator<X> iterator();
-    
-}]]></programlisting>
-
-        <programlisting><![CDATA[public mutable interface OpenIterator<X> 
-        satisfies OpenIterator<X> {
-    
-    doc "Remove the current element from the iterable
-         object to which this iterator belongs."
-    public void remove();
-    
-    doc "Replace the current element in the iterable
-         object to which this iterator belongs with
-         the given object."
-    public assign current;
-    
+        <programlisting><![CDATA[Object? next() = list.iterator();
+while (exists Object o = next()) {
+    doSomething(o);
 }]]></programlisting>
 
     </section>
@@ -748,26 +715,14 @@ while (i.more) {
     
     public extension 
     class EmptySequence<out X>() satisfies X[] {
-    
         X? value = null;
+        override Referenceable<X?> value(Natural index) { return value }
         override Boolean empty { return true }
         override Natural? lastIndex = null;
-        override Iterator<X> iterator() { return EmptyIterator() }
-        override Reference<X?> value(Natural index) { return value }
-
-        class EmptyIterator()
-                satisfies Iterator<X> {
-            override Boolean more { 
-                return false
-            }
-            override X next() {
-                throw ExhaustedIteratorException() 
-            }
-            override X current {
-                throw IllegalStateException()
-            }
+        override X? iterator()() { 
+            X? next() { return null }
+            return next
         }
-    
     }
     
 }]]></programlisting>
@@ -777,38 +732,27 @@ while (i.more) {
         
         <programlisting><![CDATA[public extension Iterable<Entry<Natural,X>> sequenceEntries<X>(Sequence<X> sequence) {
     
-    class SequenceEntryIterator()
-            satisfies Iterator<Entry<Natural,X>> {
-            
-        Iterator<X> iter = sequence.iterator();
-        mutable Natural index := 0;
-        mutable Entry<Natural,X>? entry := null;
-        
-        override Boolean more { 
-            return iter.more
-        }
-        override X next() {
-            index++;
-            return entry:=Entry(index,iter.next()) 
-        }
-        override X current {
-            if (exists entry) {
-                return entry
-            }
-            else {
-                throw IllegalStateException()
-            }
-        }
-        
-    }
-    
     class SequenceEntryIterable()
             satisfies Iterable<Entry<Natural,X>> {
         override Boolean empty { 
             return sequence.empty 
         }
-        override Iterator<X> iterator() {
-            return SequenceEntryIterator();
+        override Entry<Natural,X>? iterator()() {
+            mutable class EntryIterator() {
+                X? nextElement() = sequence.iterator();
+                mutable Natural index := 0;
+                Entry<Natural,X>? next() { 
+                    X? x = nextElement(); 
+                    if (exists x) {
+                        return Entry(index++, x)
+                    }
+                    else {
+                        return null;
+                    
+                    }
+                } 
+            }
+            return EntryIterator().next;
         }
     }
     
@@ -828,47 +772,24 @@ while (i.more) {
      to the original sequences."
 public S join<S,T>(S... sequences) 
         where S(T... elements) satisfies T[] {
-
-    class JoinedIterator()
-            implements Iterator<T> {
-          
-        Iterator<T[]> outerIter = sequences.iterator();
-        mutable Iterator<T> innerIter := none.iterator();
-        mutable T? curr := null;
-        advance();
-                
-        void advance() {
-            while (!innerIter.more && outerIter.more) {
-                innerIter := outerIter.next().iterator()
-            }
-        }
-        
-        override Boolean more { 
-            return currentIter.more;
-        }
-        override T next() {
-            curr := currentIter.next();
-            advance();
-            return current;
-        }
-        override T current {
-            if (exists curr) {
-                return curr
-            }
-            else {
-                throw new IllegalStateException()
-            }
-        }
-      
-    }
             
     class JoinedIterable()
             implements Iterable<T> { 
         override Boolean empty {
             return forAll (Sequence<T> s in sequences) every (s.empty)
         }
-        override Iterator<T> iterator() {
-            return JoinedIterator();
+        override T? iterator()() {
+            mutable class JoinedIterator() {
+                T[]? outer() = sequences.iterator();
+                mutable Callable<T?> inner := none.iterator();
+                T? next() {
+                    while (!innerIter.more && outerIter.more) {
+                        inner := outer().iterator()
+                    }
+                    return inner()
+                }
+            }
+            return JoinedIterator().next;
         }
     }
 
@@ -884,39 +805,27 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
          where S(T... elements) satisfies T[] {
          
     if (exists Natural last = sequence.lastIndex) {
-      
-        class SubrangeIterator()
-              implements Iterator<T> {
-            
-            Iterator<T> iter = sequence.iterator();
-            mutable Natural index := from;
-            repeat (min(from,last)) times (iter.next());
         
-            override Boolean more { 
-                return index<min(to,last);
-            }
-            override T next() {
-                if (more) {
-                    index++;       
-                    return iter.next()
-                }
-                else {
-                    throw ExhaustedIteratorException()
-                }
-            }
-            override T current {
-                return iter.current
-            }
-        
-        }
-    
         class SubrangeIterable()
                 implements Iterable<T> { 
             override Boolean empty {
                 return from>to
             }
-            override Iterator<T> iterator() {
-                return SubrangeIterator();
+            override T? iterator()() {
+                mutable class SubrangeIterator() {
+                    T? nextFromSequence() = sequence.iterator();
+                    mutable Natural index := from;
+                    repeat (from) times (iter.next());
+                    T? next() {
+                        if (index++<=to) {
+                            return nextFromSequence()
+                        }
+                        else {
+                            return null
+                        }
+                    }
+                }
+                return SubrangeIterator().next;
             }
         }
 
@@ -1055,7 +964,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
         <para>Mutable collections implement <literal>lang.OpenCollection</literal>:</para>
         
         <programlisting><![CDATA[public mutable interface OpenCollection<X> 
-        satisfies OpenIterable<X>, OpenCategory<X>, Collection<X> 
+        satisfies OpenCategory<X>, Collection<X> 
         where X satisfies Object {
     
     doc "Remove all elements or entries of the collection,
@@ -1605,7 +1514,7 @@ while (people nonempty) {
          match the parenthesized groups of the regex,
          ordered by the position of the opening parenthesis
          of the group." 
-    public Iterator<Match> matchList(String string) { return ... }
+    public Match? matchList(String string)() { return ... }
     
     doc "Determine if the given string matches the regex."
     public Boolean matches(String string) { return ... }
