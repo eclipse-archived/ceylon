@@ -802,10 +802,10 @@ fail {
             <para>For example:</para>
             
             <programlisting>mutable Natural n:=0
-do {
+while (n&lt;=10) {
     log.info("count = " + $n);
-}
-while (n&lt;=10) { n++; }</programlisting>
+    n++;
+}</programlisting>
             
             <programlisting>Person? next() = org.employees.iterator();
 while (exists Person p = next()) {

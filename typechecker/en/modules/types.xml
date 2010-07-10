@@ -804,37 +804,30 @@ public S join<S,T>(S... sequences)
 public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
          where S(T... elements) satisfies T[] {
          
-    if (exists Natural last = sequence.lastIndex) {
-        
-        class SubrangeIterable()
-                implements Iterable<T> { 
-            override Boolean empty {
-                return from>to
-            }
-            override T? iterator()() {
-                mutable class SubrangeIterator() {
-                    T? nextFromSequence() = sequence.iterator();
-                    mutable Natural index := from;
-                    repeat (from) times (iter.next());
-                    T? next() {
-                        if (index++<=to) {
-                            return nextFromSequence()
-                        }
-                        else {
-                            return null
-                        }
+    class SubrangeIterable()
+            implements Iterable<T> {
+        override Boolean empty {
+            return from>to
+        }
+        override T? iterator()() {
+            mutable class SubrangeIterator() {
+                T? nextFromSequence() = sequence.iterator();
+                repeat (from) times (iter.next());
+                mutable Natural index := from;
+                T? next() {
+                    if (index++<=to) {
+                        return nextFromSequence()
+                    }
+                    else {
+                        return null
                     }
                 }
-                return SubrangeIterator().next;
             }
+            return SubrangeIterator().next;
         }
+    }
 
-        return S( SubrangeIterable() )
-      
-    }
-    else {
-        return none
-    }
+    return S( SubrangeIterable() )
     
 }]]></programlisting>
         
