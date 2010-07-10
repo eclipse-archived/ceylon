@@ -706,14 +706,13 @@ else {
             <itemizedlist>
             <listitem>
                 <para>The iterated expression must be an expression of type assignable to 
-                <!--<literal>Iterable&lt;X&gt;</literal> or--> <literal>Iterator&lt;X&gt;</literal> 
-                where <literal>&lt;X&gt;</literal> is the declared type of the iteration
-                variable.</para> 
+                <literal>Iterable&lt;X&gt;</literal> <!--or <literal>Iterator&lt;X&gt;</literal>-->
+                where <literal>X</literal> is the declared type of the iteration variable.</para> 
             </listitem>
             <listitem>
                 <para>If two iteration variables are defined, the iterated expression type 
-                must be assignable to <!--<literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> or -->
-                <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal> where <literal>U</literal>
+                must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> <!--or 
+                <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal>--> where <literal>U</literal>
                 and <literal>V</literal> are the declared types of the iteration variables.</para>
             </listitem>
             </itemizedlist>
@@ -721,20 +720,19 @@ else {
             <!--para>Iterated and constraint expressions may refer to any local variable 
             defined by a previous iteration.</para-->
             
-            <para>When the construct is executed, the <literal>for</literal> block is executed 
-            once for each element of the <literal>Iterator</literal>.</para>
+            <para>When the construct is executed:</para>
             
-            <!--itemizedlist>
+            <itemizedlist>
                 <listitem>
-                    <para>if the iterated expression is of type <literal>Iterable</literal>,
+                    <para><!--if the iterated expression is of type <literal>Iterable</literal>,-->
                     the <literal>Iterator</literal> is obtained by calling 
                     <literal>iterator()</literal>, and then</para>
                 </listitem>
                 <listitem>
-                    <para>the <literal>for</literal> block is executed once for each element 
-                    of the <literal>Iterator</literal>.</para>
+                    <para>the <literal>for</literal> block is executed once for each value 
+                    produced by the <literal>Iterator</literal>.</para>
                 </listitem>
-            </itemizedlist-->
+            </itemizedlist>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>break true</literal>, <literal>return</literal> or <literal>throw</literal>, 
