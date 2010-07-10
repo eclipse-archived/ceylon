@@ -748,7 +748,26 @@ while (i.more) {
     
     public extension 
     class EmptySequence<out X>() satisfies X[] {
-        ...
+    
+        X? value = null;
+        override Boolean empty { return true }
+        override Natural? lastIndex = null;
+        override Iterator<X> iterator() { return EmptyIterator() }
+        override Reference<X?> value(Natural index) { return value }
+
+        class EmptyIterator()
+                satisfies Iterator<X> {
+            override Boolean more { 
+                return false
+            }
+            override X next() {
+                throw ExhaustedIteratorException() 
+            }
+            override X current {
+                throw IllegalStateException()
+            }
+        }
+    
     }
     
 }]]></programlisting>
@@ -810,10 +829,51 @@ while (i.more) {
 public S join<S,T>(S... sequences) 
         where S(T... elements) satisfies T[] {
 
-    class JoinedIterable
-        implements Iterable<T> { ... }
+    class JoinedIterator()
+            implements Iterator<T> {
+          
+        Iterator<T[]> outerIter = sequences.iterator();
+        mutable Iterator<T> innerIter := none.iterator();
+        mutable T? curr := null;
+        advance();
+                
+        void advance() {
+            while (!innerIter.more && outerIter.more) {
+                innerIter := outerIter.next().iterator()
+            }
+        }
+        
+        override Boolean more { 
+            return currentIter.more;
+        }
+        override T next() {
+            curr := currentIter.next();
+            advance();
+            return current;
+        }
+        override T current {
+            if (exists curr) {
+                return curr
+            }
+            else {
+                throw new IllegalStateException()
+            }
+        }
+      
+    }
+            
+    class JoinedIterable()
+            implements Iterable<T> { 
+        override Boolean empty {
+            return forAll (Sequence<T> s in sequences) every (s.empty)
+        }
+        override Iterator<T> iterator() {
+            return JoinedIterator();
+        }
+    }
 
     return S( JoinedIterable() )
+    
 }]]></programlisting>
         
         <programlisting><![CDATA[doc "The ternary range operator x[from..to], along
@@ -825,46 +885,46 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
          
     if (exists Natural last = sequence.lastIndex) {
       
-      class SubrangeIterator()
-            implements Iterator<T> {
+        class SubrangeIterator()
+              implements Iterator<T> {
             
-        Iterator<X> iter = sequence.iterator();
-        mutable Natural index := from;
-        repeat (min(from,last)) times (iter.next());
+            Iterator<T> iter = sequence.iterator();
+            mutable Natural index := from;
+            repeat (min(from,last)) times (iter.next());
         
-        override Boolean more { 
-            return index<min(to,last);
-        }
-        override X next() {
-            if (more) {
-                index++;       
-                return iter.next()
+            override Boolean more { 
+                return index<min(to,last);
             }
-            else {
-                throw ExhaustedIteratorException()
+            override T next() {
+                if (more) {
+                    index++;       
+                    return iter.next()
+                }
+                else {
+                    throw ExhaustedIteratorException()
+                }
             }
-        }
-        override X current {
-            return iter.current
-        }
+            override T current {
+                return iter.current
+            }
         
-      }
+        }
     
-      class SubrangeIterable()
-            implements Iterable<T> { 
-        override Boolean empty {
-            return from>to
+        class SubrangeIterable()
+                implements Iterable<T> { 
+            override Boolean empty {
+                return from>to
+            }
+            override Iterator<T> iterator() {
+                return SubrangeIterator();
+            }
         }
-        override Iterator<X> iterator() {
-            return SubrangeIterator();
-        }
-      }
 
-      return S( SubrangeIterable() )
+        return S( SubrangeIterable() )
       
     }
     else {
-      return none
+        return none
     }
     
 }]]></programlisting>
