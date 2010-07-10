@@ -825,20 +825,18 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
          
     if (exists Natural last = sequence.lastIndex) {
       
-      if (from>last || to>last || from>to) {
-          throw IllegalSubrangeException()
-      }
-      
       class SubrangeIterator()
             implements Iterator<T> {
+            
         Iterator<X> iter = sequence.iterator();
         mutable Natural index := from;
-        repeat (from) times (iter.next());
+        repeat (min(from,last)) times (iter.next());
+        
         override Boolean more { 
-            return index<to;
+            return index<min(to,last);
         }
         override X next() {
-            if (index<to) {
+            if (more) {
                 index++;       
                 return iter.next()
             }
@@ -849,6 +847,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
         override X current {
             return iter.current
         }
+        
       }
     
       class SubrangeIterable()
@@ -865,7 +864,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
       
     }
     else {
-      throw EmptySequenceException()
+      return none
     }
     
 }]]></programlisting>
