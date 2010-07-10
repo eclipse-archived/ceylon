@@ -293,15 +293,18 @@ public void hello(Process process) {
 }</programlisting>
 
         <para>
-        This code defines a Ceylon method named <literal>hello()</literal>
-        with a parameter of type <literal>lang.Process</literal>. The 
-        method is annotated <literal>public</literal>, which makes it
-        accessible to code in other compilation units. When the method is 
-        invoked, it calls the <literal>writeLine()</literal> method of the 
-        class <literal>Process</literal>. (This method displays its parameter 
-        on the console.) The <literal>doc</literal> annotation contains 
-        documentation that is included in the output of the Ceylon 
-        documentation compiler.
+        This code defines a method named <literal>hello()</literal> with a 
+        parameter of type <literal>lang.Process</literal>. The method is 
+        annotated <literal>public</literal>, which makes it accessible to 
+        code in other compilation units. When the method is executed, it 
+        calls the <literal>writeLine()</literal> method of the class 
+        <literal>Process</literal>. (This method displays its parameter on 
+        the console.)
+        </para>
+        
+        <para>
+        The <literal>doc</literal> annotation contains documentation 
+        that is included in the output of the Ceylon documentation compiler.
         </para>
         
         <para>Copy this code into a file named <literal>hello.ceylon</literal>
