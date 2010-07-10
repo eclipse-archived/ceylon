@@ -743,12 +743,21 @@ while (i.more) {
     }
     
 }]]></programlisting>
-
-
+        
+        <para>The following extension provides access to the indices 
+        of the sequence in a <literal>for</literal> loop.</para>
+        
+        <programlisting><![CDATA[public extension Iterable<Entry<Natural,X>> sequenceEntries<X>(Sequence<X> sequence) { ... }]]></programlisting>
+        
+        <para>The compiler is permitted to optimize away the call to 
+        this extension in a loop such as:</para>
+        
+        <programlisting><![CDATA[for (Natural i -> Value val in valueList) { ... }]]></programlisting>
+        
         <para>Toplevel methods define the join and range operators, for 
         sequence types which have an appropriate constructor:</para>
 
-<programlisting><![CDATA[doc "The binary join operator x + y. 
+        <programlisting><![CDATA[doc "The binary join operator x + y. 
      The returned sequence does not reflect changes
      to the original sequences."
 public S join<S,T>(S... sequences) 
@@ -760,7 +769,7 @@ public S join<S,T>(S... sequences)
     return S( JoinedIterable() )
 }]]></programlisting>
         
-<programlisting><![CDATA[doc "The ternary range operator x[from..to], along
+        <programlisting><![CDATA[doc "The ternary range operator x[from..to], along
      with the binary upper range x[from...] operator. 
      The returned sequence does not reflect changes 
      to the original sequence."

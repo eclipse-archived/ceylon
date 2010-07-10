@@ -714,17 +714,9 @@ else {
                 <para>If two iteration variables are defined, the iterated expression type 
                 must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> or 
                 <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal> where <literal>U</literal>
-                and <literal>V</literal> are the declared types of the iteration variables, or
-                of type <literal>Sequence&lt;X&gt;</literal> where <literal>Natural</literal> 
-                is the type of the first iteration variable, and <literal>X</literal> is the 
-                type of the second iteration variable.</para>
+                and <literal>V</literal> are the declared types of the iteration variables.</para>
             </listitem>
             </itemizedlist>
-            
-            <comment><para>TODO: do we need the special case for <literal>Sequence</literal>?
-            For lists, we could just make you write:</para>
-            <programlisting>for (local i-&gt;local x in list.map) { ... }</programlisting>
-            </comment>
             
             <!--para>Iterated and constraint expressions may refer to any local variable 
             defined by a previous iteration.</para-->
