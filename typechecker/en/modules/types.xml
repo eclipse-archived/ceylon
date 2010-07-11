@@ -778,9 +778,9 @@ while (exists Object o = next()) {
         <para>Toplevel methods define the join and range operators, for 
         sequence types which have an appropriate constructor:</para>
 
-        <programlisting><![CDATA[doc "The binary join operator |x + y|. 
-     The returned sequence does not reflect changes
-     to the original sequences."
+        <programlisting><![CDATA[doc "The binary join operator |x + y|. The returned 
+     sequence does not reflect changes to the original 
+     sequences."
 public S join<S,T>(S... sequences) 
         where S(T... elements) satisfies T[] {
             
