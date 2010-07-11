@@ -30,7 +30,7 @@
         <programlisting><![CDATA[public abstract class Object() 
         extends Void() {
         
-    doc "The equals operator x == y. Default implementation compares
+    doc "The equals operator |x == y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
     public default Boolean equals(Object that) { return ... }
@@ -74,12 +74,6 @@
     doc "The |Type| of the instance."
     public Type<subtype> type { return ... }
     
-    doc "Binary assignability operator x is Y. Determine if the 
-         instance is of the given |Type|."
-    public Boolean instanceOf(Type<Object> type) {
-        return this.type.assignableTo(type)
-    }
-    
     doc "A log obect for the type."
     public default Log log { return type.log }
     
@@ -99,8 +93,40 @@
         
 }]]></programlisting>
 
+<!-- 
+    doc "Binary assignability operator |x is Y|. Determine if the 
+         instance is of the given |Type|."
+    public Boolean instanceOf(Type<Object> type) {
+        return this.type.assignableTo(type)
+    }    
+ -->
+
     </section>
 
+    <section id="callable">
+        <title>Callable references</title>
+        
+        <para>The type <literal>lang.Callable</literal> represents an executable
+        operation. Expressions of type <literal>Callable</literal> may be the subject
+        of the argument specification operators <literal>()</literal> and
+        <literal>{}</literal>.</para>
+        
+        <programlisting><![CDATA[public interface Callable<out R, P...> {
+    public R call(P... args);
+    public void intercept( R onInvoke(R proceed(P... args), P... args) )();
+}]]></programlisting>
+    
+        <para>An interceptor may be removed by invoking the returned method reference:</para>
+
+        <programlisting><![CDATA[void removeSayInterceptor() = person.say.intercept() 
+    onInvoke(void proceed(String words), String words) { 
+        proceed(words.uppercase);
+    };
+...
+removeSayInterceptor();]]></programlisting>
+
+    </section>
+    
     <section id="referenceableandassignable">
         <title>Referenceable and assignable values</title>
         
@@ -116,7 +142,7 @@
     doc "Obtain and return the value."
     extension T getIt();
     
-    public Removeable intercept( T onGet(T proceed()) );
+    public void intercept( T onGet(T proceed()) )();
     
 }]]></programlisting>
         
@@ -136,34 +162,13 @@
          assign operator |:=|."
     public T setIt(T t);
     
-    public Removeable intercept( void onSet(void proceed(T value), T value) );
+    public void intercept( void onSet(void proceed(T value), T value) )();
     
 }]]></programlisting>
 
         <comment><para>TODO: should <literal>onSet()</literal> return the new value of
         the attribute instead of being <literal>void</literal>?</para></comment>
 
-        <para>A <literal>Removeable</literal> may be removed.</para>
-
-        <programlisting>interface Removeable {
-    public void remove();
-}</programlisting>
-
-    </section>
-    
-    <section id="callable">
-        <title>Callable references</title>
-        
-        <para>The type <literal>lang.Callable</literal> represents an executable
-        operation. Expressions of type <literal>Callable</literal> may be the subject
-        of the argument specification operators <literal>()</literal> and
-        <literal>{}</literal>.</para>
-        
-        <programlisting><![CDATA[public interface Callable<out R, P...> {
-    public R call(P... args);
-    public Removeable intercept( R onInvoke(R proceed(P... args), P... args) );
-}]]></programlisting>
-    
     </section>
     
     <section id="boolean">
@@ -180,7 +185,7 @@
         satisfies Case<Boolean>, Bits<Boolean> {
     case true, case false;
 
-    doc "The binary or operator x | y"
+    doc "The binary or operator |x | y|"
     override public Boolean or(Boolean boolean) {
         if (this) {
             return true
@@ -190,7 +195,7 @@
         }
     }
     
-    doc "The binary and operator x & y"
+    doc "The binary and operator |x & y|"
     override public Boolean and(Boolean boolean) {
         if (this) {
             return boolean
@@ -200,7 +205,7 @@
         }
     }
     
-    doc "The binary xor operator x ^ y"
+    doc "The binary xor operator |x ^ y|"
     override public Boolean xor(Boolean boolean) {
         if (this) {
             return boolean.complement
@@ -210,7 +215,7 @@
         }
     }
     
-    doc "The unary not operator !x"
+    doc "The unary not operator |!x|"
     override public Boolean complement { 
         if (this) {
             return false
@@ -303,11 +308,14 @@ class CaseSuper<X,Y>(Case<X> c)
         <programlisting><![CDATA[abstract class Optional<out X>() 
         extends Void() {
     
-    doc "The unary postfix exists operator |x exists|."
+    doc "The unary postfix exists operator 
+         |x exists|."
     public Boolean valueExists;
     
-    doc "The binary default operator |x ? y|."
-    public T default(T defaultValue) where T abstracts X;
+    doc "The binary default operator 
+         |x ? y|."
+    public T default<T>(T defaultValue) 
+            where T abstracts X;
     
 }]]></programlisting>
 
@@ -334,7 +342,8 @@ class Something<out X>(X x)
         return true 
     }
     
-    override T default(T defaultValue) where T abstracts X {
+    override T default<T>(T defaultValue) 
+            where T abstracts X {
         return value;
     }
     
@@ -357,7 +366,8 @@ class Nothing<out X>(Null null)
         return false 
     }
     
-    override T default(T defaultValue) where T abstracts X {
+    override T default<T>(T defaultValue) 
+            where T abstracts X {
         return defaultValue;
     }
     
@@ -439,7 +449,8 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
         container which may be iterated using a <literal>for</literal> or
         <literal>while</literal> loop.</para>
         
-        <programlisting><![CDATA[public interface Iterable<out X> satisfies Container {
+        <programlisting><![CDATA[public interface Iterable<out X> 
+        satisfies Container {
     
     doc "Produce an iterator."
     public X? iterator()();
@@ -566,7 +577,7 @@ while (exists Object o = next()) {
         <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence)
         where U satisfies Object {
 
-    doc "Binary list lookup operator x[keys]. Returns a list 
+    doc "Binary list lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
@@ -575,7 +586,7 @@ while (exists Object o = next()) {
         return from (U key in keys) select (correspondence[key])
     }
     
-    doc "Binary set lookup operator x[keys]. Returns an iterator
+    doc "Binary set lookup operator |x[keys]|. Return an iterator
          of the values defined for the given keys."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
@@ -797,8 +808,8 @@ public S join<S,T>(S... sequences)
     
 }]]></programlisting>
         
-        <programlisting><![CDATA[doc "The ternary range operator x[from..to], along
-     with the binary upper range x[from...] operator. 
+        <programlisting><![CDATA[doc "The ternary range operator |x[from..to]|, along
+     with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
 public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
@@ -1095,9 +1106,20 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
             <para>It is possible to iterate lists without creating an iterator:</para>
             
             <programlisting><![CDATA[mutable List<Person> people := ... ;
-while (people nonempty) {
-    doSomething(people.first);
+while (exists Person p = people.first) {
+    doSomething(p);
     people.=rest;
+}]]></programlisting>
+
+            <para>Or, using recursion:</para>
+            
+            <programlisting><![CDATA[String names(List<Person> people) {
+    if (exists Person p = people.first) {
+        return p.name + ", " + names(people.rest)
+    }
+    else {
+        return ""
+    }
 }]]></programlisting>
             
             <para>There is a mutable subtype:</para>
@@ -1531,16 +1553,16 @@ while (people nonempty) {
         
         <programlisting><![CDATA[public interface Bits<T> {
         
-    doc "Bitwise or operator x|y"
+    doc "Bitwise or operator |x | y|"
     public T or(T bits);
     
-    doc "Bitwise and operator x&y"
+    doc "Bitwise and operator |x & y|"
     public T and(T bits);
     
-    doc "Bitwise xor operator x^y"
+    doc "Bitwise xor operator |x ^ y|"
     public T xor(T bits);
     
-    doc "Bitwise complement operator ~x"
+    doc "Bitwise complement operator |~x|"
     public T complement;
     
     doc "A list of the bits."
@@ -1632,19 +1654,19 @@ while (people nonempty) {
         satisfies Number, Comparable<N>
         where N satisfies Number {
 
-    doc "The binary + operator"
+    doc "The binary |+| operator"
     public N plus(N number);
 
-    doc "The binary - operator"
+    doc "The binary |-| operator"
     public N minus(N number);
 
-    doc "The binary * operator"
+    doc "The binary |*| operator"
     public N times(N number);
 
-    doc "The binary / operator"
+    doc "The binary |/| operator"
     public N divided(N number);
 
-    doc "The binary ** operator"
+    doc "The binary |**| operator"
     public N power(N number);
     
 }]]></programlisting>
@@ -1664,7 +1686,7 @@ while (people nonempty) {
         satisfies Numeric<N>, Ordinal
         where N satisfies Number {
 
-    doc "The binary % operator"
+    doc "The binary |%| operator"
     public N remainder(N number);
 
 }]]></programlisting>
@@ -1675,7 +1697,7 @@ while (people nonempty) {
         <programlisting><![CDATA[public interface Invertable<I> 
     where I satisfies Number {
     
-    doc "The unary - operator"
+    doc "The unary |-| operator"
     public I inverse;
 
 }]]></programlisting>
@@ -1902,8 +1924,8 @@ while (people nonempty) {
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
     
-    public Removeable intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )
-                        where S abstracts X;
+    public void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
+                    where S abstracts X;
     
 }]]></programlisting>
 
@@ -1914,8 +1936,8 @@ while (people nonempty) {
         
     public Boolean mutable;
     
-    public Removeable intercept<S>( T onGet(S instance, T proceed()) );
-                        where S abstracts X;
+    public void intercept<S>( T onGet(S instance, T proceed()) )()
+                    where S abstracts X;
     
 }]]></programlisting>
 
@@ -1923,8 +1945,8 @@ while (people nonempty) {
         extends Attribute<X, T>
         satisfies Member<X, Assignable<T>> {  //this is OK since Member is covariant in T
         
-    public Removeable intercept<S>( void onSet(S instance, void proceed(T value), T value) );
-                        where S abstracts X;
+    public void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
+                    where S abstracts X;
     
 }]]></programlisting>
 
@@ -1936,8 +1958,8 @@ while (people nonempty) {
     
     public Parameter<Object>[] parameters;
     
-    public Removeable intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )
-                        where S abstracts X;
+    public void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
+                    where S abstracts X;
     
 }]]></programlisting>
 
@@ -1956,7 +1978,8 @@ while (people nonempty) {
         <programlisting><![CDATA[public interface Annotated {
     doc "Return all the annotation values that are 
          assignable to the given type."
-    public T[] annotations<T>(Type<T> type = Object) where T satisfies Object;
+    public T[] annotations<T>(Type<T> type = Object) 
+            where T satisfies Object;
 }]]></programlisting>
 
     </section>
