@@ -569,7 +569,9 @@ else {
 }</programlisting>
 
             <programlisting>if (exists Payment p = order.payment) {
-    if (p.paid) { log.info("already paid"); }
+    if (p.paid) { 
+        log.info("already paid"); 
+    }
 }</programlisting>
             
             <programlisting>if (is CardPayment p = order.payment) {
