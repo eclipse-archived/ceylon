@@ -899,7 +899,7 @@ finally {
             <para>(This example shows a Ceylon-ified version of the Java 
             <literal>synchronized</literal> block.)</para>
             
-            <programlisting>try ( Transaction() )
+            <programlisting>try ( Transaction() ) {
     try ( Session s = Session() ) {
         return s.get(Person, id)
     }
