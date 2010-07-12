@@ -1460,10 +1460,10 @@ while (exists Person p = people.first) {
     public extension class StringToCharacter(String string) {
     
         doc "Parse the string representation of a |Character| in UTF-16"
-        public extension Character parseUtf16Character() { return ... }
+        public Character parseUtf16Character() { return ... }
     
         doc "Parse the string representation of a |Character| in UTF-8"
-        public extension Character parseUtf8Character() { return ... }
+        public Character parseUtf8Character() { return ... }
     
     }
  
