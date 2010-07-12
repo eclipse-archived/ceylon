@@ -1353,12 +1353,19 @@ ClassBody</programlisting>
         <para>The class initializer is responsible for initializing the state of a new instance
         of the class, before a reference to the new instance is available to clients.</para>
         
-        <programlisting>public mutable class DiagonalPoint(Decimal position) 
+        <programlisting>public abstract class Point() {
+    Decimal x;
+    Decimal y;
+}</programlisting>
+        
+        <programlisting>public mutable class DiagonalPoint(Decimal distance) 
         extends Point() {
     
-    x := y := sqrt(position**2/2) * position.sign;
+    Decimal pos = sqrt(distance**2/2) * distance.sign;
+    x = pos;
+    y = pos;
     
-    assert ("must have distance " position " from origin") 
+    assert ("must have distance " distance " from origin") 
         that ( x**2 + y**2 == position**2 );
     
 }</programlisting>
