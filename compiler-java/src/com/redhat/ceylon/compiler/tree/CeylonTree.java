@@ -35,7 +35,17 @@ public abstract class CeylonTree {
    * Create a Ceylon tree from an ANTLR tree.
    */
   private static CeylonTree consume(Tree src) {
-    Class<? extends CeylonTree> klass = classFor(src);
+    Token token = ((CommonTree) src).getToken();
+
+    Class<? extends CeylonTree> klass;
+    if (token == null) {
+      klass = CompilationUnit.class;
+    }
+    else {
+      int type = token.getType();
+      klass = classes.get(type);
+      assert klass != null : type + ": " + CeylonParser.tokenNames[type];
+    }
 
     CeylonTree dst;
     try {
@@ -47,40 +57,17 @@ public abstract class CeylonTree {
     catch (IllegalAccessException e) {
       throw new RuntimeException(e);
     }
+    dst.token = token;
 
-    dst.children = dst.processChildren(src);
+    ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
+    for (int i = 0; i < src.getChildCount(); i++) {
+      CeylonTree child = consume(src.getChild(i));
+      child.parent = dst;
+      children.append(child);
+    }
+    dst.children = children.toList();
 
     return dst;
-  }
-
-  /**
-   * Decide which class to use to represent this node
-   */
-  private static Class<? extends CeylonTree> classFor(Tree src) {
-    Token token = ((CommonTree) src).getToken();
-    if (token == null)
-      return CompilationUnit.class;
-
-    int type = token.getType();
-    if (type == CeylonParser.TYPE_DECL) {
-      // TYPE_DECL nodes are used to ensure that a type's
-      // annotations are grouped together with the type
-      // itself.  We rewrite them to bring the type (eg
-      // CLASS_DECL) to the top, and put the annotations
-      // as the child of the type.
-      Tree firstChild = src.getChild(0);
-      int childType = ((CommonTree) firstChild).getToken().getType();
-      assert childType == CeylonParser.TYPE_DECL
-          || childType == CeylonParser.CLASS_DECL
-          || childType == CeylonParser.INTERFACE_DECL
-          || childType == CeylonParser.ALIAS_DECL
-           : CeylonParser.tokenNames[childType];
-      return classFor(firstChild);
-    }
-   
-    Class<? extends CeylonTree> klass = classes.get(type);
-    assert klass != null : type + ": " + CeylonParser.tokenNames[type];
-    return klass;
   }
 
   /**
@@ -96,6 +83,7 @@ public abstract class CeylonTree {
     classes.put(CeylonParser.IMPORT_DECL,          ImportDeclaration.class);
     classes.put(CeylonParser.IMPORT_PATH,          ImportPath.class);
     classes.put(CeylonParser.IMPORT_WILDCARD,      ImportWildcard.class);
+    classes.put(CeylonParser.TYPE_DECL,            TypeDeclaration.class);
     classes.put(CeylonParser.CLASS_DECL,           ClassDeclaration.class);
     classes.put(CeylonParser.INTERFACE_DECL,       InterfaceDeclaration.class);
     classes.put(CeylonParser.ALIAS_DECL,           AliasDeclaration.class);
@@ -132,26 +120,15 @@ public abstract class CeylonTree {
   }
 
   /**
-   * This node's children.
+   * This node's parent and children.
    */
+  public CeylonTree parent;
   public List<CeylonTree> children;
 
-  public CeylonTree parent;
-  
   /**
-   * Initialize this node's children.  The default behaviour is to
-   * recursively consume the tree, though this may be overridden or
-   * extended by subclasses.
+   * The ANTLR token from which this node was constructed.
    */
-  protected List<CeylonTree> processChildren(Tree src) {
-    ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
-    for (int i = 0; i < src.getChildCount(); i++) {
-    	CeylonTree child = consume(src.getChild(i));
-    	child.parent = this;
-    	children.append(child);
-    }
-    return children.toList();
-  }
+  public Token token;
 
   /**
    * Base class for visitors.
@@ -162,6 +139,7 @@ public abstract class CeylonTree {
     public void visit(ImportDeclaration that)    { visitDefault(that); }
     public void visit(ImportPath that)           { visitDefault(that); }
     public void visit(ImportWildcard that)       { visitDefault(that); }
+    public void visit(TypeDeclaration that)      { visitDefault(that); }
     public void visit(ClassDeclaration that)     { visitDefault(that); }
     public void visit(InterfaceDeclaration that) { visitDefault(that); }
     public void visit(AliasDeclaration that)     { visitDefault(that); }
@@ -284,61 +262,30 @@ public abstract class CeylonTree {
   }
 
   /**
-   * A type declaration.  This abstract class is the parent
-   * class for items which may be wrapped in TYPE_DECL nodes
-   * in the parse tree, and contains the functionality to
-   * unwrap them.
+   * A type declaration.
    */
-  public static abstract class TypeDeclaration extends CeylonTree {
-    protected List<CeylonTree> processChildren(Tree src) {
-      // If the node is not a TYPE_DECL then we have nothing to do
-      if (((CommonTree) src).getToken().getType() != CeylonParser.TYPE_DECL)
-        return super.processChildren(src);
-
-      // Firstly, remove TYPE_DECL nodes that have exactly
-      // one child that is also a TYPE_DECL node.
-      if (src.getChildCount() == 1) {
-        Tree child = src.getChild(0);
-        if (((CommonTree) child).getToken().getType() == CeylonParser.TYPE_DECL)
-          return processChildren(child);
-      }
-
-      // Secondly, rewrite:
-      //   TYPE_DECL
-      //     CLASS_DECL | INTERFACE_DECL | ALIAS_DECL | MEMBER_DECL
-      //       children*
-      //     ANNOTATION_LIST?
-      // as:
-      //     CLASS_DECL | INTERFACE_DECL | ALIAS_DECL | MEMBER_DECL
-      //       children*
-      //       ANNOTATION_LIST?
-      assert src.getChildCount() == 1 || src.getChildCount() == 2;
-      ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
-      children.appendList(super.processChildren(src.getChild(0)));
-      for (int i = 1; i < src.getChildCount(); i++)
-        children.append(consume(src.getChild(i)));
-      return children.toList();
-    }
+  public static class TypeDeclaration extends CeylonTree {
+    public void accept(Visitor v) { v.visit(this); }
   }
   
   /**
    * A class declaration.
    */
-  public static class ClassDeclaration extends TypeDeclaration {
+  public static class ClassDeclaration extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * A interface declaration.
    */
-  public static class InterfaceDeclaration extends TypeDeclaration {
+  public static class InterfaceDeclaration extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
    * An alias declaration.
    */
-  public static class AliasDeclaration extends TypeDeclaration {
+  public static class AliasDeclaration extends CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
   }
 
