@@ -454,32 +454,32 @@ String?? firstWord = words[0];</programlisting>
         
         <itemizedlist>
         <listitem>
-          <para>A class or interface declaration with no type parameters defines exactly one 
-          type. A parameterized class or interface declaration defines a template for
-          producing types: one type for each possible combination of type arguments that 
-          satisfy the type constraints specified by the class or interface. The types of 
-          members of the this type are determined by replacing every appearance of each type 
-          parameter in the schema of the parameterized type definition with its type argument.</para>
+            <para>A class or interface declaration with no type parameters defines exactly one 
+            type. A parameterized class or interface declaration defines a template for
+            producing types: one type for each possible combination of type arguments that 
+            satisfy the type constraints specified by the class or interface. The types of 
+            members of the this type are determined by replacing every appearance of each type 
+            parameter in the schema of the parameterized type definition with its type argument.</para>
         </listitem>
         <listitem>
-          <para>A method declaration with no type parameters defines exactly one operation 
-          per type. A parameterized method declaration defines a template for producing
-          overloaded operations: one operation for each possible combination of type arguments 
-          that satisfy the type constraints specified by the method declaration.</para>
+            <para>A method declaration with no type parameters defines exactly one operation 
+            per type. A parameterized method declaration defines a template for producing
+            overloaded operations: one operation for each possible combination of type arguments 
+            that satisfy the type constraints specified by the method declaration.</para>
         </listitem>
         <listitem>
-          <para>A class declaration with no type parameters defines exactly one instantiation 
-          operation. A parameterized class declaration defines a template for producing 
-          overloaded instantiation operations: one instantiation operation for each possible 
-          combination of type arguments that satisfy the type constraints specified by the 
-          class declaration. The type of the object produced by an instantiation operation is 
-          determined by substituting the same combination of type arguments for the type 
-          parameters of the parameterized class.</para>
+            <para>A class declaration with no type parameters defines exactly one instantiation 
+            operation. A parameterized class declaration defines a template for producing 
+            overloaded instantiation operations: one instantiation operation for each possible 
+            combination of type arguments that satisfy the type constraints specified by the 
+            class declaration. The type of the object produced by an instantiation operation is 
+            determined by substituting the same combination of type arguments for the type 
+            parameters of the parameterized class.</para>
         </listitem>
         </itemizedlist>
         
         <para>A type parameter is itself a type, visible within the body of the declaration
-        it parameterizes. A type parameter is assignable to every upper bound of the type 
+        it parameterizes. A type parameter is a subtype of every upper bound of the type 
         parameter. However, a class, interface, or alias may not extend or implement a type 
         parameter.</para>
         
@@ -546,56 +546,70 @@ String?? firstWord = words[0];</programlisting>
                 <para>A type parameter of a method is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter type of a member class initializer is a contravariant position.</para>
+                <para>A formal parameter type of a member class initializer is a contravariant 
+                position.</para>
             </listitem>
             <listitem>
                 <para>A type parameter of a member class is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>The type of a non-<literal>mutable</literal> attribute is a covariant position.</para>
+                <para>The type of a non-<literal>mutable</literal> attribute is a covariant 
+                position.</para>
             </listitem>
             <listitem>
-                <para>The type of a <literal>mutable</literal> attribute is a nonvariant position.</para>
+                <para>The type of a <literal>mutable</literal> attribute is a nonvariant 
+                position.</para>
             </listitem>
             <listitem>
-                <para>An upper bound of a type parameter in a contravariant position is a contravariant position.</para>
+                <para>An upper bound of a type parameter in a contravariant position is a 
+                contravariant position.</para>
             </listitem>
             <listitem>
-                <para>An upper bound of a type parameter in a covariant position is a covariant position.</para>
+                <para>An upper bound of a type parameter in a covariant position is a covariant 
+                position.</para>
             </listitem>
             <listitem>
-                <para>A lower bound of a type parameter in a contravariant position is a covariant position.</para>
+                <para>A lower bound of a type parameter in a contravariant position is a 
+                covariant position.</para>
             </listitem>
             <listitem>
-                <para>A type parameter in a covariant position cannot have a lower bound. <comment>TODO: is 
-                this correct?</comment></para>
+                <para>A type parameter in a covariant position cannot have a lower bound. 
+                <comment>TODO: is this correct?</comment></para>
             </listitem>
             <listitem>
-                <para>A covariant type parameter of a type in a covariant position is a covariant position.</para>
+                <para>A covariant type parameter of a type in a covariant position is a covariant 
+                position.</para>
             </listitem>
             <listitem>
-                <para>A contravariant type parameter of a type in a covariant position is a contravariant position.</para>
+                <para>A contravariant type parameter of a type in a covariant position is a 
+                contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A covariant type parameter of a type in a contravariant position is a contravariant position.</para>
+                <para>A covariant type parameter of a type in a contravariant position is a 
+                contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A contravariant type parameter of a type in a contravariant position is a covariant position.</para>
+                <para>A contravariant type parameter of a type in a contravariant position is a 
+                covariant position.</para>
             </listitem>
             <listitem>
                 <para>A nonvariant type parameter or a type is a nonvariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a callable parameter in a contravariant position is covariant.</para>
+                <para>A formal parameter of a callable parameter in a contravariant position is 
+                covariant.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a callable parameter in a covariant position is contravariant.</para>
+                <para>A formal parameter of a callable parameter in a covariant position is 
+                contravariant.</para>
             </listitem>
             <listitem>
-                <para>The return type of a callable parameter in a contravariant position is contravariant.</para>
+                <para>The return type of a callable parameter in a contravariant position is 
+                contravariant.</para>
             </listitem>
             <listitem>
-                <para>The return type of a callable parameter in a covariant position is covariant.</para>
+                <para>The return type of a callable parameter in a covariant position is
+                covariant.</para>
             </listitem>
         </itemizedlist>
         
@@ -997,12 +1011,12 @@ VarargsParam?
         <itemizedlist>
             <listitem>
                 <para>an upper bound, <literal>X satisfies T</literal>, specifies that 
-                the type parameter <literal>X</literal> is assignable to a given
+                the type parameter <literal>X</literal> is a subtype of a given
                 type <literal>T</literal>,</para>
             </listitem>
             <listitem>
                 <para>a lower bound, <literal>X abstracts T</literal>, specifies that 
-                a given type <literal>T</literal> is assignable to the type parameter 
+                a given type <literal>T</literal> is a subtype of the type parameter 
                 <literal>X</literal>,</para>
             </listitem>
             <!--listitem>
@@ -1034,11 +1048,11 @@ VarargsParam?
         <itemizedlist>
             <listitem>
                 <para>A type argument to a type parameter with an upper bound must be a type 
-                which is assignable to all upper bounds.</para>
+                which is a subtype of all upper bounds.</para>
             </listitem>
             <listitem>
                 <para>A type argument to a type parameter with a lower bound must be a type 
-                to which all lower bounds are assignable.</para>
+                of which all lower bounds are subtypes.</para>
             </listitem>
         </itemizedlist>
         
@@ -1046,10 +1060,10 @@ VarargsParam?
         
         <itemizedlist>
             <listitem>
-                <para>A type parameter is considered assignable to its upper bound.</para>
+                <para>A type parameter is considered a subtype of its upper bound.</para>
             </listitem>
             <listitem>
-                <para>The lower bound of a type parameter is considered assignable to the
+                <para>The lower bound of a type parameter is considered a subtype of the
                 type parameter.</para>
             </listitem>
         </itemizedlist>
