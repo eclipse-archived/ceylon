@@ -318,8 +318,31 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
-        <para>A type may be <emphasis>assignable</emphasis> to another type. If <literal>X</literal>
-        is assignable to <literal>Y</literal>, then:</para>
+        <para>A type may be a <emphasis>subtype</emphasis> of another type. Subtyping obeys 
+        the following rules:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>Identity: <literal>X</literal> is a subtype of <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Transitivity: if <literal>X</literal> is a subtype of <literal>Y</literal>
+                and <literal>Y</literal> is a subtype of <literal>Z</literal> then
+                <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Interfaces are objects: all interfaces are subtypes of 
+                <literal>lang.Object</literal>. Conversely, only a subtype of 
+                <literal>lang.Object</literal> may satisfy an interface.</para>
+            </listitem>
+            <listitem>
+                <para>Single root: all types are subtypes of <literal>lang.Void</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In a certain compilation unit, a type may be <emphasis>assignable</emphasis> 
+        to another type. If, in some compilation unit, <literal>X</literal> is assignable 
+        to <literal>Y</literal>, then:</para>
         
         <itemizedlist>
             <listitem>
@@ -368,27 +391,9 @@ Description doc(String description) {
             </listitem>
         </itemizedlist>
         
-        <para><emphasis>Subtyping</emphasis> is a stricter relationship than assignability.
-        Subtyping obeys the following rules:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>Identity: <literal>X</literal> is a subtype of <literal>X</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>Transitivity: if <literal>X</literal> is a subtype of <literal>Y</literal>
-                and <literal>Y</literal> is a subtype of <literal>Z</literal> then
-                <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>Interfaces are objects: all interfaces are subtypes of 
-                <literal>lang.Object</literal>. Conversely, only a subtype of 
-                <literal>lang.Object</literal> may satisfy an interface.</para>
-            </listitem>
-            <listitem>
-                <para>Single root: all types are subtypes of <literal>lang.Void</literal>.</para>
-            </listitem>
-        </itemizedlist>
+        <para>A type <literal>X</literal> may be assignable to a type <literal>Y</literal>
+        even if <literal>X</literal> is not a subtype of <literal>Y</literal> if there is 
+        an enabled extension which introduces <literal>Y</literal> to <literal>X</literal>.</para>
         
         <para>Types are identified by the name of the type (a class, interface, alias or 
         type parameter), together with a list of type arguments if the type definition 
@@ -520,7 +525,7 @@ String?? firstWord = words[0];</programlisting>
             <listitem>
                 <para>
                     If <literal>X</literal> is nonvariant (neither covariant nor contravariant), 
-                    there is no assignability between <literal>T&lt;A&gt;</literal> and 
+                    there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
                     <literal>T&lt;B&gt;</literal>.
                 </para>
             </listitem>
