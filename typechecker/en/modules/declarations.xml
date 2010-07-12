@@ -353,6 +353,10 @@ Description doc(String description) {
                 <para>Identity: <literal>X</literal> is assignable to <literal>X</literal>.</para>
             </listitem>
             <listitem>
+                <para>Subtyping: if <literal>Y</literal> is a subtype of <literal>X</literal> 
+                then <literal>Y</literal> is assignable to <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
                 <para>Transitivity: if <literal>X</literal> is assignable to <literal>Y</literal>
                 and <literal>Y</literal> is assignable to <literal>Z</literal> then
                 <literal>X</literal> is assignable to <literal>Z</literal>.</para>
@@ -362,10 +366,27 @@ Description doc(String description) {
                 not assignable to <literal>lang.Object</literal>. Nor is its subtype
                 <literal>lang.Nothing</literal>.</para>
             </listitem>
+        </itemizedlist>
+        
+        <para><emphasis>Subtyping</emphasis> is a stricter relationship than assignability.
+        Subtyping obeys the following rules:</para>
+        
+        <itemizedlist>
             <listitem>
-                <para>Single root: all types are assignable to <literal>lang.Void</literal>.
-                Additionally, all user defined classes and all interfaces are 
-                assignable to <literal>lang.Object</literal>.</para>
+                <para>Identity: <literal>X</literal> is a subtype of <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Transitivity: if <literal>X</literal> is a subtype of <literal>Y</literal>
+                and <literal>Y</literal> is a subtype of <literal>Z</literal> then
+                <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Interfaces are objects: all interfaces are subtypes of 
+                <literal>lang.Object</literal>. Conversely, only a subtype of 
+                <literal>lang.Object</literal> may satisfy an interface.</para>
+            </listitem>
+            <listitem>
+                <para>Single root: all types are subtypes of <literal>lang.Void</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -487,13 +508,13 @@ String?? firstWord = words[0];</programlisting>
             <listitem>
                 <para>
                     If <literal>X</literal> is a covariant type parameter, 
-                    <literal>T&lt;B&gt;</literal> is assignable to <literal>T&lt;A&gt;</literal>.
+                    <literal>T&lt;B&gt;</literal> is a subtype of <literal>T&lt;A&gt;</literal>.
                 </para>
             </listitem>
             <listitem>
                 <para>
                     If <literal>X</literal> is a contravariant type parameter, 
-                    <literal>T&lt;A&gt;</literal> is assignable to <literal>T&lt;B&gt;</literal>.
+                    <literal>T&lt;A&gt;</literal> is a subtype of <literal>T&lt;B&gt;</literal>.
                 </para>
             </listitem>
             <listitem>
@@ -890,20 +911,20 @@ VarargsParam?
         <itemizedlist>
         <listitem>
             <para>If <literal>X</literal> extends <literal>Y</literal>, then
-            <literal>X</literal> is assignable to <literal>Y</literal>.</para>
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
         </listitem>
         <listitem>
             <para>If <literal>X</literal> extends <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is assignable to <literal>Y&lt;B&gt;</literal>.</para>
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
         </listitem>
         <listitem>
             <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y&lt;B&gt;</literal> 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
             for any type <literal>B</literal>.</para>
         </listitem>
         <listitem>
             <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y</literal> 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
             for any type <literal>B</literal>.</para>
         </listitem>
         </itemizedlist>
@@ -933,20 +954,20 @@ VarargsParam?
         <itemizedlist>
         <listitem>
             <para>If <literal>X</literal> satisfies <literal>Y</literal>, then
-            <literal>X</literal> is assignable to <literal>Y</literal>.</para>
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
         </listitem>
         <listitem>
             <para>If <literal>X</literal> satisfies <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is assignable to <literal>Y&lt;B&gt;</literal>.</para>
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
         </listitem>
         <listitem>
             <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y&lt;B&gt;</literal> 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
             for any type <literal>B</literal>.</para>
         </listitem>
         <listitem>
             <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is assignable to <literal>Y</literal> 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
             for any type <literal>B</literal>.</para>
         </listitem>
         </itemizedlist>
