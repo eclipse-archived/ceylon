@@ -613,7 +613,8 @@ String?? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>These rules apply to members declared by the type, and to members inherited from supertypes.</para>
+        <para>These rules apply to members declared by the type, and to members inherited from 
+        supertypes.</para>
         
         <para>Every Ceylon class or interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
