@@ -125,6 +125,76 @@
 ...
 removeSayInterceptor();]]></programlisting>
 
+        <para>The following extension provides function <emphasis>composition</emphasis>, 
+        combining a <literal>Callable&lt;Y,X&gt;</literal> with a <literal>Callable&lt;X,P...&gt;</literal>
+        to produce a <literal>Callable&lt;Y,P...&gt;</literal>:</para>
+        
+        <programlisting><![CDATA[public extension Y composeable<X,Y,P...>(Y f(X x))(X g(P... args))(P... args) {
+    Y compose(X g(P... args))(P... args) {
+        Y composition(P... args) {
+            return f(g(args))
+        }
+        return composition
+    }
+    return compose
+}]]></programlisting>
+
+       <para>For example:</para>
+       
+       <programlisting>void logFormatted(Date date) = log.info(DateFormat('dd/mm/yyyy').format);</programlisting>
+
+       <para>The next extension allows the first parameter of any function with multiple 
+       parameters to be <emphasis>curried</emphasis>, transforming a 
+       <literal>Callable&lt;R,T,P...&gt;</literal> into a
+       <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal>:</para>
+
+       <programlisting><![CDATA[public extension class Curryable<R,T,P...>(R f(T t, P... args)) {
+    R curry(T t)(P... p) {
+        R curried(P... p) {
+            return f(t, args)
+        }
+        return curried
+    }
+}]]></programlisting>
+       
+       <para>For example:</para>
+       
+       <programlisting>void info(String message) = log.message.curry(Level.info);
+void hello() = info.curry("Hello!");</programlisting>
+       
+       <para>This extension does the reverse, transforming a 
+       <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal> into a
+       <literal>Callable&lt;R,T,P...&gt;</literal>:</para>
+
+       <programlisting><![CDATA[public extension class Flattenable<R,T,P...>(R f(T t)(P... args)) {
+    R flatten(T t, P... p) {
+        return f(t)(p)
+    }
+}]]></programlisting>
+       
+       <para>For example:</para>
+       
+       <programlisting>void say(Person p, String words) = Person.say.flatten;</programlisting>
+       
+       <para>Finally, this extension swaps the first and second formal parameter lists of
+       a function with multiple parameter lists, transforming a 
+       <literal>Callable&lt;Callable&lt;R,Q...&gt;,P...&gt;</literal> into a
+       <literal>Callable&lt;Callable&lt;R,P...&gt;,Q...&gt;</literal>:</para>
+       
+       <programlisting><![CDATA[public extension class Shuffleable<R,P...,Q...>(R f(P... p)(Q... q)) {
+   R shuffle(Q... q)(P... p) {
+       R shuffled(P... p) {
+           return f(p)(q)
+       }
+       return shuffled
+   }
+}]]></programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Float sqr(Float x) = Float.power.shuffle(2);
+void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
+        
     </section>
     
     <section id="referenceableandassignable">
