@@ -935,6 +935,9 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
     }
 
 }]]></programlisting>
+
+        <comment><para>TODO: we should really have a <literal>rest</literal> 
+        operation here, but it would hide the one on <literal>List</literal>.</para></comment>
         
         <para>There is a mutable subtype which allows assignment to
         an index.</para>
