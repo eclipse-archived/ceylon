@@ -1129,6 +1129,11 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
          no element satsfies the condition."
     public Natural? lastIndex(Boolean having(X element));
     
+    doc "The elements of the list for which the given condition 
+         evaluates to |true|, as a |List| with the original 
+         order."
+    public List<X> elementList(Boolean having(X element));
+    
     doc "A sublist beginning with the element at the first given 
          index up to and including the element at the second given 
          index. The size of the returned sublist is one more than 
