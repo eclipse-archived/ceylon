@@ -1354,11 +1354,11 @@ ClassBody</programlisting>
         of the class, before a reference to the new instance is available to clients.</para>
         
         <programlisting>public abstract class Point() {
-    Decimal x;
-    Decimal y;
+    public Decimal x;
+    public Decimal y;
 }</programlisting>
         
-        <programlisting>public mutable class DiagonalPoint(Decimal distance) 
+        <programlisting>public class DiagonalPoint(Decimal distance) 
         extends Point() {
     
     Decimal pos = sqrt(distance**2/2) * distance.sign;
