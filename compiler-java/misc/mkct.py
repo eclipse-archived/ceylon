@@ -87,6 +87,7 @@ class Token:
         return parts
 
     klassmap = {
+        "CLASS":       "Klass",
         "LIDENTIFIER": "LIdentifier",
         "UIDENTIFIER": "UIdentifier"}
 
@@ -97,8 +98,8 @@ class Token:
         return "".join([part.title() for part in self.parts])
 
     commentmap = {
-        "IF_FALSE": "The taken-if-false block of an if clause",
-        "IF_TRUE": "The taken-if-true block of an if clause",
+        "IF_FALSE":    "The taken-if-false block of an if clause",
+        "IF_TRUE":     "The taken-if-true block of an if clause",
         "LIDENTIFIER": "An identifier whose first character is lowercase",
         "UIDENTIFIER": "An identifier whose first character is uppercase",
         "WS":          "Whitespace"}
