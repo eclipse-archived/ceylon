@@ -914,7 +914,7 @@ Comparison comp = order(1,-1);</programlisting>
         <programlisting>local order(Natural x, Natural y) = getOrder();
 local comp = order(1,-1);</programlisting>
 
-        <para>Or, if we don't need parameter names, we don't need to explicitly declare the 
+        <para>Or, if we don't need parameter names, we don't even need to explicitly declare the 
         parameter list:</para>
 
         <programlisting>local order = getOrder();
