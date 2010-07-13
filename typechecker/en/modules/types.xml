@@ -1487,6 +1487,31 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         
         <comment><para>TODO: if so, why not just move <literal>compare()</literal>
         up to <literal>Object</literal> to simplify things?</para></comment>
+        
+        <para>The toplevel methods <literal>min()</literal> and <literal>max()</literal>
+        return the minimum and maximum values of a list of <literal>Comparable</literal>s.</para>
+        
+        <programlisting><![CDATA[public X min<X>(X x, X... xs) 
+        where X satisfies Comparable<X> {
+    mutable X min := x;
+    for (X y in xs) { 
+        if (y<min) { 
+            min:=y;
+        }
+    }
+    return min
+}]]></programlisting>
+
+        <programlisting><![CDATA[public X max<X>(X x, X... xs) 
+        where X satisfies Comparable<X> {
+    mutable X max := x;
+    for (X y in xs) { 
+        if (y>max) { 
+            max:=y;
+        }
+    }
+    return max
+}]]></programlisting>
 
         <para>The <literal>lang.Ordinal</literal> interface represents 
         objects in a sequence, and supports the binary operator 
@@ -1581,6 +1606,9 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     doc "Split the string into tokens, using the given
          separator characters."
     public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
+    
+    doc "Split the string into lines of text."
+    public Iterable<String> lines() { return tokens("\n\l\r") }
     
     doc "The string, with all characters in lowercase."
     public String lowercase { return ... }
