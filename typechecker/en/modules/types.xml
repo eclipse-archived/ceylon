@@ -1199,6 +1199,29 @@ while (exists Person p = people.first) {
         return ""
     }
 }]]></programlisting>
+
+<!--
+            <para>Here's an implementation of the well-know quicksort algorithm 
+            for a <literal>List</literal>:</para>
+            
+            <programlisting><![CDATA[doc "Quicksort for |List|s."
+public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
+    if (exists X pivot = list.first) {
+        local createPartition = quickSort(list.rest.elementList);  
+                //i.e. List<X> createPartition(Boolean having(X X)) = ...
+        local smaller = byIncreasing.curry(pivot);                       
+                //i.e. Boolean smaller(X x) = ...
+        return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller))
+    }
+    else {
+        return none
+    }
+}]]></programlisting>
+
+            <para>For example:</para>
+            
+            <programlisting>List&lt;String&gt; sortedNames = quickSort(unsortedNames) byIncreasing (String x, String y) (x>y);</programlisting>
+-->
             
             <para>There is a mutable subtype:</para>
             
