@@ -15,7 +15,7 @@
     own native SDK as a replacement for the Java platform class libraries.
     </para>
     
-    <section>
+    <section id="languageoverview">
         <title>Language overview</title>
     
     <section>
@@ -277,7 +277,7 @@
     
     </section>
     
-    <section>
+    <section id="brieftutorial">
     <title>A brief tutorial</title>
     
     <section>
