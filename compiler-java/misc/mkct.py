@@ -1,5 +1,5 @@
 class Token:
-    def __init__(self, name, value):
+    def __init__(self, name, value = None):
         self.name  = name
         self.value = value
 
@@ -174,7 +174,7 @@ def get_tokens():
     grammar = Grammar("Ceylon.g")
     path = "src/com/redhat/ceylon/compiler/parser/CeylonParser.java"
     prefix, suffix = "public static final int ", ";"
-    tokens = []
+    tokens = [Token("COMPILATION_UNIT")]
     for line in open(path, "r").xreadlines():
         line = line.strip()
         if not line.startswith(prefix) or not line.endswith(suffix):
@@ -198,7 +198,7 @@ if __name__ == "__main__":
         if name in ("ABSTRACT_MEMBER_DECL", "INIT_EXPR"):
             print "    classes.put(CeylonParser.%s," % name
             print "                %s.class);" % token.klass
-        else:
+        elif name != "COMPILATION_UNIT":
             print "    classes.put(CeylonParser.%-22s %s.class);" % (
                 name + ",", token.klass)
     tokens = [(token.klass, token) for name, token in tokens]
