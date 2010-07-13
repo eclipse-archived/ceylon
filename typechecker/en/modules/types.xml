@@ -1067,7 +1067,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
     
 }]]></programlisting>
 
-        <section>
+        <section id="sets">
             <title>Sets</title>
             
             <para>Sets implement the following interface<!--  ,
@@ -1111,7 +1111,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
 
         </section>
         
-        <section>
+        <section id="lists">
             <title>Lists</title>
             
             <para>Lists implement the following interface, and support the 
@@ -1157,6 +1157,32 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
          last element of the list. The returned list does 
          reflect changes to the original list."
     public List<X> trailing(Natural length=1);
+    
+    doc "Split the list into sublists, each beginning at an
+         element for which the predicate returns true."
+    public Iterable<List<X>> sublists(Boolean split(X element));
+    
+    doc "Split the list into sublists, each beginning at an
+         element for which the predicate returns true. The 
+         predicate may examine elements to the left and 
+         right of the element under consideration."
+    public Iterable<List<X>> sublists( 
+            Boolean split(
+                      doc "The current element, which
+                           will be the first element
+                           of the sublist if |split()|
+                           returns |true|." 
+                      X element, 
+                      doc "The elements to the left,
+                           beginning with the immediately
+                           adjacent element." 
+                      X[] left, 
+                      doc "The elements to the right,
+                           beginning with the immediately
+                           adjacent element." 
+                      X[] right
+                  )
+              );
     
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
@@ -1312,7 +1338,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         
         </section>
             
-        <section>
+        <section id="maps">
             <title>Maps</title>
             
             <para>Maps implement the following interface:</para>
@@ -1372,7 +1398,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
         </section>
         
-        <section>
+        <section id="bags">
             <title>Bags</title>
             
             <para>Bags implement the following interface:</para>
