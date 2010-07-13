@@ -195,12 +195,12 @@ if __name__ == "__main__":
     tokens = [(token.name, token) for token in get_tokens()]
     tokens.sort()
     for name, token in tokens:
-        if name in ("ABSTRACT_MEMBER_DECL", "INIT_EXPR"):
+        if name == "ABSTRACT_MEMBER_DECL":
             print "    classes.put(CeylonParser.%s," % name
             print "                %s.class);" % token.klass
         elif name != "COMPILATION_UNIT":
-            print "    classes.put(CeylonParser.%-22s %s.class);" % (
-                name + ",", token.klass)
+            print "    classes.put(CeylonParser.%s, %s.class);" % (
+                name, token.klass)
     tokens = [(token.klass, token) for name, token in tokens]
     tokens.sort()
     print
