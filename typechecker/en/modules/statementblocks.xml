@@ -515,6 +515,30 @@ else {
         <literal>Optional&lt;T&gt;</literal> to <literal>T</literal> before generating bytecode.
         So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
         by the virtual machine.</para>
+        
+        <comment><para>TODO: should we have a new kind of condition which directly compares types,
+        allowing you to treat multiple variables as having the tested type inside the block, for 
+        example:</para>
+        <programlisting>List&lt;X&gt; xs = ...;
+X x = ...;
+if (X satisfies Comparable&lt;X&gt;) {
+    X x0;
+    if (exists X first = xs.first) {
+        x0 = max(x, first);
+    }
+    else {
+        x0 = x;
+    }
+    return forAll(X y in xs) every (x&lt;=x0)
+}</programlisting>
+        <programlisting>String string&lt;P...&gt;(Tuple&lt;P...&gt; tuple) {
+    if (T, Q... satisfies P...) {
+        return $tuple.head + ", " + string(tuple.tail);
+    }
+    else {
+        return ";"
+    }
+}</programlisting></comment>
 
         </section>
         

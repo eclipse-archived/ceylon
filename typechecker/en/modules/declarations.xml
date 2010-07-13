@@ -665,6 +665,17 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>Method&lt;X, T, P...&gt;</programlisting>
         
+        <comment><para>TODO: should we let you declare a variant varargs type parameter?
+        This is useful for modelling tuples.</para></comment>
+        
+        <comment><para>TODO: should we let you write things like:</para>
+        <programlisting>class Foo&lt;P...&gt;(Tuple&lt;Bar&lt;P&gt;...&gt; barTup) {
+    ...
+    void baz(Baz&lt;P&gt;... bazs) {
+        ...
+    }
+}</programlisting></comment>
+        
     </section>
 
     <section id="typeargumentlist">
@@ -1083,6 +1094,13 @@ where Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     
         <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
         down to the <literal>where</literal> clause?</para></comment>
+        
+        <comment><para>TODO: should we let you declare a constraint for a varargs type 
+        parameter?</para>
+        <programlisting>class Foo&lt;P...&gt;(P... args) 
+        where P satisfies Comparable&lt;P&gt; {
+    ...
+}</programlisting></comment>
     
     </section>
     
