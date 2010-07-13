@@ -542,10 +542,17 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 
         <para>An iterator is used according to the following idiom:</para>
         
-        <programlisting><![CDATA[Object? next() = list.iterator();
-while (exists Object o = next()) {
-    doSomething(o);
-}]]></programlisting>
+        <programlisting>Object? next() = list.iterator();
+while (exists Object x = next()) {
+    doSomething(x);
+}</programlisting>
+
+        <para>This looks cleaner with type inference:</para>
+        
+        <programlisting>local next = list.iterator(); 
+while (exists local x = next()) {
+    doSomething(x);
+}</programlisting>
 
     </section>
     
