@@ -1961,11 +1961,18 @@ public User(String username, Person person);</programlisting>
 }</programlisting>
 
         <programlisting>public void print(Object... objects) {
-    for (Object object in objects) { log.info($object); }
+    for (Object object in objects) {
+        log.info($object);
+    }
 }</programlisting>
 
         <programlisting>public void addEntry(V key -> U value) {
     map.define(key,value);
+}</programlisting>
+
+        <programlisting>public Set&lt;T&gt; singleton&lt;T&gt;(T element) 
+        where T satisfies Comparable&lt;T&gt; {
+    return TreeSet(element)
 }</programlisting>
 
         <para>Note that a method which declares the return type <literal>Void</literal>
