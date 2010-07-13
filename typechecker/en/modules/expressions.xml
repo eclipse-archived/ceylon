@@ -914,6 +914,15 @@ Comparison comp = order(1,-1);</programlisting>
         <programlisting>local order(Natural x, Natural y) = getOrder();
 local comp = order(1,-1);</programlisting>
 
+        <para>Or, if we don't need parameter names, we don't need to explicitly declare the 
+        parameter list:</para>
+
+        <programlisting>local order = getOrder();
+local comp = order(1,-1);</programlisting>
+
+        <para>In this case, <literal>order</literal> is actually not a method at all&mdash;it's
+        just a local of type <literal>Callable&lt;Comparison,Natural,Natural&gt;</literal>.</para>
+
         <para>Of course, more than one argument list may be specified in a single expression:</para>
         
         <programlisting>Comparison comp = getOrder(true)(10, 100);</programlisting>
