@@ -395,6 +395,10 @@ Description doc(String description) {
         even if <literal>X</literal> is not a subtype of <literal>Y</literal> if there is 
         an enabled extension which introduces <literal>Y</literal> to <literal>X</literal>.</para>
         
+        <comment><para>TODO: are we really, truly going to make extensions transitive?
+        That would involve the compiler searching for extension chains. But if not, 
+        assignability would not transitive.</para></comment>
+        
         <para>Types are identified by the name of the type (a class, interface, alias or 
         type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
