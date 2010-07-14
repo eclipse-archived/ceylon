@@ -56,7 +56,7 @@
             (RET_STMT
               (EXPR
                 (EXPR
-                  (MEMBER_NAME mutableAttribute) DOT
+                  (MEMBER_NAME mutableAttribute) .
                   (MEMBER_NAME uppercase))))))
         (MEMBER_DECL
           (ATTRIBUTE_SETTER
@@ -67,7 +67,7 @@
                 (MEMBER_NAME mutableAttribute)
                 (EXPR
                   (EXPR
-                    (MEMBER_NAME attribute) DOT
+                    (MEMBER_NAME attribute) .
                     (MEMBER_NAME lowercase)))))))
         (MEMBER_DECL
           (MEMBER_TYPE
@@ -83,7 +83,7 @@
               (INIT_EXPR
                 (EXPR
                   (EXPR
-                    (MEMBER_NAME mutableAttribute) DOT
+                    (MEMBER_NAME mutableAttribute) .
                     (MEMBER_NAME uppercase)))))
             (RET_STMT
               (EXPR
@@ -105,7 +105,7 @@
                 (MEMBER_NAME mutableAttribute)
                 (EXPR
                   (EXPR
-                    (MEMBER_NAME value) DOT
+                    (MEMBER_NAME value) .
                     (MEMBER_NAME lowercase)))))))
         (MEMBER_DECL
           (MEMBER_TYPE
@@ -127,7 +127,7 @@
                 (RET_STMT
                   (EXPR
                     (EXPR
-                      (MEMBER_NAME param) DOT
+                      (MEMBER_NAME param) .
                       (MEMBER_NAME uppercase))))))
             (RET_STMT
               (EXPR
@@ -155,7 +155,7 @@
                 (RET_STMT
                   (EXPR
                     (EXPR
-                      (MEMBER_NAME param) DOT
+                      (MEMBER_NAME param) .
                       (MEMBER_NAME lowercase))))))
             (EXPR
               (:=
@@ -190,7 +190,7 @@
                     (INIT_EXPR
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME param) DOT
+                          (MEMBER_NAME param) .
                           (MEMBER_NAME uppercase))))))))
             (RET_STMT
               (EXPR
@@ -199,7 +199,7 @@
                   (CALL_EXPR
                     (ARG_LIST
                       (EXPR
-                        (MEMBER_NAME mutableAttribute)))) DOT
+                        (MEMBER_NAME mutableAttribute)))) .
                   (MEMBER_NAME value))))))
         (MEMBER_DECL
           (ATTRIBUTE_SETTER
@@ -222,7 +222,7 @@
                     (INIT_EXPR
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME param) DOT
+                          (MEMBER_NAME param) .
                           (MEMBER_NAME lowercase))))))))
             (EXPR
               (:=
@@ -233,7 +233,7 @@
                     (CALL_EXPR
                       (ARG_LIST
                         (EXPR
-                          (MEMBER_NAME attributeWithNestedClass)))) DOT
+                          (MEMBER_NAME attributeWithNestedClass)))) .
                     (MEMBER_NAME value)))))))
         (MEMBER_DECL
           (MEMBER_TYPE

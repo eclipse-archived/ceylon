@@ -79,7 +79,7 @@
                       (MEMBER_NAME count)
                       (EXPR
                         (EXPR
-                          (MEMBER_NAME countAsString) DOT
+                          (MEMBER_NAME countAsString) .
                           (MEMBER_NAME parseNatural))))))))))
         (TYPE_DECL
           (CLASS_DECL

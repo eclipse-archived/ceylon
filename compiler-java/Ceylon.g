@@ -711,8 +711,7 @@ selector
     ;
 
 member
-    : '.' nameAndTypeArguments -> DOT  nameAndTypeArguments
-    | ('?.' | '*.') nameAndTypeArguments
+    : ('.' | '?.' | '*.') nameAndTypeArguments
     ;
 
 nameAndTypeArguments

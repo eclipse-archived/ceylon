@@ -209,7 +209,7 @@
         (EXPR
           (EXPR
             (TYPE_NAME Foo)
-            (CALL_EXPR ARG_LIST) DOT
+            (CALL_EXPR ARG_LIST) .
             (MEMBER_NAME instanceMethod)
             (CALL_EXPR
               (ARG_LIST
@@ -218,7 +218,7 @@
         (EXPR
           (EXPR
             (TYPE_NAME Foo)
-            (CALL_EXPR ARG_LIST) DOT
+            (CALL_EXPR ARG_LIST) .
             (MEMBER_NAME instanceMethod)
             (CALL_EXPR
               (ARG_LIST
@@ -247,7 +247,7 @@
         (EXPR
           (EXPR
             (TYPE_NAME Foo)
-            (CALL_EXPR ARG_LIST) DOT
+            (CALL_EXPR ARG_LIST) .
             (TYPE_NAME Baz)
             (CALL_EXPR
               (ARG_LIST
@@ -256,7 +256,7 @@
         (EXPR
           (EXPR
             (TYPE_NAME Foo)
-            (CALL_EXPR ARG_LIST) DOT
+            (CALL_EXPR ARG_LIST) .
             (TYPE_NAME Baz)
             (CALL_EXPR
               (ARG_LIST
