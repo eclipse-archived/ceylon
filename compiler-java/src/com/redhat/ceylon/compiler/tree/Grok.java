@@ -73,12 +73,7 @@ public class Grok extends CeylonTree.Visitor {
         current.context.setName(name.name);
     }
     
-    public void visit(CeylonTree.UIdentifier id) {
-        current.context.setName(id.token.getText());
-        inner(id);
-    }
-    
-    public void visit(CeylonTree.LIdentifier id) {
+    public void visit(CeylonTree.Identifier id) {
         current.context.setName(id.token.getText());
         inner(id);
     }
