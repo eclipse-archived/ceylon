@@ -835,16 +835,16 @@ while (exists local x = next()) {
                         return Entry(index++, x)
                     }
                     else {
-                        return null;
+                        return null
                     
                     }
                 } 
             }
-            return EntryIterator().next;
+            return EntryIterator().next
         }
     }
     
-    return SequenceEntryIterable();
+    return SequenceEntryIterable()
 }]]></programlisting>
         
         <para>The compiler is permitted to optimize away the call to 
@@ -877,7 +877,7 @@ public S join<S,T>(S... sequences)
                     return inner()
                 }
             }
-            return JoinedIterator().next;
+            return JoinedIterator().next
         }
     }
 
@@ -911,7 +911,7 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
                     }
                 }
             }
-            return SubrangeIterator().next;
+            return SubrangeIterator().next
         }
     }
 
