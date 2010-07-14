@@ -18,6 +18,12 @@ public abstract class CeylonTree {
 	}
 	
 	interface Declaration {
+		void setParameterList(List<FormalParameter> theList);
+
+	}
+	
+	interface IType {
+		void setType (IType type);
 	}
 	
   /**
@@ -293,13 +299,23 @@ public abstract class CeylonTree {
    * This node's parent and children.
    */
   public CeylonTree parent;
+
   public List<CeylonTree> children;
   
   public List<Annotation> annotations;
   
   public List<ClassDeclaration> classDecls;
+
   public List<InterfaceDeclaration> interfaceDecls;
 
+  public List<MethodDeclaration> methods;
+  
+  public String name;
+  
+  void setName(String name) {
+	  this.name = name;
+  }
+  
   void add (ClassDeclaration decl)
   {
 	  if (classDecls == null)
@@ -312,6 +328,13 @@ public abstract class CeylonTree {
 	  if (interfaceDecls == null)
 		  interfaceDecls = List.<InterfaceDeclaration>nil();
 	  interfaceDecls = interfaceDecls.append(decl);
+  }
+  
+  void add (MethodDeclaration decl)
+  {
+	  if (methods == null)
+		  methods = List.<MethodDeclaration>nil();
+	  methods = methods.append(decl);
   }
   
   public void add(Declaration t) {
@@ -328,10 +351,6 @@ public abstract class CeylonTree {
 	  if (annotations == null)
 		  annotations = List.<Annotation>nil();
 	  annotations.append(ann);
-  }
-  
-  public void setName(String name) {
-	  throw new RuntimeException();
   }
   
   /**
@@ -454,6 +473,7 @@ public abstract class CeylonTree {
     public void visit(MemberDeclaration that)         { visitDefault(that); }
     public void visit(MemberName that)                { visitDefault(that); }
     public void visit(MemberType that)                { visitDefault(that); }
+    public void visit(MethodDeclaration that)         { visitDefault(that); }
     public void visit(Minus that)                     { visitDefault(that); }
     public void visit(MinusEqual that)                { visitDefault(that); }
     public void visit(Module that)                    { visitDefault(that); }
@@ -550,6 +570,9 @@ public abstract class CeylonTree {
     public void visitDefault(CeylonTree tree) {
       throw new RuntimeException();
     }
+    
+    // Synthetic tree nodes generated during analysis
+	public void visit(MethodType that)          { visitDefault(that); }
   }
 
   /**
@@ -594,12 +617,22 @@ public abstract class CeylonTree {
     * An alias declaration
     */
   public static class AliasDeclaration extends CeylonTree implements Declaration {
+	 
 		public void setVisibility(CeylonTree v) {
 			// TODO
 		}
 
     public void accept(Visitor v) { v.visit(this); }
-  }
+
+	public void setName(MemberName name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setParameterList(List<FormalParameter> theList) {
+		throw new RuntimeException();
+	}
+ }
 
   /**
     * The symbol "&&"
@@ -813,7 +846,9 @@ public abstract class CeylonTree {
     * A class declaration
     */
   public static class ClassDeclaration extends CeylonTree implements Declaration {
-	public void setVisibility(CeylonTree v) {			
+	  List<FormalParameter> params;
+	  
+	  public void setVisibility(CeylonTree v) {			
 	}
 	public String name;
 	public void setName(String name) {
@@ -821,6 +856,14 @@ public abstract class CeylonTree {
 	}
 	
     public void accept(Visitor v) { v.visit(this); }
+
+	public void setName(MemberName name) {
+		throw new RuntimeException();		
+	}
+
+	public void setParameterList(List<FormalParameter> p) {
+		params = p;				
+	}
   }
 
   /**
@@ -1103,6 +1146,12 @@ public abstract class CeylonTree {
     * A list of formal parameters
     */
   public static class FormalParameterList extends CeylonTree {
+	  public List<FormalParameter> theList = List.<FormalParameter>nil();
+	  
+	  public void addFormalParameter(FormalParameter p) {
+		  theList = theList.append(p);
+	  }
+	  
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -1247,6 +1296,15 @@ public abstract class CeylonTree {
 		}
 
     public void accept(Visitor v) { v.visit(this); }
+
+	public void setName(MemberName name) {
+		throw new RuntimeException();
+		
+	}
+
+	public void setParameterList(List<FormalParameter> p) {
+		throw new RuntimeException();		
+	}
   }
 
   /**
@@ -1270,6 +1328,10 @@ public abstract class CeylonTree {
 		public void setVisibility(CeylonTree v) {			
 		}
    public void accept(Visitor v) { v.visit(this); }
+   public void setParameterList(List<FormalParameter> p) {
+	throw new RuntimeException();
+	
+}
   }
 
   /**
@@ -1364,8 +1426,20 @@ public abstract class CeylonTree {
   /**
     * A member declaration
     */
-  public static class MemberDeclaration extends CeylonTree {
+  public static class MemberDeclaration extends CeylonTree implements Declaration {
+	  public IType type;
+	  public MemberName name;
+	  public List<FormalParameter> params;
+	  
+	  public void setName(MemberName name) {
+		  this.name = name;
+	  }
+	  
     public void accept(Visitor v) { v.visit(this); }
+
+	public void setParameterList(List<FormalParameter> p) {
+		params = p;
+	}
   }
 
   /**
@@ -1378,8 +1452,40 @@ public abstract class CeylonTree {
   /**
     * A member type
     */
-  public static class MemberType extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+  public static class MemberType extends CeylonTree implements IType {
+    IType type;
+	  
+	  public void accept(Visitor v) { v.visit(this); }
+
+	public void setType(IType type) {
+		this.type = type;
+	}
+  }
+
+  public static class MethodType extends CeylonTree implements IType {
+	  public List<FormalParameter> formalParameters;
+	  public IType returnType;
+	  
+		  public void accept(Visitor v) { v.visit(this); }
+
+		public void setType(IType type) {
+			this.returnType = type;
+		}
+	  }
+  
+  public static class MethodDeclaration extends CeylonTree implements Declaration {
+	  public IType type;
+	  public List<FormalParameter> params;
+	  
+		public void setType(IType type) {
+			this.type = type;
+		}
+
+		public void accept(Visitor v) { v.visit(this); }
+
+		public void setParameterList(List<FormalParameter> theList) {
+			params = theList;
+		}
   }
 
   /**
@@ -1567,14 +1673,14 @@ public abstract class CeylonTree {
   /**
     * The word "private"
     */
-  public static class Private extends CeylonTree {
+  public static class Private extends CeylonTree implements Annotation {
     public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
     * The word "public"
     */
-  public static class Public extends CeylonTree {
+  public static class Public extends CeylonTree implements Annotation {
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -1896,8 +2002,14 @@ public abstract class CeylonTree {
   /**
     * A type
     */
-  public static class Type extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+  public static class Type extends CeylonTree implements IType {
+	    IType type;
+		  
+		  public void accept(Visitor v) { v.visit(this); }
+
+		public void setType(IType type) {
+			this.type = type;		
+	}
   }
 
   /**
@@ -1928,6 +2040,10 @@ public abstract class CeylonTree {
 		public void setVisibility(CeylonTree v) {			
 		}
 	  public void accept(Visitor v) { v.visit(this); }
+	
+	  public void setParameterList(List<FormalParameter> p) {
+		throw new RuntimeException();		
+	}
   }
 
   /**
@@ -2001,8 +2117,14 @@ public abstract class CeylonTree {
   /**
     * The word "void"
     */
-  public static class Void extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+  public static class Void extends CeylonTree implements IType {
+	    IType type;
+		  
+		  public void accept(Visitor v) { v.visit(this); }
+
+		public void setType(IType type) {
+			throw new RuntimeException();
+	}
   }
 
   /**

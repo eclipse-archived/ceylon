@@ -116,7 +116,79 @@ public class Grok extends CeylonTree.Visitor {
 	
 	@Override
 	public void visit(CeylonTree.Public v) {
+		current.context.add(v);		
 		// ((CeylonTree.Declaration)current.context).setVisibility(v);
+	}
+	
+	public void visit(CeylonTree.MemberDeclaration member)
+	{
+		// We don't know if this is going to be a method or a field.
+		// We resolve this by saying if it has an arg list, it's a method.
+		current.push(member);
+		inner(member);
+		current.pop();
+		if (member.params != null) {
+			CeylonTree.MethodType methodType = new CeylonTree.MethodType();
+			methodType.formalParameters = member.params;
+			methodType.returnType = member.type;
+			member.type = methodType;
+			CeylonTree.MethodDeclaration decl = new CeylonTree.MethodDeclaration();
+			decl.setParameterList(member.params);
+			decl.setType(methodType);
+			decl.setName(member.name.name);
+			current.context.add(decl);	
+		} else {
+			current.context.add(member);
+		}
+	}
+	
+	public void visit(CeylonTree.MemberName member)
+	{
+		current.push(member);
+		inner(member);
+		current.pop();
+	}
+	
+	public void visit(CeylonTree.MemberType type)
+	{
+		current.push(type);
+		inner(type);
+		current.pop();
+		CeylonTree.MemberDeclaration decl = (CeylonTree.MemberDeclaration)current.context;
+		decl.type = type;
+	}
+	
+	public void visit(CeylonTree.Void v)
+	{
+		CeylonTree.IType type = (CeylonTree.IType)current.context;
+		type.setType(v);
+	}
+	
+	public void visit(CeylonTree.Type type) {
+		inner(type);
+	}
+	
+	public void visit(CeylonTree.FormalParameterList list) {
+		current.push(list);
+		inner(list);
+		current.pop();
+		CeylonTree.Declaration decl = (CeylonTree.Declaration)current.context;
+		decl.setParameterList(list.theList);
+	}
+	
+	public void visit(CeylonTree.FormalParameter p) {
+		current.push(p);
+		inner(p);
+		current.pop();
+		CeylonTree.FormalParameterList l = (CeylonTree.FormalParameterList)current.context;
+		l.addFormalParameter(p);
+	}
+	
+	public void visit(CeylonTree.ArgumentName name) {
+		current.push(name);
+		inner(name);
+		current.pop();
+		current.context.setName(name.name);
 	}
 	
 	void inner(CeylonTree t) {
