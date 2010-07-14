@@ -1,7 +1,8 @@
 public class Test (Float f)
 {
-  void p() { Integer arse ;  
+  void p() { }
+Integer arse ;  
 Integer pp (Integer one) { 
 } 
 }
-}
+

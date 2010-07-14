@@ -19,7 +19,7 @@ public abstract class CeylonTree {
 	
 	interface Declaration {
 		void setParameterList(List<FormalParameter> theList);
-
+		void setType(IType type);
 	}
 	
 	interface IType {
@@ -310,6 +310,8 @@ public abstract class CeylonTree {
 
   public List<MethodDeclaration> methods;
   
+  public List <MemberDeclaration> members;
+  
   public String name;
   
   void setName(String name) {
@@ -337,12 +339,27 @@ public abstract class CeylonTree {
 	  methods = methods.append(decl);
   }
   
+ void add (MemberDeclaration decl)
+  {
+	  if (members == null)
+		  members = List.<MemberDeclaration>nil();
+	  members = members.append(decl);
+  }
+  
+ void setType(IType t) {
+	  throw new RuntimeException();
+ }
+ 
   public void add(Declaration t) {
 	  // FIXME: Do this properly
 	  if (ClassDeclaration.class.isAssignableFrom(t.getClass()))
 		  add ((ClassDeclaration)t);
 	  else if (InterfaceDeclaration.class.isAssignableFrom(t.getClass()))
 		  add ((InterfaceDeclaration)t);
+	  else if (MethodDeclaration.class.isAssignableFrom(t.getClass()))
+		  add ((MethodDeclaration)t);
+	  else if (MemberDeclaration.class.isAssignableFrom(t.getClass()))
+		  add ((MemberDeclaration)t);
 	  else
 		  throw new RuntimeException();
   }
@@ -625,12 +642,17 @@ public abstract class CeylonTree {
     public void accept(Visitor v) { v.visit(this); }
 
 	public void setName(MemberName name) {
-		// TODO Auto-generated method stub
+		throw new RuntimeException();
 		
 	}
 
 	public void setParameterList(List<FormalParameter> theList) {
 		throw new RuntimeException();
+	}
+
+	public void setType(IType type) {
+		throw new RuntimeException();
+		
 	}
  }
 
@@ -863,6 +885,11 @@ public abstract class CeylonTree {
 
 	public void setParameterList(List<FormalParameter> p) {
 		params = p;				
+	}
+
+	public void setType(IType type) {
+		throw new RuntimeException();
+		
 	}
   }
 
@@ -1138,8 +1165,18 @@ public abstract class CeylonTree {
   /**
     * A formal parameter
     */
-  public static class FormalParameter extends CeylonTree {
+  public static class FormalParameter extends CeylonTree implements Declaration {
+	IType type;
+	  
     public void accept(Visitor v) { v.visit(this); }
+    
+    public void setType(IType type) {
+    	this.type = type;
+    }
+
+	public void setParameterList(List<FormalParameter> theList) {
+		throw new RuntimeException();	
+	}
   }
 
   /**
@@ -1305,6 +1342,11 @@ public abstract class CeylonTree {
 	public void setParameterList(List<FormalParameter> p) {
 		throw new RuntimeException();		
 	}
+
+	public void setType(IType type) {
+		throw new RuntimeException();
+		
+	}
   }
 
   /**
@@ -1331,7 +1373,12 @@ public abstract class CeylonTree {
    public void setParameterList(List<FormalParameter> p) {
 	throw new RuntimeException();
 	
-}
+   }
+   
+   public void setType(IType type) {
+	throw new RuntimeException();
+	
+   }	
   }
 
   /**
@@ -1428,17 +1475,21 @@ public abstract class CeylonTree {
     */
   public static class MemberDeclaration extends CeylonTree implements Declaration {
 	  public IType type;
-	  public MemberName name;
 	  public List<FormalParameter> params;
 	  
 	  public void setName(MemberName name) {
-		  this.name = name;
+		  this.name = name.name;
 	  }
 	  
     public void accept(Visitor v) { v.visit(this); }
 
 	public void setParameterList(List<FormalParameter> p) {
 		params = p;
+	}
+
+	public void setType(IType type) {
+		this.type = type;
+		
 	}
   }
 
@@ -2043,6 +2094,10 @@ public abstract class CeylonTree {
 	
 	  public void setParameterList(List<FormalParameter> p) {
 		throw new RuntimeException();		
+	}
+	public void setType(IType type) {
+		throw new RuntimeException();
+		
 	}
   }
 

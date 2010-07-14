@@ -135,7 +135,7 @@ public class Grok extends CeylonTree.Visitor {
 			CeylonTree.MethodDeclaration decl = new CeylonTree.MethodDeclaration();
 			decl.setParameterList(member.params);
 			decl.setType(methodType);
-			decl.setName(member.name.name);
+			decl.setName(member.name);
 			current.context.add(decl);	
 		} else {
 			current.context.add(member);
@@ -147,6 +147,7 @@ public class Grok extends CeylonTree.Visitor {
 		current.push(member);
 		inner(member);
 		current.pop();
+		current.context.setName(member.name);
 	}
 	
 	public void visit(CeylonTree.MemberType type)
@@ -160,12 +161,12 @@ public class Grok extends CeylonTree.Visitor {
 	
 	public void visit(CeylonTree.Void v)
 	{
-		CeylonTree.IType type = (CeylonTree.IType)current.context;
-		type.setType(v);
+		current.context.setType(v);
 	}
 	
 	public void visit(CeylonTree.Type type) {
 		inner(type);
+		current.context.setType(type);
 	}
 	
 	public void visit(CeylonTree.FormalParameterList list) {
