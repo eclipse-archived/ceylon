@@ -3061,6 +3061,16 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         <literal>override (OtherIntroducedType.member)</literal> to resolve an ambiguity like 
         this.</para></comment>
         
+        <comment><para>TODO: We need to make the following idiom work:</para>
+        <programlisting>public extension Foo toFoo(Bar bar) {
+    if (is Foo bar) { 
+        return bar //it is already a Foo, use its customized implementation
+    } 
+    else { 
+        return FooImpl(bar) //provide an implementation of Foo
+    }   
+}</programlisting></comment>
+        
         <para>When an invocation of an introduced method or evaluation of an introduced attribute 
         is executed, or when an instance of the extended type is assigned to a program element
         of the introduced type, the extension is invoked to produce an instance of the introduced

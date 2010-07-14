@@ -470,6 +470,14 @@ else {
                 <literal>Optional&lt;X&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>Note: I suppose we could have a <literal>nonempty</literal> condition on 
+        a <literal>Sequence&lt;X&gt;</literal> let you treat <literal>seq.first</literal> and
+        <literal>seq.last</literal> as type <literal>X</literal> instead of <literal>X?</literal>,
+        but the danger is that the list could change underneath us. And we do already have the idiom 
+        <literal>if (exists X first = seq.first) { doSomething(first); }</literal> which is only 
+        a little more verbose than <literal>if (nonempty seq) { doSomething(seq.first); }</literal>
+        </para></comment>
                         
         <para>For <literal>is</literal> conditions:</para>
         
