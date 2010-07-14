@@ -872,7 +872,7 @@ public S join<S,T>(S... sequences)
                 mutable Callable<T?> inner := none.iterator();
                 T? next() {
                     while (!innerIter.more && outerIter.more) {
-                        inner := outer().iterator()
+                        inner := outer().iterator();
                     }
                     return inner()
                 }
