@@ -1,6 +1,3 @@
 syntax: glob
-output
-regtest/build
-src/com/redhat/ceylon/compiler/parser/Ceylon.tokens
-src/com/redhat/ceylon/compiler/parser/CeylonLexer.java
-src/com/redhat/ceylon/compiler/parser/CeylonParser.java
+build
+src/com/redhat/ceylon/compiler/parser

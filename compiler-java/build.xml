@@ -1,7 +1,7 @@
 <project name="MyProject" default="test" basedir=".">
 
   <!-- The directory containing java source files -->
-  <property name="java.src" location="../src"/>
+  <property name="java.src" location="src"/>
 
   <!-- The directory everything gets built into -->
   <property name="build" location="build"/>
@@ -14,13 +14,13 @@
        from it end up in, and the ANTLR jar
        file we'll use to generate one from
        the other -->
-  <property name="antlr.src" location="../Ceylon.g"/>
-  <property name="antlr.dst" location="../src/com/redhat/ceylon/compiler/parser"/>
-  <property name="antlr.lib" location="../lib/antlrworks-1.3.1.jar"/>
+  <property name="antlr.src" location="Ceylon.g"/>
+  <property name="antlr.dst" location="src/com/redhat/ceylon/compiler/parser"/>
+  <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
 
   <!-- The directory that tests live in, and the
        directory test results get written into -->
-  <property name="test.src" location="../corpus/tests"/>
+  <property name="test.src" location="corpus/tests"/>
   <property name="test.dst" location="${build}/test"/>
 
   <!-- Rules to build parser classes from the ANTLR grammar -->
@@ -83,5 +83,6 @@
   <!-- Rule to clean everything up -->
   <target name="clean">
     <delete dir="${build}"/>
+    <delete dir="${antlr.dst}"/>
   </target>
 </project>
