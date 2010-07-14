@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.tree;
 
+import java.math.BigInteger;
+
 import com.sun.tools.javac.util.*;
 
 public class Grok extends CeylonTree.Visitor {
@@ -84,7 +86,10 @@ public class Grok extends CeylonTree.Visitor {
     }
     
     public void visit(CeylonTree.StatementList stmts) {
+        current.push(stmts);
         inner(stmts);
+        current.pop();
+        current.context.append(stmts);
     }
     
     public void visit(CeylonTree.AnnotationList list) {
@@ -117,7 +122,7 @@ public class Grok extends CeylonTree.Visitor {
     @Override
         public void visit(CeylonTree.Public v) {
         current.context.add(v);     
-        // ((CeylonTree.Declaration)current.context).setVisibility(v);
+        // TODO ((CeylonTree.Declaration)current.context).setVisibility(v);
     }
     
     public void visit(CeylonTree.MemberDeclaration member)
@@ -136,6 +141,7 @@ public class Grok extends CeylonTree.Visitor {
             decl.setParameterList(member.params);
             decl.setType(methodType);
             decl.setName(member.name);
+            decl.stmts = member.stmts;
             current.context.add(decl);  
         } else {
             current.context.add(member);
@@ -192,7 +198,45 @@ public class Grok extends CeylonTree.Visitor {
         current.context.setName(name.name);
     }
     
-    void inner(CeylonTree t) {
+    public void visit(CeylonTree.ReturnStatement stmt) {
+        current.push(stmt);
+        inner(stmt);
+        current.pop();
+        current.context.append(stmt);
+    }
+    
+    public void visit(CeylonTree.Expression expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.IntConstant expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.FloatConstant expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.StringConstant expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.NaturalLiteral lit) {
+        lit.value = new BigInteger(lit.token.getText());
+        current.context.append(lit);
+    }
+    
+    public void visit(CeylonTree.FloatLiteral lit) {
+        lit.value = Float.valueOf(lit.token.getText());
+        current.context.append(lit);
+    }
+    
+    public void visit(CeylonTree.SimpleStringLiteral lit) {
+        lit.value = lit.token.getText();
+        current.context.append(lit);
+    }
+    
+     void inner(CeylonTree t) {
         for (CeylonTree child : t.children)
             child.accept(this);     
     }   

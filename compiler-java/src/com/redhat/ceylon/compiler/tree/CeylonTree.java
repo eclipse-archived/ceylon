@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.tree;
 
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -349,7 +350,11 @@ public abstract class CeylonTree {
     void setType(IType t) {
         throw new RuntimeException();
     }
- 
+
+    void append(CeylonTree expr) {
+        throw new RuntimeException();
+    }
+    
     public void add(Declaration t) {
         // FIXME: Do this properly
         if (ClassDeclaration.class.isAssignableFrom(t.getClass()))
@@ -868,8 +873,15 @@ public abstract class CeylonTree {
      * A class declaration
      */
     public static class ClassDeclaration extends CeylonTree implements Declaration {
-        List<FormalParameter> params;
-      
+        public List<FormalParameter> params;
+        public List<CeylonTree> stmts;
+
+        public void append(CeylonTree stmt) {
+            if (stmts == null)
+                stmts = List.<CeylonTree>nil();
+            stmts = stmts.append(stmt);
+        }
+          
         public void setVisibility(CeylonTree v) {           
         }
         public String name;
@@ -930,9 +942,15 @@ public abstract class CeylonTree {
             if (pendingAnnotations == null)
                 pendingAnnotations = List.<Annotation>nil();
             pendingAnnotations.append(ann);
-          
         }
 
+        void add (ClassDeclaration decl)
+        {
+            if (classDecls == null)
+                classDecls = List.<ClassDeclaration>nil();
+            classDecls = classDecls.append(decl);
+        }
+        
         List<CeylonTree.ImportDeclaration> importDeclarations;
       
         public void accept(Visitor v) { v.visit(this); }
@@ -1131,6 +1149,7 @@ public abstract class CeylonTree {
      * A float literal
      */
     public static class FloatLiteral extends CeylonTree {
+        double value;
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1476,7 +1495,14 @@ public abstract class CeylonTree {
     public static class MemberDeclaration extends CeylonTree implements Declaration {
         public IType type;
         public List<FormalParameter> params;
-      
+        public List<CeylonTree> stmts;
+        
+        public void append(CeylonTree stmt) {
+            if (stmts == null)
+                stmts = List.<CeylonTree>nil();
+            stmts = stmts.append(stmt);
+        }
+        
         public void setName(MemberName name) {
             this.name = name.name;
         }
@@ -1527,6 +1553,8 @@ public abstract class CeylonTree {
     public static class MethodDeclaration extends CeylonTree implements Declaration {
         public IType type;
         public List<FormalParameter> params;
+        
+        public List<CeylonTree> stmts;
       
         public void setType(IType type) {
             this.type = type;
@@ -1599,6 +1627,8 @@ public abstract class CeylonTree {
      * A natural literal
      */
     public static class NaturalLiteral extends CeylonTree {
+        public BigInteger value; 
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1816,6 +1846,14 @@ public abstract class CeylonTree {
      * A return statement
      */
     public static class ReturnStatement extends CeylonTree {
+        CeylonTree expr;
+        
+        void append(CeylonTree expr) {
+            if (this.expr != null)
+                throw new RuntimeException();
+            this.expr = expr;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1886,6 +1924,8 @@ public abstract class CeylonTree {
      * A simple string literal
      */
     public static class SimpleStringLiteral extends CeylonTree {
+        public String value;
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1907,6 +1947,12 @@ public abstract class CeylonTree {
      * A list of statements
      */
     public static class StatementList extends CeylonTree {
+        List<CeylonTree> stmts = List.<CeylonTree>nil();
+        
+        public void append(CeylonTree t) {
+            stmts = stmts.append(t);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
