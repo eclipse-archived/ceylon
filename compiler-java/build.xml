@@ -17,6 +17,7 @@
   <property name="antlr.src" location="Ceylon.g"/>
   <property name="antlr.dst" location="src/com/redhat/ceylon/compiler/parser"/>
   <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
+  <property name="tools.lib" location="/local/lambda/build/linux-amd64/lib/tools.jar"/>
 
   <!-- The directory that tests live in, and the
        directory test results get written into -->
@@ -51,11 +52,12 @@
   <!-- Rule to build test classes from their Java sources -->
   <target name="test.classes" depends="antlr">
     <mkdir dir="${classes}"/>
+    <echo message="${antlr.lib}:${tools.lib}"/>
     <javac
        srcdir="${java.src}"
        destdir="${classes}"
        debug="true"
-       classpath="${antlr.lib}">
+       classpath="${antlr.lib}:${tools.lib}">
     </javac>
   </target>
 

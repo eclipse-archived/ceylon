@@ -14,11 +14,10 @@ import com.sun.tools.javac.util.ListBuffer;
 
 public abstract class CeylonTree {
   
-	public interface Annotation {
+	interface Annotation {
 	}
 	
-	public interface Declaration {
-		void setVisibility(CeylonTree v);
+	interface Declaration {
 	}
 	
   /**
@@ -298,19 +297,37 @@ public abstract class CeylonTree {
   
   public List<Annotation> annotations;
   
-  public List<ClassDeclaration> enclosedClasses;
-  
-  public void addClass(ClassDeclaration t) {
-	  if (enclosedClasses == null)
-		  enclosedClasses = List.<ClassDeclaration>nil();
-	  enclosedClasses = enclosedClasses.append(t);
+  public List<ClassDeclaration> classDecls;
+  public List<InterfaceDeclaration> interfaceDecls;
+
+  void add (ClassDeclaration decl)
+  {
+	  if (classDecls == null)
+		  classDecls = List.<ClassDeclaration>nil();
+	  classDecls = classDecls.append(decl);
   }
   
-  public void addAnnotation(Annotation ann) {
+  void add (InterfaceDeclaration decl)
+  {
+	  if (interfaceDecls == null)
+		  interfaceDecls = List.<InterfaceDeclaration>nil();
+	  interfaceDecls = interfaceDecls.append(decl);
+  }
+  
+  public void add(Declaration t) {
+	  // FIXME: Do this properly
+	  if (ClassDeclaration.class.isAssignableFrom(t.getClass()))
+		  add ((ClassDeclaration)t);
+	  else if (InterfaceDeclaration.class.isAssignableFrom(t.getClass()))
+		  add ((InterfaceDeclaration)t);
+	  else
+		  throw new RuntimeException();
+  }
+  
+  public void add(Annotation ann) {
 	  if (annotations == null)
 		  annotations = List.<Annotation>nil();
 	  annotations.append(ann);
- 	  
   }
   
   public void setName(String name) {
@@ -839,21 +856,13 @@ public abstract class CeylonTree {
     */
   public static class CompilationUnit extends CeylonTree {
 	  List<CeylonTree.Annotation> pendingAnnotations;
-	  public void addAnnotation(Annotation ann) {
+	  public void add(Annotation ann) {
 		  if (pendingAnnotations == null)
 			  pendingAnnotations = List.<Annotation>nil();
 		  pendingAnnotations.append(ann);
 	 	  
 	  }
-	  
-	  public void addClass(ClassDeclaration cdecl) {
-		  if (pendingAnnotations != null) {
-			  cdecl.annotations = pendingAnnotations;
-			  super.addClass(cdecl);
-		  }
-		  pendingAnnotations = null;
-	  }
-	  
+
 	  List<CeylonTree.ImportDeclaration> importDeclarations;
 	  
     public void accept(Visitor v) { v.visit(this); }

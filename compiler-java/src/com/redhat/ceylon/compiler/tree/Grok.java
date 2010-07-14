@@ -28,7 +28,7 @@ public class Grok extends CeylonTree.Visitor {
 		public void push(CeylonTree context) {
 			push();
 			current.context = context;
-		}
+        }
 		
 		public void pop() {
 			current = prev;
@@ -43,11 +43,10 @@ public class Grok extends CeylonTree.Visitor {
 	}
 
 	public void visit(CeylonTree.ClassDeclaration decl) {
-		current.push();
-		current.context = decl;
+		current.push(decl);
 		inner(decl);
 		current.pop();
-		current.context.addClass(decl);
+		current.context.add(decl);
 	}
 
 	public void visit(CeylonTree.ImportDeclaration decl) {
@@ -59,18 +58,16 @@ public class Grok extends CeylonTree.Visitor {
 	}
 	
 	public void visit(CeylonTree.TypeDeclaration decl) {
-		current.push();
-		current.context = decl;
+		current.push(decl);
 		inner(decl);
 		current.pop();
-		CeylonTree.ClassDeclaration classDecl = decl.enclosedClasses.last();
+		CeylonTree.ClassDeclaration classDecl = decl.classDecls.last();
 		classDecl.annotations = decl.annotations;
-		current.context.addClass(classDecl);
+		current.context.add(classDecl);
 	}
 	
 	public void visit(CeylonTree.TypeName name) {
-		current.push();
-		current.context = name;
+		current.push(name);
 		inner(name);
 		current.pop();
 		current.context.setName(name.name);
@@ -95,25 +92,23 @@ public class Grok extends CeylonTree.Visitor {
 	}
 	
 	public void visit(CeylonTree.UserAnnotation ann) {
-		current.push();
-		current.context = ann;
+		current.push(ann);
 		inner(ann);
 		current.pop();
-		current.context.addAnnotation(ann);
+		current.context.add(ann);
 	}
 	
 	public void visit(CeylonTree.LanguageAnnotation ann) {
-		current.push();
+		current.push(ann);
 		current.context = ann;
 		inner(ann);
 		current.pop();
-		current.context.addAnnotation(ann);
+		current.context.add(ann);
 	}
 	
 	public void visit(CeylonTree.AnnotationName name)
 	{
-		current.push();
-		current.context = name;
+		current.push(name);
 		inner(name);
 		current.pop();	
 		current.context.setName(name.name);
