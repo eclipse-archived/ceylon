@@ -710,8 +710,7 @@ selector
     ;
 
 member
-    : '.' nameAndTypeArguments -> DOT  nameAndTypeArguments
-    | ('?.' | '*.') nameAndTypeArguments
+    : ('.' | '?.' | '*.') nameAndTypeArguments
     ;
 
 nameAndTypeArguments
@@ -1010,10 +1009,19 @@ Exponent
     : ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
+fragment ELLIPSIS
+    :   '...'
+    ;
+
+fragment RANGE
+    :   '..'
+    ;
+
+fragment DOT
+    :   '.'
+    ;
+
 fragment FLOATLITERAL :;
-fragment ELLIPSIS :;
-fragment RANGE :;
-fragment DOT :;
 NATURALLITERAL
     : Digits 
       ( { input.LA(2) != '.' }? => '.' Digits Exponent? { $type = FLOATLITERAL; } )?
