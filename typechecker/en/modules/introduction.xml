@@ -1256,8 +1256,9 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
         <para>Well, if you thought you were starting to feel comfortable with this new 
         syntax, I've got something extra to throw at you! A method parameter can be 
         declared as an <emphasis>iterator</emphasis> method, which allows us to move 
-        the declaration of the formal parameters of the inline methods. For example,
-        Ceylon has a built-in method that is intended to be called like this:</para>
+        the declaration of the formal parameters of the inline callable arguments. For 
+        example, the <literal>lang</literal> package has a that is intended to be called 
+        like this:</para>
         
         <programlisting>String[] names = from (Person p in people) select (p.name) having (p.age>18);</programlisting>
         
