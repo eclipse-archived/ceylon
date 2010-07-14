@@ -149,7 +149,7 @@ removeSayInterceptor();]]></programlisting>
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal>:</para>
 
        <programlisting><![CDATA[public extension class Curryable<R,T,P...>(R f(T t, P... args)) {
-    R curry(T t)(P... p) {
+    R partial(T t)(P... p) {
         R curried(P... p) {
             return f(t, args)
         }
@@ -159,8 +159,8 @@ removeSayInterceptor();]]></programlisting>
        
        <para>For example:</para>
        
-       <programlisting>void info(String message) = log.message.curry(Level.info);
-void hello() = info.curry("Hello!");</programlisting>
+       <programlisting>void info(String message) = log.message.partial(Level.info);
+void hello() = info.partial("Hello!");</programlisting>
        
        <para>This extension does the reverse, transforming a 
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal> into a
@@ -1264,7 +1264,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     if (exists X pivot = list.first) {
         local createPartition = quickSort(list.rest.elementList);  
                 //i.e. List<X> createPartition(Boolean having(X X)) = ...
-        local smaller = byIncreasing.curry(pivot);                       
+        local smaller = byIncreasing.partial(pivot);                       
                 //i.e. Boolean smaller(X x) = ...
         return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller))
     }
