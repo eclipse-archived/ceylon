@@ -115,7 +115,7 @@ public class Grok extends CeylonTree.Visitor {
 	}
 	
 	@Override
-	public void visit(CeylonTree.Public v) {
+        public void visit(CeylonTree.Public v) {
 		current.context.add(v);		
 		// ((CeylonTree.Declaration)current.context).setVisibility(v);
 	}
