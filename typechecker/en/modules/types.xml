@@ -946,6 +946,28 @@ public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex)
         <comment><para>TODO: we should really have a <literal>rest</literal> 
         operation here, but it would hide the one on <literal>List</literal>.</para></comment>
         
+        <para>The <literal>zip()</literal> function combines <literal>Sequence</literal>s 
+        into a single <literal>Sequence</literal>.</para>
+
+        <programlisting><![CDATA[public T[] zip<T,X,Y>(X[] x, Y[] y, T producing(X x, Y y)) {
+    return from(Natural i in 0..min(x.lastIndex,y.lastIndex)) 
+                select (f(x[i],y[i]))
+}]]></programlisting>
+
+        <programlisting><![CDATA[public Entry<X,Y>[] zip<X,Y>(X[] x, Y[] y) {
+    return zip(x,y,Entry)
+}]]></programlisting>
+
+        <programlisting><![CDATA[public T[] zip<T,X>(X[] lists..., T producing(X x...)) {
+    Natural len = min(from (X[] list in lists) select (list.lastIndex));
+    return from (Natural i in 0..len) 
+                select (f(from (X[] list in lists) select (list[i]));
+}]]></programlisting>
+
+        <programlisting><![CDATA[public T[] zip<T,X>(X[] lists...) {
+    return zip(lists,ArrayList)
+}]]></programlisting>
+
         <para>There is a mutable subtype which allows assignment to
         an index.</para>
         
@@ -1232,7 +1254,7 @@ while (exists Person p = people.first) {
         return ""
     }
 }]]></programlisting>
-
+            
 <!--
             <para>Here's an implementation of the well-know quicksort algorithm 
             for a <literal>List</literal>:</para>

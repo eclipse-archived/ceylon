@@ -674,7 +674,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     void baz(Baz&lt;P&gt;... bazs) {
         ...
     }
-}</programlisting></comment>
+}</programlisting>
+        <para>It's probably only really useful if we also let you do stuff like this:</para>
+        <programlisting><![CDATA[List<T> zip<T,P...>(List<P>... x, T producing(P... args)) {
+    return from (Natural i in 0..min(x.lastIndex...)) select (f(x[i]...))
+}]]></programlisting></comment>
         
     </section>
 
