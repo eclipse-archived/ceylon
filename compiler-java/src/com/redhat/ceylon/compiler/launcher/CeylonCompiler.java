@@ -46,6 +46,8 @@ public class CeylonCompiler
       out.println();
       out.println();
 
+      cu.accept(new Grok());
+
       /*for (CeylonTree.ImportDeclaration id : cu.getImports()) {
         out.print("IMPORT:");
         out.print(id);

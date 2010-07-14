@@ -14,6 +14,13 @@ import com.sun.tools.javac.util.ListBuffer;
 
 public abstract class CeylonTree {
   
+	public interface Annotation {
+	}
+	
+	public interface Declaration {
+		void setVisibility(CeylonTree v);
+	}
+	
   /**
    * Create a Ceylon compilation unit from an ANTLR tree.
    */
@@ -288,7 +295,28 @@ public abstract class CeylonTree {
    */
   public CeylonTree parent;
   public List<CeylonTree> children;
-
+  
+  public List<Annotation> annotations;
+  
+  public List<ClassDeclaration> enclosedClasses;
+  
+  public void addClass(ClassDeclaration t) {
+	  if (enclosedClasses == null)
+		  enclosedClasses = List.<ClassDeclaration>nil();
+	  enclosedClasses = enclosedClasses.append(t);
+  }
+  
+  public void addAnnotation(Annotation ann) {
+	  if (annotations == null)
+		  annotations = List.<Annotation>nil();
+	  annotations.append(ann);
+ 	  
+  }
+  
+  public void setName(String name) {
+	  throw new RuntimeException();
+  }
+  
   /**
    * The ANTLR token from which this node was constructed.
    */
@@ -548,7 +576,11 @@ public abstract class CeylonTree {
   /**
     * An alias declaration
     */
-  public static class AliasDeclaration extends CeylonTree {
+  public static class AliasDeclaration extends CeylonTree implements Declaration {
+		public void setVisibility(CeylonTree v) {
+			// TODO
+		}
+
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -577,6 +609,11 @@ public abstract class CeylonTree {
     * An annotation name
     */
   public static class AnnotationName extends CeylonTree {
+	  public String name;
+	  public void setName(String name) {
+		  this.name = name;
+	  }
+	  
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -758,7 +795,14 @@ public abstract class CeylonTree {
   /**
     * A class declaration
     */
-  public static class ClassDeclaration extends CeylonTree {
+  public static class ClassDeclaration extends CeylonTree implements Declaration {
+	public void setVisibility(CeylonTree v) {			
+	}
+	public String name;
+	public void setName(String name) {
+		this.name = name;
+	}
+	
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -794,6 +838,24 @@ public abstract class CeylonTree {
     * A compilation unit
     */
   public static class CompilationUnit extends CeylonTree {
+	  List<CeylonTree.Annotation> pendingAnnotations;
+	  public void addAnnotation(Annotation ann) {
+		  if (pendingAnnotations == null)
+			  pendingAnnotations = List.<Annotation>nil();
+		  pendingAnnotations.append(ann);
+	 	  
+	  }
+	  
+	  public void addClass(ClassDeclaration cdecl) {
+		  if (pendingAnnotations != null) {
+			  cdecl.annotations = pendingAnnotations;
+			  super.addClass(cdecl);
+		  }
+		  pendingAnnotations = null;
+	  }
+	  
+	  List<CeylonTree.ImportDeclaration> importDeclarations;
+	  
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -1171,7 +1233,10 @@ public abstract class CeylonTree {
   /**
     * An instance declaration
     */
-  public static class InstanceDeclaration extends CeylonTree {
+  public static class InstanceDeclaration extends CeylonTree implements Declaration {
+		public void setVisibility(CeylonTree v) {			
+		}
+
     public void accept(Visitor v) { v.visit(this); }
   }
 
@@ -1192,8 +1257,10 @@ public abstract class CeylonTree {
   /**
     * An interface declaration
     */
-  public static class InterfaceDeclaration extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+  public static class InterfaceDeclaration extends CeylonTree implements Declaration {
+		public void setVisibility(CeylonTree v) {			
+		}
+   public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
@@ -1220,8 +1287,13 @@ public abstract class CeylonTree {
   /**
     * A language annotation
     */
-  public static class LanguageAnnotation extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+  public static class LanguageAnnotation extends CeylonTree implements Annotation {
+	  public String name;
+	  public void setName(String name) {
+		  this.name = name;
+	  }
+	  
+	  public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
@@ -1843,15 +1915,23 @@ public abstract class CeylonTree {
   /**
     * A type declaration
     */
-  public static class TypeDeclaration extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+  public static class TypeDeclaration extends CeylonTree implements Declaration {
+		public void setVisibility(CeylonTree v) {			
+		}
+	  public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
     * A type name
     */
   public static class TypeName extends CeylonTree {
-    public void accept(Visitor v) { v.visit(this); }
+	  public String name;
+	  
+	  public void setName(String name) {
+		  this.name = name;
+	  }
+		
+   public void accept(Visitor v) { v.visit(this); }
   }
 
   /**
@@ -1892,7 +1972,13 @@ public abstract class CeylonTree {
   /**
     * A user annotation
     */
-  public static class UserAnnotation extends CeylonTree {
+  public static class UserAnnotation extends CeylonTree implements Annotation
+  {
+	  public String name;
+	  public void setName(String name) {
+		  this.name = name;
+	  }
+	  
     public void accept(Visitor v) { v.visit(this); }
   }
 
