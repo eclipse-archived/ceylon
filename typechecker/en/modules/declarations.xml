@@ -201,7 +201,7 @@ Description doc(String description) {
         
         <para>And its value may be obtained like this:</para>
         
-        <programlisting>Description description = Person.annotations(Description).first;</programlisting>
+        <programlisting>Description? description = Person.annotations(Description).first;</programlisting>
         
         <para>Unlike Java, the same annotation may appear multiple times for the same
         program element. Furthermore, different annotations (toplevel methods) may 

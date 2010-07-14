@@ -388,6 +388,22 @@ public void hello(Process process) {
         the compilation process, allowing the resulting bytecode to take advantage 
         of the efficient handling of null values in the virtual machine.</para>
         
+        <para>It's possible to declare the local <literal>name</literal> inside
+        the <literal>if (exists ... )</literal> condition:</para>
+        
+        <programlisting><![CDATA[String greeting;
+if (exists String name = process.args.first) {
+    greeting = "Hello, " name "!";
+}
+else {
+    greeting = "Hello, World!";
+}
+process.writeLine(greeting);]]></programlisting>
+        
+        <para>This is the prefered style most of the time, since we can't actually
+        use <literal>name</literal> for anything useful outside of the 
+        <literal>if (exists ... )</literal> construct.</para>
+        
         <para>Copy this new version of the program into <literal>hello.ceylon</literal> 
         and run, as before:</para>
         
@@ -1483,11 +1499,10 @@ people {
 }
 class Hello(String? name) {
 
-    Set&lt;Person&gt;? annotation = type.annotations(Set&lt;Person&gt;).first
-    
     doc "The list of people"
     Set&lt;Person&gt; people;
-    if (exists annotation) {
+    if (exists Set&lt;Person&gt; annotation 
+            = type.annotations(Set&lt;Person&gt;).first) {
         people = annotation;
     }
     else {
