@@ -1253,7 +1253,25 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>By the way, there's an even easier way to define 
+        <para>Well, if you thought you were starting to feel comfortable with this new 
+        syntax, I've got something extra to throw at you! A method parameter can be 
+        declared as an <emphasis>iterator</emphasis> method, which allows us to move 
+        the declaration of the formal parameters of the inline methods. For example,
+        Ceylon has a built-in method that is intended to be called like this:</para>
+        
+        <programlisting>String[] names = from (Person p in people) select (p.name) having (p.age>18);</programlisting>
+        
+        <para>Which is exactly equivalent to, but much more readable than, the
+        following:</para>
+        
+        <programlisting>String[] names = from (people) select (Person p) (p.name) having (Person p) (p.age>18);</programlisting>
+        
+        <para>We won't go into the details how to declare an iterator method here 
+        (it's just a couple of annotations). It's much more important to be able
+        to <emphasis>use</emphasis> iterator methods than actually write them
+        yourself.</para>
+        
+        <para>Oh, by the way, there's an even easier way to define 
         <literal>greeting</literal>, using the <literal>?</literal>
         operator.</para>
         
@@ -1501,8 +1519,8 @@ class Hello(String? name) {
 
     doc "The list of people"
     Set&lt;Person&gt; people;
-    if (exists Set&lt;Person&gt; annotation 
-            = type.annotations(Set&lt;Person&gt;).first) {
+    if (exists Set&lt;Person&gt; annotation = 
+            type.annotations(Set&lt;Person&gt;).first) {
         people = annotation;
     }
     else {
@@ -1512,9 +1530,9 @@ class Hello(String? name) {
     doc "The greeting"
     package String greeting {
         if (exists name) {
-            Person? person = first (people) 
-                    having (Person p) (p.firstName==name);
-            if (exists person) {
+            if (exists Person person = 
+                    first (Person p in people) 
+                        having (p.firstName==name)) {
                 return "" person.lang.hello ", " 
                     person.firstName " " person.lastName "!"
             }
