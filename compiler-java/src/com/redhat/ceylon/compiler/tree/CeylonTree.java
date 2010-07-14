@@ -192,7 +192,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.LANG_ANNOTATION, LanguageAnnotation.class);
         classes.put(CeylonParser.LBRACE, LeftBrace.class);
         classes.put(CeylonParser.LBRACKET, LeftBracket.class);
-        classes.put(CeylonParser.LIDENTIFIER, LIdentifier.class);
+        classes.put(CeylonParser.LIDENTIFIER, Identifier.class);
         classes.put(CeylonParser.LINE_COMMENT, SingleLineComment.class);
         classes.put(CeylonParser.LOCAL, Local.class);
         classes.put(CeylonParser.LOOP_BLOCK, LoopBlock.class);
@@ -284,7 +284,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.TYPE_PARAMETER, TypeParameter.class);
         classes.put(CeylonParser.TYPE_PARAMETER_LIST, TypeParameterList.class);
         classes.put(CeylonParser.TYPE_VARIANCE, TypeVariance.class);
-        classes.put(CeylonParser.UIDENTIFIER, UIdentifier.class);
+        classes.put(CeylonParser.UIDENTIFIER, Identifier.class);
         classes.put(CeylonParser.UPPER_BOUND, UpperBound.class);
         classes.put(CeylonParser.USER_ANNOTATION, UserAnnotation.class);
         classes.put(CeylonParser.VARARGS, Varargs.class);
@@ -463,6 +463,7 @@ public abstract class CeylonTree {
         public void visit(GreaterThanEqual that)          { visitDefault(that); }
         public void visit(Hash that)                      { visitDefault(that); }
         public void visit(Identical that)                 { visitDefault(that); }
+        public void visit(Identifier that)                { visitDefault(that); }
         public void visit(If that)                        { visitDefault(that); }
         public void visit(IfFalse that)                   { visitDefault(that); }
         public void visit(IfStatement that)               { visitDefault(that); }
@@ -482,7 +483,6 @@ public abstract class CeylonTree {
         public void visit(InterfaceDeclaration that)      { visitDefault(that); }
         public void visit(Is that)                        { visitDefault(that); }
         public void visit(IsExpression that)              { visitDefault(that); }
-        public void visit(LIdentifier that)               { visitDefault(that); }
         public void visit(LanguageAnnotation that)        { visitDefault(that); }
         public void visit(LeftBrace that)                 { visitDefault(that); }
         public void visit(LeftBracket that)               { visitDefault(that); }
@@ -578,7 +578,6 @@ public abstract class CeylonTree {
         public void visit(TypeParameter that)             { visitDefault(that); }
         public void visit(TypeParameterList that)         { visitDefault(that); }
         public void visit(TypeVariance that)              { visitDefault(that); }
-        public void visit(UIdentifier that)               { visitDefault(that); }
         public void visit(UpperBound that)                { visitDefault(that); }
         public void visit(UserAnnotation that)            { visitDefault(that); }
         public void visit(Varargs that)                   { visitDefault(that); }
@@ -1254,6 +1253,13 @@ public abstract class CeylonTree {
     }
 
     /**
+     * An identifier
+     */
+    public static class Identifier extends CeylonTree {
+        public void accept(Visitor v) { v.visit(this); }
+    }
+
+    /**
      * The word "if"
      */
     public static class If extends CeylonTree {
@@ -1411,13 +1417,6 @@ public abstract class CeylonTree {
      * An is expression
      */
     public static class IsExpression extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * An identifier whose first character is lowercase
-     */
-    public static class LIdentifier extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2178,13 +2177,6 @@ public abstract class CeylonTree {
      * A type variance
      */
     public static class TypeVariance extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * An identifier whose first character is uppercase
-     */
-    public static class UIdentifier extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
