@@ -10,6 +10,10 @@ Integer pp (Integer one) {
 }
 */
 
+floobydust
+public interface I {
+}
+
 public class Test (Float f)
 {
   void p() { }
