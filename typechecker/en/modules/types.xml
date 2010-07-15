@@ -525,16 +525,24 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
 }]]></programlisting>
 
         <para>An <literal>Iterator</literal> numbers the iterated 
-        elements. An <literal>Iterator</literal> is permitted to throw 
+        elements. If there are <literal>N</literal> iterated elements, 
+        <literal>iter[i]</literal> must return the <literal>i</literal>th
+        element for <literal>0&lt;=i&lt;N</literal> or <literal>null</literal> 
+        whenever <literal>i&gt;=N</literal>, indicating that the iterator 
+        is exhausted. An <literal>Iterator</literal> is permitted to throw 
         an <literal>IllegalStateException</literal> if the same element 
-        is accessed twice. If there are <literal>n</literal> iterated
-        elements, <literal>iter[m]</literal> must return 
-        <literal>null</literal> whenever <literal>m>=n</literal>, 
-        indicating that the iterator is exhausted.</para>
+        is accessed twice.</para>
 
-        <programlisting><![CDATA[doc "TODO"
+        <programlisting><![CDATA[doc "An iterator containing |N| elements. The 
+     operation |value(i)| must return the 
+     |i|th element for any |0<=i<N| or |null| 
+     for any |i>=N|."
 public interface Iterator<X>
         satisfies Correspondence<Natural, out X> {}]]></programlisting>
+        
+        <comment><para>TODO: I'm still not sure whether we should have
+        stateful iterators or not. They're much better for cases like
+        reading files and parsing strings.</para></comment>
         
         <para>For iteration using a <literal>while</literal> loop, the
         following extension is provided:</para>
@@ -874,10 +882,10 @@ class SequenceEntryIterable<X>(X[] sequence)
         <programlisting><![CDATA[doc "The binary join operator |x + y|. The returned 
      sequence does not reflect changes to the original 
      sequences."
-public S join<S,T>(S... sequences) 
-        where S(T... elements) satisfies T[] {
+public T[] join<T>(T[]... sequences)  {
             
-    class JoinedSequence() {
+    class JoinedSequence() 
+            satisfies T[] {
         override Natural? lastIndex {
             mutable Natural? result := null;
             for (T[] s in sequences) {
@@ -912,7 +920,7 @@ public S join<S,T>(S... sequences)
         }
     }
     
-    return S(JoinedSequence())
+    return copy(JoinedSequence()) //take a shallow copy
     
 }]]></programlisting>
         
@@ -920,10 +928,10 @@ public S join<S,T>(S... sequences)
      with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-public S range<S,T>(S sequence, Natural from, Natural? to=sequence.lastIndex) 
-         where S(T... elements) satisfies T[] {
+public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) {
          
-    class JoinedSequence() {
+    class RangeSequence() 
+            satisfies T[] {
         override Natural? lastIndex {
             if (exists Natural last = sequence.lastIndex) {
                 if (exists to) {
@@ -952,7 +960,7 @@ public S range<S,T>(S sequence, Natural from, Natural? to=sequence.lastIndex)
         }
      } 
 
-    return S( JoinedSequence() )
+    return copy(RangeSequence()) //take a shallow copy
     
 }]]></programlisting>
         
@@ -1291,6 +1299,14 @@ while (exists Person p = people.first) {
         return ""
     }
 }]]></programlisting>
+            
+            <para>Any <literal>Sequence</literal> may be transparently converted to a 
+            <literal>List</literal>:</para>
+            
+            <programlisting>public extension class SequenceList&lt;X&gt;(X[] sequence) 
+        satisfies List&lt;X&gt; {
+    ...
+}</programlisting>
             
 <!--
             <para>Here's an implementation of the well-know quicksort algorithm 
@@ -1687,10 +1703,13 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
  
 }]]></programlisting>
         
-        <para>Strings implement <literal>Sequence</literal>, therefore they support 
-        the join, subrange, contains and lookup operators, among others.</para> 
+        <para><literal>String</literal> implements <literal>Sequence</literal>, 
+        and therefore supports the join, subrange, contains and lookup operators, 
+        among others. Any <literal>Character[]</literal> may be transparently
+        converted to <literal>String</literal>.</para> 
                 
-        <programlisting><![CDATA[public class String(Character... characters) 
+        <programlisting><![CDATA[public extension 
+class String(Character[] characters) 
         satisfies Character[], Comparable<String>, Case<String> {
     
     ... 
