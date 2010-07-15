@@ -1585,7 +1585,7 @@ class Hello(String? name) {
         
         <programlisting>Collection&lt;Geek&gt; geeks = ... ;
 Collection&lt;Person&gt; people = geeks;   //compiler error
-for (Person person in people.iterator()) { ... }</programlisting>
+for (Person person in people) { ... }</programlisting>
         
         <para>This code is, frankly, perfectly reasonable taken at face value. Yet
         in both Java and Ceylon, this code results in a compiler error at the 
@@ -1682,7 +1682,7 @@ people.add( Person("Fonzie") );</programlisting>
 
         <programlisting>Collection&lt;Geek&gt; geeks = ... ;
 Producer&lt;Person&gt; people = geeks;
-for (Person person in people.iterator()) { ... }</programlisting>
+for (Person person in people) { ... }</programlisting>
 
         <para>Which matches our original intuition.</para>
 
