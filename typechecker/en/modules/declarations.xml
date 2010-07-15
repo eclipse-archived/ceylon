@@ -2920,6 +2920,13 @@ public Visibility private() {
         <para>An toplevel extension method is called a <emphasis>converter</emphasis>. 
         An toplevel extension class is called a <emphasis>decorator</emphasis>.</para>
         
+        <para>A decorator may not use the special value <literal>this</literal> in
+        expressions. This allows the compiler to optimize away the actual instance
+        of the class in certain circumstances.</para>
+        
+        <comment><para>TODO: do we really need this restriction in order to enable a
+        mere optimization?</para></comment>
+        
         <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
         
         <itemizedlist>
