@@ -315,6 +315,10 @@ public class Grok extends CeylonTree.Visitor {
         expr.value = expr.token.getText();
     }
     
+    public void visit(CeylonTree.Operator op) {
+        op.type = op.token.getType();
+        inner(op);
+    }
    
     
      void inner(CeylonTree t) {

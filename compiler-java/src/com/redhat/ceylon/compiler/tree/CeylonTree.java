@@ -480,6 +480,7 @@ public abstract class CeylonTree {
         public void visit(Nonempty that)                  { visitDefault(that); }
         public void visit(NonemptyExpression that)        { visitDefault(that); }
         public void visit(Null that)                      { visitDefault(that); }
+        public void visit(Operator that)                  { visitDefault(that); }
         public void visit(Optional that)                  { visitDefault(that); }
         public void visit(Override that)                  { visitDefault(that); }
         public void visit(Package that)                   { visitDefault(that); }
@@ -1398,6 +1399,15 @@ public abstract class CeylonTree {
      * The word "null"
      */
     public static class Null extends CeylonTree {
+        public void accept(Visitor v) { v.visit(this); }
+    }
+
+    /**
+     * An operator.
+     */
+    public static class Operator extends CeylonTree {
+        public int type;
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
