@@ -42,22 +42,16 @@ public class CeylonCompiler
 
     if (consumeTree) {
       CeylonTree.CompilationUnit cu = CeylonTree.build(t);
-      out.print(cu);
-      out.println();
+
+      PrintWriter w = new PrintWriter(out);
+      cu.accept(new CeylonTreePrinter(w));
+      w.flush();
       out.println();
 
       cu.accept(new Grok());
-
-      /*for (CeylonTree.ImportDeclaration id : cu.getImports()) {
-        out.print("IMPORT:");
-        out.print(id);
-        out.println();
-      }
-      for (CeylonTree.TypeDeclaration td : cu.getTypeDecls()) {
-        out.print("TYPE:");
-        out.print(td);
-        out.println();
-      }*/
+      out.print(cu);
+      out.println();
+      out.println();
     }
   }
 
