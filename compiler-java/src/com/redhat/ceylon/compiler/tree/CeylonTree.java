@@ -589,13 +589,23 @@ public abstract class CeylonTree {
         public void visit(Whitespace that)                { visitDefault(that); }
 
         public void visitDefault(CeylonTree tree) {
-            String fullName = tree.getClass().getName();
-            String shortName = fullName.substring(fullName.indexOf('$') + 1);
-            throw new RuntimeException(shortName);
+            throw new RuntimeException(tree.getClassName());
         }
     
         // Synthetic tree nodes generated during analysis
         public void visit(MethodType that)          { visitDefault(that); }
+    }
+
+    /**
+     * Return the name of this subclass of CeylonTree,
+     * useful for debugging.
+     */
+    public String getClassName() {
+        String fullName = getClass().getName();
+        String prefix = CeylonTree.class.getName() + "$";
+        int index = prefix.length();
+        assert fullName.substring(0, index).equals(prefix);
+        return fullName.substring(index);
     }
 
     /**

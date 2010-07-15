@@ -29,17 +29,12 @@ public class CeylonTreePrinter extends CeylonTree.Visitor {
             print("  ");
     }
 
-    private String getName(CeylonTree tree) {
-        String name = tree.getClass().getName();
-        return name.substring(name.indexOf('$') + 1);
-    }
-  
     public void visitDefault(CeylonTree tree) {
         int child_count = tree.children.size();
         if (child_count != 0) {
             newline();
             indent();
-            print("(" + getName(tree));
+            print("(" + tree.getClassName());
             depth++;
             for (CeylonTree child : tree.children) {
                 child.accept(this);
@@ -48,7 +43,7 @@ public class CeylonTreePrinter extends CeylonTree.Visitor {
             depth--;
         }
         else {
-            print(" " + getName(tree));
+            print(" " + tree.getClassName());
         }
     }
 }
