@@ -618,7 +618,7 @@ public abstract class CeylonTree {
      */
     public String toString() {
         StringWriter s = new StringWriter();
-        this.accept(new CeylonTreePrinter(s));
+        this.accept(new TreePrinter(s));
         return s.toString();
     }
 
