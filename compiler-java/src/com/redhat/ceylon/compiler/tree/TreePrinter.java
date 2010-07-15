@@ -23,6 +23,27 @@ public class TreePrinter extends CeylonTree.Visitor {
             out.print("  ");
     }
 
+    private void enter(String what) {
+        indent();
+        out.print("(" + what);
+        depth++;
+    }
+
+    private void leave() {
+        depth--;
+        out.print(")");
+    }
+
+    private String getShortShortName(String shortName) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < shortName.length(); i++) {
+            char c = shortName.charAt(i);
+            if (Character.isUpperCase(c))
+                builder.append(Character.toLowerCase(c));
+        }
+        return builder.toString();
+    }
+
     private static class NameValuePair implements Comparable {
         public String name;
         public Object value;
@@ -86,24 +107,17 @@ public class TreePrinter extends CeylonTree.Visitor {
         return result.appendList(List.<NameValuePair>from(tmpA));
     }
 
-    private void enter(String what) {
-        indent();
-        out.print("(" + what);
-        depth++;
-    }
-    private void leave() {
-        depth--;
-        out.print(")");
-    }
-
     public void visitDefault(CeylonTree tree) {
-        enter(tree.getClassName());
+        String shortName = tree.getClassName();
+        String shortShortName = getShortShortName(shortName);
+
+        enter(shortName);
         for (NameValuePair field: getFields(tree)) {
             Object value = field.value;
             if (value == null)
                 continue;
 
-            enter(field.name);
+            enter(shortShortName + "." + field.name);
             if (value instanceof String) {
                 out.print(" \"" + value + "\"");
             }
