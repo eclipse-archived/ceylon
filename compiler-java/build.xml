@@ -64,6 +64,7 @@
   <!-- Rule to run the regression tests -->
   <target name="test" depends="test.classes">
     <apply executable="java">
+      <arg value="-ea"/>
       <arg value="-cp"/>
       <arg value="${classes}:${antlr.lib}"/>
       <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>      

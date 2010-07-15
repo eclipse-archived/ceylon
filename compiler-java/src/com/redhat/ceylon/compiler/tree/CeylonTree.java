@@ -181,14 +181,14 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.IMPORT_LIST, ImportList.class);
         classes.put(CeylonParser.IMPORT_PATH, ImportPath.class);
         classes.put(CeylonParser.IMPORT_WILDCARD, ImportWildcard.class);
-        classes.put(CeylonParser.IN, In.class);
+        classes.put(CeylonParser.IN, Operator.class);
         classes.put(CeylonParser.INCREMENT, Operator.class);
         classes.put(CeylonParser.INIT_EXPR, InitializerExpression.class);
         classes.put(CeylonParser.INST_DECL, InstanceDeclaration.class);
         classes.put(CeylonParser.INTERFACE, Interface.class);
         classes.put(CeylonParser.INTERFACE_DECL, InterfaceDeclaration.class);
         classes.put(CeylonParser.INT_CST, IntConstant.class);
-        classes.put(CeylonParser.IS, Is.class);
+        classes.put(CeylonParser.IS, Operator.class);
         classes.put(CeylonParser.IS_EXPR, IsExpression.class);
         classes.put(CeylonParser.LANG_ANNOTATION, LanguageAnnotation.class);
         classes.put(CeylonParser.LBRACE, Operator.class);
@@ -235,7 +235,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.QUESDOT, Operator.class);
         classes.put(CeylonParser.QUOTEDLITERAL, QuotedLiteral.class);
         classes.put(CeylonParser.QUOTE_CST, QuoteConstant.class);
-        classes.put(CeylonParser.RANGE, Range.class);
+        classes.put(CeylonParser.RANGE, Operator.class);
         classes.put(CeylonParser.RBRACE, Operator.class);
         classes.put(CeylonParser.RBRACKET, Operator.class);
         classes.put(CeylonParser.REFLECTED_LITERAL, ReflectedLiteral.class);
@@ -768,6 +768,8 @@ public abstract class CeylonTree {
      * A character literal
      */
     public static class CharLiteral extends CeylonTree {
+        public String value;
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1406,7 +1408,7 @@ public abstract class CeylonTree {
      * An operator.
      */
     public static class Operator extends CeylonTree {
-        public int type;
+        public int kind;
         
         public void accept(Visitor v) { v.visit(this); }
     }
@@ -1739,6 +1741,12 @@ public abstract class CeylonTree {
      * A list of type arguments
      */
     public static class TypeArgumentList extends CeylonTree {
+        List<IType> types = List.<IType>nil();
+        void append(CeylonTree expr) {
+            IType type = (IType)expr;
+            types.append(type);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 

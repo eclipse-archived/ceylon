@@ -206,7 +206,7 @@ public class Grok extends CeylonTree.Visitor {
     
     public void visit(CeylonTree.Type type) {
         inner(type);
-        current.context.setType(type);
+        current.context.append(type);
     }
     
     public void visit(CeylonTree.FormalParameterList list) {
@@ -304,6 +304,17 @@ public class Grok extends CeylonTree.Visitor {
         inner(expr);
     }
     
+    public void visit(CeylonTree.CharConstant expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.CharLiteral lit) {
+        inner(lit);
+        lit.value = lit.token.getText();
+        current.context.append(lit);
+        
+    }
+    
     public void visit(CeylonTree.CallExpression expr) {
         current.push(expr);
         inner(expr);
@@ -316,12 +327,36 @@ public class Grok extends CeylonTree.Visitor {
     }
     
     public void visit(CeylonTree.Operator op) {
-        op.type = op.token.getType();
+        op.kind = op.token.getType();
         inner(op);
     }
    
+    public void visit(CeylonTree.TypeArgumentList list) {
+        current.push(list);
+        inner(list);
+        current.pop();
+    }
+      
+    public void visit(CeylonTree.Null theNull) {
+        current.context.append(theNull);
+    }
     
-     void inner(CeylonTree t) {
+    public void visit(CeylonTree.None theNone) {
+        current.context.append(theNone);
+    }
+    
+    public void visit(CeylonTree.PrefixExpression expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.EnumList list) {
+        current.push(list);
+        inner(list);
+        current.pop();       
+    }
+    
+    
+    void inner(CeylonTree t) {
         for (CeylonTree child : t.children)
             child.accept(this);     
     }   
