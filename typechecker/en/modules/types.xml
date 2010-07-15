@@ -500,7 +500,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     </section>
     
     <section id="iterableanditerator">
-        <title>Iterable objects and iterators</title>
+        <title>Containers and iterable objects</title>
         
         <para>The interface <literal>lang.Container</literal> represents
         the abstract notion of an object that may be empty. Expressions
@@ -514,40 +514,48 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     public Boolean empty;
     
 }]]></programlisting>
-
-        <para>The interface <literal>lang.Iterable</literal> represents a
-        container which may be iterated using a <literal>for</literal> or
-        <literal>while</literal> loop.</para>
-        
-        <programlisting><![CDATA[public interface Iterable<out X> 
+    
+        <programlisting><![CDATA[public interface Iterable<X>
         satisfies Container {
     
-    doc "Produce an iterator."
-    public X? iterator()();
+    doc "A sequence of objects belonging
+         to the container."
+    public Iterator<X> iterator();
     
 }]]></programlisting>
 
-        <!--
-        <para>The interface <literal>lang.Iterator</literal> produces a 
-        sequence of values.</para>
+        <para>An <literal>Iterator</literal> numbers the iterated 
+        elements. An <literal>Iterator</literal> is permitted to throw 
+        an <literal>IllegalStateException</literal> if the same element 
+        is accessed twice. If there are <literal>n</literal> iterated
+        elements, <literal>iter[m]</literal> must return 
+        <literal>null</literal> whenever <literal>m>=n</literal>, 
+        indicating that the iterator is exhausted.</para>
+
+        <programlisting><![CDATA[doc "TODO"
+public interface Iterator<X>
+        satisfies Correspondence<Natural, out X> {}]]></programlisting>
         
-        <programlisting><![CDATA[public interface Iterator<out X> {
-
-    doc "Return the next value, or |null| if the iterator 
-         is exhausted and can produce no more values."
-    public X? next();
-    
+        <para>For iteration using a <literal>while</literal> loop, the
+        following extension is provided:</para>
+        
+        <programlisting><![CDATA[public extension X? next(Iterator<X> iter)() {
+    mutable class StatefulIterator() {
+        mutable index i:=0;
+        X? next() { return iter[i] }
+    }
+    return StatefulIterator().next
 }]]></programlisting>
-         -->
-
-        <para>An iterator is used according to the following idiom:</para>
+    
+        <para>An iterator may therefore be used according to the following 
+        idiom:</para>
         
         <programlisting>Object? next() = list.iterator();
 while (exists Object x = next()) {
     doSomething(x);
 }</programlisting>
 
-        <para>This looks cleaner with type inference:</para>
+        <para>Which looks cleaner with type inference:</para>
         
         <programlisting>local next = list.iterator(); 
 while (exists local x = next()) {
@@ -784,12 +792,25 @@ while (exists local x = next()) {
         inherited from <literal>Correspondence</literal>:</para>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
-        satisfies Correspondence<Natural, out X>, Iterable<X> {
+        satisfies Correspondence<Natural, out X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
     public Natural? lastIndex;
     
+}]]></programlisting>
+
+        <para>Any <literal>Sequence</literal> is trivially <literal>Iterable</literal>:</para>
+        
+        <programlisting><![CDATA[public extension
+SequenceIterable<X>(X[] sequence) 
+        satisfies Iterable<X> {
+    override Boolean empty { 
+        return !sequence.lastIndex exists 
+    }
+    override Iterable<X> iterator() { 
+        return sequence
+    }
 }]]></programlisting>
         
         <para>The value <literal>None.none</literal> is transparently
@@ -803,13 +824,10 @@ while (exists local x = next()) {
     
     public extension 
     class EmptySequence<out X>() satisfies X[] {
-        X? value = null;
-        override Referenceable<X?> value(Natural index) { return value }
-        override Boolean empty { return true }
         override Natural? lastIndex = null;
-        override X? iterator()() { 
-            X? next() { return null }
-            return next
+        override Referenceable<X?> value(Natural index) {
+            X? nullValue = null;
+            return nullValue 
         }
     }
     
@@ -818,34 +836,32 @@ while (exists local x = next()) {
         <para>The following extension provides access to the indices 
         of the sequence in a <literal>for</literal> loop.</para>
         
-        <programlisting><![CDATA[public extension Iterable<Entry<Natural,X>> sequenceEntries<X>(Sequence<X> sequence) {
-    
-    class SequenceEntryIterable()
-            satisfies Iterable<Entry<Natural,X>> {
-        override Boolean empty { 
-            return sequence.empty 
-        }
-        override Entry<Natural,X>? iterator()() {
-            mutable class EntryIterator() {
-                X? nextElement() = sequence.iterator();
-                mutable Natural index := 0;
-                Entry<Natural,X>? next() { 
-                    X? x = nextElement(); 
-                    if (exists x) {
-                        return Entry(index++, x)
+        <programlisting><![CDATA[public extension
+class SequenceEntryIterable<X>(X[] sequence)
+        satisfies Iterable<Entry<Natural,X>> {
+    override Boolean empty { 
+        return !sequence.lastIndex exists
+    }
+    override Iterator<Entry<Natural,X>> iterator() {
+        class EntryIterator() satisfies Iterator<Entry<Natural,X>> {
+            override Referenceable<Entry<Natural,X>?> value(Natural index) {
+                Entry<Natural, X>? entry {
+                    if (exists X x = sequence[index]) {
+                        return index->x
                     }
                     else {
-                        return null
-                    
+                        return null;
                     }
-                } 
+                }
+                return entry
             }
-            return EntryIterator().next
         }
+        return EntryIterator()
     }
-    
-    return SequenceEntryIterable()
 }]]></programlisting>
+
+        <comment><para>TODO: or should we just directly make <literal>X[]</literal> 
+        assignable to <literal>Entry&lt;Natural,X&gt;[]</literal>?</para></comment>
         
         <para>The compiler is permitted to optimize away the call to 
         this extension in a loop such as:</para>
@@ -861,27 +877,42 @@ while (exists local x = next()) {
 public S join<S,T>(S... sequences) 
         where S(T... elements) satisfies T[] {
             
-    class JoinedIterable()
-            satisfies Iterable<T> { 
-        override Boolean empty {
-            return forAll (Sequence<T> s in sequences) every (s.empty)
-        }
-        override T? iterator()() {
-            mutable class JoinedIterator() {
-                T[]? outer() = sequences.iterator();
-                mutable Callable<T?> inner := none.iterator();
-                T? next() {
-                    while (!innerIter.more && outerIter.more) {
-                        inner := outer().iterator();
+    class JoinedSequence() {
+        override Natural? lastIndex {
+            mutable Natural? result := null;
+            for (T[] s in sequences) {
+                if (exists Natural last = s.lastIndex) {
+                    if (exists result) {
+                        result += last;
                     }
-                    return inner()
+                    else {
+                        result := last;
+                    }
                 }
             }
-            return JoinedIterator().next
+            return result
+        }
+        override Referenceable<T?> value(Natural index) {
+            T? value {
+                mutable Natural i := index;
+                for (T[] s in sequences) {
+                    if (exists Natural last = s.lastIndex) {
+                        if (i<=last) {
+                            return s[i]
+                        }
+                        else {
+                            i-=last;
+                        }
+                    }
+                }
+                return null
+                
+            }
+            return value
         }
     }
-
-    return S( JoinedIterable() )
+    
+    return S(JoinedSequence())
     
 }]]></programlisting>
         
@@ -889,33 +920,39 @@ public S join<S,T>(S... sequences)
      with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-public S range<S,T>(S sequence, Natural from, Natural to=sequence.lastIndex) 
+public S range<S,T>(S sequence, Natural from, Natural? to=sequence.lastIndex) 
          where S(T... elements) satisfies T[] {
          
-    class SubrangeIterable()
-            satisfies Iterable<T> {
-        override Boolean empty {
-            return from>to
-        }
-        override T? iterator()() {
-            mutable class SubrangeIterator() {
-                T? nextFromSequence() = sequence.iterator();
-                repeat (from) times (iter.next());
-                mutable Natural index := from;
-                T? next() {
-                    if (index++<=to) {
-                        return nextFromSequence()
+    class JoinedSequence() {
+        override Natural? lastIndex {
+            if (exists Natural last = sequence.lastIndex) {
+                if (exists to) {
+                    if (to<last) {
+                        return to-from
                     }
                     else {
-                        return null
+                        return last-from
                     }
                 }
             }
-            return SubrangeIterator().next
+            else {
+                return null
+            }
+        } 
+        override Referenceable<T?> value(Natural index) {
+            T? value {
+                if (exists to) {
+                    if (index>to) {
+                        return null
+                    }
+                }
+                return sequence[index+from]
+            }
+            return value
         }
-    }
+     } 
 
-    return S( SubrangeIterable() )
+    return S( JoinedSequence() )
     
 }]]></programlisting>
         
