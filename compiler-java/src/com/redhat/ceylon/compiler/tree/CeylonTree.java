@@ -21,6 +21,7 @@ public abstract class CeylonTree {
     interface Declaration {
         void setParameterList(List<FormalParameter> theList);
         void setType(IType type);
+        void setAnnotations(List<Annotation> annos);
     }
     
     interface IType {
@@ -347,10 +348,15 @@ public abstract class CeylonTree {
         members = members.append(decl);
     }
   
+    public void setAnnotations(List<Annotation> annotations) {
+        // FIXME: This should not be a method of CeylonTree
+        this.annotations = annotations;
+    }
+    
     void setType(IType t) {
         throw new RuntimeException();
     }
-
+    
     void append(CeylonTree expr) {
         throw new RuntimeException();
     }
@@ -372,7 +378,7 @@ public abstract class CeylonTree {
     public void add(Annotation ann) {
         if (annotations == null)
             annotations = List.<Annotation>nil();
-        annotations.append(ann);
+        annotations = annotations.append(ann);
     }
   
     /**
@@ -668,7 +674,6 @@ public abstract class CeylonTree {
 
         public void setType(IType type) {
             throw new RuntimeException();
-        
         }
     }
 
@@ -2145,7 +2150,10 @@ public abstract class CeylonTree {
      * A type declaration
      */
     public static class TypeDeclaration extends CeylonTree implements Declaration {
+        Declaration decl;
+
         public void setVisibility(CeylonTree v) {           
+            throw new RuntimeException();
         }
         public void accept(Visitor v) { v.visit(this); }
     
@@ -2153,8 +2161,15 @@ public abstract class CeylonTree {
             throw new RuntimeException();       
         }
         public void setType(IType type) {
-            throw new RuntimeException();
-        
+            throw new RuntimeException();   
+        }
+        void add (ClassDeclaration decl)
+        {
+            this.decl = decl;
+        }   
+        void add (InterfaceDeclaration decl)
+        {
+            this.decl = decl;
         }
     }
 

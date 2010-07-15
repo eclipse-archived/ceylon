@@ -50,6 +50,12 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
         current.context.add(decl);
     }
+    public void visit(CeylonTree.InterfaceDeclaration decl) {
+        current.push(decl);
+        inner(decl);
+        current.pop();
+        current.context.add(decl);
+    }
 
     public void visit(CeylonTree.ImportDeclaration decl) {
         current.imports.append(decl);
@@ -63,9 +69,9 @@ public class Grok extends CeylonTree.Visitor {
         current.push(decl);
         inner(decl);
         current.pop();
-        CeylonTree.ClassDeclaration classDecl = decl.classDecls.last();
-        classDecl.annotations = decl.annotations;
-        current.context.add(classDecl);
+        CeylonTree.Declaration type = decl.decl;
+        type.setAnnotations(decl.annotations);
+        current.context.add(type);
     }
     
     public void visit(CeylonTree.TypeName name) {
@@ -100,7 +106,6 @@ public class Grok extends CeylonTree.Visitor {
     
     public void visit(CeylonTree.LanguageAnnotation ann) {
         current.push(ann);
-        current.context = ann;
         inner(ann);
         current.pop();
         current.context.add(ann);
