@@ -97,8 +97,8 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.ABSTRACT_MEMBER_DECL,
                     AbstractMemberDeclaration.class);
         classes.put(CeylonParser.ALIAS_DECL, AliasDeclaration.class);
-        classes.put(CeylonParser.AND, And.class);
-        classes.put(CeylonParser.ANDEQ, AndEqual.class);
+        classes.put(CeylonParser.AND, Operator.class);
+        classes.put(CeylonParser.ANDEQ, Operator.class);
         classes.put(CeylonParser.ANNOTATION_LIST, AnnotationList.class);
         classes.put(CeylonParser.ANNOTATION_NAME, AnnotationName.class);
         classes.put(CeylonParser.ANON_METH, AnonymousMethod.class);
@@ -106,13 +106,13 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.ARG_NAME, ArgumentName.class);
         classes.put(CeylonParser.ASSIGN, Assign.class);
         classes.put(CeylonParser.ATTRIBUTE_SETTER, AttributeSetter.class);
-        classes.put(CeylonParser.BITWISEAND, BitwiseAnd.class);
-        classes.put(CeylonParser.BITWISEANDEQ, BitwiseAndEqual.class);
-        classes.put(CeylonParser.BITWISENOT, BitwiseNot.class);
-        classes.put(CeylonParser.BITWISEOR, BitwiseOr.class);
-        classes.put(CeylonParser.BITWISEOREQ, BitwiseOrEqual.class);
-        classes.put(CeylonParser.BITWISEXOR, BitwiseXor.class);
-        classes.put(CeylonParser.BITWISEXOREQ, BitwiseXorEqual.class);
+        classes.put(CeylonParser.BITWISEAND, Operator.class);
+        classes.put(CeylonParser.BITWISEANDEQ, Operator.class);
+        classes.put(CeylonParser.BITWISENOT, Operator.class);
+        classes.put(CeylonParser.BITWISEOR, Operator.class);
+        classes.put(CeylonParser.BITWISEOREQ, Operator.class);
+        classes.put(CeylonParser.BITWISEXOR, Operator.class);
+        classes.put(CeylonParser.BITWISEXOREQ, Operator.class);
         classes.put(CeylonParser.BREAK, Break.class);
         classes.put(CeylonParser.BREAK_STMT, BreakStatement.class);
         classes.put(CeylonParser.CALL_EXPR, CallExpression.class);
@@ -127,27 +127,27 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.CLASS, Klass.class);
         classes.put(CeylonParser.CLASS_BODY, ClassBody.class);
         classes.put(CeylonParser.CLASS_DECL, ClassDeclaration.class);
-        classes.put(CeylonParser.COLON, Colon.class);
-        classes.put(CeylonParser.COLONEQ, ColonEqual.class);
-        classes.put(CeylonParser.COMMA, Comma.class);
-        classes.put(CeylonParser.COMPARE, Compare.class);
+        classes.put(CeylonParser.COLON, Operator.class);
+        classes.put(CeylonParser.COLONEQ, Operator.class);
+        classes.put(CeylonParser.COMMA, Operator.class);
+        classes.put(CeylonParser.COMPARE, Operator.class);
         classes.put(CeylonParser.CONDITION, Condition.class);
         classes.put(CeylonParser.CONTINUE, Continue.class);
-        classes.put(CeylonParser.DECREMENT, Decrement.class);
+        classes.put(CeylonParser.DECREMENT, Operator.class);
         classes.put(CeylonParser.DEFAULT, Default.class);
-        classes.put(CeylonParser.DIVIDED, Divide.class);
-        classes.put(CeylonParser.DIVIDEDEQ, DivideEqual.class);
+        classes.put(CeylonParser.DIVIDED, Operator.class);
+        classes.put(CeylonParser.DIVIDEDEQ, Operator.class);
         classes.put(CeylonParser.DO, Do.class);
-        classes.put(CeylonParser.DOT, Dot.class);
-        classes.put(CeylonParser.DOTEQ, DotEqual.class);
+        classes.put(CeylonParser.DOT, Operator.class);
+        classes.put(CeylonParser.DOTEQ, Operator.class);
         classes.put(CeylonParser.DO_BLOCK, DoBlock.class);
         classes.put(CeylonParser.DO_ITERATOR, DoIterator.class);
-        classes.put(CeylonParser.ELLIPSIS, Ellipsis.class);
+        classes.put(CeylonParser.ELLIPSIS, Operator.class);
         classes.put(CeylonParser.ELSE, Else.class);
-        classes.put(CeylonParser.ENTRY, Entry.class);
+        classes.put(CeylonParser.ENTRY, Operator.class);
         classes.put(CeylonParser.ENUM_LIST, EnumList.class);
-        classes.put(CeylonParser.EQ, Equal.class);
-        classes.put(CeylonParser.EQEQ, EqualEqual.class);
+        classes.put(CeylonParser.EQ, Operator.class);
+        classes.put(CeylonParser.EQEQ, Operator.class);
         classes.put(CeylonParser.EXISTS, Exists.class);
         classes.put(CeylonParser.EXISTS_EXPR, ExistsExpression.class);
         classes.put(CeylonParser.EXPR, Expression.class);
@@ -167,22 +167,22 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.FOR_STMT, ForStatement.class);
         classes.put(CeylonParser.GET, Get.class);
         classes.put(CeylonParser.GET_EXPR, GetExpression.class);
-        classes.put(CeylonParser.GT, GreaterThan.class);
-        classes.put(CeylonParser.GTEQ, GreaterThanEqual.class);
-        classes.put(CeylonParser.HASH, Hash.class);
-        classes.put(CeylonParser.IDENTICAL, Identical.class);
+        classes.put(CeylonParser.GT, Operator.class);
+        classes.put(CeylonParser.GTEQ, Operator.class);
+        classes.put(CeylonParser.HASH, Operator.class);
+        classes.put(CeylonParser.IDENTICAL, Operator.class);
         classes.put(CeylonParser.IF, If.class);
         classes.put(CeylonParser.IF_FALSE, IfFalse.class);
         classes.put(CeylonParser.IF_STMT, IfStatement.class);
         classes.put(CeylonParser.IF_TRUE, IfTrue.class);
-        classes.put(CeylonParser.IMPLIES, Implies.class);
+        classes.put(CeylonParser.IMPLIES, Operator.class);
         classes.put(CeylonParser.IMPORT, Import.class);
         classes.put(CeylonParser.IMPORT_DECL, ImportDeclaration.class);
         classes.put(CeylonParser.IMPORT_LIST, ImportList.class);
         classes.put(CeylonParser.IMPORT_PATH, ImportPath.class);
         classes.put(CeylonParser.IMPORT_WILDCARD, ImportWildcard.class);
         classes.put(CeylonParser.IN, In.class);
-        classes.put(CeylonParser.INCREMENT, Increment.class);
+        classes.put(CeylonParser.INCREMENT, Operator.class);
         classes.put(CeylonParser.INIT_EXPR, InitializerExpression.class);
         classes.put(CeylonParser.INST_DECL, InstanceDeclaration.class);
         classes.put(CeylonParser.INTERFACE, Interface.class);
@@ -191,21 +191,21 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.IS, Is.class);
         classes.put(CeylonParser.IS_EXPR, IsExpression.class);
         classes.put(CeylonParser.LANG_ANNOTATION, LanguageAnnotation.class);
-        classes.put(CeylonParser.LBRACE, LeftBrace.class);
-        classes.put(CeylonParser.LBRACKET, LeftBracket.class);
+        classes.put(CeylonParser.LBRACE, Operator.class);
+        classes.put(CeylonParser.LBRACKET, Operator.class);
         classes.put(CeylonParser.LIDENTIFIER, Identifier.class);
         classes.put(CeylonParser.LINE_COMMENT, SingleLineComment.class);
         classes.put(CeylonParser.LOCAL, Local.class);
         classes.put(CeylonParser.LOOP_BLOCK, LoopBlock.class);
         classes.put(CeylonParser.LOWER_BOUND, LowerBound.class);
-        classes.put(CeylonParser.LPAREN, LeftParen.class);
-        classes.put(CeylonParser.LT, LessThan.class);
-        classes.put(CeylonParser.LTEQ, LessThanEqual.class);
+        classes.put(CeylonParser.LPAREN, Operator.class);
+        classes.put(CeylonParser.LT, Operator.class);
+        classes.put(CeylonParser.LTEQ, Operator.class);
         classes.put(CeylonParser.MEMBER_DECL, MemberDeclaration.class);
         classes.put(CeylonParser.MEMBER_NAME, MemberName.class);
         classes.put(CeylonParser.MEMBER_TYPE, MemberType.class);
-        classes.put(CeylonParser.MINUS, Minus.class);
-        classes.put(CeylonParser.MINUSEQ, MinusEqual.class);
+        classes.put(CeylonParser.MINUS, Operator.class);
+        classes.put(CeylonParser.MINUSEQ, Operator.class);
         classes.put(CeylonParser.MODULE, Module.class);
         classes.put(CeylonParser.MULTI_COMMENT, MultiLineComment.class);
         classes.put(CeylonParser.MUTABLE, Mutable.class);
@@ -215,46 +215,46 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.NONE, None.class);
         classes.put(CeylonParser.NONEMPTY, Nonempty.class);
         classes.put(CeylonParser.NONEMPTY_EXPR, NonemptyExpression.class);
-        classes.put(CeylonParser.NOT, Not.class);
-        classes.put(CeylonParser.NOTEQ, NotEqual.class);
+        classes.put(CeylonParser.NOT, Operator.class);
+        classes.put(CeylonParser.NOTEQ, Operator.class);
         classes.put(CeylonParser.NULL, Null.class);
         classes.put(CeylonParser.OPTIONAL, Optional.class);
-        classes.put(CeylonParser.OR, Or.class);
-        classes.put(CeylonParser.OREQ, OrEqual.class);
+        classes.put(CeylonParser.OR, Operator.class);
+        classes.put(CeylonParser.OREQ, Operator.class);
         classes.put(CeylonParser.OVERRIDE, Override.class);
         classes.put(CeylonParser.PACKAGE, Package.class);
-        classes.put(CeylonParser.PLUS, Plus.class);
-        classes.put(CeylonParser.PLUSEQ, PlusEqual.class);
+        classes.put(CeylonParser.PLUS, Operator.class);
+        classes.put(CeylonParser.PLUSEQ, Operator.class);
         classes.put(CeylonParser.POSTFIX_EXPR, PostfixExpression.class);
-        classes.put(CeylonParser.POWER, Power.class);
+        classes.put(CeylonParser.POWER, Operator.class);
         classes.put(CeylonParser.PREFIX_EXPR, PrefixExpression.class);
         classes.put(CeylonParser.PRIVATE, Private.class);
         classes.put(CeylonParser.PUBLIC, Public.class);
-        classes.put(CeylonParser.QMARK, QuestionMark.class);
-        classes.put(CeylonParser.QMARKEQ, QuestionMarkEqual.class);
-        classes.put(CeylonParser.QUESDOT, QuestionMarkDot.class);
+        classes.put(CeylonParser.QMARK, Operator.class);
+        classes.put(CeylonParser.QMARKEQ, Operator.class);
+        classes.put(CeylonParser.QUESDOT, Operator.class);
         classes.put(CeylonParser.QUOTEDLITERAL, QuotedLiteral.class);
         classes.put(CeylonParser.QUOTE_CST, QuoteConstant.class);
         classes.put(CeylonParser.RANGE, Range.class);
-        classes.put(CeylonParser.RBRACE, RightBrace.class);
-        classes.put(CeylonParser.RBRACKET, RightBracket.class);
+        classes.put(CeylonParser.RBRACE, Operator.class);
+        classes.put(CeylonParser.RBRACKET, Operator.class);
         classes.put(CeylonParser.REFLECTED_LITERAL, ReflectedLiteral.class);
-        classes.put(CeylonParser.REMAINDER, Modulo.class);
-        classes.put(CeylonParser.REMAINDEREQ, ModuloEqual.class);
-        classes.put(CeylonParser.RENDER, Render.class);
+        classes.put(CeylonParser.REMAINDER, Operator.class);
+        classes.put(CeylonParser.REMAINDEREQ, Operator.class);
+        classes.put(CeylonParser.RENDER, Operator.class);
         classes.put(CeylonParser.RETRY, Retry.class);
         classes.put(CeylonParser.RETRY_STMT, RetryStatement.class);
         classes.put(CeylonParser.RETURN, Return.class);
         classes.put(CeylonParser.RET_STMT, ReturnStatement.class);
-        classes.put(CeylonParser.RPAREN, RightParen.class);
+        classes.put(CeylonParser.RPAREN, Operator.class);
         classes.put(CeylonParser.SATISFIES, Satisfies.class);
         classes.put(CeylonParser.SATISFIES_LIST, SatisfiesList.class);
         classes.put(CeylonParser.SELECTOR_LIST, SelectorList.class);
-        classes.put(CeylonParser.SEMI, Semi.class);
+        classes.put(CeylonParser.SEMI, Operator.class);
         classes.put(CeylonParser.SET, Set.class);
         classes.put(CeylonParser.SET_EXPR, SetExpression.class);
         classes.put(CeylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
-        classes.put(CeylonParser.STARDOT, StarDot.class);
+        classes.put(CeylonParser.STARDOT, Operator.class);
         classes.put(CeylonParser.STMT_LIST, StatementList.class);
         classes.put(CeylonParser.STRING_CONCAT, StringConcatenation.class);
         classes.put(CeylonParser.STRING_CST, StringConstant.class);
@@ -269,8 +269,8 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.THIS, This.class);
         classes.put(CeylonParser.THROW, Throw.class);
         classes.put(CeylonParser.THROW_STMT, ThrowStatement.class);
-        classes.put(CeylonParser.TIMES, Times.class);
-        classes.put(CeylonParser.TIMESEQ, TimesEqual.class);
+        classes.put(CeylonParser.TIMES, Operator.class);
+        classes.put(CeylonParser.TIMESEQ, Operator.class);
         classes.put(CeylonParser.TRY, Try.class);
         classes.put(CeylonParser.TRY_BLOCK, TryBlock.class);
         classes.put(CeylonParser.TRY_CATCH_STMT, TryCatchStatement.class);
@@ -395,8 +395,6 @@ public abstract class CeylonTree {
         public void visit(AbstractMethodDeclaration that) { visitDefault(that); }
         public void visit(AbstractsList that)             { visitDefault(that); }
         public void visit(AliasDeclaration that)          { visitDefault(that); }
-        public void visit(And that)                       { visitDefault(that); }
-        public void visit(AndEqual that)                  { visitDefault(that); }
         public void visit(AnnotationList that)            { visitDefault(that); }
         public void visit(AnnotationName that)            { visitDefault(that); }
         public void visit(AnonymousMethod that)           { visitDefault(that); }
@@ -404,13 +402,6 @@ public abstract class CeylonTree {
         public void visit(ArgumentName that)              { visitDefault(that); }
         public void visit(Assign that)                    { visitDefault(that); }
         public void visit(AttributeSetter that)           { visitDefault(that); }
-        public void visit(BitwiseAnd that)                { visitDefault(that); }
-        public void visit(BitwiseAndEqual that)           { visitDefault(that); }
-        public void visit(BitwiseNot that)                { visitDefault(that); }
-        public void visit(BitwiseOr that)                 { visitDefault(that); }
-        public void visit(BitwiseOrEqual that)            { visitDefault(that); }
-        public void visit(BitwiseXor that)                { visitDefault(that); }
-        public void visit(BitwiseXorEqual that)           { visitDefault(that); }
         public void visit(Break that)                     { visitDefault(that); }
         public void visit(BreakStatement that)            { visitDefault(that); }
         public void visit(CallExpression that)            { visitDefault(that); }
@@ -425,28 +416,15 @@ public abstract class CeylonTree {
         public void visit(Klass that)                     { visitDefault(that); }
         public void visit(ClassBody that)                 { visitDefault(that); }
         public void visit(ClassDeclaration that)          { visitDefault(that); }
-        public void visit(Colon that)                     { visitDefault(that); }
-        public void visit(ColonEqual that)                { visitDefault(that); }
-        public void visit(Comma that)                     { visitDefault(that); }
-        public void visit(Compare that)                   { visitDefault(that); }
         public void visit(CompilationUnit that)           { visitDefault(that); }
         public void visit(Condition that)                 { visitDefault(that); }
         public void visit(Continue that)                  { visitDefault(that); }
-        public void visit(Decrement that)                 { visitDefault(that); }
         public void visit(Default that)                   { visitDefault(that); }
-        public void visit(Divide that)                    { visitDefault(that); }
-        public void visit(DivideEqual that)               { visitDefault(that); }
         public void visit(Do that)                        { visitDefault(that); }
         public void visit(DoBlock that)                   { visitDefault(that); }
         public void visit(DoIterator that)                { visitDefault(that); }
-        public void visit(Dot that)                       { visitDefault(that); }
-        public void visit(DotEqual that)                  { visitDefault(that); }
-        public void visit(Ellipsis that)                  { visitDefault(that); }
         public void visit(Else that)                      { visitDefault(that); }
-        public void visit(Entry that)                     { visitDefault(that); }
         public void visit(EnumList that)                  { visitDefault(that); }
-        public void visit(Equal that)                     { visitDefault(that); }
-        public void visit(EqualEqual that)                { visitDefault(that); }
         public void visit(Exists that)                    { visitDefault(that); }
         public void visit(ExistsExpression that)          { visitDefault(that); }
         public void visit(Expression that)                { visitDefault(that); }
@@ -466,23 +444,17 @@ public abstract class CeylonTree {
         public void visit(FormalParameterList that)       { visitDefault(that); }
         public void visit(Get that)                       { visitDefault(that); }
         public void visit(GetExpression that)             { visitDefault(that); }
-        public void visit(GreaterThan that)               { visitDefault(that); }
-        public void visit(GreaterThanEqual that)          { visitDefault(that); }
-        public void visit(Hash that)                      { visitDefault(that); }
-        public void visit(Identical that)                 { visitDefault(that); }
         public void visit(Identifier that)                { visitDefault(that); }
         public void visit(If that)                        { visitDefault(that); }
         public void visit(IfFalse that)                   { visitDefault(that); }
         public void visit(IfStatement that)               { visitDefault(that); }
         public void visit(IfTrue that)                    { visitDefault(that); }
-        public void visit(Implies that)                   { visitDefault(that); }
         public void visit(Import that)                    { visitDefault(that); }
         public void visit(ImportDeclaration that)         { visitDefault(that); }
         public void visit(ImportList that)                { visitDefault(that); }
         public void visit(ImportPath that)                { visitDefault(that); }
         public void visit(ImportWildcard that)            { visitDefault(that); }
         public void visit(In that)                        { visitDefault(that); }
-        public void visit(Increment that)                 { visitDefault(that); }
         public void visit(InitializerExpression that)     { visitDefault(that); }
         public void visit(InstanceDeclaration that)       { visitDefault(that); }
         public void visit(IntConstant that)               { visitDefault(that); }
@@ -491,11 +463,6 @@ public abstract class CeylonTree {
         public void visit(Is that)                        { visitDefault(that); }
         public void visit(IsExpression that)              { visitDefault(that); }
         public void visit(LanguageAnnotation that)        { visitDefault(that); }
-        public void visit(LeftBrace that)                 { visitDefault(that); }
-        public void visit(LeftBracket that)               { visitDefault(that); }
-        public void visit(LeftParen that)                 { visitDefault(that); }
-        public void visit(LessThan that)                  { visitDefault(that); }
-        public void visit(LessThanEqual that)             { visitDefault(that); }
         public void visit(Local that)                     { visitDefault(that); }
         public void visit(LoopBlock that)                 { visitDefault(that); }
         public void visit(LowerBound that)                { visitDefault(that); }
@@ -503,11 +470,7 @@ public abstract class CeylonTree {
         public void visit(MemberName that)                { visitDefault(that); }
         public void visit(MemberType that)                { visitDefault(that); }
         public void visit(MethodDeclaration that)         { visitDefault(that); }
-        public void visit(Minus that)                     { visitDefault(that); }
-        public void visit(MinusEqual that)                { visitDefault(that); }
         public void visit(Module that)                    { visitDefault(that); }
-        public void visit(Modulo that)                    { visitDefault(that); }
-        public void visit(ModuloEqual that)               { visitDefault(that); }
         public void visit(MultiLineComment that)          { visitDefault(that); }
         public void visit(Mutable that)                   { visitDefault(that); }
         public void visit(NamedArgument that)             { visitDefault(that); }
@@ -516,45 +479,29 @@ public abstract class CeylonTree {
         public void visit(None that)                      { visitDefault(that); }
         public void visit(Nonempty that)                  { visitDefault(that); }
         public void visit(NonemptyExpression that)        { visitDefault(that); }
-        public void visit(Not that)                       { visitDefault(that); }
-        public void visit(NotEqual that)                  { visitDefault(that); }
         public void visit(Null that)                      { visitDefault(that); }
         public void visit(Optional that)                  { visitDefault(that); }
-        public void visit(Or that)                        { visitDefault(that); }
-        public void visit(OrEqual that)                   { visitDefault(that); }
         public void visit(Override that)                  { visitDefault(that); }
         public void visit(Package that)                   { visitDefault(that); }
-        public void visit(Plus that)                      { visitDefault(that); }
-        public void visit(PlusEqual that)                 { visitDefault(that); }
         public void visit(PostfixExpression that)         { visitDefault(that); }
-        public void visit(Power that)                     { visitDefault(that); }
         public void visit(PrefixExpression that)          { visitDefault(that); }
         public void visit(Private that)                   { visitDefault(that); }
         public void visit(Public that)                    { visitDefault(that); }
-        public void visit(QuestionMark that)              { visitDefault(that); }
-        public void visit(QuestionMarkDot that)           { visitDefault(that); }
-        public void visit(QuestionMarkEqual that)         { visitDefault(that); }
         public void visit(QuoteConstant that)             { visitDefault(that); }
         public void visit(QuotedLiteral that)             { visitDefault(that); }
         public void visit(Range that)                     { visitDefault(that); }
         public void visit(ReflectedLiteral that)          { visitDefault(that); }
-        public void visit(Render that)                    { visitDefault(that); }
         public void visit(Retry that)                     { visitDefault(that); }
         public void visit(RetryStatement that)            { visitDefault(that); }
         public void visit(Return that)                    { visitDefault(that); }
         public void visit(ReturnStatement that)           { visitDefault(that); }
-        public void visit(RightBrace that)                { visitDefault(that); }
-        public void visit(RightBracket that)              { visitDefault(that); }
-        public void visit(RightParen that)                { visitDefault(that); }
         public void visit(Satisfies that)                 { visitDefault(that); }
         public void visit(SatisfiesList that)             { visitDefault(that); }
         public void visit(SelectorList that)              { visitDefault(that); }
-        public void visit(Semi that)                      { visitDefault(that); }
         public void visit(Set that)                       { visitDefault(that); }
         public void visit(SetExpression that)             { visitDefault(that); }
         public void visit(SimpleStringLiteral that)       { visitDefault(that); }
         public void visit(SingleLineComment that)         { visitDefault(that); }
-        public void visit(StarDot that)                   { visitDefault(that); }
         public void visit(StatementList that)             { visitDefault(that); }
         public void visit(StringConcatenation that)       { visitDefault(that); }
         public void visit(StringConstant that)            { visitDefault(that); }
@@ -569,8 +516,6 @@ public abstract class CeylonTree {
         public void visit(This that)                      { visitDefault(that); }
         public void visit(Throw that)                     { visitDefault(that); }
         public void visit(ThrowStatement that)            { visitDefault(that); }
-        public void visit(Times that)                     { visitDefault(that); }
-        public void visit(TimesEqual that)                { visitDefault(that); }
         public void visit(Try that)                       { visitDefault(that); }
         public void visit(TryBlock that)                  { visitDefault(that); }
         public void visit(TryCatchStatement that)         { visitDefault(that); }
@@ -683,20 +628,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "&&"
-     */
-    public static class And extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "&&="
-     */
-    public static class AndEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * A list of annotations
      */
     public static class AnnotationList extends CeylonTree {
@@ -753,55 +684,6 @@ public abstract class CeylonTree {
      * An attribute setter
      */
     public static class AttributeSetter extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "&"
-     */
-    public static class BitwiseAnd extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "&="
-     */
-    public static class BitwiseAndEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "~"
-     */
-    public static class BitwiseNot extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "|"
-     */
-    public static class BitwiseOr extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "|="
-     */
-    public static class BitwiseOrEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "^"
-     */
-    public static class BitwiseXor extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "^="
-     */
-    public static class BitwiseXorEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -939,34 +821,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol ":"
-     */
-    public static class Colon extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol ":="
-     */
-    public static class ColonEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol ","
-     */
-    public static class Comma extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "<=>"
-     */
-    public static class Compare extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * A compilation unit
      */
     public static class CompilationUnit extends CeylonTree {
@@ -1004,30 +858,9 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "--"
-     */
-    public static class Decrement extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * The word "default"
      */
     public static class Default extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "/"
-     */
-    public static class Divide extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "/="
-     */
-    public static class DivideEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1053,27 +886,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "."
-     */
-    public static class Dot extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol ".="
-     */
-    public static class DotEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "..."
-     */
-    public static class Ellipsis extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * The word "else"
      */
     public static class Else extends CeylonTree {
@@ -1081,30 +893,9 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "->"
-     */
-    public static class Entry extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * A list of enums
      */
     public static class EnumList extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "="
-     */
-    public static class Equal extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "=="
-     */
-    public static class EqualEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1267,34 +1058,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol ">"
-     */
-    public static class GreaterThan extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol ">="
-     */
-    public static class GreaterThanEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "#"
-     */
-    public static class Hash extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "==="
-     */
-    public static class Identical extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * An identifier
      */
     public static class Identifier extends CeylonTree {
@@ -1326,13 +1089,6 @@ public abstract class CeylonTree {
      * The taken-if-true block of an if clause
      */
     public static class IfTrue extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "=>"
-     */
-    public static class Implies extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1375,13 +1131,6 @@ public abstract class CeylonTree {
      * The word "in"
      */
     public static class In extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "++"
-     */
-    public static class Increment extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1468,41 +1217,6 @@ public abstract class CeylonTree {
     public static class LanguageAnnotation extends CeylonTree implements Annotation {
         public CeylonTree kind;
       
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "{"
-     */
-    public static class LeftBrace extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "["
-     */
-    public static class LeftBracket extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "("
-     */
-    public static class LeftParen extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "<"
-     */
-    public static class LessThan extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "<="
-     */
-    public static class LessThanEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1610,37 +1324,9 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "-"
-     */
-    public static class Minus extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "-="
-     */
-    public static class MinusEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * The word "module"
      */
     public static class Module extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "%"
-     */
-    public static class Modulo extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "%="
-     */
-    public static class ModuloEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1709,20 +1395,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "!"
-     */
-    public static class Not extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "!="
-     */
-    public static class NotEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * The word "null"
      */
     public static class Null extends CeylonTree {
@@ -1733,20 +1405,6 @@ public abstract class CeylonTree {
      * The word "optional"
      */
     public static class Optional extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "||"
-     */
-    public static class Or extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "||="
-     */
-    public static class OrEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1765,30 +1423,9 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "+"
-     */
-    public static class Plus extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "+="
-     */
-    public static class PlusEqual extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * A postfix expression
      */
     public static class PostfixExpression extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "**"
-     */
-    public static class Power extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1810,27 +1447,6 @@ public abstract class CeylonTree {
      * The word "public"
      */
     public static class Public extends CeylonTree implements Annotation {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "?"
-     */
-    public static class QuestionMark extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "?."
-     */
-    public static class QuestionMarkDot extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "?="
-     */
-    public static class QuestionMarkEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1871,13 +1487,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "$"
-     */
-    public static class Render extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * The word "retry"
      */
     public static class Retry extends CeylonTree {
@@ -1914,27 +1523,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The symbol "}"
-     */
-    public static class RightBrace extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "]"
-     */
-    public static class RightBracket extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol ")"
-     */
-    public static class RightParen extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * The word "satisfies"
      */
     public static class Satisfies extends CeylonTree {
@@ -1952,13 +1540,6 @@ public abstract class CeylonTree {
      * A list of selectors
      */
     public static class SelectorList extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol ";"
-     */
-    public static class Semi extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1989,13 +1570,6 @@ public abstract class CeylonTree {
      * A single line comment
      */
     public static class SingleLineComment extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "*."
-     */
-    public static class StarDot extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2100,20 +1674,6 @@ public abstract class CeylonTree {
      * A throw statement
      */
     public static class ThrowStatement extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "*"
-     */
-    public static class Times extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * The symbol "*="
-     */
-    public static class TimesEqual extends CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
