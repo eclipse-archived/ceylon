@@ -764,7 +764,8 @@ else {
                 </listitem>
                 <listitem>
                     <para>the <literal>for</literal> block is executed once for each value 
-                    produced by the iterator, until the iterator is exhausted.</para>
+                    in the resulting sequence of values of type <literal>X</literal>, until 
+                    the iterator is exhausted.</para>
                 </listitem>
             </itemizedlist>
             
@@ -776,9 +777,13 @@ else {
             
             <para>For example:</para>
 
-            <programlisting>for (Person p in people) { log.info(p.name); }</programlisting>
+            <programlisting>for (Person p in people) { 
+    log.info(p.name);
+}</programlisting>
             
-            <programlisting>for (Natural month -> Float temp in monthlyTempsList) { plot(month,temp); }</programlisting>
+            <programlisting>for (Natural month -> Float temp in monthlyTempsList) { 
+    plot(month,temp); 
+}</programlisting>
 
             <programlisting>for (String word -> Natural freq in wordFrequencyMap) { 
     log.info("The frequency of the " word " is " freq "."); 
