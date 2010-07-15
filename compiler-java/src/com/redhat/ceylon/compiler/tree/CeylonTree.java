@@ -589,7 +589,9 @@ public abstract class CeylonTree {
         public void visit(Whitespace that)                { visitDefault(that); }
 
         public void visitDefault(CeylonTree tree) {
-            throw new RuntimeException();
+            String fullName = tree.getClass().getName();
+            String shortName = fullName.substring(fullName.indexOf('$') + 1);
+            throw new RuntimeException(shortName);
         }
     
         // Synthetic tree nodes generated during analysis
