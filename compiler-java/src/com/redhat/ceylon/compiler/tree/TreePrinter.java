@@ -128,7 +128,8 @@ public class TreePrinter extends CeylonTree.Visitor {
                 for (Object child: (List) value) {
                     ((CeylonTree) child).accept(this);
                 }
-            }
+            } else if (value instanceof Number)
+                out.print(" " + value);
             else {
                 throw new RuntimeException(value.getClass().getName());
             }

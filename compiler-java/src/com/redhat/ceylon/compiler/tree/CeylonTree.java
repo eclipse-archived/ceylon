@@ -310,7 +310,7 @@ public abstract class CeylonTree {
 
     public List<InterfaceDeclaration> interfaceDecls;
 
-    public List<MethodDeclaration> methods;
+    public List<BaseMethodDeclaration> methods;
   
     public List <MemberDeclaration> members;
   
@@ -334,10 +334,10 @@ public abstract class CeylonTree {
         interfaceDecls = interfaceDecls.append(decl);
     }
   
-    void add (MethodDeclaration decl)
+    void add (BaseMethodDeclaration decl)
     {
         if (methods == null)
-            methods = List.<MethodDeclaration>nil();
+            methods = List.<BaseMethodDeclaration>nil();
         methods = methods.append(decl);
     }
   
@@ -367,8 +367,8 @@ public abstract class CeylonTree {
             add ((ClassDeclaration)t);
         else if (InterfaceDeclaration.class.isAssignableFrom(t.getClass()))
             add ((InterfaceDeclaration)t);
-        else if (MethodDeclaration.class.isAssignableFrom(t.getClass()))
-            add ((MethodDeclaration)t);
+        else if (BaseMethodDeclaration.class.isAssignableFrom(t.getClass()))
+            add ((BaseMethodDeclaration)t);
         else if (MemberDeclaration.class.isAssignableFrom(t.getClass()))
             add ((MemberDeclaration)t);
         else
@@ -392,6 +392,7 @@ public abstract class CeylonTree {
     public static class Visitor {
         public void visit(Abstract that)                  { visitDefault(that); }
         public void visit(AbstractMemberDeclaration that) { visitDefault(that); }
+        public void visit(AbstractMethodDeclaration that) { visitDefault(that); }
         public void visit(AbstractsList that)             { visitDefault(that); }
         public void visit(AliasDeclaration that)          { visitDefault(that); }
         public void visit(And that)                       { visitDefault(that); }
@@ -641,7 +642,11 @@ public abstract class CeylonTree {
     /**
      * An abstract member declaration
      */
-    public static class AbstractMemberDeclaration extends CeylonTree {
+    public static class AbstractMemberDeclaration extends BaseMemberDeclaration {
+        public void accept(Visitor v) { v.visit(this); }
+    }
+
+    public static class AbstractMethodDeclaration extends BaseMethodDeclaration {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -721,6 +726,12 @@ public abstract class CeylonTree {
      * A list of arguments
      */
     public static class ArgumentList extends CeylonTree {
+        List<CeylonTree> theList = List.<CeylonTree>nil();
+        
+        public void append(CeylonTree expr) {
+            theList.append(expr);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -812,6 +823,12 @@ public abstract class CeylonTree {
      * A call expression
      */
     public static class CallExpression extends CeylonTree {
+        public List<CeylonTree> args = List.<CeylonTree>nil();
+        
+        public void append(CeylonTree arg) {
+            args = args.append(arg);
+        }
+       
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1203,6 +1220,14 @@ public abstract class CeylonTree {
     public static class FormalParameter extends CeylonTree implements Declaration {
         IType type;
       
+        CeylonTree initializer;
+        
+        void append(CeylonTree expr) {
+            if (this.initializer != null)
+                throw new RuntimeException();
+            this.initializer = expr;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     
         public void setType(IType type) {
@@ -1441,10 +1466,7 @@ public abstract class CeylonTree {
      * A language annotation
      */
     public static class LanguageAnnotation extends CeylonTree implements Annotation {
-        public String name;
-        public void setName(String name) {
-            this.name = name;
-        }
+        public CeylonTree kind;
       
         public void accept(Visitor v) { v.visit(this); }
     }
@@ -1508,7 +1530,7 @@ public abstract class CeylonTree {
     /**
      * A member declaration
      */
-    public static class MemberDeclaration extends CeylonTree implements Declaration {
+    public static abstract class BaseMemberDeclaration extends CeylonTree implements Declaration {
         public IType type;
         public List<FormalParameter> params;
         public List<CeylonTree> stmts;
@@ -1523,8 +1545,6 @@ public abstract class CeylonTree {
             this.name = name.name;
         }
       
-        public void accept(Visitor v) { v.visit(this); }
-
         public void setParameterList(List<FormalParameter> p) {
             params = p;
         }
@@ -1535,7 +1555,11 @@ public abstract class CeylonTree {
         }
     }
 
-    /**
+    public static class MemberDeclaration extends BaseMemberDeclaration {
+        public void accept(Visitor v) { v.visit(this); }
+    }
+
+     /**
      * A member name
      */
     public static class MemberName extends CeylonTree {
@@ -1566,7 +1590,7 @@ public abstract class CeylonTree {
         }
     }
   
-    public static class MethodDeclaration extends CeylonTree implements Declaration {
+    public static abstract class BaseMethodDeclaration extends CeylonTree implements Declaration {
         public IType type;
         public List<FormalParameter> params;
         
@@ -1576,11 +1600,13 @@ public abstract class CeylonTree {
             this.type = type;
         }
 
-        public void accept(Visitor v) { v.visit(this); }
-
         public void setParameterList(List<FormalParameter> theList) {
             params = theList;
         }
+    }
+
+    public static class MethodDeclaration extends BaseMethodDeclaration implements Declaration {
+        public void accept(Visitor v) { v.visit(this); }
     }
 
     /**
@@ -1636,6 +1662,12 @@ public abstract class CeylonTree {
      * A named argument
      */
     public static class NamedArgument extends CeylonTree {
+        public CeylonTree value;
+        
+        void append(CeylonTree expr) {
+            value = expr;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1813,6 +1845,8 @@ public abstract class CeylonTree {
      * A quoted literal
      */
     public static class QuotedLiteral extends CeylonTree {
+        public String value;
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1827,6 +1861,12 @@ public abstract class CeylonTree {
      * A reflected  literal
      */
     public static class ReflectedLiteral extends CeylonTree {
+        IType type;
+        
+        void setType(IType t) {
+            this.type = type;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2224,6 +2264,11 @@ public abstract class CeylonTree {
             this.name = name;
         }
       
+        public CeylonTree value;
+        void append(CeylonTree expr) {
+            value = expr;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 

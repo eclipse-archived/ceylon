@@ -108,8 +108,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(ann);
         inner(ann);
         current.pop();
-        current.context.add(ann);
-    }
+     }
     
     public void visit(CeylonTree.AnnotationName name)
     {
@@ -125,7 +124,15 @@ public class Grok extends CeylonTree.Visitor {
         // TODO ((CeylonTree.Declaration)current.context).setVisibility(v);
     }
     
-    public void visit(CeylonTree.MemberDeclaration member)
+    public void visit(CeylonTree.MemberDeclaration member) {
+        visit((CeylonTree.BaseMemberDeclaration)member);
+    }
+    public void visit(CeylonTree.AbstractMemberDeclaration member) {
+        visit((CeylonTree.BaseMemberDeclaration)member);
+    }
+
+    
+    public void visit(CeylonTree.BaseMemberDeclaration member)
     {
         // We don't know if this is going to be a method or a field.
         // We resolve this by saying if it has an arg list, it's a method.
@@ -137,7 +144,12 @@ public class Grok extends CeylonTree.Visitor {
             methodType.formalParameters = member.params;
             methodType.returnType = member.type;
             member.type = methodType;
-            CeylonTree.MethodDeclaration decl = new CeylonTree.MethodDeclaration();
+            // I'm not at all sure that it's worth having both MethodDeclaration and
+            // AbstractMethodDeclaration, since it's trivial to distinguish because
+            // one has statements; the other has none.
+            CeylonTree.BaseMethodDeclaration decl = 
+                member.stmts != null ? new CeylonTree.MethodDeclaration()
+                                     : new CeylonTree.AbstractMethodDeclaration();
             decl.setParameterList(member.params);
             decl.setType(methodType);
             decl.setName(member.name);
@@ -158,10 +170,8 @@ public class Grok extends CeylonTree.Visitor {
     
     public void visit(CeylonTree.MemberType type)
     {
-        current.push(type);
         inner(type);
-        current.pop();
-        CeylonTree.MemberDeclaration decl = (CeylonTree.MemberDeclaration)current.context;
+        CeylonTree.BaseMemberDeclaration decl = (CeylonTree.BaseMemberDeclaration)current.context;
         decl.type = type;
     }
     
@@ -169,6 +179,30 @@ public class Grok extends CeylonTree.Visitor {
     {
         current.context.setType(v);
     }
+    
+    public void visit(CeylonTree.Default v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
+    
+    public void visit(CeylonTree.Package v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
+    
+    public void visit(CeylonTree.Abstract v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
+    
+    public void visit(CeylonTree.Module v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
     
     public void visit(CeylonTree.Type type) {
         inner(type);
@@ -235,6 +269,53 @@ public class Grok extends CeylonTree.Visitor {
         lit.value = lit.token.getText();
         current.context.append(lit);
     }
+    
+    public void visit(CeylonTree.InitializerExpression expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.NamedArgument expr) {
+        current.push(expr);
+        inner(expr);
+        current.pop();
+    }
+    
+    public void visit(CeylonTree.ArgumentList expr) {
+        current.push(expr);
+        inner(expr);
+        current.pop();
+    }
+    
+    public void visit(CeylonTree.Varargs expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.ExpressionList expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.ReflectedLiteral expr) {
+        current.push(expr);
+        inner(expr);
+        current.pop();
+    }
+    
+    public void visit(CeylonTree.QuoteConstant expr) {
+        inner(expr);
+    }
+    
+    public void visit(CeylonTree.CallExpression expr) {
+        current.push(expr);
+        inner(expr);
+        current.pop();        
+    }
+    
+    public void visit(CeylonTree.QuotedLiteral expr) {
+        inner(expr);
+        expr.value = expr.token.getText();
+    }
+    
+   
     
      void inner(CeylonTree t) {
         for (CeylonTree child : t.children)

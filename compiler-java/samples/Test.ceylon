@@ -8,16 +8,19 @@ Integer arse ;
 Integer pp (Integer one) { 
 } 
 }
-*/
 
 floobydust
+*/
 public interface I {
+       void p();
 }
 
+/*
 public class Test (Float f)
 {
-  void p() { }
+  void p(Integer a) { }
 Integer arse ;  
 Integer pp (Integer one) { 
 } 
 }
+*/

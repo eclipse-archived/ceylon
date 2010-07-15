@@ -11,6 +11,7 @@ tokens {
     USER_ANNOTATION;
     ANNOTATION_LIST;
     MEMBER_DECL;
+    TYPE_DECL;
     ABSTRACT_MEMBER_DECL;
     ALIAS_DECL;
     ANNOTATION_NAME;
@@ -710,7 +711,8 @@ selector
     ;
 
 member
-    : ('.' | '?.' | '*.') nameAndTypeArguments
+    : '.' nameAndTypeArguments -> DOT  nameAndTypeArguments
+    | ('?.' | '*.') nameAndTypeArguments
     ;
 
 nameAndTypeArguments
@@ -804,7 +806,7 @@ specialArgument
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)?
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
     ;
 
 //special rule for syntactic predicates
@@ -1009,19 +1011,10 @@ Exponent
     : ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
-fragment ELLIPSIS
-    :   '...'
-    ;
-
-fragment RANGE
-    :   '..'
-    ;
-
-fragment DOT
-    :   '.'
-    ;
-
 fragment FLOATLITERAL :;
+fragment ELLIPSIS :;
+fragment RANGE :;
+fragment DOT :;
 NATURALLITERAL
     : Digits 
       ( { input.LA(2) != '.' }? => '.' Digits Exponent? { $type = FLOATLITERAL; } )?
