@@ -28,12 +28,12 @@
   <condition property="antlr.needed">
     <or>
       <not>
-        <available file="${antlr.dst}/ceylonParser.java"/>
+        <available file="${antlr.dst}/CeylonParser.java"/>
       </not>
       <not>
         <uptodate
            srcfile="${antlr.src}"
-           targetfile="${antlr.dst}/ceylonParser.java"/>
+           targetfile="${antlr.dst}/CeylonParser.java"/>
       </not>
     </or>
   </condition>
