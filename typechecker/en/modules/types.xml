@@ -542,7 +542,7 @@ public interface Iterator<X>
         <programlisting><![CDATA[public extension X? next(Iterator<X> iter)() {
     mutable class StatefulIterator() {
         mutable index i:=0;
-        X? next() { return iter[i] }
+        X? next() { return iter[i++] }
     }
     return StatefulIterator().next
 }]]></programlisting>
