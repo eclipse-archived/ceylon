@@ -67,6 +67,12 @@ public class TreePrinter extends CeylonTree.Visitor {
                 cd.stmts);
     }
 
+    public void visit(CeylonTree.InterfaceDeclaration id) {
+        process("InterfaceDeclaration",
+                id.name,
+                id.annotations);
+    }
+
     public void visit(CeylonTree.FormalParameter fp) {
         process("FormalParameter",
                 fp.type);
