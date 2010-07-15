@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.tree;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import com.sun.tools.javac.util.List;
 
@@ -20,71 +23,103 @@ public class TreePrinter extends CeylonTree.Visitor {
             out.print("  ");
     }
 
-    private void inner(List children) {
-        for (Object child: children) {
-            ((CeylonTree) child).accept(this);
+    private static class NameValuePair implements Comparable {
+        public String name;
+        public Object value;
+
+        public NameValuePair(String name, Object value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public int compareTo(Object o) {
+            NameValuePair that = (NameValuePair) o;
+            boolean thisIsName = this.name.equals("name");
+            boolean thatIsName = that.name.equals("name");
+            if (thisIsName) {
+                if (thatIsName)
+                    return 0;
+                return -1;
+            }
+            if (thatIsName)
+                return 1;
+            return this.name.compareTo(that.name);
         }
     }
-    
-    private void process(String str, Object ... children) {
-        indent();
-        out.print("(" + str);
-        depth++;
 
-        for (Object child: children) {
-            if (child != null) {
-                if (child instanceof List) {
-                    inner((List) child);
-                }
-                else if (child instanceof CeylonTree) {
+    private List<NameValuePair> getFields(CeylonTree tree) {
+        return getFields(tree.getClass(), tree);
+    }
+
+    private List<NameValuePair> getFields(Class klass, CeylonTree tree) {
+        List<NameValuePair> result;
+        if (klass == CeylonTree.class)
+            result = List.<NameValuePair>nil();
+        else
+            result = getFields(klass.getSuperclass(), tree);
+
+        List<NameValuePair> tmpL = List.<NameValuePair>nil();
+        for (Field field: klass.getDeclaredFields()) {
+            if (Modifier.isStatic(field.getModifiers()))
+                continue;
+
+            String name = field.getName();
+            if (name.equals("parent") || name.equals("children"))
+                continue;
+            if (name.equals("token"))
+                continue;
+
+            Object value;
+            try {
+                value = field.get(tree);
+            }
+            catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            tmpL = tmpL.append(new NameValuePair(name, value));
+        }
+
+        NameValuePair[] tmpA = new NameValuePair[tmpL.size()];
+        tmpL.toArray(tmpA);
+        Arrays.sort(tmpA);
+
+        return result.appendList(List.<NameValuePair>from(tmpA));
+    }
+
+    private void enter(String what) {
+        indent();
+        out.print("(" + what);
+        depth++;
+    }
+    private void leave() {
+        depth--;
+        out.print(")");
+    }
+
+    public void visitDefault(CeylonTree tree) {
+        enter(tree.getClassName());
+        for (NameValuePair field: getFields(tree)) {
+            Object value = field.value;
+            if (value == null)
+                continue;
+
+            enter(field.name);
+            if (value instanceof String) {
+                out.print(" \"" + value + "\"");
+            }
+            else if (value instanceof CeylonTree) {
+                ((CeylonTree) value).accept(this);
+            }
+            else if (value instanceof List) {
+                for (Object child: (List) value) {
                     ((CeylonTree) child).accept(this);
                 }
-                else if (child instanceof String) {
-                    out.print(" \"" + (String) child + '"');
-                }
-                else {
-                    throw new RuntimeException(child.getClass().getName());
-                }
             }
+            else {
+                throw new RuntimeException(value.getClass().getName());
+            }
+            leave();
         }
-
-        depth--;
-        out.print(')');
-    }
-
-    public void visit(CeylonTree.CompilationUnit cu) {
-        process("CompilationUnit",
-                cu.importDeclarations,
-                cu.interfaceDecls,
-                cu.classDecls);
-    }
-
-    public void visit(CeylonTree.ClassDeclaration cd) {
-        process("ClassDeclaration",
-                cd.name,
-                cd.params,
-                cd.annotations,
-                cd.stmts);
-    }
-
-    public void visit(CeylonTree.InterfaceDeclaration id) {
-        process("InterfaceDeclaration",
-                id.name,
-                id.annotations);
-    }
-
-    public void visit(CeylonTree.FormalParameter fp) {
-        process("FormalParameter",
-                fp.type);
-    }
-
-    public void visit(CeylonTree.Type t) {
-        process("Type",
-                t.type);
-    }
-
-    public void visit(CeylonTree.StatementList sl) {
-        process("StatementList",
-                sl.stmts);
+        leave();
     }
 }
