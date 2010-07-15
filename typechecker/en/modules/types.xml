@@ -515,7 +515,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     
 }]]></programlisting>
     
-        <programlisting><![CDATA[public interface Iterable<X>
+        <programlisting><![CDATA[public interface Iterable<out X>
         satisfies Container {
     
     doc "A sequence of objects belonging
@@ -537,8 +537,8 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
      operation |value(i)| must return the 
      |i|th element for any |0<=i<N| or |null| 
      for any |i>=N|."
-public interface Iterator<X>
-        satisfies Correspondence<Natural, out X> {}]]></programlisting>
+public interface Iterator<out X>
+        satisfies Correspondence<Natural, X> {}]]></programlisting>
         
         <comment><para>TODO: I'm still not sure whether we should have
         stateful iterators or not. They're much better for cases like
@@ -800,7 +800,7 @@ while (exists local x = next()) {
         inherited from <literal>Correspondence</literal>:</para>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
-        satisfies Correspondence<Natural, out X> {
+        satisfies Correspondence<Natural, X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."

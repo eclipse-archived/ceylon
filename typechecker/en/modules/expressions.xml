@@ -3143,18 +3143,18 @@ setPerson(person);</programlisting>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
             <entry><literal>range(lhs,x,y)</literal></entry>
-            <entry><literal>S where S(X... elements) satisfies X[]</literal></entry>
+            <entry><literal>X[]</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
-            <entry><literal>S</literal></entry>
+            <entry><literal>X[]</literal></entry>
         </row>
         <row>
             <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
             <entry><literal>range(lhs,x)</literal></entry>
-            <entry><literal>S where S(X... elements) satisfies X[]</literal></entry>
+            <entry><literal>X[]</literal></entry>
             <entry><literal>Natural</literal></entry>
-            <entry><literal>S</literal></entry>
+            <entry><literal>X[]</literal></entry>
         </row>
         <!--
         <row>
@@ -3175,9 +3175,9 @@ setPerson(person);</programlisting>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>join</entry>
             <entry><literal>join(lhs, rhs)</literal></entry>
-            <entry><literal>S(X... elements) where S satisfies X[]</literal></entry>
-            <entry><literal>S</literal></entry>
-            <entry><literal>S</literal></entry>
+            <entry><literal>X[]</literal></entry>
+            <entry><literal>X[]</literal></entry>
+            <entry><literal>X[]</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Spread invocation</emphasis></entry></row>
