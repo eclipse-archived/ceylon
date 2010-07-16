@@ -612,7 +612,7 @@ for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
         <para>The metamodel object for a class, attribute or method implements 
         <literal>Callable</literal> and is therefore invokable.</para>
         
-        <programlisting>Class&lt;ArrayList&lt;String&gt;,Iterable&lt;String&gt;&gt; arrayListClass = ArrayList&lt;String&gt;;
+        <programlisting>Class&lt;ArrayList&lt;String&gt;,String[]&gt; arrayListClass = ArrayList&lt;String&gt;;
         
 List list = arrayListClass("foo", "bar", "baz);</programlisting>
         
@@ -1096,7 +1096,7 @@ local comp = order(1,-1);</programlisting>
         <itemizedlist>
             <listitem>
                 <para>be a single argument expression of type assignable to 
-                <literal>Iterable&lt;T&gt;</literal>, or</para>
+                <literal>T[]</literal>, or</para>
             </listitem>
             <listitem>
                 <para>in the case of a direct invocation, an arbitrary number of argument 
@@ -1105,7 +1105,7 @@ local comp = order(1,-1);</programlisting>
         </itemizedlist>
          
         <para>In the second case, the argument expressions are evaluated and collected into an 
-        instance of <literal>Iterable&lt;T&gt;</literal> when the invocation is executed.</para>
+        instance of <literal>T[]</literal> when the invocation is executed.</para>
         
         <para>When a invocation expression of a callable reference is executed:</para>
         
@@ -1316,7 +1316,7 @@ local comp = order(1,-1);</programlisting>
         <comment><para>TODO: figure this out. Is this only for varargs in a named parameter
         invocation?</para></comment>
         
-        <para>A vararg argument may be an <literal>Iterable</literal> of the parameter type.</para>
+        <para>A vararg argument may be a <literal>Sequence</literal> of the parameter type.</para>
         
         <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
         
@@ -3198,7 +3198,7 @@ setPerson(person);</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>spread invoke</entry>
             <entry><literal>for (C c in lhs) c(x,y,z)</literal></entry>
-            <entry><literal>Iterable&lt;Callable&lt;T,P...&gt;&gt;</literal></entry>
+            <entry><literal>Callable&lt;T,P...&gt;[]</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
