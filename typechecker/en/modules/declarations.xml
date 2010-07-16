@@ -1015,9 +1015,9 @@ VarargsParam?
 
         <para>Method, class and interface declarations which declare generic type 
         parameters may declare constraints upon the type parameters using the
-        <literal>where</literal> clause.</para>
+        <literal>given</literal> clause.</para>
         
-        <programlisting>TypeConstraints = ("where" TypeConstraint)+</programlisting>
+        <programlisting>TypeConstraints = ("given" TypeConstraint)+</programlisting>
     
         <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? Subtypes?</programlisting>
         
@@ -1085,21 +1085,21 @@ VarargsParam?
             </listitem>
         </itemizedlist>
         
-        <programlisting>where X satisfies Number&lt;X&gt;
-where Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+        <programlisting>given X satisfies Number&lt;X&gt;
+given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
 
-        <programlisting>where T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
+        <programlisting>given T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
     
         <comment><para>TODO: Should the type parameter upper bound default to <literal>Object</literal>
         instead of <literal>Void</literal>?</para></comment>
     
         <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
-        down to the <literal>where</literal> clause?</para></comment>
+        down to the <literal>given</literal> clause?</para></comment>
         
         <comment><para>TODO: should we let you declare a constraint for a varargs type 
         parameter?</para>
         <programlisting>class Foo&lt;P...&gt;(P... args) 
-        where P satisfies Comparable&lt;P&gt; {
+        given P satisfies Comparable&lt;P&gt; {
     ...
 }</programlisting></comment>
     
@@ -1990,7 +1990,7 @@ public User(String username, Person person);</programlisting>
 }</programlisting>
 
         <programlisting>public Set&lt;T&gt; singleton&lt;T&gt;(T element) 
-        where T satisfies Comparable&lt;T&gt; {
+        given T satisfies Comparable&lt;T&gt; {
     return TreeSet(element)
 }</programlisting>
 
@@ -2978,14 +2978,14 @@ public Visibility private() {
 }</programlisting>
 
         <programlisting>public extension class SequenceUtils&lt;N&gt;(N[] seq) 
-        where N extends Number, Comparable&lt;N&gt; {
+        given N extends Number, Comparable&lt;N&gt; {
     
     public N[] positiveElements() {
-        return seq.elements() having (N n) (n&gt;0); 
+        return seq.elements() where (N n) (n&gt;0); 
     }
     
     public N[] elementsLessThan(N limit) {
-        return seq.elements() having (N n) (n&lt;limit);
+        return seq.elements() where (N n) (n&lt;limit);
     }
     
     ...   

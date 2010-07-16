@@ -346,7 +346,7 @@ class CaseOptional<X>(Case<X> c)
         <programlisting><![CDATA[public extension
 class CaseSuper<X,Y>(Case<X> c) 
         satisfies Case<Y> 
-        where X satisfies Y {
+        given X satisfies Y {
         
     override Boolean test(Y y) {
         if (is X y) {
@@ -383,7 +383,7 @@ class CaseSuper<X,Y>(Case<X> c)
     doc "The binary default operator 
          |x ? y|."
     public T default<T>(T defaultValue) 
-            where T abstracts X;
+            given T abstracts X;
     
 }]]></programlisting>
 
@@ -411,7 +411,7 @@ class Something<out X>(X x)
     }
     
     override T default<T>(T defaultValue) 
-            where T abstracts X {
+            given T abstracts X {
         return value;
     }
     
@@ -435,7 +435,7 @@ class Nothing<out X>(Null null)
     }
     
     override T default<T>(T defaultValue) 
-            where T abstracts X {
+            given T abstracts X {
         return defaultValue;
     }
     
@@ -654,7 +654,7 @@ while (exists local x = next()) {
         
         <programlisting><![CDATA[public mutable interface OpenCategory<in X> 
         satisfies Category 
-        where X satisfies Object {
+        given X satisfies Object {
     
     doc "Add the given objects to the category. Return the number of 
          objects which did not already belong to the category."
@@ -728,7 +728,7 @@ while (exists local x = next()) {
         <literal>[key]</literal> (lookup).</para>
 
         <programlisting><![CDATA[public interface Correspondence<in U, out V> 
-        where U satisfies Object {
+        given U satisfies Object {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
@@ -740,7 +740,7 @@ while (exists local x = next()) {
         <para>A decorator allows retrieval of lists and sets of values.</para>
 
         <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence)
-        where U satisfies Object {
+        given U satisfies Object {
 
     doc "Binary list lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
@@ -833,7 +833,7 @@ while (exists local x = next()) {
         <para>A decorator allows addition of multiple <literal>Entry</literal>s.</para>
 
         <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) 
-        where U satisfies Object {
+        given U satisfies Object {
 
     doc "Add the given entries, overriding any definitions that 
          already exist."
@@ -1118,7 +1118,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         
         <programlisting><![CDATA[public interface Collection<out X> 
         satisfies Iterable<X>, Container, Category 
-        where X satisfies Object {
+        given X satisfies Object {
     
     doc "The number of elements or entries belonging to the 
          collection."
@@ -1130,18 +1130,18 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     
     doc "Determine the number of elements or entries for
          which the given condition evaluates to |true|."
-    public Natural count(Boolean having(X element));
+    public Natural count(Boolean where(X element));
     
     doc "Determine if the given condition evaluates to |true|
          for at least one element or entry."
-    public Boolean contains(Boolean having(X element));
+    public Boolean contains(Boolean where(X element));
     
     doc "The elements of the collection, as a |Set|."
     public Set<X> elements;
     
     doc "The elements of the collection for which the given
          condition evaluates to |true|, as a |Set|."
-    public Set<X> elements(Boolean having(X element));
+    public Set<X> elements(Boolean where(X element));
     
     doc "The elements of the collection, sorted using the given
          comparison."
@@ -1150,10 +1150,10 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     doc "An extension of the collection, with the given 
          elements. The returned collection reflects changes 
          made to the first collection."
-    public Collection<T> with<T>(T... elements) where T abstracts X;
+    public Collection<T> with<T>(T... elements) given T abstracts X;
 
     doc "A mutable copy of the collection."
-    public OpenCollection<T> copy<T>() where T abstracts X;
+    public OpenCollection<T> copy<T>() given T abstracts X;
     
 }]]></programlisting>
 
@@ -1163,7 +1163,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <literal>Comparable</literal> values in natural order.</para>
         
         <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
-        where X satisfies Comparable<X> {
+        given X satisfies Comparable<X> {
         
     doc "The elements of the collection, sorted in natural order."
     public List<X> sortedElements() {
@@ -1176,7 +1176,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         
         <programlisting><![CDATA[public mutable interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
-        where X satisfies Object {
+        given X satisfies Object {
     
     doc "Remove all elements or entries of the collection,
          resulting in an empty collection."
@@ -1190,7 +1190,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     doc "Remove all elements from the collection for which
          the given condition evaluates to |true|. Return 
          the number of elements which were removed."
-    public Natural remove(Boolean having(X element));
+    public Natural remove(Boolean where(X element));
     
 }]]></programlisting>
 
@@ -1209,7 +1209,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
             
             <programlisting><![CDATA[public interface Set<out X> 
         satisfies Collection<X>, Correspondence<Object, Boolean> 
-        where X satisfies Object {
+        given X satisfies Object {
     
     doc "Determine if the set is a superset of the given set.
          Return |true| if it is a superset."
@@ -1219,13 +1219,13 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
          Return |true| if it is a subset."
     public Boolean subset(Set<Object> set);
     
-    public override Set<T> with<T>(T... elements) where T abstracts X;
-    public override OpenSet<T> copy<T>() where T abstracts X;
+    public override Set<T> with<T>(T... elements) given T abstracts X;
+    public override OpenSet<T> copy<T>() given T abstracts X;
 
 }]]></programlisting>
 
             <!--    
-    public Set<T> union(Set<T> set) where T abstracts X;
+    public Set<T> union(Set<T> set) given T abstracts X;
     public Set<X> intersection(Set<Object> set);
     public Set<X> complement(Set<Object> set);
             -->
@@ -1234,7 +1234,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
             
             <programlisting><![CDATA[public mutable interface OpenSet<X> 
         satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<Object, Boolean> 
-        where X satisfies Object {}]]></programlisting>
+        given X satisfies Object {}]]></programlisting>
 
         </section>
         
@@ -1247,22 +1247,22 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
             
             <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X>, X[] 
-        where X satisfies Object {
+        given X satisfies Object {
     
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    public Natural? firstIndex(Boolean having(X element));
+    public Natural? firstIndex(Boolean where(X element));
 
     doc "The index of the last element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    public Natural? lastIndex(Boolean having(X element));
+    public Natural? lastIndex(Boolean where(X element));
     
     doc "The elements of the list for which the given condition 
          evaluates to |true|, as a |List| with the original 
          order."
-    public List<X> elementList(Boolean having(X element));
+    public List<X> elementList(Boolean where(X element));
     
     doc "A sublist beginning with the element at the first given 
          index up to and including the element at the second given 
@@ -1310,12 +1310,12 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public override List<T> with<T>(T... elements) where T abstracts X;
+    public override List<T> with<T>(T... elements) given T abstracts X;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<T> withInitial<T>(T... elements) where T abstracts X;
+    public List<T> withInitial<T>(T... elements) given T abstracts X;
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
@@ -1333,7 +1333,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
          every element of the list."
     public List<Y> transform<Y>(Y select(X element));
     
-    public override OpenList<T> copy<T>() where T abstracts X;
+    public override OpenList<T> copy<T>() given T abstracts X;
 
 }]]></programlisting>
 
@@ -1353,7 +1353,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
 public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     if (exists X pivot = list.first) {
         local createPartition = quickSort(list.rest.elementList);  
-                //i.e. List<X> createPartition(Boolean having(X X)) = ...
+                //i.e. List<X> createPartition(Boolean where(X X)) = ...
         local smaller = byIncreasing.partial(pivot);                       
                 //i.e. Boolean smaller(X x) = ...
         return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller))
@@ -1372,7 +1372,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public mutable interface OpenList<X> 
         satisfies List<X>, OpenCollection<X>, OpenSequence<X> 
-        where X satisfies Object {
+        given X satisfies Object {
 
     doc "Remove the element at the given index, decrementing
          the index of every element with an index greater
@@ -1437,7 +1437,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         <literal>Comparable</literal> values in natural order.</para>
         
         <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
-        where X satisfies Comparable<X> {
+        given X satisfies Comparable<X> {
         
     doc "Reorder the elements of the list, according to the 
          natural order."
@@ -1459,7 +1459,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Map<U, out V>
         satisfies Collection<Entry<U,V>>, Correspondence<U, V> 
-        where U satisfies Object {
+        given U satisfies Object {
     
     doc "The keys of the map, as a |Set|."
     public Set<U> keys;
@@ -1477,10 +1477,10 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     
     doc "The entries of the map for which the given condition 
          evaluates to |true|, as a |Map|."
-    public Map<U, V> entries(Boolean having(U key -> V value));
+    public Map<U, V> entries(Boolean where(U key -> V value));
     
-    public override Map<U, T> with<T>(Entry<U, T>... entries) where T abstracts V;
-    public override OpenMap<U,T> copy<T>() where T abstracts V;
+    public override Map<U, T> with<T>(Entry<U, T>... entries) given T abstracts V;
+    public override OpenMap<U,T> copy<T>() given T abstracts V;
     
 }]]></programlisting>
 
@@ -1488,7 +1488,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
         satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> 
-        where U satisfies Object {
+        given U satisfies Object {
     
     doc "Remove the entry for the given key, returning the 
          value of the removed entry."
@@ -1499,7 +1499,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     doc "Remove all entries from the map which have keys for 
          which the given condition evaluates to |true|. Return 
          entries which were removed."
-    public Map<U,V> remove(Boolean having(U key));
+    public Map<U,V> remove(Boolean where(U key));
     
     override public OpenSet<U> keys;
     override public OpenBag<V> values;
@@ -1516,15 +1516,15 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X>, Correspondence<Object, Natural> 
-        where X satisfies Object {
+        given X satisfies Object {
     
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
          the original bag."
     public Map<X,Natural> map;
     
-    public override Bag<T> with<T>(T... elements) where T abstracts X;
-    public override OpenBag<T> copy<T>() where T abstracts X;
+    public override Bag<T> with<T>(T... elements) given T abstracts X;
+    public override OpenBag<T> copy<T>() given T abstracts X;
     
 }]]></programlisting>
 
@@ -1593,7 +1593,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         (compare).</para>
         
         <programlisting><![CDATA[public interface Comparable<in T> 
-        where T satisfies Object {
+        given T satisfies Object {
     
     doc "The binary compare operator |<=>|. Compares this 
          object with the given object."
@@ -1636,7 +1636,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         return the minimum and maximum values of a list of <literal>Comparable</literal>s.</para>
         
         <programlisting><![CDATA[public X min<X>(X x, X... xs) 
-        where X satisfies Comparable<X> {
+        given X satisfies Comparable<X> {
     mutable X min := x;
     for (X y in xs) { 
         if (y<min) { 
@@ -1647,7 +1647,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
 }]]></programlisting>
 
         <programlisting><![CDATA[public X max<X>(X x, X... xs) 
-        where X satisfies Comparable<X> {
+        given X satisfies Comparable<X> {
     mutable X max := x;
     for (X y in xs) { 
         if (y>max) { 
@@ -1691,7 +1691,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         satisfies Category, X[], Case<X>
-        where X satisfies Ordinal, Comparable<X> { 
+        given X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
     public X first = first;
@@ -1928,7 +1928,7 @@ class String(Character[] characters)
 
 <programlisting><![CDATA[public interface Numeric<N>
         satisfies Number, Comparable<N>
-        where N satisfies Number {
+        given N satisfies Number {
 
     doc "The binary |+| operator"
     public N plus(N number);
@@ -1960,7 +1960,7 @@ class String(Character[] characters)
 
 <programlisting><![CDATA[public interface Integral<N>
         satisfies Numeric<N>, Ordinal
-        where N satisfies Number {
+        given N satisfies Number {
 
     doc "The binary |%| operator"
     public N remainder(N number);
@@ -1971,7 +1971,7 @@ class String(Character[] characters)
         prefix <literal>-</literal> operator.</para>
         
         <programlisting><![CDATA[public interface Invertable<I> 
-    where I satisfies Number {
+    given I satisfies Number {
     
     doc "The unary |-| operator"
     public I inverse;
@@ -2201,7 +2201,7 @@ class String(Character[] characters)
     public Parameter<Object>[] parameters;
     
     public void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
-                    where S abstracts X;
+                    given S abstracts X;
     
 }]]></programlisting>
 
@@ -2213,7 +2213,7 @@ class String(Character[] characters)
     public Boolean mutable;
     
     public void intercept<S>( T onGet(S instance, T proceed()) )()
-                    where S abstracts X;
+                    given S abstracts X;
     
 }]]></programlisting>
 
@@ -2222,7 +2222,7 @@ class String(Character[] characters)
         satisfies Member<X, Assignable<T>> {  //this is OK since Member is covariant in T
         
     public void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
-                    where S abstracts X;
+                    given S abstracts X;
     
 }]]></programlisting>
 
@@ -2235,7 +2235,7 @@ class String(Character[] characters)
     public Parameter<Object>[] parameters;
     
     public void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
-                    where S abstracts X;
+                    given S abstracts X;
     
 }]]></programlisting>
 
@@ -2255,7 +2255,7 @@ class String(Character[] characters)
     doc "Return all the annotation values that are 
          assignable to the given type."
     public T[] annotations<T>(Type<T> type = Object) 
-            where T satisfies Object;
+            given T satisfies Object;
 }]]></programlisting>
 
     </section>
@@ -2298,7 +2298,7 @@ class String(Character[] characters)
 }]]></programlisting>
         
         <programlisting><![CDATA[public class Interval<X>(X start, X end) 
-        where X satisfies Instant {
+        given X satisfies Instant {
     public X start = start;
     public X end = end;
     public Duration<X> duration { return ... }
@@ -2306,7 +2306,7 @@ class String(Character[] characters)
 }]]></programlisting>
 
         <programlisting><![CDATA[public class Duration<X>(Map<Granularity<X>, Natural> magnitude) 
-        where X satisfies Instant {
+        given X satisfies Instant {
 
     public Map<Granularity<X>, Natural> magnitude = magnitude;
     
@@ -2323,7 +2323,7 @@ class String(Character[] characters)
 }]]></programlisting>
 
         <programlisting><![CDATA[public interface Granularity<X> 
-        where X satisfies Instant {}]]></programlisting>
+        given X satisfies Instant {}]]></programlisting>
 
         <programlisting><![CDATA[public class DateGranularity()
         satisfies Granularity<Date> {
@@ -2434,7 +2434,7 @@ public Y seek<Y,E>(Y seek(),
      the first block."
 public Y using<X,Y>(specified X resource,
                     Y seek(coordinated X x))
-        where X satisfies Usable {
+        given X satisfies Usable {
     try (resource) {
         return seek(resource)
     }
@@ -2447,7 +2447,7 @@ public Y using<X,Y>(specified X resource,
 public Y using<X,Y,E>(specified X resource,
                       Y seek(coordinated X x),
                       Y except(E e))
-        where X satisfies Usable {
+        given X satisfies Usable {
     try (resource) {
         return seek(resource)
     }
@@ -2506,10 +2506,10 @@ public void repeat(Natural repetitions, void times()) {
         <programlisting><![CDATA[doc "Count the elements for which the block 
      evaluates to true."
 public Natural count<X>(iterated Iterable<X> elements,
-                        Boolean having(coordinated X x)) {
+                        Boolean where(coordinated X x)) {
     mutable Natural count := 0;
     for (X x in elements) {
-        if ( having(x) ) {
+        if ( where(x) ) {
             ++count;
         }
     }
@@ -2532,17 +2532,17 @@ public Boolean forAll<X>(iterated Iterable<X> elements,
      evaluates to true."
 public Boolean forAny<X>(iterated Iterable<X> elements,
                          Boolean some(coordinated X x)) {
-    Boolean having(X x) { return !some(x) }
-    return !forAll(elements, having)
+    Boolean where(X x) { return !some(x) }
+    return !forAll(elements, where)
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Return the first element for which the block 
      evaluates to true, or |null|if no such element 
      is found."
 public X? first<X>(iterated Iterable<X> elements,
-                   Boolean having(coordinated X x)) {
+                   Boolean where(coordinated X x)) {
     for (X x in elements) {
-        if ( having(x) ) {
+        if ( where(x) ) {
             return x
         }
     }
@@ -2554,9 +2554,9 @@ public X? first<X>(iterated Iterable<X> elements,
      evaluating the second block, if no such 
      element is found."
 public X first<X>(iterated Iterable<X> elements,
-                  Boolean having(coordinated X x),
+                  Boolean where(coordinated X x),
                   X otherwise()) {
-    if (exists X first = first(elements, having)) {
+    if (exists X first = first(elements, where)) {
         return first
     }
     else {
@@ -2571,10 +2571,10 @@ public X first<X>(iterated Iterable<X> elements,
      the first block evaluates to true, ordered 
      using the second block, if specified."
 public List<X> from<X>(iterated Iterable<X> elements,
-                       Boolean having(coordinated X x),
+                       Boolean where(coordinated X x),
                        Comparable by(coordinated X x) = naturalOrder) {
     X select(X x) { return x }
-    return from(elements, having, select, by)
+    return from(elements, where, select, by)
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Iterate elements and for each element evaluate 
@@ -2584,8 +2584,8 @@ public List<X> from<X>(iterated Iterable<X> elements,
 public List<Y> from<X,Y>(iterated Iterable<X> elements,
                          Y select(coordinated X x),
                          Comparable by(coordinated X x) = naturalOrder)  {
-    Boolean having(X x) { return true }
-    return from(elements, having, select, by)
+    Boolean where(X x) { return true }
+    return from(elements, where, select, by)
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Iterate elements and select those for which 
@@ -2594,12 +2594,12 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
      of the resulting values, ordered using the 
      third block, if specified."
 public List<Y> from<X,Y>(iterated Iterable<X> elements,
-                         Boolean having(coordinated X x), 
+                         Boolean where(coordinated X x), 
                          Y select(coordinated X x),
                          Comparable by(coordinated X x) = naturalOrder) {
     OpenList<Y> list = ArrayList<Y>();
     for (X x in elements) {
-        if ( having(x) ) {
+        if ( where(x) ) {
             list.append( select(x) );
         }
     }

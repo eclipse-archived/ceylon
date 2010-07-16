@@ -1166,7 +1166,7 @@ local comp = order(1,-1);</programlisting>
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
             <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
             
-            <programlisting>from (people) having (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
+            <programlisting>from (people) where (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
             <programlisting>iterate (map) perform (String name->Object value) { log.info("Entry: " name "->" value ""); };</programlisting>
             
         </section>
@@ -1479,7 +1479,7 @@ local comp = order(1,-1);</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>having (Person p) (p.age>18)</programlisting>
+        <programlisting>where (Person p) (p.age>18)</programlisting>
         
         <programlisting>by (Float x, Float y) ( x&lt;=&gt;y )</programlisting>
         
@@ -1493,7 +1493,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>ifTrue (x+1) ifFalse (x-1)</programlisting>
         
-        <programlisting>select (Person p) (p.name) having (Person p) (p.age>18)</programlisting>
+        <programlisting>select (Person p) (p.name) where (Person p) (p.age>18)</programlisting>
         
         <para>Arguments must be listed in the same order as the formal parameters are 
         declared by the method declaration.</para>
@@ -1502,7 +1502,7 @@ local comp = order(1,-1);</programlisting>
         <para>TODO: should we support type inference for the formal parameters? It 
         gets complicated with method overloading. For example:</para>
         <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
-        <programlisting>having (local p) (p.age>18)</programlisting>
+        <programlisting>where (local p) (p.age>18)</programlisting>
         </comment>
 
         </section>
@@ -1525,32 +1525,32 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>public
 List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
-                  Boolean having(coordinated X x),
+                  Boolean where(coordinated X x),
                   Y select(coordinated X x));</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>List&lt;String&gt; names = from (Person p in people) having (p>20) select (p.name);</programlisting>
+        <programlisting>List&lt;String&gt; names = from (Person p in people) where (p>20) select (p.name);</programlisting>
         
         <para>Which is equivalent to:</para>
         
-        <programlisting>List&lt;String&gt; names = from (people) having (Person p) (p>20) select (Person p) (p.name);</programlisting>
+        <programlisting>List&lt;String&gt; names = from (people) where (Person p) (p>20) select (Person p) (p.name);</programlisting>
         
         <para>Or, we may invoke the method as follows:</para>
                   
         <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
-                      having (user.authorized(key)) 
+                      where (user.authorized(key)) 
                       select ($key + ": " + $value);</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>List&lt;String&gt; labels = from (namedValues)
-                      having (Key key -> Value value) (user.authorized(key)) 
+                      where (Key key -> Value value) (user.authorized(key)) 
                       select (Key key -> Value value) ($key + ": " + $value);</programlisting>
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local names = from (local p in people) having (p>20) select (p.name);</programlisting>
+        <programlisting>local names = from (local p in people) where (p>20) select (p.name);</programlisting>
         
         
         </section>
@@ -1590,7 +1590,7 @@ Y ifExists&lt;X,Y&gt;(specified X? value,
         <programlisting>public
 Y using&lt;X,Y&gt;(specified X resource, 
              Y seek(coordinated X x))
-  where X satisfies Usable;</programlisting>
+  given X satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1642,7 +1642,7 @@ Y select&lt;X, Y&gt;(X selector,
         
         <programlisting>public
 X attempt&lt;X&gt;(functor X() seek, 
-             cases functor X(E e) where E satisfies Exception... except);</programlisting>
+             cases functor X(E e) given E satisfies Exception... except);</programlisting>
                   
         <para>We may invoke the method as follows:</para>
         
@@ -3359,7 +3359,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
-            <entry><literal>T where T &gt;= Ordinal &amp; T &gt;= Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T given T satisfies Ordinal, Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Range&lt;T&gt;</literal></entry>
         </row>
@@ -3393,7 +3393,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>interval</entry>
             <entry><literal>Interval(lhs, rhs)</literal></entry>
-            <entry><literal>T where T satisfies Instant</literal></entry>
+            <entry><literal>T given T satisfies Instant</literal></entry>
             <entry><literal>Instant&lt;T&gt;</literal></entry>
             <entry><literal>Interval&lt;T&gt;</literal></entry>
         </row>

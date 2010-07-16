@@ -1260,12 +1260,12 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
         example, the <literal>lang</literal> package defines a <literal>from()</literal> 
         method that is intended to be called like this:</para>
         
-        <programlisting>String[] names = from (Person p in people) select (p.name) having (p.age>18);</programlisting>
+        <programlisting>String[] names = from (Person p in people) select (p.name) where (p.age>18);</programlisting>
         
         <para>Which is exactly equivalent to, but much more readable than, the
         following:</para>
         
-        <programlisting>String[] names = from (people) select (Person p) (p.name) having (Person p) (p.age>18);</programlisting>
+        <programlisting>String[] names = from (people) select (Person p) (p.name) where (Person p) (p.age>18);</programlisting>
         
         <para>We won't go into the details how to declare an iterator method here 
         (it's just a couple of annotations). It's much more important to be able
@@ -1533,7 +1533,7 @@ class Hello(String? name) {
         if (exists name) {
             if (exists Person person = 
                     first (Person p in people) 
-                        having (p.firstName==name)) {
+                        where (p.firstName==name)) {
                 return "" person.lang.hello ", " 
                     person.firstName " " person.lastName "!"
             }
