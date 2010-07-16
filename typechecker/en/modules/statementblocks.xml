@@ -764,10 +764,14 @@ else {
                 </listitem>
                 <listitem>
                     <para>the <literal>for</literal> block is executed once for each value 
-                    in the resulting sequence of values of type <literal>X</literal>, until 
-                    the iterator is exhausted.</para>
+                    of type <literal>X</literal> produced by the iterator, until the iterator 
+                    is exhausted.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>Note that if the iterated expression is also of type <literal>Sequence&lt;X&gt;</literal>,
+            the compiler is permitted to optimize away the use of <literal>Iterator</literal>, 
+            instead using indexed element access.</para>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>break true</literal>, <literal>return</literal> or <literal>throw</literal>, 
