@@ -526,24 +526,6 @@ catch (Exception e) {
     
 }]]></programlisting>
         
-        <!--
-        <para>An <literal>Iterator</literal> numbers the iterated 
-        elements. If there are <literal>N</literal> iterated elements, 
-        <literal>iter[i]</literal> must return the <literal>i</literal>th
-        element for <literal>0&lt;=i&lt;N</literal> or <literal>null</literal> 
-        whenever <literal>i&gt;=N</literal>, indicating that the iterator 
-        is exhausted. An <literal>Iterator</literal> is permitted to throw 
-        an <literal>IllegalStateException</literal> if the same element 
-        is accessed twice.</para>
-
-        <programlisting><![CDATA[doc "An iterator containing |N| elements. The 
-     operation |value(i)| must return the 
-     |i|th element for any |0<=i<N| or |null| 
-     for any |i>=N|."
-public interface Iterator<out X>
-        satisfies Correspondence<Natural, X> {}]]></programlisting>
-        -->
-        
         <para>A Ceylon <literal>Iterator</literal> is a stateless object
         that produces a theoretically unbounded sequence of values.</para>
         
@@ -555,50 +537,11 @@ public interface Iterator<out X>
         <para>An <literal>Iterator</literal> is used according to the
         following idiom:</para>
             
-        <programlisting><![CDATA[mutable Iterator<Person> people := ... ;
-while (exists Person p = people.head) {
-    doSomething(p);
-    people.=tail;
+        <programlisting><![CDATA[mutable local iter := iterable.iterator();
+while (exists local value = iter.head) {
+    ...
+    iter.=tail;
 }]]></programlisting>
-
-        <para>Or, using recursion:</para>
-            
-        <programlisting><![CDATA[String names(List<Person> people) {
-    if (exists Person p = people.first) {
-        return p.name + ", " + names(people.rest)
-    }
-    else {
-        return ""
-    }
-}]]></programlisting>
-        
-        <!--
-        <para>For iteration using a <literal>while</literal> loop, the
-        following extension is provided:</para>
-        
-        <programlisting><![CDATA[public extension X? next(Iterator<X> iter)() {
-    mutable class StatefulIterator() {
-        mutable index i:=0;
-        X? next() { return iter[i++] }
-    }
-    return StatefulIterator().next
-}]]></programlisting>
-    
-        <para>An iterator may therefore be used according to the following 
-        idiom:</para>
-        
-        <programlisting>Object? next() = list.iterator();
-while (exists Object x = next()) {
-    doSomething(x);
-}</programlisting>
-
-        <para>Which looks cleaner with type inference:</para>
-        
-        <programlisting>local next = list.iterator(); 
-while (exists local x = next()) {
-    doSomething(x);
-}</programlisting>
-        -->
 
     </section>
     
@@ -904,16 +847,6 @@ SequenceIterable<X>(X[] sequence)
     }
 }]]></programlisting>
         
-        <comment><para>TODO: for some kinds of sequences, especially linked
-        lists, this is a very bad implementation. We should make 
-        <literal>Sequence</literal> extend <literal>Iterable</literal>. But
-        should <literal>Sequence</literal> be an abstract class instead?</para></comment>
-        
-        <para>The compiler is permitted to optimize away the call to 
-        this extension in a loop such as:</para>
-        
-        <programlisting><![CDATA[for (Value val in valueList) { ... }]]></programlisting>
-        
         <para>The following extension provides access to the indices 
         of the sequence in a <literal>for</literal> loop.</para>
         
@@ -942,10 +875,33 @@ class SequenceEntryIterable<X>(X[] sequence)
         <comment><para>TODO: or should we just directly make <literal>X[]</literal> 
         assignable to <literal>Entry&lt;Natural,X&gt;[]</literal>?</para></comment>
         
-        <para>The compiler is permitted to optimize away the call to 
-        this extension in a loop such as:</para>
+        <para>The compiler is permitted to optimize away the call to these 
+        extensions in a loop such as:</para>
         
-        <programlisting><![CDATA[for (Natural i -> Value val in valueList) { ... }]]></programlisting>
+        <programlisting><![CDATA[for (local elem in sequence) { 
+    ...
+}]]></programlisting>
+        
+        <para>or even:</para>
+        
+        <programlisting><![CDATA[for (Natural n -> local elem in sequence) {
+    ...
+}]]></programlisting>
+        
+        <para>which are both equivalent to:</para>
+        
+        <programlisting><![CDATA[if (exists Natural last=sequence.lastIndex) {
+    mutable Natural n := 0;
+    while (n<=last) { 
+        local elem = sequence[n];
+        ...
+        ++n;
+    }
+}]]></programlisting>        
+        
+        <comment><para>TODO: for some kinds of sequences, especially linked
+        lists, access by index is very inefficient. How can we make iteration
+        of these kinds of sequences efficient?</para></comment>
         
         <para>The value <literal>None.none</literal> is transparently
         assignable to <literal>Sequence&lt;X&gt;</literal>.</para>
@@ -1718,7 +1674,30 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     public X[] by(Natural stepSize) { return ... } 
     
 }]]></programlisting>
+
+        <para>The compiler is permitted to optimize away creation of a
+        <literal>Range</literal> in code such as the following:</para>
+        
+        <programlisting><![CDATA[i in [min..max]]]></programlisting>
+        
+        <para>which is equivalent to:</para>
+        
+        <programlisting><![CDATA[(i>=min && i<=max)]]></programlisting>
+        
+        <para>and:</para>
+        
+        <programlisting><![CDATA[for (local i in [min..max]) {
+    ...
+}]]></programlisting>
     
+        <para>which is equivalent to:</para>
+        
+        <programlisting><![CDATA[mutable local i := min;
+while (i<=max) {
+    ...
+    i.=successor;
+}]]></programlisting>
+        
     </section>
     
     <section id="characterandstring">

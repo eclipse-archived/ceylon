@@ -769,9 +769,20 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>Note that if the iterated expression is also of type <literal>Sequence&lt;X&gt;</literal>,
-            the compiler is permitted to optimize away the use of <literal>Iterator</literal>, 
-            instead using indexed element access.</para>
+            <para>Note that:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the iterated expression is also of type <literal>Sequence&lt;X&gt;</literal>,
+                    the compiler is permitted to optimize away the use of <literal>Iterator</literal>, 
+                    instead using indexed element access.</para>
+                </listitem>
+                <listitem>
+                    <para>if the iterated expression is a range constructor expression, the compiler 
+                    is permitted to optimize away creation of the <literal>Range</literal>, and generate
+                    the indices using the <literal>successor</literal> operation.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>If the loop exits early via execution of one of the control directives 
             <literal>break true</literal>, <literal>return</literal> or <literal>throw</literal>, 
@@ -783,6 +794,11 @@ else {
 
             <programlisting>for (Person p in people) { 
     log.info(p.name);
+}</programlisting>
+
+            <programlisting>mutable Float sum := 0.0;
+for (Integer i in -10..10) {
+    sum += x[i];
 }</programlisting>
             
             <programlisting>for (Natural month -> Float temp in monthlyTempsList) { 
@@ -845,14 +861,16 @@ fail {
             <para>For example:</para>
             
             <programlisting>mutable Natural n:=0;
-while (n&lt;=10) {
-    log.info("count = " + $n);
-    n++;
+OpenList&lt;Natural&gt; seq = ArrayList&lt;Natural&gt;();
+while (n&lt;=max) {
+    seq.append(n);
+    n+=step(n);
 }</programlisting>
             
-            <programlisting>Person? next() = org.employees.iterator();
-while (exists Person p = next()) {
+            <programlisting>Iterator&lt;Person&gt; iter = org.employees.iterator();
+while (exists Person p = iter.head) {
     log.info(p.name);
+    iter.=tail;
 }</programlisting>
                   
             <programlisting>mutable Person person := ....;
