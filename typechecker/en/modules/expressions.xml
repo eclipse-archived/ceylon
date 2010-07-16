@@ -3120,7 +3120,7 @@ setPerson(person);</programlisting>
         <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
-            <entry>list lookup</entry>
+            <entry>sequenced lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X[]</literal></entry>
@@ -3129,7 +3129,7 @@ setPerson(person);</programlisting>
         <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
-            <entry>set lookup</entry>
+            <entry>iterated lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>Iterable&lt;X&gt;</literal></entry>

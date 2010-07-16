@@ -742,21 +742,21 @@ while (exists local x = next()) {
         <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence)
         given U satisfies Object {
 
-    doc "Binary list lookup operator |x[keys]|. Return a list 
+    doc "Binary sequenced lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    public V[] values(U[] keys) {
+    public V[] values(U... keys) {
         return from (U key in keys) select (correspondence[key])
     }
     
-    doc "Binary set lookup operator |x[keys]|. Return an iterator
+    doc "Binary iterated lookup operator |x[keys]|. Return an iterator
          of the values defined for the given keys."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    public Iterable<V> values(U... keys) {
+    public Iterable<V> values(Iterable<U> keys) {
         return from (U key in keys) select (correspondence[key])
     }
     
@@ -768,10 +768,6 @@ while (exists local x = next()) {
     }
     
 }]]></programlisting>
-
-        <comment><para>TODO: should we handle the list lookup and set
-        lookup operators using a helper class that calls a constructor
-        of the concrete subtype, like we do with <literal>Sequence</literal>?</para></comment>
 
         <!--     
         <programlisting><![CDATA[public interface Correspondence<in U, out V> {
