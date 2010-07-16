@@ -48,7 +48,7 @@ tokens {
     VARARGS;
     NIL;
     RET_STMT;
-    STMT_LIST;
+    BLOCK;
     THROW_STMT;
     RETRY_STMT;
     TRY_BLOCK;
@@ -159,7 +159,7 @@ importElement
 //instance lists are not allowed inside blocks
 block
     : '{' declarationOrStatement* directiveStatement? '}'
-    -> ^(STMT_LIST declarationOrStatement* directiveStatement?)
+    -> ^(BLOCK declarationOrStatement* directiveStatement?)
     ;
 
 /*inlineClassDeclaration
@@ -368,8 +368,8 @@ classDeclaration
 
 classBody
     : '{' declarationOrStatement* '}'
-    -> ^(STMT_LIST declarationOrStatement*)
- //    -> ^(CLASS_BODY ^(STMT_LIST $stmts))
+    -> ^(BLOCK declarationOrStatement*)
+ //    -> ^(CLASS_BODY ^(BLOCK $stmts))
     ;
 
 extendedType

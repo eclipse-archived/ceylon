@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.tools.javac.util.List;
 
 public class TreePrinter extends CeylonTree.Visitor {
@@ -93,6 +94,9 @@ public class TreePrinter extends CeylonTree.Visitor {
             Object value;
             try {
                 value = field.get(tree);
+                
+                if (name.equals("operatorKind"))
+                    value = CeylonParser.tokenNames[Integer.valueOf(value.toString())] + " (" + value + ')';
             }
             catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -119,7 +123,7 @@ public class TreePrinter extends CeylonTree.Visitor {
 
             enter(shortShortName + "." + field.name);
             if (value instanceof String) {
-                out.print(" \"" + value + "\"");
+                out.print(" " + value);
             }
             else if (value instanceof CeylonTree) {
                 ((CeylonTree) value).accept(this);

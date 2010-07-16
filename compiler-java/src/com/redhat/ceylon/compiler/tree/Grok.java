@@ -6,6 +6,7 @@ import com.sun.tools.javac.util.*;
 
 public class Grok extends CeylonTree.Visitor {
     Context current;
+    int depth;
 
     class Context implements Cloneable {
         CeylonTree compilationUnit;
@@ -17,7 +18,20 @@ public class Grok extends CeylonTree.Visitor {
         List<CeylonTree.ImportDeclaration> imports;
         CeylonTree context;
 
+ /*       int getDepth(Context c) {
+            int i = 0;
+            while (c != null) {
+                c = c.prev;
+                i++;
+            }
+            return i;   
+        }
+        */
         public void push() {
+ /*           System.err.println();
+            indent();
+            System.err.print("+ " + current.context.getClass());
+            depth++; */
             try {
                 Context c = (Context) clone();
                 c.prev = this;
@@ -27,6 +41,11 @@ public class Grok extends CeylonTree.Visitor {
             }
         }
 
+ /*       void indent(){
+            for (int i=0; i<getDepth(current);i++)
+                System.err.print(' ');
+        } */
+        
         public void push(CeylonTree context) {
             push();
             current.context = context;
@@ -34,6 +53,10 @@ public class Grok extends CeylonTree.Visitor {
         
         public void pop() {
             current = prev;
+/*            depth--;
+            System.err.println();
+            indent();
+            System.err.print("- " + current.context.getClass()); */
         }
     }
 
@@ -86,7 +109,7 @@ public class Grok extends CeylonTree.Visitor {
         inner(id);
     }
     
-    public void visit(CeylonTree.StatementList stmts) {
+    public void visit(CeylonTree.Block stmts) {
         current.push(stmts);
         inner(stmts);
         current.pop();
@@ -151,7 +174,7 @@ public class Grok extends CeylonTree.Visitor {
                 member.stmts != null ? new CeylonTree.MethodDeclaration()
                                      : new CeylonTree.AbstractMethodDeclaration();
             decl.setParameterList(member.params);
-            decl.setType(methodType);
+            decl.pushType(methodType);
             decl.setName(member.name);
             decl.stmts = member.stmts;
             current.context.add(decl);  
@@ -165,19 +188,21 @@ public class Grok extends CeylonTree.Visitor {
         current.push(member);
         inner(member);
         current.pop();
-        current.context.setName(member.name);
+        current.context.append(member);
     }
     
     public void visit(CeylonTree.MemberType type)
     {
+        current.push(type);
         inner(type);
+        current.pop();
         CeylonTree.BaseMemberDeclaration decl = (CeylonTree.BaseMemberDeclaration)current.context;
-        decl.type = type;
+        decl.type = type.type;
     }
     
     public void visit(CeylonTree.Void v)
     {
-        current.context.setType(v);
+        current.context.pushType(v);
     }
     
     public void visit(CeylonTree.Default v)
@@ -204,9 +229,17 @@ public class Grok extends CeylonTree.Visitor {
         ann.kind = v;
    }
     
+    public void visit(CeylonTree.Optional v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
+    
     public void visit(CeylonTree.Type type) {
+        current.push(type);
         inner(type);
-        current.context.append(type);
+        current.pop();
+        current.context.pushType(type);
     }
     
     public void visit(CeylonTree.FormalParameterList list) {
@@ -327,8 +360,11 @@ public class Grok extends CeylonTree.Visitor {
     }
     
     public void visit(CeylonTree.Operator op) {
-        op.kind = op.token.getType();
+        op.operatorKind = op.token.getType();
+        current.push(op);
         inner(op);
+        current.pop();        
+        current.context.append(op);
     }
    
     public void visit(CeylonTree.TypeArgumentList list) {
@@ -353,9 +389,33 @@ public class Grok extends CeylonTree.Visitor {
         current.push(list);
         inner(list);
         current.pop();       
+        current.context.append(list);
     }
     
+    public void visit(CeylonTree.SubscriptExpression expr) {
+        current.push(expr);
+        inner(expr);
+        current.pop();       
+        current.context.append(expr);
+   }
     
+    public void visit(CeylonTree.LowerBound tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        CeylonTree.SubscriptExpression expr = (CeylonTree.SubscriptExpression)current.context;
+        expr.lowerBound = tree;
+    }
+    
+    public void visit(CeylonTree.UpperBound tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        CeylonTree.SubscriptExpression expr = (CeylonTree.SubscriptExpression)current.context;
+        expr.upperBound = tree;
+    }
+    
+  
     void inner(CeylonTree t) {
         for (CeylonTree child : t.children)
             child.accept(this);     

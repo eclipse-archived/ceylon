@@ -20,12 +20,10 @@ public abstract class CeylonTree {
     
     interface Declaration {
         void setParameterList(List<FormalParameter> theList);
-        void setType(IType type);
         void setAnnotations(List<Annotation> annos);
     }
     
     interface IType {
-        void setType (IType type);
     }
     
     /**
@@ -113,6 +111,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.BITWISEOREQ, Operator.class);
         classes.put(CeylonParser.BITWISEXOR, Operator.class);
         classes.put(CeylonParser.BITWISEXOREQ, Operator.class);
+        classes.put(CeylonParser.BLOCK, Block.class);
         classes.put(CeylonParser.BREAK, Break.class);
         classes.put(CeylonParser.BREAK_STMT, BreakStatement.class);
         classes.put(CeylonParser.CALL_EXPR, CallExpression.class);
@@ -255,7 +254,6 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.SET_EXPR, SetExpression.class);
         classes.put(CeylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
         classes.put(CeylonParser.STARDOT, Operator.class);
-        classes.put(CeylonParser.STMT_LIST, StatementList.class);
         classes.put(CeylonParser.STRING_CONCAT, StringConcatenation.class);
         classes.put(CeylonParser.STRING_CST, StringConstant.class);
         classes.put(CeylonParser.SUBSCRIPT_EXPR, SubscriptExpression.class);
@@ -353,7 +351,7 @@ public abstract class CeylonTree {
         this.annotations = annotations;
     }
     
-    void setType(IType t) {
+    void pushType(IType t) {
         throw new RuntimeException();
     }
     
@@ -503,7 +501,7 @@ public abstract class CeylonTree {
         public void visit(SetExpression that)             { visitDefault(that); }
         public void visit(SimpleStringLiteral that)       { visitDefault(that); }
         public void visit(SingleLineComment that)         { visitDefault(that); }
-        public void visit(StatementList that)             { visitDefault(that); }
+        public void visit(Block that)             { visitDefault(that); }
         public void visit(StringConcatenation that)       { visitDefault(that); }
         public void visit(StringConstant that)            { visitDefault(that); }
         public void visit(SubscriptExpression that)       { visitDefault(that); }
@@ -623,7 +621,7 @@ public abstract class CeylonTree {
             throw new RuntimeException();
         }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             throw new RuntimeException();
         }
     }
@@ -685,6 +683,19 @@ public abstract class CeylonTree {
      * An attribute setter
      */
     public static class AttributeSetter extends CeylonTree {
+        public void accept(Visitor v) { v.visit(this); }
+    }
+
+    /**
+     * A list of statements
+     */
+    public static class Block extends CeylonTree {
+        List<CeylonTree> stmts = List.<CeylonTree>nil();
+        
+        public void append(CeylonTree t) {
+            stmts = stmts.append(t);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -817,7 +828,7 @@ public abstract class CeylonTree {
             params = p;             
         }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             throw new RuntimeException();
         
         }
@@ -899,6 +910,12 @@ public abstract class CeylonTree {
      * A list of enums
      */
     public static class EnumList extends CeylonTree {
+        List<CeylonTree> members = List.<CeylonTree>nil();;
+                
+        public void append(CeylonTree expr) {
+            members.append(expr);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1024,7 +1041,7 @@ public abstract class CeylonTree {
         
         public void accept(Visitor v) { v.visit(this); }
     
-        public void setType(IType type) {
+        public void pushType(IType type) {
             this.type = type;
         }
 
@@ -1162,7 +1179,7 @@ public abstract class CeylonTree {
             throw new RuntimeException();       
         }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             throw new RuntimeException();
         
         }
@@ -1194,7 +1211,7 @@ public abstract class CeylonTree {
     
         }
    
-        public void setType(IType type) {
+        public void pushType(IType type) {
             throw new RuntimeException();
     
         }   
@@ -1241,6 +1258,14 @@ public abstract class CeylonTree {
      * A lower bound
      */
     public static class LowerBound extends CeylonTree {
+        CeylonTree initializer;
+        
+        void append(CeylonTree expr) {
+            if (this.initializer != null)
+                throw new RuntimeException();
+            this.initializer = expr;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1266,7 +1291,7 @@ public abstract class CeylonTree {
             params = p;
         }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             this.type = type;
         
         }
@@ -1289,9 +1314,13 @@ public abstract class CeylonTree {
     public static class MemberType extends CeylonTree implements IType {
         IType type;
       
+        public MemberType() {
+            
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             this.type = type;
         }
     }
@@ -1302,7 +1331,7 @@ public abstract class CeylonTree {
       
         public void accept(Visitor v) { v.visit(this); }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             this.returnType = type;
         }
     }
@@ -1313,7 +1342,7 @@ public abstract class CeylonTree {
         
         public List<CeylonTree> stmts;
       
-        public void setType(IType type) {
+        public void pushType(IType type) {
             this.type = type;
         }
 
@@ -1408,7 +1437,12 @@ public abstract class CeylonTree {
      * An operator.
      */
     public static class Operator extends CeylonTree {
-        public int kind;
+        public int operatorKind;
+        public List<CeylonTree> operands = List.<CeylonTree>nil();
+         
+        public void append(CeylonTree operand) {
+            operands = operands.append(operand);
+        }
         
         public void accept(Visitor v) { v.visit(this); }
     }
@@ -1489,10 +1523,14 @@ public abstract class CeylonTree {
      * A reflected  literal
      */
     public static class ReflectedLiteral extends CeylonTree {
-        IType type;
+        CeylonTree operand;
         
-        void setType(IType t) {
-            this.type = type;
+        void append(CeylonTree member) {
+            this.operand = operand;
+        }
+        
+        void pushType(IType member) {
+            this.operand = (CeylonTree) operand;
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -1586,19 +1624,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * A list of statements
-     */
-    public static class StatementList extends CeylonTree {
-        List<CeylonTree> stmts = List.<CeylonTree>nil();
-        
-        public void append(CeylonTree t) {
-            stmts = stmts.append(t);
-        }
-        
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * A string concatenation
      */
     public static class StringConcatenation extends CeylonTree {
@@ -1616,6 +1641,15 @@ public abstract class CeylonTree {
      * A subscript expression
      */
     public static class SubscriptExpression extends CeylonTree {
+        CeylonTree lowerBound;
+        UpperBound upperBound;
+        
+        public void append(CeylonTree expr) {
+            if (lowerBound != null || upperBound != null)
+                throw new RuntimeException();
+            lowerBound = expr;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1732,7 +1766,7 @@ public abstract class CeylonTree {
           
         public void accept(Visitor v) { v.visit(this); }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             this.type = type;       
         }
     }
@@ -1742,8 +1776,7 @@ public abstract class CeylonTree {
      */
     public static class TypeArgumentList extends CeylonTree {
         List<IType> types = List.<IType>nil();
-        void append(CeylonTree expr) {
-            IType type = (IType)expr;
+        void pushType(IType type) {
             types.append(type);
         }
         
@@ -1778,7 +1811,7 @@ public abstract class CeylonTree {
         public void setParameterList(List<FormalParameter> p) {
             throw new RuntimeException();       
         }
-        public void setType(IType type) {
+        public void pushType(IType type) {
             throw new RuntimeException();   
         }
         void add (ClassDeclaration decl)
@@ -1829,6 +1862,14 @@ public abstract class CeylonTree {
      * An upper bound
      */
     public static class UpperBound extends CeylonTree {
+        CeylonTree initializer;
+        
+        void append(CeylonTree expr) {
+            if (this.initializer != null)
+                throw new RuntimeException();
+            this.initializer = expr;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1865,7 +1906,7 @@ public abstract class CeylonTree {
           
         public void accept(Visitor v) { v.visit(this); }
 
-        public void setType(IType type) {
+        public void pushType(IType type) {
             throw new RuntimeException();
         }
     }
