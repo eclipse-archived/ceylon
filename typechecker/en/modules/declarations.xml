@@ -3200,12 +3200,15 @@ PatternValidator pattern(Regex regex) {
         
         <para>These annotations are defined by the package <literal>doc</literal>:</para>
         
-        <programlisting>public Description doc(String description) {
+        <programlisting>inherited annotation { occurs = onceEachElement; }
+public Description doc(String description) {
     return Description(description.normalize())
 }</programlisting>
     
-        <programlisting>public Author[] by(String... authors) {
-    return from (String author in authors) select Author(author.normalize())
+        <programlisting>annotation { occurs = onceEachElement; }
+public Author[] by(String... authors) {
+    return from (String author in authors) 
+                select Author(author.normalize())
 }</programlisting>
     
         <programlisting>public RelatedElement see(ProgramElement pe) {
