@@ -893,12 +893,21 @@ SequenceIterable<X>(X[] sequence)
                 return SequenceIterator(from+1)
             }
         }
-        return SequenceIterator(0)
+        if (is Iterable<X> sequence) {
+            return sequence.iterator()
+        else {
+            return SequenceIterator(0)
+        }
     }
     override Boolean empty {
         return !(sequence.lastIndex exists)
     }
 }]]></programlisting>
+        
+        <comment><para>TODO: for some kinds of sequences, especially linked
+        lists, this is a very bad implementation. We should make 
+        <literal>Sequence</literal> extend <literal>Iterable</literal>. But
+        should <literal>Sequence</literal> be an abstract class instead?</para></comment>
         
         <para>The compiler is permitted to optimize away the call to 
         this extension in a loop such as:</para>
@@ -1336,9 +1345,13 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
             <para>Any <literal>Sequence</literal> may be transparently converted to a 
             <literal>List</literal>:</para>
             
-            <programlisting>public extension class SequenceList&lt;X&gt;(X[] sequence) 
-        satisfies List&lt;X&gt; {
-    ...
+            <programlisting>public extension List&lt;X&gt; sequenceToList(X[] sequence) {
+    if (is List&lt;X&gt; sequence) {
+        return sequence
+    }
+    else {
+        return SequenceList(sequence)
+    }
 }</programlisting>
             
 <!--
