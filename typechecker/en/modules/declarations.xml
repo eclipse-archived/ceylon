@@ -888,8 +888,8 @@ VarargsParam?
             <listitem>
                 <para>A <emphasis>varargs parameter</emphasis>, which accepts a list of arguments 
                 of the specified type <literal>T</literal>, or a single argument of type 
-                <literal>Iterable&lt;T&gt;</literal>. Inside the method, the varargs parameter 
-                has type <literal>Iterable&lt;T&gt;</literal>.</para>
+                <literal>T[]</literal>. Inside the method, the varargs parameter 
+                has type <literal>T[]</literal>.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
@@ -907,9 +907,6 @@ VarargsParam?
         <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
         
         <programlisting>(T instance, P... args)</programlisting>
-        
-        <comment><para>TODO: should we just make <literal>X...</literal> a syntactic shorthand
-        for <literal>Iterable&lt;X&gt;</literal> everywhere?</para></comment>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
         may be specified as a pair of variables.</para>
@@ -1471,7 +1468,7 @@ ClassBody</programlisting>
         <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
         types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
         <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
-        of the class. A varargs parameter is considered of type <literal>Iterable&lt;T&gt;</literal>
+        of the class. A varargs parameter is considered of type <literal>T[]</literal>
         where <literal>T</literal> is the declared vararg type.</para>
         
         <!-- comment>
@@ -2049,8 +2046,8 @@ Void goodbye() {
         </listitem>
         </itemizedlist>
         
-        <para>A varargs parameter is considered of type <literal>Iterable&lt;T&gt;</literal>
-        where <literal>T</literal> is the declared vararg type.</para>
+        <para>A varargs parameter is considered of type <literal>T[]</literal> where 
+        <literal>T</literal> is the declared vararg type.</para>
         
         <para>A method body may be an expression that evaluates to a callable object, 
         specified using <literal>=</literal>. The type of the callable object must be 
