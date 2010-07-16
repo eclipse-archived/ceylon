@@ -95,6 +95,7 @@
         class interface alias 
         satisfies extends abstracts
         in out
+        given
         void subtype local assign
         return break throw retry 
         this super
