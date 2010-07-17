@@ -543,6 +543,29 @@ while (exists local value = iter.head) {
     iter.=tail;
 }]]></programlisting>
 
+        <comment><para>TODO: this alternate solution abstracts efficient 
+        iteration of sequences and linked lists/trees, but suffers from
+        the problem that the <literal>element()</literal> operation 
+        accepts tokens from iterations of other objects, and is therefore
+        much less typesafe.</para>
+        <programlisting><![CDATA[public interface Indexed<out X, I> 
+        given I satisfies Ordinal {
+    
+    public I firstIndex;
+    public X? indexedValue(I index);
+    
+}]]></programlisting>
+        <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
+        be an <literal>Indexed&lt;X, Natural&gt;</literal> and a 
+        <literal>LinkedList&lt;X&gt;</literal> would be an 
+        <literal>Indexed&lt;X, Link&lt;X&gt;&gt;</literal>. The idiom
+        would be:</para>
+        <programlisting><![CDATA[mutable local i := indexed.firstIndex;
+while (exists local value = indexed.indexedValue(i)) {
+    ...
+    ++i;
+}]]></programlisting></comment>
+
     </section>
     
     <section id="category">
