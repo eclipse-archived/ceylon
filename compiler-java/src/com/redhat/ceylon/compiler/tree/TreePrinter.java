@@ -94,9 +94,6 @@ public class TreePrinter extends CeylonTree.Visitor {
             Object value;
             try {
                 value = field.get(tree);
-                
-                if (name.equals("operatorKind"))
-                    value = CeylonParser.tokenNames[Integer.valueOf(value.toString())] + " (" + value + ')';
             }
             catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -125,6 +122,16 @@ public class TreePrinter extends CeylonTree.Visitor {
             if (value instanceof String) {
                 out.print(" " + value);
             }
+            else if (value instanceof Number) {
+                out.print(" ");
+                if (field.name.equals("operatorKind")) {
+                    int operatorKind = ((Number) value).intValue();
+                    out.print(CeylonParser.tokenNames[operatorKind]);
+                }
+                else {
+                    out.print(value);
+                }
+            }
             else if (value instanceof CeylonTree) {
                 ((CeylonTree) value).accept(this);
             }
@@ -132,8 +139,7 @@ public class TreePrinter extends CeylonTree.Visitor {
                 for (Object child: (List) value) {
                     ((CeylonTree) child).accept(this);
                 }
-            } else if (value instanceof Number)
-                out.print(" " + value);
+            }
             else {
                 throw new RuntimeException(value.getClass().getName());
             }
