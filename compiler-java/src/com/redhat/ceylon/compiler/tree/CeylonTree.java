@@ -21,6 +21,7 @@ public abstract class CeylonTree {
     interface Declaration {
         void setParameterList(List<FormalParameter> theList);
         void setAnnotations(List<Annotation> annos);
+        void setTypeParameterList(List<CeylonTree>typeParameters);
     }
     
     interface IType {
@@ -312,6 +313,8 @@ public abstract class CeylonTree {
   
     public List <MemberDeclaration> members;
   
+    public List <AliasDeclaration> aliases;
+  
     public String name;
   
     void setName(String name) {
@@ -346,6 +349,13 @@ public abstract class CeylonTree {
         members = members.append(decl);
     }
   
+    void add (AliasDeclaration decl)
+    {
+        if (aliass == null)
+            aliass = List.<AliasDeclaration>nil();
+        aliass = aliass.append(decl);
+    }
+  
     public void setAnnotations(List<Annotation> annotations) {
         // FIXME: This should not be a method of CeylonTree
         this.annotations = annotations;
@@ -369,6 +379,8 @@ public abstract class CeylonTree {
             add ((BaseMethodDeclaration)t);
         else if (MemberDeclaration.class.isAssignableFrom(t.getClass()))
             add ((MemberDeclaration)t);
+        else if (AliasDeclaration.class.isAssignableFrom(t.getClass()))
+            add ((AliasDeclaration)t);
         else
             throw new RuntimeException();
     }
@@ -588,10 +600,22 @@ public abstract class CeylonTree {
      */
     public static class AbstractMemberDeclaration extends BaseMemberDeclaration {
         public void accept(Visitor v) { v.visit(this); }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();
+
+            
+        }
     }
 
     public static class AbstractMethodDeclaration extends BaseMethodDeclaration {
         public void accept(Visitor v) { v.visit(this); }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();
+
+            
+        }
     }
 
     /**
@@ -606,6 +630,9 @@ public abstract class CeylonTree {
      */
     public static class AliasDeclaration extends CeylonTree implements Declaration {
      
+        public List<IType> satisfiesList = List.<IType>nil();
+        public List<CeylonTree> typeParameters;
+        
         public void setVisibility(CeylonTree v) {
             // TODO
         }
@@ -622,7 +649,11 @@ public abstract class CeylonTree {
         }
 
         public void pushType(IType type) {
-            throw new RuntimeException();
+            satisfiesList = satisfiesList.append(type);
+        }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            this.typeParameters = typeParameters;            
         }
     }
 
@@ -659,7 +690,7 @@ public abstract class CeylonTree {
         List<CeylonTree> theList = List.<CeylonTree>nil();
         
         public void append(CeylonTree expr) {
-            theList.append(expr);
+            theList = theList.append(expr);
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -804,8 +835,10 @@ public abstract class CeylonTree {
     public static class ClassDeclaration extends CeylonTree implements Declaration {
         public List<FormalParameter> params;
         public List<CeylonTree> stmts;
-
-        public void append(CeylonTree stmt) {
+        public List<CeylonTree> typeParameters;
+	public List<TypeConstraint> typeConstraintList;
+      
+	public void append(CeylonTree stmt) {
             if (stmts == null)
                 stmts = List.<CeylonTree>nil();
             stmts = stmts.append(stmt);
@@ -832,6 +865,18 @@ public abstract class CeylonTree {
             throw new RuntimeException();
         
         }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            this.typeParameters = typeParameters;
+        }
+
+        public void addTypeConstraint(ceylonTree t)
+        {
+            if (typeConstraintList == null)
+                typeConstraintList = List.<TypeConstraint>nil();
+            typeConstraintList = typeConstraintList.append((TypeConstraint)t);
+        }
+ 	
     }
 
     /**
@@ -913,7 +958,7 @@ public abstract class CeylonTree {
         List<CeylonTree> members = List.<CeylonTree>nil();;
                 
         public void append(CeylonTree expr) {
-            members.append(expr);
+            members = members.append(expr);
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -1047,6 +1092,12 @@ public abstract class CeylonTree {
 
         public void setParameterList(List<FormalParameter> theList) {
             throw new RuntimeException();   
+        }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();
+
+            
         }
     }
 
@@ -1183,6 +1234,12 @@ public abstract class CeylonTree {
             throw new RuntimeException();
         
         }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();
+
+            
+        }
     }
 
     /**
@@ -1203,6 +1260,8 @@ public abstract class CeylonTree {
      * An interface declaration
      */
     public static class InterfaceDeclaration extends CeylonTree implements Declaration {
+        public List<CeylonTree> typeParameters;
+        
         public void setVisibility(CeylonTree v) {           
         }
         public void accept(Visitor v) { v.visit(this); }
@@ -1214,7 +1273,11 @@ public abstract class CeylonTree {
         public void pushType(IType type) {
             throw new RuntimeException();
     
-        }   
+        }
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            this.typeParameters = typeParameters;
+            
+        }
     }
 
     /**
@@ -1299,6 +1362,12 @@ public abstract class CeylonTree {
 
     public static class MemberDeclaration extends BaseMemberDeclaration {
         public void accept(Visitor v) { v.visit(this); }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();
+
+            
+        }
     }
 
      /**
@@ -1353,6 +1422,12 @@ public abstract class CeylonTree {
 
     public static class MethodDeclaration extends BaseMethodDeclaration implements Declaration {
         public void accept(Visitor v) { v.visit(this); }
+
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();
+
+            
+        }
     }
 
     /**
@@ -1583,6 +1658,10 @@ public abstract class CeylonTree {
      * A list of satisfied types
      */
     public static class SatisfiesList extends CeylonTree {
+        List<IType> types = List.<IType>nil();
+        void pushType(IType type) {
+            types.append(type);
+        }
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1763,11 +1842,16 @@ public abstract class CeylonTree {
      */
     public static class Type extends CeylonTree implements IType {
         IType type;
-          
+        TypeArgumentList argList;
+        
         public void accept(Visitor v) { v.visit(this); }
 
         public void pushType(IType type) {
             this.type = type;       
+        }
+        
+        public void setTypeArgumentList(CeylonTree t) {
+            this.argList = (TypeArgumentList)t;
         }
     }
 
@@ -1816,11 +1900,24 @@ public abstract class CeylonTree {
         }
         void add (ClassDeclaration decl)
         {
+            if (this.decl != null)
+                throw new RuntimeException();
             this.decl = decl;
         }   
         void add (InterfaceDeclaration decl)
         {
+            if (this.decl != null)
+                throw new RuntimeException();
             this.decl = decl;
+        }
+        void add (AliasDeclaration decl)
+        {
+            if (this.decl != null)
+                throw new RuntimeException();
+            this.decl = decl;
+        }
+        public void setTypeParameterList(List<CeylonTree> typeParameters) {
+            throw new RuntimeException();            
         }
     }
 
@@ -1848,6 +1945,12 @@ public abstract class CeylonTree {
      * A list of type parameters
      */
     public static class TypeParameterList extends CeylonTree {
+        List<CeylonTree> params = List.<CeylonTree>nil();
+        
+        void append(CeylonTree t) { 
+            params = params.append(t);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 

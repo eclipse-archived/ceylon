@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.tree;
 
 import java.math.BigInteger;
 
+import com.redhat.ceylon.compiler.tree.CeylonTree.Declaration;
 import com.sun.tools.javac.util.*;
 
 public class Grok extends CeylonTree.Visitor {
@@ -371,6 +372,8 @@ public class Grok extends CeylonTree.Visitor {
         current.push(list);
         inner(list);
         current.pop();
+        CeylonTree.Type theType = (CeylonTree.Type)current.context;
+        theType.setTypeArgumentList(list);
     }
       
     public void visit(CeylonTree.Null theNull) {
@@ -415,7 +418,34 @@ public class Grok extends CeylonTree.Visitor {
         expr.upperBound = tree;
     }
     
+    public void visit(CeylonTree.TypeParameterList tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        CeylonTree.Declaration d = (CeylonTree.Declaration) current.context;
+        d.setTypeParameterList(tree.params);
+    }
   
+    public void visit(CeylonTree.TypeParameter tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.append(tree);
+    }
+  
+    public void visit(CeylonTree.AliasDeclaration tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.add(tree);
+    }
+  
+    public void visit(CeylonTree.SatisfiesList tree) {
+        inner(tree);
+   }
+  
+  
+    
     void inner(CeylonTree t) {
         for (CeylonTree child : t.children)
             child.accept(this);     
