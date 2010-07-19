@@ -3,8 +3,8 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Attributes)
-      (STMT_LIST
+      (TYPE_NAME Attributes) FORMAL_PARAMETER_LIST
+      (BLOCK
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE
@@ -52,7 +52,7 @@
             (TYPE
               (TYPE_NAME String)))
           (MEMBER_NAME attribute)
-          (STMT_LIST
+          (BLOCK
             (RET_STMT
               (EXPR
                 (EXPR
@@ -61,7 +61,7 @@
         (MEMBER_DECL
           (ATTRIBUTE_SETTER
             (MEMBER_NAME attribute))
-          (STMT_LIST
+          (BLOCK
             (EXPR
               (:=
                 (MEMBER_NAME mutableAttribute)
@@ -74,7 +74,7 @@
             (TYPE
               (TYPE_NAME String)))
           (MEMBER_NAME attributeWithLocal)
-          (STMT_LIST
+          (BLOCK
             (MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
@@ -91,7 +91,7 @@
         (MEMBER_DECL
           (ATTRIBUTE_SETTER
             (MEMBER_NAME attributeWithLocal))
-          (STMT_LIST
+          (BLOCK
             (MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
@@ -112,7 +112,7 @@
             (TYPE
               (TYPE_NAME String)))
           (MEMBER_NAME attributeWithNestedMethod)
-          (STMT_LIST
+          (BLOCK
             (MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
@@ -123,7 +123,7 @@
                   (TYPE
                     (TYPE_NAME String))
                   (ARG_NAME param)))
-              (STMT_LIST
+              (BLOCK
                 (RET_STMT
                   (EXPR
                     (EXPR
@@ -140,7 +140,7 @@
         (MEMBER_DECL
           (ATTRIBUTE_SETTER
             (MEMBER_NAME attributeWithNestedMethod))
-          (STMT_LIST
+          (BLOCK
             (MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
@@ -151,7 +151,7 @@
                   (TYPE
                     (TYPE_NAME String))
                   (ARG_NAME param)))
-              (STMT_LIST
+              (BLOCK
                 (RET_STMT
                   (EXPR
                     (EXPR
@@ -172,7 +172,7 @@
             (TYPE
               (TYPE_NAME String)))
           (MEMBER_NAME attributeWithNestedClass)
-          (STMT_LIST
+          (BLOCK
             (TYPE_DECL
               (CLASS_DECL
                 (TYPE_NAME NestedClass)
@@ -181,7 +181,7 @@
                     (TYPE
                       (TYPE_NAME String))
                     (ARG_NAME param)))
-                (STMT_LIST
+                (BLOCK
                   (MEMBER_DECL
                     (MEMBER_TYPE
                       (TYPE
@@ -204,7 +204,7 @@
         (MEMBER_DECL
           (ATTRIBUTE_SETTER
             (MEMBER_NAME attributeWithNestedClass))
-          (STMT_LIST
+          (BLOCK
             (TYPE_DECL
               (CLASS_DECL
                 (TYPE_NAME NestedClass)
@@ -213,7 +213,7 @@
                     (TYPE
                       (TYPE_NAME String))
                     (ARG_NAME param)))
-                (STMT_LIST
+                (BLOCK
                   (MEMBER_DECL
                     (MEMBER_TYPE
                       (TYPE

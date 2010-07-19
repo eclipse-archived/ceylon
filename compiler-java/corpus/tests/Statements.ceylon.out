@@ -3,8 +3,8 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Statements)
-      (STMT_LIST
+      (TYPE_NAME Statements) FORMAL_PARAMETER_LIST
+      (BLOCK
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE
@@ -17,7 +17,7 @@
           (MEMBER_TYPE
             (TYPE
               (TYPE_NAME String)))
-          (MEMBER_NAME getHello)
+          (MEMBER_NAME getHello) FORMAL_PARAMETER_LIST
           (INIT_EXPR
             (EXPR
               (GET_EXPR
@@ -160,7 +160,7 @@
               (FORMAL_PARAMETER
                 (TYPE
                   (TYPE_NAME Boolean))
-                (ARG_NAME b))) STMT_LIST))
+                (ARG_NAME b))) BLOCK))
         (EXPR
           (EXPR
             (TYPE_NAME Bar)
@@ -180,8 +180,8 @@
                       (MEMBER_NAME false))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME Foo)
-            (STMT_LIST
+            (TYPE_NAME Foo) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME instanceMethod)
@@ -189,7 +189,7 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME Natural))
-                    (ARG_NAME n))) STMT_LIST)
+                    (ARG_NAME n))) BLOCK)
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME Baz)
@@ -197,7 +197,7 @@
                     (FORMAL_PARAMETER
                       (TYPE
                         (TYPE_NAME String))
-                      (ARG_NAME s))) STMT_LIST)))))
+                      (ARG_NAME s))) BLOCK)))))
         (MEMBER_DECL
           (MEMBER_TYPE void)
           (MEMBER_NAME method)
@@ -205,7 +205,7 @@
             (FORMAL_PARAMETER
               (TYPE
                 (TYPE_NAME Float))
-              (ARG_NAME f))) STMT_LIST)
+              (ARG_NAME f))) BLOCK)
         (EXPR
           (EXPR
             (TYPE_NAME Foo)
