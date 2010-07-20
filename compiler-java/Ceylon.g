@@ -388,7 +388,7 @@ abstractedTypes
     ;
 
 instance
-    : 'case'! memberName arguments? (','|';'|'...')
+    : 'case'! memberName arguments? (','! | ';'! | '...')
     ;
     
 typeConstraint
@@ -480,7 +480,9 @@ typeParameter
     ;
 
 variance
-    : 'in' | 'out'
+    : 'in' -> IN | 'out' -> OUT
+    // I think this should be equivalent to simply
+    // IN | OUT but that is compiled incorrectly and generates errors elsewhere.
     ;
     
 //for locals and attributes
@@ -1385,6 +1387,10 @@ COMPARE
     
 IN
     :   'in'
+    ;
+
+OUT
+    :   'out'
     ;
 
 IS

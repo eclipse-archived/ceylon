@@ -122,7 +122,7 @@ public class TreePrinter extends CeylonTree.Visitor {
                 continue;
 
             enter(shortShortName + "." + field.name);
-            if (value instanceof String) {
+            if (value instanceof String || value instanceof Number) {
                 out.print(" " + value);
             }
             else if (value instanceof CeylonTree) {
@@ -130,11 +130,12 @@ public class TreePrinter extends CeylonTree.Visitor {
             }
             else if (value instanceof List) {
                 for (Object child: (List) value) {
-                    ((CeylonTree) child).accept(this);
+                    if (child != null)
+                        ((CeylonTree) child).accept(this);
+                    else
+                        out.print("(NULL)");
                 }
-            } else if (value instanceof Number)
-                out.print(" " + value);
-            else {
+            } else {
                 throw new RuntimeException(value.getClass().getName());
             }
             leave();
