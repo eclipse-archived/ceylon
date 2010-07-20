@@ -452,13 +452,11 @@ public abstract class CeylonTree {
         public void visit(ImportList that)                { visitDefault(that); }
         public void visit(ImportPath that)                { visitDefault(that); }
         public void visit(ImportWildcard that)            { visitDefault(that); }
-        public void visit(In that)                        { visitDefault(that); }
         public void visit(InitializerExpression that)     { visitDefault(that); }
         public void visit(InstanceDeclaration that)       { visitDefault(that); }
         public void visit(IntConstant that)               { visitDefault(that); }
         public void visit(Interface that)                 { visitDefault(that); }
         public void visit(InterfaceDeclaration that)      { visitDefault(that); }
-        public void visit(Is that)                        { visitDefault(that); }
         public void visit(IsExpression that)              { visitDefault(that); }
         public void visit(LanguageAnnotation that)        { visitDefault(that); }
         public void visit(Local that)                     { visitDefault(that); }
@@ -488,7 +486,6 @@ public abstract class CeylonTree {
         public void visit(Public that)                    { visitDefault(that); }
         public void visit(QuoteConstant that)             { visitDefault(that); }
         public void visit(QuotedLiteral that)             { visitDefault(that); }
-        public void visit(Range that)                     { visitDefault(that); }
         public void visit(ReflectedLiteral that)          { visitDefault(that); }
         public void visit(Retry that)                     { visitDefault(that); }
         public void visit(RetryStatement that)            { visitDefault(that); }
@@ -1148,13 +1145,6 @@ public abstract class CeylonTree {
     }
 
     /**
-     * The word "in"
-     */
-    public static class In extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
      * An initializer expression
      */
     public static class InitializerExpression extends CeylonTree {
@@ -1215,13 +1205,6 @@ public abstract class CeylonTree {
             throw new RuntimeException();
     
         }   
-    }
-
-    /**
-     * The word "is"
-     */
-    public static class Is extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
     }
 
     /**
@@ -1513,14 +1496,7 @@ public abstract class CeylonTree {
     }
 
     /**
-     * A range
-     */
-    public static class Range extends CeylonTree {
-        public void accept(Visitor v) { v.visit(this); }
-    }
-
-    /**
-     * A reflected  literal
+     * A reflected literal
      */
     public static class ReflectedLiteral extends CeylonTree {
         CeylonTree operand;
