@@ -3,8 +3,8 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Operators)
-      (STMT_LIST
+      (TYPE_NAME Operators) FORMAL_PARAMETER_LIST
+      (BLOCK
         (MEMBER_DECL
           (MEMBER_TYPE
             (TYPE

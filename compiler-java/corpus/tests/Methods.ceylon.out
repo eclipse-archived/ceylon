@@ -3,15 +3,15 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Methods)
-      (STMT_LIST
+      (TYPE_NAME Methods) FORMAL_PARAMETER_LIST
+      (BLOCK
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME VoidMethods)
-            (STMT_LIST
+            (TYPE_NAME VoidMethods) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME simpleMethod) STMT_LIST)
+                (MEMBER_NAME simpleMethod) FORMAL_PARAMETER_LIST BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME methodWithParams)
@@ -23,10 +23,10 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME Object))
-                    (ARG_NAME something))) STMT_LIST)
+                    (ARG_NAME something))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME methodWithMultipleParamLists)
+                (MEMBER_NAME methodWithMultipleParamLists) FORMAL_PARAMETER_LIST
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
@@ -36,17 +36,17 @@
                     (TYPE
                       (TYPE_NAME Object))
                     (ARG_NAME something)))
-                (STMT_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (EXPR this .
                         (MEMBER_NAME methodWithParams))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME abstractMethod))
+                (MEMBER_NAME abstractMethod) FORMAL_PARAMETER_LIST)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME methodReference)
+                (MEMBER_NAME methodReference) FORMAL_PARAMETER_LIST
                 (INIT_EXPR
                   (EXPR
                     (EXPR this .
@@ -69,8 +69,8 @@
                       (MEMBER_NAME voidMethodWithParam)))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME annotatedMethod)
-                (STMT_LIST
+                (MEMBER_NAME annotatedMethod) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (EXPR
                     (EXPR
                       (MEMBER_NAME simpleMethod)
@@ -106,7 +106,7 @@
                     (TYPE
                       (TYPE_NAME X))
                     (ARG_NAME x)))
-                (STMT_LIST
+                (BLOCK
                   (EXPR
                     (EXPR
                       (MEMBER_NAME list) .
@@ -139,7 +139,7 @@
                     (SATISFIES_LIST
                       (TYPE
                         (TYPE_NAME String)))))
-                (STMT_LIST
+                (BLOCK
                   (EXPR
                     (EXPR
                       (MEMBER_NAME list) .
@@ -150,8 +150,8 @@
                             (MEMBER_NAME x))))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME methodWithNestedMethod)
-                (STMT_LIST
+                (MEMBER_NAME methodWithNestedMethod) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (MEMBER_DECL
                     (MEMBER_TYPE void)
                     (MEMBER_NAME nestedMethod)
@@ -160,7 +160,7 @@
                         (TYPE
                           (TYPE_NAME String))
                         (ARG_NAME param)))
-                    (STMT_LIST
+                    (BLOCK
                       (EXPR
                         (EXPR
                           (MEMBER_NAME log) .
@@ -178,16 +178,16 @@
                             (STRING_CST "Hello"))))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME methodWithNestedClass)
-                (STMT_LIST
+                (MEMBER_NAME methodWithNestedClass) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (TYPE_DECL
                     (CLASS_DECL
-                      (TYPE_NAME NestedClass)
-                      (STMT_LIST
+                      (TYPE_NAME NestedClass) FORMAL_PARAMETER_LIST
+                      (BLOCK
                         (MEMBER_DECL
                           (MEMBER_TYPE void)
-                          (MEMBER_NAME hello)
-                          (STMT_LIST
+                          (MEMBER_NAME hello) FORMAL_PARAMETER_LIST
+                          (BLOCK
                             (EXPR
                               (EXPR
                                 (MEMBER_NAME log) .
@@ -204,8 +204,8 @@
                       (CALL_EXPR ARG_LIST)))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME methodWithLocal)
-                (STMT_LIST
+                (MEMBER_NAME methodWithLocal) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (MEMBER_DECL
                     (MEMBER_TYPE
                       (TYPE
@@ -233,7 +233,7 @@
                         (TYPE
                           (TYPE_NAME String))
                         (ARG_NAME param)))))
-                (STMT_LIST
+                (BLOCK
                   (EXPR
                     (EXPR
                       (MEMBER_NAME method)
@@ -253,7 +253,7 @@
                             (TYPE
                               (TYPE_NAME String))
                             (ARG_NAME x)))
-                        (STMT_LIST
+                        (BLOCK
                           (EXPR
                             (EXPR
                               (MEMBER_NAME log) .
@@ -266,14 +266,14 @@
             (LANG_ANNOTATION abstract)))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME NonvoidMethods)
-            (STMT_LIST
+            (TYPE_NAME NonvoidMethods) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME simpleMethod)
-                (STMT_LIST
+                (MEMBER_NAME simpleMethod) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (STRING_CST "Hello")))))
@@ -287,7 +287,7 @@
                     (TYPE
                       (TYPE_NAME Whole))
                     (ARG_NAME amount)))
-                (STMT_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (PREFIX_EXPR $
@@ -307,29 +307,29 @@
                     (TYPE
                       (TYPE_NAME Whole))
                     (ARG_NAME amount)))
-                (STMT_LIST
+                (BLOCK
                   (IF_STMT
                     (CONDITION
                       (EXPR
                         (MEMBER_NAME b)))
                     (IF_TRUE
-                      (STMT_LIST
+                      (BLOCK
                         (RET_STMT
                           (EXPR
                             (EXPR this .
                               (MEMBER_NAME methodWithParam))))))
                     (IF_FALSE
-                      (STMT_LIST THROW_STMT)))))
+                      (BLOCK THROW_STMT)))))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME abstractMethod))
+                (MEMBER_NAME abstractMethod) FORMAL_PARAMETER_LIST)
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME methodReference)
+                (MEMBER_NAME methodReference) FORMAL_PARAMETER_LIST
                 (INIT_EXPR
                   (EXPR
                     (EXPR this .
@@ -352,8 +352,8 @@
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME annotatedMethod)
-                (STMT_LIST
+                (MEMBER_NAME annotatedMethod) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (EXPR
@@ -388,7 +388,7 @@
                     (TYPE
                       (TYPE_NAME X))
                     (ARG_NAME x)))
-                (STMT_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (EXPR
@@ -419,7 +419,7 @@
                     (SATISFIES_LIST
                       (TYPE
                         (TYPE_NAME String)))))
-                (STMT_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (EXPR
@@ -432,8 +432,8 @@
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME methodWithNestedMethod)
-                (STMT_LIST
+                (MEMBER_NAME methodWithNestedMethod) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (MEMBER_DECL
                     (MEMBER_TYPE
                       (TYPE
@@ -444,7 +444,7 @@
                         (TYPE
                           (TYPE_NAME String))
                         (ARG_NAME param)))
-                    (STMT_LIST
+                    (BLOCK
                       (RET_STMT
                         (EXPR
                           (MEMBER_NAME param)))))
@@ -460,12 +460,12 @@
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME methodWithNestedClass)
-                (STMT_LIST
+                (MEMBER_NAME methodWithNestedClass) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (TYPE_DECL
                     (CLASS_DECL
-                      (TYPE_NAME NestedClass)
-                      (STMT_LIST
+                      (TYPE_NAME NestedClass) FORMAL_PARAMETER_LIST
+                      (BLOCK
                         (MEMBER_DECL
                           (MEMBER_TYPE
                             (TYPE
@@ -484,8 +484,8 @@
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME methodWithLocal)
-                (STMT_LIST
+                (MEMBER_NAME methodWithLocal) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (MEMBER_DECL
                     (MEMBER_TYPE
                       (TYPE
@@ -508,8 +508,8 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String))
-                    (ARG_NAME method)))
-                (STMT_LIST
+                    (ARG_NAME method) FORMAL_PARAMETER_LIST))
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (EXPR
@@ -531,8 +531,8 @@
                                   (NAMED_ARG
                                     (TYPE
                                       (TYPE_NAME String))
-                                    (ARG_NAME method)
-                                    (STMT_LIST
+                                    (ARG_NAME method) FORMAL_PARAMETER_LIST
+                                    (BLOCK
                                       (RET_STMT
                                         (EXPR
                                           (STRING_CST "Hello")))))))))))))))))

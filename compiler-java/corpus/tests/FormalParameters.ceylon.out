@@ -3,15 +3,15 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME FormalParameters)
-      (STMT_LIST
+      (TYPE_NAME FormalParameters) FORMAL_PARAMETER_LIST
+      (BLOCK
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME MethodParameters)
-            (STMT_LIST
+            (TYPE_NAME MethodParameters) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME noParameter) STMT_LIST)
+                (MEMBER_NAME noParameter) FORMAL_PARAMETER_LIST BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME singleParameter)
@@ -19,7 +19,7 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME Natural))
-                    (ARG_NAME count))) STMT_LIST)
+                    (ARG_NAME count))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME annotatedParameter)
@@ -33,7 +33,7 @@
                         (STRING_CST "use something else")))
                     (TYPE
                       (TYPE_NAME Natural))
-                    (ARG_NAME count))) STMT_LIST)
+                    (ARG_NAME count))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME multipleParameters)
@@ -45,7 +45,7 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String))
-                    (ARG_NAME description))) STMT_LIST)
+                    (ARG_NAME description))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME defaultValueParameters)
@@ -69,7 +69,7 @@
                       (TYPE_NAME Lock))
                     (ARG_NAME lock)
                     (INIT_EXPR
-                      (EXPR null)))) STMT_LIST)
+                      (EXPR null)))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME varargsParameter)
@@ -77,7 +77,7 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String)) ...
-                    (ARG_NAME strings))) STMT_LIST)
+                    (ARG_NAME strings))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME entryParameter)
@@ -88,7 +88,7 @@
                     (ARG_NAME name) ->
                     (TYPE
                       (TYPE_NAME Person))
-                    (ARG_NAME person))) STMT_LIST)
+                    (ARG_NAME person))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME rangeParameter)
@@ -97,7 +97,7 @@
                     (TYPE
                       (TYPE_NAME Natural))
                     (ARG_NAME min) ..
-                    (ARG_NAME max))) STMT_LIST)
+                    (ARG_NAME max))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME combinationParameters)
@@ -139,7 +139,7 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String)) ...
-                    (ARG_NAME strings))) STMT_LIST)
+                    (ARG_NAME strings))) BLOCK)
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME functionalParameters)
@@ -147,7 +147,7 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String))
-                    (ARG_NAME produce))
+                    (ARG_NAME produce) FORMAL_PARAMETER_LIST)
                   (FORMAL_PARAMETER void
                     (ARG_NAME consume)
                     (FORMAL_PARAMETER_LIST
@@ -155,7 +155,7 @@
                         (TYPE
                           (TYPE_NAME String))
                         (ARG_NAME x)))))
-                (STMT_LIST
+                (BLOCK
                   (EXPR
                     (EXPR
                       (MEMBER_NAME consume)
@@ -167,24 +167,24 @@
                               (CALL_EXPR ARG_LIST)))))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME multipleParameterLists)
+                (MEMBER_NAME multipleParameterLists) FORMAL_PARAMETER_LIST
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME Natural))
                     (ARG_NAME min) ..
                     (ARG_NAME max)))
-                (STMT_LIST
+                (BLOCK
                   (RET_STMT
                     (EXPR
                       (MEMBER_NAME rangeParameter))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME InitParameters)
-            (STMT_LIST
+            (TYPE_NAME InitParameters) FORMAL_PARAMETER_LIST
+            (BLOCK
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME NoParameter) STMT_LIST))
+                  (TYPE_NAME NoParameter) FORMAL_PARAMETER_LIST BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME SingleParameter)
@@ -192,7 +192,7 @@
                     (FORMAL_PARAMETER
                       (TYPE
                         (TYPE_NAME Natural))
-                      (ARG_NAME count))) STMT_LIST))
+                      (ARG_NAME count))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME AnnotatedParameter)
@@ -206,7 +206,7 @@
                           (STRING_CST "use something else")))
                       (TYPE
                         (TYPE_NAME Natural))
-                      (ARG_NAME count))) STMT_LIST))
+                      (ARG_NAME count))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME MultipleParameters)
@@ -218,7 +218,7 @@
                     (FORMAL_PARAMETER
                       (TYPE
                         (TYPE_NAME String))
-                      (ARG_NAME description))) STMT_LIST))
+                      (ARG_NAME description))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME DefaultValueParameters)
@@ -242,7 +242,7 @@
                         (TYPE_NAME Lock))
                       (ARG_NAME lock)
                       (INIT_EXPR
-                        (EXPR null)))) STMT_LIST))
+                        (EXPR null)))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME VarargsParameter)
@@ -250,7 +250,7 @@
                     (FORMAL_PARAMETER
                       (TYPE
                         (TYPE_NAME String)) ...
-                      (ARG_NAME strings))) STMT_LIST))
+                      (ARG_NAME strings))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME EntryParameter)
@@ -261,7 +261,7 @@
                       (ARG_NAME name) ->
                       (TYPE
                         (TYPE_NAME Person))
-                      (ARG_NAME person))) STMT_LIST))
+                      (ARG_NAME person))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME RangeParameter)
@@ -270,7 +270,7 @@
                       (TYPE
                         (TYPE_NAME Natural))
                       (ARG_NAME min) ..
-                      (ARG_NAME max))) STMT_LIST))
+                      (ARG_NAME max))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME CombinationParameters)
@@ -312,7 +312,7 @@
                     (FORMAL_PARAMETER
                       (TYPE
                         (TYPE_NAME String)) ...
-                      (ARG_NAME strings))) STMT_LIST))
+                      (ARG_NAME strings))) BLOCK))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME FunctionalParameters)
@@ -320,7 +320,7 @@
                     (FORMAL_PARAMETER
                       (TYPE
                         (TYPE_NAME String))
-                      (ARG_NAME produce))
+                      (ARG_NAME produce) FORMAL_PARAMETER_LIST)
                     (FORMAL_PARAMETER void
                       (ARG_NAME consume)
                       (FORMAL_PARAMETER_LIST
@@ -328,7 +328,7 @@
                           (TYPE
                             (TYPE_NAME String))
                           (ARG_NAME x)))))
-                  (STMT_LIST
+                  (BLOCK
                     (EXPR
                       (EXPR
                         (MEMBER_NAME consume)

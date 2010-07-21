@@ -3,12 +3,12 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Primaries)
-      (STMT_LIST
+      (TYPE_NAME Primaries) FORMAL_PARAMETER_LIST
+      (BLOCK
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME Literals)
-            (STMT_LIST
+            (TYPE_NAME Literals) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -155,8 +155,8 @@
                       (MEMBER_NAME equals))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME Specials)
-            (STMT_LIST
+            (TYPE_NAME Specials) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -185,11 +185,11 @@
                   (EXPR this)))
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME Subclass)
+                  (TYPE_NAME Subclass) FORMAL_PARAMETER_LIST
                   (SUPERCLASS
                     (TYPE
                       (TYPE_NAME Specials)) ARG_LIST)
-                  (STMT_LIST
+                  (BLOCK
                     (MEMBER_DECL
                       (MEMBER_TYPE
                         (TYPE
@@ -199,8 +199,8 @@
                         (EXPR super)))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME Enumerations)
-            (STMT_LIST
+            (TYPE_NAME Enumerations) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -245,8 +245,8 @@
                           (STRING_CST "baz"))))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME MethodReferences)
-            (STMT_LIST
+            (TYPE_NAME MethodReferences) FORMAL_PARAMETER_LIST
+            (BLOCK
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME Person)
@@ -255,7 +255,7 @@
                       (TYPE
                         (TYPE_NAME String))
                       (ARG_NAME name)))
-                  (STMT_LIST
+                  (BLOCK
                     (MEMBER_DECL
                       (MEMBER_TYPE
                         (TYPE
@@ -268,8 +268,8 @@
                         (LANG_ANNOTATION mutable)))
                     (MEMBER_DECL
                       (MEMBER_TYPE void)
-                      (MEMBER_NAME hello)
-                      (STMT_LIST
+                      (MEMBER_NAME hello) FORMAL_PARAMETER_LIST
+                      (BLOCK
                         (EXPR
                           (EXPR
                             (MEMBER_NAME log) .
@@ -282,8 +282,8 @@
                                     (MEMBER_NAME name))))))))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME helloWorld)
-                (STMT_LIST
+                (MEMBER_NAME helloWorld) FORMAL_PARAMETER_LIST
+                (BLOCK
                   (EXPR
                     (EXPR
                       (MEMBER_NAME log) .
@@ -307,7 +307,7 @@
                             (STRING_CST "Gavin King"))))))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME hello)
+                (MEMBER_NAME hello) FORMAL_PARAMETER_LIST
                 (INIT_EXPR
                   (EXPR
                     (EXPR
@@ -315,7 +315,7 @@
                       (MEMBER_NAME hello)))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
-                (MEMBER_NAME helloWorld)
+                (MEMBER_NAME helloWorld) FORMAL_PARAMETER_LIST
                 (INIT_EXPR
                   (EXPR
                     (MEMBER_NAME helloWorld))))
@@ -323,7 +323,7 @@
                 (MEMBER_TYPE
                   (TYPE
                     (TYPE_NAME String)))
-                (MEMBER_NAME getName)
+                (MEMBER_NAME getName) FORMAL_PARAMETER_LIST
                 (INIT_EXPR
                   (EXPR
                     (GET_EXPR

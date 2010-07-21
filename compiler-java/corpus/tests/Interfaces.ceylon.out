@@ -3,8 +3,8 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Interfaces)
-      (STMT_LIST
+      (TYPE_NAME Interfaces) FORMAL_PARAMETER_LIST
+      (BLOCK
         (TYPE_DECL
           (INTERFACE_DECL
             (TYPE_NAME Simple)))
@@ -13,12 +13,12 @@
             (TYPE_NAME WithMethods)
             (ABSTRACT_MEMBER_DECL
               (MEMBER_TYPE void)
-              (MEMBER_NAME doNothing))
+              (MEMBER_NAME doNothing) FORMAL_PARAMETER_LIST)
             (ABSTRACT_MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
                   (TYPE_NAME Natural)))
-              (MEMBER_NAME returnZero))
+              (MEMBER_NAME returnZero) FORMAL_PARAMETER_LIST)
             (ABSTRACT_MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
@@ -126,4 +126,4 @@
             (TYPE_NAME WithNestedClass)
             (TYPE_DECL
               (CLASS_DECL
-                (TYPE_NAME NestedClass) STMT_LIST))))))))
+                (TYPE_NAME NestedClass) FORMAL_PARAMETER_LIST BLOCK))))))))

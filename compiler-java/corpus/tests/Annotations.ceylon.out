@@ -3,12 +3,12 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Annotations)
-      (STMT_LIST
+      (TYPE_NAME Annotations) FORMAL_PARAMETER_LIST
+      (BLOCK
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME NoArguments)
-            (STMT_LIST
+            (TYPE_NAME NoArguments) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME methodAnnotations)
@@ -22,7 +22,7 @@
                     (ARG_NAME param)
                     (INIT_EXPR
                       (EXPR
-                        (INT_CST 0))))) STMT_LIST
+                        (INT_CST 0))))) BLOCK
                 (ANNOTATION_LIST
                   (LANG_ANNOTATION public)
                   (USER_ANNOTATION
@@ -43,7 +43,7 @@
                   (LANG_ANNOTATION default)))
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) STMT_LIST)
+                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
                 (ANNOTATION_LIST
                   (LANG_ANNOTATION package)
                   (USER_ANNOTATION
@@ -56,8 +56,8 @@
                   (LANG_ANNOTATION module))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME LiteralArguments)
-            (STMT_LIST
+            (TYPE_NAME LiteralArguments) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME methodAnnotations)
@@ -76,7 +76,7 @@
                     (ARG_NAME param)
                     (INIT_EXPR
                       (EXPR
-                        (INT_CST 0))))) STMT_LIST
+                        (INT_CST 0))))) BLOCK
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
@@ -114,7 +114,7 @@
                     (ANNOTATION_NAME version))))
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) STMT_LIST)
+                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME see))
@@ -145,8 +145,8 @@
                     (STRING_CST "Andrew Haley")))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME NamedArguments)
-            (STMT_LIST
+            (TYPE_NAME NamedArguments) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME methodAnnotations)
@@ -176,7 +176,7 @@
                     (ARG_NAME param)
                     (INIT_EXPR
                       (EXPR
-                        (INT_CST 0))))) STMT_LIST
+                        (INT_CST 0))))) BLOCK
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
@@ -291,7 +291,7 @@
                             (STRING_CST "some comment"))))))))
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) STMT_LIST)
+                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
@@ -401,8 +401,8 @@
                             (STRING_CST "Andrew Haley")))))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME PositionalArguments)
-            (STMT_LIST
+            (TYPE_NAME PositionalArguments) FORMAL_PARAMETER_LIST
+            (BLOCK
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME methodAnnotations)
@@ -427,7 +427,7 @@
                     (ARG_NAME param)
                     (INIT_EXPR
                       (EXPR
-                        (INT_CST 0))))) STMT_LIST
+                        (INT_CST 0))))) BLOCK
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
@@ -518,7 +518,7 @@
                         (QUOTE_CST '1.2.0'))))))
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) STMT_LIST)
+                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME version)
@@ -604,11 +604,11 @@
                         (STRING_CST "Andrew Haley")))))))))
         (TYPE_DECL
           (CLASS_DECL
-            (TYPE_NAME ComplexArguments)
-            (STMT_LIST
+            (TYPE_NAME ComplexArguments) FORMAL_PARAMETER_LIST
+            (BLOCK
               (TYPE_DECL
                 (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) STMT_LIST)
+                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME queries)

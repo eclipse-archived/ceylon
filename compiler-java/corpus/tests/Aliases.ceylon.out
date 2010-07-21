@@ -3,8 +3,8 @@
 (TYPE_DECL
   (TYPE_DECL
     (CLASS_DECL
-      (TYPE_NAME Aliases)
-      (STMT_LIST
+      (TYPE_NAME Aliases) FORMAL_PARAMETER_LIST
+      (BLOCK
         (TYPE_DECL
           (INTERFACE_DECL
             (TYPE_NAME Foo)
