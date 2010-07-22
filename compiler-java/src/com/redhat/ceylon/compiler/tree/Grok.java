@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.tree;
 
 import java.math.BigInteger;
 
-import com.redhat.ceylon.compiler.tree.CeylonTree.Declaration;
 import com.redhat.ceylon.compiler.tree.CeylonTree.ImportDeclaration;
 import com.sun.tools.javac.util.*;
 
@@ -516,10 +515,6 @@ public class Grok extends CeylonTree.Visitor {
         current.context.append(tree);
     }
  
-    public void visit(CeylonTree.In tree) {
-        current.context.append(tree);
-     }
-  
     public void visit(CeylonTree.Out tree) {
         current.context.append(tree);
      }

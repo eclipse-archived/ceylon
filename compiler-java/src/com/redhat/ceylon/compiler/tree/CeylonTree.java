@@ -1829,7 +1829,7 @@ public abstract class CeylonTree {
         CeylonTree operand;
         
         void append(CeylonTree member) {
-            this.operand = operand;
+            this.operand = member;
         }
         
         void pushType(IType member) {

@@ -136,18 +136,14 @@ public class TreePrinter extends CeylonTree.Visitor {
                 ((CeylonTree) value).accept(this);
             }
             else if (value instanceof List) {
-                for (Object child: (List) value) {
+                for (CeylonTree child: (List<CeylonTree>) value) {
                     if (child != null)
-                        ((CeylonTree) child).accept(this);
+                        child.accept(this);
                     else
                         out.print("(NULL)");
                 }
-<<<<<<< /home/aph/ceylon/src/com/redhat/ceylon/compiler/tree/TreePrinter.java
-            } else {
-=======
             }
             else {
->>>>>>> /tmp/TreePrinter.java~other.sZhbnE
                 throw new RuntimeException(value.getClass().getName());
             }
             leave();
