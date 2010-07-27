@@ -1713,6 +1713,11 @@ public abstract class CeylonTree {
      * A nonempty expression
      */
     public static class NonemptyExpression extends CeylonTree {
+        CeylonTree thing;
+        void append(CeylonTree tree) {
+            assert (thing == null);
+            thing = tree;
+        }
         public void accept(Visitor v) { v.visit(this); }
     }
 
