@@ -1505,6 +1505,28 @@ public abstract class CeylonTree {
      * An is expression
      */
     public static class IsExpression extends CeylonTree {
+        IType type;
+        MemberName name;
+        InitializerExpression expr;
+
+        void pushType(IType type) {
+            assert(this.type == null);
+            this.type = type;
+        }
+        void append(CeylonTree tree) {
+            if (tree instanceof MemberName) {
+                assert name == null;
+                name = (MemberName) name;
+            }
+            else if (tree instanceof InitializerExpression) {
+                assert expr == null;
+                expr = (InitializerExpression) expr;
+            }
+            else {
+                throw new RuntimeException();
+            }
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 

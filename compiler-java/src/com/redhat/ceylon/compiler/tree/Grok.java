@@ -444,6 +444,13 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
         current.context.append(expr);
     }
+    
+    public void visit(CeylonTree.IsExpression expr) {
+        current.push(expr);
+        inner(expr);
+        current.pop();
+        current.context.append(expr);
+    }
  
     public void visit(CeylonTree.EnumList list) {
         current.push(list);
