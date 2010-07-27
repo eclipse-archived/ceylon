@@ -1050,11 +1050,28 @@ public abstract class CeylonTree {
      * An exists expression
      */
     public static class ExistsExpression extends CeylonTree {
-        CeylonTree thing;
-        void append(CeylonTree tree) {
-            assert (thing == null);
-            thing = tree;
+        IType type;
+        MemberName name;
+        InitializerExpression expr;
+
+        void pushType(IType type) {
+            assert(this.type == null);
+            this.type = type;
         }
+        void append(CeylonTree tree) {
+            if (tree instanceof MemberName) {
+                assert name == null;
+                name = (MemberName) name;
+            }
+            else if (tree instanceof InitializerExpression) {
+                assert expr == null;
+                expr = (InitializerExpression) expr;
+            }
+            else {
+                throw new RuntimeException();
+            }
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1713,11 +1730,28 @@ public abstract class CeylonTree {
      * A nonempty expression
      */
     public static class NonemptyExpression extends CeylonTree {
-        CeylonTree thing;
-        void append(CeylonTree tree) {
-            assert (thing == null);
-            thing = tree;
+        IType type;
+        MemberName name;
+        InitializerExpression expr;
+
+        void pushType(IType type) {
+            assert(this.type == null);
+            this.type = type;
         }
+        void append(CeylonTree tree) {
+            if (tree instanceof MemberName) {
+                assert name == null;
+                name = (MemberName) name;
+            }
+            else if (tree instanceof InitializerExpression) {
+                assert expr == null;
+                expr = (InitializerExpression) expr;
+            }
+            else {
+                throw new RuntimeException();
+            }
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
