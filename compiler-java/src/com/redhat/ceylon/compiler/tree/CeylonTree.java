@@ -1061,11 +1061,11 @@ public abstract class CeylonTree {
         void append(CeylonTree tree) {
             if (tree instanceof MemberName) {
                 assert name == null;
-                name = (MemberName) name;
+                name = (MemberName) tree;
             }
             else if (tree instanceof InitializerExpression) {
                 assert expr == null;
-                expr = (InitializerExpression) expr;
+                expr = (InitializerExpression) tree;
             }
             else {
                 throw new RuntimeException();
@@ -1516,11 +1516,11 @@ public abstract class CeylonTree {
         void append(CeylonTree tree) {
             if (tree instanceof MemberName) {
                 assert name == null;
-                name = (MemberName) name;
+                name = (MemberName) tree;
             }
             else if (tree instanceof InitializerExpression) {
                 assert expr == null;
-                expr = (InitializerExpression) expr;
+                expr = (InitializerExpression) tree;
             }
             else {
                 throw new RuntimeException();
@@ -1763,11 +1763,11 @@ public abstract class CeylonTree {
         void append(CeylonTree tree) {
             if (tree instanceof MemberName) {
                 assert name == null;
-                name = (MemberName) name;
+                name = (MemberName) tree;
             }
             else if (tree instanceof InitializerExpression) {
                 assert expr == null;
-                expr = (InitializerExpression) expr;
+                expr = (InitializerExpression) tree;
             }
             else {
                 throw new RuntimeException();
