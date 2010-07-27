@@ -1111,6 +1111,10 @@ public abstract class CeylonTree {
                     c.method = thing;
                 }
                 thing = c;
+            } else if (expr instanceof PostfixExpression) {
+                if (thing != null)
+                    expr.append(thing);
+                thing = expr;   
             } else {
                 assert(thing == null);
                 thing = expr;
@@ -1775,6 +1779,13 @@ public abstract class CeylonTree {
      * A postfix expression
      */
     public static class PostfixExpression extends CeylonTree {
+        Operator operator;
+        void append(CeylonTree expr) {
+            if (expr instanceof Operator) {
+                assert(operator == null);
+                operator = (Operator)expr;
+            }
+        }
         public void accept(Visitor v) { v.visit(this); }
     }
 
