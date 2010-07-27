@@ -119,7 +119,7 @@ public class TreePrinter extends CeylonTree.Visitor {
                 continue;
 
             enter(shortShortName + "." + field.name);
-            if (value instanceof String || value instanceof Number) {
+            if (value instanceof String || value instanceof Boolean) {
                 out.print(" " + value);
             }
             else if (value instanceof Number) {
