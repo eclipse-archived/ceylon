@@ -133,12 +133,17 @@ public class TreePrinter extends CeylonTree.Visitor {
             else if (value instanceof CeylonTree) {
                 ((CeylonTree) value).accept(this);
             }
-            else if (value instanceof List) {
-                for (CeylonTree child: (List<CeylonTree>) value) {
-                    if (child != null)
-                        child.accept(this);
-                    else
-                        out.print("(NULL)");
+            else if (value instanceof Iterable<?>) {
+                for (Object obj: (Iterable)value) {
+                    if (obj instanceof CeylonTree) {
+                        CeylonTree child = (CeylonTree)obj;
+                        if (child != null)
+                            child.accept(this);
+                        else
+                            out.print("(NULL)");
+                    } else {
+                        out.print(" " + obj + ",");
+                    }
                 }
             } else {
                 throw new RuntimeException(value.getClass().getName());

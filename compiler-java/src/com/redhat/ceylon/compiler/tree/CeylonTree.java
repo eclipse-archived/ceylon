@@ -333,11 +333,11 @@ public abstract class CeylonTree {
   
     public List<Annotation> annotations;
   
-    public void setName(String name) {
+    public void setName(CeylonTree name) {
         throw new RuntimeException();
     }
- 
-    public void setName(CeylonTree name) {
+
+    public void setName(String name) {
         throw new RuntimeException();
     }
 
@@ -440,9 +440,6 @@ public abstract class CeylonTree {
             while (klass != null) {
                 for (Field f: klass.getDeclaredFields()) {
                     Class<?> k = f.getDeclaringClass();
-                    boolean b1 = Iterable.class.isAssignableFrom(f.getClass());
-                    boolean b2 = CeylonTree.class.isAssignableFrom(f.getClass());
-                    boolean b3 = Iterable.class.isAssignableFrom(List.class);
                     if (! f.isSynthetic()
                             && (CeylonTree.class.isAssignableFrom(k) 
                                     || Iterable.class.isAssignableFrom(k))
@@ -699,7 +696,7 @@ public abstract class CeylonTree {
     public static class AbstractsList extends CeylonTree {
         List<IType> types = List.<IType>nil();
         void pushType(IType type) {
-            types.append(type);
+            types = types.append(type);
         }
   
         public void accept(Visitor v) { v.visit(this); }
@@ -714,9 +711,9 @@ public abstract class CeylonTree {
         public List<CeylonTree> typeParameters;
         
         @NotAChild
-        public String name;
+        public CeylonTree name;
 
-        public void setName(String name) {
+        public void setName(CeylonTree name) {
             this.name = name;
         }
 
@@ -967,8 +964,8 @@ public abstract class CeylonTree {
         public void setVisibility(CeylonTree v) {           
         }
         @NotAChild
-        public String name;
-        public void setName(String name) {
+        public CeylonTree name;
+        public void setName(CeylonTree name) {
             this.name = name;
         }
     
@@ -1011,7 +1008,7 @@ public abstract class CeylonTree {
         public void add(Annotation ann) {
             if (pendingAnnotations == null)
                 pendingAnnotations = List.<Annotation>nil();
-            pendingAnnotations.append(ann);
+           pendingAnnotations = pendingAnnotations.append(ann);
         }
 
         void add (ClassDeclaration decl)
@@ -1199,6 +1196,11 @@ public abstract class CeylonTree {
                 thing = expr;
             }
         }
+        
+        public void setName(CeylonTree name) {
+            assert(this.thing == null);
+            thing = name;
+        }
     }
 
     /**
@@ -1301,7 +1303,14 @@ public abstract class CeylonTree {
             this.name = name;
         }
 
+        // FIXME: Do we need append here?
         void append(CeylonTree expr) {
+            if (this.initializer != null)
+                throw new RuntimeException();
+            this.initializer = expr;
+        }
+        
+        void setInitialValue(CeylonTree expr) {
             if (this.initializer != null)
                 throw new RuntimeException();
             this.initializer = expr;
@@ -1363,10 +1372,10 @@ public abstract class CeylonTree {
      */
     public static class Identifier extends CeylonTree {
         @NotAChild
-        public String name;
+        public String value;
 
         public void setName(String name) {
-            this.name = name;
+            this.value = name;
         }
 
         public void accept(Visitor v) { v.visit(this); }
@@ -1446,7 +1455,7 @@ public abstract class CeylonTree {
         List<CeylonTree> importPath = List.<CeylonTree>nil();
         
         public void append(CeylonTree t) {
-            importPath.append(t);
+            importPath = importPath.append(t);
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -1463,6 +1472,13 @@ public abstract class CeylonTree {
      * An import path
      */
     public static class ImportPath extends CeylonTree {
+        @NotAChild
+        public List<String> pathElements = List.<String>nil();
+        
+        public void setName(String name) {
+           pathElements = pathElements.append(name);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1560,9 +1576,9 @@ public abstract class CeylonTree {
         public List<FormalParameter> params;
         
         @NotAChild
-        public String name;
+        public CeylonTree name;
 
-        public void setName(String name) {
+        public void setName(CeylonTree name) {
             this.name = name;
         }
 
@@ -1642,7 +1658,7 @@ public abstract class CeylonTree {
         public AttributeSetter attributeSetter;
         
         @NotAChild
-        public String name;
+        public CeylonTree name;
         
         public void append(CeylonTree stmt) {
             if (stmt instanceof MemberName) {
@@ -1653,10 +1669,10 @@ public abstract class CeylonTree {
             }
         }
 
-        public void setName(MemberName name) {
+        public void setName(CeylonTree name) {
             if (this.name != null)
                 throw new RuntimeException();
-            this.name = name.name;
+            this.name = name;
         }
       
         public void setParameterList(List<FormalParameter> p) {
@@ -1736,9 +1752,9 @@ public abstract class CeylonTree {
         public List<CeylonTree> stmts;
       
         @NotAChild
-        public String name;
+        public CeylonTree name;
 
-        public void setName(String name) {
+        public void setName(CeylonTree name) {
             this.name = name;
         }
 
@@ -1791,6 +1807,13 @@ public abstract class CeylonTree {
         public IType type;
         public List<FormalParameter> formalParams;
         
+        public String name;
+        public void setName(String s) {
+            assert(name == null);
+            name = s;
+        }
+        
+        // FIXME: Delete append?
         public void append(CeylonTree expr) {
             value = expr;
         }
@@ -1805,7 +1828,12 @@ public abstract class CeylonTree {
             formalParams = theList;
         }
 
-        
+        void setInitialValue(CeylonTree expr) {
+            if (this.value != null)
+                throw new RuntimeException();
+            this.value = expr;
+        }
+       
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2030,7 +2058,7 @@ public abstract class CeylonTree {
     public static class SatisfiesList extends CeylonTree {
         List<IType> types = List.<IType>nil();
         void pushType(IType type) {
-            types.append(type);
+            types = types.append(type);
         }
         public void accept(Visitor v) { v.visit(this); }
     }
@@ -2231,9 +2259,9 @@ public abstract class CeylonTree {
         TypeArgumentList argList;
         
         @NotAChild
-        public String name;
+        public CeylonTree name;
 
-        public void setName(String name) {
+        public void setName(CeylonTree name) {
             this.name = name;
         }
 
@@ -2258,7 +2286,7 @@ public abstract class CeylonTree {
     public static class TypeArgumentList extends CeylonTree {
         List<IType> types = List.<IType>nil();
         void pushType(IType type) {
-            types.append(type);
+            types = types.append(type);
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -2268,6 +2296,39 @@ public abstract class CeylonTree {
      * A type constraint
      */
     public static class TypeConstraint extends CeylonTree {
+        @NotAChild
+        public CeylonTree name;
+        public SatisfiesList satisfies; // XXXXXXXXXXXXX
+        public AbstractsList abstracts;
+        public List<FormalParameter> formalParameters;
+
+        public void addTypeConstraint(SatisfiesList l) {
+            assert(satisfies == null);
+            satisfies = l;
+        }
+
+        public void addTypeConstraint(AbstractsList l) {
+            assert(satisfies == null);
+            abstracts = l;
+        }
+
+        public void addTypeConstraint(CeylonTree t) {
+            if (t instanceof SatisfiesList)
+                addTypeConstraint((SatisfiesList)t);
+            else if (t instanceof AbstractsList)
+                addTypeConstraint((AbstractsList)t);
+        }
+
+        public void setParameterList(List<FormalParameter> formalParameters) {
+            assert(this.formalParameters == null);
+            this.formalParameters = formalParameters;
+        }
+        
+        public void setName(CeylonTree name) {
+            assert(this.name == null);
+            this.name = name;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2326,6 +2387,7 @@ public abstract class CeylonTree {
         public String name;
       
         public void setName(String name) {
+            assert(this.name == null);
             this.name = name;
         }
         
@@ -2339,9 +2401,9 @@ public abstract class CeylonTree {
         public List<CeylonTree> operands = List.<CeylonTree>nil();
         
         @NotAChild
-        public String name;
+        public CeylonTree name;
 
-        public void setName(String name) {
+        public void setName(CeylonTree name) {
             this.name = name;
         }
 
