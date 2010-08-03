@@ -104,7 +104,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(name);
         inner(name);
         current.pop();
-        current.context.setName(name.name);
+        current.context.setName(name);
     }
     
     public void visit(CeylonTree.Identifier id) {
@@ -338,7 +338,10 @@ public class Grok extends CeylonTree.Visitor {
     }
     
     public void visit(CeylonTree.InitializerExpression expr) {
+        current.push(expr);
         inner(expr);
+        current.pop();
+        current.context.setInitialValue(expr);
     }
     
     public void visit(CeylonTree.NamedArgument expr) {

@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.tree;
 
 import java.io.StringWriter;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +18,16 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
 public abstract class CeylonTree {
+  
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface NotAChild {
+
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface NotPrintedInDump {
+
+    }
   
     interface Annotation {
     }
@@ -95,6 +109,7 @@ public abstract class CeylonTree {
     /**
      * Mapping of ANTLR tokens to CeylonTree subclasses.
      */
+    @NotAChild
     private static Map<Integer, Class<? extends CeylonTree>> classes;
 
     static {
@@ -310,18 +325,22 @@ public abstract class CeylonTree {
     /**
      * This node's parent and children.
      */
+    @NotAChild @NotPrintedInDump
     public CeylonTree parent;
 
+    @NotAChild @NotPrintedInDump
     public List<CeylonTree> children;
   
     public List<Annotation> annotations;
   
-    public String name;
-  
-    void setName(String name) {
-        this.name = name;
+    public void setName(String name) {
+        throw new RuntimeException();
     }
-  
+ 
+    public void setName(CeylonTree name) {
+        throw new RuntimeException();
+    }
+
     void add (ClassDeclaration decl)
     {
         append(decl);
@@ -372,6 +391,10 @@ public abstract class CeylonTree {
         throw new RuntimeException();
     }
     
+    void setInitialValue(CeylonTree expr) {
+        throw new RuntimeException();
+    }
+    
     public void setSuperclass(IType type) {
         throw new RuntimeException();
     }
@@ -410,9 +433,54 @@ public abstract class CeylonTree {
         throw new RuntimeException();
     }
 
+    public void visitChildren(Visitor v) {
+        if (fields == null) {
+            ArrayList<Field> tmp = new ArrayList<Field>();
+            Class klass = getClass();
+            while (klass != null) {
+                for (Field f: klass.getDeclaredFields()) {
+                    Class<?> k = f.getDeclaringClass();
+                    boolean b1 = Iterable.class.isAssignableFrom(f.getClass());
+                    boolean b2 = CeylonTree.class.isAssignableFrom(f.getClass());
+                    boolean b3 = Iterable.class.isAssignableFrom(List.class);
+                    if (! f.isSynthetic()
+                            && (CeylonTree.class.isAssignableFrom(k) 
+                                    || Iterable.class.isAssignableFrom(k))
+                            && f.getAnnotation(NotAChild.class) == null) {
+                        tmp.add(f);
+                    }
+                }
+                fields = tmp;
+                klass = klass.getSuperclass();
+            }
+        }
+        
+        for (Field f: fields) {
+            Object value;
+            try {
+                value = f.get(this);
+            } catch (IllegalAccessException e) {
+                continue;
+            }
+            if (value == null)
+                continue;
+            if (value instanceof Iterable<?>) {
+                for (Object o: (Iterable<?>)value) {
+                    ((CeylonTree)o).accept(v);
+                }   
+            } else {
+                ((CeylonTree)value).accept(v);
+            }
+        }
+    }
+
+    @NotAChild @NotPrintedInDump
+    private Iterable<Field> fields;
+    
     /**
      * The ANTLR token from which this node was constructed.
      */
+    @NotAChild @NotPrintedInDump
     public Token token;
 
     /**
@@ -645,6 +713,13 @@ public abstract class CeylonTree {
         public List<IType> satisfiesList = List.<IType>nil();
         public List<CeylonTree> typeParameters;
         
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
         public void setVisibility(CeylonTree v) {
             // TODO
         }
@@ -721,6 +796,12 @@ public abstract class CeylonTree {
      * An argument name
      */
     public static class ArgumentName extends CeylonTree {
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -885,6 +966,7 @@ public abstract class CeylonTree {
           
         public void setVisibility(CeylonTree v) {           
         }
+        @NotAChild
         public String name;
         public void setName(String name) {
             this.name = name;
@@ -970,6 +1052,7 @@ public abstract class CeylonTree {
         List<CeylonTree.ImportDeclaration> importDeclarations;
       
         public void accept(Visitor v) { v.visit(this); }
+        
     }
 
     /**
@@ -1211,6 +1294,13 @@ public abstract class CeylonTree {
       
         CeylonTree initializer;
         
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
         void append(CeylonTree expr) {
             if (this.initializer != null)
                 throw new RuntimeException();
@@ -1272,6 +1362,13 @@ public abstract class CeylonTree {
      * An identifier
      */
     public static class Identifier extends CeylonTree {
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1380,6 +1477,13 @@ public abstract class CeylonTree {
      * An initializer expression
      */
     public static class InitializerExpression extends CeylonTree {
+        CeylonTree thing;
+
+        public void append(CeylonTree t) {
+            assert(thing == null);
+            thing = t;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1455,7 +1559,14 @@ public abstract class CeylonTree {
         public List<CeylonTree> typeParameters;
         public List<FormalParameter> params;
         
-        public void append(CeylonTree stmt) {
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+         public void append(CeylonTree stmt) {
             if (stmts == null)
                 stmts = List.<CeylonTree>nil();
             stmts = stmts.append(stmt);
@@ -1530,13 +1641,21 @@ public abstract class CeylonTree {
         List<CeylonTree> typeParameters;
         public AttributeSetter attributeSetter;
         
-        public void append(CeylonTree stmt) {
-            if (stmts == null)
-                stmts = List.<CeylonTree>nil();
-            stmts = stmts.append(stmt);
-        }
+        @NotAChild
+        public String name;
         
+        public void append(CeylonTree stmt) {
+            if (stmt instanceof MemberName) {
+                setName((MemberName)stmt);
+            } else if (stmts == null) {
+                stmts = List.<CeylonTree>nil();
+                stmts = stmts.append(stmt);
+            }
+        }
+
         public void setName(MemberName name) {
+            if (this.name != null)
+                throw new RuntimeException();
             this.name = name.name;
         }
       
@@ -1551,11 +1670,18 @@ public abstract class CeylonTree {
     }
 
     public static class MemberDeclaration extends BaseMemberDeclaration {
+        CeylonTree initialValue;
+
         public void accept(Visitor v) { v.visit(this); }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
             assert(this.typeParameters == null);
             this.typeParameters = typeParameters;
+        }
+
+        void setInitialValue(CeylonTree expr) {
+            assert (initialValue == null);
+            this.initialValue = expr;
         }
     }
 
@@ -1563,8 +1689,14 @@ public abstract class CeylonTree {
      * A member name
      */
     public static class MemberName extends CeylonTree {
+        @NotAChild
+        public String name;
+ 
+        public void setName(String name) {
+            this.name = name;
+        }
+
         CeylonTree operand;
-        CeylonTree memberName;
         
         public void accept(Visitor v) { v.visit(this); }
     }
@@ -1603,6 +1735,13 @@ public abstract class CeylonTree {
         
         public List<CeylonTree> stmts;
       
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
         public void pushType(IType type) {
             this.type = type;
         }
@@ -1674,6 +1813,7 @@ public abstract class CeylonTree {
      * A natural literal
      */
     public static class NaturalLiteral extends CeylonTree {
+        @NotAChild
         public BigInteger value; 
 
         public void accept(Visitor v) { v.visit(this); }
@@ -1718,7 +1858,9 @@ public abstract class CeylonTree {
      * An operator.
      */
     public static class Operator extends CeylonTree {
+        @NotAChild
         public int operatorKind;
+
         public List<CeylonTree> operands = List.<CeylonTree>nil();
          
         public void append(CeylonTree operand) {
@@ -1918,6 +2060,7 @@ public abstract class CeylonTree {
      * A simple string literal
      */
     public static class SimpleStringLiteral extends CeylonTree {
+        @NotAChild
         public String value;
         
         public void accept(Visitor v) { v.visit(this); }
@@ -2087,6 +2230,13 @@ public abstract class CeylonTree {
         IType type;
         TypeArgumentList argList;
         
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
 
         public void pushType(IType type) {
@@ -2095,6 +2245,10 @@ public abstract class CeylonTree {
         
         public void setTypeArgumentList(CeylonTree t) {
             this.argList = (TypeArgumentList)t;
+        }
+        
+        void append(CeylonTree expr) {
+            setName(((TypeName)expr).name);
         }
     }
 
@@ -2168,6 +2322,7 @@ public abstract class CeylonTree {
      * A type name
      */
     public static class TypeName extends CeylonTree {
+        @NotAChild
         public String name;
       
         public void setName(String name) {
@@ -2183,7 +2338,14 @@ public abstract class CeylonTree {
     public static class TypeParameter extends CeylonTree {
         public List<CeylonTree> operands = List.<CeylonTree>nil();
         
-        public void append(CeylonTree operand) {
+        @NotAChild
+        public String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+         public void append(CeylonTree operand) {
             operands = operands.append(operand);
         }
 
@@ -2236,6 +2398,7 @@ public abstract class CeylonTree {
      */
     public static class UserAnnotation extends CeylonTree implements Annotation
     {
+        @NotAChild
         public String name;
         public void setName(String name) {
             this.name = name;

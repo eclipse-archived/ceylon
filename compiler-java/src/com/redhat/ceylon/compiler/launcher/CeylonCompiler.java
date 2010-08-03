@@ -6,11 +6,18 @@ import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 
 import com.redhat.ceylon.compiler.tree.*;
+import com.redhat.ceylon.compiler.tree.CeylonTree.Visitor;
 import com.redhat.ceylon.compiler.parser.*;
 
 public class CeylonCompiler
 {
-  final PrintStream out;
+    public class EmptyWalker extends Visitor {
+        public void visitDefault(CeylonTree tree) {
+            tree.visitChildren(this);
+        }
+    }
+
+final PrintStream out;
   final FileInputStream is;
 
   CeylonCompiler(FileInputStream is, PrintStream out)
@@ -52,6 +59,8 @@ public class CeylonCompiler
       out.print(cu);
       out.println();
       out.println();
+      
+      cu.accept(new EmptyWalker());
     }
   }
 

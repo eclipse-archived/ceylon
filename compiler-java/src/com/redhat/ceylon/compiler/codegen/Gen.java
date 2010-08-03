@@ -35,56 +35,51 @@ public class Gen {
     Names names;
     ClassReader reader;
     Resolve resolve;
-	JavaCompiler compiler;
-	DiagnosticCollector<JavaFileObject> diagnostics;
-	JavacFileManager fileManager;
-	JavacTaskImpl task;
+    JavaCompiler compiler;
+    DiagnosticCollector<JavaFileObject> diagnostics;
+    JavacFileManager fileManager;
+    JavacTaskImpl task;
     Options options;
-    
-	Gen() throws Exception {
-		compiler = ToolProvider.getSystemJavaCompiler();
-		diagnostics
-			= new DiagnosticCollector<JavaFileObject>();
-		fileManager
-			= (JavacFileManager)compiler.getStandardFileManager(diagnostics, null, null);
-		fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
-								Arrays.asList(new File("/tmp")));
 
-		fileManager.setLocation(StandardLocation.CLASS_PATH,
-								Arrays.asList(new File("/tmp")));
-		Iterable<? extends JavaFileObject> compilationUnits
-		= fileManager.getJavaFileObjectsFromStrings(new ArrayList<String>());
+    Gen() throws Exception {
+        compiler = ToolProvider.getSystemJavaCompiler();
+        diagnostics
+        = new DiagnosticCollector<JavaFileObject>();
+        fileManager
+        = (JavacFileManager)compiler.getStandardFileManager(diagnostics, null, null);
+        fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
+                Arrays.asList(new File("/tmp")));
 
-		JavaCompiler.CompilationTask aTask
-			= compiler.getTask(null, fileManager,
-						   diagnostics,
-						   Arrays.asList("-g", /* "-verbose", */
-										 "-source", "7", "-XDallowFunctionTypes"),
-						   null, compilationUnits);
-		setup((JavacTaskImpl)aTask);
-	}
-	
-	void setup (JavacTaskImpl task) {
-		this.task = task;
+        fileManager.setLocation(StandardLocation.CLASS_PATH,
+                Arrays.asList(new File("/tmp")));
+        Iterable<? extends JavaFileObject> compilationUnits
+        = fileManager.getJavaFileObjectsFromStrings(new ArrayList<String>());
 
-		context = task.getContext();
-		options = Options.instance(context);
-		// It's a bit weird to see "invokedynamic" set here,
-		// but it has to be done before Resolve.instance().
-		options.put("invokedynamic", "invokedynamic");
-		make = TreeMaker.instance(context);
-		names = Names.instance(context);
-		reader = ClassReader.instance(context);
-		resolve = Resolve.instance(context);
-	}
-	
-	JCTree forTree(CeylonTree.ClassDeclaration t) {
-		JCClassDecl classDef
-		= make.ClassDef(make.Modifiers(PUBLIC, List.<JCAnnotation>nil()),
-						names.fromString("MySyntheticClass"),
-						List.<JCTypeParameter>nil(), null,
-						List.<JCExpression>nil(),
-						List.<JCTree>nil());
-		return classDef;
-	}
+        JavaCompiler.CompilationTask aTask
+        = compiler.getTask(null, fileManager,
+                diagnostics,
+                Arrays.asList("-g", /* "-verbose", */
+                        "-source", "7", "-XDallowFunctionTypes"),
+                        null, compilationUnits);
+        setup((JavacTaskImpl)aTask);
+    }
+
+    void setup (JavacTaskImpl task) {
+        this.task = task;
+
+        context = task.getContext();
+        options = Options.instance(context);
+        // It's a bit weird to see "invokedynamic" set here,
+        // but it has to be done before Resolve.instance().
+        options.put("invokedynamic", "invokedynamic");
+        make = TreeMaker.instance(context);
+        names = Names.instance(context);
+        reader = ClassReader.instance(context);
+        resolve = Resolve.instance(context);
+    }
+
+    class Vistor extends CeylonTree.Visitor
+    {
+        
+    }
 }
