@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.tree;
 
+import java.io.PrintWriter;
 import java.math.BigInteger;
 
 import com.redhat.ceylon.compiler.tree.CeylonTree.ImportDeclaration;
@@ -85,10 +86,10 @@ public class Grok extends CeylonTree.Visitor {
         current.push(decl);
         inner(decl);
         current.pop();
-        current.imports.append(decl);
+        current.imports = current.imports.append(decl);
         CeylonTree.CompilationUnit toplev = (CeylonTree.CompilationUnit) current.context;
         toplev.importDeclarations = current.imports;
-        current.imports  = List.<ImportDeclaration>nil();
+        current.imports = List.<ImportDeclaration>nil();
     }
     
     public void visit(CeylonTree.TypeDeclaration decl) {
@@ -104,7 +105,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(name);
         inner(name);
         current.pop();
-        current.context.setName(name.name);
+        current.context.setName(name);
     }
     
     public void visit(CeylonTree.Identifier id) {
@@ -341,6 +342,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
+        current.context.setInitialValue(expr);
     }
     
     public void visit(CeylonTree.NamedArgument expr) {
@@ -534,7 +536,9 @@ public class Grok extends CeylonTree.Visitor {
     }
  
     public void visit(CeylonTree.TypeConstraint tree) {
+        current.push(tree);
         inner(tree);
+        current.pop();
         current.context.addTypeConstraint(tree);
     }
  

@@ -85,12 +85,10 @@ public class TreePrinter extends CeylonTree.Visitor {
             if (Modifier.isStatic(field.getModifiers()))
                 continue;
 
-            String name = field.getName();
-            if (name.equals("parent") || name.equals("children"))
-                continue;
-            if (name.equals("token"))
+            if (field.getAnnotation(CeylonTree.NotPrintedInDump.class) != null)
                 continue;
 
+            String name = field.getName();
             Object value;
             try {
                 value = field.get(tree);
@@ -135,15 +133,19 @@ public class TreePrinter extends CeylonTree.Visitor {
             else if (value instanceof CeylonTree) {
                 ((CeylonTree) value).accept(this);
             }
-            else if (value instanceof List) {
-                for (CeylonTree child: (List<CeylonTree>) value) {
-                    if (child != null)
-                        child.accept(this);
-                    else
-                        out.print("(NULL)");
+            else if (value instanceof Iterable<?>) {
+                for (Object obj: (Iterable)value) {
+                    if (obj instanceof CeylonTree) {
+                        CeylonTree child = (CeylonTree)obj;
+                        if (child != null)
+                            child.accept(this);
+                        else
+                            out.print("(NULL)");
+                    } else {
+                        out.print(" " + obj + ",");
+                    }
                 }
-            }
-            else {
+            } else {
                 throw new RuntimeException(value.getClass().getName());
             }
             leave();
