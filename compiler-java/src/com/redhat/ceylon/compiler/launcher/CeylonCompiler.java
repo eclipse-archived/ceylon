@@ -7,6 +7,7 @@ import org.antlr.runtime.tree.*;
 
 import com.redhat.ceylon.compiler.tree.*;
 import com.redhat.ceylon.compiler.tree.CeylonTree.Visitor;
+import com.redhat.ceylon.compiler.codegen.Gen;
 import com.redhat.ceylon.compiler.parser.*;
 
 public class CeylonCompiler
@@ -26,7 +27,7 @@ final PrintStream out;
     this.is = is;
   }
 
-  void run(String comment, boolean consumeTree)
+  void run(String comment, boolean consumeTree, String filename)
     throws Exception
   {
     ANTLRInputStream input
@@ -60,7 +61,9 @@ final PrintStream out;
       out.println();
       out.println();
       
-      cu.accept(new EmptyWalker());
+      // cu.accept(new EmptyWalker());
+      
+      new Gen().run(cu, filename);
     }
   }
 
@@ -160,7 +163,7 @@ final PrintStream out;
         }
 
       System.err.println(infile);
-      theCeylonCompiler.run(infile, consumeTree);
+      theCeylonCompiler.run(infile, consumeTree, filename);
 
     }
   }

@@ -964,11 +964,16 @@ public abstract class CeylonTree {
         public void setVisibility(CeylonTree v) {           
         }
         @NotAChild
+        // FIXME: Should be a TypeName
         public CeylonTree name;
         public void setName(CeylonTree name) {
             this.name = name;
         }
     
+        public String nameAsString() {
+            return ((TypeName)name).name;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
 
         public void setName(MemberName name) {
