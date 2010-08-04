@@ -400,19 +400,13 @@ public abstract class CeylonTree {
     }
     
     public void add(Declaration t) {
-        // FIXME: Do this properly
-        if (ClassDeclaration.class.isAssignableFrom(t.getClass()))
-            add ((ClassDeclaration)t);
-        else if (InterfaceDeclaration.class.isAssignableFrom(t.getClass()))
-            add ((InterfaceDeclaration)t);
-        else if (BaseMethodDeclaration.class.isAssignableFrom(t.getClass()))
-            add ((BaseMethodDeclaration)t);
-        else if (BaseMemberDeclaration.class.isAssignableFrom(t.getClass()))
-            add ((BaseMemberDeclaration)t);
-        else if (AliasDeclaration.class.isAssignableFrom(t.getClass()))
-            add ((AliasDeclaration)t);
-        else
-            throw new RuntimeException();
+         t.accept(new CeylonTree.Visitor () {
+            public void visit(ClassDeclaration t) { add(t); }
+            public void visit(InterfaceDeclaration t) { add(t); }
+            public void visit(BaseMethodDeclaration t) { add(t); }
+            public void visit(BaseMemberDeclaration t) { add(t); }
+            public void visit(AliasDeclaration t) { add(t); }
+        });
     }
   
     public void add(Annotation ann) {
@@ -633,6 +627,8 @@ public abstract class CeylonTree {
         public void visit(WhileBlock that)                { visitDefault(that); }
         public void visit(WhileStatement that)            { visitDefault(that); }
         public void visit(Whitespace that)                { visitDefault(that); }
+        public void visit(BaseMemberDeclaration that)     { visitDefault(that); }
+        public void visit(BaseMethodDeclaration that)     { visitDefault(that); }
 
         public void visitDefault(CeylonTree tree) {
             throw new RuntimeException(tree.getClassName());

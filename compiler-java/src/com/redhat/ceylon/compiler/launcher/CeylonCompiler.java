@@ -61,7 +61,7 @@ final PrintStream out;
       out.println();
       out.println();
       
-      // cu.accept(new EmptyWalker());
+      cu.accept(new EmptyWalker());
       
       new Gen().run(cu, filename);
     }

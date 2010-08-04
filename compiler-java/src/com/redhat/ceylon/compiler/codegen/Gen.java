@@ -88,6 +88,13 @@ public class Gen {
         resolve = Resolve.instance(context);
     }
 
+    class Accumulator<T> {
+        List<T> things;
+        Accumulator() { things = List.<T>nil(); }
+        List<T> get() { return things; }
+        void append(T t) { things = things.append(t); }
+    }
+    
     public void run(CeylonTree.CompilationUnit t, String filename) 
         throws IOException
     {        
@@ -105,14 +112,17 @@ public class Gen {
     }
     
     public JCCompilationUnit convert(CeylonTree.CompilationUnit t) {
-        List<JCTree> classes = List.<JCTree>nil();
-        for (ClassDeclaration decl: t.classDecls) {
-            classes = classes.append(convert(decl));
-        }
+        final Accumulator<JCTree> classes = new Accumulator<JCTree>();
+                
+        t.visitChildren(new CeylonTree.Visitor () {
+            public void visit(CeylonTree.ClassDeclaration decl) {
+                classes.append(convert(decl));
+            }
+        });
 
         JCCompilationUnit topLev =
             make.TopLevel(List.<JCTree.JCAnnotation>nil(),
-                    /* package id*/ null, classes);
+                    /* package id*/ null, classes.get());
 
         System.out.println(topLev);
         return topLev;
