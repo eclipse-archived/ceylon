@@ -1047,7 +1047,7 @@ public abstract class CeylonTree {
             aliases = aliases.append(decl);
         }
       
-        List<CeylonTree.ImportDeclaration> importDeclarations;
+        List<CeylonTree.ImportDeclaration> importDeclarations = List.<ImportDeclaration>nil();
       
         public void accept(Visitor v) { v.visit(this); }
         

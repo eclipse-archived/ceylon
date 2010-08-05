@@ -85,10 +85,8 @@ public class Grok extends CeylonTree.Visitor {
         current.push(decl);
         inner(decl);
         current.pop();
-        current.imports = current.imports.append(decl);
         CeylonTree.CompilationUnit toplev = (CeylonTree.CompilationUnit) current.context;
-        toplev.importDeclarations = current.imports;
-        current.imports = List.<ImportDeclaration>nil();
+        toplev.importDeclarations = toplev.importDeclarations.append(decl);
     }
     
     public void visit(CeylonTree.TypeDeclaration decl) {
