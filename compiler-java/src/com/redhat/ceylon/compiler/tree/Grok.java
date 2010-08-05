@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.tree;
 
-import java.io.PrintWriter;
 import java.math.BigInteger;
 
 import com.redhat.ceylon.compiler.tree.CeylonTree.ImportDeclaration;
@@ -200,7 +199,6 @@ public class Grok extends CeylonTree.Visitor {
         current.push(member);
         inner(member);
         current.pop();
-        CeylonTree t = current.context;
         
         if ((current.context) instanceof CeylonTree.BaseMemberDeclaration) {
             // FIXME: Another kludge
