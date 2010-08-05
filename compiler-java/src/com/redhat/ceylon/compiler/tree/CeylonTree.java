@@ -1324,25 +1324,38 @@ public abstract class CeylonTree {
         CeylonTree initializer;
         
         @NotAChild
-        public String name;
+        public List<String> names = List.<String>nil();
 
+        // FIXME: misnamed (we're not setting, we're appending)
         public void setName(String name) {
-            this.name = name;
+            names = names.append(name);
         }
 
         // FIXME: Do we need append here?
         void append(CeylonTree expr) {
-            if (this.initializer != null)
-                throw new RuntimeException();
+            assert this.initializer == null;
             this.initializer = expr;
         }
         
         void setInitialValue(CeylonTree expr) {
-            if (this.initializer != null)
-                throw new RuntimeException();
+            if (this.initializer != null) {
+                if (names.length() == 2 && isRange(this.initializer)) {
+                    // The range operator between the parameter names
+                    // has been taken for the initializer by append().
+                    this.initializer = null;
+                }
+            }
+            assert this.initializer == null;
             this.initializer = expr;
         }
         
+        static boolean isRange(CeylonTree expr) {
+            if (!(expr instanceof Operator)) {
+                return false;
+            }
+            return ((Operator) expr).operatorKind == CeylonParser.RANGE;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     
         public void pushType(IType type) {
