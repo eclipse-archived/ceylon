@@ -234,19 +234,19 @@
             (TYPE_NAME WithClosedInstanceList) FORMAL_PARAMETER_LIST
             (BLOCK
               (INST_DECL
-                (MEMBER_NAME foo) ,)
+                (MEMBER_NAME foo))
               (INST_DECL
-                (MEMBER_NAME bar) ,)
+                (MEMBER_NAME bar))
               (INST_DECL
-                (MEMBER_NAME baz) ;))))
+                (MEMBER_NAME baz)))))
         (TYPE_DECL
           (CLASS_DECL
             (TYPE_NAME WithOpenInstanceList) FORMAL_PARAMETER_LIST
             (BLOCK
               (INST_DECL
-                (MEMBER_NAME foo) ,)
+                (MEMBER_NAME foo))
               (INST_DECL
-                (MEMBER_NAME bar) ,)
+                (MEMBER_NAME bar))
               (INST_DECL
                 (MEMBER_NAME baz) ...))))
         (TYPE_DECL
@@ -262,17 +262,17 @@
                 (MEMBER_NAME one)
                 (ARG_LIST
                   (EXPR
-                    (INT_CST 1))) ,)
+                    (INT_CST 1))))
               (INST_DECL
                 (MEMBER_NAME two)
                 (ARG_LIST
                   (EXPR
-                    (INT_CST 2))) ,)
+                    (INT_CST 2))))
               (INST_DECL
                 (MEMBER_NAME three)
                 (ARG_LIST
                   (EXPR
-                    (INT_CST 3))) ;)
+                    (INT_CST 3))))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -300,7 +300,7 @@
                     (BLOCK
                       (RET_STMT
                         (EXPR
-                          (STRING_CST "Foo")))))) ,)
+                          (STRING_CST "Foo")))))))
               (INST_DECL
                 (MEMBER_NAME bar)
                 (ARG_LIST
@@ -311,7 +311,7 @@
                     (BLOCK
                       (RET_STMT
                         (EXPR
-                          (STRING_CST "Bar")))))) ,)
+                          (STRING_CST "Bar")))))))
               (INST_DECL
                 (MEMBER_NAME baz)
                 (ARG_LIST
@@ -322,7 +322,7 @@
                     (BLOCK
                       (RET_STMT
                         (EXPR
-                          (STRING_CST "Baz")))))) ;)
+                          (STRING_CST "Baz")))))))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
@@ -344,7 +344,7 @@
                 (MEMBER_NAME one)
                 (ARG_LIST
                   (EXPR
-                    (INT_CST 1))) ,
+                    (INT_CST 1)))
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
@@ -358,7 +358,7 @@
                 (MEMBER_NAME two)
                 (ARG_LIST
                   (EXPR
-                    (INT_CST 2))) ,
+                    (INT_CST 2)))
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
@@ -372,7 +372,7 @@
                 (MEMBER_NAME three)
                 (ARG_LIST
                   (EXPR
-                    (INT_CST 3))) ;
+                    (INT_CST 3)))
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
                     (ANNOTATION_NAME doc)

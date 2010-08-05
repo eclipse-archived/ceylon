@@ -979,11 +979,11 @@
                   (TYPE_NAME Color) FORMAL_PARAMETER_LIST
                   (BLOCK
                     (INST_DECL
-                      (MEMBER_NAME red) ,)
+                      (MEMBER_NAME red))
                     (INST_DECL
-                      (MEMBER_NAME green) ,)
+                      (MEMBER_NAME green))
                     (INST_DECL
-                      (MEMBER_NAME blue) ;))))
+                      (MEMBER_NAME blue)))))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE
