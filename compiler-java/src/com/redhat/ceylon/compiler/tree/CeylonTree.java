@@ -430,7 +430,7 @@ public abstract class CeylonTree {
     public void visitChildren(Visitor v) {
         if (fields == null) {
             ArrayList<Field> tmp = new ArrayList<Field>();
-            Class klass = getClass();
+            Class<?> klass = getClass();
             while (klass != null) {
                 for (Field f: klass.getDeclaredFields()) {
                     Class<?> k = f.getDeclaringClass();

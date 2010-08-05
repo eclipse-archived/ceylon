@@ -45,7 +45,7 @@ public class TreePrinter extends CeylonTree.Visitor {
         return builder.toString();
     }
 
-    private static class NameValuePair implements Comparable {
+    private static class NameValuePair implements Comparable<NameValuePair> {
         public String name;
         public Object value;
 
@@ -54,8 +54,7 @@ public class TreePrinter extends CeylonTree.Visitor {
             this.value = value;
         }
 
-        public int compareTo(Object o) {
-            NameValuePair that = (NameValuePair) o;
+        public int compareTo(NameValuePair that) {
             boolean thisIsName = this.name.equals("name");
             boolean thatIsName = that.name.equals("name");
             if (thisIsName) {
@@ -73,7 +72,7 @@ public class TreePrinter extends CeylonTree.Visitor {
         return getFields(tree.getClass(), tree);
     }
 
-    private List<NameValuePair> getFields(Class klass, CeylonTree tree) {
+    private List<NameValuePair> getFields(Class<?> klass, CeylonTree tree) {
         List<NameValuePair> result;
         if (klass == CeylonTree.class)
             result = List.<NameValuePair>nil();
@@ -134,7 +133,7 @@ public class TreePrinter extends CeylonTree.Visitor {
                 ((CeylonTree) value).accept(this);
             }
             else if (value instanceof Iterable<?>) {
-                for (Object obj: (Iterable)value) {
+                for (Object obj: (Iterable<?>)value) {
                     if (obj instanceof CeylonTree) {
                         CeylonTree child = (CeylonTree)obj;
                         if (child != null)
