@@ -18,7 +18,7 @@ for path in paths:
          "-ea",
          "-cp", classpath,
          "com.redhat.ceylon.compiler.launcher.CeylonCompiler",
-         "-t",
+         "-g",
          path),
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE).communicate()

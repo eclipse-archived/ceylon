@@ -27,7 +27,10 @@ final PrintStream out;
     this.is = is;
   }
 
-  void run(String comment, boolean consumeTree, String filename)
+  void run(String comment,
+           boolean consumeTree,
+           boolean generateCode,
+           String filename)
     throws Exception
   {
     ANTLRInputStream input
@@ -59,11 +62,12 @@ final PrintStream out;
       cu.accept(new Grok());
       out.print(cu);
       out.println();
-      out.println();
-      
-      cu.accept(new EmptyWalker());
-      
-      new Gen().run(cu);
+
+      if (generateCode) {
+          out.println();
+          cu.accept(new EmptyWalker());
+          new Gen().run(cu);
+      }
     }
   }
 
@@ -121,6 +125,7 @@ final PrintStream out;
 
     String outputdir = "";
     boolean consumeTree = false;
+    boolean generateCode = false;
 
     for (int i = 0; i < args.size(); i++) {
       if (args.get(i).equals("-d"))
@@ -131,9 +136,16 @@ final PrintStream out;
           new File(outputdir).mkdir();
           i--;
         }
+      else if (args.get(i).equals("-g"))
+        {
+          consumeTree = true;
+          args.remove(i);
+          i--;
+        }
       else if (args.get(i).equals("-t"))
         {
           consumeTree = true;
+          generateCode = true;
           args.remove(i);
           i--;
         }
@@ -163,7 +175,7 @@ final PrintStream out;
         }
 
       System.err.println(infile);
-      theCeylonCompiler.run(infile, consumeTree, filename);
+      theCeylonCompiler.run(infile, consumeTree, generateCode, filename);
 
     }
   }
