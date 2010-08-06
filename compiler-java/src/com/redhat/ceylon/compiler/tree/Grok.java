@@ -473,6 +473,7 @@ public class Grok extends CeylonTree.Visitor {
    }
     
     public void visit(CeylonTree.OperatorDot expr) {
+        expr.operatorKind = expr.token.getType();
         current.push(expr);
         inner(expr);
         current.pop();

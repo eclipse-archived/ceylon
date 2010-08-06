@@ -258,7 +258,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.PUBLIC, Public.class);
         classes.put(CeylonParser.QMARK, Operator.class);
         classes.put(CeylonParser.QMARKEQ, Operator.class);
-        classes.put(CeylonParser.QUESDOT, Operator.class);
+        classes.put(CeylonParser.QUESDOT, OperatorDot.class);
         classes.put(CeylonParser.QUOTEDLITERAL, QuotedLiteral.class);
         classes.put(CeylonParser.QUOTE_CST, QuoteConstant.class);
         classes.put(CeylonParser.RANGE, Operator.class);
@@ -280,7 +280,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.SET, Set.class);
         classes.put(CeylonParser.SET_EXPR, SetExpression.class);
         classes.put(CeylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
-        classes.put(CeylonParser.STARDOT, Operator.class);
+        classes.put(CeylonParser.STARDOT, OperatorDot.class);
         classes.put(CeylonParser.STRING_CONCAT, StringConcatenation.class);
         classes.put(CeylonParser.STRING_CST, StringConstant.class);
         classes.put(CeylonParser.SUBSCRIPT_EXPR, SubscriptExpression.class);
@@ -1983,9 +1983,12 @@ public abstract class CeylonTree {
     }
 
     /**
-     * An operator.
+     * An operator with a dot in it.
      */
     public static class OperatorDot extends CeylonTree {
+        @NotAChild
+        public int operatorKind;
+
         public CeylonTree operand;
         public CeylonTree memberName;
   
