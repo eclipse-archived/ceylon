@@ -177,6 +177,7 @@ public class Grok extends CeylonTree.Visitor {
             
         } else if (member.params != null) {
             CeylonTree.MethodType methodType = new CeylonTree.MethodType();
+            methodType.source = member.source;
             methodType.formalParameters = member.params;
             methodType.returnType = member.type;
             member.type = methodType;
@@ -186,6 +187,7 @@ public class Grok extends CeylonTree.Visitor {
             CeylonTree.BaseMethodDeclaration decl = 
                 member.stmts != null ? new CeylonTree.MethodDeclaration()
                                      : new CeylonTree.AbstractMethodDeclaration();
+            decl.source = member.source;
             decl.setParameterList(member.params);
             decl.setTypeParameterList(member.typeParameters);
             decl.pushType(methodType);

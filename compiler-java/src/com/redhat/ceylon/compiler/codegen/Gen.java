@@ -95,14 +95,9 @@ public class Gen {
         void append(T t) { things = things.append(t); }
     }
     
-    public void run(CeylonTree.CompilationUnit t, String filename) 
-        throws IOException
-    {        
+    public void run(CeylonTree.CompilationUnit t) throws IOException {        
         JCCompilationUnit tree = convert(t);
-        CeylonFileObject f = 
-            new CeylonFileObject(fileManager.getFileForInput(filename));
-        
-        tree.sourcefile = f;
+        tree.sourcefile = new CeylonFileObject(fileManager.getFileForInput(t.source.path));
 
         Iterable<? extends TypeElement> result =
             task.enter(List.of(tree));

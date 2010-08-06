@@ -49,7 +49,7 @@ final PrintStream out;
     out.println();
 
     if (consumeTree) {
-      CeylonTree.CompilationUnit cu = CeylonTree.build(t);
+      CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename);
 
       PrintWriter w = new PrintWriter(out);
       cu.accept(new CeylonTreePrinter(w));
@@ -63,7 +63,7 @@ final PrintStream out;
       
       cu.accept(new EmptyWalker());
       
-      new Gen().run(cu, filename);
+      new Gen().run(cu);
     }
   }
 

@@ -53,7 +53,7 @@ public abstract class CeylonTree {
     /**
      * Create a Ceylon compilation unit from an ANTLR tree.
      */
-    public static CompilationUnit build(Tree src) {
+    public static CompilationUnit build(Tree src, String path) {
         Token token = ((CommonTree) src).getToken();
         if (token != null) {
             // ANTLR doesn't create a null top-level node when it
@@ -64,13 +64,13 @@ public abstract class CeylonTree {
             tmp.addChild(src);
             src = tmp;
         }
-        return (CompilationUnit) consume(src);
+        return (CompilationUnit) consume(src, path);
     }
 
     /**
      * Create a Ceylon tree from an ANTLR tree.
      */
-    private static CeylonTree consume(Tree src) {
+    private static CeylonTree consume(Tree src, String path) {
         Token token = ((CommonTree) src).getToken();
 
         Class<? extends CeylonTree> klass;
@@ -94,10 +94,11 @@ public abstract class CeylonTree {
             throw new RuntimeException(e);
         }
         dst.token = token;
+        dst.source = new SourceLocation(src, path);
 
         ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
         for (int i = 0; i < src.getChildCount(); i++) {
-            CeylonTree child = consume(src.getChild(i));
+            CeylonTree child = consume(src.getChild(i), path);
             child.parent = dst;
             children.append(child);
         }
@@ -473,6 +474,12 @@ public abstract class CeylonTree {
      */
     @NotAChild @NotPrintedInDump
     public Token token;
+
+    /**
+     * The source location (filename, line number) of this node's token.
+     */
+    @NotAChild @NotPrintedInDump
+    public SourceLocation source;
 
     /**
      * Base class for visitors.
