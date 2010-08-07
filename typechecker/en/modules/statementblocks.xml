@@ -734,7 +734,7 @@ else {
 
             <!--programlisting>Iteration := FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
-            <para>The type of the iterated expression depends upon the iterarion variable 
+            <para>The type of the iterated expression depends upon the iteration variable 
             declarations:</para>
             
             <itemizedlist>
