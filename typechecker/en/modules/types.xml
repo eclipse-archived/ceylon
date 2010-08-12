@@ -786,7 +786,7 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> 
-        where U satisfies Object {
+        given U satisfies Object {
     
     override public Assignable<V?> value(U key);
     
