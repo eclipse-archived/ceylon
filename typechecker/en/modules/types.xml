@@ -2366,7 +2366,7 @@ class String(Character[] characters)
      |AssertionException| with the given message."
 public void assert(StringTemplate message, Boolean that()) {
     if ( assertionsEnabled() && !that() ) {
-        throw new AssertionException(message)
+        throw AssertionException(message)
     }
 }]]></programlisting>
     

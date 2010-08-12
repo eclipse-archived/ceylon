@@ -1344,7 +1344,7 @@ ClassBody</programlisting>
         parameter in the <literal>extends</literal> clause.</para>
 
         <programlisting>public class SpecialKey1()
-        extends Key( new SpecialLock() ) {
+        extends Key( SpecialLock() ) {
     ...
 }</programlisting>
 
