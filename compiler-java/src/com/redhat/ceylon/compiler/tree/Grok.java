@@ -176,11 +176,6 @@ public class Grok extends CeylonTree.Visitor {
             current.context.append(tmp);
             
         } else if (member.params != null) {
-            CeylonTree.MethodType methodType = new CeylonTree.MethodType();
-            methodType.source = member.source;
-            methodType.formalParameters = member.params;
-            methodType.returnType = member.type;
-            member.type = methodType;
             // I'm not at all sure that it's worth having both MethodDeclaration and
             // AbstractMethodDeclaration, since it's trivial to distinguish because
             // one has statements; the other has none.
@@ -188,9 +183,9 @@ public class Grok extends CeylonTree.Visitor {
                 member.stmts != null ? new CeylonTree.MethodDeclaration()
                                      : new CeylonTree.AbstractMethodDeclaration();
             decl.source = member.source;
+            decl.returnType = member.type;
             decl.setParameterList(member.params);
             decl.setTypeParameterList(member.typeParameters);
-            decl.pushType(methodType);
             decl.setName(member.name);
             decl.stmts = member.stmts;
             current.context.add(decl);  
@@ -337,7 +332,9 @@ public class Grok extends CeylonTree.Visitor {
     }
     
     public void visit(CeylonTree.SimpleStringLiteral lit) {
-        lit.value = lit.token.getText();
+        String s = lit.token.getText();
+        // Strip off quote markers from each end of the token
+        lit.value = s.substring(1, s.length()-1);
         current.context.append(lit);
     }
     
@@ -352,12 +349,18 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
+        assert(false);
     }
     
     public void visit(CeylonTree.ArgumentList expr) {
         current.push(expr);
         inner(expr);
         current.pop();
+        
+        // FIXME: is this the right way to remove the arg list?
+        for (CeylonTree t: expr.args()) {
+            current.context.append(t);
+        }
     }
     
     public void visit(CeylonTree.Varargs expr) {

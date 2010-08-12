@@ -136,8 +136,8 @@ importDeclaration
     ;
     
 importPath
-    : importElement ('.' importElement)*
-    -> ^(IMPORT_PATH importElement*)
+    : identifier ('.' identifier)*
+    -> ^(IMPORT_PATH identifier*)
     ;
     
 wildcard
@@ -150,7 +150,7 @@ alias
     -> ^(ALIAS_DECL typeName)
     ;
     
-importElement
+identifier
     : LIDENTIFIER | UIDENTIFIER
     ;
 
@@ -445,8 +445,8 @@ reflectedLiteral
     ;
 
 qualifiedTypeName
-    : UIDENTIFIER ('.' UIDENTIFIER)*
-    -> ^(TYPE_NAME UIDENTIFIER+) 
+    : (identifier '.')* UIDENTIFIER
+    -> ^(TYPE_NAME identifier* UIDENTIFIER) 
     ;
 
 typeName
