@@ -1321,7 +1321,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
         
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
-        regular to use semicolons to seperate varargs in a named parameter invocation.</para></comment>
+        regular to use semicolons to separate varargs in a named parameter invocation.</para></comment>
         
         </section>
         
