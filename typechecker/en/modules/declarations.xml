@@ -2573,7 +2573,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
-    Float pi { ... }
+    override Float pi { ... }
 }</programlisting>
             
             <para>For abstract attributes, a special shortcut form of overriding is
