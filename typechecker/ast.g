@@ -389,7 +389,7 @@ instance
     ;
     
 typeConstraint
-    : 'where' typeName formalParameters? satisfiedTypes? abstractedTypes?
+    : 'given' typeName formalParameters? satisfiedTypes? abstractedTypes?
     -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedTypes?)
     ;
     
@@ -1116,7 +1116,11 @@ FINALLY
 FOR
     :   'for'
     ;
-    
+
+GIVEN
+    :   'given'
+    ;
+
 IF
     :   'if'
     ;
