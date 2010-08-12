@@ -1701,7 +1701,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         <para>The compiler is permitted to optimize away creation of a
         <literal>Range</literal> in code such as the following:</para>
         
-        <programlisting><![CDATA[i in [min..max]]]></programlisting>
+        <programlisting><![CDATA[i in min..max]]></programlisting>
         
         <para>which is equivalent to:</para>
         
@@ -1709,7 +1709,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         
         <para>and:</para>
         
-        <programlisting><![CDATA[for (local i in [min..max]) {
+        <programlisting><![CDATA[for (local i in min..max) {
     ...
 }]]></programlisting>
     
