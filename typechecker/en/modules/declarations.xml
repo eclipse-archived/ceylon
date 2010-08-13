@@ -1745,9 +1745,8 @@ class Customer(Name name, Organization? org = null)
     
 }</programlisting>
 
-        <para>A class with declared <literal>case</literal>s implicitly extends 
-        <literal>lang.Selector</literal>, a subclass of 
-        <literal>java.lang.Enum</literal>.</para>
+        <para>A class with declared <literal>case</literal>s implicitly implements 
+        <literal>lang.Selector</literal>.</para>
         
         <para>Enumerated instances of a class are instantiated when the class is
         loaded by the virtual machine, with the specified arguments.</para>
