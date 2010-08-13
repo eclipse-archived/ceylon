@@ -991,12 +991,12 @@ NATURALLITERAL
     ;
 
 CHARLITERAL
-    :   '@' ( ~ NonCharacterChars | EscapeSequence )
+    :   '`' ( ~ NonCharacterChars | EscapeSequence ) '`'
     ;
 
 fragment
 NonCharacterChars
-    :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
+    :    '`' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
     ;
 
 QUOTEDLITERAL
@@ -1020,16 +1020,17 @@ StringPart
     
 fragment
 EscapeSequence 
-    :   '\\' (
-            'b' 
-        |   't' 
-        |   'n' 
-        |   'f' 
+    :   '\\' 
+        (
+            'b'
+        |   't'
+        |   'n'
+        |   'f'
         |   'r'
-        |   's' 
-        |   '\"' 
+        |   '"'
         |   '\''
-        )          
+        |   '`'
+        )
     ;
 
 WS  
