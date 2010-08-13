@@ -362,8 +362,8 @@ class CaseSuper<X,Y>(Case<X> c)
         <para>Classes with enumerated <literal>case</literal>s implicitly extend 
         <literal>lang.Selector</literal></para>
         
-        <programlisting><![CDATA[public abstract class Selector(String name, int ordinal)
-        satisfies Case<subtype> { ... }]]></programlisting>
+        <programlisting><![CDATA[public abstract class Selector<X>(String name, int ordinal)
+        satisfies Case<X> { ... }]]></programlisting>
         
     </section>
     
