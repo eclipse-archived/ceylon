@@ -2025,9 +2025,6 @@ Void goodbye() {
     return x + y
 }</programlisting>
                 
-        <para>The semantics of Ceylon methods are identical to Java, except that Ceylon 
-        methods may declare defaulted parameters and callable parameters.</para>
-        
         </section>
         
         <section id="callabletype">
