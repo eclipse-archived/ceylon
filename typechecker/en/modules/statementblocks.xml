@@ -418,10 +418,13 @@ else {
                 value, and</para>
             </listitem>
             <listitem>
-                <para>a <emphasis>subtype condition</emphasis> is satisfied when an expression
-                evaluates to an instance of a specified type.</para>
+                <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
+                evaluates to an instance of a type assignable to the specified type.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: does <literal>is</literal> really test assignability, or should it 
+        it test that the value is an instance of a <emphasis>subtype</emphasis> of the given type?</para></comment>
         
         <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
        
@@ -430,7 +433,7 @@ else {
         <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
         
         <para>Any condition contains an expression. In the case of existence, nonemptiness and 
-        subtype conditions, the expression may be a specifier of a variable declaration.</para>
+        assignability conditions, the expression may be a specifier of a variable declaration.</para>
 
         <para>The type of a condition expression depend upon whether the <literal>exists</literal>, 
         <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
@@ -629,7 +632,7 @@ else {
             <para>The <literal>switch</literal> expression may be of any type. The <literal>case</literal> 
             values must be expressions of type assignable to <literal>Case&lt;X&gt;</literal>, where 
             <literal>X</literal> is the <literal>switch</literal> expression type. Alternatively, the 
-            <literal>case</literal>s may be subtype conditions.</para>
+            <literal>case</literal>s may be assignability conditions.</para>
 
             <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
             
@@ -656,7 +659,7 @@ else {
             <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
             block is defined, the <literal>else</literal> block is executed.</para>
             
-            <para>For a subtype condition <literal>case</literal>, if the <literal>switch</literal> 
+            <para>For an assignability condition <literal>case</literal>, if the <literal>switch</literal> 
             expression is a local, then the local will be treated by the compiler as having the 
             specified type inside the <literal>case</literal> block.</para>
             
