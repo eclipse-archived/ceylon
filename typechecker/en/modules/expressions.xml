@@ -357,7 +357,7 @@ if you prefer.";</programlisting>
                 
         <programlisting>Date date = '25/03/2005';</programlisting>
         <programlisting>Time time = '12:00 AM PST';</programlisting>
-        <programlisting>Boolean isEmail = email.matches( '^\w+@((\w+)\.)+$' );</programlisting>
+        <programlisting>Boolean isEmail = '^\w+@((\w+)\.)+$'.matches(email);</programlisting>
         <programlisting>Cron schedule = '0 0 23 ? * MON-FRI';</programlisting>
         <programlisting>Color color = 'FF3B66';</programlisting>
         <programlisting>Url url = 'http://jboss.org/ceylon';</programlisting>
