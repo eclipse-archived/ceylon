@@ -149,26 +149,23 @@
     <section>
         <title>Character literals</title>
         
-        <para>A single character literal consists of a character, preceded by a 
-        <literal>@</literal>:</para>
+        <para>A single character literal consists of a character, surrounded by backticks.</para> 
         
-        <programlisting>CharacterLiteral := "@" Character</programlisting>
+        <programlisting>CharacterLiteral := "`" Character "`"</programlisting>
         
-        <programlisting>Character := ~(" " | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
+        <programlisting>Character := ~("`" | "\" | Tab | Formfeed | Newline | Return | Backspace) | EscapeSequence</programlisting>
         
-        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "s" | "\" | "&quot;" | "'" )</programlisting>
+        <programlisting>EscapeSequence := "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" )</programlisting>
         
         <para>The following are legal character literals:</para>
         
-        <programlisting>@A</programlisting>
-        <programlisting>@#</programlisting>
-        <programlisting>@\n</programlisting>
+        <programlisting>`A`</programlisting>
+        <programlisting>`#`</programlisting>
+        <programlisting>` `</programlisting>
+        <programlisting>`\n`</programlisting>
         
         <comment><para>TODO: should we support an escape sequence for Unicode character names
         <literal>\N{name}</literal> like Python does?</para></comment>
-        
-        <comment><para>TODO: would it be better to quote character literals using backticks, 
-        for example, <literal>`A`</literal>?</para></comment>
         
     </section>
     

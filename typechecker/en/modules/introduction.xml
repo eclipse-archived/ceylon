@@ -968,7 +968,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <programlisting>Natural[] from1To10 = 1..10;</programlisting>
             <programlisting>Integer[] fromNegative10To10 = -10..10;</programlisting>
-            <programlisting>Character[] fromAToZ = @A..@Z;</programlisting>
+            <programlisting>Character[] fromAToZ = `A`..`Z`;</programlisting>
 
             <para>The <literal>Sequence</literal> interface as assignable to <literal>Iterable</literal>,
             so we can iterate a <literal>Sequence</literal> using a <literal>for</literal>

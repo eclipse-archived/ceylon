@@ -303,7 +303,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A single character literal is an expression of type 
         <literal>lang.Character</literal>.</para>
                 
-        <programlisting>if ( string[i] == @+ ) { ... }</programlisting>
+        <programlisting>if ( string[i] == `+` ) { ... }</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
@@ -2182,7 +2182,7 @@ setPerson(person);</programlisting>
     
     <programlisting>for ( Natural n in 1..10 ) { ... }</programlisting>
     
-    <programlisting>if (char in @A..@Z) { ... }</programlisting>
+    <programlisting>if (char in `A`..`Z`) { ... }</programlisting>
     
     <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
     
@@ -2198,7 +2198,7 @@ setPerson(person);</programlisting>
     
     <programlisting>this.total += item.price;</programlisting>
     
-    <programlisting>if ( nonempty args[i] &amp;&amp; !args[i].first == @- ) { ... }</programlisting>
+    <programlisting>if ( nonempty args[i] &amp;&amp; !args[i].first == `-` ) { ... }</programlisting>
     
     <programlisting>Float vol = length**3;</programlisting>
     
