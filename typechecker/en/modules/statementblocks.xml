@@ -579,7 +579,7 @@ if (X satisfies Comparable&lt;X&gt;) {
     payment.paid := true;
 }
 else {
-    throw NotEnoughMoneyException();
+    throw NotEnoughMoneyException()
 }</programlisting>
 
             <programlisting>public void welcome(User? user) {
