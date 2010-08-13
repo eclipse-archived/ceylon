@@ -2186,8 +2186,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             method may not declare a stricter visibility modifier than the method 
             it overrides.</para>
             
-            <programlisting>abstract class AbstractSquareRooter() {
-    Float squareRoot(Float x);
+            <programlisting>abstract public class AbstractSquareRooter() {
+    public Float squareRoot(Float x);
 }</programlisting>
 
             <programlisting>class ConcreteSquareRooter()
@@ -2567,8 +2567,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             method may not declare a stricter visibility modifier than the method 
             it overrides.</para>
             
-            <programlisting>abstract class AbstractPi() {
-    Float pi;
+            <programlisting>abstract module class AbstractPi() {
+    module Float pi;
 }</programlisting>
 
             <programlisting>class ConcretePi() 
