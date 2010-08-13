@@ -601,12 +601,12 @@ if you prefer.";</programlisting>
             
         <para>The metamodel object for a type allows its members to be iterated:</para>
         
-        <programlisting>Type&lt;Object&gt; t = ...;
+        <programlisting>Type&lt;Object&gt; t = object.type;
 for (Attribute&lt;Object,String&gt; a in t.attributes(String)) {
-    log.info(a.name + "=" + a(person));
+    log.info(a.name + "=" + a(object));
 }
 for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
-    log.info(m.name + "=" + m(person)());
+    log.info(m.name + "=" + m(object)());
 }</programlisting>
         
         <para>The metamodel object for a class, attribute or method implements 
