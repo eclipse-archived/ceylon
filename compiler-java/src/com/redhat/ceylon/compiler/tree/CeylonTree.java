@@ -2025,6 +2025,12 @@ public abstract class CeylonTree {
             operands = operands.append(operand);
         }
         
+        public CeylonTree[] toArray() {
+            return (operands.toArray(new CeylonTree[0]));
+        }
+        
+        public int kind() { return operatorKind; }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 

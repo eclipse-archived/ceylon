@@ -13,6 +13,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
+import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.redhat.ceylon.compiler.tree.*;
 import com.sun.source.tree.*;
 import com.sun.tools.javac.api.JavacTaskImpl;
@@ -323,15 +324,7 @@ public class Gen {
     }
     
     JCExpression convertArg(CeylonTree arg) {
-        final Singleton<JCExpression> expr =
-            new Singleton<JCExpression>();
-        
-        arg.accept (new CeylonTree.Visitor () {
-            public void visit(CeylonTree.SimpleStringLiteral string) {
-                 expr.append(convert(string));             
-            }});
-        
-        return expr.thing();
+        return convertExpression(arg);
     }
     
     JCExpression convert(CeylonTree.SimpleStringLiteral string) {
@@ -343,14 +336,72 @@ public class Gen {
     
     JCExpression convert(CeylonTree.OperatorDot access)
     {
-        CeylonTree.Name memberName = access.memberName();
-        if (access.operand() instanceof CeylonTree.Name) {
-            CeylonTree.Name operand = (CeylonTree.Name)access.operand();
-            return makeIdent(Arrays.asList(operand.name, memberName.name));
-        } else if (access.operand() instanceof CeylonTree.OperatorDot) {
-            JCExpression exp = convert((CeylonTree.OperatorDot)access.operand());
-            return make.Select(exp, names.fromString(memberName.name));
-        } else
-            throw new RuntimeException();
+        final CeylonTree.Name memberName = access.memberName();
+        final CeylonTree operand = access.operand();
+        
+        class V extends CeylonTree.Visitor {
+            public JCExpression result;
+            public void visit(CeylonTree.MemberName op) {
+                result = makeIdent(Arrays.asList(op.name, memberName.name));
+            }
+            public void visit(CeylonTree.OperatorDot op) {
+                result = make.Select(convert(op), names.fromString(memberName.name));
+            }
+            public void visit(CeylonTree.Operator op) {
+                result = make.Select(convertExpression(op), names.fromString(memberName.name));
+            }
+        }
+
+        V v = new V();
+        operand.accept(v);
+        return v.result;
     }   
+
+    JCExpression convertExpression(CeylonTree expr) {
+        class V extends CeylonTree.Visitor {
+            public JCExpression result;
+
+            public void visit(OperatorDot access) {
+                result = convert(access);
+            }
+            public void visit(Operator op) {
+                result = convert(op);
+            }
+            public void visit(NaturalLiteral lit) {
+                JCExpression n = make.Literal(lit.value.longValue());
+                result = make.Apply (null, makeSelect("ceylon", "Integer", "instance"),
+                        List.of(n));
+            }
+            public void visit(CeylonTree.SimpleStringLiteral string) {
+                result = convert(string);
+            }
+            public void visit(CeylonTree.CallExpression call) {
+                result = convert(call);
+            }
+        }
+
+        V v = new V();
+        expr.accept(v);
+        return v.result;        
+    }
+    
+    JCExpression convert(CeylonTree.Operator op) {
+        JCExpression result;
+        CeylonTree[] operands = op.toArray();
+
+        switch (op.kind()) {
+        case CeylonParser.PLUS:
+            result = make.Apply (null, make.Select(convertExpression(operands[0]),
+                    names.fromString("operatorPlus")),
+                    List.of(convertExpression(operands[1])));
+
+            break;
+            
+            default:
+                throw new RuntimeException();
+        }
+        return result;
+    }
+
 }
+
