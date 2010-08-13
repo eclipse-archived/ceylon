@@ -581,23 +581,31 @@ String?? firstWord = words[0];</programlisting>
                 <comment>TODO: is this correct?</comment></para>
             </listitem>
             <listitem>
-                <para>A covariant type parameter of a type in a covariant position is a covariant 
+                <para>A covariant type argument of a satisfied or extended type is a covariant 
                 position.</para>
             </listitem>
             <listitem>
-                <para>A contravariant type parameter of a type in a covariant position is a 
+                <para>A contravariant type argument of a satisfied or extended type is a 
                 contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A covariant type parameter of a type in a contravariant position is a 
+                <para>A covariant type argument of a type in a covariant position is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type argument of a type in a covariant position is a 
                 contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A contravariant type parameter of a type in a contravariant position is a 
+                <para>A covariant type argument of a type in a contravariant position is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type argument of a type in a contravariant position is a 
                 covariant position.</para>
             </listitem>
             <listitem>
-                <para>A nonvariant type parameter or a type is a nonvariant position.</para>
+                <para>A nonvariant type argument of a type is a nonvariant position.</para>
             </listitem>
             <listitem>
                 <para>A formal parameter of a callable parameter in a contravariant position is 
