@@ -359,12 +359,31 @@ class CaseSuper<X,Y>(Case<X> c)
         
 }]]></programlisting>
 
-        <para>Classes with enumerated <literal>case</literal>s implicitly extend 
+        <para>Classes with enumerated <literal>case</literal>s implicitly implement 
         <literal>lang.Selector</literal></para>
         
-        <programlisting><![CDATA[public abstract class Selector<X>(String name, int ordinal)
-        satisfies Case<X> { ... }]]></programlisting>
+        <programlisting><![CDATA[public interface Selector {
+    public String name;
+    public small Integer ordinal;
+}]]></programlisting>
+
+        <para>The implementations of <literal>equals()</literal>, <literal>hash</literal>
+        and <literal>string</literal> provided by the <literal>Object</literal> class 
+        handle subclasses that implement <literal>Selector</literal> as a special case.</para>
+
+        <para>This extension allows selectors to be used as cases in a <literal>switch</literal>
+        statement:</para>
         
+        <programlisting>public extension class SelectorCase&lt;X&gt;(X selector)
+        given X extends Selector {
+    override Boolean test(X x) {
+        return x.ordinal==selector.ordinal
+    }
+}</programlisting>
+
+        <para>Of course, the compiler is permitted to optimize away the call to this
+        extension.</para>
+
     </section>
     
     <section id="optionalandnull">
