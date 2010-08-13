@@ -2823,14 +2823,14 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         </itemizedlist>
         
         <para>The visibility of a nested declaration may not be less strict than the 
-        visibility modifier of the body (class body, interface body, or block) which 
-        contains it. For example, a <literal>package</literal>-visibility class may 
-        not contain a <literal>public</literal>-visibility attribute, method, or 
-        member class. A block may not declare a visibility modifier, so a declaration
-        that occurs inside a block may not declare a visibility modifier. Note, 
-        however, that this restriction does not apply to the visibility of nested
-        declarations annotated <literal>override</literal> which inherit their
-        visibility from the declaration they override.</para>
+        visibility of the body (class body, interface body, or block) which contains 
+        it. For example, a <literal>package</literal>-visibility class may not contain 
+        a <literal>public</literal>-visibility attribute, method, or member class. 
+        Likewise, a block may not declare a visibility modifier, so a declaration that 
+        occurs inside a block may not declare a visibility modifier. Note, however, 
+        that this restriction does not apply to the visibility of nested declarations 
+        annotated <literal>override</literal> which inherit their visibility from the 
+        declaration they override.</para>
         
         <para>The class <literal>lang.Visibility</literal> defines the visibility 
         levels:</para>
