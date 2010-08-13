@@ -1166,7 +1166,7 @@ local comp = order(1,-1);</programlisting>
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
             <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
             
-            <programlisting>from (people) where (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
+            <programlisting>from (people) where (Person p) (p.age>18) select (Person p) (p.name)</programlisting>
             <programlisting>iterate (map) 
     perform (String name->Object value) { 
         log.info("Entry: " name "->" value ""); 
