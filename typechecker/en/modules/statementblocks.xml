@@ -97,7 +97,7 @@
         <programlisting>Entry&lt;Float,Float&gt; xy() {
     Float x { return y }  //compiler error!
     Float y { return x }
-    return x->y;
+    return x->y
 }</programlisting>
 
         <para>Nor is this code legal, since all three statements occur inside the

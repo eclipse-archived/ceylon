@@ -1027,12 +1027,12 @@ VarargsParam?
         
         <itemizedlist>
             <listitem>
-                <para>an upper bound, <literal>X satisfies T</literal>, specifies that 
+                <para>an upper bound, <literal>given X satisfies T</literal>, specifies that 
                 the type parameter <literal>X</literal> is a subtype of a given
                 type <literal>T</literal>,</para>
             </listitem>
             <listitem>
-                <para>a lower bound, <literal>X abstracts T</literal>, specifies that 
+                <para>a lower bound, <literal>given X abstracts T</literal>, specifies that 
                 a given type <literal>T</literal> is a subtype of the type parameter 
                 <literal>X</literal>,</para>
             </listitem>
