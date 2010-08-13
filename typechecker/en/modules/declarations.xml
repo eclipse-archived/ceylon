@@ -2991,11 +2991,11 @@ public Visibility private() {
         given N extends Number, Comparable&lt;N&gt; {
     
     public N[] positiveElements() {
-        return seq.elements() where (N n) (n&gt;0); 
+        return seq.elements() where (N n) (n&gt;0)
     }
     
     public N[] elementsLessThan(N limit) {
-        return seq.elements() where (N n) (n&lt;limit);
+        return seq.elements() where (N n) (n&lt;limit)
     }
     
     ...   
@@ -3026,7 +3026,7 @@ import org.domain.utils.SequenceUtils;</programlisting>
 ...
 Person person = ...;
 User user = person;
-info("person is a User and this is a Log!")</programlisting>
+info("person is a User and this is a Log!");</programlisting>
         
         <!--
         <para>Is equivalent to the following Java code:</para>
