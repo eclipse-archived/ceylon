@@ -1536,11 +1536,11 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>List&lt;String&gt; names = from (Person p in people) where (p>20) select (p.name);</programlisting>
+        <programlisting>List&lt;String&gt; names = from (Person p in people) where (p.age>18) select (p.name);</programlisting>
         
         <para>Which is equivalent to:</para>
         
-        <programlisting>List&lt;String&gt; names = from (people) where (Person p) (p>20) select (Person p) (p.name);</programlisting>
+        <programlisting>List&lt;String&gt; names = from (people) where (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
         
         <para>Or, we may invoke the method as follows:</para>
                   
@@ -1556,7 +1556,7 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local names = from (local p in people) where (p>20) select (p.name);</programlisting>
+        <programlisting>local names = from (local p in people) where (p.age>18) select (p.name);</programlisting>
         
         
         </section>
