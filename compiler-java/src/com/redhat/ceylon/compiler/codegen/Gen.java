@@ -68,7 +68,7 @@ public class Gen {
                 Arrays.asList(new File("/tmp")));
 
         fileManager.setLocation(StandardLocation.CLASS_PATH,
-                Arrays.asList(new File("/tmp"), new File("/home/aph/ceylon/src/runtime")));
+                Arrays.asList(new File("/tmp"), new File(System.getProperty("user.dir") + "/runtime")));
         Iterable<? extends JavaFileObject> compilationUnits
         = fileManager.getJavaFileObjectsFromStrings(new ArrayList<String>());
 
@@ -225,6 +225,7 @@ public class Gen {
         return topLev;
     }
 
+    // FIXME: There must be a better way to do this.
     void processMethodDeclaration(CeylonTree.MethodDeclaration decl, 
             final Accumulator<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
@@ -248,10 +249,7 @@ public class Gen {
         for (CeylonTree.Annotation a: decl.annotations) {
             a.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.UserAnnotation userAnn) {
-                    JCAnnotation ann =
-                        make.Annotation(make.Ident(names.fromString(userAnn.name)),
-                                List.<JCExpression>of(convertExpression(userAnn.value())));
-                    annotations.append(ann);
+                    annotations.append(convertUserAnnotation(userAnn));
                 }
                 public void visit(CeylonTree.LanguageAnnotation langAnn) {
                     // FIXME
@@ -260,6 +258,22 @@ public class Gen {
         }
     }                
 
+    class ExpressionVisitor extends CeylonTree.Visitor {
+        public JCExpression result;
+    }
+    
+    JCAnnotation convertUserAnnotation(CeylonTree.UserAnnotation userAnn) {
+        ExpressionVisitor v = new ExpressionVisitor() {
+            public void visit(CeylonTree.SimpleStringLiteral value) {
+                result = make.Literal(value.value);
+            }          
+        };
+        userAnn.value().accept(v);
+        JCAnnotation result = make.Annotation(make.Ident(names.fromString(userAnn.name)),
+                List.<JCExpression>of(v.result));
+        return result;
+    }
+    
     JCVariableDecl convert(CeylonTree.FormalParameter param) {
         Name name = names.fromString(param.name());
         
