@@ -15,7 +15,7 @@ public class Grok extends CeylonTree.Visitor {
         CeylonTree block;
         Context prev;
         List<CeylonTree> accum;
-        List<CeylonTree> annotations;
+        List<CeylonTree.Annotation> annotations;
         List<CeylonTree.ImportDeclaration> imports = List.<ImportDeclaration>nil();
         CeylonTree context;
 
@@ -93,9 +93,11 @@ public class Grok extends CeylonTree.Visitor {
         current.push(decl);
         inner(decl);
         current.pop();
-        CeylonTree.Declaration type = decl.decl;
-        type.setAnnotations(decl.annotations);
-        current.context.add(type);
+        CeylonTree.Declaration def = decl.decl;
+        // FIXME: Is this the right test?
+        if (def.annotations == null)
+            def.setAnnotations(decl.annotations);
+        current.context.add(def);
     }
     
     public void visit(CeylonTree.TypeName name) {
@@ -169,6 +171,9 @@ public class Grok extends CeylonTree.Visitor {
         current.push(member);
         inner(member);
         current.pop();
+        // member.setAnnotations(current.annotations);
+        // current.annotations = null;
+        
         if (member.attributeSetter != null) {
             CeylonTree.AttributeSetter tmp = member.attributeSetter;
             member.attributeSetter = null;
@@ -180,14 +185,8 @@ public class Grok extends CeylonTree.Visitor {
             // AbstractMethodDeclaration, since it's trivial to distinguish because
             // one has statements; the other has none.
             CeylonTree.BaseMethodDeclaration decl = 
-                member.stmts != null ? new CeylonTree.MethodDeclaration()
-                                     : new CeylonTree.AbstractMethodDeclaration();
-            decl.source = member.source;
-            decl.returnType = member.type;
-            decl.setParameterList(member.params);
-            decl.setTypeParameterList(member.typeParameters);
-            decl.setName(member.name);
-            decl.stmts = member.stmts;
+                member.stmts != null ? new CeylonTree.MethodDeclaration(member)
+                                     : new CeylonTree.AbstractMethodDeclaration(member);
             current.context.add(decl);  
         } else {
             current.context.add(member);
