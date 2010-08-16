@@ -5,7 +5,7 @@
 
   <!-- The directory everything gets built into -->
   <property name="build" location="build"/>
-  
+
   <!-- The directory class files go into -->
   <property name="classes" location="${build}/classes"/>
 
@@ -67,14 +67,14 @@
       <arg value="-ea"/>
       <arg value="-cp"/>
       <arg value="${classes}:${antlr.lib}"/>
-      <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>      
+      <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>
       <arg value="-d"/>
       <arg value="${test.dst}"/>
       <fileset dir="${test.src}">
 	<include name="*.ceylon"/>
       </fileset>
     </apply>
-    <apply executable="diff" failonerror="true">      
+    <apply executable="diff" failonerror="true">
       <arg value="-w"/>
       <arg value="${test.dst}"/>
       <fileset dir="${test.src}">
