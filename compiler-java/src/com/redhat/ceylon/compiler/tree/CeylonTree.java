@@ -30,7 +30,7 @@ public abstract class CeylonTree {
 
     }
   
-    interface Annotation {
+    public abstract static class Annotation extends CeylonTree {
     }
     
     public abstract static class Declaration extends CeylonTree {
@@ -646,6 +646,7 @@ public abstract class CeylonTree {
         // Synthetic tree nodes generated during analysis
         public void visit(MethodType that)          { visitDefault(that); }
         public void visit(Name that)                { visitDefault(that); }
+        public void visit(Annotation that)          { visitDefault(that); }
     }
 
     /**
@@ -692,6 +693,10 @@ public abstract class CeylonTree {
    }
 
     public static class AbstractMethodDeclaration extends BaseMethodDeclaration {
+        public AbstractMethodDeclaration(BaseMemberDeclaration base) {
+            super(base);
+        }
+
         public void accept(Visitor v) { v.visit(this); }
 
    }
@@ -1708,7 +1713,7 @@ public abstract class CeylonTree {
     /**
      * A language annotation
      */
-    public static class LanguageAnnotation extends CeylonTree implements Annotation {
+    public static class LanguageAnnotation extends Annotation {
         public CeylonTree kind;
       
         public void accept(Visitor v) { v.visit(this); }
@@ -1857,9 +1862,19 @@ public abstract class CeylonTree {
         public List<FormalParameter> params;
         
         public List<CeylonTree> stmts;
-      
+        
         @NotAChild
         public CeylonTree name;
+
+        public BaseMethodDeclaration(BaseMemberDeclaration base) {
+            source = base.source;
+            returnType = base.type;
+            setParameterList(base.params);
+            setTypeParameterList(base.typeParameters);
+            setName(base.name);
+            stmts = base.stmts;
+            annotations = base.annotations;
+        }
 
         public void setName(CeylonTree name) {
             this.name = name;
@@ -1878,6 +1893,10 @@ public abstract class CeylonTree {
     public static class MethodDeclaration extends BaseMethodDeclaration {
         List<CeylonTree> typeParameters;
         
+        public MethodDeclaration(BaseMemberDeclaration member) {
+            super(member);
+        }
+
         public void accept(Visitor v) { v.visit(this); }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
@@ -2119,14 +2138,14 @@ public abstract class CeylonTree {
     /**
      * The word "private"
      */
-    public static class Private extends CeylonTree implements Annotation {
+    public static class Private extends Annotation {
         public void accept(Visitor v) { v.visit(this); }
     }
 
     /**
      * The word "public"
      */
-    public static class Public extends CeylonTree implements Annotation {
+    public static class Public extends Annotation {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2648,7 +2667,7 @@ public abstract class CeylonTree {
     /**
      * A user annotation
      */
-    public static class UserAnnotation extends CeylonTree implements Annotation
+    public static class UserAnnotation extends Annotation
     {
         @NotAChild
         public String name;
@@ -2659,6 +2678,14 @@ public abstract class CeylonTree {
         public CeylonTree value;
         void append(CeylonTree expr) {
             value = expr;
+        }
+        
+        public CeylonTree value() {
+            return value;
+        }
+        
+        public String name() {
+            return name;
         }
         
         public void accept(Visitor v) { v.visit(this); }

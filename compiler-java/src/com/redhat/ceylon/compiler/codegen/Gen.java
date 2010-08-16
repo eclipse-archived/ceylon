@@ -100,6 +100,7 @@ public class Gen {
         Accumulator() { things = List.<T>nil(); }
         List<T> asList() { return things; }
         void append(T t) { things = things.append(t); }
+        public String toString() { return asList().toString(); }
         public Iterator<T> iterator() {
             return things.iterator();
         }
@@ -188,12 +189,15 @@ public class Gen {
                 
                 final Accumulator<JCVariableDecl> params = 
                     new Accumulator<JCVariableDecl>();
+                final Accumulator<JCAnnotation> annotations = 
+                    new Accumulator<JCAnnotation>();
                 final Singleton<JCBlock> body = 
                     new Singleton<JCBlock>();
                 Singleton<JCExpression> restype =
                     new Singleton<JCExpression>();
                 
-                processMethodDeclaration(decl, params, body, restype, (Accumulator<JCTypeParameter>)null);
+                processMethodDeclaration(decl, params, body, restype, (Accumulator<JCTypeParameter>)null,
+                        annotations);
                 
                 JCMethodDecl meth = make.MethodDef(make.Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
@@ -203,7 +207,7 @@ public class Gen {
                         List.<JCExpression>nil(), body.thing(), null);
                 
                 JCClassDecl classDef = 
-                    make.ClassDef(make.Modifiers(PUBLIC, List.<JCTree.JCAnnotation>nil()),
+                    make.ClassDef(make.Modifiers(PUBLIC, annotations.asList()),
                             names.fromString(decl.nameAsString()),
                             List.<JCTypeParameter>nil(), null,
                             List.<JCExpression>nil(),
@@ -225,7 +229,8 @@ public class Gen {
             final Accumulator<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
-            final Accumulator<JCTypeParameter> typarams) {
+            final Accumulator<JCTypeParameter> typarams,
+            final Accumulator<JCAnnotation> annotations) {
 
         System.err.println(decl);
         
@@ -239,6 +244,20 @@ public class Gen {
                     block.thing = convert(b);
                 }
             });
+        
+        for (CeylonTree.Annotation a: decl.annotations) {
+            a.accept(new CeylonTree.Visitor () {
+                public void visit(CeylonTree.UserAnnotation userAnn) {
+                    JCAnnotation ann =
+                        make.Annotation(make.Ident(names.fromString(userAnn.name)),
+                                List.<JCExpression>of(convertExpression(userAnn.value())));
+                    annotations.append(ann);
+                }
+                public void visit(CeylonTree.LanguageAnnotation langAnn) {
+                    // FIXME
+                }
+            });
+        }
     }                
 
     JCVariableDecl convert(CeylonTree.FormalParameter param) {
