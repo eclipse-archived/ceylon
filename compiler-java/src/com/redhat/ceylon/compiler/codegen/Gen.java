@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 import javax.tools.DiagnosticCollector;
@@ -415,15 +417,39 @@ public class Gen {
         return v.result;
     }
 
+    private static Map<Integer, String> operatorImplementors;
+
+    static {
+        operatorImplementors = new HashMap<Integer, String>();
+
+        operatorImplementors.put(CeylonParser.PLUS,       "operatorAdd");
+        operatorImplementors.put(CeylonParser.MINUS,      "operatorSubtract");
+        operatorImplementors.put(CeylonParser.TIMES,      "operatorMultiply");
+        operatorImplementors.put(CeylonParser.POWER,      "operatorPower");
+        operatorImplementors.put(CeylonParser.DIVIDED,    "operatorDivide");
+        operatorImplementors.put(CeylonParser.REMAINDER,  "operatorModulo");
+        operatorImplementors.put(CeylonParser.BITWISEAND, "operatorBitwiseAnd");
+        operatorImplementors.put(CeylonParser.BITWISEOR,  "operatorBitwiseOr");
+        operatorImplementors.put(CeylonParser.BITWISEXOR, "operatorBitwiseXor");
+    }
+
     JCExpression convert(CeylonTree.Operator op) {
         JCExpression result;
         CeylonTree[] operands = op.toArray();
 
         switch (op.operatorKind) {
         case CeylonParser.PLUS:
+        case CeylonParser.MINUS:
+        case CeylonParser.TIMES:
+        case CeylonParser.POWER:
+        case CeylonParser.DIVIDED:
+        case CeylonParser.REMAINDER:
+        case CeylonParser.BITWISEAND:
+        case CeylonParser.BITWISEOR:
+        case CeylonParser.BITWISEXOR:
             result = make.Apply(null,
                                 make.Select(convertExpression(operands[0]),
-                                            names.fromString("operatorPlus")),
+                                            names.fromString(operatorImplementors.get(op.operatorKind))),
                                 List.of(convertExpression(operands[1])));
             break;
 
