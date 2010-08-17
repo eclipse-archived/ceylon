@@ -412,23 +412,23 @@ public class Gen {
 
         V v = new V();
         expr.accept(v);
-        return v.result;        
+        return v.result;
     }
-    
+
     JCExpression convert(CeylonTree.Operator op) {
         JCExpression result;
         CeylonTree[] operands = op.toArray();
 
         switch (op.kind()) {
         case CeylonParser.PLUS:
-            result = make.Apply (null, make.Select(convertExpression(operands[0]),
-                    names.fromString("operatorPlus")),
-                    List.of(convertExpression(operands[1])));
-
+            result = make.Apply(null,
+                                make.Select(convertExpression(operands[0]),
+                                            names.fromString("operatorPlus")),
+                                List.of(convertExpression(operands[1])));
             break;
-            
-            default:
-                throw new RuntimeException();
+
+        default:
+            throw new RuntimeException();
         }
         return result;
     }
