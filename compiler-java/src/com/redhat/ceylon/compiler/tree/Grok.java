@@ -348,7 +348,6 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
-        assert(false);
     }
     
     public void visit(CeylonTree.ArgumentList expr) {
