@@ -2047,8 +2047,6 @@ public abstract class CeylonTree {
             return (operands.toArray(new CeylonTree[0]));
         }
         
-        public int kind() { return operatorKind; }
-        
         public void accept(Visitor v) { v.visit(this); }
     }
 

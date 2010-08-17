@@ -419,7 +419,7 @@ public class Gen {
         JCExpression result;
         CeylonTree[] operands = op.toArray();
 
-        switch (op.kind()) {
+        switch (op.operatorKind) {
         case CeylonParser.PLUS:
             result = make.Apply(null,
                                 make.Select(convertExpression(operands[0]),
