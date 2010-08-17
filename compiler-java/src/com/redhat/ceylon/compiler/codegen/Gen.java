@@ -14,8 +14,6 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 import com.redhat.ceylon.compiler.parser.CeylonParser;
-import com.redhat.ceylon.compiler.tree.*;
-import com.sun.source.tree.*;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.file.JavacFileManager;
@@ -28,7 +26,6 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -169,7 +166,7 @@ public class Gen {
 
         Iterable<? extends TypeElement> result =
             task.enter(List.of(tree));
-        Iterable<? extends JavaFileObject> files = task.generate(result);
+        /*Iterable<? extends JavaFileObject> files =*/ task.generate(result);
 
         System.out.println(diagnostics.getDiagnostics());
     }
