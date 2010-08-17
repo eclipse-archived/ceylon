@@ -145,6 +145,15 @@ Body?</programlisting>
         <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
         non-<literal>mutable</literal> toplevel attributes?</para></comment>
             
+        <comment><para>TODO: Would it be better to specify that there is at most a single 
+        <literal>import</literal> statement per source file, for example:</para>
+        <programlisting>import my.query.Order, lang.collections.*, java.util.Map.Entry alias MapEntry;</programlisting>.</comment>
+        
+        <comment><para>TODO: Would it be better to enclose that the imported expressions
+        in single quotes, as they would need to appear in the body of the source file,
+        for example: <literal>'my.query.Order'</literal>, <literal>'lang.collections.*'</literal>,
+        <literal>'java.util.Map.Entry' alias MapEntry</literal>.</para></comment>
+        
      </section>
     
     <section id="annotationlist">
