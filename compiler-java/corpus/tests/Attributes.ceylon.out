@@ -250,9 +250,15 @@
 	     strings can be spread across multiple lines."))
             (USER_ANNOTATION
               (ANNOTATION_NAME by)
+              (STRING_CST "Gavin King")
               (STRING_CST "Andrew Haley"))
             (USER_ANNOTATION
-              (ANNOTATION_NAME see))
+              (ANNOTATION_NAME see)
+              (REFLECTED_LITERAL
+                (TYPE
+                  (TYPE_NAME Attributes)))
+              (REFLECTED_LITERAL
+                (MEMBER_NAME immutableAttribute)))
             (USER_ANNOTATION
               (ANNOTATION_NAME column)
               (ARG_LIST

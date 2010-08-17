@@ -70,7 +70,9 @@
                         (ANNOTATION_NAME doc)
                         (STRING_CST "use something else"))
                       (USER_ANNOTATION
-                        (ANNOTATION_NAME see)))
+                        (ANNOTATION_NAME see)
+                        (REFLECTED_LITERAL
+                          (MEMBER_NAME otherMethod))))
                     (TYPE
                       (TYPE_NAME Natural))
                     (ARG_NAME param)
@@ -83,15 +85,30 @@
                     (STRING_CST "The method doc"))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
+                    (STRING_CST "Gavin King")
                     (STRING_CST "Andrew Haley"))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME version))
+                    (ANNOTATION_NAME version)
+                    (QUOTE_CST '1.2.0'))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME timeout))
+                    (ANNOTATION_NAME timeout)
+                    (INT_CST 1000))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME ClassAnnotations)))
+                    (REFLECTED_LITERAL
+                      (MEMBER_NAME methodAnnotations))
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Object))
+                      (MEMBER_NAME equals)))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME DatabaseException)))
                     (STRING_CST "if database access fails"))))
               (MEMBER_DECL
                 (MEMBER_TYPE
@@ -107,27 +124,52 @@
                     (STRING_CST "The attribute doc"))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
+                    (STRING_CST "Gavin King")
                     (STRING_CST "Andrew Haley"))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME ClassAnnotations)))
+                    (REFLECTED_LITERAL
+                      (MEMBER_NAME methodAnnotations))
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Object))
+                      (MEMBER_NAME equals)))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME version))))
+                    (ANNOTATION_NAME version)
+                    (QUOTE_CST '1.0.0'))))
               (TYPE_DECL
                 (CLASS_DECL
                   (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
                 (ANNOTATION_LIST
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME ClassAnnotations)))
+                    (REFLECTED_LITERAL
+                      (MEMBER_NAME methodAnnotations))
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Object))
+                      (MEMBER_NAME equals)))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME doc)
                     (STRING_CST "The class doc"))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME DatabaseException)))
                     (STRING_CST "if database access fails"))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME version))
+                    (ANNOTATION_NAME version)
+                    (QUOTE_CST '2.1.0'))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
+                    (STRING_CST "Gavin King")
                     (STRING_CST "Andrew Haley"))))
               (TYPE_DECL
                 (INTERFACE_DECL
@@ -137,11 +179,22 @@
                     (ANNOTATION_NAME doc)
                     (STRING_CST "The interface doc"))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME version))
+                    (ANNOTATION_NAME version)
+                    (QUOTE_CST '1.0.0 beta'))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME ClassAnnotations)))
+                    (REFLECTED_LITERAL
+                      (MEMBER_NAME methodAnnotations))
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Object))
+                      (MEMBER_NAME equals)))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
+                    (STRING_CST "Gavin King")
                     (STRING_CST "Andrew Haley")))))))
         (TYPE_DECL
           (CLASS_DECL
@@ -628,4 +681,10 @@
                               (EXPR
                                 (QUOTE_CST 'select p.name from Person p where p.age>18'))))))))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see)))))))))))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME List)
+                        (TYPE_ARG_LIST
+                          (TYPE
+                            (TYPE_NAME String)))))))))))))))

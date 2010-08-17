@@ -433,10 +433,14 @@ userAnnotation
     ;
 
 annotationArguments
-    : arguments | 
-    ( 
+    : arguments | specialAnnotation+
+    ;
+
+specialAnnotation
+    :
     (SIMPLESTRINGLITERAL) => SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
-    | literal | reflectedLiteral )+
+    | literal
+    | reflectedLiteral
     ;
 
 reflectedLiteral 

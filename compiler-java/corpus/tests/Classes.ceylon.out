@@ -164,6 +164,7 @@
 	     strings can be spread across multiple lines."))
             (USER_ANNOTATION
               (ANNOTATION_NAME by)
+              (STRING_CST "Gavin King")
               (STRING_CST "Andrew Haley"))
             (USER_ANNOTATION
               (ANNOTATION_NAME scope)
@@ -171,9 +172,15 @@
                 (EXPR
                   (MEMBER_NAME session))))
             (USER_ANNOTATION
-              (ANNOTATION_NAME see))
+              (ANNOTATION_NAME see)
+              (REFLECTED_LITERAL
+                (TYPE
+                  (TYPE_NAME Simple))))
             (USER_ANNOTATION
               (ANNOTATION_NAME throws)
+              (REFLECTED_LITERAL
+                (TYPE
+                  (TYPE_NAME DatabaseException)))
               (STRING_CST "if database access fails"))
             (USER_ANNOTATION
               (ANNOTATION_NAME entity))

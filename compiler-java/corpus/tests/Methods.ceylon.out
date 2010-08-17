@@ -82,12 +82,20 @@
 		     strings can be spread across multiple lines."))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
+                    (STRING_CST "Gavin King")
                     (STRING_CST "Andrew Haley"))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Exception)))
                     (STRING_CST "if something goes wrong"))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see))))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Methods VoidMethods))
+                      (MEMBER_NAME simpleMethod)))))
               (MEMBER_DECL
                 (MEMBER_TYPE void)
                 (MEMBER_NAME methodWithTypeParameter)
@@ -366,12 +374,20 @@
 		     strings can be spread across multiple lines."))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME by)
+                    (STRING_CST "Gavin King")
                     (STRING_CST "Andrew Haley"))
                   (USER_ANNOTATION
                     (ANNOTATION_NAME throws)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Exception)))
                     (STRING_CST "if something goes wrong"))
                   (USER_ANNOTATION
-                    (ANNOTATION_NAME see))))
+                    (ANNOTATION_NAME see)
+                    (REFLECTED_LITERAL
+                      (TYPE
+                        (TYPE_NAME Methods VoidMethods))
+                      (MEMBER_NAME simpleMethod)))))
               (MEMBER_DECL
                 (MEMBER_TYPE
                   (TYPE

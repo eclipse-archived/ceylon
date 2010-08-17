@@ -127,7 +127,17 @@
               (STRING_CST "an alias"))
             (USER_ANNOTATION
               (ANNOTATION_NAME by)
+              (STRING_CST "Gavin King")
               (STRING_CST "Andrew Haley"))
             (USER_ANNOTATION
-              (ANNOTATION_NAME see))
+              (ANNOTATION_NAME see)
+              (REFLECTED_LITERAL
+                (TYPE
+                  (TYPE_NAME Foo)))
+              (REFLECTED_LITERAL
+                (TYPE
+                  (TYPE_NAME Bar)))
+              (REFLECTED_LITERAL
+                (TYPE
+                  (TYPE_NAME Baz))))
             (LANG_ANNOTATION public)))))))
