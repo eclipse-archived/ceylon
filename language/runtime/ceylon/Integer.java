@@ -11,39 +11,39 @@ public final class Integer
         return new ceylon.Integer(l);
     }
 
-    public ceylon.Integer operatorAdd(ceylon.Integer op) {
+    public ceylon.Integer plus(ceylon.Integer op) {
         return instance(value + op.value);
     }
 
-    public ceylon.Integer operatorSubtract(ceylon.Integer op) {
+    public ceylon.Integer minus(ceylon.Integer op) {
         return instance(value - op.value);
     }
 
-    public ceylon.Integer operatorMultiply(ceylon.Integer op) {
+    public ceylon.Integer times(ceylon.Integer op) {
         return instance(value * op.value);
     }
 
-    public ceylon.Integer operatorPower(ceylon.Integer op) {
-        return instance((long) Math.pow(value, op.value)); // FIXME: ugly
-    }
-
-    public ceylon.Integer operatorDivide(ceylon.Integer op) {
+    public ceylon.Integer divided(ceylon.Integer op) {
         return instance(value / op.value);
     }
 
-    public ceylon.Integer operatorModulo(ceylon.Integer op) {
+    public ceylon.Integer remainder(ceylon.Integer op) {
         return instance(value % op.value);
     }
 
-    public ceylon.Integer operatorBitwiseAnd(ceylon.Integer op) {
+    public ceylon.Integer power(ceylon.Integer op) {
+        return instance((long) Math.pow(value, op.value)); // FIXME: ugly
+    }
+
+    public ceylon.Integer and(ceylon.Integer op) {
         return instance(value & op.value);
     }
 
-    public ceylon.Integer operatorBitwiseOr(ceylon.Integer op) {
+    public ceylon.Integer or(ceylon.Integer op) {
         return instance(value | op.value);
     }
 
-    public ceylon.Integer operatorBitwiseXor(ceylon.Integer op) {
+    public ceylon.Integer xor(ceylon.Integer op) {
         return instance(value ^ op.value);
     }
 
