@@ -214,7 +214,6 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.INTERFACE, Interface.class);
         classes.put(CeylonParser.INTERFACE_DECL, InterfaceDeclaration.class);
         classes.put(CeylonParser.INT_CST, IntConstant.class);
-        classes.put(CeylonParser.IN, Operator.class);
         classes.put(CeylonParser.IS, Operator.class);
         classes.put(CeylonParser.IS_EXPR, IsExpression.class);
         classes.put(CeylonParser.LANG_ANNOTATION, LanguageAnnotation.class);
@@ -2047,8 +2046,6 @@ public abstract class CeylonTree {
         public CeylonTree[] toArray() {
             return (operands.toArray(new CeylonTree[0]));
         }
-        
-        public int kind() { return operatorKind; }
         
         public void accept(Visitor v) { v.visit(this); }
     }

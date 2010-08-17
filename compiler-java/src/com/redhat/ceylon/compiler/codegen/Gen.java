@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 import javax.tools.DiagnosticCollector;
@@ -14,8 +16,6 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 import com.redhat.ceylon.compiler.parser.CeylonParser;
-import com.redhat.ceylon.compiler.tree.*;
-import com.sun.source.tree.*;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.file.JavacFileManager;
@@ -28,7 +28,6 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -169,7 +168,7 @@ public class Gen {
 
         Iterable<? extends TypeElement> result =
             task.enter(List.of(tree));
-        Iterable<? extends JavaFileObject> files = task.generate(result);
+        /*Iterable<? extends JavaFileObject> files =*/ task.generate(result);
 
         System.out.println(diagnostics.getDiagnostics());
     }
@@ -415,23 +414,47 @@ public class Gen {
 
         V v = new V();
         expr.accept(v);
-        return v.result;        
+        return v.result;
     }
-    
+
+    private static Map<Integer, String> operatorImplementors;
+
+    static {
+        operatorImplementors = new HashMap<Integer, String>();
+
+        operatorImplementors.put(CeylonParser.PLUS,       "operatorAdd");
+        operatorImplementors.put(CeylonParser.MINUS,      "operatorSubtract");
+        operatorImplementors.put(CeylonParser.TIMES,      "operatorMultiply");
+        operatorImplementors.put(CeylonParser.POWER,      "operatorPower");
+        operatorImplementors.put(CeylonParser.DIVIDED,    "operatorDivide");
+        operatorImplementors.put(CeylonParser.REMAINDER,  "operatorModulo");
+        operatorImplementors.put(CeylonParser.BITWISEAND, "operatorBitwiseAnd");
+        operatorImplementors.put(CeylonParser.BITWISEOR,  "operatorBitwiseOr");
+        operatorImplementors.put(CeylonParser.BITWISEXOR, "operatorBitwiseXor");
+    }
+
     JCExpression convert(CeylonTree.Operator op) {
         JCExpression result;
         CeylonTree[] operands = op.toArray();
 
-        switch (op.kind()) {
+        switch (op.operatorKind) {
         case CeylonParser.PLUS:
-            result = make.Apply (null, make.Select(convertExpression(operands[0]),
-                    names.fromString("operatorPlus")),
-                    List.of(convertExpression(operands[1])));
-
+        case CeylonParser.MINUS:
+        case CeylonParser.TIMES:
+        case CeylonParser.POWER:
+        case CeylonParser.DIVIDED:
+        case CeylonParser.REMAINDER:
+        case CeylonParser.BITWISEAND:
+        case CeylonParser.BITWISEOR:
+        case CeylonParser.BITWISEXOR:
+            result = make.Apply(null,
+                                make.Select(convertExpression(operands[0]),
+                                            names.fromString(operatorImplementors.get(op.operatorKind))),
+                                List.of(convertExpression(operands[1])));
             break;
-            
-            default:
-                throw new RuntimeException();
+
+        default:
+            throw new RuntimeException();
         }
         return result;
     }

@@ -4,11 +4,10 @@
   <property name="compiler.src" location="src"/>
   <property name="runtime.src" location="runtime"/>
 
-  <!-- The directory everything gets built into -->
+  <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
-
-  <!-- The directory class files go into -->
-  <property name="classes" location="${build}/classes"/>
+  <property name="build.classes" location="${build}/classes"/>
+  <property name="build.lib" location="${build}/lib"/>
 
   <!-- The ANTLR source file for the parser,
        the directory the java files generated
@@ -52,11 +51,11 @@
 
   <!-- Rule to build test classes from their Java sources -->
   <target name="test.classes" depends="antlr">
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${build.classes}"/>
     <echo message="${antlr.lib}:${tools.lib}"/>
     <javac
        srcdir="${compiler.src}"
-       destdir="${classes}"
+       destdir="${build.classes}"
        debug="true"
        classpath="${antlr.lib}:${tools.lib}">
     </javac>
@@ -67,7 +66,7 @@
     <apply executable="java">
       <arg value="-ea"/>
       <arg value="-cp"/>
-      <arg value="${classes}:${antlr.lib}"/>
+      <arg value="${build.classes}:${antlr.lib}"/>
       <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>
       <arg value="-d"/>
       <arg value="${test.dst}"/>
@@ -84,18 +83,24 @@
     </apply>
   </target>
 
-  <!-- Rule to build the runtime classes -->
+  <!-- Rules to build the runtime -->
   <target name="runtime.classes">
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${build.classes}"/>
     <javac
        srcdir="${runtime.src}"
-       destdir="${classes}"
+       destdir="${build.classes}"
        debug="true">
     </javac>
   </target>
+  <target name="runtime.jar" depends="runtime.classes">
+    <mkdir dir="${build.lib}"/>
+    <jar destfile="${build.lib}/runtime.jar"
+         basedir="${build.classes}"
+         excludes="com/**"/>
+  </target>
 
   <!-- Rule to just do everything -->
-  <target name="all" depends="runtime.classes,test"/>
+  <target name="all" depends="runtime.jar,test"/>
 
   <!-- Rule to clean everything up -->
   <target name="clean">
