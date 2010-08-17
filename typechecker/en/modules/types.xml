@@ -549,7 +549,7 @@ catch (Exception e) {
         that produces a theoretically unbounded sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
-    public X? head;
+    public Reference<X>? head;
     public Iterator<X> tail;
 }]]></programlisting>
         
@@ -570,19 +570,20 @@ while (exists local value = iter.head) {
 }]]></programlisting>
         <programlisting><![CDATA[public mutable interface OpenIterator<X> 
         satisfies Iterator<X> {
-    override mutable X? head;
+    override Assignable<X>? head;
+    public void remove();
 }]]></programlisting></comment>
 
         <comment><para>TODO: this alternate solution abstracts efficient 
         iteration of sequences and linked lists/trees, but suffers from
-        the problem that the <literal>element()</literal> operation accepts 
-        tokens from iterations of other objects, and is therefore much less 
-        typesafe.</para>
+        the problem that the <literal>indexedValue()</literal> operation 
+        accepts tokens from iterations of other objects, and is therefore 
+        much less typesafe.</para>
         <programlisting><![CDATA[public interface Indexed<out X, I> 
         given I satisfies Ordinal {
     
     public I firstIndex;
-    public Referenceable<X?> indexedValue(I index);
+    public Referenceable<X>? indexedValue(I index);
     
 }]]></programlisting>
         <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
@@ -599,7 +600,8 @@ while (exists local value = indexed.indexedValue(i)) {
         <programlisting><![CDATA[public mutable interface OpenIndexed<X, I> 
         satisfies Indexed<X,I>
         given I satisfies Ordinal {
-    override mutable Assignable<X?> indexedValue(I index);
+    override mutable Assignable<X>? indexedValue(I index);
+    public void removeIndex(I index);
 }]]></programlisting>
 </comment>
 
