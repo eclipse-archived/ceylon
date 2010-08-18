@@ -422,15 +422,15 @@ public class Gen {
     static {
         operatorImplementors = new HashMap<Integer, String>();
 
-        operatorImplementors.put(CeylonParser.PLUS,       "plus");
-        operatorImplementors.put(CeylonParser.MINUS,      "minus");
-        operatorImplementors.put(CeylonParser.TIMES,      "times");
-        operatorImplementors.put(CeylonParser.DIVIDED,    "divided");
-        operatorImplementors.put(CeylonParser.REMAINDER,  "remainder");
-        operatorImplementors.put(CeylonParser.POWER,      "power");
-        operatorImplementors.put(CeylonParser.BITWISEAND, "and");
-        operatorImplementors.put(CeylonParser.BITWISEOR,  "or");
-        operatorImplementors.put(CeylonParser.BITWISEXOR, "xor");
+        operatorImplementors.put(CeylonParser.PLUS,       "operatorAdd");
+        operatorImplementors.put(CeylonParser.MINUS,      "operatorSubtract");
+        operatorImplementors.put(CeylonParser.TIMES,      "operatorMultiply");
+        operatorImplementors.put(CeylonParser.POWER,      "operatorPower");
+        operatorImplementors.put(CeylonParser.DIVIDED,    "operatorDivide");
+        operatorImplementors.put(CeylonParser.REMAINDER,  "operatorModulo");
+        operatorImplementors.put(CeylonParser.BITWISEAND, "operatorBitwiseAnd");
+        operatorImplementors.put(CeylonParser.BITWISEOR,  "operatorBitwiseOr");
+        operatorImplementors.put(CeylonParser.BITWISEXOR, "operatorBitwiseXor");
     }
 
     JCExpression convert(CeylonTree.Operator op) {
