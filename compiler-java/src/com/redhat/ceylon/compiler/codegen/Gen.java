@@ -285,7 +285,7 @@ public class Gen {
         for (CeylonTree expr: userAnn.values()) {
             values = values.append(convertExpression(expr));
         }
-        return make.Apply(null, make.Ident(names.fromString(userAnn.name)),
+        return make.Apply(null, makeSelect(userAnn.name, "run"),
                 values);
     }
     
