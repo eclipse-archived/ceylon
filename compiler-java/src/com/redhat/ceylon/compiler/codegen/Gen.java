@@ -36,6 +36,7 @@ import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Options;
@@ -95,18 +96,6 @@ public class Gen {
         resolve = Resolve.instance(context);
     }
 
-    class Accumulator<T> implements Iterable<T>{
-        private List<T> things;
-        Accumulator() { things = List.<T>nil(); }
-        List<T> asList() { return things; }
-        void append(T t) { things = things.append(t); }
-        public String toString() { return asList().toString(); }
-        public Iterator<T> iterator() {
-            return things.iterator();
-        }
-        public int length() { return things.length(); }
-    }
-    
     class Singleton<T> implements Iterable<T>{
         private T thing;
         Singleton() { }
@@ -176,7 +165,7 @@ public class Gen {
     }
     
     public JCCompilationUnit convert(CeylonTree.CompilationUnit t) {
-        final Accumulator<JCTree> defs = new Accumulator<JCTree>();
+        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         
         defs.append(make.Import(makeIdent(Arrays.asList("ceylon", "*")), false));
                 
@@ -188,23 +177,23 @@ public class Gen {
                 // This is a top-level method.  Generate a class with the
                 // name of the method and a corresponding run() method.
                 
-                final Accumulator<JCVariableDecl> params = 
-                    new Accumulator<JCVariableDecl>();
-                final Accumulator<JCStatement> annotations = 
-                    new Accumulator<JCStatement>();
+                final ListBuffer<JCVariableDecl> params = 
+                    new ListBuffer<JCVariableDecl>();
+                final ListBuffer<JCStatement> annotations = 
+                    new ListBuffer<JCStatement>();
                 final Singleton<JCBlock> body = 
                     new Singleton<JCBlock>();
                 Singleton<JCExpression> restype =
                     new Singleton<JCExpression>();
                 
-                processMethodDeclaration(decl, params, body, restype, (Accumulator<JCTypeParameter>)null,
+                processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
                         annotations);
                 
                 JCMethodDecl meth = make.MethodDef(make.Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
                         make.TypeIdent(VOID),
                         List.<JCTypeParameter>nil(),
-                        params.asList(),
+                        params.toList(),
                         List.<JCExpression>nil(), body.thing(), null);
                 
                 List<JCTree> innerDefs = List.<JCTree>of(meth);
@@ -213,7 +202,7 @@ public class Gen {
                 // within the scope of the class, but the annotations are lexically
                 // outside it.
                 if (annotations.length() > 0) {
-                    innerDefs = innerDefs.append(registerAnnotations(annotations.asList()));
+                    innerDefs = innerDefs.append(registerAnnotations(annotations.toList()));
                 }
                 
                 JCClassDecl classDef = 
@@ -229,7 +218,7 @@ public class Gen {
 
         JCCompilationUnit topLev =
             make.TopLevel(List.<JCTree.JCAnnotation>nil(),
-                    /* package id*/ null, defs.asList());
+                    /* package id*/ null, defs.toList());
 
         System.out.println(topLev);
         return topLev;
@@ -237,11 +226,11 @@ public class Gen {
 
     // FIXME: There must be a better way to do this.
     void processMethodDeclaration(CeylonTree.MethodDeclaration decl, 
-            final Accumulator<JCVariableDecl> params, 
+            final ListBuffer<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
-            final Accumulator<JCTypeParameter> typarams,
-            final Accumulator<JCStatement> annotations) {
+            final ListBuffer<JCTypeParameter> typarams,
+            final ListBuffer<JCStatement> annotations) {
 
         System.err.println(decl);
         
@@ -343,8 +332,8 @@ public class Gen {
     }
     
     public JCClassDecl convert(CeylonTree.ClassDeclaration cdecl) {
-        final Accumulator<JCVariableDecl> params = 
-            new Accumulator<JCVariableDecl>();
+        final ListBuffer<JCVariableDecl> params = 
+            new ListBuffer<JCVariableDecl>();
         
         cdecl.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.FormalParameter param) {
@@ -372,8 +361,8 @@ public class Gen {
     }
 
     public JCBlock convert(CeylonTree.Block block) {
-        final Accumulator<JCStatement> stmts =
-            new Accumulator<JCStatement>();
+        final ListBuffer<JCStatement> stmts =
+            new ListBuffer<JCStatement>();
         
         for (CeylonTree stmt: block.getStmts()) 
             stmt.accept(new CeylonTree.Visitor () {
@@ -381,14 +370,14 @@ public class Gen {
                     stmts.append(make.Exec(convert(expr)));
             }});
         
-        return make.Block(0, stmts.asList());
+        return make.Block(0, stmts.toList());
     }
 
     JCExpression convert(CeylonTree.CallExpression ce) {
         final Singleton<JCExpression> expr =
             new Singleton<JCExpression>();
-        final Accumulator<JCExpression> args =
-            new Accumulator<JCExpression>();
+        final ListBuffer<JCExpression> args =
+            new ListBuffer<JCExpression>();
         
         ce.getMethod().accept (new CeylonTree.Visitor () {
             public void visit(CeylonTree.OperatorDot access) {
@@ -398,7 +387,7 @@ public class Gen {
         for (CeylonTree arg: ce.args())
             args.append(convertArg(arg));
           
-        return make.Apply(null, expr.thing(), args.asList());
+        return make.Apply(null, expr.thing(), args.toList());
     }
     
     JCExpression convertArg(CeylonTree arg) {
