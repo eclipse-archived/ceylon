@@ -260,17 +260,52 @@ public class Gen {
     class ExpressionVisitor extends CeylonTree.Visitor {
         public JCExpression result;
     }
+    class ListVisitor<T> extends CeylonTree.Visitor {
+        public List<T> result = List.<T>nil();
+    }
     
     JCAnnotation convertUserAnnotation(CeylonTree.UserAnnotation userAnn) {
         ExpressionVisitor v = new ExpressionVisitor() {
             public void visit(CeylonTree.SimpleStringLiteral value) {
                 result = make.Literal(value.value);
             }          
+            public void visit(CeylonTree.ReflectedLiteral value) {
+                result = convert(value);     
+            }          
         };
-        userAnn.value().accept(v);
+        List<JCExpression> values = List.<JCExpression>nil();
+        for (CeylonTree expr: userAnn.values()) {
+            expr.accept(v);
+            values = values.append(v.result);
+        }
         JCAnnotation result = make.Annotation(make.Ident(names.fromString(userAnn.name)),
-                List.<JCExpression>of(v.result));
-        return result;
+                values);
+       return result;
+    }
+    
+    JCExpression convert(CeylonTree.ReflectedLiteral value) {
+        ListVisitor<String> v = new ListVisitor<String>() {
+            public void visit(CeylonTree.Type type) {
+                TypeName name = type.name();
+                for (String component: name.components) {
+                    result = result.append(component);
+                }
+            }
+            public void visit(CeylonTree.MemberName name) {
+                result = result.append(name.name);
+            }
+        };
+        
+        for (CeylonTree op: value.operands())
+            op.accept(v);
+        
+        if (Character.isUpperCase(v.result.last().charAt(0))) {
+            // This looks like something of a kludge, but I think
+            // it's a legitimate way to determine if this is the
+            // name of a class.
+            v.result = v.result.append("class");
+        }
+        return makeIdent(v.result);
     }
     
     JCVariableDecl convert(CeylonTree.FormalParameter param) {

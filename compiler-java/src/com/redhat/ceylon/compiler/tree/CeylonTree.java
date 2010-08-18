@@ -1819,6 +1819,7 @@ public abstract class CeylonTree {
         public String name;
  
         public void setName(String name) {
+            assert(this.name == null);
             this.name = name;
         }
 
@@ -2170,14 +2171,18 @@ public abstract class CeylonTree {
      * A reflected literal
      */
     public static class ReflectedLiteral extends CeylonTree {
-        CeylonTree operand;
-        
-        void append(CeylonTree member) {
-            this.operand = member;
+        List<CeylonTree> operands = List.<CeylonTree>nil();
+
+        void append(CeylonTree op) {
+            operands = operands.append(op);
         }
         
-        void pushType(Type member) {
-            this.operand = (CeylonTree) operand;
+        void pushType(Type operand) {
+            append(operand);
+        }
+        
+        public List<CeylonTree> operands() {
+            return operands;
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -2458,6 +2463,10 @@ public abstract class CeylonTree {
             this.argList = (TypeArgumentList)t;
         }
         
+        public TypeArgumentList getTypeArgumentList() {
+            return argList;
+        }
+        
         void append(CeylonTree expr) {
             setName((TypeName)expr);
         }
@@ -2681,13 +2690,13 @@ public abstract class CeylonTree {
             this.name = name;
         }
       
-        public CeylonTree value;
+        public List<CeylonTree> values = List.<CeylonTree>nil();
         void append(CeylonTree expr) {
-            value = expr;
+            values = values.append(expr);
         }
         
-        public CeylonTree value() {
-            return value;
+        public List<CeylonTree> values() {
+            return values;
         }
         
         public String name() {

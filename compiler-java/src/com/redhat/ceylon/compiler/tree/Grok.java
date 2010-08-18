@@ -373,6 +373,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
+        current.context.append(expr);
     }
     
     public void visit(CeylonTree.QuoteConstant expr) {
