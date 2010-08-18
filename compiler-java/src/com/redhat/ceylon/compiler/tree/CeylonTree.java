@@ -2330,6 +2330,11 @@ public abstract class CeylonTree {
             theSuperclass = type;
         }
         
+        public List<CeylonTree> arguments = List.<CeylonTree>nil();
+        public void append(CeylonTree argument) {
+            arguments = arguments.append(argument);
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
