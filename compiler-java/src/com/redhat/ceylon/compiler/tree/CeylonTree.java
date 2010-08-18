@@ -2441,6 +2441,7 @@ public abstract class CeylonTree {
     public static class Type extends CeylonTree {
         Type type;
         TypeArgumentList argList;
+        Subtype subtype;
         
         public CeylonTree name;
 
@@ -2469,6 +2470,11 @@ public abstract class CeylonTree {
         
         void append(CeylonTree expr) {
             setName((TypeName)expr);
+        }
+        
+        public void setSubtype(Subtype subtype) {
+            assert this.subtype == null;
+            this.subtype = subtype;
         }
     }
 

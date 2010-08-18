@@ -658,10 +658,12 @@ public class Grok extends CeylonTree.Visitor {
     }
     */
     
+    public void visit(CeylonTree.Subtype tree) {
+        inner(tree);
+        ((CeylonTree.Type) current.context).setSubtype(tree);
+    }
       
-     
-    
-     void inner(CeylonTree t) {
+    void inner(CeylonTree t) {
         for (CeylonTree child : t.children)
             child.accept(this);     
     }   
