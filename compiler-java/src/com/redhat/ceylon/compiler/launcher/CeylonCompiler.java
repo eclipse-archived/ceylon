@@ -51,7 +51,9 @@ final PrintStream out;
     new TreeVisitor().visit(t, new PrintTree());
     out.println();
 
-    if (consumeTree) {
+    if (parser.getNumberOfSyntaxErrors() == 0 &&
+            lexer.getNumberOfSyntaxErrors() == 0 &&
+            consumeTree) {
       CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename);
 
       PrintWriter w = new PrintWriter(out);
@@ -65,7 +67,6 @@ final PrintStream out;
 
       if (generateCode) {
           out.println();
-          cu.accept(new EmptyWalker());
           new Gen().run(cu);
       }
     }

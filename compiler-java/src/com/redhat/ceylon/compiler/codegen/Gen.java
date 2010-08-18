@@ -40,6 +40,8 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.Position;
+
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
@@ -140,6 +142,21 @@ public class Gen {
         return names.fromString(s);
     }
     
+    String toFlatName(Iterable<String> components) {
+        StringBuffer buf = new StringBuffer();
+        Iterator<String> iterator;
+        String s;
+        
+        for (iterator = components.iterator();
+            iterator.hasNext();) {
+            buf.append(iterator.next());
+            if (iterator.hasNext())
+                buf.append('.');
+        }
+        
+        return buf.toString();
+    }
+    
     public JCExpression makeIdent(Iterable<String> components) {
 
         JCExpression type = null;
@@ -195,6 +212,8 @@ public class Gen {
                         List.<JCTypeParameter>nil(),
                         params.toList(),
                         List.<JCExpression>nil(), body.thing(), null);
+                
+                meth.setPos(Position.encodePosition(decl.source.line, decl.source.column));
                 
                 List<JCTree> innerDefs = List.<JCTree>of(meth);
                 
@@ -279,6 +298,7 @@ public class Gen {
     }
     
     JCExpression convert(CeylonTree.ReflectedLiteral value) {
+        
         ListVisitor<String> v = new ListVisitor<String>() {
             public void visit(CeylonTree.Type type) {
                 TypeName name = type.name();
@@ -293,19 +313,27 @@ public class Gen {
         
         for (CeylonTree op: value.operands())
             op.accept(v);
-        
+
+        JCExpression result;
+
         if (Character.isUpperCase(v.result.last().charAt(0))) {
             // This looks like something of a kludge, but I think
             // it's a legitimate way to determine if this is the
             // name of a class.
+
             v.result = v.result.append("class");
+            result = makeIdent(v.result);
+       } else {
+           // In the case of method literals, we're going to do this lazily.
+           // To do otherwise would be very expensive
+           
+            result = make.Apply (null, makeSelect("ceylon", "Method", "instance"),
+                    List.<JCExpression>of(
+                            make.Literal(toFlatName(v.result))));
         }
-        
-        // FIXME: method literals are going to need some special
-        // processing.  At present you'll just get a compile-time
-        // error.
-        
-        return makeIdent(v.result);
+
+        result.setPos(Position.encodePosition(value.source.line, value.source.column));
+        return result;
     }
     
     JCVariableDecl convert(CeylonTree.FormalParameter param) {
@@ -387,7 +415,9 @@ public class Gen {
         for (CeylonTree arg: ce.args())
             args.append(convertArg(arg));
           
-        return make.Apply(null, expr.thing(), args.toList());
+        JCExpression call = make.Apply(null, expr.thing(), args.toList());
+        call.setPos(Position.encodePosition(ce.source.line, ce.source.column));
+        return call;
     }
     
     JCExpression convertArg(CeylonTree arg) {

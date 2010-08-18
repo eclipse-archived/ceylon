@@ -10,7 +10,7 @@ public class SourceLocation {
     public SourceLocation(Tree src, String path) {
         this.path = path;
         this.line = src.getLine();
-        this.column = src.getCharPositionInLine();
+        this.column = src.getCharPositionInLine() + 1;
     }
     
     public String toString() {
