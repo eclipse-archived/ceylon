@@ -17,6 +17,7 @@ import javax.tools.ToolProvider;
 
 import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.tools.javac.api.JavacTaskImpl;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.jvm.ClassReader;
@@ -103,6 +104,7 @@ public class Gen {
         public Iterator<T> iterator() {
             return things.iterator();
         }
+        public int length() { return things.length(); }
     }
     
     class Singleton<T> implements Iterable<T>{
@@ -188,8 +190,8 @@ public class Gen {
                 
                 final Accumulator<JCVariableDecl> params = 
                     new Accumulator<JCVariableDecl>();
-                final Accumulator<JCAnnotation> annotations = 
-                    new Accumulator<JCAnnotation>();
+                final Accumulator<JCStatement> annotations = 
+                    new Accumulator<JCStatement>();
                 final Singleton<JCBlock> body = 
                     new Singleton<JCBlock>();
                 Singleton<JCExpression> restype =
@@ -205,12 +207,21 @@ public class Gen {
                         params.asList(),
                         List.<JCExpression>nil(), body.thing(), null);
                 
+                List<JCTree> innerDefs = List.<JCTree>of(meth);
+                
+                // FIXME: This is wrong because the annotation registration is done
+                // within the scope of the class, but the annotations are lexically
+                // outside it.
+                if (annotations.length() > 0) {
+                    innerDefs = innerDefs.append(registerAnnotations(annotations.asList()));
+                }
+                
                 JCClassDecl classDef = 
-                    make.ClassDef(make.Modifiers(PUBLIC, annotations.asList()),
+                    make.ClassDef(make.Modifiers(PUBLIC, List.<JCAnnotation>nil()),
                             names.fromString(decl.nameAsString()),
                             List.<JCTypeParameter>nil(), null,
                             List.<JCExpression>nil(),
-                            List.<JCTree>of(meth));
+                            innerDefs);
                 
                 defs.append(classDef);
             }
@@ -230,7 +241,7 @@ public class Gen {
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
             final Accumulator<JCTypeParameter> typarams,
-            final Accumulator<JCAnnotation> annotations) {
+            final Accumulator<JCStatement> annotations) {
 
         System.err.println(decl);
         
@@ -248,7 +259,7 @@ public class Gen {
         for (CeylonTree.Annotation a: decl.annotations) {
             a.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.UserAnnotation userAnn) {
-                    annotations.append(convertUserAnnotation(userAnn));
+                    annotations.append(make.Exec(convert(userAnn)));
                 }
                 public void visit(CeylonTree.LanguageAnnotation langAnn) {
                     // FIXME
@@ -257,30 +268,25 @@ public class Gen {
         }
     }                
 
-    class ExpressionVisitor extends CeylonTree.Visitor {
+    JCBlock registerAnnotations(List<JCStatement> annos) {
+        JCBlock block = make.Block(Flags.STATIC, annos);
+        return block;        
+    }
+    
+   class ExpressionVisitor extends CeylonTree.Visitor {
         public JCExpression result;
     }
     class ListVisitor<T> extends CeylonTree.Visitor {
         public List<T> result = List.<T>nil();
     }
     
-    JCAnnotation convertUserAnnotation(CeylonTree.UserAnnotation userAnn) {
-        ExpressionVisitor v = new ExpressionVisitor() {
-            public void visit(CeylonTree.SimpleStringLiteral value) {
-                result = make.Literal(value.value);
-            }          
-            public void visit(CeylonTree.ReflectedLiteral value) {
-                result = convert(value);     
-            }          
-        };
-        List<JCExpression> values = List.<JCExpression>nil();
+    JCExpression convert(CeylonTree.UserAnnotation userAnn) {
+       List<JCExpression> values = List.<JCExpression>nil();
         for (CeylonTree expr: userAnn.values()) {
-            expr.accept(v);
-            values = values.append(v.result);
+            values = values.append(convertExpression(expr));
         }
-        JCAnnotation result = make.Annotation(make.Ident(names.fromString(userAnn.name)),
+        return make.Apply(null, makeSelect(userAnn.name, "run"),
                 values);
-       return result;
     }
     
     JCExpression convert(CeylonTree.ReflectedLiteral value) {
@@ -305,6 +311,11 @@ public class Gen {
             // name of a class.
             v.result = v.result.append("class");
         }
+        
+        // FIXME: method literals are going to need some special
+        // processing.  At present you'll just get a compile-time
+        // error.
+        
         return makeIdent(v.result);
     }
     
@@ -444,6 +455,9 @@ public class Gen {
             }
             public void visit(CeylonTree.CallExpression call) {
                 result = convert(call);
+            }
+            public void visit(CeylonTree.ReflectedLiteral value) {
+                result = convert(value);
             }
         }
 
