@@ -470,7 +470,7 @@ public class Gen {
             break;
 
         default:
-            throw new RuntimeException();
+            throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
         }
         return result;
     }

@@ -323,6 +323,10 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.WS, Whitespace.class);
     }
 
+    public void bomb() {
+        throw new RuntimeException(source + ": " + getClassName());
+    }
+    
     /**
      * This node's parent and children.
      */
@@ -335,11 +339,11 @@ public abstract class CeylonTree {
     public List<Annotation> annotations;
   
     public void setName(CeylonTree name) {
-        throw new RuntimeException();
+        bomb();
     }
 
     public void setName(String name) {
-        throw new RuntimeException();
+        bomb();
     }
 
     void add (ClassDeclaration decl)
@@ -373,31 +377,31 @@ public abstract class CeylonTree {
     }
     
     public void setCondition(Condition t) {
-        throw new RuntimeException();
+        bomb();
     }
     
     public void setIfTrue(CeylonTree block) {
-        throw new RuntimeException();
+        bomb();
     }
     
     public void setIfFalse(CeylonTree block) {
-        throw new RuntimeException();
+        bomb();
     }
     
     void pushType(Type t) {
-        throw new RuntimeException();
+        bomb();
     }
     
     void append(CeylonTree expr) {
-        throw new RuntimeException();
+        bomb();
     }
     
     void setInitialValue(CeylonTree expr) {
-        throw new RuntimeException();
+        bomb();
     }
     
     public void setSuperclass(Type type) {
-        throw new RuntimeException();
+        bomb();
     }
     
     public void add(Declaration t) {
@@ -418,15 +422,15 @@ public abstract class CeylonTree {
     }
 
     public void addTypeConstraint(CeylonTree t) {
-        throw new RuntimeException();
+        bomb();
     }
     
     public void setTypeArgumentList(CeylonTree t) {
-        throw new RuntimeException();
+        bomb();
     }
  
     public void setParameterList(List<FormalParameter> theList) {
-        throw new RuntimeException();
+        bomb();
     }
 
     public void visitChildren(Visitor v) {
@@ -639,7 +643,7 @@ public abstract class CeylonTree {
         public void visit(BaseMethodDeclaration that)     { visitDefault(that); }
 
         public void visitDefault(CeylonTree tree) {
-            throw new RuntimeException(tree.getClassName());
+            tree.bomb();
         }
     
         // Synthetic tree nodes generated during analysis
@@ -734,12 +738,12 @@ public abstract class CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
 
         public void setName(MemberName name) {
-            throw new RuntimeException();
+            bomb();
         
         }
 
         public void setParameterList(List<FormalParameter> theList) {
-            throw new RuntimeException();
+            bomb();
         }
 
         public void pushType(Type type) {
@@ -829,7 +833,7 @@ public abstract class CeylonTree {
                 assert(name == null);
                 name = (MemberName)t;
             } else {
-                throw new RuntimeException();
+                bomb();
             }
             
         }
@@ -1002,7 +1006,7 @@ public abstract class CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
 
         public void setName(MemberName name) {
-            throw new RuntimeException();       
+            bomb();       
         }
 
         public void setParameterList(List<FormalParameter> p) {
@@ -1010,7 +1014,7 @@ public abstract class CeylonTree {
         }
 
         public void pushType(Type type) {
-            throw new RuntimeException();
+            bomb();
         }
         
         public void setSuperclass(Type type) {
@@ -1178,7 +1182,7 @@ public abstract class CeylonTree {
                 expr = (InitializerExpression) tree;
             }
             else {
-                throw new RuntimeException();
+                bomb();
             }
         }
         
@@ -1407,7 +1411,7 @@ public abstract class CeylonTree {
         }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
-            throw new RuntimeException();
+            bomb();
         }
         
         public String name() {
@@ -1599,16 +1603,16 @@ public abstract class CeylonTree {
         }
 
         public void setParameterList(List<FormalParameter> p) {
-            throw new RuntimeException();       
+            bomb();       
         }
 
         public void pushType(Type type) {
-            throw new RuntimeException();
+            bomb();
         
         }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
-            throw new RuntimeException();          
+            bomb();          
         }
         
         static boolean isEllipsis(CeylonTree expr) {
@@ -1625,7 +1629,7 @@ public abstract class CeylonTree {
             } else if (isEllipsis(expr)) {
                 open = true;
             } else {
-                throw new RuntimeException();
+                bomb();
             }
         }
 
@@ -1675,7 +1679,7 @@ public abstract class CeylonTree {
         }
    
         public void pushType(Type type) {
-            throw new RuntimeException();
+            bomb();
     
         }
     }
@@ -1702,7 +1706,7 @@ public abstract class CeylonTree {
                 expr = (InitializerExpression) tree;
             }
             else {
-                throw new RuntimeException();
+                bomb();
             }
         }
         
@@ -1740,7 +1744,7 @@ public abstract class CeylonTree {
         
         void append(CeylonTree expr) {
             if (this.initializer != null)
-                throw new RuntimeException();
+                bomb();
             this.initializer = expr;
         }
 
@@ -1771,7 +1775,7 @@ public abstract class CeylonTree {
 
         public void setName(CeylonTree name) {
             if (this.name != null)
-                throw new RuntimeException();
+                bomb();
             this.name = name;
         }
       
@@ -1956,7 +1960,7 @@ public abstract class CeylonTree {
 
         void setInitialValue(CeylonTree expr) {
             if (this.value != null)
-                throw new RuntimeException();
+                bomb();
             this.value = expr;
         }
        
@@ -2016,7 +2020,7 @@ public abstract class CeylonTree {
                 expr = (InitializerExpression) tree;
             }
             else {
-                throw new RuntimeException();
+                bomb();
             }
         }
         
@@ -2208,7 +2212,7 @@ public abstract class CeylonTree {
         
         void append(CeylonTree expr) {
             if (this.expr != null)
-                throw new RuntimeException();
+                bomb();
             this.expr = expr;
         }
         
@@ -2295,7 +2299,7 @@ public abstract class CeylonTree {
         
         public void append(CeylonTree expr) {
             if (lowerBound != null || upperBound != null)
-                throw new RuntimeException();
+                bomb();
             lowerBound = expr;
         }
         
@@ -2379,7 +2383,7 @@ public abstract class CeylonTree {
                 
         void append(CeylonTree expr) {
             if (this.expr != null)
-                throw new RuntimeException();
+                bomb();
             this.expr = expr;
         }
       
@@ -2520,32 +2524,32 @@ public abstract class CeylonTree {
         Declaration decl;
 
         public void setVisibility(CeylonTree v) {           
-            throw new RuntimeException();
+            bomb();
         }
         public void accept(Visitor v) { v.visit(this); }
     
         public void setParameterList(List<FormalParameter> p) {
-            throw new RuntimeException();       
+            bomb();       
         }
         public void pushType(Type type) {
-            throw new RuntimeException();   
+            bomb();   
         }
         void add (ClassDeclaration decl)
         {
             if (this.decl != null)
-                throw new RuntimeException();
+                bomb();
             this.decl = decl;
         }   
         void add (InterfaceDeclaration decl)
         {
             if (this.decl != null)
-                throw new RuntimeException();
+                bomb();
             this.decl = decl;
         }
         void add (AliasDeclaration decl)
         {
             if (this.decl != null)
-                throw new RuntimeException();
+                bomb();
             this.decl = decl;
         }
         
@@ -2555,16 +2559,16 @@ public abstract class CeylonTree {
             // outside the scope of a class.
             
             if (! (t instanceof MethodDeclaration)) {
-                throw new RuntimeException();
+                bomb();
             }
             
             if (this.decl != null)
-                throw new RuntimeException();
+                bomb();
             this.decl = (MethodDeclaration)t;            
         }
         
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
-            throw new RuntimeException();            
+            bomb();            
         }
     }
 
@@ -2654,7 +2658,7 @@ public abstract class CeylonTree {
         
         void append(CeylonTree expr) {
             if (this.initializer != null)
-                throw new RuntimeException();
+                bomb();
             this.initializer = expr;
         }
 
@@ -2704,7 +2708,7 @@ public abstract class CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
 
         public void pushType(Type type) {
-            throw new RuntimeException();
+            bomb();
         }
     }
 
