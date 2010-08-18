@@ -1,6 +1,7 @@
 package ceylon;
 
-public @interface doc
+public class doc
 {
-    public java.lang.String value();
+    public static void run(ceylon.String... value) {
+    }
 }
