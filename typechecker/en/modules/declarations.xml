@@ -2181,8 +2181,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <literal>satisfies</literal> clause, and</para>
                 </listitem>
                  <listitem>
-                    <para>with a return type that is assignable to the return type of 
-                    the method it overrides, after substitution of type arguments 
+                    <para>with a return type that is a subtype of the return type 
+                    of the method it overrides, after substitution of type arguments 
                     specified in the <literal>extends</literal> or 
                     <literal>satisfies</literal> clause.</para>
                 </listitem>
@@ -2545,7 +2545,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>with the same name as the attribute it overrides,</para>
                 </listitem>
                  <listitem>
-                    <para>with a type that is assignable to the type of the attribute it 
+                    <para>with a type that is a subtype of the type of the attribute it 
                     overrides, after substitution of type arguments specified in the 
                     <literal>extends</literal> or <literal>satisfies</literal> clause,</para>
                 </listitem>
