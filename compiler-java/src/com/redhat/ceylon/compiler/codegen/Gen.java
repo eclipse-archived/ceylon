@@ -431,6 +431,14 @@ public class Gen {
         operatorImplementors.put(CeylonParser.BITWISEAND, "operatorBitwiseAnd");
         operatorImplementors.put(CeylonParser.BITWISEOR,  "operatorBitwiseOr");
         operatorImplementors.put(CeylonParser.BITWISEXOR, "operatorBitwiseXor");
+        operatorImplementors.put(CeylonParser.EQEQ,       "operatorEqual");
+        operatorImplementors.put(CeylonParser.IDENTICAL,  "operatorIdentical");
+        operatorImplementors.put(CeylonParser.NOTEQ,      "operatorNotEqual");
+        operatorImplementors.put(CeylonParser.LT,         "operatorLessThan");
+        operatorImplementors.put(CeylonParser.GT,         "operatorGreaterThan");
+        operatorImplementors.put(CeylonParser.LTEQ,       "operatorLessEqual");
+        operatorImplementors.put(CeylonParser.GTEQ,       "operatorGreaterEqual");
+        operatorImplementors.put(CeylonParser.COMPARE,    "operatorCompare");
     }
 
     JCExpression convert(CeylonTree.Operator op) {
@@ -447,6 +455,14 @@ public class Gen {
         case CeylonParser.BITWISEAND:
         case CeylonParser.BITWISEOR:
         case CeylonParser.BITWISEXOR:
+        case CeylonParser.EQEQ:
+        case CeylonParser.IDENTICAL:
+        case CeylonParser.NOTEQ:
+        case CeylonParser.LT:
+        case CeylonParser.GT:
+        case CeylonParser.LTEQ:
+        case CeylonParser.GTEQ:
+        case CeylonParser.COMPARE:
             result = make.Apply(null,
                                 make.Select(convertExpression(operands[0]),
                                             names.fromString(operatorImplementors.get(op.operatorKind))),
