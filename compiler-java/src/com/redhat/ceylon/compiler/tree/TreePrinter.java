@@ -115,7 +115,13 @@ public class TreePrinter extends CeylonTree.Visitor {
             if (value == null)
                 continue;
 
-            enter(shortShortName + "." + field.name);
+            {
+                String source = tree.source != null?
+                        tree.source.line + ":" + tree.source.column :
+                            ":";
+                enter("[" + source + "] " + shortShortName + "." + field.name);
+            }
+            
             if (value instanceof String || value instanceof Boolean) {
                 out.print(" " + value);
             }

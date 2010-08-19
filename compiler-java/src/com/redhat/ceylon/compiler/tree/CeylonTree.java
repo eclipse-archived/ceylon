@@ -95,7 +95,7 @@ public abstract class CeylonTree {
             throw new RuntimeException(e);
         }
         dst.token = token;
-        dst.source = new SourceLocation(src, path);
+        dst.source = SourceLocation.instance(src, path);
 
         ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
         for (int i = 0; i < src.getChildCount(); i++) {
@@ -845,6 +845,8 @@ public abstract class CeylonTree {
      * A list of statements
      */
     public static class Block extends CeylonTree {
+        public Block() { }
+        
         public List<CeylonTree> stmts = List.<CeylonTree>nil();
         
         public void append(CeylonTree t) {

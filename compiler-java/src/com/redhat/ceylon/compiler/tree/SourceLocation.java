@@ -7,12 +7,20 @@ public class SourceLocation {
     public int line;
     public int column;
 
-    public SourceLocation(Tree src, String path) {
+    private SourceLocation(Tree src, String path) {
         this.path = path;
-        this.line = src.getLine();
-        this.column = src.getCharPositionInLine() + 1;
+        line = src.getLine();
+        column = src.getCharPositionInLine();
+   }
+
+    static public SourceLocation instance (Tree src, String path) {
+        if (src.getLine() != 0) {
+            return new SourceLocation(src, path) ;
+        } else {
+            return null;
+        }
     }
-    
+        
     public String toString() {
         return path + ":" + line;
     }

@@ -41,6 +41,7 @@ import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position;
+import com.sun.tools.javac.util.Position.LineMap;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.TypeTags.*;
@@ -49,7 +50,7 @@ import com.redhat.ceylon.compiler.tree.CeylonTree.*;
 
 public class Gen {
     Context context;
-    TreeMaker make;
+    TreeMaker _make;
     Names names;
     ClassReader reader;
     Resolve resolve;
@@ -58,6 +59,7 @@ public class Gen {
     JavacFileManager fileManager;
     JavacTaskImpl task;
     Options options;
+    LineMap map;
     
     JCCompilationUnit jcCompilationUnit;
 
@@ -92,12 +94,22 @@ public class Gen {
         // It's a bit weird to see "invokedynamic" set here,
         // but it has to be done before Resolve.instance().
         options.put("invokedynamic", "invokedynamic");
-        make = TreeMaker.instance(context);
+        _make = TreeMaker.instance(context);
         names = Names.instance(context);
         reader = ClassReader.instance(context);
         resolve = Resolve.instance(context);
     }
 
+    TreeMaker make(CeylonTree t) {
+        if (t.source != null)
+            return _make.at(map.getStartPosition(t.source.line) + t.source.column);
+        return _make;
+    }
+    
+    TreeMaker make() {
+        return _make;
+    }
+    
     class Singleton<T> implements Iterable<T>{
         private T thing;
         Singleton() { }
@@ -114,11 +126,11 @@ public class Gen {
     }
     
     JCFieldAccess makeSelect(JCExpression s1, String s2) {
-        return make.Select(s1, names.fromString(s2));
+        return make().Select(s1, names.fromString(s2));
     }
 
     JCFieldAccess makeSelect(String s1, String s2) {
-        return makeSelect(make.Ident(names.fromString(s1)), s2);
+        return makeSelect(make().Ident(names.fromString(s1)), s2);
     }
 
     JCFieldAccess makeSelect(String s1, String s2, String... rest) {
@@ -162,18 +174,23 @@ public class Gen {
         JCExpression type = null;
         for (String component : components) {
             if (type == null)
-                type = make.Ident(names.fromString(component));
+                type = make().Ident(names.fromString(component));
             else
-                type = make.Select(type, names.fromString(component));
+                type = make().Select(type, names.fromString(component));
         }
         
         return type;
     }
     
-    public void run(CeylonTree.CompilationUnit t) throws IOException {        
-        JCCompilationUnit tree = convert(t);
-        tree.sourcefile = new CeylonFileObject(fileManager.getFileForInput(t.source.path));
+    public void run(CeylonTree.CompilationUnit t) throws IOException {
 
+        CeylonFileObject file = new CeylonFileObject(fileManager.getFileForInput(t.source.path));
+        char[] chars = file.getCharContent(true).toString().toCharArray();
+        map = Position.makeLineMap(chars, chars.length, false);
+
+        JCCompilationUnit tree = convert(t);
+        tree.sourcefile = file;
+        
         Iterable<? extends TypeElement> result =
             task.enter(List.of(tree));
         /*Iterable<? extends JavaFileObject> files =*/ task.generate(result);
@@ -184,7 +201,7 @@ public class Gen {
     public JCCompilationUnit convert(CeylonTree.CompilationUnit t) {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         
-        defs.append(make.Import(makeIdent(Arrays.asList("ceylon", "*")), false));
+        defs.append(make(t).Import(makeIdent(Arrays.asList("ceylon", "*")), false));
                 
         t.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.ClassDeclaration decl) {
@@ -206,14 +223,13 @@ public class Gen {
                 processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
                         annotations);
                 
-                JCMethodDecl meth = make.MethodDef(make.Modifiers(PUBLIC|STATIC),
+                JCMethodDecl meth = make(decl).MethodDef(make().Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
-                        make.TypeIdent(VOID),
+                        make().TypeIdent(VOID),
                         List.<JCTypeParameter>nil(),
                         params.toList(),
                         List.<JCExpression>nil(), body.thing(), null);
                 
-                meth.setPos(Position.encodePosition(decl.source.line, decl.source.column));
                 
                 List<JCTree> innerDefs = List.<JCTree>of(meth);
                 
@@ -225,7 +241,7 @@ public class Gen {
                 }
                 
                 JCClassDecl classDef = 
-                    make.ClassDef(make.Modifiers(PUBLIC, List.<JCAnnotation>nil()),
+                    make(decl).ClassDef(make().Modifiers(PUBLIC, List.<JCAnnotation>nil()),
                             names.fromString(decl.nameAsString()),
                             List.<JCTypeParameter>nil(), null,
                             List.<JCExpression>nil(),
@@ -236,7 +252,7 @@ public class Gen {
         });
 
         JCCompilationUnit topLev =
-            make.TopLevel(List.<JCTree.JCAnnotation>nil(),
+            make(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
                     /* package id*/ null, defs.toList());
 
         System.out.println(topLev);
@@ -244,7 +260,7 @@ public class Gen {
     }
 
     // FIXME: There must be a better way to do this.
-    void processMethodDeclaration(CeylonTree.MethodDeclaration decl, 
+    void processMethodDeclaration(final CeylonTree.MethodDeclaration decl, 
             final ListBuffer<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
@@ -267,7 +283,7 @@ public class Gen {
         for (CeylonTree.Annotation a: decl.annotations) {
             a.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.UserAnnotation userAnn) {
-                    annotations.append(make.Exec(convert(userAnn)));
+                    annotations.append(make(decl).Exec(convert(userAnn)));
                 }
                 public void visit(CeylonTree.LanguageAnnotation langAnn) {
                     // FIXME
@@ -277,7 +293,7 @@ public class Gen {
     }                
 
     JCBlock registerAnnotations(List<JCStatement> annos) {
-        JCBlock block = make.Block(Flags.STATIC, annos);
+        JCBlock block = make().Block(Flags.STATIC, annos);
         return block;        
     }
     
@@ -293,7 +309,7 @@ public class Gen {
         for (CeylonTree expr: userAnn.values()) {
             values = values.append(convertExpression(expr));
         }
-        return make.Apply(null, makeSelect(userAnn.name, "run"),
+        return make(userAnn).Apply(null, makeSelect(userAnn.name, "run"),
                 values);
     }
     
@@ -327,9 +343,9 @@ public class Gen {
            // In the case of method literals, we're going to do this lazily.
            // To do otherwise would be very expensive
            
-            result = make.Apply (null, makeSelect("ceylon", "Method", "instance"),
+            result = make(value).Apply (null, makeSelect("ceylon", "Method", "instance"),
                     List.<JCExpression>of(
-                            make.Literal(toFlatName(v.result))));
+                            make(value).Literal(toFlatName(v.result))));
         }
 
         result.setPos(Position.encodePosition(value.source.line, value.source.column));
@@ -339,7 +355,7 @@ public class Gen {
     JCVariableDecl convert(CeylonTree.FormalParameter param) {
         Name name = names.fromString(param.name());
         
-        JCVariableDecl v = make.VarDef(make.Modifiers(0), name,
+        JCVariableDecl v = make(param).VarDef(make().Modifiers(0), name,
                 variableType(param.type()), null);
         
         return v;
@@ -350,7 +366,7 @@ public class Gen {
             new Singleton<JCExpression>();
         t.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.Void v) {
-                result.thing = make.TypeIdent(VOID);
+                result.thing = make().TypeIdent(VOID);
             }
             public void visit(CeylonTree.TypeName name) {
                 result.thing = makeIdent(name.components());
@@ -359,14 +375,14 @@ public class Gen {
         return result.thing();
     }
     
-    public JCClassDecl convert(CeylonTree.ClassDeclaration cdecl) {
+    public JCClassDecl convert(final CeylonTree.ClassDeclaration cdecl) {
         final ListBuffer<JCVariableDecl> params = 
             new ListBuffer<JCVariableDecl>();
         
         cdecl.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.FormalParameter param) {
                 JCExpression vartype = makeIdent(param.type().name().components());
-                JCVariableDecl var = make.VarDef(make.Modifiers(PUBLIC), makeName(param.names), vartype, null);
+                JCVariableDecl var = make(cdecl).VarDef(make().Modifiers(PUBLIC), makeName(param.names), vartype, null);
                 System.out.println(var);
                 params.append(var);
             }
@@ -377,7 +393,7 @@ public class Gen {
         });
         
         JCClassDecl classDef = 
-            make.ClassDef(make.Modifiers(PUBLIC, List.<JCTree.JCAnnotation>nil()),
+            make(cdecl).ClassDef(make().Modifiers(PUBLIC, List.<JCTree.JCAnnotation>nil()),
                     names.fromString(cdecl.nameAsString()),
                     List.<JCTypeParameter>nil(), null,
                     List.<JCExpression>nil(),
@@ -395,10 +411,10 @@ public class Gen {
         for (CeylonTree stmt: block.getStmts()) 
             stmt.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.CallExpression expr) {
-                    stmts.append(make.Exec(convert(expr)));
+                    stmts.append(make(expr).Exec(convert(expr)));
             }});
         
-        return make.Block(0, stmts.toList());
+        return make(block).Block(0, stmts.toList());
     }
 
     JCExpression convert(CeylonTree.CallExpression ce) {
@@ -415,8 +431,7 @@ public class Gen {
         for (CeylonTree arg: ce.args())
             args.append(convertArg(arg));
           
-        JCExpression call = make.Apply(null, expr.thing(), args.toList());
-        call.setPos(Position.encodePosition(ce.source.line, ce.source.column));
+        JCExpression call = make(ce).Apply(null, expr.thing(), args.toList());
         return call;
     }
     
@@ -426,12 +441,12 @@ public class Gen {
     
     JCExpression convert(CeylonTree.SimpleStringLiteral string) {
         String s = string.value;
-        JCLiteral lit = make.Literal (s);
-        return make.Apply (null, makeSelect("ceylon", "String", "instance"),
+        JCLiteral lit = make(string).Literal (s);
+        return make(string).Apply (null, makeSelect("ceylon", "String", "instance"),
                 List.<JCExpression>of(lit));
     }
     
-    JCExpression convert(CeylonTree.OperatorDot access)
+    JCExpression convert(final CeylonTree.OperatorDot access)
     {
         final CeylonTree.Name memberName = access.memberName();
         final CeylonTree operand = access.operand();
@@ -442,10 +457,10 @@ public class Gen {
                 result = makeIdent(Arrays.asList(op.name, memberName.name));
             }
             public void visit(CeylonTree.OperatorDot op) {
-                result = make.Select(convert(op), names.fromString(memberName.name));
+                result = make(access).Select(convert(op), names.fromString(memberName.name));
             }
             public void visit(CeylonTree.Operator op) {
-                result = make.Select(convertExpression(op), names.fromString(memberName.name));
+                result = make(access).Select(convertExpression(op), names.fromString(memberName.name));
             }
         }
 
@@ -454,7 +469,7 @@ public class Gen {
         return v.result;
     }   
 
-    JCExpression convertExpression(CeylonTree expr) {
+    JCExpression convertExpression(final CeylonTree expr) {
         class V extends CeylonTree.Visitor {
             public JCExpression result;
 
@@ -465,8 +480,8 @@ public class Gen {
                 result = convert(op);
             }
             public void visit(NaturalLiteral lit) {
-                JCExpression n = make.Literal(lit.value.longValue());
-                result = make.Apply (null, makeSelect("ceylon", "Integer", "instance"),
+                JCExpression n = make(expr).Literal(lit.value.longValue());
+                result = make(expr).Apply (null, makeSelect("ceylon", "Integer", "instance"),
                         List.of(n));
             }
             public void visit(CeylonTree.SimpleStringLiteral string) {
@@ -531,8 +546,8 @@ public class Gen {
         case CeylonParser.LTEQ:
         case CeylonParser.GTEQ:
         case CeylonParser.COMPARE:
-            result = make.Apply(null,
-                                make.Select(convertExpression(operands[0]),
+            result = make(op).Apply(null,
+                                make(op).Select(convertExpression(operands[0]),
                                             names.fromString(operatorImplementors.get(op.operatorKind))),
                                 List.of(convertExpression(operands[1])));
             break;
