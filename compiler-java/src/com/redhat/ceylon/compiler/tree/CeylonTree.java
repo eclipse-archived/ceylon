@@ -1446,6 +1446,12 @@ public abstract class CeylonTree {
      * A get expression
      */
     public static class GetExpression extends CeylonTree {
+        CeylonTree expr;
+        void append(CeylonTree expr) {
+            assert this.expr == null;
+            this.expr = expr;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2260,6 +2266,12 @@ public abstract class CeylonTree {
      * A set expression
      */
     public static class SetExpression extends CeylonTree {
+        CeylonTree expr;
+        void append(CeylonTree expr) {
+            assert this.expr == null;
+            this.expr = expr;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 

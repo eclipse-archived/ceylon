@@ -662,6 +662,25 @@ public class Grok extends CeylonTree.Visitor {
         inner(tree);
         ((CeylonTree.Type) current.context).setSubtype(tree);
     }
+ 
+    public void visit(CeylonTree.Super tree) {
+        inner(tree);
+        current.context.append(tree);
+    }
+    
+    public void visit(CeylonTree.GetExpression tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.append(tree);
+    }
+    
+    public void visit(CeylonTree.SetExpression tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.append(tree);
+    }
       
     void inner(CeylonTree t) {
         for (CeylonTree child : t.children)
