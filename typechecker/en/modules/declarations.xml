@@ -2068,7 +2068,12 @@ Void goodbye() {
         
         <programlisting>Float say(String words) = person.say;</programlisting>
         
+        <programlisting>Float sqrt(Float x) = 2.root;</programlisting>
+        
         <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
+        
+        <para>The callable object expression may not refer to formal parameters of the
+        method.</para>
         
         <para>A method may declare multiple lists of formal parameters. A method which 
         declares more than one formal parameter list returns instances of 
@@ -2099,7 +2104,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         type of the type argument to the second type parameter of the expression type
         <literal>Callable</literal> (the return type).</para>
         
-        <programlisting>local sqrt(Integer x) = 2.root(x);</programlisting>
+        <programlisting>local sqrt(Float x) = 2.root;</programlisting>
                 
         </section>
         
