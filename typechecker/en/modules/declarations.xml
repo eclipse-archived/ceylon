@@ -460,7 +460,7 @@ String?? firstWord = words[0];</programlisting>
         <para>Methods, classes, interfaces and aliases may declare one or more generic type 
         parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" TypeParam ("," TypeParam)* VarargsTypeParam "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | VarargsTypeParam) "&gt;"</programlisting>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
@@ -491,14 +491,29 @@ String?? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>A type parameter is itself a type, visible within the body of the declaration
-        it parameterizes. A type parameter is a subtype of every upper bound of the type 
-        parameter. However, a class, interface, or alias may not extend or implement a type 
+        <para>There are two types of type parameter:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>an <emphasis>ordinary type parameter</emphasis> parameterizes the type by some
+            other type, and</para>
+        </listitem>
+        <listitem>
+            <para>a <emphasis>dimensional type parameter</emphasis> parameterizes the type by a
+            natural number.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <programlisting>TypeParam := OrdinaryTypeParam | DimensionalTypeParam</programlisting>
+        
+        <para>An ordinary type parameter is itself a type, visible within the body of the 
+        declaration it parameterizes. The type parameter is a subtype of every upper bound of the 
+        type parameter. However, a class, interface, or alias may not extend or implement a type 
         parameter.</para>
         
-        <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
+        <para>Each ordinary type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
-        <programlisting>TypeParam := Variance TypeName</programlisting>
+        <programlisting>OrdinaryTypeParam := Variance TypeName</programlisting>
         
         <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
         A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
@@ -518,31 +533,6 @@ String?? firstWord = words[0];</programlisting>
         
         <comment><para>TODO: Would <literal>produces</literal> and <literal>consumes</literal> 
         be better?</para></comment>
-        
-        <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
-        and a subtype <literal>B</literal> of <literal>A</literal>:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>
-                    If <literal>X</literal> is a covariant type parameter, 
-                    <literal>T&lt;B&gt;</literal> is a subtype of <literal>T&lt;A&gt;</literal>.
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    If <literal>X</literal> is a contravariant type parameter, 
-                    <literal>T&lt;A&gt;</literal> is a subtype of <literal>T&lt;B&gt;</literal>.
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    If <literal>X</literal> is nonvariant (neither covariant nor contravariant), 
-                    there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
-                    <literal>T&lt;B&gt;</literal>.
-                </para>
-            </listitem>
-        </itemizedlist>
         
         <para>A covariant type parameter may only appear in covariant positions of the type 
         definition. A contravariant type parameter may only appear in contravariant positions 
@@ -637,6 +627,18 @@ String?? firstWord = words[0];</programlisting>
         <para>These rules apply to members declared by the type, and to members inherited from 
         supertypes.</para>
         
+        <para>A dimensional type parameter is a local of type <literal>Natural</literal>, 
+        visible within the body of the declaration it parameterizes.</para>
+        
+        <programlisting>DimensionalTypeParam := MemberName</programlisting>
+        
+        <para>Dimensional type parameters are distinguished by the initial lowercase
+        identifier.</para>
+        
+        <programlisting>Vector&lt;n&gt;</programlisting>
+        
+        <programlisting>Matrix&lt;h,w&gt;</programlisting>
+        
         <para>Every Ceylon class or interface has an implicit type parameter that never
         needs to be declared. This special type parameter, referred to using the keyword 
         <literal>subtype</literal>, represents the concrete type of the current instance 
@@ -707,19 +709,38 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
         
-        <para>A type argument list is a list of types, and an optional varargs type argument.</para>
+        <para>A type argument list is a list of types and dimensions, and an optional varargs 
+        type argument.</para>
         
-        <programlisting>TypeArguments := "&lt;" Type ("," Type)* ("," VarargsType)? "&gt;"</programlisting>
+        <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | VarargsType) "&gt;"</programlisting>
         
         <programlisting>VarargsType := TypeName "..."</programlisting>
         
-        <para>A type argument list <emphasis>conforms</emphasis> to a type parameter
-        list if:</para>
+        <para>A type argument is a type or a dimension:</para>
+        
+        <programlisting>TypeArgument := Type | Dimension</programlisting>
+        
+        <para>A <emphasis>dimension</emphasis> is an expression compose of natural number
+        literals, locals of type <literal>Natural</literal>, and the operators 
+        <literal>+</literal>, <literal>-</literal>, <literal>*</literal>.</para>
+        
+        <programlisting>Dimension := DimensionTerm ( ("+" | "-" | "*") DimensionTerm )*</programlisting>
+        <programlisting>DimensionTerm := NaturalLiteral | MemberName</programlisting>
+        
+        <para>Two dimension expressions are considered equivalent if they are identical
+        after evaluating all constant sub-expressions (sub-expressions involving only
+        literals).</para>
+        
+        <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
+        if:</para>
         
         <itemizedlist>
              <listitem>
                  <para>a type argument that satisfies the constraints of the type parameter 
-                 is specified for every type parameter, and.</para>
+                 is specified for every ordinary type parameter,</para>
+             </listitem>
+             <listitem>
+                 <para>a dimension is specified for every dimensional type parameter, and</para>
              </listitem>
              <listitem>
                  <para>if the type parameter list has no varargs type parameter, then there
@@ -730,9 +751,47 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>Entry&lt;String,Person&gt;</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
         <programlisting>Callable&lt;X,T,P..&gt;</programlisting>
+        <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        
+        <programlisting>Vector&lt;10&gt;</programlisting>
+        <programlisting>Matrix&lt;x,y&gt;</programlisting>
+        
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, <literal>T&lt;A&gt;</literal> 
+        and <literal>T&lt;B&gt;</literal> represent the same type if and only if 
+        <literal>A</literal> and <literal>B</literal> are the same type.</para>
+        
+        <para>For a generic type <literal>T&lt;n&gt;</literal>, <literal>T&lt;a&gt;</literal> 
+        and <literal>T&lt;b&gt;</literal> represent the same type if and only if 
+        <literal>a</literal> and <literal>b</literal> are equivalent dimension 
+        expressions.</para>
+        
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
+        and a subtype <literal>B</literal> of <literal>A</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a covariant type parameter, 
+                    <literal>T&lt;B&gt;</literal> is a subtype of <literal>T&lt;A&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a contravariant type parameter, 
+                    <literal>T&lt;A&gt;</literal> is a subtype of <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is nonvariant (neither covariant nor contravariant), 
+                    there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
+                    <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
         
         <para>A type argument is substituted for every appearance of the corresponding
-        type parameter in the schema of the parameterized type definition, including:</para>
+        type parameter in the schema of the parameterized declaration, including:</para>
         
         <itemizedlist>
             <listitem>
@@ -752,7 +811,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        <para>A dimension is substituted for every appearance of the corresponding 
+        dimensional type parameter in the schema of the parameterized declaration.
+        Substitution of a constant dimension results in evaluation of sub-expressions
+        of dimension expression containing the corresponding dimensional type parameter.</para>
         
         <para>In the case of a varargs type parameter:</para>
         
@@ -792,15 +854,16 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>In this case, the member class or method may not be called. Any invocation of the 
-        member results in a compiler error.</para>
+        <para>In this case, the member class or method may not be called. Any invocation of 
+        the member results in a compiler error.</para>
         
         <para>A type with an ambiguity may never be extended or implemented by another type.
         It may not appear in an <literal>extends</literal>, <literal>satisfies</literal> or
         <literal>abstracts</literal> clause.</para>
         
-        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a generic 
-        type holds a reference to its type arguments. Therefore, the following are legal in Ceylon:</para>
+        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
+        generic type holds a reference to its type arguments. Therefore, the following are 
+        legal in Ceylon:</para>
         
         <itemizedlist>
             <listitem>
@@ -831,11 +894,15 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing the
                 runtime value of a type argument of an instance using reflection, for 
-                example, <literal>objectList.type.arguments.first</literal>, and</para>
+                example, <literal>objectList.type.arguments.first</literal>,</para>
             </listitem>
             <listitem>
                 <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>T(parent)</literal>.</para>
+                specification, for example, <literal>T(parent)</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>obtaining the numeric value of a dimensional type parameter, for
+                example, <literal>for (Natural i in [0..n])</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1031,7 +1098,7 @@ VarargsParam?
     <title>Generic type constraint list</title>
 
         <para>Method, class and interface declarations which declare generic type 
-        parameters may declare constraints upon the type parameters using the
+        parameters may declare constraints upon ordinary type parameters using the
         <literal>given</literal> clause.</para>
         
         <programlisting>TypeConstraints = ("given" TypeConstraint)+</programlisting>
@@ -2101,7 +2168,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>A block local method which specifies a callable object expression may be 
         declared using the keyword <literal>local</literal> in place of the explicit 
         return type declaration. The return type of the method is inferred to be the
-        type of the type argument to the second type parameter of the expression type
+        type of the type argument to the first type parameter of the expression type
         <literal>Callable</literal> (the return type).</para>
         
         <programlisting>local sqrt(Float x) = 2.root;</programlisting>
@@ -2562,7 +2629,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>or with <emphasis>exactly the same type</emphasis> as the 
                     attribute it overrides, after substitution of type arguments specified 
                     in the <literal>extends</literal> or <literal>satisfies</literal> clause
-                    of the class, if the attribute it overrides is <literal>mutable</literal>, and</para>
+                    of the class, if the attribute it overrides is <literal>mutable</literal>, 
+                    and</para>
                 </listitem>
                 <listitem>
                     <para>that is <literal>mutable</literal>, if the attribute it overrides 
