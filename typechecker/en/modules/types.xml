@@ -1108,7 +1108,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
 
         <programlisting><![CDATA[public T[] zip<T,X,Y>(X[] x, Y[] y, T producing(X x, Y y)) {
     return from(Natural i in 0..min(x.lastIndex,y.lastIndex)) 
-                select (f(x[i],y[i]))
+                select (producing(x[i],y[i]))
 }]]></programlisting>
 
         <programlisting><![CDATA[public Entry<X,Y>[] zip<X,Y>(X[] x, Y[] y) {
@@ -1118,7 +1118,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <programlisting><![CDATA[public T[] zip<T,X>(X[] lists..., T producing(X x...)) {
     Natural len = min(from (X[] list in lists) select (list.lastIndex));
     return from (Natural i in 0..len) 
-                select (f(from (X[] list in lists) select (list[i]));
+                select (producing(from (X[] list in lists) select (list[i]));
 }]]></programlisting>
 
         <programlisting><![CDATA[public T[] zip<T,X>(X[] lists...) {
