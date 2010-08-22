@@ -774,14 +774,15 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         is a subtype of <literal>Vector&lt;min..max&gt;</literal> if 
         <literal>min&lt;=n&lt;=max</literal>.</para></comment>
         
-        <para>For a generic type <literal>T&lt;X&gt;</literal>, <literal>T&lt;A&gt;</literal> 
-        and <literal>T&lt;B&gt;</literal> represent the same type if and only if 
-        <literal>A</literal> and <literal>B</literal> are the same type.</para>
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, the types 
+        <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal> represent the 
+        same type if and only if <literal>A</literal> and <literal>B</literal> are the 
+        same type.</para>
         
-        <para>For a generic type <literal>T&lt;n&gt;</literal>, <literal>T&lt;a&gt;</literal> 
-        and <literal>T&lt;b&gt;</literal> represent the same type if and only if 
-        <literal>a</literal> and <literal>b</literal> are equivalent dimension 
-        expressions.</para>
+        <para>For a generic type <literal>T&lt;n&gt;</literal>, the types 
+        <literal>T&lt;a&gt;</literal> and <literal>T&lt;b&gt;</literal> represent the 
+        same type if and only if <literal>a</literal> and <literal>b</literal> are 
+        equivalent dimension expressions.</para>
         
         <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
         and a subtype <literal>B</literal> of <literal>A</literal>:</para>
