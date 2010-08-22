@@ -491,7 +491,7 @@ String?? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>There are two types of type parameter:</para>
+        <para>There are two kinds of type parameter:</para>
         
         <itemizedlist>
         <listitem>
