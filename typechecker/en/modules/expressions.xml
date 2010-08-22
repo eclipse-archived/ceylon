@@ -1138,7 +1138,7 @@ local comp = order(1,-1);</programlisting>
         <para>When an invocation expression of any other invoked expression is executed, the 
         <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para>
         
-        <para>The type of an invocation expression is the type argument to the second type parameter
+        <para>The type of an invocation expression is the type argument to the first type parameter
         of the expression type <literal>Callable</literal> (the return type). Thus, the type of a 
         method invocation is the return type of the method and the type of a class instantation is 
         the class. The type of a <literal>void</literal> method invocation is <literal>Void</literal>.</para>
