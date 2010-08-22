@@ -721,10 +721,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>TypeArgument := Type | Dimension</programlisting>
         
         <para>A <emphasis>dimension</emphasis> is an expression compose of natural number
-        literals, locals of type <literal>Natural</literal>, and the operators 
-        <literal>+</literal>, <literal>-</literal>, <literal>*</literal>.</para>
+        literals, locals of type <literal>Natural</literal>, the operators 
+        <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
         
-        <programlisting>Dimension := DimensionTerm ( ("+" | "-") DimensionTerm )*</programlisting>
+        <programlisting>Dimension := DimensionTerm ("+" DimensionTerm)*</programlisting>
         <programlisting>DimensionTerm := (NaturalLiteral "*")* DimensionAtom</programlisting>
         <programlisting>DimensionAtom := NaturalLiteral | MemberName | ParenDimension</programlisting>
         <programlisting>ParenDimension := "(" Dimension ")"</programlisting>
@@ -732,12 +732,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>The <emphasis>canonical form</emphasis> of a dimension expression is formed
         by algebraically simplifying the expression to a dimension expression of form:</para>
         
-        <programlisting>C + N * n + M * m + ... - P * p - Q * q - ...</programlisting>
+        <programlisting>C + N * n + M * m + ...</programlisting>
         
         <para>where <literal>C</literal> <literal>N</literal>, <literal>M</literal>, 
-        <literal>P</literal>, <literal>Q</literal>, <literal>...</literal> are natural 
-        numbers and <literal>n</literal>, <literal>m</literal>, <literal>p</literal>,
-        <literal>q</literal>, <literal>...</literal> are distinct locals of type 
+        <literal>...</literal> are constant natural numbers and <literal>n</literal>, 
+        <literal>m</literal>, <literal>...</literal> are distinct locals of type 
         <literal>Natural</literal>.</para>
         
         <para>Two dimension expressions are considered <emphasis>equivalent</emphasis> if 
