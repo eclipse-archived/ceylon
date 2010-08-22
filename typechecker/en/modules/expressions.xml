@@ -479,6 +479,9 @@ if you prefer.";</programlisting>
         <comment><para>TODO: are there metamodel objects for block local declarations? This
         includes block local declarations inside a class body, and block local declarations
         inside a method or attribute body.</para></comment>
+        
+        <comment><para>TODO: should we have typesafe metamodel reference expressions for 
+        parameters, for example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
                 
         <section>
             <title>Interface and class metamodel references</title>
