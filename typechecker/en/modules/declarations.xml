@@ -756,6 +756,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>Vector&lt;10&gt;</programlisting>
         <programlisting>Matrix&lt;x,y&gt;</programlisting>
         
+        <comment><para>TODO: should we allow ranges as arguments to dimensional type 
+        parameters, for example, <literal>Vector&lt;0...&gt;</literal> or
+        <literal>Vector&lt;1..10&gt;</literal>, where <literal>Vector&lt;n&gt;</literal>
+        is a subtype of <literal>Vector&lt;min..max&gt;</literal> if 
+        <literal>min&lt;=n&lt;=max</literal>.</para></comment>
+        
         <para>For a generic type <literal>T&lt;X&gt;</literal>, <literal>T&lt;A&gt;</literal> 
         and <literal>T&lt;B&gt;</literal> represent the same type if and only if 
         <literal>A</literal> and <literal>B</literal> are the same type.</para>
@@ -1186,6 +1192,9 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         given P satisfies Comparable&lt;P&gt; {
     ...
 }</programlisting></comment>
+
+        <comment><para>TODO: should we allow constraints on dimensional type parameters,
+        for example <literal>given n&gt;=1</literal>.</para></comment>
     
     </section>
     
