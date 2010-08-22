@@ -269,8 +269,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="naturalnumber">
         <title>Natural number literals</title>
         
-        <para>A natural number literal is an expression of type
-        <literal>lang.Natural</literal>.</para>
+        <para>A natural number literal <literal>n</literal> is an 
+        expression of type <literal>lang.Bounded&lt;n&gt;</literal>.</para>
+        
+        <programlisting>Bounded&lt;5&gt; five = 5;</programlisting>
+        
+        <para>An extension supports conversion to the type 
+        <literal>Natural</literal>.</para>
         
         <programlisting>Natural m = n + 10;</programlisting>
         
