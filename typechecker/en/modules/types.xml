@@ -1296,7 +1296,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
         into a single <literal>BoundedSequence</literal>.</para>
 
         <programlisting><![CDATA[public T[n] zip<T,X,Y,n>(X[n] x, Y[n] y, T producing(X x, Y y)) {
-    return from(Bound<n> i in 0..n) select (producing(x[i],y[i]))
+    return from(Bound<n> i in Range<n>()) select (producing(x[i],y[i]))
 }]]></programlisting>
 
         <programlisting><![CDATA[public Entry<X,Y>[n] zip<X,Y,n>(X[n] x, Y[n] y) {
@@ -1304,7 +1304,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
 }]]></programlisting>
 
         <programlisting><![CDATA[public T[n] zip<T,X,n>(X[n] lists..., T producing(X x...)) {
-    return from (Bound<n> i in 0..n) 
+    return from (Bound<n> i in Range<n>()) 
                 select (producing(from (X[n] list in lists) select (list[i]));
 }]]></programlisting>
 
@@ -1822,12 +1822,11 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     
 }]]></programlisting>
         
-        <para>The following overloaded form is called for expressions like
-        <literal>0..5</literal> where the arguments are instances of 
-        <literal>Bounded</literal>, with different dimensions.</para>
+        <para>The following overloaded form is useful for iterating a
+        <literal>BoundedSequence</literal>.</para>
         
-        <programlisting><![CDATA[public class Range<n,m>(Bounded<n> first, Bounded<n+m> last) 
-    extends Range<Bounded<n+m>>(first.bounded<n+m>(), last) {}]]></programlisting>
+        <programlisting><![CDATA[public class Range<n>() 
+    extends Range<Bounded<n>>(0, n) {}]]></programlisting>
 
         <para>The compiler is permitted to optimize away creation of a
         <literal>Range</literal> in code such as the following:</para>
