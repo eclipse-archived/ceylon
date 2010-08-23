@@ -452,8 +452,30 @@ memberName
     ;
 
 typeArguments
-    : '<' type (',' type)* '>'
-    -> ^(TYPE_ARG_LIST type+)
+    : '<' typeArgument (',' typeArgument)* '>'
+    -> ^(TYPE_ARG_LIST typeArgument+)
+    ;
+
+typeArgument
+    : type '...'? | dimension
+    ;
+
+dimension
+    : dimensionTerm ('+' dimensionTerm)*
+    ;
+
+dimensionTerm
+    : (NATURALLITERAL '*')* dimensionAtom
+    ;
+
+dimensionAtom
+    : NATURALLITERAL 
+    | memberName 
+    | parenDimension
+    ;
+
+parenDimension
+    : '(' dimension ')'
     ;
 
 typeParameters
@@ -462,12 +484,21 @@ typeParameters
     ;
 
 typeParameter
+    : ordinaryTypeParameter | dimensionalTypeParameter
+    ;
+
+ordinaryTypeParameter
     : variance? typeName '...'?
     -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     ;
 
 variance
     : 'in' | 'out'
+    ;
+    
+dimensionalTypeParameter
+    : memberName
+    -> ^(TYPE_PARAMETER memberName)
     ;
     
 //for locals and attributes
