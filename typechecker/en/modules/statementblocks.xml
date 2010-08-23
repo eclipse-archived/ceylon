@@ -801,7 +801,7 @@ else {
 
             <programlisting>mutable Float sum := 0.0;
 for (Integer i in -10..10) {
-    sum += x[i];
+    sum += x[i] ? 0.0;
 }</programlisting>
             
             <programlisting>for (Natural month -> Float temp in monthlyTempsList) { 
