@@ -965,7 +965,7 @@ while (exists local value = indexed.indexedValue(i)) {
         <para>The <literal>Bounded</literal> class represents a value
         from an upper-bounded list of natural numbers.</para>
         
-        <programlisting><![CDATA[ public class Bounded<max>(Bounded<max> b)
+        <programlisting><![CDATA[public class Bounded<max>(Bounded<max> b)
        satisfies Ordinal, Comparable<Bounded<max>> {
 
    public extension Natural natural { ... }
@@ -981,7 +981,7 @@ while (exists local value = indexed.indexedValue(i)) {
    public extension Bounded<max+inc> bounded<inc>() { ... }
 
 }]]></programlisting>
-        
+
     </section>
     
     <section id="sequence">
@@ -1821,6 +1821,13 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     public X[] by(Natural stepSize) { return ... } 
     
 }]]></programlisting>
+        
+        <para>The following overloaded form is called for expressions like
+        <literal>0..5</literal> where the arguments are instances of 
+        <literal>Bounded</literal>, with different dimensions.</para>
+        
+        <programlisting><![CDATA[public class Range<n,m>(Bounded<n> first, Bounded<n+m> last) 
+    extends Range<Bounded<n+m>>(first.bounded<n+m>(), last) {}]]></programlisting>
 
         <para>The compiler is permitted to optimize away creation of a
         <literal>Range</literal> in code such as the following:</para>
