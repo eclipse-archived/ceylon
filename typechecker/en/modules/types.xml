@@ -1296,7 +1296,8 @@ class SequenceEntryIterable<X>(X[n] sequence)
         into a single <literal>BoundedSequence</literal>.</para>
 
         <programlisting><![CDATA[public T[n] zip<T,X,Y,n>(X[n] x, Y[n] y, T producing(X x, Y y)) {
-    return from(Bound<n> i in Range<n>()) select (producing(x[i],y[i]))
+    return from (Bound<n> i in Range<n>()) 
+                select (producing(x[i],y[i]))
 }]]></programlisting>
 
         <programlisting><![CDATA[public Entry<X,Y>[n] zip<X,Y,n>(X[n] x, Y[n] y) {
