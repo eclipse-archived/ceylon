@@ -724,7 +724,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeArgument := Type | Dimension</programlisting>
         
-        <para>A <emphasis>dimension</emphasis> is an expression compose of natural number
+        <para>A <emphasis>dimension</emphasis> is an expression composed of natural number
         literals, locals of type <literal>Natural</literal>, the operators 
         <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
         
