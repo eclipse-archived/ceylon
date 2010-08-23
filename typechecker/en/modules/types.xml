@@ -862,6 +862,128 @@ while (exists local value = indexed.indexedValue(i)) {
        
     </section>
     
+    <section id="comparableandordinal">
+        <title>Ordered values</title>
+        
+        <para>The <literal>lang.Comparable</literal> interface 
+        represents totally ordered types, and supports the binary operators 
+        <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
+        (compare).</para>
+        
+        <programlisting><![CDATA[public interface Comparable<in T> 
+        given T satisfies Object {
+    
+    doc "The binary compare operator |<=>|. Compares this 
+         object with the given object."
+    public Comparison compare(T other);
+    
+}]]></programlisting>
+        
+        <programlisting><![CDATA[public class Comparison() {
+    
+    doc "The receiving object is larger than 
+         the given object."
+    case larger, 
+    
+    doc "The receiving object is smaller than 
+         the given object."
+    case smaller, 
+    
+    doc "The receiving object is exactly equal 
+         to the given object."
+    case equal;
+        
+    public Boolean larger { return this===larger }
+    public Boolean smaller { return this===smaller }
+    public Boolean equal { return this===equal }
+    public Boolean unequal { return !this===equal }
+    public Boolean largeAs { return !this===smaller }
+    public Boolean smallAs { return !this===larger }
+    
+}]]></programlisting>
+
+        <comment><para>TODO: should we support partial orders? Give
+        <literal>Comparison</literal> an extra <literal>uncomparable</literal>
+        value, or let <literal>compare()</literal> return 
+        <literal>null</literal>?</para></comment>
+        
+        <comment><para>TODO: if so, why not just move <literal>compare()</literal>
+        up to <literal>Object</literal> to simplify things?</para></comment>
+        
+        <para>The toplevel methods <literal>min()</literal> and <literal>max()</literal>
+        return the minimum and maximum values of a list of <literal>Comparable</literal>s.</para>
+        
+        <programlisting><![CDATA[public X min<X>(X x, X... xs) 
+        given X satisfies Comparable<X> {
+    mutable X min := x;
+    for (X y in xs) { 
+        if (y<min) { 
+            min:=y;
+        }
+    }
+    return min
+}]]></programlisting>
+
+        <programlisting><![CDATA[public X max<X>(X x, X... xs) 
+        given X satisfies Comparable<X> {
+    mutable X max := x;
+    for (X y in xs) { 
+        if (y>max) { 
+            max:=y;
+        }
+    }
+    return max
+}]]></programlisting>
+
+        <para>The <literal>lang.Ordinal</literal> interface represents 
+        objects in a sequence, and supports the binary operator 
+        <literal>..</literal> (range). In addition, variables support 
+        the postfix unary operators <literal>++</literal> (increment) 
+        and <literal>--</literal> (decrement) and prefix unary 
+        operators <literal>++</literal> (successor) and 
+        <literal>--</literal> (predecessor).</para>
+        
+        <programlisting><![CDATA[public interface Ordinal {
+
+    doc "The unary |++| operator. The successor of this instance."
+    throws (OutOfRangeException
+            -> "if this is the maximum value")
+    public subtype successor;
+    
+    doc "The unary |--| operator. The predecessor of this instance."
+    throws (OutOfRangeException
+            -> "if this is the minimum value")
+    public subtype predecessor;
+    
+}]]></programlisting>
+
+    </section>
+    
+    <section id="bounded">
+        <title>Bounded</title>
+        
+        <para>The <literal>Bounded</literal> class represents a value
+        from an upper-bounded list of natural numbers.</para>
+        
+        <programlisting><![CDATA[ public class Bounded<max>(Bounded<max> b)
+       satisfies Ordinal, Comparable<Bounded<max>> {
+
+   public extension Natural natural { ... }
+
+   override subtype successor { ... }
+
+   override subtype predecessor { ... }
+
+   override Comparison compare(Bounded<max> other) {
+       return natural.compare(other.natural)
+   }
+
+   public extension Bounded<max+inc> bounded<inc>() { ... }
+
+}]]></programlisting>
+        
+    </section>
+    
     <section id="sequence">
         <title>Sequences</title>
         
@@ -964,26 +1086,6 @@ class SequenceEntryIterable<X>(X[] sequence)
         <comment><para>TODO: for some kinds of sequences, especially linked
         lists, access by index is very inefficient. How can we make iteration
         of these kinds of sequences efficient?</para></comment>
-        
-        <para>The value <literal>None.none</literal> is transparently
-        assignable to <literal>Sequence&lt;X&gt;</literal>.</para>
-        
-        <programlisting><![CDATA[public class None() {
-        
-    doc "Represents an empty sequence. The value of 
-         the empty sequence enumeration |{}|."
-    case none;
-    
-    public extension 
-    class EmptySequence<out X>() satisfies X[] {
-        override Natural? lastIndex = null;
-        override Referenceable<X?> value(Natural index) {
-            X? nullValue = null;
-            return nullValue 
-        }
-    }
-    
-}]]></programlisting>
         
         <para>Toplevel methods define the join and range operators, for 
         sequence types:</para>
@@ -1100,29 +1202,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
             return null
         }
     }
-
-}]]></programlisting>
-        
-        <para>The <literal>zip()</literal> function combines <literal>Sequence</literal>s 
-        into a single <literal>Sequence</literal>.</para>
-
-        <programlisting><![CDATA[public T[] zip<T,X,Y>(X[] x, Y[] y, T producing(X x, Y y)) {
-    return from(Natural i in 0..min(x.lastIndex,y.lastIndex)) 
-                select (producing(x[i],y[i]))
-}]]></programlisting>
-
-        <programlisting><![CDATA[public Entry<X,Y>[] zip<X,Y>(X[] x, Y[] y) {
-    return zip(x,y,Entry)
-}]]></programlisting>
-
-        <programlisting><![CDATA[public T[] zip<T,X>(X[] lists..., T producing(X x...)) {
-    Natural len = min(from (X[] list in lists) select (list.lastIndex));
-    return from (Natural i in 0..len) 
-                select (producing(from (X[] list in lists) select (list[i]));
-}]]></programlisting>
-
-        <programlisting><![CDATA[public T[] zip<T,X>(X[] lists...) {
-    return zip(lists,ArrayList)
+   
 }]]></programlisting>
 
         <para>There is a mutable subtype which allows assignment to
@@ -1131,6 +1211,108 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <programlisting><![CDATA[public mutable interface OpenSequence<X>
         satisfies X[], OpenCorrespondence<Natural,X> {}]]></programlisting>
 
+        <para>A <literal>lang.BoundedSequence</literal> adds a typesafe bound
+        to the indices, allowing use of indices of type <literal>Bound&lt;n&gt;</literal>.</para>
+        
+        <programlisting><![CDATA[public interface BoundedSequence<out X, n>
+        satisfies X[] {
+    public Referenceable<X> value(Bounded<n> index);
+    override Bounded<n>? lastIndex;
+}]]></programlisting>
+
+        <para>The following extension provides access to the indices 
+        of the bounded sequence in a <literal>for</literal> loop. The
+        indices are of type <literal>Bounded&lt;n&gt;</literal>.</para>
+        
+        <programlisting><![CDATA[public extension
+class SequenceEntryIterable<X>(X[n] sequence)
+        satisfies Iterable<Entry<Bounded<n>,X>> {
+    override Iterator<Entry<Bounded<n>,X>> iterator() {
+        class EntryIterator(Bounded<n> from) 
+                satisfies Iterator<Entry<Bounded<n>,X>> {
+            override Entry<Bounded<n>,X>? head {
+                return from->sequence[from]
+            }
+            override Iterable<Entry<Bounded<n>,X>> tail {
+                if (from+1<n) {
+                    return EntryIterator(from.successor)
+                }
+                else {
+                    return none
+                }
+            }
+        }
+        return EntryIterator(0)
+    }
+}]]></programlisting>
+
+        <!--
+        <para>A helper class adds a useful convenience attribute.</para>
+        
+        <programlisting><![CDATA[public extension class BoundSequences<out X,n>(X[n] sequence) {
+   
+    doc "A sequence of all indices of the the sequence."
+    public Bounded<n>[n] indices {
+        return ifTrue(n>0)
+            then Bounded<n>(0)..Bounded<n>(n-1)
+            otherwise {}
+    }
+   
+}]]></programlisting>
+        -->
+        
+        <para>There is a mutable subtype which allows assignment to
+        an index.</para>
+        
+        <programlisting><![CDATA[public mutable interface OpenBoundedSequence<X,n>
+        satisfies X[n], OpenSequence<X> {
+    public Assignable<X> value(Bounded<n> index);
+}]]></programlisting>
+
+        <para>The value <literal>None.none</literal> is transparently
+        assignable to <literal>X[]</literal> and <literal>X[0]</literal>.</para>
+        
+        <programlisting><![CDATA[public class None() {
+        
+    doc "Represents an empty sequence. The value of 
+         the empty sequence enumeration |{}|."
+    case none;
+    
+    public extension 
+    class EmptySequence<out X>() satisfies X[0] {
+        override Natural? lastIndex = null;
+        override Referenceable<X?> value(Natural index) {
+            X? nullValue = null;
+            return nullValue 
+        }
+        override Referenceable<X> value(Bounded<0> index) {
+            throw Exception()
+        }
+    }
+    
+}]]></programlisting>
+        
+        <para>The <literal>zip()</literal> function combines <literal>BoundedSequence</literal>s 
+        into a single <literal>BoundedSequence</literal>.</para>
+
+        <programlisting><![CDATA[public T[n] zip<T,X,Y,n>(X[n] x, Y[n] y, T producing(X x, Y y)) {
+    return from(Bound<n> i in 0..n) select (producing(x[i],y[i]))
+}]]></programlisting>
+
+        <programlisting><![CDATA[public Entry<X,Y>[n] zip<X,Y,n>(X[n] x, Y[n] y) {
+    return zip(x,y,Entry)
+}]]></programlisting>
+
+        <programlisting><![CDATA[public T[n] zip<T,X,n>(X[n] lists..., T producing(X x...)) {
+    return from (Bound<n> i in 0..n) 
+                select (producing(from (X[n] list in lists) select (list[i]));
+}]]></programlisting>
+
+<!--
+        <programlisting><![CDATA[public T[][n] zip<T,X,n>(X[n] lists...) {
+    return zip(lists,ArrayList)
+}]]></programlisting>
+-->
     </section>
     
     <section id="collections">
@@ -1609,103 +1791,6 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         
         -->
         
-    </section>
-    
-    <section id="comparableandordinal">
-        <title>Ordered values</title>
-        
-        <para>The <literal>lang.Comparable</literal> interface 
-        represents totally ordered types, and supports the binary operators 
-        <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
-        (compare).</para>
-        
-        <programlisting><![CDATA[public interface Comparable<in T> 
-        given T satisfies Object {
-    
-    doc "The binary compare operator |<=>|. Compares this 
-         object with the given object."
-    public Comparison compare(T other);
-    
-}]]></programlisting>
-        
-        <programlisting><![CDATA[public class Comparison() {
-    
-    doc "The receiving object is larger than 
-         the given object."
-    case larger, 
-    
-    doc "The receiving object is smaller than 
-         the given object."
-    case smaller, 
-    
-    doc "The receiving object is exactly equal 
-         to the given object."
-    case equal;
-        
-    public Boolean larger { return this===larger }
-    public Boolean smaller { return this===smaller }
-    public Boolean equal { return this===equal }
-    public Boolean unequal { return !this===equal }
-    public Boolean largeAs { return !this===smaller }
-    public Boolean smallAs { return !this===larger }
-    
-}]]></programlisting>
-
-        <comment><para>TODO: should we support partial orders? Give
-        <literal>Comparison</literal> an extra <literal>uncomparable</literal>
-        value, or let <literal>compare()</literal> return 
-        <literal>null</literal>?</para></comment>
-        
-        <comment><para>TODO: if so, why not just move <literal>compare()</literal>
-        up to <literal>Object</literal> to simplify things?</para></comment>
-        
-        <para>The toplevel methods <literal>min()</literal> and <literal>max()</literal>
-        return the minimum and maximum values of a list of <literal>Comparable</literal>s.</para>
-        
-        <programlisting><![CDATA[public X min<X>(X x, X... xs) 
-        given X satisfies Comparable<X> {
-    mutable X min := x;
-    for (X y in xs) { 
-        if (y<min) { 
-            min:=y;
-        }
-    }
-    return min
-}]]></programlisting>
-
-        <programlisting><![CDATA[public X max<X>(X x, X... xs) 
-        given X satisfies Comparable<X> {
-    mutable X max := x;
-    for (X y in xs) { 
-        if (y>max) { 
-            max:=y;
-        }
-    }
-    return max
-}]]></programlisting>
-
-        <para>The <literal>lang.Ordinal</literal> interface represents 
-        objects in a sequence, and supports the binary operator 
-        <literal>..</literal> (range). In addition, variables support 
-        the postfix unary operators <literal>++</literal> (increment) 
-        and <literal>--</literal> (decrement) and prefix unary 
-        operators <literal>++</literal> (successor) and 
-        <literal>--</literal> (predecessor).</para>
-        
-        <programlisting><![CDATA[public interface Ordinal {
-
-    doc "The unary |++| operator. The successor of this instance."
-    throws (OutOfRangeException
-            -> "if this is the maximum value")
-    public subtype successor;
-    
-    doc "The unary |--| operator. The predecessor of this instance."
-    throws (OutOfRangeException
-            -> "if this is the minimum value")
-    public subtype predecessor;
-    
-}]]></programlisting>
-
     </section>
     
     <section id="range">

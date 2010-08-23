@@ -440,14 +440,18 @@ Description doc(String description) {
                 <para><literal>X[]</literal> means <literal>Sequence&lt;X&gt;</literal> for
                 any type <literal>X</literal>.</para>
             </listitem>
+            <listitem>
+                <para><literal>X[n]</literal> means <literal>BoundedSequence&lt;X,n&gt;</literal> 
+                for any type <literal>X</literal> and dimension <literal>n</literal>.</para>
+            </listitem>
         </itemizedlist>
         
         <programlisting>Abbreviation := "?" | "[" "]"</programlisting>
         
         <para>Abbreviations may be combined:</para>
         
-        <programlisting>String?[] words = { "hello", "world", null };
-String?? firstWord = words[0];</programlisting>
+        <programlisting>String?[3] words = { "hello", "world", null };
+String? firstWord = words[0];</programlisting>
         
         <comment><para>TODO: It might be difficult to support <literal>T??</literal>
         since <literal>Optional</literal> is erased.</para></comment>

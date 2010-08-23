@@ -2126,12 +2126,13 @@ setPerson(person);</programlisting>
         <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
         containing the enumerated elements in the given order. When an enumeration is 
         executed, each element expression is evaluated, and the resulting values collected 
-        together into an object that implements <literal>Sequence&lt;T&gt;</literal> where 
+        together into an object that implements <literal>Sequence&lt;T,n&gt;</literal> where 
         <literal>T</literal> is a subtype of <literal>Object</literal> to which all the 
-        enumerated element expression types are assignable. The concrete type of this object 
-        is not specified here.</para>
+        enumerated element expression types are assignable and <literal>n</literal> is the
+        number of element expressions. The concrete type of this object  is not specified 
+        here.</para>
         
-        <programlisting>String[] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
+        <programlisting>String[5] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
         
         <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>None.none</literal>.</para>
                                 
@@ -3123,6 +3124,15 @@ setPerson(person);</programlisting>
             <entry><literal>Y?</literal></entry>
         </row>
         <row>
+            <entry><literal>[]</literal></entry>
+            <entry><literal>lhs[index]</literal></entry>
+            <entry>bounded lookup</entry>
+            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>Y[n]</literal></entry>
+            <entry><literal>Bound&lt;n&gt;</literal></entry>
+            <entry><literal>Y</literal></entry>
+        </row>
+        <row>
             <entry><literal>?[]</literal></entry>
             <entry><literal>lhs?[index]</literal></entry>
             <entry>nullsafe lookup</entry>
@@ -3332,6 +3342,9 @@ setPerson(person);</programlisting>
     </tbody>
     </tgroup>
     </table>
+    
+    <comment><para>TODO: Should the subrange operators be defined only for 
+    <literal>BoundedSequence</literal>s?</para></comment>
     
     <comment><para>TODO: Should we have operators for set union/intersection/complement
     and set comparison?</para></comment>
