@@ -834,7 +834,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         </itemizedlist>
         
         <para>A dimension is substituted for every appearance of the corresponding 
-        dimensional type parameter in the schema of the parameterized declaration.</para>
+        dimensional type parameter in the schema of the parameterized declaration.
+        The dimension appears as a parenthesized expression in expressions involving
+        the dimensional type parameter.</para>
         
         <para>In the case of a varargs type parameter:</para>
         
