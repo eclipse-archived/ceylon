@@ -1,0 +1,189 @@
+<chapter id="modules">
+    <title>Module architecture</title>
+
+    <para>Compiled code is automatically packaged into <emphasis>module
+    archives</emphasis> by the Ceylon compiler. A <emphasis>module 
+    repository</emphasis> is a repository containing module archives.
+    A module archive is automatically obtained from a module repository 
+    when a class belonging to the module is needed by the compiler or
+    module runtime.</para>
+    
+    <section>
+        <title>Module names and version identifiers</title>
+        
+        <para>A module <emphasis>name</emphasis> is a period-separated
+        list of lowercase identifiers, for example:</para>
+        
+        <programlisting>lang</programlisting>
+        <programlisting>org.hibernate</programlisting>
+        
+        <para>Any package whose name begins with the module name belongs
+        to the module, for example, the packages:</para>
+
+        <programlisting>lang</programlisting>
+        <programlisting>lang.collections</programlisting>
+        
+        <para>belong to the module <literal>lang</literal>. The packages:</para>
+        
+        <programlisting>org.hibernate</programlisting>
+        <programlisting>org.hibernate.impl</programlisting>
+        <programlisting>org.hibernate.cache</programlisting>
+        
+        <para>belong to the module <literal>org.hibernate</literal>.</para>
+        
+        <para>A module version <emphasis>identifier</emphasis> .... , 
+        for example:</para>
+        
+        <programlisting>1.0.1</programlisting>
+        <programlisting>3.0.0</programlisting>
+        
+        <para>A <emphasis>module archive name</emphasis> is constructed from 
+        the module name and version identifier. A module archive name is of 
+        the following standard form:</para>
+        
+        <programlisting><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.car</programlisting>
+        
+        <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
+        is the full name of the module, and 
+        <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
+        version identifier. For example:</para>
+        
+        <programlisting>lang-1.0.1.car</programlisting>
+        <programlisting>org.hibernate-3.0.0.car</programlisting>
+        
+        <para>A <emphasis>source archive name</emphasis> is of the following 
+        standard form:</para>
+        
+        <programlisting><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.src</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>lang-1.0.1.src</programlisting>
+        <programlisting>org.hibernate-3.0.0.src</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Module archives</title>
+        
+        <para>A Ceylon module archive is a Java <literal>jar</literal>
+        file which:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>contains a Ceylon module descriptor in the
+                <emphasis>module directory</emphasis> and</para>
+            </listitem>
+            <listitem>
+                <para>has a filename which adheres to the standard for
+                module archive names.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The module directory of the module archive is the directory
+        containing the package with the same name as the module. For 
+        example, the module directory for the module <literal>lang</literal>
+        is the directory <literal>/lang</literal>. The module directory for
+        the module <literal>org.hibernate</literal> is the directory
+        <literal>/org/hibernate</literal>.</para>
+        
+        <para>Thus, the structure of the module archive for the module
+        <literal>org.hello</literal> might be the following:</para>
+        
+        <programlisting><![CDATA[org.hello-1.0.0.car
+    META-INF/
+        MANIFEST.MF
+    org/
+        hello/
+            module.class      //the module descriptor
+            main/
+                hello.class
+            default/
+                DefaultHello.class
+            personalized/
+                PersonalizedHello.class]]></programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Source archives</title>
+        
+        <para>A <emphasis>source archive</emphasis> is a <literal>zip</literal> 
+        archive containing Ceylon source code which has a filename which adheres 
+        to the standard for source archive names.</para>
+        
+        <para>Inside a source archive, Ceylon source is found at a directory
+        path formed by replacing periods by <literal>/</literal> in the name
+        of the package.</para>
+        
+        <para>Thus, the structure of the source archive for the module
+        <literal>org.hello</literal> might be the following:</para>
+        
+        <programlisting><![CDATA[org.hello-1.0.0.src
+    org/
+        hello/
+            module.ceylon      //the module descriptor
+            main/
+                hello.ceylon
+            default/
+                DefaultHello.ceylon
+            personalized/
+                PersonalizedHello.ceylon]]></programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Module repositories</title>
+        
+        <para>A module repository is a directory structure on the local
+        filesystem or a remote HTTP server.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A local module repository is identified by the 
+                filesystem path.</para>
+            </listitem>
+            <listitem> 
+                <para>A remote module repository is identified by a 
+                URL.</para> 
+            </listitem>
+        </itemizedlist>
+        
+        <para>For example:</para>
+        
+        <programlisting>modules</programlisting>
+        <programlisting>/usr/bin/ceylon/modules</programlisting>
+        <programlisting>http://org.jboss/ceylon/modules</programlisting>
+        
+        <para>A module repository contains module archives and source
+        archives. The address of an archive belonging to the repository 
+        adheres to the following standard form:</para>
+        
+        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-rel-path&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
+        
+        <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
+        is the filesystem path or URL of the repository,
+        <literal><emphasis>&lt;repository&gt;</emphasis></literal> is the name
+        of the archive, and <literal><emphasis>&lt;module-rel-path&gt;</emphasis></literal> 
+        is formed by replacing periods with <literal>/</literal> in the module
+        name.</para> 
+        
+        <para>For example, the module archive <literal>lang-1.0.1.car</literal> 
+        and source archive <literal>lang-1.0.1.src</literal> belonging to the 
+        repository included in the Ceylon SDK are obtained from the following
+        addresses:</para>
+ 
+        <programlisting>modules/lang/lang-1.0.1.car</programlisting>        
+        <programlisting>modules/lang/lang-1.0.1.src</programlisting>
+        
+        <para>The module archive <literal>org.hibernate-3.0.0.car</literal>
+        and source archive <literal>org.hibernate-3.0.0.src</literal>
+        belonging to the repository <literal>http://org.jboss/ceylon/modules</literal>
+        are obtained from the following addresses:</para>
+        
+        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/org.hibernate-3.0.0.car</programlisting>
+        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/org.hibernate-3.0.0.src</programlisting>
+        
+    </section>
+
+</chapter>

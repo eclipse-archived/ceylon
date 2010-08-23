@@ -9,6 +9,8 @@
 <!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
 <!ENTITY expressions               SYSTEM "modules/expressions.xml">
 <!ENTITY types                     SYSTEM "modules/types.xml">
+<!ENTITY modules                   SYSTEM "modules/modules.xml">
+<!ENTITY tools                     SYSTEM "modules/tools.xml">
 ]>
 
 <book lang="en">
@@ -134,6 +136,8 @@
     &statementblocks;
     &expressions;
     &types;
+    &modules;
+    &tools;
 
 </book>
 
