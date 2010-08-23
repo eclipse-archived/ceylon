@@ -3343,9 +3343,6 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
-    <comment><para>TODO: Should the subrange operators be defined only for 
-    <literal>BoundedSequence</literal>s?</para></comment>
-    
     <comment><para>TODO: Should we have operators for set union/intersection/complement
     and set comparison?</para></comment>
     
