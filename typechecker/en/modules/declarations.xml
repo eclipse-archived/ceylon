@@ -2102,6 +2102,10 @@ public User(String username, Person person);</programlisting>
     return TreeSet(element)
 }</programlisting>
 
+        <programlisting>public String[n] strings&lt;n&gt;(Object[n] objects) {
+    return Vector&lt;n&gt;() containing (Bound&lt;n&gt; i) (objects[i])
+}</programlisting>
+
         <para>Note that a method which declares the return type <literal>Void</literal>
         is not a <literal>void</literal> method. A method with declared type 
         <literal>Void</literal> must return a value of type <literal>Void</literal> 
@@ -2446,6 +2450,8 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         -->
 
         <programlisting>public Decimal pi = calculatePi();</programlisting>
+        
+        <programlisting>public Natural[5] evenDigits = {0,2,4,6,8};</programlisting>
 
         <para>A simple attribute declared directly inside the body of a class represents state 
         associated with the instance of the class. Repeated evaluation of the attribute of a 
