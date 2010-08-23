@@ -2025,17 +2025,17 @@ String name = getName();</programlisting>
         <para>Note that the <literal>value()</literal> method of <literal>Correspondence</literal>
         is also defined to return a <literal>Referenceable</literal>.</para>
         
-        <programlisting>Person person = people[index];</programlisting>
+        <programlisting>Person? person = people[index];</programlisting>
         
         <para>Therefore an element expression can be passed by reference:</para>
         
-        <programlisting>Referenceable&lt;Person&gt; personRef = person[index];
-Person person = person;</programlisting>
+        <programlisting>Referenceable&lt;Person?&gt; personRef = person[index];
+Person? person = person;</programlisting>
         
         <para>And an element expression can be transformed into method reference:</para>
         
-        <programlisting>Person getPerson() = people.[index].getIt;
-Person person = getPerson();</programlisting>
+        <programlisting>Person? getPerson() = people[index].getIt;
+Person? person = getPerson();</programlisting>
         
     </section>
     
@@ -2100,13 +2100,13 @@ setName(p.name, "Gavin");</programlisting>
         
         <para>Therefore an assignable element expression can be passed by reference:</para>
         
-        <programlisting>Assignable&lt;Person&gt; personRef = people[index];
+        <programlisting>Assignable&lt;Person?&gt; personRef = people[index];
 personRef := person;</programlisting>
         
         <para>And an assignable element expression can be transformed into method 
         reference:</para>
         
-        <programlisting>Person setPerson(Person p) = people[index].setIt;
+        <programlisting>Person? setPerson(Person? p) = people[index].setIt;
 setPerson(person);</programlisting>
         
     </section>
