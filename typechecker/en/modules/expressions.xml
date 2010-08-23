@@ -2064,7 +2064,7 @@ setName("Gavin");</programlisting>
         <programlisting>Assignable&lt;String&gt; getName(Person p) { return p.name }
 getName(p) := "Gavin";</programlisting>
 
-        <programlisting> setName(Assignable&lt;String&gt; name, String value) { name:=value; }
+        <programlisting>setName(Assignable&lt;String&gt; name, String value) { name:=value; }
 setName(p.name, "Gavin");</programlisting>
         
         <para>When an attribute value is assigned:</para>
