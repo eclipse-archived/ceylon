@@ -163,11 +163,11 @@
         
         <itemizedlist>
             <listitem>
-                <para>A <emphais>local</emphais> module repository is 
+                <para>A <emphasis>local</emphasis> module repository is 
                 identified by a filesystem path.</para>
             </listitem>
             <listitem> 
-                <para>A <emphais>remote</emphais> module repository is 
+                <para>A <emphasis>remote</emphasis> module repository is 
                 identified by a URL.</para> 
             </listitem>
         </itemizedlist>
