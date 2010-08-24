@@ -511,9 +511,9 @@ public class Gen {
         operatorImplementors.put(CeylonParser.DIVIDED,    "divided");
         operatorImplementors.put(CeylonParser.POWER,      "power");
         operatorImplementors.put(CeylonParser.REMAINDER,  "remainder");
-        operatorImplementors.put(CeylonParser.BITWISEAND, "operatorBitwiseAnd");
-        operatorImplementors.put(CeylonParser.BITWISEOR,  "operatorBitwiseOr");
-        operatorImplementors.put(CeylonParser.BITWISEXOR, "operatorBitwiseXor");
+        operatorImplementors.put(CeylonParser.BITWISEAND, "and");
+        operatorImplementors.put(CeylonParser.BITWISEOR,  "or");
+        operatorImplementors.put(CeylonParser.BITWISEXOR, "xor");
         operatorImplementors.put(CeylonParser.EQEQ,       "operatorEqual");
         operatorImplementors.put(CeylonParser.IDENTICAL,  "operatorIdentical");
         operatorImplementors.put(CeylonParser.NOTEQ,      "operatorNotEqual");
