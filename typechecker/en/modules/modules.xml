@@ -36,7 +36,7 @@
         letters, for example:</para>
         
         <programlisting>1.0.1</programlisting>
-        <programlisting>3.0.0</programlisting>
+        <programlisting>3.0.0.beta</programlisting>
         
         <para>A <emphasis>module archive name</emphasis> is constructed from 
         the module name and version identifier. A module archive name is of 
@@ -50,7 +50,7 @@
         version identifier. For example:</para>
         
         <programlisting>lang-1.0.1.car</programlisting>
-        <programlisting>org.hibernate-3.0.0.car</programlisting>
+        <programlisting>org.hibernate-3.0.0.beta.car</programlisting>
         
         <para>A <emphasis>source archive name</emphasis> is of the following 
         standard form:</para>
@@ -60,7 +60,7 @@
         <para>For example:</para>
         
         <programlisting>lang-1.0.1.src</programlisting>
-        <programlisting>org.hibernate-3.0.0.src</programlisting>
+        <programlisting>org.hibernate-3.0.0.beta.src</programlisting>
         
     </section>
     
@@ -199,20 +199,21 @@
         <programlisting>modules/lang/1.0.1/lang-1.0.1.car</programlisting>        
         <programlisting>modules/lang/1.0.1/lang-1.0.1.src</programlisting>
         
-        <para>The module archive <literal>org.hibernate-3.0.0.car</literal>
-        and source archive <literal>org.hibernate-3.0.0.src</literal>
+        <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>
+        and source archive <literal>org.hibernate-3.0.0.beta.src</literal>
         belonging to the repository <literal>http://org.jboss/ceylon/modules</literal>
         are obtained from the following addresses:</para>
         
-        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0/org.hibernate-3.0.0.car</programlisting>
-        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0/org.hibernate-3.0.0.src</programlisting>
+        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.car</programlisting>
+        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.src</programlisting>
         
     </section>
     
     <section>
         <title>Module descriptors</title>
         
-        TODO
+        <para>The following classes define the format of the Ceylon module
+        descriptor:</para>
         
     </section>
 
