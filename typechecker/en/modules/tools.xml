@@ -112,7 +112,7 @@
         
         <itemizedlist>
             <listitem>
-                <para>module archives in a specified repositories,</para>
+                <para>module archives in the specified repositories,</para>
             </listitem>
             <listitem>
                 <para>source archives in the specified repositories, 
@@ -178,7 +178,7 @@
         
         <itemizedlist>
             <listitem>
-                <para>module archives in a specified repositories,</para>
+                <para>module archives in the specified repositories,</para>
             </listitem>
             <listitem>
                 <para>source archives in the specified repositories, 
