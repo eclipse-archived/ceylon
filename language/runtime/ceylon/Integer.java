@@ -1,6 +1,7 @@
 package ceylon;
 
 public final class Integer
+    extends Object
     implements Integral<Integer>, Invertable<Integer>, Case<Integer> {
 
     private final long value;
@@ -91,7 +92,7 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public ceylon.String asString() {
+    public ceylon.String string() {
         return ceylon.String.instance(java.lang.Long.toString(value));
     }
 }

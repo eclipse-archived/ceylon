@@ -1,7 +1,6 @@
 package ceylon;
 
-public final class Boolean
-{
+public final class Boolean extends Object {
     private final boolean value;
 
     private Boolean(boolean b) {
@@ -12,7 +11,7 @@ public final class Boolean
         return new ceylon.Boolean(b);
     }
 
-    public ceylon.String asString() {
+    public ceylon.String string() {
         return ceylon.String.instance(java.lang.Boolean.toString(value));
     }
 }
