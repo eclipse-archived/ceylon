@@ -182,7 +182,7 @@
         archives. The address of an archive belonging to the repository 
         adheres to the following standard form:</para>
         
-        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-rel-path&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
+        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-rel-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
         
         <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
         is the filesystem path or URL of the repository,
@@ -195,16 +195,16 @@
         repository included in the Ceylon SDK are obtained from the following
         addresses:</para>
  
-        <programlisting>modules/lang/lang-1.0.1.car</programlisting>        
-        <programlisting>modules/lang/lang-1.0.1.src</programlisting>
+        <programlisting>modules/lang/1.0.1/lang-1.0.1.car</programlisting>        
+        <programlisting>modules/lang/1.0.1/lang-1.0.1.src</programlisting>
         
         <para>The module archive <literal>org.hibernate-3.0.0.car</literal>
         and source archive <literal>org.hibernate-3.0.0.src</literal>
         belonging to the repository <literal>http://org.jboss/ceylon/modules</literal>
         are obtained from the following addresses:</para>
         
-        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/org.hibernate-3.0.0.car</programlisting>
-        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/org.hibernate-3.0.0.src</programlisting>
+        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0/org.hibernate-3.0.0.car</programlisting>
+        <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0/org.hibernate-3.0.0.src</programlisting>
         
     </section>
     
