@@ -1,9 +1,9 @@
 package ceylon;
 
-public enum Comparison {
-    LARGER,
-    SMALLER,
-    EQUAL;
+public class Comparison extends Object {
+    public static final Comparison LARGER = new Comparison();
+    public static final Comparison SMALLER = new Comparison();
+    public static final Comparison EQUAL = new Comparison();
 
     public ceylon.Boolean larger() {
         return ceylon.Boolean.instance(this == LARGER);
@@ -29,21 +29,15 @@ public enum Comparison {
         return ceylon.Boolean.instance(this != LARGER);
     }
 
-    public ceylon.String asString() {
+    public ceylon.String string() {
         java.lang.String result;
-        switch (this) {
-        case LARGER:
+        if (this == LARGER)
             result = "LARGER";
-            break;
-        case SMALLER:
+        else if (this == SMALLER)
             result = "SMALLER";
-            break;
-        case EQUAL:
+        else
             result = "EQUAL";
-            break;
-        default:
-            throw new RuntimeException();
-        }
+
         return ceylon.String.instance(result);
     }
 }
