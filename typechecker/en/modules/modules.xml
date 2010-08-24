@@ -67,12 +67,17 @@
         <title>Module archives</title>
         
         <para>A Ceylon module archive is a Java <literal>jar</literal>
-        file which:</para>
+        archive which:</para>
         
         <itemizedlist>
             <listitem>
                 <para>contains a Ceylon module descriptor in the
-                <emphasis>module directory</emphasis> and</para>
+                <emphasis>module directory</emphasis>,</para>
+            </listitem>
+            <listitem>
+                <para>contains the compiled <literal>.class</literal>
+                files for all compilation units belonging to the module, 
+                and</para>
             </listitem>
             <listitem>
                 <para>has a filename which adheres to the standard for
@@ -111,8 +116,19 @@
         <title>Source archives</title>
         
         <para>A <emphasis>source archive</emphasis> is a <literal>zip</literal> 
-        archive containing Ceylon source code which has a filename which adheres 
-        to the standard for source archive names.</para>
+        archive which:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>contains the source code (<literal>.ceylon</literal>
+                files) for all compilation units belonging to the module, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>has a filename which adheres to the standard for
+                source archive names.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>Inside a source archive, a Ceylon compilation unit (source file) 
         is located in the <emphasis>package directory</emphasis> of the package 
@@ -147,12 +163,12 @@
         
         <itemizedlist>
             <listitem>
-                <para>A local module repository is identified by the 
-                filesystem path.</para>
+                <para>A <emphais>local</emphais> module repository is 
+                identified by a filesystem path.</para>
             </listitem>
             <listitem> 
-                <para>A remote module repository is identified by a 
-                URL.</para> 
+                <para>A <emphais>remote</emphais> module repository is 
+                identified by a URL.</para> 
             </listitem>
         </itemizedlist>
         
