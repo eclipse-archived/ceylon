@@ -215,31 +215,51 @@
         <para>The following classes define the format of the Ceylon module
         descriptor:</para>
         
-        <programlisting>public class Module(
-                    doc "The name of the module."
-                    ModuleName name, 
-                    doc "The version id of the module."
-                    ModuleVersion version,
-                    doc "A description of the module."
-                    String? doc=null, 
-                    doc "The license under which the module
-                         is distributed."
-                    URL? license=null,
-                    doc "Modules used by this module."
-                    Import... dependencies) { ... }</programlisting>
+        <programlisting>doc "A module descriptor."
+public class Module(
+
+        doc "The name of the module."
+        ModuleName name, 
         
-        <programlisting>public class Import(
-                        doc "The name of this imported module."
-                        ModuleName name, 
-                        doc "The version id of this imported module."
-                        ModuleVersion version=null,
-                        doc "Determines if this imported module is
-                             required by the module."
-                        Boolean optional=false, 
-                        doc "Determines if this imported module is
-                             exported transitively to other modules
-                             that import the module."
-                        export=false) { ... }</programlisting>
+        doc "The version id of the module."
+        ModuleVersion version,
+        
+        doc "A description of the module."
+        String? doc=null, 
+        
+        doc "The license under which the module
+             is distributed."
+        URL? license=null,
+        
+        doc "Modules used by this module."
+        Import... dependencies) { 
+        
+    ... 
+
+}</programlisting>
+        
+        <programlisting>doc "Specifies an imported module (dependency) of a 
+     module."
+public class Import(
+
+        doc "The name of this imported module."
+        ModuleName name, 
+        
+        doc "The version id of this imported module."
+        ModuleVersion version=null,
+        
+        doc "Determines if this imported module is
+             required by the module."
+        Boolean optional=false, 
+        
+        doc "Determines if this imported module is
+             exported transitively to other modules
+             that import the module."
+        export=false) { 
+        
+    ... 
+    
+}</programlisting>
                         
         <para>For example:</para>
         
