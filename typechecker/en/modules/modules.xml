@@ -232,7 +232,7 @@
                         doc "The name of this imported module."
                         ModuleName name, 
                         doc "The version id of this imported module."
-                        ModuleVersion? version=null,
+                        ModuleVersion version=null,
                         doc "Determines if this imported module is
                              required by the module."
                         Boolean optional=false, 
