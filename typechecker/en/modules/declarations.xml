@@ -84,12 +84,12 @@ Body?</programlisting>
         
         <para>For example:</para>
             
-        <programlisting>String name; "Hello " name "!"</programlisting>
+        <programlisting>String firstName; String lastName; "Hello" firstName " " lastName "!"</programlisting>
 
         <para>as a toplevel expression in the file <literal>hello.ceylon</literal> is 
         equivalent to:</para>
             
-        <programlisting>public String hello(String name) { return "Hello " name "!" }</programlisting>
+        <programlisting>public String hello(String firstName, String lastName) { return "Hello " firstName " " lastName "!" }</programlisting>
         
         <para>A compilation unit consists of a list of imported toplevel types and 
         toplevel methods, followed by one or more type or method definitions or
