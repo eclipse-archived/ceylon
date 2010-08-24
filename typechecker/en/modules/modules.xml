@@ -212,6 +212,14 @@
     <section>
         <title>Module descriptors</title>
         
+        <para>A <emphasis>module descriptor</emphasis> is a toplevel method
+        of the root package of the module&mdash;the package with the same name as 
+        the module&mdash;with the following signature:</para>
+        
+        <programlisting>public Module module() { ... }</programlisting>
+        
+        <para>This method is usually specified as a toplevel expression.</para>
+        
         <para>The following classes define the format of the Ceylon module
         descriptor:</para>
         
