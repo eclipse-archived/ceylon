@@ -112,9 +112,12 @@
         archive containing Ceylon source code which has a filename which adheres 
         to the standard for source archive names.</para>
         
-        <para>Inside a source archive, Ceylon source is found at a directory
-        path formed by replacing periods by <literal>/</literal> in the name
-        of the package.</para>
+        <para>Inside a source archive, a Ceylon compilation unit (source file) 
+        is located in the <emphasis>package directory</emphasis> of the package 
+        to which the compilation unit belongs.</para>
+        
+        <para>The path of a package directory is formed by replacing every period 
+        with the directory separator character in the name of the package.</para>
         
         <para>Thus, the structure of the source archive for the module
         <literal>org.hello</literal> might be the following:</para>
@@ -165,8 +168,7 @@
         is the filesystem path or URL of the repository,
         <literal><emphasis>&lt;repository&gt;</emphasis></literal> is the name
         of the archive, and <literal><emphasis>&lt;module-rel-path&gt;</emphasis></literal> 
-        is formed by replacing periods with <literal>/</literal> in the module
-        name.</para> 
+        is formed by replacing every period with a slash in the module name.</para> 
         
         <para>For example, the module archive <literal>lang-1.0.1.car</literal> 
         and source archive <literal>lang-1.0.1.src</literal> belonging to the 
@@ -187,7 +189,7 @@
     </section>
     
     <section>
-        <title>Module runtime</title>
+        <title>Module descriptors</title>
         
         TODO
         

@@ -22,6 +22,45 @@
     </itemizedlist>
     
     <section>
+        <title>Source directories</title>
+        
+        <para>A <emphasis>source directory</emphasis> contains Ceylon source 
+        code. The module and package to which a compilation unit (source file)
+        belongs is determined by the subdirectory in which the compilation
+        unit is found.</para>
+        
+        <para>The name of the package to which a compilation unit belongs is 
+        formed by replacing every path directory separator character with a 
+        period in the relative path from the source directory to the 
+        subdirectory containing the compilation unit .</para>
+        
+        <para>The name of the module to which a compilation unit belongs is 
+        determined by searching all containing directories for a module 
+        descriptor. The name of the module is formed by replacing every path
+        directory separator character with a period in the relative path 
+        from the source directory to the subdirectory containing the module 
+        descriptor.</para>
+        
+        <para>Thus, the structure of the source directory for the module
+        <literal>org.hello</literal> might be the following:</para>
+        
+        <programlisting><![CDATA[source/
+    org/
+        hello/
+            module.ceylon      //the module descriptor
+            main/
+                hello.ceylon
+            default/
+                DefaultHello.ceylon
+            personalized/
+                PersonalizedHello.ceylon]]></programlisting>
+                
+        <comment><para>TODO: define some kind of "default module" for the
+        case where no module descriptor is found, just for test code.</para></comment>
+        
+    </section>
+    
+    <section>
         <title>The VM front end</title>
         
         <para>The <literal>ceylon</literal> command accepts the name 
@@ -117,10 +156,10 @@
         -src ~/projects/hibernate/src \
         -out ~/projects/hibernate/build</programlisting>
         
-        <para>The compiler searches for source files to compile in
-        the specified modules in the specified source directories. For
-        each specified module, the compiler generates a module archive
-        and source archive in the output module repository.</para>
+        <para>The compiler searches for the source code of the specified 
+        modules in the specified source directories. For each specified 
+        module, the compiler generates a module archive and source archive 
+        in the output module repository.</para>
         
         <para>The compiler searches for dependencies in the following 
         locations:</para>
