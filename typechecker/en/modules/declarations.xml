@@ -54,8 +54,8 @@ Body?</programlisting>
     <section id="topleveldeclaration">
         <title>Imports and toplevel declarations</title>
         
-        <para>A toplevel declaration defines a type&mdash;a class, interface or type 
-        alias&mdash;or a method.</para>
+        <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class, 
+        interface or type alias&mdash;or a method.</para>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method</programlisting>
         
@@ -71,10 +71,31 @@ Body?</programlisting>
         Java, a compilation unit may contain multiple toplevel class or method 
         declarations with the same name.</para>
         
-        <para>A compilation unit consists of a list of imported toplevel types and 
-        toplevel methods, followed by one or more type or method definitions:</para>
+        <para>A <emphasis>toplevel expression</emphasis> is a shorthand toplevel 
+        method declaration.</para>
         
-        <programlisting>Import* ToplevelDeclaration+</programlisting>
+        <programlisting>ToplevelExpression := (Param ";")* Expression</programlisting>
+        
+        <para>A toplevel expression is equivalent to a <literal>public</literal> 
+        toplevel method declaration with the specified formal parameters, which returns 
+        the specified expression. The name of the toplevel method is determined from 
+        the name of the compilation unit (by removing the file suffix 
+        <literal>.ceylon</literal>).</para>
+        
+        <para>For example:</para>
+            
+        <programlisting>String name;
+"Hello " name "!"</programlisting>
+
+        <para>is equivalent to:</para>
+            
+        <programlisting>public String hello(String name) { return "Hello " name "!" }</programlisting>
+        
+        <para>A compilation unit consists of a list of imported toplevel types and 
+        toplevel methods, followed by one or more type or method definitions or
+        by a single toplevel expression:</para>
+        
+        <programlisting>Import* (ToplevelDeclaration+ | ToplevelExpression)</programlisting>
         
         <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
         An <literal>import</literal> statement allows the compilation unit to refer to a 
