@@ -1,4 +1,144 @@
 <chapter id="tools">
     <title>Toolset</title>
 
+    <para>The Ceylon SDK contains the following tools:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the Java VM, <literal>java</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the Ceylon front end for the Java VM, 
+            <literal>ceylon</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the Ceylon compiler, <literal>ceylonc</literal>, 
+            and</para>
+        </listitem>
+        <listitem>
+            <para>the Ceylon documentation compiler, 
+            <literal>ceylond</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <section>
+        <title>The VM front end</title>
+        
+        <para>The <literal>ceylon</literal> command accepts the name 
+        of a toplevel method, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repository and source directory.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repository is <literal>modules</literal>
+        and the default source directory is <literal>source</literal>.</para>
+        
+        <programlisting>ceylon org.hibernate.test.run \
+        -rep http://org.jboss/ceylon/modules \
+        -src ~/projects/hibernate/src</programlisting>
+               
+        <para>Execution begins with the named toplevel method, and
+        dependent modules are loaded lazily as classes they contain are 
+        needed. The name and version id of the dependent module containing 
+        the needed class are determined from the imported package name and 
+        the dependent module version specified by the module descriptor. 
+        Each version of each module is loaded using a different class 
+        loader.</para>
+        
+        <comment><para>TODO: one slight issue with this is that with 
+        wildcard imports it is sometimes ambiguous which package a class
+        belongs to.</para></comment>
+        
+        <para>The module runtime searches for modules in the following 
+        locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>module archives in a specified repositories,</para>
+            </listitem>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Source code in source archives and source directories is 
+        automatically compiled by the module runtime.</para>
+                
+    </section>
+
+    <section>
+        <title>The Ceylon compiler</title>
+        
+        <para>The <literal>ceylonc</literal> command accepts a list of
+        module names, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be a local module repository).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing dependencies.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repository and source directory.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repository is <literal>modules</literal>
+        and the default source directory is <literal>source</literal>.
+        The default output module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylonc org.hibernate.test org.hibernate \
+        -rep http://org.jboss/ceylon/modules \
+        -src ~/projects/hibernate/src \
+        -out ~/projects/hibernate/build</programlisting>
+        
+        <para>The compiler searches for source files to compile in
+        the specified modules in the specified source directories. For
+        each specified module, the compiler generates a module archive
+        and source archive in the output module repository.</para>
+        
+        <para>The compiler searches for dependencies in the following 
+        locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>module archives in a specified repositories,</para>
+            </listitem>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+                
+    </section>
+
 </chapter>
