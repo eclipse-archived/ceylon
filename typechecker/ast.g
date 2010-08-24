@@ -105,7 +105,15 @@ compilationUnit
       toplevelDeclaration+
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
-       ^(TYPE_DECL toplevelDeclaration)+
+       toplevelDeclaration+
+    ;
+
+dataUnit
+    : importDeclaration*
+      toplevelExpression
+      EOF
+    -> ^(IMPORT_LIST importDeclaration*)
+       toplevelExpression
     ;
 
 toplevelDeclaration
@@ -125,6 +133,11 @@ typeDeclaration
     -> ^(INTERFACE_DECL interfaceDeclaration)
     | aliasDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
+    ;
+
+toplevelExpression
+    : ( (declarationStart) => formalParameter ';')* expression
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*) expression
     ;
 
 importDeclaration
