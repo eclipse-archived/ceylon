@@ -255,7 +255,7 @@ public class Import(
         doc "Determines if this imported module is
              exported transitively to other modules
              that import the module."
-        export=false) { 
+        Boolean export=false) { 
         
     ... 
     
