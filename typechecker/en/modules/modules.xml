@@ -31,8 +31,9 @@
         
         <para>belong to the module <literal>org.hibernate</literal>.</para>
         
-        <para>A module version <emphasis>identifier</emphasis> .... , 
-        for example:</para>
+        <para>A module <emphasis>version identifier</emphasis> is a
+        character string containing digits, periods, and lowercase
+        letters, for example:</para>
         
         <programlisting>1.0.1</programlisting>
         <programlisting>3.0.0</programlisting>
@@ -182,12 +183,12 @@
         archives. The address of an archive belonging to the repository 
         adheres to the following standard form:</para>
         
-        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-rel-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
+        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
         
         <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
         is the filesystem path or URL of the repository,
         <literal><emphasis>&lt;repository&gt;</emphasis></literal> is the name
-        of the archive, and <literal><emphasis>&lt;module-rel-path&gt;</emphasis></literal> 
+        of the archive, and <literal><emphasis>&lt;module-path&gt;</emphasis></literal> 
         is formed by replacing every period with a slash in the module name.</para> 
         
         <para>For example, the module archive <literal>lang-1.0.1.car</literal> 
