@@ -84,10 +84,10 @@ Body?</programlisting>
         
         <para>For example:</para>
             
-        <programlisting>String name;
-"Hello " name "!"</programlisting>
+        <programlisting>String name; "Hello " name "!"</programlisting>
 
-        <para>is equivalent to:</para>
+        <para>as a toplevel expression in the file <literal>hello.ceylon</literal> is 
+        equivalent to:</para>
             
         <programlisting>public String hello(String name) { return "Hello " name "!" }</programlisting>
         
