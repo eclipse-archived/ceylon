@@ -966,21 +966,30 @@ while (exists local value = indexed.indexedValue(i)) {
         from an upper-bounded list of natural numbers.</para>
         
         <programlisting><![CDATA[public class Bounded<max>(Bounded<max> b)
-       satisfies Ordinal, Comparable<Bounded<max>> {
-
+       satisfies Comparable<Bounded<max>> {
+   
+   doc "The |Natural| representing this natural
+        number."
    public extension Natural natural { ... }
-
-   override subtype successor { ... }
-
-   override subtype predecessor { ... }
 
    override Comparison compare(Bounded<max> other) {
        return natural.compare(other.natural)
    }
 
+   doc "This natural number, as a |Bounded<nmax>| where
+        |nmax>=max|."
    public extension Bounded<max+inc> bounded<inc>() { ... }
-
+   
 }]]></programlisting>
+        
+        <para><literal>Bounded&lt;n&gt;</literal> does not implement 
+        <literal>Ordinal</literal>, so the type 
+        <literal>Range&lt;Bounded&lt;n&gt;&gt;</literal> does not exist.
+        Instead, the following utility method is provided:</para> 
+        
+        <programlisting><![CDATA[doc "A sequence of |Bounded<n+1>| from
+     from |0| to |n|."
+public Bounded<n+1>[n+1] zeroTo<n>() { ... }]]></programlisting>
 
     </section>
     
@@ -1296,7 +1305,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
         into a single <literal>BoundedSequence</literal>.</para>
 
         <programlisting><![CDATA[public T[n] zip<T,X,Y,n>(X[n] x, Y[n] y, T producing(X x, Y y)) {
-    return from (Bound<n> i in Range<n>()) 
+    return from (Bounded<n> i in zeroTo<n>()) 
                 select (producing(x[i],y[i]))
 }]]></programlisting>
 
@@ -1305,7 +1314,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
 }]]></programlisting>
 
         <programlisting><![CDATA[public T[n] zip<T,X,n>(X[n] lists..., T producing(X x...)) {
-    return from (Bound<n> i in Range<n>()) 
+    return from (Bounded<n> i in zeroTo<n>()) 
                 select (producing(from (X[n] list in lists) select (list[i]));
 }]]></programlisting>
 
@@ -1823,12 +1832,6 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     
 }]]></programlisting>
         
-        <para>The following overloaded form is useful for iterating a
-        <literal>BoundedSequence</literal>.</para>
-        
-        <programlisting><![CDATA[public class Range<n>() 
-    extends Range<Bounded<n>>(0, n) {}]]></programlisting>
-
         <para>The compiler is permitted to optimize away creation of a
         <literal>Range</literal> in code such as the following:</para>
         
