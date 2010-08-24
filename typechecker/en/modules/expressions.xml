@@ -3428,6 +3428,9 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
+    <comment><para>TODO: Should we have a binary <literal>upto</literal> operator
+    for producing ranges of <literal>Bounded&lt;n&gt;</literal>?</para></comment>
+    
     <comment><para>TODO: Should we have operators for performing arithmetic with
     datetimes and durations, constructing intervals and combining dates and 
     times?</para></comment>
