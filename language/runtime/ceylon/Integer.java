@@ -37,18 +37,6 @@ public final class Integer
         return instance(value % op.value);
     }
 
-    public ceylon.Integer operatorBitwiseAnd(ceylon.Integer op) {
-        return instance(value & op.value);
-    }
-
-    public ceylon.Integer operatorBitwiseOr(ceylon.Integer op) {
-        return instance(value | op.value);
-    }
-
-    public ceylon.Integer operatorBitwiseXor(ceylon.Integer op) {
-        return instance(value ^ op.value);
-    }
-
     public ceylon.Boolean operatorEqual(ceylon.Integer op) {
         return ceylon.Boolean.instance(value == op.value);
     }
