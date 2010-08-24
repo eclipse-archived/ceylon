@@ -32,7 +32,7 @@
         <para>The name of the package to which a compilation unit belongs is 
         formed by replacing every path directory separator character with a 
         period in the relative path from the source directory to the 
-        subdirectory containing the compilation unit .</para>
+        subdirectory containing the compilation unit.</para>
         
         <para>The name of the module to which a compilation unit belongs is 
         determined by searching all containing directories for a module 
@@ -41,7 +41,7 @@
         from the source directory to the subdirectory containing the module 
         descriptor.</para>
         
-        <para>Thus, the structure of the source directory for the module
+        <para>Thus, the structure of the source directory containing the module
         <literal>org.hello</literal> might be the following:</para>
         
         <programlisting><![CDATA[source/
@@ -54,6 +54,9 @@
                 DefaultHello.ceylon
             personalized/
                 PersonalizedHello.ceylon]]></programlisting>
+                
+        <para>The source code for multiple modules may be contained in a
+        single source directory.</para>
                 
         <comment><para>TODO: define some kind of "default module" for the
         case where no module descriptor is found, just for test code.</para></comment>

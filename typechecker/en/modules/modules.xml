@@ -102,6 +102,8 @@
                 DefaultHello.class
             personalized/
                 PersonalizedHello.class]]></programlisting>
+                
+        <para>A module archive may not contain multiple modules.</para>
         
     </section>
     
@@ -132,6 +134,8 @@
                 DefaultHello.ceylon
             personalized/
                 PersonalizedHello.ceylon]]></programlisting>
+        
+        <para>A source archive may not contain the source of multiple modules.</para>
         
     </section>
     
