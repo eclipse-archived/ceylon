@@ -91,11 +91,12 @@
         -rep http://org.jboss/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
                
-        <para>Execution begins with the named toplevel method, and
-        dependent modules are loaded lazily as classes they contain are 
-        needed. The name and version id of the dependent module containing 
-        the needed class are determined from the imported package name and 
-        the dependent module version specified by the module descriptor.</para>
+        <para>Execution begins with the named toplevel method, and imported 
+        modules are loaded lazily as classes they contain are needed. The 
+        name and version id of the imported module containing the needed 
+        class are determined from the imported package name specified by
+        the compilation unit and the imported module version specified by 
+        the module descriptor.</para>
         
         <comment><para>TODO: one slight issue with this is that with 
         wildcard imports it is sometimes ambiguous which package a class
@@ -104,8 +105,8 @@
         <para>Each version of each module is loaded using a different class 
         loader. Classes inside a module have access to other classes in the 
         same module and to classes belonging to modules that are explicitly 
-        specified as dependencies in the module descriptor. Classes in other 
-        modules are not accessible.</para>
+        imported in the module descriptor. Classes in other modules are not 
+        accessible.</para>
         
         <para>The module runtime searches for modules in the following 
         locations:</para>
@@ -170,8 +171,7 @@
         
         <para>All program elements imported by a compilation unit must
         belong to the same module as the compilation unit, or must belong
-        to a module that is explicitly specified as a dependency in the
-        module descriptor.</para>
+        to a module that is explicitly imported in the module descriptor.</para>
         
         <para>The compiler searches for dependencies in the following 
         locations:</para>
