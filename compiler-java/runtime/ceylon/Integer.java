@@ -1,7 +1,8 @@
 package ceylon;
 
 public final class Integer
-{
+    implements Integral<Integer>, Invertable<Integer>, Case<Integer> {
+
     private final long value;
     private Integer(long l) {
         value = l;
@@ -11,27 +12,27 @@ public final class Integer
         return new ceylon.Integer(l);
     }
 
-    public ceylon.Integer operatorAdd(ceylon.Integer op) {
+    public ceylon.Integer plus(ceylon.Integer op) {
         return instance(value + op.value);
     }
 
-    public ceylon.Integer operatorSubtract(ceylon.Integer op) {
+    public ceylon.Integer minus(ceylon.Integer op) {
         return instance(value - op.value);
     }
 
-    public ceylon.Integer operatorMultiply(ceylon.Integer op) {
+    public ceylon.Integer times(ceylon.Integer op) {
         return instance(value * op.value);
     }
 
-    public ceylon.Integer operatorPower(ceylon.Integer op) {
-        return instance((long) Math.pow(value, op.value)); // FIXME: ugly
-    }
-
-    public ceylon.Integer operatorDivide(ceylon.Integer op) {
+    public ceylon.Integer divided(ceylon.Integer op) {
         return instance(value / op.value);
     }
 
-    public ceylon.Integer operatorModulo(ceylon.Integer op) {
+    public ceylon.Integer power(ceylon.Integer op) {
+        return instance((long) Math.pow(value, op.value)); // FIXME: ugly
+    }
+
+    public ceylon.Integer remainder(ceylon.Integer op) {
         return instance(value % op.value);
     }
 
@@ -75,8 +76,19 @@ public final class Integer
         return ceylon.Boolean.instance(value >= op.value);
     }
 
-    public ceylon.Integer operatorCompare(ceylon.Integer op) {
-        return instance(java.lang.Long.valueOf(value).compareTo(op.value));
+    public ceylon.Integer inverse() {
+        return instance(-value);
+    }
+
+    public ceylon.Boolean test(ceylon.Integer op) {
+        return ceylon.Boolean.instance(value == op.value);
+    }
+
+    public ceylon.Comparison compare(ceylon.Integer op) {
+        long x = value;
+        long y = op.value;
+        return (x < y) ? Comparison.SMALLER :
+            ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
     public ceylon.String asString() {

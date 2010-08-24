@@ -505,12 +505,12 @@ public class Gen {
     static {
         operatorImplementors = new HashMap<Integer, String>();
 
-        operatorImplementors.put(CeylonParser.PLUS,       "operatorAdd");
-        operatorImplementors.put(CeylonParser.MINUS,      "operatorSubtract");
-        operatorImplementors.put(CeylonParser.TIMES,      "operatorMultiply");
-        operatorImplementors.put(CeylonParser.POWER,      "operatorPower");
-        operatorImplementors.put(CeylonParser.DIVIDED,    "operatorDivide");
-        operatorImplementors.put(CeylonParser.REMAINDER,  "operatorModulo");
+        operatorImplementors.put(CeylonParser.PLUS,       "plus");
+        operatorImplementors.put(CeylonParser.MINUS,      "minus");
+        operatorImplementors.put(CeylonParser.TIMES,      "times");
+        operatorImplementors.put(CeylonParser.DIVIDED,    "divided");
+        operatorImplementors.put(CeylonParser.POWER,      "power");
+        operatorImplementors.put(CeylonParser.REMAINDER,  "remainder");
         operatorImplementors.put(CeylonParser.BITWISEAND, "operatorBitwiseAnd");
         operatorImplementors.put(CeylonParser.BITWISEOR,  "operatorBitwiseOr");
         operatorImplementors.put(CeylonParser.BITWISEXOR, "operatorBitwiseXor");
@@ -521,7 +521,7 @@ public class Gen {
         operatorImplementors.put(CeylonParser.GT,         "operatorGreaterThan");
         operatorImplementors.put(CeylonParser.LTEQ,       "operatorLessEqual");
         operatorImplementors.put(CeylonParser.GTEQ,       "operatorGreaterEqual");
-        operatorImplementors.put(CeylonParser.COMPARE,    "operatorCompare");
+        operatorImplementors.put(CeylonParser.COMPARE,    "compare");
     }
 
     JCExpression convert(CeylonTree.Operator op) {
