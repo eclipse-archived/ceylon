@@ -245,7 +245,7 @@ try (lock) { ... }</programlisting>
         of a loop. If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
         directive may not specify an expression. If the loop has a <literal>fail</literal> 
         block, the <literal>break</literal> directive must specify an expression of 
-        type <literal>lang.Boolean</literal>. When the directive is executed, the expression 
+        type <literal>ceylon.lang.Boolean</literal>. When the directive is executed, the expression 
         is evaluated and a value of <literal>false</literal> specifies that the 
         <literal>fail</literal> block should be executed.</para>
         
@@ -257,7 +257,7 @@ try (lock) { ... }</programlisting>
         <programlisting>Continue := "continue"</programlisting>
         
         <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
-        expression of type <literal>lang.Exception</literal>. When the directive is executed, 
+        expression of type <literal>ceylon.lang.Exception</literal>. When the directive is executed, 
         the expression is evaluated and the resulting exception is thrown. If no expression 
         is specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
         
@@ -899,12 +899,12 @@ while (!person.dead);</programlisting>
             <programlisting>Finally := "finally" Block</programlisting>
 
             <para>The type of each <literal>catch</literal> variable declaration must be 
-            assignable to <literal>lang.Exception</literal>.</para>
+            assignable to <literal>ceylon.lang.Exception</literal>.</para>
             
             <para>The <literal>try</literal> block may declare a <emphasis>resource</emphasis>
             expression. A resource expresson produces a heavyweight object that must be 
             released when execution of the <literal>try</literal> terminates. Each resource 
-            expression must be of type assignable to <literal>lang.Usable</literal>.</para>
+            expression must be of type assignable to <literal>ceylon.lang.Usable</literal>.</para>
             
             <programlisting>Resource := InferableVariable Specifier | Expression</programlisting>
             

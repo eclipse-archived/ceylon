@@ -14,16 +14,18 @@
         <para>A module <emphasis>name</emphasis> is a period-separated
         list of lowercase identifiers, for example:</para>
         
-        <programlisting>lang</programlisting>
+        <programlisting>ceylon.lang</programlisting>
         <programlisting>org.hibernate</programlisting>
         
         <para>Any package whose name begins with the module name belongs
         to the module, for example, the packages:</para>
 
-        <programlisting>lang</programlisting>
-        <programlisting>lang.collections</programlisting>
+        <programlisting>ceylon.lang</programlisting>
+        <programlisting>ceylon.lang.assertion</programlisting>
+        <programlisting>ceylon.lang.metamodel</programlisting>
         
-        <para>belong to the module <literal>lang</literal>. The packages:</para>
+        <para>belong to the module <literal>ceylon.lang</literal>. The 
+        packages:</para>
         
         <programlisting>org.hibernate</programlisting>
         <programlisting>org.hibernate.impl</programlisting>
@@ -49,7 +51,7 @@
         <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
         version identifier. For example:</para>
         
-        <programlisting>lang-1.0.1.car</programlisting>
+        <programlisting>ceylon.lang-1.0.1.car</programlisting>
         <programlisting>org.hibernate-3.0.0.beta.car</programlisting>
         
         <para>A <emphasis>source archive name</emphasis> is of the following 
@@ -59,7 +61,7 @@
         
         <para>For example:</para>
         
-        <programlisting>lang-1.0.1.src</programlisting>
+        <programlisting>ceylon.lang-1.0.1.src</programlisting>
         <programlisting>org.hibernate-3.0.0.beta.src</programlisting>
         
     </section>
@@ -88,9 +90,9 @@
         
         <para>The module directory of the module archive is the directory
         containing the package with the same name as the module. For 
-        example, the module directory for the module <literal>lang</literal>
-        is the directory <literal>/lang</literal>. The module directory for
-        the module <literal>org.hibernate</literal> is the directory
+        example, the module directory for the module <literal>ceylon.lang</literal>
+        is the directory <literal>/ceylon/lang</literal>. The module directory 
+        for the module <literal>org.hibernate</literal> is the directory
         <literal>/org/hibernate</literal>.</para>
         
         <para>Thus, the structure of the module archive for the module
@@ -191,13 +193,13 @@
         of the archive, and <literal><emphasis>&lt;module-path&gt;</emphasis></literal> 
         is formed by replacing every period with a slash in the module name.</para> 
         
-        <para>For example, the module archive <literal>lang-1.0.1.car</literal> 
-        and source archive <literal>lang-1.0.1.src</literal> belonging to the 
+        <para>For example, the module archive <literal>ceylon.lang-1.0.1.car</literal> 
+        and source archive <literal>ceylon.lang-1.0.1.src</literal> belonging to the 
         repository included in the Ceylon SDK are obtained from the following
         addresses:</para>
  
-        <programlisting>modules/lang/1.0.1/lang-1.0.1.car</programlisting>        
-        <programlisting>modules/lang/1.0.1/lang-1.0.1.src</programlisting>
+        <programlisting>modules/ceylon/lang/1.0.1/ceylon.lang-1.0.1.car</programlisting>        
+        <programlisting>modules/ceylon/lang/1.0.1/ceylon.lang-1.0.1.src</programlisting>
         
         <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>
         and source archive <literal>org.hibernate-3.0.0.beta.src</literal>
@@ -277,7 +279,7 @@ public class Import(
     doc = "The best-ever ORM solution!";
     license = 'http://www.gnu.org/licenses/lgpl.html';
     Import {
-        name = 'lang';
+        name = 'ceylon.lang';
         version = '1.0.1';
         export = true;
     },

@@ -8,7 +8,7 @@
     <section id="void">
         <title>The void type</title>
         
-        <para>The class <literal>lang.Void</literal> is the root of the type
+        <para>The class <literal>ceylon.lang.Void</literal> is the root of the type
         system. All types are assignable to <literal>Void</literal>, which
         supports the the operator <literal>.</literal> (member selection), 
         along with <literal>is</literal> (assignability).</para>
@@ -20,8 +20,8 @@
     <section id="object">
         <title>The Object type</title>
         
-        <para>User-written classes extend <literal>lang.Object</literal> and 
-        all interface types are assignable to <literal>lang.Object</literal>.
+        <para>User-written classes extend <literal>ceylon.lang.Object</literal> and 
+        all interface types are assignable to <literal>Object</literal>.
         Expressions of type <literal>Object</literal> support the binary
         operator <literal>===</literal> (identity equals). An <literal>Object</literal> 
         may belong to collections. Expressions of type <literal>Object</literal> 
@@ -104,7 +104,7 @@
     <section id="callable">
         <title>Callable references</title>
         
-        <para>The type <literal>lang.Callable</literal> represents an executable
+        <para>The type <literal>ceylon.lang.Callable</literal> represents an executable
         operation. Expressions of type <literal>Callable</literal> may be the subject
         of the argument specification operators <literal>()</literal> and
         <literal>{}</literal>.</para>
@@ -198,7 +198,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     <section id="referenceableandassignable">
         <title>Referenceable and assignable values</title>
         
-        <para>The class <literal>lang.Referenceable</literal> represents a value
+        <para>The class <literal>ceylon.lang.Referenceable</literal> represents a value
         for which a reference can be obtained, allowing pass by reference semantics.
         Instances of <literal>Referenceable&lt;T&gt;</literal> are transparently
         assignable to <literal>T</literal>, according to the <literal>extension</literal>
@@ -214,10 +214,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     
 }]]></programlisting>
         
-        <para>Note that <literal>lang.Referenceable</literal> is not a subclass of 
-        <literal>lang.Object</literal>.</para>
+        <para>Note that <literal>ceylon.lang.Referenceable</literal> is not a subclass of 
+        <literal>ceylon.lang.Object</literal>.</para>
     
-        <para>The subtype <literal>lang.Assignable</literal> represents a reference
+        <para>The subtype <literal>ceylon.lang.Assignable</literal> represents a reference
         to an assignable value, allowing pass by reference semantics for assignable
         values. Expressions of type <literal>Assignable</literal> support the binary
         operator <literal>:=</literal> (assign).</para>
@@ -242,7 +242,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     <section id="boolean">
         <title>Boolean values</title>
         
-        <para>The <literal>lang.Boolean</literal> class represents
+        <para>The <literal>ceylon.lang.Boolean</literal> class represents
         boolean values. Expressions of type <literal>Boolean</literal> support 
         the binary <literal>||, &amp;&amp;</literal> and <literal>=></literal> 
         operators and the unary <literal>!</literal> operator, and inherit the 
@@ -303,7 +303,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     <section id="casesandselectors">
         <title>Cases and selectors</title>
         
-        <para>The interface <literal>lang.Case</literal> represents a
+        <para>The interface <literal>ceylon.lang.Case</literal> represents a
         type that may be used as a <literal>case</literal> in the 
         <literal>switch</literal> construct.</para>
         
@@ -360,7 +360,7 @@ class CaseSuper<X,Y>(Case<X> c)
 }]]></programlisting>
 
         <para>Classes with enumerated <literal>case</literal>s implicitly implement 
-        <literal>lang.Selector</literal></para>
+        <literal>ceylon.lang.Selector</literal></para>
         
         <programlisting><![CDATA[public interface Selector {
     public String name;
@@ -389,7 +389,7 @@ class CaseSuper<X,Y>(Case<X> c)
     <section id="optionalandnull">
         <title>Optional and null values</title>
         
-        <para>The class <literal>lang.Optional</literal> represents a
+        <para>The class <literal>ceylon.lang.Optional</literal> represents a
         value that may be null.</para>
         
         <programlisting><![CDATA[abstract class Optional<out X>() 
@@ -413,11 +413,11 @@ class CaseSuper<X,Y>(Case<X> c)
         operators <literal>==</literal> (equals) and <literal>!=</literal> 
         (not equals).</para>
         
-         <para>Note that <literal>lang.Optional</literal> is not a subtype
-        of <literal>lang.Object</literal>.</para>
+         <para>Note that <literal>ceylon.lang.Optional</literal> is not a subtype
+        of <literal>ceylon.lang.Object</literal>.</para>
         
         <para>If an optional value is not null, it is represented by an
-        instance of the subclass <literal>lang.Something</literal>.</para>
+        instance of the subclass <literal>ceylon.lang.Something</literal>.</para>
         
         <programlisting><![CDATA[public extension 
 class Something<out X>(X x) 
@@ -443,7 +443,7 @@ class Something<out X>(X x)
         assignable to <literal>X</literal>.</para>
         
         <para>If an optional value is null, it is represented by an
-        instance of the subclass <literal>lang.Nothing</literal>.</para>
+        instance of the subclass <literal>ceylon.lang.Nothing</literal>.</para>
         
         <programlisting><![CDATA[public extension 
 class Nothing<out X>(Null null) 
@@ -472,7 +472,7 @@ class Nothing<out X>(Null null)
     
 }]]></programlisting>
 
-        <para>The decorator <literal>lang.NullCase</literal> allows <literal>null</literal>
+        <para>The decorator <literal>ceylon.lang.NullCase</literal> allows <literal>null</literal>
         to appear as a <literal>case</literal> expression in a <literal>switch</literal>
         statement.</para>
         
@@ -497,7 +497,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     <section id="usable">
         <title>Usables</title>
         
-        <para>The interface <literal>lang.Usable</literal> represents an
+        <para>The interface <literal>ceylon.lang.Usable</literal> represents an
         object with a lifecycle controlled by <literal>try</literal>.</para>
         
         <programlisting><![CDATA[public interface Usable {
@@ -610,7 +610,7 @@ while (exists local value = indexed.indexedValue(i)) {
     <section id="category">
         <title>Containers and categories</title>
         
-        <para>The interface <literal>lang.Container</literal> represents
+        <para>The interface <literal>ceylon.lang.Container</literal> represents
         the abstract notion of an object that may be empty. Expressions
         of type <literal>Container?</literal> support the unary postfix 
         operator <literal>nonempty</literal>.</para>
@@ -623,7 +623,7 @@ while (exists local value = indexed.indexedValue(i)) {
     
 }]]></programlisting>
     
-        <para>The interface <literal>lang.Category</literal> represents
+        <para>The interface <literal>ceylon.lang.Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
         
         <programlisting><![CDATA[public interface Category {
@@ -727,7 +727,7 @@ while (exists local value = indexed.indexedValue(i)) {
     <section id="correspondence">
         <title>Correspondences</title>
         
-        <para>The interface <literal>lang.Correspondence</literal> represents
+        <para>The interface <literal>ceylon.lang.Correspondence</literal> represents
         the abstract notion of an object that maps value of one type to values
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
@@ -865,7 +865,7 @@ while (exists local value = indexed.indexedValue(i)) {
     <section id="comparableandordinal">
         <title>Ordered values</title>
         
-        <para>The <literal>lang.Comparable</literal> interface 
+        <para>The <literal>ceylon.lang.Comparable</literal> interface 
         represents totally ordered types, and supports the binary operators 
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
@@ -935,7 +935,7 @@ while (exists local value = indexed.indexedValue(i)) {
     return max
 }]]></programlisting>
 
-        <para>The <literal>lang.Ordinal</literal> interface represents 
+        <para>The <literal>ceylon.lang.Ordinal</literal> interface represents 
         objects in a sequence, and supports the binary operator 
         <literal>..</literal> (range). In addition, variables support 
         the postfix unary operators <literal>++</literal> (increment) 
@@ -996,7 +996,7 @@ public Bounded<n+1>[n+1] zeroTo<n>() { ... }]]></programlisting>
     <section id="sequence">
         <title>Sequences</title>
         
-        <para>A <literal>lang.Sequence</literal> is a correspondence from 
+        <para>A <literal>ceylon.lang.Sequence</literal> is a correspondence from 
         a bounded progression of natural numbers. Sequences support the 
         binary operators <literal>[].</literal> (spread), <literal>+</literal> 
         (join) and <literal>[i...]</literal> (upper range) and the ternary 
@@ -1220,7 +1220,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <programlisting><![CDATA[public mutable interface OpenSequence<X>
         satisfies X[], OpenCorrespondence<Natural,X> {}]]></programlisting>
 
-        <para>A <literal>lang.BoundedSequence</literal> adds a typesafe bound
+        <para>A <literal>ceylon.lang.BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bound&lt;n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, n>
@@ -1328,7 +1328,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
     <section id="collections">
         <title>Collections</title>
         
-        <para>The interface <literal>lang.Collection</literal> is the 
+        <para>The interface <literal>ceylon.collection.Collection</literal> is the 
         root of the Ceylon collections framework.</para>
         
         <programlisting><![CDATA[public interface Collection<out X> 
@@ -1387,7 +1387,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
     
 }]]></programlisting>
         
-        <para>Mutable collections implement <literal>lang.OpenCollection</literal>:</para>
+        <para>Mutable collections implement <literal>ceylon.collection.OpenCollection</literal>:</para>
         
         <programlisting><![CDATA[public mutable interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
@@ -1925,7 +1925,7 @@ class String(Character[] characters)
         <comment><para>What encoding is the default for Ceylon strings? Are there 
         performance advantages to going with UTF-16 like Java? Can we easily abstract
         this stuff? Does the JVM do all kinds of optimizations for 
-        <literal>java.lang.String</literal>?</para></comment>
+        <literal>java.ceylon.lang.String</literal>?</para></comment>
         
         <para>A string template is represented by an instance of <literal>StringTemplate</literal>.</para>
         
@@ -1996,7 +1996,7 @@ class String(Character[] characters)
     <section id="number">
         <title>Numbers</title>
         
-        <para>The <literal>lang.Number</literal> interface is the abstract supertype
+        <para>The <literal>ceylon.lang.Number</literal> interface is the abstract supertype
         of all classes which represent numeric values.</para>
         
         <programlisting><![CDATA[public interface Number {
@@ -2065,7 +2065,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para>The subtype <literal>lang.Numeric</literal> supports the binary 
+        <para>The subtype <literal>ceylon.lang.Numeric</literal> supports the binary 
         operators <literal>+,-, *, /, **</literal>. In addition, 
         <literal>mutable</literal> values of type <literal>Numeric</literal> 
         support the compound assignment operators 
@@ -2098,7 +2098,7 @@ class String(Character[] characters)
         <comment><para>TODO: I suppose <literal>Numeric</literal> should not extend
         <literal>Comparable</literal>, since complex numbers are not comparable.</para></comment>
 
-        <para>The subtype <literal>lang.Integral</literal> supports the binary 
+        <para>The subtype <literal>ceylon.lang.Integral</literal> supports the binary 
         operator <literal>%</literal>, and inherits the unary operators 
         <literal>++</literal> and <literal>--</literal> from 
         <literal>Ordinal</literal>.</para>
@@ -2112,7 +2112,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para>The type <literal>lang.Invertable</literal> supports the unary
+        <para>The type <literal>ceylon.lang.Invertable</literal> supports the unary
         prefix <literal>-</literal> operator.</para>
         
         <programlisting><![CDATA[public interface Invertable<I> 
@@ -2125,7 +2125,7 @@ class String(Character[] characters)
         
         <para>Five numeric types are built in:</para>
 
-        <para><literal>lang.Natural</literal> represents 63 bit unsigned integers
+        <para><literal>ceylon.lang.Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
         <programlisting><![CDATA[public class Natural(Natural natural)
@@ -2166,7 +2166,7 @@ class String(Character[] characters)
         literals. I don't love this, because natural numbers are especially common in real
         applications.</para></comment>
 
-        <para><literal>lang.Integer</literal> represents 64 bit signed integers.</para>
+        <para><literal>ceylon.lang.Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
         satisfies Integral<Integer>, Invertable<Integer>, Case<Integer> {
@@ -2190,7 +2190,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para><literal>lang.Whole</literal> represents arbitrary-precision
+        <para><literal>ceylon.lang.Whole</literal> represents arbitrary-precision
         signed integers.</para>
 
         <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
@@ -2211,7 +2211,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
         
-        <para><literal>lang.Float</literal> represents 64 bit floating point
+        <para><literal>ceylon.lang.Float</literal> represents 64 bit floating point
         values.</para>
 
         <programlisting><![CDATA[public class Float(Float float)
@@ -2233,7 +2233,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para><literal>lang.Decimal</literal> represents arbitrary-precision
+        <para><literal>ceylon.lang.Decimal</literal> represents arbitrary-precision
         and arbitrary-scale decimals.</para>
 
         <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
@@ -2498,7 +2498,7 @@ class String(Character[] characters)
     <section id="control">
         <title>Control expressions</title>
         
-        <para>The <literal>lang.assertion</literal> package defines 
+        <para>The <literal>ceylon.lang.assertion</literal> package defines 
         support for assertions.</para>
         
         <programlisting><![CDATA[doc "Assert that the block evaluates to true. The block 
@@ -2511,7 +2511,7 @@ public void assert(StringTemplate message, Boolean that()) {
     }
 }]]></programlisting>
     
-        <para>The <literal>lang.conditional</literal> package defines 
+        <para>The <literal>ceylon.lang.conditional</literal> package defines 
         support for conditional expressions.</para>
         
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
@@ -2566,7 +2566,7 @@ public Y ifExists<X,Y>(specified X? value,
     }
 }]]></programlisting>
 
-        <para>The <literal>lang.exceptional</literal> package defines 
+        <para>The <literal>ceylon.lang.exceptional</literal> package defines 
         support for exceptional expressions.</para>
         
         <programlisting><![CDATA[doc "Attempt to evaluate the first block. If an 
@@ -2640,7 +2640,7 @@ public Y select<X,Y>(X selector,
 
 -->
 
-        <para>The <literal>lang.repetition</literal> package defines 
+        <para>The <literal>ceylon.lang.repetition</literal> package defines 
         support for loops.</para>
         
         <programlisting><![CDATA[doc "Repeat the block the given number of times."
@@ -2652,7 +2652,7 @@ public void repeat(Natural repetitions, void times()) {
     }
 }]]></programlisting>
     
-        <para>The <literal>lang.quantification</literal> package defines 
+        <para>The <literal>ceylon.lang.quantification</literal> package defines 
         support for quantifiers.</para>
         
         <programlisting><![CDATA[doc "Count the elements for which the block 
@@ -2716,7 +2716,7 @@ public X first<X>(iterated Iterable<X> elements,
     }
 }]]></programlisting>
         
-        <para>The <literal>lang.comprehension.list</literal> package defines 
+        <para>The <literal>ceylon.lang.comprehension.list</literal> package defines 
         support for <literal>List</literal> comprehensions.</para>
         
         <programlisting><![CDATA[doc "Iterate elements and return those for which 
@@ -2761,7 +2761,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
     return list
 }]]></programlisting>
         
-        <para>The <literal>lang.comprehension.map</literal> package defines 
+        <para>The <literal>ceylon.lang.comprehension.map</literal> package defines 
         support for <literal>Map</literal> comprehensions.</para>
         
         <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for 

@@ -133,21 +133,21 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         <itemizedlist>
         <listitem>
             <para>The compiler is permitted to emit bytecode that unexpectedly creates or avoids 
-            creating an actual instance of the erasable type <literal>lang.Optional</literal>, 
-            of <literal>lang.Referenceable</literal>, or of <literal>lang.Assignable</literal>,
+            creating an actual instance of the erasable type <literal>ceylon.lang.Optional</literal>, 
+            of <literal>ceylon.lang.Referenceable</literal>, or of <literal>ceylon.lang.Assignable</literal>,
             when an expression is evaluated, as long as this does not affect the execution of 
             the program. (Therefore, the <literal>===</literal> operator is undefined for these 
             types.)</para>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of one 
-            of the the built-in numeric types, of <literal>lang.Range</literal>, of 
-            <literal>lang.Entry</literal>, or of <literal>lang.String</literal> without execution 
-            of the initializer of the class, whenever any expression is evaluated. Furthermore, 
-            it is permitted to use such a newly-produced instance as the value of the expression, 
-            as long as the newly-produced instance is equal to the value expected according to 
-            the rules above, as determined using the <literal>==</literal> operator. Therefore, 
-            the <literal>===</literal> operator is unreliable for the listed types.</para>
+            of the the built-in numeric types, of <literal>ceylon.lang.Range</literal>, of 
+            <literal>ceylon.lang.Entry</literal>, or of <literal>ceylon.lang.String</literal> 
+            without execution of the initializer of the class, whenever any expression is evaluated. 
+            Furthermore, it is permitted to use such a newly-produced instance as the value of the 
+            expression, as long as the newly-produced instance is equal to the value expected 
+            according to the rules above, as determined using the <literal>==</literal> operator. 
+            Therefore, the <literal>===</literal> operator is unreliable for the listed types.</para>
         </listitem>
         </itemizedlist>
         
@@ -270,7 +270,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Natural number literals</title>
         
         <para>A natural number literal <literal>n</literal> is an 
-        expression of type <literal>lang.Bounded&lt;n&gt;</literal>.</para>
+        expression of type <literal>ceylon.lang.Bounded&lt;n&gt;</literal>.</para>
         
         <programlisting>Bounded&lt;5&gt; five = 5;</programlisting>
         
@@ -290,7 +290,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Floating point number literals</title>
         
         <para>A floating point number literal is an expression of 
-        type <literal>lang.Float</literal>.</para>
+        type <literal>ceylon.lang.Float</literal>.</para>
         
        <programlisting>public Float pi = 3.14159;</programlisting>
         
@@ -306,7 +306,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Character literals</title>
         
         <para>A single character literal is an expression of type 
-        <literal>lang.Character</literal>.</para>
+        <literal>ceylon.lang.Character</literal>.</para>
                 
         <programlisting>if ( string[i] == `+` ) { ... }</programlisting>
         
@@ -323,7 +323,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Character string literals</title>
         
         <para>A character string literal is an expression of type
-        <literal>lang.String</literal>.</para>
+        <literal>ceylon.lang.String</literal>.</para>
         
         <programlisting>person.name := "Gavin King";</programlisting>
         
@@ -357,7 +357,7 @@ if you prefer.";</programlisting>
         structured data.</para>
         
         <para>A single quoted literal is an expression of type 
-        <literal>lang.Quoted</literal>. An extension is responsible for converting 
+        <literal>ceylon.lang.Quoted</literal>. An extension is responsible for converting 
         it to the appropriate type.</para>
                 
         <programlisting>Date date = '25/03/2005';</programlisting>
@@ -1702,8 +1702,8 @@ except (SomethingElseWrong sew) {
                 <para>replacing each occurrence of any type parameter of the method or class 
                 in the signature with the explicitly specified type argument, if type arguments 
                 were specified, or with the first declared upper bound of the type parameter, 
-                or <literal>lang.Void</literal> if the type parameter has no declared upper 
-                bound.</para>
+                or <literal>ceylon.lang.Void</literal> if the type parameter has no declared 
+                upper bound.</para>
             </listitem>
         </itemizedlist>
         
@@ -2491,9 +2491,9 @@ setPerson(person);</programlisting>
     </itemizedlist>
     
     <para>The argument expressions of the identity operator must be of type
-    <literal>lang.Object</literal>. The argument expression of the assignability 
-    operator may be of any type, not limited to types assignable to 
-    <literal>Object</literal>.</para>
+    <literal>ceylon.lang.Object</literal>. The argument expression of the 
+    assignability operator may be of any type, not limited to types assignable 
+    to <literal>Object</literal>.</para>
     
     <para>All other operators are defined in terms of other operators and/or
     invocations.</para>
@@ -3681,19 +3681,19 @@ setPerson(person);</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para><literal>lang.Natural</literal> to <literal>lang.Integer</literal>,
-                <literal>lang.Float</literal>, <literal>lang.Whole</literal> and 
-                <literal>lang.Decimal</literal></para>
+                <para><literal>Natural</literal> to <literal>Integer</literal>,
+                <literal>Float</literal>, <literal>Whole</literal> and 
+                <literal>Decimal</literal></para>
             </listitem>
             <listitem>
-                <para><literal>lang.Integer</literal> to <literal>lang.Float</literal>,
-                <literal>lang.Whole</literal> and <literal>lang.Decimal</literal></para>
+                <para><literal>Integer</literal> to <literal>Float</literal>,
+                <literal>Whole</literal> and <literal>Decimal</literal></para>
             </listitem>
             <listitem>
-                <para><literal>lang.Float</literal> to <literal>lang.Decimal</literal></para>
+                <para><literal>Float</literal> to <literal>Decimal</literal></para>
             </listitem>
             <listitem>
-                <para><literal>lang.Whole</literal> to <literal>lang.Decimal</literal></para>
+                <para><literal>Whole</literal> to <literal>Decimal</literal></para>
             </listitem>
         </itemizedlist>
         

@@ -148,7 +148,7 @@ Body?</programlisting>
         <para>The optional <literal>alias</literal> clause allows resolution of 
         cross-namespace declaration name collisions.</para>
         
-        <programlisting>import lang.collections.*;</programlisting>
+        <programlisting>import ceylon.collection.*;</programlisting>
         
         <programlisting>import transaction.propagation.TxPropagationType.*;</programlisting>
         
@@ -168,11 +168,11 @@ Body?</programlisting>
             
         <comment><para>TODO: Would it be better to specify that there is at most a single 
         <literal>import</literal> statement per source file, for example:</para>
-        <programlisting>import my.query.Order, lang.collections.*, java.util.Map.Entry alias MapEntry;</programlisting>.</comment>
+        <programlisting>import my.query.Order, ceylon.collection.*, java.util.Map.Entry alias MapEntry;</programlisting>.</comment>
         
         <comment><para>TODO: Would it be better to enclose that the imported expressions
         in single quotes, as they would need to appear in the body of the source file,
-        for example: <literal>'my.query.Order'</literal>, <literal>'lang.collections.*'</literal>,
+        for example: <literal>'my.query.Order'</literal>, <literal>'ceylon.collection.*'</literal>,
         <literal>'java.util.Map.Entry' alias MapEntry</literal>.</para></comment>
         
      </section>
@@ -306,12 +306,12 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
-                the first declared upper bound of the type parameter, or <literal>lang.Void</literal> 
+                the first declared upper bound of the type parameter, or <literal>ceylon.lang.Void</literal> 
                 if there is no declared upper bound, and</para>
             </listitem>
             <listitem>
                 <para>replacing the type of any varargs type parameter in the signature with 
-                <literal>lang.Void...</literal>, and then</para>
+                <literal>ceylon.lang.Void...</literal>, and then</para>
             </listitem>
             <listitem>
                 <para>discarding the type arguments of each element of the list, leaving just 
@@ -362,11 +362,11 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>Interfaces are objects: all interfaces are subtypes of 
-                <literal>lang.Object</literal>. Conversely, only a subtype of 
-                <literal>lang.Object</literal> may satisfy an interface.</para>
+                <literal>ceylon.lang.Object</literal>. Conversely, only a subtype of 
+                <literal>ceylon.lang.Object</literal> may satisfy an interface.</para>
             </listitem>
             <listitem>
-                <para>Single root: all types are subtypes of <literal>lang.Void</literal>.</para>
+                <para>Single root: all types are subtypes of <literal>ceylon.lang.Void</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -415,9 +415,9 @@ Description doc(String description) {
                 <literal>X</literal> is assignable to <literal>Z</literal>.</para>
             </listitem>
             <listitem>
-                <para>Nullsafety: the type <literal>lang.Optional</literal> is 
-                not assignable to <literal>lang.Object</literal>. Nor is its subtype
-                <literal>lang.Nothing</literal>.</para>
+                <para>Nullsafety: the type <literal>ceylon.lang.Optional</literal> is 
+                not assignable to <literal>ceylon.lang.Object</literal>. Nor is its subtype
+                <literal>ceylon.lang.Nothing</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1092,7 +1092,7 @@ VarargsParam?
         </listitem>
         </itemizedlist>
         
-        <para>A user-defined class must extend <literal>lang.Object</literal>
+        <para>A user-defined class must extend <literal>ceylon.lang.Object</literal>
         or one of its subclasses.</para>
         
     </section>
@@ -1674,8 +1674,8 @@ class Customer(Name name, Organization? org = null)
         
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>lang.Object</literal>. There are one exception to this
-        rule: the built-in class <literal>lang.Void</literal> which does not have a superclass.
+        its superclass is <literal>ceylon.lang.Object</literal>. There are one exception to this
+        rule: the built-in class <literal>ceylon.lang.Void</literal> which does not have a superclass.
         </para>
         
         <para>
@@ -1868,7 +1868,7 @@ class Customer(Name name, Organization? org = null)
 }</programlisting>
 
         <para>A class with declared <literal>case</literal>s implicitly implements 
-        <literal>lang.Selector</literal>.</para>
+        <literal>ceylon.lang.Selector</literal>.</para>
         
         <para>Enumerated instances of a class are instantiated when the class is
         loaded by the virtual machine, with the specified arguments.</para>
@@ -2974,7 +2974,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         annotated <literal>override</literal> which inherit their visibility from the 
         declaration they override.</para>
         
-        <para>The class <literal>lang.Visibility</literal> defines the visibility 
+        <para>The class <literal>ceylon.lang.Visibility</literal> defines the visibility 
         levels:</para>
         
         <programlisting>public class Visibility {

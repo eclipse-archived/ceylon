@@ -277,42 +277,42 @@
     
     <itemizedlist>
         <listitem>
-            <para><literal>lang</literal> - basic types provided to support
+            <para><literal>ceylon.lang</literal> - basic types provided to support
             built-in language features</para>
         </listitem>
         <listitem>
-            <para><literal>module</literal> - the module runtime (based upon
+            <para><literal>ceylon.module</literal> - the module runtime (based upon
             JBoss Modules)</para>
         </listitem>
         <listitem>
-            <para><literal>collection</literal> - the collections framework
+            <para><literal>ceylon.collection</literal> - the collections framework
             (with the underlying implementation provided by the Java collections
             framework)</para>
         </listitem>
         <listitem>
-            <para><literal>datetime</literal> - support for representing
+            <para><literal>ceylon.datetime</literal> - support for representing
             dates and times (based upon JSR-310)</para>
         </listitem>
         <listitem>
-            <para><literal>security</literal> - the security API</para>
+            <para><literal>ceylon.security</literal> - the security API</para>
         </listitem>
         <listitem>
-            <para><literal>io</literal> - the I/O facility</para>
+            <para><literal>ceylon.io</literal> - the I/O facility</para>
         </listitem>
         <listitem>
-            <para><literal>concurrent</literal> - the concurrency API (based
+            <para><literal>ceylon.concurrent</literal> - the concurrency API (based
             upon JSR-166)</para>
         </listitem>
         <listitem>
-            <para><literal>http</literal> - the HTTP client and server (based 
+            <para><literal>ceylon.http</literal> - the HTTP client and server (based 
             upon JBoss Netty)</para>
         </listitem>
         <listitem>
-            <para><literal>transaction</literal> - the transaction server (based 
+            <para><literal>ceylon.transaction</literal> - the transaction server (based 
             upon JBoss Transactions)</para>
         </listitem>
         <listitem>
-            <para><literal>message</literal> - the message server (based 
+            <para><literal>ceylon.message</literal> - the message server (based 
             upon JBoss HornetQ)</para>
         </listitem>
     </itemizedlist>
@@ -338,8 +338,8 @@ public void hello(Process process) {
 
         <para>
         This code defines a method named <literal>hello()</literal> with a 
-        parameter of type <literal>lang.Process</literal>. The method is 
-        annotated <literal>public</literal>, which makes it accessible to 
+        parameter of type <literal>ceylon.lang.Process</literal>. The method 
+        is annotated <literal>public</literal>, which makes it accessible to 
         code in other compilation units. When the method is executed, it 
         calls the <literal>writeLine()</literal> method of the class 
         <literal>Process</literal>. (This method displays its parameter on 
@@ -903,7 +903,7 @@ package assign greeting {
             <programlisting>Float oneHundredth = 0.01;</programlisting>
             <programlisting>Float oneMillion = 1.0E+6;</programlisting>
             
-            <para>Widening type conversions are implicit, since the <literal>lang</literal> 
+            <para>Widening type conversions are implicit, since the <literal>ceylon.lang</literal> 
             package defines a set of built-in <emphasis>extensions</emphasis> (a concept 
             we'll meet later) that take care of this:</para>
             
@@ -1058,13 +1058,13 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             result, to account for the possibility that there is no value defined for
             the given key.</para>
 
-            <para>So far we haven't met anything from the collections package proper. 
+            <para>So far we haven't met anything from the collections module proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
-            of the package <literal>lang</literal>. They're there to abstract away the
-            nice syntax we've just met from the (relatively) gory details of the collections 
-            package.</para>
+            of the package <literal>ceylon.lang</literal>. They're there to abstract away 
+            the nice syntax we've just met from the (relatively) gory details of the 
+            collections package.</para>
             
-            <para>Inside the collections package you'll find some interfaces with pretty
+            <para>Inside the collections module you'll find some interfaces with pretty
             familiar names: <literal>Collection</literal>, <literal>Set</literal>, 
             <literal>List</literal> and <literal>Map</literal>. (There's even a
             <literal>Bag</literal>.) But these interfaces aren't quite what you're used 
@@ -1301,7 +1301,7 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
         syntax, I've got something extra to throw at you! A method parameter can be 
         declared as an <emphasis>iterator</emphasis> method, which allows us to move 
         the declaration of the formal parameters of the inline callable arguments. For 
-        example, the <literal>lang</literal> package defines a <literal>from()</literal> 
+        example, the <literal>ceylon.lang</literal> package defines a <literal>from()</literal> 
         method that is intended to be called like this:</para>
         
         <programlisting>String[] names = from (Person p in people) select (p.name) where (p.age>18);</programlisting>
