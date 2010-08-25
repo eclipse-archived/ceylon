@@ -49,22 +49,6 @@ public final class Integer
         return ceylon.Boolean.instance(value != op.value);
     }
 
-    public ceylon.Boolean operatorLessThan(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value < op.value);
-    }
-
-    public ceylon.Boolean operatorGreaterThan(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value > op.value);
-    }
-
-    public ceylon.Boolean operatorLessEqual(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value <= op.value);
-    }
-
-    public ceylon.Boolean operatorGreaterEqual(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value >= op.value);
-    }
-
     public ceylon.Integer inverse() {
         return instance(-value);
     }
