@@ -1900,7 +1900,7 @@ public class Hello(String? name) {
         won't be able to call the <literal>info()</literal> method without
         explicitly invoking the <literal>log</literal> attribute.</para>
         
-        <para>So you might think that extension are just a trivial trick that
+        <para>So you might think that extensions are just a trivial trick that
         saves a few keystrokes of typing effort. But the history of Java 
         demonstrates why extensions are an important feature. Java defines its
         collections framework in terms of various interfaces, for example, 
