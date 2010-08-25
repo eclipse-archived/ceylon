@@ -17,6 +17,11 @@
         <programlisting>ceylon.lang</programlisting>
         <programlisting>org.hibernate</programlisting>
         
+        <para>It is recommended that module names follow the Java package
+        naming convention embedding the organization's domain name (in
+        this case, <literal>hibernate.org</literal>). The namespace
+        <literal>ceylon</literal> is reserved for SDK modules.</para>
+        
         <para>Any package whose name begins with the module name belongs
         to the module, for example, the packages:</para>
 
