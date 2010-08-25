@@ -24,7 +24,7 @@ Body?</programlisting>
         be named with an initial uppercase. Members, parameters, locals and packages
         must be named with an initial lowercase or underscore.</para>
         
-        <programlisting>PackageName := LIdentifier</programlisting>
+        <programlisting>PackageName := PIdentifier</programlisting>
         <programlisting>TypeName := UIdentifier</programlisting>
         <programlisting>MemberName := LIdentifier</programlisting>
         <programlisting>ParameterName := LIdentifier</programlisting>
@@ -104,7 +104,7 @@ Body?</programlisting>
         <programlisting>Import := "import" FullPackageName "." ImportSpec ";"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated
-        list of initial lowercase identifiers.</para>
+        list of all lowercase identifiers.</para>
         
         <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
         

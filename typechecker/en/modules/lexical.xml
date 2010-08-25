@@ -88,6 +88,10 @@
         <programlisting>_id</programlisting>
         <programlisting>x2</programlisting>
         
+        <para>Package and module names are built from all-lowercase identifiers.</para>
+        
+        <programlisting>PIdentifier := LowercaseChar+</programlisting>
+        
         <para>The following reserved words are not legal identifier names:</para>
         
         <para><literal>
