@@ -273,6 +273,40 @@
     equivalent to Java's <literal>protected</literal>.
     </para>
     
+    <para>The Ceylon SDK includes the following important modules:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para><literal>lang</literal> - basic types provided to support
+            built-in language features</para>
+        </listitem>
+        <listitem>
+            <para><literal>module</literal> - the module runtime (based upon
+            JBoss Modules)</para>
+        </listitem>
+        <listitem>
+            <para><literal>collection</literal> - the collections framework</para>
+        </listitem>
+        <listitem>
+            <para><literal>datetime</literal> - support for representing
+            dates and times (based upon JSR-310)</para>
+        </listitem>
+        <listitem>
+            <para><literal>io</literal> - the I/O facility</para>
+        </listitem>
+        <listitem>
+            <para><literal>http</literal> - the HTTP client and server (based 
+            upon JBoss Netty)</para>
+        </listitem>
+        <listitem>
+            <para><literal>security</literal> - the security API</para>
+        </listitem>
+        <listitem>
+            <para><literal>transaction</literal> - the transaction server (based 
+            upon JBoss Transactions)</para>
+        </listitem>
+    </itemizedlist>
+    
     </section>
     
     </section>
