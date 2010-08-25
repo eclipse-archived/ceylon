@@ -312,6 +312,10 @@
             upon JBoss Transactions)</para>
         </listitem>
         <listitem>
+            <para><literal>ceylon.rdbc</literal> - relational database connectivity 
+            (based upon JDBC)</para>
+        </listitem>
+        <listitem>
             <para><literal>ceylon.message</literal> - the message server (based 
             upon JBoss HornetQ)</para>
         </listitem>
