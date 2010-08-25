@@ -1590,6 +1590,10 @@ public abstract class CeylonTree {
             thing = t;
         }
         
+        public CeylonTree value() {
+            return thing;
+        }
+        
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1787,6 +1791,10 @@ public abstract class CeylonTree {
             this.name = name;
         }
       
+        public String nameAsString() {
+            return ((MemberName)name).asString();
+        }
+        
         public void setParameterList(List<FormalParameter> p) {
             params = p;
         }
@@ -1810,6 +1818,10 @@ public abstract class CeylonTree {
         void setInitialValue(CeylonTree expr) {
             assert (initialValue == null);
             this.initialValue = expr;
+        }
+        
+        public CeylonTree initialValue() {
+            return initialValue;
         }
     }
 
@@ -2227,6 +2239,10 @@ public abstract class CeylonTree {
             if (this.expr != null)
                 bomb();
             this.expr = expr;
+        }
+        
+        public CeylonTree expr() {
+            return expr;
         }
         
         public void accept(Visitor v) { v.visit(this); }
