@@ -176,7 +176,7 @@ assert() that (person.name===name) //assertion may fail!</programlisting>
     
     <itemizedlist>
         <listitem>
-            <para><literal>Natural</literal> and <literal>Float</literal>,</para>
+            <para><literal>Bounded</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
             <para><literal>Character</literal>,</para>
