@@ -1,0 +1,4 @@
+package ceylon;
+interface Annotation
+{
+}
