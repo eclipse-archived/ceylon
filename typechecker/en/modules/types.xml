@@ -2218,6 +2218,9 @@ class String(Character[] characters)
         satisfies Numeric<Float>, Invertable<Float> { 
     ... 
     
+    doc "The natural logarithm of the number"
+    public Float ln { return ... }
+    
     doc "Implicit type promotion to |Decimal|"
     override public extension Decimal decimal { return ... }
     
