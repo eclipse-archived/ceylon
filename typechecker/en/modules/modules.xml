@@ -129,11 +129,10 @@
         
         <para>A module archive may be accompanied by a <emphasis>legacy 
         archive</emphasis>. A legacy archive is a standard Java <literal>jar</literal>
-        containing compiled classes required by the module archive, whose
-        filename adheres to the standard for legacy archive names. At 
-        runtime there is no difference between a class packaged in a
-        legacy archive and a class packaged directly in the module 
-        archive.</para>
+        containing compiled classes required by the module, whose filename 
+        adheres to the standard for legacy archive names. At runtime there 
+        is no difference between a class packaged in a legacy archive and a 
+        class packaged directly in the module archive.</para>
         
     </section>
     
