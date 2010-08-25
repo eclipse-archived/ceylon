@@ -848,11 +848,11 @@ public String greeting {
 
 doc "sets the greeting"
 package assign greeting {
-    if (empty greeting) {
-        throw IllegalArgumentException("greeting can not be empty)
+    if (nonempty greeting) {
+        grtng = greeting.strip().normalize();
     }
     else {
-        grtng = greeting.strip().normalize();
+        throw IllegalArgumentException("greeting can not be empty)
     }
 }</programlisting>
 
