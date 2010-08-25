@@ -235,8 +235,8 @@
         <literal>/usr/bin/ceylon/modules</literal> are obtained from the following 
         addresses:</para>
         
-        <programlisting>/usr/bin/ceylon/modules/org/hibernate/1.2.141/org.h2-1.2.141.car</programlisting>
-        <programlisting>/usr/bin/ceylon/modules/org/hibernate/1.2.141/org.h2-1.2.141.jar</programlisting>
+        <programlisting>/usr/bin/ceylon/modules/org/h2/1.2.141/org.h2-1.2.141.car</programlisting>
+        <programlisting>/usr/bin/ceylon/modules/org/h2/1.2.141/org.h2-1.2.141.jar</programlisting>
         
         <comment><para>TODO: the module repository should also contain checksum files
         alongside the archives.</para></comment>
