@@ -69,6 +69,15 @@
         <programlisting>ceylon.lang-1.0.1.src</programlisting>
         <programlisting>org.hibernate-3.0.0.beta.src</programlisting>
         
+        <para>Finally, a <emphasis>module descriptor archive name</emphasis> 
+        is of the following standard form:</para>
+        
+        <programlisting><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.dsc</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>org.h2-1.2.141.dsc</programlisting>
+        
     </section>
     
     <section>
@@ -117,6 +126,15 @@
                 PersonalizedHello.class]]></programlisting>
                 
         <para>A module archive may not contain multiple modules.</para>
+        
+        <para>Note that the module runtime supports module archives with
+        a missing module descriptor. In this case, the module descriptor 
+        must be packaged in a <emphasis>module descriptor archive</emphasis>,
+        a separate <literal>jar</literal> containing just the module 
+        descriptor in the module directory which has a filename which 
+        adheres to the standard for module archive names. A module 
+        descriptor archive allows the use of standard legacy Java 
+        <literal>jar</literal>s with the Ceylon module runtime.</para>
         
     </section>
     
@@ -186,9 +204,9 @@
         <programlisting>/usr/bin/ceylon/modules</programlisting>
         <programlisting>http://org.jboss/ceylon/modules</programlisting>
         
-        <para>A module repository contains module archives and source
-        archives. The address of an archive belonging to the repository 
-        adheres to the following standard form:</para>
+        <para>A module repository contains module archives, module descriptor 
+        archives, and source archives. The address of an archive belonging to 
+        the repository adheres to the following standard form:</para>
         
         <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
         
@@ -213,6 +231,21 @@
         
         <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.car</programlisting>
         <programlisting>http://org.jboss/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.src</programlisting>
+        
+        <para>The module archive <literal>org.h2-1.2.141.car</literal> and module 
+        descriptor archive <literal>org.h2-1.2.141.mds</literal> belonging to the 
+        repository <literal>/usr/bin/ceylon/modules</literal> are obtained from the 
+        following addresses:</para>
+        
+        <programlisting>/usr/bin/ceylon/modules/org/hibernate/1.2.141/org.h2-1.2.141.car</programlisting>
+        <programlisting>/usr/bin/ceylon/modules/org/hibernate/1.2.141/org.h2-1.2.141.mds</programlisting>
+        
+        <comment><para>TODO: the module repository should also contain checksum files
+        alongside the archives.</para></comment>
+        
+        <comment><para>TODO: the module repository could contain documentation in 
+        exploded form, with <literal>index.html</literal> in the same directory as
+        the archives.</para></comment>
         
     </section>
     
