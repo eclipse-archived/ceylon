@@ -505,6 +505,7 @@ public class Gen {
     static {
         operatorImplementors = new HashMap<Integer, String>();
 
+        // Operators that act on the types themselves
         operatorImplementors.put(CeylonParser.PLUS,       "plus");
         operatorImplementors.put(CeylonParser.MINUS,      "minus");
         operatorImplementors.put(CeylonParser.TIMES,      "times");
@@ -517,18 +518,21 @@ public class Gen {
         operatorImplementors.put(CeylonParser.EQEQ,       "operatorEqual");
         operatorImplementors.put(CeylonParser.IDENTICAL,  "operatorIdentical");
         operatorImplementors.put(CeylonParser.NOTEQ,      "operatorNotEqual");
-        operatorImplementors.put(CeylonParser.LT,         "operatorLessThan");
-        operatorImplementors.put(CeylonParser.GT,         "operatorGreaterThan");
-        operatorImplementors.put(CeylonParser.LTEQ,       "operatorLessEqual");
-        operatorImplementors.put(CeylonParser.GTEQ,       "operatorGreaterEqual");
         operatorImplementors.put(CeylonParser.COMPARE,    "compare");
+
+        // Operators that act on Comparison objects
+        operatorImplementors.put(CeylonParser.GT,         "larger");
+        operatorImplementors.put(CeylonParser.LT,         "smaller");
+        operatorImplementors.put(CeylonParser.GTEQ,       "largeAs");
+        operatorImplementors.put(CeylonParser.LTEQ,       "smallAs");
     }
 
     JCExpression convert(CeylonTree.Operator op) {
-        JCExpression result;
-        CeylonTree[] operands = op.toArray();
+        boolean binary_operator = false;
+        boolean lose_comparison = false;
 
-        switch (op.operatorKind) {
+        int operator = op.operatorKind;
+        switch (operator) {
         case CeylonParser.PLUS:
         case CeylonParser.MINUS:
         case CeylonParser.TIMES:
@@ -541,20 +545,40 @@ public class Gen {
         case CeylonParser.EQEQ:
         case CeylonParser.IDENTICAL:
         case CeylonParser.NOTEQ:
+        case CeylonParser.COMPARE:
+            binary_operator = true;
+            break;
+
         case CeylonParser.LT:
         case CeylonParser.GT:
         case CeylonParser.LTEQ:
         case CeylonParser.GTEQ:
-        case CeylonParser.COMPARE:
-            result = make(op).Apply(null,
-                                make(op).Select(convertExpression(operands[0]),
-                                            names.fromString(operatorImplementors.get(op.operatorKind))),
-                                List.of(convertExpression(operands[1])));
+            operator = CeylonParser.COMPARE;
+            binary_operator = true;
+            lose_comparison = true;
             break;
 
         default:
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
         }
+
+        CeylonTree[] operands = op.toArray();
+
+        JCExpression result = null;
+        if (binary_operator) {
+            result = make(op).Apply(null,
+                                    make(op).Select(convertExpression(operands[0]),
+                                                    names.fromString(operatorImplementors.get(operator))),
+                                    List.of(convertExpression(operands[1])));
+
+            if (lose_comparison) {
+                result = make(op).Apply(null,
+                                        make(op).Select(result,
+                                                        names.fromString(operatorImplementors.get(op.operatorKind))),
+                                        List.<JCExpression>nil());
+            }
+        }
+
         return result;
     }
 
