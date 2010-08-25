@@ -856,10 +856,10 @@ package assign greeting {
     }
 }</programlisting>
 
-            <para>Get used to using <literal>empty</literal> to check that a value of type 
-            <literal>String</literal> or <literal>String?</literal> is an actual non-empty
-            string of characters. It's much more readable than the equivalent Java idiom
-            <literal>!"".equals(greeting)</literal>.</para>
+            <para>Get used to using the <literal>nonempty</literal> operator to check that 
+            a value of type <literal>String</literal> or <literal>String?</literal> is an 
+            actual non-empty string of characters. It's much more readable than the 
+            equivalent Java idiom <literal>!"".equals(greeting)</literal>.</para>
             
         </section>
         
