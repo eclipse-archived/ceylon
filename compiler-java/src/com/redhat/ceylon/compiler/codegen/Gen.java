@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.comp.Resolve;
-import com.sun.tools.javac.file.JavacFileManager;
+import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -39,7 +39,6 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
@@ -52,7 +51,7 @@ import com.redhat.ceylon.compiler.tree.CeylonTree.*;
 public class Gen {
     Context context;
     TreeMaker _make;
-    Names names;
+    Name.Table names;
     ClassReader reader;
     Resolve resolve;
     JavaCompiler compiler;
@@ -81,8 +80,9 @@ public class Gen {
         JavaCompiler.CompilationTask aTask
         = compiler.getTask(null, fileManager,
                 diagnostics,
-                Arrays.asList("-g", /* "-verbose", */
-                        "-source", "7", "-XDallowFunctionTypes"),
+                Arrays.asList("-g"/* , /* "-verbose", */
+                        // "-source", "7", "-XDallowFunctionTypes"
+                        ),
                         null, compilationUnits);
         setup((JavacTaskImpl)aTask);
     }
@@ -96,7 +96,7 @@ public class Gen {
         // but it has to be done before Resolve.instance().
         options.put("invokedynamic", "invokedynamic");
         _make = TreeMaker.instance(context);
-        names = Names.instance(context);
+        names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         resolve = Resolve.instance(context);
     }
@@ -158,7 +158,6 @@ public class Gen {
     String toFlatName(Iterable<String> components) {
         StringBuffer buf = new StringBuffer();
         Iterator<String> iterator;
-        String s;
         
         for (iterator = components.iterator();
             iterator.hasNext();) {
