@@ -285,25 +285,35 @@
             JBoss Modules)</para>
         </listitem>
         <listitem>
-            <para><literal>collection</literal> - the collections framework</para>
+            <para><literal>collection</literal> - the collections framework
+            (with the underlying implementation provided by the Java collections
+            framework)</para>
         </listitem>
         <listitem>
             <para><literal>datetime</literal> - support for representing
             dates and times (based upon JSR-310)</para>
         </listitem>
         <listitem>
+            <para><literal>security</literal> - the security API</para>
+        </listitem>
+        <listitem>
             <para><literal>io</literal> - the I/O facility</para>
+        </listitem>
+        <listitem>
+            <para><literal>concurrent</literal> - the concurrency API (based
+            upon JSR-166)</para>
         </listitem>
         <listitem>
             <para><literal>http</literal> - the HTTP client and server (based 
             upon JBoss Netty)</para>
         </listitem>
         <listitem>
-            <para><literal>security</literal> - the security API</para>
-        </listitem>
-        <listitem>
             <para><literal>transaction</literal> - the transaction server (based 
             upon JBoss Transactions)</para>
+        </listitem>
+        <listitem>
+            <para><literal>message</literal> - the message server (based 
+            upon JBoss HornetQ)</para>
         </listitem>
     </itemizedlist>
     
