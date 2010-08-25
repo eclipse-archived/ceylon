@@ -2,13 +2,20 @@
     <title>Basic types</title>
     
     <para>There are no primitive types in Ceylon, however, there are certain
-    important types provided by the package <literal>lang</literal>. Many
-    of these types support <emphasis>operators</emphasis>.</para>
+    important types provided by the SDK modules <literal>ceylon.lang</literal>
+    and <literal>ceylon.collection</literal>. Many of these types support 
+    operators.</para>
     
+    <section id="languagemodule">
+        <title>The language module</title>
+        
+        <para>The module <literal>ceylon.lang</literal> contains types which
+        are referred to in the language definition.</para>
+        
     <section id="void">
         <title>The void type</title>
         
-        <para>The class <literal>ceylon.lang.Void</literal> is the root of the type
+        <para>The class <literal>Void</literal> is the root of the type
         system. All types are assignable to <literal>Void</literal>, which
         supports the the operator <literal>.</literal> (member selection), 
         along with <literal>is</literal> (assignability).</para>
@@ -20,7 +27,7 @@
     <section id="object">
         <title>The Object type</title>
         
-        <para>User-written classes extend <literal>ceylon.lang.Object</literal> and 
+        <para>User-written classes extend <literal>Object</literal> and 
         all interface types are assignable to <literal>Object</literal>.
         Expressions of type <literal>Object</literal> support the binary
         operator <literal>===</literal> (identity equals). An <literal>Object</literal> 
@@ -104,7 +111,7 @@
     <section id="callable">
         <title>Callable references</title>
         
-        <para>The type <literal>ceylon.lang.Callable</literal> represents an executable
+        <para>The type <literal>Callable</literal> represents an executable
         operation. Expressions of type <literal>Callable</literal> may be the subject
         of the argument specification operators <literal>()</literal> and
         <literal>{}</literal>.</para>
@@ -198,7 +205,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     <section id="referenceableandassignable">
         <title>Referenceable and assignable values</title>
         
-        <para>The class <literal>ceylon.lang.Referenceable</literal> represents a value
+        <para>The class <literal>Referenceable</literal> represents a value
         for which a reference can be obtained, allowing pass by reference semantics.
         Instances of <literal>Referenceable&lt;T&gt;</literal> are transparently
         assignable to <literal>T</literal>, according to the <literal>extension</literal>
@@ -214,10 +221,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     
 }]]></programlisting>
         
-        <para>Note that <literal>ceylon.lang.Referenceable</literal> is not a subclass of 
-        <literal>ceylon.lang.Object</literal>.</para>
+        <para>Note that <literal>Referenceable</literal> is not a subclass of 
+        <literal>Object</literal>.</para>
     
-        <para>The subtype <literal>ceylon.lang.Assignable</literal> represents a reference
+        <para>The subtype <literal>Assignable</literal> represents a reference
         to an assignable value, allowing pass by reference semantics for assignable
         values. Expressions of type <literal>Assignable</literal> support the binary
         operator <literal>:=</literal> (assign).</para>
@@ -242,7 +249,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     <section id="boolean">
         <title>Boolean values</title>
         
-        <para>The <literal>ceylon.lang.Boolean</literal> class represents
+        <para>The <literal>Boolean</literal> class represents
         boolean values. Expressions of type <literal>Boolean</literal> support 
         the binary <literal>||, &amp;&amp;</literal> and <literal>=></literal> 
         operators and the unary <literal>!</literal> operator, and inherit the 
@@ -303,7 +310,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     <section id="casesandselectors">
         <title>Cases and selectors</title>
         
-        <para>The interface <literal>ceylon.lang.Case</literal> represents a
+        <para>The interface <literal>Case</literal> represents a
         type that may be used as a <literal>case</literal> in the 
         <literal>switch</literal> construct.</para>
         
@@ -360,7 +367,7 @@ class CaseSuper<X,Y>(Case<X> c)
 }]]></programlisting>
 
         <para>Classes with enumerated <literal>case</literal>s implicitly implement 
-        <literal>ceylon.lang.Selector</literal></para>
+        <literal>Selector</literal></para>
         
         <programlisting><![CDATA[public interface Selector {
     public String name;
@@ -389,7 +396,7 @@ class CaseSuper<X,Y>(Case<X> c)
     <section id="optionalandnull">
         <title>Optional and null values</title>
         
-        <para>The class <literal>ceylon.lang.Optional</literal> represents a
+        <para>The class <literal>Optional</literal> represents a
         value that may be null.</para>
         
         <programlisting><![CDATA[abstract class Optional<out X>() 
@@ -413,11 +420,11 @@ class CaseSuper<X,Y>(Case<X> c)
         operators <literal>==</literal> (equals) and <literal>!=</literal> 
         (not equals).</para>
         
-         <para>Note that <literal>ceylon.lang.Optional</literal> is not a subtype
-        of <literal>ceylon.lang.Object</literal>.</para>
+         <para>Note that <literal>Optional</literal> is not a subtype
+        of <literal>Object</literal>.</para>
         
         <para>If an optional value is not null, it is represented by an
-        instance of the subclass <literal>ceylon.lang.Something</literal>.</para>
+        instance of the subclass <literal>Something</literal>.</para>
         
         <programlisting><![CDATA[public extension 
 class Something<out X>(X x) 
@@ -443,7 +450,7 @@ class Something<out X>(X x)
         assignable to <literal>X</literal>.</para>
         
         <para>If an optional value is null, it is represented by an
-        instance of the subclass <literal>ceylon.lang.Nothing</literal>.</para>
+        instance of the subclass <literal>Nothing</literal>.</para>
         
         <programlisting><![CDATA[public extension 
 class Nothing<out X>(Null null) 
@@ -472,7 +479,7 @@ class Nothing<out X>(Null null)
     
 }]]></programlisting>
 
-        <para>The decorator <literal>ceylon.lang.NullCase</literal> allows <literal>null</literal>
+        <para>The decorator <literal>NullCase</literal> allows <literal>null</literal>
         to appear as a <literal>case</literal> expression in a <literal>switch</literal>
         statement.</para>
         
@@ -497,7 +504,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
     <section id="usable">
         <title>Usables</title>
         
-        <para>The interface <literal>ceylon.lang.Usable</literal> represents an
+        <para>The interface <literal>Usable</literal> represents an
         object with a lifecycle controlled by <literal>try</literal>.</para>
         
         <programlisting><![CDATA[public interface Usable {
@@ -610,7 +617,7 @@ while (exists local value = indexed.indexedValue(i)) {
     <section id="category">
         <title>Containers and categories</title>
         
-        <para>The interface <literal>ceylon.lang.Container</literal> represents
+        <para>The interface <literal>Container</literal> represents
         the abstract notion of an object that may be empty. Expressions
         of type <literal>Container?</literal> support the unary postfix 
         operator <literal>nonempty</literal>.</para>
@@ -623,7 +630,7 @@ while (exists local value = indexed.indexedValue(i)) {
     
 }]]></programlisting>
     
-        <para>The interface <literal>ceylon.lang.Category</literal> represents
+        <para>The interface <literal>Category</literal> represents
         the abstract notion of an object that contains other objects.</para>
         
         <programlisting><![CDATA[public interface Category {
@@ -727,7 +734,7 @@ while (exists local value = indexed.indexedValue(i)) {
     <section id="correspondence">
         <title>Correspondences</title>
         
-        <para>The interface <literal>ceylon.lang.Correspondence</literal> represents
+        <para>The interface <literal>Correspondence</literal> represents
         the abstract notion of an object that maps value of one type to values
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
@@ -865,7 +872,7 @@ while (exists local value = indexed.indexedValue(i)) {
     <section id="comparableandordinal">
         <title>Ordered values</title>
         
-        <para>The <literal>ceylon.lang.Comparable</literal> interface 
+        <para>The <literal>Comparable</literal> interface 
         represents totally ordered types, and supports the binary operators 
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
@@ -935,7 +942,7 @@ while (exists local value = indexed.indexedValue(i)) {
     return max
 }]]></programlisting>
 
-        <para>The <literal>ceylon.lang.Ordinal</literal> interface represents 
+        <para>The <literal>Ordinal</literal> interface represents 
         objects in a sequence, and supports the binary operator 
         <literal>..</literal> (range). In addition, variables support 
         the postfix unary operators <literal>++</literal> (increment) 
@@ -996,7 +1003,7 @@ public Bounded<n+1>[n+1] zeroTo<n>() { ... }]]></programlisting>
     <section id="sequence">
         <title>Sequences</title>
         
-        <para>A <literal>ceylon.lang.Sequence</literal> is a correspondence from 
+        <para>A <literal>Sequence</literal> is a correspondence from 
         a bounded progression of natural numbers. Sequences support the 
         binary operators <literal>[].</literal> (spread), <literal>+</literal> 
         (join) and <literal>[i...]</literal> (upper range) and the ternary 
@@ -1102,7 +1109,7 @@ class SequenceEntryIterable<X>(X[] sequence)
         <programlisting><![CDATA[doc "The binary join operator |x + y|. The returned 
      sequence does not reflect changes to the original 
      sequences."
-public T[] join<T>(T[]... sequences)  {
+public T[] join<T>(T[]... sequences) {
             
     class JoinedSequence() 
             satisfies T[] {
@@ -1220,7 +1227,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <programlisting><![CDATA[public mutable interface OpenSequence<X>
         satisfies X[], OpenCorrespondence<Natural,X> {}]]></programlisting>
 
-        <para>A <literal>ceylon.lang.BoundedSequence</literal> adds a typesafe bound
+        <para>A <literal>BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bound&lt;n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, n>
@@ -1323,484 +1330,6 @@ class SequenceEntryIterable<X>(X[n] sequence)
     return zip(lists,ArrayList)
 }]]></programlisting>
 -->
-    </section>
-    
-    <section id="collections">
-        <title>Collections</title>
-        
-        <para>The interface <literal>ceylon.collection.Collection</literal> is the 
-        root of the Ceylon collections framework.</para>
-        
-        <programlisting><![CDATA[public interface Collection<out X> 
-        satisfies Iterable<X>, Container, Category 
-        given X satisfies Object {
-    
-    doc "The number of elements or entries belonging to the 
-         collection."
-    public Natural size;
-    
-    doc "Determine the number of times the given element
-         appears in the collection."
-    public Natural count(Object element);
-    
-    doc "Determine the number of elements or entries for
-         which the given condition evaluates to |true|."
-    public Natural count(Boolean where(X element));
-    
-    doc "Determine if the given condition evaluates to |true|
-         for at least one element or entry."
-    public Boolean contains(Boolean where(X element));
-    
-    doc "The elements of the collection, as a |Set|."
-    public Set<X> elements;
-    
-    doc "The elements of the collection for which the given
-         condition evaluates to |true|, as a |Set|."
-    public Set<X> elements(Boolean where(X element));
-    
-    doc "The elements of the collection, sorted using the given
-         comparison."
-    public List<X> sortedElements(Comparison by(X x, X y));
-    
-    doc "An extension of the collection, with the given 
-         elements. The returned collection reflects changes 
-         made to the first collection."
-    public Collection<T> with<T>(T... elements) given T abstracts X;
-
-    doc "A mutable copy of the collection."
-    public OpenCollection<T> copy<T>() given T abstracts X;
-    
-}]]></programlisting>
-
-<!-- public Boolean containsAny(Object... objects); ??? -->
-
-        <para>A decorator provides the ability to sort collections of
-        <literal>Comparable</literal> values in natural order.</para>
-        
-        <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
-        given X satisfies Comparable<X> {
-        
-    doc "The elements of the collection, sorted in natural order."
-    public List<X> sortedElements() {
-        return collection.sortedElements() by (X x, X y) (x<=>y)
-    }
-    
-}]]></programlisting>
-        
-        <para>Mutable collections implement <literal>ceylon.collection.OpenCollection</literal>:</para>
-        
-        <programlisting><![CDATA[public mutable interface OpenCollection<X> 
-        satisfies OpenCategory<X>, Collection<X> 
-        given X satisfies Object {
-    
-    doc "Remove all elements or entries of the collection,
-         resulting in an empty collection."
-    public Boolean clear();
-    
-    doc "Remove the given elements from the collection.
-         Return the number of elements which belonged
-         to the collection."
-    public Natural remove(X... elements);
-    
-    doc "Remove all elements from the collection for which
-         the given condition evaluates to |true|. Return 
-         the number of elements which were removed."
-    public Natural remove(Boolean where(X element));
-    
-}]]></programlisting>
-
-        <section id="sets">
-            <title>Sets</title>
-            
-            <para>Sets implement the following interface<!--  ,
-            and support the binary operators <literal>+</literal>
-            (union), <literal>~</literal> (intersect), 
-            <literal>-</literal> (complement),
-            <literal>>=</literal> (superset),
-            <literal>&lt;=</literal> (subset),
-            <literal>></literal> (proper superset) and
-            <literal>&lt;</literal> (proper subset),
-            in addition to inherited operators-->:</para>
-            
-            <programlisting><![CDATA[public interface Set<out X> 
-        satisfies Collection<X>, Correspondence<Object, Boolean> 
-        given X satisfies Object {
-    
-    doc "Determine if the set is a superset of the given set.
-         Return |true| if it is a superset."
-    public Boolean superset(Set<Object> set);
-
-    doc "Determine if the set is a subset of the given set.
-         Return |true| if it is a subset."
-    public Boolean subset(Set<Object> set);
-    
-    public override Set<T> with<T>(T... elements) given T abstracts X;
-    public override OpenSet<T> copy<T>() given T abstracts X;
-
-}]]></programlisting>
-
-            <!--    
-    public Set<T> union(Set<T> set) given T abstracts X;
-    public Set<X> intersection(Set<Object> set);
-    public Set<X> complement(Set<Object> set);
-            -->
-
-            <para>There is a mutable subtype:</para>
-            
-            <programlisting><![CDATA[public mutable interface OpenSet<X> 
-        satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<Object, Boolean> 
-        given X satisfies Object {}]]></programlisting>
-
-        </section>
-        
-        <section id="lists">
-            <title>Lists</title>
-            
-            <para>Lists implement the following interface, and support the 
-            operators inherited from <literal>Collection</literal> and 
-            <literal>Sequence</literal>:</para>
-            
-            <programlisting><![CDATA[public interface List<out X> 
-        satisfies Collection<X>, X[] 
-        given X satisfies Object {
-    
-    doc "The index of the first element of the list
-         which satisfies the condition, or |null| if 
-         no element satsfies the condition."
-    public Natural? firstIndex(Boolean where(X element));
-
-    doc "The index of the last element of the list
-         which satisfies the condition, or |null| if 
-         no element satsfies the condition."
-    public Natural? lastIndex(Boolean where(X element));
-    
-    doc "The elements of the list for which the given condition 
-         evaluates to |true|, as a |List| with the original 
-         order."
-    public List<X> elementList(Boolean where(X element));
-    
-    doc "A sublist beginning with the element at the first given 
-         index up to and including the element at the second given 
-         index. The size of the returned sublist is one more than 
-         the difference between the two indexes. The returned list 
-         does reflect changes to the original list."
-    public List<X> sublist(Natural from, Natural to=lastIndex);
-    
-    doc "A sublist of the given length beginning with the 
-         first element of the list. The returned list does 
-         reflect changes to the original list."
-    public List<X> leading(Natural length=1);
-    
-    doc "A sublist of the given length ending with the 
-         last element of the list. The returned list does 
-         reflect changes to the original list."
-    public List<X> trailing(Natural length=1);
-    
-    doc "Split the list into sublists, each beginning at an
-         element for which the predicate returns true."
-    public Iterable<List<X>> sublists(Boolean split(X element));
-    
-    doc "Split the list into sublists, each beginning at an
-         element for which the predicate returns true. The 
-         predicate may examine elements to the left and 
-         right of the element under consideration."
-    public Iterable<List<X>> sublists( 
-            Boolean split(
-                      doc "The current element, which
-                           will be the first element
-                           of the sublist if |split()|
-                           returns |true|." 
-                      X element, 
-                      doc "The elements to the left,
-                           beginning with the immediately
-                           adjacent element." 
-                      X[] left, 
-                      doc "The elements to the right,
-                           beginning with the immediately
-                           adjacent element." 
-                      X[] right
-                  )
-              );
-    
-    doc "An extension of the list with the given elements
-         at the end of the list. The returned list does 
-         reflect changes to the original list."
-    public override List<T> with<T>(T... elements) given T abstracts X;
-    
-    doc "An extension of the list with the given elements
-         at the start of the list. The returned list does 
-         reflect changes to the original list."
-    public List<T> withInitial<T>(T... elements) given T abstracts X;
-    
-    doc "The list in reverse order. The returned list does 
-         reflect changes to the original list."
-    public List<X> reversed;
-    
-    doc "The unsorted elements of the list. The returned 
-         bag does reflect changes to the original list."
-    public Bag<X> unsorted;
-    
-    doc "A map from list index to element. The returned 
-         map does reflect changes to the original list."
-    public Map<Natural,X> map;
-    
-    doc "Produce a new list by applying an operation to
-         every element of the list."
-    public List<Y> transform<Y>(Y select(X element));
-    
-    public override OpenList<T> copy<T>() given T abstracts X;
-
-}]]></programlisting>
-
-            <para>Any <literal>Sequence</literal> may be transparently converted to a 
-            <literal>List</literal>:</para>
-            
-            <programlisting>public extension List&lt;X&gt; sequenceToList(X[] sequence) {
-    if (is List&lt;X&gt; sequence) {
-        return sequence
-    }
-    else {
-        return SequenceList(sequence)
-    }
-}</programlisting>
-            
-<!--
-            <para>Here's an implementation of the well-know quicksort algorithm 
-            for a <literal>List</literal>:</para>
-            
-            <programlisting><![CDATA[doc "Quicksort for |List|s."
-public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
-    if (exists X pivot = list.first) {
-        local createPartition = quickSort(list.rest.elementList);  
-                //i.e. List<X> createPartition(Boolean where(X X)) = ...
-        local smaller = byIncreasing.partial(pivot);                       
-                //i.e. Boolean smaller(X x) = ...
-        return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller))
-    }
-    else {
-        return none
-    }
-}]]></programlisting>
-
-            <para>For example:</para>
-            
-            <programlisting>List&lt;String&gt; sortedNames = quickSort(unsortedNames) byIncreasing (String x, String y) (x>y);</programlisting>
--->
-            
-            <para>There is a mutable subtype:</para>
-            
-            <programlisting><![CDATA[public mutable interface OpenList<X> 
-        satisfies List<X>, OpenCollection<X>, OpenSequence<X> 
-        given X satisfies Object {
-
-    doc "Remove the element at the given index, decrementing
-         the index of every element with an index greater
-         than the given index by one. Return the removed
-         element."
-    throws (UndefinedKeyException
-            -> "if the index is not in the list")
-    public X removeIndex(Natural at);
-    
-    doc "Add the given elements at the end of the list."
-    public void append(X... elements);
-    
-    doc "Add the given elements at the start of the list,
-         incrementing the index of every existing element
-         by the number of given elements."
-    public void prepend(X... elements);
-
-    doc "Insert the given elements beginning at the given
-         index, incrementing the index of every existing 
-         element with that index or greater by the number 
-         of given elements."
-    throws (UndefinedKeyException
-            -> "if the index is not in the list")
-    public void insert(Natural at, X... elements);
-    
-    doc "Remove elements beginning with the first given index 
-         up to and including the second given index,
-         decrementing the indexes of all elements after
-         with the second given index by one more than the 
-         difference between the two indexes."
-    throws (UndefinedKeyException
-            -> "if the index is not in the list")
-    public void delete(Natural from, Natural to=lastIndex);
-    
-    doc "Remove and return the first element, decrementing
-         the index of every other element by one."
-    throws (EmptyException
-            -> "if the list is empty")
-    public X removeFirst();
-
-    doc "Remove and return the last element."
-    throws (EmptyException
-            -> "if the list is empty")
-    public X removeLast();
-    
-    doc "Reverse the order of the list."
-    public void reverse();
-    
-    doc "Reorder the elements of the list, according to the 
-         given comparison."
-    public void resort(Comparison by(X x, X y));
-    
-    override public OpenList<X> leading(Natural length);
-    override public OpenList<X> trailing(Natural length);
-    override public OpenList<X> sublist(Natural from, Natural to);
-    override public OpenList<X> reversed;
-    override public OpenMap<Natural,X> map;
-    
-}]]></programlisting>
-            
-        <para>A decorator provides the ability to resort lists of
-        <literal>Comparable</literal> values in natural order.</para>
-        
-        <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
-        given X satisfies Comparable<X> {
-        
-    doc "Reorder the elements of the list, according to the 
-         natural order."
-    public void resort() {
-        list.resort() by (X x, X y) (x<=>y);
-    }
-    
-}]]></programlisting>
-        
-        </section>
-            
-        <section id="maps">
-            <title>Maps</title>
-            
-            <para>Maps implement the following interface:</para>
-            
-            <comment><para>TODO: is it OK that maps are not contravariant 
-            in the key type?</para></comment>
-            
-            <programlisting><![CDATA[public interface Map<U, out V>
-        satisfies Collection<Entry<U,V>>, Correspondence<U, V> 
-        given U satisfies Object {
-    
-    doc "The keys of the map, as a |Set|."
-    public Set<U> keys;
-    
-    doc "The values of the map, as a |Bag|."
-    public Bag<V> values;
-    
-    doc "A |Map| of each value belonging to the map, to the 
-         |Set| of all keys at which that value occurs."
-    public Map<V, Set<U>> inverse;
-    
-    doc "Produce a new map by applying an operation to every 
-         element of the map."
-    public Map<U, W> transform<W>(W? select(U key -> V value));
-    
-    doc "The entries of the map for which the given condition 
-         evaluates to |true|, as a |Map|."
-    public Map<U, V> entries(Boolean where(U key -> V value));
-    
-    public override Map<U, T> with<T>(Entry<U, T>... entries) given T abstracts V;
-    public override OpenMap<U,T> copy<T>() given T abstracts V;
-    
-}]]></programlisting>
-
-            <para>There is a mutable subtype:</para>
-            
-            <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
-        satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> 
-        given U satisfies Object {
-    
-    doc "Remove the entry for the given key, returning the 
-         value of the removed entry."
-    throws (UndefinedKeyException
-            -> "if no value is defined for the given key")   
-    public V remove(U key);
-    
-    doc "Remove all entries from the map which have keys for 
-         which the given condition evaluates to |true|. Return 
-         entries which were removed."
-    public Map<U,V> remove(Boolean where(U key));
-    
-    override public OpenSet<U> keys;
-    override public OpenBag<V> values;
-    override public OpenMap<V, Set<U>> inverse;
-    
-}]]></programlisting>
-            
-        </section>
-        
-        <section id="bags">
-            <title>Bags</title>
-            
-            <para>Bags implement the following interface:</para>
-            
-            <programlisting><![CDATA[public interface Bag<out X> 
-        satisfies Collection<X>, Correspondence<Object, Natural> 
-        given X satisfies Object {
-    
-    doc "A map from element to the number of occurrences of 
-         the element. The returned map reflects changes to 
-         the original bag."
-    public Map<X,Natural> map;
-    
-    public override Bag<T> with<T>(T... elements) given T abstracts X;
-    public override OpenBag<T> copy<T>() given T abstracts X;
-    
-}]]></programlisting>
-
-            <para>There is a mutable subtype:</para>
-            
-            <programlisting><![CDATA[public mutable interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> {
-        
-    override public OpenMap<X,Natural> map;
-    
-}]]></programlisting>
-            
-        </section>
-        
-        <!--
-        
-        <section>
-            <title>Collection operations</title>
-            
-            <programlisting><![CDATA[public Collections {
-            
-    public static List<X> join<X>(List<X> list...) {
-        return new List<X> {
-            ...
-        }
-    }
-    
-    public static Bag<X> union<X>(Bag<X> bag...) {
-        return new Bag<X> {
-            ...
-        }
-    }
-    
-    public static Set<X> union<X>(Set<X> set...) {
-        return new Set<X> {
-            ...
-        }
-    }
-    
-    public static Set<X> intersection<X>(Set<X> set...) {
-        return new Set<X> {
-            ...
-        }
-    }
-    
-    public static Set<X> complement<X>(Set<X> set, Set<Object> sets...) {
-        return new Set<X> {
-            ...
-        }
-    }    
-            
-}]]></programlisting>
-            
-        </section>
-        
-        -->
-        
     </section>
     
     <section id="range">
@@ -1925,7 +1454,7 @@ class String(Character[] characters)
         <comment><para>What encoding is the default for Ceylon strings? Are there 
         performance advantages to going with UTF-16 like Java? Can we easily abstract
         this stuff? Does the JVM do all kinds of optimizations for 
-        <literal>java.ceylon.lang.String</literal>?</para></comment>
+        <literal>java.String</literal>?</para></comment>
         
         <para>A string template is represented by an instance of <literal>StringTemplate</literal>.</para>
         
@@ -1996,7 +1525,7 @@ class String(Character[] characters)
     <section id="number">
         <title>Numbers</title>
         
-        <para>The <literal>ceylon.lang.Number</literal> interface is the abstract supertype
+        <para>The <literal>Number</literal> interface is the abstract supertype
         of all classes which represent numeric values.</para>
         
         <programlisting><![CDATA[public interface Number {
@@ -2065,7 +1594,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para>The subtype <literal>ceylon.lang.Numeric</literal> supports the binary 
+        <para>The subtype <literal>Numeric</literal> supports the binary 
         operators <literal>+,-, *, /, **</literal>. In addition, 
         <literal>mutable</literal> values of type <literal>Numeric</literal> 
         support the compound assignment operators 
@@ -2098,7 +1627,7 @@ class String(Character[] characters)
         <comment><para>TODO: I suppose <literal>Numeric</literal> should not extend
         <literal>Comparable</literal>, since complex numbers are not comparable.</para></comment>
 
-        <para>The subtype <literal>ceylon.lang.Integral</literal> supports the binary 
+        <para>The subtype <literal>Integral</literal> supports the binary 
         operator <literal>%</literal>, and inherits the unary operators 
         <literal>++</literal> and <literal>--</literal> from 
         <literal>Ordinal</literal>.</para>
@@ -2112,7 +1641,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para>The type <literal>ceylon.lang.Invertable</literal> supports the unary
+        <para>The type <literal>Invertable</literal> supports the unary
         prefix <literal>-</literal> operator.</para>
         
         <programlisting><![CDATA[public interface Invertable<I> 
@@ -2125,7 +1654,7 @@ class String(Character[] characters)
         
         <para>Five numeric types are built in:</para>
 
-        <para><literal>ceylon.lang.Natural</literal> represents 63 bit unsigned integers
+        <para><literal>Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
         <programlisting><![CDATA[public class Natural(Natural natural)
@@ -2166,7 +1695,7 @@ class String(Character[] characters)
         literals. I don't love this, because natural numbers are especially common in real
         applications.</para></comment>
 
-        <para><literal>ceylon.lang.Integer</literal> represents 64 bit signed integers.</para>
+        <para><literal>Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
         satisfies Integral<Integer>, Invertable<Integer>, Case<Integer> {
@@ -2190,7 +1719,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para><literal>ceylon.lang.Whole</literal> represents arbitrary-precision
+        <para><literal>Whole</literal> represents arbitrary-precision
         signed integers.</para>
 
         <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
@@ -2211,7 +1740,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
         
-        <para><literal>ceylon.lang.Float</literal> represents 64 bit floating point
+        <para><literal>Float</literal> represents 64 bit floating point
         values.</para>
 
         <programlisting><![CDATA[public class Float(Float float)
@@ -2233,7 +1762,7 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
-        <para><literal>ceylon.lang.Decimal</literal> represents arbitrary-precision
+        <para><literal>Decimal</literal> represents arbitrary-precision
         and arbitrary-scale decimals.</para>
 
         <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
@@ -2795,6 +2324,494 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     }
 }]]></programlisting>
     
+    </section>
+    
+    </section>
+    
+    <section>
+        <title>The collections module</title>
+        
+        <para>The module <literal>ceylon.collection</literal> contains the collections
+        framework.</para>
+    
+    <section id="collections">
+        <title>Collections</title>
+        
+        <para>The interface <literal>Collection</literal> is the 
+        root of the Ceylon collections framework.</para>
+        
+        <programlisting><![CDATA[public interface Collection<out X> 
+        satisfies Iterable<X>, Container, Category 
+        given X satisfies Object {
+    
+    doc "The number of elements or entries belonging to the 
+         collection."
+    public Natural size;
+    
+    doc "Determine the number of times the given element
+         appears in the collection."
+    public Natural count(Object element);
+    
+    doc "Determine the number of elements or entries for
+         which the given condition evaluates to |true|."
+    public Natural count(Boolean where(X element));
+    
+    doc "Determine if the given condition evaluates to |true|
+         for at least one element or entry."
+    public Boolean contains(Boolean where(X element));
+    
+    doc "The elements of the collection, as a |Set|."
+    public Set<X> elements;
+    
+    doc "The elements of the collection for which the given
+         condition evaluates to |true|, as a |Set|."
+    public Set<X> elements(Boolean where(X element));
+    
+    doc "The elements of the collection, sorted using the given
+         comparison."
+    public List<X> sortedElements(Comparison by(X x, X y));
+    
+    doc "An extension of the collection, with the given 
+         elements. The returned collection reflects changes 
+         made to the first collection."
+    public Collection<T> with<T>(T... elements) given T abstracts X;
+
+    doc "A mutable copy of the collection."
+    public OpenCollection<T> copy<T>() given T abstracts X;
+    
+}]]></programlisting>
+
+<!-- public Boolean containsAny(Object... objects); ??? -->
+
+        <para>A decorator provides the ability to sort collections of
+        <literal>Comparable</literal> values in natural order.</para>
+        
+        <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
+        given X satisfies Comparable<X> {
+        
+    doc "The elements of the collection, sorted in natural order."
+    public List<X> sortedElements() {
+        return collection.sortedElements() by (X x, X y) (x<=>y)
+    }
+    
+}]]></programlisting>
+        
+        <para>Mutable collections implement <literal>OpenCollection</literal>:</para>
+        
+        <programlisting><![CDATA[public mutable interface OpenCollection<X> 
+        satisfies OpenCategory<X>, Collection<X> 
+        given X satisfies Object {
+    
+    doc "Remove all elements or entries of the collection,
+         resulting in an empty collection."
+    public Boolean clear();
+    
+    doc "Remove the given elements from the collection.
+         Return the number of elements which belonged
+         to the collection."
+    public Natural remove(X... elements);
+    
+    doc "Remove all elements from the collection for which
+         the given condition evaluates to |true|. Return 
+         the number of elements which were removed."
+    public Natural remove(Boolean where(X element));
+    
+}]]></programlisting>
+
+    </section>
+
+        <section id="sets">
+            <title>Sets</title>
+            
+            <para>Sets implement the following interface<!--  ,
+            and support the binary operators <literal>+</literal>
+            (union), <literal>~</literal> (intersect), 
+            <literal>-</literal> (complement),
+            <literal>>=</literal> (superset),
+            <literal>&lt;=</literal> (subset),
+            <literal>></literal> (proper superset) and
+            <literal>&lt;</literal> (proper subset),
+            in addition to inherited operators-->:</para>
+            
+            <programlisting><![CDATA[public interface Set<out X> 
+        satisfies Collection<X>, Correspondence<Object, Boolean> 
+        given X satisfies Object {
+    
+    doc "Determine if the set is a superset of the given set.
+         Return |true| if it is a superset."
+    public Boolean superset(Set<Object> set);
+
+    doc "Determine if the set is a subset of the given set.
+         Return |true| if it is a subset."
+    public Boolean subset(Set<Object> set);
+    
+    public override Set<T> with<T>(T... elements) given T abstracts X;
+    public override OpenSet<T> copy<T>() given T abstracts X;
+
+}]]></programlisting>
+
+            <!--    
+    public Set<T> union(Set<T> set) given T abstracts X;
+    public Set<X> intersection(Set<Object> set);
+    public Set<X> complement(Set<Object> set);
+            -->
+
+            <para>There is a mutable subtype:</para>
+            
+            <programlisting><![CDATA[public mutable interface OpenSet<X> 
+        satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<Object, Boolean> 
+        given X satisfies Object {}]]></programlisting>
+
+        </section>
+        
+        <section id="lists">
+            <title>Lists</title>
+            
+            <para>Lists implement the following interface, and support the 
+            operators inherited from <literal>Collection</literal> and 
+            <literal>Sequence</literal>:</para>
+            
+            <programlisting><![CDATA[public interface List<out X> 
+        satisfies Collection<X>, X[] 
+        given X satisfies Object {
+    
+    doc "The index of the first element of the list
+         which satisfies the condition, or |null| if 
+         no element satsfies the condition."
+    public Natural? firstIndex(Boolean where(X element));
+
+    doc "The index of the last element of the list
+         which satisfies the condition, or |null| if 
+         no element satsfies the condition."
+    public Natural? lastIndex(Boolean where(X element));
+    
+    doc "The elements of the list for which the given condition 
+         evaluates to |true|, as a |List| with the original 
+         order."
+    public List<X> elementList(Boolean where(X element));
+    
+    doc "A sublist beginning with the element at the first given 
+         index up to and including the element at the second given 
+         index. The size of the returned sublist is one more than 
+         the difference between the two indexes. The returned list 
+         does reflect changes to the original list."
+    public List<X> sublist(Natural from, Natural to=lastIndex);
+    
+    doc "A sublist of the given length beginning with the 
+         first element of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> leading(Natural length=1);
+    
+    doc "A sublist of the given length ending with the 
+         last element of the list. The returned list does 
+         reflect changes to the original list."
+    public List<X> trailing(Natural length=1);
+    
+    doc "Split the list into sublists, each beginning at an
+         element for which the predicate returns true."
+    public Iterable<List<X>> sublists(Boolean split(X element));
+    
+    doc "Split the list into sublists, each beginning at an
+         element for which the predicate returns true. The 
+         predicate may examine elements to the left and 
+         right of the element under consideration."
+    public Iterable<List<X>> sublists( 
+            Boolean split(
+                      doc "The current element, which
+                           will be the first element
+                           of the sublist if |split()|
+                           returns |true|." 
+                      X element, 
+                      doc "The elements to the left,
+                           beginning with the immediately
+                           adjacent element." 
+                      X[] left, 
+                      doc "The elements to the right,
+                           beginning with the immediately
+                           adjacent element." 
+                      X[] right
+                  )
+              );
+    
+    doc "An extension of the list with the given elements
+         at the end of the list. The returned list does 
+         reflect changes to the original list."
+    public override List<T> with<T>(T... elements) given T abstracts X;
+    
+    doc "An extension of the list with the given elements
+         at the start of the list. The returned list does 
+         reflect changes to the original list."
+    public List<T> withInitial<T>(T... elements) given T abstracts X;
+    
+    doc "The list in reverse order. The returned list does 
+         reflect changes to the original list."
+    public List<X> reversed;
+    
+    doc "The unsorted elements of the list. The returned 
+         bag does reflect changes to the original list."
+    public Bag<X> unsorted;
+    
+    doc "A map from list index to element. The returned 
+         map does reflect changes to the original list."
+    public Map<Natural,X> map;
+    
+    doc "Produce a new list by applying an operation to
+         every element of the list."
+    public List<Y> transform<Y>(Y select(X element));
+    
+    public override OpenList<T> copy<T>() given T abstracts X;
+
+}]]></programlisting>
+
+            <para>Any <literal>Sequence</literal> may be transparently converted to a 
+            <literal>List</literal>:</para>
+            
+            <programlisting>public extension List&lt;X&gt; sequenceToList(X[] sequence) {
+    if (is List&lt;X&gt; sequence) {
+        return sequence
+    }
+    else {
+        return SequenceList(sequence)
+    }
+}</programlisting>
+            
+<!--
+            <para>Here's an implementation of the well-know quicksort algorithm 
+            for a <literal>List</literal>:</para>
+            
+            <programlisting><![CDATA[doc "Quicksort for |List|s."
+public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
+    if (exists X pivot = list.first) {
+        local createPartition = quickSort(list.rest.elementList);  
+                //i.e. List<X> createPartition(Boolean where(X X)) = ...
+        local smaller = byIncreasing.partial(pivot);                       
+                //i.e. Boolean smaller(X x) = ...
+        return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller))
+    }
+    else {
+        return none
+    }
+}]]></programlisting>
+
+            <para>For example:</para>
+            
+            <programlisting>List&lt;String&gt; sortedNames = quickSort(unsortedNames) byIncreasing (String x, String y) (x>y);</programlisting>
+-->
+            
+            <para>There is a mutable subtype:</para>
+            
+            <programlisting><![CDATA[public mutable interface OpenList<X> 
+        satisfies List<X>, OpenCollection<X>, OpenSequence<X> 
+        given X satisfies Object {
+
+    doc "Remove the element at the given index, decrementing
+         the index of every element with an index greater
+         than the given index by one. Return the removed
+         element."
+    throws (UndefinedKeyException
+            -> "if the index is not in the list")
+    public X removeIndex(Natural at);
+    
+    doc "Add the given elements at the end of the list."
+    public void append(X... elements);
+    
+    doc "Add the given elements at the start of the list,
+         incrementing the index of every existing element
+         by the number of given elements."
+    public void prepend(X... elements);
+
+    doc "Insert the given elements beginning at the given
+         index, incrementing the index of every existing 
+         element with that index or greater by the number 
+         of given elements."
+    throws (UndefinedKeyException
+            -> "if the index is not in the list")
+    public void insert(Natural at, X... elements);
+    
+    doc "Remove elements beginning with the first given index 
+         up to and including the second given index,
+         decrementing the indexes of all elements after
+         with the second given index by one more than the 
+         difference between the two indexes."
+    throws (UndefinedKeyException
+            -> "if the index is not in the list")
+    public void delete(Natural from, Natural to=lastIndex);
+    
+    doc "Remove and return the first element, decrementing
+         the index of every other element by one."
+    throws (EmptyException
+            -> "if the list is empty")
+    public X removeFirst();
+
+    doc "Remove and return the last element."
+    throws (EmptyException
+            -> "if the list is empty")
+    public X removeLast();
+    
+    doc "Reverse the order of the list."
+    public void reverse();
+    
+    doc "Reorder the elements of the list, according to the 
+         given comparison."
+    public void resort(Comparison by(X x, X y));
+    
+    override public OpenList<X> leading(Natural length);
+    override public OpenList<X> trailing(Natural length);
+    override public OpenList<X> sublist(Natural from, Natural to);
+    override public OpenList<X> reversed;
+    override public OpenMap<Natural,X> map;
+    
+}]]></programlisting>
+            
+        <para>A decorator provides the ability to resort lists of
+        <literal>Comparable</literal> values in natural order.</para>
+        
+        <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
+        given X satisfies Comparable<X> {
+        
+    doc "Reorder the elements of the list, according to the 
+         natural order."
+    public void resort() {
+        list.resort() by (X x, X y) (x<=>y);
+    }
+    
+}]]></programlisting>
+        
+        </section>
+            
+        <section id="maps">
+            <title>Maps</title>
+            
+            <para>Maps implement the following interface:</para>
+            
+            <comment><para>TODO: is it OK that maps are not contravariant 
+            in the key type?</para></comment>
+            
+            <programlisting><![CDATA[public interface Map<U, out V>
+        satisfies Collection<Entry<U,V>>, Correspondence<U, V> 
+        given U satisfies Object {
+    
+    doc "The keys of the map, as a |Set|."
+    public Set<U> keys;
+    
+    doc "The values of the map, as a |Bag|."
+    public Bag<V> values;
+    
+    doc "A |Map| of each value belonging to the map, to the 
+         |Set| of all keys at which that value occurs."
+    public Map<V, Set<U>> inverse;
+    
+    doc "Produce a new map by applying an operation to every 
+         element of the map."
+    public Map<U, W> transform<W>(W? select(U key -> V value));
+    
+    doc "The entries of the map for which the given condition 
+         evaluates to |true|, as a |Map|."
+    public Map<U, V> entries(Boolean where(U key -> V value));
+    
+    public override Map<U, T> with<T>(Entry<U, T>... entries) given T abstracts V;
+    public override OpenMap<U,T> copy<T>() given T abstracts V;
+    
+}]]></programlisting>
+
+            <para>There is a mutable subtype:</para>
+            
+            <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
+        satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> 
+        given U satisfies Object {
+    
+    doc "Remove the entry for the given key, returning the 
+         value of the removed entry."
+    throws (UndefinedKeyException
+            -> "if no value is defined for the given key")   
+    public V remove(U key);
+    
+    doc "Remove all entries from the map which have keys for 
+         which the given condition evaluates to |true|. Return 
+         entries which were removed."
+    public Map<U,V> remove(Boolean where(U key));
+    
+    override public OpenSet<U> keys;
+    override public OpenBag<V> values;
+    override public OpenMap<V, Set<U>> inverse;
+    
+}]]></programlisting>
+            
+        </section>
+        
+        <section id="bags">
+            <title>Bags</title>
+            
+            <para>Bags implement the following interface:</para>
+            
+            <programlisting><![CDATA[public interface Bag<out X> 
+        satisfies Collection<X>, Correspondence<Object, Natural> 
+        given X satisfies Object {
+    
+    doc "A map from element to the number of occurrences of 
+         the element. The returned map reflects changes to 
+         the original bag."
+    public Map<X,Natural> map;
+    
+    public override Bag<T> with<T>(T... elements) given T abstracts X;
+    public override OpenBag<T> copy<T>() given T abstracts X;
+    
+}]]></programlisting>
+
+            <para>There is a mutable subtype:</para>
+            
+            <programlisting><![CDATA[public mutable interface OpenBag<X> 
+        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> {
+        
+    override public OpenMap<X,Natural> map;
+    
+}]]></programlisting>
+            
+        </section>
+        
+        <!--
+        
+        <section>
+            <title>Collection operations</title>
+            
+            <programlisting><![CDATA[public Collections {
+            
+    public static List<X> join<X>(List<X> list...) {
+        return new List<X> {
+            ...
+        }
+    }
+    
+    public static Bag<X> union<X>(Bag<X> bag...) {
+        return new Bag<X> {
+            ...
+        }
+    }
+    
+    public static Set<X> union<X>(Set<X> set...) {
+        return new Set<X> {
+            ...
+        }
+    }
+    
+    public static Set<X> intersection<X>(Set<X> set...) {
+        return new Set<X> {
+            ...
+        }
+    }
+    
+    public static Set<X> complement<X>(Set<X> set, Set<Object> sets...) {
+        return new Set<X> {
+            ...
+        }
+    }    
+            
+}]]></programlisting>
+            
+        </section>
+        
+        -->
+        
     </section>
     
 </chapter>
