@@ -925,7 +925,7 @@ package assign greeting {
             with the numeric types. You can also use the <literal>**</literal> operator to
             raise a number to a power:</para>
             
-            <programlisting>Float diagonal = sqrt(length**2+width**2);</programlisting>
+            <programlisting>Float diagonal = (length**2+width**2)**0.5;</programlisting>
             
             <para>Of course, if you want to use the increment <literal>++</literal> operator,
             decrement <literal>--</literal> operator, or one of the compound assignment

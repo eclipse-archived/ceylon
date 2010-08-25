@@ -1514,7 +1514,7 @@ ClassBody</programlisting>
         <programlisting>public class DiagonalPoint(Decimal distance) 
         extends Point() {
     
-    Decimal pos = sqrt(distance**2/2) * distance.sign;
+    Decimal pos = distance / 2**0.5;
     x = pos;
     y = pos;
     
