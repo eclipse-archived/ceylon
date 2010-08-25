@@ -1,7 +1,8 @@
 package ceylon;
 
-public class doc
+public class doc implements ceylon.Annotation
 {
-    public static void run(ceylon.String... value) {
+    public static ceylon.Annotation run(ceylon.String... value) {
+        return null;
     }
 }

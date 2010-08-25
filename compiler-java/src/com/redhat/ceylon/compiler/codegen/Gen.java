@@ -29,6 +29,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -243,7 +244,7 @@ public class Gen {
                 JCClassDecl classDef = 
                     make(decl).ClassDef(make().Modifiers(PUBLIC, List.<JCAnnotation>nil()),
                             names.fromString(decl.nameAsString()),
-                            List.<JCTypeParameter>nil(), null,
+                            List.<JCTypeParameter>nil(), makeSelect("ceylon", "Object"),
                             List.<JCExpression>nil(),
                             innerDefs);
                 
@@ -309,8 +310,11 @@ public class Gen {
         for (CeylonTree expr: userAnn.values()) {
             values = values.append(convertExpression(expr));
         }
-        return make(userAnn).Apply(null, makeSelect(userAnn.name, "run"),
+        JCExpression result = make().Apply(null, makeSelect(userAnn.name, "run"),
                 values);
+        JCIdent addAnnotation = make(userAnn).Ident(names.fromString("addAnnotation"));
+        result = make().Apply(null, addAnnotation, List.<JCExpression>of(result));
+        return result;
     }
     
     JCExpression convert(CeylonTree.ReflectedLiteral value) {
