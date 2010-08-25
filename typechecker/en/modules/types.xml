@@ -5,6 +5,28 @@
     important types provided by the package <literal>lang</literal>. Many
     of these types support <emphasis>operators</emphasis>.</para>
     
+    <para>The Ceylon SDK includes the following important modules:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para><literal>lang</literal> - basic types provided to support
+            built-in language features</para>
+        </listitem>
+        <listitem>
+            <para><literal>module</literal> - the module runtime</para>
+        </listitem>
+        <listitem>
+            <para><literal>collection</literal> - the collections framework</para>
+        </listitem>
+        <listitem>
+            <para><literal>datetime</literal> - support for representing
+            dates and times</para>
+        </listitem>
+        <listitem>
+            <para><literal>io</literal> - the I/O facility</para>
+        </listitem>
+    </itemizedlist>
+    
     <section id="void">
         <title>The void type</title>
         
