@@ -79,4 +79,7 @@ implements JavaFileObject
          return f.getAccessLevel();
      }
 
+     public String toString() {
+    	 return f.toString();
+     }
 }

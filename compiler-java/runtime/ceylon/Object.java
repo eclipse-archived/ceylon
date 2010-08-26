@@ -9,4 +9,7 @@ public abstract class Object extends Void {
 
     public static void addAnnotation(Annotation ann) {
     }
+
+    public static void addAnnotation(String memberName, Annotation ann) {
+    }
 }
