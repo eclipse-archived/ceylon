@@ -1,7 +1,7 @@
 <project name="MyProject" default="all" basedir=".">
 
   <!-- Directories containing java source files -->
-  <property name="compiler.src" location="src/com"/>
+  <property name="compiler.src" location="src"/>
   <property name="runtime.src" location="runtime"/>
 
   <!-- Directories everything gets built into -->
@@ -25,7 +25,7 @@
   <property name="test.dst" location="${build}/test"/>
 
   <ant antfile="simple.xml"
-    dir="src/langtools/make"
+    dir="langtools/make"
     inheritAll="false">
   </ant>
 
