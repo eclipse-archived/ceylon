@@ -1,7 +1,7 @@
 <project name="MyProject" default="all" basedir=".">
 
   <!-- Directories containing java source files -->
-  <property name="compiler.src" location="src"/>
+  <property name="compiler.src" location="src/com"/>
   <property name="runtime.src" location="runtime"/>
 
   <!-- Directories everything gets built into -->
@@ -17,12 +17,17 @@
   <property name="antlr.src" location="Ceylon.g"/>
   <property name="antlr.dst" location="src/com/redhat/ceylon/compiler/parser"/>
   <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
-  <property name="tools.lib" location="/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/lib/tools.jar"/>
+  <property name="tools.lib" location="src/langtools/tools.jar"/>
 
   <!-- The directory that tests live in, and the
        directory test results get written into -->
   <property name="test.src" location="corpus/tests"/>
   <property name="test.dst" location="${build}/test"/>
+
+  <ant antfile="simple.xml"
+    dir="src/langtools/make"
+    inheritAll="false">
+  </ant>
 
   <!-- Rules to build parser classes from the ANTLR grammar -->
   <condition property="antlr.needed">
