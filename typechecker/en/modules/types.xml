@@ -252,12 +252,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>The <literal>Boolean</literal> class represents
         boolean values. Expressions of type <literal>Boolean</literal> support 
         the binary <literal>||, &amp;&amp;</literal> and <literal>=></literal> 
-        operators and the unary <literal>!</literal> operator, and inherit the 
-        binary <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
-        operators from <literal>Bits</literal>.</para>
+        operators and the unary <literal>!</literal> operator.</para>
         
         <programlisting><![CDATA[public class Boolean()
-        satisfies Case<Boolean>, Bits<1,Boolean> {
+        satisfies Case<Boolean> {
     case true, case false;
 
     doc "The binary or operator |x | y|"
@@ -1488,38 +1486,9 @@ class String(Character[] characters)
     
 }]]></programlisting>
         
-        <comment><para>TODO: I assume these are just Java (Perl 5-style) regular expressions. Is
-        there some other better syntax around?</para></comment>
+        <comment><para>TODO: I assume these are just Java (Perl 5-style) regular 
+        expressions. Is there some other better syntax around?</para></comment>
 
-    </section>
-    
-    <section id="bits">
-        <title>Bit strings</title>
-        
-        <para>The interface <literal>Bits</literal> represents a fixed length
-        string of boolean values, and supports the binary 
-        <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
-        operators.</para>
-        
-        <programlisting><![CDATA[public interface Bits<n,T> {
-        
-    doc "Bitwise or operator |x | y|"
-    public T or(T bits);
-    
-    doc "Bitwise and operator |x & y|"
-    public T and(T bits);
-    
-    doc "Bitwise xor operator |x ^ y|"
-    public T xor(T bits);
-    
-    doc "Bitwise complement operator |~x|"
-    public T complement;
-    
-    doc "A list of the bits."
-    public Boolean[n] bits;
-    
-}]]></programlisting>
-        
     </section>
     
     <section id="number">
@@ -1658,7 +1627,7 @@ class String(Character[] characters)
         (including zero).</para>
         
         <programlisting><![CDATA[public class Natural(Natural natural)
-        satisfies Integral<Natural>, Invertable<Integer>, Case<Integer>, Bits<63,Natural> { 
+        satisfies Integral<Natural>, Invertable<Integer>, Case<Integer> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
@@ -1781,6 +1750,45 @@ class String(Character[] characters)
 
 }]]></programlisting>
 
+    </section>
+    
+    <section id="bits">
+        <title>Bit strings</title>
+        
+        <para>The interface <literal>Bits</literal> represents a fixed length
+        string of boolean values, and supports the binary 
+        <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
+        operators.</para>
+        
+        <programlisting><![CDATA[public interface Bits<n> 
+        satisfies Boolean[n] {
+        
+    doc "Bitwise or operator |x | y|"
+    public Bits<n> or(Bits<n> bits);
+    
+    doc "Bitwise and operator |x & y|"
+    public Bits<n> and(Bits<n> bits);
+    
+    doc "Bitwise xor operator |x ^ y|"
+    public Bits<n> xor(Bits<n> bits);
+    
+    doc "Bitwise complement operator |~x|"
+    public Bits<n> complement;
+    
+}]]></programlisting>
+
+        <comment><para>TODO: should we model <literal>Bits&lt;n&gt;</literal> as 
+        a decorator of <literal>Boolean[n]</literal>, like what we do with 
+        <literal>String</literal> and <literal>Character[]</literal>?</para></comment>
+
+        <para>Boolean values are transparently converted to and from <literal>Bits&lt;1&gt;</literal>.</para>
+
+        <programlisting><![CDATA[public extension Bits<1> booleanToBits(Boolean b) { .... }]]></programlisting>
+        <programlisting><![CDATA[public extension Boolean bitsToBoolean(Bits<1> b) { return b[0] }]]></programlisting>
+
+        <comment><para>TODO: we need a bunch of functions for converting bit 
+        strings to and from numeric values, characters, etc.</para></comment>
+        
     </section>
     
     <section id="metamodel">

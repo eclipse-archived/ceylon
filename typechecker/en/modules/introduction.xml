@@ -946,18 +946,18 @@ package assign greeting {
 
 }</programlisting>
             
+            <!--
             <para>You can even apply the bitwise and, or, xor, and complement operators
             to the type <literal>Natural</literal>:</para>
             
             <programlisting>Natural result = color&amp;mask;</programlisting>
+            -->
             
             <para>Operators in Ceylon are, in principle, just abbreviations for some expression
             involving a method call. So the numeric types all implement the <literal>Numeric</literal> 
             interface, which declares the methods <literal>plus()</literal>, <literal>minus()</literal>,
             <literal>times()</literal>, <literal>divided()</literal> and <literal>power()</literal>.
-            The numeric operators are defined in terms of these methods of <literal>Numeric</literal>.
-            And <literal>Natural</literal> gets its bitwise operations from the <literal>Bits</literal>
-            interface.</para>
+            The numeric operators are defined in terms of these methods of <literal>Numeric</literal>.</para>
             
             <para>But don't worry about the performance implications of this&mdash;in practice, 
             the compiler is permitted to optimize away the method invocations. In fact, the compiler

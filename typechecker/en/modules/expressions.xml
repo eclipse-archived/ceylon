@@ -141,13 +141,14 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of one 
-            of the the built-in numeric types, of <literal>ceylon.lang.Range</literal>, of 
-            <literal>ceylon.lang.Entry</literal>, or of <literal>ceylon.lang.String</literal> 
-            without execution of the initializer of the class, whenever any expression is evaluated. 
-            Furthermore, it is permitted to use such a newly-produced instance as the value of the 
-            expression, as long as the newly-produced instance is equal to the value expected 
-            according to the rules above, as determined using the <literal>==</literal> operator. 
-            Therefore, the <literal>===</literal> operator is unreliable for the listed types.</para>
+            of the the built-in numeric types, of <literal>Bits&lt;n&gt;</literal>, of 
+            <literal>ceylon.lang.Range</literal>, of <literal>ceylon.lang.Entry</literal>, or of 
+            <literal>ceylon.lang.String</literal> without execution of the initializer of the class, 
+            whenever any expression is evaluated. Furthermore, it is permitted to use such a 
+            newly-produced instance as the value of the expression, as long as the newly-produced 
+            instance is equal to the value expected according to the rules above, as determined using 
+            the <literal>==</literal> operator. Therefore, the <literal>===</literal> operator is 
+            unreliable for the listed types.</para>
         </listitem>
         </itemizedlist>
         
@@ -3708,11 +3709,12 @@ setPerson(person);</programlisting>
     <section id="bitwise">
     <title>Bitwise operators</title>
     
-    <para>These are C-style bitwise operations for bit strings (unsigned integers).
-    A <literal>Boolean</literal> is considered a bit string of length one, so these
-    operators also apply to <literal>Boolean</literal> values. Note that in Ceylon
-    these operators have a higher precedence than they have in C or Java. There are
-    no bitshift operators in Ceylon.</para>
+    <para>These are C-style bitwise operations for bit strings. A <literal>Boolean</literal> 
+    is considered a bit string of length one, so these operators also apply to 
+    <literal>Boolean</literal> values. Note that in Ceylon these operators have a higher 
+    precedence than they have in C or Java. Note also that the built-in numeric types are
+    not considered bit strings, so explicit conversion to <literal>Bits&lt;n&gt;</literal>
+    is required before these operations may be applied to a numeric value.</para>
     
     <table>
     <tgroup cols="7">
@@ -3744,35 +3746,35 @@ setPerson(person);</programlisting>
             <entry>complement</entry>
             <entry><literal>rhs.complement</literal></entry>
             <entry></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>|</literal></entry>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;</literal></entry>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>^</literal></entry>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Bits&lt;X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
 
         
@@ -3783,32 +3785,34 @@ setPerson(person);</programlisting>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Assignable&lt;Bits&lt;n&gt;&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Assignable&lt;Bits&lt;n&gt;&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Assignable&lt;Bits&lt;X&gt;&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>Assignable&lt;Bits&lt;n&gt;&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
         
     </tbody>
     </tgroup>
     </table>
+    
+    <comment><para>TODO: should we support the traditional C-style bitshift operators?</para></comment>
     
     </section>
     
