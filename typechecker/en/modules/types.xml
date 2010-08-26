@@ -79,7 +79,7 @@
     doc "The |Type| of the instance."
     public Type<subtype> type { return ... }
     
-    doc "A log obect for the type."
+    doc "A log object for the type."
     public default Log log { return type.log }
     
     doc "Transform the given object to a string. Override to
