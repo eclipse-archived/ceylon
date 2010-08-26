@@ -257,6 +257,8 @@ public class Gen {
         JCCompilationUnit topLev =
             make(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
                     /* package id*/ null, defs.toList());
+        
+        topLev.isCeylonProgram = true;
 
         System.out.println(topLev);
         return topLev;
