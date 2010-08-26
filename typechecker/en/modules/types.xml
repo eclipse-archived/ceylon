@@ -258,6 +258,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         satisfies Case<Boolean> {
         
     case true, case false;
+    
+    override Boolean test(Boolean value) {
+        return this===value
+    }
 
 }]]></programlisting>
 
