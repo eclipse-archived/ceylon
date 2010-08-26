@@ -257,7 +257,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         operators from <literal>Bits</literal>.</para>
         
         <programlisting><![CDATA[public class Boolean()
-        satisfies Case<Boolean>, Bits<Boolean> {
+        satisfies Case<Boolean>, Bits<1,Boolean> {
     case true, case false;
 
     doc "The binary or operator |x | y|"
@@ -1501,7 +1501,7 @@ class String(Character[] characters)
         <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
         operators.</para>
         
-        <programlisting><![CDATA[public interface Bits<T> {
+        <programlisting><![CDATA[public interface Bits<n,T> {
         
     doc "Bitwise or operator |x | y|"
     public T or(T bits);
@@ -1516,7 +1516,7 @@ class String(Character[] characters)
     public T complement;
     
     doc "A list of the bits."
-    public List<Boolean> bits;
+    public Boolean[n] bits;
     
 }]]></programlisting>
         
@@ -1658,7 +1658,7 @@ class String(Character[] characters)
         (including zero).</para>
         
         <programlisting><![CDATA[public class Natural(Natural natural)
-        satisfies Integral<Natural>, Invertable<Integer>, Case<Integer>, Bits<Natural> { 
+        satisfies Integral<Natural>, Invertable<Integer>, Case<Integer>, Bits<63,Natural> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
@@ -2328,7 +2328,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     
     </section>
     
-    <section>
+    <section id="collectonsmodule">
         <title>The collections module</title>
         
         <para>The module <literal>ceylon.collection</literal> contains the collections
