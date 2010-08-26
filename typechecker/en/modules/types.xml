@@ -256,51 +256,9 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         
         <programlisting><![CDATA[public class Boolean()
         satisfies Case<Boolean> {
+        
     case true, case false;
 
-    doc "The binary or operator |x | y|"
-    override public Boolean or(Boolean boolean) {
-        if (this) {
-            return true
-        }
-        else {
-            return boolean
-        }
-    }
-    
-    doc "The binary and operator |x & y|"
-    override public Boolean and(Boolean boolean) {
-        if (this) {
-            return boolean
-        }
-        else {
-            return false
-        }
-    }
-    
-    doc "The binary xor operator |x ^ y|"
-    override public Boolean xor(Boolean boolean) {
-        if (this) {
-            return boolean.complement
-        }
-        else {
-            return boolean
-        }
-    }
-    
-    doc "The unary not operator |!x|"
-    override public Boolean complement { 
-        if (this) {
-            return false
-        }
-        else {
-            return true
-        }
-    }
-    
-    override public List<Boolean> bits {
-        return SingletonList(this)
-    }
 }]]></programlisting>
 
     </section>
@@ -1783,8 +1741,64 @@ class String(Character[] characters)
 
         <para>Boolean values are transparently converted to and from <literal>Bits&lt;1&gt;</literal>.</para>
 
+        <programlisting><![CDATA[public extension class BooleanBit(Boolean boolean)
+        satisfies Bits<1> {
+
+    public extension Boolean boolean = boolean;
+
+    override Bits<1> or(Bits<1> bit) {
+        if (boolean) {
+            return this
+        else {
+            return bit
+        }
+    }
+    
+    override Bits<1> and(Bits<1> bit) {
+        if (boolean) {
+            return bit
+        else {
+            return false
+        }
+    }
+    
+    override Bits<1> xor(Bits<1> bit) {
+        if (boolean) {
+            return bit.complement
+        else {
+            return bit
+        }
+    }
+    
+    override Bits<1> complement {
+        return BooleanBit(!boolean)
+    }
+    
+    override Referenceable<Boolean> value(Bounded<1> index) {
+        return boolean
+    }
+    
+    override Referenceable<Boolean?> value(Natural key) {
+        Boolean? result;
+        if (key==0) {
+            result = boolean 
+        }
+        else {
+            result = null
+        }
+        return result
+    }
+    
+    override Bounded<1> lastIndex {
+        return 0
+    }
+    
+}]]></programlisting>
+
+        <!--
         <programlisting><![CDATA[public extension Bits<1> booleanToBits(Boolean b) { .... }]]></programlisting>
         <programlisting><![CDATA[public extension Boolean bitsToBoolean(Bits<1> b) { return b[0] }]]></programlisting>
+        -->
 
         <comment><para>TODO: we need a bunch of functions for converting bit 
         strings to and from numeric values, characters, etc.</para></comment>
