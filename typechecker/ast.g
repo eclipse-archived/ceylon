@@ -328,7 +328,7 @@ memberType
     ;
 
 memberParameters
-    : typeParameters? formalParameters+ typeConstraints?
+    : typeParameters? formalParameters+ extraFormalParameters typeConstraints?
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -370,6 +370,7 @@ classDeclaration
         typeName
         typeParameters?
         formalParameters
+        extraFormalParameters
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -817,6 +818,11 @@ specialArgument
     //| existsCondition
     ;
 
+extraFormalParameters
+    : extraFormalParameter*
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
+    ;
+
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
     -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
@@ -835,9 +841,20 @@ formalParameterStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    : annotations? formalParameterType parameterName formalParameters*
-      ( '->' type parameterName | '..' parameterName )? 
+    : basicFormalParameter
+      ( '->' type parameterName 
+      | '..' parameterName 
+      | (('in'|'=') formalParameterStart) => ('in'|'=') basicFormalParameter
+      )? 
       specifier?
+    ;
+    
+basicFormalParameter
+    : annotations? formalParameterType parameterName formalParameters*
+    ;
+
+extraFormalParameter
+    : formalParameterType parameterName formalParameters*
     ;
 
 formalParameterType
