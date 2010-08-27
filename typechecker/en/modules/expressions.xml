@@ -1517,7 +1517,7 @@ local comp = order(1,-1);</programlisting>
         outside the parentheses in method and class definitions, in order to better respect the 
         intended invocation syntax, for example:</para>
         <programlisting>public void assert(StringTemplate message) Boolean that { ... }</programlisting>
-        <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition, Y then, Y otherwise) { ... }</programlisting>
+        <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
         <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
         </comment>
         
