@@ -1513,6 +1513,14 @@ local comp = order(1,-1);</programlisting>
         <para>Arguments must be listed in the same order as the formal parameters are 
         declared by the method declaration.</para>
         
+        <comment><para>TODO:</para> should we introduce the ability to declare functional parameters
+        outside the parentheses in method and class definitions, in order to better respect the 
+        intended invocation syntax, for example:
+        <programlisting>public void assert(StringTemplate message) Boolean that { ... }</programlisting>
+        <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition, Y then, Y otherwise) { ... }</programlisting>
+        <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
+        </comment>
+        
         <comment>
         <para>TODO: should we support type inference for the formal parameters? It 
         gets complicated with method overloading. For example:</para>
@@ -1567,7 +1575,12 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         
         <programlisting>local names = from (local p in people) where (p.age>18) select (p.name);</programlisting>
         
-        
+        <comment><para>TODO: would a declaration which more closely reflects the invocation 
+        syntax be easier to understand, something like this, for example:</para>
+        <programlisting>public List&lt;Y&gt; from&lt;X,Y&gt;(X x in Iterable&lt;X&gt; elements)
+             Boolean where(coordinated X x)
+             Y select(coordinated X x);</programlisting></comment>
+                
         </section>
         
         <section id="localdefinition">
@@ -1620,6 +1633,12 @@ Y using&lt;X,Y&gt;(specified X resource,
         <programlisting>local amount = ifExists(local p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
         <programlisting>local order = using (local s = Session()) seek (s.get(Order, oid));</programlisting>
         
+        <comment><para>TODO: would a declaration which more closely reflects the invocation 
+        syntax be easier to understand, something like this, for example:</para>
+        <programlisting>public Y ifExists&lt;X,Y&gt;(X x = X? value) 
+            Y then(coordinated X x)
+            Y otherwise;</programlisting></comment>
+                
         </section>
         
         <!--section id="caseslist">
