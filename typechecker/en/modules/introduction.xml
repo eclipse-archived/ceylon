@@ -1263,7 +1263,7 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
         <itemizedlist>
             <listitem>
                 <para><emphasis>assertion</emphasis>, such as: 
-                <literal>assert() that (x==0.0);</literal></para>
+                <literal>assert("x must be zero") that (x==0.0);</literal></para>
             </listitem>
             <listitem>
                 <para><emphasis>comprehension</emphasis>, such as:
