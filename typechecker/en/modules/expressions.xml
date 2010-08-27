@@ -1513,9 +1513,9 @@ local comp = order(1,-1);</programlisting>
         <para>Arguments must be listed in the same order as the formal parameters are 
         declared by the method declaration.</para>
         
-        <comment><para>TODO:</para> should we introduce the ability to declare functional parameters
+        <comment><para>TODO: should we introduce the ability to declare functional parameters
         outside the parentheses in method and class definitions, in order to better respect the 
-        intended invocation syntax, for example:
+        intended invocation syntax, for example:</para>
         <programlisting>public void assert(StringTemplate message) Boolean that { ... }</programlisting>
         <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition, Y then, Y otherwise) { ... }</programlisting>
         <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
