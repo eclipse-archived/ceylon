@@ -114,6 +114,7 @@ public class Gen {
     class Singleton<T> implements Iterable<T>{
         private T thing;
         Singleton() { }
+        Singleton(T t) { thing = t; }
         List<T> asList() { return List.of(thing); }
         void append(T t) {
             if (thing != null)
@@ -220,9 +221,11 @@ public class Gen {
                     new Singleton<JCBlock>();
                 Singleton<JCExpression> restype =
                     new Singleton<JCExpression>();
+            	final ListBuffer<JCAnnotation> langAnnotations =
+            		new ListBuffer<JCAnnotation>();
                 
                 processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
-                        annotations);
+                        annotations, langAnnotations);
                 
                 JCMethodDecl meth = make(decl).MethodDef(make().Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
@@ -269,7 +272,8 @@ public class Gen {
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
             final ListBuffer<JCTypeParameter> typarams,
-            final ListBuffer<JCStatement> annotations) {
+            final ListBuffer<JCStatement> annotations,
+    		final ListBuffer<JCAnnotation> langAnnotations) {
 
         System.err.println(decl);
         
@@ -284,27 +288,43 @@ public class Gen {
                 }
             });
         
-        processAnnotations(decl.annotations, annotations, decl.nameAsString());
+        processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
         
         restype.append(makeIdent(decl.returnType.name().components()));
     }                
 
     void processAnnotations(List<CeylonTree.Annotation> ceylonAnnos,
     		final ListBuffer<JCStatement> annotations,
+    		final ListBuffer<JCAnnotation> langAnnotations,
     		final String declName) {
-    	if (ceylonAnnos == null)
-    		return;
-    	
-        for (CeylonTree.Annotation a: ceylonAnnos) {
-            a.accept(new CeylonTree.Visitor () {
-                public void visit(CeylonTree.UserAnnotation userAnn) {
-                    annotations.append(make().Exec(convert(userAnn, declName)));
-                }
-                public void visit(CeylonTree.LanguageAnnotation langAnn) {
-                    // FIXME
-                }
-            });
-        }
+
+    	class V extends CeylonTree.Visitor {
+    		boolean optional = false;
+
+    		public void visit(CeylonTree.UserAnnotation userAnn) {
+    			annotations.append(make().Exec(convert(userAnn, declName)));
+    		}
+    		public void visit(CeylonTree.LanguageAnnotation langAnn) {
+    			langAnn.kind.accept(this);
+    		}
+    		public void visit(CeylonTree.Optional opt) {
+    			optional = true;
+    		}
+    		public void visit(CeylonTree.Public pub) {
+    			// FIXME
+    		}
+    	}
+    	V v = new V();
+
+    	if (ceylonAnnos != null)
+    		for (CeylonTree.Annotation a: ceylonAnnos)
+    			a.accept(v);
+
+    	if (! v.optional) {
+    		JCAnnotation ann = make().Annotation(makeSelect("ceylon", "nonOptional"),
+    				List.<JCExpression>nil());
+    		langAnnotations.append(ann);
+    	}
     }
     
     JCBlock registerAnnotations(List<JCStatement> annos) {
@@ -406,11 +426,15 @@ public class Gen {
             new ListBuffer<JCTree>();
         final ListBuffer<JCStatement> annotations = 
             new ListBuffer<JCStatement>();
+		final ListBuffer<JCAnnotation> langAnnotations =
+			new ListBuffer<JCAnnotation>();
+
         
         cdecl.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.FormalParameter param) {
                 JCExpression vartype = makeIdent(param.type().name().components());
-                JCVariableDecl var = make(cdecl).VarDef(make().Modifiers(PUBLIC), makeName(param.names), vartype, null);
+                JCVariableDecl var = make(cdecl).VarDef(make().Modifiers(PUBLIC), 
+                		makeName(param.names), vartype, null);
                 System.out.println(var);
                 params.append(var);
             }
@@ -424,11 +448,11 @@ public class Gen {
             }
             
             public void visit(CeylonTree.LanguageAnnotation ann) {
-                // FIXME
+                // Handled in processAnnotations
             }
             
             public void visit(CeylonTree.UserAnnotation userAnn) {
-                annotations.append(make(cdecl).Exec(convert(userAnn, null)));
+                // Handled in processAnnotations
             }
             
             public void visit(CeylonTree.MemberDeclaration mem) {
@@ -437,12 +461,15 @@ public class Gen {
             }
          });
         
-       if (annotations.length() > 0) {
+        processAnnotations(cdecl.annotations, annotations, langAnnotations, 
+                           cdecl.nameAsString());
+        
+        if (annotations.length() > 0) {
             defs.append(registerAnnotations(annotations.toList()));
         }
         
         JCClassDecl classDef = 
-            make(cdecl).ClassDef(make().Modifiers(PUBLIC, List.<JCTree.JCAnnotation>nil()),
+            make(cdecl).ClassDef(make().Modifiers(PUBLIC, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
                     List.<JCTypeParameter>nil(), makeSelect("ceylon", "Object"),
                     List.<JCExpression>nil(),
@@ -458,13 +485,15 @@ public class Gen {
             new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCStatement> annotations = 
             new ListBuffer<JCStatement>();
+    	final ListBuffer<JCAnnotation> langAnnotations =
+    		new ListBuffer<JCAnnotation>();
         final Singleton<JCBlock> body = 
             new Singleton<JCBlock>();
         Singleton<JCExpression> restype =
             new Singleton<JCExpression>();
 
         processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
-                annotations);
+                annotations, langAnnotations);
 
         JCMethodDecl meth = make(decl).MethodDef(make().Modifiers(PUBLIC),
                 names.fromString(decl.nameAsString()),
@@ -574,18 +603,21 @@ public class Gen {
     	if (decl.initialValue() != null)
     		initialValue = convertExpression(decl.initialValue());
     		
-    	List<JCStatement> result = 
-    		List.<JCStatement>of(make(decl).VarDef(make().Modifiers(0), 
-                    names.fromString(decl.nameAsString()),
-                    makeIdent(decl.type.name().components()), 
-                    initialValue));
-        
-        final ListBuffer<JCStatement> annotations = 
+    	final ListBuffer<JCAnnotation> langAnnotations =
+    		new ListBuffer<JCAnnotation>();
+    	final ListBuffer<JCStatement> annotations = 
             new ListBuffer<JCStatement>();
-        processAnnotations(decl.annotations, annotations, decl.nameAsString());
-     
+        processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
+    	
+        List<JCStatement> result = 
+        	List.<JCStatement>of(make(decl).VarDef
+        			(make().Modifiers(0, langAnnotations.toList()), 
+        					names.fromString(decl.nameAsString()),
+        					makeIdent(decl.type.name().components()), 
+        					initialValue));
+
         if (annotations.length() > 0) {
-            result = result.append(registerAnnotations(annotations.toList()));
+        	result = result.append(registerAnnotations(annotations.toList()));
         }
 
         return result;

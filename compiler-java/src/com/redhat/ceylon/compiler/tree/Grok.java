@@ -150,20 +150,13 @@ public class Grok extends CeylonTree.Visitor {
         current.context.setName(name.name);
     }
     
-    @Override
-        public void visit(CeylonTree.Public v) {
-        current.context.add(v);     
-        // TODO ((CeylonTree.Declaration)current.context).setVisibility(v);
-    }
-    
     public void visit(CeylonTree.MemberDeclaration member) {
         visit((CeylonTree.BaseMemberDeclaration)member);
     }
     public void visit(CeylonTree.AbstractMemberDeclaration member) {
         visit((CeylonTree.BaseMemberDeclaration)member);
     }
-
-    
+ 
     public void visit(CeylonTree.BaseMemberDeclaration member)
     {
         // We don't know if this is going to be a method or a field.
@@ -221,6 +214,13 @@ public class Grok extends CeylonTree.Visitor {
     {
         current.context.pushType(v);
     }
+
+    public void visit(CeylonTree.Public v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
+    
     
     public void visit(CeylonTree.Default v)
     {
