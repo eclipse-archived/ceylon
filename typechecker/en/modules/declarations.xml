@@ -2210,6 +2210,17 @@ Void goodbye() {
         Parameters declared by parameter lists other than the first parameter list are 
         not considered visible inside the body of the method.</para>
         
+        <comment><para>TODO: I think we should drop this restriction (like in a real 
+        functional language) and let the compiler do the legwork. So you could write
+        the following equivalent code instead:</para>
+        <programlisting>Comparison getOrder()(Natural x, Natural y) {
+    return x&lt;=&gt;y
+}</programlisting>
+        <para>The compiler could figure out what's going on by the type of the 
+        expression specified by <literal>return</return>, and automatically create 
+        the inner method definition.
+        </comment>
+        
         <para>The type of a callable object returned by a method with multiple parameter 
         lists must be assignable to the callable type of a method formed by taking the 
         method with multiple parameter lists and eliminating its first parameter list.</para>
