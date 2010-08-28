@@ -1779,6 +1779,27 @@ except (SomethingElseWrong sew) {
                 <comment><para>TODO: Figure out the details of the type inference implied by this 
                 last bit!</para></comment>
                 
+                <comment><para>TODO: What about the case of an "unbound" type parameter which does
+                not appear in the formal parameter list? Is it an error, or should the compiler 
+                search through all imported types (in the calling scope) looking for a type that 
+                satisfies the constraints? This would work out a bit like Scala implicit parameters. 
+                For example:</para>
+                <programlisting><![CDATA[Producer<T> producer<T,P>()
+        given P() satisfies Producer<T> {
+    return P()
+}]]></programlisting>
+                <programlisting><![CDATA[T sum<T,M>(T[] ts) 
+        given M() satisfies Monoid<T> {
+    Monoid<T> monoid = M();
+    mutable T result := monoid.zero;
+    for (T t in ts) {
+        result := monoid.sum(result,t);
+    }
+    return t;
+}]]></programlisting>
+                <para>Note that the difference is that a constraint poses an upper bound, whereas an
+                argument poses a lower bound.</para></comment>
+                
                 <para>If no such combination of type arguments exists, the invocation or 
                 instantiation is illegal. (Note that Ceylon is less strict than Java with this 
                 rule.)</para>
