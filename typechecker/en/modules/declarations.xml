@@ -1179,6 +1179,9 @@ VarargsParam?
             </listitem>
         </itemizedlist>
         
+        <para>Note that a single <literal>given</literal> clause may specify multiple
+        constraints.</para>
+        
         <para>A constraint may not refer to a varargs type parameter.</para>
         
         <!--
