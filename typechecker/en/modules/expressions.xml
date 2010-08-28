@@ -1797,8 +1797,8 @@ except (SomethingElseWrong sew) {
     }
     return t;
 }]]></programlisting>
-                <para>Note that the difference is that a constraint poses an upper bound, whereas an
-                argument poses a lower bound.</para></comment>
+                <para>Note that the difference is that a constraint (or expected return type) poses 
+                an upper bound, whereas an argument poses a lower bound.</para></comment>
                 
                 <para>If no such combination of type arguments exists, the invocation or 
                 instantiation is illegal. (Note that Ceylon is less strict than Java with this 
