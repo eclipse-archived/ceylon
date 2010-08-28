@@ -1173,7 +1173,7 @@ VarargsParam?
                 of the current instance, and</para>
             </listitem-->
             <listitem>
-                <para>an initialization parameter specification, <literal>X(...)</literal>
+                <para>an initialization parameter specification, <literal>given X(...)</literal>
                 specifies that the type parameter <literal>X</literal> is a class with
                 the given formal parameter types.</para>
             </listitem>
