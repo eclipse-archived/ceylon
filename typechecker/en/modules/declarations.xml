@@ -2216,9 +2216,9 @@ Void goodbye() {
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
     return x&lt;=&gt;y
 }</programlisting>
-        <para>The compiler could figure out what's going on by the type of the 
-        expression specified by <literal>return</return>, and automatically create 
-        the inner method definition.
+        <para>The compiler could figure out what's going on using the type of the 
+        expression specified by <literal>return</literal>, and automatically create 
+        the inner method definition.</para>
         </comment>
         
         <para>The type of a callable object returned by a method with multiple parameter 
