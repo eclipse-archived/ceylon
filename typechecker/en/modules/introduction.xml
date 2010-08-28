@@ -261,7 +261,7 @@
     
     </section>
     
-    <section>
+    <section id="modularity">
     <title>Modularity</title>
     
     <para>
@@ -281,7 +281,7 @@
             built-in language features</para>
         </listitem>
         <listitem>
-            <para><literal>ceylon.module</literal> - the module runtime (based upon
+            <para><literal>ceylon.module</literal> - the module runtime (based on
             JBoss Modules)</para>
         </listitem>
         <listitem>
@@ -291,33 +291,34 @@
         </listitem>
         <listitem>
             <para><literal>ceylon.datetime</literal> - support for representing
-            dates and times (based upon JSR-310)</para>
+            dates and times (based on JSR-310)</para>
         </listitem>
         <listitem>
             <para><literal>ceylon.security</literal> - the security API</para>
         </listitem>
         <listitem>
-            <para><literal>ceylon.io</literal> - the I/O facility</para>
+            <para><literal>ceylon.io</literal> - the I/O facility (based on 
+            <literal>java.io</literal>)</para>
         </listitem>
         <listitem>
             <para><literal>ceylon.concurrent</literal> - the concurrency API (based
-            upon JSR-166)</para>
+            on JSR-166)</para>
         </listitem>
         <listitem>
             <para><literal>ceylon.http</literal> - the HTTP client and server (based 
-            upon JBoss Netty)</para>
+            on JBoss Netty)</para>
         </listitem>
         <listitem>
             <para><literal>ceylon.transaction</literal> - the transaction server (based 
-            upon JBoss Transactions)</para>
+            on JBoss Transactions)</para>
         </listitem>
         <listitem>
             <para><literal>ceylon.rdbc</literal> - relational database connectivity 
-            (based upon JDBC)</para>
+            (based on JDBC)</para>
         </listitem>
         <listitem>
             <para><literal>ceylon.message</literal> - the message server (based 
-            upon JBoss HornetQ)</para>
+            on JBoss HornetQ)</para>
         </listitem>
     </itemizedlist>
     
