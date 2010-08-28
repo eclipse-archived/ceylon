@@ -3240,6 +3240,16 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         of the introduced type, the extension is invoked to produce an instance of the introduced
         type that will receive the invocation or evaluation.</para>
         
+        <para>It's even possible to define an extension to a metatype:</para>
+        
+        <programlisting>public extension class StringType(Type&lt;String&gt; stringType) {
+    public String concat(String a, String b) { return a + " " + b }
+}</programlisting>
+
+        <para>Resulting in a syntax very much like a Java-style "static" invocation.</para>
+
+        <programlisting>log.info(String.concat(a, b));</programlisting>
+        
         <comment><para>TODO: extensions are nice, and quite powerful, but they aren't enough to
         implement an embedded query language like in JPA. Dynamic languages let you implement a
         method to respond to an unknown member invoked at runtime. Java 6 lets you do a similar
