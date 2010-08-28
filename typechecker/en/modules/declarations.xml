@@ -476,6 +476,10 @@ String? firstWord = words[0];</programlisting>
         
         <comment><para>TODO: It might be difficult to support <literal>T??</literal>
         since <literal>Optional</literal> is erased.</para></comment>
+        
+        <comment><para>TODO: Java lets you put the <literal>[]</literal> after the variable
+        name. C requires that. Should we support/require this variation? It is consistent
+        with how we declare functional parameters!</para></comment>
     
     </section>
         
