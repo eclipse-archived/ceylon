@@ -982,7 +982,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         </listitem>
         </itemizedlist>
         
-        <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
+        <programlisting>Method&lt;Order, Item, Product prod, Natural&gt;</programlisting>
         
         <comment><para>TODO: should we let you fill in the formal parameter names, so
         you can call this thing using named parameters?
