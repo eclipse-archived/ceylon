@@ -65,12 +65,21 @@ Body?</programlisting>
         
         <para>For example:</para>
             
-        <programlisting>String firstName; String lastName; "Hello" firstName " " lastName "!"</programlisting>
+        <programlisting>String firstName; 
+String lastName; 
+
+"Hello" firstName " " lastName "!"</programlisting>
 
         <para>as a toplevel expression in the file <literal>hello.ceylon</literal> is 
         equivalent to:</para>
             
-        <programlisting>public String hello(String firstName, String lastName) { return "Hello " firstName " " lastName "!" }</programlisting>
+        <programlisting>public String hello(String firstName, String lastName) { 
+    return "Hello " firstName " " lastName "!"
+}</programlisting>
+        
+        <comment><para>TODO: should we allow the definition of <literal>private</literal>
+        toplevel methods and types in a compilation unit containing a toplevel 
+        expression?</para></comment>
         
         </section>
         
