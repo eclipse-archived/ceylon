@@ -1784,6 +1784,12 @@ except (SomethingElseWrong sew) {
                 <comment><para>TODO: Figure out the details of the type inference implied by this 
                 last bit!</para></comment>
                 
+                <comment><para>TODO: For type constraints with an initialization parameter 
+                specification, the actual parameter type may not declare such signature, but
+                one of its superclasses may. Is the compiler allowed to infer the superclass
+                type in this situation? If so, what happens when both the class and its 
+                superclass satisfy the constraint?</para></comment>
+                
                 <comment><para>TODO: What about the case of an "unbound" type parameter which does
                 not appear in the formal parameter list? Is it an error, or should the compiler 
                 search through all imported types (in the calling scope) looking for a type that 
