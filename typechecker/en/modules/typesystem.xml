@@ -674,7 +674,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         </section>
         
         <section>
-            <title>Vaargs type parameters</title>
+            <title>Varargs type parameters</title>
         
         <para>A <emphasis>varargs type parameter</emphasis>, identified by an elipsis
         <literal>...</literal> accepts a list of zero or more type arguments.</para>
