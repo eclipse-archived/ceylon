@@ -57,8 +57,8 @@
     assignable to a program element if the type of the expression is 
     assignable to the declared type of the program element.</para>
     
-    <comment><para>TODO: Do we need a definition of "constant expression"? We
-    might use it for:</para>
+    <comment><para>TODO: Do we need a definition of "constant expression"? 
+    We might use it for:</para>
     <itemizedlist>
     <listitem><literal>case</literal> expressions (when are these evaluated?),</listitem>
     <listitem>annotations available at compile time,</listitem>
