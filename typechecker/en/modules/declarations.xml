@@ -1906,6 +1906,14 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
         </itemizedlist>
         
+        <comment><para>TODO: We could live without compilation-unit <literal>private</literal>
+        visibility. In fact, it's arguably contrary to the block structure of the language,
+        since a package acts as a single "block". If we did get rid of this visibility level,
+        we could use the keyword <literal>private</literal> to mean package-level visibility,
+        and the keyword <literal>protected</literal> to mean module-level visibility. This is
+        probably more readable, since all three modifiers would be adjectives. On the other
+        hand, we would be reusing well-known keywords to mean something quite different.</para></comment>
+        
         <para>The visibility of a nested declaration may not be less strict than the 
         visibility of the body (class body, interface body, or block) which contains 
         it. For example, a <literal>package</literal>-visibility class may not contain 
