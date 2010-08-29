@@ -74,6 +74,11 @@
     enumerations.</para>
     </comment>
     
+    <comment><para>TODO: Should we define that <emphasis>every</emphasis> 
+    expression is of type <literal>Reference&lt;T&gt;</literal> instead of
+    <literal>T</literal>, in order to support lazy evaluation like in a
+    functional language?</para></comment>
+    
     <section>
         <title>Object instances, identity, and reference passing</title>
         
