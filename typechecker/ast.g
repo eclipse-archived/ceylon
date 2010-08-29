@@ -102,19 +102,20 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      toplevelDeclaration+
+      ( (declarationStart) => toplevelDeclaration )+
+      expression?
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
        toplevelDeclaration+
     ;
 
-dataUnit
+/*dataUnit
     : importDeclaration*
       toplevelExpression
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
        toplevelExpression
-    ;
+    ;*/
 
 toplevelDeclaration
     : annotations? 
@@ -135,10 +136,10 @@ typeDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
     ;
 
-toplevelExpression
+/*toplevelExpression
     : ( (declarationStart) => formalParameter ';')* expression
     -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*) expression
-    ;
+    ;*/
 
 importDeclaration
     : 'import' importPath ('.' wildcard | alias)? ';'
