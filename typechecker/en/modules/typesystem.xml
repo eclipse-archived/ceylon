@@ -344,6 +344,107 @@ String? firstWord = words[0];</programlisting>
     
     </section>
         
+    <section id="inheritance">
+        <title>Inheritance</title>
+        
+        <para>Subtyping is a static relationship between classes and interfaces produced
+        through the use of <emphasis>inheritance</emphasis>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a class may <emphasis>extend</emphasis> another class,</para>
+            </listitem>
+            <listitem>
+                <para>a class may <emphasis>implement</emphasis> an interface, or</para>
+            </listitem>
+            <listitem>
+                <para>an interface may <emphasis>extend</emphasis> another interface.</para>
+            </listitem>
+        </itemizedlist>
+    
+    <section id="extendedclass">
+        <title>Class extension</title>
+    
+        <para>A class may extend another class using the <literal>extends</literal> 
+        clause.</para>
+        
+        <programlisting>Supertype := "extends" Type PositionalArguments</programlisting>
+    
+        <para>A class may extend only one superclass. If the superclass is a parameterized
+        type, the <literal>extends</literal> clause must specify type arguments.</para>
+        
+        <programlisting>extends Person(name, org)</programlisting>
+    
+        <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
+    
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> extends <literal>Y</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> extends <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>A user-defined class must extend <literal>ceylon.lang.Object</literal>
+        or one of its subclasses.</para>
+        
+    </section>
+    
+    <section id="satisfiedinterfaces">
+        <title>Interfaces implementation and extension</title>
+    
+        <para>A classes or interface may <emphasis>satisfy</emphasis> (implement or 
+        extend) one or more interfaces using the <literal>satisfies</literal> clause.</para>
+        
+        <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
+    
+        <para>A class or interface may satisfy multiple interfaces. If a satisfied 
+        interface is a parameterized type, the <literal>satisfies</literal> clause 
+        must specify type arguments.</para>
+        
+        <programlisting>satisfies T[], Collection&lt;T&gt;</programlisting>
+        
+        <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
+        a class or interface.</para>
+    
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> satisfies <literal>Y</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> satisfies <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+    </section>
+    
+    </section>
+
     <section id="generictypeparameterlist">
         <title>Generic type parameters</title>
     
@@ -969,93 +1070,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                 
     </section>
     
-    <section id="inheritance">
-        <title>Inheritance</title>
-        
-        <para>Subtyping is a static relationship between classes and interfaces.</para>
-    
-    <section id="extendedclass">
-        <title>Class extension</title>
-    
-        <para>A class may extend another class using the <literal>extends</literal> clause.</para>
-        
-        <programlisting>Supertype := "extends" Type PositionalArguments</programlisting>
-    
-        <para>A class may extend only one superclass. If the superclass is a parameterized
-        type, the <literal>extends</literal> clause must specify type arguments.</para>
-        
-        <programlisting>extends Person(name, org)</programlisting>
-    
-        <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
-    
-        <itemizedlist>
-        <listitem>
-            <para>If <literal>X</literal> extends <literal>Y</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X</literal> extends <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <para>A user-defined class must extend <literal>ceylon.lang.Object</literal>
-        or one of its subclasses.</para>
-        
-    </section>
-    
-    <section id="satisfiedinterfaces">
-        <title>Interfaces implementation and extension</title>
-    
-        <para>Classes and interfaces may satisfy (implement or extend) interfaces, 
-        using the <literal>satisfies</literal> clause.</para>
-        
-        <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
-    
-        <para>A class or interface may satisfy multiple interfaces. If a satisfied 
-        interface is a parameterized type, the <literal>satisfies</literal> clause 
-        must specify type arguments.</para>
-        
-        <programlisting>satisfies T[], Collection&lt;T&gt;</programlisting>
-        
-        <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
-        a class or interface.</para>
-    
-        <itemizedlist>
-        <listitem>
-            <para>If <literal>X</literal> satisfies <literal>Y</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X</literal> satisfies <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        </itemizedlist>
-        
-    </section>
-    
-    </section>
-
     <section id="formalparameterlist">
         <title>Formal parameters</title>
     
