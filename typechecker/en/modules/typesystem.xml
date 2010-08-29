@@ -798,7 +798,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
         down to the <literal>given</literal> clause?</para></comment>
         
-        <comment><para>TODO: should we let you declare a constraint for a varargs type 
+        <comment><para>TODO: Should we let you declare a constraint for a varargs type 
         parameter?</para>
         <programlisting>class Foo&lt;P...&gt;(P... args) 
         given P satisfies Comparable&lt;P&gt; {
