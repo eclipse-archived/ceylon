@@ -5,6 +5,7 @@
 [
 <!ENTITY introduction              SYSTEM "modules/introduction.xml">
 <!ENTITY lexical                   SYSTEM "modules/lexical.xml">
+<!ENTITY typesystem                SYSTEM "modules/typesystem.xml">
 <!ENTITY declarations              SYSTEM "modules/declarations.xml">
 <!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
 <!ENTITY expressions               SYSTEM "modules/expressions.xml">
@@ -132,6 +133,7 @@
 
     &introduction;
     &lexical;
+    &typesystem;
     &declarations;
     &statementblocks;
     &expressions;

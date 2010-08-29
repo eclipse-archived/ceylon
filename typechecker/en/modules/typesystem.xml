@@ -1,0 +1,1244 @@
+<chapter id="typesystem">
+    <title>Type system overview</title>
+    
+    <para>Every value in a Ceylon program is an instance of a type that can be expressed 
+    within the Ceylon language as a <emphasis>class</emphasis>. The language does not 
+    define any primitive or compound types that cannot, in principle, be expressed within 
+    the language itself.</para>
+    
+    <para>A class is a recipe for producing new values, and defines the operations and
+    attributes of the resulting values. Each class declaration defines a type. However, 
+    not all types are classes. It is often advantageous to write generic code that 
+    abstracts the concrete class of a value. This technique is called 
+    <emphasis>polymorphism</emphasis>. Ceylon supports two different kinds of polymorphism:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para><emphasis>subtype polymorphism</emphasis>, where a subtype <literal>B</literal>
+            inherits a supertype <literal>A</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para><emphasis>parametric polymorphism</emphasis>, where a type definition 
+            <literal>A&lt;T&gt;</literal> is parameterized by a <emphasis>generic type 
+            parameter</emphasis> <literal>T</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Ceylon, like Java and many other object-oriented languages, supports a single
+    inheritance model for class inheritance. A class may inherit at most one other 
+    class.</para>
+    
+    <para>Therefore, Ceylon recognizes the following additional kinds of type:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>An <emphasis>interface</emphasis> declares a set of operations and
+            attributes that must be provided by every class that <emphasis>implements</emphasis>
+            the interface. A class may implement many interfaces.</para>
+        </listitem>
+        <listitem>
+            <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
+            for the generic type parameters of a parameterized type.</para>
+        </listitem>
+        <listitem>
+            <para>A <emphasis>generic type parameter</emphasis> is considered a type
+            within the declararion that it parameterizes.</para>
+        </listitem>
+    </itemizedlist>
+
+    <section>
+        <title>Identifier naming</title>
+
+        <para>The Ceylon compiler enforces identifier naming conventions. Types must
+        be named with an initial uppercase. Members, parameters, locals and packages
+        must be named with an initial lowercase or underscore.</para>
+        
+        <programlisting>PackageName := PIdentifier</programlisting>
+        <programlisting>TypeName := UIdentifier</programlisting>
+        <programlisting>MemberName := LIdentifier</programlisting>
+        <programlisting>ParameterName := LIdentifier</programlisting>
+        
+        <para>Ceylon defines three identifier namespaces:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>classes, interfaces and aliases share a single namespace,</para>
+            </listitem>
+            <listitem>
+                <para>methods, attributes and locals share a single namespace, and</para>
+            </listitem>
+            <listitem>
+                <para>packages have their own dedicated namespace.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The Ceylon parser is able to unambiguously identify which namespace an 
+        identifier belongs to.</para>
+        
+        <comment><para>TODO: should we specify that a package name must be an 
+        all-lowercase identifier?</para></comment>
+        
+    </section>
+      
+    <section id="type">
+        <title>Types</title>
+    
+        <para>A <emphasis>type</emphasis> or <emphasis>type schema</emphasis> is name 
+        (an initial upper case identifier) and an optional list of type parameters, with 
+        a set of:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>attribute schemas,</para>
+            </listitem>
+            <listitem>
+                <para>member method schemas, and</para>
+            </listitem>
+            <listitem>
+                <para>member class schemas.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Speaking formally:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>An <emphasis>attribute schema</emphasis> is a name (an initial lower 
+                case identifier) with a type and mutability.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>method schema</emphasis> is a name (an initial lower case 
+                identifier) and an optional list of type parameters, with a type (often 
+                called the <emphasis>return type</emphasis>) and a list of one or more formal 
+                parameter lists.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>class schema</emphasis> is a type with a formal parameter 
+                list.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>formal parameter list</emphasis> is a list of names 
+                (initial lower case identifiers) with types. The 
+                <emphasis>signature</emphasis> of a formal parameter list is formed by 
+                discarding the names, leaving the list of types.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Speaking slightly less formally, we usually refer to an attribute, method, or 
+        member class of a type, meaning an attribute schema, member method schema or member 
+        class schema.</para>
+        
+        <section>
+            <title>Member distinctness</title>
+        
+        <para>The <emphasis>erased signature</emphasis> of a method or class is formed by:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>taking the signature of the formal parameter list of the member class, 
+                or of the first formal parameter list of the method, and</para>
+            </listitem>
+            <listitem>
+                <para>replacing each occurrence of any type alias in the signature with the
+                aliased type, and</para>
+            </listitem>
+            <listitem>
+                <para>replacing each occurrence of <literal>Optional&lt;T&gt;</literal> in 
+                the signature with <literal>T</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>replacing each occurrence of any type parameter in the signature with 
+                the first declared upper bound of the type parameter, or <literal>ceylon.lang.Void</literal> 
+                if there is no declared upper bound, and</para>
+            </listitem>
+            <listitem>
+                <para>replacing the type of any varargs type parameter in the signature with 
+                <literal>ceylon.lang.Void...</literal>, and then</para>
+            </listitem>
+            <listitem>
+                <para>discarding the type arguments of each element of the list, leaving just 
+                the name of a class or interface.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>Note: I really, really hate this stuff. Is there any way we can do 
+        better than Java here?</para></comment>
+        
+        <para>Two erased signatures are considered <emphasis>distinct</emphasis> if they 
+        have different lengths, or if at some position within the lists, the two types are 
+        non-identical.</para>
+        
+        <comment><para>TODO: non-identical, or non-assignable?</para></comment>
+        
+        <comment><para>TODO: what about varargs parameters? what does Java do?</para></comment>
+            
+        <para>A type may not have:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>two attributes with the same name,</para>
+            </listitem>
+            <listitem>
+                <para>a method and an attribute with the same name,</para>
+            </listitem>
+            <listitem>
+                <para>two methods with the same name and non-distinct erased signatures, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>two member classes with the same name and non-distinct erased signatures.</para>
+            </listitem>
+        </itemizedlist>
+        
+        </section>
+        
+        <section>
+            <title>Subtyping and assignability</title>
+        
+        <para>A type may be a <emphasis>subtype</emphasis> of another type. Subtyping obeys 
+        the following rules:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>Identity: <literal>X</literal> is a subtype of <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Transitivity: if <literal>X</literal> is a subtype of <literal>Y</literal>
+                and <literal>Y</literal> is a subtype of <literal>Z</literal> then
+                <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Interfaces are objects: all interfaces are subtypes of 
+                <literal>ceylon.lang.Object</literal>. Conversely, only a subtype of 
+                <literal>ceylon.lang.Object</literal> may satisfy an interface.</para>
+            </listitem>
+            <listitem>
+                <para>Single root: all types are subtypes of <literal>ceylon.lang.Void</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In a certain compilation unit, a type may be <emphasis>assignable</emphasis> 
+        to another type. If, in some compilation unit, <literal>X</literal> is assignable 
+        to <literal>Y</literal>, then:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>For each non-<literal>mutable</literal> attribute of <literal>Y</literal>, 
+                <literal>X</literal> has an attribute with the same name, whose type is 
+                assignable to the type of the attribute of <literal>Y</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each <literal>mutable</literal> attribute of <literal>Y</literal>, 
+                <literal>X</literal> has a <literal>mutable</literal> attribute with the 
+                same name and the same type.</para>
+            </listitem>
+            <listitem>
+                <para>For each method of <literal>Y</literal>, <literal>X</literal>
+                has a method with the same name, with the same number of formal parameter 
+                lists, with the same signatures, and whose return type is assignable to the 
+                return type of the method of <literal>Y</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each member class of <literal>Y</literal>, <literal>X</literal>
+                has a member class of the same name, with a formal parameter list with 
+                the same signature, that is assignable to the member class of 
+                <literal>Y</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Assignability obeys the following rules:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>Identity: <literal>X</literal> is assignable to <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Subtyping: if <literal>Y</literal> is a subtype of <literal>X</literal> 
+                then <literal>Y</literal> is assignable to <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Transitivity: if <literal>X</literal> is assignable to <literal>Y</literal>
+                and <literal>Y</literal> is assignable to <literal>Z</literal> then
+                <literal>X</literal> is assignable to <literal>Z</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Nullsafety: the type <literal>ceylon.lang.Optional</literal> is 
+                not assignable to <literal>ceylon.lang.Object</literal>. Nor is its subtype
+                <literal>ceylon.lang.Nothing</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A type <literal>X</literal> may be assignable to a type <literal>Y</literal>
+        even if <literal>X</literal> is not a subtype of <literal>Y</literal> if there is 
+        an enabled extension which introduces <literal>Y</literal> to <literal>X</literal>.</para>
+        
+        <comment><para>TODO: are we really, truly going to make extensions transitive?
+        That would involve the compiler searching for extension chains. But if not, 
+        assignability would not transitive.</para></comment>
+        
+        </section>
+        
+        <section>
+            <title>Declaring the type of a program element</title>
+        
+        <para>Method, attribute and formal parameter declarations must declare a type.</para>
+        
+        <para>Types are identified by the name of the type (a class, interface, alias or 
+        type parameter), together with a list of type arguments if the type definition 
+        specifies type parameters.</para>
+        
+        <programlisting>Type := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) Abbreviation*</programlisting>
+        
+        <para>If a type has type parameters or a varargs type parameter, a type argument 
+        list must be specified. If a type has no type parameters, and no varargs type 
+        parameter, no type argument list may be specified.</para>        
+        
+         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
+
+        <para>Certain declarations which usually require an explicit type may omit the type, 
+        forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
+        where the type usually appears.</para>
+        
+        <programlisting>InferableType := Type | "local"</programlisting>
+        
+        <para>Type inference is only allowed for block local declarations. The keyword
+        <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
+        
+        </section>
+        
+        <section>
+            <title>Type name abbreviations</title>
+            
+        <para>The following type name abbreviations are supported:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>X?</literal> means <literal>Optional&lt;X&gt;</literal> for
+                any type <literal>X</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>X[]</literal> means <literal>Sequence&lt;X&gt;</literal> for
+                any type <literal>X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para><literal>X[n]</literal> means <literal>BoundedSequence&lt;X,n&gt;</literal> 
+                for any type <literal>X</literal> and dimension <literal>n</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>Abbreviation := "?" | "[" "]"</programlisting>
+        
+        <para>Abbreviations may be combined:</para>
+        
+        <programlisting>String?[3] words = { "hello", "world", null };
+String? firstWord = words[0];</programlisting>
+        
+        <comment><para>TODO: It might be difficult to support <literal>T??</literal>
+        since <literal>Optional</literal> is erased.</para></comment>
+        
+        <comment><para>TODO: Java lets you put the <literal>[]</literal> after the variable
+        name. C requires that. Should we support/require this variation? It is consistent
+        with how we declare functional parameters!</para></comment>
+        
+        </section>
+    
+    </section>
+        
+    <section id="generictypeparameterlist">
+        <title>Generic type parameters</title>
+    
+        <para>Methods, classes, interfaces and aliases may declare one or more generic type 
+        parameters.</para>
+        
+        <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | VarargsTypeParam) "&gt;"</programlisting>
+        
+        <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
+        <emphasis>parameterized</emphasis>.</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>A class or interface declaration with no type parameters defines exactly one 
+            type. A parameterized class or interface declaration defines a template for
+            producing types: one type for each possible combination of type arguments that 
+            satisfy the type constraints specified by the class or interface. The types of 
+            members of the this type are determined by replacing every appearance of each type 
+            parameter in the schema of the parameterized type definition with its type argument.</para>
+        </listitem>
+        <listitem>
+            <para>A method declaration with no type parameters defines exactly one operation 
+            per type. A parameterized method declaration defines a template for producing
+            overloaded operations: one operation for each possible combination of type arguments 
+            that satisfy the type constraints specified by the method declaration.</para>
+        </listitem>
+        <listitem>
+            <para>A class declaration with no type parameters defines exactly one instantiation 
+            operation. A parameterized class declaration defines a template for producing 
+            overloaded instantiation operations: one instantiation operation for each possible 
+            combination of type arguments that satisfy the type constraints specified by the 
+            class declaration. The type of the object produced by an instantiation operation is 
+            determined by substituting the same combination of type arguments for the type 
+            parameters of the parameterized class.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>There are two kinds of type parameter:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>an <emphasis>ordinary type parameter</emphasis> parameterizes the type by some
+            other type, and</para>
+        </listitem>
+        <listitem>
+            <para>a <emphasis>dimensional type parameter</emphasis> parameterizes the type by a
+            natural number.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <programlisting>TypeParam := OrdinaryTypeParam | DimensionalTypeParam</programlisting>
+        
+        <section>
+            <title>Ordinary type parameters and variance</title>
+        
+        <para>An ordinary type parameter is itself a type, visible within the body of the 
+        declaration it parameterizes. The type parameter is a subtype of every upper bound of the 
+        type parameter. However, a class, interface, or alias may not extend or implement a type 
+        parameter.</para>
+        
+        <para>Each ordinary type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
+        
+        <programlisting>OrdinaryTypeParam := Variance TypeName</programlisting>
+        
+        <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
+        A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
+        
+        <programlisting>Variance :=  ("out" | "in")?</programlisting>
+        
+        <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> 
+        is called <emphasis>nonvariant</emphasis>.</para>
+        
+        <programlisting>Map&lt;K, V&gt;</programlisting>
+        
+        <programlisting>Sender&lt;in M&gt;</programlisting>
+        
+        <programlisting>Container&lt;out T&gt;</programlisting>
+        
+        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
+        
+        <comment><para>TODO: Would <literal>produces</literal> and <literal>consumes</literal> 
+        be better?</para></comment>
+        
+        <para>A covariant type parameter may only appear in covariant positions of the type 
+        definition. A contravariant type parameter may only appear in contravariant positions 
+        of the type definition. Nonvariant type parameters may appear in any position.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The return type of a method is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter type of a method is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type parameter of a method is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter type of a member class initializer is a contravariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>A type parameter of a member class is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>The type of a non-<literal>mutable</literal> attribute is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>The type of a <literal>mutable</literal> attribute is a nonvariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>An upper bound of a type parameter in a contravariant position is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>An upper bound of a type parameter in a covariant position is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>A lower bound of a type parameter in a contravariant position is a 
+                covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type parameter in a covariant position cannot have a lower bound. 
+                <comment>TODO: is this correct?</comment></para>
+            </listitem>
+            <listitem>
+                <para>A covariant type argument of a satisfied or extended type is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type argument of a satisfied or extended type is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A covariant type argument of a type in a covariant position is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type argument of a type in a covariant position is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A covariant type argument of a type in a contravariant position is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A contravariant type argument of a type in a contravariant position is a 
+                covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A nonvariant type argument of a type is a nonvariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter of a callable parameter in a contravariant position is 
+                covariant.</para>
+            </listitem>
+            <listitem>
+                <para>A formal parameter of a callable parameter in a covariant position is 
+                contravariant.</para>
+            </listitem>
+            <listitem>
+                <para>The return type of a callable parameter in a contravariant position is 
+                contravariant.</para>
+            </listitem>
+            <listitem>
+                <para>The return type of a callable parameter in a covariant position is
+                covariant.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>These rules apply to members declared by the type, and to members inherited from 
+        supertypes.</para>
+        
+        </section>
+        
+        <section>
+            <title>Dimensional type parameters</title>
+        
+        <para>A dimensional type parameter is a local of type <literal>Natural</literal>, 
+        visible within the body of the declaration it parameterizes.</para>
+        
+        <programlisting>DimensionalTypeParam := MemberName</programlisting>
+        
+        <para>Dimensional type parameters are distinguished by the initial lowercase
+        identifier.</para>
+        
+        <programlisting>Vector&lt;n&gt;</programlisting>
+        
+        <programlisting>Matrix&lt;h,w&gt;</programlisting>
+        
+        </section>
+        
+        <section>
+            <title>The <literal>subtype</literal> keyword</title>
+        
+        <para>Every Ceylon class or interface has an implicit type parameter that never
+        needs to be declared. This special type parameter, referred to using the keyword 
+        <literal>subtype</literal>, represents the concrete type of the current instance 
+        (the instance that is being invoked). It is considered a covariant type parameter
+        of the type, and may only appear in covariant positions of the type definition.
+        It is upper bounded by the type (and is therefore assignable to the type).</para>
+        
+        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
+        
+        <programlisting>public abstract class Wrappable() {
+   public Wrapper&lt;subtype&gt; wrap() {
+       return Wrapper(this)
+   }
+}</programlisting>
+        
+        <programlisting>public class Special() extends Wrappable() {}</programlisting>
+
+        <programlisting>Special special = Special();
+Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
+
+        <para>The only expression assignable to the type <literal>subtype</literal> is
+        the special value <literal>this</literal>, except inside the body of a method or
+        attribute annotated <literal>fixed</literal>, where the class that declares the
+        method or attribute is assignable to <literal>subtype</literal>.</para>
+        
+        <comment><para>TODO: should we let you declare type constraints on 
+        <literal>subtype</literal>?</para></comment>
+        
+        </section>
+        
+        <section>
+            <title>Vaargs type parameters</title>
+        
+        <para>A <emphasis>varargs type parameter</emphasis>, identified by an elipsis
+        <literal>...</literal> accepts a list of zero or more type arguments.</para>
+        
+        <programlisting>VarargsTypeParam := TypeName "..."</programlisting>
+        
+        <para>Varargs type parameters are always non-variant.</para>
+        
+        <para>Inside the declaration of the parameterized type or method, a varargs type 
+        parameter may be used as a type argument to other types which accept a varargs type 
+        parameter, or it may be used as the type of the last formal parameter declared by a 
+        method. It may not appear in any other position. The varargs type parameter acts as 
+        a pseudo-type. It is treated by the Ceylon compiler as if it were a type with no 
+        members, to which no other type may be assigned, and which can only by assigned to 
+        itself.</para>
+        
+        <programlisting>Method&lt;X, T, P...&gt;</programlisting>
+        
+        <comment><para>TODO: should we let you declare a variant varargs type parameter?
+        This is useful for modelling tuples.</para></comment>
+        
+        <comment><para>TODO: should we let you write things like:</para>
+        <programlisting>class Foo&lt;P...&gt;(Tuple&lt;Bar&lt;P&gt;...&gt; barTup) {
+    ...
+    void baz(Baz&lt;P&gt;... bazs) {
+        ...
+    }
+}</programlisting>
+        <para>It's probably only really useful if we also let you do stuff like this:</para>
+        <programlisting><![CDATA[List<T> zip<T,P...>(List<P>... x, T producing(P... args)) {
+    return from (Natural i in 0..min(x.lastIndex...)) select (f(x[i]...))
+}]]></programlisting></comment>
+
+        </section>
+        
+    <section id="generictypeconstraintlist">
+    <title>Generic type constraints</title>
+
+        <para>Method, class and interface declarations which declare generic type 
+        parameters may declare constraints upon ordinary type parameters using the
+        <literal>given</literal> clause.</para>
+        
+        <programlisting>TypeConstraints = ("given" TypeConstraint)+</programlisting>
+    
+        <programlisting>TypeConstraint := TypeName FormalParams? Interfaces? Subtypes?</programlisting>
+        
+        <programlisting>Subtypes := "abstracts" Type ("," Type)*</programlisting>
+        
+        <para>There are three kinds of type constraint:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>an upper bound, <literal>given X satisfies T</literal>, specifies that 
+                the type parameter <literal>X</literal> is a subtype of a given
+                type <literal>T</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>a lower bound, <literal>given X abstracts T</literal>, specifies that 
+                a given type <literal>T</literal> is a subtype of the type parameter 
+                <literal>X</literal>,</para>
+            </listitem>
+            <!--listitem>
+                <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
+                the type parameter <literal>X</literal> represents the concrete type
+                of the current instance, and</para>
+            </listitem-->
+            <listitem>
+                <para>an initialization parameter specification, <literal>given X(...)</literal>
+                specifies that the type parameter <literal>X</literal> is a class with
+                the given formal parameter types.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A single <literal>given</literal> clause may specify multiple constraints.</para>
+        
+        <para>A constraint may not refer to a varargs type parameter.</para>
+        
+        <!--
+        <para>Subtype bounds are needed since the special type <literal>subtype</literal>
+        cannot appear in a contravariant position. A subtype bound cannot be applied to
+        a covariant or contravariant type parameter.</para>
+        -->
+        
+        <para>Initialization parameter specifications allow instantiation of the generic 
+        type.</para>
+        
+        <para>A constraints affects the type arguments that can be assigned to a type
+        parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type argument to a type parameter with an upper bound must be a type 
+                which is a subtype of all upper bounds.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with a lower bound must be a type 
+                of which all lower bounds are subtypes.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A constraint affects the assignability of a type parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type parameter is considered a subtype of its upper bound.</para>
+            </listitem>
+            <listitem>
+                <para>The lower bound of a type parameter is considered a subtype of the
+                type parameter.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>given X satisfies Number&lt;X&gt;
+given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+
+        <programlisting>given T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
+    
+        <comment><para>TODO: Should the type parameter upper bound default to <literal>Object</literal>
+        instead of <literal>Void</literal>?</para></comment>
+    
+        <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
+        down to the <literal>given</literal> clause?</para></comment>
+        
+        <comment><para>TODO: should we let you declare a constraint for a varargs type 
+        parameter?</para>
+        <programlisting>class Foo&lt;P...&gt;(P... args) 
+        given P satisfies Comparable&lt;P&gt; {
+    ...
+}</programlisting></comment>
+
+        <comment><para>TODO: should we allow constraints on dimensional type parameters,
+        for example <literal>given n&gt;=1</literal>.</para></comment>
+    
+    </section>
+
+    </section>
+
+    <section id="typeargumentlist">
+        <title>Generic type arguments</title>
+            
+        <para>A list of <emphasis>type arguments</emphasis> produces a new type from a 
+        parameterized type, or a new method schema from a method schema with type 
+        parameters.</para>
+        
+        <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
+        
+        <para>A type argument list is a list of types and dimensions, and an optional varargs 
+        type argument.</para>
+        
+        <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | VarargsType) "&gt;"</programlisting>
+        
+        <programlisting>VarargsType := TypeName "..."</programlisting>
+        
+        <para>A type argument is a type or a dimension:</para>
+        
+        <programlisting>TypeArgument := Type | Dimension</programlisting>
+        
+        <section>
+            <title>Dimensions</title>
+        
+        <para>A <emphasis>dimension</emphasis> is an expression composed of natural number
+        literals, locals of type <literal>Natural</literal>, the operators 
+        <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
+        
+        <programlisting>Dimension := DimensionTerm ("+" DimensionTerm)*</programlisting>
+        <programlisting>DimensionTerm := (NaturalLiteral "*")* DimensionAtom</programlisting>
+        <programlisting>DimensionAtom := NaturalLiteral | MemberName | ParenDimension</programlisting>
+        <programlisting>ParenDimension := "(" Dimension ")"</programlisting>
+        
+        <para>The <emphasis>canonical form</emphasis> of a dimension expression is formed
+        by algebraically simplifying the expression to a dimension expression of form:</para>
+        
+        <programlisting>C + N * n + M * m + ...</programlisting>
+        
+        <para>where <literal>C</literal> <literal>N</literal>, <literal>M</literal>, 
+        <literal>...</literal> are constant natural numbers and <literal>n</literal>, 
+        <literal>m</literal>, <literal>...</literal> are distinct locals of type 
+        <literal>Natural</literal>.</para>
+        
+        <para>Two dimension expressions are considered <emphasis>equivalent</emphasis> if 
+        they have the same canonical form, ignoring the order of terms.</para>
+        
+        </section>
+                
+        <section>
+            <title>Type argument conformance</title>
+        
+        <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
+        if:</para>
+        
+        <itemizedlist>
+             <listitem>
+                 <para>a type argument that satisfies the constraints of the type parameter 
+                 is specified for every ordinary type parameter,</para>
+             </listitem>
+             <listitem>
+                 <para>a dimension is specified for every dimensional type parameter, and</para>
+             </listitem>
+             <listitem>
+                 <para>if the type parameter list has no varargs type parameter, then there
+                 are no additional type arguments, and no varargs type argument.</para>
+             </listitem>
+        </itemizedlist>
+        
+        <programlisting>Entry&lt;String,Person&gt;</programlisting>
+        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
+        <programlisting>Callable&lt;X,T,P..&gt;</programlisting>
+        <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        
+        <programlisting>Vector&lt;10&gt;</programlisting>
+        <programlisting>Matrix&lt;x,y&gt;</programlisting>
+        
+        <comment><para>TODO: should we allow ranges as arguments to dimensional type 
+        parameters, for example, <literal>Vector&lt;0...&gt;</literal> or
+        <literal>Vector&lt;1..10&gt;</literal>, where <literal>Vector&lt;n&gt;</literal>
+        is a subtype of <literal>Vector&lt;min..max&gt;</literal> if 
+        <literal>min&lt;=n&lt;=max</literal>.</para></comment>
+        
+        </section>
+                
+        <section>
+            <title>Produced types and and variance</title>
+            
+        <para>If a type argument list conforms to a type parameter list, the combination
+        of the parameterized type together with the type argument list is itself a type,
+        called a <emphasis>produced type</emphasis>.</para>
+        
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, the types 
+        <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal> represent the 
+        same type if and only if <literal>A</literal> and <literal>B</literal> are the 
+        same type.</para>
+        
+        <para>For a generic type <literal>T&lt;n&gt;</literal>, the types 
+        <literal>T&lt;a&gt;</literal> and <literal>T&lt;b&gt;</literal> represent the 
+        same type if and only if <literal>a</literal> and <literal>b</literal> are 
+        equivalent dimension expressions.</para>
+        
+        <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
+        and a subtype <literal>B</literal> of <literal>A</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a covariant type parameter, 
+                    <literal>T&lt;B&gt;</literal> is a subtype of <literal>T&lt;A&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is a contravariant type parameter, 
+                    <literal>T&lt;A&gt;</literal> is a subtype of <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If <literal>X</literal> is nonvariant (neither covariant nor contravariant), 
+                    there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
+                    <literal>T&lt;B&gt;</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        </section>
+                
+        <section>
+            <title>Type argument substitution</title>
+        
+        <para>A type argument is substituted for every appearance of the corresponding
+        type parameter in the schema of the parameterized declaration, including:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>attribute types,</para>
+            </listitem>
+            <listitem>
+                <para>method return types,</para>
+            </listitem>
+            <listitem>
+                <para>method formal parameter types,</para>
+            </listitem>
+            <listitem>
+                <para>initializer formal parameter types, and</para>
+            </listitem>
+            <listitem>
+                <para>type arguments of extended classes and satisfied interfaces.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A dimension is substituted for every appearance of the corresponding 
+        dimensional type parameter in the schema of the parameterized declaration.
+        The dimension appears as a parenthesized expression in expressions involving
+        the dimensional type parameter.</para>
+        
+        <para>In the case of a varargs type parameter:</para>
+        
+        <itemizedlist>
+        <listitem> 
+            <para>the type arguments are appended to the list of type arguments in every 
+            parameterized type in which the varargs type parameter appears, and</para>
+        </listitem>
+        <listitem> 
+            <para>a list of formal parameters whose types are the type arguments is
+            appended to the list of formal parameters of every method declaration in
+            which the varargs type parameter appears.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
+        
+        <comment><para>TODO: should we let you fill in the formal parameter names, so
+        you can call this thing using named parameters?
+        <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
+        </para></comment>
+        
+        <para>A type argument may itself be a parameterized type or type parameter.</para>
+        
+        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        
+        <para>Substitution of type arguments may result in an ambiguity:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>two methods of the parameterized type with the same name may now
+                also have non-distinct erased signatures, or</para>
+            </listitem>
+            <listitem>
+                <para>two member classes of the parameterized type with the same name may 
+                now also have non-distinct erased signatures.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In this case, the member class or method may not be called. Any invocation of 
+        the member results in a compiler error.</para>
+        
+        <para>A type with an ambiguity may never be extended or implemented by another type.
+        It may not appear in an <literal>extends</literal>, <literal>satisfies</literal> or
+        <literal>abstracts</literal> clause.</para>
+        
+        </section>
+                
+        <section>
+            <title>Reification</title>
+        
+        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
+        generic type holds a reference to its type arguments. Therefore, the following are 
+        legal in Ceylon:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>testing the runtime value of a type argument of an instance, for 
+                example, <literal>objectList is List&lt;Person&gt;</literal> or 
+                <literal>case (is List&lt;Person&gt;)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>filtering exceptions based on type arguments, for example,
+                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>testing the runtime value of an instance against a type parameter,
+                for example <literal>x is T</literal>, or against a type with a type 
+                parameter as an argument, for example, 
+                <literal>objectList is List&lt;T&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing a type with 
+                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the runtime 
+                value of a type parameter, for example, <literal>T</literal>, or of a 
+                type with a type parameter as an argument, for example, 
+                <literal>List&lt;T&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the
+                runtime value of a type argument of an instance using reflection, for 
+                example, <literal>objectList.type.arguments.first</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>instantiating a type parameter with an initialization parameter
+                specification, for example, <literal>T(parent)</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>obtaining the numeric value of a dimensional type parameter, for
+                example, <literal>for (Natural i in [0..n])</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Varargs type parameters are not reified. None of the above operations can be
+        performed with a vararg type parameter.</para>
+        
+        </section>
+                
+    </section>
+    
+    <section id="inheritance">
+        <title>Inheritance</title>
+        
+        <para>Subtyping is a static relationship between classes and interfaces.</para>
+    
+    <section id="extendedclass">
+        <title>Class extension</title>
+    
+        <para>A class may extend another class using the <literal>extends</literal> clause.</para>
+        
+        <programlisting>Supertype := "extends" Type PositionalArguments</programlisting>
+    
+        <para>A class may extend only one superclass. If the superclass is a parameterized
+        type, the <literal>extends</literal> clause must specify type arguments.</para>
+        
+        <programlisting>extends Person(name, org)</programlisting>
+    
+        <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
+    
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> extends <literal>Y</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> extends <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>A user-defined class must extend <literal>ceylon.lang.Object</literal>
+        or one of its subclasses.</para>
+        
+    </section>
+    
+    <section id="satisfiedinterfaces">
+        <title>Interfaces implementation and extension</title>
+    
+        <para>Classes and interfaces may satisfy (implement or extend) interfaces, 
+        using the <literal>satisfies</literal> clause.</para>
+        
+        <programlisting>Interfaces = "satisfies" Type ("," Type)*</programlisting>
+    
+        <para>A class or interface may satisfy multiple interfaces. If a satisfied 
+        interface is a parameterized type, the <literal>satisfies</literal> clause 
+        must specify type arguments.</para>
+        
+        <programlisting>satisfies T[], Collection&lt;T&gt;</programlisting>
+        
+        <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
+        a class or interface.</para>
+    
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> satisfies <literal>Y</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> satisfies <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+    </section>
+    
+    </section>
+
+    <section id="formalparameterlist">
+        <title>Formal parameters</title>
+    
+        <para>Method and class declarations may declare formal parameters, including
+        defaulted parameters and a varargs parameter.</para>
+        
+        <programlisting>FormalParams := 
+"("
+FormalParam ("," FormalParam)* ("," DefaultParam)* ("," VarargsParam)? | 
+DefaultParam ("," DefaultParam)* ("," VarargsParam)? | 
+VarargsParam?
+")"</programlisting>
+
+        <programlisting>FormalParam := Param | EntryParamPair | RangeParamPair</programlisting>
+        
+        <para>Each parameter is declared with a type and name and may have annotations and/or
+        parameters of its own.</para>
+        
+        <programlisting>Param := Annotation* (Type|"void") ParameterName FormalParams*</programlisting>
+        
+        <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
+        assigned to within the body of the method or class.</para>
+        
+        <section>
+            <title>Callable parameters</title>
+        
+        <para>A parameter with its own parameter list (or lists) is called a 
+        <emphasis>callable parameter</emphasis>. Think of it as an abstract local method that 
+        must be defined by the caller when the method is invoked or the class is instantiated. 
+        </para>
+            
+        <programlisting>(String label, void onClick())</programlisting>
+        
+        <programlisting>(Comparison by(X x, X y))</programlisting>
+        
+        <para>A callable parameter declaration is equivalent to a formal parameter declaration 
+        with no parameter lists where the type is the callable type of the method declaration.
+        So the above are equivalent to:</para>
+        
+        <programlisting>(String label, Callable&lt;Object&gt; onClick)</programlisting>
+        
+        <programlisting>(Callable&lt;Comparison,X,X&gt; by)</programlisting>
+        
+        </section>
+        
+        <section>
+            <title>Defaulted parameters</title>
+        
+        <para>Defaulted parameters specify a default argument.</para>
+    
+        <programlisting>DefaultParam := FormalParam Specifier</programlisting>
+        
+        <para>The <literal>=</literal> specifier is used throughout the language to indicate a 
+        value which cannot be reassigned.</para>
+        
+        <programlisting>Specifier := "=" Expression</programlisting>
+        
+        <para>Defaulted parameters must occur after non-defaulted parameters in the formal
+        parameter list.</para>
+        
+        <programlisting>(Product product, Natural quantity=1)</programlisting>
+        
+        <para>The type of the default argument expression must be assignable to the declared
+        type of the formal parameter.</para>
+        
+        </section>
+        
+        <section>
+            <title>Varargs and tuple parameters</title>
+        
+        <para>The elipsis <literal>...</literal> indicates that a formal parameter is 
+        either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A <emphasis>varargs parameter</emphasis>, which accepts a list of arguments 
+                of the specified type <literal>T</literal>, or a single argument of type 
+                <literal>T[]</literal>. Inside the method, the varargs parameter 
+                has type <literal>T[]</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
+                whose types are defined by a varargs type parameter. Inside the method, the 
+                argument has the pseudo-type of the varargs type parameter and is assignable to 
+                any tuple parameter of the same pseudo-type.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
+        
+        <para>The varargs parameter or tuple parameter must be the last formal parameter in the 
+        list.</para>
+        
+        <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
+        
+        <programlisting>(T instance, P... args)</programlisting>
+        
+        </section>
+        
+        <section>
+            <title>Entry and range parameter pairs</title>
+        
+        <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
+        may be specified as a pair of variables.</para>
+        
+        <programlisting>EntryParamPair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
+
+        <programlisting>RangeParamPair := Annotation* Type ParameterName ".." ParameterName</programlisting>
+        
+        <para>A variable pair declaration of form <literal>U u -> V v</literal> results in a single 
+        parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
+        
+        <programlisting>(Key key -> Value value)</programlisting>
+        
+        <para>A variable pair declaration of form <literal>T x .. y</literal> results in a single 
+        parameter of type <literal>Range&lt;T&gt;</literal>.</para>
+        
+        <programlisting>(Float value, Integer min..max)</programlisting>
+        
+        </section>
+        
+    </section>
+    
+    <section id="annotationlist">
+        <title>Annotations</title>
+
+        <para>Declarations may be preceded by a list of annotations.</para>
+    
+        <programlisting>Annotation := MemberName ( Arguments | Literal+ )?</programlisting>
+        
+        <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
+        
+        <para>For an annotation with no arguments, or with only literal-valued arguments, 
+        the parentheses around, and commas between, the positional arguments may be 
+        omitted.</para>
+        
+        <programlisting>doc "The user login action"
+by "Gavin King"
+   "Andrew Haley"
+throws (DatabaseException 
+        -> "if database access fails")
+see (LogoutAction.logout)
+scope (session) 
+action { description="Log In"; url="/login"; }
+public deprecated</programlisting>
+
+        <para>An annotation is an invocation of a toplevel method that occurs when the 
+        type is loaded by the virtual machine. The return value of the invocation is 
+        made available via reflection.</para>
+        
+        <para>For example, the built-in <literal>doc</literal> annotation is defined as 
+        follows:</para>
+        
+        <programlisting>public 
+annotation { occurs=onceEachElement; }
+Description doc(String description) { 
+    return Description(description.normalize())
+}</programlisting>
+        
+        <para>The annotation may be specified at a program element using any one of three 
+        forms.</para>
+        
+        <para>Using a positional parameter invocation of the method:</para>
+        
+        <programlisting>doc("the name") String name;</programlisting>
+        
+        <para>Using a named parameter invocation of the method:</para>
+        
+        <programlisting>doc {description="the name";} String name;</programlisting>
+        
+        <para>Or using the special abbreviated form for annotations with literal value
+        arguments:</para>
+        
+        <programlisting>doc "the name" String name;</programlisting>
+        
+        <para>And its value may be obtained like this:</para>
+        
+        <programlisting>Description? description = Person.annotations(Description).first;</programlisting>
+        
+        <para>Unlike Java, the same annotation may appear multiple times for the same
+        program element. Furthermore, different annotations (toplevel methods) may 
+        return values of the same type.</para>
+        
+    </section>
+        
+</chapter>
