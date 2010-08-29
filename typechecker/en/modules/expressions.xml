@@ -57,9 +57,6 @@
     assignable to a program element if the type of the expression is 
     assignable to the declared type of the program element.</para>
     
-    <comment><para>TODO: We need to allow some way to have an expression to be 
-    specified as a toplevel element, for DSLs.</para></comment>
-    
     <comment><para>TODO: Do we need a definition of "constant expression"? We
     might use it for:</para>
     <itemizedlist>
