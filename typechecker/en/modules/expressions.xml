@@ -383,9 +383,6 @@ if you prefer.";</programlisting>
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
         
-        <comment><para>TODO: Quoted literals are used for version numbers and version 
-        constraints in the module architecture, for example: <literal>'1.2.3BETA'</literal>.</para></comment>
-    
     </section>
 
     </section>
