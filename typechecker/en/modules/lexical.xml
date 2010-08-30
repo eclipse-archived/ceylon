@@ -7,6 +7,9 @@
     is then processed by the lexer to produce a stream of terminal tokens of the 
     Ceylon grammar.</para>
         
+        <comment><para>TODO: what is the character encoding? Does it work just like
+        <literal>javac</literal>?</para></comment>
+        
     <section>
         <title>Whitespace</title>
         

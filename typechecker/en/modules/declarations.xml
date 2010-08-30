@@ -18,9 +18,6 @@ Body?</programlisting>
         <para>A <emphasis>compilation unit</emphasis>  is a text file, with the 
         filename extension <literal>.ceylon</literal>.</para>
         
-        <comment><para>TODO: what is the character encoding? Does it work just like
-        <literal>javac</literal>?</para></comment>
-        
         <para>A compilation unit consists of a list of imported types and methods, 
         followed by one or more toplevel type or method definitions or by a single 
         toplevel expression:</para>
