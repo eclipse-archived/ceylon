@@ -50,8 +50,9 @@
         <title>Identifier naming</title>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
-        be named with an initial uppercase. Members, parameters, locals and packages
-        must be named with an initial lowercase or underscore.</para>
+        be named with an initial uppercase. Members, parameters and locals must be 
+        named with an initial lowercase or underscore. A package name element is an
+        all-lowercase identifier.</para>
         
         <programlisting>PackageName := PIdentifier</programlisting>
         <programlisting>TypeName := UIdentifier</programlisting>
@@ -74,9 +75,6 @@
         
         <para>The Ceylon parser is able to unambiguously identify which namespace an 
         identifier belongs to.</para>
-        
-        <comment><para>TODO: should we specify that a package name must be an 
-        all-lowercase identifier?</para></comment>
         
     </section>
       
