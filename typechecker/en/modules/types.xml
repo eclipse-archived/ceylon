@@ -1449,7 +1449,8 @@ class String(Character[] characters)
 }]]></programlisting>
         
         <comment><para>TODO: I assume these are just Java (Perl 5-style) regular 
-        expressions. Is there some other better syntax around?</para></comment>
+        expressions. Is there some other better syntax around? Something BNF-like,
+        perhaps?</para></comment>
 
     </section>
     
