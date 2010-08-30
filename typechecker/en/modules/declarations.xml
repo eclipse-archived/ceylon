@@ -1235,6 +1235,9 @@ Void goodbye() {
             </listitem>
         </itemizedlist>
         
+        <para>The first inferred method replaces the original declared method in the 
+        definition of the class.</para>
+        
         <para>This method declaration:</para>
         
         <programlisting>public String fullName(String firstName)(String middleName)(String lastName) {
