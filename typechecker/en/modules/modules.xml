@@ -238,9 +238,16 @@
         <programlisting>/usr/bin/ceylon/modules/org/h2/1.2.141/org.h2-1.2.141.car</programlisting>
         <programlisting>/usr/bin/ceylon/modules/org/h2/1.2.141/org.h2-1.2.141.jar</programlisting>
         
-        <comment><para>TODO: the module repository should also contain checksum files
-        alongside the archives.</para></comment>
+        <para>For each archive, the module repository may contain a SHA-1 checksum 
+        file. The checksum file is a plain text file containing just the SHA-1 checksum
+        of the archive. The address of a checksum file adheres to the following standard 
+        form:</para>
         
+        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis>.sha1</programlisting>
+        
+        <para>The compiler or module runtime verifies the checksum after downloading
+        the archive from the module repository.</para>
+                
         <comment><para>TODO: the module repository could contain documentation in 
         exploded form, with <literal>index.html</literal> in the same directory as
         the archives.</para></comment>
