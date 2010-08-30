@@ -15,15 +15,15 @@ Body?</programlisting>
     <section id="topleveldeclaration">
         <title>Compilation unit structure</title>
         
-        <para>A <emphasis>compilation unit</emphasis>  is a text file, with the filename 
-        extension <literal>.ceylon</literal>.</para>
+        <para>A <emphasis>compilation unit</emphasis>  is a text file, with the 
+        filename extension <literal>.ceylon</literal>.</para>
         
         <comment><para>TODO: what is the character encoding? Does it work just like
         <literal>javac</literal>?</para></comment>
         
-        <para>A compilation unit consists of a list of imported toplevel types and 
-        toplevel methods, followed by one or more type or method definitions or
-        by a single toplevel expression:</para>
+        <para>A compilation unit consists of a list of imported types and methods, 
+        followed by one or more toplevel type or method definitions or by a single 
+        toplevel expression:</para>
         
         <programlisting>Import* (ToplevelDeclaration+ | ToplevelExpression)</programlisting>
         
@@ -47,6 +47,9 @@ Body?</programlisting>
         Java, a compilation unit may contain multiple toplevel class or method 
         declarations with the same name.</para>
         
+        <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
+        non-<literal>mutable</literal> toplevel attributes?</para></comment>
+            
         </section>
         
         <section>
@@ -83,12 +86,17 @@ String lastName;
         
         </section>
         
-        <section>
+    </section>
+    
+        <section id="imports">
             <title>Imports</title>
         
         <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
-        An <literal>import</literal> statement allows the compilation unit to refer to a 
-        toplevel declaration in another package.</para>
+        Code in one compilation unit may refer to a toplevel declaration in another 
+        compilation unit in the same package without explicitly importing the declaration. 
+        It may refer to a declaration defined in a compilation unit in another package 
+        only if it explicitly imports the declaration using the <literal>import</literal> 
+        statement.</para>
         
         <programlisting>Import := "import" FullPackageName "." ImportSpec ";"</programlisting>
         
@@ -96,6 +104,7 @@ String lastName;
         list of all lowercase identifiers.</para>
         
         <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
+        
         
         <para>An <literal>import</literal> statement may import either:</para>
         
@@ -120,26 +129,41 @@ String lastName;
         
         <programlisting>ImportSpec := TypeSpec | MethodSpec | InstanceSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
         
+        <comment><para>TODO: Would it be better to specify that there is at most a single 
+        <literal>import</literal> statement per source file, for example:</para>
+        <programlisting>import my.query.Order, ceylon.collection.*, java.util.Map.Entry alias MapEntry;</programlisting></comment>
+        
+        <comment><para>TODO: Would it be better to enclose that the imported expressions
+        in single quotes, as they would need to appear in the body of the source file,
+        for example: <literal>'my.query.Order'</literal>, <literal>'ceylon.collection.*'</literal>,
+        <literal>'java.util.Map.Entry' alias MapEntry</literal>.</para></comment>
+        
+        <section>
+            <title>Fully explicit imports</title>
+        
+        <para>An import statement that specifies a package name followed by a type
+        name imports the type with that name in the package.</para>
+        
         <programlisting>TypeSpec := QualifiedTypeName ("alias" TypeName)?</programlisting>
-        <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
-        <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
-        
-        <para>The character <literal>*</literal> acts as a wildcard, just like in Java.</para>
-        
-        <programlisting>PackageMembersSpec := "*"</programlisting>
-        <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
         
         <para>The name of a member type must be qualified by the names of its containing
         types.</para>
         
         <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
+                
+        <para>An import statement that specifies a package name followed by a method
+        name imports the method with that name in the package.</para>
         
-        <para>The optional <literal>alias</literal> clause allows resolution of 
-        cross-namespace declaration name collisions.</para>
+        <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
         
-        <programlisting>import ceylon.collection.*;</programlisting>
+        <para>An import statement that specifies a package name followed by a type
+        name and the name of an enumerated instance imports the named enumerated 
+        instance.</para>
+                
+        <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
         
-        <programlisting>import transaction.propagation.TxPropagationType.*;</programlisting>
+        <para>The optional <literal>alias</literal> clause in a fully-explicit import
+        allows resolution of cross-namespace declaration name collisions.</para>
         
         <programlisting>import java.util.Map.Entry alias MapEntry;</programlisting>
         
@@ -147,26 +171,30 @@ String lastName;
         
         <programlisting>import my.query.Order.descending alias desc;</programlisting>
         
-        <para>Code in one compilation unit may refer to a toplevel declaration in another 
-        compilation unit in the same package without explicitly importing the declaration. 
-        It may refer to a toplevel declaration defined in a compilation unit in another 
-        package only if it explicitly imports the declaration.</para>
+        </section>
         
-        <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
-        non-<literal>mutable</literal> toplevel attributes?</para></comment>
-            
-        <comment><para>TODO: Would it be better to specify that there is at most a single 
-        <literal>import</literal> statement per source file, for example:</para>
-        <programlisting>import my.query.Order, ceylon.collection.*, java.util.Map.Entry alias MapEntry;</programlisting>.</comment>
+        <section>
+            <title>Wildcard imports</title>
         
-        <comment><para>TODO: Would it be better to enclose that the imported expressions
-        in single quotes, as they would need to appear in the body of the source file,
-        for example: <literal>'my.query.Order'</literal>, <literal>'ceylon.collection.*'</literal>,
-        <literal>'java.util.Map.Entry' alias MapEntry</literal>.</para></comment>
+        <para>The character <literal>*</literal> acts as a wildcard, just like in Java.</para>
+        
+        <para>An import statement that specifies a package name followed by a wildcard
+        imports all toplevel types of the package.</para>
+        
+        <programlisting>PackageMembersSpec := "*"</programlisting>
+        
+        <para>An import statement that specifies a type name followed by a wildcard
+        imports all member types of the type.</para>
+                
+        <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
+        
+        <programlisting>import ceylon.collection.*;</programlisting>
+        
+        <programlisting>import transaction.propagation.TxPropagationType.*;</programlisting>
         
         </section>
-    
-    </section>
+        
+        </section>
     
     <section id="interfaces">
         <title>Interfaces</title>
