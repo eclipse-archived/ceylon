@@ -173,8 +173,9 @@
         
         <para>The compiler searches for compilation units belonging to the 
         specified modules in the specified source directories. For each 
-        specified module, the compiler generates a module archive and source 
-        archive in the specified output module repository.</para>
+        specified module, the compiler generates a module archive, source 
+        archive, and their checksum files in the specified output module 
+        repository.</para>
         
         <para>All program elements imported by a compilation unit must
         belong to the same module as the compilation unit, or must belong
