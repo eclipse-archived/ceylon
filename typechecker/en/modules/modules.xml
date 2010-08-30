@@ -145,8 +145,8 @@
         <itemizedlist>
             <listitem>
                 <para>contains the source code (<literal>.ceylon</literal>
-                files) for all compilation units belonging to the module, 
-                and</para>
+                and <literal>.java</literal> files) for all compilation units 
+                belonging to the module, and</para>
             </listitem>
             <listitem>
                 <para>has a filename which adheres to the standard for
@@ -154,9 +154,9 @@
             </listitem>
         </itemizedlist>
         
-        <para>Inside a source archive, a Ceylon compilation unit (source file) 
-        is located in the <emphasis>package directory</emphasis> of the package 
-        to which the compilation unit belongs.</para>
+        <para>Inside a source archive, a Ceylon or Java source file is located in 
+        the <emphasis>package directory</emphasis> of the package to which the 
+        compilation unit belongs.</para>
         
         <para>The path of a package directory is formed by replacing every period 
         with the directory separator character in the name of the package.</para>

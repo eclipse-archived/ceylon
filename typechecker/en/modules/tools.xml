@@ -25,14 +25,17 @@
         <title>Source directories</title>
         
         <para>A <emphasis>source directory</emphasis> contains Ceylon source 
-        code. The module and package to which a compilation unit (source file)
-        belongs is determined by the subdirectory in which the compilation
-        unit is found.</para>
+        code in files with the extension <literal>.ceylon</literal> and Java 
+        source code in files with the extension <literal>.java</literal>. 
+        The module and package to which a compilation unit belongs is 
+        determined by the subdirectory in which the source file is found.</para>
         
         <para>The name of the package to which a compilation unit belongs is 
         formed by replacing every path directory separator character with a 
         period in the relative path from the source directory to the 
-        subdirectory containing the compilation unit.</para>
+        subdirectory containing the source file. In the case of a Java source 
+        file, the subdirectory must agree with the package specified by the 
+        Java <literal>package</literal> declaration.</para>
         
         <para>The name of the module to which a compilation unit belongs is 
         determined by searching all containing directories for a module 
@@ -132,6 +135,10 @@
 
     <section>
         <title>The Ceylon compiler</title>
+        
+        <para>The Ceylon compiler is able to compile Ceylon and Java
+        source code and directly produce module and source archives
+        in a local module repository.</para>
         
         <para>The <literal>ceylonc</literal> command accepts a list of
         module names, along with the following options:</para>
