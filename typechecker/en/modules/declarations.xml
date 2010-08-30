@@ -100,7 +100,7 @@ String lastName;
         <programlisting>Import := "import" FullPackageName "." ImportSpec ";"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated
-        list of all lowercase identifiers.</para>
+        list of all-lowercase identifiers.</para>
         
         <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
         
