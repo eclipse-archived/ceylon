@@ -222,7 +222,7 @@ declaration
     
 //special rule for syntactic predicates
 declarationStart
-    :  userAnnotation* ( langAnnotation | visibility | memberDeclarationStart | typeDeclarationStart )
+    :  userAnnotation* ( langAnnotation | memberDeclarationStart | typeDeclarationStart )
     ;
 
 memberDeclarationStart
@@ -244,6 +244,7 @@ langAnnotation
     | 'extension'
     | 'volatile'
     | 'small'
+    | visibility
     ;
 
 visibility
@@ -434,8 +435,8 @@ typeNameWithArguments
     ;
     
 annotations
-    : annotation+ (visibility annotation+)?
-    -> ^(ANNOTATION_LIST annotation+ visibility? annotation*)
+    : annotation+
+    -> ^(ANNOTATION_LIST annotation+)
     ;
 
 annotation
@@ -839,7 +840,7 @@ formalParameters
 //matches "()", which can also be an 
 //argument list
 formalParameterStart
-    : '(' ( userAnnotation* ( langAnnotation | visibility | formalParameterType LIDENTIFIER ) | ')' )
+    : '(' ( userAnnotation* ( langAnnotation | formalParameterType LIDENTIFIER ) | ')' )
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
