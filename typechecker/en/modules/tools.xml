@@ -171,6 +171,9 @@
         -src ~/projects/hibernate/src \
         -out ~/projects/hibernate/build</programlisting>
         
+        <comment><para>TODO: how do you create signed jars? Some additional
+        commandline options?</para></comment>
+        
         <para>The compiler searches for compilation units belonging to the 
         specified modules in the specified source directories. For each 
         specified module, the compiler generates a module archive, source 
