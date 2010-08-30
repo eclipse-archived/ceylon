@@ -8,16 +8,16 @@
             <para>the Java VM, <literal>java</literal>,</para>
         </listitem>
         <listitem>
-            <para>the Ceylon front end for the Java VM, 
-            <literal>ceylon</literal>,</para>
+            <para>the front end for the Java VM, <literal>ceylon</literal>,</para>
         </listitem>
         <listitem>
-            <para>the Ceylon compiler, <literal>ceylonc</literal>, 
-            and</para>
+            <para>the compiler, <literal>ceylonc</literal></para>
         </listitem>
         <listitem>
-            <para>the Ceylon documentation compiler, 
-            <literal>ceylond</literal>.</para>
+            <para>the documentation compiler, <literal>ceylond</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para>the source archive extractor, <literal>ceylonf</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -83,15 +83,16 @@
             </listitem>
             <listitem>
                 <para><literal>-d</literal> disables the default
-                module repository and source directory.</para>
+                module repositories and source directory.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The default module repository is <literal>modules</literal>
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon.org</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylon org.hibernate.test.run \
-        -rep http://org.jboss/ceylon/modules \
+        -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
                
         <para>Execution begins with the named toplevel method, and imported 
@@ -134,7 +135,7 @@
     </section>
 
     <section>
-        <title>The Ceylon compiler</title>
+        <title>The compiler</title>
         
         <para>The Ceylon compiler is able to compile Ceylon and Java
         source code and directly produce module and source archives
@@ -158,16 +159,17 @@
             </listitem>
             <listitem>
                 <para><literal>-d</literal> disables the default
-                module repository and source directory.</para>
+                module repositories and source directory.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The default module repository is <literal>modules</literal>
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon.org</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
         <programlisting>ceylonc org.hibernate.test org.hibernate \
-        -rep http://org.jboss/ceylon/modules \
+        -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src \
         -out ~/projects/hibernate/build</programlisting>
         
@@ -201,6 +203,45 @@
             </listitem>
         </itemizedlist>
                 
+    </section>
+    
+    <section>
+        <title>The source archive extractor</title>
+        
+        <para>The Ceylon source archive extractor fetches source archives
+        and extracts their contents into a source directory. This is
+        especially useful for working with example projects.</para>
+        
+        <para>The <literal>ceylonf</literal> command accepts a list of
+        module names, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-src</literal> specifies the output source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories and source directory.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon.org</literal>,
+        and the default source directory is <literal>source</literal>.</para>
+        
+        <programlisting>ceylonf org.hibernate.examples \
+        -rep http://jboss.org/ceylon/modules \
+        -src ~/projects/hibernate/src</programlisting>
+        
+        <para>The source archive extractor searches for source archives for
+        the specified modules in the specified module repositores and, if
+        found, extracts their contents into the specified source directory.</para>
+        
     </section>
 
 </chapter>
