@@ -206,6 +206,65 @@
     </section>
     
     <section>
+        <title>The documentation compiler</title>
+        
+        <para>The documentation compiler generates XHTML-format 
+        documentation from Ceylon source files.</para>
+        
+        <para>The <literal>ceylond</literal> command accepts a list of
+        module names, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be a local module repository).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories and source directory.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon.org</literal>,
+        and the default source directory is <literal>source</literal>.
+        The default output module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylond org.hibernate \
+        -src ~/projects/hibernate/src \
+        -out ~/projects/hibernate/build</programlisting>
+        
+        <para>The documentation compiler searches for compilation units 
+        belonging to the specified modules in the specified source directories
+        and in source archives in the specified module repositories. 
+        For each specified module, the compiler generates a set of XHTML pages
+        in the module documentation directory (the <literal>module-doc</literal> 
+        directory) of the specified output module repository.</para>
+        
+        <para>The compiler searches for source in the following locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+                
+    </section>
+    
+    <section>
         <title>The source archive extractor</title>
         
         <para>The Ceylon source archive extractor fetches source archives
@@ -239,7 +298,7 @@
         -src ~/projects/hibernate/src</programlisting>
         
         <para>The source archive extractor searches for source archives for
-        the specified modules in the specified module repositores and, if
+        the specified modules in the specified module repositories and, if
         found, extracts their contents into the specified source directory.</para>
         
     </section>
