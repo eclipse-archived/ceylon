@@ -222,7 +222,7 @@ declaration
     
 //special rule for syntactic predicates
 declarationStart
-    :  userAnnotation* ( langAnnotation | memberDeclarationStart | typeDeclarationStart )
+    :  userAnnotation* ( langAnnotation | visibility | memberDeclarationStart | typeDeclarationStart )
     ;
 
 memberDeclarationStart
@@ -236,17 +236,22 @@ typeDeclarationStart
 //by making these things keywords, we reduce the amount of
 //backtracking
 langAnnotation
-    : 'public'
-    | 'module'
-    | 'package'
-    | 'private'
-    | 'abstract'
+    : 'abstract'
     | 'default'
     | 'override'
     | 'fixed'
     | 'mutable'
     | 'extension'
     | 'volatile'
+    | 'small'
+    ;
+
+visibility
+    : 'public'
+    | 'module'
+    | 'package'
+    | 'private'
+    | 'protected'
     ;
 
 statement 
@@ -429,8 +434,8 @@ typeNameWithArguments
     ;
     
 annotations
-    : annotation+
-    -> ^(ANNOTATION_LIST annotation+)
+    : annotation+ (visibility annotation+)?
+    -> ^(ANNOTATION_LIST annotation+ visibility? annotation*)
     ;
 
 annotation
@@ -821,7 +826,7 @@ specialArgument
 
 extraFormalParameters
     : extraFormalParameter*
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)*)
     ;
 
 formalParameters
@@ -834,7 +839,7 @@ formalParameters
 //matches "()", which can also be an 
 //argument list
 formalParameterStart
-    : '(' ( userAnnotation* ( langAnnotation | formalParameterType LIDENTIFIER ) | ')' )
+    : '(' ( userAnnotation* ( langAnnotation | visibility | formalParameterType LIDENTIFIER ) | ')' )
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
