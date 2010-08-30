@@ -105,7 +105,7 @@
         this super
         if else switch case for fail do while try catch finally
         exists nonempty is
-        public module package private
+        public module package
         abstract default fixed override mutable extension 
         deprecated volatile small
         </literal></para>

@@ -267,8 +267,8 @@
     <para>
     Ceylon features language-level <emphasis>package</emphasis> and 
     <emphasis>module</emphasis> constructs, and language-level access control 
-    with five levels of visibility for program elements: block local (the 
-    default), <literal>private</literal>, <literal>package</literal>, 
+    with four levels of visibility for program elements: block local (the 
+    default), <!--<literal>private</literal>,--> <literal>package</literal>, 
     <literal>module</literal> and <literal>public</literal>. There's no 
     equivalent to Java's <literal>protected</literal>.
     </para>

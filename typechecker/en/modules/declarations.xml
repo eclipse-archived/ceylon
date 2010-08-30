@@ -37,15 +37,15 @@ Body?</programlisting>
         
         <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
         
-        <para>All toplevel declarations with a visibility modifier less strict than
-        <literal>private</literal> must have the same name as the compilation unit 
+        <para>All toplevel declarations <!--with a visibility modifier less strict than
+        <literal>private</literal>--> must have the same name as the compilation unit 
         filename (after removing the file suffix <literal>.ceylon</literal>). For 
         example, a <literal>public</literal> toplevel class named <literal>Person</literal> 
         must be defined in a file named <literal>Person.ceylon</literal>. A 
-        <literal>public</literal> toplevel method named <literal>hello()</literal> 
-        must be defined in a file named <literal>hello.ceylon</literal>. Unlike 
-        Java, a compilation unit may contain multiple toplevel class or method 
-        declarations with the same name.</para>
+        <literal>public</literal> toplevel method named <literal>hello()</literal> must 
+        be defined in a file named <literal>hello.ceylon</literal>. Unlike Java, a 
+        compilation unit may contain multiple toplevel class or method declarations 
+        with the same name.</para>
         
         <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
         non-<literal>mutable</literal> toplevel attributes?</para></comment>
@@ -80,9 +80,11 @@ String lastName;
     return "Hello " firstName " " lastName "!"
 }</programlisting>
         
+        <!--
         <comment><para>TODO: should we allow the definition of <literal>private</literal>
         toplevel methods and types in a compilation unit containing a toplevel 
         expression?</para></comment>
+        -->
         
         </section>
         
@@ -1747,7 +1749,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        
        <!--programlisting>alias Compare&lt;T&gt; satisfies functor Comparison(T x, T y);</programlisting-->
        
-       <para>A shortcut is provided for definition of private aliases.</para>
+       <para>A shortcut is provided for definition of compilation unit local aliases.</para>
        
        <programlisting>import java.util.List alias JavaList;</programlisting>
        
@@ -1774,8 +1776,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para><literal>public</literal>, <literal>module</literal>,
-                <literal>package</literal> and <literal>private</literal> 
+                <para><literal>public</literal>, <literal>module</literal>
+                and <literal>package</literal> <!-- <literal>private</literal> -->
                 determine the visibility of a declaration (by default, the 
                 declaration is visible only to statements and declarations 
                 that appear later inside the same block).</para>
@@ -1916,10 +1918,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         is determined by the visibility modifier:</para>
         
         <itemizedlist>
+            <!--
             <listitem>
                 <para><literal>private</literal> specifies that the declaration is 
                 visible to all code in the same compilation unit,</para>
             </listitem>
+            -->
             <listitem>
                 <para><literal>package</literal> specifies that the declaration is 
                 visible to all code in any compilation unit in the same package,</para>
@@ -1934,13 +1938,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: We could live without compilation-unit <literal>private</literal>
-        visibility. In fact, it's arguably contrary to the block structure of the language,
-        since a package acts as a single "block".</para></comment>
-        
         <comment><para>TODO: Should we call the visibility levels <literal>public</literal>,
-        <literal>shared</literal>, <literal>protected</literal>, <literal>private</literal>,
-        so they are all adjectives rather than nouns?</para></comment>
+        <literal>shared</literal>, <literal>protected</literal> so they are all adjectives 
+        rather than nouns?</para></comment>
         
         <para>The visibility of a nested declaration may not be less strict than the 
         visibility of the body (class body, interface body, or block) which contains 
@@ -1971,16 +1971,18 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
          package."
     case package, 
 
-    doc "A program element visible to  
-         the compilation unit in which
-         its is declared."
-    case private, 
-    
     doc "A program element local to the
          block in which it is defined."
     case block; 
     
 }</programlisting>
+
+<!--
+    doc "A program element visible to  
+         the compilation unit in which
+         its is declared."
+    case private, 
+-->
     
         <para>The following declarations define the visibility 
         modifier annotations:</para>
@@ -2005,13 +2007,15 @@ annotation { occurs=onceEachElement; }
 public Visibility package() { 
     return package 
 }</programlisting>
-
+        
+        <!--
         <programlisting>doc "The |private| visibility modifier 
      annotation."
 annotation { occurs=onceEachElement; } 
 public Visibility private() { 
     return private 
 }</programlisting>
+        -->
 
         <comment><para>TODO: how are we going to go about compiling these classes which
         <emphasis>define</emphasis> the reserved-word annotations? A special compiler
