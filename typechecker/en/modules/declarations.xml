@@ -1049,10 +1049,38 @@ public User(String username, Person person);</programlisting>
         
         <para>The Ceylon compiler preserves the names of method parameters.</para>
         
-        <section id="methodimplementation">
-            <title>Method implementation</title>
+        <section id="callabletype">
+            <title>Callable type of a method</title>
             
-        <para>A method body may be a block. If the method is a <literal>void</literal> 
+        <para>The <emphasis>callable type</emphasis> of a method captures the return
+        type and formal parameter types of the method.</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>The callable type of a method with a single parameter list is 
+            <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is the 
+            declared type of the method, or <literal>Void</literal> if the method is 
+            <literal>void</literal>, and <literal>P...</literal> are the formal 
+            parameter types of the method.</para>
+        </listitem>
+        <listitem>
+            <para>The callable type of a method with multiple parameter lists is 
+            <literal>Callable&lt;O,P...&gt;</literal>, where <literal>O</literal> is the
+            callable type of a method produced by eliminating the first formal parameter
+            list, and <literal>P...</literal> are the formal parameter types of the first 
+            formal parameter list of the method.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>A varargs parameter is considered of type <literal>T[]</literal> where 
+        <literal>T</literal> is the declared vararg type.</para>
+        
+        </section>
+        
+        <section id="methodswithbodies">
+            <title>Methods with bodies</title>
+            
+        <para>A method implementation may be a block. If the method is a <literal>void</literal> 
         method, the block may not contain a <literal>return</literal> directive that 
         specifies an expression. Otherwise, every conditional execution path of the block 
         must end in a <literal>return</literal> directive that specifies an expression
@@ -1108,38 +1136,15 @@ Void goodbye() {
         <programlisting>local add(Integer x, Integer y) {
     return x + y
 }</programlisting>
-                
+        
         </section>
         
-        <section id="callabletype">
-            <title>Callable type of a method</title>
+        <section id="methodswithspecifiers">
+            <title>Methods with specifiers</title>
             
-        <para>The <emphasis>callable type</emphasis> of a method captures the return
-        types and formal parameter types of the method.</para>
-        
-        <itemizedlist>
-        <listitem>
-            <para>The callable type of a method with a single parameter list is 
-            <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> is the 
-            declared type of the method, or <literal>Void</literal> if the method is 
-            <literal>void</literal>, and <literal>P...</literal> are the formal 
-            parameter types of the method.</para>
-        </listitem>
-        <listitem>
-            <para>The callable type of a method with multiple parameter lists is 
-            <literal>Callable&lt;O,P...&gt;</literal>, where <literal>O</literal> is the
-            callable type of a method produced by eliminating the first formal parameter
-            list, and <literal>P...</literal> are the formal parameter types of the first 
-            formal parameter list of the method.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <para>A varargs parameter is considered of type <literal>T[]</literal> where 
-        <literal>T</literal> is the declared vararg type.</para>
-        
-        <para>A method body may be an expression that evaluates to a callable object, 
-        specified using <literal>=</literal>. The type of the callable object must be 
-        assignable to the callable type of the method.</para>
+        <para>Alternatively, a method implementation may be an expression that evaluates 
+        to a callable object, specified using <literal>=</literal>. The type of the 
+        callable object must be assignable to the callable type of the method.</para>
         
         <programlisting>Float say(String words) = person.say;</programlisting>
         
@@ -1150,40 +1155,6 @@ Void goodbye() {
         <para>The callable object expression may not refer to formal parameters of the
         method.</para>
         
-        <para>A method may declare multiple lists of formal parameters. A method which 
-        declares more than one formal parameter list returns instances of 
-        <literal>Callable</literal>, usually method references.</para>
-        
-        <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
-    return order
-}</programlisting>
-
-        <para>A method body may <emphasis>only</emphasis> refer to parameters in the 
-        first parameter list. It may not refer to parameters of other parameter lists.
-        Parameters declared by parameter lists other than the first parameter list are 
-        not considered visible inside the body of the method.</para>
-        
-        <comment><para>TODO: I think we should drop this restriction (like in a real 
-        functional language) and let the compiler do the legwork. So you could write
-        the following equivalent code instead:</para>
-        <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    return x&lt;=&gt;y
-}</programlisting>
-        <para>The compiler could figure out what's going on using the type of the 
-        expression specified by <literal>return</literal>, and automatically create 
-        the inner method definition.</para>
-        </comment>
-        
-        <para>The type of a callable object returned by a method with multiple parameter 
-        lists must be assignable to the callable type of a method formed by taking the 
-        method with multiple parameter lists and eliminating its first parameter list.</para>
-        
-        <!--
-        <programlisting>@FormalParameterNames({"x", "y"}) 
-public Integer add(Integer x, Integer y) { ... }</programlisting>
-        -->
-                
         <para>A block local method which specifies a callable object expression may be 
         declared using the keyword <literal>local</literal> in place of the explicit 
         return type declaration. The return type of the method is inferred to be the
@@ -1191,6 +1162,101 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <literal>Callable</literal> (the return type).</para>
         
         <programlisting>local sqrt(Float x) = 2.root;</programlisting>
+        
+        </section>
+                
+        <section id="multipleparameterlists">
+            <title>Methods with multiple parameter lists</title>
+            
+        <para>A method may declare multiple lists of formal parameters. A method which 
+        declares more than one formal parameter list returns instances of 
+        <literal>Callable</literal>, usually method references.</para>
+        
+        <para>The type of the expression specified by the <literal>return</literal> 
+        directive may be be assignable to either:</para>
+        
+        <itemizedlist>
+            <listitem><para>the callable type of a method produced by taking the 
+            method with multiple parameter lists and eliminating the first formal 
+            parameter list, or</para></listitem>
+            <listitem><para>the declared return type of the method.</para></listitem>
+        </itemizedlist>
+        
+        <para>If the <literal>return</literal> expression type is assignable to the 
+        callable type of the method produced by eliminating the first formal parameter 
+        list of the method, the method body may <emphasis>only</emphasis> refer to 
+        parameters in the first parameter list. It may not refer to parameters of 
+        other parameter lists. Parameters declared by parameter lists other than the 
+        first parameter list are not considered visible inside the body of the 
+        method.</para>
+        
+        <programlisting>Comparison getOrder()(Natural x, Natural y) {
+    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
+    return order
+}</programlisting>
+
+        <para>Otherwise, if the <literal>return</literal> expression type is assignable 
+        to the declared return type of the method, the method body may refer to any
+        formal parameter in any one of the formal parameter lists of the method. The 
+        compiler automatically infers a series of nested methods, one for each parameter 
+        list of the method. The declarations and statements in the method body form the 
+        body of the most nested inferred method.</para>
+        
+        <para>This method declaration:</para>
+        
+        <programlisting>Comparison getOrder()(Natural x, Natural y) {
+    return x&lt;=&gt;y
+}</programlisting>
+
+        <para>is equivalent to the previous example. The compiler infers a method with
+        the same signature and implementation as <literal>order()</literal> above.</para>
+
+        <para>For a method with <literal>n</literal> parameter lists, there are 
+        <literal>n</literal> inferred methods. The <literal>i</literal>th inferred 
+        method:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>has the same return type as the original declared method,</para>
+            </listitem>
+            <listitem>
+                <para>has the same formal parameter lists as the declared method, after 
+                eliminating the first <literal>i-1</literal> formal parameter lists, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>if <literal>i&lt;n</literal>, has a body which contains the
+                definition of the <literal>i+1</literal>th inferred method and 
+                simply returns a reference to that method, or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, if <literal>i=n</literal>, has the body of the original
+                declared method.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>This method declaration:</para>
+        
+        <programlisting>public String fullName(String firstName)(String middleName)(String lastName) {
+    return firstName + " " + middleName + " " lastName
+}</programlisting>
+        
+        <para>Is equivalent to:</para>
+        
+        <programlisting>public String fullName(String firstName)(String middleName)(String lastName) {
+    String fullName2(String middleName)(String lastName) {
+        String fullName3(String lastName) {
+            return firstName + " " + middleName + " " + lastName
+        }
+        return fullName3
+    }
+    return fullName2
+}</programlisting>
+        
+        <!--
+        <programlisting>@FormalParameterNames({"x", "y"}) 
+public Integer add(Integer x, Integer y) { ... }</programlisting>
+        -->
                 
         </section>
         
