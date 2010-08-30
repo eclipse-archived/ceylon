@@ -1225,7 +1225,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             the method must be annotated <literal>abstract</literal>. If no implementation 
             is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
         
-            <programlisting>public U? get(V? key);</programlisting>
+            <programlisting>public U? get(V key);</programlisting>
         
             <para>Methods declared by interfaces never specify an implementation:</para>
         
