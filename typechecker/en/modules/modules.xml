@@ -299,7 +299,7 @@ public class Module(
         
         doc "The entry point of a runnable
              module."
-        Callable&lt;Object,Process&gt;? run=null;
+        void run(Process process) = notRunnable,
         
         doc "Modules used by this module."
         Import... dependencies) { 
@@ -354,7 +354,9 @@ public class Import(
     version = '3.0.0.beta';
     doc = "The test suite for Hibernate";
     license = 'http://www.gnu.org/licenses/lgpl.html';
-    run = runTests;
+    void run(Process process) {
+        new TestSuite(process).run();
+    }
     Import {
         name = 'org.hibernate';
         version = '3.0.0.beta';
