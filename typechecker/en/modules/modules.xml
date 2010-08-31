@@ -1,8 +1,8 @@
 <chapter id="modulesandtools">
     <title>Module architecture and toolset</title>
     
-    <para>The Ceylon module architecture enables a toolset which 
-    relieves developers of many mundane tasks.</para>
+    <para>The Ceylon module architecture enables a toolset which relieves 
+    developers of many mundane tasks.</para>
 
 <section id="modules">
     <title>Module architecture</title>
@@ -13,6 +13,10 @@
     A module archive is automatically obtained from a module repository 
     when a class belonging to the module is needed by the compiler or
     module runtime.</para>
+    
+    <para>Modules that form part of the Ceylon SDK are found in the
+    module repository in the <literal>modules</literal> directory of 
+    the Ceylon distribution.</para>
     
     <para>JBoss maintains a central module repository at 
     <literal>http://modules.ceylon.org</literal>.</para>
