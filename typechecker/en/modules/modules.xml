@@ -660,8 +660,9 @@ public class Import(
         
         <para>The repository replicator copies modules from one repository
         to another. For example, it may be used to create local copies of
-        modules, or to publish modules to a remote repository.
-        To publish modules to <literal>http://modules.ceylon.org</literal>,
+        modules, or to publish modules to a remote repository.</para>
+        
+        <para>To publish modules to <literal>http://modules.ceylon.org</literal>,
         module developers may use the repository replicator to submit their 
         modules to their private repository at 
         <literal>ftp://modules.ceylon.org</literal>.</para>
