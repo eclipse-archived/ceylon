@@ -18,7 +18,7 @@
     module repository in the <literal>modules</literal> directory of 
     the Ceylon distribution.</para>
     
-    <para>JBoss maintains a central module repository at 
+    <para>Red Hat maintains a central module repository at 
     <literal>http://modules.ceylon.org</literal>.</para>
     
     <section>
