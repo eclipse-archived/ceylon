@@ -275,7 +275,11 @@
         <title>The repository replicator</title>
         
         <para>The repository replicator copies modules from one repository
-        to another.</para>
+        to another. For example, it may be used to create a local copies of
+        modules, or to publish modules to a remote repository.
+        To publish modules to <literal>http://modules.ceylon.org</literal>,
+        module developers may submit their modules to their private
+        repository at <literal>ftp://modules.ceylon.org</literal>.</para>
         
         <para>The <literal>ceylonr</literal> command accepts a list of 
         module names, along with the following options:</para>
@@ -313,7 +317,7 @@
         
         <programlisting>ceylonr org.hibernate \
         -rep modules \
-        -out ftp://gavin:secret@modules.ceylon.org</programlisting>
+        -out ftp://gavin:secret@modules.ceylon.org/hibernate</programlisting>
         
         <para>The repository replicator searches for directories containing
         the specified modules in the specified module repositories and, if 
