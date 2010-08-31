@@ -591,13 +591,8 @@ expression
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
 assignmentExpression
-    : implicationExpression
+    : disjunctionExpression
       (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
-    ;
-
-implicationExpression
-    : disjunctionExpression 
-      ('=>'^ disjunctionExpression)?
     ;
 
 //should '^' have a higher precedence?
@@ -1328,10 +1323,6 @@ AND
 
 OR
     :   '||'
-    ;
-
-IMPLIES
-    :   '=>'
     ;
 
 INCREMENT
