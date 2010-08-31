@@ -11,10 +11,13 @@
             <para>the front end for the Java VM, <literal>ceylon</literal>,</para>
         </listitem>
         <listitem>
-            <para>the compiler, <literal>ceylonc</literal></para>
+            <para>the compiler, <literal>ceylonc</literal>,</para>
         </listitem>
         <listitem>
-            <para>the documentation compiler, <literal>ceylond</literal>, and</para>
+            <para>the documentation compiler, <literal>ceylond</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the repository replicator, <literal>ceylonr</literal>, and</para>
         </listitem>
         <listitem>
             <para>the source archive extractor, <literal>ceylonf</literal>.</para>
@@ -267,10 +270,58 @@
     </section>
     
     <section>
+        <title>The repository replicator</title>
+        
+        <para>The repository replicator copies modules from one repository
+        to another.</para>
+        
+        <para>The <literal>ceylonr</literal> command accepts a list of 
+        module names, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be a local module repository or
+                a remote module repository which supports the standard 
+                module submission interface).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-nosrc</literal> disables replication of
+                source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-nodoc</literal> disables replication of
+                module documentation directories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon.org</literal>. The default output
+        module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylonr org.hibernate org.hibernate.test org.hibernate.examples \
+        -rep http://jboss.org/ceylon/modules</programlisting>
+        
+        <para>The repository replicator searches for directories containing
+        the specified modules in the specified module repositories and, if 
+        found, replicates their contents into the specified output module 
+        repository.</para>
+        
+    </section>
+    
+    <section>
         <title>The source archive extractor</title>
         
-        <para>The Ceylon source archive extractor fetches source archives
-        and extracts their contents into a source directory. This is
+        <para>The source archive extractor fetches source archives and 
+        extracts their contents into a source directory. This is
         especially useful for working with example projects.</para>
         
         <para>The <literal>ceylonf</literal> command accepts a list of
