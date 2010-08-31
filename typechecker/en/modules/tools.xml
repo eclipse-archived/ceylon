@@ -144,7 +144,7 @@
         
         <para>The Ceylon compiler is able to compile Ceylon and Java
         source code and directly produce module and source archives
-        in a local module repository.</para>
+        in a module repository.</para>
         
         <para>The <literal>ceylonc</literal> command accepts a list of
         module names, along with the following options:</para>
@@ -152,7 +152,8 @@
         <itemizedlist>
             <listitem>
                 <para><literal>-out</literal> specifies the output module 
-                repository (which must be a local module repository).</para>
+                repository (which must be a local module repository or a
+                remote module repository with protocol <literal>ftp:</literal>).</para>
             </listitem>
             <listitem>
                 <para><literal>-src</literal> specifies a source
@@ -222,7 +223,8 @@
         <itemizedlist>
             <listitem>
                 <para><literal>-out</literal> specifies the output module 
-                repository (which must be a local module repository).</para>
+                repository (which must be a local module repository or a 
+                remote module repository with protocol <literal>ftp:</literal>).</para>
             </listitem>
             <listitem>
                 <para><literal>-src</literal> specifies a source
@@ -281,9 +283,8 @@
         <itemizedlist>
             <listitem>
                 <para><literal>-out</literal> specifies the output module 
-                repository (which must be a local module repository or
-                a remote module repository which supports the standard 
-                module submission interface).</para>
+                repository (which must be a local module repository or a 
+                remote module repository with protocol <literal>ftp:</literal>).</para>
             </listitem>
             <listitem>
                 <para><literal>-rep</literal> specifies a module
@@ -309,6 +310,10 @@
         
         <programlisting>ceylonr org.hibernate org.hibernate.test org.hibernate.examples \
         -rep http://jboss.org/ceylon/modules</programlisting>
+        
+        <programlisting>ceylonr org.hibernate \
+        -rep modules \
+        -out ftp://gavin:secret@modules.ceylon.org</programlisting>
         
         <para>The repository replicator searches for directories containing
         the specified modules in the specified module repositories and, if 

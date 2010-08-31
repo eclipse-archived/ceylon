@@ -183,7 +183,7 @@
         <title>Module repositories</title>
         
         <para>A module repository is a directory structure on the local
-        filesystem or a remote HTTP server.</para>
+        filesystem or a remote HTTP or FTP server.</para>
         
         <itemizedlist>
             <listitem>
@@ -192,7 +192,8 @@
             </listitem>
             <listitem> 
                 <para>A <emphasis>remote</emphasis> module repository is 
-                identified by a URL.</para> 
+                identified by a URL with protocol <literal>http:</literal>,
+                <literal>https:</literal>, or <literal>ftp:</literal>.</para> 
             </listitem>
         </itemizedlist>
         
