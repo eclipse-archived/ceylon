@@ -8,6 +8,9 @@
     when a class belonging to the module is needed by the compiler or
     module runtime.</para>
     
+    <para>JBoss maintains a central module repository at 
+    <literal>http://modules.ceylon.org</literal>.</para>
+    
     <section>
         <title>Module names and version identifiers</title>
         
