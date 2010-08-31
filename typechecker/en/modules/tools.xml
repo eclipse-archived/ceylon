@@ -287,7 +287,7 @@
             </listitem>
             <listitem>
                 <para><literal>-d</literal> disables the default
-                module repositories and source directory.</para>
+                module repositories.</para>
             </listitem>
         </itemizedlist>
         
