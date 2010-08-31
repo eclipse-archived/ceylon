@@ -699,7 +699,7 @@ public class Import(
         and <literal>http://modules.ceylon.org</literal>. The default output
         module repository is <literal>modules</literal>.</para>
         
-        <programlisting>ceylonr org.hibernate org.hibernate.test org.hibernate.examples \
+        <programlisting>ceylonr org.hibernate org.hibernate.test org.hibernate.example \
         -rep http://jboss.org/ceylon/modules</programlisting>
         
         <programlisting>ceylonr org.hibernate \
@@ -742,7 +742,7 @@ public class Import(
         and <literal>http://modules.ceylon.org</literal>. The default output 
         source directory is <literal>source</literal>.</para>
         
-        <programlisting>ceylonf org.hibernate.examples \
+        <programlisting>ceylonf org.hibernate.example \
         -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
         
