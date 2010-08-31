@@ -2573,6 +2573,18 @@ public class Lower extends TreeTranslator {
                 result = app;
                 return;
             }
+
+            if (meth.name.toString().equals("$internalErasedExists")) {
+                if (tree.meth.getTag() == JCTree.SELECT) {
+                	JCExpression selected = ((JCFieldAccess) tree.meth).selected;
+                	Type t = ((JCFieldAccess) tree.meth).type.baseType();
+                	if (tree.args.length() == 0) {
+                		result = selected;
+                		return;
+                	}
+                } 
+            }
+            
         }
         result = tree;
     }

@@ -320,11 +320,11 @@ public class Gen {
     		for (CeylonTree.Annotation a: ceylonAnnos)
     			a.accept(v);
 
-    	if (! v.optional) {
+    	/* if (! v.optional) {
     		JCAnnotation ann = make().Annotation(makeSelect("ceylon", "nonOptional"),
     				List.<JCExpression>nil());
     		langAnnotations.append(ann);
-    	}
+    	} */
     }
     
     JCBlock registerAnnotations(List<JCStatement> annos) {
@@ -609,11 +609,16 @@ public class Gen {
             new ListBuffer<JCStatement>();
         processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
     	
+        JCExpression type = makeIdent(decl.type.name().components());
+        
+        if (decl.optional)
+        	type = make(decl).TypeApply(makeSelect("ceylon", "Optional"), List.<JCExpression>of(type));
+        
         List<JCStatement> result = 
         	List.<JCStatement>of(make(decl).VarDef
         			(make().Modifiers(0, langAnnotations.toList()), 
         					names.fromString(decl.nameAsString()),
-        					makeIdent(decl.type.name().components()), 
+        					type, 
         					initialValue));
 
         if (annotations.length() > 0) {
@@ -652,6 +657,9 @@ public class Gen {
             }
             public void visit(CeylonTree.InitializerExpression value) {
                 result = convertExpression(value.value());
+            }
+            public void visit(CeylonTree.Null value) {
+            	result = makeSelect("ceylon", "Nothing", "NULL");
             }
           }
 

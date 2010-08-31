@@ -336,7 +336,7 @@ public abstract class CeylonTree {
     @NotAChild @NotPrintedInDump
     public List<CeylonTree> children;
   
-    public List<Annotation> annotations;
+    public List<Annotation> annotations = List.<Annotation>nil();
   
     public void setName(CeylonTree name) {
         bomb();
@@ -416,8 +416,6 @@ public abstract class CeylonTree {
     }
   
     public void add(Annotation ann) {
-        if (annotations == null)
-            annotations = List.<Annotation>nil();
         annotations = annotations.append(ann);
     }
 
@@ -1772,6 +1770,8 @@ public abstract class CeylonTree {
         public List<CeylonTree> stmts;
         List<CeylonTree> typeParameters;
         public AttributeSetter attributeSetter;
+        @NotAChild
+        public boolean optional;
         
         @NotAChild
         public CeylonTree name;

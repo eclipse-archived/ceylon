@@ -166,6 +166,15 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
         // member.setAnnotations(current.annotations);
         // current.annotations = null;
+
+        for (CeylonTree.Annotation ann: member.annotations) {
+        	if (ann instanceof CeylonTree.LanguageAnnotation) {
+        		CeylonTree.LanguageAnnotation la = 
+        			(CeylonTree.LanguageAnnotation)ann;
+        		if (la.kind instanceof CeylonTree.Optional)
+        			member.optional = true;
+        	}
+        } 
         
         if (member.attributeSetter != null) {
             CeylonTree.AttributeSetter tmp = member.attributeSetter;
@@ -180,6 +189,7 @@ public class Grok extends CeylonTree.Visitor {
             CeylonTree.BaseMethodDeclaration decl = 
                 member.stmts != null ? new CeylonTree.MethodDeclaration(member)
                                      : new CeylonTree.AbstractMethodDeclaration(member);
+                
             current.context.add(decl);  
         } else {
             current.context.add(member);

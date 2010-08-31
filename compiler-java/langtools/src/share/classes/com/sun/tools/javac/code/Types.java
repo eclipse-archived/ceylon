@@ -264,7 +264,7 @@ public class Types {
      * Is t a subtype of or convertiable via boxing/unboxing
      * convertions to s?
      */
-    public boolean isConvertible(Type t, Type s, Warner warn) {
+    private boolean isConvertibleNotOptional(Type t, Type s, Warner warn) {
         boolean tPrimitive = t.isPrimitive();
         boolean sPrimitive = s.isPrimitive();
         if (tPrimitive == sPrimitive)
@@ -273,6 +273,28 @@ public class Types {
         return tPrimitive
             ? isSubtype(boxedClass(t).type, s)
             : isSubtype(unboxedType(t), s);
+     }
+
+    public boolean isConvertible(Type t, Type s, Warner warn) {
+    	if (isConvertibleNotOptional(t, s, warn))
+    		return true;
+    	
+        Type base = s.baseType();
+        TypeSymbol tsym = s.tsym;
+        String sStr = tsym.toString();
+        if (sStr.equals("ceylon.Optional") &&
+        		base.tag == CLASS) {
+        	ClassType klass = (ClassType)base;
+        	List<Type> typeArgs = klass.getTypeArguments();
+        	if (typeArgs.length() == 1) {
+        		Type s1 = typeArgs.last();
+        		if (s1.tag == CLASS) {
+        			return isConvertible(t, s1, warn);
+        		}
+        	}
+        }
+        
+        return false;
     }
 
     /**
@@ -1496,10 +1518,10 @@ public class Types {
      * type parameters in t are deleted.
      */
     public Type erasure(Type t) {
-        if (t.tag <= lastBaseTag)
-            return t; /* fast special case */
-        else
-            return erasure.visit(t);
+    	if (t.tag <= lastBaseTag)
+    		return t; /* fast special case */
+    	else
+    		return erasure.visit(t);
     }
     // where
         private UnaryVisitor<Type> erasure = new UnaryVisitor<Type>() {
@@ -1517,6 +1539,17 @@ public class Types {
 
             @Override
             public Type visitClassType(ClassType t, Void ignored) {
+               	// Erase ceylon.Optional<T> to T
+            	if (t.tsym.toString().equals("ceylon.Optional"))
+            	{
+            		List<Type> l = t.getTypeArguments();
+            		if (l.length() == 1) {
+            			Type t1 = l.last();
+            			if (t1.tag == CLASS)
+            				return t1;
+            		}
+            	}
+            	
                 return t.tsym.erasure(Types.this);
             }
 
