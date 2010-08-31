@@ -211,6 +211,7 @@
         <programlisting>modules</programlisting>
         <programlisting>/usr/bin/ceylon/modules</programlisting>
         <programlisting>http://jboss.org/ceylon/modules</programlisting>
+        <programlisting>ftp://gavin:secret@modules.ceylon.org/hibernate</programlisting>
         
         <para>A module repository contains module archives, legacy archives, 
         and source archives. The address of an archive belonging to the 
