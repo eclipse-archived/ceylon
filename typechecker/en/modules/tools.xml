@@ -292,8 +292,8 @@
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon.org</literal>,
-        and the default source directory is <literal>source</literal>.</para>
+        and <literal>http://modules.ceylon.org</literal>. The default output 
+        source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonf org.hibernate.examples \
         -rep http://jboss.org/ceylon/modules \
