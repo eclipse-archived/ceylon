@@ -662,8 +662,9 @@ public class Import(
         to another. For example, it may be used to create local copies of
         modules, or to publish modules to a remote repository.
         To publish modules to <literal>http://modules.ceylon.org</literal>,
-        module developers may submit their modules to their private
-        repository at <literal>ftp://modules.ceylon.org</literal>.</para>
+        module developers may use the repository replicator to submit their 
+        modules to their private repository at 
+        <literal>ftp://modules.ceylon.org</literal>.</para>
         
         <para>The <literal>ceylonr</literal> command accepts a list of 
         module names, along with the following options:</para>
