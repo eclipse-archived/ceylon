@@ -273,6 +273,11 @@
         
         <para>This method is usually specified as a toplevel expression.</para>
         
+        <para>A module may be <emphasis>runnable</emphasis>. The module descriptor
+        for a runnable module specifies an <emphasis>entry point</emphasis>, a 
+        toplevel method or class with a single formal parameter of type 
+        <literal>Process</literal>.</para>
+        
         <para>The following classes define the format of the Ceylon module
         descriptor:</para>
         
@@ -291,6 +296,10 @@ public class Module(
         doc "The license under which the module
              is distributed."
         URL? license=null,
+        
+        doc "The entry point of a runnable
+             module."
+        Callable&lt;Object,Process&gt;? run=null;
         
         doc "Modules used by this module."
         Import... dependencies) { 
@@ -337,6 +346,18 @@ public class Import(
     Import {
         name = 'jdbc';
         version = '4.0';
+    }
+}</programlisting>
+
+        <programlisting>Module {
+    name = 'org.hibernate.test';
+    version = '3.0.0.beta';
+    doc = "The test suite for Hibernate";
+    license = 'http://www.gnu.org/licenses/lgpl.html';
+    run = runTests;
+    Import {
+        name = 'org.hibernate';
+        version = '3.0.0.beta';
     }
 }</programlisting>
 

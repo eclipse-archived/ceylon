@@ -69,8 +69,10 @@
     <section>
         <title>The VM front end</title>
         
-        <para>The <literal>ceylon</literal> command accepts the name 
-        of a toplevel method, along with the following options:</para>
+        <para>The <literal>ceylon</literal> command accepts the fully
+        qualified name of a runnable module or of a toplevel method or 
+        class with a single formal parameter of type <literal>Process</literal>, 
+        along with the following options:</para>
         
         <itemizedlist>
             <listitem>
@@ -91,7 +93,7 @@
         and <literal>http://modules.ceylon.org</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
-        <programlisting>ceylon org.hibernate.test.run \
+        <programlisting>ceylon org.hibernate.test \
         -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
                
