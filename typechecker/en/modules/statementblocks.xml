@@ -6,7 +6,7 @@
     code contains expressions and control directives and is organized using blocks and 
     control structures.</para>
     
-    <section>
+    <section id="nameresolution">
         <title>Name resolution</title>
         
         <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
@@ -174,7 +174,7 @@ do {
 try (lock) { ... }</programlisting>
 </comment>
         
-        <section>
+        <section id="expressionstatements">
             <title>Expression statements</title>
             
         <para>Only certain expressions are valid statements: assignment, prefix or 

@@ -76,7 +76,7 @@
     <literal>T</literal>, in order to support lazy evaluation like in a
     functional language?</para></comment>
     
-    <section>
+    <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
         
         <para>An <emphasis>object</emphasis> is a unique identifier, together with a 
@@ -172,8 +172,8 @@ assert() that (person.name===name) //assertion may fail!</programlisting>
         
     </section>
 
-    <section id="literals">
-        <title>Literals</title>
+    <section id="literalvalues">
+        <title>Literal values</title>
     
     <para>Ceylon supports literal values of the following types:</para>
     
@@ -488,7 +488,7 @@ if you prefer.";</programlisting>
         <comment><para>TODO: should we have typesafe metamodel reference expressions for 
         parameters, for example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
                 
-        <section>
+        <section id="interfaceandclassmetamodelreferences">
             <title>Interface and class metamodel references</title>
             
         <para>A <literal>Type</literal> object may be obtained by specifying the full
@@ -523,7 +523,7 @@ if you prefer.";</programlisting>
         
         </section>
         
-        <section>
+        <section id="toplevelmethodmetamodelreferences">
             <title>Toplevel method metamodel references</title>
             
         <para>A <literal>Function</literal> object representing a toplevel method may be 
@@ -551,7 +551,7 @@ if you prefer.";</programlisting>
            
         </section>
         
-        <section>
+        <section id="membermethodmetamodelreferences">
             <title>Member method metamodel references</title>
             
         <para>A <literal>Method</literal> object representing a member method may be 
@@ -576,7 +576,7 @@ if you prefer.";</programlisting>
          
         </section>
         
-        <section>
+        <section id="attributemetamodelreferences">
             <title>Attribute metamodel references</title>
             
         <para>An <literal>Attribute</literal> object representing an attribute may be 
@@ -604,7 +604,7 @@ if you prefer.";</programlisting>
          
         </section>
         
-        <section>
+        <section id="usingthemetamodel">
             <title>Using the metamodel</title>
             
         <para>The metamodel object for a type allows its members to be iterated:</para>
@@ -744,7 +744,7 @@ createItemMethod.intercept()
         
         </section>
         
-        <section>
+        <section id="typearguments">
             <title>Type arguments</title>
             
             <para>If a callable reference expression refers to a generic declaration, 
@@ -2272,7 +2272,7 @@ setPerson(person);</programlisting>
     of the remaining argument expressions. Optimizations performed by the
     Ceylon compiler must not alter these behaviours.</para>
     
-    <section>
+    <section id="operatorprecedence">
         <title>Operator precedence</title>
         
     <para>This table defines the relative precedence of the various operators, 
@@ -2502,7 +2502,7 @@ setPerson(person);</programlisting>
     
     </section>
     
-    <section>
+    <section id="operatordefinition">
         <title>Operator definition</title>
         
     <para>The following tables define the semantics of the Ceylon operators. There 

@@ -10,7 +10,7 @@
         <comment><para>TODO: what is the character encoding? Does it work just like
         <literal>javac</literal>?</para></comment>
         
-    <section>
+    <section id="whitespace">
         <title>Whitespace</title>
         
         <para>Whitespace characters are the ASCII <literal>SP</literal>, 
@@ -25,7 +25,7 @@
         
     </section>
     
-    <section>
+    <section id="comments">
         <title>Comments</title>
         
         <para>There are two kinds of comments:</para>
@@ -65,7 +65,7 @@
   
     </section>
     
-    <section>
+    <section id="identifiersandkeywords">
         <title>Identifiers and keywords</title>
         
         <para>Identifiers may contain upper and lowercase letters, digits and 
@@ -122,10 +122,10 @@
         
     </section>
     
-    <section>
+    <section id="literals">
         <title>Literals</title>
         
-    <section>
+    <section id="numericliterals">
         <title>Numeric literals</title>
         
         <para>A natural number literal has this form:</para>
@@ -156,7 +156,7 @@
         
     </section>
     
-    <section>
+    <section id="characterliterals">
         <title>Character literals</title>
         
         <para>A single character literal consists of a character, surrounded by backticks.</para> 
@@ -179,7 +179,7 @@
         
     </section>
     
-    <section>
+    <section id="stringliterals">
         <title>String literals</title>
         
         <para>A character string literal is a character sequence surrounded by 
@@ -197,7 +197,7 @@
     
     </section>
     
-    <section>
+    <section id="singlequotedliterals">
         <title>Single quoted literals</title>
         
         <para>Single-quoted strings are used to express literal values for 
@@ -211,7 +211,7 @@
         
     </section>
     
-    <section>
+    <section id="operatorsanddelimiters">
         <title>Operators and delimiters</title>
         
         <para>The following character sequences are operators and/or punctuation:</para>

@@ -12,7 +12,7 @@ Interfaces?
 TypeConstraints? 
 Body?</programlisting>
 
-    <section id="topleveldeclaration">
+    <section id="compilationunitstructure">
         <title>Compilation unit structure</title>
         
         <para>A <emphasis>compilation unit</emphasis>  is a text file, with the 
@@ -24,7 +24,7 @@ Body?</programlisting>
         
         <programlisting>Import* (ToplevelDeclaration+ | ToplevelExpression)</programlisting>
         
-        <section>
+        <section id="topleveldeclarations">
             <title>Toplevel declarations</title>
         
         <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class, 
@@ -49,7 +49,7 @@ Body?</programlisting>
             
         </section>
         
-        <section>
+        <section id="toplevelexpressions">
             <title>Toplevel expressions</title>
         
         <para>A <emphasis>toplevel expression</emphasis> is a shorthand toplevel 
@@ -137,7 +137,7 @@ String lastName;
         for example: <literal>'my.query.Order'</literal>, <literal>'ceylon.collection.*'</literal>,
         <literal>'java.util.Map.Entry' alias MapEntry</literal>.</para></comment>
         
-        <section>
+        <section id="fullyexplicitimports">
             <title>Fully explicit imports</title>
         
         <para>An import statement that specifies a package name followed by a type
@@ -172,7 +172,7 @@ String lastName;
         
         </section>
         
-        <section>
+        <section id="wildcardimports">
             <title>Wildcard imports</title>
         
         <para>The character <literal>*</literal> acts as a wildcard, just like in Java.</para>
@@ -2378,8 +2378,8 @@ PatternValidator pattern(Regex regex) {
         
     </section>
     
-    <section id="documentationcompiler">
-        <title>Documentation compiler</title>
+    <section id="documentation">
+        <title>Documentation</title>
     
         <para>The following annotations are instructions to the documentation
         compiler:</para>

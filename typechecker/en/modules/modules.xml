@@ -21,7 +21,7 @@
     <para>Red Hat maintains a central module repository at 
     <literal>http://modules.ceylon.org</literal>.</para>
     
-    <section>
+    <section id="modulenamesandversionidentifiers">
         <title>Module names and version identifiers</title>
         
         <para>A module <emphasis>name</emphasis> is a period-separated
@@ -93,7 +93,7 @@
         
     </section>
     
-    <section>
+    <section id="modulearchives">
         <title>Module archives</title>
         
         <para>A Ceylon module archive is a Java <literal>jar</literal>
@@ -149,7 +149,7 @@
         
     </section>
     
-    <section>
+    <section id="sourcearchives">
         <title>Source archives</title>
         
         <para>A <emphasis>source archive</emphasis> is a <literal>zip</literal> 
@@ -192,7 +192,7 @@
         
     </section>
     
-    <section>
+    <section id="modulerepositories">
         <title>Module repositories</title>
         
         <para>A module repository is a directory structure on the local
@@ -277,7 +277,7 @@
         
     </section>
     
-    <section>
+    <section id="moduledescriptors">
         <title>Module descriptors</title>
         
         <para>A <emphasis>module descriptor</emphasis> is a toplevel method
@@ -408,7 +408,7 @@ public class Import(
         </listitem>
     </itemizedlist>
     
-    <section>
+    <section id="sourcedirectories">
         <title>Source directories</title>
         
         <para>A <emphasis>source directory</emphasis> contains Ceylon source 
@@ -453,7 +453,7 @@ public class Import(
         
     </section>
     
-    <section>
+    <section id="vmfrontend">
         <title>The VM front end</title>
         
         <para>The <literal>ceylon</literal> command accepts the fully
@@ -523,7 +523,7 @@ public class Import(
                 
     </section>
 
-    <section>
+    <section id="compiler">
         <title>The compiler</title>
         
         <para>The Ceylon compiler is able to compile Ceylon and Java
@@ -595,7 +595,7 @@ public class Import(
                 
     </section>
     
-    <section>
+    <section id="documentationcompiler">
         <title>The documentation compiler</title>
         
         <para>The documentation compiler generates XHTML-format 
@@ -635,9 +635,9 @@ public class Import(
         
         <para>The documentation compiler searches for compilation units 
         belonging to the specified modules in the specified source directories
-        and in source archives in the specified module repositories. 
-        For each specified module, the compiler generates a set of XHTML pages
-        in the module documentation directory (the <literal>module-doc</literal> 
+        and in source archives in the specified module repositories. For each 
+        specified module, the compiler generates a set of XHTML pages in the 
+        module documentation directory (the <literal>module-doc</literal> 
         directory) of the specified output module repository.</para>
         
         <para>The compiler searches for source in the following locations:</para>
@@ -655,7 +655,7 @@ public class Import(
                 
     </section>
     
-    <section>
+    <section id="repositoryreplicator">
         <title>The repository replicator</title>
         
         <para>The repository replicator copies modules from one repository
@@ -713,7 +713,7 @@ public class Import(
         
     </section>
     
-    <section>
+    <section id="sourcearchiveextractor">
         <title>The source archive extractor</title>
         
         <para>The source archive extractor fetches source archives and 

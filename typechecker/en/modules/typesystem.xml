@@ -46,7 +46,7 @@
         </listitem>
     </itemizedlist>
 
-    <section>
+    <section id="identifiernaming">
         <title>Identifier naming</title>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
@@ -126,7 +126,7 @@
         member class of a type, meaning an attribute schema, member method schema or member 
         class schema.</para>
         
-        <section>
+        <section id="memberdistinctness">
             <title>Member distinctness</title>
         
         <para>The <emphasis>erased signature</emphasis> of a method or class is formed by:</para>
@@ -190,7 +190,7 @@
         
         </section>
         
-        <section>
+        <section id="subtypingandassignability">
             <title>Subtyping and assignability</title>
         
         <para>A type may be a <emphasis>subtype</emphasis> of another type. Subtyping obeys 
@@ -276,8 +276,8 @@
         
         </section>
         
-        <section>
-            <title>Declaring the type of a program element</title>
+        <section id="typeofaprogramelement">
+            <title>Type of a program element</title>
         
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
@@ -304,7 +304,7 @@
         
         </section>
         
-        <section>
+        <section id="typenameabbreviations">
             <title>Type name abbreviations</title>
             
         <para>The following type name abbreviations are supported:</para>
@@ -495,7 +495,7 @@ String? firstWord = words[0];</programlisting>
         
         <programlisting>TypeParam := OrdinaryTypeParam | DimensionalTypeParam</programlisting>
         
-        <section>
+        <section id="ordinarytypeparameters">
             <title>Ordinary type parameters and variance</title>
         
         <para>An ordinary type parameter is itself a type, visible within the body of the 
@@ -621,7 +621,7 @@ String? firstWord = words[0];</programlisting>
         
         </section>
         
-        <section>
+        <section id="dimensionaltypeparameters">
             <title>Dimensional type parameters</title>
         
         <para>A dimensional type parameter is a local of type <literal>Natural</literal>, 
@@ -638,7 +638,7 @@ String? firstWord = words[0];</programlisting>
         
         </section>
         
-        <section>
+        <section id="thesubtypekeyword">
             <title>The <literal>subtype</literal> keyword</title>
         
         <para>Every Ceylon class or interface has an implicit type parameter that never
@@ -671,7 +671,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         </section>
         
-        <section>
+        <section id="varargstypeparameters">
             <title>Varargs type parameters</title>
         
         <para>A <emphasis>varargs type parameter</emphasis>, identified by an elipsis
@@ -830,7 +830,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>TypeArgument := Type | Dimension</programlisting>
         
-        <section>
+        <section id="dimensions">
             <title>Dimensions</title>
         
         <para>A <emphasis>dimension</emphasis> is an expression composed of natural number
@@ -857,7 +857,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         </section>
                 
-        <section>
+        <section id="typeargumentconformance">
             <title>Type argument conformance</title>
         
         <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
@@ -893,7 +893,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         </section>
                 
-        <section>
+        <section id="producedtypes">
             <title>Produced types and and variance</title>
             
         <para>If a type argument list conforms to a type parameter list, the combination
@@ -937,7 +937,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         </section>
                 
-        <section>
+        <section id="typeargumentsubstitution">
             <title>Type argument substitution</title>
         
         <para>A type argument is substituted for every appearance of the corresponding
@@ -1013,7 +1013,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         </section>
                 
-        <section>
+        <section id="reification">
             <title>Reification</title>
         
         <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
@@ -1091,7 +1091,7 @@ VarargsParam?
         <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
         assigned to within the body of the method or class.</para>
         
-        <section>
+        <section id="callableparameters">
             <title>Callable parameters</title>
         
         <para>A parameter with its own parameter list (or lists) is called a 
@@ -1113,7 +1113,7 @@ VarargsParam?
         
         </section>
         
-        <section>
+        <section id="defaultedparameters">
             <title>Defaulted parameters</title>
         
         <para>Defaulted parameters specify a default argument.</para>
@@ -1135,7 +1135,7 @@ VarargsParam?
         
         </section>
         
-        <section>
+        <section id="varargsandtupleparameters">
             <title>Varargs and tuple parameters</title>
         
         <para>The elipsis <literal>...</literal> indicates that a formal parameter is 
@@ -1167,7 +1167,7 @@ VarargsParam?
         
         </section>
         
-        <section>
+        <section id="entryandrangeparameters">
             <title>Entry and range parameter pairs</title>
         
         <para>Parameters of type <literal>Entry</literal> or <literal>Range</literal> 
