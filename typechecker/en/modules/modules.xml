@@ -456,13 +456,54 @@ public class Import(
         
     </section>
     
+    <section>
+        <title>Identifying versioned modules</title>
+        
+        <para>The command line tools expect the following format for a versioned
+        module name:</para>
+        
+        <programlisting><emphasis>&lt;module&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis></programlisting>
+        
+        <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
+        is the full name of the module, and 
+        <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
+        version identifier. For example:</para>
+        
+        <programlisting>ceylon.lang/1.0.1</programlisting>
+        <programlisting>org.h2/1.2.141</programlisting>
+        
+        <para>The VM front end supports an extended format that identifies a
+        versioned reference to a toplevel declaration:</para>
+        
+        <programlisting><emphasis>&lt;package&gt;</emphasis>.<emphasis>&lt;name&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis></programlisting>
+        
+        <para>where <literal><emphasis>&lt;package&gt;</emphasis></literal> 
+        is the full name of the module, and 
+        <literal><emphasis>&lt;name&gt;</emphasis></literal> is the name of a
+        toplevel method or class. For example:</para>
+        
+        <programlisting>org.hello.main.hello/1.0.1</programlisting>
+        <programlisting>org.hibernate.test.TestSuite/3.0.0.beta</programlisting>
+        
+    </section>
+    
     <section id="vmfrontend">
         <title>The VM front end</title>
         
-        <para>The <literal>ceylon</literal> command accepts the fully
-        qualified name of a runnable module or of a toplevel method or 
-        class with a single formal parameter of type <literal>Process</literal>, 
-        along with the following options:</para>
+        <para>The <literal>ceylon</literal> command accepts either:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>the name of a runnable module with an optional version, or</para>
+        </listitem>
+        <listitem>
+            <para>the fully qualified name of a toplevel method or class with a 
+            single formal parameter of type <literal>Process</literal> with an 
+            optional version,</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>together with the following options:</para>
         
         <itemizedlist>
             <listitem>
@@ -483,7 +524,7 @@ public class Import(
         and <literal>http://modules.ceylon.org</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
-        <programlisting>ceylon org.hibernate.test \
+        <programlisting>ceylon org.hibernate.test/3.0.0.beta \
         -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
                
@@ -521,6 +562,9 @@ public class Import(
             </listitem>
         </itemizedlist>
         
+        <para>If no version identifier is specified for a module, the module 
+        is assumed to exist in a source directory.</para>
+        
         <para>Source code in source archives and source directories is 
         automatically compiled by the module runtime.</para>
                 
@@ -529,12 +573,12 @@ public class Import(
     <section id="compiler">
         <title>The compiler</title>
         
-        <para>The Ceylon compiler is able to compile Ceylon and Java
-        source code and directly produce module and source archives
-        in a module repository.</para>
+        <para>The Ceylon compiler is able to compile Ceylon and Java source 
+        code and directly produce module and source archives in a module 
+        repository.</para>
         
         <para>The <literal>ceylonc</literal> command accepts a list of
-        module names, along with the following options:</para>
+        module names (without versions), along with the following options:</para>
         
         <itemizedlist>
             <listitem>
@@ -646,8 +690,8 @@ public class Import(
             </listitem>
         </itemizedlist>
         
-        <para>If no module version is specified, the tool prints information
-        about all available versions of the module.</para>
+        <para>If no version identifier is specified for a module, the tool 
+        prints information about all available versions of the module.</para>
 
     </section>
         
@@ -658,7 +702,7 @@ public class Import(
         documentation from Ceylon source files.</para>
         
         <para>The <literal>ceylond</literal> command accepts a list of
-        module names, along with the following options:</para>
+        module names with optional versions, along with the following options:</para>
         
         <itemizedlist>
             <listitem>
@@ -685,7 +729,7 @@ public class Import(
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
-        <programlisting>ceylond org.hibernate \
+        <programlisting>ceylond org.hibernate/3.0.0.beta \
         -src ~/projects/hibernate/src \
         -out ~/projects/hibernate/build</programlisting>
         
@@ -709,6 +753,9 @@ public class Import(
             </listitem>
         </itemizedlist>
                 
+        <para>If no version identifier is specified for a module, the module 
+        is assumed to exist in a source directory.</para>
+        
     </section>
     
     <section id="repositoryreplicator">
@@ -725,7 +772,7 @@ public class Import(
         <literal>ftp://modules.ceylon.org</literal>.</para>
         
         <para>The <literal>ceylonr</literal> command accepts a list of 
-        module names, along with the following options:</para>
+        versioned module names, along with the following options:</para>
         
         <itemizedlist>
             <listitem>
@@ -755,10 +802,10 @@ public class Import(
         and <literal>http://modules.ceylon.org</literal>. The default output
         module repository is <literal>modules</literal>.</para>
         
-        <programlisting>ceylonr org.hibernate org.hibernate.test org.hibernate.example \
+        <programlisting>ceylonr org.hibernate/3.0.0.beta org.hibernate.test/3.0.0.beta org.hibernate.example/3.0.0.beta \
         -rep http://jboss.org/ceylon/modules</programlisting>
         
-        <programlisting>ceylonr org.hibernate \
+        <programlisting>ceylonr org.hibernate/3.0.0.beta \
         -rep modules \
         -out ftp://gavin:secret@modules.ceylon.org/hibernate</programlisting>
         
@@ -777,7 +824,7 @@ public class Import(
         especially useful for working with example projects.</para>
         
         <para>The <literal>ceylonf</literal> command accepts a list of
-        module names, along with the following options:</para>
+        versioned module names, along with the following options:</para>
         
         <itemizedlist>
             <listitem>
@@ -798,7 +845,7 @@ public class Import(
         and <literal>http://modules.ceylon.org</literal>. The default output 
         source directory is <literal>source</literal>.</para>
         
-        <programlisting>ceylonf org.hibernate.example \
+        <programlisting>ceylonf org.hibernate.example/3.0.0.beta \
         -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
         
