@@ -469,9 +469,9 @@ else {
             </listitem>
             <listitem>
                 <para>If the condition expression is a local, the local will be treated by the 
-                compiler as having type <literal>X</literal> inside the block that 
-                follows immediately, where the conditional expression is of type 
-                <literal>Optional&lt;X&gt;</literal>.</para>
+                compiler as non-<literal>mutable</literal> and as having type <literal>X</literal> 
+                inside the block that follows immediately, where the conditional expression is of 
+                type <literal>Optional&lt;X&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -492,7 +492,8 @@ else {
             </listitem>
             <listitem>
                 <para>if the condition is a local, the local will be treated by the compiler 
-                as having the specified type inside the block that follows immediately.</para>
+                as non-<literal>mutable</literal> and as having the specified type inside the block 
+                that follows immediately.</para>
             </listitem>
         </itemizedlist>
                         
