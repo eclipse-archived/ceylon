@@ -251,7 +251,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         
         <para>The <literal>Boolean</literal> class represents
         boolean values. Expressions of type <literal>Boolean</literal> support 
-        the binary <literal>||, &amp;&amp;</literal> and <literal>=></literal> 
+        the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
         <programlisting><![CDATA[public class Boolean()

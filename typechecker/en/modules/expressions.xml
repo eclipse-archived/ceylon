@@ -2245,8 +2245,6 @@ setPerson(person);</programlisting>
     <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
     
     <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
-
-    <programlisting>if ( exists name => name == "Gavin" ) { return ... }</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
@@ -2453,14 +2451,6 @@ setPerson(person);</programlisting>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
-            </row>
-            <row>
-                <entry>Logical implication:</entry>
-                <entry>
-                <literal>=></literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
             </row>
             
             <row>
@@ -2985,15 +2975,6 @@ setPerson(person);</programlisting>
             <entry><literal>lhs &amp;&amp; rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>if (lhs) rhs else false</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        <row>
-            <entry><literal>=></literal></entry>
-            <entry><literal>lhs => rhs</literal></entry>
-            <entry>implication</entry>
-            <entry><literal>if (lhs) rhs else true</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
