@@ -398,6 +398,9 @@ public class Import(
             <para>the compiler, <literal>ceylonc</literal>,</para>
         </listitem>
         <listitem>
+            <para>the module info tool, <literal>ceylonp</literal>,</para>
+        </listitem>
+        <listitem>
             <para>the documentation compiler, <literal>ceylond</literal>,</para>
         </listitem>
         <listitem>
@@ -595,6 +598,59 @@ public class Import(
                 
     </section>
     
+    <section id="moduleinfotool">
+        <title>The module info tool</title>
+        
+        <para>The module info tool prints information about the contents of
+        a module archive, its description, its licence, and its dependencies
+        to the console.</para>
+        
+        <para>The <literal>ceylonp</literal> command accepts a list of module 
+        names with optional versions, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories and source directory.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon.org</literal>,
+        and the default source directory is <literal>source</literal>.</para>
+        
+        <programlisting>ceylonp org.hibernate/3.0.0.beta
+        -rep http://jboss.org/ceylon/modules</programlisting>
+        
+        <para>The tool searches for modules in the following locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>module archives in the specified repositories,</para>
+            </listitem>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If no module version is specified, the tool prints information
+        about all available versions of the module.</para>
+
+    </section>
+        
     <section id="documentationcompiler">
         <title>The documentation compiler</title>
         
