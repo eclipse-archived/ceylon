@@ -2178,15 +2178,17 @@ setPerson(person);</programlisting>
         
         <para>Each enumerated element expression type must be assignable to 
         <literal>Object</literal>.</para>
+        
+        <para>The type of an enumeration expression is 
+        <literal>Reference&lt;T[n]&gt;</literal> where <literal>T</literal> is a subtype of 
+        <literal>Object</literal> to which all the enumerated element expression types are 
+        assignable and <literal>n</literal> is the number of element expressions.</para>
                     
-        <para>The value of an enumeration is a new instance of <literal>Sequence</literal>,
-        containing the enumerated elements in the given order. When an enumeration is 
-        executed, each element expression is evaluated, and the resulting values collected 
-        together into an object that implements <literal>Sequence&lt;T,n&gt;</literal> where 
-        <literal>T</literal> is a subtype of <literal>Object</literal> to which all the 
-        enumerated element expression types are assignable and <literal>n</literal> is the
-        number of element expressions. The concrete type of this object  is not specified 
-        here.</para>
+        <para>Evaluation of an reference object for an enumeration produces an instance of 
+        <literal>T[n]</literal> containing the enumerated elements in the given order. When 
+        an enumeration evaluation is executed, each element expression is evaluated, and the 
+        resulting values collected together into an object that implements <literal>T[n]</literal>. 
+        The concrete type of this object  is not specified here.</para>
         
         <programlisting>String[5] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
         
