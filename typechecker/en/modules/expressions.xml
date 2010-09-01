@@ -2768,10 +2768,6 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
         
-        <comment><para>TODO: we could perhaps move the member selection operator <literal>.</literal>
-        down to <literal>Object</literal> from <literal>Void</literal>. Not sure if this would be 
-        advantageous.</para></comment>
-        
         <comment><para>TODO: do we really need the <literal>$</literal> operator?</para></comment>
         
         <!--
