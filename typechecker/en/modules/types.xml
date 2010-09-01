@@ -202,45 +202,46 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         
     </section>
     
-    <section id="referenceableandassignable">
-        <title>Referenceable and assignable values</title>
+    <section id="evaluableandassignable">
+        <title>Evaluable and assignable values</title>
         
-        <para>The class <literal>Referenceable</literal> represents a value
-        for which a reference can be obtained, allowing pass by reference semantics.
-        Instances of <literal>Referenceable&lt;T&gt;</literal> are transparently
-        assignable to <literal>T</literal>, according to the <literal>extension</literal>
-        method <literal>getIt()</literal>.</para>
+        <para>The class <literal>Gettable</literal> represents a reference which may 
+        be evaluated to produce a value, allowing pass by reference and lazy evaluation 
+        semantics. Instances of <literal>Gettable&lt;T&gt;</literal> are transparently 
+        assignable to <literal>T</literal> (evaluation).</para>
         
-        <programlisting><![CDATA[public abstract class Referenceable<out T> 
-        extends Void() {
-        
-    doc "Obtain and return the value."
-    extension T getIt();
-    
+        <programlisting><![CDATA[public abstract class Gettable<out T>()
+        extends Void() {    
     public void intercept( T onGet(T proceed()) )();
-    
 }]]></programlisting>
         
-        <para>Note that <literal>Referenceable</literal> is not a subclass of 
+        <para>Note that <literal>Gettable</literal> is not a subclass of 
         <literal>Object</literal>.</para>
+        
+        <para>The following method allows a <literal>Gettable&lt;T&gt;</literal>
+        to be treated as a <literal>Callable&lt;T&gt;</literal>:</para>
+
+        <programlisting><![CDATA[public T get<T>(Gettable<T> value)() { 
+    return value 
+}]]></programlisting>
     
-        <para>The subtype <literal>Assignable</literal> represents a reference
+        <para>The subtype <literal>Settable</literal> represents a reference
         to an assignable value, allowing pass by reference semantics for assignable
-        values. Expressions of type <literal>Assignable</literal> support the binary
+        values. Expressions of type <literal>Settable</literal> support the binary
         operator <literal>:=</literal> (assign).</para>
         
-        <programlisting><![CDATA[public abstract class Assignable<T>() 
-        extends Referenceable<T>() {
-        
-    doc "Assign the value, returning the new
-         value after assignment. The binary
-         assign operator |:=|."
-    public T setIt(T t);
-    
+        <programlisting><![CDATA[public abstract class Settable<T>()
+        extends Gettable<T>() {
     public void intercept( void onSet(void proceed(T value), T value) )();
-    
 }]]></programlisting>
 
+        <para>The following method allows an <literal>Settable&lt;T&gt;</literal>
+        to be treated as a <literal>Callable&lt;T,T&gt;</literal>:</para>
+
+        <programlisting><![CDATA[public T set<T>(Settable<T> value)(T newValue) { 
+    return value := newValue; 
+}]]></programlisting>
+    
         <comment><para>TODO: should <literal>onSet()</literal> return the new value of
         the attribute instead of being <literal>void</literal>?</para></comment>
 
@@ -516,7 +517,7 @@ catch (Exception e) {
         that produces a theoretically unbounded sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
-    public Reference<X>? head;
+    public Gettable<X>? head;
     public Iterator<X> tail;
 }]]></programlisting>
         
@@ -537,7 +538,7 @@ while (exists local value = iter.head) {
 }]]></programlisting>
         <programlisting><![CDATA[public mutable interface OpenIterator<X> 
         satisfies Iterator<X> {
-    override Assignable<X>? head;
+    override Settable<X>? head;
     public void remove();
 }]]></programlisting></comment>
 
@@ -550,7 +551,7 @@ while (exists local value = iter.head) {
         given I satisfies Ordinal {
     
     public I firstIndex;
-    public Referenceable<X>? indexedValue(I index);
+    public Gettable<X>? indexedValue(I index);
     
 }]]></programlisting>
         <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
@@ -567,7 +568,7 @@ while (exists local value = indexed.indexedValue(i)) {
         <programlisting><![CDATA[public mutable interface OpenIndexed<X, I> 
         satisfies Indexed<X,I>
         given I satisfies Ordinal {
-    override mutable Assignable<X>? indexedValue(I index);
+    override mutable Settable<X>? indexedValue(I index);
     public void removeIndex(I index);
 }]]></programlisting>
 </comment>
@@ -705,7 +706,7 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    public Referenceable<V?> value(U key);
+    public Gettable<V?> value(U key);
     
 }]]></programlisting>
 
@@ -794,7 +795,7 @@ while (exists local value = indexed.indexedValue(i)) {
         satisfies Correspondence<U, V> 
         given U satisfies Object {
     
-    override public Assignable<V?> value(U key);
+    override public Settable<V?> value(U key);
     
 }]]></programlisting>
 
@@ -819,7 +820,7 @@ while (exists local value = indexed.indexedValue(i)) {
     throws (UndefinedKeyException
             -> "if a value can not be defined for the given key")
     public V? define(U key, V value) {
-        Assignable<V?> definition = correspondence[key];
+        Settable<V?> definition = correspondence[key];
         V? result = definition;
         definition := value;
         return result;
@@ -1087,7 +1088,7 @@ public T[] join<T>(T[]... sequences) {
             }
             return result
         }
-        override Referenceable<T?> value(Natural index) {
+        override Gettable<T?> value(Natural index) {
             T? value {
                 mutable Natural i := index;
                 for (T[] s in sequences) {
@@ -1134,7 +1135,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
                 return null
             }
         } 
-        override Referenceable<T?> value(Natural index) {
+        override Gettable<T?> value(Natural index) {
             T? value {
                 if (exists to) {
                     if (index>to) {
@@ -1192,7 +1193,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, n>
         satisfies X[] {
-    public Referenceable<X> value(Bounded<n> index);
+    public Gettable<X> value(Bounded<n> index);
     override Bounded<n>? lastIndex;
 }]]></programlisting>
 
@@ -1242,7 +1243,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
         
         <programlisting><![CDATA[public mutable interface OpenBoundedSequence<X,n>
         satisfies X[n], OpenSequence<X> {
-    public Assignable<X> value(Bounded<n> index);
+    public Settable<X> value(Bounded<n> index);
 }]]></programlisting>
 
         <para>The value <literal>None.none</literal> is transparently
@@ -1257,11 +1258,11 @@ class SequenceEntryIterable<X>(X[n] sequence)
     public extension 
     class EmptySequence<out X>() satisfies X[0] {
         override Natural? lastIndex = null;
-        override Referenceable<X?> value(Natural index) {
+        override Gettable<X?> value(Natural index) {
             X? nullValue = null;
             return nullValue 
         }
-        override Referenceable<X> value(Bounded<0> index) {
+        override Gettable<X> value(Bounded<0> index) {
             throw Exception()
         }
     }
@@ -1416,6 +1417,7 @@ class String(Character[] characters)
         this stuff? Does the JVM do all kinds of optimizations for 
         <literal>java.String</literal>?</para></comment>
         
+        <!--
         <para>A string template is represented by an instance of <literal>StringTemplate</literal>.</para>
         
         <programlisting>public class StringTemplate(...) {
@@ -1426,6 +1428,7 @@ class String(Character[] characters)
     public extension String interpolate() { return ... }
 
 }</programlisting>
+        -->
         
     </section>
     
@@ -1779,11 +1782,11 @@ class String(Character[] characters)
         return BooleanBit(!boolean)
     }
     
-    override Referenceable<Boolean> value(Bounded<1> index) {
+    override Gettable<Boolean> value(Bounded<1> index) {
         return boolean
     }
     
-    override Referenceable<Boolean?> value(Natural key) {
+    override Gettable<Boolean?> value(Natural key) {
         Boolean? result;
         if (key==0) {
             result = boolean 
@@ -1912,7 +1915,7 @@ class String(Character[] characters)
         <para>An <literal>Attribute</literal> represents an attribute declaration.</para>
 
         <programlisting><![CDATA[public interface Attribute<in X, T> 
-        satisfies Member<X, Referenceable<T>> {
+        satisfies Member<X, Gettable<T>> {
         
     public Boolean mutable;
     
@@ -1923,7 +1926,7 @@ class String(Character[] characters)
 
         <programlisting><![CDATA[public interface MutableAttribute<in X, T> 
         extends Attribute<X, T>
-        satisfies Member<X, Assignable<T>> {  //this is OK since Member is covariant in T
+        satisfies Member<X, Settable<T>> {  //this is OK since Member is covariant in T
         
     public void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
                     given S abstracts X;
@@ -2061,7 +2064,7 @@ class String(Character[] characters)
      is executed only when assertions are enabled. If
      the block evaluates to false, throw an 
      |AssertionException| with the given message."
-public void assert(StringTemplate message, Boolean that()) {
+public void assert(Gettable<String> message, Boolean that()) {
     if ( assertionsEnabled() && !that() ) {
         throw AssertionException(message)
     }

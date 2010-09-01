@@ -260,9 +260,13 @@
                 <literal>X</literal> is assignable to <literal>Z</literal>.</para>
             </listitem>
             <listitem>
-                <para>Nullsafety: the type <literal>ceylon.lang.Optional</literal> is 
-                not assignable to <literal>ceylon.lang.Object</literal>. Nor is its subtype
-                <literal>ceylon.lang.Nothing</literal>.</para>
+                <para>Lazy evaluation: the type <literal>Gettable&lt;T&gt;</literal> is 
+                assignable to <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Nullsafety: the type <literal>Optional&lt;T&gt;</literal> is 
+                not assignable to <literal>Object</literal>. Nor is its subtype
+                <literal>Nothing</literal>.</para>
             </listitem>
         </itemizedlist>
         

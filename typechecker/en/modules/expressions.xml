@@ -71,11 +71,6 @@
     enumerations.</para>
     </comment>
     
-    <comment><para>TODO: Should we define that <emphasis>every</emphasis> 
-    expression is of type <literal>Reference&lt;T&gt;</literal> instead of
-    <literal>T</literal>, in order to support lazy evaluation like in a
-    functional language?</para></comment>
-    
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
         
@@ -136,7 +131,7 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         <listitem>
             <para>The compiler is permitted to emit bytecode that unexpectedly creates or avoids 
             creating an actual instance of the erasable type <literal>ceylon.lang.Optional</literal>, 
-            of <literal>ceylon.lang.Referenceable</literal>, or of <literal>ceylon.lang.Assignable</literal>,
+            of <literal>ceylon.lang.Gettable</literal>, or of <literal>ceylon.lang.Settable</literal>,
             when an expression is evaluated, as long as this does not affect the execution of 
             the program. (Therefore, the <literal>===</literal> operator is undefined for these 
             types.)</para>
@@ -395,7 +390,8 @@ if you prefer.";</programlisting>
         
         <programlisting>StringTemplate := StringLiteral (Expression? StringLiteral)+</programlisting>
         
-        <para>A character string template is an expression of type <literal>StringTemplate</literal>.</para>
+        <para>A character string template is an expression of type 
+        <literal>Gettable&lt;String&gt;</literal>.</para>
         
         <!--
         <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
@@ -422,9 +418,9 @@ if you prefer.";</programlisting>
         <para>An interpolated expression in a string template may not refer to 
         <literal>mutable</literal> locals from the containing scope.</para>
         
-        <para>Interpolated expressions are evaluated when the <literal>interpolate()</literal>
-        method of <literal>StringTemplate</literal> is called to produce a constant 
-        character string.</para>
+        <para>Interpolated expressions are evaluated when the
+        <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a 
+        constant character string.</para>
 
     </section>
     
@@ -870,14 +866,13 @@ sort(names, reverseAlpha);</programlisting>
         
         <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
-        <para>This code instantiates the class, passing references to the <literal>getIt()</literal> 
-        and <literal>setIt()</literal> methods of the <literal>Assignable</literal> for 
-        the attribute <literal>person.name</literal>:</para>
+        <para>This code instantiates the class, passing references to methods which set and
+        get the attribute <literal>person.name</literal>:</para>
         
         <programlisting>TextInput it = TextInput { 
     size=15; 
-    onInit = person.name.getIt;
-    onUpdate = person.name.setIt;
+    onInit = set(person.name);
+    onUpdate = get(person.name);
 }</programlisting>
         
         </section>
@@ -953,7 +948,7 @@ local comp = order(1,-1);</programlisting>
         the attribute or local.</para>
         
         <para>A value reference expression is assignable to
-        <literal>Referenceable&lt;T&gt;</literal> or <literal>Assignable&lt;T&gt;</literal>
+        <literal>Gettable&lt;T&gt;</literal> or <literal>Settable&lt;T&gt;</literal>
         were <literal>T</literal> is the type of the attribute or local.</para>
         
         <section id="attributeandlocalreferences">
@@ -972,41 +967,33 @@ local comp = order(1,-1);</programlisting>
         <itemizedlist>
             <listitem>
                 <para><literal>X</literal>, if <literal>X</literal> is assignable
-                to <literal>Referenceable&lt;Object&gt;</literal>, or, otherwise,</para>
+                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
             </listitem>
             <listitem>
-                <para><literal>Referenceable&lt;X&gt;</literal>, if the attribute, 
+                <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, 
                 local, or formal parameter is not <literal>mutable</literal>, or if 
                 the setter is not visible to the block containing the attribute or 
                 local reference, or</para>
             </listitem>
             <listitem>
-                <para><literal>Assignable&lt;X&gt;</literal>, if the attribute, local, 
+                <para><literal>Settable&lt;X&gt;</literal>, if the attribute, local, 
                 or formal parameter is <literal>mutable</literal> and the setter, if 
                 any, is visible to the block containing the attribute or local 
                 reference.</para>
             </listitem>
         </itemizedlist>
-                    
-        <comment><para>TODO: an alternative solution to the "recursion" problem would
-        be to require an explicit call to <literal>reference</literal> defined by an
-        intermediate interface to obtain the <literal>Referenceable</literal> instead 
-        of making it an extension, perhaps hiding the call behind a <literal>&amp;</literal>
-        operator. That would allow us to pass references to references. Yet another
-        alternative is let the method of an extended type "underride" the method of
-        the introduced type.</para></comment>
         
         </section>
         
         <section id="passbyreference">
             <title>Pass by reference</title>
             
-        <para>An expression of type <literal>Referenceable</literal> or <literal>Assignable</literal> 
+        <para>An expression of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may be assigned to an attribute or local, passed as an argument to a method or initializer, 
         or returned by a method. If the attribute, local, or formal parameter to which the 
-        expression is assigned is of declared type <literal>Referenceable</literal> or 
-        <literal>Assignable</literal>, or if the method which returns the expression is of declared  
-        type <literal>Referenceable</literal> or <literal>Assignable</literal>, this is called 
+        expression is assigned is of declared type <literal>Gettable</literal> or 
+        <literal>Settable</literal>, or if the method which returns the expression is of declared  
+        type <literal>Gettable</literal> or <literal>Settable</literal>, this is called 
         <emphasis>pass by reference</emphasis>, since it does not result in immediate evaluation of 
         the referenced value. Instead, the attribute, local, or formal parameter holds a 
         <emphasis>reference</emphasis> to the value of some other attribute, local, or formal 
@@ -1014,20 +1001,20 @@ local comp = order(1,-1);</programlisting>
         
         <para>This local holds a reference:</para>
         
-        <programlisting>Referenceable&lt;String&gt; nameRef = person.name;</programlisting>
+        <programlisting>Gettable&lt;String&gt; nameRef = person.name;</programlisting>
         
         <para>This method returns a reference:</para>
         
-        <programlisting>Assignable&lt;String&gt; getName(Person p) { return p.name }</programlisting>
+        <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name }</programlisting>
         
         <para>This class has an initialization parameter which accepts a reference:</para>
         
-        <programlisting>class Input(Assignable&lt;String&gt; model) { ... }</programlisting>
+        <programlisting>class Input(Settable&lt;String&gt; model) { ... }</programlisting>
         
-        <para>An attribute or local of type <literal>Referenceable</literal> or <literal>Assignable</literal> 
+        <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be declared <literal>mutable</literal>.</para>
         
-        <para>The <literal>Referenceable</literal> object representing a <literal>mutable</literal> 
+        <para>The <literal>Gettable</literal> object representing a <literal>mutable</literal> 
         local may not be assigned to an attribute, passed as a method argument, passed to
         a control directive, enumerated as the value of a sequence enumeration, or referred 
         to by a nested method or class. It may be assigned to a local, or invoked directly 
@@ -1039,8 +1026,8 @@ local comp = order(1,-1);</programlisting>
         
     </section>
 
-    <section id="invocation">
-        <title>Invocation</title>
+    <section id="invocationexpressions">
+        <title>Invocation expressions</title>
         
         <para>A callable object&mdash;any instance of <literal>Callable</literal>&mdash;is 
         <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
@@ -1050,10 +1037,10 @@ local comp = order(1,-1);</programlisting>
         <programlisting>Invocation := Primary Arguments</programlisting>
             
         <para>Any invocation expression where the invoked expression is a callable reference 
-        expression is called a <emphasis>direct invocation</emphasis> of the method, callable
-        parameter, or class. In the case of a direct invocation, the compiler has additional 
-        information about the schema of the method or class that is not reified by the 
-        <literal>Callable</literal> interface. The compiler is aware of:</para>
+        expression is called a <emphasis>direct invocation expression</emphasis> of the 
+        method, callable parameter, or class. In the case of a direct invocation expression, 
+        the compiler has additional information about the schema of the method or class that 
+        is not reified by the <literal>Callable</literal> interface. The compiler is aware of:</para>
         
         <itemizedlist>
             <listitem>
@@ -1074,21 +1061,21 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>(Furthermore, in the case of a direct invocation, type argument inference is 
-        possible, since the compiler is aware of the type parameters and constraints of
-        the method or class.)</para>
+        <para>(Furthermore, in the case of a direct invocation expression, type argument 
+        inference is possible, since the compiler is aware of the type parameters and 
+        constraints of the method or class.)</para>
                 
-        <para>An invocation must specify arguments for parameters of the callable object, 
-        either by listing parameter values in order or, in the case of a direct invocation, 
-        listing named parameter values.</para>
+        <para>An invocation expression must specify arguments for parameters of the callable 
+        object, either by listing parameter values in order or, in the case of a direct 
+        invocation, listing named parameter values.</para>
         
         <programlisting>Arguments := PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
-        <para>Arguments to required parameters must be specified. If the invocation is a 
-        direct invocation, arguments to defaulted parameters may optionally be specified, 
-        and one or more arguments to a varargs parameter may optionally be specified. 
-        Otherwise, an argument must be specified for each defaulted parameter, and a 
-        single argument must be specified for the varargs parameter.</para>
+        <para>Arguments to required parameters must be specified. If the invocation 
+        expression is a direct invocation expression, arguments to defaulted parameters may 
+        optionally be specified, and one or more arguments to a varargs parameter may 
+        optionally be specified. Otherwise, an argument must be specified for each defaulted 
+        parameter, and a single argument must be specified for the varargs parameter.</para>
         
         <para>For a required or defaulted formal parameter of type <literal>T</literal>, 
         the type of the corresponding argument expression must be assignable to 
@@ -1107,68 +1094,45 @@ local comp = order(1,-1);</programlisting>
                 <literal>T[]</literal>, or</para>
             </listitem>
             <listitem>
-                <para>in the case of a direct invocation, an arbitrary number of argument 
-                expressions of type assignable to <literal>T</literal>.</para>
+                <para>in the case of a direct invocation expression, an arbitrary number of 
+                argument expressions of type assignable to <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
          
-        <para>In the second case, the argument expressions are evaluated and collected into an 
-        instance of <literal>T[]</literal> when the invocation is executed.</para>
+        <para>In the second case, the argument expressions are evaluated and collected into 
+        an instance of <literal>T[]</literal> when the invocation is executed.</para>
         
-        <para>When a invocation expression of a callable reference is executed:</para>
-        
+        <para>The type of an invocation expression is:</para> 
+                        
         <itemizedlist>
             <listitem>
-                <para>first, the invoked expression is executed to obtain the callable 
-                object, then</para>
+                <para><literal>R</literal>, if <literal>R</literal> is assignable
+                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
             </listitem>
             <listitem>
-                <para>each argument is evaluated in turn in the calling context, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual member to be invoked is determined by considering the runtime
-                type of the receiving instance and the static types of the arguments, and then</para>
-            </listitem>
-            <listitem>
-                <para>execution of the calling context pauses while the body of the method or 
-                initializer is executed by the receiving instance with the argument values, 
-                then</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the method or initializer ends without a thrown 
-                exception, execution of the calling context resumes.</para>
+                <para><literal>Gettable&lt;R&gt;</literal></para>
             </listitem>
         </itemizedlist>
         
-        <para>When an invocation expression of any other invoked expression is executed, the 
-        <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para>
+        <para>where <literal>R</literal> is the type argument to the first type parameter 
+        of the expression type <literal>Callable</literal> (the return type).</para>
         
-        <para>The type of an invocation expression is the type argument to the first type parameter
-        of the expression type <literal>Callable</literal> (the return type). Thus, the type of a 
-        method invocation is the return type of the method and the type of a class instantation is 
-        the class. The type of a <literal>void</literal> method invocation is <literal>Void</literal>.</para>
-                        
         <section id="methodinvocation">
             <title>Method invocation</title>
             
-            <para>A method invocation evaluates to the return value of the method, as specified 
-            by the <literal>return</literal> directive. The argument values are passed to the 
-            formal parameters of the method, and the body of the method is executed.</para>
-            
-            <para>The actual value that invocation of a <literal>void</literal> method returns
-            is not specified here. However, the <literal>is T</literal> operator always evaluates
-            to <literal>false</literal> for any type <literal>T</literal> other than 
-            <literal>Void</literal> when applied to the return value of an invocation of a 
-            <literal>void</literal> method.</para>
+            <para>For a method invocation, the invocation expression is of type
+            <literal>Gettable&lt;R&gt;</literal> where <literal>R</literal> is the return 
+            type of the method. The type of a <literal>void</literal> method invocation 
+            expression is <literal>Gettable&lt;Void&gt;</literal>.</para>
             
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
             <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
-            <programlisting>set person.name("Gavin")</programlisting>
-            <programlisting>get process.args()</programlisting>
+            <programlisting>set(person.name)("Gavin")</programlisting>
+            <programlisting>get(process.args)()</programlisting>
             
-            <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y );</programlisting>
+            <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y )</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
             
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
@@ -1186,14 +1150,14 @@ local comp = order(1,-1);</programlisting>
             <title>Class instantiation</title>
             
             <para>Invocation of a constructor reference is called <emphasis>instantiation</emphasis> 
-            of the type. A class instantiation evaluates to a new instance of the class. The argument 
-            values are passed to the initialization parameters of the class, and the initializer
-            is executed.</para>
-                        
-            <programlisting>Map&lt;String, Person&gt;(entries)</programlisting>
+            of the class. For a class instantation, the invocation expression is of type
+            <literal>Gettable&lt;T&gt;</literal> where <literal>T</literal> is the 
+            class.</para>
+            
+            <programlisting>HashMap&lt;String, Person&gt;(entries)</programlisting>
             <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
             <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
-            <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
+            <programlisting>input.Tokens()</programlisting>
             
             <programlisting>Panel {
     label = "Hello";
@@ -1515,7 +1479,7 @@ local comp = order(1,-1);</programlisting>
         <comment><para>TODO: should we introduce the ability to declare functional parameters
         outside the parentheses in method and class definitions, in order to better respect the 
         intended invocation syntax, for example:</para>
-        <programlisting>public void assert(StringTemplate message) Boolean that { ... }</programlisting>
+        <programlisting>public void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
         <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
         <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
         </comment>
@@ -1700,31 +1664,31 @@ except (SomethingElseWrong sew) {
                 member of the receiving type at compile time, even if the method or class 
                 it refers to is overloaded.</para>
                 
-        <para>The <emphasis>initial signature</emphasis> of a method or class in a direct
-        invocation is formed by:</para>
+                <para>The <emphasis>initial signature</emphasis> of a method or class in a direct
+                invocation is formed by:</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>taking the signature of the formal parameter list of the member class, 
-                or of the first formal parameter list of the method, and</para>
-            </listitem>
+                <itemizedlist>
+                    <listitem>
+                        <para>taking the signature of the formal parameter list of the member class, 
+                        or of the first formal parameter list of the method, and</para>
+                    </listitem>
             <!--listitem>
                 <para>replacing each occurrence of any type alias in the signature with the
                 aliased type, and</para>
             </listitem-->
-            <listitem>
-                <para>replacing each occurrence of any type parameter of the receiving type
-                in the signature with the type argument of that parameter in the callable 
-                object expression type, and</para>
-            </listitem>
-            <listitem>
-                <para>replacing each occurrence of any type parameter of the method or class 
-                in the signature with the explicitly specified type argument, if type arguments 
-                were specified, or with the first declared upper bound of the type parameter, 
-                or <literal>ceylon.lang.Void</literal> if the type parameter has no declared 
-                upper bound.</para>
-            </listitem>
-        </itemizedlist>
+                    <listitem>
+                        <para>replacing each occurrence of any type parameter of the receiving type
+                        in the signature with the type argument of that parameter in the callable 
+                        object expression type, and</para>
+                    </listitem>
+                    <listitem>
+                        <para>replacing each occurrence of any type parameter of the method or class 
+                        in the signature with the explicitly specified type argument, if type arguments 
+                        were specified, or with the first declared upper bound of the type parameter, 
+                        or <literal>ceylon.lang.Void</literal> if the type parameter has no declared 
+                        upper bound.</para>
+                    </listitem>
+                </itemizedlist>
         
                 <para>A direct invocation is <emphasis>resolveable</emphasis> if there is 
                 exactly one method, callable parameter, or class declaration which:</para>
@@ -1967,73 +1931,54 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     </section-->
     
     <section id="evaluationandassignment">
-        <title>Evaluation and assignment</title>
+        <title>Evaluation, invocation, and assignment</title>
         
-        <para>A reference object&mdash;any instance of <literal>Referenceable</literal>&mdash;can 
-        be <emphasis>evaluated</emphasis> to produce a value. If the reference object is of type 
-        <literal>Assignable</literal>, its value may also be <emphasis>assigned</emphasis>. It is 
-        not necessary to explicitly invoke the reference object to evaluate or assign the 
-        referenced value. Instead:</para>
+        <para>A reference object&mdash;any instance of <literal>Gettable</literal>&mdash;can 
+        be <emphasis>evaluated</emphasis> to produce a value. Evaluation is the process of
+        transforming a reference of type <literal>Gettable&lt;T&gt;</literal> into a value of
+        type <literal>T</literal>.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>the <literal>getIt()</literal> method of <literal>Referenceable</literal> 
-                is an <literal>extension</literal>, and transparently produces the current 
-                value of a referenced value without any explicit invocation, and</para>
-            </listitem>
-            <listitem>
-                <para>the <literal>:=</literal> operator is defined to apply directly to
-                argument expressions of type <literal>Assignable</literal>, hiding the
-                underlying invocation of the <literal>setIt()</literal> method.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Thus, the following are equivalent:</para>
-        
-        <programlisting>String name = person.name.getIt();   //discouraged</programlisting>
-        <programlisting>String name = person.name;           //preferred</programlisting>
-        
-        <para>As are the following:</para>
-        
-        <programlisting>person.name.setIt("Gavin");   //discouraged</programlisting>        
-        <programlisting>person.name := "Gavin";       //preferred</programlisting>
-        
-        <para>Furthermore, the argument specification operators cannot be applied directly 
-        to a value reference, and so a value reference is not a callable reference. However, 
-        it is possible to obtain a callable reference to:</para>
+        <para>Evaluation occurs automatically wherever an expression of type 
+        <literal>Gettable&lt;T&gt;</literal>:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the <literal>getIt()</literal> method of <literal>Referenceable</literal>,
-                or</para>
+                <para>is used as the argument of an invocation or operator that expects a value of 
+                type <literal>T</literal>, or</para>
             </listitem>
             <listitem>
-                <para>the <literal>setIt()</literal> method of <literal>Assignable</literal>.</para>
+                <para>occurs as an expression statement.</para>
             </listitem>
         </itemizedlist>
+                
+        <programlisting>Natural age = person.age;</programlisting>
+        <programlisting>person.say("Hello!");</programlisting>
+        <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
         
-        <para>These methods, conceptually, do the work of evaluating or assigning a value 
-        reference.</para>
-        
+        <para>If a reference object is of type <literal>Settable</literal>, its value may also 
+        be <emphasis>assigned</emphasis>. Assignment is performed using the <literal>:=</literal> 
+        operator.</para>
+         
+        <programlisting>person.name := "Gavin";</programlisting>
+                
     <section id="evaluation">
         <title>Evaluation</title>
         
-        <para>Invocation of the <literal>getIt()</literal> method of an attribute reference
-        or local reference evaluates the attribute or local. The <literal>getIt()</literal> 
-        method is declared <literal>extension</literal>, so it does not need to be called 
-        explicitly.</para>
+        <para>Evaluation of an attribute reference or local reference produces the current value 
+        of the attribute or local.</para> 
         
         <programlisting>String name = person.name;</programlisting>
         
         <para>Sometimes we need to pass an attribute by reference:</para>
         
-        <programlisting>Referenceable&lt;String&gt; nameRef = person.name;
+        <programlisting>Gettable&lt;String&gt; nameRef = person.name;
 String name = nameRef;</programlisting>
         
         <para>Sometimes we need to transform an attribute reference into a method 
-        reference:</para>
+        reference. The toplevel method <literal>lang.get()</literal> is provided 
+        for this purpose:</para>
         
-        <programlisting>String getName() = person.name.getIt;
+        <programlisting>String getName() = get(person.name);
 String name = getName();</programlisting>
                         
         <para>When a local evaluation is executed, the current value of the local is 
@@ -2069,51 +2014,116 @@ String name = getName();</programlisting>
         directive.</para>
 
         <para>Note that the <literal>value()</literal> method of <literal>Correspondence</literal>
-        is also defined to return a <literal>Referenceable</literal>.</para>
+        is also defined to return a <literal>Gettable</literal>.</para>
         
         <programlisting>Person? person = people[index];</programlisting>
         
         <para>Therefore an element expression can be passed by reference:</para>
         
-        <programlisting>Referenceable&lt;Person?&gt; personRef = person[index];
+        <programlisting>Gettable&lt;Person?&gt; personRef = person[index];
 Person? person = person;</programlisting>
         
         <para>And an element expression can be transformed into method reference:</para>
         
-        <programlisting>Person? getPerson() = people[index].getIt;
+        <programlisting>Person? getPerson() = get(people[index]);
 Person? person = getPerson();</programlisting>
         
+    </section>
+    
+    <section id="invocation">
+        <title>Invocation</title>
+        
+        <para>Evaluation of an invocation expression of a callable reference invokes the 
+        underlying callable reference. This is called <emphasis>invocation</emphasis> in
+        the case of a method reference, and <emphasis>instantiation</emphasis> in the case
+        of a constructor reference.</para>
+        
+        <programlisting>log.info("Hello world!");</programlisting>
+        <programlisting>Map&lt;String, Person&gt; map = HashMap&lt;String, Person&gt;(entries);</programlisting>
+        
+        <para>Sometimes we need to perform an invocation lazily:</para>
+        
+        <programlisting>Gettable&lt;Void&gt; logInfoHello = log.info("Hello world!");
+void invoke(Void v) {}
+invoke(logInfoHello);</programlisting>
+
+        <programlisting>Gettable&lt;Map&lt;String, Person&gt;&gt; createMapFromEntries = HashMap&lt;String, Person&gt;(entries);
+Map&lt;String, Person&gt; map = logInfoHello;</programlisting>
+        
+        <para>When an evaluation of an invocation expression of a callable reference is 
+        executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>first, the invoked expression is executed to obtain the callable 
+                object, then</para>
+            </listitem>
+            <listitem>
+                <para>each argument is evaluated in turn in the calling context, then</para>
+            </listitem>
+            <listitem>
+                <para>the actual member to be invoked is determined by considering the runtime
+                type of the receiving instance and the static types of the arguments, and then</para>
+            </listitem>
+            <listitem>
+                <para>execution of the calling context pauses while the body of the method or 
+                initializer is executed by the receiving instance with the argument values, 
+                then</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the method or initializer ends without a thrown 
+                exception, execution of the calling context resumes.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>When an evaluation of any other invocation expression is executed, the 
+        <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para>
+        
+        <para>A method invocation evaluates to the return value of the method, as specified 
+        by the <literal>return</literal> directive. The argument values are passed to the 
+        formal parameters of the method, and the body of the method is executed.</para>
+            
+        <para>The actual value that invocation of a <literal>void</literal> method returns
+        is not specified here. However, the <literal>is T</literal> operator always evaluates
+        to <literal>false</literal> for any type <literal>T</literal> other than 
+        <literal>Void</literal> when applied to the return value of an invocation of a 
+        <literal>void</literal> method.</para>
+            
+        <para>A class instantiation evaluates to a new instance of the class. The argument 
+        values are passed to the initialization parameters of the class, and the initializer
+        is executed.</para>
+             
     </section>
     
     <section id="assignment">
         <title>Assignment</title>
             
-        <para>Invocation of the <literal>setIt()</literal> method of an attribute reference
-        of type <literal>Assignable</literal> assigns of the attribute or local. We usually 
-        use an assignment operator instead of invoking <literal>setIt()</literal> directly.</para>
+        <para>The assignment operator <literal>:=</literal> assigns a new value to an 
+        attribute reference for a mutable attribute or local.</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
         <para>Sometimes we need to pass a mutable attribute by reference:</para>
         
-        <programlisting>Assignable&lt;String&gt; nameRef = person.name;
+        <programlisting>Settable&lt;String&gt; nameRef = person.name;
 nameRef := "Gavin";</programlisting>
 
         <para>Sometimes we need to transform a mutable attribute reference into a method 
-        reference:</para>
+        reference. The toplevel method <literal>lang.set()</literal> is provided 
+        for this purpose:</para>
         
-        <programlisting>String setName(String name) = person.name.setIt;
+        <programlisting>String setName(String name) = set(person.name);
 setName("Gavin");</programlisting>
 
         <para>Even the following are possible:</para>
         
-        <programlisting>Assignable&lt;String&gt; getName(Person p) { return p.name }
+        <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name }
 getName(p) := "Gavin";</programlisting>
 
-        <programlisting>setName(Assignable&lt;String&gt; name, String value) { name:=value; }
+        <programlisting>setName(Settable&lt;String&gt; name, String value) { name:=value; }
 setName(p.name, "Gavin");</programlisting>
         
-        <para>When an attribute value is assigned:</para>
+        <para>When an attribute or local is assigned:</para>
         
         <itemizedlist>
             <listitem>
@@ -2140,19 +2150,19 @@ setName(p.name, "Gavin");</programlisting>
         </itemizedlist>
         
         <para>Note that the <literal>value()</literal> method of <literal>OpenCorrespondence</literal>
-        is also defined to return an <literal>Assignable</literal>.</para>
+        is also defined to return an <literal>Settable</literal>.</para>
         
         <programlisting>people[index] := person;</programlisting>
         
         <para>Therefore an assignable element expression can be passed by reference:</para>
         
-        <programlisting>Assignable&lt;Person?&gt; personRef = people[index];
+        <programlisting>Settable&lt;Person?&gt; personRef = people[index];
 personRef := person;</programlisting>
         
         <para>And an assignable element expression can be transformed into method 
         reference:</para>
         
-        <programlisting>Person? setPerson(Person? p) = people[index].setIt;
+        <programlisting>Person? setPerson(Person? p) = set(people[index]);
 setPerson(person);</programlisting>
         
     </section>
@@ -2262,13 +2272,31 @@ setPerson(person);</programlisting>
     
     <programlisting>order.lineItems[index] := LineItem { product = prod; quantity = 1; };</programlisting>
     
-    <para>In all operator expressions, the arguments of the operator
-    must be evaluated from left to right when the expression is executed. In
-    certain cases, depending upon the definition of the operator, evaluation 
-    of the leftmost argument expression results in a value that causes the final
-    value of the operator expression to be produced immediately without evaluation
-    of the remaining argument expressions. Optimizations performed by the
-    Ceylon compiler must not alter these behaviours.</para>
+    <para>In all operator expressions, the arguments of the operator must be 
+    evaluated from left to right when the expression is executed. In certain cases, 
+    depending upon the definition of the operator, evaluation of the leftmost 
+    argument expression results in a value that causes the final value of the 
+    operator expression to be produced immediately without evaluation of the 
+    remaining argument expressions. Optimizations performed by the Ceylon compiler 
+    must not alter these behaviours.</para>
+    
+    <section id="operatorexpressions">
+        <title>Operator expressions</title>
+        
+        <para>The type of an operator expression for an operator that is defined to
+        produce the type <literal>T</literal> is:</para> 
+                        
+        <itemizedlist>
+            <listitem>
+                <para><literal>T</literal>, if <literal>T</literal> is assignable
+                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
+            </listitem>
+            <listitem>
+                <para><literal>Gettable&lt;T&gt;</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+    </section>
     
     <section id="operatorprecedence">
         <title>Operator precedence</title>
@@ -2512,6 +2540,12 @@ setPerson(person);</programlisting>
             argument list of an invocation,</para>
         </listitem>
         <listitem>
+            <para>the <emphasis>assignment</emphasis> operator
+            <literal>:=</literal> assigns a new value to an instance of
+            <literal>Settable</literal> and returns the new value after 
+            assignment,</para>
+        </listitem>
+        <listitem>
             <para>the <emphasis>identity</emphasis> operator
             <literal>===</literal> evaluates to <literal>true</literal> if 
             its argument expressions evaluate to references to the same 
@@ -2650,7 +2684,7 @@ setPerson(person);</programlisting>
             <entry></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Member&lt;X,T&gt;</literal></entry>
-            <entry><literal>Referenceable&lt;T&gt;</literal> or
+            <entry><literal>Gettable&lt;T&gt;</literal> or
             <literal>T</literal></entry>
         </row>
         
@@ -2662,7 +2696,8 @@ setPerson(person);</programlisting>
             <entry></entry>
             <entry><literal>Callable&lt;T,P...&gt;</literal></entry>
             <entry><literal>P...</literal></entry>
-            <entry><literal>T</literal></entry>
+            <entry><literal>Gettable&lt;T&gt;</literal> or
+            <literal>T</literal></entry>
         </row>
         
         <!--
@@ -2674,7 +2709,7 @@ setPerson(person);</programlisting>
             <entry>rhs.reference</entry>
             <entry></entry>
             <entry></entry>
-            <entry><literal>Referenceable&lt;X,V&gt;</literal></entry>
+            <entry><literal>Gettable&lt;X,V&gt;</literal></entry>
             <entry><literal>Value&lt;X&gt;</literal>
             or <literal>MutableValue&lt;X&gt;</literal></entry>
         </row>
@@ -2686,8 +2721,8 @@ setPerson(person);</programlisting>
             <entry><literal>:=</literal></entry>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
-            <entry><literal>lhs.setIt(rhs)</literal></entry>
-            <entry><literal>Assignable&lt;X&gt;</literal></entry>
+            <entry><literal></literal></entry>
+            <entry><literal>Settable&lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
@@ -2732,9 +2767,8 @@ setPerson(person);</programlisting>
     </table>
         
         <comment><para>TODO: we could perhaps move the member selection operator <literal>.</literal>
-        down to <literal>Object</literal> from <literal>Void</literal> if we somehow turned
-        <literal>getIt()</literal> and <literal>setIt()</literal> into basic operators. Not
-        sure if this would be advantageous.</para></comment>
+        down to <literal>Object</literal> from <literal>Void</literal>. Not sure if this would be 
+        advantageous.</para></comment>
         
         <comment><para>TODO: do we really need the <literal>$</literal> operator?</para></comment>
         
@@ -2987,7 +3021,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
             <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
-            <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
+            <entry><literal>Settable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2997,7 +3031,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
-            <entry><literal>Assignable&lt;Boolean&gt;</literal></entry>
+            <entry><literal>Settable&lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3076,7 +3110,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
             <entry><literal>if (exists lhs) lhs else lhs:=rhs</literal></entry>
-            <entry><literal>Assignable&lt;T?&gt;</literal></entry>
+            <entry><literal>Settable&lt;T?&gt;</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
@@ -3148,7 +3182,16 @@ setPerson(person);</programlisting>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Y?</literal></entry>
+            <entry><literal>Gettable&lt;Y?&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[]</literal></entry>
+            <entry><literal>lhs[index]</literal></entry>
+            <entry>lookup</entry>
+            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>OpenCorrespondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Settable&lt;Y?&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
@@ -3157,7 +3200,16 @@ setPerson(person);</programlisting>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Y[n]</literal></entry>
             <entry><literal>Bound&lt;n&gt;</literal></entry>
-            <entry><literal>Y</literal></entry>
+            <entry><literal>Gettable&lt;Y&gt;</literal></entry>
+        </row>
+        <row>
+            <entry><literal>[]</literal></entry>
+            <entry><literal>lhs[index]</literal></entry>
+            <entry>bounded lookup</entry>
+            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>OpenBoundedSequence&lt;Y,n&gt;</literal></entry>
+            <entry><literal>Bound&lt;n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>?[]</literal></entry>
@@ -3502,7 +3554,7 @@ setPerson(person);</programlisting>
             <entry>successor</entry>
             <entry><literal>rhs:=rhs.successor</literal></entry>
             <entry></entry>
-            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         <row>
@@ -3511,7 +3563,7 @@ setPerson(person);</programlisting>
             <entry>predecessor</entry>
             <entry><literal>rhs:=rhs.predecessor</literal></entry>
             <entry></entry>
-            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -3522,7 +3574,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
             <entry><literal>(++lhs).predecessor</literal></entry>
-            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -3531,7 +3583,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
             <entry><literal>(--lhs).successor</literal></entry>
-            <entry><literal>Assignable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -3614,7 +3666,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
             <entry><literal>lhs:=lhs+rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3623,7 +3675,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
             <entry><literal>lhs:=lhs-rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3632,7 +3684,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
             <entry><literal>lhs:=lhs*rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3641,7 +3693,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
             <entry><literal>lhs:=lhs/rhs</literal></entry>
-            <entry><literal>Assignable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3650,7 +3702,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
             <entry><literal>lhs:=lhs%rhs</literal></entry>
-            <entry><literal>Assignable&lt;Integral&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Integral&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3811,7 +3863,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Assignable&lt;Bits&lt;n&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bits&lt;n&gt;&gt;</literal></entry>
             <entry><literal>Bits&lt;n&gt;</literal></entry>
             <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
@@ -3820,7 +3872,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Assignable&lt;Bits&lt;n&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bits&lt;n&gt;&gt;</literal></entry>
             <entry><literal>Bits&lt;n&gt;</literal></entry>
             <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
@@ -3829,7 +3881,7 @@ setPerson(person);</programlisting>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Assignable&lt;Bits&lt;n&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bits&lt;n&gt;&gt;</literal></entry>
             <entry><literal>Bits&lt;n&gt;</literal></entry>
             <entry><literal>Bits&lt;n&gt;</literal></entry>
         </row>
