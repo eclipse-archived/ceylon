@@ -1945,8 +1945,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>in a specification statement for a member or local of type 
-                <literal>T</literal>,</para>
+                <para>as the specified expression in a specification statement or declaration 
+                of a member or local of type <literal>T</literal>,</para>
             </listitem>
             <listitem>
                 <para>as the receiver expression of a callable reference or value 
