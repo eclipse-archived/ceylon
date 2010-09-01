@@ -517,7 +517,7 @@ catch (Exception e) {
         that produces a theoretically unbounded sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
-    public Gettable<X>? head;
+    public X? head;
     public Iterator<X> tail;
 }]]></programlisting>
         
@@ -538,7 +538,7 @@ while (exists local value = iter.head) {
 }]]></programlisting>
         <programlisting><![CDATA[public mutable interface OpenIterator<X> 
         satisfies Iterator<X> {
-    override Settable<X>? head;
+    override mutable X? head;
     public void remove();
 }]]></programlisting></comment>
 
@@ -1902,7 +1902,7 @@ class String(Character[] characters)
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
         <programlisting><![CDATA[public interface Method<in X, R, P...> 
-        satisfies Member<Function<R, P...>> {
+        satisfies Member<X, Function<R, P...>> {
         
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
