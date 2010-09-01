@@ -2651,9 +2651,9 @@ setPerson(person);</programlisting>
     <section id="basic">
     <title>Basic invocation and assignment operators</title>
     
-    <para>These operators support method invocation and attribute evaluation and
-    assignment. The <literal>$</literal> operator is a shortcut for converting
-    any expression to a <literal>String</literal>.</para>
+        <para>These operators support method invocation and attribute evaluation and
+        assignment. The <literal>$</literal> operator is a shortcut for converting
+        any expression to a <literal>String</literal>.</para>
     
     <table>
     <tgroup cols="7">
@@ -2819,8 +2819,8 @@ setPerson(person);</programlisting>
     <section id="equalitycomparison">
     <title>Equality and comparison operators</title>
     
-    <para>These operators compare values for equality, order, magnitude, or membership,
-    producing boolean values.</para>
+        <para>These operators compare values for equality, order, magnitude, or membership,
+        producing boolean values.</para>
     
     <table>
     <tgroup cols="7">
@@ -2950,15 +2950,18 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
-    <comment><para>TODO: should we really have the equality operators accept null
-    values?</para></comment>
+        <comment><para>TODO: does <literal>==</literal> really belong on <literal>Object</literal>,
+        or should we define an interface for objects which can be compared for equality?</para></comment>
+        
+        <comment><para>TODO: should we really have the equality operators accept null
+        values?</para></comment>
     
     </section>
                 
     <section id="logical">
     <title>Logical operators</title>
     
-    <para>These are the usual logical operations for boolean values.</para>
+        <para>These are the usual logical operations for boolean values.</para>
     
     <table>
     <tgroup cols="7">
@@ -3043,8 +3046,8 @@ setPerson(person);</programlisting>
     <section id="nullvalues">
     <title>Operators for handling null values</title>
     
-    <para>These operators make it easy to work with <literal>Optional</literal>
-    values.</para>
+        <para>These operators make it easy to work with <literal>Optional</literal>
+        values.</para>
     
     <table>
     <tgroup cols="7">
@@ -3145,9 +3148,9 @@ setPerson(person);</programlisting>
     <section id="listmap">
     <title>Correspondence and sequence operators</title>
     
-    <para>These operators provide a simplified syntax for accessing values 
-    of a <literal>Correspondence</literal>, and for joining and obtaining
-    subranges of <literal>Sequences</literal>s.</para>
+        <para>These operators provide a simplified syntax for accessing values 
+        of a <literal>Correspondence</literal>, and for joining and obtaining
+        subranges of <literal>Sequences</literal>s.</para>
     
     <table>
     <tgroup cols="7">
@@ -3420,16 +3423,16 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
-    <comment><para>TODO: Should we have operators for set union/intersection/complement
-    and set comparison?</para></comment>
+        <comment><para>TODO: Should we have operators for set union/intersection/complement
+        and set comparison?</para></comment>
     
     </section>
     
     <section id="constructors">
     <title>Operators for constructing objects</title>
     
-    <para>These operators simplify the syntax for constructing certain commonly 
-    used built-in types.</para>
+        <para>These operators simplify the syntax for constructing certain commonly 
+        used built-in types.</para>
     
     <table>
     <tgroup cols="7">
@@ -3505,20 +3508,20 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
-    <comment><para>TODO: Should we have a binary <literal>upto</literal> operator
-    for producing ranges of <literal>Bounded&lt;n&gt;</literal>?</para></comment>
+        <comment><para>TODO: Should we have a binary <literal>upto</literal> operator
+        for producing ranges of <literal>Bounded&lt;n&gt;</literal>?</para></comment>
     
-    <comment><para>TODO: Should we have operators for performing arithmetic with
-    datetimes and durations, constructing intervals and combining dates and 
-    times?</para></comment>
+        <comment><para>TODO: Should we have operators for performing arithmetic with
+        datetimes and durations, constructing intervals and combining dates and 
+        times?</para></comment>
     
     </section>
     
     <section id="arithmetic">
     <title>Arithmetic operators</title>
     
-    <para>These are the usual mathematical operations for all kinds of
-    numeric values.</para>
+        <para>These are the usual mathematical operations for all kinds of
+        numeric values.</para>
     
     <table>
     <tgroup cols="7">
@@ -3785,12 +3788,12 @@ setPerson(person);</programlisting>
     <section id="bitwise">
     <title>Bitwise operators</title>
     
-    <para>These are C-style bitwise operations for bit strings. A <literal>Boolean</literal> 
-    is considered a bit string of length one, so these operators also apply to 
-    <literal>Boolean</literal> values. Note that in Ceylon these operators have a higher 
-    precedence than they have in C or Java. Note also that the built-in numeric types are
-    not considered bit strings, so explicit conversion to <literal>Bits&lt;n&gt;</literal>
-    is required before these operations may be applied to a numeric value.</para>
+        <para>These are C-style bitwise operations for bit strings. A <literal>Boolean</literal> 
+        is considered a bit string of length one, so these operators also apply to 
+        <literal>Boolean</literal> values. Note that in Ceylon these operators have a higher 
+        precedence than they have in C or Java. Note also that the built-in numeric types are
+        not considered bit strings, so explicit conversion to <literal>Bits&lt;n&gt;</literal>
+        is required before these operations may be applied to a numeric value.</para>
     
     <table>
     <tgroup cols="7">
@@ -3888,7 +3891,7 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
-    <comment><para>TODO: should we support the traditional C-style bitshift operators?</para></comment>
+        <comment><para>TODO: should we support the traditional C-style bitshift operators?</para></comment>
     
     </section>
     
