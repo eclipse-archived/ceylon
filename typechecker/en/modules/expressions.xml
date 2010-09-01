@@ -1939,6 +1939,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         type <literal>T</literal>.</para>
         
         <para>Evaluation occurs automatically wherever an expression of type 
+        <literal>Gettable&lt;T&gt;</literal> appears where an expression of type 
+        <literal>T</literal> is required, in particular, where 
         <literal>Gettable&lt;T&gt;</literal> occurs:</para>
         
         <itemizedlist>
