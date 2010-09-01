@@ -18,6 +18,7 @@ import javax.tools.ToolProvider;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.jvm.ClassReader;
@@ -299,19 +300,12 @@ public class Gen {
     		final String declName) {
 
     	class V extends CeylonTree.Visitor {
-    		boolean optional = false;
-
     		public void visit(CeylonTree.UserAnnotation userAnn) {
     			annotations.append(make().Exec(convert(userAnn, declName)));
     		}
+    		// FIXME: Shouldn't be here
     		public void visit(CeylonTree.LanguageAnnotation langAnn) {
     			langAnn.kind.accept(this);
-    		}
-    		public void visit(CeylonTree.Optional opt) {
-    			optional = true;
-    		}
-    		public void visit(CeylonTree.Public pub) {
-    			// FIXME
     		}
     	}
     	V v = new V();
@@ -396,16 +390,24 @@ public class Gen {
         return result;
     }
     
+    JCExpression optionalType(JCExpression type) {
+    	return make().TypeApply(makeSelect("ceylon", "Optional"), List.<JCExpression>of(type));
+    }
+    
     JCVariableDecl convert(CeylonTree.FormalParameter param) {
+        make(param);
         Name name = names.fromString(param.name());
-        
+        JCExpression type = variableType(param.type(), param.annotations());
+        if ((param.flags & CeylonTree.OPTIONAL) != 0)
+        	type = optionalType(type);
+       
         JCVariableDecl v = make(param).VarDef(make().Modifiers(0), name,
-                variableType(param.type()), null);
+                type, null);
         
         return v;
     }
 
-    JCExpression variableType(CeylonTree.Type t) {
+    JCExpression variableType(CeylonTree.Type t, List<Annotation> annotations) {
         final Singleton<JCExpression>result =
             new Singleton<JCExpression>();
         t.visitChildren(new CeylonTree.Visitor () {
@@ -416,6 +418,7 @@ public class Gen {
                 result.thing = makeIdent(name.components());
             }
         });
+        
         return result.thing();
     }
     
@@ -513,26 +516,69 @@ public class Gen {
 
     
     public JCBlock convert(CeylonTree.Block block) {
-        final ListBuffer<JCStatement> stmts =
+        return make(block).Block(0, convertStmts(block.getStmts()));
+    }
+    
+    List<JCStatement> convertStmts(List<CeylonTree> stmts) {
+        final ListBuffer<JCStatement> buf =
             new ListBuffer<JCStatement>();
         
-        for (CeylonTree stmt: block.getStmts()) 
-            stmt.accept(new CeylonTree.Visitor () {
-                public void visit(CeylonTree.CallExpression expr) {
-                    stmts.append(make(expr).Exec(convert(expr)));
-                }
-                public void visit(CeylonTree.ReturnStatement ret) {
-                    stmts.append(convert(ret));
-                }
-                public void visit(CeylonTree.MemberDeclaration decl) {
-                   	for (JCTree def: convert(decl))
-                         stmts.append((JCStatement)def);
-                }
-                });
-        
-        return make(block).Block(0, stmts.toList());
+        CeylonTree.Visitor v = new CeylonTree.Visitor () {
+            public void visit(CeylonTree.CallExpression expr) {
+                buf.append(make(expr).Exec(convert(expr)));
+            }
+            public void visit(CeylonTree.ReturnStatement ret) {
+                buf.append(convert(ret));
+            }
+            public void visit(CeylonTree.IfStatement stat) {
+                buf.append(convert(stat));
+            }
+            public void visit(CeylonTree.MemberDeclaration decl) {
+               	for (JCTree def: convert(decl))
+                     buf.append((JCStatement)def);
+            }};
+            
+        for (CeylonTree stmt: stmts) 
+        	stmt.accept(v);
+            
+        return buf.toList();
     }
 
+    JCStatement convert(CeylonTree.IfStatement stmt) {
+    	JCBlock thenPart = convert(stmt.ifTrue);
+    	JCBlock elsePart = convert(stmt.ifFalse);
+    	
+    	if (stmt.condition.operand instanceof CeylonTree.ExistsExpression) {
+    		CeylonTree.ExistsExpression exists =
+    			(CeylonTree.ExistsExpression)stmt.condition.operand;
+    		CeylonTree.MemberName name = exists.name;
+    		JCExpression type = variableType(exists.type, null);
+    		JCExpression expr = convertExpression(exists.expr);
+    		expr = make(stmt).Apply(null, 
+    				make(stmt).Select(expr, names.fromString("$internalErasedExists")),
+    					List.<JCExpression>nil());
+    		
+    		Name tmp = names.fromString(name.asString());
+    		JCVariableDecl decl = 
+            	make(stmt).VarDef
+            			(make().Modifiers(0), tmp, type, expr);
+    		
+        	JCStatement cond = 
+        		make(stmt).If(make(stmt).Binary
+        				(JCTree.NE, make().Ident(tmp),
+        						make().Literal(TypeTags.BOT, null)), 
+        						thenPart, elsePart);
+
+        	JCBlock result = make().Block(0, List.<JCStatement>of(decl, cond));
+        	
+    		return result;
+    	}
+    	JCExpression cond = convertExpression(stmt.condition);
+    	JCStatement result = make(stmt).If(cond, thenPart, elsePart);
+    	
+    	return result;
+    }
+    
     JCExpression convert(CeylonTree.CallExpression ce) {
         final Singleton<JCExpression> expr =
             new Singleton<JCExpression>();
@@ -541,6 +587,9 @@ public class Gen {
         
         ce.getMethod().accept (new CeylonTree.Visitor () {
             public void visit(CeylonTree.OperatorDot access) {
+                expr.append(convert(access));
+            }
+            public void visit(CeylonTree.MemberName access) {
                 expr.append(convert(access));
             }});
         
@@ -576,6 +625,9 @@ public class Gen {
             public void visit(CeylonTree.MemberName op) {
                 result = makeIdent(Arrays.asList(op.name, memberName.name));
             }
+            public void visit(CeylonTree.TypeName op) {
+                result = makeIdent(op.components.append(memberName.name));
+            }
             public void visit(CeylonTree.OperatorDot op) {
                 result = make(access).Select(convert(op), names.fromString(memberName.name));
             }
@@ -599,6 +651,8 @@ public class Gen {
     }
     
     List<JCStatement> convert(CeylonTree.MemberDeclaration decl) {
+    	make(decl);
+    	
     	JCExpression initialValue = null;
     	if (decl.initialValue() != null)
     		initialValue = convertExpression(decl.initialValue());
@@ -611,8 +665,8 @@ public class Gen {
     	
         JCExpression type = makeIdent(decl.type.name().components());
         
-        if (decl.optional)
-        	type = make(decl).TypeApply(makeSelect("ceylon", "Optional"), List.<JCExpression>of(type));
+        if ((decl.flags & CeylonTree.OPTIONAL) != 0)
+        	type = optionalType(type);
         
         List<JCStatement> result = 
         	List.<JCStatement>of(make(decl).VarDef
@@ -660,6 +714,9 @@ public class Gen {
             }
             public void visit(CeylonTree.Null value) {
             	result = makeSelect("ceylon", "Nothing", "NULL");
+            }
+            public void visit(CeylonTree.Condition value) {
+            	result = convertExpression(value.operand);
             }
           }
 

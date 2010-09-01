@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,18 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
 public abstract class CeylonTree {
-  
+
+    @NotAChild
+	public int flags;
+
+    public static final int PUBLIC = 1 << 0;
+    public static final int DEFAULT = 1 << 1;
+    public static final int PACKAGE = 1 << 2;
+    public static final int ABSTRACT = 1 << 3;
+    public static final int MODULE = 1 << 4;
+    public static final int OPTIONAL = 1 << 5;
+    public static final int MUTABLE = 1 << 6;
+    
     @Retention(RetentionPolicy.RUNTIME)
     public @interface NotAChild {
 
@@ -46,6 +58,10 @@ public abstract class CeylonTree {
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
             this.typeParameters = typeParameters;            
         }
+
+		public List<Annotation> annotations() {
+			return annotations;
+		}
     }
     
     public interface IType {
@@ -418,6 +434,23 @@ public abstract class CeylonTree {
     public void add(Annotation ann) {
         annotations = annotations.append(ann);
     }
+    
+    public class AnnotationVisitor extends CeylonTree.Visitor {
+    	AnnotationVisitor (Declaration decl) { this.decl = decl; }
+    	private Declaration decl;
+    	
+    	public void visit(Public ann) { decl.flags |= PUBLIC; }
+    	public void visit(Default ann) { decl.flags |= DEFAULT; }
+    	public void visit(Package ann) { decl.flags |= PACKAGE; }
+    	public void visit(Abstract ann) { decl.flags |= ABSTRACT; }
+    	public void visit(Module ann) { decl.flags |= MODULE; }
+    	public void visit(Optional ann) { decl.flags |= OPTIONAL; }
+    	public void visit(Mutable ann) { decl.flags |= MUTABLE; }
+    }
+
+    public void add(LanguageAnnotation ann) {
+        ann.visitChildren(new AnnotationVisitor ((Declaration)this));
+    }
 
     public void addTypeConstraint(CeylonTree t) {
         bomb();
@@ -439,6 +472,7 @@ public abstract class CeylonTree {
                 for (Field f: klass.getDeclaredFields()) {
                     Class<?> k = f.getDeclaringClass();
                     if (! f.isSynthetic()
+                    		&& ! Modifier.isStatic(f.getModifiers())
                             && (CeylonTree.class.isAssignableFrom(k) 
                                     || Iterable.class.isAssignableFrom(k))
                             && f.getAnnotation(NotAChild.class) == null) {
@@ -677,6 +711,9 @@ public abstract class CeylonTree {
     }
 
 
+    public abstract static class ControlStructure extends CeylonTree {
+    }
+    
     // Node subclasses
 
     /**
@@ -1090,7 +1127,7 @@ public abstract class CeylonTree {
      * A condition
      */
     public static class Condition extends CeylonTree {
-        CeylonTree operand;
+        public CeylonTree operand;
         void append(CeylonTree expr) {
             assert(operand == null);
             operand = expr;
@@ -1164,9 +1201,9 @@ public abstract class CeylonTree {
      * An exists expression
      */
     public static class ExistsExpression extends CeylonTree {
-        Type type;
-        MemberName name;
-        InitializerExpression expr;
+        public Type type;
+        public MemberName name;
+        public InitializerExpression expr;
 
         void pushType(Type type) {
             assert(this.type == null);
@@ -1177,13 +1214,17 @@ public abstract class CeylonTree {
                 assert name == null;
                 name = (MemberName) tree;
             }
-            else if (tree instanceof InitializerExpression) {
-                assert expr == null;
-                expr = (InitializerExpression) tree;
-            }
             else {
                 bomb();
             }
+        }
+        
+        public void setInitialValue(CeylonTree tree) {
+        	if (tree instanceof InitializerExpression) {
+                assert expr == null;
+                expr = (InitializerExpression) tree;
+            } else
+            	bomb ();
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -1420,7 +1461,7 @@ public abstract class CeylonTree {
             assert(! it.hasNext());
             return s;
         }
-    }
+   }
 
     /**
      * A list of formal parameters
@@ -1493,19 +1534,19 @@ public abstract class CeylonTree {
     /**
      * An if statement
      */
-    public static class IfStatement extends CeylonTree {
-        Condition condition;
-        CeylonTree ifTrue; // FIXME: Always an instance of Block
-        CeylonTree ifFalse; // FIXME: Always an instance of Block
+    public static class IfStatement extends ControlStructure {
+        public Condition condition;
+        public Block ifTrue; 
+        public Block ifFalse; 
                
         public void setIfTrue(CeylonTree t) {
             assert(ifTrue == null);
-            ifTrue = t;
+            ifTrue = (Block)t;
         }
             
         public void setIfFalse(CeylonTree t) {
             assert(ifFalse == null);
-            ifFalse = t;
+            ifFalse = (Block)t;
         }
             
         public void setCondition(Condition t) {
@@ -1770,8 +1811,6 @@ public abstract class CeylonTree {
         public List<CeylonTree> stmts;
         List<CeylonTree> typeParameters;
         public AttributeSetter attributeSetter;
-        @NotAChild
-        public boolean optional;
         
         @NotAChild
         public CeylonTree name;
@@ -2397,7 +2436,7 @@ public abstract class CeylonTree {
     /**
      * A switch statement
      */
-    public static class SwitchStatement extends CeylonTree {
+    public static class SwitchStatement extends ControlStructure {
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2793,7 +2832,7 @@ public abstract class CeylonTree {
     /**
      * A while statement
      */
-    public static class WhileStatement extends CeylonTree {
+    public static class WhileStatement extends ControlStructure {
         Condition condition;
         CeylonTree ifTrue; // FIXME: Always an instance of Block
         

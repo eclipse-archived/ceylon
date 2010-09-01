@@ -171,8 +171,7 @@ public class Grok extends CeylonTree.Visitor {
         	if (ann instanceof CeylonTree.LanguageAnnotation) {
         		CeylonTree.LanguageAnnotation la = 
         			(CeylonTree.LanguageAnnotation)ann;
-        		if (la.kind instanceof CeylonTree.Optional)
-        			member.optional = true;
+        		throw new RuntimeException();
         	}
         } 
         
