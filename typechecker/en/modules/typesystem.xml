@@ -267,7 +267,7 @@
             </listitem>
             <listitem>
                 <para>Lazy evaluation: the type <literal>Gettable&lt;T&gt;</literal> is 
-                assignable to <literal>T</literal>.</para>
+                assignable to <literal>T</literal> for every type <literal>T</literal>.</para>
             </listitem>
             <!--
             <listitem>
