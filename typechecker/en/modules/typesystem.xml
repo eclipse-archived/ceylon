@@ -269,11 +269,13 @@
                 <para>Lazy evaluation: the type <literal>Gettable&lt;T&gt;</literal> is 
                 assignable to <literal>T</literal>.</para>
             </listitem>
+            <!--
             <listitem>
                 <para>Nullsafety: the type <literal>Optional&lt;T&gt;</literal> is 
                 not assignable to <literal>Object</literal>. Nor is its subtype
                 <literal>Nothing</literal>.</para>
             </listitem>
+            -->
         </itemizedlist>
         
         <para>A type <literal>X</literal> may be assignable to a type <literal>Y</literal>
