@@ -1939,15 +1939,31 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         type <literal>T</literal>.</para>
         
         <para>Evaluation occurs automatically wherever an expression of type 
-        <literal>Gettable&lt;T&gt;</literal>:</para>
+        <literal>Gettable&lt;T&gt;</literal> occurs:</para>
         
         <itemizedlist>
             <listitem>
-                <para>is used as the argument of an invocation or operator that expects a value of 
-                type <literal>T</literal>, or</para>
+                <para>as the receiver expression of a callable reference or value 
+                reference,</para>
             </listitem>
             <listitem>
-                <para>occurs as an expression statement.</para>
+                <para>as the argument of an invocation or operator expression that expects 
+                a value of type <literal>T</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>in a <literal>return</literal> directive of a method with declared
+                return type <literal>T</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>in a <literal>throw</literal> or <literal>break</literal> 
+                directive,</para>
+            </listitem>
+            <listitem>
+                <para>as a control structure condition, resource, or iteration expression, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>as an expression statement.</para>
             </listitem>
         </itemizedlist>
                 
