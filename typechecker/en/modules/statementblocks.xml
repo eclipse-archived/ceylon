@@ -302,11 +302,11 @@ try (lock) { ... }</programlisting>
 Comparison order(X x, X y);
 if (reverseOrder()) {
     description = "Reverse order";
-    order = Order.reverse;
+    order = reverse;
 }
 else {
     description = "Natural order";
-    order = Order.natural;
+    order = natural;
 }</programlisting>
 
         </section>
