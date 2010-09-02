@@ -140,15 +140,20 @@
     doc "Determine if this object belongs to the given |Category|.
          The binary |in| operator."
     see (Category)
-    public Boolean in(Category cat) {
-        return cat.contains(object)
+    public Boolean in(Category category) {
+        return category.contains(object)
     }
         
     doc "Determine if this object is produced by the |Iterable|.
          The binary |in| operator."
     see (Iterable<Object>)
     public Boolean in(Iterable<Object> objects) {
-        return forAny (Object elem in objects) some (elem == object)
+        if (is Category cat = objects) {
+            return in(cat)
+        }
+        else {
+            return forAny (Object elem in objects) some (elem == object)
+        }
     }
 
 }]]></programlisting>
