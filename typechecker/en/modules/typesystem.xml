@@ -641,8 +641,8 @@ String? firstWord = words[0];</programlisting>
         
         <programlisting>DimensionalTypeParam := MemberName</programlisting>
         
-        <para>Dimensional type parameters are distinguished by the initial lowercase
-        identifier.</para>
+        <para>Dimensional type parameters are distinguished by a <literal>#</literal>
+        prefix, and must be an initial lowercase identifier.</para>
         
         <programlisting>Vector&lt;#n&gt;</programlisting>
         
