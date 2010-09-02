@@ -845,7 +845,6 @@ formalParameterStart
 formalParameter
     : basicFormalParameter
       ( '->' type parameterName 
-      | '..' parameterName 
       | (('in'|'=') formalParameterStart) => ('in'|'=') basicFormalParameter
       )? 
       specifier?
