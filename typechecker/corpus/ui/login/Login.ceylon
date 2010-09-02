@@ -21,8 +21,8 @@ public class Login(Session session, Environment env) extends Window(env) {
 					margin = 5;
 					TextInput {
 						size = 15;
-						onInit = get session.username;
-						onUpdate = set session.username;
+						onInit = get(session.username);
+						onUpdate = set(session.username);
 					},
 					TextInput {
 						size = 15;

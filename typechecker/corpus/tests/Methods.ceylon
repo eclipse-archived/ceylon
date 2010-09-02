@@ -20,16 +20,16 @@ class Methods() {
 		     strings can be spread across multiple lines."
 		by "Gavin King"
 		   "Andrew Haley"
-		throws #Exception 
-		       "if something goes wrong"
-		see #Methods.VoidMethods.simpleMethod
+		throws (Exception 
+		        -> "if something goes wrong")
+		see (Methods.VoidMethods.simpleMethod)
 		void annotatedMethod() {
 			simpleMethod();
 		}
 		
 		void methodWithTypeParameter<X>(OpenList<X> list, X x) { list.add(x); }
 		
-		void methodWithTypeConstraint<X>(OpenList<X> list, X x) where X satisfies String { list.add(x); }
+		void methodWithTypeConstraint<X>(OpenList<X> list, X x) given X satisfies String { list.add(x); }
 		
 		void methodWithNestedMethod() {
 			void nestedMethod(String param) {
@@ -88,16 +88,16 @@ class Methods() {
 		     strings can be spread across multiple lines."
 		by "Gavin King"
 		   "Andrew Haley"
-		throws #Exception 
-		       "if something goes wrong"
-		see #Methods.VoidMethods.simpleMethod
+		throws (Exception 
+		        -> "if something goes wrong")
+		see (Methods.VoidMethods.simpleMethod)
 		String annotatedMethod() {
 			return simpleMethod();
 		}
 		
 		List<X> methodWithTypeParameter<X>(X x) { return List(x); }
 		
-		List<X> methodWithTypeConstraint<X>(X x) where X satisfies String { return List(x); }
+		List<X> methodWithTypeConstraint<X>(X x) given X satisfies String { return List(x); }
 		
 		String methodWithNestedMethod() {
 			String nestedMethod(String param) {

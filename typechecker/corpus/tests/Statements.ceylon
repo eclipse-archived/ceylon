@@ -1,7 +1,7 @@
 class Statements() {
 
 	String hello = "Hello World"; //specification
-	String getHello() = get hello; //method specification
+	String getHello() = get(hello); //method specification
 	mutable String string := hello; //initialization
 	string := "Hello Gavin"; //assignment
 	

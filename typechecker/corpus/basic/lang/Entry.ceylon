@@ -7,11 +7,11 @@ public class Entry<out U, out V>(U key, V value) {
     public V value = value;
     
     override public Boolean equals(Object that) {
-        return equals(that, #key, #value)
+        return equals(that, key, value)
     }
     
     override public Integer hash {
-        return hash(#key, #value)
+        return hash(key, value)
     }
 
 }

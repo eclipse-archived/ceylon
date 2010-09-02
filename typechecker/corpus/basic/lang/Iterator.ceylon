@@ -10,9 +10,9 @@ public interface Iterator<out X> {
 
     doc "Advance to the next element, returning
          the next element."
-    throw #ExhaustedIteratorException
-          "if the iterator contains no
-           more elements."
+    throw (ExhaustedIteratorException
+           -> "if the iterator contains no
+               more elements.")
     public X next();
     
 }

@@ -1,6 +1,6 @@
 public class Range<X>(X first, X last) 
         satisfies Category, Sequence<X>, Case<Object>
-        where X satisfies Ordinal, Comparable<X> { 
+        given X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
     public X first = first;

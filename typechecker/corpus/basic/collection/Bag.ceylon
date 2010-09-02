@@ -6,7 +6,7 @@ public interface Bag<out X>
          the original bag."
     public Map<X,Natural> map;
     
-    public override Bag<T> with<T>(T... elements) where T abstracts X;
-    public override OpenBag<T> copy<T>() where T abstracts X;
+    public override Bag<T> with<T>(T... elements) given T abstracts X;
+    public override OpenBag<T> copy<T>() given T abstracts X;
     
 }

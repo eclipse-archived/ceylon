@@ -8,15 +8,15 @@ class Primaries() {
 		Float zero = 0.0;
 		Float big = 1.0e10;
 		Float small = 1.0e-10;
-		Character x = @x;
-		Character newline = @\n;
+		Character x = `x`;
+		Character newline = `\n`;
 		Quoted quoted = 'quoted literal';
 		
-		Type<Literals> primariesClass = #Primaries;
-		Type<Literals> literalsClass = #Primaries.Literals;
-		Attribute<Literals,String> helloAttribute = #hello;
-		Attribute<Literals,String> oneAttribute = #Primaries.Literals.one;
-		Method<Object,Boolean> method = #Object.equals;
+		Type<Literals> primariesClass = Primaries;
+		Type<Literals> literalsClass = Primaries.Literals;
+		Attribute<Literals,String> helloAttribute = hello;
+		Attribute<Literals,String> oneAttribute = Primaries.Literals.one;
+		Method<Object,Boolean> method = Object.equals;
 		
 	}
 	
@@ -61,8 +61,8 @@ class Primaries() {
 		Person person = Person("Gavin King");
 		void hello() = person.hello;
 		void helloWorld() = helloWorld;
-		String getName() = get person.name;
-		void setName(String name) = set person.name;
+		String getName() = get(person.name);
+		void setName(String name) = set(person.name);
 		Person newPerson(String name) = Person;
 		
 	}

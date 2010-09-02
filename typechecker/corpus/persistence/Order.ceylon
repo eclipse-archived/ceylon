@@ -5,7 +5,7 @@ import math.Math;
 entity table{ schema="orders"; name="order"; }
 by "Gavin King"
    "Andrew Haley"
-see #OrderSystem
+see (OrderSystem)
 public class Order() {
 	
 	//TODO: address, payment, user
@@ -31,7 +31,7 @@ public class Order() {
 		
 	}
 	
-	oneToMany{ mappedBy=#Item.order; }
+	oneToMany{ mappedBy=Item.order; }
 	cascade(persist, merge, remove) deleteOrphans
 	OpenList<Item> itemList = ArrayList<Item>();
 	
@@ -53,7 +53,7 @@ public class Order() {
 	
 	transient
 	public Float total {
-		return Math.sum(items*.price);
+		return Math.sum(items[].price);
 	}
 	
 	

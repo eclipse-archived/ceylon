@@ -1,5 +1,5 @@
 public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
-        where X satisfies Comparable<X> {
+        given X satisfies Comparable<X> {
         
     doc "The elements of the collection, sorted in natural order."
     public List<X> sortedElements() {

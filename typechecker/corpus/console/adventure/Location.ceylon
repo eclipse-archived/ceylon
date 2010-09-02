@@ -1,8 +1,8 @@
 doc "A location which the player can visit.
      Locations may have connections to other
      locations. Locations can contain things."
-see #Thing
-see #Connection
+see (Thing)
+see (Connection)
 package class Location(String name, String description, Connection... connections) {
 			
 	package String name = name;

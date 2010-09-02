@@ -35,12 +35,12 @@ public interface List<out X>
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public override List<T> with<T>(T... elements) where T abstracts X;
+    public override List<T> with<T>(T... elements) given T abstracts X;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<T> withInitial<T>(T... elements) where T abstracts X;
+    public List<T> withInitial<T>(T... elements) given T abstracts X;
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
@@ -58,6 +58,6 @@ public interface List<out X>
          every element of the list."
     public List<Y> transform<Y>(Y select(X element));
     
-    public override OpenList<T> copy<T>() where T abstracts X;
+    public override OpenList<T> copy<T>() given T abstracts X;
 
 }

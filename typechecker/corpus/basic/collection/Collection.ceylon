@@ -31,9 +31,9 @@ public interface Collection<out X>
     doc "An extension of the collection, with the given 
          elements. The returned collection reflects changes 
          made to the first collection."
-    public Collection<T> with<T>(T... elements) where T abstracts X;
+    public Collection<T> with<T>(T... elements) given T abstracts X;
 
     doc "A mutable copy of the collection."
-    public OpenCollection<T> copy<T>() where T abstracts X;
+    public OpenCollection<T> copy<T>() given T abstracts X;
     
 }

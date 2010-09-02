@@ -20,9 +20,9 @@ public interface Number {
     public Decimal decimal;
 
     doc "The number, represented as a |Float|"
-    throws #FloatOverflowException
-           "if the number is too large to be
-            represented as a |Float|"
+    throws (FloatOverflowException
+            -> "if the number is too large to be
+                represented as a |Float|")
     public Float float;
     
     doc "The number, represented as an |Whole|,
@@ -33,16 +33,16 @@ public interface Number {
     doc "The number, represented as an |Integer|,
          after truncation of any fractional 
          part"
-    throws #IntegerOverflowException
-           "if the number is too large to be
-            represented as an |Integer|"
+    throws (IntegerOverflowException
+            -> "if the number is too large to be
+                represented as an |Integer|")
     public Integer integer;
     
     doc "The number, represented as a |Natural|,
          after truncation of any fractional 
          part"
-    throws #NegativeNumberException
-           "if the number is negative"
+    throws (NegativeNumberException ->
+            "if the number is negative")
     public Natural natural;
     
     doc "The magnitude of the number"

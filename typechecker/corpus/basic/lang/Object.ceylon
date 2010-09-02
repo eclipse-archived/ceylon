@@ -2,7 +2,7 @@ public abstract class Object() {
         
     doc "The equals operator x == y. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
-    see #id
+    see (id)
     public Boolean equals(Object that) { throw }
     
     doc "Compares the given attributes of this instance with the given
@@ -11,7 +11,7 @@ public abstract class Object() {
     
     doc "The hash code of the instance. Default implementation compares
          attributes annotated |id|, or assumes identity equality."
-    see #id
+    see (id)
     public Integer hash { throw }
     
     doc "Computes the hash code of the instance using the given 
@@ -25,14 +25,14 @@ public abstract class Object() {
     public String string { throw }
     
     doc "Determine if the instance belongs to the given |Category|."
-    see #Category
+    see (Category)
     public Boolean in(Category cat) {
         return cat.contains(this)
     }
     
     doc "Determine if the instance belongs to the given |Iterable|
          object or listed objects."
-    see #Iterable
+    see (Iterable)
     public Boolean in(Object... objects) {
         return forAny (Object elem in objects) some elem == this
     }

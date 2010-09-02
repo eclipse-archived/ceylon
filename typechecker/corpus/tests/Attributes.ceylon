@@ -56,8 +56,8 @@ abstract class Attributes() {
 	     strings can be spread across multiple lines."
 	by "Gavin King"
 	   "Andrew Haley"
-	see #Attributes 
-	    #immutableAttribute
+	see (Attributes, 
+	    immutableAttribute)
 	column { name="columnName"; comment="some comment"; }
 	public String annotatedAttribute = immutableAttribute;
 		

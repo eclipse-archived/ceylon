@@ -13,7 +13,7 @@ package mutable class Adventure(Process process) {
     Random<Natural> rand = RandomNatural(1..10);
 	
 	package Float backpackWeight {
-		return Math.sum( backpack.things*.weight );
+		return Math.sum( backpack.things[].weight );
 	}
 	
 	package void display(String message) {

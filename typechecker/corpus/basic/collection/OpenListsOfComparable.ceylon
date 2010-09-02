@@ -1,5 +1,5 @@
 public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
-        where X satisfies Comparable<X> {
+        given X satisfies Comparable<X> {
         
     doc "Reorder the elements of the list, according to the 
          natural order."

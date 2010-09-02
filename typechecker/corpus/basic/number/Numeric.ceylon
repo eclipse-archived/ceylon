@@ -1,7 +1,7 @@
 public interface Numeric<N, I>
         satisfies Number, Comparable<N> 
-        where I satisfies Number 
-        where N satisfies Number {
+        given I satisfies Number 
+        given N satisfies Number {
 
     doc "The unary - operator"
     public I inverse;

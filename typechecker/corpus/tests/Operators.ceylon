@@ -11,7 +11,7 @@ class Operators() {
 	
 	Entry<String,String> name = "Gavin"->"King";
 	Range<Natural> range = 1..5;
-	Range<Character> charRange = @A..@Z;
+	Range<Character> charRange = `A`..`Z`;
 	
 	String defaulted = null ? "Hello";
 	Boolean nullExists = null exists;
@@ -20,7 +20,6 @@ class Operators() {
 	Boolean not = !true;
 	Boolean or = true||false;
 	Boolean and = or&&not;
-	Boolean implies = or=>and;
 	
 	Boolean equal = 1==2;
 	Boolean notEqual = 1!=2;
@@ -54,7 +53,7 @@ class Operators() {
 	
 	String? input = null;
 	Iterable<String>? tokens = input?.tokens();
-	Sequence<Natural> sizes = tokens*.size;
+	Sequence<Natural> sizes = tokens[].size;
 	
 	//TODO: := .=
 	

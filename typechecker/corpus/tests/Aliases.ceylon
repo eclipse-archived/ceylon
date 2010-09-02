@@ -9,13 +9,13 @@ class Aliases() {
 	alias WithTypeParameter<X> satisfies Bar<Baz<X>>;
 	
 	alias WithTypeConstraint<X> satisfies Bar<Baz<X>>
-		where X satisfies String;
+		given X satisfies String;
 	
 	alias Multiple satisfies Foo<Bar<Baz<String>>, Natural, Character>, Bar<Baz<String>>;
 	
 	doc "an alias"
 	by "Gavin King" "Andrew Haley"
-	see #Foo #Bar #Baz
+	see (Foo, Bar, Baz)
 	public alias WithAnnotations satisfies Foo<Bar<Baz<String>>, Natural, Character>;
 	
 }
