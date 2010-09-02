@@ -427,7 +427,7 @@ type
     ;
 
 abbreviation
-    : '[' ']' | '?'
+    : '[' dimension? ']' | '?'
     ;
 
 typeNameWithArguments
@@ -478,7 +478,7 @@ typeArguments
     ;
 
 typeArgument
-    : type '...'? | dimension
+    : type '...'? | '#'! dimension
     ;
 
 dimension
@@ -505,7 +505,7 @@ typeParameters
     ;
 
 typeParameter
-    : ordinaryTypeParameter | dimensionalTypeParameter
+    : ordinaryTypeParameter | '#'! dimensionalTypeParameter
     ;
 
 ordinaryTypeParameter
@@ -733,7 +733,7 @@ member
 
 nameAndTypeArguments
     : ( memberName | typeName ) 
-      ( ( typeArguments ('('|'{') ) => typeArguments )?
+      ( (typeArguments) => typeArguments )?
     ;
 
 elementSelector
