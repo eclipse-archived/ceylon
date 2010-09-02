@@ -518,7 +518,10 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         annotateLater(tree.packageAnnotations, env, tree.packge);
 
         // Import-on-demand java.lang.
-        importAll(tree.pos, reader.enterPackage(names.java_lang), env);
+        if (! tree.isCeylonProgram)
+            importAll(tree.pos, reader.enterPackage(names.java_lang), env);
+        else
+            importAll(tree.pos, reader.enterPackage(names.ceylon), env);
 
         // Process all import clauses.
         memberEnter(tree.defs, env);
@@ -628,7 +631,9 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
                 v.setLazyConstValue(initEnv(tree, env), log, attr, tree.init);
         }
         if (chk.checkUnique(tree.pos(), v, enclScope)) {
-            chk.checkTransparentVar(tree.pos(), v, enclScope);
+        	// Not for Ceylon
+        	if (false)
+        		chk.checkTransparentVar(tree.pos(), v, enclScope);
             enclScope.enter(v);
         }
         annotateLater(tree.mods.annotations, localEnv, v);
