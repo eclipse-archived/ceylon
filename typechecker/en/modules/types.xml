@@ -938,7 +938,7 @@ while (exists local value = indexed.indexedValue(i)) {
         from an upper-bounded list of natural numbers.</para>
         
         <programlisting><![CDATA[public class Bounded<max>(Bounded<max> b)
-       satisfies Comparable<Bounded<max>> {
+       satisfies Comparable<Bounded<max>>, Number {
    
    doc "The |Natural| representing this natural
         number."
@@ -1306,7 +1306,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
         operator:</para> 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
-        satisfies Category, X[], Case<X>
+        satisfies Category, X[], Case<X>, Iterable<X>
         given X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
@@ -1315,14 +1315,96 @@ class SequenceEntryIterable<X>(X[n] sequence)
     doc "The last value in the range."
     public X last = last;
     
-    ... 
-    
     doc "Return a |Sequence| of values in the range, 
          beginning at the first value, and 
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    public X[] by(Natural stepSize) { return ... } 
+    public X[] by(Natural stepSize) { 
+        return from (Natural index->X value in this) 
+                    where (index%stepSize==0) 
+    }
+    
+    public Natural? index(X x) {
+        if (x<first || x>last) {
+            return null
+        }
+        else {
+            //optimize this for numbers!
+            mutable Natural index:=0;
+            mutable X value:=first;
+            while (value<x) {
+                ++index;
+                ++value;
+            }
+            return index
+        }
+    }
+    
+    override Iterator<X> iterator() {
+        class RangeIterator(X x) satisfies Iterator<X> {
+            X? head { 
+                if (x>last) { 
+                    return null 
+                } 
+                else { 
+                    return x 
+                }
+            }
+            Iterator<X> tail {
+                return RangeIterator(x.successor)
+            }
+        }
+        return RangeIterator(first)
+    }
+    
+    override Boolean contains(Object... objects) {
+        for (x in objects) {
+            if (is X x) {
+                if ( x<first || x>last ) ) {
+                    return false
+                }
+            }
+            else {
+                return false
+            }
+        }
+        fail {
+            return true
+        } 
+    }
+    
+    override Boolean test(X x) {
+        return x>first && x<last
+    }
+    
+    override Natural? lastIndex = index(last);
+    
+    override Gettable<X?> value(Natural n) {
+        //optimize this for numbers!
+        mutable Natural index:=0;
+        mutable X? value:=first;
+        while (index<n) {
+            ++index;
+            ++value;
+            if (value>last) {
+                value := null;
+                break
+            }
+        }
+        return value
+    }
+    
+    override Boolean equals(Object that) {
+        if (is Range<X> that) {
+            return that.first==first && that.last==last
+        }
+        else {
+            return false
+        }
+    }
+    
+    ...
     
 }]]></programlisting>
         
