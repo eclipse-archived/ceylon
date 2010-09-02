@@ -2572,12 +2572,14 @@ setPerson(person);</programlisting>
             <literal>Settable</literal> and returns the new value after 
             assignment,</para>
         </listitem>
+        <!-- 
         <listitem>
             <para>the <emphasis>identity</emphasis> operator
             <literal>===</literal> evaluates to <literal>true</literal> if 
             its argument expressions evaluate to references to the same 
             object, and <literal>false</literal> otherwise, and</para>
         </listitem>
+        -->
         <listitem>
             <para>the <emphasis>assignability</emphasis> operator
             <literal>is</literal> evaluates to <literal>true</literal> if 
@@ -2875,7 +2877,7 @@ setPerson(person);</programlisting>
             <entry><literal>===</literal></entry>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
-            <entry><literal></literal></entry>
+            <entry><literal>identical(lhs,rhs)</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Boolean</literal></entry>

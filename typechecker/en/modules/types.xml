@@ -76,12 +76,8 @@
             return hash(idAttributes)
         }
         else {
-            return identityHash
+            return identityHash(this)
         }
-    }
-    
-    public Integer identityHash {
-        return ...
     }
     
     doc "Computes the hash code of the instance using the given 
@@ -144,6 +140,13 @@
     ...
         
 }]]></programlisting>
+
+    <para>The following toplevel methods expose the notion of
+    object identity:</para>
+    
+    <programlisting>public Boolean identical(Object x, Object y) { return ... }</programlisting>
+    <programlisting>public Integer identityHash(Object x) { return ... }</programlisting>
+    
 
 <!-- 
     doc "Binary assignability operator |x is Y|. Determine if the 
