@@ -1174,7 +1174,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     }
 
     doc "The last element of the sequence, or
-         |null| if the sequence has no elements.."
+         |null| if the sequence has no elements."
     public X? last {
         if (exists Natural index = sequence.lastIndex) {
             return sequence[index]
