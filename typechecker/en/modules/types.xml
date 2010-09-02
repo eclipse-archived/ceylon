@@ -36,34 +36,77 @@
         
         <programlisting><![CDATA[public abstract class Object() 
         extends Void() {
-        
+    
+    Attribute<subtype,Object>[] idAttributes() {
+        return from ( Attribute<subtype,Object> a in type.attributes() ) 
+                    where ( nonempty a.annotations(Id) );
+    }
+    
     doc "The equals operator |x == y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
-    public default Boolean equals(Object that) { return ... }
+    public default Boolean equals(Object that) {
+        Attribute<subtype,Object>[] idAttributes = idAttributes();
+        if (nonempty idAttributes) {
+            return equals(that, idAttributes)
+        }
+        else {
+            return this===that
+        }
+    }
     
     doc "Compares the given attributes of this instance with the given
          attributes of the given instance."
-    public Boolean equals(Object that, Attribute... attributes) { ... }
+    public Boolean equals(Object that, Attribute<subtype,Object>... attributes) {
+        if (is subtype that) {
+            return forAll (Attribute<subtype,Object> a in attributes)
+                        every ( a(this)==a(that) )
+        }
+        else {
+            return false
+        }
+    }
     
     doc "The hash code of the instance. Default implementation compares
          attributes annotated |id|, or assumes identity equality."
     see (id)
-    public default Integer hash { return ... }
+    public default Integer hash { 
+        Attribute<subtype,Object>[] idAttributes = idAttributes();
+        if (nonempty idAttributes) {
+            return hash(idAttributes)
+        }
+        else {
+            return identityHash
+        }
+    }
+    
+    public Integer identityHash {
+        return ...
+    }
     
     doc "Computes the hash code of the instance using the given 
          attributes."
-    public Integer hash(Attribute... attributes) { ... }
+    public Integer hash(Attribute<subtype,Object>... attributes) { ... }
         
     doc "A developer-friendly string representing the instance. 
          By default, the string contains the name of the type, 
          and the values of all attributes annotated |id|."
-    public default String string { return ... }
+    public default String string {
+        return string(idAttributes())
+    }
     
     doc "A developer-friendly string representing the instance,
          containing the name of the type, and the value of the
          given attributes." 
-    public default String string(Attribute... attributes) { ... }
+    public default String string(Attribute<subtype,Object>... attributes) {
+        StringBuilder builder = StringBuilder();
+        builder.append(type.name).append("{");
+        for (Attribute<subtype,Object> a in attributes) {
+            builder.append(a.name).append("=").append($a(this)).append(";");
+        }
+        builder.append("}");
+        return builder
+    }
     
     doc "Determine if the instance belongs to the given |Category|."
     see (Category)
