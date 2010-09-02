@@ -1358,6 +1358,8 @@ class SequenceEntryIterable<X>(X[n] sequence)
         return RangeIterator(first)
     }
     
+    override Boolean empty = last<first;
+    
     override Boolean contains(Object... objects) {
         for (x in objects) {
             if (is X x) {
