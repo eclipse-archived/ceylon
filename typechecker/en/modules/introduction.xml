@@ -18,22 +18,23 @@
     <section id="languageoverview">
         <title>Language overview</title>
     
-    <section>
+    <section id="thetypesystem">
     <title>The type system</title>
     
     <para>
-    Ceylon features a similar inheritance and generic type model to Java. 
-    A type is either an <emphasis>interface</emphasis> or a 
-    <emphasis>class</emphasis>. An interface may extend an arbitrary number 
-    of other interfaces. A class may implement an arbitrary number of interfaces 
-    and must extend another class. 
+    Ceylon features a similar inheritance and generic type model to Java. A type 
+    is either an <emphasis>interface</emphasis> or a <emphasis>class</emphasis>. 
+    An interface may extend an arbitrary number of other interfaces. A class may 
+    implement an arbitrary number of interfaces and must extend another class. 
+    A class or interface may declare type parameters.
     </para>
     
     <para>
-    There are no primitive types or arrays in Ceylon, so all values are
-    instances of the type hierarchy root <literal>lang.Object</literal>.
-    However, the Ceylon compiler is permitted to optimize certain code to 
-    take advantage of the better performance of primitive types on the JVM.
+    There are no primitive types or arrays in Ceylon&mdash;every Ceylon type can 
+    be represented within the language itself. So all values are instances of the 
+    type hierarchy root <literal>lang.Void</literal>. However, the Ceylon compiler 
+    is permitted to optimize certain code to take advantage of the optimized 
+    performance of primitive types on the JVM.
     </para>
     
     <para>
@@ -51,7 +52,7 @@
     
     </section>
     
-    <section>
+    <section id="compilerenforcednamingconventions">
     <title>Compiler-enforced naming conventions</title>
     
     <para>
@@ -67,7 +68,7 @@
     
     </section>
     
-    <section>
+    <section id="initializationandinstantiation">
     <title>Class initialization and instantiation</title>
     
     <para>
@@ -86,7 +87,7 @@
     
     </section>
     
-    <section>
+    <section id="methodsandattributes">
     <title>Methods and attributes</title>
     
     <para>
@@ -106,7 +107,7 @@
 
     </section>
     
-    <section>
+    <section id="defaultparameters">
     <title>Defaulted parameters</title>
     
     <para>
@@ -116,25 +117,34 @@
     
     </section>
     
-    <section>
+    <section id="firstclassfunctions">
     <title>First-class functions</title>
     
     <para>
-    Ceylon supports first-class 
-    function types and higher-order functions, with minimal extensions to 
-    the traditional C syntax. A method declaration may specify a 
-    <emphasis>callable parameter</emphasis> that accepts references to 
-    other methods with a certain signature. The argument of such a callable 
-    parameter may be either a reference to a named method declared elsewhere, 
-    or a new method defined inline as part of the method invocation. A method 
-    may even return an invocable reference to another method. Finally, nested 
-    method declarations receive a closure of immutable values in the 
+    Ceylon supports first-class function types and higher-order functions, 
+    with minimal extensions to the traditional C syntax. A method declaration 
+    may specify a <emphasis>callable parameter</emphasis> that accepts 
+    references to other methods with a certain signature. The argument of such 
+    a callable parameter may be either a reference to a named method declared 
+    elsewhere, or a new method defined inline as part of the method invocation. 
+    A method may even return an invocable reference to another method. Finally, 
+    nested method declarations receive a closure of immutable values in the 
     surrounding scope.
     </para>
     
     </section>
     
-    <section>
+    <section id="lazyevaluation">
+    <title>Lazy evaluation and pass by reference</title>
+    
+    <para>
+    Using a "trick" in the Ceylon type system, it's possible to take advantage 
+    of lazy evaluation of expressions and pass by reference for attributes.
+    </para>
+    
+    </section>
+    
+    <section id="immutability">
     <title>Immutability by default</title>
     
     <para>
@@ -148,7 +158,7 @@
     
     </section>
     
-    <section>
+    <section id="compiletimesafety">
     <title>Compile-time safety for optional values and type narrowing</title>
     
     <para>
@@ -171,15 +181,15 @@
     
     </section>
     
-    <section>
+    <section id="controlflow">
     <title>Control flow</title>
     
     <para>
-    Ceylon control flow structures are very similar to the traditional 
-    constructs found in C, C# and Java. However, inline methods can be 
-    used together with a special Smalltalk-style method invocation protocol 
-    to achieve more specialized flow control and other more functional-style 
-    constructs such as comprehensions.
+    Ceylon's built in control flow structures are very similar to the traditional 
+    constructs found in C, C# and Java. However, inline methods can be used 
+    together with a special Smalltalk-style method invocation protocol to achieve 
+    more specialized flow control and other more functional-style constructs such 
+    as comprehensions.
     </para>
     
     <para>
@@ -189,8 +199,8 @@
     
     </section>
     
-    <section>
-    <title>Operators</title>
+    <section id="operatorsandoperatorpolymorphism">
+    <title>Operators and operator polymorphism</title>
     
     <para>
     Ceylon features a rich set of operators, including most of the operators 
@@ -202,7 +212,7 @@
     
     </section>
     
-    <section>
+    <section id="numerictypes">
     <title>Numeric types</title>
     
     <para>Ceylon's numeric type system is much simpler than C, C# or Java, 
@@ -217,8 +227,18 @@
     
     </section>
     
-    <section>
-    <title>Extensions</title>
+    <section id="dimensioned types">
+    <title>Dimensioned types</title>
+    
+    <para>Ceylon supports <emphasis>dimensional type parameters</emphasis>,
+    allowing types with fixed dimensions such as vectors or matrices to be
+    represented within the type system, and enabling compile-time bounds 
+    checking of indexing operations.</para>
+    
+    </section>
+    
+    <section id="typeextensions">
+    <title>Type extensions</title>
     
     <para>
     True open classes are not supported. However, Ceylon supports 
@@ -231,7 +251,7 @@
     
     </section>
     
-    <section>
+    <section id="structureddata">
     <title>Structured data</title>
     
     <para>
@@ -247,7 +267,7 @@
     
     </section>
     
-    <section>
+    <section id="metaprogramming">
     <title>Metaprogramming</title>
     
     <para>
@@ -272,6 +292,13 @@
     <literal>module</literal> and <literal>public</literal>. There's no 
     equivalent to Java's <literal>protected</literal>.
     </para>
+    
+    </section>
+    
+    </section>
+    
+    <section id="sdk">
+        <title>Modules included in the SDK</title>
     
     <para>The Ceylon SDK includes the following important modules:</para>
     
@@ -327,8 +354,6 @@
             <para><literal>ceylon.html</literal> - the HTML construction kit</para>
         </listitem>
     </itemizedlist>
-    
-    </section>
     
     </section>
     

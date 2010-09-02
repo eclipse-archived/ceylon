@@ -88,8 +88,8 @@
         </listitem>
         <listitem>
             <para>to expand compile-time typesafety with compile-time safe handling 
-            of null values, compile-time safe typecasts, and a more typesafe approach 
-            to reflection,</para>
+            of null values, compile-time safe typecasts, dimensioned types with
+            typesafe indexing, and a more typesafe approach to reflection,</para>
         </listitem>
         <listitem>
             <para>to provide language-level modularity,</para>
