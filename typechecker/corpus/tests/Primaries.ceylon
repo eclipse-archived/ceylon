@@ -17,6 +17,8 @@ class Primaries() {
 		Attribute<Literals,String> helloAttribute = hello;
 		Attribute<Primaries.Literals,Natural> oneAttribute = Primaries.Literals.one;
 		Method<Object,Boolean,Object> method = Object.equals;
+        Type<List<String>> stringListType = List<String>;
+        Type<Matrix<#5,#3>> matrix5by3Type = Matrix<#5,#3>;
 		
 	}
 	

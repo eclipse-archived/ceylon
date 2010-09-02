@@ -91,12 +91,12 @@ class Generics() {
     
     output(2,p);
     
-    class ClassWithDimensionalParameter<n>() {
-        mutable Bounded<n> count := 0;
+    class ClassWithDimensionalParameter<#n>() {
+        mutable Bounded<#n> count := 0;
     }
     
-    interface TypeWithDimensionalParameters<m,n> {
-        Float<m,n> matrix;
+    interface TypeWithDimensionalParameters<#m,#n> {
+        Float<#m,#n> matrix;
     }
     
     class ClassWithVarargsTypeParameter<P...>(Callable<Void,P...> callable) {
