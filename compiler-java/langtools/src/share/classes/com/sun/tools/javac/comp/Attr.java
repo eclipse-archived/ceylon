@@ -730,6 +730,17 @@ public class Attr extends JCTree.Visitor {
                     v.pos = tree.pos;
                 }
             }
+            
+            if (tree.forCeylon) {
+            	TypeSymbol tsym = v.type.tsym;
+            	String sStr = tsym.toString();
+            	// Generate a ceylon temporary whose type comes from its initializer.
+            	if (sStr.equals("ceylon.Any") &&
+            			v.type.tag == CLASS) {
+            		v.type = tree.init.type;
+            	}
+            }
+
             result = tree.type = v.type;
             chk.validateAnnotations(tree.mods.annotations, v);
         }

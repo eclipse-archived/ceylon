@@ -27,6 +27,8 @@ package com.sun.tools.javac.code;
 
 import java.util.*;
 
+import javax.tools.JavaFileObject;
+
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.List;
 
@@ -281,6 +283,7 @@ public class Types {
     	
         Type base = s.baseType();
         TypeSymbol tsym = s.tsym;
+
         String sStr = tsym.toString();
         if (sStr.equals("ceylon.Optional") &&
         		base.tag == CLASS) {
@@ -293,6 +296,12 @@ public class Types {
         		}
         	}
         }
+        
+        // The placeholder type for ceylon temporaries.  It only exists
+        // while a temporary is declared, and will be replaced by the
+        // type of an expression.
+        if (sStr.equals("ceylon.Any"))
+        	return true;
         
         return false;
     }

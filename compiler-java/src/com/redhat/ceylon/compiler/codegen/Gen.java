@@ -580,22 +580,36 @@ public class Gen {
     		CeylonTree.ExistsExpression exists =
     			(CeylonTree.ExistsExpression)stmt.condition.operand;
     		CeylonTree.MemberName name = exists.name;
-    		JCExpression type = variableType(exists.type, null);
-    		JCExpression expr = convertExpression(exists.expr);
+    		
+    		Name tmp = names.fromString(tempName());
+    		Name tmp2 = names.fromString(name.asString());
+
+    		JCExpression type;
+    		if (exists.type == null) {
+    			type = makeSelect("ceylon", "Any");
+    		} else {    		
+    			type = variableType(exists.type, null);
+    		}
+    		
+    		JCExpression expr;
+    		if (exists.expr == null) {
+    			expr = at(stmt).Ident(tmp2);
+    		} else {
+    			expr = convertExpression(exists.expr);
+    		}
+    		
     		expr = at(stmt).Apply(null, 
     				at(stmt).Select(expr, names.fromString("$internalErasedExists")),
     					List.<JCExpression>nil());
     		
-    		Name tmp = names.fromString(tempName());
-    		Name tmp2 = names.fromString(name.asString());
     		// This temp variable really should be SYNTHETIC, but then javac
     		// won't let you use it...
     		JCVariableDecl decl = 
             	at(stmt).VarDef
-            			(make.Modifiers(0), tmp, type, expr);
+            			(make.Modifiers(FINAL), tmp, type, expr);
     		JCVariableDecl decl2 = 
             	at(stmt).VarDef
-            			(make.Modifiers(0), tmp2, type, at(stmt).Ident(tmp));
+            			(make.Modifiers(FINAL), tmp2, type, at(stmt).Ident(tmp));
     		thenPart = at(stmt).Block(0, List.<JCStatement>of(decl2, thenPart));
     		
         	JCStatement cond = 
