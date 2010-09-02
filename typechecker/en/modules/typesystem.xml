@@ -505,7 +505,7 @@ String? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
-        <programlisting>TypeParam := OrdinaryTypeParam | DimensionalTypeParam</programlisting>
+        <programlisting>TypeParam := OrdinaryTypeParam | "#" DimensionalTypeParam</programlisting>
         
         <section id="ordinarytypeparameters">
             <title>Ordinary type parameters and variance</title>
@@ -644,9 +644,9 @@ String? firstWord = words[0];</programlisting>
         <para>Dimensional type parameters are distinguished by the initial lowercase
         identifier.</para>
         
-        <programlisting>Vector&lt;n&gt;</programlisting>
+        <programlisting>Vector&lt;#n&gt;</programlisting>
         
-        <programlisting>Matrix&lt;h,w&gt;</programlisting>
+        <programlisting>Matrix&lt;#h,#w&gt;</programlisting>
         
         </section>
         
@@ -840,7 +840,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <para>A type argument is a type or a dimension:</para>
         
-        <programlisting>TypeArgument := Type | Dimension</programlisting>
+        <programlisting>TypeArgument := Type | "#" Dimension</programlisting>
         
         <section id="dimensions">
             <title>Dimensions</title>
@@ -894,13 +894,13 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
         <programlisting>Map&lt;Key, Value&gt;</programlisting>
         
-        <programlisting>Vector&lt;10&gt;</programlisting>
-        <programlisting>Matrix&lt;x,y&gt;</programlisting>
+        <programlisting>Vector&lt;#10&gt;</programlisting>
+        <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
         
         <comment><para>TODO: should we allow ranges as arguments to dimensional type 
-        parameters, for example, <literal>Vector&lt;0...&gt;</literal> or
-        <literal>Vector&lt;1..10&gt;</literal>, where <literal>Vector&lt;n&gt;</literal>
-        is a subtype of <literal>Vector&lt;min..max&gt;</literal> if 
+        parameters, for example, <literal>Vector&lt;#0...&gt;</literal> or
+        <literal>Vector&lt;#1..10&gt;</literal>, where <literal>Vector&lt;#n&gt;</literal>
+        is a subtype of <literal>Vector&lt;#min..max&gt;</literal> if 
         <literal>min&lt;=n&lt;=max</literal>.</para></comment>
         
         </section>

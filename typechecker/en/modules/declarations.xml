@@ -1109,8 +1109,8 @@ public User(String username, Person person);</programlisting>
     return TreeSet(element)
 }</programlisting>
 
-        <programlisting>public Float[n] float&lt;n&gt;(Decimal[n] decimals) {
-    return Vector&lt;Float,n&gt;() containing (Bound&lt;n&gt; i) (decimals[i].float)
+        <programlisting>public Float[n] float&lt;#n&gt;(Decimal[n] decimals) {
+    return Vector&lt;Float,#n&gt;() containing (Bounded&lt;#n&gt; i) (decimals[i].float)
 }</programlisting>
 
         <para>Note that a method which declares the return type <literal>Void</literal>

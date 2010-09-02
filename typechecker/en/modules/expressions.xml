@@ -138,7 +138,7 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of one 
-            of the the built-in numeric types, of <literal>Bits&lt;n&gt;</literal>, of 
+            of the the built-in numeric types, of <literal>Bits&lt;#n&gt;</literal>, of 
             <literal>ceylon.lang.Range</literal>, of <literal>ceylon.lang.Entry</literal>, or of 
             <literal>ceylon.lang.String</literal> without execution of the initializer of the class, 
             whenever any expression is evaluated. Furthermore, it is permitted to use such a 
@@ -268,9 +268,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Natural number literals</title>
         
         <para>A natural number literal <literal>n</literal> is an 
-        expression of type <literal>ceylon.lang.Bounded&lt;n&gt;</literal>.</para>
+        expression of type <literal>ceylon.lang.Bounded&lt;#n&gt;</literal>.</para>
         
-        <programlisting>Bounded&lt;5&gt; five = 5;</programlisting>
+        <programlisting>Bounded&lt;#5&gt; five = 5;</programlisting>
         
         <para>An extension supports conversion to the type 
         <literal>Natural</literal>.</para>
@@ -3227,7 +3227,7 @@ setPerson(person);</programlisting>
             <entry>bounded lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Y[n]</literal></entry>
-            <entry><literal>Bound&lt;n&gt;</literal></entry>
+            <entry><literal>Bound&lt;#n&gt;</literal></entry>
             <entry><literal>Gettable&lt;Y&gt;</literal></entry>
         </row>
         <row>
@@ -3236,7 +3236,7 @@ setPerson(person);</programlisting>
             <entry>bounded lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>OpenBoundedSequence&lt;Y,n&gt;</literal></entry>
-            <entry><literal>Bound&lt;n&gt;</literal></entry>
+            <entry><literal>Bound&lt;#n&gt;</literal></entry>
             <entry><literal>Settable&lt;Y&gt;</literal></entry>
         </row>
         <row>
@@ -3536,7 +3536,7 @@ setPerson(person);</programlisting>
     </table>
     
         <comment><para>TODO: Should we have a binary <literal>upto</literal> operator
-        for producing ranges of <literal>Bounded&lt;n&gt;</literal>?</para></comment>
+        for producing ranges of <literal>Bounded&lt;#n&gt;</literal>?</para></comment>
     
         <comment><para>TODO: Should we have operators for performing arithmetic with
         datetimes and durations, constructing intervals and combining dates and 
@@ -3819,7 +3819,7 @@ setPerson(person);</programlisting>
         is considered a bit string of length one, so these operators also apply to 
         <literal>Boolean</literal> values. Note that in Ceylon these operators have a higher 
         precedence than they have in C or Java. Note also that the built-in numeric types are
-        not considered bit strings, so explicit conversion to <literal>Bits&lt;n&gt;</literal>
+        not considered bit strings, so explicit conversion to <literal>Bits&lt;#n&gt;</literal>
         is required before these operations may be applied to a numeric value.</para>
     
     <table>
@@ -3852,35 +3852,35 @@ setPerson(person);</programlisting>
             <entry>complement</entry>
             <entry><literal>rhs.complement</literal></entry>
             <entry></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>|</literal></entry>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;</literal></entry>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>^</literal></entry>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
 
         
@@ -3891,27 +3891,27 @@ setPerson(person);</programlisting>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Settable&lt;Bits&lt;n&gt;&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bits&lt;#n&gt;&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Settable&lt;Bits&lt;n&gt;&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bits&lt;#n&gt;&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Settable&lt;Bits&lt;n&gt;&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
-            <entry><literal>Bits&lt;n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bits&lt;#n&gt;&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bits&lt;#n&gt;</literal></entry>
         </row>
         
     </tbody>
