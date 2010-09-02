@@ -120,11 +120,6 @@
         return ... 
     }
     
-    doc "A log object for the type."
-    public default Log log { 
-        return type.log 
-    }
-    
     doc "Transform the given object to a string. Override to
          customize the render operator and character string 
          template expression interpolation."
@@ -155,6 +150,13 @@
         return this.type.assignableTo(type)
     }    
  -->
+<!--
+    doc "A log object for the type."
+    public default Log log { 
+        return type.log 
+    }
+ -->
+    
 
     </section>
 
@@ -1993,18 +1995,20 @@ class String(Character[] characters)
          given callable type."
     public Set<MemberClass<X,Y,P...>> classes<Y,P...>(Type<Callable<Y,P...>> type);
     
+    public Log log;
+    
     ...
     
 }]]></programlisting>
         
         <para>An instance of <literal>Interface</literal> represents an interface.</para>
         
-        <programlisting><![CDATA[public interface Interface<X> 
+        <programlisting><![CDATA[public interface Interface<out X> 
         satisfies Type<X> {}]]></programlisting>
 
         <para>An instance of <literal>Class</literal> represents a class.</para>
         
-        <programlisting><![CDATA[public interface Class<X, P...> 
+        <programlisting><![CDATA[public interface Class<out X, P...> 
         satisfies Type<X>, Callable<X,P...> {
     
     public Boolean abstract;
@@ -2099,6 +2103,72 @@ class String(Character[] characters)
             given T satisfies Object;
 }]]></programlisting>
 
+    </section>
+    
+    <section>
+        <title>Logging</title>
+        
+        <para>The class <literal>lang.Log</literal> allows all modules in an application
+        to send log messages to a common output stream.</para>
+        
+        <programlisting><![CDATA[public class Log(LogChannel channel, String category) {
+    
+    public void log(LogPriority priority, Gettable<String> message) {
+        if ( channel.enabled(priority) ) {
+            send(priority, message) );
+        }
+    }
+    
+    public void log(LogPriority priority, String message) {
+        if ( channel.enabled(priority) ) {
+            send(priority, message) );
+        }
+    }
+    
+    void send(LogPriority priority, String message) {
+        channel.send( priority, LogMessage(priority, category, message) );
+    }
+    
+}]]></programlisting>
+
+        <para>The class <literal>LogPriority</literal> defines an extensible set of
+        levels of importance for log messages.</para>
+
+        <programlisting><![CDATA[public class LogPriority() {
+    case debug, case info, case warn, case error ...
+}]]></programlisting>
+
+        <para>The class <literal>LogMessage</literal> describes a log message:</para>
+        
+        <programlisting><![CDATA[public class LogMessage(LogPriority priority, String category, String message) {
+    public Priority priority = priority;
+    public String category = category;
+    public String message = message;
+    public Datetime datetime = currentDatetime();
+}]]></programlisting>
+
+        <para>The following extensions make it easy to log from any object:</para>
+        
+        <programlisting><![CDATA[public extension class ObjectLog(Object object) {
+    public Log log =  object.type.log;
+}]]></programlisting>
+
+        <programlisting><![CDATA[public extension class Logs(Log log) {
+    public void debug(Gettable<String> message) { log.log(debug, message); }
+    public void debug(String message) { log.log(debug, message); }
+    public void info(Gettable<String> message) { log.info(debug, message); }
+    public void info(String message) { log.info(debug, message); }
+    public void warn(Gettable<String> message) { log.warn(debug, message); }
+    public void warn(String message) { log.warn(debug, message); }
+    public void error(Gettable<String> message) { log.error(debug, message); }
+    public void error(String message) { log.error(debug, message); }
+}]]></programlisting>
+
+        <comment><para>TODO: I would really like to turn <literal>Type.log</literal> 
+        into an extension. But where would it get its <literal>LogChannel</literal>
+        from? There is no shared state in Ceylon! We need a toplevel attribute 
+        somewhere.</para></comment>
+    
     </section>
     
     <!--
