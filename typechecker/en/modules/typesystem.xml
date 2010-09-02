@@ -891,7 +891,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>Entry&lt;String,Person&gt;</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
-        <programlisting>Callable&lt;X,T,P..&gt;</programlisting>
+        <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
         <programlisting>Map&lt;Key, Value&gt;</programlisting>
         
         <programlisting>Vector&lt;10&gt;</programlisting>
@@ -1069,7 +1069,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
             </listitem>
             <listitem>
                 <para>obtaining the numeric value of a dimensional type parameter, for
-                example, <literal>for (Natural i in [0..n])</literal>.</para>
+                example, <literal>for (Natural i in 0..n)</literal>.</para>
             </listitem>
         </itemizedlist>
         
