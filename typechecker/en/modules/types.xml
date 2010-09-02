@@ -104,17 +104,6 @@
         return builder
     }
     
-    doc "Determine if the instance belongs to the given |Category|."
-    see (Category)
-    public Boolean in(Category cat) {
-        return cat.contains(this)
-    }
-    
-    doc "Determine if the instance is one of the given objects."
-    public Boolean in(Object... objects) {
-        return forAny (Object elem in objects) some (elem == this)
-    }
-    
     doc "The |Type| of the instance."
     public Type<subtype> type {
         return ... 
@@ -142,7 +131,29 @@
     <programlisting>public Boolean identical(Object x, Object y) { return ... }</programlisting>
     <programlisting>public Integer identityHash(Object x) { return ... }</programlisting>
     
+    
+    <para>The following extension defines the <literal>in</literal>
+    operator:</para>
+    
+    <programlisting><![CDATA[public extension class Objects(Object object) {
+    
+    doc "Determine if this object belongs to the given |Category|.
+         The binary |in| operator."
+    see (Category)
+    public Boolean in(Category cat) {
+        return cat.contains(object)
+    }
+        
+    doc "Determine if this object is produced by the |Iterable|.
+         The binary |in| operator."
+    see (Iterable<Object>)
+    public Boolean in(Iterable<Object> objects) {
+        return forAny (Object elem in objects) some (elem == object)
+    }
 
+}]]></programlisting>
+    
+    
 <!-- 
     doc "Binary assignability operator |x is Y|. Determine if the 
          instance is of the given |Type|."
