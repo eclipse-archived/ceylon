@@ -320,6 +320,12 @@
             <para><literal>ceylon.message</literal> - the message server (based 
             on JBoss HornetQ)</para>
         </listitem>
+        <listitem>
+            <para><literal>ceylon.xml</literal> - the XML parser</para>
+        </listitem>
+        <listitem>
+            <para><literal>ceylon.html</literal> - the HTML construction kit</para>
+        </listitem>
     </itemizedlist>
     
     </section>
