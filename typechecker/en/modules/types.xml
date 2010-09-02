@@ -73,14 +73,18 @@
     
     doc "Determine if the instance is one of the given objects."
     public Boolean in(Object... objects) {
-        return forAny (Object elem in objects) some elem == this
+        return forAny (Object elem in objects) some (elem == this)
     }
     
     doc "The |Type| of the instance."
-    public Type<subtype> type { return ... }
+    public Type<subtype> type {
+        return ... 
+    }
     
     doc "A log object for the type."
-    public default Log log { return type.log }
+    public default Log log { 
+        return type.log 
+    }
     
     doc "Transform the given object to a string. Override to
          customize the render operator and character string 
@@ -680,11 +684,11 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "The value associated with the key."
     public V value = value;
     
-    override public Boolean equals(Object that) {
+    override Boolean equals(Object that) {
         return equals(that, Entry.key, Entry.value)
     }
     
-    override public Integer hash {
+    override Integer hash {
         return hash(Entry.key, Entry.value)
     }
 
@@ -795,7 +799,7 @@ while (exists local value = indexed.indexedValue(i)) {
         satisfies Correspondence<U, V> 
         given U satisfies Object {
     
-    override public Settable<V?> value(U key);
+    override Settable<V?> value(U key);
     
 }]]></programlisting>
 
@@ -1597,16 +1601,16 @@ class String(Character[] characters)
     ... 
     
     doc "Implicit type promotion to |Integer|"
-    override public extension Integer integer { return ... }
+    override extension Integer integer { return ... }
     
     doc "Implicit type promotion to |Whole|"
-    override public extension Whole whole { return ... }
+    override extension Whole whole { return ... }
     
     doc "Implicit type promotion to |Float|"
-    override public extension Float float { return ... }
+    override extension Float float { return ... }
     
     doc "Implicit type promotion to |Decimal|"
-    override public extension Decimal decimal { return ... }
+    override extension Decimal decimal { return ... }
 
     doc "Shift bits left by the given number of places"
     public Natural leftShift(Natural digits) { return ... }
@@ -1637,13 +1641,13 @@ class String(Character[] characters)
     ...
     
     doc "Implicit type promotion to |Whole|"
-    override public extension Whole whole { return ... }
+    override extension Whole whole { return ... }
     
     doc "Implicit type promotion to |Float|"
-    override public extension Float float { return ... }
+    override extension Float float { return ... }
 
     doc "Implicit type promotion to |Decimal|"
-    override public extension Decimal decimal { return ... }
+    override extension Decimal decimal { return ... }
 
     public extension class StringToInteger(String string) {
     
@@ -1664,7 +1668,7 @@ class String(Character[] characters)
     public small Natural precision = ...;
     
     doc "Implicit type promotion to |Decimal|"
-    override public extension Decimal decimal { return ... }
+    override extension Decimal decimal { return ... }
     
     public extension class StringToWhole(String string) {
     
@@ -1686,7 +1690,7 @@ class String(Character[] characters)
     public Float ln { return ... }
     
     doc "Implicit type promotion to |Decimal|"
-    override public extension Decimal decimal { return ... }
+    override extension Decimal decimal { return ... }
     
     public extension class StringToFloat(String string) {
     
@@ -2685,11 +2689,11 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          given comparison."
     public void resort(Comparison by(X x, X y));
     
-    override public OpenList<X> leading(Natural length);
-    override public OpenList<X> trailing(Natural length);
-    override public OpenList<X> sublist(Natural from, Natural to);
-    override public OpenList<X> reversed;
-    override public OpenMap<Natural,X> map;
+    override OpenList<X> leading(Natural length);
+    override OpenList<X> trailing(Natural length);
+    override OpenList<X> sublist(Natural from, Natural to);
+    override OpenList<X> reversed;
+    override OpenMap<Natural,X> map;
     
 }]]></programlisting>
             
@@ -2761,9 +2765,9 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          entries which were removed."
     public Map<U,V> remove(Boolean where(U key));
     
-    override public OpenSet<U> keys;
-    override public OpenBag<V> values;
-    override public OpenMap<V, Set<U>> inverse;
+    override OpenSet<U> keys;
+    override OpenBag<V> values;
+    override OpenMap<V, Set<U>> inverse;
     
 }]]></programlisting>
             
@@ -2793,7 +2797,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <programlisting><![CDATA[public mutable interface OpenBag<X> 
         satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> {
         
-    override public OpenMap<X,Natural> map;
+    override OpenMap<X,Natural> map;
     
 }]]></programlisting>
             
