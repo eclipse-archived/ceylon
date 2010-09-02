@@ -12,11 +12,11 @@ class Primaries() {
 		Character newline = `\n`;
 		Quoted quoted = 'quoted literal';
 		
-		Type<Literals> primariesClass = Primaries;
-		Type<Literals> literalsClass = Primaries.Literals;
+		Class<Primaries> primariesClass = Primaries;
+		Type<Primaries.Literals> literalsClass = Primaries.Literals;
 		Attribute<Literals,String> helloAttribute = hello;
-		Attribute<Literals,String> oneAttribute = Primaries.Literals.one;
-		Method<Object,Boolean> method = Object.equals;
+		Attribute<Primaries.Literals,Natural> oneAttribute = Primaries.Literals.one;
+		Method<Object,Boolean,Object> method = Object.equals;
 		
 	}
 	
