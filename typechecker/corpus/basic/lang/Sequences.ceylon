@@ -7,7 +7,7 @@ public extension class Sequences<out X>(Sequence<X> sequence) {
     }
     
     doc "The last element of the sequence, or 
-         |null| if the sequence has no elements.."
+         |null| if the sequence has no elements."
     public X? last {
         if (exists Natural index = sequence.lastIndex) {
             return sequence[index]
