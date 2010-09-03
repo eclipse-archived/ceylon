@@ -1,8 +1,54 @@
 <chapter id="modulesandtools">
-    <title>Module architecture and toolset</title>
+    <title>Module system and toolset</title>
     
     <para>The Ceylon module architecture enables a toolset which relieves 
-    developers of many mundane tasks.</para>
+    developers of many mundane tasks. The module system specifies:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the format of packaged runnable module archives and
+            source archives,</para>
+        </listitem>
+        <listitem>
+            <para>the layout of a module repository, and</para>
+        </listitem>
+        <listitem>
+            <para>the format of a module descriptor file which contains
+            information about the module, along with a list of its
+            versioned dependencies.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Thus, developers are never exposed to individual <literal>.class</literal>
+    files, and are not required to manually manage module archives using the 
+    operating system file manager. Instead, the toolset helps automate the 
+    management of modules within module repositories.</para>
+
+<section id="classloaders">
+    <title>Class loader architecture</title>
+    
+    <para>Ceylon supports a simplified class loader architecture:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>The <emphasis>bootstrap</emphasis> class loader owns
+            classes required to bootstrap the module runtime. It is the
+            direct parent of all module class loaders, and its classes
+            are visible to all module class loaders.</para>
+        </listitem>
+        <listitem>
+            <para>A <emphasis>module</emphasis> class loader owns classes
+            belonging to a given version of a certain module. Its classes
+            are visible only to classes belonging to the module class loader
+            of a module which declares an explicit dependency on the given
+            version of the first module.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>At any time, there may be multiple versions of a certain module 
+    available in the VM.</para>
+    
+</section>
 
 <section id="modules">
     <title>Module architecture</title>
@@ -115,12 +161,28 @@
             </listitem>
         </itemizedlist>
         
-        <para>The module directory of the module archive is the directory
-        containing the package with the same name as the module. For 
-        example, the module directory for the module <literal>ceylon.lang</literal>
-        is the directory <literal>/ceylon/lang</literal>. The module directory 
-        for the module <literal>org.hibernate</literal> is the directory
-        <literal>/org/hibernate</literal>.</para>
+        <para>The <emphasis>module directory</emphasis> of the module archive 
+        is formed by replacing each period in the fully qualified package name 
+        with the directory separator character. For example, the module directory 
+        for the module <literal>ceylon.lang</literal> is:</para>
+        
+        <programlisting>/ceylon/lang</programlisting>
+        
+        <para>The module directory for the module <literal>org.hibernate</literal> 
+        is:</para>
+        
+        <programlisting>/org/hibernate</programlisting>
+        
+        <para>The <emphasis>package directory</emphasis> for a package 
+        belonging to the module archive is formed by replacing each period 
+        in the fully qualified package name with the directory separator 
+        character. For example, the package directory for the package 
+        <literal>org.hibernate.impl</literal> is:</para>
+        
+        <programlisting>/org/hibernate/impl</programlisting>
+        
+        <para>Inside a module archive, a <literal>.class</literal> file is
+        found in the package directory of the package to which it belongs.</para>
         
         <para>Thus, the structure of the module archive for the module
         <literal>org.hello</literal> might be the following:</para>
@@ -169,10 +231,9 @@
         
         <para>Inside a source archive, a Ceylon or Java source file is located in 
         the <emphasis>package directory</emphasis> of the package to which the 
-        compilation unit belongs.</para>
-        
-        <para>The path of a package directory is formed by replacing every period 
-        with the directory separator character in the name of the package.</para>
+        compilation unit belongs. The package directory for a package belonging 
+        to the source archive is formed by replacing each period in the fully 
+        qualified package name with the directory separator character.</para>
         
         <para>Thus, the structure of the source archive for the module
         <literal>org.hello</literal> might be the following:</para>
