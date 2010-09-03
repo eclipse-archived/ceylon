@@ -11,12 +11,15 @@
     in general, also syntactically valid in the body of a nested declaration or of a 
     control structure, and vice-versa.</para>
     
-    <para>There exist two exceptions to this rule:</para>
+    <para>There exist three exceptions to this rule:</para>
     
     <itemizedlist>
         <listitem>
-            <para>the enumerated instance list of a toplevel class may not appear anywhere
-            else, and</para> 
+            <para>a class body may not end in a control directive,</para>
+        </listitem>
+        <listitem>
+            <para>an enumerated named instance list may only appear directly in the body 
+            of a toplevel class, and</para> 
         </listitem>
         <listitem>
             <para>the body of an interface may contain only abstract declarations.</para>
@@ -24,6 +27,10 @@
     </itemizedlist>
         
     <para>The scope of a declaration is governed by the block in which it occurs.</para>
+    
+    <comment><para>TODO: a named argument list looks very much like a block, but is not
+    currently defined that way. The language would be more regular if we decided to just
+    make it a block.</para></comment>
     
     <section id="nameresolution">
         <title>Name resolution</title>
@@ -196,9 +203,22 @@ try (lock) { ... }</programlisting>
         <section id="expressionstatements">
             <title>Expression statements</title>
             
-        <para>Only certain expressions are valid statements: assignment, prefix or 
-        postfix increment or decrement, invocation of a method and instantiation of 
-        a class.</para>
+        <para>Only certain expressions are valid statements:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>assignment,</para>
+            </listitem>
+            <listitem>
+                <para>prefix or postfix increment or decrement,</para>
+            </listitem>
+            <listitem>
+                <para>invocation of a method,</para>
+            </listitem>
+            <listitem>
+                <para>instantiation of a class.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>ExpressionStatement := ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
         
@@ -229,8 +249,6 @@ try (lock) { ... }</programlisting>
 
         <programlisting>DirectiveStatement := Directive ";"?</programlisting>
         
-        <programlisting>Directive := Return | Throw | Break | Continue | Retry</programlisting>
-        
         <para>Ceylon provides the following control directives:</para>
         
         <itemizedlist>
@@ -244,6 +262,10 @@ try (lock) { ... }</programlisting>
             block, reinitializing all resources.</listitem>
         </itemizedlist>
                 
+        <programlisting>Directive := Return | Throw | Break | Continue | Retry</programlisting>
+
+        <para>For example:</para>
+        
         <programlisting>throw Exception()</programlisting>
         <programlisting>retry</programlisting>
         <programlisting>return x+y</programlisting>
