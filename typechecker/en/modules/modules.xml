@@ -65,7 +65,11 @@
     the Ceylon distribution.</para>
     
     <para>Red Hat maintains a central module repository at 
-    <literal>http://modules.ceylon.org</literal>.</para>
+    <literal>http://modules.ceylon.org</literal>. Read access to this
+    site is free of registration and free of charge. Ceylon projects which
+    distribute their modules under a royalty-free license may apply for a 
+    user account which provides write access to the central module
+    repository.</para>
     
     <section id="modulenamesandversionidentifiers">
         <title>Module names and version identifiers</title>
