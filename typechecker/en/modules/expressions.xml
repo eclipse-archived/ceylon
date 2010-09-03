@@ -1,7 +1,7 @@
 <chapter id="expressions">
     <title>Expressions</title>
     
-    <para>Ceylon expressions are significantly more powerful than Java, allowing a 
+    <para>Ceylon expressions are significantly more flexible than Java, allowing a 
     more declarative style of programming.</para>
     
     <para>Expressions are formed from:</para>
