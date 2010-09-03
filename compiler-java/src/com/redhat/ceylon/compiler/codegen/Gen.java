@@ -776,9 +776,6 @@ public class Gen {
             public void visit(CeylonTree.Condition value) {
             	result = convertExpression(value.operand);
             }
-            public void visit(CeylonTree.PrefixExpression expr) {
-                result = convert(expr.operator);
-            }
           }
 
         V v = new V();
