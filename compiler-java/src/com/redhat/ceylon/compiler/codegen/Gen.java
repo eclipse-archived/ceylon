@@ -291,7 +291,9 @@ public class Gen {
         
         processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
         
-        restype.append(makeIdent(decl.returnType.name().components()));
+        CeylonTree.TypeName name = decl.returnType.name();
+        if (name != null)
+            restype.append(makeIdent(name.components()));
     }                
 
     void processAnnotations(List<CeylonTree.Annotation> ceylonAnnos,
