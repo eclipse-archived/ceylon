@@ -765,9 +765,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A single <literal>given</literal> clause may specify multiple constraints.</para>
+        <para>An initialization parameter specification allows instantiation of the type 
+        parameter.</para>
         
         <para>A constraint may not refer to a varargs type parameter.</para>
+        
+        <para>A single <literal>given</literal> clause may specify multiple constraints.</para>
         
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
@@ -775,10 +778,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         a covariant or contravariant type parameter.</para>
         -->
         
-        <para>Initialization parameter specifications allow instantiation of the generic 
-        type.</para>
-        
-        <para>A constraints affects the type arguments that can be assigned to a type
+        <para>A constraint affects the type arguments that can be assigned to a type
         parameter:</para>
         
         <itemizedlist>
@@ -806,6 +806,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>given X satisfies Number&lt;X&gt;
 given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+       
+        <programlisting>given S satisfies Decimal[n]</programlisting>
 
         <programlisting>given T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
     
@@ -999,7 +1001,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         </listitem>
         </itemizedlist>
         
-        <programlisting>Method&lt;Order, Item, Product prod, Natural&gt;</programlisting>
+        <programlisting>Method&lt;Order, Item, Product, Natural&gt;</programlisting>
         
         <comment><para>TODO: should we let you fill in the formal parameter names, so
         you can call this thing using named parameters?
