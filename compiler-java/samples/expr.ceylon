@@ -14,9 +14,9 @@ public void expr(ceylon.Process process) {
     //process.writeLine((2^3).string());
 
     // Comparisons
-    process.writeLine((2==3).string());
-    process.writeLine((2===3).string());
-    process.writeLine((2!=3).string());
+    //process.writeLine((2==3).string());
+    //process.writeLine((2===3).string());
+    //process.writeLine((2!=3).string());
     process.writeLine((2<3).string());
     process.writeLine((2>3).string());
     process.writeLine((2<=3).string());

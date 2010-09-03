@@ -696,7 +696,7 @@ public class Gen {
             }
             public void visit(NaturalLiteral lit) {
                 JCExpression n = make(expr).Literal(lit.value.longValue());
-                result = make(expr).Apply (null, makeSelect("ceylon", "Integer", "instance"),
+                result = make(expr).Apply (null, makeSelect("ceylon", "Natural", "instance"),
                         List.of(n));
             }
             public void visit(CeylonTree.SimpleStringLiteral string) {
@@ -742,9 +742,9 @@ public class Gen {
         operatorImplementors.put(CeylonParser.BITWISEAND, "and");
         operatorImplementors.put(CeylonParser.BITWISEOR,  "or");
         operatorImplementors.put(CeylonParser.BITWISEXOR, "xor");
-        operatorImplementors.put(CeylonParser.EQEQ,       "operatorEqual");
-        operatorImplementors.put(CeylonParser.IDENTICAL,  "operatorIdentical");
-        operatorImplementors.put(CeylonParser.NOTEQ,      "operatorNotEqual");
+        //operatorImplementors.put(CeylonParser.EQEQ,       "operatorEqual");
+        //operatorImplementors.put(CeylonParser.IDENTICAL,  "operatorIdentical");
+        //operatorImplementors.put(CeylonParser.NOTEQ,      "operatorNotEqual");
         operatorImplementors.put(CeylonParser.COMPARE,    "compare");
 
         // Operators that act on Comparison objects
@@ -769,9 +769,9 @@ public class Gen {
         case CeylonParser.BITWISEAND:
         case CeylonParser.BITWISEOR:
         case CeylonParser.BITWISEXOR:
-        case CeylonParser.EQEQ:
-        case CeylonParser.IDENTICAL:
-        case CeylonParser.NOTEQ:
+        //case CeylonParser.EQEQ:
+        //case CeylonParser.IDENTICAL:
+        //case CeylonParser.NOTEQ:
         case CeylonParser.COMPARE:
             binary_operator = true;
             break;

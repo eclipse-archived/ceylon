@@ -37,18 +37,6 @@ public final class Integer
         return instance(value % op.value);
     }
 
-    public ceylon.Boolean operatorEqual(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value == op.value);
-    }
-
-    public ceylon.Boolean operatorIdentical(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value == op.value); // FIXME: correct?
-    }
-
-    public ceylon.Boolean operatorNotEqual(ceylon.Integer op) {
-        return ceylon.Boolean.instance(value != op.value);
-    }
-
     public ceylon.Integer inverse() {
         return instance(-value);
     }
