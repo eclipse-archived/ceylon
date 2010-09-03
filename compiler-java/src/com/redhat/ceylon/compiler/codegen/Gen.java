@@ -636,6 +636,9 @@ public class Gen {
             public void visit(CeylonTree.Operator op) {
                 result = make(access).Select(convertExpression(op), names.fromString(memberName.name));
             }
+            public void visit(CeylonTree.PrefixExpression expr) {
+                visit(expr.operator);
+            }
         }
 
         V v = new V();
@@ -727,41 +730,58 @@ public class Gen {
         return v.result;
     }
 
-    private static Map<Integer, String> operatorImplementors;
+    private static Map<Integer, String> unaryOperators;
+    private static Map<Integer, String> binaryOperators;
 
     static {
-        operatorImplementors = new HashMap<Integer, String>();
+        unaryOperators  = new HashMap<Integer, String>();
+        binaryOperators = new HashMap<Integer, String>();
 
-        // Operators that act on the types themselves
-        operatorImplementors.put(CeylonParser.PLUS,       "plus");
-        operatorImplementors.put(CeylonParser.MINUS,      "minus");
-        operatorImplementors.put(CeylonParser.TIMES,      "times");
-        operatorImplementors.put(CeylonParser.DIVIDED,    "divided");
-        operatorImplementors.put(CeylonParser.POWER,      "power");
-        operatorImplementors.put(CeylonParser.REMAINDER,  "remainder");
-        operatorImplementors.put(CeylonParser.BITWISEAND, "and");
-        operatorImplementors.put(CeylonParser.BITWISEOR,  "or");
-        operatorImplementors.put(CeylonParser.BITWISEXOR, "xor");
-        //operatorImplementors.put(CeylonParser.EQEQ,       "operatorEqual");
-        //operatorImplementors.put(CeylonParser.IDENTICAL,  "operatorIdentical");
-        //operatorImplementors.put(CeylonParser.NOTEQ,      "operatorNotEqual");
-        operatorImplementors.put(CeylonParser.COMPARE,    "compare");
+        // Unary operators
+        unaryOperators.put(CeylonParser.MINUS,       "inverse");
+        unaryOperators.put(CeylonParser.BITWISENOT,  "complement");
 
-        // Operators that act on Comparison objects
-        operatorImplementors.put(CeylonParser.GT,         "larger");
-        operatorImplementors.put(CeylonParser.LT,         "smaller");
-        operatorImplementors.put(CeylonParser.GTEQ,       "largeAs");
-        operatorImplementors.put(CeylonParser.LTEQ,       "smallAs");
+        // Binary operators that act on types
+        binaryOperators.put(CeylonParser.PLUS,       "plus");
+        binaryOperators.put(CeylonParser.MINUS,      "minus");
+        binaryOperators.put(CeylonParser.TIMES,      "times");
+        binaryOperators.put(CeylonParser.DIVIDED,    "divided");
+        binaryOperators.put(CeylonParser.POWER,      "power");
+        binaryOperators.put(CeylonParser.REMAINDER,  "remainder");
+        binaryOperators.put(CeylonParser.BITWISEAND, "and");
+        binaryOperators.put(CeylonParser.BITWISEOR,  "or");
+        binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
+        //binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
+        //binaryOperators.put(CeylonParser.IDENTICAL,  "operatorIdentical");
+        //binaryOperators.put(CeylonParser.NOTEQ,      "operatorNotEqual");
+        binaryOperators.put(CeylonParser.COMPARE,    "compare");
+
+        // Binary operators that act on intermediary Comparison objects
+        binaryOperators.put(CeylonParser.GT,         "larger");
+        binaryOperators.put(CeylonParser.LT,         "smaller");
+        binaryOperators.put(CeylonParser.GTEQ,       "largeAs");
+        binaryOperators.put(CeylonParser.LTEQ,       "smallAs");
     }
 
     JCExpression convert(CeylonTree.Operator op) {
+        boolean unary_operator  = false;
         boolean binary_operator = false;
         boolean lose_comparison = false;
 
         int operator = op.operatorKind;
         switch (operator) {
-        case CeylonParser.PLUS:
         case CeylonParser.MINUS:
+            if (op.operands.length() == 1)
+                unary_operator = true;
+            else
+                binary_operator = true;
+            break;
+            
+        case CeylonParser.BITWISENOT:
+            unary_operator = true;
+            break;
+
+        case CeylonParser.PLUS:
         case CeylonParser.TIMES:
         case CeylonParser.POWER:
         case CeylonParser.DIVIDED:
@@ -789,19 +809,28 @@ public class Gen {
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
         }
 
+        assert unary_operator ^ binary_operator;
         CeylonTree[] operands = op.toArray();
 
         JCExpression result = null;
-        if (binary_operator) {
+        if (unary_operator) {
+            assert operands.length == 1;
             result = make(op).Apply(null,
                                     make(op).Select(convertExpression(operands[0]),
-                                                    names.fromString(operatorImplementors.get(operator))),
+                                                    names.fromString(unaryOperators.get(operator))),
+                                    List.<JCExpression>nil());
+        }
+        if (binary_operator) {
+            assert operands.length == 2;
+            result = make(op).Apply(null,
+                                    make(op).Select(convertExpression(operands[0]),
+                                                    names.fromString(binaryOperators.get(operator))),
                                     List.of(convertExpression(operands[1])));
 
             if (lose_comparison) {
                 result = make(op).Apply(null,
                                         make(op).Select(result,
-                                                        names.fromString(operatorImplementors.get(op.operatorKind))),
+                                                        names.fromString(binaryOperators.get(op.operatorKind))),
                                         List.<JCExpression>nil());
             }
         }
