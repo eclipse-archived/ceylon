@@ -157,7 +157,7 @@
                 if there is no declared upper bound, and</para>
             </listitem>
             <listitem>
-                <para>replacing the type of any varargs type parameter in the signature with 
+                <para>replacing the type of any sequenced type parameter in the signature with 
                 <literal>ceylon.lang.Void...</literal>, and then</para>
             </listitem>
             <listitem>
@@ -175,7 +175,7 @@
         
         <comment><para>TODO: non-identical, or non-assignable?</para></comment>
         
-        <comment><para>TODO: what about varargs parameters? what does Java do?</para></comment>
+        <comment><para>TODO: what about sequenced parameters? what does Java do?</para></comment>
             
         <para>A type may not have:</para>
         
@@ -306,8 +306,8 @@
         
         <programlisting>Type := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) Abbreviation*</programlisting>
         
-        <para>If a type has type parameters or a varargs type parameter, a type argument 
-        list must be specified. If a type has no type parameters, and no varargs type 
+        <para>If a type has type parameters or a sequenced type parameter, a type argument 
+        list must be specified. If a type has no type parameters, and no sequenced type 
         parameter, no type argument list may be specified.</para>        
         
          <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
@@ -468,7 +468,7 @@ String? firstWord = words[0];</programlisting>
         <para>Methods, classes, interfaces and aliases may declare one or more generic type 
         parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | VarargsTypeParam) "&gt;"</programlisting>
+        <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
@@ -690,27 +690,27 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         </section>
         
-        <section id="varargstypeparameters">
-            <title>Varargs type parameters</title>
+        <section id="sequencedtypeparameters">
+            <title>Sequenced type parameters</title>
         
-        <para>A <emphasis>varargs type parameter</emphasis>, identified by an elipsis
+        <para>A <emphasis>sequenced type parameter</emphasis>, identified by an elipsis
         <literal>...</literal> accepts a list of zero or more type arguments.</para>
         
-        <programlisting>VarargsTypeParam := TypeName "..."</programlisting>
+        <programlisting>SequencedTypeParam := TypeName "..."</programlisting>
         
-        <para>Varargs type parameters are always non-variant.</para>
+        <para>Sequenced type parameters are always non-variant.</para>
         
-        <para>Inside the declaration of the parameterized type or method, a varargs type 
-        parameter may be used as a type argument to other types which accept a varargs type 
+        <para>Inside the declaration of the parameterized type or method, a sequenced type 
+        parameter may be used as a type argument to other types which accept a sequenced type 
         parameter, or it may be used as the type of the last formal parameter declared by a 
-        method. It may not appear in any other position. The varargs type parameter acts as 
+        method. It may not appear in any other position. The sequenced type parameter acts as 
         a pseudo-type. It is treated by the Ceylon compiler as if it were a type with no 
         members, to which no other type may be assigned, and which can only by assigned to 
         itself.</para>
         
         <programlisting>Method&lt;X, T, P...&gt;</programlisting>
         
-        <comment><para>TODO: should we let you declare a variant varargs type parameter?
+        <comment><para>TODO: should we let you declare a variant sequenced type parameter?
         This is useful for modelling tuples.</para></comment>
         
         <comment><para>TODO: should we let you write things like:</para>
@@ -768,7 +768,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>An initialization parameter specification allows instantiation of the type 
         parameter.</para>
         
-        <para>A constraint may not refer to a varargs type parameter.</para>
+        <para>A constraint may not refer to a sequenced type parameter.</para>
         
         <para>A single <literal>given</literal> clause may specify multiple constraints.</para>
         
@@ -817,7 +817,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
         down to the <literal>given</literal> clause?</para></comment>
         
-        <comment><para>TODO: Should we let you declare a constraint for a varargs type 
+        <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
         parameter?</para>
         <programlisting>class Foo&lt;P...&gt;(P... args) 
         given P satisfies Comparable&lt;P&gt; {
@@ -840,12 +840,12 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
         
-        <para>A type argument list is a list of types and dimensions, and an optional varargs 
+        <para>A type argument list is a list of types and dimensions, and an optional sequenced 
         type argument.</para>
         
-        <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | VarargsType) "&gt;"</programlisting>
+        <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
         
-        <programlisting>VarargsType := TypeName "..."</programlisting>
+        <programlisting>SequencedType := TypeName "..."</programlisting>
         
         <para>A type argument is a type or a dimension:</para>
         
@@ -893,8 +893,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                  <para>a dimension is specified for every dimensional type parameter, and</para>
              </listitem>
              <listitem>
-                 <para>if the type parameter list has no varargs type parameter, then there
-                 are no additional type arguments, and no varargs type argument.</para>
+                 <para>if the type parameter list has no sequenced type parameter, then there
+                 are no additional type arguments, and no sequenced type argument.</para>
              </listitem>
         </itemizedlist>
         
@@ -987,17 +987,17 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         The dimension appears as a parenthesized expression in expressions involving
         the dimensional type parameter.</para>
         
-        <para>In the case of a varargs type parameter:</para>
+        <para>In the case of a sequenced type parameter:</para>
         
         <itemizedlist>
         <listitem> 
             <para>the type arguments are appended to the list of type arguments in every 
-            parameterized type in which the varargs type parameter appears, and</para>
+            parameterized type in which the sequenced type parameter appears, and</para>
         </listitem>
         <listitem> 
             <para>a list of formal parameters whose types are the type arguments is
             appended to the list of formal parameters of every method declaration in
-            which the varargs type parameter appears.</para>
+            which the sequenced type parameter appears.</para>
         </listitem>
         </itemizedlist>
         
@@ -1082,8 +1082,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>Varargs type parameters are not reified. None of the above operations can be
-        performed with a vararg type parameter.</para>
+        <para>Sequenced type parameters are not reified. None of the above operations can be
+        performed with a sequenced type parameter.</para>
         
         </section>
                 
@@ -1093,13 +1093,13 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <title>Formal parameters</title>
     
         <para>Method and class declarations may declare formal parameters, including
-        defaulted parameters and a varargs parameter.</para>
+        defaulted parameters and a sequenced parameter.</para>
         
         <programlisting>FormalParams := 
 "("
-FormalParam ("," FormalParam)* ("," DefaultParam)* ("," VarargsParam)? | 
-DefaultParam ("," DefaultParam)* ("," VarargsParam)? | 
-VarargsParam?
+FormalParam ("," FormalParam)* ("," DefaultParam)* ("," SequencedParam)? | 
+DefaultParam ("," DefaultParam)* ("," SequencedParam)? | 
+SequencedParam?
 ")"</programlisting>
 
         <programlisting>FormalParam := Param | EntryParamPair</programlisting>
@@ -1156,30 +1156,30 @@ VarargsParam?
         
         </section>
         
-        <section id="varargsandtupleparameters">
-            <title>Varargs and tuple parameters</title>
+        <section id="sequencedandtupleparameters">
+            <title>Sequenced and tuple parameters</title>
         
         <para>The elipsis <literal>...</literal> indicates that a formal parameter is 
         either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>A <emphasis>varargs parameter</emphasis>, which accepts a list of arguments 
-                of the specified type <literal>T</literal>, or a single argument of type 
-                <literal>T[]</literal>. Inside the method, the varargs parameter 
+                <para>A <emphasis>sequenced parameter</emphasis>, which accepts a list of 
+                arguments of the specified type <literal>T</literal>, or a single argument of 
+                type <literal>T[]</literal>. Inside the method, the sequenced parameter 
                 has type <literal>T[]</literal>.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
-                whose types are defined by a varargs type parameter. Inside the method, the 
-                argument has the pseudo-type of the varargs type parameter and is assignable to 
+                whose types are defined by a sequenced type parameter. Inside the method, the 
+                argument has the pseudo-type of the sequenced type parameter and is assignable to 
                 any tuple parameter of the same pseudo-type.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>VarargsParam := Annotation* Type "..." ParameterName</programlisting>
+        <programlisting>SequencedParam := Annotation* Type "..." ParameterName</programlisting>
         
-        <para>The varargs parameter or tuple parameter must be the last formal parameter in the 
+        <para>The sequenced parameter or tuple parameter must be the last formal parameter in the 
         list.</para>
         
         <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>

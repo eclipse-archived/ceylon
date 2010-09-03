@@ -556,8 +556,8 @@ ClassBody</programlisting>
         <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
         types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
         <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
-        of the class. A varargs parameter is considered of type <literal>T[]</literal>
-        where <literal>T</literal> is the declared vararg type.</para>
+        of the class. A sequenced parameter is considered of type <literal>T[]</literal>
+        where <literal>T...</literal> is the declared sequenced type.</para>
         
         <!-- comment>
         
@@ -1072,8 +1072,8 @@ public User(String username, Person person);</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>A varargs parameter is considered of type <literal>T[]</literal> where 
-        <literal>T</literal> is the declared vararg type.</para>
+        <para>A sequenced parameter is considered of type <literal>T[]</literal> where 
+        <literal>T...</literal> is the declared sequenced type.</para>
         
         </section>
         

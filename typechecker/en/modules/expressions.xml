@@ -1056,7 +1056,7 @@ local comp = order(1,-1);</programlisting>
                 values, and</para>
             </listitem>
             <listitem>
-                <para>whether the last formal parameter in the list is a varargs
+                <para>whether the last formal parameter in the list is a sequenced
                 parameter.</para>
             </listitem>
         </itemizedlist>
@@ -1073,9 +1073,9 @@ local comp = order(1,-1);</programlisting>
         
         <para>Arguments to required parameters must be specified. If the invocation 
         expression is a direct invocation expression, arguments to defaulted parameters may 
-        optionally be specified, and one or more arguments to a varargs parameter may 
+        optionally be specified, and one or more arguments to a sequenced parameter may 
         optionally be specified. Otherwise, an argument must be specified for each defaulted 
-        parameter, and a single argument must be specified for the varargs parameter.</para>
+        parameter, and a single argument must be specified for the sequenced parameter.</para>
         
         <para>For a required or defaulted formal parameter of type <literal>T</literal>, 
         the type of the corresponding argument expression must be assignable to 
@@ -1085,7 +1085,7 @@ local comp = order(1,-1);</programlisting>
         corresponding argument expression must be <literal>P...</literal>. (That is, it
         must be a tuple parameter of declared type <literal>P...</literal>.)</para>
         
-        <para>For a varargs parameter of type <literal>T...</literal>, there may 
+        <para>For a sequenced parameter of type <literal>T...</literal>, there may 
         either:</para>
         
         <itemizedlist>
@@ -1196,8 +1196,8 @@ local comp = order(1,-1);</programlisting>
             </listitem>
             <listitem>
                 <para>Finally, if arguments to all defaulted parameters have been specified,
-                and if the method declares a varargs parameter, an arbitrary number of arguments 
-                to the varargs parameter may be specified. 
+                and if the method declares a sequenced parameter, an arbitrary number of arguments 
+                to the sequenced parameter may be specified. 
                 </para>
             </listitem>
         </itemizedlist>
@@ -1213,13 +1213,14 @@ local comp = order(1,-1);</programlisting>
             
         <para>When arguments are named, the argument list is enclosed in braces.</para>
         
-        <programlisting>NamedArguments := "{" NamedArgument* VarargArguments? "}"</programlisting>
+        <programlisting>NamedArguments := "{" NamedArgument* SequencedArguments? "}"</programlisting>
         
         <para>Named arguments may be listed in a different order to the corresponding formal
         parameters.</para>
 
-        <para>Required and defaulted parameter arguments are specified by name. Varargs are 
-        specified by listing them, without specifying a name, at the end of the argument list.</para>
+        <para>Required and defaulted parameter arguments are specified by name. Arguments to
+        a sequenced parameter are specified by listing them, without specifying a name, at the 
+        end of the argument list.</para>
 
         <para>A named argument either:</para> 
         
@@ -1273,30 +1274,31 @@ local comp = order(1,-1);</programlisting>
         
         </section>
 
-        <section id="varargarguments">
-            <title>Vararg arguments</title>
+        <section id="sequencedarguments">
+            <title>Sequenced arguments</title>
             
-        <para>Vararg arguments are seperated by commas.</para>
+        <para>Arguments to a sequenced parameter are seperated by commas.</para>
 
-        <programlisting>VarargArguments := VarargArgument ("," VarargArgument)*</programlisting>
+        <programlisting>SequencedArguments := SequencedArgument ("," SequencedArgument)*</programlisting>
 
-        <programlisting>VarargArgument := Expression | InferableVariable Specifier</programlisting>
+        <programlisting>SequencedArgument := Expression | InferableVariable Specifier</programlisting>
         
         <para>For example:</para>
         
         <programlisting>(1, 1, 2, 3, 5, 8)</programlisting>
         
-        <para>A vararg argument may be a local declaration.</para>
+        <para>An argument to a sequenced parameter may be a local declaration.</para>
         
-        <comment><para>TODO: figure this out. Is this only for varargs in a named parameter
+        <comment><para>TODO: figure this out. Is this only for arguments in a named parameter
         invocation?</para></comment>
         
-        <para>A vararg argument may be a <literal>Sequence</literal> of the parameter type.</para>
+        <para>Alternatively, the argument to a sequence parameter may be a <literal>Sequence</literal> 
+        of the parameter type.</para>
         
         <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
         
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
-        regular to use semicolons to separate varargs in a named parameter invocation.</para></comment>
+        regular to use semicolons to separate sequenced arguments in a named parameter invocation.</para></comment>
         
         </section>
         
@@ -2241,7 +2243,7 @@ setPerson(person);</programlisting>
         <literal>return</literal> and after <literal>:=</literal> in an attribute initializer. 
         The disadvantage to this approach is that enumerations would not be allowed in 
         positional parameter invocations, or in expressions. It's also less regular. On the 
-        other hand, it is consistent with how we treat varargs.</para>
+        other hand, it is consistent with how we treat sequenced arguments.</para>
         <programlisting>Map&lt;String, String&gt; map = "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!";</programlisting>
         <programlisting>for (String lang in "Java", "Ceylon", "Scala", "C#") { ... }</programlisting>
         <programlisting>join { sep=", "; strings=firstName, initial, lastName; };</programlisting>

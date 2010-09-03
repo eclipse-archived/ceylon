@@ -14,7 +14,7 @@ class FormalParameters() {
 		                            String description="", 
 		                            Lock lock=null) {}
 		
-		void varargsParameter(String... strings) {}
+		void sequencedParameter(String... strings) {}
 		
 		void entryParameter(String name->Person person) {}
 		
@@ -46,7 +46,7 @@ class FormalParameters() {
 		                             String description="", 
 		                             Lock? lock=null) {}
 		
-		class VarargsParameter(String... strings) {}
+		class SequencedParameter(String... strings) {}
 		
 		class EntryParameter(String name->Person person) {}
 		

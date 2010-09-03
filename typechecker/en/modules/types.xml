@@ -1708,9 +1708,6 @@ class String(Character[] characters)
     
 }]]></programlisting>
 
-        <comment><para>TODO: should <literal>plus()</literal> and <literal>times()</literal>
-        accept varargs, to minimize method calls?</para></comment>
-        
         <comment><para>TODO: I suppose <literal>Numeric</literal> should not extend
         <literal>Comparable</literal>, since complex numbers are not comparable.</para></comment>
 

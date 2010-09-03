@@ -99,13 +99,13 @@ class Generics() {
         Float<#m,#n> matrix;
     }
     
-    class ClassWithVarargsTypeParameter<P...>(Callable<Void,P...> callable) {
+    class ClassWithSequencedTypeParameter<P...>(Callable<Void,P...> callable) {
         T call(P... args) {
             callable(args);
         }
     }
     
-    interface InterfaceWithVarargsTypeParameter<T,Q...> {
+    interface InterfaceWithSequencedTypeParameter<T,Q...> {
         T invokeSomething(Q... params);
     }
 
