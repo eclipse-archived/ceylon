@@ -30,25 +30,6 @@
         </listitem>
     </itemizedlist>
     
-    <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
-    sequence of expressions, or a parenthesized expression.</para>
-    
-    <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
-    
-    <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
-    members of an atom or toplevel method or class.</para>
-    
-    <programlisting>Primary := Atom | Meta | EnumeratedInstanceReference | CallableReference | ValueReference | Invocation</programlisting>
-    
-    <para>More complex expressions are formed by combining expressions using operators, 
-    including assignment operators.</para>    
-    
-    <programlisting>Expression := Primary | OperatorExpression</programlisting>
-    
-    <para>Parentheses are used for grouping:</para>
-    
-    <programlisting>ParExpression := "(" Expression ")"</programlisting>
-    
     <para>Ceylon expressions are validated for typesafety at compile time.
     To determine whether an expression is assignable to a program element 
     such as an attribute, local or formal parameter, Ceylon considers the 
@@ -57,6 +38,38 @@
     assignable to a program element if the type of the expression is 
     assignable to the declared type of the program element.</para>
     
+    <para>Ceylon supports <emphasis>lazy evaluation</emphasis> of expressions.
+    Conceptually, what triggers evaluation of an expression is not execution
+    of the expression itself, but use of the expression in a context where
+    its value is required.</para>
+    
+    <para>The first statement of this code fragment causes immediate evaluation 
+    of the expression <literal>calculatePi()</literal>:</para>
+    
+    <programlisting>Float pi = calculatePi();
+Float area = pi * radius**2;</programlisting>
+    
+    <para>But in the following code, <literal>calculatePi()</literal> is not
+    evaluated until the second statement:</para>
+    
+    <programlisting>Gettable&lt;Float&gt; pi = calculatePi();
+Float area = pi * radius**2;</programlisting>
+
+    <para>The type <literal>Gettable&lt;T&gt;</literal> represents a reference
+    to a value of type <literal>T</literal> that can be computed if and when
+    required.</para>
+    
+    <para>One application of lazy evaluation is <emphasis>pass by 
+    reference</emphasis>. Even <emphasis>mutable</emphasis> attributes may
+    be passed by reference, as in the following code:</para>
+    
+    <programlisting>void setGreeting(Settable&lt;String&gt; ref) {
+    ref:="Que honda!";
+}
+
+mutable String greeting = "'sup!";
+setGreeting(greeting);</programlisting>
+        
     <comment><para>TODO: Do we need a definition of "constant expression"? 
     We might use it for:</para>
     <itemizedlist>
@@ -165,6 +178,30 @@ assert() that (person.name===name) //assertion may fail!</programlisting>
         and assignment is considered an <emphasis>assign</emphasis> operation, again in 
         terms of the JLS.</para>
         
+    </section>
+    
+    <section>
+        <title>Compound expressions</title>
+
+        <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
+        sequence of expressions, or a parenthesized expression.</para>
+    
+        <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
+    
+        <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
+        members of an atom or toplevel method or class.</para>
+    
+        <programlisting>Primary := Atom | Meta | EnumeratedInstanceReference | CallableReference | ValueReference | Invocation</programlisting>
+    
+        <para>More complex expressions are formed by combining expressions using operators, 
+        including assignment operators.</para>    
+    
+        <programlisting>Expression := Primary | OperatorExpression</programlisting>
+    
+        <para>Parentheses are used for grouping:</para>
+    
+        <programlisting>ParExpression := "(" Expression ")"</programlisting>
+    
     </section>
 
     <section id="literalvalues">
