@@ -760,6 +760,9 @@ public class Gen {
             public void visit(CeylonTree.Condition value) {
             	result = convertExpression(value.operand);
             }
+            public void visit(CeylonTree.PrefixExpression expr) {
+                result = convert(expr.operator);
+            }
           }
 
         V v = new V();
@@ -777,6 +780,7 @@ public class Gen {
         // Unary operators
         unaryOperators.put(CeylonParser.MINUS,       "inverse");
         unaryOperators.put(CeylonParser.BITWISENOT,  "complement");
+        unaryOperators.put(CeylonParser.RENDER,      "string");
 
         // Binary operators that act on types
         binaryOperators.put(CeylonParser.PLUS,       "plus");
@@ -815,6 +819,7 @@ public class Gen {
             break;
             
         case CeylonParser.BITWISENOT:
+        case CeylonParser.RENDER:
             unary_operator = true;
             break;
 

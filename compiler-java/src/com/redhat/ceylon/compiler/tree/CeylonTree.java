@@ -2188,12 +2188,11 @@ public abstract class CeylonTree {
     public static class PrefixExpression extends CeylonTree {
         public Operator operator;
         void append(CeylonTree expr) {
-            if (expr instanceof Operator) {
-                assert(operator == null);
-                operator = (Operator)expr;
-            } 
+            if (operator == null) {
+                assert expr instanceof Operator;
+                operator = (Operator) expr;
+            }
             else {
-                assert operator != null;
                 operator.append(expr);
             }
         }
