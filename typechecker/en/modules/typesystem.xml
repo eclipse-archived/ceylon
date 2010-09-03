@@ -29,7 +29,7 @@
     and all classes eventually inherit, directly or indirectly, the class 
     <literal>ceylon.lang.Void</literal>, which acts as the root of the class hierarchy.</para>
     
-    <para>A truly hierarchical type system is much too restrictive for more general 
+    <para>A truly hierarchical type system is much too restrictive for more abstract 
     programming tasks. Therefore, in addition to classes, Ceylon recognizes the following 
     kinds of type:</para>
     
@@ -517,14 +517,16 @@ String? firstWord = words[0];</programlisting>
         <section id="ordinarytypeparameters">
             <title>Ordinary type parameters and variance</title>
         
-        <para>An ordinary type parameter is itself a type, visible within the body of the 
-        declaration it parameterizes. The type parameter is a subtype of every upper bound of the 
-        type parameter. However, a class, interface, or alias may not extend or implement a type 
-        parameter.</para>
+        <para>An ordinary type parameter allows a declaration to be abstracted over a constrained 
+        set of types.</para>
         
         <para>Each ordinary type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
         <programlisting>OrdinaryTypeParam := Variance TypeName</programlisting>
+        
+        <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
+        itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
+        However, a class, interface, or alias may not extend or implement a type parameter.</para>
         
         <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
         A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
@@ -643,16 +645,18 @@ String? firstWord = words[0];</programlisting>
         <section id="dimensionaltypeparameters">
             <title>Dimensional type parameters</title>
         
-        <para>A dimensional type parameter is a local of type <literal>Natural</literal>, 
-        visible within the body of the declaration it parameterizes.</para>
+        <para>A dimensional type parameter allows a declaration to be abstracted over 
+        the natural numbers.</para>
+        
+        <para>A dimensional type parameter is distinguished by a <literal>#</literal>
+        prefix, and must be an initial lowercase identifier.</para>
         
         <programlisting>DimensionalTypeParam := MemberName</programlisting>
         
-        <para>Dimensional type parameters are distinguished by a <literal>#</literal>
-        prefix, and must be an initial lowercase identifier.</para>
+        <para>Within the body of the declaration it parameterized, a dimensional type 
+        parameter is a local of type <literal>Natural</literal>.</para>
         
         <programlisting>Vector&lt;#n&gt;</programlisting>
-        
         <programlisting>Matrix&lt;#h,#w&gt;</programlisting>
         
         </section>
@@ -693,8 +697,13 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <section id="sequencedtypeparameters">
             <title>Sequenced type parameters</title>
         
-        <para>A <emphasis>sequenced type parameter</emphasis>, identified by an elipsis
-        <literal>...</literal> accepts a list of zero or more type arguments.</para>
+        <para>A <emphasis>sequenced type parameter</emphasis> allows a declaration to be 
+        abstracted over a variable length list of arbitrary types. This allows declarations 
+        with formal parameter lists to be represented by metamodel objects within the 
+        language.</para>
+        
+        <para>A sequenced type parameter is identified by an elipsis <literal>...</literal>,
+        indicating that it accepts a list of zero or more type arguments.</para>
         
         <programlisting>SequencedTypeParam := TypeName "..."</programlisting>
         
@@ -708,7 +717,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         members, to which no other type may be assigned, and which can only by assigned to 
         itself.</para>
         
+        <programlisting>Type&lt;X, P...&gt;</programlisting>
         <programlisting>Method&lt;X, T, P...&gt;</programlisting>
+        <programlisting>Tuple&lt;P...&gt;</programlisting>
         
         <comment><para>TODO: should we let you declare a variant sequenced type parameter?
         This is useful for modelling tuples.</para></comment>
@@ -730,9 +741,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     <section id="generictypeconstraintlist">
     <title>Generic type constraints</title>
 
-        <para>Method, class and interface declarations which declare generic type 
-        parameters may declare constraints upon ordinary type parameters using the
-        <literal>given</literal> clause.</para>
+        <para>A parameterized method, class, alias, or interface declaration may declare 
+        constraints upon ordinary type parameters using the <literal>given</literal> clause.</para>
         
         <programlisting>TypeConstraints = ("given" TypeConstraint)+</programlisting>
     
@@ -766,11 +776,13 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         </itemizedlist>
         
         <para>An initialization parameter specification allows instantiation of the type 
-        parameter.</para>
+        represented by the type parameter within the body of the declaration.</para>
         
         <para>A constraint may not refer to a sequenced type parameter.</para>
         
-        <para>A single <literal>given</literal> clause may specify multiple constraints.</para>
+        <para>A single <literal>given</literal> clause may specify multiple constraints
+        on a certain type parameter. For example, it may specify multiple upper bounds
+        together with an initialization parameter specification.</para>
         
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
@@ -792,7 +804,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A constraint affects the assignability of a type parameter:</para>
+        <para>Within the body of the declaration, a constraint affects the assignability of 
+        a type parameter:</para>
         
         <itemizedlist>
             <listitem>
@@ -834,8 +847,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     <section id="typeargumentlist">
         <title>Generic type arguments</title>
             
-        <para>A list of <emphasis>type arguments</emphasis> produces a new type from a 
-        parameterized type, or a new method schema from a method schema with type 
+        <para>A list of <emphasis>type arguments</emphasis> produces a new type schema from a 
+        parameterized type schema, or a new method schema from a method schema with type 
         parameters.</para>
         
         <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
@@ -844,6 +857,9 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         type argument.</para>
         
         <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
+        
+        <para>A sequenced type argument is a reference to a sequenced type parameter of the
+        containing declaration.</para>
         
         <programlisting>SequencedType := TypeName "..."</programlisting>
         
@@ -874,7 +890,11 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <literal>Natural</literal>.</para>
         
         <para>Two dimension expressions are considered <emphasis>equivalent</emphasis> if 
-        they have the same canonical form, ignoring the order of terms.</para>
+        they have the same canonical form, ignoring the order of terms. For example, the
+        following represent the same type:</para>
+        
+        <programlisting>Vector&lt;#2*n+m+3&gt;</programlisting>
+        <programlisting>Vector&lt;#(n+2)+(m+n+1)&gt;</programlisting>
         
         </section>
                 
@@ -1092,8 +1112,12 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     <section id="formalparameterlist">
         <title>Formal parameters</title>
     
-        <para>Method and class declarations may declare formal parameters, including
-        defaulted parameters and a sequenced parameter.</para>
+        <para>A method or class declaration may declare a list or <emphasis>formal parameters</emphasis>, 
+        including, optionally, <emphasis>defaulted parameters</emphasis> (parameters with default
+        values) and a <emphasis>sequenced parameter</emphasis> (a "vararg" parameter).</para>
+        
+        <para>In a formal parameter list, parameters with default values must occur after 
+        required parameters. The sequenced parameter, if any, must occur last.</para>
         
         <programlisting>FormalParams := 
 "("
@@ -1191,7 +1215,7 @@ SequencedParam?
         <section id="entryandrangeparameters">
             <title>Key/value parameter pairs</title>
         
-        <para>Parameters of type <literal>Entry</literal> may be specified as a pair of variables.</para>
+        <para>A parameter of type <literal>Entry</literal> may be specified as a pair of variables.</para>
         
         <programlisting>EntryParamPair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
         
@@ -1208,7 +1232,10 @@ SequencedParam?
     <section id="annotationlist">
         <title>Annotations</title>
 
-        <para>Declarations may be preceded by a list of annotations.</para>
+        <para>Declarations may be preceded by a list of annotations. An annotation is an
+        initial lowercase identifier, optionally followed by an argument list. A list of 
+        annotations does not require punctuation between the individual annotations in the 
+        list.</para>
     
         <programlisting>Annotation := MemberName ( Arguments | Literal+ )?</programlisting>
         

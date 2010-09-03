@@ -1,16 +1,35 @@
 <chapter id="declarations">
     <title>Declarations</title>
     
-    <para>All classes, interfaces, methods, attributes and locals must be declared.</para>
+    <para>Ceylon is a statically typed language. Classes, interfaces, aliases, methods, 
+    attributes and locals must be declared. This allows the compiler to detect many
+    errors, including:</para>
     
-        <para>All declarations follow a general pattern:</para>
+    <itemizedlist>
+        <listitem><para>typing errors in identifier names,</para></listitem>
+        <listitem><para>references to types which do not exist or are not visible,</para></listitem>
+        <listitem><para>references to type members which do not exist or are not visible,</para></listitem>
+        <listitem><para>argument lists which do not match formal parameter lists,</para></listitem>
+        <listitem><para>type argument lists which do not match type parameter lists, and</para></listitem>
+        <listitem><para>incompatible assignment of an expression of one type to a
+        program element of a different type.</para></listitem>
+    </itemizedlist>
+    
+    <para>All declarations follow a general pattern:</para>
         
-        <programlisting>Annotation* 
+    <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
 Supertype?
 Interfaces? 
 TypeConstraints? 
 Body?</programlisting>
+
+    <para>A type parameter does not need an explicit declaration of this form unless it 
+    has constraints. In the case that it does have constraints, the constraint declaration 
+    does follow the general pattern.</para>
+    
+    <para>This consistent pattern for declarations, together with the strict block structure
+    of the language, makes Ceylon a highly regular language.</para>
 
     <section id="compilationunitstructure">
         <title>Compilation unit structure</title>
