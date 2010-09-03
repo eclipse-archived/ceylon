@@ -2186,11 +2186,15 @@ public abstract class CeylonTree {
      * A prefix expression
      */
     public static class PrefixExpression extends CeylonTree {
-        Operator operator;
+        public Operator operator;
         void append(CeylonTree expr) {
             if (expr instanceof Operator) {
                 assert(operator == null);
                 operator = (Operator)expr;
+            } 
+            else {
+                assert operator != null;
+                operator.append(expr);
             }
         }
         public void accept(Visitor v) { v.visit(this); }

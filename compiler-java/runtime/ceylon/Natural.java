@@ -2,8 +2,7 @@ package ceylon;
 
 public final class Natural
     extends Object
-    implements Integral<Natural>, Invertable<Integer>,
-        Case<Natural>, Bits<Natural> {
+    implements Integral<Natural>, Invertable<Integer>, Case<Natural> {
 
     private final long value;
     private Natural(long l) {
@@ -37,22 +36,6 @@ public final class Natural
 
     public ceylon.Natural remainder(ceylon.Natural op) {
         return instance(value % op.value);
-    }
-
-    public ceylon.Natural or(ceylon.Natural op) {
-        return instance(value | op.value);
-    }
-
-    public ceylon.Natural and(ceylon.Natural op) {
-        return instance(value & op.value);
-    }
-
-    public ceylon.Natural xor(ceylon.Natural op) {
-        return instance(value ^ op.value);
-    }
-
-    public ceylon.Natural complement() {
-        return instance(~value);
     }
 
     public ceylon.Integer inverse() {
