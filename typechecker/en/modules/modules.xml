@@ -315,13 +315,19 @@ public class Module(
              is distributed."
         URL? license=null,
         
+        doc "A method that is responsible for
+             initializing state needed by the
+             module. Called immediately after 
+             the module is loaded."
+        void onLoad(Process process) = noop,
+        
         doc "The entry point of a runnable
              module."
         void run(Process process) = notRunnable,
         
         doc "Modules used by this module."
         Import... dependencies) { 
-        
+    
     ... 
 
 }</programlisting>
