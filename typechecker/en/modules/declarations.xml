@@ -160,7 +160,7 @@ String lastName;
             <title>Fully explicit imports</title>
         
         <para>An import statement that specifies a package name followed by a type
-        name imports the type with that name in the package.</para>
+        name imports the type with that name from the given package.</para>
         
         <programlisting>TypeSpec := QualifiedTypeName ("alias" TypeName)?</programlisting>
         
@@ -170,7 +170,7 @@ String lastName;
         <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
                 
         <para>An import statement that specifies a package name followed by a method
-        name imports the method with that name in the package.</para>
+        name imports the method with that name from the given package.</para>
         
         <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
         
@@ -194,7 +194,7 @@ String lastName;
         <section id="wildcardimports">
             <title>Wildcard imports</title>
         
-        <para>The character <literal>*</literal> acts as a wildcard, just like in Java.</para>
+        <para>The character <literal>*</literal> acts as a wildcard in import statements.</para>
         
         <para>An import statement that specifies a package name followed by a wildcard
         imports all toplevel types of the package.</para>
@@ -205,6 +205,8 @@ String lastName;
         imports all member types of the type.</para>
                 
         <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
+        
+        <para>Overuse of wildcard imports is discouraged.</para>
         
         <programlisting>import ceylon.collection.*;</programlisting>
         
