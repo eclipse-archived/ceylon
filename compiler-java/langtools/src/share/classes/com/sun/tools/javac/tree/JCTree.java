@@ -41,7 +41,6 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Symbol.*;
-import com.sun.source.tree.Tree;
 import com.sun.source.tree.*;
 
 import static com.sun.tools.javac.code.BoundKind.*;
@@ -331,7 +330,9 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
     /* The type of this node.
      */
     public Type type;
-
+    
+    public boolean forCeylon;
+    
     /* The tag of this node -- one of the constants declared above.
      */
     public abstract int getTag();
