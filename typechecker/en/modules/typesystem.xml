@@ -25,10 +25,13 @@
     </itemizedlist>
     
     <para>Ceylon, like Java and many other object-oriented languages, supports a single
-    inheritance model for class inheritance. A class may inherit at most one other 
-    class.</para>
+    inheritance model for classes. A class may directly inherit at most one other class, 
+    and all classes eventually inherit, directly or indirectly, the class 
+    <literal>ceylon.lang.Void</literal>, which acts as the root of the class hierarchy.</para>
     
-    <para>Therefore, Ceylon recognizes the following additional kinds of type:</para>
+    <para>A truly hierarchical type system is much too restrictive for more general 
+    programming tasks. Therefore, in addition to classes, Ceylon recognizes the following 
+    kinds of type:</para>
     
     <itemizedlist>
         <listitem>
@@ -37,12 +40,14 @@
             the interface. A class may implement many interfaces.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
-            for the generic type parameters of a parameterized type.</para>
+            <para>A <emphasis>generic type parameter</emphasis> is considered a type
+            within the declararion that it parameterizes. In fact, it is an abstraction
+            over many types: it generalizes the declaration to all types which could be 
+            substituted for the parameter.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>generic type parameter</emphasis> is considered a type
-            within the declararion that it parameterizes.</para>
+            <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
+            for the generic type parameters of a parameterized type.</para>
         </listitem>
     </itemizedlist>
 
@@ -58,6 +63,8 @@
         <programlisting>TypeName := UIdentifier</programlisting>
         <programlisting>MemberName := LIdentifier</programlisting>
         <programlisting>ParameterName := LIdentifier</programlisting>
+        
+        <para>An underscore <literal>_</literal> is considered a lowercase letter.</para>
         
         <para>Ceylon defines three identifier namespaces:</para>
         
@@ -111,8 +118,8 @@
                 parameter lists.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>class schema</emphasis> is a type with a formal parameter 
-                list.</para>
+                <para>A <emphasis>class schema</emphasis> is a type schema with a formal 
+                parameter list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
@@ -324,19 +331,19 @@
         <itemizedlist>
             <listitem>
                 <para><literal>X?</literal> means <literal>Optional&lt;X&gt;</literal> for
-                any type <literal>X</literal>, and</para>
+                any type <literal>X</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>X[]</literal> means <literal>Sequence&lt;X&gt;</literal> for
-                any type <literal>X</literal>.</para>
+                any type <literal>X</literal>, and</para>
             </listitem>
             <listitem>
-                <para><literal>X[n]</literal> means <literal>BoundedSequence&lt;X,n&gt;</literal> 
+                <para><literal>X[n]</literal> means <literal>BoundedSequence&lt;X,#n&gt;</literal> 
                 for any type <literal>X</literal> and dimension <literal>n</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>Abbreviation := "?" | "[" "]"</programlisting>
+        <programlisting>Abbreviation := "?" | "[" dimension? "]"</programlisting>
         
         <para>Abbreviations may be combined:</para>
         
