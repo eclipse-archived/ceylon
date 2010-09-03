@@ -1,10 +1,29 @@
 <chapter id="statementblocks">
     <title>Blocks and control structures</title>
     
-    <para>Method, attribute and class bodies contain procedural code that is executed 
+    <para>Method, attribute, and class bodies contain procedural code that is executed 
     when the method or attribute is invoked, or when the class is instantiated. The 
     code contains expressions and control directives and is organized using blocks and 
     control structures.</para>
+    
+    <para>The Ceylon language has a recursive block structure&mdash;statements and
+    declarations that are syntactically valid in the body of a toplevel declaration are, 
+    in general, also syntactically valid in the body of a nested declaration or of a 
+    control structure, and vice-versa.</para>
+    
+    <para>There exist two exceptions to this rule:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the enumerated instance list of a toplevel class may not appear anywhere
+            else, and</para> 
+        </listitem>
+        <listitem>
+            <para>the body of an interface may contain only abstract declarations.</para>
+        </listitem>
+    </itemizedlist>
+        
+    <para>The scope of a declaration is governed by the block in which it occurs.</para>
     
     <section id="nameresolution">
         <title>Name resolution</title>
