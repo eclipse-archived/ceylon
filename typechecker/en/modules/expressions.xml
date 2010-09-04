@@ -744,6 +744,10 @@ createItemMethod.intercept()
         <para>A callable reference expression is assignable to 
         <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
         <literal>P...</literal> depend upon the schema of the method or class.</para>
+        
+        <comment><para>TODO: we can support LINQ to SQL-like queries by making 
+        <literal>Callable</literal> provide an AST of the statements contained
+        in the method declaration, allowing translation to SQL.</para></comment>
                 
         <section id="receiverexpressions">
             <title>Receiver expressions</title>
