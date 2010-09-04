@@ -71,6 +71,27 @@
     user account which provides write access to the central module
     repository.</para>
     
+    <para>A module belonging to the central module repository must
+    satisfy the following regulations:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the first element of the module name must be a top-level
+            internet domain name, and the second element of the module 
+            name must be a second-level domain of the given top-level domain 
+            owned by the organization distributing the module, and</para>
+        </listitem>
+        <listitem>
+             <para>the module must be packaged as a module archive signed 
+             using the Java <literal>jarsigner</literal> tool.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>For example, a module developed by Red Hat might be named
+    <literal>org.jboss.server</literal>.</para>
+    
+    <comment><para>TODO: but where do they obtain the public keys from?</para></comment>
+    
     <section id="modulenamesandversionidentifiers">
         <title>Module names and version identifiers</title>
         
