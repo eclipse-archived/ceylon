@@ -1180,6 +1180,20 @@ local comp = order(1,-1);</programlisting>
     perform (String name->Object value) { 
         log.info("Entry: " name "->" value ""); 
     };</programlisting>
+    
+            <programlisting>privilege() action {
+    exec("java Hello");
+}</programlisting>
+
+            <programlisting>check {
+    FilePermission {
+        path = "/usr/bin";
+        action = { 
+            FileAction.read,
+            FileAction.execute
+        }
+    }
+}</programlisting>
             
         </section>
         
