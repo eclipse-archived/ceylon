@@ -1360,7 +1360,13 @@ local comp = order(1,-1);</programlisting>
         
         <para>This class:</para>
         
-        <programlisting>public class Counter(Natural initialCount=0) { ... }</programlisting>
+        <programlisting>public class Counter(Natural initialCount=0) {
+    
+    mutable Natural count := initialCount;
+    
+    ...
+    
+}</programlisting>
         
         <!--
         <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
@@ -1406,7 +1412,9 @@ local comp = order(1,-1);</programlisting>
             <para>This method:</para>
         
             <programlisting>public class Counter() {
-        
+    
+    mutable Natural count := 0;
+    
     package void init(Natural initialCount=0) {
         count:=initialCount;
     }
