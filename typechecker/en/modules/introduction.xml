@@ -1451,7 +1451,7 @@ public class HelloHtml(Request request)
         our program a little. First, we'll create a class to represent people:</para>
         
         <programlisting>doc "Represents a person"
-package class Person(String firstName, String lastName, Language lang) {
+class Person(String firstName, String lastName, Language lang) {
     package String firstName = firstName;
     package String lastName = lastName;
     package Language lang = lang;
@@ -1463,7 +1463,7 @@ package class Person(String firstName, String lastName, Language lang) {
         our program supports.</para>
         
         <programlisting>doc "Represents a language"
-package class Language(String hello) {
+class Language(String hello) {
 
     english("Hello"),
     french("Bonjour"),
@@ -1908,7 +1908,7 @@ else {
         
         <programlisting>import com.domain.util.objectToLog;
         
-public class Hello(String? name) {
+class Hello(String? name) {
 
     ...
     
@@ -1921,7 +1921,7 @@ public class Hello(String? name) {
         <para>The compiler automatically inserts a call to 
         <literal>objectToLog()</literal>. So the above code is equivalent to:</para>
 
-        <programlisting>public class Hello(String? name) {
+        <programlisting>class Hello(String? name) {
 
     ...
     
