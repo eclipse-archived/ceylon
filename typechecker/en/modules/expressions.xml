@@ -151,8 +151,8 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of one 
             of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,--> of 
-            <literal>ceylon.lang.Character</literal>, of
-            <literal>ceylon.lang.Range</literal>, of <literal>ceylon.lang.Entry</literal>, or of 
+            <literal>ceylon.lang.Bounded&lt;#n&gt;</literal>, of <literal>ceylon.lang.Character</literal>, 
+            of <literal>ceylon.lang.Range</literal>, of <literal>ceylon.lang.Entry</literal>, or of 
             <literal>ceylon.lang.String</literal> without execution of the initializer of the class, 
             whenever any expression is evaluated. Furthermore, it is permitted to use such a 
             newly-produced instance as the value of the expression, as long as the newly-produced 
@@ -161,8 +161,8 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>Therefore, the types listed above directly extend <literal>Object</literal>
-        instead of <literal>Reference</literal>.</para>
+        <para>Therefore, the types listed above directly extend <literal>Object</literal> or
+        <literal>Void</literal> instead of <literal>IdentityObject</literal>.</para>
                 
         <para>The execution of a Ceylon program complies with the rules laid out by the Java 
         programming language's execution model (Chapter 17 of the Java Language Specification).
@@ -2254,10 +2254,10 @@ setPerson(person);</programlisting>
         <para>Each enumerated element expression type must be assignable to 
         <literal>Object</literal>.</para>
         
-        <para>The type of an enumeration expression is 
-        <literal>Reference&lt;T[n]&gt;</literal> where <literal>T</literal> is a subtype of 
-        <literal>Object</literal> to which all the enumerated element expression types are 
-        assignable and <literal>n</literal> is the number of element expressions.</para>
+        <para>The type of an enumeration expression is <literal>Gettable&lt;T[n]&gt;</literal> 
+        where <literal>T</literal> is a subtype of <literal>Object</literal> to which all the 
+        enumerated element expression types are assignable and <literal>n</literal> is the number 
+        of element expressions.</para>
                     
         <para>Evaluation of an reference object for an enumeration produces an instance of 
         <literal>T[n]</literal> containing the enumerated elements in the given order. When 
@@ -2930,8 +2930,8 @@ setPerson(person);</programlisting>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
-            <entry><literal>Reference</literal></entry>
-            <entry><literal>Reference</literal></entry>
+            <entry><literal>IdentityObject</literal></entry>
+            <entry><literal>IdentityObject</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>

@@ -400,6 +400,17 @@ String? firstWord = words[0];</programlisting>
         
         <programlisting>extends Person(name, org)</programlisting>
     
+        <para>
+        If a class does not explicitly specify a superclass using <literal>extends</literal>,
+        its superclass is <literal>ceylon.lang.IdentityObject</literal>. <!--There is one exception 
+        to this rule: the built-in class <literal>ceylon.lang.Void</literal> which does not have 
+        a superclass.-->
+        </para>
+        
+        <para>
+        The root class <literal>ceylon.lang.Void</literal> does not have a superclass.
+        </para>
+        
         <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
     
         <itemizedlist>

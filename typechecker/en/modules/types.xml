@@ -20,12 +20,15 @@
         supports the the operator <literal>.</literal> (member selection), 
         along with <literal>is</literal> (assignability).</para>
         
-        <programlisting>public abstract class Void {}</programlisting>
+        <programlisting>public abstract class Void extends null {}</programlisting>
+        
+        <para>The special syntax <literal>extends null</literal> indicates
+        that <literal>Void</literal> has no superclass.</para>
         
     </section>
     
     <section id="object">
-        <title>The <literal>Object</literal> and <literal>Reference</literal> 
+        <title>The <literal>Object</literal> and <literal>IdentityObject</literal> 
         types</title>
         
         <para>The class <literal>Object</literal> represents a definite value. 
@@ -110,13 +113,13 @@
     }
  -->
     
-        <para>User-written classes extend <literal>Reference</literal>.
-        Expressions of type <literal>Reference</literal> support the binary
+        <para>User-written classes usually extend <literal>IdentityObject</literal>.
+        Expressions of type <literal>IdentityObject</literal> support the binary
         operator <literal>===</literal> (identity equals) and have a default
         implementation of <literal>equals()</literal> and <literal>hash</literal>
         provided for them.</para>
         
-        <programlisting><![CDATA[public abstract class Reference() 
+        <programlisting><![CDATA[public abstract class IdentityObject() 
         extends Object() {
     
     Attribute<subtype,Object>[] idAttributes() {
@@ -193,8 +196,8 @@
         <para>The following toplevel methods expose the notion of
         object identity:</para>
     
-        <programlisting>public Boolean identical(Reference x, Reference y) { return ... }</programlisting>
-        <programlisting>public Integer identityHash(Reference x) { return ... }</programlisting>
+        <programlisting>public Boolean identical(IdentityObject x, IdentityObject y) { return ... }</programlisting>
+        <programlisting>public Integer identityHash(IdentityObject x) { return ... }</programlisting>
     
     </section>
 
@@ -426,7 +429,7 @@ class CaseSuper<X,Y>(Case<X> c)
 }]]></programlisting>
 
         <para>The implementations of <literal>equals()</literal>, <literal>hash</literal>
-        and <literal>string</literal> provided by the <literal>Reference</literal> class 
+        and <literal>string</literal> provided by the <literal>IdentityObject</literal> class 
         handle subclasses that implement <literal>Selector</literal> as a special case.</para>
 
         <para>This extension allows selectors to be used as cases in a <literal>switch</literal>
@@ -1025,19 +1028,20 @@ while (exists local value = indexed.indexedValue(i)) {
         from an upper-bounded list of natural numbers.</para>
         
         <programlisting><![CDATA[public class Bounded<#max>(Bounded<#max> b)
+       extends Object()
        satisfies Comparable<Bounded<#max>>, Number {
    
-   doc "The |Natural| representing this natural
-        number."
-   public extension Natural natural { ... }
+    doc "The |Natural| representing this natural
+         number."
+    public extension Natural natural { ... }
 
-   override Comparison compare(Bounded<#max> other) {
-       return natural.compare(other.natural)
-   }
+    override Comparison compare(Bounded<#max> other) {
+        return natural.compare(other.natural)
+    }
 
-   doc "This natural number, as a |Bounded<#nmax>| where
-        |nmax>=max|."
-   public extension Bounded<#max+inc> bounded<#inc>() { ... }
+    doc "This natural number, as a |Bounded<#nmax>| where
+         |nmax>=max|."
+    public extension Bounded<#max+inc> bounded<#inc>() { ... }
    
 }]]></programlisting>
         
