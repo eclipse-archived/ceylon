@@ -146,31 +146,24 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
             creating an actual instance of the erasable type <literal>ceylon.lang.Optional</literal>, 
             of <literal>ceylon.lang.Gettable</literal>, or of <literal>ceylon.lang.Settable</literal>,
             when an expression is evaluated, as long as this does not affect the execution of 
-            the program. (Therefore, the <literal>===</literal> operator is undefined for these 
-            types.)</para>
+            the program.</para>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of one 
-            of the the built-in numeric types, of <literal>Bits&lt;#n&gt;</literal>, of 
+            of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,--> of 
+            <literal>ceylon.lang.Character</literal>, of
             <literal>ceylon.lang.Range</literal>, of <literal>ceylon.lang.Entry</literal>, or of 
             <literal>ceylon.lang.String</literal> without execution of the initializer of the class, 
             whenever any expression is evaluated. Furthermore, it is permitted to use such a 
             newly-produced instance as the value of the expression, as long as the newly-produced 
-            instance is equal to the value expected according to the rules above, as determined using 
-            the <literal>==</literal> operator. Therefore, the <literal>===</literal> operator is 
-            unreliable for the listed types.</para>
+            instance is equal to the value expected according to the rules above, as determined 
+            using the <literal>==</literal> operator.</para>
         </listitem>
         </itemizedlist>
         
-        <programlisting>Boolean identical(Natural x, Natural y) { return x==y }
-Natural n = 1;
-assert() that (identical(n,n)); //assertion may fail!</programlisting>
-        
-
-        <programlisting>String name = "Gavin";
-person.name := name;
-assert() that (person.name===name) //assertion may fail!</programlisting>
-        
+        <para>Therefore, the types listed above directly extend <literal>Object</literal>
+        instead of <literal>Reference</literal>.</para>
+                
         <para>The execution of a Ceylon program complies with the rules laid out by the Java 
         programming language's execution model (Chapter 17 of the Java Language Specification).
         Ceylon attributes and locals are considered <emphasis>variables</emphasis> in the 
@@ -2646,10 +2639,12 @@ setPerson(person);</programlisting>
         </listitem>
     </itemizedlist>
     
+    <!--
     <para>The argument expressions of the identity operator must be of type
     <literal>ceylon.lang.Object</literal>. The argument expression of the 
     assignability operator may be of any type, not limited to types assignable 
     to <literal>Object</literal>.</para>
+    -->
     
     <para>All other operators are defined in terms of other operators and/or
     invocations.</para>
@@ -2935,8 +2930,8 @@ setPerson(person);</programlisting>
             <entry><literal>lhs === rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
-            <entry><literal>Object</literal></entry>
-            <entry><literal>Object</literal></entry>
+            <entry><literal>Reference</literal></entry>
+            <entry><literal>Reference</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -3034,9 +3029,6 @@ setPerson(person);</programlisting>
     </tgroup>
     </table>
     
-        <comment><para>TODO: does <literal>==</literal> really belong on <literal>Object</literal>,
-        or should we define an interface for objects which can be compared for equality?</para></comment>
-        
         <comment><para>TODO: should we really have the equality operators accept null
         values?</para></comment>
     

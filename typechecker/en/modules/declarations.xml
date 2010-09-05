@@ -653,8 +653,9 @@ class Customer(Name name, Organization? org = null)
         
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>ceylon.lang.Object</literal>. There are one exception to this
-        rule: the built-in class <literal>ceylon.lang.Void</literal> which does not have a superclass.
+        its superclass is <literal>ceylon.lang.Reference</literal>. There is one exception to 
+        this rule: the built-in class <literal>ceylon.lang.Void</literal> which does not have 
+        a superclass.
         </para>
         
         <para>

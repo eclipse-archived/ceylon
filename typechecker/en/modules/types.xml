@@ -25,89 +25,32 @@
     </section>
     
     <section id="object">
-        <title>The Object type</title>
+        <title>The <literal>Object</literal> and <literal>Reference</literal> 
+        types</title>
         
-        <para>User-written classes extend <literal>Object</literal> and 
-        all interface types are assignable to <literal>Object</literal>.
-        Expressions of type <literal>Object</literal> support the binary
-        operator <literal>===</literal> (identity equals). An <literal>Object</literal> 
-        may belong to collections. Expressions of type <literal>Object</literal> 
-        therefore support the binary operator <literal>in</literal> (in).</para>
+        <para>The class <literal>Object</literal> represents a definite value. 
+        All interface types are assignable to <literal>Object</literal>.</para>
         
         <programlisting><![CDATA[public abstract class Object() 
         extends Void() {
-    
-    Attribute<subtype,Object>[] idAttributes() {
-        return from ( Attribute<subtype,Object> a in type.attributes() ) 
-                    where ( nonempty a.annotations(Id) );
-    }
-    
-    doc "The equals operator |x == y|. Default implementation compares
-         attributes annotated |id|, or performs identity comparison."
-    see (id)
-    public default Boolean equals(Object that) {
-        Attribute<subtype,Object>[] idAttributes = idAttributes();
-        if (nonempty idAttributes) {
-            return equals(that, idAttributes)
-        }
-        else {
-            return this===that
-        }
-    }
-    
-    doc "Compares the given attributes of this instance with the given
-         attributes of the given instance."
-    public Boolean equals(Object that, Attribute<subtype,Object>... attributes) {
-        if (is subtype that) {
-            return forAll (Attribute<subtype,Object> a in attributes)
-                        every ( a(this)==a(that) )
-        }
-        else {
-            return false
-        }
-    }
-    
-    doc "The hash code of the instance. Default implementation compares
-         attributes annotated |id|, or assumes identity equality."
-    see (id)
-    public default Integer hash { 
-        Attribute<subtype,Object>[] idAttributes = idAttributes();
-        if (nonempty idAttributes) {
-            return hash(idAttributes)
-        }
-        else {
-            return identityHash(this)
-        }
-    }
-    
-    doc "Computes the hash code of the instance using the given 
-         attributes."
-    public Integer hash(Attribute<subtype,Object>... attributes) { ... }
-        
-    doc "A developer-friendly string representing the instance. 
-         By default, the string contains the name of the type, 
-         and the values of all attributes annotated |id|."
-    public default String string {
-        return string(idAttributes())
-    }
-    
-    doc "A developer-friendly string representing the instance,
-         containing the name of the type, and the value of the
-         given attributes." 
-    public default String string(Attribute<subtype,Object>... attributes) {
-        StringBuilder builder = StringBuilder();
-        builder.append(type.name).append("{");
-        for (Attribute<subtype,Object> a in attributes) {
-            builder.append(a.name).append("=").append($a(this)).append(";");
-        }
-        builder.append("}");
-        return builder
-    }
     
     doc "The |Type| of the instance."
     public Type<subtype> type {
         return ... 
     }
+        
+    doc "The equals operator |x == y|."
+    public Boolean equals(Object that);
+    
+    doc "The hash code of the instance. Implementations of |hash| 
+         must respect the constraint that if |x==y| then 
+         |x.hash==y.hash|."
+    public Integer hash;
+    
+    doc "A developer-friendly string representing the instance. 
+         By default, the string contains the name of the type, 
+         and the values of all attributes annotated |id|."
+    public String string;
     
     doc "Transform the given object to a string. Override to
          customize the render operator and character string 
@@ -124,15 +67,9 @@
     ...
         
 }]]></programlisting>
-
-    <para>The following toplevel methods expose the notion of
-    object identity:</para>
     
-    <programlisting>public Boolean identical(Object x, Object y) { return ... }</programlisting>
-    <programlisting>public Integer identityHash(Object x) { return ... }</programlisting>
-    
-    
-    <para>The following extension defines the <literal>in</literal>
+    <para>An <literal>Object</literal> may belong to categories. The 
+    following extensions define the binary <literal>in</literal>
     operator:</para>
     
     <programlisting><![CDATA[public extension class Objects(Object object) {
@@ -173,7 +110,92 @@
     }
  -->
     
-
+        <para>User-written classes extend <literal>Reference</literal>.
+        Expressions of type <literal>Reference</literal> support the binary
+        operator <literal>===</literal> (identity equals) and have a default
+        implementation of <literal>equals()</literal> and <literal>hash</literal>
+        provided for them.</para>
+        
+        <programlisting><![CDATA[public abstract class Reference() 
+        extends Object() {
+    
+    Attribute<subtype,Object>[] idAttributes() {
+        return from ( Attribute<subtype,Object> a in type.attributes() ) 
+                    where ( nonempty a.annotations(Id) );
+    }
+    
+    doc "The equals operator |x == y|. Default implementation compares
+         attributes annotated |id|, or performs identity comparison."
+    see (id)
+    default override Boolean equals(Object that) {
+        Attribute<subtype,Object>[] idAttributes = idAttributes();
+        if (nonempty idAttributes) {
+            return equals(that, idAttributes)
+        }
+        else {
+            return this===that
+        }
+    }
+    
+    doc "Compares the given attributes of this instance with the given
+         attributes of the given instance."
+    public Boolean equals(Object that, Attribute<subtype,Object>... attributes) {
+        if (is subtype that) {
+            return forAll (Attribute<subtype,Object> a in attributes)
+                        every ( a(this)==a(that) )
+        }
+        else {
+            return false
+        }
+    }
+    
+    doc "The hash code of the instance. Default implementation compares
+         attributes annotated |id|, or assumes identity equality."
+    see (id)
+    default override Integer hash { 
+        Attribute<subtype,Object>[] idAttributes = idAttributes();
+        if (nonempty idAttributes) {
+            return hash(idAttributes)
+        }
+        else {
+            return identityHash(this)
+        }
+    }
+    
+    doc "Computes the hash code of the instance using the given 
+         attributes."
+    public Integer hash(Attribute<subtype,Object>... attributes) { ... }
+        
+    doc "A developer-friendly string representing the instance. 
+         By default, the string contains the name of the type, 
+         and the values of all attributes annotated |id|."
+    default override String string {
+        return string(idAttributes())
+    }
+    
+    doc "A developer-friendly string representing the instance,
+         containing the name of the type, and the value of the
+         given attributes." 
+    public default String string(Attribute<subtype,Object>... attributes) {
+        StringBuilder builder = StringBuilder();
+        builder.append(type.name).append("{");
+        for (Attribute<subtype,Object> a in attributes) {
+            builder.append(a.name).append("=").append($a(this)).append(";");
+        }
+        builder.append("}");
+        return builder
+    }
+    
+    ...
+        
+}]]></programlisting>
+    
+        <para>The following toplevel methods expose the notion of
+        object identity:</para>
+    
+        <programlisting>public Boolean identical(Reference x, Reference y) { return ... }</programlisting>
+        <programlisting>public Integer identityHash(Reference x) { return ... }</programlisting>
+    
     </section>
 
     <section id="callable">
@@ -404,7 +426,7 @@ class CaseSuper<X,Y>(Case<X> c)
 }]]></programlisting>
 
         <para>The implementations of <literal>equals()</literal>, <literal>hash</literal>
-        and <literal>string</literal> provided by the <literal>Object</literal> class 
+        and <literal>string</literal> provided by the <literal>Reference</literal> class 
         handle subclasses that implement <literal>Selector</literal> as a special case.</para>
 
         <para>This extension allows selectors to be used as cases in a <literal>switch</literal>
@@ -740,7 +762,8 @@ while (exists local value = indexed.indexedValue(i)) {
         <para>Entries may be constructed using the <literal>-></literal> 
         operator.</para>
 
-            <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) {
+            <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
+        extends Object() {
     
     doc "The key used to access the entry."
     public U key = key;
@@ -1370,6 +1393,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
         operator:</para> 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
+        extends Object() 
         satisfies Category, X[], Case<X>, Iterable<X>
         given X satisfies Ordinal, Comparable<X> { 
     
@@ -1505,6 +1529,7 @@ while (i<=max) {
         <para>UTF-32 Unicode Characters are represented by the following class:</para>
 
         <programlisting><![CDATA[public class Character(small Natural utf32)
+        extends Object()
         satisfies Ordinal, Comparable<Character>, Case<Character> { 
     ... 
     
@@ -1533,6 +1558,7 @@ while (i<=max) {
                 
         <programlisting><![CDATA[public extension 
 class String(Character[] characters) 
+        extends Object() 
         satisfies Character[], Comparable<String>, Case<String> {
     
     ... 
@@ -1742,6 +1768,7 @@ class String(Character[] characters)
         (including zero).</para>
         
         <programlisting><![CDATA[public class Natural(Natural natural)
+        extends Object() 
         satisfies Integral<Natural>, Invertable<Integer>, Case<Integer> { 
     ... 
     
@@ -1782,6 +1809,7 @@ class String(Character[] characters)
         <para><literal>Integer</literal> represents 64 bit signed integers.</para>
 
         <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
+        extends Object() 
         satisfies Integral<Integer>, Invertable<Integer>, Case<Integer> {
     ...
     
@@ -1807,6 +1835,7 @@ class String(Character[] characters)
         signed integers.</para>
 
         <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
+        extends Object() 
         satisfies Integral<Whole>, Invertable<Whole> {
     ...
     
@@ -1828,6 +1857,7 @@ class String(Character[] characters)
         values.</para>
 
         <programlisting><![CDATA[public class Float(Float float)
+        extends Object() 
         satisfies Numeric<Float>, Invertable<Float> { 
     ... 
     
@@ -1850,6 +1880,7 @@ class String(Character[] characters)
         and arbitrary-scale decimals.</para>
 
         <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
+        extends Object() 
         satisfies Numeric<Decimal>, Invertable<Decimal> {
     ...
 
