@@ -382,7 +382,8 @@ String? firstWord = words[0];</programlisting>
                 more interfaces or type parameters, or</para>
             </listitem>
             <listitem>
-                <para>a type parameter may <emphasis>abstract</emphasis> another type parameter.</para>
+                <para>a type parameter may <emphasis>abstract</emphasis> a class, interface or 
+                type parameter.</para>
             </listitem>
         </itemizedlist>
         
