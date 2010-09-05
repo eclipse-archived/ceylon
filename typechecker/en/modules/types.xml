@@ -180,13 +180,12 @@
          containing the name of the type, and the value of the
          given attributes." 
     public default String string(Attribute<subtype,Object>... attributes) {
-        StringBuilder builder = StringBuilder();
-        builder.append(type.name).append("{");
-        for (Attribute<subtype,Object> a in attributes) {
-            builder.append(a.name).append("=").append($a(this)).append(";");
-        }
-        builder.append("}");
-        return builder
+        mutable Character[] result := "";
+        result .= with (type.name, "{");
+        result .= forEach (Attribute<subtype,Object> a in attributes)
+                    with ({ a.name, "=", $a(this), ";" });
+        result .= with ("}");
+        return result 
     }
     
     ...
@@ -1543,6 +1542,9 @@ while (i<=max) {
     doc "The UTF-8 encoding"
     public String utf8;
     
+    public Character lowercase { return .. }
+    public Character uppercase { return .. }
+    
     public extension class StringToCharacter(String string) {
     
         doc "Parse the string representation of a |Character| in UTF-16"
@@ -1565,6 +1567,14 @@ class String(Character[] characters)
         extends Object() 
         satisfies Character[], Comparable<String>, Case<String> {
     
+    Character[] chars;
+    if (is String characters) {
+        chars = characters;
+    }
+    else {
+        chars = copy(characters)
+    }
+    
     ... 
     
     doc "Split the string into tokens, using the given
@@ -1574,11 +1584,38 @@ class String(Character[] characters)
     doc "Split the string into lines of text."
     public Iterable<String> lines() { return tokens("\n\l\r") }
     
+    public String replace(Character with(Character character)) { return ... }
+    
+    public String replace(Character character -> Character replacement) {
+        return replace() with (Character c) {
+            if (c=character) {
+                return replacement
+            }
+            else {
+                return c
+            }
+        }
+    }
+    
+    public String replace(Correspondence<Character,Character> replacements) { 
+        return replace() with (Character c) {
+            return replacements[c] ? c
+        }
+    }
+    
     doc "The string, with all characters in lowercase."
-    public String lowercase { return ... }
+    public String lowercase {
+        return replace() with (Character c) {
+            return c.lowercase
+        }
+    }
     
     doc "The string, with all characters in uppercase."
-    public String uppercase { return ... }
+    public String uppercase {
+        return replace() with (Character c) {
+            return c.uppercase
+        }
+    }
     
     doc "Remove the given characters from the beginning 
          and end of the string.
@@ -1598,6 +1635,46 @@ class String(Character[] characters)
         performance advantages to going with UTF-16 like Java? Can we easily abstract
         this stuff? Does the JVM do all kinds of optimizations for 
         <literal>java.String</literal>?</para></comment>
+        
+        <para>The extension class <literal>StringBuilder</literal> makes it more 
+        efficient to produce a string using procedural code:</para>
+        
+        <programlisting><![CDATA[public extension class StringBuilder(Character[] string) {
+        
+    Character[] string = string;
+    
+    Character[] with(Character[] appendedStrings...) {
+        mutable OpenList<Character> list = ArrayList<Character>(string);
+        list.append(string);
+        for (Character[] s in appendedStrings) {
+            list.append(s);
+        }
+    }
+    
+    Character[] forEach<X>(iterated Iterable<X> objects, 
+                           Character[] with(coordinated X x)) {
+        mutable OpenList<Character> list = ArrayList<Character>(string);
+        for (X x in objects) {
+            list.append(with(x));
+        }
+        return list 
+    }
+    
+    Character[] forEach<X>(iterated Iterable<X> objects, 
+                           Character[][] with(coordinated X x)) {
+        mutable OpenList<Character> list = ArrayList<Character>(string);
+        for (X x in objects) {
+            for (Character[] s in with(x)) {
+                list.append(s);
+            }
+        }
+        return list 
+    }
+       
+}]]></programlisting>
+
+        <comment><para>TODO: is this OK, or is it going to need to be a <emphasis>mutable</emphasis> 
+        class?</para></comment>
         
         <!--
         <para>A string template is represented by an instance of <literal>StringTemplate</literal>.</para>
