@@ -376,8 +376,8 @@ public void hello(Process process) {
         This code defines a method named <literal>hello()</literal> with a 
         parameter of type <literal>ceylon.lang.Process</literal>. The method 
         is annotated <literal>public</literal>, which makes it accessible to 
-        code in other compilation units. When the method is executed, it 
-        calls the <literal>writeLine()</literal> method of the class 
+        code in other packages. When the method is executed, it calls the 
+        <literal>writeLine()</literal> method of the class 
         <literal>Process</literal>. (This method displays its parameter on 
         the console.)
         </para>
@@ -536,6 +536,13 @@ process.writeLine(greeting);]]></programlisting>
         default</emphasis>&mdash;only members with explicit visibility modifiers are
         visible to other toplevel types or methods, other compilation units, other 
         packages, or other modules.
+        </para>
+        
+        <para>
+        And, of course, a class itself may be hidden from other code. By default,
+        a toplevel class is visible only inside the package in which it is defined.
+        To make it visible to other packages or modules, an explicit visibility
+        modifier is required. 
         </para>
         
         <para>Our first version of the <literal>Hello</literal> class has a
