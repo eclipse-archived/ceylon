@@ -19,8 +19,8 @@
         
     <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
-Supertype?
-Interfaces? 
+ExtendedType?
+SatisfiedTypes? 
 TypeConstraints? 
 Body?</programlisting>
 
@@ -225,7 +225,7 @@ String lastName;
         <programlisting>Interface :=
 Annotation*
 "interface" TypeName TypeParams?
-Interfaces?
+SatisfiedTypes?
 TypeConstraints? 
 InterfaceBody</programlisting>
 
@@ -315,8 +315,8 @@ InterfaceBody</programlisting>
         <programlisting>Class :=
 Annotation*
 "class" TypeName TypeParams? FormalParams
-Supertype?
-Interfaces?
+ExtendedType?
+SatisfiedTypes?
 TypeConstraints?
 ClassBody</programlisting>
 
@@ -1824,7 +1824,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        <para>A <emphasis>type alias</emphasis> allows a type to be referred to more 
        compactly.</para>
        
-       <programlisting>Alias := Annotation* "alias" TypeName TypeParams? Interfaces? TypeConstraints? ";"</programlisting>
+       <programlisting>Alias := Annotation* "alias" TypeName TypeParams? SatisfiedTypes? TypeConstraints? ";"</programlisting>
        
        <para>A type alias may satisfy either a single interface or a single class.</para>
        
