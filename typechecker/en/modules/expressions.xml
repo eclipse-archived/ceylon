@@ -100,7 +100,7 @@ setGreeting(greeting);</programlisting>
         
         <para>Two values are said to be <emphasis>identical</emphasis> if they are
         references to the same object&mdash;if they hold the same unique identifier. The 
-        program may determine the if two values are identical using the <literal>===</literal> 
+        program may determine the if two values are identical using the <literal>==</literal> 
         operator. It may not directly obtain the unique identifier (which is a purely 
         abstract construct).</para>
         
@@ -113,11 +113,11 @@ setGreeting(greeting);</programlisting>
         
         <programlisting>Person myself(Person me) { return me }
 Person p = ...;
-assert() that (myself(p)===p); //assertion never fails</programlisting>
+assert() that (myself(p)==p); //assertion never fails</programlisting>
 
         <programlisting>Semaphore s = Semaphore();
 this.semaphore = s;
-assert() that (semaphore===s) //assertion never fails</programlisting>
+assert() that (semaphore==s) //assertion never fails</programlisting>
         
         <para>A new object is produced by execution of a class instantiation expression.
         The Ceylon compiler guarantees that if execution of a class initializer terminates
@@ -157,7 +157,7 @@ assert() that (semaphore===s) //assertion never fails</programlisting>
             whenever any expression is evaluated. Furthermore, it is permitted to use such a 
             newly-produced instance as the value of the expression, as long as the newly-produced 
             instance is equal to the value expected according to the rules above, as determined 
-            using the <literal>==</literal> operator.</para>
+            using the <literal>=</literal> operator.</para>
         </listitem>
         </itemizedlist>
         
@@ -336,7 +336,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A single character literal is an expression of type 
         <literal>ceylon.lang.Character</literal>.</para>
                 
-        <programlisting>if ( string[i] == `+` ) { ... }</programlisting>
+        <programlisting>if ( string[i] = `+` ) { ... }</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
@@ -2313,7 +2313,7 @@ setPerson(person);</programlisting>
     
     <programlisting>Float z = x * y + 1.0;</programlisting>
     
-    <programlisting>even := n % 2 == 0;</programlisting>
+    <programlisting>even := n % 2 = 0;</programlisting>
     
     <programlisting>++count;</programlisting>
     
@@ -2341,7 +2341,7 @@ setPerson(person);</programlisting>
     
     <programlisting>this.total += item.price;</programlisting>
     
-    <programlisting>if ( nonempty args[i] &amp;&amp; !args[i].first == `-` ) { ... }</programlisting>
+    <programlisting>if ( nonempty args[i] &amp;&amp; args[i]?.first != `-` ) { ... }</programlisting>
     
     <programlisting>Float vol = length**3;</programlisting>
     
@@ -2525,11 +2525,11 @@ setPerson(person);</programlisting>
                 <entry>None</entry>
             </row>
             <row>
-                <entry>Equality:</entry>
+                <entry>Equality, identity:</entry>
                 <entry>
-                <literal>==</literal>, 
+                <literal>=</literal>, 
                 <literal>!=</literal>, 
-                <literal>===</literal>
+                <literal>==</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
@@ -2625,7 +2625,7 @@ setPerson(person);</programlisting>
         <!-- 
         <listitem>
             <para>the <emphasis>identity</emphasis> operator
-            <literal>===</literal> evaluates to <literal>true</literal> if 
+            <literal>==</literal> evaluates to <literal>true</literal> if 
             its argument expressions evaluate to references to the same 
             object, and <literal>false</literal> otherwise, and</para>
         </listitem>
@@ -2923,11 +2923,11 @@ setPerson(person);</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Equality</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Equality and identity</emphasis></entry></row>
         
         <row>
-            <entry><literal>===</literal></entry>
-            <entry><literal>lhs === rhs</literal></entry>
+            <entry><literal>==</literal></entry>
+            <entry><literal>lhs == rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
             <entry><literal>IdentityObject</literal></entry>
@@ -2935,8 +2935,8 @@ setPerson(person);</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>==</literal></entry>
-            <entry><literal>lhs == rhs</literal></entry>
+            <entry><literal>=</literal></entry>
+            <entry><literal>lhs = rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>if (exists lhs) lhs.equals(rhs) else if (exists rhs) false else true</literal></entry>
             <entry><literal>Object?</literal></entry>

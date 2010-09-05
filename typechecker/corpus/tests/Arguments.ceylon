@@ -99,18 +99,18 @@ class Arguments() {
 		}
 		
 		from(0) 
-			until (Natural y) (y==10)
+			until (Natural y) (y=10)
 			each (Natural y) (y+2)
 			perform (Natural y) { log.info(y); };
 		
 		from(0) 
-			until(Natural y) { return y==10 } 
+			until(Natural y) { return y=10 } 
 			each(Natural y) { return y+2 } 
 			perform(Natural y) { log.info(y); };
 		
 		from {
 			initial=0; 
-			Boolean until(Natural y) { return y==10 } 
+			Boolean until(Natural y) { return y=10 } 
 			Natural each(Natural y) { return y+2 } 
 			void perform(Natural y) { log.info(y); }
 		};

@@ -501,7 +501,7 @@ ClassBody</programlisting>
     y = pos;
     
     assert ("must have distance " distance " from origin") 
-        that ( x**2 + y**2 == distance**2 );
+        that ( x**2 + y**2 = distance**2 );
     
 }</programlisting>
         

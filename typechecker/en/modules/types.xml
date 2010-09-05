@@ -42,12 +42,12 @@
         return ... 
     }
         
-    doc "The equals operator |x == y|."
+    doc "The equals operator |x = y|."
     public Boolean equals(Object that);
     
     doc "The hash code of the instance. Implementations of |hash| 
-         must respect the constraint that if |x==y| then 
-         |x.hash==y.hash|."
+         must respect the constraint that if |x=y| then 
+         |x.hash=y.hash|."
     public Integer hash;
     
     doc "A developer-friendly string representing the instance. 
@@ -92,7 +92,7 @@
             return in(cat)
         }
         else {
-            return forAny (Object elem in objects) some (elem == object)
+            return forAny (Object elem in objects) some (elem = object)
         }
     }
 
@@ -115,7 +115,7 @@
     
         <para>User-written classes usually extend <literal>IdentityObject</literal>.
         Expressions of type <literal>IdentityObject</literal> support the binary
-        operator <literal>===</literal> (identity equals) and have a default
+        operator <literal>==</literal> (identity equals) and have a default
         implementation of <literal>equals()</literal> and <literal>hash</literal>
         provided for them.</para>
         
@@ -127,7 +127,7 @@
                     where ( nonempty a.annotations(Id) );
     }
     
-    doc "The equals operator |x == y|. Default implementation compares
+    doc "The equals operator |x = y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
     default override Boolean equals(Object that) {
@@ -136,7 +136,7 @@
             return equals(that, idAttributes)
         }
         else {
-            return this===that
+            return this==that
         }
     }
     
@@ -145,7 +145,7 @@
     public Boolean equals(Object that, Attribute<subtype,Object>... attributes) {
         if (is subtype that) {
             return forAll (Attribute<subtype,Object> a in attributes)
-                        every ( a(this)==a(that) )
+                        every ( a(this) = a(that) )
         }
         else {
             return false
@@ -354,7 +354,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     case true, case false;
     
     override Boolean test(Boolean value) {
-        return this===value
+        return this==value
     }
 
 }]]></programlisting>
@@ -438,7 +438,7 @@ class CaseSuper<X,Y>(Case<X> c)
         <programlisting>public extension class SelectorCase&lt;X&gt;(X selector)
         given X extends Selector {
     override Boolean test(X x) {
-        return x.ordinal==selector.ordinal
+        return x.ordinal = selector.ordinal
     }
 }</programlisting>
 
@@ -471,7 +471,7 @@ class CaseSuper<X,Y>(Case<X> c)
         binary operators <literal>?.</literal> (nullsafe invoke) and 
         <literal>?</literal> (default), the unary operator <literal>exists</literal>, 
         the unary operator <literal>$</literal> (render) and the the binary 
-        operators <literal>==</literal> (equals) and <literal>!=</literal> 
+        operators <literal>=</literal> (equals) and <literal>!=</literal> 
         (not equals).</para>
         
          <para>Note that <literal>Optional</literal> is not a subtype
@@ -955,12 +955,12 @@ while (exists local value = indexed.indexedValue(i)) {
          to the given object."
     case equal;
         
-    public Boolean larger { return this===larger }
-    public Boolean smaller { return this===smaller }
-    public Boolean equal { return this===equal }
-    public Boolean unequal { return !this===equal }
-    public Boolean largeAs { return !this===smaller }
-    public Boolean smallAs { return !this===larger }
+    public Boolean larger { return this=larger }
+    public Boolean smaller { return this=smaller }
+    public Boolean equal { return this=equal }
+    public Boolean unequal { return this!=equal }
+    public Boolean largeAs { return this!=smaller }
+    public Boolean smallAs { return this!=larger }
     
 }]]></programlisting>
 
@@ -1414,7 +1414,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
          reached."
     public X[] by(Natural stepSize) { 
         return from (Natural index->X value in this) 
-                    where (index%stepSize==0) 
+                    where (index%stepSize=0) 
     }
     
     public Natural? index(X x) {
@@ -1491,7 +1491,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
     
     override Boolean equals(Object that) {
         if (is Range<X> that) {
-            return that.first==first && that.last==last
+            return that.first=first && that.last=last
         }
         else {
             return false
@@ -1972,7 +1972,7 @@ class String(Character[] characters)
     
     override Gettable<Boolean?> value(Natural key) {
         Boolean? result;
-        if (key==0) {
+        if (key=0) {
             result = boolean 
         }
         else {

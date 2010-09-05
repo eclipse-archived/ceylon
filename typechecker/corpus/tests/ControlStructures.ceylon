@@ -10,7 +10,7 @@ class ControlStructures() {
 		}
 		
 		for (String name in names) {
-			if (name=="Gavin") {
+			if (name = "Gavin") {
 				log.info("found");
 				break true
 			}
@@ -24,8 +24,8 @@ class ControlStructures() {
 		}
 		
 		for (Natural n in 1..5) {
-		    if (n==2) { continue }
-		    if (n==4) { break }
+		    if (n=2) { continue }
+		    if (n=4) { break }
 		}
 		
 	}
@@ -131,7 +131,7 @@ class ControlStructures() {
 		Iterator<String> tokens = text.tokens().iterator();
 		while (tokens.more) {
 			String word = tokens.next().lowercase;
-			if ("hello"==word) {
+			if ("hello" = word) {
 				log.info("found hello");
 				break
 			}

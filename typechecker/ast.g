@@ -45,7 +45,7 @@ tokens {
     MEMBER_NAME;
     MEMBER_TYPE;
     NAMED_ARG;
-    VARARGS;
+    SEQ_ARG;
     NIL;
     RET_STMT;
     STMT_LIST;
@@ -256,12 +256,12 @@ visibility
     ;
 
 statement 
-    : expressionStatement
+    : specificationOrExpressionStatement
     | controlStructure
     ;
 
-expressionStatement
-    : expression ';'!
+specificationOrExpressionStatement
+    : primary specifier? ';'!
     ;
 
 directiveStatement
@@ -522,13 +522,11 @@ dimensionalTypeParameter
     -> ^(TYPE_PARAMETER memberName)
     ;
     
-//for locals and attributes
 initializer
     : ':=' expression
     -> ^(INIT_EXPR expression)
     ;
 
-//for parameters
 specifier
     : '=' expression
     -> ^(INIT_EXPR expression)
@@ -592,7 +590,7 @@ expression
 //can be used to init locals
 assignmentExpression
     : disjunctionExpression
-      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
+      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
     ;
 
 //should '^' have a higher precedence?
@@ -613,7 +611,7 @@ logicalNegationExpression
 
 equalityExpression
     : comparisonExpression
-      (('=='^|'!='^|'==='^) comparisonExpression)?
+      (('=='^|'!='^|'='^) comparisonExpression)?
     ;
 
 comparisonExpression
@@ -778,7 +776,7 @@ parameterName
 
 namedArguments
     : '{' ((namedArgumentStart) => namedArgument)* expressions? '}'
-    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* ^(VARARGS expressions)?)
+    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* ^(SEQ_ARG expressions)?)
     ;
 
 parExpression 

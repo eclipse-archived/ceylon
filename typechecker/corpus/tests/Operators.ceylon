@@ -21,7 +21,7 @@ class Operators() {
 	Boolean or = true||false;
 	Boolean and = or&&not;
 	
-	Boolean equal = 1==2;
+	Boolean equal = 1=2;
 	Boolean notEqual = 1!=2;
 	Boolean smaller = 1<2;
 	Boolean larger = 1>2;
@@ -36,7 +36,7 @@ class Operators() {
 	
 	Boolean instanceOf = 1 is Natural;
 	Boolean containedIn = 3 in range;
-	Boolean identical = 3===sum;
+	Boolean identical = compare==compare;
 	
 	String render = $123;
 	
