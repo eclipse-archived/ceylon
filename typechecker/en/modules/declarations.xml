@@ -1762,8 +1762,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <para>By default, the attribute annotated <literal>override</literal>
             has the same visibility modifier as the attribute it overrides. The
-            method may not declare a stricter visibility modifier than the method 
-            it overrides.</para>
+            attribute may not declare a stricter visibility modifier than the 
+            attribute it overrides.</para>
             
             <programlisting>abstract module class AbstractPi() {
     module Float pi;
