@@ -1619,7 +1619,7 @@ class String(Character[] characters)
     
 }]]></programlisting>
         
-        <comment><para>What encoding is the default for Ceylon strings? Are there 
+        <comment><para>TODO: What encoding is the default for Ceylon strings? Are there 
         performance advantages to going with UTF-16 like Java? Can we easily abstract
         this stuff? Does the JVM do all kinds of optimizations for 
         <literal>java.String</literal>?</para></comment>
@@ -1661,7 +1661,7 @@ class String(Character[] characters)
        
 }]]></programlisting>
 
-        <comment><para>TODO: is this OK, or is it going to need to be a <emphasis>mutable</emphasis> 
+        <comment><para>TODO: Is this OK, or is it going to need to be a <emphasis>mutable</emphasis> 
         class?</para></comment>
         
         <!--
