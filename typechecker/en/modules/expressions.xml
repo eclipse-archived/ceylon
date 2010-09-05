@@ -1185,7 +1185,7 @@ local comp = order(1,-1);</programlisting>
         log.info("Entry: " name "->" value ""); 
     };</programlisting>
     
-            <programlisting>privilege() action {
+            <programlisting>performAs (subject) privilegedAction {
     exec("java Hello");
 }</programlisting>
 
