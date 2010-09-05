@@ -2715,7 +2715,10 @@ setPerson(person);</programlisting>
             operators <literal>..</literal> and <literal>-></literal>,</para>
         </listitem>
         <listitem>
-            <para>the sequence concatenation operator <literal>+</literal>, and</para>
+            <para>the sequence concatenation operator <literal>+</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the identity equality operator <literal>==</literal>, and</para>
         </listitem>
         <listitem>
             <para>all assignment and compound assignment operators.</para>
