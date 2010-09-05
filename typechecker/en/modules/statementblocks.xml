@@ -138,7 +138,7 @@
         <para>However, this code <emphasis>is</emphasis> legal, since the statements do not 
         occur in the initializer of the class:</para>
         
-        <programlisting>public class Point() {
+        <programlisting>class Point() {
     Float x { return y }
     Float y { return x }
 }</programlisting>
