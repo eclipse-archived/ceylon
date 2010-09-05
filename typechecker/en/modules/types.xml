@@ -452,7 +452,7 @@ class CaseSuper<X,Y>(Case<X> c)
         <para>The class <literal>Optional</literal> represents a
         value that may be null.</para>
         
-        <programlisting><![CDATA[abstract class Optional<out X>() 
+        <programlisting><![CDATA[public abstract class Optional<out X>() 
         extends Void() {
     
     doc "The unary postfix exists operator 
