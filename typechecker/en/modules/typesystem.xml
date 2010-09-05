@@ -372,19 +372,21 @@ String? firstWord = words[0];</programlisting>
                 <para>a class may <emphasis>extend</emphasis> another class,</para>
             </listitem>
             <listitem>
-                <para>a class may <emphasis>implement</emphasis> an interface,</para>
+                <para>a class may <emphasis>implement</emphasis> one or more interfaces,</para>
             </listitem>
             <listitem>
-                <para>an interface may <emphasis>extend</emphasis> another interface,</para>
+                <para>an interface may <emphasis>extend</emphasis> one or more other interfaces,</para>
             </listitem>
             <listitem>
-                <para>a type parameter may <emphasis>satisfy</emphasis> a class or interface,
-                or</para>
+                <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
+                more interfaces or type parameters, or</para>
             </listitem>
             <listitem>
-                <para>a type parameter may <emphasis>abstract</emphasis> a class or interface.</para>
+                <para>a type parameter may <emphasis>abstract</emphasis> another type parameter.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: should we let an interface extend a class other than <literal>Object</literal>?</para></comment>
     
     <section id="extendedclass">
         <title>Extension</title>
