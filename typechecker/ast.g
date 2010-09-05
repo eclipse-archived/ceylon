@@ -400,9 +400,9 @@ satisfiedTypes
     -> ^(SATISFIES_LIST type+)
     ;
 
-abstractedTypes
-    : 'abstracts' type (',' type)*
-    -> ^(ABSTRACTS_LIST type+)
+abstractedType
+    : 'abstracts' type
+    -> ^(ABSTRACTS_LIST type)
     ;
 
 instance
@@ -410,8 +410,8 @@ instance
     ;
     
 typeConstraint
-    : 'given' typeName formalParameters? satisfiedTypes? abstractedTypes?
-    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedTypes?)
+    : 'given' typeName formalParameters? satisfiedTypes? abstractedType?
+    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
     ;
     
 typeConstraints
