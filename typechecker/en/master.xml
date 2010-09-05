@@ -69,7 +69,7 @@
         <listitem>
             <para>to eliminate some of Java's verbosity, while retaining its 
             readability&mdash;Ceylon does <emphasis>not</emphasis> aim to be 
-            the least verbose/most cryptic language around,</para>
+            the most concise/cryptic language around,</para>
         </listitem>
         <listitem>
             <para>to provide a declarative syntax for expressing hierarchical 
