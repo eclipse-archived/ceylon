@@ -1587,34 +1587,22 @@ class String(Character[] characters)
     public String replace(Character with(Character character)) { return ... }
     
     public String replace(Character character -> Character replacement) {
-        return replace() with (Character c) {
-            if (c=character) {
-                return replacement
-            }
-            else {
-                return c
-            }
-        }
+        return replace() with (Character c) 
+            (ifTrue (c=character) then (replacement) otherwise (c))
     }
     
     public String replace(Correspondence<Character,Character> replacements) { 
-        return replace() with (Character c) {
-            return replacements[c] ? c
-        }
+        return replace() with (Character c) (replacements[c] ? c)
     }
     
     doc "The string, with all characters in lowercase."
     public String lowercase {
-        return replace() with (Character c) {
-            return c.lowercase
-        }
+        return replace() with (Character c) (c.lowercase)
     }
     
     doc "The string, with all characters in uppercase."
     public String uppercase {
-        return replace() with (Character c) {
-            return c.uppercase
-        }
+        return replace() with (Character c) (c.uppercase)
     }
     
     doc "Remove the given characters from the beginning 
