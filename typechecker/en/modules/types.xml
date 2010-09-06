@@ -12,6 +12,24 @@
         <para>The module <literal>ceylon.lang</literal> contains types which
         are referred to in the language definition.</para>
         
+        <comment><para>Note: we will probably need to do the following erasures:</para>
+        <itemizedlist>
+            <listitem>
+                <para><literal>Optional&lt;T&gt;</literal>, <literal>Something&lt;T&gt;</literal>
+                and <literal>Nothing&lt;T&gt;</literal> to <literal>T</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>Void</literal>, <literal>Object</literal> and 
+                <literal>IdentityObject</literal> to <literal>java.lang.Object</literal>.</para>
+            </listitem>
+            <listitem>
+                <para><literal>Exception</literal> to <literal>java.lang.Throwable</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        <para>Therefore the members declared by <literal>Object</literal> and
+        <literal>Exception</literal> will require special handling in the compiler.</para>
+        </comment>
+    
     <section id="void">
         <title>The void type</title>
         
@@ -28,8 +46,8 @@
     </section>
     
     <section id="object">
-        <title>The <literal>Object</literal> and <literal>IdentityObject</literal> 
-        types</title>
+        <title><literal>Object</literal>, <literal>IdentityObject</literal>,
+        and <literal>BaseObject</literal></title>
         
         <para>The class <literal>Object</literal> represents a definite value. 
         All interface types are assignable to <literal>Object</literal>.</para>
@@ -55,18 +73,6 @@
          and the values of all attributes annotated |id|."
     public String string;
     
-    doc "Transform the given object to a string. Override to
-         customize the render operator and character string 
-         template expression interpolation."
-    public default String string(Object? object) {
-        return (object ? nullString).string
-    }
-    
-    doc "The string representation of a null value. Override 
-         to customize the render operator and character string 
-         template expression interpolation."
-    public default String nullString = "null";
-        
     ...
         
 }]]></programlisting>
@@ -113,15 +119,31 @@
     }
  -->
     
-        <para>User-written classes usually extend <literal>IdentityObject</literal>.
-        Expressions of type <literal>IdentityObject</literal> support the binary
-        operator <literal>==</literal> (identity equals) and have a default
-        implementation of <literal>equals()</literal> and <literal>hash</literal>
-        provided for them.</para>
+        <para>The class <literal>IdentityObject</literal> represents a type 
+        whose values are always passed by reference. Expressions of type 
+        <literal>IdentityObject</literal> support the binary operator 
+        <literal>==</literal> (identity equals).</para>
         
         <programlisting><![CDATA[public abstract class IdentityObject() 
-        extends Object() {
+        extends Object() {}]]></programlisting>
+        
+        <para>The following toplevel methods expose the notion of object 
+        identity:</para>
     
+        <programlisting>public Boolean identical(IdentityObject x, IdentityObject y) { return ... }</programlisting>
+        <programlisting>public Integer identityHash(IdentityObject x) { return ... }</programlisting>
+    
+        <comment><para>Note: Java classes would be subtypes of 
+        <literal>IdentityObject</literal>.</para></comment>
+    
+        <para>User-written classes usually extend <literal>BaseObject</literal>.
+        Expressions of type <literal>BaseObject</literal> have a default
+        implementation of <literal>equals()</literal>, <literal>hash</literal>
+        and <literal>string</literal> provided for them.</para>
+        
+        <programlisting><![CDATA[public abstract class BaseObject() 
+        extends Object() {
+        
     Attribute<subtype,Object>[] idAttributes() {
         return from ( Attribute<subtype,Object> a in type.attributes() ) 
                     where ( nonempty a.annotations(Id) );
@@ -188,53 +210,31 @@
         return result 
     }
     
+    doc "Transform the given object to a string. Override to
+         customize the render operator and character string 
+         template expression interpolation."
+    public default String string(Object? object) {
+        return (object ? nullString).string
+    }
+    
+    doc "The string representation of a null value. Override 
+         to customize the render operator and character string 
+         template expression interpolation."
+    public default String nullString = "null";
+        
     ...
         
 }]]></programlisting>
     
-        <para>The following toplevel methods expose the notion of
-        object identity:</para>
-    
-        <programlisting>public Boolean identical(IdentityObject x, IdentityObject y) { return ... }</programlisting>
-        <programlisting>public Integer identityHash(IdentityObject x) { return ... }</programlisting>
-    
     </section>
     
-    <section id="exception">
-        <title>Exceptions</title>
-        
-        <para>The class <literal>Exception</literal> is the base class for all
-        exception types.</para>
-        
-        <programlisting><![CDATA[public class Exception(Exception? cause=null, String? message=null) 
-        extends Object() {
-    
-    public String message = message ? cause?.message ? "";
-    
-    public Exception cause = cause ? this;
-    
-    public StackTrace stackTrace { return ... }
-    
-    override String string {
-        if (nonempty message) {
-            return type.name + ": " + message
-        }
-        else {
-            return type.name
-        }
-    }
-    
-}]]></programlisting>
-        
-    </section>
-
     <section id="callable">
         <title>Callable references</title>
         
         <para>The type <literal>Callable</literal> represents an executable
-        operation. Expressions of type <literal>Callable</literal> may be the subject
-        of the argument specification operators <literal>()</literal> and
-        <literal>{}</literal>.</para>
+        operation. Expressions of type <literal>Callable</literal> may be the 
+        subject of the argument specification operators <literal>()</literal> 
+        and <literal>{}</literal>.</para>
         
         <programlisting><![CDATA[public interface Callable<out R, P...> {
     public R call(P... args);
@@ -456,7 +456,7 @@ class CaseSuper<X,Y>(Case<X> c)
 }]]></programlisting>
 
         <para>The implementations of <literal>equals()</literal>, <literal>hash</literal>
-        and <literal>string</literal> provided by the <literal>IdentityObject</literal> class 
+        and <literal>string</literal> provided by the <literal>BaseObject</literal> class 
         handle subclasses that implement <literal>Selector</literal> as a special case.</para>
 
         <para>This extension allows selectors to be used as cases in a <literal>switch</literal>
@@ -582,6 +582,34 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
         
     </section>
     
+    <section id="exception">
+        <title>Exceptions</title>
+        
+        <para>The class <literal>Exception</literal> is the base class for all
+        exception types.</para>
+        
+        <programlisting><![CDATA[public class Exception(Exception? cause=null, String? message=null) 
+        extends Object() {
+    
+    public String message = message ? cause?.message ? "";
+    
+    public Exception cause = cause ? this;
+    
+    public StackTrace stackTrace { return ... }
+    
+    override String string {
+        if (nonempty message) {
+            return type.name + ": " + message
+        }
+        else {
+            return type.name
+        }
+    }
+    
+}]]></programlisting>
+
+    </section>
+
     <section id="usable">
         <title>Usables</title>
         
@@ -2246,7 +2274,7 @@ class String(Character[] characters)
 
     </section>
     
-    <section>
+    <section id="logging">
         <title>Logging</title>
         
         <para>The class <literal>lang.Log</literal> allows all modules in an application
