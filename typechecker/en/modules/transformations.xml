@@ -1,0 +1,93 @@
+<chapter id="transformations">
+    <title>Intercompilation of Ceylon and Java</title>
+    
+    <para>The Ceylon compiler is able to intercompile classes written in
+    Ceylon and Java. Ceylon types are available to Java code as inferred 
+    Java types, and Java types are available to Ceylon code as inferred 
+    Ceylon types.</para>
+    
+    <para>A well-defined <emphasis>transformation</emphasis> infers the 
+    schema of a type in one language from the schema of a type in the 
+    other language. Since the languages have different capabilities, 
+    some information is lost by this transformation&mdash;the transformation
+    is not, in general, an isomorphism.</para>
+    
+    <section id="ceylon2java">
+        <title>Transformation from Ceylon to Java</title>
+        
+        <para>A Java type is infered from a Ceylon type according to the
+        following rules:</para>
+        
+        <itemizedlist>        
+            <listitem>
+                <para>For each root toplevel Ceylon class, there is a Java 
+                class with the same name and package.</para>
+            </listitem>
+            <listitem>
+                <para>For each overloaded toplevel Ceylon class, there is a 
+                Java class whose name is formed from the Ceylon class name
+                and the types of the initializer paramemeters.</para>
+            </listitem>
+            <listitem>
+                <para>For each toplevel Ceylon interface, there is a Java 
+                interface with the same name and package.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The Java type has the same ordinary type parameters as the Ceylon 
+        type. The upper bounds of a type parameter of the Java type are formed 
+        by transforming the upper bounds of the type parameter of the Ceylon 
+        type. Dimensional type parameters and sequenced type parameters are
+        erased by the transformation process.</para>
+        
+        <para>In the case of a class, the Java class has a constructor with 
+        the same formal parameters as the Ceylon class. The types of the
+        constructor parameters are formed by transforming the types of the
+        initializer parameters of the Ceylon type.</para>
+        
+        <para>The supertypes of the Java type are formed by transforming the
+        supertypes of the Ceylon type.</para>
+        
+        <para>Members of the Java type are infered from the corresponding 
+        Ceylon type according to:</para>
+        
+        <itemizedlist>        
+            <listitem>
+                <para>For each method of the Ceylon class, there is a method
+                of the Java class with the same name.</para>
+            </listitem>
+            <listitem>
+                <para>For each Ceylon attribute, there is a JavaBeans-style 
+                getter method of the Java class.</para>
+            </listitem>
+            <listitem>
+                <para>For each mutable Ceylon attribute, there is a 
+                JavaBeans-style setter method of the Java class.</para>
+            </listitem>
+            <listitem>
+                <para>For each Ceylon member class, there is a non-<literal>static</literal> 
+                inner class of the Java class, together with a method that
+                instantiates and returns an instance of the inner class.</para>
+            </listitem>
+            <listitem>
+                <para>For each Ceylon nested interface, there is an inner
+                interface of the Java class.</para>
+            </listitem>
+            <listitem>
+                <para>For each enumerated instance of the Ceylon class, there is 
+                a <literal>static</literal> field of the Java class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The member type (attribute type, or method return type) of a member
+        of the Java class is formed by transforming the member type of the member
+        of the Ceylon class.</para>
+        
+        <para>In the case of a method, the Java method has the same formal 
+        parameters as the Ceylon class. The types of the method parameters are 
+        formed by transforming the types of the method parameters of the Ceylon 
+        type.</para>
+        
+    </section>
+    
+</chapter>
