@@ -77,9 +77,14 @@
         
 }]]></programlisting>
     
-    <para>An <literal>Object</literal> may belong to categories. The 
-    following extensions define the binary <literal>in</literal>
-    operator:</para>
+        <para>Classes which are optimized by the compiler to Java primitive 
+        types extend <literal>Object</literal> directly, since there is no 
+        well-defined notion of identity for these types. Most other types
+        are subclasses of <literal>IdentityObject</literal>.</para>
+    
+        <para>An <literal>Object</literal> may belong to categories. The 
+        following extensions define the binary <literal>in</literal>
+        operator:</para>
     
     <programlisting><![CDATA[public extension class Objects(Object object) {
     
