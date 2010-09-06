@@ -63,12 +63,16 @@
         return ... 
     }
         
-    doc "The equals operator |x = y|."
+    doc "The equals operator |x == y|. Implementations should 
+         respect the constraint that if |x===y| then |x==y|,
+         the constraint that if |x==y| then |y==x|,
+         and the constraint that if |x==y| and |y==z| then
+         |x==z|."
     public Boolean equals(Object that);
     
     doc "The hash code of the instance. Implementations of |hash| 
-         must respect the constraint that if |x=y| then 
-         |x.hash=y.hash|."
+         must respect the constraint that if |x==y| then 
+         |x.hash==y.hash|."
     public Integer hash;
     
     doc "A developer-friendly string representing the instance. 
@@ -130,7 +134,7 @@
         <para>The class <literal>IdentifiableObject</literal> represents a type 
         whose values are always passed by reference. Expressions of type 
         <literal>IdentifiableObject</literal> support the binary operator 
-        <literal>==</literal> (identity equals).</para>
+        <literal>&identical;</literal> (identity equals).</para>
         
         <programlisting><![CDATA[public abstract class IdentifiableObject() 
         extends Object() {}]]></programlisting>
@@ -157,16 +161,19 @@
                     where ( nonempty a.annotations(Id) );
     }
     
-    doc "The equals operator |x = y|. Default implementation compares
+    doc "The equals operator |x == y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
     default override Boolean equals(Object that) {
+        if (that.type!=type) {
+            return false
+        }
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
             return equals(that, idAttributes)
         }
         else {
-            return this==that
+            return this===that
         }
     }
     
@@ -175,7 +182,7 @@
     public Boolean equals(Object that, Attribute<subtype,Object>... attributes) {
         if (is subtype that) {
             return forAll (Attribute<subtype,Object> a in attributes)
-                        every ( a(this) = a(that) )
+                        every ( a(this) == a(that) )
         }
         else {
             return false
@@ -389,7 +396,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     case true, case false;
     
     override Boolean test(Boolean value) {
-        return this==value
+        return this===value
     }
 
 }]]></programlisting>
@@ -506,7 +513,7 @@ class CaseSuper<X,Y>(Case<X> c)
         binary operators <literal>?.</literal> (nullsafe invoke) and 
         <literal>?</literal> (default), the unary operator <literal>exists</literal>, 
         the unary operator <literal>$</literal> (render) and the the binary 
-        operators <literal>=</literal> (equals) and <literal>!=</literal> 
+        operators <literal>&equals;</literal> (equals) and <literal>!=</literal> 
         (not equals).</para>
         
          <para>Note that <literal>Optional</literal> is not a subtype
@@ -999,7 +1006,11 @@ while (exists local value = indexed.indexedValue(i)) {
         given T satisfies Object {
     
     doc "The binary compare operator |<=>|. Compares this 
-         object with the given object."
+         object with the given object. Implementations must
+         respect the constraint that if |x==y| then
+         |x<=>y == Comparison.equal|, the constraint that 
+         if |x>y| then |y<x|, and the constraint that if 
+         |x>y| and |y>z| then |x>z|."
     public Comparison compare(T other);
     
 }]]></programlisting>
@@ -1477,7 +1488,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
          reached."
     public X[] by(Natural stepSize) { 
         return from (Natural index->X value in this) 
-                    where (index%stepSize=0) 
+                    where (index%stepSize == 0) 
     }
     
     public Natural? index(X x) {
@@ -2101,7 +2112,7 @@ class String(Character[] characters)
     
     override Gettable<Boolean?> value(Natural key) {
         Boolean? result;
-        if (key=0) {
+        if (key==0) {
             result = boolean 
         }
         else {
