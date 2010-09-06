@@ -2169,10 +2169,9 @@ Map&lt;String, Person&gt; map = logInfoHello;</programlisting>
         formal parameters of the method, and the body of the method is executed.</para>
             
         <para>The actual value that invocation of a <literal>void</literal> method returns
-        is not specified here. However, the <literal>is T</literal> operator always evaluates
-        to <literal>false</literal> for any type <literal>T</literal> other than 
-        <literal>Void</literal> when applied to the return value of an invocation of a 
-        <literal>void</literal> method.</para>
+        is not specified here. The type system and the definition of the <literal>is</literal> 
+        operator ensures that a value of type <literal>Void</literal> can never be narrowed
+        to a more specific type.</para>
             
         <para>A class instantiation evaluates to a new instance of the class. The argument 
         values are passed to the initializer parameters of the class, and the initializer
