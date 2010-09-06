@@ -11,7 +11,7 @@ public class CommandLine(Process process) {
 	Iterator<String> tokens = process.args.iterator();
 	while (tokens.more) {
 		String token = tokens.next();
-		if ( token.first = `-` ) {
+		if ( token.first == `-` ) {
 			String name = token[1...];
 			if (tokens.more) {
 				namedArgs[name]:=tokens.next();
