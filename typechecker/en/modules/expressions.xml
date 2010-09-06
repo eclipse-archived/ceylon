@@ -100,7 +100,7 @@ setGreeting(greeting);</programlisting>
         
         <para>Two values are said to be <emphasis>identical</emphasis> if they are
         references to the same object&mdash;if they hold the same unique identifier. The 
-        program may determine the if two values are identical using the <literal>==</literal> 
+        program may determine the if two values are identical using the <literal>&identical;</literal> 
         operator. It may not directly obtain the unique identifier (which is a purely 
         abstract construct).</para>
         
@@ -113,11 +113,11 @@ setGreeting(greeting);</programlisting>
         
         <programlisting>Person myself(Person me) { return me }
 Person p = ...;
-assert() that (myself(p)==p); //assertion never fails</programlisting>
+assert() that (myself(p)&identical;p); //assertion never fails</programlisting>
 
         <programlisting>Semaphore s = Semaphore();
 this.semaphore = s;
-assert() that (semaphore==s) //assertion never fails</programlisting>
+assert() that (semaphore&identical;s) //assertion never fails</programlisting>
         
         <para>A new object is produced by execution of a class instantiation expression.
         The Ceylon compiler guarantees that if execution of a class initializer terminates
@@ -336,7 +336,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A single character literal is an expression of type 
         <literal>ceylon.lang.Character</literal>.</para>
                 
-        <programlisting>if ( string[i] = `+` ) { ... }</programlisting>
+        <programlisting>if ( string[i] &equals; `+` ) { ... }</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
@@ -2322,7 +2322,7 @@ setPerson(person);</programlisting>
     
     <programlisting>Float z = x * y + 1.0;</programlisting>
     
-    <programlisting>even := n % 2 = 0;</programlisting>
+    <programlisting>even := n % 2 &equals; 0;</programlisting>
     
     <programlisting>++count;</programlisting>
     
@@ -2538,9 +2538,9 @@ setPerson(person);</programlisting>
             <row>
                 <entry>Equality, identity:</entry>
                 <entry>
-                <literal>=</literal>, 
+                <literal>&equals;</literal>, 
                 <literal>!=</literal>, 
-                <literal>==</literal>
+                <literal>&identical;</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
@@ -2636,8 +2636,8 @@ setPerson(person);</programlisting>
         <!-- 
         <listitem>
             <para>the <emphasis>identity</emphasis> operator
-            <literal>==</literal> evaluates to <literal>true</literal> if 
-            its argument expressions evaluate to references to the same 
+            <literal>&identical;</literal> evaluates to <literal>true</literal> 
+            if its argument expressions evaluate to references to the same 
             object, and <literal>false</literal> otherwise, and</para>
         </listitem>
         -->
@@ -2716,7 +2716,7 @@ setPerson(person);</programlisting>
             <para>all bitwise operators,</para>
         </listitem>
         <listitem>
-            <para>the comparison and equality operators <literal>=</literal>,
+            <para>the comparison and equality operators <literal>&equals;</literal>,
             <literal>!=</literal>, <literal>&lt;=&gt;</literal>, <literal>&lt;</literal>,
             <literal>&gt;</literal>, <literal>&lt;=</literal>, <literal>&gt;=</literal>
             when the argument expression types are built-in numeric types,</para>
@@ -2729,7 +2729,7 @@ setPerson(person);</programlisting>
             <para>the sequence concatenation operator <literal>+</literal>,</para>
         </listitem>
         <listitem>
-            <para>the identity equality operator <literal>==</literal>, and</para>
+            <para>the identity equality operator <literal>&identical;</literal>, and</para>
         </listitem>
         <listitem>
             <para>all assignment and compound assignment operators.</para>
@@ -2940,8 +2940,8 @@ setPerson(person);</programlisting>
         <row><entry namest="first" nameend="last"><emphasis>Equality and identity</emphasis></entry></row>
         
         <row>
-            <entry><literal>==</literal></entry>
-            <entry><literal>lhs == rhs</literal></entry>
+            <entry><literal>&identical;</literal></entry>
+            <entry><literal>lhs &identical; rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
             <entry><literal>IdentifiableObject</literal></entry>
@@ -2949,8 +2949,8 @@ setPerson(person);</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>=</literal></entry>
-            <entry><literal>lhs = rhs</literal></entry>
+            <entry><literal>&equals;</literal></entry>
+            <entry><literal>lhs &equals; rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>if (exists lhs) lhs.equals(rhs) else if (exists rhs) false else true</literal></entry>
             <entry><literal>Object?</literal></entry>
@@ -3034,8 +3034,9 @@ setPerson(person);</programlisting>
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
+            <!-- Cannot be Void because we have typed nulls whose type is erased -->
             <entry><literal>Object</literal></entry>
-            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry>literal <literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
                 
