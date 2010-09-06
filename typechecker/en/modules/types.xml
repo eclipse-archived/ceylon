@@ -1663,7 +1663,7 @@ class String(Character[] characters)
     
     public String replace(Character character -> Character replacement) {
         return replace() with (Character c) 
-            (ifTrue (c=character) then (replacement) otherwise (c))
+            (ifTrue (c==character) then (replacement) otherwise (c))
     }
     
     public String replace(Correspondence<Character,Character> replacements) { 
