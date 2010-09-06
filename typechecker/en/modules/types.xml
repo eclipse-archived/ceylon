@@ -589,7 +589,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
         exception types.</para>
         
         <programlisting><![CDATA[public class Exception(Exception? cause=null, String? message=null) 
-        extends Object() {
+        extends IdentityObject() {
     
     public String message = message ? cause?.message ? "";
     
