@@ -110,7 +110,7 @@
             return in(cat)
         }
         else {
-            return forAny (Object elem in objects) some (elem = object)
+            return forAny (Object elem in objects) some (elem == object)
         }
     }
 
