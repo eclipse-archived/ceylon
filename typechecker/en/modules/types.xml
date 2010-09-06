@@ -20,7 +20,7 @@
             </listitem>
             <listitem>
                 <para><literal>Void</literal>, <literal>Object</literal> and 
-                <literal>IdentityObject</literal> to <literal>java.lang.Object</literal>.</para>
+                <literal>IdentifiableObject</literal> to <literal>java.lang.Object</literal>.</para>
             </listitem>
             <listitem>
                 <para><literal>Exception</literal> to <literal>java.lang.Throwable</literal>.</para>
@@ -46,7 +46,7 @@
     </section>
     
     <section id="object">
-        <title><literal>Object</literal>, <literal>IdentityObject</literal>,
+        <title><literal>Object</literal>, <literal>IdentifiableObject</literal>,
         and <literal>BaseObject</literal></title>
         
         <para>The class <literal>Object</literal> represents a definite value. 
@@ -119,22 +119,22 @@
     }
  -->
     
-        <para>The class <literal>IdentityObject</literal> represents a type 
+        <para>The class <literal>IdentifiableObject</literal> represents a type 
         whose values are always passed by reference. Expressions of type 
-        <literal>IdentityObject</literal> support the binary operator 
+        <literal>IdentifiableObject</literal> support the binary operator 
         <literal>==</literal> (identity equals).</para>
         
-        <programlisting><![CDATA[public abstract class IdentityObject() 
+        <programlisting><![CDATA[public abstract class IdentifiableObject() 
         extends Object() {}]]></programlisting>
         
         <para>The following toplevel methods expose the notion of object 
         identity:</para>
     
-        <programlisting>public Boolean identical(IdentityObject x, IdentityObject y) { return ... }</programlisting>
-        <programlisting>public Integer identityHash(IdentityObject x) { return ... }</programlisting>
+        <programlisting>public Boolean identical(IdentifiableObject x, IdentifiableObject y) { return ... }</programlisting>
+        <programlisting>public Integer identityHash(IdentifiableObject x) { return ... }</programlisting>
     
         <comment><para>Note: Java classes would be subtypes of 
-        <literal>IdentityObject</literal>.</para></comment>
+        <literal>IdentifiableObject</literal>.</para></comment>
     
         <para>User-written classes usually extend <literal>BaseObject</literal>.
         Expressions of type <literal>BaseObject</literal> have a default
@@ -589,7 +589,7 @@ class NullCase<X>(Null null) satisfies Case<Optional<X>> {
         exception types.</para>
         
         <programlisting><![CDATA[public class Exception(Exception? cause=null, String? message=null) 
-        extends IdentityObject() {
+        extends IdentifiableObject() {
     
     public String message = message ? cause?.message ? "";
     

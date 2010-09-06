@@ -162,7 +162,7 @@ assert() that (semaphore==s) //assertion never fails</programlisting>
         </itemizedlist>
         
         <para>Therefore, the types listed above directly extend <literal>Object</literal> or
-        <literal>Void</literal> instead of <literal>IdentityObject</literal>.</para>
+        <literal>Void</literal> instead of <literal>IdentifiableObject</literal>.</para>
                 
         <para>The execution of a Ceylon program complies with the rules laid out by the Java 
         programming language's execution model (Chapter 17 of the Java Language Specification).
@@ -2943,8 +2943,8 @@ setPerson(person);</programlisting>
             <entry><literal>lhs == rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
-            <entry><literal>IdentityObject</literal></entry>
-            <entry><literal>IdentityObject</literal></entry>
+            <entry><literal>IdentifiableObject</literal></entry>
+            <entry><literal>IdentifiableObject</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>

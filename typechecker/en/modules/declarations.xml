@@ -381,7 +381,7 @@ ClassBody</programlisting>
         
         <para>A class may be annotated <literal>mutable</literal>. If a class is 
         annotated <literal>mutable</literal> it must (directly or indirectly) extend 
-        <literal>ceylon.lang.IdentityObject</literal>.</para>
+        <literal>ceylon.lang.IdentifiableObject</literal>.</para>
         
         <para>If a class is not annotated <literal>mutable</literal> it is called an 
         <emphasis>immutable type</emphasis>, and it may not:</para>
