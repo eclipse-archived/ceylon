@@ -1565,7 +1565,7 @@ class SequenceEntryIterable<X>(X[n] sequence)
     
     override Boolean equals(Object that) {
         if (is Range<X> that) {
-            return that.first=first && that.last=last
+            return that.first==first && that.last==last
         }
         else {
             return false
