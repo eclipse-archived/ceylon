@@ -264,6 +264,24 @@ InterfaceBody</programlisting>
           
         <comment><para>TODO: if methods of interfaces can define defaulted parameters,
         precisely how do we implement that?</para></comment>
+        
+        <section id="mutableinterfaces">
+            <title>Mutable and immutable interfaces</title>
+            
+        <para>An interface may be annotated <literal>mutable</literal>. If an interface is 
+        not annotated <literal>mutable</literal> it is called an <emphasis>immutable type</emphasis>, 
+        and it may not:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>declare or inherit <literal>mutable</literal> attributes, or</para>
+            </listitem>
+            <listitem>
+                <para>extend an interface annotated <literal>mutable</literal>.</para>
+            </listitem>
+        </itemizedlist>
+            
+        </section>
             
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
@@ -341,6 +359,26 @@ ClassBody</programlisting>
 
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
         
+        <para>Ordinarily, a declaration that occurs in a block of code is a block local
+        declaration&mdash;it is visible only to statements and declarations that occur
+        later in the same block. This rule is relaxed for certain declarations that occur 
+        directly inside a class body:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>declarations with explicit visibility modifiers&mdash;whose visibility
+                is determined by the modifier, and</para>
+            </listitem>
+            <listitem>
+                <para>declarations that occur in the second part of the body of the class, 
+                after the last statement of the initializer&mdash;which are visible to all
+                other declarations in the second part of the body of the class.</para>
+            </listitem>
+        </itemizedlist>
+        
+    <section id="mutableclasses">
+        <title>Mutable and immutable classes</title>
+        
         <para>A class may be annotated <literal>mutable</literal>. If a class is 
         annotated <literal>mutable</literal> it must (directly or indirectly) extend 
         <literal>ceylon.lang.IdentityObject</literal>.</para>
@@ -360,23 +398,8 @@ ClassBody</programlisting>
             </listitem>
         </itemizedlist>
     
-        <para>Ordinarily, a declaration that occurs in a block of code is a block local
-        declaration&mdash;it is visible only to statements and declarations that occur
-        later in the same block. This rule is relaxed for certain declarations that occur 
-        directly inside a class body:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para>declarations with explicit visibility modifiers&mdash;whose visibility
-                is determined by the modifier, and</para>
-            </listitem>
-            <listitem>
-                <para>declarations that occur in the second part of the body of the class, 
-                after the last statement of the initializer&mdash;which are visible to all
-                other declarations in the second part of the body of the class.</para>
-            </listitem>
-        </itemizedlist>
-        
+    </section>
+    
     <section id="classinitializer">
         <title>Class initializer</title>
         
