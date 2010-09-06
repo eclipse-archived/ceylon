@@ -112,7 +112,7 @@
     
     <para>
     As an alternative to method or class overloading, Ceylon supports method 
-    and class initialization parameters with default values. 
+    and class initializer parameters with default values. 
     </para>
     
     </section>
@@ -620,7 +620,7 @@ class Hello(String? name) {
         <itemizedlist>
             <listitem>
                 <para>the parameters needed to instantiate the class&mdash;the 
-                <emphasis>initialization parameters</emphasis>&mdash;are declared 
+                <emphasis>initializer parameters</emphasis>&mdash;are declared 
                 directly after the name of the class, and</para>
             </listitem>
             <listitem>
@@ -689,7 +689,7 @@ else {
         </section>
         
         <section>
-            <title>Instantiating classes and overloading their initialization parameters</title>
+            <title>Instantiating classes and overloading their initializer parameters</title>
          
         <para>Oops, I got so excited about attributes and closure that I forgot to show 
         you the code that uses <literal>Hello</literal>!</para>
@@ -716,7 +716,7 @@ class Hello(Process process)
     extends Hello(process.args.first) {}]]></programlisting>
     
         <para>A class can overload a second class by extending it and declaring different
-        initialization parameters. An overloaded class with an empty body is the Ceylon
+        initializer parameters. An overloaded class with an empty body is the Ceylon
         approach to "constructor" overloading. Of course, overloaded classes can do much
         more than just this!</para>
         
@@ -756,7 +756,7 @@ class DefaultHello() {
             
             <para>Subclasses specify their superclass using the <literal>extends</literal>
             keyword, followed by the name of the superclass, followed by a list of arguments
-            to be sent to the superclass initialization parameters. It looks just like an
+            to be sent to the superclass initializer parameters. It looks just like an
             expression that instantiates the superclass:</para>
             
             <programlisting><![CDATA[doc "A personalized greeting"

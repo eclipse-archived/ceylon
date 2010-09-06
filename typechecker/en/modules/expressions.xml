@@ -726,7 +726,7 @@ createItemMethod.intercept()
         something&mdash;a method, callable parameter, or class&mdash;that can be 
         <emphasis>invoked</emphasis> by specifying a list of arguments.</para>
         
-        <programlisting>CallableReference := MethodReference | ConstructorReference</programlisting>
+        <programlisting>CallableReference := MethodReference | InitializerReference</programlisting>
         
         <para>A callable reference may be invoked immediately, or it may be passed 
         to other code which may invoke the reference. A callable reference captures 
@@ -801,21 +801,21 @@ createItemMethod.intercept()
         <programlisting>MethodReference := (Receiver ".")? MemberName TypeArguments?</programlisting>        
 
         <para>The type of a method reference expression is assignable to the callable 
-        type of every overloaded version of the method. Calling the callable reference 
+        type of every overloaded version of the method. Calling the method reference 
         results in execution of the method.</para>
         
         </section>
 
-        <section id="constructorreferences">
-            <title>Constructor references</title>
+        <section id="initializerreferences">
+            <title>Initializer references</title>
         
-        <para>If a callable reference specifies a class name, it is called a 
-        <emphasis>constructor reference</emphasis>.</para>
+        <para>If a callable reference specifies a class name, it is called an 
+        <emphasis>initializer reference</emphasis>.</para>
         
-        <programlisting>ConstructorReference := (Receiver ".")? TypeName TypeArguments?</programlisting>
+        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments?</programlisting>
         
-        <para>The type of a constructor reference expression is assignable to the 
-        callable type of every overloaded version of the class. Calling the constructor 
+        <para>The type of an initializer reference expression is assignable to the 
+        callable type of every overloaded version of the class. Calling the initializer 
         reference results in instantiation of the class.</para>
         
         </section>
@@ -1197,7 +1197,7 @@ local comp = order(1,-1);</programlisting>
         <section id="classinstantiation">
             <title>Class instantiation</title>
             
-            <para>Invocation of a constructor reference is called <emphasis>instantiation</emphasis> 
+            <para>Invocation of an initializer reference is called <emphasis>instantiation</emphasis> 
             of the class. For a class instantation, the invocation expression is of type
             <literal>Gettable&lt;T&gt;</literal> where <literal>T</literal> is the 
             class.</para>
@@ -2121,7 +2121,7 @@ Person? person = getPerson();</programlisting>
         <para>Evaluation of an invocation expression of a callable reference invokes the 
         underlying callable reference. This is called <emphasis>invocation</emphasis> in
         the case of a method reference, and <emphasis>instantiation</emphasis> in the case
-        of a constructor reference.</para>
+        of an initializer reference.</para>
         
         <programlisting>log.info("Hello world!");</programlisting>
         <programlisting>Map&lt;String, Person&gt; map = HashMap&lt;String, Person&gt;(entries);</programlisting>
@@ -2175,7 +2175,7 @@ Map&lt;String, Person&gt; map = logInfoHello;</programlisting>
         <literal>void</literal> method.</para>
             
         <para>A class instantiation evaluates to a new instance of the class. The argument 
-        values are passed to the initialization parameters of the class, and the initializer
+        values are passed to the initializer parameters of the class, and the initializer
         is executed.</para>
              
     </section>
@@ -3518,9 +3518,9 @@ setPerson(person);</programlisting>
     </section>
     
     <section id="constructors">
-    <title>Operators for constructing objects</title>
+    <title>Operators for creating objects</title>
     
-        <para>These operators simplify the syntax for constructing certain commonly 
+        <para>These operators simplify the syntax for creating certain commonly 
         used built-in types.</para>
     
     <table>

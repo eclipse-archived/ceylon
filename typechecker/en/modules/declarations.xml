@@ -408,9 +408,9 @@ ClassBody</programlisting>
         
         <itemizedlist>
            <listitem>
-              <para>The body of the class declares <emphasis>initialization 
-              parameters</emphasis>. An initialization parameter may be used anywhere in 
-              the class body, including in method and attribute definitions.</para>
+              <para>The body of the class declares <emphasis>initializer parameters</emphasis>. 
+              An initializer parameter may be used anywhere in the class body, including in 
+              method and attribute definitions.</para>
            </listitem>
            <listitem>
               <para>The initial part of the body of the class is called the 
@@ -508,8 +508,9 @@ ClassBody</programlisting>
 }</programlisting>
         -->
         
-        <para>The class initializer is responsible for initializing the state of a new instance
-        of the class, before a reference to the new instance is available to clients.</para>
+        <para>The class initializer is responsible for initializing the state of 
+        a new instance of the class, before a reference to the new instance is 
+        available to clients.</para>
         
         <programlisting>public abstract class Point() {
     public Decimal x;
@@ -557,8 +558,8 @@ ClassBody</programlisting>
         receiver.</para>
         
         <para>An initializer of a member class may invoke, evaluate or assign members of the 
-        current instance of the containing class (the instance upon which the constructor
-        was invoked) without explicitly specifying the receiver.</para>
+        current instance of the containing class or interface (the receiving instance of the 
+        instantiation expression) without explicitly specifying the receiver.</para>
         
         <para>A class may be declared inside the body of a method or attribute, in which case 
         the initializer may refer to any non-<literal>mutable</literal> local, block local 
@@ -596,31 +597,9 @@ ClassBody</programlisting>
         <para>Superclass members may be invoked, evaluated or assigned anywhere inside the body of
         the class. The superclass initializer is executed before the subclass initializer.</para>
         
-        <comment><para>TODO: should class initialization parameters be allowed to be declared 
+        <comment><para>TODO: should class initializer parameters be allowed to be declared 
         <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 
         like in Scala?</para></comment>
-        
-        <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
-        types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
-        <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
-        of the class. A sequenced parameter is considered of type <literal>T[]</literal>
-        where <literal>T...</literal> is the declared sequenced type.</para>
-        
-        <!-- comment>
-        
-        <para>TODO: I would really, really like to believe that one "constructor"
-        per class is sufficient, but somehow I'm not quite buying it. We can allow the
-        declaration of additional constructors, according to:</para>
-        
-        <programlisting>Constructor := Annotation* TypeName FormalParams Supertype Block</programlisting>
-        
-        <para>for example:</para>
-        
-        <programlisting>public class Person(Name name) {
-    public Person(String name) extends Person( Name(name) ) {}
-}</programlisting>
-        
-        </comment-->
                 
         <!--
         <section>
@@ -652,6 +631,17 @@ public class Person { ... }</programlisting>
 
     </section>
 
+    <section id="callabletypeofclass">
+        <title>Callable type of a class</title>
+        
+        <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
+        types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
+        <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
+        of the class. A sequenced parameter is considered of type <literal>T[]</literal>
+        where <literal>T...</literal> is the declared sequenced type.</para>
+    
+    </section>
+    
         <section id="classinheritance">
              <title>Class inheritance</title>
         
@@ -935,10 +925,9 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
         <section id="overloadedclasses">
             <title>Overloaded classes</title>
             
-            <para>Multiple toplevel classes belonging to the same package, or
-            multiple member classes of the same containing class may declare 
-            the same name. The classes are called <emphasis>overloaded</emphasis>.
-            Overloaded classes:</para>
+            <para>Multiple toplevel classes belonging to the same package, or multiple 
+            member classes of the same containing class may declare the same name. The 
+            classes are called <emphasis>overloaded</emphasis>. Overloaded classes:</para>
             
             <itemizedlist>
                 <listitem>
@@ -952,15 +941,15 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
                     <para>may not declare default parameters, and</para>
                 </listitem>
                 <listitem>
-                    <para>except for the root type, may not declare any member
-                    with a visibility modifier.</para>
+                    <para>except for the root type, may not declare any member with a 
+                    visibility modifier.</para>
                 </listitem>
             </itemizedlist>
             
             <para>Then the class name always refers to the root type, except in 
-            instantiations. In the case of instantiation, the correct overloaded 
-            class is resolved at compile time, using the mechanism that Java
-            uses to choose between overloaded constructors.</para>
+            instantiation expressions. An instantiation expression is resolved to a 
+            particular overloaded class declaration at compile time, using the argument 
+            expression types.</para>
             
         </section>
         
@@ -1076,8 +1065,8 @@ public User(String username, Person person);</programlisting>
         was invoked) without explicitly specifying the receiver.</para>
         
         <para>A member method body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class (the containing instance of the 
-        instance upon which the method was invoked) without explicitly specifying the 
+        of the current instance of the containing class or interface (the containing instance 
+        of the instance upon which the method was invoked) without explicitly specifying the 
         receiver.</para>
         
         <para>A toplevel method body may not refer to <literal>this</literal> or 
@@ -1307,9 +1296,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <section id="overloadedmethods">
             <title>Overloaded methods</title>
             
-            <para>A class may declare or inherit multiple methods with the
-            same name. The methods are called <emphasis>overloaded</emphasis>.
-            Overloaded methods: </para>
+            <para>A class may declare or inherit multiple methods with the same name. 
+            The methods are called <emphasis>overloaded</emphasis>. Overloaded methods:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1323,7 +1311,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>A class may not not declare of inherit a method with the same name as
             an attribute it declares or inherits.</para>
             
-            <para>Like Java, Ceylon resolves overloaded methods at compile time.</para>
+            <para>An invocation expression is resolved to a particular overloaded method 
+            declaration at compile time, using the argument expression types.</para>
         
         </section>
         
@@ -1478,9 +1467,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         attribute was invoked) without explicitly specifying the receiver.</para>
         
         <para>An attribute body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class (the containing instance of the 
-        instance upon which the attribute was invoked) without explicitly specifying the 
-        receiver.</para>
+        of the current instance of the containing class or interface (the containing instance 
+        of the instance upon which the attribute was invoked) without explicitly specifying 
+        the receiver.</para>
         
         <para>An attribute may be declared inside the body of another method or attribute, in 
         which case it may refer to any non-<literal>mutable</literal> local, block local 
@@ -2151,7 +2140,7 @@ public Visibility private() {
                 <para>a toplevel class with exactly one initialization parameter,</para>
             </listitem>
             <listitem>
-                <para>a member class with no initialization parameters, or</para>
+                <para>a member class with no initializer parameters, or</para>
             </listitem>
             <listitem>
                 <para>an attribute.</para>

@@ -399,7 +399,7 @@ String? firstWord = words[0];</programlisting>
         <para>The <literal>extends</literal> clause must specify exactly one superclass. 
         If the superclass is a parameterized type, the <literal>extends</literal> clause 
         must specify type arguments. The <literal>extends</literal> clause must specify 
-        arguments for the initialization parameters of the superclass.</para>
+        arguments for the initializer parameters of the superclass.</para>
         
         <programlisting>extends Person(name, org)</programlisting>
     

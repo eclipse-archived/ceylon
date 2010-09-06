@@ -15,8 +15,8 @@
     <section id="ceylon2java">
         <title>Transformation from Ceylon to Java</title>
         
-        <para>A Java type is infered from a Ceylon type according to the
-        following rules:</para>
+        <para>A Java type declaration is infered from a Ceylon type declaration 
+        according to the following rules:</para>
         
         <itemizedlist>        
             <listitem>
@@ -26,7 +26,7 @@
             <listitem>
                 <para>For each overloaded toplevel Ceylon class, there is a 
                 Java class whose name is formed from the Ceylon class name
-                and the types of the initializer paramemeters.</para>
+                and the names of the types of the initializer paramemeters.</para>
             </listitem>
             <listitem>
                 <para>For each toplevel Ceylon interface, there is a Java 
@@ -49,7 +49,7 @@
         supertypes of the Ceylon type.</para>
         
         <para>Members of the Java type are infered from the corresponding 
-        Ceylon type according to:</para>
+        Ceylon type declaration according to:</para>
         
         <itemizedlist>        
             <listitem>
