@@ -12,6 +12,9 @@
 <!ENTITY types                     SYSTEM "modules/types.xml">
 <!ENTITY transformations           SYSTEM "modules/transformations.xml">
 <!ENTITY modules                   SYSTEM "modules/modules.xml">
+<!ENTITY equals                    "==">
+<!ENTITY assign                    ":=">
+<!ENTITY identical                 "===">
 ]>
 
 <book lang="en">
