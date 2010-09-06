@@ -142,9 +142,9 @@
         <literal>IdentifiableObject</literal>.</para></comment>
     
         <para>User-written classes usually extend <literal>BaseObject</literal>.
-        Expressions of type <literal>BaseObject</literal> have a default
-        implementation of <literal>equals()</literal>, <literal>hash</literal>
-        and <literal>string</literal> provided for them.</para>
+        Subclasses of <literal>BaseObject</literal> have default implementations 
+        of <literal>equals()</literal>, <literal>hash</literal> and 
+        <literal>string</literal> provided for them.</para>
         
         <programlisting><![CDATA[public abstract class BaseObject() 
         extends Object() {
