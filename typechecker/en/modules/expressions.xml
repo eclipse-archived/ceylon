@@ -2359,6 +2359,8 @@ setPerson(person);</programlisting>
     
     <programlisting>order.lineItems[index] := LineItem { product = prod; quantity = 1; };</programlisting>
     
+    <programlisting>if (!document.internal || user is Employee) { ... }</programlisting>
+    
     <para>In all operator expressions, the arguments of the operator must be 
     evaluated from left to right when the expression is executed. In certain cases, 
     depending upon the definition of the operator, evaluation of the leftmost 
@@ -3033,8 +3035,8 @@ setPerson(person);</programlisting>
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
-            <entry><literal>X</literal></entry>
-            <entry></entry>
+            <entry><literal>Object</literal></entry>
+            <entry><literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
                 
