@@ -199,6 +199,34 @@
         <programlisting>public Integer identityHash(IdentityObject x) { return ... }</programlisting>
     
     </section>
+    
+    <section id="exception">
+        <title>Exceptions</title>
+        
+        <para>The class <literal>Exception</literal> is the base class for all
+        exception types.</para>
+        
+        <programlisting><![CDATA[public class Exception(Exception? cause=null, String? message=null) 
+        extends Object() {
+    
+    public String message = message ? cause?.message ? "";
+    
+    public Exception cause = cause ? this;
+    
+    public StackTrace stackTrace { return ... }
+    
+    override String string {
+        if (nonempty message) {
+            return type.name + ": " + message
+        }
+        else {
+            return type.name
+        }
+    }
+    
+}]]></programlisting>
+        
+    </section>
 
     <section id="callable">
         <title>Callable references</title>
