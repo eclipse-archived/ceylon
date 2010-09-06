@@ -849,6 +849,10 @@ public class Import(
         <para>If no version identifier is specified for a module, the module 
         is assumed to exist in a source directory.</para>
         
+        <comment><para>TODO: should the documentation compiler generate HTML
+        directly, or should it generate some intermediate format (XML?) that
+        can be transformed to HTML, DocBook, etc?</para></comment>
+        
     </section>
     
     <section id="repositoryreplicator">
