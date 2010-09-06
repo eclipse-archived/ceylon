@@ -1302,7 +1302,7 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
         <itemizedlist>
             <listitem>
                 <para><emphasis>assertion</emphasis>, such as: 
-                <literal>assert("x must be zero") that (x=0.0);</literal></para>
+                <literal>assert("x must be zero") that (x&equals;0.0);</literal></para>
             </listitem>
             <listitem>
                 <para><emphasis>comprehension</emphasis>, such as:
@@ -1620,7 +1620,7 @@ class Hello(String? name) {
         if (exists name) {
             if (exists Person person = 
                     first (Person p in people) 
-                        where (p.firstName=name)) {
+                        where (p.firstName &equals; name)) {
                 return "" person.lang.hello ", " 
                     person.firstName " " person.lastName "!"
             }
