@@ -480,7 +480,7 @@ class CaseSuper<X,Y>(Case<X> c)
         <programlisting>public extension class SelectorCase&lt;X&gt;(X selector)
         given X extends Selector {
     override Boolean test(X x) {
-        return x.ordinal = selector.ordinal
+        return x.ordinal == selector.ordinal
     }
 }</programlisting>
 
