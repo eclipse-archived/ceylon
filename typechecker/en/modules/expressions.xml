@@ -1493,7 +1493,8 @@ local comp = order(1,-1);</programlisting>
         </itemizedlist>
         
         <para>These arguments are called an <emphasis>inline callable arguments</emphasis> 
-        of a positional parameter invocation.</para>
+        of a positional parameter invocation. (This is what Ceylon provides instead of
+        lambda expressions.)</para>
                 
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
         
@@ -1555,9 +1556,10 @@ local comp = order(1,-1);</programlisting>
             <title>Iteration</title>
             
         <para>A specialized invocation syntax is provided for toplevel methods which iterate 
-        collections. If the first parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>,
-        annotated <literal>iterated</literal>, and all remaining parameters are callable
-        parameters, then the method may be invoked according to the following protocol:</para>
+        collections. (This is Ceylon's much more flexible version of C#'s LINQ.) If the first 
+        parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>, annotated 
+        <literal>iterated</literal>, and all remaining parameters are callable parameters, 
+        then the method may be invoked according to the following protocol:</para>
         
         <programlisting>Primary "(" ForIterator ")" FunctionalArguments</programlisting>
         
