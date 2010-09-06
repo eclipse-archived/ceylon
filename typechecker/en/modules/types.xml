@@ -35,8 +35,9 @@
         
         <para>The class <literal>Void</literal> is the root of the type
         system. All types are assignable to <literal>Void</literal>, which
-        supports the the operator <literal>.</literal> (member selection), 
-        along with <literal>is</literal> (assignability).</para>
+        supports the the operator <literal>.</literal> (member selection).
+        However, <literal>Void</literal> itself does not declare any 
+        members.</para>
         
         <programlisting>public abstract class Void extends null {}</programlisting>
         
@@ -50,7 +51,9 @@
         and <literal>BaseObject</literal></title>
         
         <para>The class <literal>Object</literal> represents a definite value. 
-        All interface types are assignable to <literal>Object</literal>.</para>
+        Expressions of type <literal>Object</literal> may be the subject of the 
+        <literal>is</literal> operator (assignability). All interface types are 
+        assignable to <literal>Object</literal>.</para>
         
         <programlisting><![CDATA[public abstract class Object() 
         extends Void() {
