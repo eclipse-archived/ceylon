@@ -100,7 +100,7 @@ setGreeting(greeting);</programlisting>
         
         <para>Two values are said to be <emphasis>identical</emphasis> if they are
         references to the same object&mdash;if they hold the same unique identifier. The 
-        program may determine the if two values of type <literal>IdentifiableObject</literal> 
+        program may determine if two values of type <literal>IdentifiableObject</literal> 
         are identical using the <literal>&identical;</literal> operator. It may not directly 
         obtain the unique identifier (which is a purely abstract construct). The program has 
         no way of determining the identity of a value which is not of type 
