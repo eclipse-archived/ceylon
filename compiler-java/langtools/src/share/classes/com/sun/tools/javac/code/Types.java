@@ -277,10 +277,25 @@ public class Types {
             : isSubtype(unboxedType(t), s);
      }
 
+    public Type getClassType(String name) {
+        return reader.enterClass(names.fromString(name)).type;
+    }
+
+    private boolean isConvertibleCeylon(Type t, Type s) {
+        if (isSubtype(t, getClassType("ceylon.Object")) &&
+            isSubtype(s, getClassType("ceylon.String")))
+            return true;
+
+        return false;
+    }
+
     public boolean isConvertible(Type t, Type s, Warner warn) {
     	if (isConvertibleNotOptional(t, s, warn))
     		return true;
     	
+    	if (isConvertibleCeylon(t, s))
+            return true;
+
         Type base = s.baseType();
         TypeSymbol tsym = s.tsym;
 
