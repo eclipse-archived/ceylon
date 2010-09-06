@@ -285,7 +285,6 @@ public class Gen {
             at(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
                     /* package id*/ null, defs.toList());
         
-        topLev.isCeylonProgram = true;
         topLev.lineMap = map;
 
         System.out.println(topLev);
@@ -748,6 +747,9 @@ public class Gen {
             public void visit(Operator op) {
                 result = convert(op);
             }
+            public void visit(PrefixExpression expr) {
+                expr.operator.accept(this);
+            }
             public void visit(NaturalLiteral lit) {
                 JCExpression n = make.Literal(lit.value.longValue());
                 result = at(expr).Apply (null, makeSelect("ceylon", "Natural", "instance"),
@@ -773,9 +775,6 @@ public class Gen {
             }
             public void visit(CeylonTree.Condition value) {
             	result = convertExpression(value.operand);
-            }
-            public void visit(CeylonTree.PrefixExpression expr) {
-                result = convert(expr.operator);
             }
           }
 
