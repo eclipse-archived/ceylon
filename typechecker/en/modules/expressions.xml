@@ -2439,24 +2439,42 @@ createItemMethod.intercept()
     <section id="operatorprecedence">
         <title>Operator precedence</title>
         
-    <para>This table defines the relative precedence of the various operators, 
-    from highest to lowest, along with associativity rules:</para>
+        <para>There are 14 distinct operator precedence levels, but these levels
+        are arranged into layers in order to make them easier to predict.</para>
         
-    <table>
-    <tgroup cols="4">
-        <colspec colnum="1" colwidth="2.5*" align="center"/>
-        <colspec colnum="2" colwidth="2.0*" align="center"/>
-        <colspec colnum="3" colwidth="1.0*" align="center"/>
-        <colspec colnum="4" colwidth="0.7*" align="center"/>
-    <thead>
-        <row>
-            <entry>Operations</entry>
-            <entry>Operators</entry>
-            <entry>Type</entry>
-            <entry>Associativity</entry>
-        </row>
-    </thead>
-    <tbody>
+        <itemizedlist>
+            <listitem><para>Operators in layer 1 produce, transform, and combine
+            values.</para></listitem>
+            <listitem>Operators in layer 2 compare or predicate values, producing
+            a <literal>Boolean</literal> result.</listitem>
+            <listitem>Operators in layer 3 are logical operators that operate
+            upon <literal>Boolean</literal> arguments to produce a <literal>Boolean</literal>
+            value.</listitem>
+            <listitem>Operators in layer 4 perform assignment.</listitem>
+        </itemizedlist>
+        
+        <para>This table defines the relative precedence of the various operators, 
+        from highest to lowest, along with associativity rules:</para>
+        
+        <table>
+        <tgroup cols="4">
+            <colspec colnum="1" colwidth="2.5*" align="center" colname="first"/>
+            <colspec colnum="2" colwidth="2.0*" align="center"/>
+            <colspec colnum="3" colwidth="1.0*" align="center"/>
+            <colspec colnum="4" colwidth="0.7*" align="center" colname="last"/>
+        <thead>
+            <row>
+                <entry>Operations</entry>
+                <entry>Operators</entry>
+                <entry>Type</entry>
+                <entry>Associativity</entry>
+            </row>
+        </thead>
+        <tbody>
+        
+            <row>
+                <entry namest="first" nameend="last"><emphasis>Layer 1</emphasis></entry>
+            </row>
     
             <row>
                 <entry>Member invocation and lookup, subrange,
@@ -2552,6 +2570,11 @@ createItemMethod.intercept()
                 <entry>Binary</entry>
                 <entry>Right</entry>
             </row>
+
+            <row>
+                <entry namest="first" nameend="last"><emphasis>Layer 2</emphasis></entry>
+            </row>
+    
             <row>
                 <entry>Existence, emptiness:</entry>
                 <entry><literal>exists</literal>, <literal>nonempty</literal></entry> 
@@ -2596,6 +2619,10 @@ createItemMethod.intercept()
             </row>
         
             <row>
+                <entry namest="first" nameend="last"><emphasis>Layer 3</emphasis></entry>
+            </row>
+    
+            <row>
                 <entry>Logical not:</entry>
                 <entry><literal>!</literal></entry>
                 <entry>Unary prefix</entry>
@@ -2619,6 +2646,10 @@ createItemMethod.intercept()
             </row>
             
             <row>
+                <entry namest="first" nameend="last"><emphasis>Layer 4</emphasis></entry>
+            </row>
+    
+            <row>
                 <entry>Assignment:</entry> 
                 <entry>
                 <literal>:=</literal>, 
@@ -2639,9 +2670,9 @@ createItemMethod.intercept()
                 <entry>Right</entry>
             </row>
             
-    </tbody>
-    </tgroup>
-    </table>
+        </tbody>
+        </tgroup>
+        </table>
     
     <!-- 
     <comment><para>TODO: should <literal>?</literal> have a lower precedence?</para></comment>
@@ -2657,9 +2688,9 @@ createItemMethod.intercept()
     strings and bit strings are not numbers in Ceylon.</para></comment>
     -->
     
-    <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
-    <literal>&gt;&gt;</literal> later, we could give them the same precedence
-    as <literal>**</literal>.</para></comment>
+        <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
+        <literal>&gt;&gt;</literal> later, we could give them the same precedence
+        as <literal>**</literal>.</para></comment>
     
     </section>
     
