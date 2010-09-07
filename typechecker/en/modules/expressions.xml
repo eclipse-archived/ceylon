@@ -3248,7 +3248,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>lhs.valueExists</literal></entry>
+            <entry><literal>lhs.defined</literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>

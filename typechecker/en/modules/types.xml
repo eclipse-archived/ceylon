@@ -501,7 +501,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     
     doc "The unary postfix existence operator 
          |x exists|."
-    public Boolean valueExists;
+    public Boolean defined;
     
 }]]></programlisting>
 
@@ -530,7 +530,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
 
     public extension X value = x;
     
-    override Boolean valueExists { 
+    override Boolean defined { 
         return true 
     }
     
@@ -554,7 +554,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <programlisting><![CDATA[public extension class Nothing<out X>(Null null) 
         extends X?() {
 
-    override Boolean valueExists { 
+    override Boolean defined { 
         return false 
     }
     
