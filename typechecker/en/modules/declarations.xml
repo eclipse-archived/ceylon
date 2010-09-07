@@ -235,7 +235,8 @@ InterfaceBody</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>member (method, attribute and member class) declarations, and</para>
+                <para>member (abstract method, abstract attribute and member class) 
+                declarations, and</para>
             </listitem>
             <listitem>
                 <para>nested interface declarations.</para>
@@ -257,6 +258,8 @@ InterfaceBody</programlisting>
     Comparison compare(T other);
 }</programlisting>
         -->
+        
+        <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
         
         <para>Interface members inherit the visibility modifier of the interface.</para>
         
@@ -956,9 +959,30 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
     <section id="overridingmemberclasses">
         <title>Overriding member classes</title>
         
-        <para>A member class annotated <literal>abstract</literal> or
-        <literal>default</literal> may be overridden by subclasses of the class 
-        which contains the member class. The subclass must declare a member class:</para>
+        <para>Member class overriding is a unique feature of Ceylon, akin to the
+        "factory method" pattern of many other languages.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A member class annotated <literal>default</literal> may be 
+                overridden by any subtype of the class or interface which declares 
+                the member class.</para>
+            </listitem>
+            <listitem>
+                <para>A member class annotated <literal>abstract</literal> may be 
+                overridden by any subtype of the class or interface which declares 
+                the member class.</para>
+            </listitem>
+            <listitem>
+                <para>A member class annotated <literal>abstract</literal> 
+                <emphasis>must</emphasis> be overridden by every non-<literal>abstract</literal> class which is a subtype
+                of the class or interface that declares the member class, unless the 
+                class inherits a non-<literal>abstract</literal> member class from a 
+                superclass that overrides the <literal>abstract</literal> member class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>To override a member class, the subtype must declare a member class:</para>
         
         <itemizedlist>
             <listitem>
@@ -1335,27 +1359,31 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <section id="overridingmethods">
             <title>Overriding methods</title>
             
-            <para>Method overriding is the foundation of polymorphism in Ceylon:</para>
+            <para>Method overriding is the foundation of polymorphism in Ceylon.</para>
             
             <itemizedlist>
             <listitem>
                 <para>A method annotated <literal>default</literal> may be overridden by 
-                subclasses of the class or interface which declares the method.</para>
+                any subtype of the class which declares the method.</para>
             </listitem>
             <listitem>
                 <para>A method annotated <literal>fixed</literal> <emphasis>must</emphasis> 
-                be overridden by every subclass of the class or interface which declares the
+                be overridden by every subtype of the class or interface which declares the
                 method.</para>
             </listitem>
             <listitem>
-                <para>An interface method or abstract method must be overridden by every 
-                non-<literal>abstract</literal> class that is assignable to the interface or 
-                abstract class type, unless the class inherits a non-abstract method from a 
-                superclass which overrides the interface method or abstract method.</para>
+                <para>An interface method or abstract method may be overridden by any subtype 
+                of the class or interface which declares the method.</para>
+            </listitem>
+            <listitem>
+                <para>An interface method or abstract method <emphasis>must</emphasis> be 
+                overridden by every non-<literal>abstract</literal> class that is a subtype 
+                of the interface or abstract class, unless the class inherits a non-abstract 
+                method from a superclass which overrides the interface method or abstract method.</para>
             </listitem>
             </itemizedlist>           
             
-            <para>To override a method, a class must declare a method:</para>
+            <para>To override a method, the subtype must declare a method:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1704,23 +1732,29 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <section id="overridingattributes">
             <title>Overriding attributes</title>
             
-            <para>Ceylon allows attributes to be overridden, just like methods:</para>
+            <para>Ceylon allows attributes to be overridden, just like methods. This helps
+            eliminate the need for Java-style getter and setter methods.</para>
             
             <itemizedlist>
             <listitem>
                 <para>An attribute annotated <literal>default</literal> may be overridden by 
-                subclasses of the class or interface which declares the method.</para>
+                any subtype of the class or interface which declares the method.</para>
             </listitem>
             <listitem>
                 <para>A method annotated <literal>fixed</literal> <emphasis>must</emphasis> 
-                be overridden by every subclass of the class or interface which declares the
+                be overridden by every subtype of the class or interface which declares the
                 method.</para>
             </listitem>
             <listitem>
-                <para>An interface attribute or abstract attribute must be overridden by every 
-                non-<literal>abstract</literal> class that is assignable to the interface or 
-                abstract class type, unless the class inherits a non-abstract attribute from a 
-                superclass which overrides the interface attribute or abstract attribute.</para>
+                <para>An interface attribute or abstract attribute may be overridden by any 
+                subtype of the class or interface which declares the method.</para>
+            </listitem>
+            <listitem>
+                <para>An interface attribute or abstract attribute <emphasis>must</emphasis> 
+                be overridden by every non-<literal>abstract</literal> class that is a subtype 
+                of the interface or abstract class, unless the class inherits a non-abstract 
+                attribute from a superclass which overrides the interface attribute or abstract 
+                attribute.</para>
             </listitem>
             </itemizedlist>
             
@@ -1729,7 +1763,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             overridden by a <literal>mutable</literal> simple attribute or by an attribute 
             getter and setter pair.</para>
             
-            <para>A class which overrides an attribute must declare an attribute:</para>
+            <para>To override an attribute, the subtype must declare an attribute:</para>
             
             <itemizedlist>
                 <listitem>
