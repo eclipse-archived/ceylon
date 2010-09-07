@@ -2453,17 +2453,17 @@ createItemMethod.intercept()
             <listitem>Operators in layer 4 perform assignment.</listitem>
         </itemizedlist>
         
-        <para>Within each layer, postfix operators have a higher precedence
-        than prefix operators, and prefix operators have a higher precedence
-        than binary operators.</para>
+        <para>Within each layer, postfix operators have a higher precedence than 
+        prefix operators, and prefix operators have a higher precedence than 
+        binary operators.</para>
         
-        <para>There is a single exception to this principal: the exponentiation 
-        operator <literal>**</literal> has a higher precedence than the negation 
-        operator <literal>-</literal>. The reason for this is that the following 
-        expressions should always evaluate to the same value:</para>
+        <para>There is a single exception to this principal: the binary 
+        exponentiation operator <literal>**</literal> has a higher precedence than 
+        the prefix negation operator <literal>-</literal>. The reason for this is 
+        that the following expressions should be equivalent:</para>
         
         <programlisting>-x**2       //means -(x**2)</programlisting>
-        <programlisting>0.0 - x**2  //means 0.0 - (x**2)</programlisting>
+        <programlisting>0 - x**2    //means 0 - (x**2)</programlisting>
         
         <para>It's important to be aware that in Ceylon, compared to other C-like 
         languages, the logical not operator <literal>!</literal> has a very low
