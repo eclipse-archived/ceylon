@@ -511,11 +511,11 @@ typeParameters
     ;
 
 typeParameter
-    : ordinaryTypeParameter | '#'! dimensionalTypeParameter
+    : ordinaryTypeParameter '...'? | '#'! dimensionalTypeParameter
     ;
 
 ordinaryTypeParameter
-    : variance? typeName '...'?
+    : variance? typeName
     -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     ;
 
@@ -795,7 +795,7 @@ positionalArguments
     ;
 
 positionalArgument
-    : (variableStart) => specialArgument
+    : (declarationStart) => specialArgument
     | expression
     ;
 
@@ -819,7 +819,7 @@ functionalArgumentDefinition
     ;
 
 specialArgument
-    : (type|'local') memberName (containment|specifier)
+    : (type | 'local') memberName (containment | specifier)
     //| isCondition
     //| existsCondition
     ;
@@ -847,23 +847,25 @@ formalParametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    : basicFormalParameter
-      ( '->' type parameterName 
-      | (iteratedFormalParameterStart) => iteratedFormalParameter
-      )? 
+    : annotations? formalParameterType parameterName formalParameters*
+      ( valueFormalParameter | iteratedFormalParameter | (specifiedFormalParameterStart) => specifiedFormalParameter )? 
       specifier?
     ;
 
+valueFormalParameter
+    : '->' type parameterName
+    ;
+
 iteratedFormalParameter
-    : ('in'|'=') basicFormalParameter
+    : 'in' type parameterName
     ;
 
-iteratedFormalParameterStart
-    : ('in'|'=') annotatedDeclarationStart
+specifiedFormalParameter
+    : '=' type parameterName
     ;
 
-basicFormalParameter
-    : annotations? formalParameterType parameterName formalParameters*
+specifiedFormalParameterStart
+    : '=' declarationStart
     ;
 
 extraFormalParameter
@@ -1029,17 +1031,12 @@ resource
     ;
 
 controlVariableOrExpression
-    : (variableStart) => variable specifier 
+    : (declarationStart) => variable specifier 
     | expression
     ;
 
 variable
-    : (type|'local') memberName
-    ;
-
-//special rule for syntactic predicate
-variableStart
-    : variable ('in'|'=')
+    : (type | 'local') memberName
     ;
 
 // Lexer
