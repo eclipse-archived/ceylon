@@ -105,7 +105,7 @@
         given
         void subtype local assign
         return break throw retry 
-        this super
+        this super outer
         if else switch case for fail do while try catch finally
         exists nonempty is
         public module package private protected
