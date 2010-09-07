@@ -2541,16 +2541,16 @@ createItemMethod.intercept()
                 <entry>None</entry>
             </row-->
             <row>
-                <entry>Default:</entry> 
-                <entry><literal>?</literal></entry>
-                <entry>Binary</entry>
-                <entry>Right</entry>
-            </row>
-            <row>
                 <entry>Range<!--, interval--> and entry construction:</entry> 
                 <entry><literal>..</literal>, <literal>-></literal></entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
+            </row>
+            <row>
+                <entry>Default:</entry> 
+                <entry><literal>?</literal></entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
             </row>
             <row>
                 <entry>Existence, emptiness:</entry>

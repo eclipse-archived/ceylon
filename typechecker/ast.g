@@ -621,20 +621,13 @@ equalityExpression
     ;
 
 comparisonExpression
-    : defaultExpression
-      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) defaultExpression)?
-    ;
-
-//should we reverse the precedence order 
-//of '?' and 'exists'/'nonempty'?
-defaultExpression
-    : existenceEmptinessExpression 
-      ('?'^ defaultExpression)?
+    : existenceEmptinessExpression
+      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) existenceEmptinessExpression)?
     ;
 
 /*
 existenceEmptinessExpression
-    : e=rangeIntervalEntryExpression 
+    : e=defaultExpression 
     ('exists' -> ^(EXISTS_EXPR $e) 
      | 'nonempty' -> ^(NONEMPTY_EXPR $e)
      | -> $e)
@@ -642,10 +635,15 @@ existenceEmptinessExpression
 */
 
 existenceEmptinessExpression
-    : e=rangeIntervalEntryExpression
+    : e=defaultExpression
        (('exists' -> ^(EXISTS_EXPR $e))
         | ('nonempty' -> ^(NONEMPTY_EXPR $e)) )?
      -> $e
+    ;
+
+defaultExpression
+    : rangeIntervalEntryExpression 
+      ('?'^ defaultExpression)?
     ;
 
 //I wonder if it would it be cleaner to give 
