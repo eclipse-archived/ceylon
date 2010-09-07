@@ -305,10 +305,15 @@ public class Types {
 
         Type base = s.baseType();
         TypeSymbol tsym = s.tsym;
-
         String sStr = tsym.toString();
+        
         if (sStr.equals("ceylon.Optional") &&
         		base.tag == CLASS) {
+
+            if (t.baseType().tag == CLASS &&
+            		t.tsym.toString().equals("ceylon.Nothing"))
+            	return true;
+            
         	ClassType klass = (ClassType)base;
         	List<Type> typeArgs = klass.getTypeArguments();
         	if (typeArgs.length() == 1) {
