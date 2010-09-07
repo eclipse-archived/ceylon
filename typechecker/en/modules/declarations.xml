@@ -147,6 +147,10 @@ String lastName;
         
         <programlisting>ImportSpec := TypeSpec | MethodSpec | InstanceSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
         
+        <para>Note that toplevel types, toplevel methods, and extensions in the module
+        <literal>ceylon.lang</literal> do not need to be explicitly imported. They are
+        implicitly imported by every compilation unit.</para>
+        
         <comment><para>TODO: Would it be better to specify that there is at most a single 
         <literal>import</literal> statement per source file, for example:</para>
         <programlisting>import my.query.Order, ceylon.collection.*, java.util.Map.Entry alias MapEntry;</programlisting></comment>
