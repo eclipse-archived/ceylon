@@ -752,7 +752,7 @@ public class Gen {
             }
             public void visit(NaturalLiteral lit) {
                 JCExpression n = make.Literal(lit.value.longValue());
-                result = at(expr).Apply (null, makeSelect("ceylon", "Natural", "instance"),
+                result = at(expr).Apply (null, makeSelect("ceylon", "Integer", "instance"),
                         List.of(n));
             }
             public void visit(CeylonTree.SimpleStringLiteral string) {
