@@ -12,8 +12,8 @@
         <para>The module <literal>ceylon.lang</literal> contains types which
         are referred to in the language definition.</para>
         
-        <para>Toplevel types, toplevel methods, and extensions defined in 
-        <literal>ceylon.lang</literal> do not need to be explicitly imported.</para>
+        <para>Toplevel types, toplevel methods, enumerates instances, and extensions 
+        defined in <literal>ceylon.lang</literal> do not need to be explicitly imported.</para>
     
         <comment><para>Note: we will probably need to do the following erasures:</para>
         <itemizedlist>
