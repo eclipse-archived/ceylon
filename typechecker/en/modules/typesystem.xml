@@ -50,6 +50,58 @@
             for the generic type parameters of a parameterized type.</para>
         </listitem>
     </itemizedlist>
+    
+    <para>The Ceylon type system is much more complete than most other object oriented
+    languages. In Ceylon, it's possible to answer questions that might at first sound
+    almost nonsensical if you're used to languages with more traditional type systems. 
+    For example:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>What is the return type of a <literal>void</literal> method?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type of an attribute that may or may not hold a value 
+            of type <literal>T</literal>?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type that represents methods that accept two <literal>Float</literal>
+            values?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type of an expression that may be evaluated to produce
+            a <literal>String</literal>?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type of a sequence of natural numbers of length <literal>n+1</literal>?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type that represents subclasses of <literal>Renderer</literal> 
+            which must be provided at instantiation time with a function that accepts an 
+            object and produces a <literal>String</literal>?</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>The answers, as we shall discover, are: <literal>Void</literal>, 
+    <literal>Optional&lt;T&gt;</literal>, <literal>Method&lt;Object, Void, Float, Float&gt;</literal>,
+    <literal>Gettable&lt;String&gt;</literal>, <literal>BoundedSequence&lt;n+1&gt;</literal>, 
+    and <literal>Class&lt;Renderer, Callable&lt;String,Object&gt;&gt;</literal>.</para>
+    
+    <!--itemizedlist>
+        <listitem>
+            <para><literal>Void</literal>, </para>
+        </listitem>
+        <listitem>
+            <para><literal>Optional&lt;T&gt;</literal></para>
+        </listitem>
+        <listitem>
+            <para><literal>Method&lt;Void, Float, Float&gt;</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para><literal>Gettable&lt;String&gt;</literal>.</para>
+        </listitem>
+    </itemizedlist-->
+    
 
     <section id="identifiernaming">
         <title>Identifier naming</title>
