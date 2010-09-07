@@ -579,7 +579,7 @@ interpolatedExpressionStart
     | '#' 
     | LIDENTIFIER 
     | UIDENTIFIER 
-    | specialValue 
+    | selfReference 
     | nonstringLiteral
     | prefixOperator
     ;
@@ -679,9 +679,10 @@ prefixOperator
     : '$' | '-' |'++' | '--' | '~'
     ;
 
-specialValue
-    : 'this' 
+selfReference
+    : 'this' //typeName?
     | 'super'
+    | 'outer'
     ;
 
 enumeration
@@ -717,13 +718,13 @@ base
     | stringExpression
     | parExpression
     | enumeration
-    | specialValue
+    | selfReference
     | nameAndTypeArguments
     //| inlineClassDeclaration
     ;
     
 selector 
-    : member
+    : memberSelector
     | argumentsWithFunctionalArguments
     -> ^(CALL_EXPR argumentsWithFunctionalArguments)
     | elementSelector
@@ -731,8 +732,8 @@ selector
     -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
-member
-    : ('.' | '?.' | '[].') nameAndTypeArguments
+memberSelector
+    : ('.' | '?.' | '[].') ( nameAndTypeArguments | 'outer' )
     ;
 
 nameAndTypeArguments
@@ -1231,6 +1232,10 @@ SWITCH
 
 THIS
     :   'this'
+    ;
+
+OUTER
+    :   'outer'
     ;
 
 SUBTYPE
