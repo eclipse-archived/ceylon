@@ -3,6 +3,7 @@ package ceylon;
 public abstract class Object extends Void {
 
     /** A developer-friendly string representing the instance. */
+    @Extension
     public ceylon.String string() {
         return String.instance("");
     }

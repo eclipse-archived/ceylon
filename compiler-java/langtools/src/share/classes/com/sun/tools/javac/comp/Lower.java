@@ -2625,30 +2625,27 @@ public class Lower extends TreeTranslator {
         return result.toList();
     }
 
-    /** Perform a Ceylon automatic type conversion if needed */
-    JCExpression ceylonConvert(JCExpression tree, Type dstType) {
+    /** Convert using a Ceylon extension if needed */
+    JCExpression ceylonExtensionIfNeeded(JCExpression tree, Type dstType) {
         if (dstType.isPrimitive())
             return tree;
         Type srcType = tree.type;
         if (srcType.isPrimitive())
             return tree;
 
-        if (types.isSubtype(srcType, types.getClassType("ceylon.Object")) &&
-            types.isSubtype(dstType, types.getClassType("ceylon.String"))) {
+        Symbol methodSym = types.getCeylonExtension(srcType, dstType);
+        if (methodSym != null) {
             make_at(tree.pos());
-            Symbol methodSym = lookupMethod(tree.pos(),
-                                            names.fromString("string"),
-                                            srcType,
-                                            List.<Type>nil());
-            return make.App(make.Select(tree, methodSym));
+            tree = make.App(make.Select(tree, methodSym));
         }
+
         return tree;
     }
 
     /** Expand a boxing or unboxing conversion if needed. */
     @SuppressWarnings("unchecked") // XXX unchecked
     <T extends JCTree> T boxIfNeeded(T tree, Type type) {
-        tree = (T)ceylonConvert((JCExpression)tree, type);
+        tree = (T)ceylonExtensionIfNeeded((JCExpression)tree, type);
         boolean havePrimitive = tree.type.isPrimitive();
         if (havePrimitive == type.isPrimitive())
             return tree;

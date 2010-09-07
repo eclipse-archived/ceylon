@@ -277,23 +277,30 @@ public class Types {
             : isSubtype(unboxedType(t), s);
      }
 
-    public Type getClassType(String name) {
-        return reader.enterClass(names.fromString(name)).type;
-    }
+    public MethodSymbol getCeylonExtension(Type t, Type s) {
+        if (t.tag != CLASS || s.tag != CLASS)
+            return null;
 
-    private boolean isConvertibleCeylon(Type t, Type s) {
-        if (isSubtype(t, getClassType("ceylon.Object")) &&
-            isSubtype(s, getClassType("ceylon.String")))
-            return true;
+        ClassSymbol ceylonExtension =
+            reader.enterClass(names.fromString("ceylon.Extension"));
 
-        return false;
+        for (Symbol sym : ((ClassSymbol) t.tsym).members().getElements()) {
+            if (sym.attribute(ceylonExtension) == null)
+                continue;
+
+            MethodSymbol msym = (MethodSymbol) sym;
+            if (isSubtype(msym.getReturnType(), s))
+                return msym;
+        }
+
+        return null;
     }
 
     public boolean isConvertible(Type t, Type s, Warner warn) {
     	if (isConvertibleNotOptional(t, s, warn))
     		return true;
     	
-    	if (isConvertibleCeylon(t, s))
+    	if (getCeylonExtension(t, s) != null)
             return true;
 
         Type base = s.baseType();
