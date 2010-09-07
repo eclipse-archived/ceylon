@@ -102,7 +102,7 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      ( (declarationStart) => toplevelDeclaration )+
+      ( (annotatedDeclarationStart) => toplevelDeclaration )+
       expression?
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
@@ -193,7 +193,7 @@ inlineClassBody
 //instances have to be listed together at the top
 //of the class body
 declarationOrStatement
-    : (declarationStart) => declaration | statement
+    : (annotatedDeclarationStart) => declaration | statement
     ;
 
 //TODO: I don't understand why we need to distinguish
@@ -221,21 +221,27 @@ declaration
     ;
     
 //special rule for syntactic predicates
-declarationStart
-    :  userAnnotation* ( langAnnotation | memberDeclarationStart | typeDeclarationStart )
+annotatedDeclarationStart
+    :  userAnnotation* ( declarationAnnotation | declarationStart )
     ;
 
-memberDeclarationStart
-    : (type|'assign'|'void'|'case') LIDENTIFIER
+declarationStart
+    : declarationKeyword | type '...'? LIDENTIFIER
     ;
-    
-typeDeclarationStart
-    : ('class'|'interface'|'alias') UIDENTIFIER
+
+declarationKeyword
+    : 'local' 
+    | 'assign' 
+    | 'void' 
+    | 'case' 
+    | 'class' 
+    | 'interface' 
+    | 'alias'
     ;
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-langAnnotation
+declarationAnnotation
     : 'abstract'
     | 'default'
     | 'override'
@@ -261,7 +267,7 @@ statement
     ;
 
 specificationOrExpressionStatement
-    : primary specifier? ';'!
+    : expression specifier? ';'!
     ;
 
 directiveStatement
@@ -440,8 +446,8 @@ annotations
     ;
 
 annotation
-    : langAnnotation
-    -> ^(ANNOTATION langAnnotation) 
+    : declarationAnnotation
+    -> ^(ANNOTATION declarationAnnotation) 
     | userAnnotation
     ;
 
@@ -611,7 +617,7 @@ logicalNegationExpression
 
 equalityExpression
     : comparisonExpression
-      (('=='^|'!='^|'='^) comparisonExpression)?
+      (('=='^|'!='^|'==='^) comparisonExpression)?
     ;
 
 comparisonExpression
@@ -766,7 +772,7 @@ namedSpecifiedArgument
 
 namedArgumentStart
     : LIDENTIFIER '=' 
-    | (formalParameterType|'local') LIDENTIFIER
+    | declarationStart
     ;
 
 parameterName
@@ -803,12 +809,12 @@ functionalArgument
 functionalArgumentHeader
     : parameterName
     -> ^(ARG_NAME parameterName)
-    | 'case' '(' expressions ')'
-    -> ^(CASE_ITEM expressions)
+    /*| 'case' '(' expressions ')'
+    -> ^(CASE_ITEM expressions)*/
     ;
 
 functionalArgumentDefinition
-    : ( (formalParameterStart) => formalParameters )? 
+    : ( (formalParametersStart) => formalParameters )? 
       ( block | parExpression /*| literal | specialValue*/ )
     ;
 
@@ -832,8 +838,8 @@ formalParameters
 //be careful with this one, since it 
 //matches "()", which can also be an 
 //argument list
-formalParameterStart
-    : '(' ( userAnnotation* ( langAnnotation | formalParameterType LIDENTIFIER ) | ')' )
+formalParametersStart
+    : '(' ( annotatedDeclarationStart | ')' )
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
@@ -843,11 +849,19 @@ formalParameterStart
 formalParameter
     : basicFormalParameter
       ( '->' type parameterName 
-      | (('in'|'=') formalParameterStart) => ('in'|'=') basicFormalParameter
+      | (iteratedFormalParameterStart) => iteratedFormalParameter
       )? 
       specifier?
     ;
-    
+
+iteratedFormalParameter
+    : ('in'|'=') basicFormalParameter
+    ;
+
+iteratedFormalParameterStart
+    : ('in'|'=') annotatedDeclarationStart
+    ;
+
 basicFormalParameter
     : annotations? formalParameterType parameterName formalParameters*
     ;
@@ -857,7 +871,7 @@ extraFormalParameter
     ;
 
 formalParameterType
-    : (type|'void') '...'?
+    : type '...'? | 'void'
     ;
 
 // Control structures.
