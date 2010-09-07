@@ -659,18 +659,18 @@ additiveExpression
     ;
 
 multiplicativeExpression 
-    : exponentiationExpression
-      (('*'^ | '/'^ | '%'^ | '&'^) exponentiationExpression)*
-    ;
-
-exponentiationExpression
-    : unaryExpression ('**'^ unaryExpression)?
+    : unaryExpression
+      (('*'^ | '/'^ | '%'^ | '&'^) unaryExpression)*
     ;
 
 unaryExpression 
     : prefixOperator unaryExpression
     -> ^(PREFIX_EXPR prefixOperator unaryExpression)
-    | primary
+    | exponentiationExpression
+    ;
+
+exponentiationExpression
+    : primary ('**'^ primary)?
     ;
 
 prefixOperator
