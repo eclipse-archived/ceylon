@@ -175,30 +175,6 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
         
     </section>
     
-    <section id="compoundexpressions">
-        <title>Compound expressions</title>
-
-        <para>An <emphasis>atom</emphasis> is a literal or special value, an enumerated 
-        sequence of expressions, or a parenthesized expression.</para>
-    
-        <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
-    
-        <para>A <emphasis>primary</emphasis> is formed by recursively invoking or evaluating 
-        members of an atom or toplevel method or class.</para>
-    
-        <programlisting>Primary := Atom | Meta | EnumeratedInstanceReference | CallableReference | ValueReference | Invocation</programlisting>
-    
-        <para>More complex expressions are formed by combining expressions using operators, 
-        including assignment operators.</para>    
-    
-        <programlisting>Expression := Primary | OperatorExpression</programlisting>
-    
-        <para>Parentheses are used for grouping:</para>
-    
-        <programlisting>ParExpression := "(" Expression ")"</programlisting>
-    
-    </section>
-
     <section id="literalvalues">
         <title>Literal values</title>
     
@@ -456,296 +432,66 @@ if you prefer.";</programlisting>
 
     </section>
     
-    <section id="specialvalues">
+    <section id="selfreferences">
         <title>Self references</title>
         
-        <para>The type of the following special values depends upon
-        the context in which they appear.</para>
+        <para>The type of the following special values depends upon the context 
+        in which they appear.</para>
         
         <programlisting>SelfReference := "this" | "super"</programlisting>
 
-        <para>The keyword <literal>super</literal> refers to the
-        current instance (the instance that is being invoked), and has
-        the same members as the immediate superclass of the class, except 
-        for <literal>fixed</literal> members. Any invocation of this 
-        reference is processed by the method or attribute defined or 
-        inherited by this superclass, bypassing any method declaration 
-        that overrides the method on the current class or any subclass 
-        of the current class. Invocation of <literal>fixed</literal> 
-        members upon <literal>super</literal> is not allowed. The 
-        <literal>super</literal> reference is not assignable to any 
-        type.</para>
+        <para>The keyword <literal>super</literal> refers to the current instance 
+        (the instance that is being invoked), and has the same members as the 
+        immediate superclass of the class, except for <literal>fixed</literal> 
+        members. Any invocation of this reference is processed by the method or 
+        attribute defined or inherited by this superclass, bypassing any method 
+        declaration that overrides the method on the current class or any subclass 
+        of the current class. Invocation of <literal>fixed</literal> members upon 
+        <literal>super</literal> is not allowed. The <literal>super</literal> 
+        reference is not assignable to any type.</para>
         
-        <para>The keyword <literal>this</literal> refers to the current 
-        instance, and is assignable to both the type of the current 
-        class (the class which declares the method being invoked), and 
-        to the special type <literal>subtype</literal>, representing 
-        the concrete type of the current instance.</para>
+        <para>The keyword <literal>this</literal> refers to the current instance, 
+        and is assignable to both the type of the current class (the class in which 
+        the expression appears), and to the special type <literal>subtype</literal>, 
+        which represents the concrete type of the current instance.</para>
         
-    </section>
-    
-    <section id="metamodelreferences">
-        <title>Metamodel references</title>
-        
-        <para>The metamodel object representing a type or program element may be obtained
-        using a completely typesafe syntax.</para>
-        
-        <programlisting>Meta := TypeMeta | MethodMeta | AttributeMeta | FunctionMeta</programlisting>
-        
-        <para>Metamodel references are compile-time typesafe.</para>
-        
-        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = List&lt;String&gt;;</programlisting>
-        
-        <programlisting>Class&lt;Person,Name&gt; personClass = Person;</programlisting>
-        
-        <programlisting>Method&lt;Log, Void, String&gt; infoMethod = Log.info;</programlisting>
-        
-        <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
-        
-        <para>A metamodel reference that refers to a generic declaration must specify type
-        arguments.</para>
-        
-        <comment><para>TODO: can we just default the type arguments to the upper bounds of 
-        the type parameters if the type arguments are missing? Or do we need some kind of
-        <literal>GenericType</literal> object to represent generic declarations?</para></comment>
-        
-        <comment><para>TODO: are there metamodel objects for block local declarations? This
-        includes block local declarations inside a class body, and block local declarations
-        inside a method or attribute body.</para></comment>
-        
-        <comment><para>TODO: should we have typesafe metamodel reference expressions for 
-        parameters, for example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
-                
-        <section id="interfaceandclassmetamodelreferences">
-            <title>Interface and class metamodel references</title>
-            
-        <para>A <literal>Type</literal> object may be obtained by specifying the full
-        type, including type arguments if the type is generic.</para>
-        
-        <programlisting>TypeMeta := Type</programlisting>
-        
-        <para>The metamodel expression, <literal>X</literal>, for a type, class or interface is:</para>
-        
-        <itemizedlist>
-             <listitem>
-                <para>of type <literal>Interface&lt;X&gt;</literal> where 
-                <literal>X</literal> is the interface, or</para>
-            </listitem>
-            <listitem>
-                <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
-                <literal>X</literal> is the toplevel class and <literal>P...</literal> 
-                are the types of the formal parameter list of the class, for every
-                overloaded version of the class, or</para>
-            </listitem>
-            <listitem>
-                <para>assignable to <literal>MemberClass&lt;X,Y,P...&gt;</literal> where 
-                <literal>Y</literal> is the member class and <literal>P...</literal> 
-                are the types of the formal parameter list of the class, for every
-                overloaded version of the class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that for a toplevel class <literal>X</literal>, the expression <literal>X</literal>
-        is both a metamodel reference and a callable reference. This is consistent, since
-        <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
-        
-        </section>
-        
-        <section id="toplevelmethodmetamodelreferences">
-            <title>Toplevel method metamodel references</title>
-            
-        <para>A <literal>Function</literal> object representing a toplevel method may be 
-        obtained by specifying the method name, with type arguments if the toplevel method 
-        is generic.</para>
-        
-        <programlisting>FunctionMeta := MemberName TypeArguments?</programlisting>
-               
-        <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>assignable to <literal>Function&lt;R,P...&gt;</literal> where 
-                <literal>R</literal> is the callable type of a method produced by 
-                removing the first formal parameter list of the method, and 
-                <literal>P...</literal> are the types of the first formal parameter 
-                lists of the method, for every overloaded version of the method.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that for a toplevel method <literal>x()</literal>, the expression <literal>x</literal>
-        is both a metamodel reference and a callable reference. This is consistent, since
-        <literal>Function&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
-           
-        </section>
-        
-        <section id="membermethodmetamodelreferences">
-            <title>Member method metamodel references</title>
-            
-        <para>A <literal>Method</literal> object representing a member method may be 
-        obtained by specifying the type (with type arguments) and member name, together 
-        with type arguments if the method is generic.</para>
-        
-        <programlisting>MethodMeta := Type "." MemberName TypeArguments?</programlisting>
-               
-        <para>The metamodel expression, <literal>X.member</literal>, for a member method 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>assignable to <literal>Method&lt;X,R,P...&gt;</literal> where 
-                <literal>X</literal> is the type that defines the method, and 
-                <literal>R</literal> is the callable type of a method produced by 
-                removing the first formal parameter list of the method, and 
-                <literal>P...</literal> are the types of the first formal parameter 
-                lists of the method, for every overloaded version of the method.</para>
-            </listitem>
-        </itemizedlist>
-         
-        </section>
-        
-        <section id="attributemetamodelreferences">
-            <title>Attribute metamodel references</title>
-            
-        <para>An <literal>Attribute</literal> object representing an attribute may be 
-        obtained by specifying the type (with type arguments) and member name.</para>
-        
-        <programlisting>AttributeMeta := Type "." MemberName</programlisting>
-
-        <para>The metamodel expression, <literal>X.member</literal>, for an attribute 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>of type <literal>Attribute&lt;X,T&gt;</literal> where 
-                <literal>X</literal> is the type that defines the attribute, 
-                and <literal>T</literal> is the declared type of the attribute,
-                unless the attribute is declared <literal>mutable</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>of type <literal>MutableAttribute&lt;X,T&gt;</literal> where 
-                <literal>X</literal> is the type that defines the attribute, 
-                and <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>mutable</literal>.</para>
-            </listitem>
-        </itemizedlist>
-         
-        </section>
-        
-        <section id="usingthemetamodel">
-            <title>Using the metamodel</title>
-            
-        <para>The metamodel object for a type allows its members to be iterated:</para>
-        
-        <programlisting>Type&lt;Object&gt; t = object.type;
-for (Attribute&lt;Object,String&gt; a in t.attributes(String)) {
-    log.info(a.name + "=" + a(object));
-}
-for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
-    log.info(m.name + "=" + m(object)());
-}</programlisting>
-        
-        <para>The metamodel object for a class, attribute or method implements 
-        <literal>Callable</literal> and is therefore invokable.</para>
-        
-        <programlisting>Class&lt;ArrayList&lt;String&gt;,String[]&gt; arrayListClass = ArrayList&lt;String&gt;;
-        
-List list = arrayListClass("foo", "bar", "baz);</programlisting>
-        
-        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person.name;
-        
-String personName = nameAttribute(person);</programlisting>
-        
-        <programlisting>Method&lt;Person, String&gt; sayMethod = Person.say;
-        
-String result = sayMethod(person)();</programlisting>
-
-        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
-
-countAttribute(this)++;</programlisting>        
-
-        <para>The metamodel object for a class, attribute or method supports registration 
-        of a listener, which intercepts invocations.</para>
-        
-        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
-
-countAttribute.intercept() 
-    onGet (Counter c, Natural proceed()) {
-        log.debug("getting");
-        return proceed()
-    };
-    
-countAttribute.intercept() 
-    onSet (Counter c, void proceed(Natural n), Natural value) {
-        log.debug("setting");
-        proceed(value)
-    };</programlisting>
-
-        <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
-        
-createItemMethod.intercept()
-    onInvoke (Order o, Item proceed(Product p, Natural n),  
-              Product product, Natural quantity) {
-        log.debug("invoking in transaction");
-        try (Transaction()) {
-            return proceed(product,quantity)
-        }
-    };</programlisting>
-    
-        </section>
-    
-        <comment><para>TODO: According to this, we can "curry" in type arguments of
-        the type. We need this. But if so, why can't we curry type arguments of the 
-        member? It's not a problem from the grammar point of view.</para></comment>
-        
-    </section>
-
-    <section id="enumeratedinstancereferences">
-        <title>Enumerated instance references</title>
-        
-        <para>An enumerated instance of a class is identified according to:</para> 
-        
-        <programlisting>EnumeratedInstanceReference := (Type ".")? MemberName</programlisting>
-        
-        <para>The type is required unless the enumerated instance was explicitly 
-        imported or is a member of a containing class.</para>
-        
-        <para>The type of the enumerated instance reference is the class of which
-        the enumerated instance is a member.</para>
-        
-        <para>The value of an enumerated instance reference is the instance of
-        the class that was instantiated when the class was loaded by the virtual
-        machine.</para>
-        
-        <programlisting>DayOfWeek sunday = DayOfWeek.sun;</programlisting>
+        <!--
+        <comment><para>TODO: what is the syntax for the current instance
+        of a containing class? Here are some options:</para>
+        <programlisting>Graph.this.nodes</programlisting>
+        <programlisting>this Graph.nodes</programlisting>
+        <programlisting>this&lt;Graph&gt;.nodes</programlisting>
+        </comment>
+         -->
         
     </section>
     
-    <section id="callablereferences">
-        <title>Callable references</title>
-        
-        <para>A <emphasis>callable reference</emphasis> is a reference to 
-        something&mdash;a method, callable parameter, or class&mdash;that can be 
-        <emphasis>invoked</emphasis> by specifying a list of arguments.</para>
-        
-        <programlisting>CallableReference := MethodReference | InitializerReference</programlisting>
-        
-        <para>A callable reference may be invoked immediately, or it may be passed 
-        to other code which may invoke the reference. A callable reference captures 
-        the return type and formal parameter lists of the method, callable parameter, 
-        or class it refers to, allowing compile-time validation of argument types when 
-        the callable reference is invoked.</para>
-        
-        <para>A callable reference expression is assignable to 
-        <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
-        <literal>P...</literal> depend upon the schema of the method or class.</para>
-        
-        <comment><para>TODO: we can support LINQ to SQL-like queries by making 
-        <literal>Callable</literal> provide an AST of the statements contained
-        in the method declaration, allowing translation to SQL.</para></comment>
-                
-        <section id="receiverexpressions">
-            <title>Receiver expressions</title>
+    <section id="compoundexpressions">
+        <title>Compound expressions</title>
+
+        <para>An <emphasis>atom</emphasis> is a literal or self reference, an 
+        enumeration expression, or a parenthesized expression.</para>
+    
+        <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
+    
+        <para>A <emphasis>primary</emphasis> is formed by recursively invoking or 
+        evaluating members of an atom or toplevel method or class.</para>
+    
+        <programlisting>Primary := Atom | Meta | MemberReference | Invocation</programlisting>
+
+        <programlisting>MemberReference := OuterReference | EnumeratedInstanceReference | CallableReference | ValueReference</programlisting>
+    
+        <para>More complex expressions are formed by combining expressions using 
+        operators, including assignment operators.</para>    
+    
+        <programlisting>Expression := Primary | OperatorExpression</programlisting>
+    
+        <para>Parentheses are used for grouping:</para>
+    
+        <programlisting>ParExpression := "(" Expression ")"</programlisting>
+    
+    <section id="receiverexpressions">
+        <title>Receiver expressions</title>
         
         <para>A callable reference or value reference may specify a <emphasis>receiver 
         expression</emphasis>. The receiver expression produces the instance upon which 
@@ -774,8 +520,186 @@ createItemMethod.intercept()
         receiver expression is executed, the receiver expression is evaluated and a 
         reference to the resulting value is held as part of the value reference.</para>
         
+        <para>An outer instance reference may also specify a receiver expression. The
+        receiver expression must be explicitly specified unless the current instance
+        of the current class is the receiver.</para>
+        
+    </section>
+        
+    </section>
+
+    <section id="outerinstancereferences">
+        <title>Outer instance references</title>
+        
+        <para>For a nested class, the containing instance may be obtained using
+        the keyword <literal>outer</literal>.</para>
+        
+        <programlisting>OuterReference := (Receiver ".") "outer"</programlisting>
+        
+        <para>The type of the outer instance reference is the type that contains 
+        the declaration of the receiver expression type (which must be a member 
+        class). If no receiver expression is specified, the type of the outer 
+        instance reference is the type that contains the declaration of the 
+        current class (the class in which the expression appears, which must be a 
+        member class).</para>
+        
+        <programlisting>Node node = tree.Node().Node();
+assert() that (tree == node.outer.outer);</programlisting>
+
+        <programlisting>class Catalog() {
+    class Schema() {
+        Catalog catalog { return outer }
+        class Table() {
+            Schema schema { return outer }
+            Catalog catalog { return outer.outer }
+        }
+    }
+}</programlisting>
+        
+    </section>
+    
+    <section id="enumeratedinstancereferences">
+        <title>Enumerated instance references</title>
+        
+        <para>An enumerated instance of a class is identified according to:</para> 
+        
+        <programlisting>EnumeratedInstanceReference := (Type ".")? MemberName</programlisting>
+        
+        <para>The type is required unless the enumerated instance was explicitly 
+        imported or is a member of a containing class.</para>
+        
+        <para>The type of the enumerated instance reference is the class of which
+        the enumerated instance is a member.</para>
+        
+        <para>The value of an enumerated instance reference is the instance of
+        the class that was instantiated when the class was loaded by the virtual
+        machine.</para>
+        
+        <programlisting>DayOfWeek sunday = DayOfWeek.sun;</programlisting>
+        
+    </section>
+    
+    <section id="valuereferences">
+        <title>Value references</title>
+                
+        <para>A <emphasis>value reference</emphasis> is a reference to 
+        something&mdash;for example, an attribute, a local, or an invocation 
+        expression&mdash;that can be <emphasis>evaluated</emphasis>.</para>
+
+        <para>A value reference may be transparently converted to the actual current 
+        value of the attribute or local, or to the return value of the invocation, or 
+        it may be passed, as a reference, to other code, which may use the reference to 
+        <emphasis>evaluate</emphasis> the current value of the attribute or local, or
+        to perform the invocation. A reference to a <literal>mutable</literal> attribute 
+        or local may be used to <emphasis>assign</emphasis> a new value to the attribute 
+        or local.</para>
+        
+        <para>A value reference expression is assignable to <literal>Gettable&lt;T&gt;</literal> 
+        or <literal>Settable&lt;T&gt;</literal> where <literal>T</literal> is the type of 
+        the attribute or local, or the return type of the invocation expression.</para>
+        
+        <section id="attributeandlocalreferences">
+            <title>Attribute and local references</title>
+        
+        <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
+        of some object. A <emphasis>local reference</emphasis> is a reference to a 
+        local or formal parameter. An attribute reference specifies the name of the 
+        attribute. A local reference specifies the name of the local or formal parameter.</para>
+        
+        <programlisting>ValueReference := (Receiver ".")? MemberName</programlisting>
+        
+        <para>The type of an attribute reference or local reference expression for an 
+        attribute, local, or formal parameter of declared type <literal>X</literal> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>X</literal>, if <literal>X</literal> is assignable
+                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
+            </listitem>
+            <listitem>
+                <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, 
+                local, or formal parameter is not <literal>mutable</literal>, or if 
+                the setter is not visible to the block containing the attribute or 
+                local reference, or</para>
+            </listitem>
+            <listitem>
+                <para><literal>Settable&lt;X&gt;</literal>, if the attribute, local, 
+                or formal parameter is <literal>mutable</literal> and the setter, if 
+                any, is visible to the block containing the attribute or local 
+                reference.</para>
+            </listitem>
+        </itemizedlist>
+        
         </section>
         
+        <section id="passbyreference">
+            <title>Pass by reference</title>
+            
+            <para>An expression of type <literal>Gettable</literal> or <literal>Settable</literal> 
+            may be assigned to an attribute or local, passed as an argument to a method or initializer, 
+            or returned by a method. If the attribute, local, or formal parameter to which the 
+            expression is assigned is of declared type <literal>Gettable</literal> or 
+            <literal>Settable</literal>, or if the method which returns the expression is of declared  
+            type <literal>Gettable</literal> or <literal>Settable</literal>, this is called 
+            <emphasis>pass by reference</emphasis>, since it does not result in immediate evaluation of 
+            the referenced value. Instead, the attribute, local, or formal parameter holds a 
+            <emphasis>reference</emphasis> to the value of some other attribute, local, or formal 
+            parameter.</para>
+            
+            <para>This local holds a reference:</para>
+            
+            <programlisting>Gettable&lt;String&gt; nameRef = person.name;</programlisting>
+            
+            <para>This method returns a reference:</para>
+            
+            <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name }</programlisting>
+            
+            <para>This class has an initialization parameter which accepts a reference:</para>
+            
+            <programlisting>class Input(Settable&lt;String&gt; model) { ... }</programlisting>
+            
+            <para>This attribute holds a reference to an invocation expression:</para>
+            
+            <programlisting>public Gettable&lt;Decimal&gt; total = order.calculateTotal();</programlisting>
+            
+            <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
+            may not be declared <literal>mutable</literal>.</para>
+            
+            <para>The <literal>Gettable</literal> object representing a <literal>mutable</literal> 
+            local may not be assigned to an attribute, passed as a method argument, passed to
+            a control directive, enumerated as the value of a sequence enumeration, or referred 
+            to by a nested method or class. It may be assigned to a local, or invoked directly 
+            inside the block that obtained it.</para>
+            
+            <comment><para>TODO: nail down these rules a little better.</para></comment>
+            
+        </section>
+        
+    </section>
+
+    <section id="callablereferences">
+        <title>Callable references</title>
+        
+        <para>A <emphasis>callable reference</emphasis> is a reference to 
+        something&mdash;a method, callable parameter, or class&mdash;that can be 
+        <emphasis>invoked</emphasis> by specifying a list of arguments.</para>
+        
+        <programlisting>CallableReference := MethodReference | InitializerReference</programlisting>
+        
+        <para>A callable reference may be invoked immediately, or it may be passed 
+        to other code which may invoke the reference. A callable reference captures 
+        the return type and formal parameter lists of the method, callable parameter, 
+        or class it refers to, allowing compile-time validation of argument types when 
+        the callable reference is invoked.</para>
+        
+        <para>A callable reference expression is assignable to 
+        <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
+        <literal>P...</literal> depend upon the schema of the method or class.</para>
+        
+        <comment><para>TODO: we can support LINQ to SQL-like queries by making 
+        <literal>Callable</literal> provide an AST of the statements contained
+        in the method declaration, allowing translation to SQL.</para></comment>
+                
         <section id="typearguments">
             <title>Type arguments</title>
             
@@ -970,98 +894,6 @@ local comp = order(1,-1);</programlisting>
         
     </section>
     
-    <section id="valuereferences">
-        <title>Value references</title>
-                
-        <para>A <emphasis>value reference</emphasis> is a reference to something&mdash;an 
-        attribute or local&mdash;that can be <emphasis>evaluated</emphasis>.</para>
-
-        <para>A value reference may be transparently converted to the actual current 
-        value of the attribute or local, or it may be passed, as a reference, to other 
-        code, which may invoke the reference to <emphasis>evaluate</emphasis> the current 
-        value of the attribute or local. A reference to a <literal>mutable</literal> 
-        attribute or local may be invoked to <emphasis>assign</emphasis> a new value to 
-        the attribute or local.</para>
-        
-        <para>A value reference expression is assignable to
-        <literal>Gettable&lt;T&gt;</literal> or <literal>Settable&lt;T&gt;</literal>
-        were <literal>T</literal> is the type of the attribute or local.</para>
-        
-        <section id="attributeandlocalreferences">
-            <title>Attribute and local references</title>
-        
-        <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
-        of some object. A <emphasis>local reference</emphasis> is a reference to a 
-        local or formal parameter. An attribute reference specifies the name of the 
-        attribute. A local reference specifies the name of the local or formal parameter.</para>
-        
-        <programlisting>ValueReference := (Receiver ".")? MemberName</programlisting>
-        
-        <para>The type of an attribute reference or local reference expression for an 
-        attribute, local, or formal parameter of declared type <literal>X</literal> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>X</literal>, if <literal>X</literal> is assignable
-                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
-            </listitem>
-            <listitem>
-                <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, 
-                local, or formal parameter is not <literal>mutable</literal>, or if 
-                the setter is not visible to the block containing the attribute or 
-                local reference, or</para>
-            </listitem>
-            <listitem>
-                <para><literal>Settable&lt;X&gt;</literal>, if the attribute, local, 
-                or formal parameter is <literal>mutable</literal> and the setter, if 
-                any, is visible to the block containing the attribute or local 
-                reference.</para>
-            </listitem>
-        </itemizedlist>
-        
-        </section>
-        
-        <section id="passbyreference">
-            <title>Pass by reference</title>
-            
-        <para>An expression of type <literal>Gettable</literal> or <literal>Settable</literal> 
-        may be assigned to an attribute or local, passed as an argument to a method or initializer, 
-        or returned by a method. If the attribute, local, or formal parameter to which the 
-        expression is assigned is of declared type <literal>Gettable</literal> or 
-        <literal>Settable</literal>, or if the method which returns the expression is of declared  
-        type <literal>Gettable</literal> or <literal>Settable</literal>, this is called 
-        <emphasis>pass by reference</emphasis>, since it does not result in immediate evaluation of 
-        the referenced value. Instead, the attribute, local, or formal parameter holds a 
-        <emphasis>reference</emphasis> to the value of some other attribute, local, or formal 
-        parameter.</para>
-        
-        <para>This local holds a reference:</para>
-        
-        <programlisting>Gettable&lt;String&gt; nameRef = person.name;</programlisting>
-        
-        <para>This method returns a reference:</para>
-        
-        <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name }</programlisting>
-        
-        <para>This class has an initialization parameter which accepts a reference:</para>
-        
-        <programlisting>class Input(Settable&lt;String&gt; model) { ... }</programlisting>
-        
-        <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
-        may not be declared <literal>mutable</literal>.</para>
-        
-        <para>The <literal>Gettable</literal> object representing a <literal>mutable</literal> 
-        local may not be assigned to an attribute, passed as a method argument, passed to
-        a control directive, enumerated as the value of a sequence enumeration, or referred 
-        to by a nested method or class. It may be assigned to a local, or invoked directly 
-        inside the block that obtained it.</para>
-        
-        <comment><para>TODO: nail down these rules a little better.</para></comment>
-        
-        </section>
-        
-    </section>
-
     <section id="invocationexpressions">
         <title>Invocation expressions</title>
         
@@ -2310,6 +2142,222 @@ setPerson(person);</programlisting>
             
     </section>
     
+    <section id="metamodelreferences">
+        <title>Metamodel references</title>
+        
+        <para>The metamodel object representing a type or program element may be obtained
+        using a completely typesafe syntax.</para>
+        
+        <programlisting>Meta := TypeMeta | MethodMeta | AttributeMeta | FunctionMeta</programlisting>
+        
+        <para>Metamodel references are compile-time typesafe.</para>
+        
+        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = List&lt;String&gt;;</programlisting>
+        
+        <programlisting>Class&lt;Person,Name&gt; personClass = Person;</programlisting>
+        
+        <programlisting>Method&lt;Log, Void, String&gt; infoMethod = Log.info;</programlisting>
+        
+        <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
+        
+        <para>A metamodel reference that refers to a generic declaration must specify type
+        arguments.</para>
+        
+        <comment><para>TODO: can we just default the type arguments to the upper bounds of 
+        the type parameters if the type arguments are missing? Or do we need some kind of
+        <literal>GenericType</literal> object to represent generic declarations?</para></comment>
+        
+        <comment><para>TODO: are there metamodel objects for block local declarations? This
+        includes block local declarations inside a class body, and block local declarations
+        inside a method or attribute body.</para></comment>
+        
+        <comment><para>TODO: should we have typesafe metamodel reference expressions for 
+        parameters, for example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
+                
+        <section id="interfaceandclassmetamodelreferences">
+            <title>Interface and class metamodel references</title>
+            
+        <para>A <literal>Type</literal> object may be obtained by specifying the full
+        type, including type arguments if the type is generic.</para>
+        
+        <programlisting>TypeMeta := Type</programlisting>
+        
+        <para>The metamodel expression, <literal>X</literal>, for a type, class or interface is:</para>
+        
+        <itemizedlist>
+             <listitem>
+                <para>of type <literal>Interface&lt;X&gt;</literal> where 
+                <literal>X</literal> is the interface, or</para>
+            </listitem>
+            <listitem>
+                <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
+                <literal>X</literal> is the toplevel class and <literal>P...</literal> 
+                are the types of the formal parameter list of the class, for every
+                overloaded version of the class, or</para>
+            </listitem>
+            <listitem>
+                <para>assignable to <literal>MemberClass&lt;X,Y,P...&gt;</literal> where 
+                <literal>Y</literal> is the member class and <literal>P...</literal> 
+                are the types of the formal parameter list of the class, for every
+                overloaded version of the class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that for a toplevel class <literal>X</literal>, the expression <literal>X</literal>
+        is both a metamodel reference and a callable reference. This is consistent, since
+        <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
+        
+        </section>
+        
+        <section id="toplevelmethodmetamodelreferences">
+            <title>Toplevel method metamodel references</title>
+            
+        <para>A <literal>Function</literal> object representing a toplevel method may be 
+        obtained by specifying the method name, with type arguments if the toplevel method 
+        is generic.</para>
+        
+        <programlisting>FunctionMeta := MemberName TypeArguments?</programlisting>
+               
+        <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
+        is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>assignable to <literal>Function&lt;R,P...&gt;</literal> where 
+                <literal>R</literal> is the callable type of a method produced by 
+                removing the first formal parameter list of the method, and 
+                <literal>P...</literal> are the types of the first formal parameter 
+                lists of the method, for every overloaded version of the method.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that for a toplevel method <literal>x()</literal>, the expression <literal>x</literal>
+        is both a metamodel reference and a callable reference. This is consistent, since
+        <literal>Function&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
+           
+        </section>
+        
+        <section id="membermethodmetamodelreferences">
+            <title>Member method metamodel references</title>
+            
+        <para>A <literal>Method</literal> object representing a member method may be 
+        obtained by specifying the type (with type arguments) and member name, together 
+        with type arguments if the method is generic.</para>
+        
+        <programlisting>MethodMeta := Type "." MemberName TypeArguments?</programlisting>
+               
+        <para>The metamodel expression, <literal>X.member</literal>, for a member method 
+        is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>assignable to <literal>Method&lt;X,R,P...&gt;</literal> where 
+                <literal>X</literal> is the type that defines the method, and 
+                <literal>R</literal> is the callable type of a method produced by 
+                removing the first formal parameter list of the method, and 
+                <literal>P...</literal> are the types of the first formal parameter 
+                lists of the method, for every overloaded version of the method.</para>
+            </listitem>
+        </itemizedlist>
+         
+        </section>
+        
+        <section id="attributemetamodelreferences">
+            <title>Attribute metamodel references</title>
+            
+        <para>An <literal>Attribute</literal> object representing an attribute may be 
+        obtained by specifying the type (with type arguments) and member name.</para>
+        
+        <programlisting>AttributeMeta := Type "." MemberName</programlisting>
+
+        <para>The metamodel expression, <literal>X.member</literal>, for an attribute 
+        is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>of type <literal>Attribute&lt;X,T&gt;</literal> where 
+                <literal>X</literal> is the type that defines the attribute, 
+                and <literal>T</literal> is the declared type of the attribute,
+                unless the attribute is declared <literal>mutable</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>of type <literal>MutableAttribute&lt;X,T&gt;</literal> where 
+                <literal>X</literal> is the type that defines the attribute, 
+                and <literal>T</literal> is the declared type of the attribute,
+                if the attribute is declared <literal>mutable</literal>.</para>
+            </listitem>
+        </itemizedlist>
+         
+        </section>
+        
+        <section id="usingthemetamodel">
+            <title>Using the metamodel</title>
+            
+        <para>The metamodel object for a type allows its members to be iterated:</para>
+        
+        <programlisting>Type&lt;Object&gt; t = object.type;
+for (Attribute&lt;Object,String&gt; a in t.attributes(String)) {
+    log.info(a.name + "=" + a(object));
+}
+for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
+    log.info(m.name + "=" + m(object)());
+}</programlisting>
+        
+        <para>The metamodel object for a class, attribute or method implements 
+        <literal>Callable</literal> and is therefore invokable.</para>
+        
+        <programlisting>Class&lt;ArrayList&lt;String&gt;,String[]&gt; arrayListClass = ArrayList&lt;String&gt;;
+        
+List list = arrayListClass("foo", "bar", "baz);</programlisting>
+        
+        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person.name;
+        
+String personName = nameAttribute(person);</programlisting>
+        
+        <programlisting>Method&lt;Person, String&gt; sayMethod = Person.say;
+        
+String result = sayMethod(person)();</programlisting>
+
+        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
+
+countAttribute(this)++;</programlisting>        
+
+        <para>The metamodel object for a class, attribute or method supports registration 
+        of a listener, which intercepts invocations.</para>
+        
+        <programlisting>MutableAttribute&lt;Counter, Natural&gt; countAttribute = Counter.count;
+
+countAttribute.intercept() 
+    onGet (Counter c, Natural proceed()) {
+        log.debug("getting");
+        return proceed()
+    };
+    
+countAttribute.intercept() 
+    onSet (Counter c, void proceed(Natural n), Natural value) {
+        log.debug("setting");
+        proceed(value)
+    };</programlisting>
+
+        <programlisting>Method&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
+        
+createItemMethod.intercept()
+    onInvoke (Order o, Item proceed(Product p, Natural n),  
+              Product product, Natural quantity) {
+        log.debug("invoking in transaction");
+        try (Transaction()) {
+            return proceed(product,quantity)
+        }
+    };</programlisting>
+    
+        </section>
+    
+        <comment><para>TODO: According to this, we can "curry" in type arguments of
+        the type. We need this. But if so, why can't we curry type arguments of the 
+        member? It's not a problem from the grammar point of view.</para></comment>
+        
+    </section>
+
     <section id="operators">
     <title>Operators</title>
     
