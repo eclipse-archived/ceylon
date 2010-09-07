@@ -2661,9 +2661,9 @@ createItemMethod.intercept()
     <section id="operatordefinition">
         <title>Operator definition</title>
         
-    <para>The following tables define the semantics of the Ceylon operators. There 
-    are four basic operators which do not have a definition in terms of other 
-    operators or invocations:</para>
+    <para>The following tables define the semantics of the Ceylon operators. 
+    There are four basic operators which do not have a definition in terms of 
+    other operators or invocations:</para>
     
     <itemizedlist>
         <listitem>
@@ -2698,6 +2698,15 @@ createItemMethod.intercept()
             assignable to the specified type, and <literal>false</literal> 
             otherwise.</para>
         </listitem>
+        <!-- 
+        <listitem>
+            <para>the <emphasis>existence</emphasis> operator
+            <literal>exists</literal> evaluates to <literal>true</literal> if 
+            its argument expression evaluates to an instance of 
+            <literal>Something</literal>, and <literal>false</literal> 
+            otherwise.</para>
+        </listitem>
+        -->
     </itemizedlist>
     
     <!--
@@ -2709,6 +2718,22 @@ createItemMethod.intercept()
     
     <para>All other operators are defined in terms of other operators and/or
     invocations.</para>
+    
+    <!-- 
+    <comment><para>Note that <literal>exists</literal> is primitive because
+    <literal>is</literal> is undefined for <literal>Optional</literal> and 
+    its subtypes. The reason for this is that the type of a null value is 
+    erased. We can't make the following behave consistently with the type 
+    system:</para>
+    <programlisting>Apple apple = null;
+Void v = apple;
+if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
+    <para>Now, there is a potential workaround. We could define an extension 
+    which converts a null of one type to a null of any other type, which 
+    reflects what the JVM does. Then <literal>is</literal> could be defined 
+    to work consistently for optional types.</para>
+    </comment>
+     -->
     
     <para>In the tables, the following pseudo-code is used, which is not legal
     Ceylon syntax:</para>
@@ -3218,7 +3243,7 @@ createItemMethod.intercept()
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>lhs is Something&lt;Object&gt;</literal></entry>
+            <entry><literal>lhs.valueExists</literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
