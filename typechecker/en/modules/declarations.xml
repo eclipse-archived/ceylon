@@ -247,6 +247,8 @@ InterfaceBody</programlisting>
 
         <para>Interface method and attribute declarations may not specify implementation.</para>
 
+        <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
+        
         <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
 }</programlisting>
@@ -258,8 +260,6 @@ InterfaceBody</programlisting>
     Comparison compare(T other);
 }</programlisting>
         -->
-        
-        <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
         
         <para>Interface members inherit the visibility modifier of the interface.</para>
         
