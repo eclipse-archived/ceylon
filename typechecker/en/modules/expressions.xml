@@ -2697,10 +2697,7 @@ createItemMethod.intercept()
         </tbody>
         </tgroup>
         </table>
-    
-    <!-- 
-    <comment><para>TODO: should <literal>?</literal> have a lower precedence?</para></comment>
-    -->
+
     <!-- 
     <comment><para>TODO: should <literal>^</literal> have a higher precedence than
     <literal>|</literal> like in C and Java? No, cos no-one will ever remember which
