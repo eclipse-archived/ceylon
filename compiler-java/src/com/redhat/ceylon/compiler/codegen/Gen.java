@@ -452,12 +452,14 @@ public class Gen {
             new ListBuffer<JCStatement>();
 		final ListBuffer<JCAnnotation> langAnnotations =
 			new ListBuffer<JCAnnotation>();
+		final ListBuffer<JCStatement> stmts =
+			new ListBuffer<JCStatement>();
 
         
         cdecl.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.FormalParameter param) {
                 JCExpression vartype = makeIdent(param.type().name().components());
-                JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(PUBLIC), 
+                JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(0), 
                 		makeName(param.names), vartype, null);
                 System.out.println(var);
                 params.append(var);
@@ -480,13 +482,43 @@ public class Gen {
             }
             
             public void visit(CeylonTree.MemberDeclaration mem) {
-            	for (JCTree def: convert(mem))
-            		defs.append(def);
+            	for (JCStatement def: convert(mem)) {
+            		if (def instanceof JCVariableDecl &&
+            				((JCVariableDecl) def).init != null) {
+            			JCVariableDecl decl = (JCVariableDecl)def;
+            			Name name = decl.name;
+            			JCExpression init = decl.init;
+            			decl.init = null;
+            			defs.append(decl);
+            			stmts.append(at(mem).Exec(at(mem).Assign(at(mem).Ident(name), init)));
+            		} else {
+            			defs.append(def);
+            		}
+            	}
+            }
+            
+            // FIXME: Just a placeholder for all the control structures
+            public void visit(CeylonTree.IfStatement stmt) {
+            	stmts.append(convert(stmt));
+            }
+            
+            public void visit(CeylonTree.Operator op) {
+            	stmts.append(at(op).Exec(convert(op)));
             }
          });
         
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
                            cdecl.nameAsString());
+        
+        JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(PUBLIC),
+                names.fromString(cdecl.nameAsString()),
+                at(cdecl).TypeIdent(VOID),
+                List.<JCTypeParameter>nil(),
+                params.toList(),
+                List.<JCExpression>nil(),
+                at(cdecl).Block(0, stmts.toList()), null);
+        
+        defs.append(meth);
         
         if (annotations.length() > 0) {
             defs.append(registerAnnotations(annotations.toList()));
@@ -537,7 +569,8 @@ public class Gen {
 
     
     public JCBlock convert(CeylonTree.Block block) {
-        return at(block).Block(0, convertStmts(block.getStmts()));
+        return block == null ? null :
+        	at(block).Block(0, convertStmts(block.getStmts()));
     }
     
     List<JCStatement> convertStmts(List<CeylonTree> stmts) {
@@ -557,7 +590,11 @@ public class Gen {
             public void visit(CeylonTree.MemberDeclaration decl) {
                	for (JCTree def: convert(decl))
                      buf.append((JCStatement)def);
-            }};
+            }
+            public void visit(CeylonTree.Operator op) {
+               	buf.append(at(op).Exec(convert(op)));
+           }
+            };
             
         for (CeylonTree stmt: stmts) 
         	stmt.accept(v);
@@ -822,6 +859,8 @@ public class Gen {
         boolean binary_operator = false;
         boolean lose_comparison = false;
 
+        CeylonTree[] operands = op.toArray();
+
         int operator = op.operatorKind;
         switch (operator) {
         case CeylonParser.MINUS:
@@ -860,12 +899,14 @@ public class Gen {
             lose_comparison = true;
             break;
 
+        case CeylonParser.COLONEQ:
+        	return at(op).Assign(convertExpression(operands[0]), convertExpression(operands[1]));
+            
         default:
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
         }
 
         assert unary_operator ^ binary_operator;
-        CeylonTree[] operands = op.toArray();
 
         JCExpression result = null;
         if (unary_operator) {
