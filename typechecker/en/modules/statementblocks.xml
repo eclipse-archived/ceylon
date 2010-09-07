@@ -143,16 +143,34 @@
     Float y { return x }
 }</programlisting>
 
-        <para>When a member is hidden by a block local declaration, the member may be
-        accessed via the special value <literal>this</literal>. For example:</para>
+        <section id="usingthisandouter">
+            <title>Accessing hidden members</title>
+            
+            <para>When a member is hidden by a block local declaration, the member may be
+            accessed via the self reference <literal>this</literal> or via the outer instance
+            reference <literal>outer</literal>. For example:</para>
         
-        <programlisting>class Item(String name) {
+            <programlisting>public class Item(String name) {
     mutable String name := name;
     public void changeName(String name) {
         this.name := name;
     }
 }</programlisting>
         
+            <programlisting>class Catalog(String name) {
+    String name = name;
+    class Schema(String name) {
+        String name = name;
+        String catalogName { return outer.name }
+        class Table(String name) {
+            String name = name;
+            String schemaName { return outer.name }
+            String catalogName { return outer.outer.name }
+        }
+    }</programlisting>
+    
+        </section>
+    
     </section>
     
     <section id="blocks">
