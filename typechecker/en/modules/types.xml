@@ -12,6 +12,9 @@
         <para>The module <literal>ceylon.lang</literal> contains types which
         are referred to in the language definition.</para>
         
+        <para>Toplevel types, toplevel methods, and extensions defined in 
+        <literal>ceylon.lang</literal> do not need to be explicitly imported.</para>
+    
         <comment><para>Note: we will probably need to do the following erasures:</para>
         <itemizedlist>
             <listitem>
@@ -29,7 +32,7 @@
         <para>Therefore the members declared by <literal>Object</literal> and
         <literal>Exception</literal> will require special handling in the compiler.</para>
         </comment>
-    
+        
     <section id="void">
         <title>The void type</title>
         
@@ -427,8 +430,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
         function as <literal>Case&lt;X?&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension
-class CaseOptional<X>(Case<X> c) 
+        <programlisting><![CDATA[public extension class CaseOptional<X>(Case<X> c) 
         satisfies Case<X?> {
         
     override Boolean test(X? x) {
@@ -446,8 +448,7 @@ class CaseOptional<X>(Case<X> c)
         function as <literal>Case&lt;Y&gt;</literal> where <literal>X</literal> 
         is assignable to <literal>Y</literal>.</para>
         
-        <programlisting><![CDATA[public extension
-class CaseSuper<X,Y>(Case<X> c) 
+        <programlisting><![CDATA[public extension class CaseSuper<X,Y>(Case<X> c) 
         satisfies Case<Y> 
         given X satisfies Y {
         
@@ -498,16 +499,18 @@ class CaseSuper<X,Y>(Case<X> c)
         <programlisting><![CDATA[public abstract class Optional<out X>() 
         extends Void() {
     
-    doc "The unary postfix exists operator 
+    doc "The unary postfix existence operator 
          |x exists|."
     public Boolean valueExists;
     
+}]]></programlisting>
+
+<!--
     doc "The binary default operator 
          |x ? y|."
     public T default<T>(T defaultValue) 
             given T abstracts X;
-    
-}]]></programlisting>
+-->
 
         <para>Expressions of type <literal>Object?</literal> support the 
         binary operators <literal>?.</literal> (nullsafe invoke) and 
@@ -522,9 +525,8 @@ class CaseSuper<X,Y>(Case<X> c)
         <para>If an optional value is not null, it is represented by an
         instance of the subclass <literal>Something</literal>.</para>
         
-        <programlisting><![CDATA[public extension 
-class Something<out X>(X x) 
-        extends Optional<X>() {
+        <programlisting><![CDATA[public extension class Something<out X>(X x) 
+        extends X?() {
 
     public extension X value = x;
     
@@ -532,13 +534,14 @@ class Something<out X>(X x)
         return true 
     }
     
+}]]></programlisting>
+
+<!-- 
     override T default<T>(T defaultValue) 
             given T abstracts X {
         return value;
     }
-    
-}]]></programlisting>
-
+-->
         <para>Non-optional values are transparently assignable to optional
         values, since <literal>Something&lt;X&gt;</literal> is an extension of 
         <literal>X</literal> enabled in every compilation unit. Likewise, 
@@ -548,21 +551,21 @@ class Something<out X>(X x)
         <para>If an optional value is null, it is represented by an
         instance of the subclass <literal>Nothing</literal>.</para>
         
-        <programlisting><![CDATA[public extension 
-class Nothing<out X>(Null null) 
-        extends Optional<X>() {
+        <programlisting><![CDATA[public extension class Nothing<out X>(Null null) 
+        extends X?() {
 
     override Boolean valueExists { 
         return false 
     }
     
+}]]></programlisting>
+
+<!--
     override T default<T>(T defaultValue) 
             given T abstracts X {
         return defaultValue;
     }
-    
-}]]></programlisting>
-
+-->    
         <para>The value <literal>Null.null</literal> is transparently 
         assignable to optional values, since <literal>Nothing&lt;X&gt;</literal> 
         is an extension of <literal>Null</literal> enabled in every 
@@ -579,11 +582,11 @@ class Nothing<out X>(Null null)
         to appear as a <literal>case</literal> expression in a <literal>switch</literal>
         statement.</para>
         
-        <programlisting><![CDATA[public extension 
-class NullCase<X>(Null null) satisfies Case<Optional<X>> {
+        <programlisting><![CDATA[public extension class NullCase<X>(Null null) 
+        satisfies Case<X?> {
 
-    override Boolean test(Optional<X> value) {
-        return value is Nothing<X>;
+    override Boolean test(X? value) {
+        return !value exists;
     }
     
 }]]></programlisting>
