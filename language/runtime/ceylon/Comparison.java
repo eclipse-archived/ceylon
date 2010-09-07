@@ -29,6 +29,7 @@ public class Comparison extends Object {
         return ceylon.Boolean.instance(this != LARGER);
     }
 
+    @Extension
     public ceylon.String string() {
         java.lang.String result;
         if (this == LARGER)

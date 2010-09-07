@@ -52,6 +52,7 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
+    @Extension
     public ceylon.String string() {
         return ceylon.String.instance(java.lang.Long.toString(value));
     }
