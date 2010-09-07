@@ -90,7 +90,6 @@ tokens {
     FOR_CONTAINMENT;
     ENUM_LIST;
     SUPERCLASS;
-    PREFIX_EXPR;
     POSTFIX_EXPR;
     EXISTS_EXPR;
     NONEMPTY_EXPR;
@@ -576,12 +575,15 @@ stringTemplate
 interpolatedExpressionStart
     : '(' 
     | '{'
-    | '#' 
     | LIDENTIFIER 
     | UIDENTIFIER 
     | selfReference 
     | nonstringLiteral
     | prefixOperator
+    ;
+
+prefixOperator
+    : '$' | '-' |'++' | '--' | '~'
     ;
 
 expression
@@ -650,7 +652,7 @@ defaultExpression
 //'..' a higher precedence than '->'
 rangeIntervalEntryExpression
     : additiveExpression
-      (('..'^ |'->'^) additiveExpression)?
+      (('..'^ | '->'^) additiveExpression)?
     ;
 
 additiveExpression
@@ -659,22 +661,23 @@ additiveExpression
     ;
 
 multiplicativeExpression 
-    : unaryExpression
-      (('*'^ | '/'^ | '%'^ | '&'^) unaryExpression)*
+    : negationComplementExpression
+      (('*'^ | '/'^ | '%'^ | '&'^) negationComplementExpression)*
     ;
 
-unaryExpression 
-    : prefixOperator unaryExpression
-    -> ^(PREFIX_EXPR prefixOperator unaryExpression)
+negationComplementExpression 
+    : ('-'^ | '~'^ | '$'^) negationComplementExpression
     | exponentiationExpression
     ;
 
 exponentiationExpression
-    : primary ('**'^ primary)?
+    : incrementDecrementExpression 
+      ('**'^ incrementDecrementExpression)?
     ;
 
-prefixOperator
-    : '$' | '-' |'++' | '--' | '~'
+incrementDecrementExpression
+    : ('++'^ | '--'^) incrementDecrementExpression
+    | primary
     ;
 
 selfReference
