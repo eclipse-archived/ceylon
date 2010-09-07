@@ -143,6 +143,16 @@
     Float y { return x }
 }</programlisting>
 
+        <para>When a member is hidden by a block local declaration, the member may be
+        accessed via the special value <literal>this</literal>. For example:</para>
+        
+        <programlisting>class Item(String name) {
+    mutable String name := name;
+    public void changeName(String name) {
+        this.name := name;
+    }
+}</programlisting>
+        
     </section>
     
     <section id="blocks">

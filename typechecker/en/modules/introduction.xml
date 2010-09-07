@@ -297,7 +297,7 @@
     
     </section>
     
-    <section id="sdk">
+    <section id="sdkmodules">
         <title>Modules included in the SDK</title>
     
     <para>The Ceylon SDK includes the following important modules:</para>
@@ -354,6 +354,20 @@
             <para><literal>ceylon.html</literal> - the HTML construction kit</para>
         </listitem>
     </itemizedlist>
+    
+    <section id="parsingceylon">
+        <title>Parsing and compiling the Ceylon language</title>
+        
+        <para>The Ceylon language has been shown to be lexable and parseable using 
+        an ANTRL grammar with no hand-coded special cases. Where lookahead was 
+        necessary, this was handled using syntactic predicates.</para>
+        
+        <para>Ceylon is a language for the Java Virtual Machine, therefore Ceylon
+        programs compile to a set of platform-independent <literal>.class</literal> 
+        files that comply with the published specification for the Java class file 
+        format.</para>
+        
+    </section>
     
     </section>
     
