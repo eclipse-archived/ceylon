@@ -869,11 +869,18 @@ public class Gen {
 
         JCExpression result = null;
         if (unary_operator) {
-            assert operands.length == 1;
-            result = at(op).Apply(null,
-                                  at(op).Select(convertExpression(operands[0]),
-                                                names.fromString(unaryOperators.get(operator))),
-                                  List.<JCExpression>nil());
+    		assert operands.length == 1;
+        	if (operands[0] instanceof CeylonTree.NaturalLiteral && operator == CeylonParser.MINUS) {
+        		CeylonTree.NaturalLiteral lit = (CeylonTree.NaturalLiteral)operands[0];
+        		result = at(op).Apply(null, makeSelect("ceylon", "Integer", "instance"),
+                        List.<JCExpression>of(make.Literal(-lit.value.longValue())));
+        		
+        	} else {
+        		result = at(op).Apply(null,
+        				at(op).Select(convertExpression(operands[0]),
+        						names.fromString(unaryOperators.get(operator))),
+        						List.<JCExpression>nil());
+        	}
         }
         if (binary_operator) {
             assert operands.length == 2;
