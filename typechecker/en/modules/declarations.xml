@@ -2072,7 +2072,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         declarations.</para>
         
         <comment><para>TODO: Should we call the visibility levels <literal>public</literal>,
-        <literal>shared</literal>, <literal>protected</literal> so they are all adjectives 
+        <literal>shared</literal>, <literal>internal</literal> so they are all adjectives 
         rather than nouns?</para></comment>
         
         <para>The visibility of a nested declaration may not be less strict than the 
