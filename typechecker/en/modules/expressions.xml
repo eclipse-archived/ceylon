@@ -2541,6 +2541,12 @@ createItemMethod.intercept()
                 <entry>None</entry>
             </row-->
             <row>
+                <entry>Default:</entry> 
+                <entry><literal>?</literal></entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
                 <entry>Range<!--, interval--> and entry construction:</entry> 
                 <entry><literal>..</literal>, <literal>-></literal></entry>
                 <entry>Binary</entry>
@@ -2560,13 +2566,6 @@ createItemMethod.intercept()
                 <entry>None</entry>
             </row>
             -->
-            <row>
-                <entry>Default:</entry> 
-                <entry><literal>?</literal></entry>
-                <entry>Binary</entry>
-                <entry>Right</entry>
-            </row>
-
             <row>
                 <entry>Comparison, <!--set comparison,--> containment,
                 assignability:</entry> 
@@ -2644,13 +2643,19 @@ createItemMethod.intercept()
     </tgroup>
     </table>
     
-    <comment><para>TODO: should <literal>?</literal> have a higher precedence?</para></comment>
-    
+    <!-- 
+    <comment><para>TODO: should <literal>?</literal> have a lower precedence?</para></comment>
+    -->
+    <!-- 
     <comment><para>TODO: should <literal>^</literal> have a higher precedence than
-    <literal>|</literal> like in C and Java?</para></comment>
-    
+    <literal>|</literal> like in C and Java? No, cos no-one will ever remember which
+    comes first.</para></comment>
+    -->
+    <!--
     <comment><para>TODO: should <literal>^,|,&amp;</literal> have a lower precedence
-    than <literal>+,-,*,/</literal> like in Ruby?</para></comment>
+    than <literal>+,-,*,/</literal> like in Ruby? No point, cos numbers are not bit 
+    strings and bit strings are not numbers in Ceylon.</para></comment>
+    -->
     
     <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
     <literal>&gt;&gt;</literal> later, we could give them the same precedence
