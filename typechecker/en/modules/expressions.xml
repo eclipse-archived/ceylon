@@ -2439,7 +2439,7 @@ createItemMethod.intercept()
     <section id="operatorprecedence">
         <title>Operator precedence</title>
         
-        <para>There are 14 distinct operator precedence levels, but these levels
+        <para>There are 15 distinct operator precedence levels, but these levels
         are arranged into layers in order to make them easier to predict.</para>
         
         <itemizedlist>
@@ -2514,6 +2514,15 @@ createItemMethod.intercept()
                 <entry>Left</entry>
             </row>
             <row>
+                <entry>Prefix increment, prefix decrement:</entry>
+                <entry>
+                <literal>++</literal>, 
+                <literal>--</literal>
+                </entry>
+                <entry>Unary prefix</entry>
+                <entry>Right</entry>
+            </row>
+            <row>
                 <entry>Exponentiation:</entry>
                 <entry>
                 <literal>**</literal>
@@ -2522,14 +2531,11 @@ createItemMethod.intercept()
                 <entry>Right</entry>
             </row>            
             <row>
-                <entry>Prefix increment, prefix decrement,
-                negation, render, bitwise complement:</entry>
+                <entry>Negation, bitwise complement, render:</entry>
                 <entry>
-                <literal>++</literal>, 
-                <literal>--</literal>, 
                 <literal>-</literal>, 
-                <literal>$</literal>,
-                <literal>~</literal> 
+                <literal>~</literal>,
+                <literal>$</literal> 
                 </entry>
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
