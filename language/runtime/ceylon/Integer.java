@@ -58,7 +58,12 @@ public final class Integer
     }
 
     @Extension
-    public Natural natural() {
+    public ceylon.Natural natural() {
         return ceylon.Natural.instance(value);
+    }
+
+    @Extension
+    public ceylon.Integer integer() {
+        return this;
     }
 }
