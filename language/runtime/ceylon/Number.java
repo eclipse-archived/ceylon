@@ -1,5 +1,6 @@
 package ceylon;
 
 public interface Number {
-    // XXX what?
+    @Extension
+    public Natural natural();
 }
