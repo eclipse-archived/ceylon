@@ -2,5 +2,8 @@ package ceylon;
 
 public interface Number {
     @Extension
-    public Natural natural();
+    public ceylon.Natural natural();
+
+    @Extension
+    public ceylon.Integer integer();
 }
