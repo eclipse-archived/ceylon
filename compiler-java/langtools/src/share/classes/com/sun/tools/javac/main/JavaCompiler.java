@@ -1315,6 +1315,8 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
             //translate out inner classes
             List<JCTree> cdefs = lower.translateTopLevelClass(env, env.tree, localMake);
 
+            System.out.println(cdefs);
+            
             if (shouldStop(CompileState.LOWER))
                 return;
 

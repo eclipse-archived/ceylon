@@ -267,6 +267,12 @@ public class Grok extends CeylonTree.Visitor {
         ann.kind = v;
    }
     
+    public void visit(CeylonTree.Extension v)
+    {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+        ann.kind = v;
+   }
+    
     public void visit(CeylonTree.Type type) {
         current.push(type);
         inner(type);

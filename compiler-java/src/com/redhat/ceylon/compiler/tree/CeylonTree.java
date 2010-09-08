@@ -31,6 +31,7 @@ public abstract class CeylonTree {
     public static final int MODULE = 1 << 4;
     public static final int OPTIONAL = 1 << 5;
     public static final int MUTABLE = 1 << 6;
+    public static final int EXTENSION = 1 << 7;
     
     @Retention(RetentionPolicy.RUNTIME)
     public @interface NotAChild {
@@ -446,6 +447,7 @@ public abstract class CeylonTree {
     	public void visit(Module ann) { decl.flags |= MODULE; }
     	public void visit(Optional ann) { decl.flags |= OPTIONAL; }
     	public void visit(Mutable ann) { decl.flags |= MUTABLE; }
+    	public void visit(Extension ann) { decl.flags |= EXTENSION; }
     }
 
     public void add(LanguageAnnotation ann) {
@@ -1937,6 +1939,7 @@ public abstract class CeylonTree {
             setName(base.name);
             stmts = base.stmts;
             annotations = base.annotations;
+            flags = base.flags;
         }
 
         public void setName(CeylonTree name) {
