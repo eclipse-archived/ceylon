@@ -34,7 +34,7 @@ Body?</programlisting>
     <section id="compilationunitstructure">
         <title>Compilation unit structure</title>
         
-        <para>A <emphasis>compilation unit</emphasis>  is a text file, with the 
+        <para>A <emphasis>compilation unit</emphasis> is a text file, with the 
         filename extension <literal>.ceylon</literal>.</para>
         
         <para>A compilation unit consists of a list of imported types and methods, 

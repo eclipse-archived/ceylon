@@ -1380,8 +1380,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         of the bounded sequence in a <literal>for</literal> loop. The
         indices are of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension
-class SequenceEntryIterable<X>(X[n] this)
+        <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[n] this)
         satisfies Iterable<Entry<Bounded<#n>,X>> {
     override Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
