@@ -167,7 +167,8 @@
             String schemaName { return outer.name }
             String catalogName { return outer.outer.name }
         }
-    }</programlisting>
+    }
+}</programlisting>
     
         </section>
     
