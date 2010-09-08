@@ -49,7 +49,7 @@
         <para>In the case of a class, the Java class has a constructor with 
         the same formal parameters as the Ceylon class. The types of the
         constructor parameters are formed by transforming the types of the
-        initializer parameters of the Ceylon type.</para>
+        initializer parameters of the Ceylon class.</para>
         
         <para>The supertypes of the Java type are formed by transforming the
         supertypes of the Ceylon type.</para>
@@ -65,7 +65,7 @@
                 name.</para>
             </listitem>
         </itemizedlist>
-            
+        
         <para>The return type of the Java method is formed by transforming the 
         return type toplevel Ceylon method. The Java method has the same formal 
         parameters as the Ceylon method. The types of the method parameters are 
@@ -77,45 +77,46 @@
         <section>
             <title>Member declarations</title>
         
-        <para>Members of the Java type are infered from the corresponding 
+        <para>Members of the Java type are inferred from the corresponding 
         Ceylon type declaration according to:</para>
         
         <itemizedlist>        
             <listitem>
-                <para>For each method of the Ceylon class, there is a method
-                of the Java class with the same name.</para>
+                <para>For each method of the Ceylon type, there is a method
+                of the Java type with the same name.</para>
             </listitem>
             <listitem>
                 <para>For each Ceylon attribute, there is a JavaBeans-style 
-                getter method of the Java class.</para>
+                getter method of the Java type.</para>
             </listitem>
             <listitem>
                 <para>For each mutable Ceylon attribute, there is a 
-                JavaBeans-style setter method of the Java class.</para>
+                JavaBeans-style setter method of the Java type.</para>
             </listitem>
             <listitem>
                 <para>For each Ceylon member class, there is a non-<literal>static</literal> 
-                inner class of the Java class, together with a method that
+                inner class of the Java type, together with a method that
                 instantiates and returns an instance of the inner class.</para>
             </listitem>
             <listitem>
                 <para>For each Ceylon nested interface, there is an inner
-                interface of the Java class.</para>
+                interface of the Java type with the same name.</para>
             </listitem>
             <listitem>
                 <para>For each enumerated instance of the Ceylon class, there is 
-                a <literal>static</literal> field of the Java class.</para>
+                a <literal>static</literal> field of the Java class with the
+                same name.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The member type (attribute type, or method return type) of a member
-        of the Java class is formed by transforming the member type of the member
-        of the Ceylon class.</para>
+        <para>The member type (property type, or method return type) of a member
+        of the Java type is formed by transforming the member type of the member
+        of the Ceylon type.</para>
         
         <para>In the case of a method, the Java method has the same formal 
-        parameters as the Ceylon class. The types of the method parameters are 
+        parameters as the Ceylon method. The types of the method parameters are 
         formed by transforming the types of the method parameters of the Ceylon 
-        type.</para>
+        method.</para>
         
         </section>
         
@@ -124,60 +125,76 @@
             
             <para>The type of a Java program element may be inferred from the
             type of a Ceylon program element by erasing all type arguments to
-            sequenced and dimensional type parameters and then:</para>
+            sequenced and dimensional type parameters and then replacing:</para>
             
             <itemizedlist>
                <listitem>
-                   <para>replacing <literal>IdentifiableObject</literal>,
+                   <para><literal>IdentifiableObject</literal>,
                    <literal>Object</literal> and <literal>Void</literal> with
                    <literal>java.lang.Object</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Exception</literal> with
+                   <para><literal>Exception</literal> with
                    <literal>java.lang.Throwable</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>String</literal> with
+                   <para><literal>String</literal> with
                    <literal>java.lang.String</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Integer</literal>,
+                   <para><literal>Integer</literal>,
                    <literal>Bounded&lt;#n&gt;</literal> and 
                    <literal>Natural</literal> with
                    <literal>long</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Float</literal> with
+                   <para><literal>Float</literal> with
                    <literal>double</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Integer?</literal>,
+                   <para><literal>Character</literal> with
+                   <literal>char</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>Boolean</literal> with
+                   <literal>boolean</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>Integer?</literal>,
                    <literal>Bounded&lt;#n&gt;?</literal> and 
                    <literal>Natural?</literal> with
                    <literal>java.lang.Long</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Float?</literal> with
+                   <para><literal>Float?</literal> with
                    <literal>java.lang.Double</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Whole</literal> with
+                   <para><literal>Character?</literal> with
+                   <literal>java.lang.Character</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>Boolean?</literal> with
+                   <literal>java.lang.Boolean</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>Whole</literal> with
                    <literal>java.math.BigInteger</literal>,</para>
                </listitem>
                <listitem>
-                   <para>replacing <literal>Decimal</literal> with
+                   <para><literal>Decimal</literal> with
                    <literal>java.math.BigDecimal</literal>,</para>
                </listitem>
            </itemizedlist>
            
-           <para>and then, finally:</para>
+           <para>and then, finally replacing:</para>
            
            <itemizedlist>
                <listitem>
-                   <para>replacing <literal>Optional&lt;T&gt;</literal>,
+                   <para><literal>Optional&lt;T&gt;</literal>,
                    <literal>Something&lt;T&gt;</literal> and 
                    <literal>Nothing&lt;T&gt;</literal> with <literal>T</literal>, 
-                   for any type <literal>T</literal>,</para>
+                   for any type <literal>T</literal>.</para>
                </listitem>
             </itemizedlist>
             
@@ -188,11 +205,181 @@
     <section id="java2ceylon">
         <title>Transformation from Java to Ceylon</title>
         
-        <para>The schema of a Ceylon type may be inferred from the schema of
-        a Java type.</para>
+        <para>The schema of a Ceylon type may be inferred from the schema 
+        of a Java type.</para>
         
-        <comment><para>TODO</para></comment>
+        <section>
+            <title>Toplevel declarations</title>
         
+        <para>A Ceylon type declaration is inferred from a toplevel Java type 
+        declaration according to the following rules:</para>
+        
+        <itemizedlist>        
+            <listitem>
+                <para>For each constructor of each toplevel Java class, there 
+                is a Ceylon class with the same name and package.</para>
+            </listitem>
+            <listitem>
+                <para>For each toplevel Java <literal>enum</literal>, there is 
+                a Ceylon class with the same name and package.</para>
+            </listitem>
+            <listitem>
+                <para>For each toplevel Java interface, there is a Ceylon 
+                interface with the same name and package.</para>
+            </listitem>
+            <listitem>
+                <para>For each toplevel Java type with static members, there 
+                is a Ceylon extension class which decorates the type of the 
+                inferred Ceylon class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The Ceylon type has the same type parameters as the Java type. 
+        The upper bounds of a type parameter of the Ceylon type are formed 
+        by transforming the upper bounds of the type parameter of the Java 
+        type.</para>
+        
+        <para>In the case of a class, the Ceylon class has the same formal 
+        parameters as the Java constructor. The types of the initializer 
+        parameters are formed by transforming the types of the constructor 
+        parameters of the Java class.</para>
+        
+        <para>The supertypes of the Ceylon type are formed by transforming 
+        the supertypes of the Java type.</para>
+        
+        </section>
+        
+        <section>
+            <title>Member declarations</title>
+        
+        <para>Members of the Ceylon type are inferred from the corresponding 
+        Java type declaration according to:</para>
+        
+        <itemizedlist>        
+            <listitem>
+                <para>For each non-<literal>static</literal> method of the 
+                Java type, there is a method of the Ceylon type with the 
+                same name.</para>
+            </listitem>
+            <listitem>
+                <para>For each JavaBeans-style getter method of the Java type, 
+                there is an attribute of the Ceylon type with the same name. 
+                If there is a matching JavaBeans-style setter method, the 
+                attribute is mutable.</para>
+            </listitem>
+            <listitem>
+                <para>If the Java type is an <literal>enum</literal>, then 
+                for each enumerated value, there is an enumerated instance of
+                the Ceylon class with the same name.</para>
+            </listitem>
+            <listitem>
+                <para>For each non-<literal>static</literal> Java inner class, 
+                there is a member class of the Ceylon type with the same
+                name.</para>
+            </listitem>
+            <listitem>
+                <para>For each Java inner interface, there is a nested
+                interface of the Ceylon type with the same name.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Members of the Ceylon extension class are inferred from the 
+        corresponding Java type declaration according to:</para>
+        
+        <itemizedlist>        
+            <listitem>
+                <para>For each <literal>static</literal> method of the 
+                Java type, there is a method of the extension class with the 
+                same name.</para>
+            </listitem>
+            <listitem>
+                <para>For each <literal>static</literal> Java inner class, 
+                there is a member class of the extension class with the same 
+                name.</para>
+            </listitem>
+            <listitem>
+                <para>For each Java inner <literal>enum</literal>, there is 
+                a member class of the extension class with the same name.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The member type (attribute type, or method return type) of a member
+        of the Ceylon type or extension class is formed by transforming the member 
+        type of the member of the Java type.</para>
+        
+        <para>In the case of a method, the Ceylon method has the same formal 
+        parameters as the Java method. The types of the method parameters are 
+        formed by transforming the types of the method parameters of the Java 
+        method.</para>
+        
+        </section>
+        
+        <section>
+            <title>Type transformations</title>
+            
+            <para>The type of a Ceylon program element may be inferred from the
+            type of a Java program element by replacing:</para>
+            
+            <itemizedlist>
+               <listitem>
+                   <para><literal>java.lang.Object</literal>, with 
+                   <literal>IdentifiableObject</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.lang.Throwable</literal> with
+                   <literal>Exception</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.lang.String</literal> with
+                   <literal>String</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>short</literal>, <literal>int</literal> 
+                   and <literal>long</literal> with <literal>Natural</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>float</literal> and 
+                   <literal>double</literal> with <literal>Float</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>character</literal> with
+                   <literal>Character</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>boolean</literal> with
+                   <literal>Boolean</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.lang.Integer</literal>,
+                   <literal>java.lang.Short</literal> and 
+                   <literal>java.lang.Long</literal> with
+                   <literal>Long?</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.lang.Float</literal> and 
+                   <literal>java.lang.Double</literal> with 
+                   <literal>Float?</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.lang.Character</literal> with
+                   <literal>Character?</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.lang.Boolean</literal> with
+                   <literal>Boolean?</literal>,</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.math.BigInteger</literal> with
+                   <literal>Whole</literal>, and</para>
+               </listitem>
+               <listitem>
+                   <para><literal>java.math.BigDecimal</literal> with
+                   <literal>Decimal</literal>.</para>
+               </listitem>
+           </itemizedlist>
+           
+        </section>
+                
     </section>
     
 </chapter>
