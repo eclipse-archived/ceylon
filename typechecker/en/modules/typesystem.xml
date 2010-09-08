@@ -1214,10 +1214,13 @@ SequencedParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* (Type|"void") ParameterName FormalParams*</programlisting>
+        <programlisting>Param := Annotation* (Type|"void") (ParameterName|"this") FormalParams*</programlisting>
         
-        <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not be
-        assigned to within the body of the method or class.</para>
+        <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not 
+        be assigned to within the body of the method or class.</para>
+        
+        <para>Only a parameter of a toplevel extension method or class may define a parameter
+        named <literal>this</literal>.</para>
         
         <section id="callableparameters">
             <title>Callable parameters</title>

@@ -96,13 +96,13 @@
         following extension defines the binary <literal>in</literal>
         operator:</para>
     
-    <programlisting><![CDATA[public extension class Objects(Object object) {
+    <programlisting><![CDATA[public extension class Objects(Object this) {
     
     doc "Determine if this object belongs to the given |Category|.
          The binary |in| operator."
     see (Category)
     public Boolean in(Category category) {
-        return category.contains(object)
+        return category.contains(this)
     }
 
 }]]></programlisting>
@@ -260,10 +260,10 @@ removeSayInterceptor();]]></programlisting>
         combining a <literal>Callable&lt;Y,X&gt;</literal> with a <literal>Callable&lt;X,P...&gt;</literal>
         to produce a <literal>Callable&lt;Y,P...&gt;</literal>:</para>
         
-        <programlisting><![CDATA[public extension Y composeable<X,Y,P...>(Y f(X x))(X g(P... args))(P... args) {
+        <programlisting><![CDATA[public extension Y composeable<X,Y,P...>(Y this(X x))(X g(P... args))(P... args) {
     Y compose(X g(P... args))(P... args) {
         Y composition(P... args) {
-            return f(g(args))
+            return this(g(args))
         }
         return composition
     }
@@ -279,10 +279,10 @@ removeSayInterceptor();]]></programlisting>
        <literal>Callable&lt;R,T,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal>:</para>
 
-       <programlisting><![CDATA[public extension class Curryable<R,T,P...>(R f(T t, P... args)) {
+       <programlisting><![CDATA[public extension class Curryable<R,T,P...>(R this(T t, P... args)) {
     R partial(T t)(P... p) {
         R curried(P... p) {
-            return f(t, args)
+            return this(t, args)
         }
         return curried
     }
@@ -297,9 +297,9 @@ void hello() = info.partial("Hello!");</programlisting>
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal> into a
        <literal>Callable&lt;R,T,P...&gt;</literal>:</para>
 
-       <programlisting><![CDATA[public extension class Flattenable<R,T,P...>(R f(T t)(P... args)) {
+       <programlisting><![CDATA[public extension class Flattenable<R,T,P...>(R this(T t)(P... args)) {
     R flatten(T t, P... p) {
-        return f(t)(p)
+        return this(t)(p)
     }
 }]]></programlisting>
        
@@ -312,10 +312,10 @@ void hello() = info.partial("Hello!");</programlisting>
        <literal>Callable&lt;Callable&lt;R,Q...&gt;,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,Q...&gt;</literal>:</para>
        
-       <programlisting><![CDATA[public extension class Shuffleable<R,P...,Q...>(R f(P... p)(Q... q)) {
+       <programlisting><![CDATA[public extension class Shuffleable<R,P...,Q...>(R this(P... p)(Q... q)) {
    R shuffle(Q... q)(P... p) {
        R shuffled(P... p) {
-           return f(p)(q)
+           return this(p)(q)
        }
        return shuffled
    }
@@ -418,12 +418,12 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
         function as <literal>Case&lt;X?&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension class CaseOptional<X>(Case<X> c) 
+        <programlisting><![CDATA[public extension class CaseOptional<X>(Case<X> this) 
         satisfies Case<X?> {
         
     override Boolean test(X? x) {
         if (exists value) {
-            return c.test(x)
+            return this.test(x)
         }
         else {
             return false;
@@ -436,13 +436,13 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         function as <literal>Case&lt;Y&gt;</literal> where <literal>X</literal> 
         is assignable to <literal>Y</literal>.</para>
         
-        <programlisting><![CDATA[public extension class CaseSuper<X,Y>(Case<X> c) 
+        <programlisting><![CDATA[public extension class CaseSuper<X,Y>(Case<X> this) 
         satisfies Case<Y> 
         given X satisfies Y {
         
     override Boolean test(Y y) {
         if (is X y) {
-            return c.test(y)
+            return this.test(y)
         }
         else {
             return false;
@@ -466,10 +466,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>This extension allows selectors to be used as cases in a <literal>switch</literal>
         statement:</para>
         
-        <programlisting>public extension class SelectorCase&lt;X&gt;(X selector)
+        <programlisting>public extension class SelectorCase&lt;X&gt;(X this)
         given X extends Selector {
     override Boolean test(X x) {
-        return x.ordinal == selector.ordinal
+        return x.ordinal == this.ordinal
     }
 }</programlisting>
 
@@ -513,10 +513,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>If an optional value is not null, it is represented by an
         instance of the subclass <literal>Something</literal>.</para>
         
-        <programlisting><![CDATA[public extension class Something<out X>(X x) 
+        <programlisting><![CDATA[public extension class Something<out X>(X this) 
         extends X?() {
 
-    public extension X value = x;
+    public extension X value = this;
     
     override Boolean defined { 
         return true 
@@ -539,7 +539,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>If an optional value is null, it is represented by an
         instance of the subclass <literal>Nothing</literal>.</para>
         
-        <programlisting><![CDATA[public extension class Nothing<out X>(Null null) 
+        <programlisting><![CDATA[public extension class Nothing<out X>(Null this) 
         extends X?() {
 
     override Boolean defined { 
@@ -570,7 +570,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         to appear as a <literal>case</literal> expression in a <literal>switch</literal>
         statement.</para>
         
-        <programlisting><![CDATA[public extension class NullCase<X>(Null null) 
+        <programlisting><![CDATA[public extension class NullCase<X>(Null this) 
         satisfies Case<X?> {
 
     override Boolean test(X? value) {
@@ -777,12 +777,12 @@ while (exists local value = iter.head) {
     <para>The following extension allows <literal>Iterable</literal> objects
     to be used with the <literal>in</literal> operator.</para>
     
-    <programlisting><![CDATA[public extension class IterableCategory(Iterable<Object> object) 
+    <programlisting><![CDATA[public extension class IterableCategory(Iterable<Object> this) 
         satisfies Category {
         
     override Boolean contains(Object... objects) {
         for (Object object in objects) {
-            if ( forAll (Object elem in objects) every (elem != object) ) {
+            if ( forAll (Object elem in this) every (elem != object) ) {
                 return false
             }
         }
@@ -888,7 +888,7 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <para>A decorator allows retrieval of lists and sets of values.</para>
 
-        <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence)
+        <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> this)
         given U satisfies Object {
 
     doc "Binary sequenced lookup operator |x[keys]|. Return a list 
@@ -897,7 +897,7 @@ while (exists local value = indexed.indexedValue(i)) {
             -> "if no value is defined for one of the given 
                 keys")
     public V[] values(U... keys) {
-        return from (U key in keys) select (correspondence[key])
+        return from (U key in keys) select (this[key])
     }
     
     doc "Binary iterated lookup operator |x[keys]|. Return an iterator
@@ -906,14 +906,14 @@ while (exists local value = indexed.indexedValue(i)) {
             -> "if no value is defined for one of the given 
                 keys")
     public Iterable<V> values(Iterable<U> keys) {
-        return from (U key in keys) select (correspondence[key])
+        return from (U key in keys) select (this[key])
     }
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
          given keys."
     public Boolean defines(U... keys) {
-        return forAll (U key in keys) every (correspondence[key] exists)
+        return forAll (U key in keys) every (this[key] exists)
     }
     
 }]]></programlisting>
@@ -977,7 +977,7 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <para>A decorator allows addition of multiple <literal>Entry</literal>s.</para>
 
-        <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> correspondence) 
+        <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> this) 
         given U satisfies Object {
 
     doc "Add the given entries, overriding any definitions that 
@@ -987,7 +987,7 @@ while (exists local value = indexed.indexedValue(i)) {
                 given keys")
     public void define(Entry<U, V>... definitions) {
         for (U key->V value in definitions) {
-            correspondence[key] := value;
+            this[key] := value;
         }
     }
     
@@ -996,7 +996,7 @@ while (exists local value = indexed.indexedValue(i)) {
     throws (UndefinedKeyException
             -> "if a value can not be defined for the given key")
     public V? define(U key, V value) {
-        Settable<V?> definition = correspondence[key];
+        Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;
         return result;
@@ -1165,41 +1165,39 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         and is a <literal>Container</literal>, according to the following 
         decorator:</para>
         
-        <programlisting><![CDATA[public extension
-SequenceIterable<X>(X[] sequence) 
+        <programlisting><![CDATA[public extension class SequenceIterable<X>(X[] this) 
         satisfies Iterable<X>, Container {
     override Iterator<X> iterator() {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
             override X? head { 
-                return sequence[from] 
+                return this[from] 
             }
             override Iterable<X> tail {
                 return SequenceIterator(from+1)
             }
         }
         if (is Iterable<X> sequence) {
-            return sequence.iterator()
+            return this.iterator()
         else {
             return SequenceIterator(0)
         }
     }
     override Boolean empty {
-        return !(sequence.lastIndex exists)
+        return !(this.lastIndex exists)
     }
 }]]></programlisting>
         
         <para>The following extension provides access to the indices 
         of the sequence in a <literal>for</literal> loop.</para>
         
-        <programlisting><![CDATA[public extension
-class SequenceEntryIterable<X>(X[] sequence)
+        <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[] this)
         satisfies Iterable<Entry<Natural,X>> {
     override Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
                 satisfies Iterator<Entry<Natural,X>> {
             override Entry<Natural,X>? head {
-                if (exists X x = sequence[from]) {
+                if (exists X x = this[from]) {
                     return from->x
                 }
                 else {
@@ -1336,25 +1334,25 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <para>A helper class decorates <literal>Sequence</literal> with 
         some convenience attributes:</para>
 
-        <programlisting><![CDATA[public extension class Sequences<out X>(X[] sequence) {
+        <programlisting><![CDATA[public extension class Sequences<out X>(X[] this) {
 
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
     public X? first {
-        return sequence[0]
+        return this[0]
     }
     
     doc "The rest of the sequence, after removing 
          the first element."
     public X[] rest {
-        return sequence[1...]
+        return this[1...]
     }
 
     doc "The last element of the sequence, or
          |null| if the sequence has no elements."
     public X? last {
         if (exists Natural index = sequence.lastIndex) {
-            return sequence[index]
+            return this[index]
         }
         else {
             return null
@@ -1383,13 +1381,13 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         indices are of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public extension
-class SequenceEntryIterable<X>(X[n] sequence)
+class SequenceEntryIterable<X>(X[n] this)
         satisfies Iterable<Entry<Bounded<#n>,X>> {
     override Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
                 satisfies Iterator<Entry<Bounded<#n>,X>> {
             override Entry<Bounded<#n>,X>? head {
-                return from->sequence[from]
+                return from->this[from]
             }
             override Iterable<Entry<Bounded<#n>,X>> tail {
                 if (from+1<n) {
@@ -1436,8 +1434,8 @@ class SequenceEntryIterable<X>(X[n] sequence)
          the empty sequence enumeration |{}|."
     case none;
     
-    public extension 
-    class EmptySequence<out X>() satisfies X[0] {
+    public extension class EmptySequence<out X>() 
+            satisfies X[0] {
         override Natural? lastIndex = null;
         override Gettable<X?> value(Natural index) {
             X? nullValue = null;
@@ -1632,7 +1630,7 @@ while (i<=max) {
     public Character lowercase { return .. }
     public Character uppercase { return .. }
     
-    public extension class StringToCharacter(String string) {
+    public extension class StringToCharacter(String this) {
     
         doc "Parse the string representation of a |Character| in UTF-16"
         public Character parseUtf16Character() { return ... }
@@ -1649,17 +1647,16 @@ while (i<=max) {
         among others. Any <literal>Character[]</literal> may be transparently
         converted to <literal>String</literal>.</para> 
                 
-        <programlisting><![CDATA[public extension 
-class String(Character[] characters) 
+        <programlisting><![CDATA[public extension class String(Character[] this) 
         extends Object() 
         satisfies Character[], Comparable<String>, Case<String> {
     
     Character[] chars;
-    if (is String characters) {
-        chars = characters;
+    if (is String this) {
+        chars = this;
     }
     else {
-        chars = copy(characters)
+        chars = copy(this)
     }
     
     ... 
@@ -1714,12 +1711,10 @@ class String(Character[] characters)
         <para>The extension class <literal>StringBuilder</literal> makes it more 
         efficient to produce a string using procedural code:</para>
         
-        <programlisting><![CDATA[public extension class StringBuilder(Character[] string) {
+        <programlisting><![CDATA[public extension class StringBuilder(Character[] this) {
         
-    Character[] string = string;
-    
     Character[] with(Character[] appendedStrings...) {
-        mutable OpenList<Character> list = ArrayList<Character>(string);
+        mutable OpenList<Character> list = ArrayList<Character>(this);
         list.append(string);
         for (Character[] s in appendedStrings) {
             list.append(s);
@@ -1728,7 +1723,7 @@ class String(Character[] characters)
     
     Character[] forEach<X>(iterated Iterable<X> objects, 
                            Character[] with(coordinated X x)) {
-        mutable OpenList<Character> list = ArrayList<Character>(string);
+        mutable OpenList<Character> list = ArrayList<Character>(this);
         for (X x in objects) {
             list.append(with(x));
         }
@@ -1737,7 +1732,7 @@ class String(Character[] characters)
     
     Character[] forEach<X>(iterated Iterable<X> objects, 
                            Character[][] with(coordinated X x)) {
-        mutable OpenList<Character> list = ArrayList<Character>(string);
+        mutable OpenList<Character> list = ArrayList<Character>(this);
         for (X x in objects) {
             for (Character[] s in with(x)) {
                 list.append(s);
@@ -1769,7 +1764,7 @@ class String(Character[] characters)
     <section id="regex">
         <title>Regular expressions</title>
         
-        <programlisting><![CDATA[public extension class Regex(Quoted expression)
+        <programlisting><![CDATA[public extension class Regex(Quoted this)
         satisfies Case<String> { 
         
     doc "Return the substrings of the given string which
@@ -1946,7 +1941,7 @@ class String(Character[] characters)
     doc "Shift bits right by the given number of places"
     public Natural rightShift(Natural digits) { return ... }
     
-    public extension class StringToNatural(String string) {
+    public extension class StringToNatural(String this) {
     
         doc "Parse the string representation of a |Natural| in the given radix"
         public Natural parseNatural(small Natural radix=10) { return ... }
@@ -1978,7 +1973,7 @@ class String(Character[] characters)
     doc "Implicit type promotion to |Decimal|"
     override extension Decimal decimal { return ... }
 
-    public extension class StringToInteger(String string) {
+    public extension class StringToInteger(String this) {
     
         doc "Parse the string representation of an |Integer| in the given radix"
         public Integer parseInteger(small Natural radix=10) { return ... }
@@ -2000,7 +1995,7 @@ class String(Character[] characters)
     doc "Implicit type promotion to |Decimal|"
     override extension Decimal decimal { return ... }
     
-    public extension class StringToWhole(String string) {
+    public extension class StringToWhole(String this) {
     
         doc "Parse the string representation of a |Whole| in the given radix"
         public Whole parseWhole(small Natural radix=10) { return ... }
@@ -2023,7 +2018,7 @@ class String(Character[] characters)
     doc "Implicit type promotion to |Decimal|"
     override extension Decimal decimal { return ... }
     
-    public extension class StringToFloat(String string) {
+    public extension class StringToFloat(String this) {
     
         doc "Parse the string representation of a |Float| in the given radix"
         public Float parseFloat(small Natural radix=10) { return ... }
@@ -2043,7 +2038,7 @@ class String(Character[] characters)
     public small Natural precision = ...;
     public small Integer scale = ...;
     
-    public extension class StringToDecimal(String string) {
+    public extension class StringToDecimal(String this) {
     
         doc "Parse the string representation of a |Decimal| in the given radix"
         public Decimal parseDecimal(small Natural radix=10) { return ... }
@@ -2085,13 +2080,13 @@ class String(Character[] characters)
 
         <para>Boolean values are transparently converted to and from <literal>Bits&lt;1&gt;</literal>.</para>
 
-        <programlisting><![CDATA[public extension class BooleanBit(Boolean boolean)
+        <programlisting><![CDATA[public extension class BooleanBit(Boolean this)
         satisfies Bits<1> {
 
-    public extension Boolean boolean = boolean;
+    public extension Boolean boolean { return this }
 
     override Bits<1> or(Bits<1> bit) {
-        if (boolean) {
+        if (this) {
             return this
         else {
             return bit
@@ -2099,7 +2094,7 @@ class String(Character[] characters)
     }
     
     override Bits<1> and(Bits<1> bit) {
-        if (boolean) {
+        if (this) {
             return bit
         else {
             return false
@@ -2107,7 +2102,7 @@ class String(Character[] characters)
     }
     
     override Bits<1> xor(Bits<1> bit) {
-        if (boolean) {
+        if (this) {
             return bit.complement
         else {
             return bit
@@ -2115,11 +2110,11 @@ class String(Character[] characters)
     }
     
     override Bits<1> complement {
-        return BooleanBit(!boolean)
+        return BooleanBit(!this)
     }
     
     override Gettable<Boolean> value(Bounded<1> index) {
-        return boolean
+        return this
     }
     
     override Gettable<Boolean?> value(Natural key) {
@@ -2349,19 +2344,19 @@ class String(Character[] characters)
 
         <para>The following extensions make it easy to log from any object:</para>
         
-        <programlisting><![CDATA[public extension class ObjectLog(Object object) {
-    public Log log =  object.type.log;
+        <programlisting><![CDATA[public extension class ObjectLog(Object this) {
+    public Log log =  this.type.log;
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension class Logs(Log log) {
-    public void debug(Gettable<String> message) { log.log(debug, message); }
-    public void debug(String message) { log.log(debug, message); }
-    public void info(Gettable<String> message) { log.info(debug, message); }
-    public void info(String message) { log.info(debug, message); }
-    public void warn(Gettable<String> message) { log.warn(debug, message); }
-    public void warn(String message) { log.warn(debug, message); }
-    public void error(Gettable<String> message) { log.error(debug, message); }
-    public void error(String message) { log.error(debug, message); }
+        <programlisting><![CDATA[public extension class Logs(Log this) {
+    public void debug(Gettable<String> message) { this.log(debug, message); }
+    public void debug(String message) { this.log(debug, message); }
+    public void info(Gettable<String> message) { this.info(debug, message); }
+    public void info(String message) { this.info(debug, message); }
+    public void warn(Gettable<String> message) { this.warn(debug, message); }
+    public void warn(String message) { this.warn(debug, message); }
+    public void error(Gettable<String> message) { this.error(debug, message); }
+    public void error(String message) { this.error(debug, message); }
 }]]></programlisting>
 
         <comment><para>TODO: I would really like to turn <literal>Type.log</literal> 
@@ -2820,12 +2815,12 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         <para>A decorator provides the ability to sort collections of
         <literal>Comparable</literal> values in natural order.</para>
         
-        <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> collection) 
+        <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> this) 
         given X satisfies Comparable<X> {
         
     doc "The elements of the collection, sorted in natural order."
     public List<X> sortedElements() {
-        return collection.sortedElements() by (X x, X y) (x<=>y)
+        return this.sortedElements() by (X x, X y) (x<=>y)
     }
     
 }]]></programlisting>
@@ -3000,12 +2995,12 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>Any <literal>Sequence</literal> may be transparently converted to a 
             <literal>List</literal>:</para>
             
-            <programlisting>public extension List&lt;X&gt; sequenceToList(X[] sequence) {
-    if (is List&lt;X&gt; sequence) {
-        return sequence
+            <programlisting>public extension List&lt;X&gt; sequenceToList(X[] this) {
+    if (is List&lt;X&gt; this) {
+        return this
     }
     else {
-        return SequenceList(sequence)
+        return SequenceList(this)
     }
 }</programlisting>
             
@@ -3100,13 +3095,13 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         <para>A decorator provides the ability to resort lists of
         <literal>Comparable</literal> values in natural order.</para>
         
-        <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> list) 
+        <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> this) 
         given X satisfies Comparable<X> {
         
     doc "Reorder the elements of the list, according to the 
          natural order."
     public void resort() {
-        list.resort() by (X x, X y) (x<=>y);
+        this.resort() by (X x, X y) (x<=>y);
     }
     
 }]]></programlisting>

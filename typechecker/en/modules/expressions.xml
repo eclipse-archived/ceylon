@@ -380,8 +380,8 @@ if you prefer.";</programlisting>
         evaluated at compile time for single-quoted literals, alowing compile-time
         validation of the contents of the single-quoted string.</para>
         
-        <programlisting>public extension Date date(Quoted dateString) { return ... }</programlisting>
-        <programlisting>public extension class Regex(Quoted expression) { return ... }</programlisting>
+        <programlisting>public extension Date date(Quoted this) { return ... }</programlisting>
+        <programlisting>public extension class Regex(Quoted this) { return ... }</programlisting>
         
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
@@ -454,6 +454,11 @@ if you prefer.";</programlisting>
         and is assignable to both the type of the current class (the class in which 
         the expression appears), and to the special type <literal>subtype</literal>, 
         which represents the concrete type of the current instance.</para>
+        
+        <para>In a toplevel extension method or class, <literal>this</literal> is 
+        also assignable to the extended type, and when a member of the extended type
+        is used, <literal>this</literal> refers to the instance of the extended type
+        to which the extension is being applied.</para>
         
         <!--
         <comment><para>TODO: what is the syntax for the current instance

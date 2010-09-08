@@ -1920,7 +1920,9 @@ else {
         approach. We'll write a toplevel <emphasis>extension method</emphasis>,
         sometimes called a <emphasis>converter</emphasis>:</para>
         
-        <programlisting>public extension Log objectToLog(Object o) { return o.log }</programlisting>
+        <programlisting>public extension Log objectToLog(Object this) { 
+    return this.log
+}</programlisting>
         
         <para>The extended type is the type of the parameter of the converter.
         The introduced type is the return type of the converter.</para>
@@ -1945,14 +1947,19 @@ class Hello(String? name) {
 
 }</programlisting>
 
-        <para>The compiler automatically inserts a call to 
-        <literal>objectToLog()</literal>. So the above code is equivalent to:</para>
+        <para>The compiler automatically inserts a call to <literal>objectToLog()</literal>. 
+        So the above code is equivalent to:</para>
 
         <programlisting>class Hello(String? name) {
 
     ...
     
-    objectToLog(this).info(greeting);
+    if (is Log this) {
+        this.info(greeting);
+    }
+    else {
+        objectToLog(this).info(greeting);
+    }
     
     ...
 
