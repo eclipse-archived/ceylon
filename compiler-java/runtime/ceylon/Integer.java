@@ -56,4 +56,9 @@ public final class Integer
     public ceylon.String string() {
         return ceylon.String.instance(java.lang.Long.toString(value));
     }
+
+    @Extension
+    public Natural natural() {
+        return ceylon.Natural.instance(value);
+    }
 }

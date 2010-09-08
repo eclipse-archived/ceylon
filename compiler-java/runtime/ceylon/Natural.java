@@ -59,4 +59,9 @@ public final class Natural
     public ceylon.String string() {
         return ceylon.String.instance(java.lang.Long.toString(value));
     }
+
+    @Extension
+    public Natural natural() {
+        return this;
+    }
 }
