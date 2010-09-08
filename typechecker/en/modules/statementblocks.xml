@@ -1093,7 +1093,7 @@ finally {
 try ( Transaction() ) {
     ...
 }
-catch (TransactonTimeoutException tte) {
+catch (TransactionTimeoutException tte) {
     if (retries &lt; 3) {
         retries++;
         retry
