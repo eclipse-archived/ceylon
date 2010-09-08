@@ -1032,12 +1032,12 @@ while (exists local value = indexed.indexedValue(i)) {
          to the given object."
     case equal;
         
-    public Boolean larger { return this==larger }
-    public Boolean smaller { return this==smaller }
-    public Boolean equal { return this==equal }
-    public Boolean unequal { return this!=equal }
-    public Boolean largeAs { return this!=smaller }
-    public Boolean smallAs { return this!=larger }
+    public Boolean isLarger = equals(larger);
+    public Boolean isSmaller = equals(smaller);
+    public Boolean isEqual = equals(equal);
+    public Boolean isUnequal = !isEqual;
+    public Boolean isLargeAs = !isSmaller;
+    public Boolean isSmallAs = !isLarger;
     
 }]]></programlisting>
 
