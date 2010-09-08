@@ -46,29 +46,36 @@ final PrintStream out;
     CommonTree t = (CommonTree)r.getTree();
 
     if (comment != null)
-      out.println("# "+ comment);
+    	out.println("# "+ comment);
 
-    new TreeVisitor().visit(t, new PrintTree());
-    out.println();
+    if (! consumeTree) {
+    	new TreeVisitor().visit(t, new PrintTree());
+    	out.println();
+    }
 
     if (parser.getNumberOfSyntaxErrors() == 0 &&
-            lexer.getNumberOfSyntaxErrors() == 0 &&
-            consumeTree) {
-      CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename);
+    		lexer.getNumberOfSyntaxErrors() == 0 &&
+    		consumeTree) {
+    	CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename);
 
-      PrintWriter w = new PrintWriter(out);
-      cu.accept(new CeylonTreePrinter(w));
-      w.flush();
-      out.println();
+    	if (false) {
+    		PrintWriter w = new PrintWriter(out);
+    		cu.accept(new CeylonTreePrinter(w));
+    		w.flush();
+    		out.println();
+    	}
+    	
+    	cu.accept(new Grok());
 
-      cu.accept(new Grok());
-      out.print(cu);
-      out.println();
+    	if (false) {
+    		out.print(cu);
+    		out.println();
+    	}
 
-      if (generateCode) {
-          out.println();
-          new Gen().run(cu);
-      }
+    	if (generateCode) {
+    		out.println();
+    		new Gen().run(cu);
+    	}
     }
   }
 
