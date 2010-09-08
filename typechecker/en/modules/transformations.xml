@@ -350,6 +350,10 @@
                    <literal>Boolean</literal>,</para>
                </listitem>
                <listitem>
+                   <para><literal>T[]</literal> (array of type <literal>T</literal>) 
+                   with <literal>T[]</literal> (<literal>Sequence&lt;T&gt;</literal>),</para>
+               </listitem>
+               <listitem>
                    <para><literal>java.lang.Integer</literal>,
                    <literal>java.lang.Short</literal> and 
                    <literal>java.lang.Long</literal> with
