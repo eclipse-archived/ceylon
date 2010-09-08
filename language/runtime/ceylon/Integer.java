@@ -66,4 +66,9 @@ public final class Integer
     public ceylon.Integer integer() {
         return this;
     }
+
+    @Extension
+    public ceylon.Float floatXXX() {
+        return ceylon.Float.instance(value);
+    }
 }
