@@ -1357,7 +1357,7 @@ public abstract class CeylonTree {
      * A float literal
      */
     public static class FloatLiteral extends CeylonTree {
-        double value;
+        public double value;
         public void accept(Visitor v) { v.visit(this); }
     }
 

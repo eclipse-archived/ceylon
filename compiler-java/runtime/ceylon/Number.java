@@ -6,4 +6,7 @@ public interface Number {
 
     @Extension
     public ceylon.Integer integer();
+
+    @Extension
+    public ceylon.Float floatXXX();
 }

@@ -792,6 +792,11 @@ public class Gen {
                 result = at(expr).Apply (null, makeSelect("ceylon", "Integer", "instance"),
                         List.of(n));
             }
+            public void visit(FloatLiteral lit) {
+                JCExpression n = make.Literal(lit.value);
+                result = at(expr).Apply (null, makeSelect("ceylon", "Float", "instance"),
+                        List.of(n));
+            }
             public void visit(CeylonTree.SimpleStringLiteral string) {
                 result = convert(string);
             }
