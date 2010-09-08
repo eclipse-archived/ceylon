@@ -903,6 +903,13 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <comment><para>TODO: Should the type parameter upper bound default to <literal>Object</literal>
         instead of <literal>Void</literal>?</para></comment>
     
+        <comment><para>TODO: at some stage it would be very interesting to support "assignability
+        upper bounds", for example <literal>given X is String</literal>, where the client code is
+        required to have an enabled extension that introduces the bound <literal>String</literal>
+        to the type parameter <literal>X</literal>. Under the covers this extension would be passed
+        as a <literal>Callable&lt;String,X&gt;</literal> to the initializer or method that declares 
+        the constrained type parameter. Scala calls this feature "view bounds".</para></comment>
+        
         <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
         down to the <literal>given</literal> clause?</para></comment>
         
@@ -915,7 +922,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
 
         <comment><para>TODO: should we allow constraints on dimensional type parameters,
         for example <literal>given n&gt;=1</literal>.</para></comment>
-    
+        
     </section>
 
     </section>
