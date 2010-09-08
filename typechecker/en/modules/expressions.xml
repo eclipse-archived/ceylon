@@ -3155,7 +3155,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>in</entry>
             <entry><literal>lhs.in(rhs)</literal></entry>
             <entry><literal>Object</literal></entry>
-            <entry><literal>Category</literal> or <literal>Iterable&lt;Object&gt;</literal></entry>
+            <entry><literal>Category</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         

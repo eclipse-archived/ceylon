@@ -1091,6 +1091,12 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             for any <literal>Sequence&lt;X&gt;</literal>. (Oh, the <literal>$</literal> 
             operator just converts an object to a printable string.)</para>
             
+            <para>There's another extension which produces a <literal>Category</literal>
+            from any <literal>Sequence</literal>. Therefore, you can use the <literal>in</literal>
+            operator with sequences:</para>
+            
+            <programlisting>if ("Paris" in voyage) { ... }</programlisting>
+
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
             so we need something other than a <literal>Sequence</literal>. A
             <literal>Correspondence&lt;U,V&gt;</literal> is a mapping from keys of type
@@ -1114,7 +1120,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <para>Notice that the lookup operator returns an <literal>Optional</literal>
             result, to account for the possibility that there is no value defined for
             the given key.</para>
-
+            
             <para>So far we haven't met anything from the collections module proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
             of the package <literal>ceylon.lang</literal>. They're there to abstract away 

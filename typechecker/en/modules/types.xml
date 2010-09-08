@@ -93,7 +93,7 @@
         are subclasses of <literal>IdentityObject</literal>.</para>
     
         <para>An <literal>Object</literal> may belong to categories. The 
-        following extensions define the binary <literal>in</literal>
+        following extension defines the binary <literal>in</literal>
         operator:</para>
     
     <programlisting><![CDATA[public extension class Objects(Object object) {
@@ -103,18 +103,6 @@
     see (Category)
     public Boolean in(Category category) {
         return category.contains(object)
-    }
-        
-    doc "Determine if this object is produced by the |Iterable|.
-         The binary |in| operator."
-    see (Iterable<Object>)
-    public Boolean in(Iterable<Object> objects) {
-        if (is Category cat = objects) {
-            return in(cat)
-        }
-        else {
-            return forAny (Object elem in objects) some (elem == object)
-        }
     }
 
 }]]></programlisting>
@@ -664,83 +652,6 @@ catch (Exception e) {
         -->
     </section>
     
-    <section id="iterableanditerator">
-        <title>Iterable objects and iterators</title>
-        
-        <para>The interface <literal>Iterable</literal> represents an
-        object which can produce a sequence of values, and which can
-        be iterated using a <literal>for</literal> loop.</para>
-        
-        <programlisting><![CDATA[public interface Iterable<out X> {
-    
-    doc "A sequence of objects belonging
-         to the container."
-    public Iterator<X> iterator();
-    
-}]]></programlisting>
-        
-        <para>A Ceylon <literal>Iterator</literal> is a stateless object
-        that produces a theoretically unbounded sequence of values.</para>
-        
-        <programlisting><![CDATA[public interface Iterator<out X> {
-    public X? head;
-    public Iterator<X> tail;
-}]]></programlisting>
-        
-        <para>An <literal>Iterator</literal> is used according to the
-        following idiom:</para>
-            
-        <programlisting><![CDATA[mutable local iter := iterable.iterator();
-while (exists local value = iter.head) {
-    ...
-    iter.=tail;
-}]]></programlisting>
-
-        <comment><para>TODO: should we provide for mutation/removal during 
-        iteration:</para>
-        <programlisting><![CDATA[public mutable interface OpenIterable<X> 
-        satisfies Iterable<X> {
-    override OpenIterator<X> iterator();
-}]]></programlisting>
-        <programlisting><![CDATA[public mutable interface OpenIterator<X> 
-        satisfies Iterator<X> {
-    override mutable X? head;
-    public void remove();
-}]]></programlisting></comment>
-
-        <comment><para>TODO: this alternate solution abstracts efficient 
-        iteration of sequences and linked lists/trees, but suffers from
-        the problem that the <literal>indexedValue()</literal> operation 
-        accepts tokens from iterations of other objects, and is therefore 
-        much less typesafe.</para>
-        <programlisting><![CDATA[public interface Indexed<out X, I> 
-        given I satisfies Ordinal {
-    
-    public I firstIndex;
-    public Gettable<X>? indexedValue(I index);
-    
-}]]></programlisting>
-        <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
-        be an <literal>Indexed&lt;X, Natural&gt;</literal> and a 
-        <literal>LinkedList&lt;X&gt;</literal> would be an 
-        <literal>Indexed&lt;X, Link&lt;X&gt;&gt;</literal>. The idiom
-        would be:</para>
-        <programlisting><![CDATA[mutable local i := indexed.firstIndex;
-while (exists local value = indexed.indexedValue(i)) {
-    ...
-    ++i;
-}]]></programlisting>
-        <para>Mutation/removal during iteration would also be possible.</para>
-        <programlisting><![CDATA[public mutable interface OpenIndexed<X, I> 
-        satisfies Indexed<X,I>
-        given I satisfies Ordinal {
-    override mutable Settable<X>? indexedValue(I index);
-    public void removeIndex(I index);
-}]]></programlisting>
-</comment>
-
-    </section>
-    
     <section id="category">
         <title>Containers and categories</title>
         
@@ -757,8 +668,10 @@ while (exists local value = indexed.indexedValue(i)) {
     
 }]]></programlisting>
     
-        <para>The interface <literal>Category</literal> represents
-        the abstract notion of an object that contains other objects.</para>
+        <para>The interface <literal>Category</literal> represents the 
+        abstract notion of an object that contains other objects. An 
+        expression of type <literal>Category</literal> may occur as the
+        right hand argument of the <literal>in</literal> operator.</para>
         
         <programlisting><![CDATA[public interface Category {
     
@@ -827,6 +740,102 @@ while (exists local value = indexed.indexedValue(i)) {
 }]]></programlisting>
         -->
 
+    </section>
+    
+    <section id="iterableanditerator">
+        <title>Iterable objects and iterators</title>
+        
+        <para>The interface <literal>Iterable</literal> represents an
+        object which can produce a sequence of values, and which can
+        be iterated using a <literal>for</literal> loop.</para>
+        
+        <programlisting><![CDATA[public interface Iterable<out X> {
+    
+    doc "A sequence of objects belonging
+         to the container."
+    public Iterator<X> iterator();
+    
+}]]></programlisting>
+        
+        <para>A Ceylon <literal>Iterator</literal> is a stateless object
+        that produces a theoretically unbounded sequence of values.</para>
+        
+        <programlisting><![CDATA[public interface Iterator<out X> {
+    public X? head;
+    public Iterator<X> tail;
+}]]></programlisting>
+        
+        <para>An <literal>Iterator</literal> is used according to the
+        following idiom:</para>
+            
+        <programlisting><![CDATA[mutable local iter := iterable.iterator();
+while (exists local value = iter.head) {
+    ...
+    iter.=tail;
+}]]></programlisting>
+    
+    <para>The following extension allows <literal>Iterable</literal> objects
+    to be used with the <literal>in</literal> operator.</para>
+    
+    <programlisting><![CDATA[public extension class IterableCategory(Iterable<Object> object) 
+        satisfies Category {
+        
+    override Boolean contains(Object... objects) {
+        for (Object object in objects) {
+            if ( forAll (Object elem in objects) every (elem != object) ) {
+                return false
+            }
+        }
+        fail {
+            return true
+        }
+    }
+
+}]]></programlisting>
+    
+        <comment><para>TODO: should we provide for mutation/removal during 
+        iteration:</para>
+        <programlisting><![CDATA[public mutable interface OpenIterable<X> 
+        satisfies Iterable<X> {
+    override OpenIterator<X> iterator();
+}]]></programlisting>
+        <programlisting><![CDATA[public mutable interface OpenIterator<X> 
+        satisfies Iterator<X> {
+    override mutable X? head;
+    public void remove();
+}]]></programlisting></comment>
+
+        <comment><para>TODO: this alternate solution abstracts efficient 
+        iteration of sequences and linked lists/trees, but suffers from
+        the problem that the <literal>indexedValue()</literal> operation 
+        accepts tokens from iterations of other objects, and is therefore 
+        much less typesafe.</para>
+        <programlisting><![CDATA[public interface Indexed<out X, I> 
+        given I satisfies Ordinal {
+    
+    public I firstIndex;
+    public Gettable<X>? indexedValue(I index);
+    
+}]]></programlisting>
+        <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
+        be an <literal>Indexed&lt;X, Natural&gt;</literal> and a 
+        <literal>LinkedList&lt;X&gt;</literal> would be an 
+        <literal>Indexed&lt;X, Link&lt;X&gt;&gt;</literal>. The idiom
+        would be:</para>
+        <programlisting><![CDATA[mutable local i := indexed.firstIndex;
+while (exists local value = indexed.indexedValue(i)) {
+    ...
+    ++i;
+}]]></programlisting>
+        <para>Mutation/removal during iteration would also be possible.</para>
+        <programlisting><![CDATA[public mutable interface OpenIndexed<X, I> 
+        satisfies Indexed<X,I>
+        given I satisfies Ordinal {
+    override mutable Settable<X>? indexedValue(I index);
+    public void removeIndex(I index);
+}]]></programlisting>
+</comment>
+    
     </section>
     
     <section id="entry">
