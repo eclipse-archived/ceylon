@@ -6,6 +6,8 @@ public final class Natural
 
     private final long value;
     private Natural(long l) {
+        if (l < 0)
+            throw new NegativeNumberException();
         value = l;
     }
 
