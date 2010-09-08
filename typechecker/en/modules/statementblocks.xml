@@ -415,7 +415,7 @@ else {
             Java doesn't let you define a method inside a method either, but we can wrap the 
             nested method in an anonymous class.</para></comment>
             
-            <comment><para>TODO: Note in Java, all nested classes of interfaces are considered 
+            <comment><para>TODO: Note that in Java, all nested classes of interfaces are considered 
             static inner classes. This results in a very funny semantic for a class nested 
             inside an interface nested inside another class: the class does not have access to 
             the members of the containing class. In Ceylon, a nested class is allowed to invoke
