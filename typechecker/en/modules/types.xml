@@ -464,7 +464,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
 }]]></programlisting>
 
         <para>Classes with enumerated <literal>case</literal>s implicitly implement 
-        <literal>Selector</literal></para>
+        <literal>Selector</literal>.</para>
         
         <programlisting><![CDATA[public interface Selector {
     public String name;
