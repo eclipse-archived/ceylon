@@ -2312,26 +2312,24 @@ import extension org.domain.utils.SequenceUtils;</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>if the extended type has a member with the specified name (and 
-                compatible signature, in the case of a method) and the introduced
-                type does not, the extension is not introduced, but</para>
+                <para>if the extended type has a member to which the reference is
+                resolveable and the introduced type does not, the extension is not 
+                introduced, and likewise</para>
             </listitem>
             <listitem>
-                <para>if the introduced type has a member with the specified name (and 
-                compatible signature, in the case of a method) and the extended
-                type does not, the extension is introduced, but</para>
+                <para>if there is a common supertype of the introduced type and the 
+                extended type that has a member to which the reference is resolveable, 
+                the extension is not introduced, but</para>
+            </listitem>
+            <listitem>
+                <para>if the introduced type has a member to which the reference is
+                resolveable and the extended type does not, the extension 
+                <emphasis>is</emphasis> introduced, and finally</para>
             </listitem>
             <listitem>
                 <para>if both the introduced type and the extended type have members
-                with the specified name (and compatible signature, in the case of a
-                method), and if both members were originally defined by a common supertype, 
-                the extension is not introduced, or</para>
-            </listitem>
-            <listitem>
-                <para>if both the introduced type and the extended type have members
-                with the specified name (and compatible signature, in the case of a
-                method), and if these members were not defined by a common supertype, 
-                a compilation error results.</para>
+                to which the reference is resolveable, but there is no common supertype 
+                with such a member, a compilation error results.</para>
             </listitem>
         </itemizedlist>
         
