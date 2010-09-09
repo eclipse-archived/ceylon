@@ -116,13 +116,12 @@ String lastName;
         only if it explicitly imports the declaration using the <literal>import</literal> 
         statement.</para>
         
-        <programlisting>Import := "import" FullPackageName "." ImportSpec ";"</programlisting>
+        <programlisting>Import := "import" "extension"? FullPackageName "." ImportSpec ";"</programlisting>
         
-        <para>A package is a namespace. A full package name is a period-separated
-        list of all-lowercase identifiers.</para>
+        <para>A package is a namespace. A full package name is a period-separated list of 
+        all-lowercase identifiers.</para>
         
         <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
-        
         
         <para>An <literal>import</literal> statement may import either:</para>
         
@@ -150,6 +149,9 @@ String lastName;
         <para>Note that toplevel types, toplevel methods, enumerated instances, and extensions 
         in the module <literal>ceylon.lang</literal> do not need to be explicitly imported. 
         They are implicitly imported by every compilation unit.</para>
+        
+        <para>If the <literal>extension</literal> annotation appears, the imported declaration
+        must also be annotated <literal>extension</literal>.</para>
         
         <comment><para>TODO: Would it be better to specify that there is at most a single 
         <literal>import</literal> statement per source file, for example:</para>
@@ -2271,23 +2273,26 @@ public Visibility private() {
         but this doesn't work for attributes and member methods.</para></comment>
          -->
         
-        <para>We say that an extension class or toplevel method is 
-        <emphasis>enabled</emphasis> in a compilation unit if the class or 
-        toplevel method is imported by that compilation unit.</para>
+        <para>We say that an extension class or toplevel method is <emphasis>enabled</emphasis> 
+        in a compilation unit if the class or toplevel method is imported by that 
+        compilation unit, and the <literal>import</literal> statement is annotated 
+        <literal>extension</literal>. If the <literal>import</literal> statement is 
+        not annotated extension, the declaration is imported normally and is not
+        be treated as an extension in that compilation unit.</para>
         
-        <programlisting>import org.domain.app.extensions.objectToLog;
-import org.domain.utils.SequenceUtils;</programlisting>
+        <programlisting>import extension org.domain.app.extensions.objectToLog;
+import extension org.domain.utils.SequenceUtils;</programlisting>
 
-        <para>A wildcard <literal>.*</literal>-style import may not be used to 
-        import an extension.</para>
+        <para>A wildcard <literal>.*</literal>-style import may not be used to import 
+        an extension.</para>
         
-        <para>An extension attribute, member class or member method is 
-        enabled in every compilation unit.</para>
+        <para>An extension attribute, member class or member method is enabled in every 
+        compilation unit.</para>
         
-        <para>If an extension is enabled in a compilation unit, the extended 
-        type is assignable to the introduced type in that compilation unit.</para>
+        <para>If an extension is enabled in a compilation unit, the extended type is 
+        assignable to the introduced type in that compilation unit.</para>
         
-        <programlisting>import org.mydomain.myproject.extensions.objectToLog;
+        <programlisting>import extension org.mydomain.myproject.extensions.objectToLog;
 ...
 Person person = ...;
 User user = person;
@@ -2300,7 +2305,7 @@ info("person is a User and this is a Log!");</programlisting>
 User user = personToUser(person);</programlisting>
         -->
         
-        <programlisting>import org.domain.utils.SequenceUtils;
+        <programlisting>import extension org.domain.utils.SequenceUtils;
 ...
 Integer[] zeroToOneHundred = 0..100;
 Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);</programlisting>

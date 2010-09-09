@@ -1935,7 +1935,7 @@ else {
         it is used. To activate an extension we <literal>import</literal> 
         it.</para>
         
-        <programlisting>import com.domain.util.objectToLog;
+        <programlisting>import extension com.domain.util.objectToLog;
         
 class Hello(String? name) {
 
@@ -1950,7 +1950,9 @@ class Hello(String? name) {
         <para>The compiler automatically inserts a call to <literal>objectToLog()</literal>. 
         So the above code is equivalent to:</para>
 
-        <programlisting>class Hello(String? name) {
+        <programlisting>import com.domain.util.objectToLog;
+        
+class Hello(String? name) {
 
     ...
     
