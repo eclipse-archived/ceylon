@@ -935,13 +935,17 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
             <title>Overloaded classes</title>
             
             <para>Multiple toplevel classes belonging to the same package, or multiple 
-            member classes of the same containing class may declare the same name. The 
-            classes are called <emphasis>overloaded</emphasis>. Overloaded classes:</para>
+            member classes of the same containing body may declare the same name. The 
+            classes are called <emphasis>overloaded</emphasis>.</para>
+            
+            <para>For any class name and package or containing body, there must be a 
+            single <emphasis>root class</emphasis> with the given name belonging to 
+            the given package or body. Other classes with the same name belonging to the 
+            same package or body:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>must extend and overload a common <emphasis>root</emphasis>
-                    type,</para>
+                    <para>must extend the root class,</para>
                 </listitem>
                 <listitem>
                     <para>must have distinct erased signatures,</para>
@@ -950,12 +954,12 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
                     <para>may not declare default parameters, and</para>
                 </listitem>
                 <listitem>
-                    <para>except for the root type, may not declare any member with a 
+                    <para>except for the root class, may not declare any member with a 
                     visibility modifier.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Then the class name always refers to the root type, except in 
+            <para>Then the class name always refers to the root class, except in 
             instantiation expressions. An instantiation expression is resolved to a 
             particular overloaded class declaration at compile time, using the argument 
             expression types.</para>
