@@ -1383,7 +1383,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 <para>An interface method or abstract method <emphasis>must</emphasis> be 
                 overridden by every non-<literal>abstract</literal> class that is a subtype 
                 of the interface or abstract class, unless the class inherits a non-abstract 
-                method from a superclass which overrides the interface method or abstract method.</para>
+                method from a superclass which overrides the interface method or abstract 
+                method.</para>
             </listitem>
             </itemizedlist>           
             
@@ -1414,6 +1415,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>Finally, the overridden method must be visible to the method
             annotated <literal>override</literal>.</para>
+            
+            <para>A method may not, directly or indirectly, override two different
+            methods not themselves annotated <literal>override</literal>.</para>
         
             <para>Then invocation of the method is polymorphic, and the actual
             method invoked depends upon the concrete type of the class instance.</para>
@@ -1798,6 +1802,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <para>Finally, the overridden attribute must be visible to the attribute
             annotated <literal>override</literal>.</para>
+        
+            <para>A method may not, directly or indirectly, override two different
+            methods not themselves annotated <literal>override</literal>.</para>
         
             <para>A non-<literal>mutable</literal> attribute may be overridden by a 
             <literal>mutable</literal> attribute.</para>
