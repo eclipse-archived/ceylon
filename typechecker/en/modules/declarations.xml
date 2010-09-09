@@ -2277,8 +2277,8 @@ public Visibility private() {
         in a compilation unit if the class or toplevel method is imported by that 
         compilation unit, and the <literal>import</literal> statement is annotated 
         <literal>extension</literal>. If the <literal>import</literal> statement is 
-        not annotated extension, the declaration is imported normally and is not
-        be treated as an extension in that compilation unit.</para>
+        not annotated extension, the declaration is imported normally and is not be 
+        treated as an extension in that compilation unit.</para>
         
         <programlisting>import extension org.domain.app.extensions.objectToLog;
 import extension org.domain.utils.SequenceUtils;</programlisting>
@@ -2291,6 +2291,49 @@ import extension org.domain.utils.SequenceUtils;</programlisting>
         
         <para>If an extension is enabled in a compilation unit, the extended type is 
         assignable to the introduced type in that compilation unit.</para>
+        
+        <para>Where an expression of the extended type is assigned to a program element,
+        the extension may or not be introduced by the compiler:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the extended type is a subtype of the type of the program 
+                element, the extension is not introduced, but otherwise</para>
+            </listitem>
+            <listitem>
+                <para>if the introduced type is a subtype of the type of the program 
+                element, but the extended type is not, the extension <emphasis>is</emphasis> 
+                introduced.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Where a member reference is applied to an expression of the extended type, 
+        the extension may or may not be introduced:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the extended type has a member with the specified name (and 
+                compatible signature, in the case of a method) and the introduced
+                type does not, the extension is not introduced, but</para>
+            </listitem>
+            <listitem>
+                <para>if the introduced type has a member with the specified name (and 
+                compatible signature, in the case of a method) and the extended
+                type does not, the extension is introduced, but</para>
+            </listitem>
+            <listitem>
+                <para>if both the introduced type and the extended type have members
+                with the specified name (and compatible signature, in the case of a
+                method), and if both members were originally defined by a common supertype, 
+                the extension is not introduced, or</para>
+            </listitem>
+            <listitem>
+                <para>if both the introduced type and the extended type have members
+                with the specified name (and compatible signature, in the case of a
+                method), and if these members were not defined by a common supertype, 
+                a compilation error results.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>import extension org.mydomain.myproject.extensions.objectToLog;
 ...
