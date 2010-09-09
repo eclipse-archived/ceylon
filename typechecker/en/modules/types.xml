@@ -216,18 +216,6 @@
         return result 
     }
     
-    doc "Transform the given object to a string. Override to
-         customize the render operator and character string 
-         template expression interpolation."
-    public default String string(Object? object) {
-        return (object ? nullString).string
-    }
-    
-    doc "The string representation of a null value. Override 
-         to customize the render operator and character string 
-         template expression interpolation."
-    public default String nullString = "null";
-        
     ...
         
 }]]></programlisting>
@@ -503,9 +491,8 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>Expressions of type <literal>Object?</literal> support the 
         binary operators <literal>?.</literal> (nullsafe invoke) and 
         <literal>?</literal> (default), the unary operator <literal>exists</literal>, 
-        the unary operator <literal>$</literal> (render) and the the binary 
-        operators <literal>&equals;</literal> (equals) and <literal>!=</literal> 
-        (not equals).</para>
+        and the the binary operators <literal>&equals;</literal> (equals) and 
+        <literal>!=</literal> (not equals).</para>
         
          <para>Note that <literal>Optional</literal> is not a subtype
         of <literal>Object</literal>.</para>
@@ -2297,6 +2284,38 @@ while (i<=max) {
             given T satisfies Object;
 }]]></programlisting>
 
+    </section>
+    
+    <section id="formattingobjects">
+        <title>Formatting objects</title>
+        
+        <para>The interface <literal>Formattable</literal> defines a method
+        to produce a <literal>String</literal> representation of a certain object.
+        An expression of type <literal>FormattedObject</literal> may be the target
+        of the format operator <literal>$</literal> or may be used in a string
+        template. Classes should not implement <literal>FormattedObject</literal> 
+        directly. Instead, an extension may decorate a class with a representation
+        in a particular format.</para>
+        
+        <programlisting>public interface Formattable {
+    String formatted;
+}</programlisting>
+
+        <para>The package <literal>ceylon.lang.util</literal>, which is not imported
+        by default, defines a format useful only for debugging purposes:</para>
+        
+        <programlisting>public extension class DebugFormat(Object? object) 
+        satisfies Formattable {
+    override String formatted {
+        if (object exists) {
+            return object.string;
+        }
+        else {
+            return "null"
+        }
+    }
+}</programlisting>
+        
     </section>
     
     <section id="logging">

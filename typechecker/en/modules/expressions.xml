@@ -398,12 +398,11 @@ if you prefer.";</programlisting>
         
         <programlisting>StringTemplate := StringLiteral (Expression? StringLiteral)+</programlisting>
         
-        <para>A character string template is an expression of type 
-        <literal>Gettable&lt;String&gt;</literal>.</para>
+        <para>Each interpolated expression contained in the string template must be 
+        an expression of type <literal>ceylon.lang.Formattable</literal>.</para>
         
-        <!--
-        <programlisting>InterpolatedStringLiteral := LStringLiteral Expression (MStringLiteral Expression)* RStringLiteral</programlisting>
-        -->
+        <para>The entire character string template is an expression of type 
+        <literal>Gettable&lt;String&gt;</literal>.</para>
         
         <programlisting>log.info("Hello, " person.firstName " " person.lastName ", the time is " Time() ".");</programlisting>
         
@@ -426,9 +425,9 @@ if you prefer.";</programlisting>
         <para>An interpolated expression in a string template may not refer to 
         <literal>mutable</literal> locals from the containing scope.</para>
         
-        <para>Interpolated expressions are evaluated when the
-        <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a 
-        constant character string.</para>
+        <para>Interpolated expressions are evaluated when the 
+        <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a constant 
+        character string.</para>
 
     </section>
     
@@ -2536,7 +2535,7 @@ createItemMethod.intercept()
                 <entry>Right</entry>
             </row>            
             <row>
-                <entry>Negation, bitwise complement, render:</entry>
+                <entry>Negation, bitwise complement, format:</entry>
                 <entry>
                 <literal>-</literal>, 
                 <literal>~</literal>,
@@ -2959,15 +2958,15 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>X</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Render</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Format</emphasis></entry></row>
         
         <row>
             <entry><literal>$</literal></entry>
             <entry><literal>$rhs</literal></entry>
-            <entry>render</entry>
-            <entry><literal>this.string(rhs)</literal></entry>
+            <entry>format</entry>
+            <entry><literal>rhs.formatted</literal></entry>
             <entry></entry>
-            <entry><literal>Object?</literal></entry>
+            <entry><literal>Formattable</literal></entry>
             <entry><literal>String</literal></entry>
         </row>
     
