@@ -548,7 +548,7 @@ if you prefer.";</programlisting>
         member class).</para>
         
         <programlisting>Node node = tree.Node().Node();
-assert() that (tree == node.outer.outer);</programlisting>
+assert() that (tree &equals; node.outer.outer);</programlisting>
 
         <programlisting>class Catalog() {
     class Schema() {
@@ -2473,7 +2473,7 @@ createItemMethod.intercept()
         languages, the logical not operator <literal>!</literal> has a very low
         precedence. The following expressions are equivalent:</para>
         
-        <programlisting>!x.y*2 == 0.0  //means !(x.y*2 == 0.0)</programlisting>
+        <programlisting>!x.y*2 &equals; 0.0  //means !(x.y*2 &equals; 0.0)</programlisting>
         <programlisting>x.y*2 != 0.0</programlisting>
         
         <para>This table defines the relative precedence of the various operators, 
@@ -3089,8 +3089,8 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &equals; rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>if (exists lhs) lhs.equals(rhs) else if (exists rhs) false else true</literal></entry>
-            <entry><literal>Object?</literal></entry>
-            <entry><literal>Object?</literal></entry>
+            <entry><literal>Equals&lt;T&gt;?</literal></entry>
+            <entry><literal>T?</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -3098,8 +3098,8 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
             <entry><literal>if (exists lhs) lhs.equals(rhs).complement else if (exists rhs) true else false</literal></entry>
-            <entry><literal>Object?</literal></entry>
-            <entry><literal>Object?</literal></entry>
+            <entry><literal>Equals&lt;T&gt;?</literal></entry>
+            <entry><literal>T?</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
