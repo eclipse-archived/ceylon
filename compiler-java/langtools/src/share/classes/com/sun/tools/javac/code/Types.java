@@ -278,6 +278,9 @@ public class Types {
      }
 
     public MethodSymbol getCeylonExtension(Type t, Type s) {
+        if (t.equals(s))
+            return null;
+        
         if (t.tag != CLASS || s.tag != CLASS)
             return null;
 
