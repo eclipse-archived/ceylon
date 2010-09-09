@@ -854,14 +854,21 @@ while (exists local value = indexed.indexedValue(i)) {
         operator.</para>
 
             <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
-        extends Object() 
-        given U satisfies Equals<U> {
+        extends Object() satisfies Equals<Entry<U,V>>
+        given U satisfies Object, Equals<U> 
+        given V satisfies Object, Equals<V> {
     
     doc "The key used to access the entry."
     public U key = key;
     
     doc "The value associated with the key."
     public V value = value;
+    
+    override Boolean equals(Entry<U,V> that) {
+        return this.key==that.key && this.value==that.value
+    }
+    
+    override Integer hash = ... ; 
 
 }]]></programlisting>
 
@@ -876,7 +883,7 @@ while (exists local value = indexed.indexedValue(i)) {
         <literal>[key]</literal> (lookup).</para>
 
         <programlisting><![CDATA[public interface Correspondence<in U, out V> 
-        given U satisfies Object {
+        given U satisfies Object, Equals<U> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
@@ -888,7 +895,7 @@ while (exists local value = indexed.indexedValue(i)) {
         <para>A decorator allows retrieval of lists and sets of values.</para>
 
         <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> this)
-        given U satisfies Object {
+        given U satisfies Object, Equals<U> {
 
     doc "Binary sequenced lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
@@ -968,7 +975,7 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> 
-        given U satisfies Object {
+        given U satisfies Object, Equals<U> {
     
     override Settable<V?> value(U key);
     
@@ -977,7 +984,8 @@ while (exists local value = indexed.indexedValue(i)) {
         <para>A decorator allows addition of multiple <literal>Entry</literal>s.</para>
 
         <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> this) 
-        given U satisfies Object {
+        given U satisfies Object, Equals<U> 
+        given V satisfies Object, Equals<V> {
 
     doc "Add the given entries, overriding any definitions that 
          already exist."
@@ -994,7 +1002,7 @@ while (exists local value = indexed.indexedValue(i)) {
          for the key, or |null| if there was no value defined."
     throws (UndefinedKeyException
             -> "if a value can not be defined for the given key")
-    public V? define(U key, V value) {
+    public V? define(U key -> V value) {
         Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;
@@ -3144,7 +3152,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Map<U, out V>
         satisfies Collection<Entry<U,V>>, Correspondence<U, V> 
-        given U satisfies Object, Equals<U> {
+        given U satisfies Object, Equals<U> 
+        given V satisfies Object, Equals<V> {
     
     doc "The keys of the map, as a |Set|."
     public Set<U> keys;
@@ -3173,7 +3182,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
         satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> 
-        given U satisfies Object, Equals<U> {
+        given U satisfies Object, Equals<U> 
+        given V satisfies Object, Equals<V> {
     
     doc "Remove the entry for the given key, returning the 
          value of the removed entry."
