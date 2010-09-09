@@ -49,6 +49,34 @@
         
     </section>
     
+    <section id="equals">
+        <title>Objects which support equality</title>
+        
+        <para>Types which can be compared for equality must satisfy the
+        interface <literal>Equals&lt;T&gt;</literal>. Two expressions of type
+        <literal>Equals&lt;T&gt;?</literal>, for the same type <literal>T</literal>,
+        may be compared using the binary operators <literal>&equals;</literal> 
+        (equals) and <literal>!=</literal> (not equals).</para>
+        
+        <programlisting><![CDATA[public interface Equals<in T> 
+        given T satisfies Object {
+    
+    doc "The equals operator |x == y|. Implementations should 
+         respect the constraint that if |x===y| then |x==y|,
+         the constraint that if |x==y| then |y==x|,
+         and the constraint that if |x==y| and |y==z| then
+         |x==z|."
+    Boolean equals(T other);
+    
+    doc "The hash code of the instance. Implementations of |hash| 
+         must respect the constraint that if |x==y| then 
+         |x.hash==y.hash|."
+    Integer hash;
+    
+}]]></programlisting>
+    
+    </section>
+    
     <section id="object">
         <title><literal>Object</literal>, <literal>IdentifiableObject</literal>,
         and <literal>BaseObject</literal></title>
@@ -65,22 +93,8 @@
     public Type<subtype> type {
         return ... 
     }
-        
-    doc "The equals operator |x == y|. Implementations should 
-         respect the constraint that if |x===y| then |x==y|,
-         the constraint that if |x==y| then |y==x|,
-         and the constraint that if |x==y| and |y==z| then
-         |x==z|."
-    public Boolean equals(Object that);
     
-    doc "The hash code of the instance. Implementations of |hash| 
-         must respect the constraint that if |x==y| then 
-         |x.hash==y.hash|."
-    public Integer hash;
-    
-    doc "A developer-friendly string representing the instance. 
-         By default, the string contains the name of the type, 
-         and the values of all attributes annotated |id|."
+    doc "A developer-friendly string representing the instance."
     public String string;
     
     ...
@@ -128,7 +142,7 @@
         <literal>&identical;</literal> (identity equals).</para>
         
         <programlisting><![CDATA[public abstract class IdentifiableObject() 
-        extends Object() {}]]></programlisting>
+        extends Object() satisfies Equals<IdentifiableObject> {}]]></programlisting>
         
         <para>The following toplevel methods expose the notion of object 
         identity:</para>
@@ -145,7 +159,7 @@
         <literal>string</literal> provided for them.</para>
         
         <programlisting><![CDATA[public abstract class BaseObject() 
-        extends Object() {
+        extends IdentifiableObject() {
         
     Attribute<subtype,Object>[] idAttributes() {
         return from ( Attribute<subtype,Object> a in type.attributes() ) 
@@ -155,7 +169,7 @@
     doc "The equals operator |x == y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
-    default override Boolean equals(Object that) {
+    default override Boolean equals(IdentifiableObject that) {
         if (that.type!=type) {
             return false
         }
@@ -170,7 +184,7 @@
     
     doc "Compares the given attributes of this instance with the given
          attributes of the given instance."
-    public Boolean equals(Object that, Attribute<subtype,Object>... attributes) {
+    public Boolean equals(IdentifiableObject that, Attribute<subtype,Object>... attributes) {
         if (is subtype that) {
             return forAll (Attribute<subtype,Object> a in attributes)
                         every ( a(this) == a(that) )
@@ -490,9 +504,8 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
 
         <para>Expressions of type <literal>Object?</literal> support the 
         binary operators <literal>?.</literal> (nullsafe invoke) and 
-        <literal>?</literal> (default), the unary operator <literal>exists</literal>, 
-        and the the binary operators <literal>&equals;</literal> (equals) and 
-        <literal>!=</literal> (not equals).</para>
+        <literal>?</literal> (default) and the unary operator 
+        <literal>exists</literal>.</para>
         
          <para>Note that <literal>Optional</literal> is not a subtype
         of <literal>Object</literal>.</para>
@@ -764,12 +777,18 @@ while (exists local value = iter.head) {
     <para>The following extension allows <literal>Iterable</literal> objects
     to be used with the <literal>in</literal> operator.</para>
     
-    <programlisting><![CDATA[public extension class IterableCategory(Iterable<Object> this) 
-        satisfies Category {
+    <programlisting><![CDATA[public extension class IterableCategory<T>(Iterable<T> this) 
+        satisfies Category
+        given T satisfies Equals<T> {
         
     override Boolean contains(Object... objects) {
         for (Object object in objects) {
-            if ( forAll (Object elem in this) every (elem != object) ) {
+            if (is T object) {
+                if ( forAll (Object elem in this) every (elem != object) ) {
+                    return false
+                }
+            }
+            else {
                 return false
             }
         }
@@ -835,21 +854,14 @@ while (exists local value = indexed.indexedValue(i)) {
         operator.</para>
 
             <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
-        extends Object() {
+        extends Object() 
+        given U satisfies Equals<U> {
     
     doc "The key used to access the entry."
     public U key = key;
     
     doc "The value associated with the key."
     public V value = value;
-    
-    override Boolean equals(Object that) {
-        return equals(that, Entry.key, Entry.value)
-    }
-    
-    override Integer hash {
-        return hash(Entry.key, Entry.value)
-    }
 
 }]]></programlisting>
 
@@ -1002,6 +1014,7 @@ while (exists local value = indexed.indexedValue(i)) {
         (compare).</para>
         
         <programlisting><![CDATA[public interface Comparable<in T> 
+        satisfies Equals<T>
         given T satisfies Object {
     
     doc "The binary compare operator |<=>|. Compares this 
@@ -1468,7 +1481,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         extends Object() 
-        satisfies Category, X[], Case<X>, Iterable<X>
+        satisfies Category, X[], Case<X>, Iterable<X>, Equals<Range<X>>
         given X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
@@ -1523,7 +1536,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     override Boolean empty = last<first;
     
     override Boolean contains(Object... objects) {
-        for (x in objects) {
+        for (Object x in objects) {
             if (is X x) {
                 if ( x<first || x>last ) ) {
                     return false
@@ -1559,13 +1572,8 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         return value
     }
     
-    override Boolean equals(Object that) {
-        if (is Range<X> that) {
-            return that.first==first && that.last==last
-        }
-        else {
-            return false
-        }
+    override Boolean equals(Range<X> that) {
+        return that.first==first && that.last==last
     }
     
     ...
@@ -2044,7 +2052,7 @@ while (i<=max) {
         operators.</para>
         
         <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n] {
+        satisfies Boolean[n], Equals<Bits<#n>> {
         
     doc "Bitwise or operator |x | y|"
     public Bits<#n> or(Bits<#n> bits);
@@ -2788,8 +2796,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         root of the Ceylon collections framework.</para>
         
         <programlisting><![CDATA[public interface Collection<out X> 
-        satisfies Iterable<X>, Container, Category 
-        given X satisfies Object {
+        satisfies Iterable<X>, Container, Category
+        given X satisfies Object, Equals<X> {
     
     doc "The number of elements or entries belonging to the 
          collection."
@@ -2847,7 +2855,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
         <programlisting><![CDATA[public mutable interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
-        given X satisfies Object {
+        given X satisfies Object, Equals<X> {
     
     doc "Remove all elements or entries of the collection,
          resulting in an empty collection."
@@ -2882,7 +2890,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public interface Set<out X> 
         satisfies Collection<X>, Correspondence<Object, Boolean> 
-        given X satisfies Object {
+        given X satisfies Object, Equals<X> {
     
     doc "Determine if the set is a superset of the given set.
          Return |true| if it is a superset."
@@ -2907,7 +2915,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public mutable interface OpenSet<X> 
         satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<Object, Boolean> 
-        given X satisfies Object {}]]></programlisting>
+        given X satisfies Object, Equals<X> {}]]></programlisting>
 
         </section>
         
@@ -2920,7 +2928,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X>, X[] 
-        given X satisfies Object {
+        given X satisfies Object, Equals<X> {
     
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
@@ -3049,7 +3057,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public mutable interface OpenList<X> 
         satisfies List<X>, OpenCollection<X>, OpenSequence<X> 
-        given X satisfies Object {
+        given X satisfies Object, Equals<X> {
 
     doc "Remove the element at the given index, decrementing
          the index of every element with an index greater
@@ -3136,7 +3144,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Map<U, out V>
         satisfies Collection<Entry<U,V>>, Correspondence<U, V> 
-        given U satisfies Object {
+        given U satisfies Object, Equals<U> {
     
     doc "The keys of the map, as a |Set|."
     public Set<U> keys;
@@ -3165,7 +3173,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
         satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> 
-        given U satisfies Object {
+        given U satisfies Object, Equals<U> {
     
     doc "Remove the entry for the given key, returning the 
          value of the removed entry."
@@ -3193,7 +3201,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X>, Correspondence<Object, Natural> 
-        given X satisfies Object {
+        given X satisfies Object, Equals<X> {
     
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
@@ -3208,7 +3216,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> {
+        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> 
+        given X satisfies Object, Equals<X> {
         
     override OpenMap<X,Natural> map;
     
