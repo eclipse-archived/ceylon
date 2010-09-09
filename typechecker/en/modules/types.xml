@@ -47,13 +47,69 @@
         <para>The special syntax <literal>extends null</literal> indicates
         that <literal>Void</literal> has no superclass.</para>
         
+        <para>In contrast to <literal>Optional</literal>, which represents a
+        possibly undefined value of a well-defined type, an expression of type
+        <literal>Void</literal> represents a possibly undefined value with a 
+        possibly undefined type! Therefore we can't really do anything very
+        much with a <literal>Void</literal>&mdash;we can't even ask it what
+        kind of thing it <literal>is</literal>.</para>
+        
+        <para>In practice, <literal>Void</literal> is used mainly to abstract
+        the return types of methods which may or may not be declated
+        <literal>void</literal>.</para>
+        
+    </section>
+    
+    <section id="object">
+        <title>The <literal>Object</literal> class</title>
+    
+        <para>The class <literal>Object</literal> represents a definite value. 
+        Expressions of type <literal>Object</literal> may be the subject of the 
+        <literal>is</literal> operator (assignability).</para>
+        
+        <programlisting><![CDATA[public abstract class Object() 
+        extends Void() {
+    
+    doc "The |Type| of the instance."
+    public Type<subtype> type {
+        return ... 
+    }
+    
+    doc "A developer-friendly string representing the instance."
+    public String string;
+    
+    ...
+        
+}]]></programlisting>
+    
+        <para>All interface types are assignable to <literal>Object</literal>.</para>
+    
+        <para>Classes which are optimized by the compiler to Java primitive 
+        types extend <literal>Object</literal> directly, since there is no 
+        well-defined notion of identity for these types. Most other types
+        are subclasses of <literal>IdentifiableObject</literal>.</para>
+    
+<!-- 
+    doc "Binary assignability operator |x is Y|. Determine if the 
+         instance is of the given |Type|."
+    public Boolean instanceOf(Type<Object> type) {
+        return this.type.assignableTo(type)
+    }    
+ -->
+<!--
+    doc "A log object for the type."
+    public default Log log { 
+        return type.log 
+    }
+ -->
+    
     </section>
     
     <section id="equals">
         <title>Objects which support equality</title>
         
-        <para>Types which can be compared for equality must satisfy the
-        interface <literal>Equals&lt;T&gt;</literal>. Two expressions of type
+        <para>Types which can be compared for equality must satisfy the interface 
+        <literal>Equals&lt;T&gt;</literal>. Two expressions of type
         <literal>Equals&lt;T&gt;?</literal>, for the same type <literal>T</literal>,
         may be compared using the binary operators <literal>&equals;</literal> 
         (equals) and <literal>!=</literal> (not equals).</para>
@@ -74,68 +130,23 @@
     Integer hash;
     
 }]]></programlisting>
+
+        <para>We can't apply the <literal>==</literal> operator to expressions
+        of arbitrary type. The reason for this is that traditionally numeric
+        equality is defined even for values of differing numeric type.
+        Furthermore, Ceylon has an extensible system of numeric types and it
+        is therefore impossible to write a single implementation of 
+        <literal>equals()</literal> that takes into consideration all possible 
+        numeric types. Therefore type promotion (an extension) must be applied 
+        to one value when values of two different numeric types are compared. 
+        If <literal>==</literal> were defined for any <literal>Object</literal>, 
+        there would be no reason for the compiler to apply the type promotion.</para>
     
     </section>
     
-    <section id="object">
-        <title><literal>Object</literal>, <literal>IdentifiableObject</literal>,
-        and <literal>BaseObject</literal></title>
+    <section id="identifiableobject">
+        <title><literal>IdentifiableObject</literal> and <literal>BaseObject</literal></title>
         
-        <para>The class <literal>Object</literal> represents a definite value. 
-        Expressions of type <literal>Object</literal> may be the subject of the 
-        <literal>is</literal> operator (assignability). All interface types are 
-        assignable to <literal>Object</literal>.</para>
-        
-        <programlisting><![CDATA[public abstract class Object() 
-        extends Void() {
-    
-    doc "The |Type| of the instance."
-    public Type<subtype> type {
-        return ... 
-    }
-    
-    doc "A developer-friendly string representing the instance."
-    public String string;
-    
-    ...
-        
-}]]></programlisting>
-    
-        <para>Classes which are optimized by the compiler to Java primitive 
-        types extend <literal>Object</literal> directly, since there is no 
-        well-defined notion of identity for these types. Most other types
-        are subclasses of <literal>IdentityObject</literal>.</para>
-    
-        <para>An <literal>Object</literal> may belong to categories. The 
-        following extension defines the binary <literal>in</literal>
-        operator:</para>
-    
-    <programlisting><![CDATA[public extension class Objects(Object this) {
-    
-    doc "Determine if this object belongs to the given |Category|.
-         The binary |in| operator."
-    see (Category)
-    public Boolean in(Category category) {
-        return category.contains(this)
-    }
-
-}]]></programlisting>
-    
-    
-<!-- 
-    doc "Binary assignability operator |x is Y|. Determine if the 
-         instance is of the given |Type|."
-    public Boolean instanceOf(Type<Object> type) {
-        return this.type.assignableTo(type)
-    }    
- -->
-<!--
-    doc "A log object for the type."
-    public default Log log { 
-        return type.log 
-    }
- -->
-    
         <para>The class <literal>IdentifiableObject</literal> represents a type 
         whose values are always passed by reference. Expressions of type 
         <literal>IdentifiableObject</literal> support the binary operator 
@@ -150,8 +161,10 @@
         <programlisting>public Boolean identical(IdentifiableObject x, IdentifiableObject y) { return ... }</programlisting>
         <programlisting>public Integer identityHash(IdentifiableObject x) { return ... }</programlisting>
     
-        <comment><para>Note: Java classes would be subtypes of 
-        <literal>IdentifiableObject</literal>.</para></comment>
+        <para>Classes written in other Java VM languages (including Java classes) 
+        are considered subtypes of <literal>IdentifiableObject</literal>. Indeed,
+        you can think of <literal>IdentifiableObject</literal> as Ceylon's
+        representation of <literal>java.lang.Object</literal>.</para>
     
         <para>User-written classes usually extend <literal>BaseObject</literal>.
         Subclasses of <literal>BaseObject</literal> have default implementations 
@@ -412,10 +425,10 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     
 }]]></programlisting>
 
-        <comment><para>TODO: the two extensions that follow don't actually
-        work, since they overload the <literal>test()</literal> method of
-        <literal>Case</literal> in a way that doesn't permit resolution
-        according to the rules we have written down.</para></comment>
+        <comment><para>TODO: the two extensions that follow don't actually work, 
+        since they overload the <literal>test()</literal> method of
+        <literal>Case</literal> in a way that doesn't permit resolution according 
+        to the rules we have written down.</para></comment>
 
         <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
         function as <literal>Case&lt;X?&gt;</literal>.</para>
@@ -436,7 +449,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
 
         <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
         function as <literal>Case&lt;Y&gt;</literal> where <literal>X</literal> 
-        is assignable to <literal>Y</literal>.</para>
+        is a subtype of <literal>Y</literal>.</para>
         
         <programlisting><![CDATA[public extension class CaseSuper<X,Y>(Case<X> this) 
         satisfies Case<Y> 
@@ -507,8 +520,13 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <literal>?</literal> (default) and the unary operator 
         <literal>exists</literal>.</para>
         
-         <para>Note that <literal>Optional</literal> is not a subtype
-        of <literal>Object</literal>.</para>
+        <para>Note that <literal>Optional</literal> is not a subtype of 
+        <literal>Object</literal>. Therefore it is not possible to apply 
+        the <literal>is</literal> operator to an expression of type 
+        <literal>Optional</literal>. The reason behind this is that 
+        <literal>Optional</literal> and its subtypes are erased by the
+        compiler, and null values are untyped at the virtual machine
+        level.</para>
         
         <para>If an optional value is not null, it is represented by an
         instance of the subclass <literal>Something</literal>.</para>
@@ -701,6 +719,21 @@ catch (Exception e) {
 }]]></programlisting>
         -->
         
+        <para>Any <literal>Object</literal> may belong to categories. The 
+        following extension defines the binary <literal>in</literal>
+        operator:</para>
+    
+    <programlisting><![CDATA[public extension class Objects(Object this) {
+    
+    doc "Determine if this object belongs to the given |Category|.
+         The binary |in| operator."
+    see (Category)
+    public Boolean in(Category category) {
+        return category.contains(this)
+    }
+
+}]]></programlisting>
+    
         <para>There is a mutable subtype, representing a category to which 
         objects may be added.</para>
         
