@@ -278,7 +278,7 @@ public class Types {
      }
 
     public MethodSymbol getCeylonExtension(Type t, Type s) {
-        if (t.equals(s))
+        if (isConvertibleNotOptional(t, s, null))
             return null;
         
         if (t.tag != CLASS || s.tag != CLASS)
@@ -1585,7 +1585,7 @@ public class Types {
             		if (l.length() == 1) {
             			Type t1 = l.last();
             			if (t1.tag == CLASS)
-            				return t1;
+            				return visitClassType((ClassType)t1, ignored);
             		}
             	}
             	
