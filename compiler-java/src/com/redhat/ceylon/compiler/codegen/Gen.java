@@ -221,6 +221,8 @@ public class Gen {
         JCCompilationUnit tree = convert(t);
         tree.sourcefile = file;
         
+        System.out.println(tree);
+        
         Iterable<? extends TypeElement> result =
             task.enter(List.of(tree));
         /*Iterable<? extends JavaFileObject> files =*/ task.generate(result);
@@ -313,11 +315,25 @@ public class Gen {
         
         processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
         
-        CeylonTree.TypeName name = decl.returnType.name();
-        if (name != null)
-            restype.append(makeIdent(name.components()));
-    }                
+        restype.append(convert(decl.returnType));
+     }                
 
+    JCExpression convert(CeylonTree.Type type) {
+    	ExpressionVisitor v = 
+    		new ExpressionVisitor() {
+    			public void visit(CeylonTree.Type t) {
+    				result = makeIdent(t.name().components());
+    			}
+    			// FIXME: Add the other primitive types
+       			public void visit(CeylonTree.Void v) {
+    				result = make.TypeIdent(VOID);
+    			}
+     	};
+
+    	type.accept(v);
+        return v.result;
+    }
+    
     void processAnnotations(List<CeylonTree.Annotation> ceylonAnnos,
     		final ListBuffer<JCStatement> annotations,
     		final ListBuffer<JCAnnotation> langAnnotations,
@@ -360,11 +376,12 @@ public class Gen {
         JCExpression result = at(userAnn).Apply(null, makeSelect(userAnn.name, "run"),
                 values);
         JCIdent addAnnotation = at(userAnn).Ident(names.fromString("addAnnotation"));
-        List<JCExpression> args =
-        	methodName != null ?
-        			(List.<JCExpression>of(ceylonLiteral(methodName), result)) :
-        				List.<JCExpression>of(result);
-        					
+        List<JCExpression> args;
+        if (methodName != null)
+        	args = List.<JCExpression>of(ceylonLiteral(methodName), result);
+        else
+        	args = List.<JCExpression>of(result);
+
         result = at(userAnn).Apply(null, addAnnotation, args);
         return result;
     }
@@ -452,6 +469,8 @@ public class Gen {
 			new ListBuffer<JCAnnotation>();
 		final ListBuffer<JCStatement> stmts =
 			new ListBuffer<JCStatement>();
+		final ListBuffer<JCTypeParameter> typeParams =
+			new ListBuffer<JCTypeParameter>();
 
         
         cdecl.visitChildren(new CeylonTree.Visitor () {
@@ -502,6 +521,10 @@ public class Gen {
             public void visit(CeylonTree.Operator op) {
             	stmts.append(at(op).Exec(convert(op)));
             }
+            
+            public void visit(CeylonTree.TypeParameter param) {
+            	typeParams.append(convert(param));
+            }
          });
         
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
@@ -522,9 +545,10 @@ public class Gen {
         }
         
         JCClassDecl classDef = 
-            at(cdecl).ClassDef(at(cdecl).Modifiers(PUBLIC, langAnnotations.toList()),
+            at(cdecl).ClassDef(at(cdecl).Modifiers(0, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
-                    List.<JCTypeParameter>nil(), makeSelect("ceylon", "Object"),
+                    typeParams.toList(),
+                    makeSelect("ceylon", "Object"),
                     List.<JCExpression>nil(),
                     defs.toList());
 
@@ -791,6 +815,11 @@ public class Gen {
         }
 
         return result;
+    }
+    
+    JCTypeParameter convert(CeylonTree.TypeParameter param) {
+    	TypeName name = (TypeName)param.name;
+    	return at(param).TypeParameter(names.fromString(name.toString()), List.<JCExpression>nil());
     }
     
     JCExpression convertExpression(final CeylonTree expr) {
