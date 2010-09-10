@@ -202,6 +202,14 @@
             
         </section>
         
+           <comment><para>TODO: should we add:</para>
+           <itemizedlist>
+               <listitem>
+                   <para><literal>String</literal> with
+                   <literal>java.lang.String</literal></para>
+               </listitem>
+           </itemizedlist></comment>
+           
     </section>
     
     <section id="java2ceylon">
@@ -388,6 +396,14 @@
                    <literal>Decimal</literal>.</para>
                </listitem>
            </itemizedlist>
+           
+           <comment><para>TODO: should we add:</para>
+           <itemizedlist>
+               <listitem>
+                   <para><literal>java.lang.String</literal> with
+                   <literal>String</literal></para>
+               </listitem>
+           </itemizedlist></comment>
            
         </section>
                 
