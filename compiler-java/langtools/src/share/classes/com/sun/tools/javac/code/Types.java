@@ -392,6 +392,14 @@ public class Types {
         if (s.tag >= firstPartialTag)
             return isSuperType(s, t);
 
+        if (s.isCompound()) {
+            for (Type s2 : interfaces(s).prepend(supertype(s))) {
+                if (!isSubtype(t, s2, capture))
+                    return false;
+            }
+            return true;
+        }
+
         Type lower = lowerBound(s);
         if (s != lower)
             return isSubtype(capture ? capture(t) : t, lower, false);
@@ -2838,6 +2846,14 @@ public class Types {
     /**
      * Capture conversion as specified by JLS 3rd Ed.
      */
+
+    public List<Type> capture(List<Type> ts) {
+        List<Type> buf = List.nil();
+        for (Type t : ts) {
+            buf = buf.prepend(capture(t));
+        }
+        return buf.reverse();
+    }
     public Type capture(Type t) {
         if (t.tag != CLASS)
             return t;
