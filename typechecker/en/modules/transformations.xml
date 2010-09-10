@@ -16,7 +16,9 @@
         <title>Transformation from Ceylon to Java</title>
         
         <para>The schema of a Java type may be inferred from the schema of
-        a Ceylon type.</para>
+        a Ceylon type. This inferred schema is compiled into the Java
+        <literal>.class</literal> file, where it is understood by any
+        Java compiler.</para>
         
         <section>
             <title>Toplevel declarations</title>
@@ -205,8 +207,13 @@
     <section id="java2ceylon">
         <title>Transformation from Java to Ceylon</title>
         
-        <para>The schema of a Ceylon type may be inferred from the schema 
-        of a Java type.</para>
+        <para>The schema of a Ceylon type may be inferred from the schema of 
+        a Java type. The Ceylon compiler is able to reverse engineer a Java 
+        schema from any <literal>.class</literal> file, infer the corresponding 
+        Ceylon schema, and compile Ceylon code against this inferred schema.
+        <!--This is not a reversible process: if the inferred Ceylon type where
+        compiled by the Ceylon compiler, the same bytecode would not necessarily 
+        be produced!--></para>
         
         <section>
             <title>Toplevel declarations</title>
