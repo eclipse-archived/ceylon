@@ -909,7 +909,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <para>(We would need to define an identity extension in <literal>ceylon.lang</literal>.)</para>
         <para>In the following special case, this lets us implement a Haskell-style type class 
         as an extension of the metatype:</para>
-        <programlisting>given extension E(Type&lt;X&gt; tx) satisfies Monad&lt;X&gt;</programlisting>
+        <programlisting>given extension E(Type&lt;X&gt; tx) satisfies Monoid&lt;X&gt;</programlisting>
         <para>The extension type would be inferred at the point of invocation, using the usual
         rules for searching for extensions.</para>
         </comment>
