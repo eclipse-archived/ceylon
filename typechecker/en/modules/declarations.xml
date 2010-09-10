@@ -2408,7 +2408,9 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         <para>It's even possible to define an extension to a metatype:</para>
         
         <programlisting>public extension class StringType(Type&lt;String&gt; this) {
-    public String concat(String a, String b) { return a + " " + b }
+    public String concat(String a, String b) { 
+        return a + " " + b 
+    }
 }</programlisting>
 
         <para>Resulting in a syntax very much like a Java-style "static" invocation.</para>
