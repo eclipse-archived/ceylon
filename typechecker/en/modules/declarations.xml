@@ -2203,6 +2203,31 @@ public Visibility private() {
         <para>An toplevel extension method is called a <emphasis>converter</emphasis>. 
         An toplevel extension class is called a <emphasis>decorator</emphasis>.</para>
                 
+        
+        <programlisting>public extension Log objectToLog(Object this) {
+    return this.log;
+}</programlisting>
+        
+        <programlisting>public class Person(User user) {
+    ...
+    public extension User user = user;
+    ...
+}</programlisting>
+
+        <programlisting>public extension class SequenceUtils&lt;N&gt;(N[] this) 
+        given N extends Number, Comparable&lt;N&gt; {
+    
+    public N[] positiveElements() {
+        return this.elements() where (N n) (n&gt;0)
+    }
+    
+    public N[] elementsLessThan(N limit) {
+        return this.elements() where (N n) (n&lt;limit)
+    }
+    
+    ...   
+}</programlisting>
+        
         <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
         
         <itemizedlist>
@@ -2245,44 +2270,20 @@ public Visibility private() {
         </itemizedlist>
         
         <para>The introduced type may not be a <literal>mutable</literal> type.</para>
-        
-        <programlisting>public extension Log objectToLog(Object this) {
-    return this.log;
-}</programlisting>
-        
-        <programlisting>public class Person(User user) {
-    ...
-    public extension User user = user;
-    ...
-}</programlisting>
 
-        <programlisting>public extension class SequenceUtils&lt;N&gt;(N[] this) 
-        given N extends Number, Comparable&lt;N&gt; {
-    
-    public N[] positiveElements() {
-        return this.elements() where (N n) (n&gt;0)
-    }
-    
-    public N[] elementsLessThan(N limit) {
-        return this.elements() where (N n) (n&lt;limit)
-    }
-    
-    ...   
-}</programlisting>
-        
         <!-- 
         <comment><para>Note: I actually much prefer the readability of 
         <literal>User personToUser(extends Person person)</literal> and
         <literal>SequenceUtils&lt;T&gt;(extends T[] collection)</literal>, 
         but this doesn't work for attributes and member methods.</para></comment>
-         -->
+        -->
         
-        <para>We say that an extension class or toplevel method is <emphasis>enabled</emphasis> 
-        in a compilation unit if the class or toplevel method is imported by that 
+        <para>We say that a converter or decorator is <emphasis>enabled</emphasis> in 
+        a compilation unit if the toplevel class or toplevel method is imported by that 
         compilation unit, and the <literal>import</literal> statement is annotated 
-        <literal>extension</literal>. If the <literal>import</literal> statement is 
-        not annotated extension, the declaration is imported normally and is not be 
-        treated as an extension in that compilation unit.</para>
+        <literal>extension</literal>. If the <literal>import</literal> statement is not 
+        annotated <literal>extension</literal>, the declaration is imported normally but 
+        the extension is not enabled in the compilation unit.</para>
         
         <programlisting>import extension org.domain.app.extensions.objectToLog;
 import extension org.domain.utils.SequenceUtils;</programlisting>
@@ -2293,49 +2294,82 @@ import extension org.domain.utils.SequenceUtils;</programlisting>
         <para>An extension attribute, member class or member method is enabled in every 
         compilation unit.</para>
         
-        <para>If an extension is enabled in a compilation unit, the extended type is 
-        assignable to the introduced type in that compilation unit.</para>
-        
-        <para>Where an expression of the extended type is assigned to a program element,
-        the extension may or not be introduced by the compiler:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the extended type is a subtype of the type of the program 
-                element, the extension is not introduced, but otherwise</para>
-            </listitem>
-            <listitem>
-                <para>if the introduced type is a subtype of the type of the program 
-                element, but the extended type is not, the extension <emphasis>is</emphasis> 
-                introduced.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Where a member reference is applied to an expression of the extended type, 
-        the extension may or may not be introduced:</para>
+        <para>A type <literal>X</literal> is <emphasis>extendable</emphasis> to a type
+        <literal>Y</literal> in a compilation unit if there exists exactly one possible
+        sequence of enabled extensions 
+        <literal>E0(T0) satisfies U0, E1(T1) satisfies U1, ... En(tn) satisfies Un</literal>, 
+        such that:</para> 
         
         <itemizedlist>
             <listitem>
-                <para>if the extended type has a member to which the reference is
-                resolveable and the introduced type does not, the extension is not 
-                introduced, and likewise</para>
+                <para>the extensions <literal>E0, E1, ... En</literal> are distinct,</para>
             </listitem>
             <listitem>
-                <para>if there is a common supertype of the introduced type and the 
-                extended type that has a member to which the reference is resolveable, 
-                the extension is not introduced, but</para>
+                <para>the introduced type <literal>Un</literal> of the last extension 
+                <literal>En</literal> is a subtype of <literal>Y</literal>, and</para>
             </listitem>
             <listitem>
-                <para>if the introduced type has a member to which the reference is
-                resolveable and the extended type does not, the extension 
-                <emphasis>is</emphasis> introduced, and finally</para>
+                <para><literal>X</literal> is a subtype of <literal>T0</literal>, the 
+                extended type of the first extension <literal>E0</literal>, and is not
+                a subtype of <literal>U0</literal>, its introduced type,</para>
             </listitem>
             <listitem>
-                <para>if both the introduced type and the extended type have members
-                to which the reference is resolveable, but there is no common supertype 
-                with such a member, a compilation error results.</para>
+                <para>for <literal>0&lt;=i&lt;n</literal>, the introduced type 
+                <literal>Ui</literal> of the <literal>i</literal>th extension 
+                <literal>Ei</literal> is a subtype of <literal>Ti+1</literal>, the 
+                extended type of the <literal>i+1</literal>th extension 
+                <literal>Ei+1</literal>, and is not a subtype of <literal>Ui+1</literal>, 
+                its introduced type.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>If a type <literal>X</literal> is extendable to a type <literal>Y</literal> 
+        in a compilation unit, then <literal>X</literal> is assignable to <literal>Y</literal> 
+        in that compilation unit. The compiler automatically introduces a chain of extension 
+        invocations where necessary, to produce an instance of <literal>Y</literal> from an
+        instance of <literal>X</literal>.</para>
+        
+        <para>Where an expression of type <literal>X</literal> is assigned to a program 
+        element of type <literal>Y</literal> to which <literal>X</literal> is extendable, 
+        the extension sequence from <literal>X</literal> to <literal>Y</literal> is 
+        automatically introduced by the compiler.</para>
+        
+        <!-- 
+        <itemizedlist>
+            <listitem>
+                <para>if <literal>X</literal> is a subtype of the type of the program 
+                element, the extension sequence is not introduced, but otherwise</para>
+            </listitem>
+            <listitem>
+                <para>if <literal>Y</literal> is a subtype of the type of the program 
+                element, but <literal>X</literal> is not, the extension sequence
+                <emphasis>is</emphasis> introduced.</para>
+            </listitem>
+        </itemizedlist>
+        -->
+        
+        <para>Where a member reference is applied to an expression of type <literal>X</literal>, 
+        an extension sequence may or may not be introduced:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if <literal>X</literal> has a member to which the reference is 
+                resolveable, and for every type <literal>Y</literal> to which <literal>X</literal> 
+                is extendable that also has a member to which the reference is resolveable,
+                the member of <literal>X</literal> and the member of <literal>Y</literal>
+                both <literal>override</literal> a member of a common supertype, then no 
+                extension sequence is introduced, but</para>
+            </listitem>
+            <listitem>
+                <para>if <literal>X</literal> does not have a member to which the reference 
+                is resolveable, and if there exists exactly one type <literal>Y</literal> 
+                to which <literal>X</literal> is extendable that has a member to which the 
+                reference is resolveable, the extension sequence from <literal>X</literal> 
+                to <literal>Y</literal> <emphasis>is</emphasis> introduced.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Otherwise, the member reference is ambiguous and results in a compiler error.</para>
         
         <programlisting>import extension org.mydomain.myproject.extensions.objectToLog;
 ...
@@ -2361,7 +2395,7 @@ Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);<
         <programlisting>Collection&lt;Integer&gt; ints = ...;
 Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements();</programlisting>
         -->
-        
+        <!-- 
         <para>An introduced type may result in an ambiguity:</para>
         
         <itemizedlist>
@@ -2388,10 +2422,10 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         
         <para>In this case, the member type, method or attribute may not be called. 
         Any invocation or evaluation of the member results in a compiler error.</para>
-        
-        <para>When an invocation of an introduced method or evaluation of an introduced 
-        attribute is executed, or when an instance of the extended type is assigned to 
-        a program element of the introduced type:</para>
+        -->
+         
+        <para>When an introduced extension sequence is executed, for each extension
+        in the sequence:</para>
         
         <itemizedlist>
             <listitem>
