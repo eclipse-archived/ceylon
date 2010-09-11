@@ -141,7 +141,7 @@ typeDeclaration
     ;*/
 
 importDeclaration
-    : 'import' importPath ('.' wildcard | alias)? ';'
+    : 'import' 'extension'? importPath ('.' wildcard | alias)? ';'
     -> ^(IMPORT_DECL importPath wildcard? alias?)
     ;
     
