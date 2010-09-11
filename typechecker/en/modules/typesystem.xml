@@ -61,8 +61,8 @@
             <para>What is the return type of a <literal>void</literal> method?</para>
         </listitem>
         <listitem>
-            <para>What is the type of an attribute that may or may not hold a value 
-            of type <literal>T</literal>?</para>
+            <para>What is the type of an local that may or may not hold a value of 
+            type <literal>T</literal>?</para>
         </listitem>
         <listitem>
             <para>What is the type that represents methods that accept two <literal>Float</literal>
