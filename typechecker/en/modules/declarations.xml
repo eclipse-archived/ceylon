@@ -2354,7 +2354,7 @@ import extension org.domain.utils.SequenceUtils;</programlisting>
         <itemizedlist>
             <listitem>
                 <para>if <literal>X</literal> has a member to which the reference is 
-                resolveable, and for every type <literal>Y</literal> to which <literal>X</literal> 
+                resolveable, and if for every type <literal>Y</literal> to which <literal>X</literal> 
                 is extendable that also has a member to which the reference is resolveable,
                 the member of <literal>X</literal> and the member of <literal>Y</literal>
                 both <literal>override</literal> a member of a common supertype, then no 
