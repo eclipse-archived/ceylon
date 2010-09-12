@@ -2082,7 +2082,7 @@ else {
         <para>Instead, we're going to introduce <literal>Log</literal> onto
         <literal>Object</literal> using an extension. If we were able to modify 
         the code of <literal>Object</literal>, this would be as easy as adding 
-        an <literal>extension</literal> annotation to the <literal>log</literal>,
+        an <literal>extension</literal> annotation to the <literal>log</literal>
         attribute like this:</para>
         
         <programlisting>public extension Log log { ... }</programlisting>
