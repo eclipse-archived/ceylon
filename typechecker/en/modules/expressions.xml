@@ -2570,12 +2570,14 @@ createItemMethod.intercept()
             </row>
             <row>
                 <entry>Addition, subtraction, bitwise or,
-                bitwise xor, list concatenation:</entry> 
+                bitwise xor, bitwise complement in, list 
+                concatenation:</entry> 
                 <entry>
                 <literal>+</literal>, 
                 <literal>-</literal>, 
                 <literal>|</literal>, 
-                <literal>^</literal>
+                <literal>^</literal>,
+                <literal>~</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
@@ -4079,6 +4081,15 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
+            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
+        </row>
+        <row>
+            <entry><literal>~</literal></entry>
+            <entry><literal>lhs ~ rhs</literal></entry>
+            <entry>complement in</entry>
+            <entry><literal>lhs.complement(rhs)</literal></entry>
             <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>

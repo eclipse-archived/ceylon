@@ -2133,8 +2133,9 @@ while (i<=max) {
     <section id="binary">
         <title>Bit strings and bitwise operations</title>
         
-        <para>The interface <literal>Bitwise</literal> defines the bitwise 
-        binary operators <literal>|, &amp;, ^</literal>.</para>
+        <para>The interface <literal>Bitwise</literal> defines the 
+        bitwise binary operators <literal>|, &amp;, ^</literal> and
+        <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Bitwise<B,T>
         satisfies Correspondence<T,Boolean>
@@ -2156,11 +2157,17 @@ while (i<=max) {
          |(x^y)[z]==((x|y)[z]&&!(x&y)[z])|.""
     public B xor(B bits);
     
+    doc "Bitwise complement in operator |x ~ y|. 
+         Implementations should respect the constraint 
+         that |(x~y)[z]==(x[z]&&!y[z])|.""
+    public B complement(B bits);
+    
 }]]></programlisting>
 
         <para><literal>Set</literal> extends <literal>Bitwise</literal>. 
-        In the case of a set, <literal>|</literal> represents union and 
-        <literal>&amp;</literal> represents intersection.</para>
+        In the case of a set, <literal>|</literal> represents union, 
+        <literal>&amp;</literal> represents intersection, and
+        <literal>~</literal> represents set complement.</para>
 
         <para>The interface <literal>BoundedBitwise</literal> defines the 
         unary operator <literal>~</literal>.</para>
