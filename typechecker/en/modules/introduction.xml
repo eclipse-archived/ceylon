@@ -816,8 +816,8 @@ abstract class Hello() {
             abstract members&mdash;simply leaving out the implementation of the member is 
             perfectly sufficient for the compiler to realize that it is abstract. An attribute
             which is never initialized is an abstract attribute. Ceylon doesn't have default
-            attribute values like Java does. Attributes don't get initialized to <literal>0</literal>
-            unless you explicitly say they should be!</para>
+            attribute values like Java does. Attributes don't get initialized to zero unless 
+            you explicitly say they should be!</para>
 
             <para>One way to define an implementation for an inherited abstract attribute is 
             to simply assign a value to it in the subclass.</para>
