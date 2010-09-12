@@ -466,13 +466,19 @@ public void hello(Process process) {
         <literal>null</literal> to a local that isn't of type 
         <literal>Optional</literal>. The compiler won't let you.</para>
         
-        <para>
-        Nor will the Ceylon compiler let you do anything "dangerous" with a 
-        value of type <literal>Optional</literal>&mdash;that is, anything that 
+        <para>Nor will the Ceylon compiler let you do anything "dangerous" with 
+        a value of type <literal>Optional</literal>&mdash;that is, anything that 
         could cause a <literal>NullPointerException</literal> in 
         Java&mdash;without first checking that the value is not null using 
-        <literal>if (exists ... )</literal>.
-        </para>
+        <literal>if (exists ... )</literal>.</para>
+        
+        <para>In fact, it's not even possible to use the equality operator 
+        <literal>==</literal> with an expression of type <literal>Optional</literal>.
+        You can't write <literal>if (x==null)</literal> like you can in Java. 
+        This helps avoid the incorrect behavior of <literal>==</literal> in Java
+        where <literal>x==y</literal> evaluates to <literal>true</literal> if
+        <literal>x</literal> and <literal>y</literal> both evaluate to 
+        <literal>null</literal>.</para>
         
         <para>If you're worried about the performance implications of wrapping
         values in instances of <literal>Optional</literal>, don't be. 
