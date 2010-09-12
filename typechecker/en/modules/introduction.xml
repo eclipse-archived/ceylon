@@ -973,8 +973,9 @@ package assign greeting {
             named <literal>IdentifiableObject</literal>, which represents a type which is always 
             passed by reference. The <literal>===</literal> operator accepts expressions of 
             type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
-            directly extend <literal>Object</literal>, but normally, and by default, your 
-            classes will extend <literal>IdentifiableObject</literal>.</para>
+            directly extend <literal>Object</literal>, but normally, and by default, your classes 
+            will extend <literal>IdentifiableObject</literal>. All <literal>mutable</literal>
+            classes must extend <literal>IdentifiableObject</literal>.</para>
             
             <para><literal>IdentifiableObject</literal> defines a default implementation of the
             interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
