@@ -510,7 +510,8 @@ else {
             </listitem>
             <listitem>
                 <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
-                evaluates to an instance of a type assignable to the specified type.</para>
+                 of type <literal>Object</literal> evaluates to an instance of a type assignable to 
+                 the specified type.</para>
             </listitem>
         </itemizedlist>
         
