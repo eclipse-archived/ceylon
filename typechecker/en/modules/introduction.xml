@@ -974,10 +974,36 @@ abstract class Hello() {
     
     override Integer hash = greeting.hash;
     
+    override String string { 
+        return greeting 
+    }
+    
+    ...
+    
 }]]></programlisting>
 
             <para>If we override <literal>equals()</literal>, we're required to also override
             the <literal>hash</literal> attribute.</para>
+            
+            <para>Since it's very common to override <literal>equals()</literal>, <literal>hash</literal>
+            and <literal>string</literal> at the same time, there's an easy way to do it using
+            the <literal>id</literal> annotation. The previous code is equivalent to this much
+            shorter version:</para>
+            
+        <programlisting><![CDATA[doc "A greeting"
+abstract class Hello() {
+    
+    id
+    doc "The (abstract) greeting"
+    package String greeting;
+    
+    ...
+        
+}]]></programlisting>
+            
+            <para>Check out the <literal>default</literal> implementation of <literal>equals()</literal>, 
+            <literal>hash</literal> and <literal>string</literal> in <literal>BaseObject</literal>
+            to see exactly how this works.</para>
             
             <para>Thus, we say that operators are <emphasis>polymorphic</emphasis> in Ceylon.</para>
 
