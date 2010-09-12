@@ -921,6 +921,88 @@ package assign greeting {
         </section>
         
         <section>
+            <title>On overview of the built-in types</title>
+            
+            <para>Just like Java, Ceylon has a class named <literal>Object</literal>. But
+            in Ceylon, <literal>Object</literal> isn't the root of the type system. An
+            expression of type <literal>Object</literal> has a definite, well-defined, 
+            non-null value. As we've seen, the Ceylon type system can also represent some
+            more exotic types, for example <literal>Optional&lt;T&gt;</literal>, which
+            represents a value that may be null. A second example of a type that doesn't
+            extend <literal>Object</literal> is <literal>Gettable&lt;T&gt;</literal>, 
+            which represents a value that has not yet been evaluated.</para>
+            
+            <para>Therefore, Ceylon's <literal>Object</literal> has a superclass, named 
+            <literal>Void</literal>. All Ceylon types are assignable to <literal>Void</literal>.
+            Expressions of type <literal>Void</literal> aren't useful for very much, 
+            since <literal>Void</literal> has no members or operators. You can't even narrow 
+            an expression of type <literal>Void</literal> to a different type. The one useful 
+            thing you <emphasis>can</emphasis> do with <literal>Void</literal> is use it to 
+            represent the signature of a method when you don't care about the return type, 
+            since a method declared <literal>void</literal> is considered to have return type
+            <literal>Void</literal>.</para>
+            
+            <para>The exotic types we just mentioned&mdash;<literal>Optional</literal> and
+            <literal>Gettable</literal>&mdash;directly extend <literal>Void</literal>. All 
+            types that represent well-defined values extend <literal>Object</literal>,
+            including:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>user-written classes,</para>
+                </listitem>
+                <listitem>
+                    <para>all interfaces, and</para>
+                </listitem>
+                <listitem>
+                    <para>the types that are considered primitive in Java, such as
+                    <literal>Integer</literal>, <literal>Float</literal> and 
+                    <literal>Character</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Since an expression of type <literal>Object</literal> always evaluates to
+            a definite, well-defined value, it's possible to obtain the runtime type of an
+            <literal>Object</literal>, or narrow an expression of type <literal>Object</literal> 
+            to a more specific type.</para>
+            
+            <para>Since <literal>Object</literal> is a supertype of types like <literal>Float</literal>
+            which are passed by value at the level of the Java virtual machine, you can't use 
+            the <literal>===</literal> operator to test the identity of two values of type
+            <literal>Object</literal>. Instead, there is a subclass of <literal>Object</literal>,
+            named <literal>IdentifiableObject</literal>, which represents a type which is always 
+            passed by reference. The <literal>===</literal> operator accepts expressions of 
+            type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
+            directly extend <literal>Object</literal>, but normally, and by default, your 
+            classes will extend <literal>IdentifiableObject</literal>.</para>
+            
+            <para><literal>IdentifiableObject</literal> defines a default implementation of the
+            interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
+            to the <literal>equals()</literal> and <literal>hashCode()</literal> methods defined
+            by <literal>java.lang.Object</literal>. Just like in Java, you can override this
+            default implementation in your own classes. This is the normal way to get a customized 
+            behavior for the <literal>==</literal> operator, the only constraint being, that for
+            subtypes of <literal>IdentifiableObject</literal>, <literal>x==y</literal> should
+            imply <literal>x===y</literal>&mdash;equality should be consistent with identity.</para>
+            
+            <para>Occasionally that's not what we want. For example, for numeric types, I don't
+            care whether a value is of class <literal>Natural</literal>, <literal>Integer</literal>, 
+            or <literal>Whole</literal> when comparing it to <literal>0</literal>. Therefore, 
+            numeric types must extend <literal>Object</literal> directly. Indeed, all the built in
+            numeric types do directly extend <literal>Object</literal>. The built-in numeric types
+            also implement the interface <literal>Numeric&lt;T&gt;</literal>, which extends 
+            <literal>Equals&lt;T&gt;</literal>. This captures the notion that equality for numeric
+            types is fundamentally different to equality for objects with well-defined identity.
+            It's not possible to compare an <literal>Integer</literal> with an <literal>Order</literal>
+            using <literal>==</literal> (at least not if you expect to have a symmetrical 
+            <literal>==</literal> operator).</para>
+            
+            <para>Thus, Ceylon is able to capture within the type system much of the behavior that 
+            Java introduces by fiat special-case rules in the language definition.</para>
+            
+        </section>
+        
+        <section>
             <title>Using numeric types</title>
             
             <para>Ceylon doesn't have anything like Java's primitive types. The types that
