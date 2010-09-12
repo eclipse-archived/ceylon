@@ -3180,6 +3180,10 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tgroup>
     </table>
     
+        <comment><para>TODO: Should we have allow the operators <literal>&lt;=</literal> 
+        and <literal>&gt;=</literal> to handle partial orders? A particular usecase is
+        <literal>Set</literal> comparison.</para></comment>
+    
     </section>
                 
     <section id="logical">
@@ -3647,13 +3651,6 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tgroup>
     </table>
     
-        <comment><para>TODO: Should we have operators for set union/intersection
-        and set comparison? Perhaps we should let you use the operators 
-        <literal>|</literal>, <literal>&amp;</literal>, <literal>^</literal> along
-        with <literal>&lt;=</literal> and <literal>&gt;=</literal> for expressions 
-        of type <literal>Set&lt;T&gt;</literal>. These operators all aready have 
-        the right precedences.</para></comment>
-    
     </section>
     
     <section id="constructors">
@@ -4016,9 +4013,12 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     <section id="bitwise">
     <title>Bitwise operators</title>
     
-        <para>These are C-style bitwise operations for bit strings. A <literal>Boolean</literal> 
-        is considered a bit string of length one, so these operators also apply to 
-        <literal>Boolean</literal> values. Note that in Ceylon these operators have a higher 
+        <para>These are C-style bitwise operations for bit strings, generalized to apply 
+        to other kinds of <literal>Correspondence&lt;T,Boolean&gt;</literal>. A 
+        <literal>Boolean</literal> is considered a bit string of length one, so these 
+        operators apply to <literal>Boolean</literal> values. A <literal>Set&lt;T&gt;</literal> 
+        is a <literal>Correspondence&lt;T,Boolean&gt;</literal>, so the operators even 
+        apply to <literal>Set</literal>s. Note that in Ceylon these operators have a higher 
         precedence than they have in C or Java. Note also that the built-in numeric types are
         not considered bit strings, so explicit conversion to <literal>Bits&lt;#n&gt;</literal>
         is required before these operations may be applied to a numeric value.</para>
@@ -4053,35 +4053,35 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>complement</entry>
             <entry><literal>rhs.complement</literal></entry>
             <entry></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>BoundedBitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
         <row>
             <entry><literal>|</literal></entry>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;</literal></entry>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
         <row>
             <entry><literal>^</literal></entry>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
 
         
@@ -4092,27 +4092,27 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Settable&lt;Bits&lt;#n&gt;&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bitwise&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
         <row>
             <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Settable&lt;Bits&lt;#n&gt;&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bitwise&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
         <row>
             <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Settable&lt;Bits&lt;#n&gt;&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
-            <entry><literal>Bits&lt;#n&gt;</literal></entry>
+            <entry><literal>Settable&lt;Bitwise&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
         </row>
         
     </tbody>

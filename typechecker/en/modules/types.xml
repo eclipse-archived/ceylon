@@ -1947,7 +1947,7 @@ while (i<=max) {
 
 <programlisting><![CDATA[public interface Numeric<N>
         satisfies Number, Comparable<N>
-        given N satisfies Number {
+        given N satisfies Numeric<N> {
 
     doc "The binary |+| operator"
     public N plus(N number);
@@ -2130,30 +2130,57 @@ while (i<=max) {
 
     </section>
     
-    <section id="bits">
-        <title>Bit strings</title>
+    <section id="binary">
+        <title>Bit strings and bitwise operations</title>
         
-        <para>The interface <literal>Bits</literal> represents a fixed length
-        string of boolean values, and supports the binary 
-        <literal>|, &amp;, ^</literal> and unary <literal>~</literal> 
-        operators.</para>
+        <para>The interface <literal>Bitwise</literal> defines the bitwise 
+        binary operators <literal>|, &amp;, ^</literal>.</para>
         
-        <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n], Equals<Bits<#n>> {
+        <programlisting><![CDATA[public interface Bitwise<B,T>
+        satisfies Correspondence<T,Boolean>
+        given T satisfies Object
+        given B satisfies Bitwise<B,T> {
         
-    doc "Bitwise or operator |x | y|"
-    public Bits<#n> or(Bits<#n> bits);
+    doc "Bitwise or operator |x | y|. Implementations
+         should respect the constraint that 
+         |(x|y)[z]==(x[z]||y[z])|."
+    public B or(B bits);
     
-    doc "Bitwise and operator |x & y|"
-    public Bits<#n> and(Bits<#n> bits);
+    doc "Bitwise and operator |x & y|. Implementations
+         should respect the constraint that 
+         |(x&y)[z]==(x[z]&&y[z])|."
+    public B and(B bits);
     
-    doc "Bitwise xor operator |x ^ y|"
-    public Bits<#n> xor(Bits<#n> bits);
+    doc "Bitwise xor operator |x ^ y|. Implementations
+         should respect the constraint that 
+         |(x^y)[z]==((x|y)[z]&&!(x&y)[z])|.""
+    public B xor(B bits);
     
-    doc "Bitwise complement operator |~x|"
+}]]></programlisting>
+
+        <para><literal>Set</literal> extends <literal>Bitwise</literal>. 
+        In the case of a set, <literal>|</literal> represents union and 
+        <literal>&amp;</literal> represents intersection.</para>
+
+        <para>The interface <literal>BoundedBitwise</literal> defines the 
+        unary operator <literal>~</literal>.</para>
+        
+        <programlisting><![CDATA[public interface BoundedBitwise<B,T> 
+        satisfies Bitwise<B,T> {
+        
+    doc "Bitwise complement operator |~x|. Implementations
+         should respect the constraint that 
+         |(~x)[z]==!x[z]|."
     public Bits<#n> complement;
     
 }]]></programlisting>
+        
+        <para>The interface <literal>Bits</literal> represents a fixed length
+        string of boolean values, and supports the unary operator 
+        <literal>~</literal>.</para>
+        
+        <programlisting><![CDATA[public interface Bits<#n> 
+        satisfies Boolean[n], Equals<Bits<#n>>, BoundedBitwise<Bits<#n>,Natural> {}]]></programlisting>
 
         <comment><para>TODO: should we model <literal>Bits&lt;#n&gt;</literal> as 
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
@@ -2979,7 +3006,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             in addition to inherited operators-->:</para>
             
             <programlisting><![CDATA[public interface Set<out X> 
-        satisfies Collection<X>, Correspondence<Object, Boolean> 
+        satisfies Collection<X>, Bitwise<Set<X>,Object> 
         given X satisfies Object, Equals<X> {
     
     doc "Determine if the set is a superset of the given set.
