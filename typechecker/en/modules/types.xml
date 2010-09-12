@@ -110,7 +110,7 @@
         
         <para>Types which can be compared for equality must satisfy the interface 
         <literal>Equals&lt;T&gt;</literal>. Two expressions of type
-        <literal>Equals&lt;T&gt;?</literal>, for the same type <literal>T</literal>,
+        <literal>Equals&lt;T&gt;</literal>, for the same type <literal>T</literal>,
         may be compared using the binary operators <literal>&equals;</literal> 
         (equals) and <literal>!=</literal> (not equals).</para>
         

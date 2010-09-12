@@ -3088,18 +3088,18 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>&equals;</literal></entry>
             <entry><literal>lhs &equals; rhs</literal></entry>
             <entry>equal</entry>
-            <entry><literal>if (exists lhs) lhs.equals(rhs) else if (exists rhs) false else true</literal></entry>
-            <entry><literal>Equals&lt;T&gt;?</literal></entry>
-            <entry><literal>T?</literal></entry>
+            <entry><literal>lhs.equals(rhs)</literal></entry>
+            <entry><literal>Equals&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
             <entry><literal>!=</literal></entry>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
-            <entry><literal>if (exists lhs) lhs.equals(rhs).complement else if (exists rhs) true else false</literal></entry>
-            <entry><literal>Equals&lt;T&gt;?</literal></entry>
-            <entry><literal>T?</literal></entry>
+            <entry><literal>!lhs.equals(rhs)</literal></entry>
+            <entry><literal>Equals&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -3179,9 +3179,6 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tbody>
     </tgroup>
     </table>
-    
-        <comment><para>TODO: should we really have the equality operators accept null
-        values?</para></comment>
     
     </section>
                 
@@ -3650,8 +3647,12 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tgroup>
     </table>
     
-        <comment><para>TODO: Should we have operators for set union/intersection/complement
-        and set comparison?</para></comment>
+        <comment><para>TODO: Should we have operators for set union/intersection
+        and set comparison? Perhaps we should let you use the operators 
+        <literal>|</literal>, <literal>&amp;</literal>, <literal>^</literal> along
+        with <literal>&lt;=</literal> and <literal>&gt;=</literal> for expressions 
+        of type <literal>Set&lt;T&gt;</literal>. These operators all aready have 
+        the right precedences.</para></comment>
     
     </section>
     

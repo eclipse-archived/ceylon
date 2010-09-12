@@ -947,7 +947,7 @@ package assign greeting {
             
             <para>means, by definition,</para>
             
-            <programlisting>ifExists(x) then (x.equals(rhs)) else (!rhs exists))</programlisting>
+            <programlisting>x.equals(y)</programlisting>
             
             <para>Therefore, it's easy to customize operators like <literal>&lt;</literal> and 
             <literal>==</literal> with specific behavior for our own classes, just by implementing
