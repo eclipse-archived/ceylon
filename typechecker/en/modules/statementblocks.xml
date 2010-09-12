@@ -535,8 +535,8 @@ else {
                 modifier appears, the condition must be an expression of type <literal>Boolean</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the <literal>is</literal> modifier appears, the condition expression may 
-                be of any type.</para>
+                <para>If the <literal>is</literal> modifier appears, the condition expression must 
+                be of type <literal>Object</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition expression 
