@@ -475,7 +475,7 @@ public void hello(Process process) {
         <para>In fact, it's not even possible to use the equality operator 
         <literal>==</literal> with an expression of type <literal>Optional</literal>.
         You can't write <literal>if (x==null)</literal> like you can in Java. 
-        This helps avoid the incorrect behavior of <literal>==</literal> in Java
+        This helps avoid the undesirable behavior of <literal>==</literal> in Java
         where <literal>x==y</literal> evaluates to <literal>true</literal> if
         <literal>x</literal> and <literal>y</literal> both evaluate to 
         <literal>null</literal>.</para>
