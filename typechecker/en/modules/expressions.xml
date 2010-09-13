@@ -2917,7 +2917,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>member</entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Member&lt;X,T&gt;</literal></entry>
+            <entry><literal>Member &lt;X,T&gt;</literal></entry>
             <entry><literal>Gettable&lt;T&gt;</literal> or
             <literal>T</literal></entry>
         </row>
@@ -2928,7 +2928,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Callable&lt;T,P...&gt;</literal></entry>
+            <entry><literal>Callable &lt;T,P...&gt;</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>Gettable&lt;T&gt;</literal> or
             <literal>T</literal></entry>
@@ -2981,7 +2981,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>follow</entry>
             <entry><literal>lhs:=lhs.member</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Attribute&lt;X,X&gt;</literal></entry>
+            <entry><literal>Attribute &lt;X,X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
 
@@ -2991,7 +2991,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>apply</entry>
             <entry><literal>lhs:=lhs.member(x,y,z)</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Method&lt;X,X,P..&gt;</literal>,
+            <entry><literal>Method &lt;X,X,P..&gt;</literal>,
             together with arguments <literal>P...</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
@@ -3113,7 +3113,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &lt;=&gt; rhs</literal></entry>
             <entry>compare</entry>
             <entry><literal>lhs.compare(rhs)</literal></entry>
-            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Comparison</literal></entry>
         </row>
@@ -3122,7 +3122,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &lt; rhs</literal></entry>
             <entry>smaller</entry>
             <entry><literal>(lhs&lt;=&gt;rhs).isSmaller</literal></entry>
-            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3131,7 +3131,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &gt; rhs</literal></entry>
             <entry>larger</entry>
             <entry><literal>(lhs&lt;=&gt;rhs).isLarger</literal></entry>
-            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3140,7 +3140,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &lt;= rhs</literal></entry>
             <entry>small as</entry>
             <entry><literal>(lhs&lt;=&gt;rhs).isSmallAs</literal></entry>
-            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3149,7 +3149,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &gt;= rhs</literal></entry>
             <entry>large as</entry>
             <entry><literal>(lhs&lt;=&gt;rhs).isLargeAs</literal></entry>
-            <entry><literal>Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3253,7 +3253,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
             <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
-            <entry><literal>Settable&lt;Boolean&gt;</literal></entry>
+            <entry><literal>Settable &lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3263,7 +3263,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
-            <entry><literal>Settable&lt;Boolean&gt;</literal></entry>
+            <entry><literal>Settable &lt;Boolean&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3355,7 +3355,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>nullsafe member</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
             <entry><literal>X?</literal></entry>
-            <entry><literal>Member&lt;X,T&gt;</literal></entry>
+            <entry><literal>Member &lt;X,T&gt;</literal></entry>
             <entry><literal>T?</literal></entry>
         </row>
 
@@ -3365,7 +3365,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>nullsafe invoke</entry>
             <entry><literal>if (exists lhs) lhs(x,y,z) else null</literal></entry>
-            <entry><literal>Callable&lt;T,P...&gt;?</literal></entry>
+            <entry><literal>Callable &lt;T,P...&gt;?</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>T?</literal></entry>
         </row>
@@ -3414,16 +3414,16 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Gettable&lt;Y?&gt;</literal></entry>
+            <entry><literal>Gettable &lt;Y?&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[index]</literal></entry>
             <entry>lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
-            <entry><literal>OpenCorrespondence&lt;X,Y&gt;</literal></entry>
+            <entry><literal>OpenCorrespondence &lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Settable&lt;Y?&gt;</literal></entry>
+            <entry><literal>Settable &lt;Y?&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
@@ -3432,16 +3432,16 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs.value(index)</literal></entry>
             <entry><literal>Y[n]</literal></entry>
             <entry><literal>Bound&lt;#n&gt;</literal></entry>
-            <entry><literal>Gettable&lt;Y&gt;</literal></entry>
+            <entry><literal>Gettable &lt;Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>[]</literal></entry>
             <entry><literal>lhs[index]</literal></entry>
             <entry>bounded lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
-            <entry><literal>OpenBoundedSequence&lt;Y,n&gt;</literal></entry>
+            <entry><literal>OpenBoundedSequence &lt;Y,n&gt;</literal></entry>
             <entry><literal>Bound&lt;#n&gt;</literal></entry>
-            <entry><literal>Settable&lt;Y&gt;</literal></entry>
+            <entry><literal>Settable &lt;Y&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>?[]</literal></entry>
@@ -3467,8 +3467,8 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>iterated lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry><literal>Iterable&lt;X&gt;</literal></entry>
-            <entry><literal>Iterable&lt;Y&gt;</literal></entry>
+            <entry><literal>Iterable &lt;X&gt;</literal></entry>
+            <entry><literal>Iterable &lt;Y&gt;</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Sequence subranges</emphasis></entry></row>
@@ -3523,7 +3523,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>spread member</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>X[]</literal></entry>
-            <entry><literal>Member&lt;X,T&gt;</literal></entry>
+            <entry><literal>Member &lt;X,T&gt;</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
         
@@ -3533,7 +3533,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>spread invoke</entry>
             <entry><literal>for (C c in lhs) c(x,y,z)</literal></entry>
-            <entry><literal>Callable&lt;T,P...&gt;[]</literal></entry>
+            <entry><literal>Callable &lt;T,P...&gt;[]</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
@@ -3783,7 +3783,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>successor</entry>
             <entry><literal>rhs:=rhs.successor</literal></entry>
             <entry></entry>
-            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         <row>
@@ -3792,7 +3792,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>predecessor</entry>
             <entry><literal>rhs:=rhs.predecessor</literal></entry>
             <entry></entry>
-            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -3803,7 +3803,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
             <entry><literal>(++lhs).predecessor</literal></entry>
-            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -3812,7 +3812,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
             <entry><literal>(--lhs).successor</literal></entry>
-            <entry><literal>Settable&lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -3827,7 +3827,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>negation</entry>
             <entry><literal>rhs.inverse</literal></entry>
             <entry></entry>
-            <entry><literal>Invertable&lt;I&gt;</literal></entry>
+            <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
         </row>
         
@@ -3895,7 +3895,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
             <entry><literal>lhs:=lhs+rhs</literal></entry>
-            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3904,7 +3904,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
             <entry><literal>lhs:=lhs-rhs</literal></entry>
-            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3913,7 +3913,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
             <entry><literal>lhs:=lhs*rhs</literal></entry>
-            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3922,7 +3922,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
             <entry><literal>lhs:=lhs/rhs</literal></entry>
-            <entry><literal>Settable&lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -3931,7 +3931,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
             <entry><literal>lhs:=lhs%rhs</literal></entry>
-            <entry><literal>Settable&lt;Integral&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Integral&lt;N&gt;&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
@@ -4017,14 +4017,15 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     <title>Slotwise operators</title>
     
         <para>These are C-style bitwise operations for bit strings, generalized to apply 
-        to other kinds of <literal>Correspondence&lt;T,Boolean&gt;</literal>. A 
-        <literal>Boolean</literal> is considered a bit string of length one, so these 
-        operators apply to <literal>Boolean</literal> values. A <literal>Set&lt;T&gt;</literal> 
-        is a <literal>Correspondence&lt;T,Boolean&gt;</literal>, so the operators even 
-        apply to <literal>Set</literal>s. Note that in Ceylon these operators have a higher 
-        precedence than they have in C or Java. Note also that the built-in numeric types are
-        not considered bit strings, so explicit conversion to <literal>Bits&lt;#n&gt;</literal>
-        is required before these operations may be applied to a numeric value.</para>
+        to other kinds of types that are formed from boolean-valued "slots". A 
+        <literal>Boolean</literal> can be seen as a bit string of length one, so these 
+        operators apply to <literal>Boolean</literal> values. A <literal>Set&lt;T&gt;</literal>, 
+        together with the <literal>in</literal> operator, may also be viewed in terms of
+        slots, so the operators even apply to <literal>Set</literal>s. Note that in Ceylon 
+        these operators have a higher precedence than they have in C or Java. Note also 
+        that the built-in numeric types are not considered bit strings, so explicit 
+        conversion to <literal>Bits&lt;#n&gt;</literal> is required before these operators 
+        may be applied to a numeric value.</para>
     
     <table>
     <tgroup cols="7">
@@ -4056,7 +4057,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>complement</entry>
             <entry><literal>rhs.complement</literal></entry>
             <entry></entry>
-            <entry><literal>FixedSlots&lt;B,T&gt;</literal></entry>
+            <entry><literal>FixedSlots&lt;B&gt;</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
         <row>
@@ -4064,7 +4065,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4073,7 +4074,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4082,7 +4083,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4091,7 +4092,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ~ rhs</literal></entry>
             <entry>complement in</entry>
             <entry><literal>lhs.complement(rhs)</literal></entry>
-            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4104,7 +4105,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4113,7 +4114,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4122,7 +4123,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4131,7 +4132,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ~= rhs</literal></entry>
             <entry>complement in</entry>
             <entry><literal>lhs:=lhs~rhs</literal></entry>
-            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Slots&lt;B&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
