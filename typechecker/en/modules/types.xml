@@ -2172,7 +2172,7 @@ while (i<=max) {
         <para>The interface <literal>BoundedBitwise</literal> defines the 
         unary operator <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface BoundedBitwise<B,T> 
+        <programlisting><![CDATA[public interface BoundedBitwise<B, in T> 
         satisfies Bitwise<B,T> {
         
     doc "Bitwise complement operator |~x|. Implementations
