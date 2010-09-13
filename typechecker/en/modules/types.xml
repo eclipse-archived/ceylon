@@ -3021,26 +3021,30 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
 
 }]]></programlisting>
 
-            <para>The following extension defines the <literal>|, &, ^, ~</literal>
+            <para>The following extension defines the <literal>|, &amp;, ^, ~</literal>
             operators for <literal>Set</literal>s.</para>
             
             <programlisting><![CDATA[public extension class BitwiseSet<X>(Set<X> this) 
         satisfies Bitwise<Set<X>,Object> {
     
-    public B or(B bits) {
+    override Set<T> or<T>(Set<T> set) 
+            given T abstracts X {
         return ...
     }
     
-    public B and(B bits) {
+    override Set<X> and<T>(Set<T> set) 
+            given T abstracts X {
         return ...
     }
     
-    public B xor(B bits) {
+    override Set<T> xor<T>(Set<T> set) 
+            given T abstracts X {
         return ...
     
     }
     
-    public B complement(B bits) {
+    override Set<X> complement<T>(Set<T> set) 
+            given T abstracts X {
         return ...
     }
     
