@@ -3019,6 +3019,18 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     public override Set<T> with<T>(T... elements) given T abstracts X;
     public override OpenSet<T> copy<T>() given T abstracts X;
 
+    public Set<T> union<T>(Set<T> set) 
+            given T abstracts X;
+    
+    public Set<X> intersection<T>(Set<T> set) 
+            given T abstracts X;
+    
+    public Set<T> exclusiveUnion<T>(Set<T> set) 
+            given T abstracts X;
+    
+    public Set<X> complement<T>(Set<T> set) 
+            given T abstracts X;
+    
 }]]></programlisting>
 
             <para>The following extension defines the <literal>|, &amp;, ^, ~</literal>
@@ -3027,25 +3039,21 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <programlisting><![CDATA[public extension class BitwiseSet<X>(Set<X> this) 
         satisfies Bitwise<Set<X>,Object> {
     
-    override Set<T> or<T>(Set<T> set) 
-            given T abstracts X {
-        return ...
+    override Set<X> or(Set<X> set) {
+        return this.union(set)
     }
     
-    override Set<X> and<T>(Set<T> set) 
-            given T abstracts X {
-        return ...
+    override Set<X> and(Set<X> set) {
+        return this.intersection(set)
     }
     
-    override Set<T> xor<T>(Set<T> set) 
-            given T abstracts X {
-        return ...
+    override Set<X> xor(Set<X> set) {
+        return this.exclusiveUnion(set)
     
     }
     
-    override Set<X> complement<T>(Set<T> set) 
-            given T abstracts X {
-        return ...
+    override Set<X> complement(Set<X> set) {
+        return this.complement(set)
     }
     
 }]]></programlisting>
