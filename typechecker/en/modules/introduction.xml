@@ -1393,16 +1393,9 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
             <programlisting>Set&lt;String&gt; names = ... ;
 if ("gavin" in names) { ... }</programlisting>
             
-            <para>A <literal>Set&lt;T&gt;</literal> is a 
-            <literal>Correspondence&lt;T,Boolean&gt;</literal>, so, alternatively, we 
-            can determine if an object belongs to a set using the index operator:</para>
-            
-            <programlisting>Set&lt;String&gt; names = ... ;
-if (names["gavin"]) { ... }</programlisting>
-            
-            <para>Now, when viewed in this light, set union and intersection closely 
-            resemble bitwise or and bitwise and. Therefore, Ceylon generalizes the 
-            traditional bitwise operators to <literal>Set</literal>s.</para>
+            <para>Set union and intersection closely resemble bitwise or and bitwise and. 
+            Therefore, Ceylon generalizes the traditional bitwise operators to 
+            <literal>Set</literal>s.</para>
             
             <programlisting>Set&lt;String&gt; someSet = ... ;
 Set&lt;String&gt; someOtherSet = ... ;
