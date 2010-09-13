@@ -49,18 +49,26 @@ public final class Float
         return ceylon.String.instance(java.lang.Double.toString(value));
     }
 
-    @Extension
+    // Conversions between numeric types
+
     public ceylon.Natural natural() {
         return ceylon.Natural.instance((long) value);
     }
 
-    @Extension
     public ceylon.Integer integer() {
         return ceylon.Integer.instance((long) value);
     }
 
-    @Extension
+    public ceylon.Whole whole() {
+        throw new RuntimeException("not implemented");
+    }
+
     public ceylon.Float floatXXX() {
         return this;
+    }
+
+    @Extension
+    public ceylon.Decimal decimal() {
+        throw new RuntimeException("not implemented");
     }
 }
