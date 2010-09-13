@@ -263,6 +263,7 @@ visibility
 statement 
     : specificationOrExpressionStatement
     | controlStructure
+    //| '...'
     ;
 
 specificationOrExpressionStatement
@@ -349,7 +350,7 @@ memberParameters
 //      style parameters below?
 memberDefinition
     : memberParameters?
-      ( block | (specifier | initializer)? ';'! )
+      ( /*'...'*/ | block | (specifier | initializer)? ';'! )
     ;
     
 interfaceDeclaration
@@ -657,7 +658,7 @@ rangeIntervalEntryExpression
 
 additiveExpression
     : multiplicativeExpression
-      (('+'^ | '-'^ | '|'^ | '^'^) multiplicativeExpression)*
+      (('+'^ | '-'^ | '|'^ | '^'^ | '~'^) multiplicativeExpression)*
     ;
 
 multiplicativeExpression 
