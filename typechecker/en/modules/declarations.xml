@@ -1504,6 +1504,10 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
         <programlisting>AttributeHeader := Annotation* InferableType MemberName</programlisting>
         
+        <para>Note that an attribute declaration is essentially a method declaration with 
+        zero formal parameter lists. Likewise, an attribute evaluation is essentially a 
+        method invocation with zero argument lists.</para>
+        
         <para>An attribute body may invoke, evaluate or assign members of the current 
         instance of the class which defines the method (the instance upon which the 
         attribute was invoked) without explicitly specifying the receiver.</para>
