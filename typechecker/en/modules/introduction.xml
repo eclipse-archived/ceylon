@@ -1214,9 +1214,9 @@ abstract class Hello() {
             
             <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
-            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Atlanta", "Guanajuato" };
+            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
 String? sf = voyage[2];
-String[] usLeg = voyage[1..2];
+String[] usLeg = voyage[1..3];
 String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlisting>
             
             <para>The syntax <literal>String[]</literal> is just an abbreviation for the 
@@ -1225,6 +1225,13 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             interface <literal>Sequence</literal> from the point of view of the type system. 
             But sequences of values are a common occurrence in computing, so Ceylon provides 
             a streamlined syntax for dealing with them.</para>
+            
+            <para>The expression <literal>voyage[2]</literal> evaluates to the third item 
+            in the sequence (the item with index <literal>2</literal>). The range expression 
+            <literal>voyage[1..3]</literal> evaluates to the subsequence from the lower index 
+            <literal>1</literal> to the upper index <literal>3</literal> (a subsequence 
+            containing the second, third, and fourth items of the sequence). The 
+            <literal>+</literal> operator joins two sequences together.</para>
             
             <para>Just like in Java, the collection types are <emphasis>parameterized</emphasis> 
             or <emphasis>generic</emphasis> types. Unlike Java, there are no raw types&mdash;if
@@ -1248,7 +1255,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <programlisting>Natural[] from1To10 = 1..10;</programlisting>
             <programlisting>Integer[] fromNegative10To10 = -10..10;</programlisting>
-            <programlisting>Character[] fromAToZ = `A`..`Z`;</programlisting>
+            <programlisting>Character[] alphanum = (`A`..`Z`) + (`0`..`9`);</programlisting>
 
             <para>The <literal>Sequence</literal> interface as assignable to <literal>Iterable</literal>,
             so we can iterate a <literal>Sequence</literal> using a <literal>for</literal>
