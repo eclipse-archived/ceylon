@@ -2692,6 +2692,7 @@ createItemMethod.intercept()
                 <literal>&amp;=</literal>, 
                 <literal>|=</literal>, 
                 <literal>^=</literal>, 
+                <literal>~=</literal>, 
                 <literal>&amp;&amp;=</literal>, 
                 <literal>||=</literal>,
                 <literal>?=</literal>
@@ -4121,6 +4122,15 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
+            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>B</literal></entry>
+            <entry><literal>B</literal></entry>
+        </row>
+        <row>
+            <entry><literal>~=</literal></entry>
+            <entry><literal>lhs ~= rhs</literal></entry>
+            <entry>complement in</entry>
+            <entry><literal>lhs:=lhs~rhs</literal></entry>
             <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>

@@ -599,7 +599,7 @@ expression
 //can be used to init locals
 assignmentExpression
     : disjunctionExpression
-      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
+      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '~='^ | '&&='^ | '||='^ | '?='^) expression )?
     ;
 
 //should '^' have a higher precedence?
@@ -1464,6 +1464,9 @@ BITWISEXOREQ
     :   '^='
     ;
 
+BITWISNOTEQ
+    :   '~='
+    ;
 REMAINDEREQ
     :   '%='
     ;
