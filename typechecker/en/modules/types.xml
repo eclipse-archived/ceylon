@@ -2137,7 +2137,7 @@ while (i<=max) {
         bitwise binary operators <literal>|, &amp;, ^</literal> and
         <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface Bitwise<B,T>
+        <programlisting><![CDATA[public interface Bitwise<B, in T>
         satisfies Correspondence<T,Boolean>
         given T satisfies Object
         given B satisfies Bitwise<B,T> {
@@ -3002,18 +3002,10 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         <section id="sets">
             <title>Sets</title>
             
-            <para>Sets implement the following interface<!--  ,
-            and support the binary operators <literal>+</literal>
-            (union), <literal>~</literal> (intersect), 
-            <literal>-</literal> (complement),
-            <literal>>=</literal> (superset),
-            <literal>&lt;=</literal> (subset),
-            <literal>></literal> (proper superset) and
-            <literal>&lt;</literal> (proper subset),
-            in addition to inherited operators-->:</para>
+            <para>Sets implement the following interface:</para>
             
             <programlisting><![CDATA[public interface Set<out X> 
-        satisfies Collection<X>, Bitwise<Set<X>,Object> 
+        satisfies Collection<X>, Correspondence<Object,Boolean> 
         given X satisfies Object, Equals<X> {
     
     doc "Determine if the set is a superset of the given set.
@@ -3029,11 +3021,30 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
 
 }]]></programlisting>
 
-            <!--    
-    public Set<T> union(Set<T> set) given T abstracts X;
-    public Set<X> intersection(Set<Object> set);
-    public Set<X> complement(Set<Object> set);
-            -->
+            <para>The following extension defines the <literal>|, &, ^, ~</literal>
+            operators for <literal>Set</literal>s.</para>
+            
+            <programlisting><![CDATA[public extension class BitwiseSet<X>(Set<X> this) 
+        satisfies Bitwise<Set<X>,Object> {
+    
+    public B or(B bits) {
+        return ...
+    }
+    
+    public B and(B bits) {
+        return ...
+    }
+    
+    public B xor(B bits) {
+        return ...
+    
+    }
+    
+    public B complement(B bits) {
+        return ...
+    }
+    
+}]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
@@ -3350,49 +3361,6 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
 }]]></programlisting>
             
         </section>
-        
-        <!--
-        
-        <section>
-            <title>Collection operations</title>
-            
-            <programlisting><![CDATA[public Collections {
-            
-    public static List<X> join<X>(List<X> list...) {
-        return new List<X> {
-            ...
-        }
-    }
-    
-    public static Bag<X> union<X>(Bag<X> bag...) {
-        return new Bag<X> {
-            ...
-        }
-    }
-    
-    public static Set<X> union<X>(Set<X> set...) {
-        return new Set<X> {
-            ...
-        }
-    }
-    
-    public static Set<X> intersection<X>(Set<X> set...) {
-        return new Set<X> {
-            ...
-        }
-    }
-    
-    public static Set<X> complement<X>(Set<X> set, Set<Object> sets...) {
-        return new Set<X> {
-            ...
-        }
-    }    
-            
-}]]></programlisting>
-            
-        </section>
-        
-        -->
         
     </section>
     
