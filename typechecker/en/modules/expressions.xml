@@ -4016,16 +4016,33 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     <section id="slotwise">
     <title>Slotwise operators</title>
     
-        <para>These are C-style bitwise operations for bit strings, generalized to apply 
-        to other kinds of types that are formed from boolean-valued "slots". A 
-        <literal>Boolean</literal> can be seen as a bit string of length one, so these 
-        operators apply to <literal>Boolean</literal> values. A <literal>Set&lt;T&gt;</literal>, 
-        together with the <literal>in</literal> operator, may also be viewed in terms of
-        slots, so the operators even apply to <literal>Set</literal>s. Note that in Ceylon 
-        these operators have a higher precedence than they have in C or Java. Note also 
-        that the built-in numeric types are not considered bit strings, so explicit 
-        conversion to <literal>Bits&lt;#n&gt;</literal> is required before these operators 
-        may be applied to a numeric value.</para>
+        <para>The C-style bitwise operators are generalized to apply to other types that 
+        are formed from boolean-valued "slots". The interface <literal>Slots</literal> 
+        defines the necessary abstraction.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The interface <literal>Bits&lt;#n&gt;</literal> represents fixed
+                length bit strings. In this case, the operators are the standard bitwise 
+                operators from other C-like languages.</para>
+            </listitem>
+            <listitem>
+                <para>A <literal>Boolean</literal> can be seen as a bit string of length 
+                one, so these operators also apply to <literal>Boolean</literal> values.</para>
+            </listitem>
+            <listitem>
+                <para>A <literal>Set&lt;T&gt;</literal>, together with the <literal>in</literal> 
+                operator, may also be viewed in terms of slots, so the operators 
+                apply to <literal>Set</literal>s, where <literal>|</literal>, <literal>&amp;</literal>
+                and binary <literal>~</literal> are interpreted as set union, intersection 
+                and complement operators.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that in Ceylon these operators have a higher precedence than they have 
+        in C or Java. Note also that the built-in numeric types are not bit strings, so 
+        explicit conversion to <literal>Bits&lt;#n&gt;</literal> is required before these 
+        operators may be applied to a numeric value.</para>
     
     <table>
     <tgroup cols="7">
