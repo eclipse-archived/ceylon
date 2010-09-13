@@ -1377,6 +1377,32 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
             
             <programlisting><![CDATA[voyage[1] := "Los Angeles";]]></programlisting>
             
+            <para>Finally, <literal>Set</literal> represents the most important kind
+            of collection in mathematics. The most important thing we can do with
+            a <literal>Set</literal> is ask if an object belongs to it. We usually
+            use the <literal>in</literal> operator, since <literal>Set</literal>, 
+            like all collections, is a suptype of <literal>Category</literal>:</para>
+            
+            <programlisting>Set&lt;String&gt; names = ... ;
+if ("gavin" in names) { ... }</programlisting>
+            
+            <para>A <literal>Set&lt;T&gt;</literal> is a 
+            <literal>Correspondence&lt;T,Boolean&gt;</literal>, so, alternatively, we 
+            can determine if an object belongs to a set using the index operator:</para>
+            
+            <programlisting>Set&lt;String&gt; names = ... ;
+if (names["gavin"]) { ... }</programlisting>
+            
+            <para>Now, when viewed in this light, set union and intersection closely 
+            resemble bitwise or and bitwise and. Therefore, Ceylon generalizes the 
+            traditional bitwise operators to <literal>Set</literal>s.</para>
+            
+            <programlisting>Set&lt;String&gt; someSet = ... ;
+Set&lt;String&gt; someOtherSet = ... ;
+Set&lt;String&gt; union = someSet | someOtherSet;
+Set&lt;String&gt; intersection = someSet &amp; someOtherSet;
+Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
+                        
             <para>Splitting the collection interfaces into a "read-only" view and a
             "writable" view has several advantages, but the most important is that you
             now don't need to worry about exposing collections as part of the public 
