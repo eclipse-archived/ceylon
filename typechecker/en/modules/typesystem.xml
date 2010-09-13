@@ -990,6 +990,13 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Vector&lt;#2*n+m+3&gt;</programlisting>
         <programlisting>Vector&lt;#(n+2)+(m+n+1)&gt;</programlisting>
         
+        <comment><para>TODO: should we allow ranges as arguments to dimensional type 
+        parameters, for example, <literal>Vector&lt;#0...&gt;</literal> or
+        <literal>Vector&lt;#1..10&gt;</literal>, where <literal>Vector&lt;#n&gt;</literal>
+        is a subtype of <literal>Vector&lt;#min..max&gt;</literal> if 
+        <literal>min&lt;=n&lt;=max</literal>. If so, we should also allow abbreviations 
+        like <literal>String[1..n]</literal> for sequences.</para></comment>
+        
         </section>
                 
         <section id="typeargumentconformance">
@@ -1019,12 +1026,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
-        
-        <comment><para>TODO: should we allow ranges as arguments to dimensional type 
-        parameters, for example, <literal>Vector&lt;#0...&gt;</literal> or
-        <literal>Vector&lt;#1..10&gt;</literal>, where <literal>Vector&lt;#n&gt;</literal>
-        is a subtype of <literal>Vector&lt;#min..max&gt;</literal> if 
-        <literal>min&lt;=n&lt;=max</literal>.</para></comment>
         
         </section>
                 
