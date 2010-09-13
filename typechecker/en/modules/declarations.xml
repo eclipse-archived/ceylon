@@ -20,8 +20,8 @@
     <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
 ExtendedType?
-SatisfiedTypes? 
-TypeConstraints? 
+SatisfiedTypes?
+TypeConstraints?
 Body?</programlisting>
 
     <para>A type parameter does not need an explicit declaration of this form unless it 

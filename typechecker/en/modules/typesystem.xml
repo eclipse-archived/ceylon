@@ -815,11 +815,14 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>A parameterized method, class, alias, or interface declaration may declare 
         constraints upon ordinary type parameters using the <literal>given</literal> clause.</para>
         
-        <programlisting>TypeConstraints = ("given" TypeConstraint)+</programlisting>
+        <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     
-        <programlisting>TypeConstraint := TypeName FormalParams? SatisfiedTypes? AbstractedType?</programlisting>
+        <programlisting>TypeConstraint := "given" TypeName FormalParams? SatisfiedTypes? AbstractedType?</programlisting>
         
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
+        
+        <para>Note that the syntax for a type constraint is essentially the same syntax used 
+        for other type declarations such as class, interface, and type alias declarations.</para>
         
         <para>There are three kinds of type constraint:</para>
         
