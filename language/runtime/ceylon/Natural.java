@@ -60,7 +60,8 @@ public final class Natural
         return ceylon.String.instance(java.lang.Long.toString(value));
     }
 
-    @Extension
+    // Conversions between numeric types
+
     public ceylon.Natural natural() {
         return this;
     }
@@ -71,7 +72,17 @@ public final class Natural
     }
 
     @Extension
+    public ceylon.Whole whole() {
+        throw new RuntimeException("not implemented");
+    }
+
+    @Extension
     public ceylon.Float floatXXX() {
         return ceylon.Float.instance(value);
+    }
+
+    @Extension
+    public ceylon.Decimal decimal() {
+        throw new RuntimeException("not implemented");
     }
 }
