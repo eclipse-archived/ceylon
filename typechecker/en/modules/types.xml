@@ -2133,33 +2133,33 @@ while (i<=max) {
     <section id="slots">
         <title>Slotwise operations</title>
         
-        <para>The interface <literal>Slots</literal> defines the 
-        slotwise binary operators <literal>|, &amp;, ^</literal> and
-        <literal>~</literal>.</para>
+        <para>The interface <literal>Slots</literal> defines the slotwise 
+        binary operators <literal>|, &amp;, ^</literal> and <literal>~</literal>. 
+        For any implementation of <literal>Slots</literal>, there should be 
+        a "slot" function that accepts a key and returns a 
+        <literal>Boolean</literal>.</para>
         
-        <programlisting><![CDATA[public interface Slots<B, in T>
-        satisfies Correspondence<T,Boolean>
-        given T satisfies Object
-        given B satisfies Slots<B,T> {
+        <programlisting><![CDATA[public interface Slots<B>
+        given B satisfies Slots<B> {
         
     doc "Slotwise or operator |x | y|. Implementations
          should respect the constraint that 
-         |(x|y)[z]==(x[z]||y[z])|."
+         |(x|y).slot(z)==(x.slot(z)||y.slot(z))|."
     public B or(B bits);
     
     doc "Slotwise and operator |x & y|. Implementations
          should respect the constraint that 
-         |(x&y)[z]==(x[z]&&y[z])|."
+         |(x&y).slot(z)==(x.slot(z)&&y.slot(z))|."
     public B and(B bits);
     
     doc "Slotwise xor operator |x ^ y|. Implementations
          should respect the constraint that 
-         |(x^y)[z]==((x|y)[z]&&!(x&y)[z])|.""
+         |(x^y).slot(z)==((x|y).slot(z)&&!(x&y).slot(z))|.""
     public B xor(B bits);
     
     doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
-         that |(x~y)[z]==(x[z]&&!y[z])|.""
+         that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|.""
     public B complement(B bits);
     
 }]]></programlisting>
@@ -2172,12 +2172,12 @@ while (i<=max) {
         <para>The interface <literal>FixedSlots</literal> defines the 
         unary operator <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface FixedSlots<B, in T> 
-        satisfies Slots<B,T> {
+        <programlisting><![CDATA[public interface FixedSlots<B> 
+        satisfies Slots<B> {
         
-    doc "Slotwise complement operator |~x|. Implementations
-         should respect the constraint that 
-         |(~x)[z]==!x[z]|."
+    doc "Slotwise complement operator |~x|. 
+         Implementations should respect the constraint 
+         that |(~x).slot(z)==!x.slot(z)|."
     public Bits<#n> complement;
     
 }]]></programlisting>
@@ -2192,7 +2192,7 @@ while (i<=max) {
         <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n], Equals<Bits<#n>>, FixedSlots<Bits<#n>,Natural> {}]]></programlisting>
+        satisfies Boolean[n], Equals<Bits<#n>>, FixedSlots<Bits<#n>> {}]]></programlisting>
 
         <comment><para>TODO: should we model <literal>Bits&lt;#n&gt;</literal> as 
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
@@ -2226,6 +2226,14 @@ while (i<=max) {
             return bit.complement
         else {
             return bit
+        }
+    }
+    
+    override Bits<1> complement(Bits<1> bit) {
+        if (this) {
+            return bit.complement
+        else {
+            return this
         }
     }
     
@@ -3010,7 +3018,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>Sets implement the following interface:</para>
             
             <programlisting><![CDATA[public interface Set<out X> 
-        satisfies Collection<X>, Correspondence<Object,Boolean> 
+        satisfies Collection<X> 
         given X satisfies Object, Equals<X> {
     
     doc "Determine if the set is a superset of the given set.
@@ -3042,7 +3050,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             operators for <literal>Set</literal>s.</para>
             
             <programlisting><![CDATA[public extension class SetSlots<X>(Set<X> this) 
-        satisfies Slots<Set<X>,Object> {
+        satisfies Slots<Set<X>> {
     
     override Set<X> or(Set<X> set) {
         return this.union(set)
@@ -3066,7 +3074,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenSet<X> 
-        satisfies Set<X>, OpenCollection<X>, OpenCorrespondence<Object, Boolean> 
+        satisfies Set<X>, OpenCollection<X> 
         given X satisfies Object, Equals<X> {}]]></programlisting>
 
         </section>
@@ -3354,7 +3362,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>Bags implement the following interface:</para>
             
             <programlisting><![CDATA[public interface Bag<out X> 
-        satisfies Collection<X>, Correspondence<Object, Natural> 
+        satisfies Collection<X> 
         given X satisfies Object, Equals<X> {
     
     doc "A map from element to the number of occurrences of 
@@ -3370,7 +3378,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X>, OpenCorrespondence<Object, Natural> 
+        satisfies Bag<X>, OpenCollection<X> 
         given X satisfies Object, Equals<X> {
         
     override OpenMap<X,Natural> map;
