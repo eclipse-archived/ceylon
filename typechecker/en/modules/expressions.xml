@@ -2535,7 +2535,7 @@ createItemMethod.intercept()
                 <entry>Right</entry>
             </row>            
             <row>
-                <entry>Negation, bitwise complement, format:</entry>
+                <entry>Negation, slotwise complement, format:</entry>
                 <entry>
                 <literal>-</literal>, 
                 <literal>~</literal>,
@@ -2558,7 +2558,7 @@ createItemMethod.intercept()
             -->
             <row>
                 <entry>Multiplication, division, remainder,
-                bitwise and:</entry> 
+                slotwise and:</entry> 
                 <entry>
                 <literal>*</literal>, 
                 <literal>/</literal>, 
@@ -2569,8 +2569,8 @@ createItemMethod.intercept()
                 <entry>Left</entry>
             </row>
             <row>
-                <entry>Addition, subtraction, bitwise or,
-                bitwise xor, bitwise complement in, list 
+                <entry>Addition, subtraction, slotwise or,
+                slotwise xor, slotwise complement in, list 
                 concatenation:</entry> 
                 <entry>
                 <literal>+</literal>, 
@@ -2851,7 +2851,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <para>all arithmetic operators,</para>
         </listitem>
         <listitem>
-            <para>all bitwise operators,</para>
+            <para>all slotwise operators,</para>
         </listitem>
         <listitem>
             <para>the comparison and equality operators <literal>&equals;</literal>,
@@ -4012,7 +4012,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
         
     </section>
     
-    <section id="bitwise">
+    <section id="slotwise">
     <title>Slotwise operators</title>
     
         <para>These are C-style bitwise operations for bit strings, generalized to apply 

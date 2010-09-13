@@ -1179,7 +1179,7 @@ abstract class Hello() {
 }</programlisting>
             
             <!--
-            <para>You can even apply the bitwise and, or, xor, and complement operators
+            <para>You can even apply the slotwise and, or, xor, and complement operators
             to the type <literal>Natural</literal>:</para>
             
             <programlisting>Natural result = color&amp;mask;</programlisting>

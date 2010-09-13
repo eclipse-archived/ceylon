@@ -2134,7 +2134,7 @@ while (i<=max) {
         <title>Slotwise operations</title>
         
         <para>The interface <literal>Slots</literal> defines the 
-        bitwise binary operators <literal>|, &amp;, ^</literal> and
+        slotwise binary operators <literal>|, &amp;, ^</literal> and
         <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Slots<B, in T>
