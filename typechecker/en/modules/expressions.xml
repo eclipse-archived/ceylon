@@ -3215,7 +3215,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Logical operations</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Logical operators</emphasis></entry></row>
         
         <row>
             <entry><literal>!</literal></entry>
@@ -3816,7 +3816,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>T</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Numeric operations</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Numeric operators</emphasis></entry></row>
         
         <!-- Unary negative -->
         
@@ -4013,7 +4013,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </section>
     
     <section id="bitwise">
-    <title>Bitwise operators</title>
+    <title>Slotwise operators</title>
     
         <para>These are C-style bitwise operations for bit strings, generalized to apply 
         to other kinds of <literal>Correspondence&lt;T,Boolean&gt;</literal>. A 
@@ -4047,7 +4047,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Bitwise operations</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Slotwise operators</emphasis></entry></row>
         
         <row>
             <entry><literal>~</literal></entry>
@@ -4055,7 +4055,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>complement</entry>
             <entry><literal>rhs.complement</literal></entry>
             <entry></entry>
-            <entry><literal>BoundedBitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>FixedSlots&lt;B,T&gt;</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
         <row>
@@ -4063,7 +4063,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
-            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4072,7 +4072,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
-            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4081,7 +4081,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
-            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4090,20 +4090,20 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ~ rhs</literal></entry>
             <entry>complement in</entry>
             <entry><literal>lhs.complement(rhs)</literal></entry>
-            <entry><literal>Bitwise&lt;B,T&gt;</literal></entry>
+            <entry><literal>Slots&lt;B,T&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
 
         
-        <row><entry namest="first" nameend="last"><emphasis>Bitwise assignment</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Slotwise assignment</emphasis></entry></row>
         
         <row>
             <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Settable&lt;Bitwise&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4112,7 +4112,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Settable&lt;Bitwise&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>
@@ -4121,7 +4121,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Settable&lt;Bitwise&lt;B,T&gt;&gt;</literal></entry>
+            <entry><literal>Settable&lt;Slots&lt;B,T&gt;&gt;</literal></entry>
             <entry><literal>B</literal></entry>
             <entry><literal>B</literal></entry>
         </row>

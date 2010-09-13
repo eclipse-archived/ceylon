@@ -2130,64 +2130,69 @@ while (i<=max) {
 
     </section>
     
-    <section id="binary">
-        <title>Bit strings and bitwise operations</title>
+    <section id="slots">
+        <title>Slotwise operations</title>
         
-        <para>The interface <literal>Bitwise</literal> defines the 
+        <para>The interface <literal>Slots</literal> defines the 
         bitwise binary operators <literal>|, &amp;, ^</literal> and
         <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface Bitwise<B, in T>
+        <programlisting><![CDATA[public interface Slots<B, in T>
         satisfies Correspondence<T,Boolean>
         given T satisfies Object
-        given B satisfies Bitwise<B,T> {
+        given B satisfies Slots<B,T> {
         
-    doc "Bitwise or operator |x | y|. Implementations
+    doc "Slotwise or operator |x | y|. Implementations
          should respect the constraint that 
          |(x|y)[z]==(x[z]||y[z])|."
     public B or(B bits);
     
-    doc "Bitwise and operator |x & y|. Implementations
+    doc "Slotwise and operator |x & y|. Implementations
          should respect the constraint that 
          |(x&y)[z]==(x[z]&&y[z])|."
     public B and(B bits);
     
-    doc "Bitwise xor operator |x ^ y|. Implementations
+    doc "Slotwise xor operator |x ^ y|. Implementations
          should respect the constraint that 
          |(x^y)[z]==((x|y)[z]&&!(x&y)[z])|.""
     public B xor(B bits);
     
-    doc "Bitwise complement in operator |x ~ y|. 
+    doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
          that |(x~y)[z]==(x[z]&&!y[z])|.""
     public B complement(B bits);
     
 }]]></programlisting>
 
-        <para><literal>Set</literal> extends <literal>Bitwise</literal>. 
+        <para><literal>Set</literal> extends <literal>Slots</literal>. 
         In the case of a set, <literal>|</literal> represents union, 
         <literal>&amp;</literal> represents intersection, and
         <literal>~</literal> represents set complement.</para>
 
-        <para>The interface <literal>BoundedBitwise</literal> defines the 
+        <para>The interface <literal>FixedSlots</literal> defines the 
         unary operator <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface BoundedBitwise<B, in T> 
-        satisfies Bitwise<B,T> {
+        <programlisting><![CDATA[public interface FixedSlots<B, in T> 
+        satisfies Slots<B,T> {
         
-    doc "Bitwise complement operator |~x|. Implementations
+    doc "Slotwise complement operator |~x|. Implementations
          should respect the constraint that 
          |(~x)[z]==!x[z]|."
     public Bits<#n> complement;
     
 }]]></programlisting>
+
+    </section>
+        
+    <section id="bitstrings">
+        <title>Bit strings</title>
         
         <para>The interface <literal>Bits</literal> represents a fixed length
         string of boolean values, and supports the unary operator 
         <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n], Equals<Bits<#n>>, BoundedBitwise<Bits<#n>,Natural> {}]]></programlisting>
+        satisfies Boolean[n], Equals<Bits<#n>>, FixedSlots<Bits<#n>,Natural> {}]]></programlisting>
 
         <comment><para>TODO: should we model <literal>Bits&lt;#n&gt;</literal> as 
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
@@ -3036,8 +3041,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>The following extension defines the <literal>|, &amp;, ^, ~</literal>
             operators for <literal>Set</literal>s.</para>
             
-            <programlisting><![CDATA[public extension class BitwiseSet<X>(Set<X> this) 
-        satisfies Bitwise<Set<X>,Object> {
+            <programlisting><![CDATA[public extension class SetSlots<X>(Set<X> this) 
+        satisfies Slots<Set<X>,Object> {
     
     override Set<X> or(Set<X> set) {
         return this.union(set)
