@@ -954,6 +954,7 @@ public class Gen {
             lose_comparison = true;
             break;
 
+        case CeylonParser.EQ:
         case CeylonParser.COLONEQ:
         	return at(op).Assign(convertExpression(operands[0]), convertExpression(operands[1]));
             
