@@ -153,7 +153,17 @@
         <literal>&identical;</literal> (identity equals).</para>
         
         <programlisting><![CDATA[public abstract class IdentifiableObject() 
-        extends Object() satisfies Equals<IdentifiableObject> {}]]></programlisting>
+        extends Object() satisfies Equals<IdentifiableObject> {
+
+    default override Boolean equals(IdentifiableObject that) {
+        return this===that
+    }
+    
+    default override Integer hash {
+        return identityHash(this);
+    }
+        
+}]]></programlisting>
         
         <para>The following toplevel methods expose the notion of object 
         identity:</para>
@@ -191,7 +201,7 @@
             return equals(that, idAttributes)
         }
         else {
-            return this===that
+            return super.equals(that)
         }
     }
     
@@ -216,7 +226,7 @@
             return hash(idAttributes)
         }
         else {
-            return identityHash(this)
+            return super.hash
         }
     }
     
