@@ -1943,16 +1943,59 @@ class Hello(String? name) {
     </section>
     
     <section>
-        <title>Generic types and covariance</title>
-        
+        <title>Generics</title>
+    
         <para>Programming with generic types is one of the most difficult parts of
         Java. That's still true, to some extent, in Ceylon. But because the Ceylon
-        language and SDK were designed for generics from the ground up, Ceylon
-        is able to eliminate one of the bits of Java generics that's really 
-        hard to get your head around: wildcard types. Wildcard types were Java's
-        solution to the problem of <emphasis>covariance</emphasis> in a generic
-        type system. Let's first explore the idea of covariance, and then see how
-        Ceylon's solution, copied from Scala, works.</para>
+        language and SDK were designed for generics from the ground up, Ceylon is
+        able to alleviate the most painful aspects of Java's bolted-on-later model.</para>
+        
+        <para>Just like in Java, type parameters are listed before ordinary formal
+        parameters, enclosed in angle brackets.</para>
+        
+        <programlisting>interface Collection&lt;X&gt; { ... }</programlisting>  
+        <programlisting>class Array&lt;T&gt;(T... elements) satisfies T[] { ... }</programlisting>
+        <programlisting>T[] singleton&lt;T&gt;(T element) { .... }</programlisting>
+        
+        <para>We usually don't need to explicitly specify type arguments in method
+        invocations or class instantiations (the type arguments can very often be 
+        inferred from the ordinary arguments), but, unlike Java, we always do need 
+        to specify type arguments in a type declaration (there are no raw types in 
+        Ceylon).</para>
+        
+        <programlisting>Array&lt;String&gt; strings = new Array("Hello", "World");</programlisting>
+        <programlisting>Person[] onlyMe = singleton(me);</programlisting>
+        <programlisting>Collection&lt;Order&gt; orders = getOrders();</programlisting>
+        
+        <para>The root cause of very many problems when working with generic types 
+        in Java is <emphasis>type erasure</emphasis>. Generic type arguments are 
+        discarded by the compiler, and simply aren't available at runtime. So the 
+        following, perfectly sensible, code fragments simply wouldn't compile in 
+        Java:</para>
+        
+        <programlisting>if (is List&lt;Person&gt; list) { ... }</programlisting>
+        <programlisting>if (is T object) { ... }</programlisting>
+        <programlisting>Type&lt;T&gt; tType = T;</programlisting>
+        
+        <para>(Where <literal>T</literal> is a generic type parameter.)</para>
+        
+        <para>You'll be pleased to know that in Ceylon, these three code
+        fragments compile and function as expected. Type arguments are reified
+        (available at runtime). Of course, generic arguments still aren't checked
+        for typesafety by the underlying virtual machine at runtime, but type
+        arguments are at least available to code that wants to make use of them
+        explicitly.</para>
+                
+        <para>Furthermore, Ceylon is able to eliminate one of the bits of Java 
+        generics that's really hard to get your head around: wildcard types. 
+        Wildcard types were Java's solution to the problem of <emphasis>covariance</emphasis> 
+        in a generic type system. Let's first explore the idea of covariance, and 
+        then see how Ceylon's solution, copied from Scala, works.</para>
+        
+    </section>
+    
+    <section>
+        <title>Covariance and contravariance</title>
         
         <para>It all starts with the intuitive expectation that a collection of
         <literal>Geek</literal>s is a collection of <literal>Person</literal>s.
@@ -2219,21 +2262,6 @@ Set&lt;Number&gt; allTheNumbers = decimals.union(floats);</programlisting>
         <programlisting>Set&lt;Hello&gt; hellos = Set( DefaultHello(), PersonalizedHello(name) );
 Set&lt;Object&gt; objects = Set("Gavin", 12, `%`, true);
 Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
-        
-        <para>Something that causes many problems when working with generic
-        types in Java is <emphasis>type erasure</emphasis>. Generic type 
-        arguments are discarded by the compiler, and simply aren't available
-        at runtime. So the following, perfectly sensible, code fragments 
-        simply wouldn't compile in Java:</para>
-        
-        <programlisting>if (is List&lt;Person&gt; list) { ... }</programlisting>
-        <programlisting>if (is T object) { ... }</programlisting>
-        <programlisting>Type&lt;T&gt; tType = T;</programlisting>
-        
-        <para>(Where <literal>T</literal> is a generic type parameter.)</para>
-        
-        <para>You'll be pleased to know that in Ceylon, these three code
-        fragments compile and function as expected.</para>
         
     </section>
     
