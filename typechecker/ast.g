@@ -350,7 +350,7 @@ memberParameters
 //      style parameters below?
 memberDefinition
     : memberParameters?
-      ( /*'...'*/ | block | (specifier | initializer)? ';'! )
+      ( /*'...' |*/ block | (specifier | initializer)? ';'! )
     ;
     
 interfaceDeclaration
