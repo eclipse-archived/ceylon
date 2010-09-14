@@ -919,7 +919,7 @@ public class Gen {
         int operator = op.operatorKind;
         switch (operator) {
         case CeylonParser.MINUS:
-            if (op.operands.length() == 1)
+            if (operands.length == 1)
                 unary_operator = true;
             else
                 binary_operator = true;
