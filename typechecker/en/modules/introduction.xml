@@ -629,6 +629,9 @@ class Hello(String? name) {
     }
 }]]></programlisting>
 
+            <para>Notice that the syntax of a getter declaration looks a lot like a 
+            method declaration with no formal parameter list.</para>
+
             <para>Clients of a class never need to know whether the attribute they 
             access holds state directly, or is a getter that derives its value from
             other attributes of the same object or other objects. In Ceylon, you don't 
