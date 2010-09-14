@@ -1968,10 +1968,10 @@ class Hello(String? name) {
         <programlisting>Collection&lt;Order&gt; orders = getOrders();</programlisting>
         
         <para>The root cause of very many problems when working with generic types 
-        in Java is <emphasis>type erasure</emphasis>. Generic type arguments are 
-        discarded by the compiler, and simply aren't available at runtime. So the 
-        following, perfectly sensible, code fragments simply wouldn't compile in 
-        Java:</para>
+        in Java is <emphasis>type erasure</emphasis>. Generic type parameters and
+        arguments are discarded by the compiler, and simply aren't available at 
+        runtime. So the following, perfectly sensible, code fragments just wouldn't 
+        compile in Java:</para>
         
         <programlisting>if (is List&lt;Person&gt; list) { ... }</programlisting>
         <programlisting>if (is T object) { ... }</programlisting>
@@ -1979,12 +1979,20 @@ class Hello(String? name) {
         
         <para>(Where <literal>T</literal> is a generic type parameter.)</para>
         
-        <para>You'll be pleased to know that in Ceylon, these three code
-        fragments compile and function as expected. Type arguments are reified
-        (available at runtime). Of course, generic arguments still aren't checked
-        for typesafety by the underlying virtual machine at runtime, but type
-        arguments are at least available to code that wants to make use of them
-        explicitly.</para>
+        <para>You'll be pleased to know that in Ceylon, these three code fragments 
+        compile and function as expected. Like Java, the Ceylon compiler performs
+        erasure, discarding type parameters from the schema of the generic type.
+        But unlike Java, type arguments are <emphasis>reified</emphasis> (available 
+        at runtime). Of course, generic type arguments aren't checked for typesafety 
+        by the underlying virtual machine at runtime, but type arguments are at least 
+        available at runtime to code that wants to make use of them explicitly. You
+        can even use reflection to discover the type arguments of an instance of a 
+        generic type.</para>
+        
+        <programlisting>String[] strings = { "Gavin", "Andrew", "Gary" };
+Object[] objects = strings;
+Type&lt;Object[]&gt; otype = objects.type;
+assert() that (otype.arguments.first == String);  //assertion succeeds</programlisting>
                 
         <para>Furthermore, Ceylon is able to eliminate one of the bits of Java 
         generics that's really hard to get your head around: wildcard types. 
