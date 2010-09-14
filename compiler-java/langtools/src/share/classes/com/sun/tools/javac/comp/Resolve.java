@@ -40,6 +40,8 @@ import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 import javax.lang.model.element.ElementVisitor;
 
+import com.sun.tools.javac.ceylon.ExtensionRequiredException;
+
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
  *  <p><b>This is NOT part of any supported API.
@@ -1219,6 +1221,17 @@ public class Resolve {
             if (sym.kind >= WRONG_MTHS)
                 sym = findMethod(env, site, name, argtypes, typeargtypes, true,
                                  env.info.varArgs=true, false);
+        }
+        if (sym.kind == WRONG_MTH) {
+            // FIXME: this is a hack to allow conversion of the left hand sides
+            // of binary operations.  It needs to be generalized to cope with any
+            // number of arguments.
+            if (argtypes.size() == 1) {
+                MethodSymbol extension = types.getCeylonExtension(site, argtypes.head);
+                if (extension != null) {
+                    throw new ExtensionRequiredException(extension);
+                }
+            }
         }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, name, true, argtypes, typeargtypes);

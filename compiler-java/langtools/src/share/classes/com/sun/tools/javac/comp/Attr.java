@@ -51,6 +51,8 @@ import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 
+import com.sun.tools.javac.ceylon.ExtensionRequiredException;
+
 /** This is the main context-dependent analysis phase in GJC. It
  *  encompasses name resolution, type checking and constant folding as
  *  subtasks. Some subtasks involve auxiliary classes.
@@ -1891,7 +1893,25 @@ public class Attr extends JCTree.Visitor {
 
         // Determine the symbol represented by the selection.
         env.info.varArgs = false;
-        Symbol sym = selectSym(tree, site, env, pt, pkind);
+        Symbol sym;
+        try {
+            sym = selectSym(tree, site, env, pt, pkind);
+        }
+        catch (ExtensionRequiredException e) {
+            // FIXME: this is a hack to allow conversion of the left hand sides
+            // of binary operations.  It needs to be generalized to cope with any
+            // number of arguments.
+            assert tree.getTag() == JCTree.SELECT;
+            JCTree.JCFieldAccess fat = (JCTree.JCFieldAccess) tree;
+  
+            // Mutate the tree (is this even vaguely allowed?)
+            make.at(fat.selected);
+            fat.selected = make.App(make.Select(fat.selected, e.extension));
+
+            // Replace the site type and try selecting the symbol again
+            site = e.extension.getReturnType();
+            sym = selectSym(tree, site, env, pt, pkind);
+        }
         if (sym.exists() && !isType(sym) && (pkind & (PCK | TYP)) != 0) {
             site = capture(site);
             sym = selectSym(tree, site, env, pt, pkind);
