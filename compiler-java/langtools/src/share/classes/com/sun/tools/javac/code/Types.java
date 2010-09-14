@@ -278,9 +278,6 @@ public class Types {
      }
 
     public MethodSymbol getCeylonExtension(Type t, Type s) {
-        if (isConvertibleNotOptional(t, s, null))
-            return null;
-        
         if (t.tag != CLASS || s.tag != CLASS)
             return null;
 
