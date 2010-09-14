@@ -565,6 +565,12 @@ process.writeLine(greeting);]]></programlisting>
         modifier is required. 
         </para>
         
+        <para>The visibility modifiers are: <literal>package</literal>,
+        <literal>module</literal>, and <literal>public</literal>. Ceylon doesn't
+        have anything like Java's <literal>protected</literal>. On the other hand,
+        Java doesn't have anything like Ceylon's <literal>module</literal> since 
+        Java has no standard module architecture.</para>
+        
         <para>Our first version of the <literal>Hello</literal> class has a
         single attribute and a single method, both declared to have 
         <literal>package</literal> visibility, making them accessible to other
@@ -599,8 +605,8 @@ class Hello(String? name) {
             <title>Abstracting state using attributes</title>
             
             <para>The attribute <literal>greeting</literal> is a <emphasis>simple 
-            attribute</emphasis>, very similar to a Java field. Its value is
-            specified immediately after it is declared. Usually we can declare
+            attribute</emphasis>, the closest thing Ceylon has to a Java field. Its 
+            value is specified immediately after it is declared. Usually we can declare
             and specify the value of an attribute in a single line of code.</para>
             
             <programlisting>package String greeting = "Hello, " name "!";</programlisting>
@@ -689,22 +695,25 @@ else {
 
         <para>You might be wondering why we're allowed to use the parameter 
         <literal>name</literal> inside the body of the getter of
-        <literal>greeting</literal>. Doesn't the parameter go out of scope 
-        as soon as the initializer terminates? Well, that's true, but 
-        Ceylon is a language with a very strict block structure, and the 
-        scope of declarations is governed by that block structure. In this 
-        case, the scope of <literal>name</literal> is the whole body of the 
-        class, and the definition of <literal>greeting</literal> sits inside 
-        that scope, so <literal>greeting</literal> is permitted to access 
+        <literal>greeting</literal>. Doesn't the parameter go out of scope as 
+        soon as the initializer terminates? Well, that's true, but Ceylon is 
+        a language with a very strict block structure, and the scope of 
+        declarations is governed by that block structure. In this case, the 
+        scope of <literal>name</literal> is the whole body of the class, and 
+        the definition of <literal>greeting</literal> sits inside that scope, 
+        so <literal>greeting</literal> is permitted to access 
         <literal>name</literal>.</para>
         
-        <para>We've just met our first example of 
-        <emphasis>closure</emphasis>, a concept from functional programming. 
-        We say that method and attribute definitions receive a closure of 
-        immutable values defined in the class body to which they belong.
-        That's just a fancy way of obfuscating the idea that 
-        <literal>greeting</literal> holds onto the value of 
+        <para>We've just met our first example of <emphasis>closure</emphasis>, 
+        a concept from functional programming. We say that method and attribute 
+        definitions receive a closure of immutable values defined in the class 
+        body to which they belong. That's just a fancy way of obfuscating the 
+        idea that <literal>greeting</literal> holds onto the value of 
         <literal>name</literal>, even after the initializer completes.</para>
+        
+        <para>In fact, one way to look at the whole notion of a class in 
+        Ceylon is to think of it as a function which returns a closure of
+        its own local variables.</para>
         
         </section>
         
@@ -821,9 +830,9 @@ abstract class Hello() {
             and can define abstract members. Unlike Java, Ceylon doesn't require us to annotate 
             abstract members&mdash;simply leaving out the implementation of the member is 
             perfectly sufficient for the compiler to realize that it is abstract. An attribute
-            which is never initialized is an abstract attribute. Ceylon doesn't have default
-            attribute values like Java does. Attributes don't get initialized to zero unless 
-            you explicitly say they should be!</para>
+            which is never initialized is always an abstract attribute because Ceylon doesn't 
+            have default attribute values like Java does. Attributes don't get initialized to 
+            zero unless you explicitly say they should be!</para>
 
             <para>One way to define an implementation for an inherited abstract attribute is 
             to simply assign a value to it in the subclass.</para>
@@ -850,7 +859,44 @@ class PersonalizedHello(String name) extends Hello() {
 
         </section>
         
-        <section>
+    <section>
+        <title>Testing the type of an object</title>
+        
+        <para>In any language with subtyping there is the, hopefully occasional,
+        need to perform narrowing conversions. Ceylon doesn't have C-style typecasts.
+        Instead, we must test and narrow the type of an object reference in one step, 
+        using the special <literal>if (is ... )</literal> construct. This construct 
+        is very, very similar to <literal>if (exists ... )</literal>, which we met 
+        earlier.</para>
+        
+        <programlisting>Object object = ... ;
+if (is Hello object) {
+    object.say();
+}</programlisting>
+        
+        <para>The <literal>switch</literal> statement can be used in a similar 
+        way:</para>
+        
+        <programlisting>Object object = ... ;
+switch(object)
+case (is Hello) {
+    object.say();
+}
+case (is Person) {
+    stream.writeLine(object.firstName);
+}
+else {
+    stream.writeLine($object);
+}</programlisting>
+
+        <para>These constructs protect us from inadvertantly writing code that 
+        would cause a <literal>ClassCastException</literal> in Java, just like
+        <literal>if (exists ... )</literal> protects us from writing code that
+        would cause a <literal>NullPointerException</literal>.</para>
+        
+    </section>
+    
+           <section>
             <title>Working with mutable state</title>
 
             <para>Ceylon encourages you to use <emphasis>immutable</emphasis> attributes
@@ -928,12 +974,101 @@ package assign greeting {
         </section>
         
         <section>
+            <title>On overview of the built-in types</title>
+            
+            <para>Just like Java, Ceylon has a class named <literal>Object</literal>. But
+            in Ceylon, <literal>Object</literal> isn't the root of the type system. An
+            expression of type <literal>Object</literal> has a definite, well-defined, 
+            non-null value. As we've seen, the Ceylon type system can also represent some
+            more exotic types, for example <literal>Optional&lt;T&gt;</literal>, which
+            represents a value that may be null. A second example of a type that doesn't
+            extend <literal>Object</literal> is <literal>Gettable&lt;T&gt;</literal>, 
+            which represents a value that has not yet been evaluated.</para>
+            
+            <para>Therefore, Ceylon's <literal>Object</literal> has a superclass, named 
+            <literal>Void</literal>. All Ceylon types are assignable to <literal>Void</literal>.
+            Expressions of type <literal>Void</literal> aren't useful for very much, 
+            since <literal>Void</literal> has no members or operators. You can't even narrow 
+            an expression of type <literal>Void</literal> to a different type. The one useful 
+            thing you <emphasis>can</emphasis> do with <literal>Void</literal> is use it to 
+            represent the signature of a method when you don't care about the return type, 
+            since a method declared <literal>void</literal> is considered to have return type
+            <literal>Void</literal>.</para>
+            
+            <para>The exotic types we just mentioned&mdash;<literal>Optional</literal> and
+            <literal>Gettable</literal>&mdash;directly extend <literal>Void</literal>. All 
+            types that represent well-defined values extend <literal>Object</literal>,
+            including:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>user-written classes,</para>
+                </listitem>
+                <listitem>
+                    <para>all interfaces, and</para>
+                </listitem>
+                <listitem>
+                    <para>the types that are considered primitive in Java, such as
+                    <literal>Integer</literal>, <literal>Float</literal> and 
+                    <literal>Character</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Since an expression of type <literal>Object</literal> always evaluates to
+            a definite, well-defined value, it's possible to obtain the runtime type of an
+            <literal>Object</literal>, or narrow an expression of type <literal>Object</literal> 
+            to a more specific type.</para>
+            
+            <para>Since <literal>Object</literal> is a supertype of types like <literal>Float</literal>
+            which are passed by value at the level of the Java virtual machine, you can't use 
+            the <literal>===</literal> operator to test the identity of two values of type
+            <literal>Object</literal>. Instead, there is a subclass of <literal>Object</literal>,
+            named <literal>IdentifiableObject</literal>, which represents a type which is always 
+            passed by reference. The <literal>===</literal> operator accepts expressions of 
+            type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
+            directly extend <literal>Object</literal>, but most of the classes you write will be
+            subclasses of <literal>IdentifiableObject</literal>. All <literal>mutable</literal>
+            classes must extend <literal>IdentifiableObject</literal>.</para>
+            
+            <para><literal>IdentifiableObject</literal> defines a default implementation of the
+            interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
+            to the <literal>equals()</literal> and <literal>hashCode()</literal> methods defined
+            by <literal>java.lang.Object</literal>. Just like in Java, you can override this
+            default implementation in your own classes. This is the normal way to get a customized 
+            behavior for the <literal>==</literal> operator, the only constraint being, that for
+            subtypes of <literal>IdentifiableObject</literal>, <literal>x==y</literal> should
+            imply <literal>x===y</literal>&mdash;equality should be consistent with identity.</para>
+            
+            <para>Occasionally that's not what we want. For example, for numeric types, I don't
+            care whether a value is of class <literal>Natural</literal>, <literal>Integer</literal>, 
+            or <literal>Whole</literal> when comparing it to <literal>0</literal>. Therefore, 
+            numeric types must extend <literal>Object</literal> directly. Indeed, all the built in
+            numeric types do directly extend <literal>Object</literal>. The built-in numeric types
+            also implement the interface <literal>Numeric&lt;T&gt;</literal>, which extends 
+            <literal>Equals&lt;T&gt;</literal>. This captures the notion that equality for numeric
+            types is fundamentally different to equality for objects with well-defined identity.
+            It's not possible to compare an <literal>Integer</literal> with an <literal>Order</literal>
+            using <literal>==</literal> (at least not if you expect to have a symmetrical 
+            <literal>==</literal> operator).</para>
+            
+            <para>Thus, Ceylon is able to capture within the type system much of the behavior that 
+            Java introduces by fiat special-case rules in the language definition.</para>
+            
+            <para>Finally, the <literal>BaseObject</literal> class&mdash;which is the class you extend
+            by default if you don't specify a superclass explicitly in the <literal>extends</literal>
+            declaration&mdash;is a subclass of <literal>Object</literal> that implements support for
+            using the <literal>id</literal> annotation to override <literal>equals()</literal>, 
+            <literal>hash</literal> and <literal>string</literal>, as we're about to see.</para>
+            
+        </section>
+        
+        <section>
             <title>Operator polymorphism</title>
             
             <para>Ceylon discourages the creation of intriguing executable ASCII art. 
             Therefore, true operator overloading is not supported by the language. Instead,
             almost every operator (every one except the primitive <literal>.</literal>,
-            <literal>()</literal>, <literal>is</literal> and <literal>:=</literal> operators) 
+            <literal>()</literal>, <literal>is</literal>, and <literal>:=</literal> operators) 
             is considered a shortcut way of writing some more complex expression involving
             other operators and ordinary method calls. For example, the <literal>&lt;</literal>
             operator is defined in terms of the interface <literal>Comparable&lt;T&gt;</literal>, 
@@ -955,9 +1090,11 @@ package assign greeting {
             
             <programlisting>x.equals(y)</programlisting>
             
-            <para>Therefore, it's easy to customize operators like <literal>&lt;</literal> and 
-            <literal>==</literal> with specific behavior for our own classes, just by implementing
-            or overriding methods like <literal>compare()</literal> and <literal>equals()</literal>.</para>
+            <para>Therefore, it's easy to customize operators like <literal>&lt;</literal> 
+            and <literal>==</literal> with specific behavior for our own classes, just by 
+            implementing or overriding methods like <literal>compare()</literal> and 
+            <literal>equals()</literal>. Thus, we say that operators are 
+            <emphasis>polymorphic</emphasis> in Ceylon.</para>
             
         <programlisting><![CDATA[doc "A greeting"
 abstract class Hello() {
@@ -1012,90 +1149,30 @@ abstract class Hello() {
             <literal>hash</literal> and <literal>string</literal> in <literal>BaseObject</literal>
             to see exactly how this works.</para>
             
-            <para>Thus, we say that operators are <emphasis>polymorphic</emphasis> in Ceylon.</para>
-
-        </section>
-        
-        <section>
-            <title>On overview of the built-in types</title>
-            
-            <para>Just like Java, Ceylon has a class named <literal>Object</literal>. But
-            in Ceylon, <literal>Object</literal> isn't the root of the type system. An
-            expression of type <literal>Object</literal> has a definite, well-defined, 
-            non-null value. As we've seen, the Ceylon type system can also represent some
-            more exotic types, for example <literal>Optional&lt;T&gt;</literal>, which
-            represents a value that may be null. A second example of a type that doesn't
-            extend <literal>Object</literal> is <literal>Gettable&lt;T&gt;</literal>, 
-            which represents a value that has not yet been evaluated.</para>
-            
-            <para>Therefore, Ceylon's <literal>Object</literal> has a superclass, named 
-            <literal>Void</literal>. All Ceylon types are assignable to <literal>Void</literal>.
-            Expressions of type <literal>Void</literal> aren't useful for very much, 
-            since <literal>Void</literal> has no members or operators. You can't even narrow 
-            an expression of type <literal>Void</literal> to a different type. The one useful 
-            thing you <emphasis>can</emphasis> do with <literal>Void</literal> is use it to 
-            represent the signature of a method when you don't care about the return type, 
-            since a method declared <literal>void</literal> is considered to have return type
-            <literal>Void</literal>.</para>
-            
-            <para>The exotic types we just mentioned&mdash;<literal>Optional</literal> and
-            <literal>Gettable</literal>&mdash;directly extend <literal>Void</literal>. All 
-            types that represent well-defined values extend <literal>Object</literal>,
-            including:</para>
+            <para>Apart from <literal>Comparable</literal> and <literal>Equals</literal>, 
+            which provide the underlying definition of comparison and equality operators,
+            the following interfaces are also important in the definition of Ceylon's
+            polymorphic operators:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>user-written classes,</para>
+                    <para><literal>Numeric</literal> supports arithmetic operators,</para>
                 </listitem>
                 <listitem>
-                    <para>all interfaces, and</para>
+                    <para><literal>Slots</literal> supports bitwise operators,</para>
                 </listitem>
                 <listitem>
-                    <para>the types that are considered primitive in Java, such as
-                    <literal>Integer</literal>, <literal>Float</literal> and 
-                    <literal>Character</literal>.</para>
+                    <para><literal>Correspondence</literal> and <literal>Sequence</literal>
+                    support indexing and subrange operators,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Callable</literal> supports invocation, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Settable</literal> supports assignnment and compound
+                    assigment operators.</para>
                 </listitem>
             </itemizedlist>
-            
-            <para>Since an expression of type <literal>Object</literal> always evaluates to
-            a definite, well-defined value, it's possible to obtain the runtime type of an
-            <literal>Object</literal>, or narrow an expression of type <literal>Object</literal> 
-            to a more specific type.</para>
-            
-            <para>Since <literal>Object</literal> is a supertype of types like <literal>Float</literal>
-            which are passed by value at the level of the Java virtual machine, you can't use 
-            the <literal>===</literal> operator to test the identity of two values of type
-            <literal>Object</literal>. Instead, there is a subclass of <literal>Object</literal>,
-            named <literal>IdentifiableObject</literal>, which represents a type which is always 
-            passed by reference. The <literal>===</literal> operator accepts expressions of 
-            type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
-            directly extend <literal>Object</literal>, but normally, and by default, your classes 
-            will extend <literal>IdentifiableObject</literal>. All <literal>mutable</literal>
-            classes must extend <literal>IdentifiableObject</literal>.</para>
-            
-            <para><literal>IdentifiableObject</literal> defines a default implementation of the
-            interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
-            to the <literal>equals()</literal> and <literal>hashCode()</literal> methods defined
-            by <literal>java.lang.Object</literal>. Just like in Java, you can override this
-            default implementation in your own classes. This is the normal way to get a customized 
-            behavior for the <literal>==</literal> operator, the only constraint being, that for
-            subtypes of <literal>IdentifiableObject</literal>, <literal>x==y</literal> should
-            imply <literal>x===y</literal>&mdash;equality should be consistent with identity.</para>
-            
-            <para>Occasionally that's not what we want. For example, for numeric types, I don't
-            care whether a value is of class <literal>Natural</literal>, <literal>Integer</literal>, 
-            or <literal>Whole</literal> when comparing it to <literal>0</literal>. Therefore, 
-            numeric types must extend <literal>Object</literal> directly. Indeed, all the built in
-            numeric types do directly extend <literal>Object</literal>. The built-in numeric types
-            also implement the interface <literal>Numeric&lt;T&gt;</literal>, which extends 
-            <literal>Equals&lt;T&gt;</literal>. This captures the notion that equality for numeric
-            types is fundamentally different to equality for objects with well-defined identity.
-            It's not possible to compare an <literal>Integer</literal> with an <literal>Order</literal>
-            using <literal>==</literal> (at least not if you expect to have a symmetrical 
-            <literal>==</literal> operator).</para>
-            
-            <para>Thus, Ceylon is able to capture within the type system much of the behavior that 
-            Java introduces by fiat special-case rules in the language definition.</para>
             
         </section>
         
@@ -1196,13 +1273,11 @@ abstract class Hello() {
             is permitted to optimize the built-in numeric types down to the virtual machine's native
             numeric types.</para>
             
-            <para>The real value of <literal>Numeric</literal> is that you can implement the
-            interface yourself, to introduce your own, more specialized numeric type. And you'll
-            be able to apply all the usual numeric operators to it. This is what we call 
-            <emphasis>operator polymorphism</emphasis>.
-            <!--It's not quite the same thing as operator
-            overloading, which refers to the ability to assign any arbitrary meaning to any symbol
-            on the keyboard.--></para>
+            <para>The real value of <literal>Numeric</literal>&mdash;apart from eliminating special 
+            cases in the language definition and type checker&mdash;is that you can implement the
+            interface yourself, to introduce your own, more specialized numeric type. And you'll be 
+            able to apply all the usual numeric operators to it. That's why we've been making a big
+            deal out of operator polymorphism.</para>
             
         </section>
 
@@ -2020,38 +2095,132 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
     </section>
     
     <section>
-        <title>Testing the type of an object</title>
+        <title>Generic type constraints</title>
         
-        <para>Ceylon doesn't have C-style typecasts. Instead, we must test and 
-        narrow the type of an object in one step, using the special <literal>if (is ... )</literal> 
-        construct. This construct is very, very similar to <literal>if (exists ... )</literal>, 
-        which we met earlier.</para>
+        <para>Very commonly, when we write a parameterized type, we want to be
+        able to invoke methods or evaluate attributes upon instances of the
+        type parameter. For example, if we were writing a parameterized type
+        <literal>Set&lt;T&gt;</literal>, we would need to be able to compare
+        instances of <literal>T</literal> using <literal>==</literal> to see if 
+        a certain instance of <literal>T</literal> is contained in the
+        <literal>Set</literal>. Since <literal>==</literal> is only defined for 
+        expressions of type <literal>Equals</literal>, we need some way to 
+        assert that <literal>T</literal> is a subtype of 
+        <literal>Equals&lt;T&gt;</literal>. This is an example of a
+        <emphasis>type constraint</emphasis>&mdash;in fact, it's an example of 
+        the most common kind of type constraint, a <emphasis>lower 
+        bound</emphasis>.</para>
         
-        <programlisting>Object object = ... ;
-if (is Hello object) {
-    object.say();
+        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        given T satisfies Equals&lt;T&gt; {
+    ...
+        
+    public Boolean contains(Object object) {
+        if (is T object) {
+            return forAny (T t in bucket(object.hash)) 
+                        some (t==object)
+        }
+        else {
+            return false
+        }
+    }
+
 }</programlisting>
         
-        <para>The <literal>switch</literal> statement supports a similar construct:</para>
+        <para>A type argument to <literal>T</literal> must be a type that
+        extends or implements <literal>Equals&lt;T&gt;</literal>.</para>
         
-        <programlisting>Object object = ... ;
-switch(object)
-case (is Hello) {
-    object.say();
-}
-case (is Person) {
-    stream.writeLine(object.firstName);
-}
-else {
-    stream.writeLine($object);
+        <programlisting>Set&lt;String&gt; set = Set("C", "Java", "Ceylon");  //ok</programlisting>
+        <programlisting>Set&lt;Character[]&gt; set = Set("C", "Java", "Ceylon"); //compile error</programlisting>
+
+        <para>In Ceylon, a generic type parameter is considered a proper type,
+        so a type constraint looks a lot like a class or interface declaration.
+        This is another way in which Ceylon is more regular than some other
+        C-like languages.</para>
+        
+        <para>A lower bound lets us call methods and attributes of the bound, 
+        but it doesn't let us instantiate new instances of <literal>T</literal>.  
+        The second-most common kind of type constraint in Ceylon is an 
+        <emphasis>initialization parameter specification</emphasis>.</para>
+        
+        <programlisting>public class Factory&lt;out T&gt;() 
+        given T(String s) {
+        
+    public T produce(String string) {
+        return T(string)
+    }
+    
 }</programlisting>
 
-        <para>These constructs protect us from inadvertantly writing code that 
-        would cause a <literal>ClassCastException</literal> in Java, just like
-        <literal>if (exists ... )</literal> protects us from writing code that
-        would cause a <literal>NullPointerException</literal>.</para>
+        <para>A type argument to <literal>T</literal> must be a class with a 
+        single initialization parameter of type <literal>String</literal>.</para>
         
-        <para>Another thing that causes problems when working with generic
+        <programlisting>Factory&lt;Hello&gt; = Factory&lt;PersonalizedHello&gt;();  //ok</programlisting>
+        <programlisting>Factory&lt;Hello&gt; = Factory&lt;DefaultHello&gt;();  //compile error</programlisting>
+
+        <para>Finally, the third kind of type constraint, which is much less
+        common, and which most people find much more confusing, is an 
+        <emphasis>upper bound</emphasis>. An upper bound is the opposite of a 
+        lower bound. It says that a type parameter is a supertype of some other 
+        type. There's only really one situation where this is useful. Consider 
+        adding a <literal>union()</literal> operation to our <literal>Set</literal> 
+        interface. We might try the following:</para>
+        
+        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        given T satisfies Equals&lt;T&gt; {
+    ...
+    
+    public Set&lt;T&gt; union(Set&lt;T&gt; set) {   //compile error
+        return ....
+    }
+    
+}</programlisting>
+
+        <para>This doesn't compile because we can't use the covariant type 
+        parameter <literal>T</literal> in the type declaration of a method
+        parameter. The following declaration would compile:</para>
+        
+        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        given T satisfies Equals&lt;T&gt; {
+    ...
+    
+    public Set&lt;Object&gt; union(Set&lt;Object&gt; set) {
+        return ....
+    }
+    
+}</programlisting>
+        
+        <para>But, unfortunately, we get back a <literal>Set&lt;Object&gt;</literal>
+        no matter what kind of set we pass in. A lower bound is the solution
+        to our dilemma:</para>
+        
+        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        given T satisfies Equals&lt;T&gt; {
+    ...
+    
+    public Set&lt;X&gt; union(Set&lt;X&gt; set) 
+            given X abstracts T {
+        return ....
+    }
+    
+}</programlisting>
+        
+        <para>The compiler chooses an appropriate <literal>X</literal> for
+        the given argument to <literal>union()</literal>:</para>
+        
+        <programlisting>Set&lt;String&gt; strings = Set("abc", "xyz") ;
+Set&lt;String&gt; moreStrings = Set("foo", "bar", "baz");
+Set&lt;String&gt; allTheStrings = strings.union(moreStrings);</programlisting>
+        
+        <programlisting>Set&lt;Decimal&gt; decimals = Set(1.2.decimal, 3.67.decimal) ;
+Set&lt;Float&gt; floats = Set(0.33, 22.0, 6.4);
+Set&lt;Number&gt; allTheNumbers = decimals.union(floats);</programlisting>
+        
+        <programlisting>Set&lt;Hello&gt; hellos = Set( DefaultHello(), PersonalizedHello(name) );
+Set&lt;Object&gt; objects = Set("Gavin", 12, `%`, true);
+Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
+        
+        <para>Something that causes many problems when working with generic
         types in Java is <emphasis>type erasure</emphasis>. Generic type 
         arguments are discarded by the compiler, and simply aren't available
         at runtime. So the following, perfectly sensible, code fragments 
@@ -2073,7 +2242,7 @@ else {
         
         <para>Ceylon doesn't have multiple inheritance or mixins. If you're used
         to the single-inheritance-with-interfaces model of Java, you'll find
-        that inheritance in Ceylon works pretty much the same.</para>
+        yourself pretty much right at home with inheritance in Ceylon.</para>
         
         <para>However, Ceylon does have something else, that's usually almost as
         good as, and often better than, true multiple inheritance. An
