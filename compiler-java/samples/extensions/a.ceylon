@@ -1,7 +1,8 @@
-// A widening extension.  Should compile to:
-//
-//   Float f = ceylon.Integer.instance(1L).floatXXX();
-//
+// A simple widening extension.
+
 public void a(ceylon.Process process) {
-    Float f = 1;
+    Integer i = 1;
 }
+
+// Should compile to:
+//   Integer i = ceylon.Natural.instance(1L).integer();

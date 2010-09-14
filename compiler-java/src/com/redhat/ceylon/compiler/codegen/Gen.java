@@ -835,9 +835,11 @@ public class Gen {
             public void visit(PrefixExpression expr) {
                 expr.operator.accept(this);
             }
+            // NB spec 1.3.11 says "There are only two types of numeric
+            // literals: literals for Naturals and literals for Floats."
             public void visit(NaturalLiteral lit) {
                 JCExpression n = make.Literal(lit.value.longValue());
-                result = at(expr).Apply (null, makeSelect("ceylon", "Integer", "instance"),
+                result = at(expr).Apply (null, makeSelect("ceylon", "Natural", "instance"),
                         List.of(n));
             }
             public void visit(FloatLiteral lit) {
