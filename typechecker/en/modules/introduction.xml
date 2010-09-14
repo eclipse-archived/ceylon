@@ -711,9 +711,12 @@ else {
         idea that <literal>greeting</literal> holds onto the value of 
         <literal>name</literal>, even after the initializer completes.</para>
         
-        <para>In fact, one way to look at the whole notion of a class in 
-        Ceylon is to think of it as a function which returns a closure of
-        its own local variables.</para>
+        <para>In fact, one way to look at the whole notion of a class in Ceylon 
+        is to think of it as a function which returns a closure of its own local 
+        variables. This helps explain why the syntax of class declarations is so 
+        similar to the syntax of method declarations (a class declaration looks a 
+        lot like a method declaration where the return type and the name of the 
+        method are the same).</para>
         
         </section>
         
