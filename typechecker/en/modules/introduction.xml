@@ -1514,26 +1514,23 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     }
 }]]></programlisting>
 
-        <para>This definition works
-        well enough, but it's quite procedural, with two <literal>return</literal>
-        statements. That's not usually considered good style in Ceylon, though
-        there are certainly times when it's necessary. Instead, Ceylon lets you
-        write code like this using a more functional style.</para>
+        <para>This definition works well enough, but it's quite procedural, with two 
+        <literal>return</literal> statements. That's not usually considered good style 
+        in Ceylon, though there are certainly times when it's necessary. Instead, Ceylon 
+        lets you write code like this using a more functional style.</para>
         
-        <para>In procedural
-        programming we usually pass a list of values to a method, which performs 
-        computations using those values, and returns another value. In functional
-        programming, we can pass an operation to a method, which calls our
+        <para>In procedural programming we usually pass a list of values to a method, 
+        which performs computations using those values, and returns another value. In 
+        functional programming, we can pass an operation to a method, which calls our
         operation, and returns a value, or, perhaps, a different operation.</para>
         
         <para>For example, the Ceylon standard librares define a method called
-        <literal>ifExists()</literal> that accepts an object and two 
-        <emphasis>callable objects</emphasis>. (A method parameter that accepts 
-        a callable objects is called a <emphasis>callable parameter</emphasis>.)
-        If the object is not null, <literal>ifExists()</literal> invokes the first
-        method. Otherwise, <literal>ifExists()</literal> invokes the second method.
-        We can use <literal>ifExists()</literal> to rewrite 
-        <literal>greeting</literal>:</para>
+        <literal>ifExists()</literal> that accepts an object and two <emphasis>callable 
+        objects</emphasis>. (A method parameter that accepts a callable objects is called 
+        a <emphasis>callable parameter</emphasis>.) If the object is not null, 
+        <literal>ifExists()</literal> invokes the first method. Otherwise, 
+        <literal>ifExists()</literal> invokes the second method. We can use 
+        <literal>ifExists()</literal> to rewrite <literal>greeting</literal>:</para>
 
 <programlisting><![CDATA[package String greeting {
     String helloName() { return "Hello, " name "!" }
@@ -1541,18 +1538,17 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     return ifExists(name, helloName, helloWorld)
 }]]></programlisting>
 
-        <para>Well, that's certainly more functional, but it's also a lot more
-        verbose. But this is not the way <literal>ifExists()</literal> is really
-        intended to be used. Ceylon provides a special method argument syntax
-        for defining a method that is passed to another method inline, as part
-        of the invocation. An inline method definition is called an
-        <emphasis>inline callable argument</emphasis>. Inline callable arguments 
-        follow the normal parenthesized argument list.</para>
+        <para>Well, that's certainly more functional, but it's also a lot more verbose. 
+        But this is not the way <literal>ifExists()</literal> is really intended to be
+        used. Ceylon provides a special method argument syntax for defining a method 
+        that is passed to another method inline, as part of the invocation. An inline 
+        method definition is called an <emphasis>inline callable argument</emphasis>. 
+        Inline callable arguments follow the normal parenthesized argument list.</para>
         
-        <para>As a first step, we could rewrite <literal>greeting</literal> 
-        as follows, to make it really clear that we're defining methods that are 
-        passed as arguments to the callable parameters <literal>then</literal> 
-        and <literal>otherwise</literal>.</para>
+        <para>As a first step, we could rewrite <literal>greeting</literal> as follows, 
+        to make it really clear that we're defining methods that are passed as arguments 
+        to the callable parameters <literal>then</literal> and 
+        <literal>otherwise</literal>.</para>
 
 <programlisting><![CDATA[package String greeting {
     return ifExists(name)
@@ -1566,14 +1562,13 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         }
 }]]></programlisting>
 
-        <para>Note that there are three <literal>return</literal> statements
-        here. The nested <literal>return</literal> statements specify the 
-        return values of the two inline methods. They do not end the execution
-        of <literal>greeting</literal>!</para>
+        <para>Note that there are three <literal>return</literal> statements here. The 
+        nested <literal>return</literal> statements specify the return values of the two 
+        inline methods. They do not end the execution of <literal>greeting</literal>!</para>
 
-        <para>This syntax was chosen to make it possible to define new
-        control structures that closely mimic the syntactic form of the
-        traditional C-style built-in control structures.</para>
+        <para>This syntax was chosen to make it possible to define new control structures 
+        that closely mimic the syntactic form of the traditional C-style built-in control 
+        structures.</para>
         
         <para>Usually, we would abbreviate the above code by:</para>
         
@@ -1599,11 +1594,10 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         otherwise ("Hello, World!")
 }]]></programlisting>
         
-        <para>This syntax might look a little unfamiliar at first, but 
-        you'll soon get used to it. In Ceylon, we use method invocations 
-        with inline callable arguments to express things that are difficult
-        to express without specialized syntax in other languages, for
-        example:</para>
+        <para>This syntax might look a little unfamiliar at first, but you'll soon get 
+        used to it. In Ceylon, we use method invocations with inline callable arguments 
+        to express things that are difficult to express without specialized syntax in 
+        other languages, for example:</para>
         
         <itemizedlist>
             <listitem>
@@ -1695,12 +1689,12 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     )
 )</programlisting>
 
-        <para>However, Ceylon provides an alternative way of writing
-        argument lists that makes it much more natural to define heirarchical
-        structures. A <emphasis>named argument list</emphasis> is a list of 
-        arguments surrounded by braces and separated by semicolons. Varargs 
-        parameters in a named argument list don't need names, and are 
-        separated by commas. For example:</para>
+        <para>However, Ceylon provides an alternative way of writing argument 
+        lists that makes it much more natural to define heirarchical structures. 
+        A <emphasis>named argument list</emphasis> is a list of arguments 
+        surrounded by braces and separated by semicolons. Varargs parameters in 
+        a named argument list don't need names, and are separated by commas. For 
+        example:</para>
 
         <programlisting>Html {
     head = Head { 
