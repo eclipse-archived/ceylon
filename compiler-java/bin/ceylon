@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo 1>&2 "usage: ceylon CLASS"
+  exit 1
+fi
+
+java \
+  -ea \
+  -cp build/lib/runtime.jar:/tmp \
+  ceylon.Launcher \
+  $1
