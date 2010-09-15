@@ -1541,7 +1541,9 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             <para>But now all event observers have to implement the interface 
             <literal>Observer</literal>, which has just one method. Why don't
             we cut out the interface, and let event observers just register a
-            function object as their event listener?</para>
+            function object as their event listener? In the following code,
+            we define the <literal>addObserver()</literal> method to accept
+            a function as a formal parameter.</para>
 
             <programlisting>public abstract class Component() {
             
@@ -1566,7 +1568,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
                 <listitem>
                     <para><literal>void observe(Event event)</literal> is more
                     readable in formal parameter lists, where <literal>observe</literal>
-                    is the name of the formal paramater, but</para>
+                    is the name of the formal parameter, but</para>
                 </listitem>
                 <listitem>
                     <para><literal>Callable&lt;Void,Event&gt;</literal> is useful
@@ -1590,8 +1592,48 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         
 }</programlisting>
             
-            <para></para>
+            <para>It's also possible to declare a method that returns a function.
+            The following method returns a function which increments its argument
+            by <literal>n</literal>:</para>
             
+            <programlisting>Natural incrementor(Natural n)(Natural arg) {
+    Natural increment(Natural arg) {
+        return n+arg
+    }
+    return increment
+}</programlisting>
+
+            <para>Notice that <literal>increment()</literal> is able to use the 
+            parameter <literal>n</literal> of <literal>incrementor()</literal>. We 
+            say that the inner method receives a closure of the 
+            non-<literal>mutable</literal> locals and parameters of the outer 
+            method.</para>
+            
+            <para>We can use our method like this:</para>
+            
+            <programlisting>Natural inc(Natural arg) incrementor = incrementor(3);
+Natural five = inc(2);</programlisting>
+
+            <para>There are two alternative, shorter ways to write the 
+            <literal>incrementor()</literal> function. Here's one of them:</para>
+            
+            <programlisting>Natural incrementor(Natural n)(Natural arg) {
+    return n.plus
+}</programlisting>
+
+            <para>In this case, we simply return a reference to the <literal>plus()</literal>
+            method of the <literal>Natural</literal> instance <literal>n</literal>.</para>
+
+            <para>And here's the second alternative:</para>
+
+            <programlisting>Natural incrementor(Natural n)(Natural arg) {
+    return n+arg
+}</programlisting>
+
+            <para>In this case, the compiler does the job of automatically infering 
+            the definition of the inner method named <literal>increment()</literal>
+            above.</para>
+
         </section>
 
         <section>
