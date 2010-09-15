@@ -1039,7 +1039,7 @@ controlVariableOrExpression
     ;
 
 variable
-    : (type | 'local') memberName
+    : (type | 'local') memberName formalParameters*
     ;
 
 // Lexer
