@@ -1581,12 +1581,12 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             
             <programlisting>public class Listener(Component component) {
         
-        component.addObserver(onEvent);
-        
         public void onEvent(Event e) {
             //respond to the event
             ...
         }
+        
+        component.addObserver(onEvent);
         
         ...
         
