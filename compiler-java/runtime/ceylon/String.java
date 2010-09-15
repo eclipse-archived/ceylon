@@ -1,6 +1,6 @@
 package ceylon;
 
-public final class String
+public final class String extends Object
 {
     public final java.lang.String value;
 
@@ -14,5 +14,10 @@ public final class String
 
     public static ceylon.String instance(java.lang.String s) {
         return new ceylon.String(s);
+    }
+
+    @Extension
+    public ceylon.String string() {
+        return this;
     }
 }
