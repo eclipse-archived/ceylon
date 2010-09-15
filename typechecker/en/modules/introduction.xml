@@ -1500,7 +1500,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         </section>
         
         <section>
-            <title>First-class functions</title>
+            <title>Understanding first-class functions</title>
             
             <para>Ceylon isn't a functional language, since has mutable locals and mutable 
             attributes and so methods can have side effects. But Ceylon does let you use 
@@ -2141,7 +2141,7 @@ class Hello(String? name) {
     </section>
     
     <section>
-        <title>Generics</title>
+        <title>Defining generic types</title>
     
         <para>Programming with generic types is one of the most difficult parts of
         Java. That's still true, to some extent, in Ceylon. But because the Ceylon
