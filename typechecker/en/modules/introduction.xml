@@ -2526,10 +2526,25 @@ Callable&lt;Void,OutputStream&gt; = hello.say;</programlisting>
             is a generic types with a sequenced type parameter representing the
             formal parameter types of the class or method.</para>
             
-            <programlisting>Class&lt;DefaultHello&gt; = DefaultHello;</programlisting>
-            <programlisting>Class&lt;PersonalizedHello,String&gt; = PersonalizedHello;</programlisting>
-            <programlisting>Method&lt;Hello,Void,OutputStream&gt; = Hello.say;</programlisting>
+            <programlisting>Class&lt;DefaultHello&gt; dh = DefaultHello;</programlisting>
+            <programlisting>Class&lt;PersonalizedHello,String&gt; ph = PersonalizedHello;</programlisting>
+            <programlisting>Method&lt;Hello,Void,OutputStream&gt; hsay = Hello.say;</programlisting>
+            
+            <para>We can invoke a <literal>Class</literal> or <literal>Method</literal>
+            object (since both types extend <literal>Callable</literal>). The following:</para>
+            
+            <programlisting>Class&lt;PersonalizedHello,String&gt; ph = PersonalizedHello;
+Method&lt;Hello,Void,OutputStream&gt; hsay = Hello.say;
+Hello hello = dh("gavin");
+void say(OutputStream stream) = hsay(hello);
+say(outputStream);</programlisting>
+
+            <para>is equivalent to:</para>
         
+            <programlisting>Hello hello = PersonalizedHello("gavin");
+void say(OutputStream stream) = hello.say;
+say(outputStream);</programlisting>
+
     </section>
     
     <section>
