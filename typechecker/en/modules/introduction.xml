@@ -1591,6 +1591,13 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         ...
         
 }</programlisting>
+
+            <para>When the name of a method appears in an expression without a
+            list of arguments after it, it is a <emphasis>reference</emphasis> to
+            the method, not an invocation of the method. Here, the expression
+            <literal>onEvent</literal> is an expression of type 
+            <literal>Callable&lt;Void,Event&gt;</literal> that refers to the
+            method <literal>onEvent()</literal>.</para>
             
             <para>It's also possible to declare a method that returns a function.
             A method that returns a function has multiple formal parameter lists.
