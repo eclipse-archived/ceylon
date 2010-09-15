@@ -1286,7 +1286,7 @@ abstract class Hello() {
             deal out of operator polymorphism.</para>
             
         </section>
-
+        
         <section>
             <title>A quick overview of collections</title>
             
@@ -1499,6 +1499,83 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         
         </section>
         
+        <section>
+            <title>First-class functions</title>
+            
+            <para>Ceylon isn't a functional language, since has mutable locals and mutable 
+            attributes and so methods can have side effects. But Ceylon does let you use 
+            functions as values, which makes the language a kind of hybrid of the functional 
+            and procedural. There's nothing very new about this idea&mdash;Smalltalk, one of 
+            the first and one of the cleanest object oriented languages was the same kind of 
+            hybrid. Ceylon, like Smalltalk and a number of other object oriented languages, 
+            lets you treat a function as an object and pass it around the system. Unlike most 
+            of these languages, Ceylon doesn't have a special syntax for declaring anonymous 
+            functions (often called lambda expressions). Instead, Ceylon has something else, 
+            which is just as good, but fits more cleanly with a traditional C-like syntax.</para>
+            
+            <para>First, let's see how we declare a method which accepts a function as a 
+            parameter. Suppose we have some kind of user interface component which
+            can be observed by other objects in the system. We could use something like Java's
+            <literal>Observer</literal>/<literal>Observable</literal> pattern:</para>
+            
+            <programlisting>public interface Observer {
+    void observe(Event event);
+}</programlisting>
+            
+            <programlisting>public abstract class Component {
+            
+    OpenList&lt;Observer&gt; observers = {};
+    
+    void addObserver(Observer o) {
+        observers.append(o);
+    }
+    
+    void fire(Event event) {
+        for (Observer o in observers) {
+            o.observe(event);
+        }
+    }
+    
+}</programlisting>
+            
+            <para>But now all event observers have to implement the interface 
+            <literal>Observer</literal>, which has just one method. Why don't
+            we cut out the interface, and let event observers just register a
+            function object as their event listener?</para>
+
+            <programlisting>public abstract class Component {
+            
+    OpenList&lt;Callable&lt;Void,Event&gt;&gt; observers = {};
+    
+    void addObserver(void observe(Event event)) {
+        observers.append(observe);
+    }
+    
+    void fire(Event event) {
+        for (Callable&lt;Void,Event&gt; observe in observers) {
+            observe(event);
+        }
+    }
+    
+}</programlisting>
+            
+            <para>Now, any event observer can just pass a reference to one of its
+            own methods to <literal>addObserver()</literal>:</para>
+            
+            <programlisting>public class Listener(Component component) {
+        
+        component.addObserver(onEvent);
+        
+        public void onEvent(Event e) {
+            ...
+        }
+        
+        ...
+        
+}</programlisting>
+            
+        </section>
+
         <section>
             <title>Taking advantage of functional-style programming</title>
         
@@ -2270,6 +2347,50 @@ Set&lt;Number&gt; allTheNumbers = decimals.union(floats);</programlisting>
         <programlisting>Set&lt;Hello&gt; hellos = Set( DefaultHello(), PersonalizedHello(name) );
 Set&lt;Object&gt; objects = Set("Gavin", 12, `%`, true);
 Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
+        
+    </section>
+    
+    <section>
+        <title>Sequenced type paramters</title>
+        
+            <para>Most static type systems have problems representing the type of a 
+            function, because a single generic type parameter can't capture a variable 
+            number of parameter types. Other statically typed languages feature a 
+            variety of ways of working around this problem, but Ceylon's unique solution 
+            is cleaner and ultimately more powerful.</para>
+            
+            <para>Ceylon, like Java, lets you write a method with a parameter that accepts 
+            multiple arguments, for example:</para>
+            
+            <programlisting>void print(String... strings) {
+    for (String s in strings) {
+        process.write(s);
+    }
+    process.writeLine();
+}</programlisting>
+            
+            <para>In Ceylon, we call this a <emphasis>sequenced parameter</emphasis>.</para>
+            
+            <para>By analogy, a <emphasis>sequenced type parameter</emphasis> is a type 
+            parameter that accepts multiple type arguments. A sequenced type paramet is
+            written as <literal>P...</literal> in the type parameter list of a generic
+            type. Here's how Ceylon represents the type of a function:</para>
+            
+            <programlisting><![CDATA[public interface Callable<out R, P...> { 
+            
+    public R call(P... args);
+    
+    ...
+}]]></programlisting>
+
+            <para>A function which accepts a <literal>String</literal> and returns a
+            <literal>Decimal</literal> is a <literal>Callable&lt;Decimal,String&gt;</literal>.
+            A function which accepts two <literal>Integer</literal>s and returns an
+            <literal>Integer</literal> is a 
+            <literal>Callable&lt;Integer,Integer,Integer&gt;</literal>.</para>
+            
+            <para>Sequenced type parameters are the foundation of Ceylon's unique statically
+            typesafe metamodel (Ceylon's version of Java's reflection API).</para>
         
     </section>
     
