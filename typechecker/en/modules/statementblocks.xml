@@ -483,7 +483,7 @@ else {
         specifying the keyword <literal>local</literal> where the type usually appears. The type of 
         the variable is inferred to be the type of the expression that follows.</para>
         
-        <programlisting>InferableVariable := InferableType MemberName</programlisting>
+        <programlisting>InferableVariable := InferableType MemberName FormalParams*</programlisting>
         
         <para>A variable is treated as a formal parameter of the control structure body.</para>
         

@@ -1552,7 +1552,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     }
     
     void fire(Event event) {
-        for (Callable&lt;Void,Event&gt; observe in observers) {
+        for (void observe(Event event) in observers) {
             observe(event);
         }
     }
