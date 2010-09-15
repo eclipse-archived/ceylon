@@ -1034,6 +1034,16 @@ NATURALLITERAL
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
 
+fragment NULLSAFE :;
+fragment SPREAD :;
+fragment LBRACKET :	;
+BRACKETS
+    : '['
+    ( ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
+     | ( { input.LA(1) == ']' && input.LA(2) == '?' }? => ']?' { $type = NULLSAFE; } )
+     | { $type = LBRACKET; } )
+    ;
+    
 CHARLITERAL
     :   '@' ( ~ NonCharacterChars | EscapeSequence )
     ;
@@ -1255,10 +1265,6 @@ LBRACE
 
 RBRACE
     :   '}'
-    ;
-
-LBRACKET
-    :   '['
     ;
 
 RBRACKET
