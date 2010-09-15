@@ -566,13 +566,17 @@ public class Gen {
     		new ListBuffer<JCAnnotation>();
         final Singleton<JCBlock> body = 
             new Singleton<JCBlock>();
-        Singleton<JCExpression> restype =
+        Singleton<JCExpression> restypebuf =
             new Singleton<JCExpression>();
         ListBuffer<JCAnnotation> jcAnnotations = new ListBuffer<JCAnnotation>();
 
-        processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
+        processMethodDeclaration(decl, params, body, restypebuf, (ListBuffer<JCTypeParameter>)null,
                 annotations, langAnnotations);
-
+        
+        JCExpression restype = restypebuf.thing();
+        
+        // FIXME: Handle lots more flags here
+        
         if ((decl.flags & CeylonTree.EXTENSION) != 0) {
         	JCAnnotation ann =
                 make.Annotation(makeSelect("ceylon", "Extension"),
@@ -580,9 +584,12 @@ public class Gen {
         	jcAnnotations.append(ann);
         }
 
+        if ((decl.flags & CeylonTree.OPTIONAL) != 0)
+        	restype = optionalType(restype);
+        
         JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC, jcAnnotations.toList()),
                 names.fromString(decl.nameAsString()),
-                restype.thing(),
+                restype,
                 List.<JCTypeParameter>nil(),
                 params.toList(),
                 List.<JCExpression>nil(), body.thing(), null);;
@@ -818,6 +825,8 @@ public class Gen {
     }
     
     JCTypeParameter convert(CeylonTree.TypeParameter param) {
+    	if (param.variance != null)
+    		throw new RuntimeException();
     	TypeName name = (TypeName)param.name;
     	return at(param).TypeParameter(names.fromString(name.toString()), List.<JCExpression>nil());
     }
