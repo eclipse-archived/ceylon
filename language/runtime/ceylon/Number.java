@@ -1,12 +1,9 @@
 package ceylon;
 
 public interface Number {
-    @Extension
     public ceylon.Natural natural();
-
-    @Extension
     public ceylon.Integer integer();
-
-    @Extension
+    public ceylon.Whole whole();
     public ceylon.Float floatXXX();
+    public ceylon.Decimal decimal();
 }
