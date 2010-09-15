@@ -1502,7 +1502,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         <section>
             <title>Understanding first-class functions</title>
             
-            <para>Ceylon isn't a functional language, since has mutable locals and mutable 
+            <para>Ceylon isn't a functional language, since it has mutable locals and mutable 
             attributes and so methods can have side effects. But Ceylon does let you use 
             functions as values, which makes the language a kind of hybrid of the functional 
             and procedural. There's nothing very new about this idea&mdash;Smalltalk, one of 
