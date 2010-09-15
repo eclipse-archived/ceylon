@@ -1581,7 +1581,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             
             <programlisting>public class Listener(Component component) {
         
-        public void onEvent(Event e) {
+        void onEvent(Event e) {
             //respond to the event
             ...
         }
