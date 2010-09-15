@@ -1,690 +1,650 @@
 # Annotations.ceylon
-
+ IMPORT_LIST
 (TYPE_DECL
-  (TYPE_DECL
-    (CLASS_DECL
-      (TYPE_NAME Annotations) FORMAL_PARAMETER_LIST
-      (BLOCK
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME NoArguments) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME methodAnnotations)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (ANNOTATION_LIST
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME deprecated)))
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME param)
-                    (INIT_EXPR
-                      (EXPR
-                        (INT_CST 0))))) BLOCK
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION public)
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME deprecated))
-                  (LANG_ANNOTATION default)))
-              (MEMBER_DECL
-                (MEMBER_TYPE
+  (CLASS_DECL
+    (TYPE_NAME Annotations) FORMAL_PARAMETER_LIST
+    (BLOCK
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME NoArguments) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME methodAnnotations)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (ANNOTATION_LIST
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME deprecated)))
                   (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME attributeAnnotations)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 1)))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION public)
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME deprecated))
-                  (LANG_ANNOTATION default)))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION package)
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME deprecated))
-                  (LANG_ANNOTATION abstract)))
-              (TYPE_DECL
-                (INTERFACE_DECL
-                  (TYPE_NAME InterfaceAnnotations))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION module))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME LiteralArguments) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME methodAnnotations)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (ANNOTATION_LIST
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME deprecated))
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME doc)
-                        (STRING_CST "use something else"))
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME see)
-                        (REFLECTED_LITERAL
-                          (MEMBER_NAME otherMethod))))
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME param)
-                    (INIT_EXPR
-                      (EXPR
-                        (INT_CST 0))))) BLOCK
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "The method doc"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (STRING_CST "Gavin King")
-                    (STRING_CST "Andrew Haley"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (QUOTE_CST '1.2.0'))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME timeout)
-                    (INT_CST 1000))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME ClassAnnotations)))
-                    (REFLECTED_LITERAL
-                      (MEMBER_NAME methodAnnotations))
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME Object))
-                      (MEMBER_NAME equals)))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME throws)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME DatabaseException)))
-                    (STRING_CST "if database access fails"))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME attributeAnnotations)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 1)))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "The attribute doc"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (STRING_CST "Gavin King")
-                    (STRING_CST "Andrew Haley"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME ClassAnnotations)))
-                    (REFLECTED_LITERAL
-                      (MEMBER_NAME methodAnnotations))
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME Object))
-                      (MEMBER_NAME equals)))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (QUOTE_CST '1.0.0'))))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME ClassAnnotations)))
-                    (REFLECTED_LITERAL
-                      (MEMBER_NAME methodAnnotations))
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME Object))
-                      (MEMBER_NAME equals)))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "The class doc"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME throws)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME DatabaseException)))
-                    (STRING_CST "if database access fails"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (QUOTE_CST '2.1.0'))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (STRING_CST "Gavin King")
-                    (STRING_CST "Andrew Haley"))))
-              (TYPE_DECL
-                (INTERFACE_DECL
-                  (TYPE_NAME InterfaceAnnotations))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "The interface doc"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (QUOTE_CST '1.0.0 beta'))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME ClassAnnotations)))
-                    (REFLECTED_LITERAL
-                      (MEMBER_NAME methodAnnotations))
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME Object))
-                      (MEMBER_NAME equals)))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (STRING_CST "Gavin King")
-                    (STRING_CST "Andrew Haley")))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME NamedArguments) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME methodAnnotations)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (ANNOTATION_LIST
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME deprecated))
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME doc)
-                        (ARG_LIST
-                          (NAMED_ARG
-                            (ARG_NAME text)
-                            (INIT_EXPR
-                              (EXPR
-                                (STRING_CST "use something else"))))))
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME see)
-                        (ARG_LIST
-                          (VARARGS
-                            (EXPR_LIST
-                              (EXPR
-                                (REFLECTED_LITERAL
-                                  (MEMBER_NAME otherMethod))))))))
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME param)
-                    (INIT_EXPR
-                      (EXPR
-                        (INT_CST 0))))) BLOCK
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME text)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "some text about the method"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME lock)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME timeout)
-                        (INIT_EXPR
-                          (EXPR
-                            (INT_CST 1000))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME throws)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME type)
-                        (INIT_EXPR
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME DatabaseException))))))
-                      (NAMED_ARG
-                        (ARG_NAME description)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "if database access fails"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (STRING_CST "Gavin King"))
-                          (EXPR
-                            (STRING_CST "Andrew Haley"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME ClassAnnotations))))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (MEMBER_NAME methodAnnotations)))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME Object))
-                              (MEMBER_NAME equals)))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME attributeAnnotations)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 1)))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME ClassAnnotations))))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (MEMBER_NAME methodAnnotations)))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME Object))
-                              (MEMBER_NAME equals)))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME text)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "some text about the attribute"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (STRING_CST "Gavin King"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME column)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME name)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "columnName"))))
-                      (NAMED_ARG
-                        (ARG_NAME comment)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "some comment"))))))))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (STRING_CST "Gavin King"))
-                          (EXPR
-                            (STRING_CST "Andrew Haley"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME text)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "some text about the class"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME throws)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME type)
-                        (INIT_EXPR
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME DatabaseException))))))
-                      (NAMED_ARG
-                        (ARG_NAME description)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "if database access fails"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME table)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME name)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "tableName"))))
-                      (NAMED_ARG
-                        (ARG_NAME schema)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "schemaName"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME ClassAnnotations))))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (MEMBER_NAME methodAnnotations)))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME Object))
-                              (MEMBER_NAME equals)))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME scope)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME scopeType)
-                        (INIT_EXPR
-                          (EXPR
-                            (MEMBER_NAME session))))))))
-              (TYPE_DECL
-                (INTERFACE_DECL
-                  (TYPE_NAME InterfaceAnnotations))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (NAMED_ARG
-                        (ARG_NAME text)
-                        (INIT_EXPR
-                          (EXPR
-                            (STRING_CST "some text about the interface"))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME ClassAnnotations))))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (MEMBER_NAME methodAnnotations)))
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (TYPE
-                                (TYPE_NAME Object))
-                              (MEMBER_NAME equals)))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (VARARGS
-                        (EXPR_LIST
-                          (EXPR
-                            (STRING_CST "Andrew Haley")))))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME PositionalArguments) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME methodAnnotations)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (ANNOTATION_LIST
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME deprecated))
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME doc)
-                        (ARG_LIST
-                          (EXPR
-                            (STRING_CST "use something else"))))
-                      (USER_ANNOTATION
-                        (ANNOTATION_NAME see)
-                        (ARG_LIST
-                          (EXPR
-                            (REFLECTED_LITERAL
-                              (MEMBER_NAME otherMethod))))))
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME param)
-                    (INIT_EXPR
-                      (EXPR
-                        (INT_CST 0))))) BLOCK
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME throws)
-                    (ARG_LIST
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME DatabaseException))))
-                      (EXPR
-                        (STRING_CST "if database access fails"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "some text about the method"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME lock)
-                    (ARG_LIST
-                      (EXPR
-                        (INT_CST 1000))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (ARG_LIST
-                      (EXPR
-                        (QUOTE_CST '2.1.0'))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "Gavin King"))
-                      (EXPR
-                        (STRING_CST "Andrew Haley"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME ClassAnnotations))))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (MEMBER_NAME methodAnnotations)))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME Object))
-                          (MEMBER_NAME equals)))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME attributeAnnotations)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 1)))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "some text about the attribute"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "Gavin King"))
-                      (EXPR
-                        (STRING_CST "Andrew Haley"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME ClassAnnotations))))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (MEMBER_NAME methodAnnotations)))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME Object))
-                          (MEMBER_NAME equals)))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (ARG_LIST
-                      (EXPR
-                        (QUOTE_CST '1.2.0'))))))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (ARG_LIST
-                      (EXPR
-                        (QUOTE_CST '1.0.0'))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "Gavin King"))
-                      (EXPR
-                        (STRING_CST "Andrew Haley"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME ClassAnnotations))))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (MEMBER_NAME methodAnnotations)))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME Object))
-                          (MEMBER_NAME equals)))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "some text about the class"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME scope)
-                    (ARG_LIST
-                      (EXPR
-                        (MEMBER_NAME session))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME throws)
-                    (ARG_LIST
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME DatabaseException))))
-                      (EXPR
-                        (STRING_CST "if database access fails"))))))
-              (TYPE_DECL
-                (INTERFACE_DECL
-                  (TYPE_NAME InterfaceAnnotations))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (ARG_LIST
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME ClassAnnotations))))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (MEMBER_NAME methodAnnotations)))
-                      (EXPR
-                        (REFLECTED_LITERAL
-                          (TYPE
-                            (TYPE_NAME Object))
-                          (MEMBER_NAME equals)))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME version)
-                    (ARG_LIST
-                      (EXPR
-                        (QUOTE_CST '1.0.0 beta'))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "some text about the interface"))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME by)
-                    (ARG_LIST
-                      (EXPR
-                        (STRING_CST "Gavin King"))
-                      (EXPR
-                        (STRING_CST "Andrew Haley")))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME ComplexArguments) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME queries)
-                    (ARG_LIST
-                      (EXPR
+                    (TYPE_NAME Natural))
+                  (ARG_NAME param)
+                  (INIT_EXPR
+                    (EXPR
+                      (INT_CST 0))))) BLOCK
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION public)
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME deprecated))
+                (LANG_ANNOTATION default)))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME attributeAnnotations)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 1)))
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION public)
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME deprecated))
+                (LANG_ANNOTATION default)))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION package)
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME deprecated))
+                (LANG_ANNOTATION abstract)))
+            (TYPE_DECL
+              (INTERFACE_DECL
+                (TYPE_NAME InterfaceAnnotations))
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION module))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME LiteralArguments) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME methodAnnotations)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (ANNOTATION_LIST
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME deprecated))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME doc)
+                      (STRING_CST "use something else"))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME see)
+                      (ARG_LIST
                         (EXPR
-                          (TYPE_NAME Query)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (QUOTE_CST 'select p.name from Person p'))))))
+                          (MEMBER_NAME otherMethod)))))
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME param)
+                  (INIT_EXPR
+                    (EXPR
+                      (INT_CST 0))))) BLOCK
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "The method doc"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (STRING_CST "Gavin King")
+                  (STRING_CST "Andrew Haley"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (QUOTE_CST '1.2.0'))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME timeout)
+                  (INT_CST 1000))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
                       (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME throws)
+                  (ARG_LIST
+                    (EXPR
+                      (->
+                        (TYPE_NAME DatabaseException)
+                        (STRING_CST "if database access fails")))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME attributeAnnotations)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 1)))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "The attribute doc"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (STRING_CST "Gavin King")
+                  (STRING_CST "Andrew Haley"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (QUOTE_CST '1.0.0'))))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "The class doc"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME throws)
+                  (ARG_LIST
+                    (EXPR
+                      (->
+                        (TYPE_NAME DatabaseException)
+                        (STRING_CST "if database access fails")))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (QUOTE_CST '2.1.0'))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (STRING_CST "Gavin King")
+                  (STRING_CST "Andrew Haley"))))
+            (TYPE_DECL
+              (INTERFACE_DECL
+                (TYPE_NAME InterfaceAnnotations))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "The interface doc"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (QUOTE_CST '1.0.0 beta'))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (STRING_CST "Gavin King")
+                  (STRING_CST "Andrew Haley")))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME NamedArguments) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME methodAnnotations)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (ANNOTATION_LIST
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME deprecated))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME doc)
+                      (ARG_LIST
+                        (NAMED_ARG
+                          (ARG_NAME text)
+                          (INIT_EXPR
+                            (EXPR
+                              (STRING_CST "use something else"))))))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME see)
+                      (ARG_LIST
+                        (VARARGS
+                          (EXPR_LIST
+                            (EXPR
+                              (MEMBER_NAME otherMethod)))))))
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME param)
+                  (INIT_EXPR
+                    (EXPR
+                      (INT_CST 0))))) BLOCK
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME text)
+                      (INIT_EXPR
                         (EXPR
-                          (TYPE_NAME Query)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (QUOTE_CST 'select p.name from Person p where p.age>18'))))))))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME see)
-                    (REFLECTED_LITERAL
-                      (TYPE
-                        (TYPE_NAME List)
-                        (TYPE_ARG_LIST
-                          (TYPE
-                            (TYPE_NAME String)))))))))))))))
+                          (STRING_CST "some text about the method"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME lock)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME timeout)
+                      (INIT_EXPR
+                        (EXPR
+                          (INT_CST 1000))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME throws)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME type)
+                      (INIT_EXPR
+                        (EXPR
+                          (TYPE_NAME DatabaseException))))
+                    (NAMED_ARG
+                      (ARG_NAME description)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "if database access fails"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (STRING_CST "Gavin King"))
+                        (EXPR
+                          (STRING_CST "Andrew Haley"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (TYPE_NAME ClassAnnotations))
+                        (EXPR
+                          (MEMBER_NAME methodAnnotations))
+                        (EXPR
+                          (EXPR
+                            (TYPE_NAME Object) .
+                            (MEMBER_NAME equals)))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME attributeAnnotations)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 1)))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (TYPE_NAME ClassAnnotations))
+                        (EXPR
+                          (MEMBER_NAME methodAnnotations))
+                        (EXPR
+                          (EXPR
+                            (TYPE_NAME Object) .
+                            (MEMBER_NAME equals)))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME text)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "some text about the attribute"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (STRING_CST "Gavin King"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME column)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME name)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "columnName"))))
+                    (NAMED_ARG
+                      (ARG_NAME comment)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "some comment"))))))))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (STRING_CST "Gavin King"))
+                        (EXPR
+                          (STRING_CST "Andrew Haley"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME text)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "some text about the class"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME throws)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME type)
+                      (INIT_EXPR
+                        (EXPR
+                          (TYPE_NAME DatabaseException))))
+                    (NAMED_ARG
+                      (ARG_NAME description)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "if database access fails"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME table)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME name)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "tableName"))))
+                    (NAMED_ARG
+                      (ARG_NAME schema)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "schemaName"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (TYPE_NAME ClassAnnotations))
+                        (EXPR
+                          (MEMBER_NAME methodAnnotations))
+                        (EXPR
+                          (EXPR
+                            (TYPE_NAME Object) .
+                            (MEMBER_NAME equals)))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME scope)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME scopeType)
+                      (INIT_EXPR
+                        (EXPR
+                          (MEMBER_NAME session))))))))
+            (TYPE_DECL
+              (INTERFACE_DECL
+                (TYPE_NAME InterfaceAnnotations))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (NAMED_ARG
+                      (ARG_NAME text)
+                      (INIT_EXPR
+                        (EXPR
+                          (STRING_CST "some text about the interface"))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (TYPE_NAME ClassAnnotations))
+                        (EXPR
+                          (MEMBER_NAME methodAnnotations))
+                        (EXPR
+                          (EXPR
+                            (TYPE_NAME Object) .
+                            (MEMBER_NAME equals)))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (VARARGS
+                      (EXPR_LIST
+                        (EXPR
+                          (STRING_CST "Andrew Haley")))))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME PositionalArguments) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME methodAnnotations)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (ANNOTATION_LIST
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME deprecated))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME doc)
+                      (ARG_LIST
+                        (EXPR
+                          (STRING_CST "use something else"))))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME see)
+                      (ARG_LIST
+                        (EXPR
+                          (MEMBER_NAME otherMethod)))))
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME param)
+                  (INIT_EXPR
+                    (EXPR
+                      (INT_CST 0))))) BLOCK
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME throws)
+                  (ARG_LIST
+                    (EXPR
+                      (->
+                        (TYPE_NAME DatabaseException)
+                        (STRING_CST "if database access fails")))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "some text about the method"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME lock)
+                  (ARG_LIST
+                    (EXPR
+                      (INT_CST 1000))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (ARG_LIST
+                    (EXPR
+                      (QUOTE_CST '2.1.0'))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "Gavin King"))
+                    (EXPR
+                      (STRING_CST "Andrew Haley"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME attributeAnnotations)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 1)))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "some text about the attribute"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "Gavin King"))
+                    (EXPR
+                      (STRING_CST "Andrew Haley"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (ARG_LIST
+                    (EXPR
+                      (QUOTE_CST '1.2.0'))))))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (ARG_LIST
+                    (EXPR
+                      (QUOTE_CST '1.0.0'))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "Gavin King"))
+                    (EXPR
+                      (STRING_CST "Andrew Haley"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "some text about the class"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME scope)
+                  (ARG_LIST
+                    (EXPR
+                      (MEMBER_NAME session))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME throws)
+                  (ARG_LIST
+                    (EXPR
+                      (->
+                        (TYPE_NAME DatabaseException)
+                        (STRING_CST "if database access fails")))))))
+            (TYPE_DECL
+              (INTERFACE_DECL
+                (TYPE_NAME InterfaceAnnotations))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME ClassAnnotations))
+                    (EXPR
+                      (MEMBER_NAME methodAnnotations))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Object) .
+                        (MEMBER_NAME equals)))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME version)
+                  (ARG_LIST
+                    (EXPR
+                      (QUOTE_CST '1.0.0 beta'))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "some text about the interface"))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME by)
+                  (ARG_LIST
+                    (EXPR
+                      (STRING_CST "Gavin King"))
+                    (EXPR
+                      (STRING_CST "Andrew Haley")))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME ComplexArguments) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME ClassAnnotations) FORMAL_PARAMETER_LIST BLOCK)
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME queries)
+                  (ARG_LIST
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Query)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (QUOTE_CST 'select p.name from Person p'))))))
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Query)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (QUOTE_CST 'select p.name from Person p where p.age>18'))))))))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME see)
+                  (ARG_LIST
+                    (EXPR
+                      (TYPE_NAME List)
+                      (TYPE_ARG_LIST
+                        (TYPE
+                          (TYPE_NAME String))))))))))))))

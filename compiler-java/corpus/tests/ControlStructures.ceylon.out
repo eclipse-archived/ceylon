@@ -1,433 +1,912 @@
 # ControlStructures.ceylon
-
+ IMPORT_LIST
 (TYPE_DECL
-  (TYPE_DECL
-    (CLASS_DECL
-      (TYPE_NAME ControlStructures) FORMAL_PARAMETER_LIST
-      (BLOCK
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME ForFail) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME List)
-                    (TYPE_ARG_LIST
-                      (TYPE
-                        (TYPE_NAME String)))))
-                (MEMBER_NAME names)
-                (INIT_EXPR
-                  (EXPR
-                    (ENUM_LIST
-                      (EXPR_LIST
-                        (EXPR
-                          (STRING_CST "Gavin"))
-                        (EXPR
-                          (STRING_CST "Emmanuel"))
-                        (EXPR
-                          (STRING_CST "Andrew"))
-                        (EXPR
-                          (STRING_CST "Jason")))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Map)
-                    (TYPE_ARG_LIST
-                      (TYPE
-                        (TYPE_NAME String))
-                      (TYPE
-                        (TYPE_NAME String)))))
-                (MEMBER_NAME fullNames)
-                (INIT_EXPR
-                  (EXPR
-                    (ENUM_LIST
-                      (EXPR_LIST
-                        (EXPR
-                          (->
-                            (STRING_CST "Gavin")
-                            (STRING_CST "King")))
-                        (EXPR
-                          (->
-                            (STRING_CST "Jason")
-                            (STRING_CST "Greene"))))))))
-              (FOR_STMT
-                (FOR_ITERATOR
-                  (TYPE
-                    (TYPE_NAME String))
-                  (MEMBER_NAME name)
-                  (FOR_CONTAINMENT
-                    (EXPR
-                      (MEMBER_NAME names))))
-                (LOOP_BLOCK
-                  (BLOCK
-                    (EXPR
+  (CLASS_DECL
+    (TYPE_NAME ControlStructures) FORMAL_PARAMETER_LIST
+    (BLOCK
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME ForFail) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME List)
+                  (TYPE_ARG_LIST
+                    (TYPE
+                      (TYPE_NAME String)))))
+              (MEMBER_NAME names)
+              (INIT_EXPR
+                (EXPR
+                  (ENUM_LIST
+                    (EXPR_LIST
                       (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME name)))))))))
-              (FOR_STMT
-                (FOR_ITERATOR
-                  (TYPE
-                    (TYPE_NAME String))
-                  (MEMBER_NAME name)
-                  (FOR_CONTAINMENT
+                        (STRING_CST "Gavin"))
+                      (EXPR
+                        (STRING_CST "Emmanuel"))
+                      (EXPR
+                        (STRING_CST "Andrew"))
+                      (EXPR
+                        (STRING_CST "Jason")))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Map)
+                  (TYPE_ARG_LIST
+                    (TYPE
+                      (TYPE_NAME String))
+                    (TYPE
+                      (TYPE_NAME String)))))
+              (MEMBER_NAME fullNames)
+              (INIT_EXPR
+                (EXPR
+                  (ENUM_LIST
+                    (EXPR_LIST
+                      (EXPR
+                        (->
+                          (STRING_CST "Gavin")
+                          (STRING_CST "King")))
+                      (EXPR
+                        (->
+                          (STRING_CST "Jason")
+                          (STRING_CST "Greene"))))))))
+            (FOR_STMT
+              (FOR_ITERATOR
+                (TYPE
+                  (TYPE_NAME String))
+                (MEMBER_NAME name)
+                (FOR_CONTAINMENT
+                  (EXPR
+                    (MEMBER_NAME names))))
+              (LOOP_BLOCK
+                (BLOCK
+                  (EXPR
                     (EXPR
-                      (MEMBER_NAME names))))
-                (LOOP_BLOCK
-                  (BLOCK
-                    (IF_STMT
-                      (CONDITION
-                        (EXPR
-                          (==
-                            (MEMBER_NAME name)
-                            (STRING_CST "Gavin"))))
-                      (IF_TRUE
-                        (BLOCK
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
                           (EXPR
-                            (EXPR
-                              (MEMBER_NAME log) .
-                              (MEMBER_NAME info)
-                              (CALL_EXPR
-                                (ARG_LIST
-                                  (EXPR
-                                    (STRING_CST "found"))))))
-                          (BREAK_STMT
-                            (EXPR
-                              (MEMBER_NAME true))))))))
-                (FAIL_BLOCK
-                  (BLOCK
-                    (EXPR
+                            (MEMBER_NAME name)))))))))
+            (FOR_STMT
+              (FOR_ITERATOR
+                (TYPE
+                  (TYPE_NAME String))
+                (MEMBER_NAME name)
+                (FOR_CONTAINMENT
+                  (EXPR
+                    (MEMBER_NAME names))))
+              (LOOP_BLOCK
+                (BLOCK
+                  (IF_STMT
+                    (CONDITION
                       (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "not found")))))))))
-              (FOR_STMT
-                (FOR_ITERATOR
-                  (TYPE
-                    (TYPE_NAME String))
-                  (MEMBER_NAME first)
-                  (TYPE
-                    (TYPE_NAME String))
-                  (MEMBER_NAME last)
-                  (FOR_CONTAINMENT
+                        (==
+                          (MEMBER_NAME name)
+                          (STRING_CST "Gavin"))))
+                    (IF_TRUE
+                      (BLOCK
+                        (EXPR
+                          (EXPR
+                            (MEMBER_NAME log) .
+                            (MEMBER_NAME info)
+                            (CALL_EXPR
+                              (ARG_LIST
+                                (EXPR
+                                  (STRING_CST "found"))))))
+                        (BREAK_STMT
+                          (EXPR
+                            (MEMBER_NAME true))))))))
+              (FAIL_BLOCK
+                (BLOCK
+                  (EXPR
                     (EXPR
-                      (MEMBER_NAME fullNames))))
-                (LOOP_BLOCK
-                  (BLOCK
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "not found")))))))))
+            (FOR_STMT
+              (FOR_ITERATOR
+                (TYPE
+                  (TYPE_NAME String))
+                (MEMBER_NAME first)
+                (TYPE
+                  (TYPE_NAME String))
+                (MEMBER_NAME last)
+                (FOR_CONTAINMENT
+                  (EXPR
+                    (MEMBER_NAME fullNames))))
+              (LOOP_BLOCK
+                (BLOCK
+                  (EXPR
                     (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (+
                               (+
-                                (+
-                                  (MEMBER_NAME first)
-                                  (STRING_CST " "))
-                                (MEMBER_NAME last))))))))))
-              (FOR_STMT
-                (FOR_ITERATOR
-                  (TYPE
-                    (TYPE_NAME Natural))
-                  (MEMBER_NAME n)
-                  (FOR_CONTAINMENT
+                                (MEMBER_NAME first)
+                                (STRING_CST " "))
+                              (MEMBER_NAME last))))))))))
+            (FOR_STMT
+              (FOR_ITERATOR
+                (TYPE
+                  (TYPE_NAME Natural))
+                (MEMBER_NAME n)
+                (FOR_CONTAINMENT
+                  (EXPR
+                    (..
+                      (INT_CST 1)
+                      (INT_CST 5)))))
+              (LOOP_BLOCK
+                (BLOCK
+                  (IF_STMT
+                    (CONDITION
+                      (EXPR
+                        (==
+                          (MEMBER_NAME n)
+                          (INT_CST 2))))
+                    (IF_TRUE
+                      (BLOCK continue)))
+                  (IF_STMT
+                    (CONDITION
+                      (EXPR
+                        (==
+                          (MEMBER_NAME n)
+                          (INT_CST 4))))
+                    (IF_TRUE
+                      (BLOCK BREAK_STMT)))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME IfElse) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (IF_STMT
+              (CONDITION
+                (EXPR
+                  (MEMBER_NAME true)))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
                     (EXPR
-                      (..
-                        (INT_CST 1)
-                        (INT_CST 5)))))
-                (LOOP_BLOCK
-                  (BLOCK
-                    (IF_STMT
-                      (CONDITION
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "always true")))))))))
+            (IF_STMT
+              (CONDITION
+                (EXPR
+                  (MEMBER_NAME false)))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "never true"))))))))
+              (IF_FALSE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "always false")))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String) ?))
+              (MEMBER_NAME hello)
+              (INIT_EXPR
+                (EXPR
+                  (STRING_CST "Hello"))))
+            (IF_STMT
+              (CONDITION
+                (EXISTS_EXPR
+                  (EXPR
+                    (MEMBER_NAME hello))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME hello)))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String) ?))
+              (MEMBER_NAME s)
+              (INIT_EXPR
+                (EXPR null)))
+            (IF_STMT
+              (CONDITION
+                (EXISTS_EXPR
+                  (EXPR
+                    (MEMBER_NAME s))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME s))))))))
+              (IF_FALSE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "never exists")))))))))
+            (IF_STMT
+              (CONDITION
+                (NONEMPTY_EXPR
+                  (EXPR
+                    (MEMBER_NAME s))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME s))))))))
+              (IF_FALSE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "never exists")))))))))
+            (IF_STMT
+              (CONDITION
+                (EXISTS_EXPR
+                  (TYPE
+                    (TYPE_NAME String))
+                  (MEMBER_NAME str)
+                  (INIT_EXPR
+                    (EXPR
+                      (MEMBER_NAME s)))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME str)))))))))
+            (IF_STMT
+              (CONDITION
+                (NONEMPTY_EXPR
+                  (TYPE
+                    (TYPE_NAME String))
+                  (MEMBER_NAME str)
+                  (INIT_EXPR
+                    (EXPR
+                      (MEMBER_NAME s)))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME str)))))))))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME Foo) FORMAL_PARAMETER_LIST BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME Bar) FORMAL_PARAMETER_LIST
+                (SUPERCLASS
+                  (TYPE
+                    (TYPE_NAME Foo)) ARG_LIST) BLOCK))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Foo)))
+              (MEMBER_NAME foo)
+              (INIT_EXPR
+                (EXPR
+                  (EXPR
+                    (TYPE_NAME Bar)
+                    (CALL_EXPR ARG_LIST)))))
+            (IF_STMT
+              (CONDITION
+                (IS_EXPR
+                  (TYPE
+                    (TYPE_NAME Bar))
+                  (EXPR
+                    (MEMBER_NAME foo))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "it is a Bar"))))))))
+              (IF_FALSE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "it is not a Bar")))))))))
+            (IF_STMT
+              (CONDITION
+                (IS_EXPR
+                  (TYPE
+                    (TYPE_NAME Bar))
+                  (MEMBER_NAME b)
+                  (INIT_EXPR
+                    (EXPR
+                      (MEMBER_NAME foo)))))
+              (IF_TRUE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "it is a Bar"))))))))
+              (IF_FALSE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "it is not a Bar")))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME List)
+                  (TYPE_ARG_LIST
+                    (TYPE
+                      (TYPE_NAME Foo))) ?))
+              (MEMBER_NAME foos)
+              (INIT_EXPR
+                (EXPR
+                  (ENUM_LIST
+                    (EXPR_LIST
+                      (EXPR
                         (EXPR
-                          (==
-                            (MEMBER_NAME n)
-                            (INT_CST 2))))
-                      (IF_TRUE
-                        (BLOCK continue)))
-                    (IF_STMT
-                      (CONDITION
+                          (TYPE_NAME Foo)
+                          (CALL_EXPR ARG_LIST)))
+                      (EXPR
                         (EXPR
-                          (==
-                            (MEMBER_NAME n)
-                            (INT_CST 4))))
-                      (IF_TRUE
-                        (BLOCK BREAK_STMT)))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME IfElse) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (IF_STMT
-                (CONDITION
+                          (TYPE_NAME Bar)
+                          (CALL_EXPR ARG_LIST))))))))
+            (IF_STMT
+              (CONDITION
+                (NONEMPTY_EXPR
                   (EXPR
-                    (MEMBER_NAME true)))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "always true")))))))))
-              (IF_STMT
-                (CONDITION
-                  (EXPR
-                    (MEMBER_NAME false)))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "never true"))))))))
-                (IF_FALSE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "always false")))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME hello)
-                (INIT_EXPR
-                  (EXPR
-                    (STRING_CST "Hello")))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION optional)))
-              (IF_STMT
-                (CONDITION
-                  (EXISTS_EXPR
-                    (EXPR
-                      (MEMBER_NAME hello))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME hello)))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME s)
-                (INIT_EXPR
-                  (EXPR null))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION optional)))
-              (IF_STMT
-                (CONDITION
-                  (EXISTS_EXPR
-                    (EXPR
-                      (MEMBER_NAME s))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME s))))))))
-                (IF_FALSE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "never exists")))))))))
-              (IF_STMT
-                (CONDITION
-                  (NONEMPTY_EXPR
-                    (EXPR
-                      (MEMBER_NAME s))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME s))))))))
-                (IF_FALSE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "never exists")))))))))
-              (IF_STMT
-                (CONDITION
-                  (EXISTS_EXPR
-                    (TYPE
-                      (TYPE_NAME String))
-                    (MEMBER_NAME str)
-                    (INIT_EXPR
-                      (EXPR
-                        (MEMBER_NAME s)))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME str)))))))))
-              (IF_STMT
-                (CONDITION
-                  (NONEMPTY_EXPR
-                    (TYPE
-                      (TYPE_NAME String))
-                    (MEMBER_NAME str)
-                    (INIT_EXPR
-                      (EXPR
-                        (MEMBER_NAME s)))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME str)))))))))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME Foo) FORMAL_PARAMETER_LIST BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME Bar) FORMAL_PARAMETER_LIST
-                  (SUPERCLASS
-                    (TYPE
-                      (TYPE_NAME Foo)) ARG_LIST) BLOCK))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Foo)))
-                (MEMBER_NAME foo)
-                (INIT_EXPR
+                    (MEMBER_NAME foos))))
+              (IF_TRUE
+                (BLOCK
                   (EXPR
                     (EXPR
-                      (TYPE_NAME Bar)
-                      (CALL_EXPR ARG_LIST)))))
-              (IF_STMT
-                (CONDITION
-                  (IS_EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (PREFIX_EXPR $
+                              (MEMBER_NAME foos)))))))))
+              (IF_FALSE
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "empty"))))))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME DoWhile) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (WHILE_STMT
+              (CONDITION
+                (EXPR
+                  (MEMBER_NAME true)))
+              (WHILE_BLOCK
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "hello")))))))))
+            (WHILE_STMT
+              (DO_BLOCK
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "hello"))))))))
+              (CONDITION
+                (EXPR
+                  (MEMBER_NAME true))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Integer)))
+              (MEMBER_NAME n)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 0)))
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION mutable)))
+            (WHILE_STMT
+              (CONDITION
+                (EXPR
+                  (<
+                    (MEMBER_NAME n)
+                    (INT_CST 10))))
+              (WHILE_BLOCK
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME n))))))
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME n)
+                      (POSTFIX_EXPR ++))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Integer)))
+              (MEMBER_NAME m)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 0)))
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION mutable)))
+            (WHILE_STMT
+              (DO_BLOCK
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (MEMBER_NAME m))))))
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME m)
+                      (POSTFIX_EXPR ++)))))
+              (CONDITION
+                (EXPR
+                  (<
+                    (MEMBER_NAME m)
+                    (INT_CST 10)))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME text)
+              (INIT_EXPR
+                (EXPR
+                  (STRING_CST "Hello World!"))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Iterator)
+                  (TYPE_ARG_LIST
                     (TYPE
-                      (TYPE_NAME Bar))
-                    (EXPR
-                      (MEMBER_NAME foo))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "it is a Bar"))))))))
-                (IF_FALSE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "it is not a Bar")))))))))
-              (IF_STMT
-                (CONDITION
-                  (IS_EXPR
-                    (TYPE
-                      (TYPE_NAME Bar))
-                    (MEMBER_NAME b)
-                    (INIT_EXPR
-                      (EXPR
-                        (MEMBER_NAME foo)))))
-                (IF_TRUE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "it is a Bar"))))))))
-                (IF_FALSE
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "it is not a Bar")))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME List)
-                    (TYPE_ARG_LIST
+                      (TYPE_NAME String)))))
+              (MEMBER_NAME tokens)
+              (INIT_EXPR
+                (EXPR
+                  (EXPR
+                    (MEMBER_NAME text) .
+                    (MEMBER_NAME tokens)
+                    (CALL_EXPR ARG_LIST) .
+                    (MEMBER_NAME iterator)
+                    (CALL_EXPR ARG_LIST)))))
+            (WHILE_STMT
+              (CONDITION
+                (EXPR
+                  (EXPR
+                    (MEMBER_NAME tokens) .
+                    (MEMBER_NAME more))))
+              (WHILE_BLOCK
+                (BLOCK
+                  (MEMBER_DECL
+                    (MEMBER_TYPE
                       (TYPE
-                        (TYPE_NAME Foo)))))
-                (MEMBER_NAME foos)
-                (INIT_EXPR
+                        (TYPE_NAME String)))
+                    (MEMBER_NAME word)
+                    (INIT_EXPR
+                      (EXPR
+                        (EXPR
+                          (MEMBER_NAME tokens) .
+                          (MEMBER_NAME next)
+                          (CALL_EXPR ARG_LIST) .
+                          (MEMBER_NAME lowercase)))))
+                  (IF_STMT
+                    (CONDITION
+                      (EXPR
+                        (==
+                          (STRING_CST "hello")
+                          (MEMBER_NAME word))))
+                    (IF_TRUE
+                      (BLOCK
+                        (EXPR
+                          (EXPR
+                            (MEMBER_NAME log) .
+                            (MEMBER_NAME info)
+                            (CALL_EXPR
+                              (ARG_LIST
+                                (EXPR
+                                  (STRING_CST "found hello")))))) BREAK_STMT)))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME TryCatchFinally) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_RESOURCE
                   (EXPR
-                    (ENUM_LIST
-                      (EXPR_LIST
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Foo)
-                            (CALL_EXPR ARG_LIST)))
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Bar)
-                            (CALL_EXPR ARG_LIST)))))))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION optional)))
-              (IF_STMT
-                (CONDITION
-                  (NONEMPTY_EXPR
                     (EXPR
-                      (MEMBER_NAME foos))))
-                (IF_TRUE
+                      (TYPE_NAME Transaction)
+                      (CALL_EXPR ARG_LIST))))
+                (TRY_BLOCK
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME doSomething)
+                        (CALL_EXPR ARG_LIST)))))))
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_BLOCK
+                  (BLOCK
+                    (THROW_STMT
+                      (EXPR
+                        (EXPR
+                          (TYPE_NAME Exception)
+                          (CALL_EXPR ARG_LIST)))))))
+              (CATCH_STMT
+                (TYPE
+                  (TYPE_NAME Exception))
+                (MEMBER_NAME e)
+                (CATCH_BLOCK
+                  (BLOCK RETRY_STMT))))
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_RESOURCE
+                  (TYPE
+                    (TYPE_NAME Session))
+                  (MEMBER_NAME s)
+                  (INIT_EXPR
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Session)
+                        (CALL_EXPR ARG_LIST)))))
+                (TRY_BLOCK
+                  (BLOCK
+                    (THROW_STMT
+                      (EXPR
+                        (EXPR
+                          (TYPE_NAME Exception)
+                          (CALL_EXPR ARG_LIST)))))))
+              (CATCH_STMT
+                (TYPE
+                  (TYPE_NAME Exception))
+                (MEMBER_NAME e)
+                (CATCH_BLOCK
+                  (BLOCK
+                    (THROW_STMT
+                      (EXPR
+                        (MEMBER_NAME e)))))))
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_RESOURCE
+                  (TYPE
+                    (TYPE_NAME Session))
+                  (MEMBER_NAME s)
+                  (INIT_EXPR
+                    (EXPR
+                      (EXPR
+                        (TYPE_NAME Session)
+                        (CALL_EXPR ARG_LIST)))))
+                (TRY_BLOCK
+                  (BLOCK
+                    (THROW_STMT
+                      (EXPR
+                        (EXPR
+                          (TYPE_NAME Exception)
+                          (CALL_EXPR ARG_LIST)))))))
+              (CATCH_STMT
+                (TYPE
+                  (TYPE_NAME Exception))
+                (MEMBER_NAME e)
+                (CATCH_BLOCK
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME error)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (MEMBER_NAME e))))))))))
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_BLOCK
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME doSomething)
+                        (CALL_EXPR ARG_LIST))))))
+              (CATCH_STMT
+                (TYPE
+                  (TYPE_NAME FooException))
+                (MEMBER_NAME fe)
+                (CATCH_BLOCK
+                  (BLOCK
+                    (THROW_STMT
+                      (EXPR
+                        (MEMBER_NAME fe))))))
+              (CATCH_STMT
+                (TYPE
+                  (TYPE_NAME BarException))
+                (MEMBER_NAME be)
+                (CATCH_BLOCK
+                  (BLOCK RETRY_STMT))))
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_BLOCK
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "entering"))))))
+                    (THROW_STMT
+                      (EXPR
+                        (EXPR
+                          (TYPE_NAME Exception)
+                          (CALL_EXPR ARG_LIST)))))))
+              (FINALLY_BLOCK
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "exiting")))))))))
+            (TRY_CATCH_STMT
+              (TRY_STMT
+                (TRY_BLOCK
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "entering"))))))
+                    (THROW_STMT
+                      (EXPR
+                        (EXPR
+                          (TYPE_NAME Exception)
+                          (CALL_EXPR ARG_LIST)))))))
+              (CATCH_STMT
+                (TYPE
+                  (TYPE_NAME Exception))
+                (MEMBER_NAME e)
+                (CATCH_BLOCK
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME error)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "catching")))))))))
+              (FINALLY_BLOCK
+                (BLOCK
+                  (EXPR
+                    (EXPR
+                      (MEMBER_NAME log) .
+                      (MEMBER_NAME info)
+                      (CALL_EXPR
+                        (ARG_LIST
+                          (EXPR
+                            (STRING_CST "exiting"))))))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME SwitchCaseElse) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Number)))
+              (MEMBER_NAME n)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 1))))
+            (SWITCH_STMT
+              (SWITCH_EXPR
+                (EXPR
+                  (MEMBER_NAME n)))
+              (SWITCH_CASE_LIST
+                (CASE_ITEM
+                  (IS_EXPR
+                    (TYPE
+                      (TYPE_NAME Natural)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "natural"))))))))
+                (CASE_ITEM
+                  (IS_EXPR
+                    (TYPE
+                      (TYPE_NAME Float)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "float"))))))))
+                (CASE_ITEM
+                  (IS_EXPR
+                    (TYPE
+                      (TYPE_NAME Integer)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "integer"))))))))
+                (CASE_ITEM
+                  (IS_EXPR
+                    (TYPE
+                      (TYPE_NAME Whole)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "whole"))))))))
+                (CASE_ITEM
+                  (IS_EXPR
+                    (TYPE
+                      (TYPE_NAME Decimal)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "decimal"))))))))
+                (CASE_DEFAULT
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "unknown"))))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME m)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 0))))
+            (SWITCH_STMT
+              (SWITCH_EXPR
+                (EXPR
+                  (MEMBER_NAME m)))
+              (SWITCH_CASE_LIST
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR
+                      (INT_CST 0)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "Zero"))))))))
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR
+                      (INT_CST 1)))
+                  (BLOCK
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "Unity"))))))))
+                (CASE_DEFAULT
                   (BLOCK
                     (EXPR
                       (EXPR
@@ -437,8 +916,24 @@
                           (ARG_LIST
                             (EXPR
                               (PREFIX_EXPR $
-                                (MEMBER_NAME foos)))))))))
-                (IF_FALSE
+                                (MEMBER_NAME m)))))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME o)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 2))))
+            (SWITCH_STMT
+              (SWITCH_EXPR
+                (EXPR
+                  (MEMBER_NAME m)))
+              (SWITCH_CASE_LIST
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR
+                      (INT_CST 0)))
                   (BLOCK
                     (EXPR
                       (EXPR
@@ -447,16 +942,11 @@
                         (CALL_EXPR
                           (ARG_LIST
                             (EXPR
-                              (STRING_CST "empty"))))))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME DoWhile) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (WHILE_STMT
-                (CONDITION
-                  (EXPR
-                    (MEMBER_NAME true)))
-                (WHILE_BLOCK
+                              (STRING_CST "Zero"))))))))
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR
+                      (INT_CST 1)))
                   (BLOCK
                     (EXPR
                       (EXPR
@@ -465,9 +955,8 @@
                         (CALL_EXPR
                           (ARG_LIST
                             (EXPR
-                              (STRING_CST "hello")))))))))
-              (WHILE_STMT
-                (DO_BLOCK
+                              (STRING_CST "Unity"))))))))
+                (CASE_DEFAULT
                   (BLOCK
                     (EXPR
                       (EXPR
@@ -476,27 +965,35 @@
                         (CALL_EXPR
                           (ARG_LIST
                             (EXPR
-                              (STRING_CST "hello"))))))))
-                (CONDITION
-                  (EXPR
-                    (MEMBER_NAME true))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Integer)))
-                (MEMBER_NAME n)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 0)))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable)))
-              (WHILE_STMT
-                (CONDITION
-                  (EXPR
-                    (<
-                      (MEMBER_NAME n)
-                      (INT_CST 10))))
-                (WHILE_BLOCK
+                              (PREFIX_EXPR $
+                                (MEMBER_NAME m)))))))))))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME Color) FORMAL_PARAMETER_LIST
+                (BLOCK
+                  (INST_DECL
+                    (MEMBER_NAME red))
+                  (INST_DECL
+                    (MEMBER_NAME green))
+                  (INST_DECL
+                    (MEMBER_NAME blue)))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Color)))
+              (MEMBER_NAME c)
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME red))))
+            (SWITCH_STMT
+              (SWITCH_EXPR
+                (EXPR
+                  (MEMBER_NAME c)))
+              (SWITCH_CASE_LIST
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR
+                      (MEMBER_NAME red)))
                   (BLOCK
                     (EXPR
                       (EXPR
@@ -505,568 +1002,62 @@
                         (CALL_EXPR
                           (ARG_LIST
                             (EXPR
-                              (MEMBER_NAME n))))))
+                              (STRING_CST "red"))))))))
+                (CASE_ITEM
+                  (EXPR_LIST
                     (EXPR
-                      (EXPR
-                        (MEMBER_NAME n)
-                        (POSTFIX_EXPR ++))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Integer)))
-                (MEMBER_NAME m)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 0)))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable)))
-              (WHILE_STMT
-                (DO_BLOCK
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (MEMBER_NAME m))))))
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME m)
-                        (POSTFIX_EXPR ++)))))
-                (CONDITION
-                  (EXPR
-                    (<
-                      (MEMBER_NAME m)
-                      (INT_CST 10)))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME text)
-                (INIT_EXPR
-                  (EXPR
-                    (STRING_CST "Hello World!"))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Iterator)
-                    (TYPE_ARG_LIST
-                      (TYPE
-                        (TYPE_NAME String)))))
-                (MEMBER_NAME tokens)
-                (INIT_EXPR
-                  (EXPR
-                    (EXPR
-                      (MEMBER_NAME text) .
-                      (MEMBER_NAME tokens)
-                      (CALL_EXPR ARG_LIST) .
-                      (MEMBER_NAME iterator)
-                      (CALL_EXPR ARG_LIST)))))
-              (WHILE_STMT
-                (CONDITION
-                  (EXPR
-                    (EXPR
-                      (MEMBER_NAME tokens) .
-                      (MEMBER_NAME more))))
-                (WHILE_BLOCK
-                  (BLOCK
-                    (MEMBER_DECL
-                      (MEMBER_TYPE
-                        (TYPE
-                          (TYPE_NAME String)))
-                      (MEMBER_NAME word)
-                      (INIT_EXPR
-                        (EXPR
-                          (EXPR
-                            (MEMBER_NAME tokens) .
-                            (MEMBER_NAME next)
-                            (CALL_EXPR ARG_LIST) .
-                            (MEMBER_NAME lowercase)))))
-                    (IF_STMT
-                      (CONDITION
-                        (EXPR
-                          (==
-                            (STRING_CST "hello")
-                            (MEMBER_NAME word))))
-                      (IF_TRUE
-                        (BLOCK
-                          (EXPR
-                            (EXPR
-                              (MEMBER_NAME log) .
-                              (MEMBER_NAME info)
-                              (CALL_EXPR
-                                (ARG_LIST
-                                  (EXPR
-                                    (STRING_CST "found hello")))))) BREAK_STMT)))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME TryCatchFinally) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_RESOURCE
-                    (EXPR
-                      (EXPR
-                        (TYPE_NAME Transaction)
-                        (CALL_EXPR ARG_LIST))))
-                  (TRY_BLOCK
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME doSomething)
-                          (CALL_EXPR ARG_LIST)))))))
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_BLOCK
-                    (BLOCK
-                      (THROW_STMT
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Exception)
-                            (CALL_EXPR ARG_LIST)))))))
-                (CATCH_STMT
-                  (TYPE
-                    (TYPE_NAME Exception))
-                  (MEMBER_NAME e)
-                  (CATCH_BLOCK
-                    (BLOCK RETRY_STMT))))
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_RESOURCE
-                    (TYPE
-                      (TYPE_NAME Session))
-                    (MEMBER_NAME s)
-                    (INIT_EXPR
-                      (EXPR
-                        (EXPR
-                          (TYPE_NAME Session)
-                          (CALL_EXPR ARG_LIST)))))
-                  (TRY_BLOCK
-                    (BLOCK
-                      (THROW_STMT
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Exception)
-                            (CALL_EXPR ARG_LIST)))))))
-                (CATCH_STMT
-                  (TYPE
-                    (TYPE_NAME Exception))
-                  (MEMBER_NAME e)
-                  (CATCH_BLOCK
-                    (BLOCK
-                      (THROW_STMT
-                        (EXPR
-                          (MEMBER_NAME e)))))))
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_RESOURCE
-                    (TYPE
-                      (TYPE_NAME Session))
-                    (MEMBER_NAME s)
-                    (INIT_EXPR
-                      (EXPR
-                        (EXPR
-                          (TYPE_NAME Session)
-                          (CALL_EXPR ARG_LIST)))))
-                  (TRY_BLOCK
-                    (BLOCK
-                      (THROW_STMT
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Exception)
-                            (CALL_EXPR ARG_LIST)))))))
-                (CATCH_STMT
-                  (TYPE
-                    (TYPE_NAME Exception))
-                  (MEMBER_NAME e)
-                  (CATCH_BLOCK
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME error)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (MEMBER_NAME e))))))))))
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_BLOCK
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME doSomething)
-                          (CALL_EXPR ARG_LIST))))))
-                (CATCH_STMT
-                  (TYPE
-                    (TYPE_NAME FooException))
-                  (MEMBER_NAME fe)
-                  (CATCH_BLOCK
-                    (BLOCK
-                      (THROW_STMT
-                        (EXPR
-                          (MEMBER_NAME fe))))))
-                (CATCH_STMT
-                  (TYPE
-                    (TYPE_NAME BarException))
-                  (MEMBER_NAME be)
-                  (CATCH_BLOCK
-                    (BLOCK RETRY_STMT))))
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_BLOCK
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "entering"))))))
-                      (THROW_STMT
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Exception)
-                            (CALL_EXPR ARG_LIST)))))))
-                (FINALLY_BLOCK
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "exiting")))))))))
-              (TRY_CATCH_STMT
-                (TRY_STMT
-                  (TRY_BLOCK
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "entering"))))))
-                      (THROW_STMT
-                        (EXPR
-                          (EXPR
-                            (TYPE_NAME Exception)
-                            (CALL_EXPR ARG_LIST)))))))
-                (CATCH_STMT
-                  (TYPE
-                    (TYPE_NAME Exception))
-                  (MEMBER_NAME e)
-                  (CATCH_BLOCK
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME error)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "catching")))))))))
-                (FINALLY_BLOCK
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME log) .
-                        (MEMBER_NAME info)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (STRING_CST "exiting"))))))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME SwitchCaseElse) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Number)))
-                (MEMBER_NAME n)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 1))))
-              (SWITCH_STMT
-                (SWITCH_EXPR
-                  (EXPR
-                    (MEMBER_NAME n)))
-                (SWITCH_CASE_LIST
-                  (CASE_ITEM
-                    (IS_EXPR
-                      (TYPE
-                        (TYPE_NAME Natural)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "natural"))))))))
-                  (CASE_ITEM
-                    (IS_EXPR
-                      (TYPE
-                        (TYPE_NAME Float)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "float"))))))))
-                  (CASE_ITEM
-                    (IS_EXPR
-                      (TYPE
-                        (TYPE_NAME Integer)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "integer"))))))))
-                  (CASE_ITEM
-                    (IS_EXPR
-                      (TYPE
-                        (TYPE_NAME Whole)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "whole"))))))))
-                  (CASE_ITEM
-                    (IS_EXPR
-                      (TYPE
-                        (TYPE_NAME Decimal)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "decimal"))))))))
-                  (CASE_DEFAULT
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "unknown"))))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME m)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 0))))
-              (SWITCH_STMT
-                (SWITCH_EXPR
-                  (EXPR
-                    (MEMBER_NAME m)))
-                (SWITCH_CASE_LIST
-                  (CASE_ITEM
-                    (EXPR_LIST
-                      (EXPR
-                        (INT_CST 0)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "Zero"))))))))
-                  (CASE_ITEM
-                    (EXPR_LIST
-                      (EXPR
-                        (INT_CST 1)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "Unity"))))))))
-                  (CASE_DEFAULT
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (PREFIX_EXPR $
-                                  (MEMBER_NAME m)))))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME o)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 2))))
-              (SWITCH_STMT
-                (SWITCH_EXPR
-                  (EXPR
-                    (MEMBER_NAME m)))
-                (SWITCH_CASE_LIST
-                  (CASE_ITEM
-                    (EXPR_LIST
-                      (EXPR
-                        (INT_CST 0)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "Zero"))))))))
-                  (CASE_ITEM
-                    (EXPR_LIST
-                      (EXPR
-                        (INT_CST 1)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "Unity"))))))))
-                  (CASE_DEFAULT
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (PREFIX_EXPR $
-                                  (MEMBER_NAME m)))))))))))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME Color) FORMAL_PARAMETER_LIST
-                  (BLOCK
-                    (INST_DECL
-                      (MEMBER_NAME red))
-                    (INST_DECL
                       (MEMBER_NAME green))
-                    (INST_DECL
-                      (MEMBER_NAME blue)))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Color)))
-                (MEMBER_NAME c)
-                (INIT_EXPR
-                  (EXPR
-                    (MEMBER_NAME red))))
-              (SWITCH_STMT
-                (SWITCH_EXPR
-                  (EXPR
-                    (MEMBER_NAME c)))
-                (SWITCH_CASE_LIST
-                  (CASE_ITEM
-                    (EXPR_LIST
+                    (EXPR
+                      (MEMBER_NAME blue)))
+                  (BLOCK
+                    (EXPR
                       (EXPR
-                        (MEMBER_NAME red)))
-                    (BLOCK
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "never anything else"))))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Color) ?))
+              (MEMBER_NAME cc)
+              (INIT_EXPR
+                (EXPR null)))
+            (SWITCH_STMT
+              (SWITCH_EXPR
+                (EXPR
+                  (MEMBER_NAME cc)))
+              (SWITCH_CASE_LIST
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR null))
+                  (BLOCK
+                    (EXPR
                       (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "red"))))))))
-                  (CASE_ITEM
-                    (EXPR_LIST
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CST "unknown color"))))))))
+                (CASE_ITEM
+                  (EXPR_LIST
+                    (EXPR
+                      (MEMBER_NAME red))
+                    (EXPR
+                      (MEMBER_NAME green))
+                    (EXPR
+                      (MEMBER_NAME blue)))
+                  (BLOCK
+                    (EXPR
                       (EXPR
-                        (MEMBER_NAME green))
-                      (EXPR
-                        (MEMBER_NAME blue)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "never anything else"))))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Color)))
-                (MEMBER_NAME cc)
-                (INIT_EXPR
-                  (EXPR null))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION optional)))
-              (SWITCH_STMT
-                (SWITCH_EXPR
-                  (EXPR
-                    (MEMBER_NAME cc)))
-                (SWITCH_CASE_LIST
-                  (CASE_ITEM
-                    (EXPR_LIST
-                      (EXPR null))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CST "unknown color"))))))))
-                  (CASE_ITEM
-                    (EXPR_LIST
-                      (EXPR
-                        (MEMBER_NAME red))
-                      (EXPR
-                        (MEMBER_NAME green))
-                      (EXPR
-                        (MEMBER_NAME blue)))
-                    (BLOCK
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME log) .
-                          (MEMBER_NAME info)
-                          (CALL_EXPR
-                            (ARG_LIST
-                              (EXPR
-                                (STRING_CONCAT "known color "
-                                  (EXPR
-                                    (MEMBER_NAME cc)) "")))))))))))))))))
+                        (MEMBER_NAME log) .
+                        (MEMBER_NAME info)
+                        (CALL_EXPR
+                          (ARG_LIST
+                            (EXPR
+                              (STRING_CONCAT "known color "
+                                (EXPR
+                                  (MEMBER_NAME cc)) ""))))))))))))))))

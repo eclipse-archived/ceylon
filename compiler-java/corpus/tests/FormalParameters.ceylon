@@ -14,26 +14,21 @@ class FormalParameters() {
 		                            String description="", 
 		                            Lock lock=null) {}
 		
-		void varargsParameter(String... strings) {}
+		void sequencedParameter(String... strings) {}
 		
 		void entryParameter(String name->Person person) {}
 		
-		void rangeParameter(Natural min..max) {}
-		
 		void combinationParameters(String name->Person person,
 		                           Natural count, 
-		                           String description="", 
-		                           Natural min..max = 1..10, 
-		                           Lock lock=null, 
+		                           String description="",
+		                           Lock? lock=null, 
 		                           String... strings) {}
 		
 		void functionalParameters(String produce(), void consume(String x)) { 
 			consume(produce()); 
 		}
 		
-		void multipleParameterLists()(Natural min..max) {
-		    return rangeParameter
-		}
+		void multipleParameterLists(Lock? lock=null)(String... strings) {}
 		
 	}
 	
@@ -49,19 +44,16 @@ class FormalParameters() {
 		
 		class DefaultValueParameters(Natural param=1, 
 		                             String description="", 
-		                             Lock lock=null) {}
+		                             Lock? lock=null) {}
 		
-		class VarargsParameter(String... strings) {}
+		class SequencedParameter(String... strings) {}
 		
 		class EntryParameter(String name->Person person) {}
 		
-		class RangeParameter(Natural min..max) {}
-		
 		class CombinationParameters(String name->Person person,
 		                            Natural count, 
-		                            String description="", 
-		                            Natural min..max = 1..10, 
-		                            Lock lock=null, 
+		                            String description="",
+		                            Lock? lock=null, 
 		                            String... strings) {}
 		
 		class FunctionalParameters(String produce(), void consume(String x)) { 

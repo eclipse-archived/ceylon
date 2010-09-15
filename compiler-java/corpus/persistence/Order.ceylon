@@ -5,12 +5,12 @@ import math.Math;
 entity table{ schema="orders"; name="order"; }
 by "Gavin King"
    "Andrew Haley"
-see #OrderSystem
-public class Order {
+see (OrderSystem)
+public class Order() {
 	
 	//TODO: address, payment, user
 	
-	public class Status {
+	public class Status() {
 	
 		doc "A draft order being edited"
 		charColumnValue "DR"
@@ -31,14 +31,14 @@ public class Order {
 		
 	}
 	
-	oneToMany{ mappedBy=#Item.order; }
+	oneToMany{ mappedBy=Item.order; }
 	cascade(persist, merge, remove) deleteOrphans
 	OpenList<Item> itemList = ArrayList<Item>();
 	
 	public mutable Status status := Status.draft;
 	
 	generated id column{ name="id"; }
-	public mutable optional orderId;
+	public mutable String? orderId;
 	
 	public Item addItem(Product product, Natural quantity=1) {
 		Item item = Item(this, product, quantity);
@@ -53,7 +53,7 @@ public class Order {
 	
 	transient
 	public Float total {
-		return Math.sum(items*.price);
+		return Math.sum(items[].price);
 	}
 	
 	

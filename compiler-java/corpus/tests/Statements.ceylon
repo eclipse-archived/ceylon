@@ -1,7 +1,7 @@
 class Statements() {
 
 	String hello = "Hello World"; //specification
-	String getHello() = get hello; //method specification
+	String getHello() = get(hello); //method specification
 	mutable String string := hello; //initialization
 	string := "Hello Gavin"; //assignment
 	
@@ -26,7 +26,7 @@ class Statements() {
 	b&=b; //bitwise and
 	b^=false; //exclusive or
 	
-	mutable optional String qux := null;
+	mutable String? qux := null;
 	qux ?= "Hello";
 	
 	class Bar(Boolean b) {}

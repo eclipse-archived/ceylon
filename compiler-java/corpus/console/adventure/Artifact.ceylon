@@ -11,7 +11,7 @@ mutable package class Artifact(String name, String description, Location locatio
 	doc "Get the artifact and put it
 	     in the player's backpack."
 	package void get(Adventure game) {
-		if ( game.backpackWeight + weight < 100 ) {
+		if (game.backpackWeight + weight < 100) {
 			location.remove(this);
 			game.backpack.put(this);
 			location := game.backpack;
@@ -26,7 +26,7 @@ mutable package class Artifact(String name, String description, Location locatio
 	doc "Get the artifact and put it
 	     in the player's backpack."
 	package void drop(Adventure game) {
-	    if ( location==game.backpack ) {
+	    if (location == game.backpack) {
 			game.backpack.remove(this);
 			game.currentLocation.put(this);
 			location := game.currentLocation;

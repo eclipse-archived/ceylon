@@ -18,9 +18,9 @@ class Interfaces() {
 	by "Gavin King"
 	   "Andrew Haley"
 	scope(session)
-	see #Simple
-	throws #DatabaseException
-	       "if database access fails"
+	see (Simple)
+	throws (DatabaseException
+	        -> "if database access fails")
 	entity table { name="someTable"; schema="someSchema"; }
 	interface WithAnnotations {}
 	
@@ -29,8 +29,8 @@ class Interfaces() {
 	interface WithTypeParameters<X, Y> {}
 	
 	interface WithTypeConstraints<X, Y> 
-		where X satisfies String 
-		where Y(Natural count) {}
+		given X satisfies String 
+		given Y(Natural count) {}
 		
 	interface WithNestedInterface {
 		interface NestedInterface {}

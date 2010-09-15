@@ -1,528 +1,528 @@
 # Classes.ceylon
-
+ IMPORT_LIST
 (TYPE_DECL
-  (TYPE_DECL
-    (CLASS_DECL
-      (TYPE_NAME Classes) FORMAL_PARAMETER_LIST
-      (BLOCK
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME Simple) FORMAL_PARAMETER_LIST BLOCK))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithMethods) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME doNothing) FORMAL_PARAMETER_LIST BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME returnZero) FORMAL_PARAMETER_LIST
-                (BLOCK
-                  (RET_STMT
-                    (EXPR
-                      (INT_CST 0)))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME returnArgument)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME arg)))
-                (BLOCK
-                  (RET_STMT
-                    (EXPR
-                      (MEMBER_NAME arg))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithAttributes) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME count)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 0))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME description)
-                (INIT_EXPR
-                  (EXPR
-                    (STRING_CST "")))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable)))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME countAsString)
-                (BLOCK
-                  (RET_STMT
-                    (EXPR
-                      (PREFIX_EXPR $
-                        (MEMBER_NAME count))))))
-              (MEMBER_DECL
-                (ATTRIBUTE_SETTER
-                  (MEMBER_NAME countAsString))
-                (BLOCK
-                  (EXPR
-                    (:=
-                      (MEMBER_NAME count)
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME countAsString) .
-                          (MEMBER_NAME parseNatural))))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithAbstractMethods) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME doNothing) FORMAL_PARAMETER_LIST)
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME returnZero) FORMAL_PARAMETER_LIST)
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME returnArgument)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME arg))))))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION abstract)))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithAbstractAttributes) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME count))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME description)
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable)))))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION abstract)))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithInitParameters)
-            (FORMAL_PARAMETER_LIST
-              (FORMAL_PARAMETER
+  (CLASS_DECL
+    (TYPE_NAME Classes) FORMAL_PARAMETER_LIST
+    (BLOCK
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME Simple) FORMAL_PARAMETER_LIST BLOCK))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithMethods) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME doNothing) FORMAL_PARAMETER_LIST BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE
                 (TYPE
-                  (TYPE_NAME Natural))
-                (ARG_NAME count))
-              (FORMAL_PARAMETER
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME returnZero) FORMAL_PARAMETER_LIST
+              (BLOCK
+                (RET_STMT
+                  (EXPR
+                    (INT_CST 0)))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
                 (TYPE
-                  (TYPE_NAME String))
-                (ARG_NAME description)))
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME returnArgument)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
                   (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME count)
-                (INIT_EXPR
+                    (TYPE_NAME String))
+                  (ARG_NAME arg)))
+              (BLOCK
+                (RET_STMT
                   (EXPR
-                    (MEMBER_NAME count))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME description)
-                (INIT_EXPR
-                  (EXPR
-                    (MEMBER_NAME description)))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithAnnotations) FORMAL_PARAMETER_LIST BLOCK)
-          (ANNOTATION_LIST
-            (USER_ANNOTATION
-              (ANNOTATION_NAME doc)
-              (STRING_CST "This class has annotations. Remember that literal
-	     strings can be spread across multiple lines."))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME by)
-              (STRING_CST "Gavin King")
-              (STRING_CST "Andrew Haley"))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME scope)
-              (ARG_LIST
-                (EXPR
-                  (MEMBER_NAME session))))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME see)
-              (REFLECTED_LITERAL
-                (TYPE
-                  (TYPE_NAME Simple))))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME throws)
-              (REFLECTED_LITERAL
-                (TYPE
-                  (TYPE_NAME DatabaseException)))
-              (STRING_CST "if database access fails"))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME entity))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME table)
-              (ARG_LIST
-                (NAMED_ARG
-                  (ARG_NAME name)
-                  (INIT_EXPR
-                    (EXPR
-                      (STRING_CST "someTable"))))
-                (NAMED_ARG
-                  (ARG_NAME schema)
-                  (INIT_EXPR
-                    (EXPR
-                      (STRING_CST "someSchema"))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME Extends) FORMAL_PARAMETER_LIST
-            (SUPERCLASS
-              (TYPE
-                (TYPE_NAME Simple)) ARG_LIST) BLOCK))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME ExtendsWithInitParameters)
-            (FORMAL_PARAMETER_LIST
-              (FORMAL_PARAMETER
-                (TYPE
-                  (TYPE_NAME Natural))
-                (ARG_NAME count))
-              (FORMAL_PARAMETER
-                (TYPE
-                  (TYPE_NAME String))
-                (ARG_NAME description))
-              (FORMAL_PARAMETER
-                (TYPE
-                  (TYPE_NAME Float))
-                (ARG_NAME tolerance)))
-            (SUPERCLASS
-              (TYPE
-                (TYPE_NAME WithInitParameters))
-              (ARG_LIST
-                (EXPR
-                  (MEMBER_NAME count))
-                (EXPR
-                  (MEMBER_NAME description))))
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Float)))
-                (MEMBER_NAME tol)
-                (INIT_EXPR
-                  (EXPR
-                    (MEMBER_NAME tolerance)))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithClosedInstanceList) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (INST_DECL
-                (MEMBER_NAME foo))
-              (INST_DECL
-                (MEMBER_NAME bar))
-              (INST_DECL
-                (MEMBER_NAME baz)))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithOpenInstanceList) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (INST_DECL
-                (MEMBER_NAME foo))
-              (INST_DECL
-                (MEMBER_NAME bar))
-              (INST_DECL
-                (MEMBER_NAME baz) ...))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithInstanceListAndInitParameter)
-            (FORMAL_PARAMETER_LIST
-              (FORMAL_PARAMETER
-                (TYPE
-                  (TYPE_NAME Integer))
-                (ARG_NAME i)))
-            (BLOCK
-              (INST_DECL
-                (MEMBER_NAME one)
-                (ARG_LIST
-                  (EXPR
-                    (INT_CST 1))))
-              (INST_DECL
-                (MEMBER_NAME two)
-                (ARG_LIST
-                  (EXPR
-                    (INT_CST 2))))
-              (INST_DECL
-                (MEMBER_NAME three)
-                (ARG_LIST
-                  (EXPR
-                    (INT_CST 3))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Integer)))
-                (MEMBER_NAME value)
-                (INIT_EXPR
-                  (EXPR
-                    (MEMBER_NAME i)))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithInstanceListAndFunctionalInitParameter)
-            (FORMAL_PARAMETER_LIST
-              (FORMAL_PARAMETER
-                (TYPE
-                  (TYPE_NAME String))
-                (ARG_NAME name) FORMAL_PARAMETER_LIST))
-            (BLOCK
-              (INST_DECL
-                (MEMBER_NAME foo)
-                (ARG_LIST
-                  (NAMED_ARG
-                    (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME name) FORMAL_PARAMETER_LIST
-                    (BLOCK
-                      (RET_STMT
-                        (EXPR
-                          (STRING_CST "Foo")))))))
-              (INST_DECL
-                (MEMBER_NAME bar)
-                (ARG_LIST
-                  (NAMED_ARG
-                    (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME name) FORMAL_PARAMETER_LIST
-                    (BLOCK
-                      (RET_STMT
-                        (EXPR
-                          (STRING_CST "Bar")))))))
-              (INST_DECL
-                (MEMBER_NAME baz)
-                (ARG_LIST
-                  (NAMED_ARG
-                    (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME name) FORMAL_PARAMETER_LIST
-                    (BLOCK
-                      (RET_STMT
-                        (EXPR
-                          (STRING_CST "Baz")))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME String)))
-                (MEMBER_NAME name) FORMAL_PARAMETER_LIST
-                (INIT_EXPR
-                  (EXPR
-                    (MEMBER_NAME name)))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithAnnotatedInstanceList)
-            (FORMAL_PARAMETER_LIST
-              (FORMAL_PARAMETER
-                (TYPE
-                  (TYPE_NAME Integer))
-                (ARG_NAME i)))
-            (BLOCK
-              (INST_DECL
-                (MEMBER_NAME one)
-                (ARG_LIST
-                  (EXPR
-                    (INT_CST 1)))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "1"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME numericValue)
-                    (ARG_LIST
-                      (EXPR
-                        (INT_CST 1))))))
-              (INST_DECL
-                (MEMBER_NAME two)
-                (ARG_LIST
-                  (EXPR
-                    (INT_CST 2)))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "2"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME numericValue)
-                    (ARG_LIST
-                      (EXPR
-                        (INT_CST 2))))))
-              (INST_DECL
-                (MEMBER_NAME three)
-                (ARG_LIST
-                  (EXPR
-                    (INT_CST 3)))
-                (ANNOTATION_LIST
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME doc)
-                    (STRING_CST "3"))
-                  (USER_ANNOTATION
-                    (ANNOTATION_NAME numericValue)
-                    (ARG_LIST
-                      (EXPR
-                        (INT_CST 3))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Integer)))
-                (MEMBER_NAME value)
-                (INIT_EXPR
-                  (EXPR
-                    (MEMBER_NAME i)))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithTypeParameters)
-            (TYPE_PARAMETER_LIST
-              (TYPE_PARAMETER
-                (TYPE_NAME X))
-              (TYPE_PARAMETER
-                (TYPE_NAME Y))) FORMAL_PARAMETER_LIST BLOCK))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithTypeConstraints)
-            (TYPE_PARAMETER_LIST
-              (TYPE_PARAMETER
-                (TYPE_NAME X))
-              (TYPE_PARAMETER
-                (TYPE_NAME Y))) FORMAL_PARAMETER_LIST
-            (TYPE_CONSTRAINT_LIST
-              (TYPE_CONSTRAINT
-                (TYPE_NAME X)
-                (SATISFIES_LIST
-                  (TYPE
-                    (TYPE_NAME String))))
-              (TYPE_CONSTRAINT
-                (TYPE_NAME Y)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME count))))) BLOCK))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithNestedClass) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME NestedClass) FORMAL_PARAMETER_LIST BLOCK)))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME WithNestedInterface) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (TYPE_DECL
-                (INTERFACE_DECL
-                  (TYPE_NAME NestedInterface))))))
-        (TYPE_DECL
-          (INTERFACE_DECL
-            (TYPE_NAME Counter)
-            (ABSTRACT_MEMBER_DECL
+                    (MEMBER_NAME arg))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithAttributes) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
               (MEMBER_TYPE
                 (TYPE
                   (TYPE_NAME Natural)))
               (MEMBER_NAME count)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 0))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME description)
+              (INIT_EXPR
+                (EXPR
+                  (STRING_CST "")))
               (ANNOTATION_LIST
-                (LANG_ANNOTATION public)))
-            (ABSTRACT_MEMBER_DECL
+                (LANG_ANNOTATION mutable)))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME countAsString)
+              (BLOCK
+                (RET_STMT
+                  (EXPR
+                    (PREFIX_EXPR $
+                      (MEMBER_NAME count))))))
+            (MEMBER_DECL
+              (ATTRIBUTE_SETTER
+                (MEMBER_NAME countAsString))
+              (BLOCK
+                (EXPR
+                  (:=
+                    (MEMBER_NAME count)
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME countAsString) .
+                        (MEMBER_NAME parseNatural))))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithAbstractMethods) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME doNothing) FORMAL_PARAMETER_LIST)
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME returnZero) FORMAL_PARAMETER_LIST)
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME returnArgument)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME arg))))))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION abstract)))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithAbstractAttributes) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME count))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME description)
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION mutable)))))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION abstract)))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithInitParameters)
+          (FORMAL_PARAMETER_LIST
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME Natural))
+              (ARG_NAME count))
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME String))
+              (ARG_NAME description)))
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME count)
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME count))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME description)
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME description)))
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION mutable))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithAnnotations) FORMAL_PARAMETER_LIST BLOCK)
+        (ANNOTATION_LIST
+          (USER_ANNOTATION
+            (ANNOTATION_NAME doc)
+            (STRING_CST "This class has annotations. Remember that literal
+	     strings can be spread across multiple lines."))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME by)
+            (STRING_CST "Gavin King")
+            (STRING_CST "Andrew Haley"))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME scope)
+            (ARG_LIST
+              (EXPR
+                (MEMBER_NAME session))))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME see)
+            (ARG_LIST
+              (EXPR
+                (TYPE_NAME Simple))))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME throws)
+            (ARG_LIST
+              (EXPR
+                (->
+                  (TYPE_NAME DatabaseException)
+                  (STRING_CST "if database access fails")))))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME entity))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME table)
+            (ARG_LIST
+              (NAMED_ARG
+                (ARG_NAME name)
+                (INIT_EXPR
+                  (EXPR
+                    (STRING_CST "someTable"))))
+              (NAMED_ARG
+                (ARG_NAME schema)
+                (INIT_EXPR
+                  (EXPR
+                    (STRING_CST "someSchema"))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME Extends) FORMAL_PARAMETER_LIST
+          (SUPERCLASS
+            (TYPE
+              (TYPE_NAME Simple)) ARG_LIST) BLOCK))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME ExtendsWithInitParameters)
+          (FORMAL_PARAMETER_LIST
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME Natural))
+              (ARG_NAME count))
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME String))
+              (ARG_NAME description))
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME Float))
+              (ARG_NAME tolerance)))
+          (SUPERCLASS
+            (TYPE
+              (TYPE_NAME WithInitParameters))
+            (ARG_LIST
+              (EXPR
+                (MEMBER_NAME count))
+              (EXPR
+                (MEMBER_NAME description))))
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Float)))
+              (MEMBER_NAME tol)
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME tolerance)))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithClosedInstanceList) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (INST_DECL
+              (MEMBER_NAME foo))
+            (INST_DECL
+              (MEMBER_NAME bar))
+            (INST_DECL
+              (MEMBER_NAME baz)))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithOpenInstanceList) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (INST_DECL
+              (MEMBER_NAME foo))
+            (INST_DECL
+              (MEMBER_NAME bar))
+            (INST_DECL
+              (MEMBER_NAME baz) ...))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithInstanceListAndInitParameter)
+          (FORMAL_PARAMETER_LIST
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME Integer))
+              (ARG_NAME i)))
+          (BLOCK
+            (INST_DECL
+              (MEMBER_NAME one)
+              (ARG_LIST
+                (EXPR
+                  (INT_CST 1))))
+            (INST_DECL
+              (MEMBER_NAME two)
+              (ARG_LIST
+                (EXPR
+                  (INT_CST 2))))
+            (INST_DECL
+              (MEMBER_NAME three)
+              (ARG_LIST
+                (EXPR
+                  (INT_CST 3))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Integer)))
+              (MEMBER_NAME value)
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME i)))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithInstanceListAndFunctionalInitParameter)
+          (FORMAL_PARAMETER_LIST
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME String))
+              (ARG_NAME name) FORMAL_PARAMETER_LIST))
+          (BLOCK
+            (INST_DECL
+              (MEMBER_NAME foo)
+              (ARG_LIST
+                (NAMED_ARG
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME name) FORMAL_PARAMETER_LIST
+                  (BLOCK
+                    (RET_STMT
+                      (EXPR
+                        (STRING_CST "Foo")))))))
+            (INST_DECL
+              (MEMBER_NAME bar)
+              (ARG_LIST
+                (NAMED_ARG
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME name) FORMAL_PARAMETER_LIST
+                  (BLOCK
+                    (RET_STMT
+                      (EXPR
+                        (STRING_CST "Bar")))))))
+            (INST_DECL
+              (MEMBER_NAME baz)
+              (ARG_LIST
+                (NAMED_ARG
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME name) FORMAL_PARAMETER_LIST
+                  (BLOCK
+                    (RET_STMT
+                      (EXPR
+                        (STRING_CST "Baz")))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME String)))
+              (MEMBER_NAME name) FORMAL_PARAMETER_LIST
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME name)))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithAnnotatedInstanceList)
+          (FORMAL_PARAMETER_LIST
+            (FORMAL_PARAMETER
+              (TYPE
+                (TYPE_NAME Integer))
+              (ARG_NAME i)))
+          (BLOCK
+            (INST_DECL
+              (MEMBER_NAME one)
+              (ARG_LIST
+                (EXPR
+                  (INT_CST 1)))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "1"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME numericValue)
+                  (ARG_LIST
+                    (EXPR
+                      (INT_CST 1))))))
+            (INST_DECL
+              (MEMBER_NAME two)
+              (ARG_LIST
+                (EXPR
+                  (INT_CST 2)))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "2"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME numericValue)
+                  (ARG_LIST
+                    (EXPR
+                      (INT_CST 2))))))
+            (INST_DECL
+              (MEMBER_NAME three)
+              (ARG_LIST
+                (EXPR
+                  (INT_CST 3)))
+              (ANNOTATION_LIST
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME doc)
+                  (STRING_CST "3"))
+                (USER_ANNOTATION
+                  (ANNOTATION_NAME numericValue)
+                  (ARG_LIST
+                    (EXPR
+                      (INT_CST 3))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Integer)))
+              (MEMBER_NAME value)
+              (INIT_EXPR
+                (EXPR
+                  (MEMBER_NAME i)))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithTypeParameters)
+          (TYPE_PARAMETER_LIST
+            (TYPE_PARAMETER
+              (TYPE_NAME X))
+            (TYPE_PARAMETER
+              (TYPE_NAME Y))) FORMAL_PARAMETER_LIST BLOCK))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithTypeConstraints)
+          (TYPE_PARAMETER_LIST
+            (TYPE_PARAMETER
+              (TYPE_NAME X))
+            (TYPE_PARAMETER
+              (TYPE_NAME Y))) FORMAL_PARAMETER_LIST
+          (TYPE_CONSTRAINT_LIST
+            (TYPE_CONSTRAINT
+              (TYPE_NAME X)
+              (SATISFIES_LIST
+                (TYPE
+                  (TYPE_NAME String))))
+            (TYPE_CONSTRAINT
+              (TYPE_NAME Y)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME count))))) BLOCK))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithNestedClass) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME NestedClass) FORMAL_PARAMETER_LIST BLOCK)))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME WithNestedInterface) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (TYPE_DECL
+              (INTERFACE_DECL
+                (TYPE_NAME NestedInterface))))))
+      (TYPE_DECL
+        (INTERFACE_DECL
+          (TYPE_NAME Counter)
+          (ABSTRACT_MEMBER_DECL
+            (MEMBER_TYPE
+              (TYPE
+                (TYPE_NAME Natural)))
+            (MEMBER_NAME count)
+            (ANNOTATION_LIST
+              (LANG_ANNOTATION public)))
+          (ABSTRACT_MEMBER_DECL
+            (MEMBER_TYPE void)
+            (MEMBER_NAME inc) FORMAL_PARAMETER_LIST
+            (ANNOTATION_LIST
+              (LANG_ANNOTATION public))))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION public)))
+      (TYPE_DECL
+        (INTERFACE_DECL
+          (TYPE_NAME Resettable)
+          (ABSTRACT_MEMBER_DECL
+            (MEMBER_TYPE void)
+            (MEMBER_NAME reset) FORMAL_PARAMETER_LIST))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION public)))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME Satisfies) FORMAL_PARAMETER_LIST
+          (SATISFIES_LIST
+            (TYPE
+              (TYPE_NAME Counter)))
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME count)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 0)))
+              (ANNOTATION_LIST
+                (LANG_ANNOTATION mutable)))
+            (MEMBER_DECL
               (MEMBER_TYPE void)
               (MEMBER_NAME inc) FORMAL_PARAMETER_LIST
+              (BLOCK
+                (EXPR
+                  (EXPR
+                    (MEMBER_NAME count)
+                    (POSTFIX_EXPR ++))))))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME SatisfiesMultiple) FORMAL_PARAMETER_LIST
+          (SATISFIES_LIST
+            (TYPE
+              (TYPE_NAME Counter))
+            (TYPE
+              (TYPE_NAME Resettable)))
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Natural)))
+              (MEMBER_NAME count)
+              (INIT_EXPR
+                (EXPR
+                  (INT_CST 0)))
               (ANNOTATION_LIST
-                (LANG_ANNOTATION public))))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION public)))
-        (TYPE_DECL
-          (INTERFACE_DECL
-            (TYPE_NAME Resettable)
-            (ABSTRACT_MEMBER_DECL
+                (LANG_ANNOTATION mutable)))
+            (MEMBER_DECL
               (MEMBER_TYPE void)
-              (MEMBER_NAME reset) FORMAL_PARAMETER_LIST))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION public)))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME Satisfies) FORMAL_PARAMETER_LIST
-            (SATISFIES_LIST
-              (TYPE
-                (TYPE_NAME Counter)))
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME count)
-                (INIT_EXPR
+              (MEMBER_NAME inc) FORMAL_PARAMETER_LIST
+              (BLOCK
+                (EXPR
                   (EXPR
-                    (INT_CST 0)))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable)))
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME inc) FORMAL_PARAMETER_LIST
-                (BLOCK
-                  (EXPR
+                    (MEMBER_NAME count)
+                    (POSTFIX_EXPR ++)))))
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME reset) FORMAL_PARAMETER_LIST
+              (BLOCK
+                (EXPR
+                  (:=
+                    (MEMBER_NAME count)
                     (EXPR
-                      (MEMBER_NAME count)
-                      (POSTFIX_EXPR ++))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME SatisfiesMultiple) FORMAL_PARAMETER_LIST
-            (SATISFIES_LIST
-              (TYPE
-                (TYPE_NAME Counter))
-              (TYPE
-                (TYPE_NAME Resettable)))
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE
-                  (TYPE
-                    (TYPE_NAME Natural)))
-                (MEMBER_NAME count)
-                (INIT_EXPR
-                  (EXPR
-                    (INT_CST 0)))
-                (ANNOTATION_LIST
-                  (LANG_ANNOTATION mutable)))
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME inc) FORMAL_PARAMETER_LIST
-                (BLOCK
-                  (EXPR
-                    (EXPR
-                      (MEMBER_NAME count)
-                      (POSTFIX_EXPR ++)))))
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME reset) FORMAL_PARAMETER_LIST
-                (BLOCK
-                  (EXPR
-                    (:=
-                      (MEMBER_NAME count)
-                      (EXPR
-                        (INT_CST 0)))))))))))))
+                      (INT_CST 0))))))))))))
