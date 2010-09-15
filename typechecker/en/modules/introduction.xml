@@ -2517,8 +2517,18 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
             <literal>Integer</literal> is a 
             <literal>Callable&lt;Integer,Integer,Integer&gt;</literal>.</para>
             
-            <para>Sequenced type parameters are the foundation of Ceylon's unique statically
-            typesafe metamodel (Ceylon's version of Java's reflection API).</para>
+            <programlisting>Hello hello = DefaultHello();
+Callable&lt;Void,OutputStream&gt; = hello.say;</programlisting>
+            
+            <para>Sequenced type parameters are the foundation of Ceylon's unique 
+            statically typesafe metamodel (Ceylon's version of Java's reflection API).
+            A metamodel type like <literal>Class</literal> and <literal>Method</literal>
+            is a generic types with a sequenced type parameter representing the
+            formal parameter types of the class or method.</para>
+            
+            <programlisting>Class&lt;DefaultHello&gt; = DefaultHello;</programlisting>
+            <programlisting>Class&lt;PersonalizedHello,String&gt; = PersonalizedHello;</programlisting>
+            <programlisting>Method&lt;Hello,Void,OutputStream&gt; = Hello.say;</programlisting>
         
     </section>
     
