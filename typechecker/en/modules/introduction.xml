@@ -1593,6 +1593,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
 }</programlisting>
             
             <para>It's also possible to declare a method that returns a function.
+            A method that returns a function has multiple formal parameter lists.
             The following method returns a function which increments its argument
             by <literal>n</literal>:</para>
             
@@ -1603,26 +1604,69 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     return increment
 }</programlisting>
 
+            <para>Here, we define a method <literal>increment()</literal> inside
+            the body of the <literal>incrementor()</literal> method, and return
+            a reference to the inner method from the outer method. The inner method, 
+            <literal>increment()</literal> can't be called directly from outside 
+            the body of the <literal>incrementor()</literal> method, since it is a 
+            block local declaration. But the reference to 
+            <literal>increment()</literal> returned by <literal>incrementor()</literal>
+            can be called by any code that obtains the reference.</para>
+
             <para>Notice that <literal>increment()</literal> is able to use the 
-            parameter <literal>n</literal> of <literal>incrementor()</literal>. We 
-            say that the inner method receives a closure of the 
+            parameter <literal>n</literal> of <literal>incrementor()</literal>. 
+            We say that the inner method receives a closure of the 
             non-<literal>mutable</literal> locals and parameters of the outer 
-            method.</para>
+            method&mdash;just like a method of a class receives a closure of the
+            class initialization parameters and non-<literal>mutable</literal> 
+            locals of the class initializer. In general, any inner class, method, 
+            or attribute declaration always receives the closure of the 
+            non-<literal>mutable</literal> values of the class, method, or attribute 
+            declaration in which it is enclosed. This is an example of how regular
+            the language is.</para>
             
-            <para>We can use our method like this:</para>
+            <para>We could invoke our method like this:</para>
             
+            <programlisting>Natural five = incrementor(3)(2);</programlisting>
+            
+            <para>But if we were planning to use the method in this way, there 
+            would be no good reason for giving it two formal parameter lists.
+            It's much more likely that we're planning to store or pass the 
+            reference to the inner method somewhere before invoking it.</para>
+
             <programlisting>Natural inc(Natural arg) incrementor = incrementor(3);
 Natural five = inc(2);</programlisting>
 
+            <para>The first line demonstrates how a method can be defined using
+            a <literal>=</literal> specification statement, just like a simple 
+            attribute definition. The second line of code simply invokes the returned 
+            reference to <literal>increment()</literal>.</para> 
+            
+            <para>We've already seen how an attribute can be defined using a block of 
+            code. Now we see that a method can be defined using a specifier. So, if 
+            you like, you can start thinking of a method as an attribute of type 
+            <literal>Callable</literal>&mdash;an attribute with parameters. Or if you 
+            prefer, you can think of an attribute as member with zero formal parameter 
+            lists, and of a method as a member with one or more formal parameter lists. 
+            Either kind of member can be defined by reference, using <literal>=</literal>, 
+            or directly, by specifying a block of code to be executed.</para>
+                        
             <para>There are two alternative, shorter ways to write the 
-            <literal>incrementor()</literal> function. Here's one of them:</para>
+            <literal>incrementor()</literal> function. Here's the first 
+            alternative:</para>
             
             <programlisting>Natural incrementor(Natural n)(Natural arg) {
     return n.plus
 }</programlisting>
 
             <para>In this case, we simply return a reference to the <literal>plus()</literal>
-            method of the <literal>Natural</literal> instance <literal>n</literal>.</para>
+            method of the <literal>Natural</literal> instance <literal>n</literal>. This 
+            method accepts a single parameter of type <literal>Natural</literal> and 
+            returns a <literal>Natural</literal>, so its type is compatible with the
+            return type of <literal>incrementor()</literal>&mdash;that is to say, its
+            type is <literal>Callable&lt;Natural,Natural&gt;</literal>. In case you're
+            wondering, the type of the method <literal>incrementor()</literal> is
+            <literal>Callable&lt;Callable&lt;Natural,Natural&gt;,Natural&gt;</literal>.</para>
 
             <para>And here's the second alternative:</para>
 
@@ -1630,10 +1674,27 @@ Natural five = inc(2);</programlisting>
     return n+arg
 }</programlisting>
 
-            <para>In this case, the compiler does the job of automatically infering 
+            <para>In this case, the compiler does the job of automatically inferring 
             the definition of the inner method named <literal>increment()</literal>
-            above.</para>
+            above. The body of the method is not executed until the second argument
+            list has been specified&mdash;that is, until the returned function is
+            invoked.</para>
+            
+            <!-- 
+            <para>Finally, here's a third alternative, that makes use of a built-in
+            extension to "curry" the first parameter of a method:</para>
+            
+            <programlisting>Natural add(Natural n, Natural m) {
+    return n+m
+}
 
+Natural inc(Natural arg) = add.partial(3);</programlisting>
+            -->
+            
+            <para>As you've probably noticed, all the functions we've defined so far 
+            have been declared with a name, using a traditional C-like syntax. Now 
+            lets see what Ceylon has instead of anonymous functions.</para>
+            
         </section>
 
         <section>
