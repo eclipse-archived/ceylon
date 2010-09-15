@@ -769,6 +769,9 @@ public class Gen {
             public void visit(CeylonTree.PrefixExpression expr) {
                 visit(expr.operator);
             }
+            public void visit(CeylonTree.NaturalLiteral lit) {
+                result = at(access).Select(convertExpression(lit), names.fromString(memberName.name));
+            }
             public void visit(CeylonTree.FloatLiteral lit) {
                 result = at(access).Select(convertExpression(lit), names.fromString(memberName.name));
             }
