@@ -1522,7 +1522,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     void observe(Event event);
 }</programlisting>
             
-            <programlisting>public abstract class Component {
+            <programlisting>public abstract class Component() {
             
     OpenList&lt;Observer&gt; observers = {};
     
@@ -1543,7 +1543,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             we cut out the interface, and let event observers just register a
             function object as their event listener?</para>
 
-            <programlisting>public abstract class Component {
+            <programlisting>public abstract class Component() {
             
     OpenList&lt;Callable&lt;Void,Event&gt;&gt; observers = {};
     
@@ -1567,6 +1567,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         component.addObserver(onEvent);
         
         public void onEvent(Event e) {
+            //respond to the event
             ...
         }
         
