@@ -1514,8 +1514,8 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             which is just as good, but fits more cleanly with a traditional C-like syntax.</para>
             
             <para>First, let's see how we declare a method which accepts a function as a 
-            parameter. Suppose we have some kind of user interface component which
-            can be observed by other objects in the system. We could use something like Java's
+            parameter. Suppose we have some kind of user interface component which can be 
+            observed by other objects in the system. We could use something like Java's
             <literal>Observer</literal>/<literal>Observable</literal> pattern:</para>
             
             <programlisting>public interface Observer {
@@ -1558,6 +1558,21 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
     }
     
 }</programlisting>
+
+            <para>In this example, we can see two different ways of specifying
+            the type of the function:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>void observe(Event event)</literal> is more
+                    readable in formal parameter lists, where <literal>observe</literal>
+                    is the name of the formal paramater, but</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Callable&lt;Void,Event&gt;</literal> is useful
+                    as a generic type argument.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>Now, any event observer can just pass a reference to one of its
             own methods to <literal>addObserver()</literal>:</para>
@@ -1574,6 +1589,8 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         ...
         
 }</programlisting>
+            
+            <para></para>
             
         </section>
 
