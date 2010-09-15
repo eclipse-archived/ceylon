@@ -208,7 +208,6 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.FOR_CONTAINMENT, ForContainment.class);
         classes.put(CeylonParser.FOR_ITERATOR, ForIterator.class);
         classes.put(CeylonParser.FOR_STMT, ForStatement.class);
-        classes.put(CeylonParser.GET, Get.class);
         classes.put(CeylonParser.GET_EXPR, GetExpression.class);
         classes.put(CeylonParser.GT, Operator.class);
         classes.put(CeylonParser.GTEQ, Operator.class);
@@ -295,7 +294,6 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.SATISFIES_LIST, SatisfiesList.class);
         classes.put(CeylonParser.SELECTOR_LIST, SelectorList.class);
         classes.put(CeylonParser.SEMI, Operator.class);
-        classes.put(CeylonParser.SET, Set.class);
         classes.put(CeylonParser.SET_EXPR, SetExpression.class);
         classes.put(CeylonParser.SIMPLESTRINGLITERAL, SimpleStringLiteral.class);
         classes.put(CeylonParser.STARDOT, OperatorDot.class);
@@ -1066,6 +1064,8 @@ public abstract class CeylonTree {
      * A compilation unit
      */
     public static class CompilationUnit extends CeylonTree {
+    	public CompilationUnit() { super(); }
+    	
         public List<ClassDeclaration> classDecls;
 
         public List<InterfaceDeclaration> interfaceDecls;
@@ -2704,6 +2704,7 @@ public abstract class CeylonTree {
      */
     public static class TypeParameter extends CeylonTree {
         public List<CeylonTree> operands = List.<CeylonTree>nil();
+        public TypeVariance variance;
         
         @NotAChild
         public CeylonTree name;
@@ -2713,6 +2714,13 @@ public abstract class CeylonTree {
         }
 
          public void append(CeylonTree operand) {
+        	 if (operand instanceof TypeVariance) {
+        		 TypeVariance v = (TypeVariance)operand;
+        		 if (variance != null)
+        			 bomb();
+        		 variance = v;
+        	 }
+        	 
             operands = operands.append(operand);
         }
 
