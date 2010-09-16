@@ -1583,11 +1583,18 @@ public abstract class CeylonTree {
      * An import declaration
      */
     public static class ImportDeclaration extends CeylonTree {
-        List<CeylonTree> importPath = List.<CeylonTree>nil();
+        List<ImportPath> importPath = List.<ImportPath>nil();
         
         public void append(CeylonTree t) {
-            importPath = importPath.append(t);
+        	if (t instanceof ImportWildcard) {
+        		importPath.last().pathElements = 
+        			importPath.last().pathElements.append("*");
+        	} else {
+        		importPath = importPath.append((ImportPath)t);
+        	}
         }
+        
+        public List<ImportPath> path() { return importPath; }
         
         public void accept(Visitor v) { v.visit(this); }
     }
@@ -1616,7 +1623,7 @@ public abstract class CeylonTree {
     /**
      * An import wildcard
      */
-    public static class ImportWildcard extends CeylonTree {
+    public static class ImportWildcard extends ImportPath {
         public void accept(Visitor v) { v.visit(this); }
     }
 

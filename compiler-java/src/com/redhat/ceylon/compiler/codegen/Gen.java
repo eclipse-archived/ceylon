@@ -34,6 +34,7 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
+import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCModifiers;
@@ -234,7 +235,10 @@ public class Gen {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
                 
         t.visitChildren(new CeylonTree.Visitor () {
-            public void visit(CeylonTree.ClassDeclaration decl) {
+            public void visit(CeylonTree.ImportDeclaration imp) {
+            	defs.appendList(convert(imp));
+            }
+        	public void visit(CeylonTree.ClassDeclaration decl) {
                 defs.append(convert(decl));
             }
             public void visit(CeylonTree.MethodDeclaration decl) {
@@ -338,6 +342,16 @@ public class Gen {
     	}
     	
         return result;
+    }
+    
+    List<JCTree> convert (CeylonTree.ImportDeclaration imp) {
+    	ListBuffer<JCTree> imports = new ListBuffer<JCTree>();
+    	for (CeylonTree pathElement: imp.path()) {
+    		CeylonTree.ImportPath ip = (CeylonTree.ImportPath) pathElement;
+    		JCImport stmt = at(imp).Import(makeIdent(ip.pathElements), false);
+    		imports.append(stmt);
+    	}
+    	return imports.toList();
     }
     
     void processAnnotations(List<CeylonTree.Annotation> ceylonAnnos,
