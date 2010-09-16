@@ -1,6 +1,6 @@
 // A simple widening extension.
 
-public void a(ceylon.Process process) {
+public void a(Process process) {
     Integer i = 1;
 }
 

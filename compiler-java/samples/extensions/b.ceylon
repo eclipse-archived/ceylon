@@ -1,6 +1,6 @@
 // Widen the right hand side of an expression.
 
-public void b(ceylon.Process process) {
+public void b(Process process) {
     Float f = 1.5 + 1;
 }
 

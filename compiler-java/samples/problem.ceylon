@@ -1,4 +1,4 @@
-public void problem(ceylon.Process process) {
+public void problem(Process process) {
     process.writeLine("Here is the thing I was trying to explain yesterday:");
     process.writeLine("");
     process.writeLine("3.142 + 1 = ");

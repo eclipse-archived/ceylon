@@ -1,11 +1,11 @@
 doc "Simple arithmetic"
-public void expr(ceylon.Process process) {
+public void expr(Process process) {
     // Unary arithmetic operations
     process.writeLine(-(2));
 
     // Binary arithmetic operations
     process.writeLine(2+3);
-    process.writeLine(2-3);
+    process.writeLine(3-2);
     process.writeLine(2*3);
     process.writeLine(2**3);
     process.writeLine(2/3);
