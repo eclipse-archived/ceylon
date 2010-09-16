@@ -1288,13 +1288,18 @@ abstract class Hello() {
         </section>
         
         <section>
-            <title>A quick overview of collections</title>
+            <title>Language-level collection types</title>
             
-            <para>The collections package is one of the best features of Ceylon. In this 
-            section we'll briefly meet some of the main characters. The most abstract types 
-            related to collections are the interfaces <literal>Container</literal> and 
-            <literal>Category</literal>. These are very simple interfaces, so many different 
-            types extend or implement them.</para>
+            <para>The collections module is one of the best features of Ceylon. However,
+            collections are not considered part of the core language. Instead, the language 
+            module defines a number of important interfaces which are extended by types in 
+            the collections module, and Ceylon defines some useful operators and control
+            structures in terms of these interfaces.</para> 
+            
+            <para>The most abstract types related to collections are the interfaces 
+            <literal>Container</literal>, <literal>Category</literal> and <literal>Iterable</literal>. 
+            These are very simple interfaces, so many different types extend or implement 
+            them.</para>
             
             <para>A <literal>Container</literal> is an object that might be empty. Any 
             <literal>Container</literal> can be the subject of the <literal>nonempty</literal>
@@ -1310,16 +1315,18 @@ if (nonempty con) { .... }</programlisting>
             <programlisting>Category cat = .... ;
 if (object in cat) { .... }</programlisting>
 
-            <para>Slightly less abstract is the interface <literal>Iterable&lt;T&gt;</literal> 
-            which represents an object which can produce an 
+            <para>An <literal>Iterable&lt;T&gt;</literal> is an object which can produce an 
             <literal>Iterator&lt;T&gt;</literal>. An <literal>Iterable</literal> object can 
             be used in a <literal>for</literal> loop.</para>
             
             <programlisting>Iterable&lt;Person&gt; people = ... ;
 for (Person p in people) { ... }</programlisting>
             
-            <para>Now for something more interesting. There's no arrays in Ceylon, but you 
-            can write the following code:</para>
+            <para>Much less abstract are the interfaces <literal>Correspondence</literal> and 
+            <literal>Sequence</literal>. Let's start with <literal>Sequence</literal>, even 
+            though a sequence is just a special type of <literal>Correspondence</literal>.</para>
+              
+            <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
             <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
 String? sf = voyage[2];
@@ -1413,32 +1420,47 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
             so we need something other than a <literal>Sequence</literal>. A
             <literal>Correspondence&lt;U,V&gt;</literal> is a mapping from keys of type
-            <literal>U</literal> to values of type <literal>V</literal>.</para>
+            <literal>U</literal> to values of type <literal>V</literal>. In fact, a 
+            <literal>Sequence</literal> is just a special case of a 
+            <literal>Correspondence</literal> where the keys are <literal>Natural</literal> 
+            numbers. <literal>Sequence&lt;X&gt;</literal> is a subtype of 
+            <literal>Correspondence&lt;Natural, X&gt;</literal>.</para>
             
+            <para>We often use the class <literal>Entry</literal>, which represents a 
+            key/value pair when working with <literal>Correspndences</literal>. The
+            operator <literal>-></literal> constructs a new <literal>Entry</literal>.</para>
+            
+            <programlisting>Entry&lt;String,Person&gt; entry = person.name->person;</programlisting>
+            
+            <para>We can assign a sequence of <literal>Entry</literal>s to 
+            <literal>Correspondence</literal>. A built-in extension takes care of 
+            performing the type conversion. This is mainly useful when we're 
+            constructing a <literal>Correspondence</literal> for the first time:</para>
+                              
             <programlisting>Correspondence&lt;String,String&gt; cities = { "Emmanuel"->"Paris",
                                            "Andrew"->"Cambridge", 
                                              "Pete"->"Edinburgh",
                                             "Gavin"->"Guanajuato" };</programlisting>
             
-            <para>In fact, a <literal>Sequence</literal> is just a special case of a 
-            <literal>Correspondence</literal> where the keys are <literal>Natural</literal> 
-            numbers. <literal>Sequence&lt;X&gt;</literal> is a subtype of 
-            <literal>Correspondence&lt;Natural, X&gt;</literal>.</para>
-                              
             <para>We can extract values from a <literal>Correspondence</literal> by key 
             using the lookup operator:</para>
 
             <programlisting>String? paris = cities["Emmanuel"];</programlisting>
             
-            <para>Notice that the lookup operator returns an <literal>Optional</literal>
+            <para>Again, notice that the lookup operator returns an <literal>Optional</literal>
             result, to account for the possibility that there is no value defined for
             the given key.</para>
             
             <para>So far we haven't met anything from the collections module proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
-            of the package <literal>ceylon.lang</literal>. They're there to abstract away 
+            of the module <literal>ceylon.lang</literal>. They're there to abstract away 
             the nice syntax we've just met from the (relatively) gory details of the 
             collections package.</para>
+            
+        </section>
+        
+        <section>
+            <title>The collections module</title>
             
             <para>Inside the collections module you'll find some interfaces with pretty
             familiar names: <literal>Collection</literal>, <literal>Set</literal>, 
@@ -1450,6 +1472,19 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <literal>OpenSet</literal>, <literal>OpenList</literal> and 
             <literal>OpenMap</literal> (and we can't forget <literal>OpenBag</literal>).</para>
             
+            <para>Splitting the collection interfaces into a "read-only" view and a
+            "writable" view has several advantages, but the most important is that you
+            now don't need to worry about exposing collections as part of the public 
+            contract of your classes. In Java, it's always difficult for a client to 
+            know if you're returning a copy of your internal list, a reference to your
+            internal list (which you might have done inadvertantly), or a reference 
+            wrapped in an <literal>immutableList()</literal>&mdash;you know, that wonderful 
+            beastie which helpfully throws exceptions at runtime to let you know that it 
+            is supposed to be "read-only". In Ceylon, you can protect the state of your 
+            internal data structures by simply not returning the "writable" view to 
+            clients. Send them back a <literal>List</literal>, and they know what they're 
+            allowed to do with it.</para>
+        
             <para>A <literal>Map</literal> is the most important kind of 
             <literal>Correspondence</literal>. We can add or override entries in an 
             <literal>OpenMap</literal> using the assignment operator:</para>
@@ -1468,8 +1503,7 @@ cities.define("Emmanuel"->"Paris",
                   "Pete"->"Edinburgh",
                 "Andrew"->"Cambridge");]]></programlisting>
             
-            <para>The <literal>-></literal> operator constructs an <literal>Entry</literal>
-            from its operands. A <literal>Map</literal> is a collection of entries, a 
+            <para>A <literal>Map</literal> is a collection of entries, a 
             <literal>Collection&lt;Entry&gt;</literal>. This is a big improvement over 
             Java where, unaccountably, a <literal>Map</literal> isn't actually a 
             <literal>Collection</literal>!</para>
@@ -1530,19 +1564,6 @@ Set&lt;String&gt; union = someSet | someOtherSet;
 Set&lt;String&gt; intersection = someSet &amp; someOtherSet;
 Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
                         
-            <para>Splitting the collection interfaces into a "read-only" view and a
-            "writable" view has several advantages, but the most important is that you
-            now don't need to worry about exposing collections as part of the public 
-            contract of your classes. In Java, it's always difficult for a client to 
-            know if you're returning a copy of your internal list, a reference to your
-            internal list (which you might have done inadvertantly), or a reference 
-            wrapped in an <literal>immutableList()</literal>&mdash;you know, that wonderful 
-            beastie which helpfully throws exceptions at runtime to let you know that it 
-            is supposed to be "read-only". In Ceylon, you can protect the state of your 
-            internal data structures by simply not returning the "writable" view to 
-            clients. Send them back a <literal>List</literal>, and they know what they're 
-            allowed to do with it.</para>
-        
         </section>
         
         <section>
