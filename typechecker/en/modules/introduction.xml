@@ -2577,21 +2577,40 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
     
     ...
 }]]></programlisting>
-
-            <para>A function which accepts a <literal>String</literal> and returns a
-            <literal>Decimal</literal> is a <literal>Callable&lt;Decimal,String&gt;</literal>.
-            A function which accepts two <literal>Integer</literal>s and returns an
-            <literal>Integer</literal> is a 
-            <literal>Callable&lt;Integer,Integer,Integer&gt;</literal>.</para>
+            
+            <para>For example:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A function which accepts a <literal>String</literal> and returns 
+                    a <literal>Decimal</literal> is a 
+                    <literal>Callable&lt;Decimal,String&gt;</literal>. Its 
+                    <literal>call()</literal> method has the signature 
+                    <literal>Decimal call(String arg)</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>A function which accepts two <literal>Integer</literal>s and 
+                    returns an <literal>Integer</literal> is a 
+                    <literal>Callable&lt;Integer,Integer,Integer&gt;</literal>. Its 
+                    <literal>call()</literal> method has the signature 
+                    <literal>Integer call(Integer arg1, Integer arg2)</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Thus, sequenced type parameters let us write types that abstract over 
+            methods with arbitrary signatures in a typesafe way.</para>
+            
+            <para>Going back to our earlier example, we could write:</para>
             
             <programlisting>Hello hello = DefaultHello();
-Callable&lt;Void,OutputStream&gt; = hello.say;</programlisting>
+Callable&lt;Void,OutputStream&gt; say = hello.say;
+say(stream);</programlisting>
             
             <para>Sequenced type parameters are the foundation of Ceylon's unique 
             statically typesafe metamodel (Ceylon's version of Java's reflection API).
             A metamodel type like <literal>Class</literal> and <literal>Method</literal>
-            is a generic types with a sequenced type parameter representing the
-            formal parameter types of the class or method.</para>
+            is a generic type with a sequenced type parameter representing the formal 
+            parameter types of the class or method.</para>
             
             <programlisting>Class&lt;DefaultHello&gt; dh = DefaultHello;</programlisting>
             <programlisting>Class&lt;PersonalizedHello,String&gt; ph = PersonalizedHello;</programlisting>
