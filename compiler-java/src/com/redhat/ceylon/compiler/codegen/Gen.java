@@ -331,7 +331,13 @@ public class Gen {
      	};
 
     	type.accept(v);
-        return v.result;
+    	JCExpression result = v.result;
+    	
+    	if ((type.flags & CeylonTree.OPTIONAL) != 0) {
+    		result = optionalType(result);
+    	}
+    	
+        return result;
     }
     
     void processAnnotations(List<CeylonTree.Annotation> ceylonAnnos,
@@ -455,7 +461,10 @@ public class Gen {
             }
         });
         
-        return result.thing();
+        JCExpression type = result.thing();
+        if ((t.flags & CeylonTree.OPTIONAL) != 0)
+        	type = optionalType(type);
+        return type;
     }
     
     public JCClassDecl convert(final CeylonTree.ClassDeclaration cdecl) {
@@ -516,6 +525,11 @@ public class Gen {
             // FIXME: Just a placeholder for all the control structures
             public void visit(CeylonTree.IfStatement stmt) {
             	stmts.append(convert(stmt));
+            }
+            
+            // FIME: Too many special cases.  We should use a StatementVisitor here.
+            public void visit(CeylonTree.CallExpression expr) {
+                stmts.append(at(expr).Exec(convert(expr)));
             }
             
             public void visit(CeylonTree.Operator op) {
@@ -816,7 +830,7 @@ public class Gen {
     	
         JCExpression type = makeIdent(decl.type.name().components());
         
-        if ((decl.flags & CeylonTree.OPTIONAL) != 0)
+        if (((decl.flags | decl.type.flags) & CeylonTree.OPTIONAL) != 0)
         	type = optionalType(type);
         
         List<JCStatement> result = 
