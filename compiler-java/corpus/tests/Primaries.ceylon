@@ -7,22 +7,24 @@ class Primaries() {
 		Natural one = 1;
 		Float zero = 0.0;
 		Float big = 1.0e10;
-		Float small = 1.0e-10;
-		Character x = @x;
-		Character newline = @\n;
+		Float smallFloat = 1.0e-10;
+		Character x = `x`;
+		Character newline = `\n`;
 		Quoted quoted = 'quoted literal';
 		
-		Type<Literals> primariesClass = #Primaries;
-		Type<Literals> literalsClass = #Primaries.Literals;
-		Attribute<Literals,String> helloAttribute = #hello;
-		Attribute<Literals,String> oneAttribute = #Primaries.Literals.one;
-		Method<Object,Boolean> method = #Object.equals;
+		Class<Primaries> primariesClass = Primaries;
+		Type<Primaries.Literals> literalsClass = Primaries.Literals;
+		Attribute<Literals,String> helloAttribute = hello;
+		Attribute<Primaries.Literals,Natural> oneAttribute = Primaries.Literals.one;
+		Method<Object,Boolean,Object> method = Object.equals;
+        Type<List<String>> stringListType = List<String>;
+        Type<Matrix<#5,#3>> matrix5by3Type = Matrix<#5,#3>;
 		
 	}
 	
 	class Specials() {
 	
-		optional String nothing = null;
+		String? nothing = null;
 
 		List<String> empty = none;
 
@@ -61,8 +63,8 @@ class Primaries() {
 		Person person = Person("Gavin King");
 		void hello() = person.hello;
 		void helloWorld() = helloWorld;
-		String getName() = get person.name;
-		void setName(String name) = set person.name;
+		String getName() = get(person.name);
+		void setName(String name) = set(person.name);
 		Person newPerson(String name) = Person;
 		
 	}

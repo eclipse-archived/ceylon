@@ -1,7 +1,7 @@
 doc "A connection (path, door, portal, etc) 
      between two locations, which the player
      can use to navigate between locations."
-see #Location
+see (Location)
 package class Connection(String description, Direction direction, Location to) {
 
 	package String description = description;

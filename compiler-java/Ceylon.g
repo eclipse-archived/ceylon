@@ -88,7 +88,7 @@ tokens {
     FAIL_BLOCK;
     LOOP_BLOCK;
     FOR_CONTAINMENT;
-    REFLECTED_LITERAL;
+    REFLECTED_LITERAL; // FIXME: Unused
     ENUM_LIST;
     SUPERCLASS;
     PREFIX_EXPR;
@@ -100,16 +100,26 @@ tokens {
     SET_EXPR;
     //PRIMARY;
 }
+
 @parser::header { package com.redhat.ceylon.compiler.parser; }
 @lexer::header { package com.redhat.ceylon.compiler.parser; }
 
 compilationUnit
     : importDeclaration*
-      toplevelDeclaration+
+      ( (annotatedDeclarationStart) => toplevelDeclaration )+
+      expression?
       EOF
-    -> ^(IMPORT_LIST importDeclaration*)?
-       ^(TYPE_DECL toplevelDeclaration)+
+    -> ^(IMPORT_LIST importDeclaration*)
+       toplevelDeclaration+
     ;
+
+/*dataUnit
+    : importDeclaration*
+      toplevelExpression
+      EOF
+    -> ^(IMPORT_LIST importDeclaration*)
+       toplevelExpression
+    ;*/
 
 toplevelDeclaration
     : annotations? 
@@ -130,14 +140,19 @@ typeDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
     ;
 
+/*toplevelExpression
+    : ( (declarationStart) => formalParameter ';')* expression
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*) expression
+    ;*/
+
 importDeclaration
     : 'import' importPath ('.' wildcard | alias)? ';'
     -> ^(IMPORT_DECL importPath wildcard? alias?)
     ;
     
 importPath
-    : identifier ('.' identifier)*
-    -> ^(IMPORT_PATH identifier*)
+    : importElement ('.' importElement)*
+    -> ^(IMPORT_PATH importElement*)
     ;
     
 wildcard
@@ -150,7 +165,7 @@ alias
     -> ^(ALIAS_DECL typeName)
     ;
     
-identifier
+importElement
     : LIDENTIFIER | UIDENTIFIER
     ;
 
@@ -182,7 +197,7 @@ inlineClassBody
 //instances have to be listed together at the top
 //of the class body
 declarationOrStatement
-    : (declarationStart) => declaration | statement
+    : (annotatedDeclarationStart) => declaration | statement
     ;
 
 //TODO: I don't understand why we need to distinguish
@@ -210,41 +225,54 @@ declaration
     ;
     
 //special rule for syntactic predicates
-declarationStart
-    :  userAnnotation* ( langAnnotation | memberDeclarationStart | typeDeclarationStart )
+annotatedDeclarationStart
+    :  userAnnotation* ( declarationAnnotation | declarationStart )
     ;
 
-memberDeclarationStart
-    : (type|'assign'|'void'|'case') LIDENTIFIER
+declarationStart
+    : declarationKeyword | type '...'? LIDENTIFIER
     ;
     
-typeDeclarationStart
-    : ('class'|'interface'|'alias') UIDENTIFIER
+declarationKeyword
+    : 'local' 
+    | 'assign' 
+    | 'void' 
+    | 'case' 
+    | 'class' 
+    | 'interface' 
+    | 'alias'
     ;
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-langAnnotation
-    : PUBLIC
-    | MODULE
-    | PACKAGE
-    | PRIVATE
-    | ABSTRACT
-    | DEFAULT
-    | OVERRIDE
-    | OPTIONAL
-    | MUTABLE
-    | EXTENSION
-    | VOLATILE
+declarationAnnotation
+    : 'abstract'
+    | 'default'
+    | 'override'
+    | 'fixed'
+    | 'mutable'
+    | 'extension'
+    | 'volatile'
+    | 'small'
+    | 'optional'  // FIXME: No longer part of the language
+    | visibility
+    ;
+
+visibility
+    : 'public'
+    | 'module'
+    | 'package'
+    | 'private'
+    | 'protected'
     ;
 
 statement 
-    : expressionStatement
+    : specificationOrExpressionStatement
     | controlStructure
     ;
 
-expressionStatement
-    : expression ';'!
+specificationOrExpressionStatement
+    : expression specifier? ';'!
     ;
 
 directiveStatement
@@ -318,7 +346,7 @@ memberType
     ;
 
 memberParameters
-    : typeParameters? formalParameters+ typeConstraints?
+    : typeParameters? formalParameters+ extraFormalParameters typeConstraints?
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -360,6 +388,7 @@ classDeclaration
         typeName
         typeParameters?
         formalParameters
+        extraFormalParameters
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -382,18 +411,18 @@ satisfiedTypes
     -> ^(SATISFIES_LIST type+)
     ;
 
-abstractedTypes
-    : 'abstracts' type (',' type)*
-    -> ^(ABSTRACTS_LIST type+)
+abstractedType
+    : 'abstracts' type
+    -> ^(ABSTRACTS_LIST type)
     ;
 
 instance
-    : 'case'! memberName arguments? (','! | ';'! | '...')
+    : 'case'! memberName arguments? (','! |';'! |'...')
     ;
     
 typeConstraint
-    : 'where' typeName formalParameters? satisfiedTypes? abstractedTypes?
-    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedTypes?)
+    : 'given' typeName formalParameters? satisfiedTypes? abstractedType?
+    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
     ;
     
 typeConstraints
@@ -402,25 +431,28 @@ typeConstraints
     ;
     
 type
-    : parameterizedType //( '[' parameterizedType? ']' )?
-    -> parameterizedType //FIXME: unnecessary?
-    | 'subtype'
-    -> ^(TYPE 'subtype')
+    : typeNameWithArguments ('.' typeNameWithArguments)* abbreviation*
+    -> ^(TYPE typeNameWithArguments+ abbreviation*)
+    | 'subtype' abbreviation*
+    -> ^(TYPE 'subtype' abbreviation*)
     ;
 
-parameterizedType
-    : qualifiedTypeName typeArguments?
-    -> ^(TYPE qualifiedTypeName typeArguments?)
+abbreviation
+    : LBRACKET dimension? ']' | '?'
     ;
 
+typeNameWithArguments
+    : typeName typeArguments?
+    ;
+    
 annotations
     : annotation+
     -> ^(ANNOTATION_LIST annotation+)
     ;
 
 annotation
-    : langAnnotation
-    -> ^(LANG_ANNOTATION langAnnotation) 
+    : declarationAnnotation
+    -> ^(LANG_ANNOTATION declarationAnnotation) 
     | userAnnotation
     ;
 
@@ -433,24 +465,7 @@ userAnnotation
     ;
 
 annotationArguments
-    : arguments | specialAnnotation+
-    ;
-
-specialAnnotation
-    :
-    (SIMPLESTRINGLITERAL) => SIMPLESTRINGLITERAL -> ^(STRING_CST SIMPLESTRINGLITERAL)
-    | literal
-    | reflectedLiteral
-    ;
-
-reflectedLiteral 
-    : '#' ( memberName | (parameterizedType ( '.' memberName )? ) )
-    -> ^(REFLECTED_LITERAL parameterizedType? memberName?)
-    ;
-
-qualifiedTypeName
-    : (identifier '.')* UIDENTIFIER
-    -> ^(TYPE_NAME identifier* UIDENTIFIER) 
+    : arguments | ( nonstringLiteral | stringLiteral )+
     ;
 
 typeName
@@ -469,8 +484,30 @@ memberName
     ;
 
 typeArguments
-    : '<' type (',' type)* '>'
-    -> ^(TYPE_ARG_LIST type+)
+    : '<' typeArgument (',' typeArgument)* '>'
+    -> ^(TYPE_ARG_LIST typeArgument+)
+    ;
+
+typeArgument
+    : type '...'? | '#'! dimension
+    ;
+
+dimension
+    : dimensionTerm ('+' dimensionTerm)*
+    ;
+
+dimensionTerm
+    : (NATURALLITERAL '*')* dimensionAtom
+    ;
+
+dimensionAtom
+    : NATURALLITERAL 
+    | memberName 
+    | parenDimension
+    ;
+
+parenDimension
+    : '(' dimension ')'
     ;
 
 typeParameters
@@ -479,6 +516,10 @@ typeParameters
     ;
 
 typeParameter
+    : ordinaryTypeParameter '...'? | '#'! dimensionalTypeParameter
+    ;
+
+ordinaryTypeParameter
     : variance? typeName
     -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     ;
@@ -489,21 +530,19 @@ variance
     // IN | OUT but that is compiled incorrectly and generates errors elsewhere.
     ;
     
-//for locals and attributes
+dimensionalTypeParameter
+    : memberName
+    -> ^(TYPE_PARAMETER memberName)
+    ;
+ 
 initializer
     : ':=' expression
     -> ^(INIT_EXPR expression)
     ;
 
-//for parameters
 specifier
     : '=' expression
     -> ^(INIT_EXPR expression)
-    ;
-
-literal
-    : nonstringLiteral
-    | stringExpression
     ;
 
 nonstringLiteral
@@ -521,7 +560,11 @@ stringExpression
     : (SIMPLESTRINGLITERAL (interpolatedExpressionStart|SIMPLESTRINGLITERAL)) 
         => stringTemplate
     -> ^(STRING_CONCAT stringTemplate)
-    | SIMPLESTRINGLITERAL
+    | stringLiteral
+    ;
+
+stringLiteral
+    : SIMPLESTRINGLITERAL
     -> ^(STRING_CST SIMPLESTRINGLITERAL)
     ;
 
@@ -546,8 +589,6 @@ interpolatedExpressionStart
     | specialValue 
     | nonstringLiteral
     | prefixOperator
-    | 'get'
-    | 'set'
     ;
 
 expression
@@ -561,13 +602,8 @@ expression
 //Note that = is not really an assignment operator, but 
 //can be used to init locals
 assignmentExpression
-    : implicationExpression
-      (('='^ | ':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
-    ;
-
-implicationExpression
-    : disjunctionExpression 
-      ('=>'^ disjunctionExpression)?
+    : disjunctionExpression
+      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '&&='^ | '||='^ | '?='^) expression )?
     ;
 
 //should '^' have a higher precedence?
@@ -594,7 +630,6 @@ equalityExpression
 comparisonExpression
     : defaultExpression
       (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) defaultExpression)?
-    | reflectedLiteral //needs to be here since it can contain type args
     ;
 
 //should we reverse the precedence order 
@@ -653,7 +688,7 @@ prefixOperator
 
 specialValue
     : 'this' 
-    | 'super' 
+    | 'super'
     | 'null'
     | 'none'
     ;
@@ -662,14 +697,8 @@ enumeration
     : '{' expressions? '}'
     -> ^(ENUM_LIST expressions?)
     ;
-
-primary
-    : getterSetterMethodReference
-    | prim
-    //-> ^(PRIMARY prim)
-    ;	
     
-prim
+primary
 options {backtrack=true;}
 /*
     : b=base 
@@ -688,17 +717,13 @@ options {backtrack=true;}
     | base
     ;
 
-getterSetterMethodReference
-    : 'set' prim -> ^(SET_EXPR prim)
-    | 'get' prim -> ^(GET_EXPR prim)
-    ;
-
 postfixOperator
     : '--' | '++'
     ;	
 
 base 
-    : literal
+    : nonstringLiteral
+    | stringExpression
     | parExpression
     | enumeration
     | specialValue
@@ -716,16 +741,16 @@ selector
     ;
 
 member
-    : ('.' | '?.' | '*.') nameAndTypeArguments
+    : ('.' | SPREAD | '?.') nameAndTypeArguments
     ;
 
 nameAndTypeArguments
     : ( memberName | typeName ) 
-      ( ( typeArguments ('('|'{') ) => typeArguments )?
+      ( (typeArguments) => typeArguments )?
     ;
 
 elementSelector
-    : '?'? '[' elementsSpec ']'
+    : '?'? LBRACKET elementsSpec ']'
     -> ^(SUBSCRIPT_EXPR '?'? elementsSpec)
     ;
 
@@ -756,7 +781,7 @@ namedSpecifiedArgument
 
 namedArgumentStart
     : LIDENTIFIER '=' 
-    | (formalParameterType|'local') LIDENTIFIER
+    | declarationStart
     ;
 
 parameterName
@@ -779,7 +804,7 @@ positionalArguments
     ;
 
 positionalArgument
-    : (variableStart) => specialArgument
+    : (declarationStart) => specialArgument
     | expression
     ;
 
@@ -793,19 +818,24 @@ functionalArgument
 functionalArgumentHeader
     : parameterName
     -> ^(ARG_NAME parameterName)
-    | 'case' '(' expressions ')'
-    -> ^(CASE_ITEM expressions)
+    /*| 'case' '(' expressions ')'
+    -> ^(CASE_ITEM expressions)*/
     ;
 
 functionalArgumentDefinition
-    : ( (formalParameterStart) => formalParameters )? 
+    : ( (formalParametersStart) => formalParameters )? 
       ( block | parExpression /*| literal | specialValue*/ )
     ;
 
 specialArgument
-    : (type|'local') memberName (containment|specifier)
+    : (type | 'local') memberName (containment | specifier)
     //| isCondition
     //| existsCondition
+    ;
+
+extraFormalParameters
+    : extraFormalParameter*
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)*)?
     ;
 
 formalParameters
@@ -817,8 +847,8 @@ formalParameters
 //be careful with this one, since it 
 //matches "()", which can also be an 
 //argument list
-formalParameterStart
-    : '(' ( userAnnotation* ( langAnnotation | formalParameterType LIDENTIFIER ) | ')' )
+formalParametersStart
+    : '(' ( annotatedDeclarationStart | ')' )
     ;
     
 // FIXME: This accepts more than the language spec: named arguments
@@ -827,12 +857,32 @@ formalParameterStart
 // list in a later pass of the compiler.
 formalParameter
     : annotations? formalParameterType parameterName formalParameters*
-      ( '->' type parameterName | '..' parameterName )? 
+      ( valueFormalParameter | iteratedFormalParameter | (specifiedFormalParameterStart) => specifiedFormalParameter )? 
       specifier?
     ;
 
+valueFormalParameter
+    : '->' type parameterName
+    ;
+
+iteratedFormalParameter
+    : 'in' type parameterName
+    ;
+
+specifiedFormalParameter
+    : '=' type parameterName
+    ;
+
+specifiedFormalParameterStart
+    : '=' declarationStart
+    ;
+
+extraFormalParameter
+    : formalParameterType parameterName formalParameters*
+    ;
+
 formalParameterType
-    : (type|'void') '...'?
+    : type '...'? | 'void'
     ;
 
 // Control structures.
@@ -857,7 +907,7 @@ isCondition
     ;
 
 controlStructure
-    : ifElse | switchCaseElse | whileStmt | doWhile | forFail | tryCatchFinally
+    : ifElse | switchCaseElse | simpleWhile | doWhile | forFail | tryCatchFinally
     ;
     
 ifElse
@@ -944,7 +994,7 @@ doWhile
     -> ^(WHILE_STMT doBlock loopCondition)
     ;
 
-whileStmt
+simpleWhile
     : loopCondition whileBlock
     -> ^(WHILE_STMT loopCondition whileBlock)
     ;
@@ -990,17 +1040,12 @@ resource
     ;
 
 controlVariableOrExpression
-    : (variableStart) => variable specifier 
+    : (declarationStart) => variable specifier 
     | expression
     ;
 
 variable
-    : (type|'local') memberName
-    ;
-
-//special rule for syntactic predicate
-variableStart
-    : variable ('in'|'=')
+    : (type | 'local') memberName
     ;
 
 // Lexer
@@ -1034,13 +1079,21 @@ NATURALLITERAL
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
 
+fragment SPREAD :;
+fragment LBRACKET :;
+BRACKETS
+    : '['
+    ( ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
+     | { $type = LBRACKET; } )
+    ;
+    
 CHARLITERAL
-    :   '@' ( ~ NonCharacterChars | EscapeSequence )
+    :   '`' ( ~ NonCharacterChars | EscapeSequence ) '`'
     ;
 
 fragment
 NonCharacterChars
-    :    ' ' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
+    :    '`' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
     ;
 
 QUOTEDLITERAL
@@ -1064,16 +1117,17 @@ StringPart
     
 fragment
 EscapeSequence 
-    :   '\\' (
-            'b' 
-        |   't' 
-        |   'n' 
-        |   'f' 
+    :   '\\' 
+        (
+            'b'
+        |   't'
+        |   'n'
+        |   'f'
         |   'r'
-        |   's' 
-        |   '\"' 
+        |   '"'
         |   '\''
-        )          
+        |   '`'
+        )
     ;
 
 WS  
@@ -1160,7 +1214,11 @@ FINALLY
 FOR
     :   'for'
     ;
-    
+
+GIVEN
+    :   'given'
+    ;
+
 IF
     :   'if'
     ;
@@ -1193,6 +1251,8 @@ NONEMPTY
     :   'nonempty'
     ;
 
+/*
+
 GET
     :   'get'
     ;
@@ -1200,6 +1260,7 @@ GET
 SET
     :   'set'
     ;
+*/
 
 RETURN
     :   'return'
@@ -1255,10 +1316,6 @@ LBRACE
 
 RBRACE
     :   '}'
-    ;
-
-LBRACKET
-    :   '['
     ;
 
 RBRACKET

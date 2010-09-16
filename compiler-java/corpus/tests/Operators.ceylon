@@ -11,7 +11,7 @@ class Operators() {
 	
 	Entry<String,String> name = "Gavin"->"King";
 	Range<Natural> range = 1..5;
-	Range<Character> charRange = @A..@Z;
+	Range<Character> charRange = `A`..`Z`;
 	
 	String defaulted = null ? "Hello";
 	Boolean nullExists = null exists;
@@ -20,7 +20,6 @@ class Operators() {
 	Boolean not = !true;
 	Boolean or = true||false;
 	Boolean and = or&&not;
-	Boolean implies = or=>and;
 	
 	Boolean equal = 1==2;
 	Boolean notEqual = 1!=2;
@@ -37,24 +36,24 @@ class Operators() {
 	
 	Boolean instanceOf = 1 is Natural;
 	Boolean containedIn = 3 in range;
-	Boolean identical = 3===sum;
+	Boolean identical = compare===compare;
 	
 	String render = $123;
 	
 	String join = "Gavin" + " " + "King";
 	
 	List<String> list = {"Gavin", "Andrew", "Emmanuel"};
-	optional List<String> nullList = null;
+	List<String>? nullList = null;
 
 	String element = list[1];
-	optional String element = nullList?[666];
+	String? element = nullList?[666];
 	List<String> elements = list[{3,2,1}];
 	List<String> subrange = list[0..1];
 	List<String> upperRange = list[1...];
 	
-	optional String input = null;
-	optional Iterable<String> tokens = input?.tokens();
-	Sequence<Natural> sizes = tokens*.size;
+	String? input = null;
+	Iterable<String>? tokens = input?.tokens();
+	Sequence<Natural> sizes = tokens[].size;
 	
 	//TODO: := .=
 	

@@ -1,277 +1,273 @@
 # Attributes.ceylon
-
+ IMPORT_LIST
 (TYPE_DECL
-  (TYPE_DECL
-    (CLASS_DECL
-      (TYPE_NAME Attributes) FORMAL_PARAMETER_LIST
-      (BLOCK
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME abstractAttribute))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME immutableAttribute)
-          (INIT_EXPR
+  (CLASS_DECL
+    (TYPE_NAME Attributes) FORMAL_PARAMETER_LIST
+    (BLOCK
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME abstractAttribute))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME immutableAttribute)
+        (INIT_EXPR
+          (EXPR
+            (STRING_CST "Hello World"))))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME mutableAttribute)
+        (INIT_EXPR
+          (EXPR
+            (STRING_CST "Hello World")))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION mutable)))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String) ?))
+        (MEMBER_NAME nullAttribute)
+        (INIT_EXPR
+          (EXPR null)))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String) ?))
+        (MEMBER_NAME nullMutableAttribute)
+        (INIT_EXPR
+          (EXPR null))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION mutable)))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME attribute)
+        (BLOCK
+          (RET_STMT
             (EXPR
-              (STRING_CST "Hello World"))))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME mutableAttribute)
-          (INIT_EXPR
-            (EXPR
-              (STRING_CST "Hello World")))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION mutable)))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME nullAttribute)
-          (INIT_EXPR
-            (EXPR null))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION optional)))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME nullMutableAttribute)
-          (INIT_EXPR
-            (EXPR null))
-          (ANNOTATION_LIST
-            (LANG_ANNOTATION optional)
-            (LANG_ANNOTATION mutable)))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME attribute)
-          (BLOCK
-            (RET_STMT
+              (EXPR
+                (MEMBER_NAME mutableAttribute) .
+                (MEMBER_NAME uppercase))))))
+      (MEMBER_DECL
+        (ATTRIBUTE_SETTER
+          (MEMBER_NAME attribute))
+        (BLOCK
+          (EXPR
+            (:=
+              (MEMBER_NAME mutableAttribute)
+              (EXPR
+                (EXPR
+                  (MEMBER_NAME attribute) .
+                  (MEMBER_NAME lowercase)))))))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME attributeWithLocal)
+        (BLOCK
+          (MEMBER_DECL
+            (MEMBER_TYPE
+              (TYPE
+                (TYPE_NAME String)))
+            (MEMBER_NAME value)
+            (INIT_EXPR
               (EXPR
                 (EXPR
                   (MEMBER_NAME mutableAttribute) .
-                  (MEMBER_NAME uppercase))))))
-        (MEMBER_DECL
-          (ATTRIBUTE_SETTER
-            (MEMBER_NAME attribute))
-          (BLOCK
+                  (MEMBER_NAME uppercase)))))
+          (RET_STMT
             (EXPR
-              (:=
-                (MEMBER_NAME mutableAttribute)
-                (EXPR
-                  (EXPR
-                    (MEMBER_NAME attribute) .
-                    (MEMBER_NAME lowercase)))))))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME attributeWithLocal)
-          (BLOCK
-            (MEMBER_DECL
-              (MEMBER_TYPE
-                (TYPE
-                  (TYPE_NAME String)))
-              (MEMBER_NAME value)
-              (INIT_EXPR
-                (EXPR
-                  (EXPR
-                    (MEMBER_NAME mutableAttribute) .
-                    (MEMBER_NAME uppercase)))))
-            (RET_STMT
+              (MEMBER_NAME value)))))
+      (MEMBER_DECL
+        (ATTRIBUTE_SETTER
+          (MEMBER_NAME attributeWithLocal))
+        (BLOCK
+          (MEMBER_DECL
+            (MEMBER_TYPE
+              (TYPE
+                (TYPE_NAME String)))
+            (MEMBER_NAME value)
+            (INIT_EXPR
               (EXPR
-                (MEMBER_NAME value)))))
-        (MEMBER_DECL
-          (ATTRIBUTE_SETTER
-            (MEMBER_NAME attributeWithLocal))
-          (BLOCK
-            (MEMBER_DECL
-              (MEMBER_TYPE
-                (TYPE
-                  (TYPE_NAME String)))
-              (MEMBER_NAME value)
-              (INIT_EXPR
+                (MEMBER_NAME attributeWithLocal))))
+          (EXPR
+            (:=
+              (MEMBER_NAME mutableAttribute)
+              (EXPR
                 (EXPR
-                  (MEMBER_NAME attributeWithLocal))))
+                  (MEMBER_NAME value) .
+                  (MEMBER_NAME lowercase)))))))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME attributeWithNestedMethod)
+        (BLOCK
+          (MEMBER_DECL
+            (MEMBER_TYPE
+              (TYPE
+                (TYPE_NAME String)))
+            (MEMBER_NAME nestedMethod)
+            (FORMAL_PARAMETER_LIST
+              (FORMAL_PARAMETER
+                (TYPE
+                  (TYPE_NAME String))
+                (ARG_NAME param)))
+            (BLOCK
+              (RET_STMT
+                (EXPR
+                  (EXPR
+                    (MEMBER_NAME param) .
+                    (MEMBER_NAME uppercase))))))
+          (RET_STMT
             (EXPR
-              (:=
-                (MEMBER_NAME mutableAttribute)
+              (EXPR
+                (MEMBER_NAME nestedMethod)
+                (CALL_EXPR
+                  (ARG_LIST
+                    (EXPR
+                      (MEMBER_NAME mutableAttribute)))))))))
+      (MEMBER_DECL
+        (ATTRIBUTE_SETTER
+          (MEMBER_NAME attributeWithNestedMethod))
+        (BLOCK
+          (MEMBER_DECL
+            (MEMBER_TYPE
+              (TYPE
+                (TYPE_NAME String)))
+            (MEMBER_NAME nestedMethod)
+            (FORMAL_PARAMETER_LIST
+              (FORMAL_PARAMETER
+                (TYPE
+                  (TYPE_NAME String))
+                (ARG_NAME param)))
+            (BLOCK
+              (RET_STMT
                 (EXPR
                   (EXPR
-                    (MEMBER_NAME value) .
-                    (MEMBER_NAME lowercase)))))))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME attributeWithNestedMethod)
-          (BLOCK
-            (MEMBER_DECL
-              (MEMBER_TYPE
-                (TYPE
-                  (TYPE_NAME String)))
-              (MEMBER_NAME nestedMethod)
-              (FORMAL_PARAMETER_LIST
-                (FORMAL_PARAMETER
-                  (TYPE
-                    (TYPE_NAME String))
-                  (ARG_NAME param)))
-              (BLOCK
-                (RET_STMT
-                  (EXPR
-                    (EXPR
-                      (MEMBER_NAME param) .
-                      (MEMBER_NAME uppercase))))))
-            (RET_STMT
+                    (MEMBER_NAME param) .
+                    (MEMBER_NAME lowercase))))))
+          (EXPR
+            (:=
+              (MEMBER_NAME mutableAttribute)
               (EXPR
                 (EXPR
                   (MEMBER_NAME nestedMethod)
                   (CALL_EXPR
                     (ARG_LIST
                       (EXPR
-                        (MEMBER_NAME mutableAttribute)))))))))
-        (MEMBER_DECL
-          (ATTRIBUTE_SETTER
-            (MEMBER_NAME attributeWithNestedMethod))
-          (BLOCK
-            (MEMBER_DECL
-              (MEMBER_TYPE
-                (TYPE
-                  (TYPE_NAME String)))
-              (MEMBER_NAME nestedMethod)
+                        (MEMBER_NAME attributeWithNestedMethod))))))))))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME attributeWithNestedClass)
+        (BLOCK
+          (TYPE_DECL
+            (CLASS_DECL
+              (TYPE_NAME NestedClass)
               (FORMAL_PARAMETER_LIST
                 (FORMAL_PARAMETER
                   (TYPE
                     (TYPE_NAME String))
                   (ARG_NAME param)))
               (BLOCK
-                (RET_STMT
-                  (EXPR
-                    (EXPR
-                      (MEMBER_NAME param) .
-                      (MEMBER_NAME lowercase))))))
-            (EXPR
-              (:=
-                (MEMBER_NAME mutableAttribute)
-                (EXPR
-                  (EXPR
-                    (MEMBER_NAME nestedMethod)
-                    (CALL_EXPR
-                      (ARG_LIST
-                        (EXPR
-                          (MEMBER_NAME attributeWithNestedMethod))))))))))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME attributeWithNestedClass)
-          (BLOCK
-            (TYPE_DECL
-              (CLASS_DECL
-                (TYPE_NAME NestedClass)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
+                (MEMBER_DECL
+                  (MEMBER_TYPE
                     (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME param)))
-                (BLOCK
-                  (MEMBER_DECL
-                    (MEMBER_TYPE
-                      (TYPE
-                        (TYPE_NAME String)))
-                    (MEMBER_NAME value)
-                    (INIT_EXPR
+                      (TYPE_NAME String)))
+                  (MEMBER_NAME value)
+                  (INIT_EXPR
+                    (EXPR
                       (EXPR
-                        (EXPR
-                          (MEMBER_NAME param) .
-                          (MEMBER_NAME uppercase))))))))
-            (RET_STMT
+                        (MEMBER_NAME param) .
+                        (MEMBER_NAME uppercase))))))))
+          (RET_STMT
+            (EXPR
+              (EXPR
+                (TYPE_NAME NestedClass)
+                (CALL_EXPR
+                  (ARG_LIST
+                    (EXPR
+                      (MEMBER_NAME mutableAttribute)))) .
+                (MEMBER_NAME value))))))
+      (MEMBER_DECL
+        (ATTRIBUTE_SETTER
+          (MEMBER_NAME attributeWithNestedClass))
+        (BLOCK
+          (TYPE_DECL
+            (CLASS_DECL
+              (TYPE_NAME NestedClass)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME param)))
+              (BLOCK
+                (MEMBER_DECL
+                  (MEMBER_TYPE
+                    (TYPE
+                      (TYPE_NAME String)))
+                  (MEMBER_NAME value)
+                  (INIT_EXPR
+                    (EXPR
+                      (EXPR
+                        (MEMBER_NAME param) .
+                        (MEMBER_NAME lowercase))))))))
+          (EXPR
+            (:=
+              (MEMBER_NAME mutableAttribute)
               (EXPR
                 (EXPR
                   (TYPE_NAME NestedClass)
                   (CALL_EXPR
                     (ARG_LIST
                       (EXPR
-                        (MEMBER_NAME mutableAttribute)))) .
-                  (MEMBER_NAME value))))))
-        (MEMBER_DECL
-          (ATTRIBUTE_SETTER
-            (MEMBER_NAME attributeWithNestedClass))
-          (BLOCK
-            (TYPE_DECL
-              (CLASS_DECL
-                (TYPE_NAME NestedClass)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME String))
-                    (ARG_NAME param)))
-                (BLOCK
-                  (MEMBER_DECL
-                    (MEMBER_TYPE
-                      (TYPE
-                        (TYPE_NAME String)))
-                    (MEMBER_NAME value)
-                    (INIT_EXPR
-                      (EXPR
-                        (EXPR
-                          (MEMBER_NAME param) .
-                          (MEMBER_NAME lowercase))))))))
-            (EXPR
-              (:=
-                (MEMBER_NAME mutableAttribute)
-                (EXPR
-                  (EXPR
-                    (TYPE_NAME NestedClass)
-                    (CALL_EXPR
-                      (ARG_LIST
-                        (EXPR
-                          (MEMBER_NAME attributeWithNestedClass)))) .
-                    (MEMBER_NAME value)))))))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME String)))
-          (MEMBER_NAME annotatedAttribute)
-          (INIT_EXPR
-            (EXPR
-              (MEMBER_NAME immutableAttribute)))
-          (ANNOTATION_LIST
-            (USER_ANNOTATION
-              (ANNOTATION_NAME doc)
-              (STRING_CST "This attribute has annotations. Remember that literal
+                        (MEMBER_NAME attributeWithNestedClass)))) .
+                  (MEMBER_NAME value)))))))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME String)))
+        (MEMBER_NAME annotatedAttribute)
+        (INIT_EXPR
+          (EXPR
+            (MEMBER_NAME immutableAttribute)))
+        (ANNOTATION_LIST
+          (USER_ANNOTATION
+            (ANNOTATION_NAME doc)
+            (STRING_CST "This attribute has annotations. Remember that literal
 	     strings can be spread across multiple lines."))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME by)
-              (STRING_CST "Gavin King")
-              (STRING_CST "Andrew Haley"))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME see)
-              (REFLECTED_LITERAL
-                (TYPE
-                  (TYPE_NAME Attributes)))
-              (REFLECTED_LITERAL
-                (MEMBER_NAME immutableAttribute)))
-            (USER_ANNOTATION
-              (ANNOTATION_NAME column)
-              (ARG_LIST
-                (NAMED_ARG
-                  (ARG_NAME name)
-                  (INIT_EXPR
-                    (EXPR
-                      (STRING_CST "columnName"))))
-                (NAMED_ARG
-                  (ARG_NAME comment)
-                  (INIT_EXPR
-                    (EXPR
-                      (STRING_CST "some comment"))))))
-            (LANG_ANNOTATION public)))))
-    (ANNOTATION_LIST
-      (LANG_ANNOTATION abstract))))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME by)
+            (STRING_CST "Gavin King")
+            (STRING_CST "Andrew Haley"))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME see)
+            (ARG_LIST
+              (EXPR
+                (TYPE_NAME Attributes))
+              (EXPR
+                (MEMBER_NAME immutableAttribute))))
+          (USER_ANNOTATION
+            (ANNOTATION_NAME column)
+            (ARG_LIST
+              (NAMED_ARG
+                (ARG_NAME name)
+                (INIT_EXPR
+                  (EXPR
+                    (STRING_CST "columnName"))))
+              (NAMED_ARG
+                (ARG_NAME comment)
+                (INIT_EXPR
+                  (EXPR
+                    (STRING_CST "some comment"))))))
+          (LANG_ANNOTATION public)))))
+  (ANNOTATION_LIST
+    (LANG_ANNOTATION abstract)))

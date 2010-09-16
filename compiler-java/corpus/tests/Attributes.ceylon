@@ -6,9 +6,9 @@ abstract class Attributes() {
 	
 	mutable String mutableAttribute := "Hello World";
 	
-	optional String nullAttribute = null;
+	String? nullAttribute = null;
 	
-	optional mutable String nullMutableAttribute := null;
+	mutable String? nullMutableAttribute := null;
 	
 	String attribute { return mutableAttribute.uppercase; }
 	
@@ -56,8 +56,8 @@ abstract class Attributes() {
 	     strings can be spread across multiple lines."
 	by "Gavin King"
 	   "Andrew Haley"
-	see #Attributes 
-	    #immutableAttribute
+	see (Attributes, 
+	    immutableAttribute)
 	column { name="columnName"; comment="some comment"; }
 	public String annotatedAttribute = immutableAttribute;
 		

@@ -1,84 +1,181 @@
 # Types.ceylon
-
+ IMPORT_LIST
 (TYPE_DECL
-  (TYPE_DECL
-    (CLASS_DECL
-      (TYPE_NAME Types) FORMAL_PARAMETER_LIST
-      (BLOCK
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo)))
-          (MEMBER_NAME simpleType))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo)
-              (TYPE_ARG_LIST
+  (CLASS_DECL
+    (TYPE_NAME Types) FORMAL_PARAMETER_LIST
+    (BLOCK
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)))
+        (MEMBER_NAME simpleType))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar)))))
+        (MEMBER_NAME typeWithParameter))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar))
+              (TYPE
+                (TYPE_NAME Baz)))))
+        (MEMBER_NAME typeWithMultipleParameters))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar)
+                (TYPE_ARG_LIST
+                  (TYPE
+                    (TYPE_NAME Baz)))))))
+        (MEMBER_NAME typeWithNestedParameter))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_NAME Bar)))
+        (MEMBER_NAME nestedType))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_NAME Bar)
+            (TYPE_NAME Baz)))
+        (MEMBER_NAME multiplyNestedType))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_NAME Bar)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Baz)))))
+        (MEMBER_NAME nestedTypeWithTypeParameter))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar)
+                (TYPE_NAME Baz)))))
+        (MEMBER_NAME typeWithNestedTypeParameter))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar)
+                (TYPE_NAME Baz)
+                (TYPE_ARG_LIST
+                  (TYPE
+                    (TYPE_NAME Qux)))))))
+        (MEMBER_NAME anythingGoes))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar)))
+            (TYPE_NAME Baz)))
+        (MEMBER_NAME evenThis))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Bar)))
+            (TYPE_NAME Baz)
+            (TYPE_ARG_LIST
+              (TYPE
+                (TYPE_NAME Qux)))))
+        (MEMBER_NAME orThis))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE subtype))
+        (MEMBER_NAME theSubtype))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo) ?))
+        (MEMBER_NAME optionalType))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST 2)))
+        (MEMBER_NAME typeWithDimension))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo)
+            (TYPE_ARG_LIST 3 5)))
+        (MEMBER_NAME typeWithMultipleDimensions))
+      (MEMBER_DECL
+        (MEMBER_TYPE
+          (TYPE
+            (TYPE_NAME Foo) [ 10 ]))
+        (MEMBER_NAME sequenceWithDimension))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME Bar)
+          (TYPE_PARAMETER_LIST
+            (TYPE_PARAMETER
+              (MEMBER_NAME n))
+            (TYPE_PARAMETER
+              (MEMBER_NAME m))
+            (TYPE_PARAMETER
+              (TYPE_NAME P)) ...) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE
                 (TYPE
-                  (TYPE_NAME Bar)))))
-          (MEMBER_NAME typeWithParameter))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo)
-              (TYPE_ARG_LIST
+                  (TYPE_NAME Foo)
+                  (TYPE_ARG_LIST
+                    (MEMBER_NAME n))))
+              (MEMBER_NAME typeWithVariantDimension))
+            (MEMBER_DECL
+              (MEMBER_TYPE
                 (TYPE
-                  (TYPE_NAME Bar))
+                  (TYPE_NAME Foo) [
+                  (MEMBER_NAME m) ]))
+              (MEMBER_NAME sequenceWithVariantDimension))
+            (MEMBER_DECL
+              (MEMBER_TYPE
                 (TYPE
-                  (TYPE_NAME Baz)))))
-          (MEMBER_NAME typeWithMultipleParameters))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo)
-              (TYPE_ARG_LIST
+                  (TYPE_NAME Foo)
+                  (TYPE_ARG_LIST
+                    (MEMBER_NAME n) +
+                    (MEMBER_NAME m) + 1)))
+              (MEMBER_NAME typeWithLinearDimension))
+            (MEMBER_DECL
+              (MEMBER_TYPE
                 (TYPE
-                  (TYPE_NAME Bar)
+                  (TYPE_NAME Foo) [
+                  (MEMBER_NAME n) +
+                  (MEMBER_NAME m) + 2 ]))
+              (MEMBER_NAME sequenceWithLinearDimension))
+            (MEMBER_DECL
+              (MEMBER_TYPE
+                (TYPE
+                  (TYPE_NAME Foo)
                   (TYPE_ARG_LIST
                     (TYPE
-                      (TYPE_NAME Baz)))))))
-          (MEMBER_NAME typeWithNestedParameter))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo Bar)))
-          (MEMBER_NAME nestedType))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo Bar Baz)))
-          (MEMBER_NAME multiplyNestedType))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo Bar)
-              (TYPE_ARG_LIST
-                (TYPE
-                  (TYPE_NAME Baz)))))
-          (MEMBER_NAME nestedTypeWithTypeParameter))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo)
-              (TYPE_ARG_LIST
-                (TYPE
-                  (TYPE_NAME Bar Baz)))))
-          (MEMBER_NAME typeWithNestedTypeParameter))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE
-              (TYPE_NAME Foo)
-              (TYPE_ARG_LIST
-                (TYPE
-                  (TYPE_NAME Bar Baz)
-                  (TYPE_ARG_LIST
-                    (TYPE
-                      (TYPE_NAME Qux)))))))
-          (MEMBER_NAME anythingGoes))
-        (MEMBER_DECL
-          (MEMBER_TYPE
-            (TYPE subtype))
-          (MEMBER_NAME theSubtype))))
-    (ANNOTATION_LIST
-      (LANG_ANNOTATION abstract))))
+                      (TYPE_NAME P)) ...)))
+              (MEMBER_NAME typeWithSequencedTypeArgument))))
+        (ANNOTATION_LIST
+          (LANG_ANNOTATION abstract)))))
+  (ANNOTATION_LIST
+    (LANG_ANNOTATION abstract)))

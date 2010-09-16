@@ -36,9 +36,9 @@ class Classes() {
 	by "Gavin King"
 	   "Andrew Haley"
 	scope(session)
-	see #Simple
-	throws #DatabaseException
-	       "if database access fails"
+	see (Simple)
+	throws (DatabaseException
+	        -> "if database access fails")
 	entity table { name="someTable"; schema="someSchema"; }
 	class WithAnnotations() {}
 	
@@ -78,8 +78,8 @@ class Classes() {
 	class WithTypeParameters<X, Y>() {}
 	
 	class WithTypeConstraints<X, Y>()
-		where X satisfies String 
-		where Y(Natural count) {}
+		given X satisfies String 
+		given Y(Natural count) {}
 		
 	class WithNestedClass() {
 		class NestedClass() {}

@@ -1,28 +1,183 @@
 # FormalParameters.ceylon
-
+ IMPORT_LIST
 (TYPE_DECL
-  (TYPE_DECL
-    (CLASS_DECL
-      (TYPE_NAME FormalParameters) FORMAL_PARAMETER_LIST
-      (BLOCK
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME MethodParameters) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME noParameter) FORMAL_PARAMETER_LIST BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME singleParameter)
+  (CLASS_DECL
+    (TYPE_NAME FormalParameters) FORMAL_PARAMETER_LIST
+    (BLOCK
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME MethodParameters) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME noParameter) FORMAL_PARAMETER_LIST BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME singleParameter)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME count))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME annotatedParameter)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (ANNOTATION_LIST
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME deprecated))
+                    (USER_ANNOTATION
+                      (ANNOTATION_NAME doc)
+                      (STRING_CST "use something else")))
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME count))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME multipleParameters)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME count))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME description))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME defaultValueParameters)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME param)
+                  (INIT_EXPR
+                    (EXPR
+                      (INT_CST 1))))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME description)
+                  (INIT_EXPR
+                    (EXPR
+                      (STRING_CST ""))))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Lock))
+                  (ARG_NAME lock)
+                  (INIT_EXPR
+                    (EXPR null)))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME sequencedParameter)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String)) ...
+                  (ARG_NAME strings))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME entryParameter)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME name) ->
+                  (TYPE
+                    (TYPE_NAME Person))
+                  (ARG_NAME person))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME combinationParameters)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME name) ->
+                  (TYPE
+                    (TYPE_NAME Person))
+                  (ARG_NAME person))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Natural))
+                  (ARG_NAME count))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME description)
+                  (INIT_EXPR
+                    (EXPR
+                      (STRING_CST ""))))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Lock) ?)
+                  (ARG_NAME lock)
+                  (INIT_EXPR
+                    (EXPR null)))
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String)) ...
+                  (ARG_NAME strings))) BLOCK)
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME functionalParameters)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String))
+                  (ARG_NAME produce) FORMAL_PARAMETER_LIST)
+                (FORMAL_PARAMETER void
+                  (ARG_NAME consume)
+                  (FORMAL_PARAMETER_LIST
+                    (FORMAL_PARAMETER
+                      (TYPE
+                        (TYPE_NAME String))
+                      (ARG_NAME x)))))
+              (BLOCK
+                (EXPR
+                  (EXPR
+                    (MEMBER_NAME consume)
+                    (CALL_EXPR
+                      (ARG_LIST
+                        (EXPR
+                          (EXPR
+                            (MEMBER_NAME produce)
+                            (CALL_EXPR ARG_LIST)))))))))
+            (MEMBER_DECL
+              (MEMBER_TYPE void)
+              (MEMBER_NAME multipleParameterLists)
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME Lock) ?)
+                  (ARG_NAME lock)
+                  (INIT_EXPR
+                    (EXPR null))))
+              (FORMAL_PARAMETER_LIST
+                (FORMAL_PARAMETER
+                  (TYPE
+                    (TYPE_NAME String)) ...
+                  (ARG_NAME strings))) BLOCK))))
+      (TYPE_DECL
+        (CLASS_DECL
+          (TYPE_NAME InitParameters) FORMAL_PARAMETER_LIST
+          (BLOCK
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME NoParameter) FORMAL_PARAMETER_LIST BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME SingleParameter)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME Natural))
-                    (ARG_NAME count))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME annotatedParameter)
+                    (ARG_NAME count))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME AnnotatedParameter)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (ANNOTATION_LIST
@@ -33,10 +188,10 @@
                         (STRING_CST "use something else")))
                     (TYPE
                       (TYPE_NAME Natural))
-                    (ARG_NAME count))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME multipleParameters)
+                    (ARG_NAME count))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME MultipleParameters)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
@@ -45,10 +200,10 @@
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String))
-                    (ARG_NAME description))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME defaultValueParameters)
+                    (ARG_NAME description))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME DefaultValueParameters)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
@@ -66,21 +221,21 @@
                         (STRING_CST ""))))
                   (FORMAL_PARAMETER
                     (TYPE
-                      (TYPE_NAME Lock))
+                      (TYPE_NAME Lock) ?)
                     (ARG_NAME lock)
                     (INIT_EXPR
-                      (EXPR null)))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME varargsParameter)
+                      (EXPR null)))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME SequencedParameter)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String)) ...
-                    (ARG_NAME strings))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME entryParameter)
+                    (ARG_NAME strings))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME EntryParameter)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
@@ -88,19 +243,10 @@
                     (ARG_NAME name) ->
                     (TYPE
                       (TYPE_NAME Person))
-                    (ARG_NAME person))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME rangeParameter)
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME min) ..
-                    (ARG_NAME max))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME combinationParameters)
+                    (ARG_NAME person))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME CombinationParameters)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
@@ -122,27 +268,17 @@
                         (STRING_CST ""))))
                   (FORMAL_PARAMETER
                     (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME min) ..
-                    (ARG_NAME max)
-                    (INIT_EXPR
-                      (EXPR
-                        (..
-                          (INT_CST 1)
-                          (INT_CST 10)))))
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME Lock))
+                      (TYPE_NAME Lock) ?)
                     (ARG_NAME lock)
                     (INIT_EXPR
                       (EXPR null)))
                   (FORMAL_PARAMETER
                     (TYPE
                       (TYPE_NAME String)) ...
-                    (ARG_NAME strings))) BLOCK)
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME functionalParameters)
+                    (ARG_NAME strings))) BLOCK))
+            (TYPE_DECL
+              (CLASS_DECL
+                (TYPE_NAME FunctionalParameters)
                 (FORMAL_PARAMETER_LIST
                   (FORMAL_PARAMETER
                     (TYPE
@@ -164,177 +300,4 @@
                           (EXPR
                             (EXPR
                               (MEMBER_NAME produce)
-                              (CALL_EXPR ARG_LIST)))))))))
-              (MEMBER_DECL
-                (MEMBER_TYPE void)
-                (MEMBER_NAME multipleParameterLists) FORMAL_PARAMETER_LIST
-                (FORMAL_PARAMETER_LIST
-                  (FORMAL_PARAMETER
-                    (TYPE
-                      (TYPE_NAME Natural))
-                    (ARG_NAME min) ..
-                    (ARG_NAME max)))
-                (BLOCK
-                  (RET_STMT
-                    (EXPR
-                      (MEMBER_NAME rangeParameter))))))))
-        (TYPE_DECL
-          (CLASS_DECL
-            (TYPE_NAME InitParameters) FORMAL_PARAMETER_LIST
-            (BLOCK
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME NoParameter) FORMAL_PARAMETER_LIST BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME SingleParameter)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME count))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME AnnotatedParameter)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (ANNOTATION_LIST
-                        (USER_ANNOTATION
-                          (ANNOTATION_NAME deprecated))
-                        (USER_ANNOTATION
-                          (ANNOTATION_NAME doc)
-                          (STRING_CST "use something else")))
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME count))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME MultipleParameters)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME count))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String))
-                      (ARG_NAME description))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME DefaultValueParameters)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME param)
-                      (INIT_EXPR
-                        (EXPR
-                          (INT_CST 1))))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String))
-                      (ARG_NAME description)
-                      (INIT_EXPR
-                        (EXPR
-                          (STRING_CST ""))))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Lock))
-                      (ARG_NAME lock)
-                      (INIT_EXPR
-                        (EXPR null)))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME VarargsParameter)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String)) ...
-                      (ARG_NAME strings))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME EntryParameter)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String))
-                      (ARG_NAME name) ->
-                      (TYPE
-                        (TYPE_NAME Person))
-                      (ARG_NAME person))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME RangeParameter)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME min) ..
-                      (ARG_NAME max))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME CombinationParameters)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String))
-                      (ARG_NAME name) ->
-                      (TYPE
-                        (TYPE_NAME Person))
-                      (ARG_NAME person))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME count))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String))
-                      (ARG_NAME description)
-                      (INIT_EXPR
-                        (EXPR
-                          (STRING_CST ""))))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Natural))
-                      (ARG_NAME min) ..
-                      (ARG_NAME max)
-                      (INIT_EXPR
-                        (EXPR
-                          (..
-                            (INT_CST 1)
-                            (INT_CST 10)))))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME Lock))
-                      (ARG_NAME lock)
-                      (INIT_EXPR
-                        (EXPR null)))
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String)) ...
-                      (ARG_NAME strings))) BLOCK))
-              (TYPE_DECL
-                (CLASS_DECL
-                  (TYPE_NAME FunctionalParameters)
-                  (FORMAL_PARAMETER_LIST
-                    (FORMAL_PARAMETER
-                      (TYPE
-                        (TYPE_NAME String))
-                      (ARG_NAME produce) FORMAL_PARAMETER_LIST)
-                    (FORMAL_PARAMETER void
-                      (ARG_NAME consume)
-                      (FORMAL_PARAMETER_LIST
-                        (FORMAL_PARAMETER
-                          (TYPE
-                            (TYPE_NAME String))
-                          (ARG_NAME x)))))
-                  (BLOCK
-                    (EXPR
-                      (EXPR
-                        (MEMBER_NAME consume)
-                        (CALL_EXPR
-                          (ARG_LIST
-                            (EXPR
-                              (EXPR
-                                (MEMBER_NAME produce)
-                                (CALL_EXPR ARG_LIST)))))))))))))))))
+                              (CALL_EXPR ARG_LIST))))))))))))))))
