@@ -2544,7 +2544,16 @@ public abstract class CeylonTree {
         }
         
         void append(CeylonTree expr) {
-            setName((TypeName)expr);
+        	final Type self = this;
+        	
+            expr.accept(new CeylonTree.Visitor () {
+                public void visit(TypeName t) { self.setName(t); }
+                public void visit(Operator op) {
+                	if (op.operatorKind != CeylonParser.QMARK)
+                		bomb();
+                	self.flags |= OPTIONAL; 
+                }
+           });
         }
         
         public void setSubtype(Subtype subtype) {
