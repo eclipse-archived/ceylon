@@ -1290,10 +1290,36 @@ abstract class Hello() {
         <section>
             <title>A quick overview of collections</title>
             
-            <para>The collections package is one of the best features of Ceylon. Let's briefly 
-            meet some of the main characters.</para>
+            <para>The collections package is one of the best features of Ceylon. In this 
+            section we'll briefly meet some of the main characters. The most abstract types 
+            related to collections are the interfaces <literal>Container</literal> and 
+            <literal>Category</literal>. These are very simple interfaces, so many different 
+            types extend or implement them.</para>
             
-            <para>There's no arrays in Ceylon, but you can write the following code:</para>
+            <para>A <literal>Container</literal> is an object that might be empty. Any 
+            <literal>Container</literal> can be the subject of the <literal>nonempty</literal>
+            operator or of the <literal>if (nonempty ...)</literal> construct.</para>
+            
+            <programlisting>Container con = .... ;
+if (nonempty con) { .... }</programlisting>
+            
+            <para>A <literal>Category</literal> is an object to which other objects
+            belong. Any <literal>Category</literal> can be the second argument of the 
+            <literal>in</literal> operator.</para>
+            
+            <programlisting>Category cat = .... ;
+if (object in cat) { .... }</programlisting>
+
+            <para>Slightly less abstract is the interface <literal>Iterable&lt;T&gt;</literal> 
+            which represents an object which can produce an 
+            <literal>Iterator&lt;T&gt;</literal>. An <literal>Iterable</literal> object can 
+            be used in a <literal>for</literal> loop.</para>
+            
+            <programlisting>Iterable&lt;Person&gt; people = ... ;
+for (Person p in people) { ... }</programlisting>
+            
+            <para>Now for something more interesting. There's no arrays in Ceylon, but you 
+            can write the following code:</para>
             
             <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
 String? sf = voyage[2];
@@ -1305,14 +1331,34 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             syntax&mdash;it's just sugar. There's actually nothing much special about the 
             interface <literal>Sequence</literal> from the point of view of the type system. 
             But sequences of values are a common occurrence in computing, so Ceylon provides 
-            a streamlined syntax for dealing with them.</para>
+            a streamlined syntax for dealing with them. Let's break down this code.</para>
             
-            <para>The expression <literal>voyage[2]</literal> evaluates to the third item 
-            in the sequence (the item with index <literal>2</literal>). The range expression 
-            <literal>voyage[1..3]</literal> evaluates to the subsequence from the lower index 
-            <literal>1</literal> to the upper index <literal>3</literal> (a subsequence 
-            containing the second, third, and fourth items of the sequence). The 
-            <literal>+</literal> operator joins two sequences together.</para>
+            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
+            
+            <para>A list of values enclosed in braces instantiates a sequence.</para>
+            
+            <programlisting>String? sf = voyage[2];</programlisting>
+            
+            <para>The expression <literal>voyage[2]</literal> evaluates to the third item in 
+            the sequence (the item with index <literal>2</literal>). Note that the lookup
+            operator returns an optional type, in this case <literal>String?</literal>, to
+            account for the possibility that the given index was outside of the range of
+            indexes of the sequence. As we'll soon see, the lookup operator works with more 
+            than just sequences.</para>
+            
+            <programlisting>String[] usLeg = voyage[1..3];</programlisting>
+            
+            <para>The range expression <literal>voyage[1..3]</literal> evaluates to the 
+            subsequence from the lower index <literal>1</literal> to the upper index 
+            <literal>3</literal> (a subsequence containing the second, third, and fourth items 
+            of the sequence). The range operator only works for sequences.</para> 
+            
+            <programlisting>String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlisting>
+            
+            <para>The <literal>+</literal> operator joins two sequences together. This
+            <literal>+</literal> operator has absolutely nothing to do with addition of 
+            numeric values. Rather, this is the single example of an overloaded operator in 
+            Ceylon.</para>
             
             <para>Just like in Java, the collection types are <emphasis>parameterized</emphasis> 
             or <emphasis>generic</emphasis> types. Unlike Java, there are no raw types&mdash;if
@@ -1356,7 +1402,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <para>This works because there's a built-in extension method (a concept we'll
             meet later) that produces an <literal>Iterable&lt;Entry&lt;Natural,X&gt;&gt;</literal>
             for any <literal>Sequence&lt;X&gt;</literal>. (Oh, the <literal>$</literal> 
-            operator just converts an object to a printable string.)</para>
+            operator just formats an object to a printable string.)</para>
             
             <para>There's another extension which produces a <literal>Category</literal>
             from any <literal>Sequence</literal>. Therefore, you can use the <literal>in</literal>
