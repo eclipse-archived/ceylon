@@ -1569,19 +1569,29 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         <section>
             <title>Understanding first-class functions</title>
             
-            <para>Ceylon isn't a functional language, since it has mutable locals and mutable 
+            <para>Ceylon isn't a functional language: it has mutable locals and mutable 
             attributes and so methods can have side effects. But Ceylon does let you use 
             functions as values, which makes the language a kind of hybrid of the functional 
             and procedural. There's nothing very new about this idea&mdash;Smalltalk, one of 
-            the first and one of the cleanest object oriented languages was the same kind of 
-            hybrid. Ceylon, like Smalltalk and a number of other object oriented languages, 
+            the first and still one of the cleanest object oriented languages, was the same kind 
+            of hybrid. Ceylon, like Smalltalk and a number of other object oriented languages, 
             lets you treat a function as an object and pass it around the system. Unlike most 
             of these languages, Ceylon doesn't have a special syntax for declaring anonymous 
             functions (often called lambda expressions). Instead, Ceylon has something else, 
             which is just as good, but fits more cleanly with a traditional C-like syntax.</para>
             
-            <para>First, let's see how we declare a method which accepts a function as a 
-            parameter. Suppose we have some kind of user interface component which can be 
+            <para>Before we get to that, first, let's see how we can define:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a method which accepts a function as a parameter, and then</para>
+                </listitem>
+                <listitem>
+                    <para>a method which returns a function.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Suppose we have some kind of user interface component which can be 
             observed by other objects in the system. We could use something like Java's
             <literal>Observer</literal>/<literal>Observable</literal> pattern:</para>
             
