@@ -2568,7 +2568,7 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
     </section>
     
     <section>
-        <title>Sequenced type paramters</title>
+        <title>Sequenced type parameters</title>
         
             <para>Most static type systems have problems representing the type of a 
             function, because a single generic type parameter can't capture a variable 
