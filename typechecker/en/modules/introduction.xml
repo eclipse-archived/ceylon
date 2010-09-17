@@ -222,8 +222,8 @@
     arbitrary precision decimals. <literal>Natural</literal>, 
     <literal>Integer</literal> and <literal>Float</literal> values are 64 bit 
     by default, and may be optimized for 32 bit architectures via use of the 
-    <literal>small</literal> annotation. <!--Unlike Java and C#, Ceylon features
-    language-level support for dates and times.--></para>
+    <literal>small</literal> annotation. But note that this annotation is 
+    really just a hint that the compiler is free to ignore.</para>
     
     </section>
     
