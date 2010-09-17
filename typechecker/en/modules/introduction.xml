@@ -1296,9 +1296,21 @@ abstract class Hello() {
             the collections module, and Ceylon defines some useful operators and control
             structures in terms of these interfaces.</para> 
             
-            <para>The most abstract types related to collections are the interfaces 
-            <literal>Container</literal>, <literal>Category</literal> and <literal>Iterable</literal>. 
-            These are very simple interfaces, so many different types extend or implement 
+            <itemizedlist>
+                <listitem>
+                    <para>The most abstract types related to collections are the interfaces 
+                    <literal>Container</literal>, <literal>Category</literal> and 
+                    <literal>Iterable</literal>. They define the most basic capabilities of
+                    an object that contains other objects.</para>
+                </listitem>
+                <listitem>
+                    <para>The types <literal>Correspondence</literal> and 
+                    <literal>Sequence</literal> define the ability to access an element by
+                    key or index.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>These are very simple interfaces, so many different types extend or implement 
             them.</para>
             
             <para>A <literal>Container</literal> is an object that might be empty. Any 
