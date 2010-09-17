@@ -341,7 +341,7 @@ public class Grok extends CeylonTree.Visitor {
     }
     
     public void visit(CeylonTree.FloatLiteral lit) {
-        lit.value = Float.valueOf(lit.token.getText());
+        lit.value = Double.valueOf(lit.token.getText());
         current.context.append(lit);
     }
     
