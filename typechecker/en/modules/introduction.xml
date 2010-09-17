@@ -222,8 +222,7 @@
     arbitrary precision decimals. <literal>Natural</literal>, 
     <literal>Integer</literal> and <literal>Float</literal> values are 64 bit 
     by default, and may be optimized for 32 bit architectures via use of the 
-    <literal>small</literal> annotation. But note that this annotation is 
-    really just a hint that the compiler is free to ignore.</para>
+    <literal>small</literal> annotation.</para>
     
     </section>
     
@@ -1213,7 +1212,8 @@ abstract class Hello() {
             
             <para><literal>Natural</literal>, <literal>Integer</literal> and 
             <literal>Float</literal> have 64-bit precision by default. You can specify that 
-            a value has 32-bit precision by annotating it <literal>small</literal>.</para>
+            a value has 32-bit precision by annotating it <literal>small</literal>. But note 
+            that this annotation is really just a hint that the compiler is free to ignore.</para>
             
             <para>There are only two kinds of numeric literals: literals for 
             <literal>Natural</literal>s, and literals for <literal>Float</literal>s:</para>
