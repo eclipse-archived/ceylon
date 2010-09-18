@@ -2868,6 +2868,65 @@ class Hello(String? name) {
         
     </section>
     
+    <section>
+        <title>Single quoted literals</title>
+        
+        <para>Ceylon doesn't have a built-in literal syntax for any of the following 
+        types of object commonly encountered in procedural or declarative code:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>dates, times, and durations,</para>
+            </listitem>
+            <listitem>
+                <para>hexadecimal and binary numbers,</para>
+            </listitem>
+            <listitem>
+                <para>regular expressions,</para>
+            </listitem>
+            <listitem>
+                <para>URLs and URIs,</para>
+            </listitem>
+            <listitem>
+                <para>email addresses, and</para>
+            </listitem>
+            <listitem>
+                <para>cron expressions.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>All of these are examples of special-purpose "mini-languages" with their
+        own parsing and validation rules that are not encoded into the Ceylon compiler.
+        In many other programming languages, it is common practice to embed mini-languages
+        in strings, resulting in code that can't be validated for syntactic correctness
+        at compile time.</para>
+        
+        <para>In Ceylon, we embed mini-languages using single-quoted literals. For
+        example:</para>
+        
+        <programlisting>Datetime datetime = Datetime('25/03/2005', '12:00 AM PST');</programlisting>
+        <programlisting>public pattern('^\w+@((\w+)\.)+$') mutable String emailAddress; </programlisting>
+        <programlisting>Button { color = 'FF3B66'; label = "Click me"; }</programlisting>
+        <programlisting>A { href = 'http://jboss.org/ceylon'; "Ceylon site" }</programlisting>
+        
+        <para>A single quoted literal is an expression of type <literal>Quoted</literal>.
+        We write an extension to convert an instance of <literal>Quoted</literal> to a
+        more semantic type, for example:</para>
+        
+        <programlisting>public extension Color hexToColor(Quoted hex) { return ... }</programlisting>
+        
+        <para>The Ceylon compiler treats extensions with the extended type 
+        <literal>Quoted</literal> as a very special case. Unlike other extensions, an 
+        extension of <literal>Quoted</literal> is called by the compiler at compile time.
+        If the extension throws an exception, a compilation error results. Thus, it's 
+        possible to validate the syntax of embedded mini-languages are compile-time.</para>
+        
+        <para>The Ceylon SDK includes built-in support for quoted literals representing
+        dates, times, URLs, hexadecimal and binary numbers, and PERL-style regular 
+        expressions.</para>
+        
+    </section>
+    
     </section>
     
 </chapter>
