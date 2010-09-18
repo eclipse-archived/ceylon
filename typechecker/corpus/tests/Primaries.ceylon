@@ -5,9 +5,11 @@ class Primaries() {
 		String hello = "Hello";
 		String names = "Gavin\nAndrew\nEmmanuel\n";
 		Natural one = 1;
+		Natural reallyLong = 123_456_789;
 		Float zero = 0.0;
 		Float big = 1.0e10;
 		Float small = 1.0e-10;
+		Float veryLong = 123_456.000_789;
 		Character x = `x`;
 		Character newline = `\n`;
 		Quoted quoted = 'quoted literal';

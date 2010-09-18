@@ -248,7 +248,7 @@ declarationAnnotation
     | 'mutable'
     | 'extension'
     | 'volatile'
-    | 'small'
+    //| 'small'
     | visibility
     ;
 
@@ -651,6 +651,7 @@ defaultExpression
 
 //I wonder if it would it be cleaner to give 
 //'..' a higher precedence than '->'
+
 rangeIntervalEntryExpression
     : additiveExpression
       (('..'^ | '->'^) additiveExpression)?
@@ -1046,7 +1047,7 @@ variable
 
 fragment
 Digits
-    : ('0'..'9')+
+    : ('0'..'9')+ ('_' ('0'..'9')+)*
     ;
 
 fragment 
