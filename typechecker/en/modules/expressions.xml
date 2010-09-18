@@ -399,7 +399,7 @@ if you prefer.";</programlisting>
         <programlisting>StringTemplate := StringLiteral (Expression? StringLiteral)+</programlisting>
         
         <para>Each interpolated expression contained in the string template must be 
-        an expression of type <literal>ceylon.lang.Formattable</literal>.</para>
+        an expression of type <literal>ceylon.lang.Format</literal>.</para>
         
         <para>The entire character string template is an expression of type 
         <literal>Gettable&lt;String&gt;</literal>.</para>
@@ -2969,7 +2969,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>format</entry>
             <entry><literal>rhs.formatted</literal></entry>
             <entry></entry>
-            <entry><literal>Formattable</literal></entry>
+            <entry><literal>Format</literal></entry>
             <entry><literal>String</literal></entry>
         </row>
     

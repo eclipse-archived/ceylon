@@ -1694,7 +1694,7 @@ while (i<=max) {
                 
         <programlisting><![CDATA[public extension class String(Character[] this) 
         extends Object() 
-        satisfies Character[], Comparable<String>, Case<String> {
+        satisfies Character[], Comparable<String>, Case<String>, Format {
     
     Character[] chars;
     if (is String this) {
@@ -2441,7 +2441,7 @@ while (i<=max) {
     <section id="formattingobjects">
         <title>Formatting objects</title>
         
-        <para>The interface <literal>Formattable</literal> defines a method
+        <para>The interface <literal>Format</literal> defines a method
         to produce a <literal>String</literal> representation of a certain object.
         An expression of type <literal>FormattedObject</literal> may be the target
         of the format operator <literal>$</literal> or may be used in a string
@@ -2449,7 +2449,7 @@ while (i<=max) {
         directly. Instead, an extension may decorate a class with a representation
         in a particular format.</para>
         
-        <programlisting>public interface Formattable {
+        <programlisting>public interface Format {
     String formatted;
 }</programlisting>
 
@@ -2457,7 +2457,7 @@ while (i<=max) {
         by default, defines a format useful only for debugging purposes:</para>
         
         <programlisting>public extension class DebugFormat(Object? object) 
-        satisfies Formattable {
+        satisfies Format {
     override String formatted {
         if (object exists) {
             return object.string;

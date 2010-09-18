@@ -904,7 +904,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <comment><para>TODO: eventually we should support the ability to implicitly pass in an
         extension that is imported by the client code, using a type constraint of form:</para>
-        <programlisting>given extension E(X x) satisfies Formattable</programlisting>
+        <programlisting>given extension E(X x) satisfies Format</programlisting>
         <para>(We would need to define an identity extension in <literal>ceylon.lang</literal>.)</para>
         <para>In the following special case, this lets us implement a Haskell-style type class 
         as an extension of the metatype:</para>

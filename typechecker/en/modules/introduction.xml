@@ -2789,6 +2789,83 @@ class Hello(String? name) {
         framework are defined by built-in extensions. So we can add new convenience 
         methods whenever we like. And so can you!</para>
         
+        <para>In the next sections, we're going to see a two very different 
+        applications of extensions.</para>
+        
+    </section>
+    
+    <section>
+        <title>String interpolation and the format operator</title>
+        
+        <para>We've already seen a couple of of examples of 
+        <emphasis>string interpolation</emphasis>:</para>
+        
+        <programlisting>"Hello, " name "!"</programlisting>
+        
+        <para>And of the <emphasis>format operator</emphasis>, the prefix 
+        <literal>$</literal>:</para>
+        
+        <programlisting>stream.writeLine($object);</programlisting>
+        
+        <para>You might have wondered earlier exactly what expression types are 
+        permitted in an interpolated string or as arguments to the format operator. 
+        The answer is that the expression must be of type <literal>Format</literal>.
+        The only built-in type that directly implements <literal>Format</literal>
+        is <literal>String</literal>. That might seem pretty limiting at first glance.
+        After all, shouldn't we at very least be able to use numeric expressings in an 
+        interpolated string?</para>
+        
+        <para>Well, the problem is that we don't always want to use exactly the same
+        formatting rules for printing out objects or numeric values. For example, in
+        in log and assertion messages, it's normal to represent a null value as the 
+        string <literal>"null"</literal>, and a complex object as a list of its named 
+        property values. On the other hand, in a HTML page, it probably makes more
+        sense to represent a null value as an empty string, and a complex object by 
+        its unique business key. Likewise, in many, but not all, contexts it makes
+        sense to truncate floating point values to a certain fixed number of decimal
+        places.</para>
+        
+        <para>Therefore, it is normal to define a format in a separate class, for
+        example:</para>
+        
+        <programlisting>public class FloatFormat(Float float) 
+        satisfies Format {
+    override String formatted {
+        return ... 
+    }
+}</programlisting>
+        
+        <para>Now, of course, one option we have is to explicitly wrap each object 
+        we're printing out in an instance of the appropriate <literal>Format</literal>.</para>
+        
+        <programlisting>stream.writeLine("2 / 3 = " + $FloatFormat(2.0/3))</programlisting>
+        
+        <para>But this gets verbose and boring. So we can define our format as an 
+        extension, for example:</para>
+        
+        <programlisting>public extension class FloatFormat(Float float) 
+        satisfies Format {
+    override String formatted {
+        return ... 
+    }
+}</programlisting>
+        
+        <para>And we can enable the appropriate default format by 
+        <literal>import</literal>ing the extension:</para>
+        
+        <programlisting>import extension org.mycompany.format.FloatFormat;</programlisting>
+        
+        <para>And now, when we don't explicitly specify a format, the format defaults
+        to the extension format:</para>
+        
+        <programlisting>stream.writeLine("2 / 3 = " + $(2.0/3))</programlisting>
+        
+        <para>Ceylon includes a built-in extension, 
+        <literal>ceylon.lang.util.DebugFormat</literal> that formats any expression 
+        assignable to <literal>Object?</literal> to an appropriate representation for 
+        log and assertion messages, delegating back to <literal>Object.string</literal>
+        for non-null values.</para>
+        
     </section>
     
     </section>
