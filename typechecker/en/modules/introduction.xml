@@ -899,6 +899,9 @@ else {
         <literal>if (exists ... )</literal> protects us from writing code that
         would cause a <literal>NullPointerException</literal>.</para>
         
+        <para>Oh, the <literal>$</literal> operator just formats an object to 
+        a printable string.</para>
+        
     </section>
     
            <section>
@@ -1420,8 +1423,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
 
             <para>This works because there's a built-in extension method (a concept we'll
             meet later) that produces an <literal>Iterable&lt;Entry&lt;Natural,X&gt;&gt;</literal>
-            for any <literal>Sequence&lt;X&gt;</literal>. (Oh, the <literal>$</literal> 
-            operator just formats an object to a printable string.)</para>
+            for any <literal>Sequence&lt;X&gt;</literal>.</para>
             
             <para>There's another extension which produces a <literal>Category</literal>
             from any <literal>Sequence</literal>. Therefore, you can use the <literal>in</literal>
