@@ -154,6 +154,8 @@
         allowed, or do we force the use of parentheses as in <literal>(1).decimal</literal> 
         and <literal>(1.0).whole</literal>?</para></comment>
         
+        <comment><para>TODO: Should we allow the use of <literal>_</literal> for digit grouping?</para></comment>
+        
     </section>
     
     <section id="characterliterals">
