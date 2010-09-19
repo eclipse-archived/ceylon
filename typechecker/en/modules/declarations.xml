@@ -384,6 +384,36 @@ ClassBody</programlisting>
                 other declarations in the second part of the body of the class.</para>
             </listitem>
         </itemizedlist>
+    
+    <section id="abstractclasses">
+        <title>Abstract classes</title>
+        
+        <para>A class may be annotated <literal>abstract</literal> only if it is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a toplevel class, or</para>
+            </listitem>
+            <listitem>
+                <para>a member class of an <literal>abstract</literal> class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If and only if a class is annotated <literal>abstract</literal> it may 
+        declare:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>abstract methods and attributes, and/or</para>
+            </listitem>
+            <listitem>
+                <para><literal>abstract</literal> member classes.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Classes annotated <literal>abstract</literal> may not be instantiated.</para>
+        
+    </section>
         
     <section id="mutableclasses">
         <title>Mutable and immutable classes</title>
@@ -1055,10 +1085,12 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
             </listitem>
             <listitem>
                 <para>A member class annotated <literal>abstract</literal> 
-                <emphasis>must</emphasis> be overridden by every non-<literal>abstract</literal> class which is a subtype
-                of the class or interface that declares the member class, unless the 
-                class inherits a non-<literal>abstract</literal> member class from a 
-                superclass that overrides the <literal>abstract</literal> member class.</para>
+                <emphasis>must</emphasis> be overridden by every 
+                non-<literal>abstract</literal> class which is a subtype of the 
+                <literal>abstract</literal> class or interface that declares the 
+                member class, unless the class inherits a 
+                non-<literal>abstract</literal> member class from a superclass that 
+                overrides the <literal>abstract</literal> member class.</para>
             </listitem>
         </itemizedlist>
         
@@ -1420,9 +1452,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <listitem>
                 <para>An interface method or abstract method <emphasis>must</emphasis> be 
                 overridden by every non-<literal>abstract</literal> class that is a subtype 
-                of the interface or abstract class, unless the class inherits a non-abstract 
-                method from a superclass which overrides the interface method or abstract 
-                method.</para>
+                of the interface or <literal>abstract</literal> class, unless the class 
+                inherits a non-abstract method from a superclass which overrides the interface 
+                method or abstract method.</para>
             </listitem>
             </itemizedlist>           
             
@@ -1801,10 +1833,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para>An interface attribute or abstract attribute <emphasis>must</emphasis> 
-                be overridden by every non-<literal>abstract</literal> class that is a subtype 
-                of the interface or abstract class, unless the class inherits a non-abstract 
-                attribute from a superclass which overrides the interface attribute or abstract 
-                attribute.</para>
+                be overridden by every non-<literal>abstract</literal> class that is a 
+                subtype of the interface or <literal>abstract</literal> class, unless the 
+                class inherits a non-abstract attribute from a superclass which overrides 
+                the interface attribute or abstract attribute.</para>
             </listitem>
             </itemizedlist>
             
