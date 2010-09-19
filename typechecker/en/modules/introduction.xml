@@ -2791,7 +2791,7 @@ class Hello(String? name) {
         <literal>List</literal>, each with very many methods, mostly convenience 
         methods for the benefit of the user of these interfaces. Because 
         implementing the whole interface from scratch is a daunting task, the 
-        collections framework includes <literal>abstract</literal> classes like 
+        collections framework includes abstract classes like 
         <literal>AbstractList</literal> that define a smaller contract for
         classes that implement the collection interfaces. But there's no way
         for the collections framework to force you to implement 
