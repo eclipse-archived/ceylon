@@ -1394,8 +1394,10 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <section id="overloadedmethods">
             <title>Overloaded methods</title>
             
-            <para>A class may declare or inherit multiple methods with the same name. 
-            The methods are called <emphasis>overloaded</emphasis>. Overloaded methods:</para>
+            <para>Multiple toplevel methods belonging to the same package, or multiple 
+            methods of the same containing body may may declare the same name. A class may 
+            declare or inherit multiple methods with the same name. The methods are called 
+            <emphasis>overloaded</emphasis>. Overloaded methods:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1586,6 +1588,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         attribute getter or block local method declared earlier withing the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
+        <para>The is no overloading for attributes. A class may not declare or inherit 
+        multiple attributes with the same name.</para>
         
         <!--
         <para>
