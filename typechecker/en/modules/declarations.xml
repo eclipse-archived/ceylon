@@ -593,24 +593,50 @@ ClassBody</programlisting>
            </listitem>
            <listitem>
               <para>They may not declare an <literal>abstract</literal> member class or an
-              abstract method or attribute.</para>
+              abstract method or attribute of the class.</para>
            </listitem>
            <listitem>
               <para>They may not declare a <literal>default</literal> member class, method, 
-              or attribute.</para>
+              or attribute of the class.</para>
+           </listitem>
+           <listitem>
+              <para>They may not invoke or evaluate abstract or <literal>default</literal> 
+              members of the class or any of its superclasses except via the special 
+              <literal>super</literal> self reference.</para>
            </listitem>
         </itemizedlist>
         
         <para>The remainder of the body of the class consists purely of declarations, including
-        abstract and <literal>default</literal> methods and attributes. It may not directly 
-        contain statements or control structures, but may freely use <literal>this</literal>, 
-        and may invoke any method or evaluate any attribute of the class. The usual restriction 
-        that a declaration may only be used by code that appears later in the block containing 
-        the declaration is relaxed. The declarations in this section may not contain specifiers
-        or initializers (<literal>=</literal> or <literal>:=</literal>).</para>
+        abstract and <literal>default</literal> methods and attributes. It may not contain:</para>
         
-        <para>Superclass members may be invoked, evaluated or assigned anywhere inside the body 
-        of the class. The superclass initializer is executed before the subclass initializer.</para>
+        <itemizedlist>
+            <listitem>
+                <para>a statement or control structure, unless it is nested inside a method,
+                attribute, or member class declaration,</para>
+            </listitem>
+            <listitem>
+                <para>a declaration with a specifier or initializer, unless it is nested inside 
+                a method, attribute, or member class declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>a specification or initialization statement for a member of the current
+                instance of the class that is being initialized (including a self reference 
+                or outer instance reference).</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>However, the declarations in this second section may freely use <literal>this</literal>, 
+        and may invoke any method or evaluate any attribute of the class or its superclasses. 
+        The usual restriction that a declaration may only be used by code that appears later in 
+        the block containing the declaration is relaxed.</para>
+        
+        <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
+        OK to let you have expression statements in the second part of the class body, just not
+        specification or initialization statements.</para></comment>
+        
+        <para>Non-abstract, non-<literal>default</literal> superclass members may be invoked, 
+        evaluated or assigned anywhere inside the body of the class. The superclass initializer 
+        is executed before the subclass initializer.</para>
         
         <para>For example, the following code fragments are not legal:</para>
         
