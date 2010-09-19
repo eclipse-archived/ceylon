@@ -575,40 +575,46 @@ ClassBody</programlisting>
         attribute getter or block local method declared earlier within the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
-        <para>The following restrictions apply to statements and declarations that appear within
-        the initializer of the class:</para>
+        <para>The following restrictions apply to statements and declarations that appear 
+        within the initializer of the class:</para>
         
         <itemizedlist>
            <listitem>
-              <para>They may not evaluate attributes or invoke methods that are declared later
-              in the body of the class upon the current object or <literal>this</literal>.</para>
+              <para>They may not evaluate attributes or invoke methods that are declared 
+              later in the body of the class upon the current instance of the class that
+              is being initialized (including upon a self reference or outer instance
+              reference).</para>
            </listitem>
            <listitem>
-              <para>They may not pass <literal>this</literal> as an argument of a method invocation
-              or the value of an attribute assignment.</para>
+              <para>They may not pass a reference to the current instance of the class that
+              is being initialized (including a self reference or outer instance reference) 
+              as an argument of an instantiation or method invocation or as the value of an 
+              attribute assignment.</para>
            </listitem>
            <listitem>
-              <para>They may not declare an abstract method or attribute.</para>
+              <para>They may not declare an <literal>abstract</literal> member class or an
+              abstract method or attribute.</para>
            </listitem>
            <listitem>
-              <para>They may not declare a <literal>default</literal> method or attribute.</para>
+              <para>They may not declare a <literal>default</literal> member class, method, 
+              or attribute.</para>
            </listitem>
         </itemizedlist>
         
         <para>The remainder of the body of the class consists purely of declarations, including
-        abstract and <literal>default</literal> methods and attributes. It may not directly contain 
-        statements or control structures, but may freely use <literal>this</literal>, and may 
-        invoke any method or evaluate any attribute of the class. The usual restriction that a 
-        declaration may only be used by code that appears later in the block containing the 
-        declaration is relaxed. The declarations in this section may not contain specifiers
+        abstract and <literal>default</literal> methods and attributes. It may not directly 
+        contain statements or control structures, but may freely use <literal>this</literal>, 
+        and may invoke any method or evaluate any attribute of the class. The usual restriction 
+        that a declaration may only be used by code that appears later in the block containing 
+        the declaration is relaxed. The declarations in this section may not contain specifiers
         or initializers (<literal>=</literal> or <literal>:=</literal>).</para>
         
-        <para>Superclass members may be invoked, evaluated or assigned anywhere inside the body of
-        the class. The superclass initializer is executed before the subclass initializer.</para>
+        <para>Superclass members may be invoked, evaluated or assigned anywhere inside the body 
+        of the class. The superclass initializer is executed before the subclass initializer.</para>
         
         <comment><para>TODO: should class initializer parameters be allowed to be declared 
-        <literal>public/package/module</literal>, allowing a shortcut simple attribute declaration 
-        like in Scala?</para></comment>
+        <literal>public/package/module</literal>, allowing a shortcut simple attribute 
+        declaration like in Scala?</para></comment>
                 
         <!--
         <section>
