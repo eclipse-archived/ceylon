@@ -440,8 +440,7 @@ public void hello(Process process) {
     process.writeLine(greeting);
 }]]></programlisting>
 
-        <para>
-        The <literal>Process</literal> class has an attribute named 
+        <para>The <literal>Process</literal> class has an attribute named 
         <literal>args</literal>, which holds a <literal>List</literal> of the 
         program's command line arguments. The local <literal>name</literal> is 
         initialized with the first of these arguments, if any. This local is 
@@ -451,8 +450,7 @@ public void hello(Process process) {
         <literal>greeting</literal>, interpolating the value of 
         <literal>name</literal> into the message string whenever 
         <literal>name</literal> is not null. Finally, the message is printed
-        to the console.
-        </para>
+        to the console.</para>
         
         <para>Unlike Java, locals, parameters, and attributes that may contain 
         null values must be explicitly declared as being of type 
@@ -520,6 +518,13 @@ process.writeLine(greeting);]]></programlisting>
         
         <programlisting>Hello everybody!</programlisting>
         
+        <!-- 
+        <para>There's also a postfix operator named <literal>exists</literal>. The
+        <literal>exists</literal> operator simply evaluates to a <literal>Boolean</literal>
+        value. It doesn't narrow its argument to a non-<literal>Optional</literal>
+        type.</para>
+        -->
+         
         </section>
         
         <section>
@@ -867,8 +872,8 @@ class PersonalizedHello(String name) extends Hello() {
     <section>
         <title>Testing the type of an object</title>
         
-        <para>In any language with subtyping there is the, hopefully occasional,
-        need to perform narrowing conversions. Ceylon doesn't have C-style typecasts.
+        <para>In any language with subtyping there is the hopefully occasional need 
+        to perform narrowing conversions. Ceylon doesn't have C-style typecasts.
         Instead, we must test and narrow the type of an object reference in one step, 
         using the special <literal>if (is ... )</literal> construct. This construct 
         is very, very similar to <literal>if (exists ... )</literal>, which we met 
@@ -902,9 +907,22 @@ else {
         <para>Oh, the <literal>$</literal> operator just formats an object to 
         a printable string.</para>
         
+        <!--
+        <para>There's also a binary operator named <literal>is</literal>. The
+        <literal>is</literal> operator simply evaluates to a 
+        <literal>Boolean</literal> value. It does not narrow its argument to a 
+        different type.</para>
+        
+        <programlisting>Boolean electronicPayment {
+    return payment is CreditCardPayment 
+        || payment is DebitCardPayment 
+        || payment is DirectDebitPayment
+}</programlisting>
+                
+        --> 
     </section>
-    
-           <section>
+
+        <section>
             <title>Working with mutable state</title>
 
             <para>Ceylon encourages you to use <emphasis>immutable</emphasis> attributes
