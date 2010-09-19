@@ -591,6 +591,7 @@ ClassBody</programlisting>
               as an argument of an instantiation or method invocation or as the value of an 
               attribute assignment.</para>
            </listitem>
+           <!-- 
            <listitem>
               <para>They may not declare an <literal>abstract</literal> member class or an
               abstract method or attribute of the class.</para>
@@ -599,12 +600,18 @@ ClassBody</programlisting>
               <para>They may not declare a <literal>default</literal> member class, method, 
               or attribute of the class.</para>
            </listitem>
+           -->
            <listitem>
               <para>They may not invoke or evaluate abstract or <literal>default</literal> 
-              members of the class or any of its superclasses except via the special 
-              <literal>super</literal> self reference.</para>
+              members of the current instance of the class or any of its superclasses except 
+              via the special <literal>super</literal> self reference.</para>
            </listitem>
         </itemizedlist>
+        
+        <para>It is acceptable to invoke or evaluate an abstract or <literal>default</literal> 
+        member of a superclass that is overridden by a non-abstract, non-<literal>default</literal> 
+        declaration of a different superclass or that appears earlier in the body of the current 
+        class.</para>
         
         <para>The remainder of the body of the class consists purely of declarations, including
         abstract and <literal>default</literal> methods and attributes. It may not contain:</para>
