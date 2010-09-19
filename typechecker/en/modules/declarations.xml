@@ -612,6 +612,37 @@ ClassBody</programlisting>
         <para>Superclass members may be invoked, evaluated or assigned anywhere inside the body 
         of the class. The superclass initializer is executed before the subclass initializer.</para>
         
+        <para>For example, the following code fragments are not legal:</para>
+        
+        <programlisting>class Graph() {
+    OpenList&lt;Node&gt; nodes = {};
+    class Node() {
+        nodes.add(this);    //compiler error (this reference in initializer)
+    }
+}</programlisting>
+        
+        <programlisting>class Graph() {
+    class Node() {}
+    Node createNode() {
+        Node node = Node();
+        nodes.add(node);    //compiler error (forward reference in initializer)
+        return node
+    }
+    OpenList&lt;Node&gt; nodes = {};
+}</programlisting>
+
+        <para>But this code fragment is legal:</para>
+        
+        <programlisting>class Graph() {
+    OpenList&lt;Node&gt; nodes = {};
+    Node createNode() {
+        Node node = Node();
+        nodes.add(node);
+        return node
+    }
+    class Node() {}
+}</programlisting>
+
         <comment><para>TODO: should class initializer parameters be allowed to be declared 
         <literal>public/package/module</literal>, allowing a shortcut simple attribute 
         declaration like in Scala?</para></comment>
