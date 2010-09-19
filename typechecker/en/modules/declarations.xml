@@ -1065,44 +1065,6 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
         
     </section>
     
-    <!--  
-    <section>
-        <title>Constructors</title>
-        
-        <para>Constructors are declared according to the following:</para>
-        
-        <programlisting>Annotation* Identifier 
-FormalParams
-( ";" | ClosedBlock )</programlisting>
-
-        <para>
-        For example:
-        </para>
-        
-        <programlisting>Public: User(String username, Person person);</programlisting>
-        <programlisting>Public: Integer(String string): value = parse(string);</programlisting>
-        <programlisting>Public: User(String u, Person p) { username = u; person = p; }</programlisting>
-        
-        <para>
-        The semantics of constructor declarations are identical to Java.
-        </para>
-        
-        <para>
-        A constructor body may omit the braces if it consists of exactly one statement. 
-        If there is no constructor body at all, the constructor assigns each parameter to
-        the attribute with the same name.
-        </para>
-        
-        <para>
-        A Ceylon constructor invocation is equivalent to a Java constructor invocation.
-        </para>
-                
-        <programlisting>@FormalParameterNames({"username", "person"}) 
-public User(String username, Person person);</programlisting>
-
-    </section>
-    -->
-    
     <section id="methods">
         <title>Methods</title>
         
@@ -1933,9 +1895,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        is assignable to the alias type.</para>
        
        <programlisting>public alias People satisfies List&lt;Person&gt;;</programlisting>
-       
-       
-       <!--programlisting>alias Compare&lt;T&gt; satisfies functor Comparison(T x, T y);</programlisting-->
+       <programlisting>alias Compare&lt;T&gt; satisfies Callable&lt;Comparison,T,T&gt;;</programlisting>
        
        <para>A shortcut is provided for definition of compilation unit local aliases.</para>
        
