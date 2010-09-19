@@ -1506,11 +1506,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     override Float squareRoot(Float x) { ... }
 }</programlisting>
             
-            <para>For abstract methods, a special shortcut form of overriding is
-            permitted. A subclass initializer may simply specify an instance of
-            <literal>Callable</literal> as the implementation of the abstract
-            method declared by the superclass. No formal parameter list, return 
-            type declaration, or <literal>override</literal> annotation is 
+            <para>For interface methods or abstract methods, a special shortcut form
+            of overriding is permitted. A subclass initializer may simply specify an 
+            instance of <literal>Callable</literal> as the implementation of the 
+            abstract method declared by the superclass. No formal parameter list, 
+            return type declaration, or <literal>override</literal> annotation is 
             necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
@@ -1905,16 +1905,19 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     override Float pi { ... }
 }</programlisting>
             
-            <para>For abstract attributes, a special shortcut form of overriding is
-            permitted. A subclass initializer may simply specify or assign a value to 
-            the attribute declared by the superclass. No type declaration or 
-            <literal>override</literal> annotation is necessary.</para>
+            <para>For interface attributes or abstract attributes, a special shortcut 
+            form of overriding is permitted. A subclass initializer may simply specify 
+            or assign a value to the attribute declared by the superclass. No type 
+            declaration or <literal>override</literal> annotation is necessary.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
     Float calculatePi() { ... }
     pi = calculatePi();
 }</programlisting>
+
+            <comment><para>TODO: Why not also allow this for <literal>default</literal>
+            attributes and methods??</para></comment>
             
         </section>
         
