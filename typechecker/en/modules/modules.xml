@@ -122,6 +122,13 @@
         
         <para>belong to the module <literal>org.hibernate</literal>.</para>
         
+        <comment><para>TODO: This might not work out all that well in practice, 
+        unless we introduce some additional convention for "extras" modules,
+        for example, modules containing examples. It could be 
+        <literal>org.hibernate</literal> vs <literal>org.hibernate_example</literal>
+        or <literal>org.hibernate.core</literal> vs 
+        <literal>org.hibernate.example</literal>.</para></comment>
+        
         <para>A module <emphasis>version identifier</emphasis> is a
         character string containing digits, periods, and lowercase
         letters, for example:</para>
