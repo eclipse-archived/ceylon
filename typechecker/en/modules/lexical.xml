@@ -130,19 +130,20 @@
         
         <para>A natural number literal has this form:</para>
         
-        <programlisting>NaturalLiteral := Digits</programlisting>
+        <programlisting>NaturalLiteral := Digits Magnitude?</programlisting>
         
         <para>A floating point number literal has this form:</para>
         
-        <programlisting>FloatLiteral := Digits "." FractionalDigits (Exponent | Magnitude)?</programlisting>
+        <programlisting>FloatLiteral := Digits "." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)?</programlisting>
         
         <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
         (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
-        prefix).</para>
+        prefix). A natural literal may include a magnitude.</para>
         
         <programlisting>Exponent := ("E"|"e") ("+"|"-")? Digits</programlisting>
         
-        <programlisting>Magnitude := "k" | "M" | "G" | "T" | "m" | "u" | "n" | "p"</programlisting>
+        <programlisting>Magnitude := "k" | "M" | "G" | "T"</programlisting>
+        <programlisting>FractionalMagnitude := "m" | "u" | "n" | "p"</programlisting>
         
         <para>Digits may be separated into groups of three using an underscore.</para>
         
