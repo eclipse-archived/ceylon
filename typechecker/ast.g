@@ -1084,7 +1084,12 @@ NonCharacterChars
     ;
 
 QUOTEDLITERAL
-    :   '\'' StringPart '\''
+    :   '\'' QuotedLiteralPart '\''
+    ;
+
+fragment
+QuotedLiteralPart
+    : ~('\'')
     ;
 
 SIMPLESTRINGLITERAL
@@ -1093,12 +1098,12 @@ SIMPLESTRINGLITERAL
 
 fragment
 NonStringChars
-    :    '\\' | '"' | '\''
+    :    '\\' | '"'
     ;
 
 fragment
 StringPart
-    : ( ~ /* NonStringChars*/ ('\\' | '"' | '\'')
+    : ( ~ /* NonStringChars*/ ('\\' | '"')
     | EscapeSequence) *
     ;
     
@@ -1111,6 +1116,7 @@ EscapeSequence
         |   'n'
         |   'f'
         |   'r'
+        |   '\\'
         |   '"'
         |   '\''
         |   '`'
