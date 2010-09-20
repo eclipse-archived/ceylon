@@ -191,7 +191,7 @@
         with the directory separator character. For example, the module directory 
         for the module <literal>ceylon.language</literal> is:</para>
         
-        <programlisting>/ceylon/lang</programlisting>
+        <programlisting>/ceylon/language</programlisting>
         
         <para>The module directory for the module <literal>org.hibernate</literal> 
         is:</para>
@@ -323,8 +323,8 @@
         repository included in the Ceylon SDK are obtained from the following
         addresses:</para>
  
-        <programlisting>modules/ceylon/lang/1.0.1/ceylon.language-1.0.1.car</programlisting>        
-        <programlisting>modules/ceylon/lang/1.0.1/ceylon.language-1.0.1.src</programlisting>
+        <programlisting>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.car</programlisting>        
+        <programlisting>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.src</programlisting>
         
         <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>
         and source archive <literal>org.hibernate-3.0.0.beta.src</literal>
