@@ -19,6 +19,7 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -276,14 +277,32 @@ public class Gen {
                     innerDefs = innerDefs.append(registerAnnotations(annotations.toList()));
                 }
                 
-                JCClassDecl classDef = 
-                    at(decl).ClassDef(at(decl).Modifiers(PUBLIC, List.<JCAnnotation>nil()),
-                            names.fromString(decl.nameAsString()),
-                            List.<JCTypeParameter>nil(), makeSelect("ceylon", "Object"),
-                            List.<JCExpression>nil(),
-                            innerDefs);
+                // Try and find a class to insert this method into
+                JCClassDecl classDef = null;
+                if (defs.nonEmpty()) {
+                    List<JCTree> tmp = defs.toList();
+                    for (JCTree def : tmp) {
+                        if (def.getKind() == Kind.CLASS) {
+                            classDef = (JCClassDecl) def;
+                            break;
+                        }
+                    }
+                }
                 
-                defs.append(classDef);
+                // No class has been made yet so make one
+                if (classDef == null) {
+                    classDef = at(decl).ClassDef(
+                        at(decl).Modifiers(PUBLIC, List.<JCAnnotation>nil()),
+                        names.fromString(decl.nameAsString()),
+                        List.<JCTypeParameter>nil(),
+                        makeSelect("ceylon", "Object"),
+                        List.<JCExpression>nil(),
+                        List.<JCTree>nil());
+                
+                    defs.append(classDef);
+                }
+                
+                classDef.defs = classDef.defs.appendList(innerDefs);
             }
         });
 
