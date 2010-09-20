@@ -136,6 +136,11 @@
         
         <programlisting>FloatLiteral := Digits "." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)?</programlisting>
         
+        <para>Digits may be separated into groups of three using an underscore.</para>
+        
+        <programlisting>Digits := Digit+ | Digit{1..3} ("_" Digit{3})+</programlisting>
+        <programlisting>FractionalDigits := Digit+ | (Digit{3} "_")+ Digit{1..3} </programlisting>
+        
         <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
         (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
         prefix). A natural literal may include a magnitude.</para>
@@ -144,11 +149,6 @@
         
         <programlisting>Magnitude := "k" | "M" | "G" | "T"</programlisting>
         <programlisting>FractionalMagnitude := "m" | "u" | "n" | "p"</programlisting>
-        
-        <para>Digits may be separated into groups of three using an underscore.</para>
-        
-        <programlisting>Digits := Digit+ | Digit{1..3} ("_" Digit{3})+</programlisting>
-        <programlisting>FractionalDigits := Digit+ | (Digit{3} "_")+ Digit{1..3} </programlisting>
         
         <para>The following examples are legal numeric literals:</para>
         
