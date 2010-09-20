@@ -21,6 +21,16 @@ class Primaries() {
 		Method<Object,Boolean,Object> method = Object.equals;
         Type<List<String>> stringListType = List<String>;
         Type<Matrix<#5,#3>> matrix5by3Type = Matrix<#5,#3>;
+        
+        Float kilo = 1k;
+        Float mega = 1.5M;
+        Float giga = 3G;
+        Float tera = 3.45T;
+        
+        Float milli = 12.3m;
+        Float micro = 1.2u;
+        Float nano = 12n;
+        Float pico = 3p;
 		
 	}
 	

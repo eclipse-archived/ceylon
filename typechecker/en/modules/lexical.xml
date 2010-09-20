@@ -130,11 +130,24 @@
         
         <para>A natural number literal has this form:</para>
         
-        <programlisting>NaturalLiteral = Digit+</programlisting>
+        <programlisting>NaturalLiteral := Digits</programlisting>
         
         <para>A floating point number literal has this form:</para>
         
-        <programlisting>FloatLiteral := Digit+ "." Digit+ ( ("E"|"e") ("+"|"-")? Digit+ )?</programlisting>
+        <programlisting>FloatLiteral := Digits "." FractionalDigits (Exponent | Magnitude)?</programlisting>
+        
+        <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
+        (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
+        prefix).</para>
+        
+        <programlisting>Exponent := ("E"|"e") ("+"|"-")? Digits</programlisting>
+        
+        <programlisting>Magnitude := "k" | "M" | "G" | "T" | "m" | "u" | "n" | "p"</programlisting>
+        
+        <para>Digits may be separated into groups of three using an underscore.</para>
+        
+        <programlisting>Digits := Digit+ | Digit{1..3} ("_" Digit{3})+</programlisting>
+        <programlisting>FractionalDigits := Digit+ | (Digit{3} "_")+ Digit{1..3} </programlisting>
         
         <para>The following examples are legal numeric literals:</para>
         
@@ -142,19 +155,28 @@
         <programlisting>6.9</programlisting>
         <programlisting>0.999e-10</programlisting>
         <programlisting>1.0E2</programlisting>
+        <programlisting>10000</programlisting>
+        <programlisting>1_000_000</programlisting>
+        <programlisting>12_345.678_9</programlisting>
+        <programlisting>1.5k</programlisting>
+        <programlisting>12M</programlisting>
+        <programlisting>2.34p</programlisting>
         
         <para>The following are <emphasis>not</emphasis> valid numeric literals:</para>
         
         <programlisting>.33  //Error: floating point literals may not begin with a decimal point</programlisting>
         <programlisting>1.  //Error: floating point literals may not end with a decimal point</programlisting>
         <programlisting>99E+3   //Error: floating point literals with an exponent must contain a decimal point</programlisting>
+        <programlisting>12_34 //Error: digit groups must be of length three</programlisting>
         
         <comment><para>TODO: The symbol <literal>.</literal> is also an operator. Are
         expressions like <literal>1.decimal</literal> and <literal>1.0.whole</literal>
         allowed, or do we force the use of parentheses as in <literal>(1).decimal</literal> 
         and <literal>(1.0).whole</literal>?</para></comment>
         
-        <comment><para>TODO: Should we allow the use of <literal>_</literal> for digit grouping?</para></comment>
+        <!--comment><para>TODO: Would it be a good idea to let you use SI prefixes for large and small numbers,
+        for example: <literal>3k</literal>, <literal>1G</literal>, <literal>2.5T</literal> and
+        <literal>1.34m</literal>, <literal>12u</literal>, <literal>4p</literal>?</para></comment-->
         
     </section>
     

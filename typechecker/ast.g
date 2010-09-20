@@ -1055,13 +1055,18 @@ Exponent
     : ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
     ;
 
+fragment
+Magnitude
+    : 'k' | 'M' | 'G' | 'T' | 'm' | 'u' | 'n' | 'p'
+    ;
+
 fragment FLOATLITERAL :;
 fragment ELLIPSIS :;
 fragment RANGE :;
 fragment DOT :;
 NATURALLITERAL
-    : Digits 
-      ( { input.LA(2) != '.' }? => '.' Digits Exponent? { $type = FLOATLITERAL; } )?
+    : Digits
+      ( ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude)? ) { $type = FLOATLITERAL; } )?
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
 
