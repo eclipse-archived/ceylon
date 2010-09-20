@@ -212,7 +212,7 @@
         
         <programlisting>StringLiteral := "&quot;" StringCharacter* "&quot;"</programlisting>
         
-        <programlisting>StringCharacter := ~( "\" | "&quot;" | "'" ) | EscapeSequence</programlisting>
+        <programlisting>StringCharacter := ~( "\" | "&quot;" ) | EscapeSequence</programlisting>
         
         <para>The following are legal strings:</para>
         
@@ -229,7 +229,14 @@
         user-defined types. A single quoted literal is a character sequence 
         surrounded by single quotes:</para>
         
-        <programlisting>QuotedLiteral := "'" StringCharacter* "'"</programlisting>
+        <programlisting>QuotedLiteral := "'" QuotedLiteralCharacter* "'"</programlisting>
+        
+        <programlisting>QuotedLiteralCharacter := ~("'")</programlisting>
+        
+        <comment><para>TODO: should we support escape sequences in quoted literals? At least
+        there should be some way to embed a single quote, right? The problem is that if we
+        make you escape <literal>\</literal>, regular expressions and windows paths get
+        really ugly.</para></comment>
         
     </section>
     
