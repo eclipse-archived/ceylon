@@ -145,17 +145,17 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
         <itemizedlist>
         <listitem>
             <para>The compiler is permitted to emit bytecode that unexpectedly creates or avoids 
-            creating an actual instance of the erasable type <literal>ceylon.lang.Optional</literal>, 
-            of <literal>ceylon.lang.Gettable</literal>, or of <literal>ceylon.lang.Settable</literal>,
+            creating an actual instance of the erasable type <literal>ceylon.language.Optional</literal>, 
+            of <literal>ceylon.language.Gettable</literal>, or of <literal>ceylon.language.Settable</literal>,
             when an expression is evaluated, as long as this does not affect the execution of 
             the program.</para>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of one 
             of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,--> of 
-            <literal>ceylon.lang.Bounded&lt;#n&gt;</literal>, of <literal>ceylon.lang.Character</literal>, 
-            of <literal>ceylon.lang.Range</literal>, of <literal>ceylon.lang.Entry</literal>, or of 
-            <literal>ceylon.lang.String</literal> without execution of the initializer of the class, 
+            <literal>ceylon.language.Bounded&lt;#n&gt;</literal>, of <literal>ceylon.language.Character</literal>, 
+            of <literal>ceylon.language.Range</literal>, of <literal>ceylon.language.Entry</literal>, or of 
+            <literal>ceylon.language.String</literal> without execution of the initializer of the class, 
             whenever any expression is evaluated. Furthermore, it is permitted to use such a 
             newly-produced instance as the value of the expression, as long as the newly-produced 
             instance is equal to the value expected according to the rules above, as determined 
@@ -276,7 +276,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Natural number literals</title>
         
         <para>A natural number literal <literal>n</literal> is an 
-        expression of type <literal>ceylon.lang.Bounded&lt;#n&gt;</literal>.</para>
+        expression of type <literal>ceylon.language.Bounded&lt;#n&gt;</literal>.</para>
         
         <programlisting>Bounded&lt;#5&gt; five = 5;</programlisting>
         
@@ -296,7 +296,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Floating point number literals</title>
         
         <para>A floating point number literal is an expression of 
-        type <literal>ceylon.lang.Float</literal>.</para>
+        type <literal>ceylon.language.Float</literal>.</para>
         
        <programlisting>public Float pi = 3.14159;</programlisting>
         
@@ -312,7 +312,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Character literals</title>
         
         <para>A single character literal is an expression of type 
-        <literal>ceylon.lang.Character</literal>.</para>
+        <literal>ceylon.language.Character</literal>.</para>
                 
         <programlisting>if ( string[i] &equals; `+` ) { ... }</programlisting>
         
@@ -329,7 +329,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Character string literals</title>
         
         <para>A character string literal is an expression of type
-        <literal>ceylon.lang.String</literal>.</para>
+        <literal>ceylon.language.String</literal>.</para>
         
         <programlisting>person.name := "Gavin King";</programlisting>
         
@@ -363,7 +363,7 @@ if you prefer.";</programlisting>
         structured data.</para>
         
         <para>A single quoted literal is an expression of type 
-        <literal>ceylon.lang.Quoted</literal>. An extension is responsible for converting 
+        <literal>ceylon.language.Quoted</literal>. An extension is responsible for converting 
         it to the appropriate type.</para>
                 
         <programlisting>Date date = '25/03/2005';</programlisting>
@@ -399,7 +399,7 @@ if you prefer.";</programlisting>
         <programlisting>StringTemplate := StringLiteral (Expression? StringLiteral)+</programlisting>
         
         <para>Each interpolated expression contained in the string template must be 
-        an expression of type <literal>ceylon.lang.Format</literal>.</para>
+        an expression of type <literal>ceylon.language.Format</literal>.</para>
         
         <para>The entire character string template is an expression of type 
         <literal>Gettable&lt;String&gt;</literal>.</para>
@@ -1583,7 +1583,7 @@ except (SomethingElseWrong sew) {
                         <para>replacing each occurrence of any type parameter of the method or class 
                         in the signature with the explicitly specified type argument, if type arguments 
                         were specified, or with the first declared upper bound of the type parameter, 
-                        or <literal>ceylon.lang.Void</literal> if the type parameter has no declared 
+                        or <literal>ceylon.language.Void</literal> if the type parameter has no declared 
                         upper bound.</para>
                     </listitem>
                 </itemizedlist>
@@ -2775,7 +2775,7 @@ createItemMethod.intercept()
     
     <!--
     <para>The argument expressions of the identity operator must be of type
-    <literal>ceylon.lang.Object</literal>. The argument expression of the 
+    <literal>ceylon.language.Object</literal>. The argument expression of the 
     assignability operator may be of any type, not limited to types assignable 
     to <literal>Object</literal>.</para>
     -->

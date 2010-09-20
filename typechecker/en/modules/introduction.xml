@@ -303,7 +303,7 @@
     
     <itemizedlist>
         <listitem>
-            <para><literal>ceylon.lang</literal> - basic types provided to support
+            <para><literal>ceylon.language</literal> - basic types provided to support
             built-in language features</para>
         </listitem>
         <listitem>
@@ -387,7 +387,7 @@ public void hello(Process process) {
 
         <para>
         This code defines a method named <literal>hello()</literal> with a 
-        parameter of type <literal>ceylon.lang.Process</literal>. The method 
+        parameter of type <literal>ceylon.language.Process</literal>. The method 
         is annotated <literal>public</literal>, which makes it accessible to 
         code in other packages. When the method is executed, it calls the 
         <literal>writeLine()</literal> method of the class 
@@ -1243,7 +1243,7 @@ abstract class Hello() {
             <programlisting>Float oneHundredth = 0.01;</programlisting>
             <programlisting>Float oneMillion = 1.0E+6;</programlisting>
             
-            <para>Widening type conversions are implicit, since the <literal>ceylon.lang</literal> 
+            <para>Widening type conversions are implicit, since the <literal>ceylon.language</literal> 
             package defines a set of built-in <emphasis>extensions</emphasis> (a concept 
             we'll meet later) that take care of this:</para>
             
@@ -1485,7 +1485,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <para>So far we haven't met anything from the collections module proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
-            of the module <literal>ceylon.lang</literal>. They're there to abstract away 
+            of the module <literal>ceylon.language</literal>. They're there to abstract away 
             the nice syntax we've just met from the (relatively) gory details of the 
             collections package.</para>
             
@@ -1958,7 +1958,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         syntax, I've got something extra to throw at you! A method parameter can be 
         declared as an <emphasis>iterator</emphasis> method, which allows us to move 
         the declaration of the formal parameters of the inline callable arguments. For 
-        example, the <literal>ceylon.lang</literal> package defines a <literal>from()</literal> 
+        example, the <literal>ceylon.language</literal> package defines a <literal>from()</literal> 
         method that is intended to be called like this:</para>
         
         <programlisting>String[] names = from (Person p in people) select (p.name) where (p.age>18);</programlisting>
@@ -2879,7 +2879,7 @@ class Hello(String? name) {
         <programlisting>stream.writeLine("2 / 3 = " + $(2.0/3))</programlisting>
         
         <para>Ceylon includes a built-in extension, 
-        <literal>ceylon.lang.util.DebugFormat</literal> that formats any expression 
+        <literal>ceylon.language.util.DebugFormat</literal> that formats any expression 
         assignable to <literal>Object?</literal> to an appropriate representation for 
         log and assertion messages, delegating back to <literal>Object.string</literal>
         for non-null values.</para>

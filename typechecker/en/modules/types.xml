@@ -2,18 +2,18 @@
     <title>Basic types</title>
     
     <para>There are no primitive types in Ceylon, however, there are certain
-    important types provided by the SDK modules <literal>ceylon.lang</literal>
+    important types provided by the SDK modules <literal>ceylon.language</literal>
     and <literal>ceylon.collection</literal>. Many of these types support 
     operators.</para>
     
     <section id="languagemodule">
         <title>The language module</title>
         
-        <para>The module <literal>ceylon.lang</literal> contains types which
+        <para>The module <literal>ceylon.language</literal> contains types which
         are referred to in the language definition.</para>
         
         <para>Toplevel types, toplevel methods, enumerated instances, and extensions 
-        defined in <literal>ceylon.lang</literal> do not need to be explicitly imported.</para>
+        defined in <literal>ceylon.language</literal> do not need to be explicitly imported.</para>
     
         <comment><para>Note: we will probably need to do the following erasures:</para>
         <itemizedlist>
@@ -2453,7 +2453,7 @@ while (i<=max) {
     String formatted;
 }</programlisting>
 
-        <para>The package <literal>ceylon.lang.util</literal>, which is not imported
+        <para>The package <literal>ceylon.language.util</literal>, which is not imported
         by default, defines a format useful only for debugging purposes:</para>
         
         <programlisting>public extension class DebugFormat(Object? object) 
@@ -2629,7 +2629,7 @@ while (i<=max) {
     <section id="control">
         <title>Control expressions</title>
         
-        <para>The <literal>ceylon.lang.assertion</literal> package defines 
+        <para>The <literal>ceylon.language.assertion</literal> package defines 
         support for assertions.</para>
         
         <programlisting><![CDATA[doc "Assert that the block evaluates to true. The block 
@@ -2642,7 +2642,7 @@ public void assert(Gettable<String> message, Boolean that()) {
     }
 }]]></programlisting>
     
-        <para>The <literal>ceylon.lang.conditional</literal> package defines 
+        <para>The <literal>ceylon.language.conditional</literal> package defines 
         support for conditional expressions.</para>
         
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
@@ -2697,7 +2697,7 @@ public Y ifExists<X,Y>(specified X? value,
     }
 }]]></programlisting>
 
-        <para>The <literal>ceylon.lang.exceptional</literal> package defines 
+        <para>The <literal>ceylon.language.exceptional</literal> package defines 
         support for exceptional expressions.</para>
         
         <programlisting><![CDATA[doc "Attempt to evaluate the first block. If an 
@@ -2771,7 +2771,7 @@ public Y select<X,Y>(X selector,
 
 -->
 
-        <para>The <literal>ceylon.lang.repetition</literal> package defines 
+        <para>The <literal>ceylon.language.repetition</literal> package defines 
         support for loops.</para>
         
         <programlisting><![CDATA[doc "Repeat the block the given number of times."
@@ -2783,7 +2783,7 @@ public void repeat(Natural repetitions, void times()) {
     }
 }]]></programlisting>
     
-        <para>The <literal>ceylon.lang.quantification</literal> package defines 
+        <para>The <literal>ceylon.language.quantification</literal> package defines 
         support for quantifiers.</para>
         
         <programlisting><![CDATA[doc "Count the elements for which the block 
@@ -2847,7 +2847,7 @@ public X first<X>(iterated Iterable<X> elements,
     }
 }]]></programlisting>
         
-        <para>The <literal>ceylon.lang.comprehension.list</literal> package defines 
+        <para>The <literal>ceylon.language.comprehension.list</literal> package defines 
         support for <literal>List</literal> comprehensions.</para>
         
         <programlisting><![CDATA[doc "Iterate elements and return those for which 
@@ -2892,7 +2892,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
     return list
 }]]></programlisting>
         
-        <para>The <literal>ceylon.lang.comprehension.map</literal> package defines 
+        <para>The <literal>ceylon.language.comprehension.map</literal> package defines 
         support for <literal>Map</literal> comprehensions.</para>
         
         <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for 

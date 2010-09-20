@@ -27,7 +27,7 @@
     <para>Ceylon, like Java and many other object-oriented languages, supports a single
     inheritance model for classes. A class may directly inherit at most one other class, 
     and all classes eventually inherit, directly or indirectly, the class 
-    <literal>ceylon.lang.Void</literal>, which acts as the root of the class hierarchy.</para>
+    <literal>ceylon.language.Void</literal>, which acts as the root of the class hierarchy.</para>
     
     <para>A truly hierarchical type system is much too restrictive for more abstract 
     programming tasks. Therefore, in addition to classes, Ceylon recognizes the following 
@@ -205,12 +205,12 @@
             </listitem>
             <listitem>
                 <para>replacing each occurrence of any type parameter in the signature with 
-                the first declared upper bound of the type parameter, or <literal>ceylon.lang.Void</literal> 
+                the first declared upper bound of the type parameter, or <literal>ceylon.language.Void</literal> 
                 if there is no declared upper bound, and</para>
             </listitem>
             <listitem>
                 <para>replacing the type of any sequenced type parameter in the signature with 
-                <literal>ceylon.lang.Void...</literal>, and then</para>
+                <literal>ceylon.language.Void...</literal>, and then</para>
             </listitem>
             <listitem>
                 <para>discarding the type arguments of each element of the list, leaving just 
@@ -266,11 +266,11 @@
             </listitem>
             <listitem>
                 <para>Interfaces are objects: all interfaces are subtypes of 
-                <literal>ceylon.lang.Object</literal>. Conversely, only a subtype of 
-                <literal>ceylon.lang.Object</literal> may satisfy an interface.</para>
+                <literal>ceylon.language.Object</literal>. Conversely, only a subtype of 
+                <literal>ceylon.language.Object</literal> may satisfy an interface.</para>
             </listitem>
             <listitem>
-                <para>Single root: all types are subtypes of <literal>ceylon.lang.Void</literal>.</para>
+                <para>Single root: all types are subtypes of <literal>ceylon.language.Void</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -453,13 +453,13 @@ String? firstWord = words[0];</programlisting>
     
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>ceylon.lang.BaseObject</literal>. <!--There is one exception 
-        to this rule: the built-in class <literal>ceylon.lang.Void</literal> which does not have 
+        its superclass is <literal>ceylon.language.BaseObject</literal>. <!--There is one exception 
+        to this rule: the built-in class <literal>ceylon.language.Void</literal> which does not have 
         a superclass.-->
         </para>
         
         <para>
-        The root class <literal>ceylon.lang.Void</literal> does not have a superclass.
+        The root class <literal>ceylon.language.Void</literal> does not have a superclass.
         </para>
         
         <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
@@ -485,7 +485,7 @@ String? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>A user-defined class must extend <literal>ceylon.lang.Object</literal>
+        <para>A user-defined class must extend <literal>ceylon.language.Object</literal>
         or one of its subclasses.</para>
         
     </section>
@@ -905,7 +905,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <comment><para>TODO: eventually we should support the ability to implicitly pass in an
         extension that is imported by the client code, using a type constraint of form:</para>
         <programlisting>given extension E(X x) satisfies Format</programlisting>
-        <para>(We would need to define an identity extension in <literal>ceylon.lang</literal>.)</para>
+        <para>(We would need to define an identity extension in <literal>ceylon.language</literal>.)</para>
         <para>In the following special case, this lets us implement a Haskell-style type class 
         as an extension of the metatype:</para>
         <programlisting>given extension E(Type&lt;X&gt; tx) satisfies Monoid&lt;X&gt;</programlisting>
