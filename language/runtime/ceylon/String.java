@@ -16,7 +16,6 @@ public final class String extends Object
         return new ceylon.String(s);
     }
 
-    @Extension
     public ceylon.String string() {
         return this;
     }
