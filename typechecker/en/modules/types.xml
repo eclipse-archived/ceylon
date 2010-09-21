@@ -2891,6 +2891,41 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
     }
     return list
 }]]></programlisting>
+
+        <programlisting><![CDATA[public List<X> list(Natural length, 
+                                                     X at(Natural index)) {
+    OpenList<Y> list = ArrayList<Y>();
+    for (Natural i in 0..length-1) {
+        list.append(at(i));
+    }
+    return list
+}]]></programlisting>
+        
+        <programlisting><![CDATA[public List<X> list(X first, X? next(X previous)) {
+    OpenList<Y> list = ArrayList<Y>();
+    list.append(first);
+    mutable X? x := first;
+    while (true) {
+        x := element(x);
+        if (exists x) {
+            list.append(x);
+        }
+        else {
+            return list
+        }
+    }
+}]]></programlisting>
+        
+        <programlisting><![CDATA[public List<X> list(Natural length, X first, X next(X previous)) {
+    OpenList<Y> list = ArrayList<Y>();
+    list.append(first);
+    mutable X x := first;
+    for (Natural i in 0..length-1) {
+        x := element(x);
+        list.append(x);
+    }
+    return list
+}]]></programlisting>
         
         <para>The <literal>ceylon.language.comprehension.map</literal> package defines 
         support for <literal>Map</literal> comprehensions.</para>
