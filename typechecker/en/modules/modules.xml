@@ -558,7 +558,7 @@ public class Import(
         
     </section>
     
-    <section>
+    <section id="identifyingversionedmodules">
         <title>Identifying versioned modules</title>
         
         <para>The command line tools expect the following format for a versioned
@@ -574,6 +574,7 @@ public class Import(
         <programlisting>ceylon.language/1.0.1</programlisting>
         <programlisting>org.h2/1.2.141</programlisting>
         
+        <!--
         <para>The VM front end supports an extended format that identifies a
         versioned reference to a toplevel declaration:</para>
         
@@ -586,6 +587,7 @@ public class Import(
         
         <programlisting>org.hello.main.hello/1.0.1</programlisting>
         <programlisting>org.hibernate.test.TestSuite/3.0.0.beta</programlisting>
+        -->
         
     </section>
     
