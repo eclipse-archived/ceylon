@@ -592,22 +592,17 @@ public class Import(
     <section id="vmfrontend">
         <title>The VM front end</title>
         
-        <para>The <literal>ceylon</literal> command accepts either:</para>
+        <para>The <literal>ceylon</literal> command accepts the name of a 
+        runnable module with an optional version together with the following 
+        options:</para>
         
         <itemizedlist>
-        <listitem>
-            <para>the name of a runnable module with an optional version, or</para>
-        </listitem>
-        <listitem>
-            <para>the fully qualified name of a toplevel method or class with a 
-            single formal parameter of type <literal>Process</literal> with an 
-            optional version,</para>
-        </listitem>
-        </itemizedlist>
-        
-        <para>together with the following options:</para>
-        
-        <itemizedlist>
+            <listitem>
+                <para><literal>-run</literal> specifies the fully 
+                qualified name of a toplevel method or class with 
+                a single formal parameter of type 
+                <literal>Process</literal>.</para>
+            </listitem>
             <listitem>
                 <para><literal>-rep</literal> specifies a module
                 repository.</para>
@@ -630,7 +625,8 @@ public class Import(
         -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src</programlisting>
                
-        <para>Execution begins with the named toplevel method, and imported 
+        <para>Execution begins with the named toplevel method or class, or
+        with the entry point specified in the module descriptor, and imported 
         modules are loaded lazily as classes they contain are needed. The 
         name and version id of the imported module containing the needed 
         class are determined from the imported package name specified by
