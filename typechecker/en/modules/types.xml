@@ -2892,6 +2892,8 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
     return list
 }]]></programlisting>
 
+        <comment><para>TODO: rewrite this to delegate to <literal>list()</literal>.</para></comment>
+
         <programlisting><![CDATA[public List<X> list(Natural length, X at(Natural index)) {
     OpenList<X> list = ArrayList<X>();
     for (Natural i in 0..length-1) {
