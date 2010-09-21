@@ -593,7 +593,7 @@ public class Import(
         <title>The VM front end</title>
         
         <para>The <literal>ceylon</literal> command accepts the name of a 
-        runnable module with an optional version together with the following 
+        runnable module with an optional version, along with the following 
         options:</para>
         
         <itemizedlist>
