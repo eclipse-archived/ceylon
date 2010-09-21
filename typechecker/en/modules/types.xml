@@ -2886,13 +2886,12 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
             list.append( select(x) );
         }
     }
-    if (exists by) {
-        list.sort(by);
-    }
+    list.sort(by);
     return list
 }]]></programlisting>
 
-        <comment><para>TODO: rewrite this to delegate to <literal>list()</literal>.</para></comment>
+        <comment><para>TODO: rewrite <literal>from()</literal> to delegate to 
+        <literal>list()</literal>.</para></comment>
 
         <programlisting><![CDATA[public List<X> list(Natural length, X at(Natural index)) {
     OpenList<X> list = ArrayList<X>();
