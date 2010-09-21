@@ -2893,7 +2893,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
 }]]></programlisting>
 
         <programlisting><![CDATA[public List<X> list(Natural length, X at(Natural index)) {
-    OpenList<Y> list = ArrayList<Y>();
+    OpenList<X> list = ArrayList<X>();
     for (Natural i in 0..length-1) {
         list.append(at(i));
     }
@@ -2901,7 +2901,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
 }]]></programlisting>
         
         <programlisting><![CDATA[public List<X> list(X first, X? next(X previous)) {
-    OpenList<Y> list = ArrayList<Y>();
+    OpenList<X> list = ArrayList<X>();
     list.append(first);
     mutable X? x := first;
     while (true) {
@@ -2916,7 +2916,7 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
 }]]></programlisting>
         
         <programlisting><![CDATA[public List<X> list(Natural length, X first, X next(X previous)) {
-    OpenList<Y> list = ArrayList<Y>();
+    OpenList<X> list = ArrayList<X>();
     list.append(first);
     mutable X x := first;
     for (Natural i in 0..length-1) {
