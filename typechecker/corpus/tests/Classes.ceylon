@@ -49,7 +49,7 @@ class Classes() {
 		Float tol = tolerance;
 	}
 	
-	class WithClosedInstanceList() { case foo, case bar, case baz; }
+	/*class WithClosedInstanceList() { case foo, case bar, case baz; }
 	
 	class WithOpenInstanceList() { case foo, case bar, case baz... }
 	
@@ -73,8 +73,48 @@ class Classes() {
 		doc "2" numericValue(2) case two(2), 
 		doc "3" numericValue(3) case three(3); 
 		Integer value = i;
-	}
+	}*/
 	
+    enumeration {
+        case foo();
+        case bar();
+        case baz();
+    }
+    of 
+    abstract final class WithClosedInstanceList() {}
+    
+    enumeration {
+        case one(1);
+        case two(2);
+        case three(3);
+    }
+    of 
+    abstract final class WithInstanceListAndInitParameter(Integer i) {
+        Integer value = i;
+    }
+    
+    enumeration {
+        case foo() name ("Foo");
+        case bar() name ("Bar");
+        case baz() name ("Baz");
+        class Qux(String s) 
+                extends WithInstanceListAndFunctionalInitParameter() name (s) {}
+    }
+    of
+    abstract final class WithInstanceListAndFunctionalInitParameter(String name()) {    
+        String name() = name;
+    }
+    
+    enumeration {
+        doc "1" numericValue(1) case one(1);
+        doc "2" numericValue(2) case two(2);
+        doc "3" numericValue(3) case three(3);
+    }
+    of
+    abstract final class WithAnnotatedInstanceList(Integer i) {
+        Integer value = i;
+    }
+    
 	class WithTypeParameters<X, Y>() {}
 	
 	class WithTypeConstraints<X, Y>()
