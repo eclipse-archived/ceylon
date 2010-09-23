@@ -51,7 +51,7 @@ Body?</programlisting>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method</programlisting>
         
-        <programlisting>TypeDeclaration := Class | Interface | Alias</programlisting>
+        <programlisting>TypeDeclaration := Class | Object | Interface | Alias</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -246,7 +246,7 @@ InterfaceBody</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>member (abstract method, abstract attribute and member class) 
+                <para>member (abstract method, abstract attribute, and member class) 
                 declarations, and</para>
             </listitem>
             <listitem>
@@ -258,7 +258,7 @@ InterfaceBody</programlisting>
         
         <para>Interface method and attribute declarations may not specify implementation.</para>
 
-        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | TypeDeclaration</programlisting>
+        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | Class | Interface</programlisting>
 
         <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
         
