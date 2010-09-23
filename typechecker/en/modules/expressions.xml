@@ -581,8 +581,6 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         or <literal>Settable&lt;T&gt;</literal> where <literal>T</literal> is the type of 
         the attribute or local, or the return type of the invocation expression.</para>
         
-        <comment><para>TODO: <literal>object</literal> references.</para></comment>
-        
         <section id="attributeandlocalreferences">
             <title>Attribute and local references</title>
         
