@@ -132,23 +132,25 @@ String lastName;
             <listitem>
                 <para>a single toplevel method,</para>
             </listitem>
+            <!--
             <listitem>
                 <para>a single named enumerated instance of a class,</para>
             </listitem>
+            -->
             <listitem>
                 <para>all toplevel declarations of a specified package, or</para>
             </listitem>
             <listitem>
-                <para>all named enumerated instances and member types of a specified class
-                or interface.</para>
+                <para>all <!--named enumerated instances and--> member types of a specified 
+                class or interface.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>ImportSpec := TypeSpec | MethodSpec | InstanceSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
+        <programlisting>ImportSpec := TypeSpec | MethodSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
         
-        <para>Note that toplevel types, toplevel methods, enumerated instances, and extensions 
-        in the module <literal>ceylon.language</literal> do not need to be explicitly imported. 
-        They are implicitly imported by every compilation unit.</para>
+        <para>Note that toplevel types, toplevel methods, <!--enumerated instances,--> and 
+        extensions in the module <literal>ceylon.language</literal> do not need to be explicitly 
+        imported. They are implicitly imported by every compilation unit.</para>
         
         <para>If the <literal>extension</literal> annotation appears, the imported declaration
         must also be annotated <literal>extension</literal>.</para>
@@ -180,11 +182,13 @@ String lastName;
         
         <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
         
+        <!--
         <para>An import statement that specifies a package name followed by a type
         name and the name of an enumerated instance imports the named enumerated 
         instance.</para>
                 
         <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
+        -->
         
         <para>The optional <literal>alias</literal> clause in a fully-explicit import
         allows resolution of cross-namespace declaration name collisions.</para>
@@ -1033,35 +1037,40 @@ public Color_red red = Color_red();</programlisting>
     <section id="cases">
         <title>Enumerated cases of a class</title>
         
-        <para>The keyword <literal>case</literal> is used to specify an enumerated subtype 
-        of a class. All <literal>case</literal>s must appear in a list that precedes the 
-        class definition. The list of <literal>case</literal>s is terminated by the
-        <literal>of</literal> keyword.</para>
+        <para>An <literal>enumeration</literal> block is used to specify the 
+        <emphasis>enumerated subtypes</emphasis> of a class. The 
+        <literal>enumeration</literal> block must precede the class definition.</para>
         
-        <programlisting>ClassWithCases := CaseType+ "of" Class</programlisting>
+        <programlisting>ClassWithCases := "enumeration" EnumeratedType+ "of" Class</programlisting>
         
-        <para>A <literal>case</literal> must be a <literal>class</literal> or 
+        <para>An enumerated subtype must be a <literal>class</literal> or 
         <literal>object</literal> declaration that extends the class.</para>
 
-        <programlisting>CaseType := "case" ( Class | Object ) | AbbreviatedCase</programlisting>
+        <programlisting>EnumeratedType := Class | Object | AbbreviatedObject</programlisting>
         
-        <para>There is no difference between an enumerated <literal>case</literal> and an
-        ordinary subtype declaration unless the class is declared <literal>final</literal>, 
-        in which case every subtype of the class must be declared as a <literal>case</literal>
-        of the class.</para>
+        <para>There is no difference between an enumerated subtype and an ordinary 
+        subtype declaration unless the class is declared <literal>final</literal>, 
+        in which case every subtype of the class must be declared as an enumerated
+        subtype of the class.</para>
         
-        <programlisting>case object true extends Boolean() {}
-case object false extends Boolean() {}
-of public abstract final class Boolean() { ... }</programlisting>
-        
-        <programlisting>case object root extends Node("root") {}
-case class Branch(String name, Node parent) 
-        extends Node(name) {
-    ... 
+        <programlisting>enumeration {
+    object true extends Boolean() {}
+    object false extends Boolean() {}
 }
-case class Leaf(String name, Node parent) 
-        extends Node(name) { 
+of public abstract final class Boolean() { 
     ... 
+}</programlisting>
+        
+        <programlisting>enumeration {
+    object root extends Node("root") {}
+    class Branch(String name, Node parent) 
+            extends Node(name) {
+        ... 
+    }
+    class Leaf(String name, Node parent) 
+            extends Node(name) { 
+        ... 
+    }
 }
 of public class Node(String name) {
     ...
@@ -1070,21 +1079,28 @@ of public class Node(String name) {
         <para>A <literal>case object</literal> declaration with an empty body may be
          abbreviated, since the <literal>extends</literal> clause is implied.</para>
         
-        <programlisting>AbbreviatedCase := Annotation* "case" MemberName Arguments</programlisting>
+        <programlisting>AbbreviatedObject := Annotation* "case" MemberName Arguments ";"</programlisting>
         
         <para>The following are exactly equivalent to the previous examples:</para>
         
-        <programlisting>case true() case false()
-of public abstract final class Boolean() { ... }</programlisting>
-        
-        <programlisting>case root("root")
-case class Branch(String name, Node parent) 
-        extends Node(name) {
-    ... 
+        <programlisting>enumeration { 
+    case true();
+    case false(); 
 }
-case class Leaf(String name, Node parent) 
-        extends Node(name) { 
+of public abstract final class Boolean() { 
     ... 
+}</programlisting>
+        
+        <programlisting>enumeration {
+    case root("root");
+    class Branch(String name, Node parent) 
+            extends Node(name) {
+        ... 
+    }
+    class Leaf(String name, Node parent) 
+            extends Node(name) { 
+        ... 
+    }
 }
 of public class Node(String name) {
     
@@ -2140,8 +2156,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>final</literal> specifies that a class may not 
-                be extended, except by its enumerated <literal>cases</literal>,
-                if any.</para>
+                be extended, except by its enumerated subtypes, if any.</para>
             </listitem>
             <listitem>
                 <para><literal>extension</literal> specifies that a method or

@@ -2078,18 +2078,20 @@ class Person(String firstName, String lastName, Language lang) {
     package Language lang = lang;
 }</programlisting>
         
-        <para>Now, we'll create a class with an <emphasis>enumerated list of 
-        instances</emphasis>&mdash;almost exactly like a Java 
+        <para>Now, we'll create a class with an <literal>enumeration</literal>
+        of its <literal>case</literal>s&mdash;almost exactly like a Java 
         <literal>enum</literal>&mdash;to represent the built-in languages that
         our program supports.</para>
         
-        <programlisting>doc "Represents a language"
-class Language(String hello) {
-
-    english("Hello"),
-    french("Bonjour"),
-    spanish("Hola"),
-    italian("Ciao")
+        <programlisting>enumeration {
+    case english("Hello");
+    case french("Bonjour");
+    case spanish("Hola");
+    case italian("Ciao");
+}
+of
+doc "Represents a language"
+abstract final class Language(String hello) {
     ...
     
     doc "The word for \"hello\" in the language"

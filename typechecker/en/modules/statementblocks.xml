@@ -7,9 +7,9 @@
     control structures.</para>
     
     <para>The Ceylon language has a recursive block structure&mdash;statements and
-    declarations that are syntactically valid in the body of a toplevel declaration are, 
-    in general, also syntactically valid in the body of a nested declaration or of a 
-    control structure, and vice-versa.</para>
+    declarations that are syntactically valid in the body of a toplevel declaration 
+    are, in general, also syntactically valid in the body of a nested declaration or 
+    of a control structure, and vice-versa.</para>
     
     <para>There exist three exceptions to this rule:</para>
     
@@ -17,10 +17,12 @@
         <listitem>
             <para>a class body may not end in a control directive,</para>
         </listitem>
+        <!--
         <listitem>
             <para>an enumerated named instance list may only appear directly in the body 
             of a toplevel class, and</para> 
         </listitem>
+        -->
         <listitem>
             <para>the body of an interface may contain only abstract declarations.</para>
         </listitem>
@@ -38,7 +40,7 @@
         <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
         <literal>[].</literal> or <literal>?.</literal>) that appears in a program 
         element refers to a declaration elsewhere: a class, interface, alias, method, 
-        attribute, local or enumerated instance.</para>
+        attribute, or local.</para>
         
         <para>A <emphasis>body</emphasis> is a block, class body or interface body.
         A declaration is <emphasis>in scope</emphasis> at a program element if:</para>
@@ -763,12 +765,14 @@ else {
             -->
             
             <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
-            expression type must be a class with a closed enumerated instance list, and all enumerated 
-            <literal>case</literal>s of the class must be explicitly listed.</para>
+            expression type must be a <literal>abstract final</literal> class with an enumerated 
+            subtype list consisting of pure <literal>case</literal>s, and all <literal>case</literal>s 
+            of the class must be explicitly listed.</para>
             
-            <para>If the <literal>switch</literal> expression type is a class with a closed enumerated 
-            instance list, and all enumerated <literal>case</literal>s of the class are explicitly 
-            listed, no <literal>else</literal> block may be specified.</para>
+            <para>If the <literal>switch</literal> expression type is an <literal>abstract final</literal> 
+            class with an enumerated subtype list consisting of pure <literal>cases</literal>, and all 
+            <literal>case</literal>s of the class are explicitly listed, no <literal>else</literal> 
+            block may be specified.</para>
             
             <para>When the construct is executed, the <literal>switch</literal> expression is evaluated, 
             and the resulting value is tested against the <literal>case</literal> values using 
