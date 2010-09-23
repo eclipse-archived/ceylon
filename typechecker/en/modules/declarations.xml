@@ -343,7 +343,7 @@ InterfaceBody</programlisting>
     </section>
     
     <section id="classes">
-        <title>Classes and scoped objects</title>
+        <title>Classes</title>
         
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.
@@ -356,36 +356,78 @@ Annotation*
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
-Body</programlisting>
+ClassBody</programlisting>
 
         <para>To obtain an instance of a class, it is necessary to instantiate the
-        class, or a subclass of the class.</para>
+        class, or a subclass of the class.</para> 
         
-        <para>A <emphasis>scoped object</emphasis> is a class that cannot be explicitly
-        instantiated. Instead, a singleton, member, or local instance is implicitly 
-        available inside the scope in which the scoped object is declared. A scoped 
-        object does not specify a formal parameter list.</para>
+        <para>However, there are two kinds of class which cannot be directly 
+        instantiated:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>abstract</literal> classes, and</para>
+            </listitem>
+            <listitem>
+                <para><emphasis>scoped classes</emphasis>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>An <literal>abstract</literal> class:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>cannot be instantiated via an instantiation expression, but</para>
+            </listitem>
+            <listitem>
+                <para>can be the superclass of another class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>To obtain an instance of an <literal>abstract</literal> class, it is
+        necessary to instantiate a concrete subclass of the class.</para>
+        
+        <para>A <emphasis>scoped class</emphasis> is declared using the keyword 
+        <literal>object</literal>.</para>
         
         <programlisting>Object :=
 Annotation*
 "object" TypeName
 ExtendedType?
 SatisfiedTypes?
-Body</programlisting>
+ClassBody</programlisting>
+
+        <para>A scoped class:</para> 
         
-        <para>The scoped object type name evaluates to the current instance of the 
-        scoped object type.</para>
+        <itemizedlist>
+            <listitem>
+                <para>is formally considered to have an empty formal parameter list,</para>
+            </listitem>
+            <listitem>
+                <para>cannot be instantiated via an instantiation expression, and</para>
+            </listitem>
+            <listitem>
+                <para>cannot be the superclass of another class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Therefore an <literal>object</literal> declaration does not specify a formal 
+        parameter list.</para>
+        
+        <para>The scoped class type name evaluates to a scoped instance of the class: a 
+        singleton, member, or local instance implicitly available inside the scope in which 
+        the scoped class is declared</para>
         
     <section id="initializerparameters">
         <title>Initializer parameters</title>
         
         <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
-        Instead, he body of the class declares <emphasis>initializer parameters</emphasis>. 
-        An initializer parameter may be used anywhere in the class body, including in 
-        method and attribute definitions.</para>
+        Instead, the body of the class declares <emphasis>initializer parameters</emphasis>
+        (unless the class is a scoped class). An initializer parameter may be used anywhere 
+        in the class body, including in method and attribute definitions.</para>
         
-        <para>An initialization parameter may be used to specify or initialize the 
-        value of an attribute:</para>
+        <para>An initializer parameter may be used to specify or initialize the value 
+        of an attribute:</para>
         
         <programlisting>public class Key(Lock lock) {
     public Lock lock = lock;
@@ -409,7 +451,7 @@ Body</programlisting>
     
 }</programlisting>
          -->
-        <para>An initialization parameter may even be used within the body of a method,
+        <para>An initializer parameter may even be used within the body of a method,
         attribute getter, or attribute setter:</para>
         
         <programlisting>public class Key(Lock lock) {
@@ -482,10 +524,12 @@ public class Person { ... }</programlisting>
         <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
         of the class. A sequenced parameter is considered of type <literal>T[]</literal>
         where <literal>T...</literal> is the declared sequenced type.</para>
+        
+        <para>Scoped classes and <literal>abstract</literal> classes are not callable.</para>
     
     </section>
     
-    <section id="classandscopedobjectbodies">
+    <section id="classbodies">
         <title>Class bodies</title>
         
         <para>The body of a class contains:</para>
@@ -502,7 +546,7 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
 
-        <programlisting>Body := "{" (Declaration | Statement)* "}"</programlisting>
+        <programlisting>ClassBody := "{" (Declaration | Statement)* "}"</programlisting>
         
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
         
@@ -889,6 +933,9 @@ public class Person { ... }</programlisting>
                     <para>must extend the root class,</para>
                 </listitem>
                 <listitem>
+                    <para>must not be scoped classes,</para>
+                </listitem>
+                <listitem>
                     <para>must have distinct erased signatures,</para>
                 </listitem>
                 <listitem>
@@ -935,6 +982,8 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>A member scoped class may not be overridden.</para>
+        
         <para>To override a member class, the subtype must declare a member class:</para>
         
         <itemizedlist>
@@ -943,6 +992,9 @@ public class Person { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>with the same name as the member class it overrides,</para>
+            </listitem>
+            <listitem>
+                <para>that is not a scoped class,</para>
             </listitem>
             <listitem>
                 <para>that extends the member class it overrides, and</para>
@@ -2320,7 +2372,7 @@ public Visibility private() {
             </listitem>
             <listitem>
                 <para>a member class with no initializer parameters, or a member scoped
-                object, or</para>
+                class, or</para>
             </listitem>
             <listitem>
                 <para>an attribute.</para>
