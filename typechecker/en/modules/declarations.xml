@@ -235,7 +235,12 @@ SatisfiedTypes?
 TypeConstraints? 
 InterfaceBody</programlisting>
 
-        <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
+        <para>To obtain a concrete instance of an interface, it is necessary to define 
+        and instantiate a class that implements the interface, or define an object that
+        implements the interface.</para>
+
+        <section id="interfacebodies">
+            <title>Interface bodies</title>
 
         <para>The body of an interface contains:</para>
         
@@ -249,9 +254,11 @@ InterfaceBody</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | TypeDeclaration</programlisting>
-
+        <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
+        
         <para>Interface method and attribute declarations may not specify implementation.</para>
+
+        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | TypeDeclaration</programlisting>
 
         <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
         
@@ -273,6 +280,8 @@ InterfaceBody</programlisting>
           
         <comment><para>TODO: if methods of interfaces can define defaulted parameters,
         precisely how do we implement that?</para></comment>
+        
+        </section>
         
         <section id="mutableinterfaces">
             <title>Mutable and immutable interfaces</title>
@@ -334,10 +343,12 @@ InterfaceBody</programlisting>
     </section>
     
     <section id="classes">
-        <title>Classes</title>
+        <title>Classes and scoped objects</title>
         
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
-        type schema, together with implementation details of the members of the type.</para>
+        type schema, together with implementation details of the members of the type.
+        An ordinary class declaration specifies a list of formal parameters required 
+        to instantiate the type.</para>
         
         <programlisting>Class :=
 Annotation*
@@ -345,46 +356,354 @@ Annotation*
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
-ClassBody</programlisting>
+Body</programlisting>
 
-        <programlisting>ClassBody := "{" Instances? (Declaration | Statement)* "}"</programlisting>
+        <para>To obtain an instance of a class, it is necessary to instantiate the
+        class, or a subclass of the class.</para>
+        
+        <para>A <emphasis>scoped object</emphasis> is a class that cannot be explicitly
+        instantiated. Instead, a singleton, member, or local instance is implicitly 
+        available inside the scope in which the scoped object is declared. A scoped 
+        object does not specify a formal parameter list.</para>
+        
+        <programlisting>Object :=
+Annotation*
+"object" TypeName
+ExtendedType?
+SatisfiedTypes?
+Body</programlisting>
+        
+        <para>The scoped object type name evaluates to the current instance of the 
+        scoped object type.</para>
+        
+    <section id="initializerparameters">
+        <title>Initializer parameters</title>
+        
+        <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
+        Instead, he body of the class declares <emphasis>initializer parameters</emphasis>. 
+        An initializer parameter may be used anywhere in the class body, including in 
+        method and attribute definitions.</para>
+        
+        <para>An initialization parameter may be used to specify or initialize the 
+        value of an attribute:</para>
+        
+        <programlisting>public class Key(Lock lock) {
+    public Lock lock = lock;
+}</programlisting>
+        
+        <programlisting>public class Counter(Natural start=0) {
+    public mutable Natural count := start;
+    public void inc() { count++; }
+}</programlisting>
+        
+        <!--
+        <para>Is equivalent to this Java class:</para>
+
+        <programlisting>public class Key {
+    private final ReadAttribute&lt;Lock&gt; lock;
+    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
+    
+    public Key(Lock lock) {
+        this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
+    }
+    
+}</programlisting>
+         -->
+        <para>An initialization parameter may even be used within the body of a method,
+        attribute getter, or attribute setter:</para>
+        
+        <programlisting>public class Key(Lock lock) {
+    public Lock lock { return lock }
+}</programlisting>
+
+        <programlisting>public class Key(Lock lock) {
+    public void lock() { lock.engage(this); }
+    public void unlock() { lock.disengage(this); }
+}</programlisting>
+
+        <!--
+        <para>Is equivalent to this Java class:</para>
+
+        <programlisting>public class Key {
+    private Lock _lock;
+        
+    private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
+        @Override public Lock get() { return _lock; }
+    };
+    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
+    
+    public Key(Lock lock) { 
+        _lock = lock; 
+    }
+    
+}</programlisting>
+        -->
+        
+
+        <comment><para>TODO: should class initializer parameters be allowed to be declared 
+        <literal>public/package/module</literal>, allowing a shortcut simple attribute 
+        declaration like in Scala?</para></comment>
+                
+        <!--
+        <section>
+        <title>Annotations</title>
+        
+        <para>Every annotation is a toplevel (non-void) method call. This Ceylon class:</para>
+        
+        <programlisting>doc "Represents a person"
+by "Gavin"
+public class Person { ... }</programlisting>
+        
+        <para>Is equivalent to this Java code:</para>
+        
+        <programlisting>public class Person { ... 
+
+    static {
+        Type&lt;Person&gt; type = Type.get(Person.class);
+        type.addAnnotation( doc("Represents a person") );
+        type.addAnnotation( by("Gavin") );
+        type.addAnnotation( public() );
+    }
+
+    ...
+
+}</programlisting>
+        
+        </section>
+        -->
+
+    </section>
+
+    <section id="callabletypeofclass">
+        <title>Callable type of a class</title>
+        
+        <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
+        types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
+        <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
+        of the class. A sequenced parameter is considered of type <literal>T[]</literal>
+        where <literal>T...</literal> is the declared sequenced type.</para>
+    
+    </section>
+    
+    <section id="classandscopedobjectbodies">
+        <title>Class bodies</title>
         
         <para>The body of a class contains:</para>
         
         <itemizedlist>
             <listitem>
-                <para>member (method, attribute and member class) declarations,</para>
+                <para>member (method, attribute, and member class) declarations,</para>
             </listitem>
             <listitem>
-                <para>nested interface declarations,</para>
+                <para>nested interface declarations, and</para>
             </listitem>
             <listitem>
-                <para>instance initialization code, and,</para>
-            </listitem>
-            <listitem>
-                <para>optionally, a list of enumerated named instances of the class.</para>
+                <para>instance initialization code.</para>
             </listitem>
         </itemizedlist>
 
+        <programlisting>Body := "{" (Declaration | Statement)* "}"</programlisting>
+        
         <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
         later in the same block. This rule is relaxed for certain declarations that occur 
-        directly inside a class body:</para>
+        directly inside the body of a class:</para>
             
         <itemizedlist>
             <listitem>
-                <para>declarations with explicit visibility modifiers&mdash;whose visibility
-                is determined by the modifier, and</para>
+                <para>declarations with explicit visibility modifiers&mdash;whose 
+                visibility is determined by the modifier, and</para>
             </listitem>
             <listitem>
-                <para>declarations that occur in the second part of the body of the class, 
-                after the last statement of the initializer&mdash;which are visible to all
-                other declarations in the second part of the body of the class.</para>
+                <para>declarations that occur in the second part of the body of the 
+                class, after the last statement of the initializer&mdash;which are visible 
+                to all other declarations in the second part of the body of the class.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>The body of a class may invoke, evaluate or assign members of the instance 
+        being initialized&mdash;the current instance of the class&mdash;without explicitly 
+        specifying the receiver.</para>
+        
+        <para>The body of a member class may invoke, evaluate or assign members of the 
+        current instance of the containing class or interface&mdash;the receiving instance 
+        of the instantiation expression&mdash;without explicitly specifying the receiver.</para>
+        
+        <para>A class may be declared inside the body of a class, method, or attribute, in 
+        which case the body of the class may refer to any non-<literal>mutable</literal> 
+        local, block local attribute getter or block local method declared earlier within 
+        the containing scope. It may not refer to <literal>mutable</literal> locals from 
+        the containing scope.</para>
+
+    </section>
+        
+    <section id="initializersection">
+        <title>Initializer section</title>
     
+        <para>The initial part of the body of a class is called the <emphasis>initializer</emphasis> 
+        and contains a mix of declarations, statements and control structures. The initializer 
+        is executed every time the class is instantiated.</para>
+           
+        <para>A class initializer is responsible for initializing the state of the new 
+        instance of the class, before a reference to the new instance is available to 
+        clients.</para>
+        
+        <programlisting>public abstract class Point() {
+    public Decimal x;
+    public Decimal y;
+}</programlisting>
+        
+        <programlisting>public class DiagonalPoint(Decimal distance) 
+        extends Point() {
+    
+    Decimal pos = distance / 2**0.5;
+    x = pos;
+    y = pos;
+    
+    assert ("must have distance " distance " from origin") 
+        that ( x**2 + y**2 &equals; distance**2 );
+    
+}</programlisting>
+        
+        <programlisting>public object Center 
+        extends Point() {
+    
+    x = 0.0;
+    y = 0.0;
+    
+}</programlisting>
+        
+        <!--
+        <para>So the above class is equivalent to:</para>
+        
+        <programlisting>public class DiagonalPoint extends Point {
+        
+    public DiagonalPoint(final Decimal position) {
+    
+        x = y = sqrt( position.power(2).divided(2) ).times(position.sign);
+        
+        assert_(new F0&lt;String&gt;() {
+                   public String call() { 
+                       return "must have distance " + position + " from origin";
+                   }
+                },
+                new F0&lt;Boolean&gt;() {
+                   public Boolean call() { 
+                       return ( x.power(2) + y.power(2) ).equals( position.power(2) );
+                   }
+                });
+    }
+    
+}</programlisting>
+        -->
+        
+        <para>The following restrictions apply to statements and declarations that appear 
+        within the initializer of a class:</para>
+        
+        <itemizedlist>
+           <listitem>
+              <para>They may not evaluate attributes or invoke methods that are declared 
+              later in the body of the class upon the instance that is being initialized 
+              (including upon a self reference or outer instance reference).</para>
+           </listitem>
+           <listitem>
+              <para>They may not pass a reference to the instance that is being initialized 
+              (including a self reference or outer instance reference) as an argument of an 
+              instantiation or method invocation or as the value of an attribute assignment.</para>
+           </listitem>
+           <!-- 
+           <listitem>
+              <para>They may not declare an <literal>abstract</literal> member class or an
+              abstract method or attribute of the class.</para>
+           </listitem>
+           <listitem>
+              <para>They may not declare a <literal>default</literal> member class, method, 
+              or attribute of the class.</para>
+           </listitem>
+           -->
+           <listitem>
+              <para>They may not invoke or evaluate abstract or <literal>default</literal> 
+              members of the instance that is being initialized, except via the special 
+              <literal>super</literal> self reference.</para>
+           </listitem>
+        </itemizedlist>
+        
+        <para>It is acceptable to invoke or evaluate an abstract or <literal>default</literal> 
+        member of a superclass that is overridden by a non-abstract, non-<literal>default</literal> 
+        declaration of a different superclass or that appears earlier in the body of the 
+        class.</para>
+        
+        <para>Non-abstract, non-<literal>default</literal> superclass members may be invoked, 
+        evaluated or assigned anywhere inside the body of the class. The superclass initializer 
+        is executed before the subclass initializer.</para>
+        
+        <para>For example, the following code fragments are not legal:</para>
+        
+        <programlisting>class Graph() {
+    OpenList&lt;Node&gt; nodes = {};
+    class Node() {
+        nodes.add(this);    //compiler error (this reference in initializer)
+    }
+}</programlisting>
+        
+        <programlisting>class Graph() {
+    class Node() {}
+    Node createNode() {
+        Node node = Node();
+        nodes.add(node);    //compiler error (forward reference in initializer)
+        return node
+    }
+    OpenList&lt;Node&gt; nodes = {};
+}</programlisting>
+
+        <para>But this code fragment is legal:</para>
+        
+        <programlisting>class Graph() {
+    OpenList&lt;Node&gt; nodes = {};
+    Node createNode() {
+        Node node = Node();
+        nodes.add(node);
+        return node
+    }
+    class Node() {}
+}</programlisting>
+
+    </section>
+    
+    <section id="declarationsection">
+        <title>Declaration section</title>
+        
+        <para>The remainder of the body of the class consists purely of declarations. <!--including
+        abstract and <literal>default</literal> methods and attributes. --> It may not contain:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a statement or control structure, unless it is nested inside a method,
+                attribute, or member class declaration,</para>
+            </listitem>
+            <listitem>
+                <para>a declaration with a specifier or initializer, unless it is nested inside 
+                a method, attribute, or member class declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>a specification or initialization statement for a member of the instance 
+                being initialized (including a self reference or outer instance reference).</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>However, the declarations in this second section may freely use <literal>this</literal>, 
+        and may invoke any method or evaluate any attribute of the class or its superclasses. 
+        The usual restriction that a declaration may only be used by code that appears later in 
+        the block containing the declaration is relaxed.</para>
+        
+        <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
+        OK to let you have expression statements in the second part of the class body, just not
+        specification or initialization statements.</para></comment>
+        
+    </section>
+           
     <section id="abstractclasses">
         <title>Abstract classes</title>
         
@@ -439,318 +758,6 @@ ClassBody</programlisting>
     
     </section>
     
-    <section id="classinitializer">
-        <title>Class initializer</title>
-        
-        <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
-        Instead:</para>
-        
-        <itemizedlist>
-           <listitem>
-              <para>The body of the class declares <emphasis>initializer parameters</emphasis>. 
-              An initializer parameter may be used anywhere in the class body, including in 
-              method and attribute definitions.</para>
-           </listitem>
-           <listitem>
-              <para>The initial part of the body of the class is called the 
-              <emphasis>initializer</emphasis> and contains a mix of declarations, statements 
-              and control structures. The initializer is executed every time the class is 
-              instantiated.</para>
-           </listitem>
-        </itemizedlist>
-        
-        <para>An initialization parameter may be used to specify or initialize the value of an 
-        attrbute:</para>
-        
-        <programlisting>public class Key(Lock lock) {
-    public Lock lock = lock;
-}</programlisting>
-        
-        <programlisting>public class Counter(Natural start=0) {
-    public mutable Natural count := start;
-    public void inc() { count++; }
-}</programlisting>
-        
-        <!--
-        <para>Is equivalent to this Java class:</para>
-
-        <programlisting>public class Key {
-    private final ReadAttribute&lt;Lock&gt; lock;
-    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
-    
-    public Key(Lock lock) {
-        this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
-    }
-    
-}</programlisting>
-         -->
-        <para>An initialization parameter may even be used within the body of a method,
-        attribute getter, or attribute setter:</para>
-        
-        <programlisting>public class Key(Lock lock) {
-    public Lock lock { return lock }
-}</programlisting>
-
-        <programlisting>public class Key(Lock lock) {
-    public void lock() { lock.engage(this); }
-    public void unlock() { lock.disengage(this); }
-}</programlisting>
-
-        <!--
-        <para>Is equivalent to this Java class:</para>
-
-        <programlisting>public class Key {
-    private Lock _lock;
-        
-    private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
-        @Override public Lock get() { return _lock; }
-    };
-    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
-    
-    public Key(Lock lock) { 
-        _lock = lock; 
-    }
-    
-}</programlisting>
-        -->
-        
-        <para>A subclass must pass values to each superclass initialization 
-        parameter in the <literal>extends</literal> clause.</para>
-
-        <programlisting>public class SpecialKey1()
-        extends Key( SpecialLock() ) {
-    ...
-}</programlisting>
-
-        <programlisting>public class SpecialKey2(Lock lock) 
-        extends Key(lock) {
-    ...
-}</programlisting>
-
-        <!--
-        <para>Which are equivalent to the Java:</para>
-        
-        <programlisting>public class SpecialKey1 
-        extends Key {
-    public SpecialKey1() { 
-        super( SpecialLock() );
-    }
-    ... 
-}</programlisting>
-
-        <programlisting>public class SpecialKey2 
-        extends Key {
-    public SpecialKey2(Lock lock) { 
-        super(lock);
-    }
-    ... 
-}</programlisting>
-        -->
-        
-        <para>The class initializer is responsible for initializing the state of 
-        a new instance of the class, before a reference to the new instance is 
-        available to clients.</para>
-        
-        <programlisting>public abstract class Point() {
-    public Decimal x;
-    public Decimal y;
-}</programlisting>
-        
-        <programlisting>public class DiagonalPoint(Decimal distance) 
-        extends Point() {
-    
-    Decimal pos = distance / 2**0.5;
-    x = pos;
-    y = pos;
-    
-    assert ("must have distance " distance " from origin") 
-        that ( x**2 + y**2 &equals; distance**2 );
-    
-}</programlisting>
-        
-        <!--
-        <para>So the above class is equivalent to:</para>
-        
-        <programlisting>public class DiagonalPoint extends Point {
-        
-    public DiagonalPoint(final Decimal position) {
-    
-        x = y = sqrt( position.power(2).divided(2) ).times(position.sign);
-        
-        assert_(new F0&lt;String&gt;() {
-                   public String call() { 
-                       return "must have distance " + position + " from origin";
-                   }
-                },
-                new F0&lt;Boolean&gt;() {
-                   public Boolean call() { 
-                       return ( x.power(2) + y.power(2) ).equals( position.power(2) );
-                   }
-                });
-    }
-    
-}</programlisting>
-        -->
-        
-        <para>An initializer may invoke, evaluate or assign members of the current instance 
-        of the class (the instance being initialized) without explicitly specifying the 
-        receiver.</para>
-        
-        <para>An initializer of a member class may invoke, evaluate or assign members of the 
-        current instance of the containing class or interface (the receiving instance of the 
-        instantiation expression) without explicitly specifying the receiver.</para>
-        
-        <para>A class may be declared inside the body of a method or attribute, in which case 
-        the initializer may refer to any non-<literal>mutable</literal> local, block local 
-        attribute getter or block local method declared earlier within the containing scope. 
-        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
-        
-        <para>The following restrictions apply to statements and declarations that appear 
-        within the initializer of the class:</para>
-        
-        <itemizedlist>
-           <listitem>
-              <para>They may not evaluate attributes or invoke methods that are declared 
-              later in the body of the class upon the current instance of the class that
-              is being initialized (including upon a self reference or outer instance
-              reference).</para>
-           </listitem>
-           <listitem>
-              <para>They may not pass a reference to the current instance of the class that
-              is being initialized (including a self reference or outer instance reference) 
-              as an argument of an instantiation or method invocation or as the value of an 
-              attribute assignment.</para>
-           </listitem>
-           <!-- 
-           <listitem>
-              <para>They may not declare an <literal>abstract</literal> member class or an
-              abstract method or attribute of the class.</para>
-           </listitem>
-           <listitem>
-              <para>They may not declare a <literal>default</literal> member class, method, 
-              or attribute of the class.</para>
-           </listitem>
-           -->
-           <listitem>
-              <para>They may not invoke or evaluate abstract or <literal>default</literal> 
-              members of the current instance of the class or any of its superclasses except 
-              via the special <literal>super</literal> self reference.</para>
-           </listitem>
-        </itemizedlist>
-        
-        <para>It is acceptable to invoke or evaluate an abstract or <literal>default</literal> 
-        member of a superclass that is overridden by a non-abstract, non-<literal>default</literal> 
-        declaration of a different superclass or that appears earlier in the body of the current 
-        class.</para>
-        
-        <para>The remainder of the body of the class consists purely of declarations, including
-        abstract and <literal>default</literal> methods and attributes. It may not contain:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a statement or control structure, unless it is nested inside a method,
-                attribute, or member class declaration,</para>
-            </listitem>
-            <listitem>
-                <para>a declaration with a specifier or initializer, unless it is nested inside 
-                a method, attribute, or member class declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>a specification or initialization statement for a member of the current
-                instance of the class that is being initialized (including a self reference 
-                or outer instance reference).</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>However, the declarations in this second section may freely use <literal>this</literal>, 
-        and may invoke any method or evaluate any attribute of the class or its superclasses. 
-        The usual restriction that a declaration may only be used by code that appears later in 
-        the block containing the declaration is relaxed.</para>
-        
-        <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
-        OK to let you have expression statements in the second part of the class body, just not
-        specification or initialization statements.</para></comment>
-        
-        <para>Non-abstract, non-<literal>default</literal> superclass members may be invoked, 
-        evaluated or assigned anywhere inside the body of the class. The superclass initializer 
-        is executed before the subclass initializer.</para>
-        
-        <para>For example, the following code fragments are not legal:</para>
-        
-        <programlisting>class Graph() {
-    OpenList&lt;Node&gt; nodes = {};
-    class Node() {
-        nodes.add(this);    //compiler error (this reference in initializer)
-    }
-}</programlisting>
-        
-        <programlisting>class Graph() {
-    class Node() {}
-    Node createNode() {
-        Node node = Node();
-        nodes.add(node);    //compiler error (forward reference in initializer)
-        return node
-    }
-    OpenList&lt;Node&gt; nodes = {};
-}</programlisting>
-
-        <para>But this code fragment is legal:</para>
-        
-        <programlisting>class Graph() {
-    OpenList&lt;Node&gt; nodes = {};
-    Node createNode() {
-        Node node = Node();
-        nodes.add(node);
-        return node
-    }
-    class Node() {}
-}</programlisting>
-
-        <comment><para>TODO: should class initializer parameters be allowed to be declared 
-        <literal>public/package/module</literal>, allowing a shortcut simple attribute 
-        declaration like in Scala?</para></comment>
-                
-        <!--
-        <section>
-        <title>Annotations</title>
-        
-        <para>Every annotation is a toplevel (non-void) method call. This Ceylon class:</para>
-        
-        <programlisting>doc "Represents a person"
-by "Gavin"
-public class Person { ... }</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>public class Person { ... 
-
-    static {
-        Type&lt;Person&gt; type = Type.get(Person.class);
-        type.addAnnotation( doc("Represents a person") );
-        type.addAnnotation( by("Gavin") );
-        type.addAnnotation( public() );
-    }
-
-    ...
-
-}</programlisting>
-        
-        </section>
-        -->
-
-    </section>
-
-    <section id="callabletypeofclass">
-        <title>Callable type of a class</title>
-        
-        <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
-        types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
-        <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
-        of the class. A sequenced parameter is considered of type <literal>T[]</literal>
-        where <literal>T...</literal> is the declared sequenced type.</para>
-    
-    </section>
-    
         <section id="classinheritance">
              <title>Class inheritance</title>
         
@@ -758,8 +765,7 @@ public class Person { ... }</programlisting>
         A class may extend another class, and implement any number of interfaces.
         </para>
         
-        <programlisting>public mutable
-class Customer(Name name, Organization? org = null) 
+        <programlisting>public mutable class Customer(Name name, Organization? org = null) 
         extends Person(name, org) { 
     ... 
 }</programlisting>
@@ -812,6 +818,39 @@ class Customer(Name name, Organization? org = null)
         initializer of the subclass whenever the subclass is instantiated.
         </para>
         
+        <para>A subclass must pass values to each superclass initialization parameter in 
+        the <literal>extends</literal> clause.</para>
+
+        <programlisting>public class SpecialKey1()
+        extends Key( SpecialLock() ) {
+    ...
+}</programlisting>
+
+        <programlisting>public class SpecialKey2(Lock lock) 
+        extends Key(lock) {
+    ...
+}</programlisting>
+
+        <!--
+        <para>Which are equivalent to the Java:</para>
+        
+        <programlisting>public class SpecialKey1 
+        extends Key {
+    public SpecialKey1() { 
+        super( SpecialLock() );
+    }
+    ... 
+}</programlisting>
+
+        <programlisting>public class SpecialKey2 
+        extends Key {
+    public SpecialKey2(Lock lock) { 
+        super(lock);
+    }
+    ... 
+}</programlisting>
+        -->
+        
         <!-- 
         <para>and the 
         above declarations are equivalent to the following Java declarations: 
@@ -833,206 +872,6 @@ class Customer(Name name, Organization? org = null)
          -->
         </section>
        
-    <section id="instanceenumeration">
-        <title>Class instance enumeration</title>
-        
-        <para>The keyword <literal>case</literal> is used to specify an enumerated named 
-        instance of a class. All <literal>case</literal>s must appear in a list as the 
-        first line of a class definition.</para>
-        
-        <programlisting>Instances := Instance ("," Instance)* ("..." | ";")</programlisting>
-
-        <programlisting>Instance := Annotation* "case" MemberName Arguments?</programlisting>
-
-        <para>If the <literal>case</literal> list ends in <literal>;</literal>, the instance
-        list is called <emphasis>closed</emphasis>. If the <literal>case</literal> list ends 
-        in <literal>...</literal>, the instance list is called <emphasis>open</emphasis>.</para>
-        
-        <para>If a class has a closed instance list, the class may not:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>be instantiated</para>
-            </listitem>
-            <listitem>
-                <para>have subclasses, or</para>
-            </listitem>
-            <listitem>
-                <para>have members annotated <literal>default</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A class may not specify enumerated named instances if it:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>is annotated <literal>abstract</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>has generic type parameters, or</para>
-            </listitem>
-            <listitem>
-                <para>is nested directly or indirectly inside another class or inside a 
-                block.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>public class DayOfWeek() {
-    case sun,
-    case mon, 
-    case tues, 
-    case wed, 
-    case thurs, 
-    case fri, 
-    case sat; 
-}</programlisting>
-
-        <comment><para>TODO: Should we make the parens on the class declaration optional 
-        in this case: a closed instance list with no parameters?</para></comment>
-
-        <programlisting>public class DayOfWeek(String name) {
-        
-    doc "Sunday"
-    case sun("Sunday"),
-    
-    doc "Monday" 
-    case mon("Monday"),
-    
-    doc "Tuesday"
-    case tues("Tuesday"),
-    
-    doc "Wednesday"
-    case wed("Wednesday"),
-    
-    doc "Thursday"
-    case thurs("Thursday"),
-    
-    doc "Friday"
-    case fri("Friday"),
-    
-    doc "Saturday"
-    case sat("Saturday");
-       
-    public String name = name;
-    
-}</programlisting>
-
-        <programlisting>public class TransactionPropagation(void inProgress(), void notInProgress()) {
-    
-    case required { 
-        void inProgress() {}
-        void notInProgress() {
-            tx.begin();
-        }
-    },
-    
-    case supports {
-        void inProgress() {}
-        void notInProgress() {}
-    },
-    
-    case mandatory { 
-        void inProgress() {}
-        void notInProgress() {
-            throw TransactionMandatory()
-        }
-    },
-    
-    case notSupported { 
-        void inProgress() {
-            throw TransactionNotSupported()
-        }
-        void notInProgress() {}
-    },
-    
-    case requiresNew { 
-        void inProgress() {
-            throw TransactionRequiresNew()
-        }
-        void notInProgress() {
-            tx.begin();
-        }
-    };
-    
-    public void propagate(Transaction tx) {
-        if (tx.inProgress) {
-            inProgress();
-        }
-        else {
-            notInProgress();
-        }
-    }
-    
-}</programlisting>
-
-        <para>A class with declared <literal>case</literal>s implicitly implements 
-        <literal>ceylon.language.Selector</literal>.</para>
-        
-        <para>Enumerated instances of a class are instantiated when the class is
-        loaded by the virtual machine, with the specified arguments.</para>
-        
-        <!--
-        <para>The above declarations are equivalent to the following Java declarations:</para>
-        
-        <programlisting>public class DayOfWeek 
-        extends Selector&lt;DayOfWeek&gt; { 
-        
-    public static DayOfWeek mon = new DayOfWeek("mon", 0); 
-    public static DayOfWeek tues = new DayOfWeek("tues", 1);
-    public static DayOfWeek wed = new DayOfWeek("wed, 2");
-    public static DayOfWeek thurs = new DayOfWeek("thurs", 3);
-    public static DayOfWeek fri = new DayOfWeek("fri", 4);
-    public static DayOfWeek sat = new DayOfWeek("sat", 5);
-    public static DayOfWeek sun = new DayOfWeek("sun", 6);
-    
-    private DayOfWeek(String id, int ord) {
-        super(id, ord);
-    }
-    
-}</programlisting>
-        
-        <programlisting>public class DayOfWeek 
-        extends Selector&lt;DayOfWeek&gt; {
-        
-    private final ReadAttribute&lt;String&gt; name;
-       
-    public static DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
-    public static DayOfWeek tues = new DayOfWeek("Tuesday", "tues", 1);
-    public static DayOfWeek wed = new DayOfWeek("Wednesday", "wed, 2");
-    public static DayOfWeek thurs = new DayOfWeek("Thursday", "thurs", 3);
-    public static DayOfWeek fri = new DayOfWeek("Friday", "fri", 4);
-    public static DayOfWeek sat = new DayOfWeek("Saturday", "sat", 5);
-    public static DayOfWeek sun = new DayOfWeek("Sunday", "sun", 6);
-     
-    private DayOfWeek(String name, String id, int ord)
-    {
-        super(id, ord);
-        name = new SimpleReadAttribute(name);
-    }
-    
-}</programlisting>
-        -->
-        
-        <comment><para>TODO: should we have the ability to declare a restricted
-        list of member subclasses using <literal>case class</literal>, for example:</para>
-        <programlisting>public class Node(String name) {
-        
-    case root("root"), 
-    case class Branch(String name, Node parent) extends Node(name) { ... },
-    case class Leaf(String name, Node parent) extends Node(name) { ... };
-    
-    ...
-    
-}</programlisting>
-        <programlisting>Node root = Node.root;
-Node branch = Node.Branch("Furry", root);
-Node leaf = Node.Leaf("Kittens", branch);</programlisting>
-        <para>Note that an <literal>abstract</literal> class may have a list of
-        <literal>case class</literal>es.</para>
-        </comment>
-        
-    </section>
-    
         <section id="overloadedclasses">
             <title>Overloaded classes</title>
             
@@ -1130,6 +969,207 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
     
     </section>
         
+    <section id="cases">
+        <title>Enumerated cases of a class</title>
+        
+        <para>The keyword <literal>case</literal> is used to specify an enumerated subtype 
+        of a class. All <literal>case</literal>s must appear in a list that precedes the 
+        class definition. The list of <literal>case</literal>s is terminated by the
+        <literal>of</literal> keyword.</para>
+        
+        <programlisting>ClassWithCases := CaseType+ "of" Class</programlisting>
+        
+        <para>A <literal>case</literal> must be a <literal>class</literal> or 
+        <literal>object</literal> declaration that extends the class.</para>
+
+        <programlisting>CaseType := "case" ( CaseObject | Class | Object )</programlisting>
+        
+        <para>There is no difference between an enumerated <literal>case</literal> and an
+        ordinary subtype declaration unless the class is declared <literal>final</literal>, 
+        in which case every subtype of the class must be declared as a <literal>case</literal>
+        of the class.</para>
+        
+        <programlisting>case object True extends Boolean() {}
+case object False extends Boolean() {}
+of public abstract final class Boolean() { ... }</programlisting>
+        
+        <programlisting>case object Root extends Node("root") {}
+case class Branch(String name, Node parent) 
+        extends Node(name) {
+    ... 
+}
+case class Leaf(String name, Node parent) 
+        extends Node(name) { 
+    ... 
+}
+of public class Node(String name) {
+    ...
+}</programlisting>
+
+        <para>A <literal>case object</literal> declaration with an empty body may be
+         abbreviated, since the <literal>extends</literal> clause is implied.</para>
+        
+        <programlisting>CaseObject := Annotation* TypeName Arguments</programlisting>
+        
+        <para>The following are exactly equivalent to the previous examples:</para>
+        
+        <programlisting>case True() 
+case False()
+of public abstract final class Boolean() { ... }</programlisting>
+        
+        <programlisting>case Root("root")
+case class Branch(String name, Node parent) 
+        extends Node(name) {
+    ... 
+}
+case class Leaf(String name, Node parent) 
+        extends Node(name) { 
+    ... 
+}
+of public class Node(String name) {
+    
+    ...
+    
+}</programlisting>
+        <!--  
+        <programlisting>public class DayOfWeek() {
+    case sun,
+    case mon, 
+    case tues, 
+    case wed, 
+    case thurs, 
+    case fri, 
+    case sat; 
+}</programlisting>
+
+        <comment><para>TODO: Should we make the parens on the class declaration optional 
+        in this case: a closed instance list with no parameters?</para></comment>
+
+        <programlisting>public class DayOfWeek(String name) {
+        
+    doc "Sunday"
+    case sun("Sunday"),
+    
+    doc "Monday" 
+    case mon("Monday"),
+    
+    doc "Tuesday"
+    case tues("Tuesday"),
+    
+    doc "Wednesday"
+    case wed("Wednesday"),
+    
+    doc "Thursday"
+    case thurs("Thursday"),
+    
+    doc "Friday"
+    case fri("Friday"),
+    
+    doc "Saturday"
+    case sat("Saturday");
+       
+    public String name = name;
+    
+}</programlisting>
+
+        <programlisting>public class TransactionPropagation(void inProgress(), void notInProgress()) {
+    
+    case required { 
+        void inProgress() {}
+        void notInProgress() {
+            tx.begin();
+        }
+    },
+    
+    case supports {
+        void inProgress() {}
+        void notInProgress() {}
+    },
+    
+    case mandatory { 
+        void inProgress() {}
+        void notInProgress() {
+            throw TransactionMandatory()
+        }
+    },
+    
+    case notSupported { 
+        void inProgress() {
+            throw TransactionNotSupported()
+        }
+        void notInProgress() {}
+    },
+    
+    case requiresNew { 
+        void inProgress() {
+            throw TransactionRequiresNew()
+        }
+        void notInProgress() {
+            tx.begin();
+        }
+    };
+    
+    public void propagate(Transaction tx) {
+        if (tx.inProgress) {
+            inProgress();
+        }
+        else {
+            notInProgress();
+        }
+    }
+    
+}</programlisting>
+        
+        <para>A class with declared <literal>case</literal>s implicitly implements 
+        <literal>ceylon.language.Selector</literal>.</para>
+        
+        <para>Enumerated instances of a class are instantiated when the class is
+        loaded by the virtual machine, with the specified arguments.</para>
+-->        
+        <!--
+        <para>The above declarations are equivalent to the following Java declarations:</para>
+        
+        <programlisting>public class DayOfWeek 
+        extends Selector&lt;DayOfWeek&gt; { 
+        
+    public static DayOfWeek mon = new DayOfWeek("mon", 0); 
+    public static DayOfWeek tues = new DayOfWeek("tues", 1);
+    public static DayOfWeek wed = new DayOfWeek("wed, 2");
+    public static DayOfWeek thurs = new DayOfWeek("thurs", 3);
+    public static DayOfWeek fri = new DayOfWeek("fri", 4);
+    public static DayOfWeek sat = new DayOfWeek("sat", 5);
+    public static DayOfWeek sun = new DayOfWeek("sun", 6);
+    
+    private DayOfWeek(String id, int ord) {
+        super(id, ord);
+    }
+    
+}</programlisting>
+        
+        <programlisting>public class DayOfWeek 
+        extends Selector&lt;DayOfWeek&gt; {
+        
+    private final ReadAttribute&lt;String&gt; name;
+       
+    public static DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
+    public static DayOfWeek tues = new DayOfWeek("Tuesday", "tues", 1);
+    public static DayOfWeek wed = new DayOfWeek("Wednesday", "wed, 2");
+    public static DayOfWeek thurs = new DayOfWeek("Thursday", "thurs", 3);
+    public static DayOfWeek fri = new DayOfWeek("Friday", "fri", 4);
+    public static DayOfWeek sat = new DayOfWeek("Saturday", "sat", 5);
+    public static DayOfWeek sun = new DayOfWeek("Sunday", "sun", 6);
+     
+    private DayOfWeek(String name, String id, int ord)
+    {
+        super(id, ord);
+        name = new SimpleReadAttribute(name);
+    }
+    
+}</programlisting>
+        -->
+        
+    </section>
+    
     </section>
     
     <section id="methods">
@@ -1148,36 +1188,6 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
         <literal>void</literal> method is considered to be <literal>Void</literal>.</para>
         
         <programlisting>MethodHeader := Annotation* (InferableType | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
-        
-        <para>A method implementation may be specified using either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a block of code, or</para>
-            </listitem>
-            <listitem>
-                <para>a reference to another method.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A member method body may invoke, evaluate or assign members of the current 
-        instance of the class which defines the method (the instance upon which the method 
-        was invoked) without explicitly specifying the receiver.</para>
-        
-        <para>A member method body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class or interface (the containing instance 
-        of the instance upon which the method was invoked) without explicitly specifying the 
-        receiver.</para>
-        
-        <para>A toplevel method body may not refer to <literal>this</literal> or 
-        <literal>super</literal>, since there is no current instance.</para>
-        
-        <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any non-<literal>mutable</literal> local, block local 
-        attribute getter or block local method declared earlier within the containing scope. 
-        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
-        
-        <para>The Ceylon compiler preserves the names of method parameters.</para>
         
         <section id="callabletype">
             <title>Callable type of a method</title>
@@ -1207,8 +1217,43 @@ Node leaf = Node.Leaf("Kittens", branch);</programlisting>
         
         </section>
         
-        <section id="methodswithbodies">
-            <title>Methods with bodies</title>
+        <section id="methodbodies">
+            <title>Method bodies</title>
+        
+        <para>A method implementation may be specified using either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a block of code, or</para>
+            </listitem>
+            <listitem>
+                <para>a reference to another method.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A member method body may invoke, evaluate or assign members of the instance
+        being invoked&mdash;the current instance of the class which defines the 
+        method&mdash;without explicitly specifying the receiver.</para>
+        
+        <para>A member method body of a member class may invoke, evaluate or assign members 
+        of the current instance of the containing class or interface (the containing instance 
+        of the instance upon which the method was invoked) without explicitly specifying the 
+        receiver.</para>
+        
+        <para>A toplevel method body may not refer to <literal>this</literal> or 
+        <literal>super</literal>, since there is no current instance.</para>
+        
+        <para>A method may be declared inside the body of another method or attribute, in 
+        which case it may refer to any non-<literal>mutable</literal> local, block local 
+        attribute getter or block local method declared earlier within the containing scope. 
+        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        
+        <para>The Ceylon compiler preserves the names of method parameters.</para>
+        
+        </section>
+        
+        <section id="methodswithblocks">
+            <title>Methods with blocks</title>
             
         <para>A method implementation may be a block. If the method is a <literal>void</literal> 
         method, the block may not contain a <literal>return</literal> directive that 
@@ -1576,17 +1621,20 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         zero formal parameter lists. Likewise, an attribute evaluation is essentially a 
         method invocation with zero argument lists.</para>
         
-        <para>An attribute body may invoke, evaluate or assign members of the current 
-        instance of the class which defines the method (the instance upon which the 
-        attribute was invoked) without explicitly specifying the receiver.</para>
+        <section id="attributebodies">
+            <title>Attribute bodies</title>
+        
+        <para>An attribute body may invoke, evaluate or assign members of the instance
+        being invoked&mdash;the current instance of the class which defines the 
+        method&mdash;without explicitly specifying the receiver.</para>
         
         <para>An attribute body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class or interface (the containing instance 
-        of the instance upon which the attribute was invoked) without explicitly specifying 
-        the receiver.</para>
+        of the current instance of the containing class or interface (the containing 
+        instance of the instance upon which the attribute was invoked) without explicitly 
+        specifying the receiver.</para>
         
-        <para>An attribute may be declared inside the body of another method or attribute, in 
-        which case it may refer to any non-<literal>mutable</literal> local, block local 
+        <para>An attribute may be declared inside the body of another method or attribute, 
+        in which case it may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier withing the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         
@@ -1600,6 +1648,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         -->
+        
+        </section>
         
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
@@ -2021,18 +2071,18 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>mutable</literal> specifies that an attribute
-                or local may be assigned, or that a class has assignable
-                attributes.</para>
+                or local may be assigned, or that an interface or class has 
+                assignable attributes.</para>
             </listitem>
             <listitem>
                 <para><literal>fixed</literal> specifies that a method or
                 attribute must be overridden by every subclass.</para>
             </listitem>
-            <!--listitem>
-                <para><literal>final</literal> indicates that a class may not 
-                be extended, or that a method or attribute may not be 
-                overridden.</para>
-            </listitem-->
+            <listitem>
+                <para><literal>final</literal> specifies that a class may not 
+                be extended, except by its enumerated <literal>cases</literal>,
+                if any.</para>
+            </listitem>
             <listitem>
                 <para><literal>extension</literal> specifies that a method or
                 attribute getter is a converter, or that a class is a decorator.</para>
@@ -2103,12 +2153,13 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     <section id="visibility">
         <title>Visibility and name resolution</title>
         
-        <para>Classes, interfaces, aliases, methods, attributes, locals, formal parameters 
-        and type parameters have names. Occurrence of a name in code implies a hard 
-        dependency from the code in which the name occurs to the schema of the named 
-        declaration. We say that a class, interface, alias, method, attribute, formal 
-        parameter or type parameter is <emphasis>visible</emphasis> to a certain program 
-        element if its name may occur in the code that defines that program element.</para>
+        <para>Classes, interfaces, aliases, methods, attributes, locals, formal 
+        parameters and type parameters have names. Occurrence of a name in code implies 
+        a hard dependency from the code in which the name occurs to the schema of the 
+        named declaration. We say that a class, interface, alias, method, attribute, 
+        formal parameter or type parameter is <emphasis>visible</emphasis> to a certain 
+        program element if its name may occur in the code that defines that program 
+        element.</para>
         
         <itemizedlist>
             <listitem>
@@ -2131,8 +2182,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 visible to code outside the class definition, and</para>
             </listitem>
             <listitem>
-                <para>a toplevel declaration is not visible to code outside the 
-                package containing its compilation unit.</para>
+                <para>a toplevel declaration is not visible to code outside the package 
+                containing its compilation unit.</para>
             </listitem>
         </itemizedlist>
         
@@ -2268,7 +2319,8 @@ public Visibility private() {
                 <literal>this</literal>,</para>
             </listitem>
             <listitem>
-                <para>a member class with no initializer parameters, or</para>
+                <para>a member class with no initializer parameters, or a member scoped
+                object, or</para>
             </listitem>
             <listitem>
                 <para>an attribute.</para>
@@ -2307,20 +2359,20 @@ public Visibility private() {
         
         <itemizedlist>
             <listitem>
-                <para>for toplevel extension methods, the extended type is the declared
-                type of the formal parameter,</para>
+                <para>for toplevel extension methods, the extended type is the 
+                declared type of the formal parameter,</para>
             </listitem>
             <listitem>
-                <para>for member extension methods, the extended 
-                type is the type that declares the extension method,</para>
+                <para>for member extension methods, the extended type is the type 
+                that declares the extension method,</para>
             </listitem>
             <listitem>
-                <para>for toplevel extension classes, the extended type is the declared 
-                type of the initialization parameter,</para>
+                <para>for toplevel extension classes, the extended type is the 
+                declared type of the initialization parameter,</para>
             </listitem>
             <listitem>
-                <para>for member extension classes, the extended type is the type that 
-                contains the member class, and</para>
+                <para>for member extension classes, the extended type is the type 
+                that contains the member class, and</para>
             </listitem>
             <listitem>
                 <para>for extension attributes, the extended type is the type that 
@@ -2366,7 +2418,7 @@ import extension org.domain.utils.SequenceUtils;</programlisting>
         <para>A wildcard <literal>.*</literal>-style import may not be used to import 
         an extension.</para>
         
-        <para>An extension attribute, member class or member method is enabled in every 
+        <para>An extension attribute, member class, or member method is enabled in every 
         compilation unit.</para>
         
         <para>A type <literal>X</literal> is <emphasis>extendable</emphasis> to a type
