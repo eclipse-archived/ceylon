@@ -590,8 +590,7 @@ of public abstract final class Boolean()
         is an extension of <literal>Null</literal> enabled in every 
         compilation unit.</para>
         
-        <programlisting><![CDATA[
-enumeration {
+        <programlisting><![CDATA[enumeration {
     doc "Represents a null reference."  
     case null(); 
 } 
@@ -1099,7 +1098,7 @@ while (exists local value = indexed.indexedValue(i)) {
 of 
 doc "The result of a comparison between two
      objects."
-public class Comparison() {
+public abstract final class Comparison() {
     
     public Boolean isLarger = equals(larger);
     public Boolean isSmaller = equals(smaller);
