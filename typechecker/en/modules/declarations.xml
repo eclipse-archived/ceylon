@@ -361,70 +361,13 @@ ClassBody</programlisting>
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
         
-        <para>However, there are two kinds of class which cannot be directly 
-        instantiated:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>abstract</literal> classes, and</para>
-            </listitem>
-            <listitem>
-                <para><emphasis>scoped classes</emphasis>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>An <literal>abstract</literal> class:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>cannot be instantiated via an instantiation expression, but</para>
-            </listitem>
-            <listitem>
-                <para>can be the superclass of another class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>To obtain an instance of an <literal>abstract</literal> class, it is
-        necessary to instantiate a concrete subclass of the class.</para>
-        
-        <para>A <emphasis>scoped class</emphasis> is declared using the keyword 
-        <literal>object</literal>.</para>
-        
-        <programlisting>Object :=
-Annotation*
-"object" TypeName
-ExtendedType?
-SatisfiedTypes?
-ClassBody</programlisting>
-
-        <para>A scoped class:</para> 
-        
-        <itemizedlist>
-            <listitem>
-                <para>is formally considered to have an empty formal parameter list,</para>
-            </listitem>
-            <listitem>
-                <para>cannot be instantiated via an instantiation expression, and</para>
-            </listitem>
-            <listitem>
-                <para>cannot be the superclass of another class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Therefore an <literal>object</literal> declaration does not specify a formal 
-        parameter list.</para>
-        
-        <para>The scoped class type name evaluates to a scoped instance of the class: a 
-        singleton, member, or local instance implicitly available inside the scope in which 
-        the scoped class is declared</para>
-        
     <section id="initializerparameters">
         <title>Initializer parameters</title>
         
         <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
-        Instead, the body of the class declares <emphasis>initializer parameters</emphasis>
-        (unless the class is a scoped class). An initializer parameter may be used anywhere 
-        in the class body, including in method and attribute definitions.</para>
+        Instead, the body of the class declares <emphasis>initializer parameters</emphasis>. 
+        An initializer parameter may be used anywhere in the class body, including in 
+        method and attribute definitions.</para>
         
         <para>An initializer parameter may be used to specify or initialize the value 
         of an attribute:</para>
@@ -525,7 +468,7 @@ public class Person { ... }</programlisting>
         of the class. A sequenced parameter is considered of type <literal>T[]</literal>
         where <literal>T...</literal> is the declared sequenced type.</para>
         
-        <para>Scoped classes and <literal>abstract</literal> classes are not callable.</para>
+        <para>An <literal>abstract</literal> class is not callable.</para>
     
     </section>
     
@@ -933,9 +876,6 @@ public class Person { ... }</programlisting>
                     <para>must extend the root class,</para>
                 </listitem>
                 <listitem>
-                    <para>must not be scoped classes,</para>
-                </listitem>
-                <listitem>
                     <para>must have distinct erased signatures,</para>
                 </listitem>
                 <listitem>
@@ -982,8 +922,6 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A member scoped class may not be overridden.</para>
-        
         <para>To override a member class, the subtype must declare a member class:</para>
         
         <itemizedlist>
@@ -992,9 +930,6 @@ public class Person { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>with the same name as the member class it overrides,</para>
-            </listitem>
-            <listitem>
-                <para>that is not a scoped class,</para>
             </listitem>
             <listitem>
                 <para>that extends the member class it overrides, and</para>
@@ -1020,6 +955,80 @@ public class Person { ... }</programlisting>
         class it overrides.</para>
     
     </section>
+    
+    <section id="anonymousclasses">
+        <title>Anonymous classes</title>
+        
+        <para>An <literal>object</literal> declaration makes it possible to define
+        a class, instantiate an instance of the class, and declare an attribute 
+        referring to the class instance in a single declaration.</para>
+        
+        <programlisting>Object :=
+Annotation*
+"object" memberName
+ExtendedType?
+SatisfiedTypes?
+ClassBody</programlisting>
+
+         <para>An <literal>object</literal> declaration specifies the name of the
+         attribute and the schema, supertypes, and implementation of the class. It
+         does not specify a type name. Instead, the type has a name assigned 
+         internally by the compiler that is not available at compilation time.</para>
+         
+         <para>An <literal>object</literal> class:</para>
+         
+         <itemizedlist>
+             <listitem>
+                 <para>is implicitly <literal>final</literal>,</para>
+             </listitem>
+             <listitem>
+                 <para>has no visibility modifier,</para>
+             </listitem>
+             <listitem>
+                 <para>may not be <literal>abstract</literal>, and</para>
+             </listitem>
+             <listitem>
+                 <para>may not declare <literal>default</literal> members.</para>
+             </listitem>
+         </itemizedlist>
+         
+         <para>If the <literal>object</literal> is annotated <literal>mutable</literal>,
+         the class is a <literal>mutable</literal> class.</para>
+         
+         <para>An <literal>object</literal> attribute:</para>
+         
+         <itemizedlist>
+             <listitem>
+                 <para>is non-<literal>mutable</literal>, and</para>
+             </listitem>
+             <listitem>
+                 <para>may not be <literal>default</literal>.</para>
+             </listitem>
+         </itemizedlist>
+         
+         <para>If the <literal>object</literal> has a visibility modifier annotation, 
+         the attribute has the specified visibility modifier. If the <literal>object</literal>
+         is annotated <literal>override</literal>, it overrides an attribute of a
+         supertype.</para>
+         
+         <para>The following declaration:</para>
+         
+         <programlisting>public object red extends Color('FF0000') {
+     override String string = "Red";
+}</programlisting>
+
+         <para>Is exactly equivalent to:</para>
+         
+         <programlisting>class Color_red extends Color('FF0000') {
+     override String string = "Red";
+}
+
+public Color_red red = Color_red();</programlisting>
+         
+         <para>Where <literal>Color_red</literal> is a name generated by the compiler.
+         The algorithm for generating this name is not specified here.</para>
+        
+    </section>
         
     <section id="cases">
         <title>Enumerated cases of a class</title>
@@ -1034,18 +1043,18 @@ public class Person { ... }</programlisting>
         <para>A <literal>case</literal> must be a <literal>class</literal> or 
         <literal>object</literal> declaration that extends the class.</para>
 
-        <programlisting>CaseType := "case" ( CaseObject | Class | Object )</programlisting>
+        <programlisting>CaseType := "case" ( Class | Object ) | AbbreviatedCase</programlisting>
         
         <para>There is no difference between an enumerated <literal>case</literal> and an
         ordinary subtype declaration unless the class is declared <literal>final</literal>, 
         in which case every subtype of the class must be declared as a <literal>case</literal>
         of the class.</para>
         
-        <programlisting>case object True extends Boolean() {}
-case object False extends Boolean() {}
+        <programlisting>case object true extends Boolean() {}
+case object false extends Boolean() {}
 of public abstract final class Boolean() { ... }</programlisting>
         
-        <programlisting>case object Root extends Node("root") {}
+        <programlisting>case object root extends Node("root") {}
 case class Branch(String name, Node parent) 
         extends Node(name) {
     ... 
@@ -1061,15 +1070,14 @@ of public class Node(String name) {
         <para>A <literal>case object</literal> declaration with an empty body may be
          abbreviated, since the <literal>extends</literal> clause is implied.</para>
         
-        <programlisting>CaseObject := Annotation* TypeName Arguments</programlisting>
+        <programlisting>AbbreviatedCase := Annotation* "case" MemberName Arguments</programlisting>
         
         <para>The following are exactly equivalent to the previous examples:</para>
         
-        <programlisting>case True() 
-case False()
+        <programlisting>case true() case false()
 of public abstract final class Boolean() { ... }</programlisting>
         
-        <programlisting>case Root("root")
+        <programlisting>case root("root")
 case class Branch(String name, Node parent) 
         extends Node(name) {
     ... 
@@ -2371,8 +2379,7 @@ public Visibility private() {
                 <literal>this</literal>,</para>
             </listitem>
             <listitem>
-                <para>a member class with no initializer parameters, or a member scoped
-                class, or</para>
+                <para>a member class with no initializer parameters, or</para>
             </listitem>
             <listitem>
                 <para>an attribute.</para>

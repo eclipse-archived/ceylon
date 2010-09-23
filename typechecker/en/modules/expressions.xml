@@ -2188,8 +2188,6 @@ setPerson(person);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: scoped classes.</para></comment>
-        
         <para>Note that for a toplevel class <literal>X</literal>, the expression <literal>X</literal>
         is both a metamodel reference and a callable reference. This is consistent, since
         <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>

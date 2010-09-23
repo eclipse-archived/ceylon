@@ -406,10 +406,9 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[public class Boolean()
+        <programlisting><![CDATA[case true() case false()
+of public class Boolean()
         satisfies Case<Boolean> {
-        
-    case true, case false;
     
     override Boolean test(Boolean value) {
         return this===value
@@ -587,12 +586,9 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         is an extension of <literal>Null</literal> enabled in every 
         compilation unit.</para>
         
-        <programlisting><![CDATA[public class Null() {
-        
-    doc "Represents a null reference."
-    case null;
-    
-}]]></programlisting>
+        <programlisting><![CDATA[doc "Represents a null reference." 
+case null()
+of public class Null() {}]]></programlisting>
 
         <para>The decorator <literal>NullCase</literal> allows <literal>null</literal>
         to appear as a <literal>case</literal> expression in a <literal>switch</literal>
@@ -1078,20 +1074,17 @@ while (exists local value = indexed.indexedValue(i)) {
     
 }]]></programlisting>
         
-        <programlisting><![CDATA[public class Comparison() {
+        <programlisting><![CDATA[doc "The receiving object is larger than 
+     the given object."
+case larger()     
+doc "The receiving object is smaller than 
+     the given object."
+case smaller() 
+doc "The receiving object is exactly equal 
+     to the given object."
+case equal()
+of public class Comparison() {
     
-    doc "The receiving object is larger than 
-         the given object."
-    case larger, 
-    
-    doc "The receiving object is smaller than 
-         the given object."
-    case smaller, 
-    
-    doc "The receiving object is exactly equal 
-         to the given object."
-    case equal;
-        
     public Boolean isLarger = equals(larger);
     public Boolean isSmaller = equals(smaller);
     public Boolean isEqual = equals(equal);
@@ -2349,7 +2342,6 @@ while (i<=max) {
         satisfies Type<X> {
     
     public Boolean abstract;
-    public Boolean scoped;
     
 }]]></programlisting>
 
@@ -2535,9 +2527,8 @@ while (i<=max) {
         <para>The class <literal>LogPriority</literal> defines an extensible set of
         levels of importance for log messages.</para>
 
-        <programlisting><![CDATA[public class LogPriority() {
-    case debug, case info, case warn, case error ...
-}]]></programlisting>
+        <programlisting><![CDATA[case debug() case info() case warn() case error()
+of public class LogPriority() {}]]></programlisting>
 
         <para>The class <literal>LogMessage</literal> describes a log message:</para>
         
