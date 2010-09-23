@@ -2324,9 +2324,13 @@ while (i<=max) {
          callable type."
     public Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
     
-    doc "Return all the member classes of the 
-         given callable type."
-    public Set<MemberClass<X,Y,P...>> classes<Y,P...>(Type<Callable<Y,P...>> type);
+    doc "Return all the instantiable member classes 
+         of the given callable type."
+    public Set<MemberConcreteClass<X,Y,P...>> concreteClasses<Y,P...>(Type<Callable<Y,P...>> type);
+    
+    doc "Return all the member types which are subtypes 
+         of the given type."
+    public Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
     
     public Log log;
     
@@ -2341,17 +2345,28 @@ while (i<=max) {
 
         <para>An instance of <literal>Class</literal> represents a class.</para>
         
-        <programlisting><![CDATA[public interface Class<out X, P...> 
-        satisfies Type<X>, Callable<X,P...> {
+        <programlisting><![CDATA[public interface Class<out X> 
+        satisfies Type<X> {
     
     public Boolean abstract;
+    public Boolean scoped;
+    
+}]]></programlisting>
+
+        <para>An instance of <literal>ConcreteClass</literal> represents a class
+        which can be directly instantiated.</para>
+        
+        <programlisting><![CDATA[public interface ConcreteClass<out X, P...> 
+        satisfies Class<X>, Callable<X,P...> {
+    
     public Boolean extension;
     
     public Parameter<Object>[] parameters;
     
 }]]></programlisting>
 
-        <para>An instance of <literal>Member</literal> represents a method or attribute.</para>
+        <para>An instance of <literal>Member</literal> represents a method, attribute,
+        or member type.</para>
 
         <programlisting><![CDATA[public interface Member<in X, out T> 
         satisfies Annotated, Callable<T,X> {
@@ -2404,11 +2419,29 @@ while (i<=max) {
     
 }]]></programlisting>
 
+        <para>An instance of <literal>MemberType</literal> represents a member 
+        type.</para>
+        
+        <programlisting><![CDATA[public interface MemberType<X, Y> 
+        satisfies Type<Y>, Member<X, Type<Y>> {}]]></programlisting>
+
+        <para>An instance of <literal>MemberInterface</literal> represents a member 
+        interface.</para>
+        
+        <programlisting><![CDATA[public interface MemberInterface<X, Y> 
+        satisfies MemberType<X, Y>, Member<X, Interface<Y>> {}]]></programlisting>
+
         <para>An instance of <literal>MemberClass</literal> represents a member 
         class.</para>
         
+        <programlisting><![CDATA[public interface MemberClass<X, Y> 
+        satisfies MemberType<X, Y>, Member<X, Class<Y>> {}]]></programlisting>
+
+        <para>An instance of <literal>MemberConcreteClass</literal> represents a member 
+        class that can be directly instantiated.</para>
+        
         <programlisting><![CDATA[public interface MemberClass<X, Y, P...> 
-        satisfies Type<Y>, Member<X, Class<Y,P...>> {
+        satisfies MemberType<X, Y>, Member<X, ConcreteClass<Y,P...>> {
     
     public Parameter<Object>[] parameters;
     
@@ -2965,7 +2998,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     
     </section>
     
-    <section id="collectonsmodule">
+    <section id="collectionsmodule">
         <title>The collections module</title>
         
         <para>The module <literal>ceylon.collection</literal> contains the collections
