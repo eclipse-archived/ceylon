@@ -141,7 +141,7 @@
         <title>Types</title>
     
         <para>A <emphasis>type</emphasis> or <emphasis>type schema</emphasis> is name 
-        (an initial upper case identifier) and an optional list of type parameters, with 
+        (an initial uppercase identifier) and an optional list of type parameters, with 
         a set of:</para>
         
         <itemizedlist>
@@ -160,14 +160,14 @@
         
         <itemizedlist>
             <listitem>
-                <para>An <emphasis>attribute schema</emphasis> is a name (an initial lower 
-                case identifier) with a type and mutability.</para>
+                <para>An <emphasis>attribute schema</emphasis> is a name (an initial 
+                lowercase identifier) with a type and mutability.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>method schema</emphasis> is a name (an initial lower case 
+                <para>A <emphasis>method schema</emphasis> is a name (an initial lowercase 
                 identifier) and an optional list of type parameters, with a type (often 
-                called the <emphasis>return type</emphasis>) and a list of one or more formal 
-                parameter lists.</para>
+                called the <emphasis>return type</emphasis>) and a list of one or more 
+                formal parameter lists.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>class schema</emphasis> is a type schema with a formal 
@@ -175,7 +175,7 @@
             </listitem>
             <listitem>
                 <para>A <emphasis>formal parameter list</emphasis> is a list of names 
-                (initial lower case identifiers) with types. The 
+                (initial lowercase identifiers) with types. The 
                 <emphasis>signature</emphasis> of a formal parameter list is formed by 
                 discarding the names, leaving the list of types.</para>
             </listitem>
