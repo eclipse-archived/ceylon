@@ -562,27 +562,6 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
     </section>
     
-    <section id="enumeratedinstancereferences">
-        <title>Enumerated instance references</title>
-        
-        <para>An enumerated instance of a class is identified according to:</para> 
-        
-        <programlisting>EnumeratedInstanceReference := (Type ".")? MemberName</programlisting>
-        
-        <para>The type is required unless the enumerated instance was explicitly 
-        imported or is a member of a containing class.</para>
-        
-        <para>The type of the enumerated instance reference is the class of which
-        the enumerated instance is a member.</para>
-        
-        <para>The value of an enumerated instance reference is the instance of
-        the class that was instantiated when the class was loaded by the virtual
-        machine.</para>
-        
-        <programlisting>DayOfWeek sunday = DayOfWeek.sun;</programlisting>
-        
-    </section>
-    
     <section id="valuereferences">
         <title>Value references</title>
                 
@@ -601,6 +580,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <para>A value reference expression is assignable to <literal>Gettable&lt;T&gt;</literal> 
         or <literal>Settable&lt;T&gt;</literal> where <literal>T</literal> is the type of 
         the attribute or local, or the return type of the invocation expression.</para>
+        
+        <comment><para>TODO: <literal>object</literal> references.</para></comment>
         
         <section id="attributeandlocalreferences">
             <title>Attribute and local references</title>
@@ -2206,6 +2187,8 @@ setPerson(person);</programlisting>
                 overloaded version of the class.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: scoped classes.</para></comment>
         
         <para>Note that for a toplevel class <literal>X</literal>, the expression <literal>X</literal>
         is both a metamodel reference and a callable reference. This is consistent, since
