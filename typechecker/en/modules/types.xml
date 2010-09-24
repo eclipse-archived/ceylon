@@ -564,48 +564,37 @@ of public abstract final class Boolean()
         instances of <literal>Something&lt;X&gt;</literal> are transparently 
         assignable to <literal>X</literal>.</para>
         
-        <para>If an optional value is null, it is represented by an
-        instance of the subclass <literal>Nothing</literal>.</para>
+        <para>If an optional value is null, it is represented by an instance 
+        of the subclass <literal>Nothing</literal>. The value 
+        <literal>null</literal> is transparently assignable to optional 
+        values, since <literal>Nothing&lt;X&gt;</literal> is an extension of 
+        <literal>Null</literal> enabled in every compilation unit.</para>
         
-        <programlisting><![CDATA[public extension class Nothing<out X>(Null this) 
-        extends X?() {
+        <programlisting><![CDATA[doc "Represents a null reference."  
+public object null {
 
-    override Boolean defined { 
-        return false 
+    public extension class Nothing<out X>() 
+            extends X?() {
+        override Boolean defined { 
+            return false 
+        }
     }
-    
-}]]></programlisting>
 
+    public extension class NullCase<X>() 
+            satisfies Case<X?> {
+        override Boolean test(X? value) {
+            return !value exists;
+        }
+    }
+     
+}]]></programlisting>
+        
 <!--
     override T default<T>(T defaultValue) 
             given T abstracts X {
         return defaultValue;
     }
 -->    
-        <para>The value <literal>Null.null</literal> is transparently 
-        assignable to optional values, since <literal>Nothing&lt;X&gt;</literal> 
-        is an extension of <literal>Null</literal> enabled in every 
-        compilation unit.</para>
-        
-        <programlisting><![CDATA[enumeration {
-    doc "Represents a null reference."  
-    case null(); 
-} 
-of public abstract final class Null() {}]]></programlisting>
-
-        <para>The decorator <literal>NullCase</literal> allows <literal>null</literal>
-        to appear as a <literal>case</literal> expression in a <literal>switch</literal>
-        statement.</para>
-        
-        <programlisting><![CDATA[public extension class NullCase<X>(Null this) 
-        satisfies Case<X?> {
-
-    override Boolean test(X? value) {
-        return !value exists;
-    }
-    
-}]]></programlisting>
-        
         <para>Note that <literal>Optional</literal> is not a reified type. The compiler
         erases all references to <literal>Optional&lt;X&gt;</literal> to 
         <literal>X</literal> after performing type validation and before generating
@@ -1472,23 +1461,20 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
 }]]></programlisting>
         -->
         
-        <para>There is a mutable subtype which allows assignment to
-        an index.</para>
+        <para>There is a mutable subtype which allows assignment to an index.</para>
         
         <programlisting><![CDATA[public mutable interface OpenBoundedSequence<X,#n>
         satisfies X[n], OpenSequence<X> {
     public Settable<X> value(Bounded<#n> index);
 }]]></programlisting>
 
-        <para>The value <literal>None.none</literal> is transparently
-        assignable to <literal>X[]</literal> and <literal>X[0]</literal>.</para>
+        <para>The value <literal>none</literal> is transparently assignable to 
+        <literal>X[]</literal> and <literal>X[0]</literal>.</para>
         
-        <programlisting><![CDATA[public class None() {
-        
-    doc "Represents an empty sequence. The value of 
-         the empty sequence enumeration |{}|."
-    case none;
-    
+        <programlisting><![CDATA[doc "Represents an empty sequence. The value of 
+     the empty sequence enumeration |{}|."
+public object none {
+
     public extension class EmptySequence<out X>() 
             satisfies X[0] {
         override Natural? lastIndex = null;
