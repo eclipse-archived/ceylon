@@ -99,7 +99,8 @@
         
         <para><literal>
         import
-        class interface alias 
+        class interface alias object
+        enumeration of
         satisfies extends abstracts
         in out
         given
