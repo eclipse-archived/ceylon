@@ -279,13 +279,10 @@ public class Gen {
                 
                 // Try and find a class to insert this method into
                 JCClassDecl classDef = null;
-                if (defs.nonEmpty()) {
-                    List<JCTree> tmp = defs.toList();
-                    for (JCTree def : tmp) {
-                        if (def.getKind() == Kind.CLASS) {
-                            classDef = (JCClassDecl) def;
-                            break;
-                        }
+                for (JCTree def : defs) {
+                    if (def.getKind() == Kind.CLASS) {
+                        classDef = (JCClassDecl) def;
+                        break;
                     }
                 }
                 
