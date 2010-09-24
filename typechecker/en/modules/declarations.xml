@@ -51,7 +51,7 @@ Body?</programlisting>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method</programlisting>
         
-        <programlisting>TypeDeclaration := Class | Object | Interface | Alias</programlisting>
+        <programlisting>TypeDeclaration := Class | Object | Interface | Alias | Enumeration</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -1034,14 +1034,14 @@ public Color_red red = Color_red();</programlisting>
         
     </section>
         
-    <section id="cases">
-        <title>Enumerated cases of a class</title>
+    <section id="enumeratedsubtypes">
+        <title>Enumerated subtypes of a class</title>
         
         <para>An <literal>enumeration</literal> block is used to specify the 
         <emphasis>enumerated subtypes</emphasis> of a class. The 
         <literal>enumeration</literal> block must precede the class definition.</para>
         
-        <programlisting>ClassWithCases := "enumeration" EnumeratedType+ "of" Class</programlisting>
+        <programlisting>Enumeration := "enumeration" EnumeratedType+ "of" Class</programlisting>
         
         <para>An enumerated subtype must be a <literal>class</literal> or 
         <literal>object</literal> declaration that extends the class.</para>
@@ -1100,9 +1100,7 @@ of public abstract final class Boolean() {
     }
 }
 of public class Node(String name) {
-    
     ...
-    
 }</programlisting>
         <!--  
         <programlisting>public class DayOfWeek() {
