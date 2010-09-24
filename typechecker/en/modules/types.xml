@@ -1296,8 +1296,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
      sequences."
 public T[] join<T>(T[]... sequences) {
             
-    class JoinedSequence() 
-            satisfies T[] {
+    object joinedSequence satisfies T[] {
         override Natural? lastIndex {
             mutable Natural? result := null;
             for (T[] s in sequences) {
@@ -1332,7 +1331,7 @@ public T[] join<T>(T[]... sequences) {
         }
     }
     
-    return copy(JoinedSequence()) //take a shallow copy
+    return copy(joinedSequence) //take a shallow copy
     
 }]]></programlisting>
         
@@ -1342,8 +1341,7 @@ public T[] join<T>(T[]... sequences) {
      to the original sequence."
 public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) {
          
-    class RangeSequence() 
-            satisfies T[] {
+    object rangeSequence satisfies T[] {
         override Natural? lastIndex {
             if (exists Natural last = sequence.lastIndex) {
                 if (exists to) {
@@ -1372,7 +1370,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         }
      }
 
-    return copy(RangeSequence()) //take a shallow copy
+    return copy(rangeSequence) //take a shallow copy
     
 }]]></programlisting>
         
