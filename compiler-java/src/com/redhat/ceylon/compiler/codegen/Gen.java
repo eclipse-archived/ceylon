@@ -588,11 +588,21 @@ public class Gen {
             defs.append(registerAnnotations(annotations.toList()));
         }
         
+        JCTree superclass;
+        if (cdecl.superclass == null) {
+            superclass = makeSelect("ceylon", "Object");
+        }
+        else {
+            List<String> name = cdecl.superclass.name().components();
+            assert name.size() == 1;
+            superclass = make().Ident(names.fromString(name.head));
+        }
+        
         JCClassDecl classDef = 
             at(cdecl).ClassDef(at(cdecl).Modifiers(0, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
                     typeParams.toList(),
-                    makeSelect("ceylon", "Object"),
+                    superclass,
                     List.<JCExpression>nil(),
                     defs.toList());
 
