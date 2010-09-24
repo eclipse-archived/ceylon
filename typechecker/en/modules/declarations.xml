@@ -51,7 +51,7 @@ Body?</programlisting>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method</programlisting>
         
-        <programlisting>TypeDeclaration := Class | Object | Interface | Alias | Enumeration</programlisting>
+        <programlisting>TypeDeclaration := Class | Object | Interface | Alias | EnumeratedTypes</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -1041,7 +1041,7 @@ public Color_red red = Color_red();</programlisting>
         <emphasis>enumerated subtypes</emphasis> of a class. The 
         <literal>enumeration</literal> block must precede the class definition.</para>
         
-        <programlisting>Enumeration := "enumeration" EnumeratedType+ "of" Class</programlisting>
+        <programlisting>EnumeratedTypes := "enumeration" "{" EnumeratedType+ "}" "of" Class</programlisting>
         
         <para>An enumerated subtype must be a <literal>class</literal> or 
         <literal>object</literal> declaration that extends the class.</para>
