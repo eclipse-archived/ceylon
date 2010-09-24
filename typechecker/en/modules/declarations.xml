@@ -1083,10 +1083,7 @@ of public class Node(String name) {
         
         <para>The following are exactly equivalent to the previous examples:</para>
         
-        <programlisting>enumeration { 
-    case true();
-    case false(); 
-}
+        <programlisting>enumeration { case true(); case false(); }
 of public abstract final class Boolean() { 
     ... 
 }</programlisting>

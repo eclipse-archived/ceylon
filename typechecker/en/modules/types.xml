@@ -407,10 +407,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[enumeration {
-    case true(); 
-    case false(); 
-}
+        <programlisting><![CDATA[enumeration { case true(); case false(); }
 of public abstract final class Boolean()
         satisfies Case<Boolean> {
     
