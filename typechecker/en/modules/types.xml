@@ -813,9 +813,9 @@ while (exists local value = iter.head) {
         given T satisfies Equals<T> {
         
     override Boolean contains(Object... objects) {
-        for (Object object in objects) {
-            if (is T object) {
-                if ( forAll (Object elem in this) every (elem != object) ) {
+        for (Object obj in objects) {
+            if (is T obj) {
+                if ( forAll (Object elem in this) every (elem != obj) ) {
                     return false
                 }
             }
@@ -2477,11 +2477,11 @@ while (i<=max) {
         <para>The package <literal>ceylon.language.util</literal>, which is not imported
         by default, defines a format useful only for debugging purposes:</para>
         
-        <programlisting>public extension class DebugFormat(Object? object) 
+        <programlisting>public extension class DebugFormat(Object? obj) 
         satisfies Format {
     override String formatted {
-        if (object exists) {
-            return object.string;
+        if (obj exists) {
+            return obj.string;
         }
         else {
             return "null"

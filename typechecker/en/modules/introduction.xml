@@ -173,10 +173,9 @@
     
     <para>
     Ceylon does not feature C-style typecasts. Instead, the 
-    <literal>if (is ... )</literal> and 
-    <literal>case (is ... )</literal> constructs may be used to narrow
-    the type of an object reference without risk of a 
-    <literal>ClassCastException</literal>.
+    <literal>if (is ... )</literal> and <literal>case (is ... )</literal> 
+    constructs may be used to narrow the type of an object reference 
+    without risk of a <literal>ClassCastException</literal>.
     </para>
     
     </section>
@@ -185,11 +184,11 @@
     <title>Control flow</title>
     
     <para>
-    Ceylon's built in control flow structures are very similar to the traditional 
-    constructs found in C, C# and Java. However, inline methods can be used 
-    together with a special Smalltalk-style method invocation protocol to achieve 
-    more specialized flow control and other more functional-style constructs such 
-    as comprehensions.
+    Ceylon's built in control flow structures are very similar to the 
+    traditional constructs found in C, C# and Java. However, inline methods 
+    can be used together with a special Smalltalk-style method invocation 
+    protocol to achieve more specialized flow control and other 
+    functional-style constructs such as comprehensions.
     </para>
     
     <para>
@@ -879,24 +878,24 @@ class PersonalizedHello(String name) extends Hello() {
         is very, very similar to <literal>if (exists ... )</literal>, which we met 
         earlier.</para>
         
-        <programlisting>Object object = ... ;
-if (is Hello object) {
-    object.say();
+        <programlisting>Object obj = ... ;
+if (is Hello obj) {
+    obj.say();
 }</programlisting>
         
         <para>The <literal>switch</literal> statement can be used in a similar 
         way:</para>
         
-        <programlisting>Object object = ... ;
-switch(object)
+        <programlisting>Object obj = ... ;
+switch(obj)
 case (is Hello) {
-    object.say();
+    obj.say();
 }
 case (is Person) {
-    stream.writeLine(object.firstName);
+    stream.writeLine(obj.firstName);
 }
 else {
-    stream.writeLine($object);
+    stream.writeLine($obj);
 }</programlisting>
 
         <para>These constructs protect us from inadvertantly writing code that 
@@ -1346,7 +1345,7 @@ if (nonempty con) { .... }</programlisting>
             <literal>in</literal> operator.</para>
             
             <programlisting>Category cat = .... ;
-if (object in cat) { .... }</programlisting>
+if (obj in cat) { .... }</programlisting>
 
             <para>An <literal>Iterable&lt;T&gt;</literal> is an object which can produce an 
             <literal>Iterator&lt;T&gt;</literal>. An <literal>Iterable</literal> object can 
@@ -2290,7 +2289,7 @@ class Hello(String? name) {
         compile in Java:</para>
         
         <programlisting>if (is List&lt;Person&gt; list) { ... }</programlisting>
-        <programlisting>if (is T object) { ... }</programlisting>
+        <programlisting>if (is T obj) { ... }</programlisting>
         <programlisting>Type&lt;T&gt; tType = T;</programlisting>
         
         <para>(Where <literal>T</literal> is a generic type parameter.)</para>
@@ -2482,10 +2481,10 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         given T satisfies Equals&lt;T&gt; {
     ...
         
-    public Boolean contains(Object object) {
-        if (is T object) {
-            return forAny (T t in bucket(object.hash)) 
-                        some (t==object)
+    public Boolean contains(Object obj) {
+        if (is T obj) {
+            return forAny (T t in bucket(obj.hash)) 
+                        some (t==obj)
         }
         else {
             return false
@@ -2825,7 +2824,7 @@ class Hello(String? name) {
         <para>And of the <emphasis>format operator</emphasis>, the prefix 
         <literal>$</literal>:</para>
         
-        <programlisting>stream.writeLine($object);</programlisting>
+        <programlisting>stream.writeLine($obj);</programlisting>
         
         <para>You might have wondered earlier exactly what expression types are 
         permitted in an interpolated string or as arguments to the format operator. 

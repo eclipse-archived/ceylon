@@ -606,14 +606,14 @@ else {
                         
         <para>If you prefer, you can think of the following:</para>
         
-        <programlisting>if (is Usable object) { ... }</programlisting>
+        <programlisting>if (is Usable obj) { ... }</programlisting>
         
         <para>As an abbreviation of:</para>
         
-        <programlisting>if (is Usable object = object) { ... }</programlisting>
+        <programlisting>if (is Usable obj = obj) { ... }</programlisting>
         
-        <para>Where the <literal>object</literal> declared by the condition hides the outer declaration
-        of <literal>object</literal> inside the block that follows.</para>
+        <para>Where the <literal>obj</literal> declared by the condition hides the outer declaration
+        of <literal>obj</literal> inside the block that follows.</para>
         
         <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
         <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>

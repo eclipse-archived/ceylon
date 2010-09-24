@@ -1341,8 +1341,8 @@ of public class Node(String name) {
 }</programlisting>
 
         <programlisting>public void print(Object... objects) {
-    for (Object object in objects) {
-        log.info($object);
+    for (Object obj in objects) {
+        log.info($obj);
     }
 }</programlisting>
 

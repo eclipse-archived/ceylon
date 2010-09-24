@@ -2279,12 +2279,12 @@ setPerson(person);</programlisting>
             
         <para>The metamodel object for a type allows its members to be iterated:</para>
         
-        <programlisting>Type&lt;Object&gt; t = object.type;
+        <programlisting>Type&lt;Object&gt; t = obj.type;
 for (Attribute&lt;Object,String&gt; a in t.attributes(String)) {
-    log.info(a.name + "=" + a(object));
+    log.info(a.name + "=" + a(obj));
 }
 for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
-    log.info(m.name + "=" + m(object)());
+    log.info(m.name + "=" + m(obj)());
 }</programlisting>
         
         <para>The metamodel object for a class, attribute or method implements 
