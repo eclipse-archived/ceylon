@@ -303,6 +303,23 @@ public class Gen {
             }
         });
 
+        // Mark overloaded top-level classes and make their names unique
+        JCClassDecl rootClass = null;
+        int overloadCount = 0;
+        for (JCTree def : defs) {
+            if (def.getKind() == Kind.CLASS) {
+                JCClassDecl classDef = (JCClassDecl) def;
+                if (rootClass == null) {
+                    rootClass = classDef;
+                }
+                else if (classDef.name.equals(rootClass.name)) {
+                    classDef.name = classDef.name.append(
+                        names.fromString("$$overload" + new Integer(++overloadCount).toString()));
+                    classDef.isOverloadedToplevelCeylonClass = true;
+                }  
+            }
+        }
+        
         JCCompilationUnit topLev =
             at(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
                     /* package id*/ null, defs.toList());
@@ -568,6 +585,10 @@ public class Gen {
             
             public void visit(CeylonTree.TypeParameter param) {
             	typeParams.append(convert(param));
+            }
+            
+            public void visit(CeylonTree.Type type) {
+                assert type == cdecl.superclass;
             }
          });
         
