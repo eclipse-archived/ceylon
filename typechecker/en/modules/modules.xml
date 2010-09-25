@@ -386,8 +386,7 @@
         
         <para>A module may be <emphasis>runnable</emphasis>. The module descriptor
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
-        toplevel method or class with a single formal parameter of type 
-        <literal>Process</literal>.</para>
+        toplevel method or class with no formal parameters.</para>
         
         <para>The following classes define the format of the Ceylon module
         descriptor:</para>
@@ -412,11 +411,11 @@ public class Module(
              initializing state needed by the
              module. Called immediately after 
              the module is loaded."
-        void onLoad(Process process) = noop,
+        void onLoad() = noop,
         
         doc "The entry point of a runnable
              module."
-        void run(Process process) = notRunnable,
+        void run() = notRunnable,
         
         doc "Modules used by this module."
         Import... dependencies) { 
@@ -471,7 +470,7 @@ public class Import(
     version = '3.0.0.beta';
     doc = "The test suite for Hibernate";
     license = 'http://www.gnu.org/licenses/lgpl.html';
-    void run(Process process) {
+    void run() {
         new TestSuite(process).run();
     }
     Import {
@@ -602,8 +601,7 @@ public class Import(
             <listitem>
                 <para><literal>-run</literal> specifies the fully 
                 qualified name of a toplevel method or class with 
-                a single formal parameter of type 
-                <literal>Process</literal>.</para>
+                no formal parameters.</para>
             </listitem>
             <listitem>
                 <para><literal>-rep</literal> specifies a module

@@ -59,9 +59,10 @@ Body?</programlisting>
         example, a <!--<literal>public</literal>--> toplevel class named <literal>Person</literal> 
         must be defined in a file named <literal>Person.ceylon</literal>. A 
         <!--<literal>public</literal>--> toplevel method named <literal>hello()</literal> 
-        must be defined in a file named <literal>hello.ceylon</literal>. Unlike Java, 
-        a compilation unit may contain multiple toplevel class or method declarations 
-        with the same name.</para>
+        must be defined in a file named <literal>hello.ceylon</literal>. A toplevel
+        attribute named <literal>pi</literal> must be defined in a file named
+        <literal>pi.ceylon</literal>. Unlike Java, a compilation unit may contain multiple 
+        toplevel class or method declarations with the same name.</para>
         
         <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
         non-<literal>mutable</literal> toplevel attributes?</para></comment>
@@ -132,6 +133,9 @@ String lastName;
             <listitem>
                 <para>a single toplevel method,</para>
             </listitem>
+            <listitem>
+                <para>a single toplevel attribute,</para>
+            </listitem>
             <!--
             <listitem>
                 <para>a single named enumerated instance of a class,</para>
@@ -148,9 +152,9 @@ String lastName;
         
         <programlisting>ImportSpec := TypeSpec | MethodSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
         
-        <para>Note that toplevel types, toplevel methods, <!--enumerated instances,--> and 
-        extensions in the module <literal>ceylon.language</literal> do not need to be explicitly 
-        imported. They are implicitly imported by every compilation unit.</para>
+        <para>Note that toplevel types, toplevel methods, toplevel attributes, <!--enumerated instances,--> 
+        and extensions in the module <literal>ceylon.language</literal> never need to be 
+        explicitly imported. They are implicitly imported by every compilation unit.</para>
         
         <para>If the <literal>extension</literal> annotation appears, the imported declaration
         must also be annotated <literal>extension</literal>.</para>
@@ -986,9 +990,6 @@ ClassBody</programlisting>
                  <para>is implicitly <literal>final</literal>,</para>
              </listitem>
              <listitem>
-                 <para>has no visibility modifier,</para>
-             </listitem>
-             <listitem>
                  <para>may not be <literal>abstract</literal>, and</para>
              </listitem>
              <listitem>
@@ -996,8 +997,10 @@ ClassBody</programlisting>
              </listitem>
          </itemizedlist>
          
-         <para>If the <literal>object</literal> is annotated <literal>mutable</literal>,
-         the class is a <literal>mutable</literal> class.</para>
+         <para>If the <literal>object</literal> has a visibility modifier annotation, 
+         the class has the specified visibility modifier. If the <literal>object</literal> 
+         is annotated <literal>mutable</literal>, the class is a <literal>mutable</literal> 
+         class.</para>
          
          <para>An <literal>object</literal> attribute:</para>
          
@@ -1692,17 +1695,22 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         zero formal parameter lists. Likewise, an attribute evaluation is essentially a 
         method invocation with zero argument lists.</para>
         
+        <para>A toplevel attribute may not be <literal>mutable</literal>.</para>
+        
         <section id="attributebodies">
             <title>Attribute bodies</title>
         
-        <para>An attribute body may invoke, evaluate or assign members of the instance
-        being invoked&mdash;the current instance of the class which defines the 
+        <para>A member attribute body may invoke, evaluate or assign members of the 
+        instance being invoked&mdash;the current instance of the class which defines the 
         method&mdash;without explicitly specifying the receiver.</para>
         
-        <para>An attribute body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class or interface (the containing 
+        <para>A member attribute body of a member class may invoke, evaluate or assign 
+        members of the current instance of the containing class or interface (the containing 
         instance of the instance upon which the attribute was invoked) without explicitly 
         specifying the receiver.</para>
+        
+        <para>A toplevel attribute body may not refer to <literal>this</literal> or 
+        <literal>super</literal>, since there is no current instance.</para>
         
         <para>An attribute may be declared inside the body of another method or attribute, 
         in which case it may refer to any non-<literal>mutable</literal> local, block local 
@@ -2046,6 +2054,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <comment><para>TODO: Why not also allow this for <literal>default</literal>
             attributes and methods??</para></comment>
             
+            <para>Toplevel attribites cannot be overridden, and so toplevel attribute 
+            evaluation and assignment is never polymorphic.</para>
+            
         </section>
         
         <!--section id="getterandsettermethods">
@@ -2382,17 +2393,17 @@ public Visibility private() {
                 <literal>this</literal>,</para>
             </listitem>
             <listitem>
-                <para>a member method with no formal parameters,</para>
-            </listitem>
-            <listitem>
                 <para>a toplevel class with exactly one initialization parameter named
                 <literal>this</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>a member method with no formal parameters,</para>
             </listitem>
             <listitem>
                 <para>a member class with no initializer parameters, or</para>
             </listitem>
             <listitem>
-                <para>an attribute.</para>
+                <para>a member attribute.</para>
             </listitem>
         </itemizedlist>
         
@@ -2432,12 +2443,12 @@ public Visibility private() {
                 declared type of the formal parameter,</para>
             </listitem>
             <listitem>
-                <para>for member extension methods, the extended type is the type 
-                that declares the extension method,</para>
-            </listitem>
-            <listitem>
                 <para>for toplevel extension classes, the extended type is the 
                 declared type of the initialization parameter,</para>
+            </listitem>
+            <listitem>
+                <para>for member extension methods, the extended type is the type 
+                that declares the extension method,</para>
             </listitem>
             <listitem>
                 <para>for member extension classes, the extended type is the type 

@@ -480,7 +480,8 @@ if you prefer.";</programlisting>
         <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
     
         <para>A <emphasis>primary</emphasis> is formed by recursively invoking or 
-        evaluating members of an atom or toplevel method or class.</para>
+        evaluating members of an atom, toplevel method, toplevel attribute, or
+        class.</para>
     
         <programlisting>Primary := Atom | Meta | MemberReference | Invocation</programlisting>
 
@@ -509,7 +510,8 @@ if you prefer.";</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>the reference is to a toplevel method or class,</para>
+                <para>the reference is to a toplevel method, toplevel attribute, 
+                or class,</para>
             </listitem>
             <listitem>
                 <para>the reference is to a local or formal parameter, or</para>
@@ -2247,15 +2249,15 @@ setPerson(person);</programlisting>
         </section>
         
         <section id="attributemetamodelreferences">
-            <title>Attribute metamodel references</title>
+            <title>Member attribute metamodel references</title>
             
-        <para>An <literal>Attribute</literal> object representing an attribute may be 
-        obtained by specifying the type (with type arguments) and member name.</para>
+        <para>An <literal>Attribute</literal> object representing a member attribute may 
+        be obtained by specifying the type (with type arguments) and member name.</para>
         
         <programlisting>AttributeMeta := Type "." MemberName</programlisting>
 
-        <para>The metamodel expression, <literal>X.member</literal>, for an attribute 
-        is:</para>
+        <para>The metamodel expression, <literal>X.member</literal>, for a member 
+        attribute is:</para>
         
         <itemizedlist>
             <listitem>

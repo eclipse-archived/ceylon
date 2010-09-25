@@ -149,12 +149,15 @@
                 <para>attribute schemas,</para>
             </listitem>
             <listitem>
-                <para>member method schemas, and</para>
+                <para>method schemas, and</para>
             </listitem>
             <listitem>
-                <para>member class schemas.</para>
+                <para>class schemas.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>The attribute, method, and class schemas are called the 
+        <emphasis>members</emphasis> of the type.</para>
         
         <para>Speaking formally:</para>
         
@@ -182,8 +185,8 @@
         </itemizedlist>
         
         <para>Speaking slightly less formally, we usually refer to an attribute, method, or 
-        member class of a type, meaning an attribute schema, member method schema or member 
-        class schema.</para>
+        member class of a type, meaning an attribute schema, method schema or class schema
+        that is a member of the type.</para>
         
         <section id="memberdistinctness">
             <title>Member distinctness</title>

@@ -749,10 +749,10 @@ else {
             <programlisting>CaseItem := "case" "(" Case ")" Block</programlisting>
             <programlisting>DefaultCaseItem := "else" Block</programlisting>
 
-            <para>The <literal>switch</literal> expression may be of any type. The <literal>case</literal> 
-            values must be expressions of type assignable to <literal>Case&lt;X&gt;</literal>, where 
-            <literal>X</literal> is the <literal>switch</literal> expression type. Alternatively, the 
-            <literal>case</literal>s may be assignability conditions.</para>
+            <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 
+            value must be a list of expressions of type assignable to <literal>Case&lt;X&gt;</literal>, 
+            where <literal>X</literal> is the <literal>switch</literal> expression type. Alternatively, 
+            a <literal>case</literal> may be an assignability condition of form <literal>case (is ...)</literal>.</para>
 
             <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
             
@@ -764,15 +764,27 @@ else {
             there must be an explicit <literal>case (null)</literal>.</para>
             -->
             
-            <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
-            expression type must be a <literal>abstract final</literal> class with an enumerated 
-            subtype list consisting of pure <literal>case</literal>s, and all <literal>case</literal>s 
-            of the class must be explicitly listed.</para>
+            <para>The <literal>case</literal>s of a <literal>switch</literal> are 
+            <emphasis>exhaustive</emphasis> if the switch expression type is an
+            <literal>abstract final</literal> class with an enumerated subtype list and:</para>
             
-            <para>If the <literal>switch</literal> expression type is an <literal>abstract final</literal> 
-            class with an enumerated subtype list consisting of pure <literal>cases</literal>, and all 
-            <literal>case</literal>s of the class are explicitly listed, no <literal>else</literal> 
-            block may be specified.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>every enumerated <literal>case</literal> or <literal>object</literal> 
+                    subtype of the class is explicitly listed as an ordinary <literal>case</literal> 
+                    value of the <literal>switch</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>every enumerated <literal>class</literal> subtype of the class is 
+                    explicitly listed as a <literal>case (is ...)</literal> assignability 
+                    condition.</para>
+                </listitem>
+            </itemizedlist>
+
+            <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
+            must have an exhaustive <literal>case</literal> list. Conversely, if the <literal>switch</literal> 
+            has an exhaustive <literal>case</literal> list, no <literal>else</literal> block may be 
+            specified.</para>
             
             <para>When the construct is executed, the <literal>switch</literal> expression is evaluated, 
             and the resulting value is tested against the <literal>case</literal> values using 
@@ -826,6 +838,18 @@ else {
     }
     else {
         log.debug("other payment type");
+    }
+}</programlisting>
+
+            <programlisting>switch (node) {
+    case (root) { 
+        handleRootNode();
+    } 
+    case (is Leaf) {
+        handleLeafNode(node);
+    }
+    case (is Branch) {
+        handleBranchNode(node);
     }
 }</programlisting>
 

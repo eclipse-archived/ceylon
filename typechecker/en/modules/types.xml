@@ -12,9 +12,9 @@
         <para>The module <literal>ceylon.language</literal> contains types which
         are referred to in the language definition.</para>
         
-        <para>Toplevel types, toplevel methods,<!--enumerated instances,--> and 
-        extensions defined in <literal>ceylon.language</literal> do not need to 
-        be explicitly imported.</para>
+        <para>Toplevel types, toplevel methods, toplevel attributes, <!--enumerated instances,--> 
+        and extensions defined in <literal>ceylon.language</literal> do not need 
+        to be explicitly imported.</para>
     
         <comment><para>Note: we will probably need to do the following erasures:</para>
         <itemizedlist>
@@ -2321,8 +2321,6 @@ while (i<=max) {
          of the given type."
     public Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
     
-    public Log log;
-    
     ...
     
 }]]></programlisting>
@@ -2459,6 +2457,27 @@ while (i<=max) {
 
     </section>
     
+    <section id="process">
+        <title>The current process</title>
+        
+        <para>The object <literal>process</literal> provides information about the
+        current process, command line arguments, and access to the standard input 
+        and output streams.</para>
+        
+        <programlisting><![CDATA[public object process {
+    
+    public List<String> args = ... ;
+    
+    public Map<String,String> properties = ... ;
+    
+    public extension OutputStream out = .... ;
+    public extension InputStream in = .... ;
+    
+}]]></programlisting>
+        
+    
+    </section>
+    
     <section id="formattingobjects">
         <title>Formatting objects</title>
         
@@ -2545,7 +2564,9 @@ public abstract final class LogPriority() {}]]></programlisting>
         <para>The following extensions make it easy to log from any object:</para>
         
         <programlisting><![CDATA[public extension class ObjectLog(Object this) {
-    public Log log =  this.type.log;
+    public Log log { 
+        return Log(defaultLogChannel, this.type.name);
+    }
 }]]></programlisting>
 
         <programlisting><![CDATA[public extension class Logs(Log this) {
@@ -2558,11 +2579,6 @@ public abstract final class LogPriority() {}]]></programlisting>
     public void error(Gettable<String> message) { this.error(debug, message); }
     public void error(String message) { this.error(debug, message); }
 }]]></programlisting>
-
-        <comment><para>TODO: I would really like to turn <literal>Type.log</literal> 
-        into an extension. But where would it get its <literal>LogChannel</literal>
-        from? There is no shared state in Ceylon! We need a toplevel attribute 
-        somewhere.</para></comment>
     
     </section>
     

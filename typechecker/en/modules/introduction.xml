@@ -380,18 +380,17 @@
         </para>
         
         <programlisting>doc "The classic Hello World program"
-public void hello(Process process) {
+public void hello() {
     process.writeLine("Hello, World!");
 }</programlisting>
 
         <para>
-        This code defines a method named <literal>hello()</literal> with a 
-        parameter of type <literal>ceylon.language.Process</literal>. The method 
-        is annotated <literal>public</literal>, which makes it accessible to 
-        code in other packages. When the method is executed, it calls the 
-        <literal>writeLine()</literal> method of the class 
-        <literal>Process</literal>. (This method displays its parameter on 
-        the console.)
+        This code defines a method named <literal>hello()</literal>. The 
+        method is annotated <literal>public</literal>, which makes it 
+        accessible to code in other packages. When the method is executed, 
+        it calls the <literal>writeLine()</literal> method of an object 
+        named <literal>process</literal>. (This method displays its 
+        parameter on the console.)
         </para>
         
         <para>
@@ -427,7 +426,7 @@ public void hello(Process process) {
         </para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello(Process process) {
+public void hello() {
     String? name = process.args.first;
     String greeting;
     if (exists name) {
@@ -439,7 +438,7 @@ public void hello(Process process) {
     process.writeLine(greeting);
 }]]></programlisting>
 
-        <para>The <literal>Process</literal> class has an attribute named 
+        <para>The <literal>process</literal> object has an attribute named 
         <literal>args</literal>, which holds a <literal>List</literal> of the 
         program's command line arguments. The local <literal>name</literal> is 
         initialized with the first of these arguments, if any. This local is 
@@ -733,7 +732,7 @@ else {
         you the code that uses <literal>Hello</literal>!</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello(Process process) {
+public void hello() {
     Hello(process.args.first).say(process);
 }]]></programlisting>
         
@@ -750,7 +749,7 @@ public void hello(Process process) {
         overload <literal>Hello</literal>:</para>
         
         <programlisting><![CDATA[doc "A command line greeting"
-class Hello(Process process) 
+class Hello() 
     extends Hello(process.args.first) {}]]></programlisting>
     
         <para>A class can overload a second class by extending it and declaring different
@@ -762,8 +761,8 @@ class Hello(Process process)
         simple:</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello(Process process) {
-    Hello(process).say(process);
+public void hello() {
+    Hello().say(process);
 }]]></programlisting>
         
         </section>
