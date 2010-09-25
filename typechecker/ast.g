@@ -25,6 +25,8 @@ tokens {
     CHAR_CST;
     CLASS_BODY;
     CLASS_DECL;
+    OBJECT_DECL;
+    CASE_DECL;
     CONDITION;
     DO_BLOCK;
     DO_ITERATOR;
@@ -40,7 +42,7 @@ tokens {
     IMPORT_WILDCARD;
     IMPORT_PATH;
     INIT_EXPR;
-    INST_DECL;
+    ENUMERATION_DECL;
     INTERFACE_DECL;
     MEMBER_NAME;
     MEMBER_TYPE;
@@ -101,29 +103,11 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      ( (annotatedDeclarationStart) => toplevelDeclaration )+
+      ( (annotatedDeclarationStart) => declaration )+
       expression?
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
-       toplevelDeclaration+
-    ;
-
-/*dataUnit
-    : importDeclaration*
-      toplevelExpression
-      EOF
-    -> ^(IMPORT_LIST importDeclaration*)
-       toplevelExpression
-    ;*/
-
-toplevelDeclaration
-    : annotations? 
-    ( 
-        memberDeclaration 
-      -> ^(MEMBER_DECL memberDeclaration annotations?)
-      | typeDeclaration 
-      -> ^(TYPE_DECL typeDeclaration annotations?)
-    )
+       declaration+
     ;
 
 typeDeclaration
@@ -133,6 +117,17 @@ typeDeclaration
     -> ^(INTERFACE_DECL interfaceDeclaration)
     | aliasDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
+    | objectDeclaration
+    -> ^(OBJECT_DECL objectDeclaration)
+    ;
+
+enumeratedTypeDeclaration
+    : classDeclaration
+    -> ^(CLASS_DECL classDeclaration)
+    | objectDeclaration
+    -> ^(OBJECT_DECL objectDeclaration)
+    | caseDeclaration
+    -> ^(CASE_DECL caseDeclaration)
     ;
 
 /*toplevelExpression
@@ -199,14 +194,14 @@ declarationOrStatement
 //      methods from attributes at this stage. Why not
 //      do it later?
 declaration
-    : annotations? 
+    : 
+    enumeratedTypes?
+    annotations? 
     ( 
         memberDeclaration 
-      -> ^(MEMBER_DECL memberDeclaration annotations?)
+      -> ^(MEMBER_DECL memberDeclaration annotations? enumeratedTypes?)
       | typeDeclaration 
-      -> ^(TYPE_DECL typeDeclaration annotations?)
-      | instance 
-      -> ^(INST_DECL instance annotations?)
+      -> ^(TYPE_DECL typeDeclaration annotations? enumeratedTypes?)
     )
 /*    (((memberHeader memberParameters) => 
             (mem=memberDeclaration 
@@ -218,10 +213,20 @@ declaration
     | (inst=instance
             -> ^(INSTANCE $inst $ann?)))*/
     ;
-    
+
+enumeratedTypes
+    : 'enumeration' '{' enumeratedType+ '}' 'of'
+    -> ^(ENUMERATION_DECL enumeratedType+)
+    ;
+
+enumeratedType
+    : annotations? enumeratedTypeDeclaration
+    -> ^(TYPE_DECL enumeratedTypeDeclaration annotations?)
+    ;
+
 //special rule for syntactic predicates
 annotatedDeclarationStart
-    :  userAnnotation* ( declarationAnnotation | declarationStart )
+    : 'enumeration' | userAnnotation* ( declarationAnnotation | declarationStart )
     ;
 
 declarationStart
@@ -232,7 +237,8 @@ declarationKeyword
     : 'local' 
     | 'assign' 
     | 'void' 
-    | 'case' 
+    | 'case'
+    | 'object'
     | 'class' 
     | 'interface' 
     | 'alias'
@@ -390,6 +396,23 @@ classDeclaration
         classBody
     ;
 
+objectDeclaration
+    :
+        'object'!
+        memberName
+        extendedType?
+        satisfiedTypes?
+        classBody
+    ;
+
+caseDeclaration
+    : 
+        'case'!
+        memberName 
+        argumentsWithFunctionalArguments 
+        ';'!
+    ;
+
 classBody
     : '{' declarationOrStatement* '}'
     -> ^(STMT_LIST declarationOrStatement*)
@@ -409,10 +432,6 @@ satisfiedTypes
 abstractedType
     : 'abstracts' type
     -> ^(ABSTRACTS_LIST type)
-    ;
-
-instance
-    : 'case'! memberName arguments? (','|';'|'...')
     ;
     
 typeConstraint
@@ -1200,6 +1219,10 @@ EXTENDS
     :   'extends'
     ;
 
+ENUMERATION
+    :   'enumeration'
+    ;
+
 FINALLY
     :   'finally'
     ;
@@ -1254,6 +1277,14 @@ THIS
 
 OUTER
     :   'outer'
+    ;
+
+OBJECT
+    :   'object'
+    ;
+
+OF
+    :   'of'
     ;
 
 SUBTYPE
