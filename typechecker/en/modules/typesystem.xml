@@ -547,7 +547,7 @@ String? firstWord = words[0];</programlisting>
     <section id="generictypeparameterlist">
         <title>Generic type parameters</title>
     
-        <para>Methods, classes, interfaces, unions, and aliases may declare one or more generic 
+        <para>Methods, classes, interfaces, and aliases may declare one or more generic 
         type parameters.</para>
         
         <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
@@ -558,8 +558,8 @@ String? firstWord = words[0];</programlisting>
         <itemizedlist>
         <listitem>
             <para>A type declaration with no type parameters defines exactly one type. A 
-            parameterized type declaration defines a template for producing types: one type for 
-            each possible combination of type arguments that satisfy the type constraints 
+            parameterized type declaration defines a template for producing types: one type 
+            for each possible combination of type arguments that satisfy the type constraints 
             specified by the type. The types of members of the this type are determined by 
             replacing every appearance of each type parameter in the schema of the 
             parameterized type definition with its type argument.</para>
@@ -823,7 +823,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     <section id="generictypeconstraintlist">
     <title>Generic type constraints</title>
 
-        <para>A parameterized method, class, union, alias, or interface declaration may 
+        <para>A parameterized method, class, interface, or alias declaration may 
         declare constraints upon ordinary type parameters using the <literal>given</literal> 
         clause.</para>
         

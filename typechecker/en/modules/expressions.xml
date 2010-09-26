@@ -3545,40 +3545,6 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
         -->
         
         <!--
-        
-        <row><entry namest="first" nameend="last"><emphasis>Set operations</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>+</literal></entry>
-            <entry><literal>lhs + rhs</literal></entry>
-            <entry>union</entry>
-            <entry><literal>lhs.union(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-        </row>
-        <row>
-            <entry><literal>~</literal></entry>
-            <entry><literal>lhs ~ rhs</literal></entry>
-            <entry>intersection</entry>
-            <entry><literal>lhs.intersection(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-        </row>
-        <row>
-            <entry><literal>-</literal></entry>
-            <entry><literal>lhs - rhs</literal></entry>
-            <entry>complement</entry>
-            <entry><literal>lhs.complement(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-        </row>
-        
-        -->
-        
-        <!--
         <row>
             <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
