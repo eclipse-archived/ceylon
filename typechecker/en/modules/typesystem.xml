@@ -40,6 +40,10 @@
             the interface. A class may implement many interfaces.</para>
         </listitem>
         <listitem>
+            <para>A <emphasis>union</emphasis> is a type whose value may be a value
+            of any one of an enumerated list of classes.</para>
+        </listitem>
+        <listitem>
             <para>A <emphasis>generic type parameter</emphasis> is considered a type
             within the declararion that it parameterizes. In fact, it is an abstraction
             over many types: it generalizes the declaration to all types which could be 
@@ -429,6 +433,9 @@ String? firstWord = words[0];</programlisting>
                 <para>an interface may <emphasis>extend</emphasis> one or more other interfaces,</para>
             </listitem>
             <listitem>
+                <para>a union may <emphasis>satisfy</emphasis> one or more interfaces,</para>
+            </listitem>
+            <listitem>
                 <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
                 more interfaces or type parameters, or</para>
             </listitem>
@@ -497,8 +504,8 @@ String? firstWord = words[0];</programlisting>
         <title>Satisfaction</title>
     
         <para>A class may implement one or more interfaces. An interface may extend one
-        or more interfaces. A type parameter may satisfy one or more interfaces and, 
-        optionally, a class.</para>
+        or more interfaces. A union may satisfy one or more interfaces. A type parameter 
+        may satisfy one or more interfaces and, optionally, a class.</para>
         
         <programlisting>SatisfiedTypes = "satisfies" Type ("," Type)*</programlisting>
     
@@ -539,8 +546,8 @@ String? firstWord = words[0];</programlisting>
     <section id="generictypeparameterlist">
         <title>Generic type parameters</title>
     
-        <para>Methods, classes, interfaces and aliases may declare one or more generic type 
-        parameters.</para>
+        <para>Methods, classes, interfaces, unions, and aliases may declare one or more generic 
+        type parameters.</para>
         
         <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
         
@@ -549,12 +556,12 @@ String? firstWord = words[0];</programlisting>
         
         <itemizedlist>
         <listitem>
-            <para>A class or interface declaration with no type parameters defines exactly one 
-            type. A parameterized class or interface declaration defines a template for
-            producing types: one type for each possible combination of type arguments that 
-            satisfy the type constraints specified by the class or interface. The types of 
-            members of the this type are determined by replacing every appearance of each type 
-            parameter in the schema of the parameterized type definition with its type argument.</para>
+            <para>A type declaration with no type parameters defines exactly one type. A 
+            parameterized type declaration defines a template for producing types: one type for 
+            each possible combination of type arguments that satisfy the type constraints 
+            specified by the type. The types of members of the this type are determined by 
+            replacing every appearance of each type parameter in the schema of the 
+            parameterized type definition with its type argument.</para>
         </listitem>
         <listitem>
             <para>A method declaration with no type parameters defines exactly one operation 
@@ -815,8 +822,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     <section id="generictypeconstraintlist">
     <title>Generic type constraints</title>
 
-        <para>A parameterized method, class, alias, or interface declaration may declare 
-        constraints upon ordinary type parameters using the <literal>given</literal> clause.</para>
+        <para>A parameterized method, class, union, alias, or interface declaration may 
+        declare constraints upon ordinary type parameters using the <literal>given</literal> 
+        clause.</para>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     

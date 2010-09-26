@@ -765,19 +765,19 @@ else {
             -->
             
             <para>The <literal>case</literal>s of a <literal>switch</literal> are 
-            <emphasis>exhaustive</emphasis> if the switch expression type is an
-            <literal>abstract final</literal> class with an enumerated subtype list and:</para>
+            <emphasis>exhaustive</emphasis> if the switch expression type is a union type 
+            and:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>every enumerated <literal>case</literal> or <literal>object</literal> 
-                    subtype of the class is explicitly listed as an ordinary <literal>case</literal> 
+                    subtype of the union is explicitly listed as an ordinary <literal>case</literal> 
                     value of the <literal>switch</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>every enumerated <literal>class</literal> subtype of the class is 
-                    explicitly listed as a <literal>case (is ...)</literal> assignability 
-                    condition.</para>
+                    <para>every non-<literal>abstract</literal> enumerated <literal>class</literal> 
+                    subtype of the union is explicitly listed as a <literal>case (is ...)</literal> 
+                    assignability condition.</para>
                 </listitem>
             </itemizedlist>
 

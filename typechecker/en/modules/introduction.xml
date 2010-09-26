@@ -1102,7 +1102,7 @@ package assign greeting {
             
             <para>means, by definition,</para>
             
-            <programlisting>x.compare(y).isSmaller</programlisting>
+            <programlisting>x.compare(y)==smaller</programlisting>
             
             <para>The equality operator <literal>==</literal> is defined in terms of the 
             interface <literal>Equals&lt;T&gt;</literal>, which has a method named 
@@ -2073,37 +2073,31 @@ public class HelloHtml(Request request)
 class Person(String firstName, String lastName, Language lang) {
     package String firstName = firstName;
     package String lastName = lastName;
-    package Language lang = lang;
+    package Language language = lang;
 }</programlisting>
         
-        <para>Now, we'll create a class with an <literal>enumeration</literal>
-        of its <literal>case</literal>s&mdash;almost exactly like a Java 
+        <para>Now, we'll create a union which enumerates its 
+        <literal>case</literal>s&mdash;almost exactly like a Java 
         <literal>enum</literal>&mdash;to represent the built-in languages that
         our program supports.</para>
         
-        <programlisting>enumeration {
-    case english("Hello");
-    case french("Bonjour");
-    case spanish("Hola");
-    case italian("Ciao");
-}
-of
-doc "Represents a language"
-abstract final class Language(String hello) {
-    ...
-    
-    doc "The word for \"hello\" in the language"
-    package String hello = hello;
-    
+        <programlisting>choice Language 
+        satisfies Case&lt;Language&gt; {
+    case english;
+    case french;
+    case spanish;
+    case italian;
 }</programlisting>
 
+<!--
         <para>The use of <literal>...</literal> at the end of the list of enumerated
         instances means that it's possible to create other <literal>Language</literal>s.
         Very important in this case, since our list of languages is definitely not 
         exhaustive! If our list of instances were exhaustive, we would terminate it
         using <literal>;</literal>, thereby preventing other code from instantiating
         additional <literal>Language</literal>s.</para>
-        
+-->
+
         <para>Now we can define the set of people known to our application like
         this:</para>
         
@@ -2111,22 +2105,22 @@ abstract final class Language(String hello) {
         Person {
             firstName = "Gavin";
             lastName = "King";
-            language = Language.english;
+            language = english;
         },
         Person {
             firstName = "Emmanuel";
             lastName = "Bernard";
-            lang = Language.french;
+            language = french;
         },
         Person {
             firstName = "Pete";
             lastName = "Muir
-            lang = Language.english;
+            language = english;
         },
         Person {
             firstName = "Andrew";
             lastName = "Haley";
-            lang = Language.english;
+            language = english;
         }
     };</programlisting>
     
@@ -2199,22 +2193,22 @@ people {
     Person {
         firstName = "Gavin";
         lastName = "King";
-        language = Language.english;
+        language = english;
     },
     Person {
         firstName = "Emmanuel";
         lastName = "Bernard";
-        lang = Language.french;
+        language = french;
     },
     Person {
         firstName = "Pete";
         lastName = "Muir
-        lang = Language.english;
+        language = english;
     },
     Person {
         firstName = "Andrew";
         lastName = "Haley";
-        lang = Language.english;
+        language = english;
     }
 }
 class Hello(String? name) {
@@ -2235,8 +2229,14 @@ class Hello(String? name) {
             if (exists Person person = 
                     first (Person p in people) 
                         where (p.firstName &equals; name)) {
-                return "" person.lang.hello ", " 
-                    person.firstName " " person.lastName "!"
+                String word;
+                switch (language) {
+                    case (english) { word = "Hello"; }
+                    case (spanish) { word = "Hola"; }
+                    case (french) { word = "Bonjour"; }
+                    case (italian) { word = "Ciao"; }
+                }
+                return "" word ", " person.firstName " " person.lastName "!"
             }
             else {
                 return "Hello, " name "!";

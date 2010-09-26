@@ -294,18 +294,18 @@ InterfaceBody</programlisting>
         <section id="mutableinterfaces">
             <title>Mutable and immutable interfaces</title>
             
-        <para>An interface may be annotated <literal>mutable</literal>. If an interface is 
-        not annotated <literal>mutable</literal> it is called an <emphasis>immutable type</emphasis>, 
-        and it may not:</para>
+            <para>An interface may be annotated <literal>mutable</literal>. If an interface 
+            is not annotated <literal>mutable</literal> it is called an <emphasis>immutable 
+            type</emphasis>, and it may not:</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>declare or inherit <literal>mutable</literal> attributes, or</para>
-            </listitem>
-            <listitem>
-                <para>extend an interface annotated <literal>mutable</literal>.</para>
-            </listitem>
-        </itemizedlist>
+            <itemizedlist>
+                <listitem>
+                    <para>declare or inherit <literal>mutable</literal> attributes, or</para>
+                </listitem>
+                <listitem>
+                    <para>extend an interface annotated <literal>mutable</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
             
@@ -328,9 +328,8 @@ InterfaceBody</programlisting>
             the interface type itself is considered assignable to <literal>lang.Object</literal>.
             </para-->
         
-            <para>The semantics of interface inheritance are exactly the same as Java. An 
-            interface inherits all members (methods, attributes and member types) of every 
-            supertype.</para>
+            <para>An interface inherits all members (methods, attributes and member types) 
+            of every supertype.</para>
         
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
@@ -1037,77 +1036,113 @@ public Color_red red = Color_red();</programlisting>
         
     </section>
         
-    <section id="enumeratedsubtypes">
-        <title>Enumerated subtypes of a class</title>
+    </section>
+    
+    <section id="unions">
+        <title>Unions</title>
         
-        <para>An <literal>enumeration</literal> block is used to specify the 
-        <emphasis>enumerated subtypes</emphasis> of a class. The 
-        <literal>enumeration</literal> block must precede the class definition.</para>
+        <para>A <emphasis>union</emphasis> is a type with an enumerated list of
+        subtypes. An instance of any of these subtypes is assignable to the 
+        union type. A union may <literal>satisfy</literal> one or more interfaces, 
+        in which case each subtype must also satisfy these interfaces. A union
+        itself does not define members.</para>
         
-        <programlisting>EnumeratedTypes := "enumeration" "{" EnumeratedType+ "}" "of" Class</programlisting>
-        
-        <para>An enumerated subtype must be a <literal>class</literal> or 
-        <literal>object</literal> declaration that extends the class.</para>
+        <programlisting>Union := 
+Annotation* 
+"choice" TypeName TypeParams? 
+SatisfiedTypes? 
+TypeConstraints?
+UnionBody</programlisting>
 
-        <programlisting>EnumeratedType := Class | Object | AbbreviatedObject</programlisting>
+        <section id="unionbodies">
+            <title>Union bodies</title>
+            
+        <para>The body of a union contains a list of classes which are subtypes 
+        of the union type.</para>
         
-        <para>There is no difference between an enumerated subtype and an ordinary 
-        subtype declaration unless the class is declared <literal>final</literal>, 
-        in which case every subtype of the class must be declared as an enumerated
-        subtype of the class.</para>
+        <programlisting>UnionBody := "{" ConcreteType+ "}"</programlisting>
+        <programlisting>ConcreteType := Class | Object | UnionCase</programlisting>
         
-        <programlisting>enumeration {
-    object true extends Boolean() {}
-    object false extends Boolean() {}
-}
-of public abstract final class Boolean() { 
-    ... 
-}</programlisting>
+        <para>The subtypes may be classes, anonymous classes, or 
+        <literal>cases</literal>s. A subtype may be an <literal>abstract</literal>
+        class.</para>
         
-        <programlisting>enumeration {
-    object root extends Node("root") {}
-    class Branch(String name, Node parent) 
-            extends Node(name) {
-        ... 
+        <programlisting>module choice Node {
+    
+    module abstract class AbstractBranch() {}
+    
+    module object root extends AbstractBranch() {}
+    
+    module class Branch(String name, AbstractBranch parent) 
+            extends AbstractBranch() {
+        String name = name;
+        String parent = parent;
     }
-    class Leaf(String name, Node parent) 
-            extends Node(name) { 
-        ... 
+    
+    module class Leaf(String name, AbstractBranch parent) { 
+        String name = name;
+        String parent = parent;
     }
-}
-of public class Node(String name) {
-    ...
+    
 }</programlisting>
 
-        <para>A <literal>case object</literal> declaration with an empty body may be
-         abbreviated, since the <literal>extends</literal> clause is implied.</para>
+        <para>An <literal>case</literal> declaration is an abbreviated
+        <literal>object</literal> declaration.</para>
         
-        <programlisting>AbbreviatedObject := Annotation* "case" MemberName Arguments ";"</programlisting>
+        <programlisting>UnionCase := Annotation* "case" MemberName";"</programlisting>
         
-        <para>The following are exactly equivalent to the previous examples:</para>
+        <para>A <literal>case</literal> is an anonymous class that implements
+        <literal>Case&lt;T&gt;</literal> where <literal>T</literal> is the
+        union type, with exactly two members:</para>
         
-        <programlisting>enumeration { 
-    case true(); 
-    case false(); 
-}
-of public abstract final class Boolean() { 
-    ... 
+        <itemizedlist>
+            <listitem>
+                <para>The first implicit member overrides the <literal>string</literal>
+                attribute of <literal>Object</literal>, and returns the name 
+                of the <literal>case</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>The second implicit member overrides the <literal>test()</literal>
+                method of <literal>Comparable</literal>, comparing the argument
+                with the receiver using identity equality.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The following:</para>
+        
+        <programlisting>public choice Boolean 
+        satisfies Case&lt;Boolean&gt; { 
+    public case true; 
+    public case false; 
+}</programlisting>
+
+        <para>is exactly equivalent to:</para>
+        
+        <programlisting>public choice Boolean 
+        satisfies Case&lt;Boolean&gt; {
+    
+    public object true satisfies Case&lt;Boolean&gt; {
+        override String string {
+            return "true"
+        }
+        override Boolean test(Boolean that) {
+            return this==that;
+        }
+    }
+    
+    public object false satisfies Case&lt;Boolean&gt; {
+        override String string {
+            return "false"
+        }
+        override Boolean test(Boolean that) {
+            return this==that;
+        }
+    }
+    
 }</programlisting>
         
-        <programlisting>enumeration {
-    case root("root");
-    class Branch(String name, Node parent) 
-            extends Node(name) {
-        ... 
-    }
-    class Leaf(String name, Node parent) 
-            extends Node(name) { 
-        ... 
-    }
-}
-of public class Node(String name) {
-    ...
-}</programlisting>
+        </section>
+        
         <!--  
         <programlisting>public class DayOfWeek() {
     case sun,
@@ -1197,9 +1232,6 @@ of public class Node(String name) {
     
 }</programlisting>
         
-        <para>A class with declared <literal>case</literal>s implicitly implements 
-        <literal>ceylon.language.Selector</literal>.</para>
-        
         <para>Enumerated instances of a class are instantiated when the class is
         loaded by the virtual machine, with the specified arguments.</para>
 -->        
@@ -1245,8 +1277,78 @@ of public class Node(String name) {
 }</programlisting>
         -->
         
-    </section>
+        <section id="mutableunions">
+            <title>Mutable and immutable unions</title>
+            
+            <para>A union may be annotated <literal>mutable</literal>. If a union is not 
+            annotated <literal>mutable</literal> it is called an <emphasis>immutable 
+            type</emphasis>, and it may not:</para>
+        
+            <itemizedlist>
+                <listitem>
+                    <para>declare a <literal>mutable</literal> subtype, or</para>
+                </listitem>
+                <listitem>
+                    <para>satisfy an interface annotated <literal>mutable</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+            
+        <section id="unioninheritance">
+            <title>Union inheritance</title>
+            
+            <para>A union may satisfy any number of other interfaces.</para>
+        
+        <programlisting>module choice Node satisfies Observable {
     
+    abstract class ObservableNode()
+            satisfies Observable {
+        ...
+    }
+    
+    module abstract class AbstractBranch() 
+            extends ObservableNode()
+            satisfies Observable {}
+    
+    module object root extends AbstractBranch() {}
+    
+    module class Branch(String name, AbstractBranch parent) 
+            extends AbstractBranch() {
+        String name = name;
+        String parent = parent;
+    }
+    
+    module class Leaf(String name, AbstractBranch parent) 
+             extends ObservableNode()
+             satisfies Observable { 
+        String name = name;
+        String parent = parent;
+        ...
+    }
+    
+}</programlisting>
+        
+            <para>The types listed after the <literal>satisfies</literal> keyword are 
+            the supertypes. All supertypes of a union must be interfaces. A union may 
+            not extend the same interface twice (not even with distinct type arguments).</para>
+            
+            <para>Every non-<literal>abstract</literal> subtype of the union must be a 
+            subtype every interface satisfied by the union type.</para>
+            
+            <!--para>
+            Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
+            the interface type itself is considered assignable to <literal>lang.Object</literal>.
+            </para-->
+        
+            <para>An union inherits all members (methods, attributes and member types) 
+            of every supertype.</para>
+        
+            <para>The schema of the inherited members is formed by substituting type 
+            arguments specified in the <literal>satisfies</literal> clause.</para>
+            
+        </section>
+        
     </section>
     
     <section id="methods">

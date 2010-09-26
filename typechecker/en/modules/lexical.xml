@@ -99,8 +99,7 @@
         
         <para><literal>
         import
-        class interface alias object
-        enumeration of
+        class interface choice alias object
         satisfies extends abstracts
         in out
         given

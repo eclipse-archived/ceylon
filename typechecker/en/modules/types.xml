@@ -407,23 +407,16 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[enumeration { 
-    case true(); 
-    case false(); 
-}
-of public abstract final class Boolean()
-        satisfies Case<Boolean> {
-    
-    override Boolean test(Boolean value) {
-        return this===value
-    }
-
+        <programlisting><![CDATA[public choice Boolean 
+        satisfies Case<Boolean> { 
+    public case false; 
+    public case true; 
 }]]></programlisting>
 
     </section>
     
-    <section id="casesandselectors">
-        <title>Cases and selectors</title>
+    <section id="cases">
+        <title>Cases</title>
         
         <para>The interface <literal>Case</literal> represents a
         type that may be used as a <literal>case</literal> in the 
@@ -478,31 +471,6 @@ of public abstract final class Boolean()
     }
         
 }]]></programlisting>
-
-        <para>Classes with enumerated <literal>case</literal>s implicitly implement 
-        <literal>Selector</literal>.</para>
-        
-        <programlisting><![CDATA[public interface Selector {
-    public String name;
-    public small Integer ordinal;
-}]]></programlisting>
-
-        <para>The implementations of <literal>equals()</literal>, <literal>hash</literal>
-        and <literal>string</literal> provided by the <literal>BaseObject</literal> class 
-        handle subclasses that implement <literal>Selector</literal> as a special case.</para>
-
-        <para>This extension allows selectors to be used as cases in a <literal>switch</literal>
-        statement:</para>
-        
-        <programlisting>public extension class SelectorCase&lt;X&gt;(X this)
-        given X extends Selector {
-    override Boolean test(X x) {
-        return x.ordinal == this.ordinal
-    }
-}</programlisting>
-
-        <para>Of course, the compiler is permitted to optimize away the call to this
-        extension.</para>
 
     </section>
     
@@ -1069,32 +1037,22 @@ while (exists local value = indexed.indexedValue(i)) {
     
 }]]></programlisting>
         
-        <programlisting><![CDATA[enumeration {
+        <programlisting><![CDATA[doc "The result of a comparison between two
+     objects."
+public choice Comparison 
+        satsifies Case<Comparison> {
         
     doc "The receiving object is larger than 
          the given object."
-    case larger();
+    case larger;
     
     doc "The receiving object is smaller than 
          the given object."
-    case smaller();
+    case smaller;
     
     doc "The receiving object is exactly equal 
          to the given object."
-    case equal();
-    
-}
-of 
-doc "The result of a comparison between two
-     objects."
-public abstract final class Comparison() {
-    
-    public Boolean isLarger = equals(larger);
-    public Boolean isSmaller = equals(smaller);
-    public Boolean isEqual = equals(equal);
-    public Boolean isUnequal = !isEqual;
-    public Boolean isLargeAs = !isSmaller;
-    public Boolean isSmallAs = !isLarger;
+    case equal;
     
 }]]></programlisting>
 
@@ -2545,15 +2503,14 @@ while (i<=max) {
         <para>The class <literal>LogPriority</literal> defines an extensible set of
         levels of importance for log messages.</para>
 
-        <programlisting><![CDATA[enumeration {
-    case trace();
-    case info();
-    case warn();
-    case error();
-} 
-of
-doc "The severity of a log message." 
-public abstract final class LogPriority() {}]]></programlisting>
+        <programlisting><![CDATA[doc "The severity of a log message."
+public choice LogPriority 
+        satisfies Case<LogPriority> {
+    case trace;
+    case info;
+    case warn;
+    case error;
+}]]></programlisting>
 
         <para>The class <literal>LogMessage</literal> describes a log message:</para>
         
