@@ -1086,6 +1086,9 @@ UnionBody</programlisting>
     
 }</programlisting>
 
+        <para>A union which declares a type parameter may not have <literal>object</literal> 
+        or <literal>case</literal> subtypes.</para>
+
         <para>An <literal>case</literal> declaration is an abbreviated
         <literal>object</literal> declaration.</para>
         
