@@ -49,9 +49,9 @@ Body?</programlisting>
         <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class, 
         interface or type alias&mdash;or a method.</para>
         
-        <programlisting>ToplevelDeclaration := TypeDeclaration | Method</programlisting>
+        <programlisting>ToplevelDeclaration := TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
-        <programlisting>TypeDeclaration := Class | Object | Interface | Alias | EnumeratedTypes</programlisting>
+        <programlisting>TypeDeclaration := Class | Object | Interface | Union | Alias</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -63,10 +63,7 @@ Body?</programlisting>
         attribute named <literal>pi</literal> must be defined in a file named
         <literal>pi.ceylon</literal>. Unlike Java, a compilation unit may contain multiple 
         toplevel class or method declarations with the same name.</para>
-        
-        <comment><para>TODO: Does Ceylon support toplevel attributes? Perhaps just 
-        non-<literal>mutable</literal> toplevel attributes?</para></comment>
-            
+                    
         </section>
         
         <section id="toplevelexpressions">
