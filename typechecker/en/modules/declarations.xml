@@ -693,8 +693,8 @@ public class Person { ... }</programlisting>
         the block containing the declaration is relaxed.</para>
         
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
-        OK to let you have expression statements in the second part of the class body, just not
-        specification or initialization statements.</para></comment>
+        OK to let you have expression statements and control structures in the second part of the 
+        class body, just not specification or initialization statements.</para></comment>
         
     </section>
            
