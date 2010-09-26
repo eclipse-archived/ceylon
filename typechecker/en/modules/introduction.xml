@@ -351,6 +351,10 @@
         <listitem>
             <para><literal>ceylon.html</literal> - the HTML construction kit</para>
         </listitem>
+        <listitem>
+            <para><literal>ceylon.compiler</literal> - a compiler for Ceylon source
+            code</para>
+        </listitem>
     </itemizedlist>
     
     <section id="parsingceylon">
