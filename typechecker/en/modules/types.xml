@@ -2854,9 +2854,10 @@ public X first<X>(iterated Iterable<X> elements,
         <programlisting><![CDATA[doc "Iterate elements and return those for which 
      the first block evaluates to true, ordered 
      using the second block, if specified."
-public List<X> from<X>(iterated Iterable<X> elements,
-                       Boolean where(coordinated X x),
-                       Comparable by(coordinated X x) = naturalOrder) {
+public List<X> from<X,C>(iterated Iterable<X> elements,
+                         Boolean where(coordinated X x),
+                         C by(coordinated X x) = naturalOrder) 
+        given C satisfies Comparable<C> {
     X select(X x) { return x }
     return from(elements, where, select, by)
 }]]></programlisting>
@@ -2865,9 +2866,10 @@ public List<X> from<X>(iterated Iterable<X> elements,
      the first block. Build a list of the resulting 
      values, ordered using the second block, if 
      specified."
-public List<Y> from<X,Y>(iterated Iterable<X> elements,
-                         Y select(coordinated X x),
-                         Comparable by(coordinated X x) = naturalOrder)  {
+public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
+                           Y select(coordinated X x),
+                           C by(coordinated X x) = naturalOrder) 
+        given C satisfies Comparable<C> {
     Boolean where(X x) { return true }
     return from(elements, where, select, by)
 }]]></programlisting>
@@ -2877,10 +2879,11 @@ public List<Y> from<X,Y>(iterated Iterable<X> elements,
      these, evaluate the second block. Build a list 
      of the resulting values, ordered using the 
      third block, if specified."
-public List<Y> from<X,Y>(iterated Iterable<X> elements,
-                         Boolean where(coordinated X x), 
-                         Y select(coordinated X x),
-                         Comparable by(coordinated X x) = naturalOrder) {
+public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
+                           Boolean where(coordinated X x), 
+                           Y select(coordinated X x),
+                           C by(coordinated X x) = naturalOrder) 
+        given C satisfies Comparable<C> {
     OpenList<Y> list = ArrayList<Y>();
     for (X x in elements) {
         if ( where(x) ) {
