@@ -83,7 +83,8 @@
         
 }]]></programlisting>
     
-        <para>All interface types are assignable to <literal>Object</literal>.</para>
+        <para>All interface and union types are assignable to 
+        <literal>Object</literal>.</para>
     
         <para>Classes which are optimized by the compiler to Java primitive 
         types extend <literal>Object</literal> directly, since there is no 
@@ -545,14 +546,11 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
 public object null {
 
     public extension class Nothing<out X>() 
-            extends X?() {
+            extends X?() 
+            satisfies Case<X?> {
         override Boolean defined { 
             return false 
         }
-    }
-
-    public extension class NullCase<X>() 
-            satisfies Case<X?> {
         override Boolean test(X? value) {
             return !value exists;
         }

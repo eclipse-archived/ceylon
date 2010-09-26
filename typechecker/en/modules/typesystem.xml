@@ -272,9 +272,10 @@
                 <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
             </listitem>
             <listitem>
-                <para>Interfaces are objects: all interfaces are subtypes of 
-                <literal>ceylon.language.Object</literal>. Conversely, only a subtype of 
-                <literal>ceylon.language.Object</literal> may satisfy an interface.</para>
+                <para>Interfaces and unions are objects: all interfaces and unions are subtypes 
+                of <literal>ceylon.language.Object</literal>. Conversely, only a subtype of 
+                <literal>ceylon.language.Object</literal> may satisfy an interface or be an
+                enumerated subtype of a union.</para>
             </listitem>
             <listitem>
                 <para>Single root: all types are subtypes of <literal>ceylon.language.Void</literal>.</para>
