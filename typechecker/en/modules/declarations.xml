@@ -1186,100 +1186,8 @@ UnionBody</programlisting>
     public String name = name;
     
 }</programlisting>
+-->
 
-        <programlisting>public class TransactionPropagation(void inProgress(), void notInProgress()) {
-    
-    case required { 
-        void inProgress() {}
-        void notInProgress() {
-            tx.begin();
-        }
-    },
-    
-    case supports {
-        void inProgress() {}
-        void notInProgress() {}
-    },
-    
-    case mandatory { 
-        void inProgress() {}
-        void notInProgress() {
-            throw TransactionMandatory()
-        }
-    },
-    
-    case notSupported { 
-        void inProgress() {
-            throw TransactionNotSupported()
-        }
-        void notInProgress() {}
-    },
-    
-    case requiresNew { 
-        void inProgress() {
-            throw TransactionRequiresNew()
-        }
-        void notInProgress() {
-            tx.begin();
-        }
-    };
-    
-    public void propagate(Transaction tx) {
-        if (tx.inProgress) {
-            inProgress();
-        }
-        else {
-            notInProgress();
-        }
-    }
-    
-}</programlisting>
-        
-        <para>Enumerated instances of a class are instantiated when the class is
-        loaded by the virtual machine, with the specified arguments.</para>
--->        
-        <!--
-        <para>The above declarations are equivalent to the following Java declarations:</para>
-        
-        <programlisting>public class DayOfWeek 
-        extends Selector&lt;DayOfWeek&gt; { 
-        
-    public static DayOfWeek mon = new DayOfWeek("mon", 0); 
-    public static DayOfWeek tues = new DayOfWeek("tues", 1);
-    public static DayOfWeek wed = new DayOfWeek("wed, 2");
-    public static DayOfWeek thurs = new DayOfWeek("thurs", 3);
-    public static DayOfWeek fri = new DayOfWeek("fri", 4);
-    public static DayOfWeek sat = new DayOfWeek("sat", 5);
-    public static DayOfWeek sun = new DayOfWeek("sun", 6);
-    
-    private DayOfWeek(String id, int ord) {
-        super(id, ord);
-    }
-    
-}</programlisting>
-        
-        <programlisting>public class DayOfWeek 
-        extends Selector&lt;DayOfWeek&gt; {
-        
-    private final ReadAttribute&lt;String&gt; name;
-       
-    public static DayOfWeek mon = new DayOfWeek("Monday", "mon", 0); 
-    public static DayOfWeek tues = new DayOfWeek("Tuesday", "tues", 1);
-    public static DayOfWeek wed = new DayOfWeek("Wednesday", "wed, 2");
-    public static DayOfWeek thurs = new DayOfWeek("Thursday", "thurs", 3);
-    public static DayOfWeek fri = new DayOfWeek("Friday", "fri", 4);
-    public static DayOfWeek sat = new DayOfWeek("Saturday", "sat", 5);
-    public static DayOfWeek sun = new DayOfWeek("Sunday", "sun", 6);
-     
-    private DayOfWeek(String name, String id, int ord)
-    {
-        super(id, ord);
-        name = new SimpleReadAttribute(name);
-    }
-    
-}</programlisting>
-        -->
-        
         <section id="mutableunions">
             <title>Mutable and immutable unions</title>
             
@@ -1348,6 +1256,73 @@ UnionBody</programlisting>
             <para>The schema of the inherited members is formed by substituting type 
             arguments specified in the <literal>satisfies</literal> clause.</para>
             
+        <programlisting>public interface TransactionPropagation {
+    void propagate(Transaction tx);
+}
+
+public choice TransactionPropagationStyle 
+        satisfies TransactionPropagation {
+        
+    abstract class BaseTransactionPropagation()
+            satisfies TransactionPropagation {
+        
+        override void propagate(Transaction tx) {
+            if (tx.inProgress) {
+                inProgress(tx);
+            }
+            else {
+                notInProgress(tx);
+            }
+        }
+        
+        package void inProgress(Transaction tx);
+        
+        package void notInProgress(Transaction tx);
+        
+    }
+    
+    public object required 
+            extends BaseTransactionPropagation() { 
+        override void inProgress(Transaction tx) {}
+        override void notInProgress(Transaction tx) {
+            tx.begin();
+        }
+    }
+    
+    public object supports 
+            extends BaseTransactionPropagation() {
+        override void inProgress(Transaction tx) {}
+        override void notInProgress(Transaction tx) {}
+    }
+    
+    public object mandatory 
+            extends BaseTransactionPropagation() { 
+        override void inProgress(Transaction tx) {}
+        override void notInProgress(Transaction tx) {
+            throw TransactionMandatory()
+        }
+    }
+    
+    public object notSupported 
+            extends BaseTransactionPropagation() { 
+        override void inProgress(Transaction tx) {
+            throw TransactionNotSupported()
+        }
+        override void notInProgress(Transaction tx) {}
+    }
+    
+    public object requiresNew 
+            extends BaseTransactionPropagation() { 
+        override void inProgress(Transaction tx) {
+            throw TransactionRequiresNew()
+        }
+        override void notInProgress(Transaction tx) {
+            tx.begin();
+        }
+    }
+    
+}</programlisting>
+        
         </section>
         
     </section>
