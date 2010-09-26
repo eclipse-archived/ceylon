@@ -1140,6 +1140,9 @@ UnionBody</programlisting>
     }
     
 }</programlisting>
+
+            <comment><para>TODO: should we let a union declare abstract
+            methods/attributes?</para></comment>
         
         </section>
         
