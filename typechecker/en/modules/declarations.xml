@@ -1778,6 +1778,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>A toplevel attribute may not be <literal>mutable</literal>.</para>
         
+        <para>There is no overloading for attributes. A class may not declare or inherit 
+        multiple attributes with the same name.</para>
+        
         <section id="attributebodies">
             <title>Attribute bodies</title>
         
@@ -1797,9 +1800,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         in which case it may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier withing the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
-        
-        <para>The is no overloading for attributes. A class may not declare or inherit 
-        multiple attributes with the same name.</para>
         
         <!--
         <para>
