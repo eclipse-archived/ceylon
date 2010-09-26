@@ -11,7 +11,7 @@
     are, in general, also syntactically valid in the body of a nested declaration or 
     of a control structure, and vice-versa.</para>
     
-    <para>There exist three exceptions to this rule:</para>
+    <para>There exist two exceptions to this rule:</para>
     
     <itemizedlist>
         <listitem>
