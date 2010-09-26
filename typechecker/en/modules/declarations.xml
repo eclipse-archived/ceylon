@@ -522,11 +522,11 @@ public class Person { ... }</programlisting>
         current instance of the containing class or interface&mdash;the receiving instance 
         of the instantiation expression&mdash;without explicitly specifying the receiver.</para>
         
-        <para>A class may be declared inside the body of a class, method, or attribute, in 
-        which case the body of the class may refer to any non-<literal>mutable</literal> 
-        local, block local attribute getter or block local method declared earlier within 
-        the containing scope. It may not refer to <literal>mutable</literal> locals from 
-        the containing scope.</para>
+        <para>A class may be declared inside the body of a method, or attribute, in which 
+        case the body of the class may refer to any non-<literal>mutable</literal> local, 
+        block local attribute getter or block local method declared earlier within the 
+        containing scope. It may not refer to <literal>mutable</literal> locals from the 
+        containing scope.</para>
 
     </section>
         
