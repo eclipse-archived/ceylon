@@ -1067,19 +1067,19 @@ UnionBody</programlisting>
         <literal>cases</literal>s. A subtype may be an <literal>abstract</literal>
         class.</para>
         
-        <programlisting>module choice Node {
+        <programlisting>choice Node {
     
-    module abstract class AbstractBranch() {}
+    abstract class Parent() {}
     
-    module object root extends AbstractBranch() {}
+    object root extends Parent() {}
     
-    module class Branch(String name, AbstractBranch parent) 
-            extends AbstractBranch() {
+    class Branch(String name, Parent parent) 
+            extends ParentNode() {
         String name = name;
         String parent = parent;
     }
     
-    module class Leaf(String name, AbstractBranch parent) { 
+    class Leaf(String name, Parent parent) { 
         String name = name;
         String parent = parent;
     }
@@ -1300,28 +1300,26 @@ UnionBody</programlisting>
             
             <para>A union may satisfy any number of other interfaces.</para>
         
-        <programlisting>module choice Node satisfies Observable {
+        <programlisting>choice Node satisfies Observable {
     
     abstract class ObservableNode()
             satisfies Observable {
         ...
     }
     
-    module abstract class AbstractBranch() 
-            extends ObservableNode()
-            satisfies Observable {}
+    abstract class Parent() 
+            extends ObservableNode() {}
     
-    module object root extends AbstractBranch() {}
+    object root extends Parent() {}
     
-    module class Branch(String name, AbstractBranch parent) 
-            extends AbstractBranch() {
+    class Branch(String name, Parent parent) 
+            extends Parent() {
         String name = name;
         String parent = parent;
     }
     
-    module class Leaf(String name, AbstractBranch parent) 
-             extends ObservableNode()
-             satisfies Observable { 
+    class Leaf(String name, Parent parent) 
+             extends ObservableNode() { 
         String name = name;
         String parent = parent;
         ...
