@@ -26,7 +26,6 @@ tokens {
     CLASS_BODY;
     CLASS_DECL;
     OBJECT_DECL;
-    CASE_DECL;
     CONDITION;
     DO_BLOCK;
     DO_ITERATOR;
@@ -42,7 +41,6 @@ tokens {
     IMPORT_WILDCARD;
     IMPORT_PATH;
     INIT_EXPR;
-    ENUMERATION_DECL;
     INTERFACE_DECL;
     MEMBER_NAME;
     MEMBER_TYPE;
@@ -119,15 +117,7 @@ typeDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
     | objectDeclaration
     -> ^(OBJECT_DECL objectDeclaration)
-    ;
-
-enumeratedTypeDeclaration
-    : classDeclaration
-    -> ^(CLASS_DECL classDeclaration)
-    | objectDeclaration
-    -> ^(OBJECT_DECL objectDeclaration)
-    | caseDeclaration
-    -> ^(CASE_DECL caseDeclaration)
+    | unionDeclaration
     ;
 
 /*toplevelExpression
@@ -194,14 +184,13 @@ declarationOrStatement
 //      methods from attributes at this stage. Why not
 //      do it later?
 declaration
-    : 
-    enumeratedTypes?
+    :
     annotations? 
     ( 
         memberDeclaration 
-      -> ^(MEMBER_DECL memberDeclaration annotations? enumeratedTypes?)
+      -> ^(MEMBER_DECL memberDeclaration annotations?)
       | typeDeclaration 
-      -> ^(TYPE_DECL typeDeclaration annotations? enumeratedTypes?)
+      -> ^(TYPE_DECL typeDeclaration annotations?)
     )
 /*    (((memberHeader memberParameters) => 
             (mem=memberDeclaration 
@@ -212,16 +201,6 @@ declaration
             -> ^(TYPE_DECL $typ $ann?))
     | (inst=instance
             -> ^(INSTANCE $inst $ann?)))*/
-    ;
-
-enumeratedTypes
-    : 'enumeration' '{' enumeratedType+ '}' 'of'
-    -> ^(ENUMERATION_DECL enumeratedType+)
-    ;
-
-enumeratedType
-    : annotations? enumeratedTypeDeclaration
-    -> ^(TYPE_DECL enumeratedTypeDeclaration annotations?)
     ;
 
 //special rule for syntactic predicates
@@ -236,12 +215,12 @@ declarationStart
 declarationKeyword
     : 'local' 
     | 'assign' 
-    | 'void' 
-    | 'case'
+    | 'void'
     | 'object'
     | 'class' 
     | 'interface' 
     | 'alias'
+    | 'choice'
     ;
 
 //by making these things keywords, we reduce the amount of
@@ -396,6 +375,17 @@ classDeclaration
         classBody
     ;
 
+unionDeclaration
+    :
+        'choice'!
+        typeName
+        typeParameters?
+        caseTypes
+        satisfiedTypes?
+        typeConstraints?
+        ';'
+    ;
+
 objectDeclaration
     :
         'object'!
@@ -403,14 +393,6 @@ objectDeclaration
         extendedType?
         satisfiedTypes?
         classBody
-    ;
-
-caseDeclaration
-    : 
-        'case'!
-        memberName 
-        argumentsWithFunctionalArguments 
-        ';'!
     ;
 
 classBody
@@ -434,6 +416,15 @@ abstractedType
     -> ^(ABSTRACTS_LIST type)
     ;
     
+caseTypes
+    : 'of' caseType (',' caseType)*
+    -> ^(ABSTRACTS_LIST caseType+)
+    ;
+
+caseType 
+    : type | memberName
+    ;
+
 typeConstraint
     : 'given' typeName formalParameters? satisfiedTypes? abstractedType?
     -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
