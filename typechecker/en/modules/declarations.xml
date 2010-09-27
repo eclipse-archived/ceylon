@@ -243,9 +243,9 @@ InterfaceBody</programlisting>
         <para>To obtain a concrete instance of an interface, it is necessary to define 
         and instantiate a class that implements the interface, or define an object that
         implements the interface.</para>
-
-        <section id="interfacebodies">
-            <title>Interface bodies</title>
+        
+        <!--<section id="interfacebodies">
+            <title>Interface bodies</title>-->
 
         <para>The body of an interface contains:</para>
         
@@ -261,9 +261,9 @@ InterfaceBody</programlisting>
         
         <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
         
-        <para>Interface method and attribute declarations may not specify implementation.</para>
-
         <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | Class | Interface</programlisting>
+
+        <para>Interface method and attribute declarations may not specify implementation.</para>
 
         <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
         
@@ -279,13 +279,16 @@ InterfaceBody</programlisting>
 }</programlisting>
         -->
         
-        <para>Interface members inherit the visibility modifier of the interface.</para>
-        
-        <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
-          
         <comment><para>TODO: if methods of interfaces can define defaulted parameters,
         precisely how do we implement that?</para></comment>
+
+        <section id="interfacemembervisibility">
+            <title>Interface member visibility</title>
+            
+            <para>Interface members inherit the visibility modifier of the interface.</para>
         
+            <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
+            
         </section>
         
         <section id="mutableinterfaces">
@@ -365,6 +368,43 @@ ClassBody</programlisting>
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
         
+    <!--<section id="classbodies">
+        <title>Class bodies</title>-->
+        
+        <para>The body of a class contains:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>member (method, attribute, and member class) declarations,</para>
+            </listitem>
+            <listitem>
+                <para>nested interface declarations, and</para>
+            </listitem>
+            <listitem>
+                <para>instance initialization code.</para>
+            </listitem>
+        </itemizedlist>
+
+        <programlisting>ClassBody := "{" (Declaration | Statement)* "}"</programlisting>
+        
+        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
+        
+        <!--
+        <para>The body of a class may invoke, evaluate or assign members of the instance 
+        being initialized&mdash;the current instance of the class&mdash;without explicitly 
+        specifying the receiver.</para>
+        
+        <para>The body of a member class may invoke, evaluate or assign members of the 
+        current instance of the containing class or interface&mdash;the receiving instance 
+        of the instantiation expression&mdash;without explicitly specifying the receiver.</para>
+        
+        <para>A class may be declared inside the body of a method, or attribute, in which 
+        case the body of the class may refer to any non-<literal>mutable</literal> local, 
+        block local attribute getter or block local method declared earlier within the 
+        containing scope. It may not refer to <literal>mutable</literal> locals from the 
+        containing scope.</para>
+        -->
+
     <section id="initializerparameters">
         <title>Initializer parameters</title>
         
@@ -476,60 +516,6 @@ public class Person { ... }</programlisting>
     
     </section>
     
-    <section id="classbodies">
-        <title>Class bodies</title>
-        
-        <para>The body of a class contains:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>member (method, attribute, and member class) declarations,</para>
-            </listitem>
-            <listitem>
-                <para>nested interface declarations, and</para>
-            </listitem>
-            <listitem>
-                <para>instance initialization code.</para>
-            </listitem>
-        </itemizedlist>
-
-        <programlisting>ClassBody := "{" (Declaration | Statement)* "}"</programlisting>
-        
-        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
-        
-        <para>Ordinarily, a declaration that occurs in a block of code is a block local
-        declaration&mdash;it is visible only to statements and declarations that occur
-        later in the same block. This rule is relaxed for certain declarations that occur 
-        directly inside the body of a class:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para>declarations with explicit visibility modifiers&mdash;whose 
-                visibility is determined by the modifier, and</para>
-            </listitem>
-            <listitem>
-                <para>declarations that occur in the second part of the body of the 
-                class, after the last statement of the initializer&mdash;which are visible 
-                to all other declarations in the second part of the body of the class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The body of a class may invoke, evaluate or assign members of the instance 
-        being initialized&mdash;the current instance of the class&mdash;without explicitly 
-        specifying the receiver.</para>
-        
-        <para>The body of a member class may invoke, evaluate or assign members of the 
-        current instance of the containing class or interface&mdash;the receiving instance 
-        of the instantiation expression&mdash;without explicitly specifying the receiver.</para>
-        
-        <para>A class may be declared inside the body of a method, or attribute, in which 
-        case the body of the class may refer to any non-<literal>mutable</literal> local, 
-        block local attribute getter or block local method declared earlier within the 
-        containing scope. It may not refer to <literal>mutable</literal> locals from the 
-        containing scope.</para>
-
-    </section>
-        
     <section id="initializersection">
         <title>Initializer section</title>
     
@@ -695,6 +681,27 @@ public class Person { ... }</programlisting>
         
     </section>
            
+    <section id="classmembervisibility">
+        <title>Class member visibility</title>
+        
+        <para>Ordinarily, a declaration that occurs in a block of code is a block local
+        declaration&mdash;it is visible only to statements and declarations that occur
+        later in the same block. This rule is relaxed for certain declarations that occur 
+        directly inside the body of a class:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>declarations with explicit visibility modifiers&mdash;whose 
+                visibility is determined by the modifier, and</para>
+            </listitem>
+            <listitem>
+                <para>declarations that occur in the second part of the body of the 
+                class, after the last statement of the initializer&mdash;which are visible 
+                to all other declarations in the second part of the body of the class.</para>
+            </listitem>
+        </itemizedlist>
+    </section>
+        
     <section id="abstractclasses">
         <title>Abstract classes</title>
         
@@ -1051,8 +1058,8 @@ SatisfiedTypes?
 TypeConstraints?
 UnionBody</programlisting>
 
-        <section id="unionbodies">
-            <title>Union bodies</title>
+        <!--<section id="unionbodies">
+            <title>Union bodies</title>-->
             
         <para>The body of a union contains a list of classes which are subtypes 
         of the union type.</para>
@@ -1140,8 +1147,6 @@ UnionBody</programlisting>
 
             <comment><para>TODO: should we let a union declare abstract
             methods/attributes?</para></comment>
-        
-        </section>
         
         <!--  
         <programlisting>public class DayOfWeek() {
@@ -1341,6 +1346,41 @@ public choice TransactionPropagationStyle
         
         <programlisting>MethodHeader := Annotation* (InferableType | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
         
+        <para>The Ceylon compiler preserves the names of method parameters.</para>
+        
+        <!--<section id="methodbodies">
+            <title>Method bodies</title>-->
+        
+        <para>A method implementation may be specified using either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a block of code, or</para>
+            </listitem>
+            <listitem>
+                <para>a reference to another method.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <!--
+        <para>A member method body may invoke, evaluate or assign members of the instance
+        being invoked&mdash;the current instance of the class which defines the 
+        method&mdash;without explicitly specifying the receiver.</para>
+        
+        <para>A member method body of a member class may invoke, evaluate or assign members 
+        of the current instance of the containing class or interface (the containing instance 
+        of the instance upon which the method was invoked) without explicitly specifying the 
+        receiver.</para>
+        
+        <para>A toplevel method body may not refer to <literal>this</literal> or 
+        <literal>super</literal>, since there is no current instance.</para>
+        
+        <para>A method may be declared inside the body of another method or attribute, in 
+        which case it may refer to any non-<literal>mutable</literal> local, block local 
+        attribute getter or block local method declared earlier within the containing scope. 
+        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        -->
+        
         <section id="callabletype">
             <title>Callable type of a method</title>
             
@@ -1366,41 +1406,6 @@ public choice TransactionPropagationStyle
         
         <para>A sequenced parameter is considered of type <literal>T[]</literal> where 
         <literal>T...</literal> is the declared sequenced type.</para>
-        
-        </section>
-        
-        <section id="methodbodies">
-            <title>Method bodies</title>
-        
-        <para>A method implementation may be specified using either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a block of code, or</para>
-            </listitem>
-            <listitem>
-                <para>a reference to another method.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A member method body may invoke, evaluate or assign members of the instance
-        being invoked&mdash;the current instance of the class which defines the 
-        method&mdash;without explicitly specifying the receiver.</para>
-        
-        <para>A member method body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class or interface (the containing instance 
-        of the instance upon which the method was invoked) without explicitly specifying the 
-        receiver.</para>
-        
-        <para>A toplevel method body may not refer to <literal>this</literal> or 
-        <literal>super</literal>, since there is no current instance.</para>
-        
-        <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any non-<literal>mutable</literal> local, block local 
-        attribute getter or block local method declared earlier within the containing scope. 
-        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
-        
-        <para>The Ceylon compiler preserves the names of method parameters.</para>
         
         </section>
         
@@ -1778,9 +1783,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>There is no overloading for attributes. A class may not declare or inherit 
         multiple attributes with the same name.</para>
         
-        <section id="attributebodies">
-            <title>Attribute bodies</title>
-        
+        <!--<section id="attributebodies">
+            <title>Attribute bodies</title>-->
+        <!-- 
         <para>A member attribute body may invoke, evaluate or assign members of the 
         instance being invoked&mdash;the current instance of the class which defines the 
         method&mdash;without explicitly specifying the receiver.</para>
@@ -1797,7 +1802,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         in which case it may refer to any non-<literal>mutable</literal> local, block local 
         attribute getter or block local method declared earlier withing the containing scope. 
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
-        
+        -->
         <!--
         <para>
         An attribute declaration is equivalent to a Java method declaration together with 
@@ -1805,8 +1810,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
         </para>
         -->
-        
-        </section>
         
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
@@ -1825,7 +1828,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
         <programlisting>Initializer := ":=" Expression</programlisting>
 
-        <para>Formal parameters of classes and methods are also considered to be simple attributes.</para>
+        <para>Formal parameters of classes and methods are also considered to be simple 
+        attributes.</para>
         
         <!--
         <para>For a simple attribute that is not a local, the Java field is initialized to an 
@@ -1932,7 +1936,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             method with the content of the getter block. For example: </para>
             -->
                     
-        <programlisting>public Float total {
+            <programlisting>public Float total {
     Float sum := 0.0;
     for (LineItem li in lineItems) {
         sum += li.amount;
@@ -1954,12 +1958,12 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             -->
             
-        <para>A block local attribute getter with a single <literal>return</literal>
-        directive may be declared using the keyword <literal>local</literal> in place of 
-        the explicit type declaration. The type of the local or attribute is inferred to 
-        be the type of the returned expression.</para>
+            <para>A block local attribute getter with a single <literal>return</literal>
+            directive may be declared using the keyword <literal>local</literal> in place of 
+            the explicit type declaration. The type of the local or attribute is inferred to 
+            be the type of the returned expression.</para>
         
-        <programlisting>local name { 
+            <programlisting>local name { 
     return Name(firstName, initial, lastName) 
 }</programlisting>
                 

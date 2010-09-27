@@ -28,11 +28,14 @@
         </listitem>
     </itemizedlist>
         
-    <para>The scope of a declaration is governed by the block in which it occurs.</para>
-    
-    <comment><para>TODO: a named argument list looks very much like a block, but is not
-    currently defined that way. The language would be more regular if we decided to just
+    <comment><para>TODO: a named argument list looks very much like a block, but is not 
+    currently defined that way. The language would be more regular if we decided to just 
     make it a block.</para></comment>
+        
+    <section id="declarationvisibilityandblockstructure">
+        <title>Declaration visibility and block structure</title>
+    
+        <para>The scope of a declaration is governed by the block in which it occurs.</para>
     
     <section id="nameresolution">
         <title>Name resolution</title>
@@ -144,15 +147,85 @@
     Float x { return y }
     Float y { return x }
 }</programlisting>
-
-        <section id="usingthisandouter">
-            <title>Accessing hidden members</title>
-            
-            <para>When a member is hidden by a block local declaration, the member may be
-            accessed via the self reference <literal>this</literal> or via the outer instance
-            reference <literal>outer</literal>. For example:</para>
+    
+    </section>
+    
+        <section id="nesteddeclarations">
+            <title>Nested declarations</title>
         
-            <programlisting>public class Item(String name) {
+            <para>Blocks may contain declarations. A declaration that occurs in a block is a 
+            block local declaration&mdash;it is visible only to statements and declarations 
+            that occur later in the same block, and therefore it may not declare a visibility 
+            modifier.</para>
+            
+            <para>The body of a nested class, method, or attribute declaration may invoke, 
+            evaluate, or assign any class, method, or attribute whose declaration is in scope 
+            at the nested declaration, except for <literal>mutable</literal> locals. If the 
+            nested declaration is nested inside a class or interface declaration, then there 
+            is always a <emphasis>current instance</emphasis> of the class or interface when 
+            the nested declaration body is executed. The current instance is determined as 
+            follows:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for the innermost class or interface declaration that contains the 
+                    nested declaration, the current instance is the receiving instance of the
+                    invocation, evaluation, or assignment, and</para>
+                </listitem>
+                <listitem>
+                    <para>for any other class or interface that contains the nested declaration,
+                    the current instance is the same object that was the current instance when
+                    the initializer of the current instance of the innermost class or interface 
+                    declaration was executed.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A block may not contain an abstract method or attribute declaration or any
+            declaration annotated <literal>default</literal> or <literal>override</literal>.</para>
+            
+            <comment><para>TODO: Note that Java does not let you define an interface inside
+            a method, so we should either add the same restriction, or figure out workaround.
+            Java doesn't let you define a method inside a method either, but we can wrap the 
+            nested method in an anonymous class.</para></comment>
+            
+            <comment><para>TODO: Note that in Java, all nested classes of interfaces are considered 
+            static inner classes. This results in a very funny semantic for a class nested 
+            inside an interface nested inside another class: the class does not have access to 
+            the members of the containing class. In Ceylon, a nested class is allowed to invoke
+            all its containing types. We need to figure out how to implement this. Also consider 
+            the related case of a class nested inside an interface nested inside a method.</para></comment>
+            
+        </section>
+        
+    <section id="containingbodies">
+        <title>Access to declarations of containing bodies</title>
+
+        <para>The initializer of a class, or the body of a member of a class may invoke, 
+        evaluate or assign members of the instance being instantiated or invoked&mdash;the 
+        current instance of the class which defines the initializer or member&mdash;without 
+        explicitly specifying the receiver, or by specifying a self reference 
+        <literal>this</literal> as the receiver.</para>
+
+        <para>The initializer of a member class, or the body of a member of a member class 
+        may invoke, evaluate or assign members of the current instance of the containing 
+        class or interface&mdash;the containing instance of the instance being instantiated
+        or invoked&mdash;without explicitly specifying the receiver, or by specifying an 
+        outer instance reference <literal>outer</literal> as the receiver.</para>
+
+        <para>A toplevel method or attribute body may not refer to a self reference or outer 
+        instance reference, since there is no current instance.</para>
+
+        <para>The body of a method, class, or attribute nested inside the body of another 
+        method or attribute may invoke or evaluate any non-<literal>mutable</literal> local, 
+        block local attribute getter or block local method declared earlier within the 
+        containing scope. It may not refer to <literal>mutable</literal> locals defined 
+        within the containing method or attribute body.</para>
+            
+        <para>When a member is hidden by a block local declaration, the member may be
+        accessed via the self reference <literal>this</literal> or via the outer instance
+        reference <literal>outer</literal>. For example:</para>
+        
+        <programlisting>public class Item(String name) {
     mutable String name := name;
     public void changeName(String name) {
         this.name := name;
@@ -381,52 +454,6 @@ else {
     order = natural;
 }</programlisting>
 
-        </section>
-        
-        <section id="nesteddeclarations">
-            <title>Nested declarations</title>
-        
-            <para>Blocks may contain declarations. A declaration that occurs in a block is a 
-            block local declaration&mdash;it is visible only to statements and declarations 
-            that occur later in the same block, and therefore it may not declare a visibility 
-            modifier.</para>
-            
-            <para>The body of a nested class, method, or attribute declaration may invoke, 
-            evaluate, or assign any class, method, or attribute whose declaration is in scope 
-            at the nested declaration. If the nested declaration is nested inside a class or 
-            interface declaration, then there is always a <emphasis>current instance</emphasis> 
-            of the class or interface when the nested declaration body is executed. The
-            current instance is determined as follows:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>for the innermost class or interface declaration that contains the 
-                    nested declaration, the current instance is the receiving instance of the
-                    invocation, evaluation, or assignment, and</para>
-                </listitem>
-                <listitem>
-                    <para>for any other class or interface that contains the nested declaration,
-                    the current instance is the same object that was the current instance when
-                    the initializer of the current instance of the innermost class or interface 
-                    declaration was executed.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>A block may not contain an abstract method or attribute declaration or any
-            declaration annotated <literal>default</literal> or <literal>override</literal>.</para>
-            
-            <comment><para>TODO: Note that Java does not let you define an interface inside
-            a method, so we should either add the same restriction, or figure out workaround.
-            Java doesn't let you define a method inside a method either, but we can wrap the 
-            nested method in an anonymous class.</para></comment>
-            
-            <comment><para>TODO: Note that in Java, all nested classes of interfaces are considered 
-            static inner classes. This results in a very funny semantic for a class nested 
-            inside an interface nested inside another class: the class does not have access to 
-            the members of the containing class. In Ceylon, a nested class is allowed to invoke
-            all its containing types. We need to figure out how to implement this. Also consider 
-            the related case of a class nested inside an interface nested inside a method.</para></comment>
-            
         </section>
         
     </section>
