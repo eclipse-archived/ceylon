@@ -777,7 +777,7 @@ else {
             <programlisting>DefaultCaseItem := "else" Block</programlisting>
 
             <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 
-            value must be a list of expressions of type assignable to <literal>Case&lt;X&gt;</literal>, 
+            value must be a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
             where <literal>X</literal> is the <literal>switch</literal> expression type. Alternatively, 
             a <literal>case</literal> may be an assignability condition of form <literal>case (is ...)</literal>.</para>
 
@@ -792,19 +792,21 @@ else {
             -->
             
             <para>The <literal>case</literal>s of a <literal>switch</literal> are 
-            <emphasis>exhaustive</emphasis> if the switch expression type is a union type 
-            and:</para>
+            <emphasis>exhaustive</emphasis> if the switch expression type is <literal>T</literal> or
+            <literal>T?</literal> where <literal>T</literal> is a union type and:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>every enumerated <literal>case</literal> or <literal>object</literal> 
-                    subtype of the union is explicitly listed as an ordinary <literal>case</literal> 
-                    value of the <literal>switch</literal>, and</para>
+                    <para>every case of the union which is an anonymous class is explicitly listed as 
+                    an ordinary <literal>case</literal> value of the <literal>switch</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>every non-<literal>abstract</literal> enumerated <literal>class</literal> 
-                    subtype of the union is explicitly listed as a <literal>case (is ...)</literal> 
-                    assignability condition.</para>
+                    <para>every other case of the union (every named class) is explicitly listed as a 
+                    <literal>case (is ...)</literal> assignability condition, and</para>
+                </listitem>
+                <listitem>
+                    <para>there is a <literal>case (null)</literal> if the switch expression type is 
+                    <literal>T?</literal>.</para>
                 </listitem>
             </itemizedlist>
 
@@ -815,7 +817,7 @@ else {
             
             <para>When the construct is executed, the <literal>switch</literal> expression is evaluated, 
             and the resulting value is tested against the <literal>case</literal> values using 
-            <literal>Case.test()</literal>. The <literal>case</literal> block for the first 
+            <literal>Matcher.matches()</literal>. The <literal>case</literal> block for the first 
             <literal>case</literal> value that tests <literal>true</literal> is executed. If no 
             <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
             block is defined, the <literal>else</literal> block is executed.</para>

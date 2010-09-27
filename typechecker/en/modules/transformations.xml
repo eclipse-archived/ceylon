@@ -285,12 +285,6 @@
                 attribute is mutable.</para>
             </listitem>
             <listitem>
-                <para>If the Java type is an <literal>enum</literal>, then 
-                for each enumerated value, there is a <literal>case</literal>
-                in the enumerated subtype list of the Ceylon class with the 
-                same name.</para>
-            </listitem>
-            <listitem>
                 <para>For each non-<literal>static</literal> Java inner class, 
                 there is a member class of the Ceylon type with the same
                 name.</para>

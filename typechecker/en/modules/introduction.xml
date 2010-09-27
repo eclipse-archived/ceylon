@@ -2080,18 +2080,15 @@ class Person(String firstName, String lastName, Language lang) {
     package Language language = lang;
 }</programlisting>
         
-        <para>Now, we'll create a union which enumerates its 
-        <literal>case</literal>s&mdash;almost exactly like a Java 
-        <literal>enum</literal>&mdash;to represent the built-in languages that
-        our program supports.</para>
+        <para>Now, we'll create a union which enumerates its cases&mdash;almost 
+        exactly like a Java <literal>enum</literal>&mdash;to represent the built-in 
+        languages that our program supports.</para>
         
-        <programlisting>choice Language 
-        satisfies Case&lt;Language&gt; {
-    case english;
-    case french;
-    case spanish;
-    case italian;
-}</programlisting>
+        <programlisting>object english extends Case("English");
+object french extends Case("French");
+object spanish extends Case("Spanish");
+object italian extends Case("Italian");
+choice Language of english, french, spanish, italian;</programlisting>
 
 <!--
         <para>The use of <literal>...</literal> at the end of the list of enumerated

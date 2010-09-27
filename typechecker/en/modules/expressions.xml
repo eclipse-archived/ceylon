@@ -197,10 +197,9 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
     </itemizedlist>
     
     <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
-    values, since <literal>Boolean</literal> is just a class with the enumerated 
-    <literal>case</literal>s <literal>true</literal> and <literal>false</literal>. The 
-    <literal>null</literal> value is just the single <literal>case</literal> of the 
-    class <literal>Null</literal>.</para>
+    values, since <literal>Boolean</literal> is just a union of the anonymous classes 
+    <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
+    is just the singleton value of an anonymous class.</para>
     
     <programlisting>Literal := NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
 

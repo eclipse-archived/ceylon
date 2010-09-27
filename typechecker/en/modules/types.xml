@@ -408,44 +408,42 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[public choice Boolean 
-        satisfies Case<Boolean> { 
-    public case false; 
-    public case true; 
-}]]></programlisting>
+        <programlisting><![CDATA[public object true extends Case();
+public object false extends Case();
+public choice Boolean or true, false;]]></programlisting>
 
     </section>
     
     <section id="cases">
-        <title>Cases</title>
+        <title>Matchers and cases</title>
         
-        <para>The interface <literal>Case</literal> represents a
+        <para>The interface <literal>Matcher</literal> represents a
         type that may be used as a <literal>case</literal> in the 
         <literal>switch</literal> construct.</para>
         
-        <programlisting><![CDATA[public interface Case<in X> {
+        <programlisting><![CDATA[public interface Matcher<in X> {
 
     doc "Determine if the given value matches
          this case, returning |true| iff the
          value matches."
-    public Boolean test(X value);
+    public Boolean matches(X value);
     
 }]]></programlisting>
 
         <comment><para>TODO: the two extensions that follow don't actually work, 
-        since they overload the <literal>test()</literal> method of
-        <literal>Case</literal> in a way that doesn't permit resolution according 
+        since they overload the <literal>matches()</literal> method of
+        <literal>Matcher</literal> in a way that doesn't permit resolution according 
         to the rules we have written down.</para></comment>
 
-        <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
-        function as <literal>Case&lt;X?&gt;</literal>.</para>
+        <para>An extension allows <literal>Matcher&lt;X&gt;</literal> to 
+        function as <literal>Matcher&lt;X?&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension class CaseOptional<X>(Case<X> this) 
-        satisfies Case<X?> {
+        <programlisting><![CDATA[public extension class OptionalMatcher<X>(Matcher<X> this) 
+        satisfies Matcher<X?> {
         
-    override Boolean test(X? x) {
+    override Boolean matches(X? x) {
         if (exists value) {
-            return this.test(x)
+            return this.matches(x)
         }
         else {
             return false;
@@ -454,23 +452,41 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         
 }]]></programlisting>
 
-        <para>An extension allows <literal>Case&lt;X&gt;</literal> to 
-        function as <literal>Case&lt;Y&gt;</literal> where <literal>X</literal> 
+        <para>An extension allows <literal>Matcher&lt;X&gt;</literal> to 
+        function as <literal>Matcher&lt;Y&gt;</literal> where <literal>X</literal> 
         is a subtype of <literal>Y</literal>.</para>
         
-        <programlisting><![CDATA[public extension class CaseSuper<X,Y>(Case<X> this) 
-        satisfies Case<Y> 
+        <programlisting><![CDATA[public extension class SupertypeMatcher<X,Y>(Matcher<X> this) 
+        satisfies Matcher<Y> 
         given X satisfies Y {
         
-    override Boolean test(Y y) {
+    override Boolean matches(Y y) {
         if (is X y) {
-            return this.test(y)
+            return this.matches(y)
         }
         else {
             return false;
         }
     }
         
+}]]></programlisting>
+        
+        <para>The class <literal>Case</literal> is the supertype of anonymous 
+        classes that may be used as cases of unions.</para>
+        
+        <programlisting><![CDATA[public abstract class Case() 
+        satisfies Matcher<Object> {
+    override Boolean matches(Object that) {
+        return this===that
+    }
+    override default String string { 
+        return type.declarationName
+    }
+}
+
+public abstract class Case(String caseName) 
+        extends Case() {
+    override String string = caseName
 }]]></programlisting>
 
     </section>
@@ -543,17 +559,18 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <literal>Null</literal> enabled in every compilation unit.</para>
         
         <programlisting><![CDATA[doc "Represents a null reference."  
-public object null {
+public object null 
+        satisfies Matcher<Object?> {
 
     public extension class Nothing<out X>() 
-            extends X?() 
-            satisfies Case<X?> {
+            extends X?() {
         override Boolean defined { 
             return false 
         }
-        override Boolean test(X? value) {
-            return !value exists;
-        }
+    }
+
+    override Boolean matches(Object? value) {
+        return !value exists;
     }
      
 }]]></programlisting>
@@ -1035,24 +1052,21 @@ while (exists local value = indexed.indexedValue(i)) {
     
 }]]></programlisting>
         
-        <programlisting><![CDATA[doc "The result of a comparison between two
+        <programlisting><![CDATA[doc "The receiving object is larger than 
+     the given object."
+public object larger extends Case();
+
+doc "The receiving object is smaller than 
+     the given object."
+public object smaller extends Case();
+
+doc "The receiving object is exactly equal 
+     to the given object."
+public object equal extends Case();
+    
+doc "The result of a comparison between two
      objects."
-public choice Comparison 
-        satsifies Case<Comparison> {
-        
-    doc "The receiving object is larger than 
-         the given object."
-    case larger;
-    
-    doc "The receiving object is smaller than 
-         the given object."
-    case smaller;
-    
-    doc "The receiving object is exactly equal 
-         to the given object."
-    case equal;
-    
-}]]></programlisting>
+public choice Comparison of larger, smaller, equal;]]></programlisting>
 
         <comment><para>TODO: should we support partial orders? Give
         <literal>Comparison</literal> an extra <literal>uncomparable</literal>
@@ -1480,7 +1494,7 @@ public object none {
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         extends Object() 
-        satisfies Category, X[], Case<X>, Iterable<X>, Equals<Range<X>>
+        satisfies Category, X[], Matcher<X>, Iterable<X>, Equals<Range<X>>
         given X satisfies Ordinal, Comparable<X> { 
     
     doc "The first value in the range."
@@ -1550,7 +1564,7 @@ public object none {
         } 
     }
     
-    override Boolean test(X x) {
+    override Boolean matches(X x) {
         return x>first && x<last
     }
     
@@ -1611,7 +1625,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Character(small Natural utf32)
         extends Object()
-        satisfies Ordinal, Comparable<Character>, Case<Character> { 
+        satisfies Ordinal, Comparable<Character>, Matcher<Character> { 
     ... 
     
     doc "The UTF-16 encoding"
@@ -1642,7 +1656,7 @@ while (i<=max) {
                 
         <programlisting><![CDATA[public extension class String(Character[] this) 
         extends Object() 
-        satisfies Character[], Comparable<String>, Case<String>, Format {
+        satisfies Character[], Comparable<String>, Matcher<String>, Format {
     
     Character[] chars;
     if (is String this) {
@@ -1758,7 +1772,7 @@ while (i<=max) {
         <title>Regular expressions</title>
         
         <programlisting><![CDATA[public extension class Regex(Quoted this)
-        satisfies Case<String> { 
+        satisfies Matcher<String> { 
         
     doc "Return the substrings of the given string which
          match the parenthesized groups of the regex,
@@ -1767,7 +1781,7 @@ while (i<=max) {
     public Match? matchList(String string)() { return ... }
     
     doc "Determine if the given string matches the regex."
-    public Boolean matches(String string) { return ... }
+    override Boolean matches(String string) { return ... }
     
     ... 
     
@@ -1959,7 +1973,7 @@ while (i<=max) {
         
         <programlisting><![CDATA[public class Natural(Natural natural)
         extends Object() 
-        satisfies Integral<Natural>, Invertable<Integer>, Case<Integer> { 
+        satisfies Integral<Natural>, Invertable<Integer>, Matcher<Integer> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
@@ -2000,7 +2014,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
         extends Object() 
-        satisfies Integral<Integer>, Invertable<Integer>, Case<Integer> {
+        satisfies Integral<Integer>, Invertable<Integer>, Matcher<Integer> {
     ...
     
     doc "Implicit type promotion to |Whole|"
@@ -2501,14 +2515,13 @@ while (i<=max) {
         <para>The class <literal>LogPriority</literal> defines an extensible set of
         levels of importance for log messages.</para>
 
-        <programlisting><![CDATA[doc "The severity of a log message."
-public choice LogPriority 
-        satisfies Case<LogPriority> {
-    case trace;
-    case info;
-    case warn;
-    case error;
-}]]></programlisting>
+        <programlisting><![CDATA[public object trace extends Case("Trace");
+public object info extends Case("Info");
+public object warn extends Case("Warn");
+public object error extends Case("Error");
+
+doc "The severity of a log message."
+public choice LogPriority of trace, info, warn, error;]]></programlisting>
 
         <para>The class <literal>LogMessage</literal> describes a log message:</para>
         
@@ -2746,8 +2759,8 @@ public Y using<X,Y,E>(specified X resource,
      return the result of the evaluation. If no block matches
      the selector value, return a null value."
 public Y? select<X,Y>(X selector,
-                              cases Iterable<Entry<Case<X>, functor Y()>> value) {
-    for (Case<X> match -> X evaluate() in value) {
+                              cases Iterable<Entry<Matcher<X>, functor Y()>> value) {
+    for (Matcher<X> match -> X evaluate() in value) {
         if ( match.test(selector) ) {
             return evaluate(value)
         }
@@ -2760,7 +2773,7 @@ public Y? select<X,Y>(X selector,
      the selector value, evaluate the last block and return
      the result of the evaluation."
 public Y select<X,Y>(X selector,
-                     cases Iterable<Entry<Case<X>, functor Y()>> value,
+                     cases Iterable<Entry<Matcher<X>, functor Y()>> value,
                      Y otherwise()) {
     if (exists Y y = select(selector, value)) {
         return y

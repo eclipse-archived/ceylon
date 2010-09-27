@@ -1046,32 +1046,42 @@ public Color_red red = Color_red();</programlisting>
         <title>Unions</title>
         
         <para>A <emphasis>union</emphasis> is a type with an enumerated list of
-        subtypes. An instance of any of these subtypes is assignable to the 
-        union type. A union may <literal>satisfy</literal> one or more interfaces, 
-        in which case each subtype must also satisfy these interfaces. A union
-        itself does not define members.</para>
+        subtypes, called the <emphasis>cases</emphasis> of the union. An instance 
+        of any of these cases is an instance of union type. A union may also 
+        <literal>satisfy</literal> one or more interfaces, in which case each 
+        case type of the union must also satisfy these interfaces. A union itself 
+        does not define members.</para>
         
         <programlisting>Union := 
 Annotation* 
-"choice" TypeName 
+"choice" TypeName TypeParams?
+CaseTypes
 SatisfiedTypes? 
 TypeConstraints?
-UnionBody</programlisting>
+";"</programlisting>
 
         <!--<section id="unionbodies">
             <title>Union bodies</title>-->
             
-        <para>The body of a union contains a list of classes which are subtypes 
-        of the union type.</para>
+        <para>The <literal>of</literal> clause of a union declaration specifies the 
+        list of cases of the union type.</para>
         
-        <programlisting>UnionBody := "{" ConcreteType+ "}"</programlisting>
-        <programlisting>ConcreteType := Class | Object | UnionCase</programlisting>
+        <programlisting>CaseTypes := "of" CaseType ("," CaseType)*</programlisting>
         
-        <para>The subtypes may be classes, anonymous classes, or 
-        <literal>cases</literal>s. A subtype may be an <literal>abstract</literal>
-        class.</para>
+        <para>The cases may be classes or anonymous classes. A case may be an 
+        <literal>abstract</literal> class.</para>
         
-        <programlisting>choice Node {
+        <programlisting>CaseType := MemberName | Type</programlisting>
+        
+        <para>An anonymous class is identified by the name specified in the 
+        <literal>object</literal> declaration&mdash;an initial lowercase
+        identifier.</para>
+        
+        <programlisting>public choice Node of root, Branch, Leaf;</programlisting>
+        
+        <programlisting>choice Container&lt;T&gt; of T[], Set&lt;T&gt;;</programlisting>
+        
+        <!-- {
     
     abstract class Parent() {}
     
@@ -1088,65 +1098,14 @@ UnionBody</programlisting>
         String parent = parent;
     }
     
-}</programlisting>
+}</programlisting> -->
 
-        <para>An <literal>case</literal> declaration is an abbreviated
-        <literal>object</literal> declaration.</para>
+        <para>If an anonymous class is a case of a union type, it must extend
+        <literal>ceylon.language.Case</literal>, directly or indirectly.</para>
         
-        <programlisting>UnionCase := Annotation* "case" MemberName";"</programlisting>
-        
-        <para>A <literal>case</literal> is an anonymous class that implements
-        <literal>Case&lt;T&gt;</literal> where <literal>T</literal> is the
-        union type, with exactly two members:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>The first implicit member overrides the <literal>string</literal>
-                attribute of <literal>Object</literal>, and returns the name 
-                of the <literal>case</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>The second implicit member overrides the <literal>test()</literal>
-                method of <literal>Comparable</literal>, comparing the argument
-                with the receiver using identity equality.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The following:</para>
-        
-        <programlisting>public choice Boolean 
-        satisfies Case&lt;Boolean&gt; { 
-    public case true; 
-    public case false; 
-}</programlisting>
-
-        <para>is exactly equivalent to:</para>
-        
-        <programlisting>public choice Boolean 
-        satisfies Case&lt;Boolean&gt; {
-    
-    public object true satisfies Case&lt;Boolean&gt; {
-        override String string {
-            return "true"
-        }
-        override Boolean test(Boolean that) {
-            return this==that;
-        }
-    }
-    
-    public object false satisfies Case&lt;Boolean&gt; {
-        override String string {
-            return "false"
-        }
-        override Boolean test(Boolean that) {
-            return this==that;
-        }
-    }
-    
-}</programlisting>
-
-            <comment><para>TODO: should we let a union declare abstract
-            methods/attributes?</para></comment>
+        <programlisting>public object true extends Case() {}
+public object false extends Case() {}
+public choice Boolean of true, false;</programlisting>
         
         <!--  
         <programlisting>public class DayOfWeek() {
@@ -1199,7 +1158,7 @@ UnionBody</programlisting>
         
             <itemizedlist>
                 <listitem>
-                    <para>declare a <literal>mutable</literal> subtype, or</para>
+                    <para>declare a <literal>mutable</literal> case, or</para>
                 </listitem>
                 <listitem>
                     <para>satisfy an interface annotated <literal>mutable</literal>.</para>
@@ -1213,7 +1172,9 @@ UnionBody</programlisting>
             
             <para>A union may satisfy any number of other interfaces.</para>
         
-        <programlisting>choice Node satisfies Observable {
+        <programlisting>public choice Node of root, Branch, Leaf satisfies Observable;</programlisting>
+        
+        <!--  {
     
     abstract class ObservableNode()
             satisfies Observable {
@@ -1238,14 +1199,14 @@ UnionBody</programlisting>
         ...
     }
     
-}</programlisting>
+}</programlisting> -->
         
             <para>The types listed after the <literal>satisfies</literal> keyword are 
             the supertypes. All supertypes of a union must be interfaces. A union may 
             not extend the same interface twice (not even with distinct type arguments).</para>
             
-            <para>Every non-<literal>abstract</literal> subtype of the union must be a 
-            subtype every interface satisfied by the union type.</para>
+            <para>Every case of the union must be a subtype of every interface satisfied 
+            by the union type.</para>
             
             <!--para>
             Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
@@ -1258,7 +1219,7 @@ UnionBody</programlisting>
             <para>The schema of the inherited members is formed by substituting type 
             arguments specified in the <literal>satisfies</literal> clause.</para>
             
-        <programlisting>public interface TransactionPropagation {
+        <!-- <programlisting>public interface TransactionPropagation {
     void propagate(Transaction tx);
 }
 
@@ -1323,7 +1284,7 @@ public choice TransactionPropagationStyle
         }
     }
     
-}</programlisting>
+}</programlisting>-->
         
         </section>
         
