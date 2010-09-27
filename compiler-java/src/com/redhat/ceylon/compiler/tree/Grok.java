@@ -656,7 +656,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(tree);
         inner(tree);
         current.pop();
-        current.context.setSuperclass(tree.theSuperclass);
+        current.context.setSuperclass(tree);
     }
     public void visit(CeylonTree.InstanceDeclaration tree) {
         current.push(tree);

@@ -588,7 +588,7 @@ public class Gen {
             }
             
             public void visit(CeylonTree.Type type) {
-                assert type == cdecl.superclass;
+                assert type == cdecl.superclass.theSuperclass;
             }
          });
         
@@ -614,7 +614,7 @@ public class Gen {
             superclass = makeSelect("ceylon", "Object");
         }
         else {
-            List<String> name = cdecl.superclass.name().components();
+            List<String> name = cdecl.superclass.theSuperclass.name().components();
             assert name.size() == 1;
             superclass = make().Ident(names.fromString(name.head));
         }

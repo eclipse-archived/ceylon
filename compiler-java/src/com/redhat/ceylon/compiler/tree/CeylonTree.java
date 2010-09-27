@@ -415,7 +415,7 @@ public abstract class CeylonTree {
         bomb();
     }
     
-    public void setSuperclass(Type type) {
+    public void setSuperclass(Superclass superclass) {
         bomb();
     }
     
@@ -1019,7 +1019,7 @@ public abstract class CeylonTree {
         public List<FormalParameter> params;
         public List<CeylonTree> stmts;
         public List<CeylonTree> typeParameters;
-        public Type superclass;
+        public Superclass superclass;
       
 	public void append(CeylonTree stmt) {
             if (stmts == null)
@@ -1054,9 +1054,9 @@ public abstract class CeylonTree {
             bomb();
         }
         
-        public void setSuperclass(Type type) {
-            assert(superclass == null);
-            superclass = type;
+        public void setSuperclass(Superclass superclass) {
+            assert(this.superclass == null);
+            this.superclass = superclass;
         }
     }
 
