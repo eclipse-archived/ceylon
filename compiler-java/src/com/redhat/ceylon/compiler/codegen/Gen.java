@@ -590,6 +590,19 @@ public class Gen {
             public void visit(CeylonTree.Type type) {
                 assert type == cdecl.superclass.theSuperclass;
             }
+            
+            public void visit(CeylonTree.Superclass sc) {
+                if (sc.arguments.nonEmpty()) {
+                    List<JCExpression> args = List.<JCExpression>nil();
+                    
+                    for (CeylonTree arg: sc.arguments)
+                        args = args.append(convertArg(arg));
+
+                    stmts.append(at(sc).Exec(at(sc).Apply(List.<JCExpression>nil(),
+                                                          at(sc).Ident(names._super),
+                                                          args)));
+                }
+            }
          });
         
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
