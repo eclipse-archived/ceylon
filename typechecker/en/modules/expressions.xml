@@ -152,15 +152,15 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
             the program.</para>
         </listitem>
         <listitem>
-            <para>The compiler is permitted to emit bytecode that produces a new instance of one 
-            of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,--> of 
-            <literal>ceylon.language.Bounded&lt;#n&gt;</literal>, of <literal>ceylon.language.Character</literal>, 
-            of <literal>ceylon.language.Range</literal>, of <literal>ceylon.language.Entry</literal>, or of 
-            <literal>ceylon.language.String</literal> without execution of the initializer of the class, 
-            whenever any expression is evaluated. Furthermore, it is permitted to use such a 
-            newly-produced instance as the value of the expression, as long as the newly-produced 
-            instance is equal to the value expected according to the rules above, as determined 
-            using the <literal>=</literal> operator.</para>
+            <para>The compiler is permitted to emit bytecode that produces a new instance of 
+            certain types in the module <literal>ceylon.language</literal> without execution of 
+            the initializer of the class, whenever any expression is evaluated. These types are:
+            any of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,--> 
+            <literal>Bounded&lt;#n&gt;</literal>, <literal>Character</literal>, 
+            <literal>Range</literal>, <literal>Entry</literal>, and <literal>String</literal>. 
+            Furthermore, it is permitted to use such a newly-produced instance as the value of 
+            the expression, as long as the newly-produced instance is equal to the value expected 
+            according to the rules above, as determined using the <literal>==</literal> operator.</para>
         </listitem>
         </itemizedlist>
         
