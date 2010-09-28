@@ -40,8 +40,9 @@
             the interface. A class may implement many interfaces.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>union</emphasis> is a type whose value may be a value
-            of any one of an enumerated list of classes.</para>
+            <para>A <emphasis>union</emphasis> is a type whose value may be a value of 
+            any one of an enumerated list of classes. <emphasis>Note: Union types are 
+            a feature proposed for inclusion in a future version of the language.</emphasis></para>
         </listitem>
         <listitem>
             <para>A <emphasis>generic type parameter</emphasis> is considered a type
