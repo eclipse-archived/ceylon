@@ -88,10 +88,10 @@
     </para>
     
     <para>
-    Ceylon provides a streamlined declaration for anonymous classes which are 
-    instantiated in exactly one place. An <literal>object</literal> declaration
-    is useful for creating singleton objects or method-local interface
-    implementations. 
+    Ceylon provides a streamlined syntax for defining an anonymous class which 
+    is only instantiated in exactly the place it is defined. Among other uses,
+    the <literal>object</literal> declaration is useful for creating singleton 
+    objects or method-local interface implementations. 
     </para>
     
     </section>
@@ -109,9 +109,9 @@
     </para>
     
     <para>There are no <literal>static</literal> members. Instead, 
-    <emphasis>toplevel</emphasis> methods are declared as direct members of a 
-    package. This, along with certain other features, gives the language a more 
-    regular block structure.
+    <emphasis>toplevel</emphasis> methods and attributes are declared as direct 
+    members of a package. This, along with certain other features, gives the 
+    language a more regular block structure.
     </para>
 
     </section>
