@@ -23,10 +23,12 @@
     
     <para>
     Ceylon features a similar inheritance and generic type model to Java. A type 
-    is either an <emphasis>interface</emphasis> or a <emphasis>class</emphasis>. 
-    An interface may extend an arbitrary number of other interfaces. A class may 
-    implement an arbitrary number of interfaces and must extend another class. 
-    A class or interface may declare type parameters.
+    is either an <emphasis>interface</emphasis>, a <emphasis>class</emphasis>, or
+    a <emphasis>type parameter</emphasis>. An interface may extend an arbitrary 
+    number of other interfaces. A class may implement an arbitrary number of 
+    interfaces and must extend another class. A class or interface may declare 
+    type parameters. A type parameter abstracts the definition of a class or 
+    interface over all types which can be substituted for the type parameter.
     </para>
     
     <para>
@@ -83,6 +85,13 @@
     overloaded. Even better, member classes of a class may be overridden by 
     subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
     eliminating the need for factory methods.
+    </para>
+    
+    <para>
+    Ceylon provides a streamlined declaration for anonymous classes which are 
+    instantiated in exactly one place. An <literal>object</literal> declaration
+    is useful for creating singleton objects or method-local interface
+    implementations. 
     </para>
     
     </section>
