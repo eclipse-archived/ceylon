@@ -19,6 +19,7 @@
         
     <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
+CaseTypes?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
@@ -360,6 +361,7 @@ InterfaceBody</programlisting>
         <programlisting>Class :=
 Annotation*
 "class" TypeName TypeParams? FormalParams
+CaseTypes?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
@@ -989,8 +991,13 @@ ClassBody</programlisting>
          <para>An <literal>object</literal> class:</para>
          
          <itemizedlist>
+             <!-- 
              <listitem>
                  <para>is implicitly <literal>final</literal>,</para>
+             </listitem>
+             -->
+             <listitem>
+                 <para>may not be extended by another class,</para>
              </listitem>
              <listitem>
                  <para>may not be <literal>abstract</literal>, and</para>
@@ -1012,7 +1019,7 @@ ClassBody</programlisting>
                  <para>is non-<literal>mutable</literal>, and</para>
              </listitem>
              <listitem>
-                 <para>may not be <literal>default</literal>.</para>
+                 <para>may not be overridden or declared <literal>default</literal>.</para>
              </listitem>
          </itemizedlist>
          
@@ -1039,11 +1046,46 @@ public Color_red red = Color_red();</programlisting>
          The algorithm for generating this name is not specified here.</para>
         
     </section>
+    
+    <section>
+        <title>Classes with enumerated cases</title>
+        
+        <para>The <literal>of</literal> clause of a class declaration specifies the 
+        list of cases of the class.</para>
+        
+        <programlisting>public abstract class Node(String name) of root, Branch, Leaf { ... }</programlisting>
+                
+        <programlisting>public object true extends Boolean() {}
+public object false extends Boolean() {}
+public abstract class Boolean() of true, false extends Case() {}</programlisting>
+
+        <para>If a class has an <literal>of</literal> clause, then all subtypes of the
+        class must be subtypes of one of the enumerated cases.</para>
+        
+        <para>A non-<literal>abstract</literal> class may not have an <literal>of</literal> 
+        clause.<!--A <literal>final</literal> class may not have an <literal>of</literal> 
+        clause. --></para>
+        
+        <comment><para>TODO: We could let a non-<literal>abstract</literal> class
+        limit its subtypes. In which case we could use the syntax <literal>of none</literal> 
+        to mean <literal>final</literal>.</para></comment>
+        
+        <comment><para>TODO: Should we allow an abbreviated syntax like:</para>
+        <programlisting>public abstract class Boolean() of case true, case false {}</programlisting>
+        <para>Note that it must be <literal>case</literal> instead of <literal>object</literal>
+        to resolve an ambiguity between an annotation and the class body followed by a
+        declaration.</para>
+        </comment>
+        
+    </section>
         
     </section>
     
     <section id="unions">
         <title>Unions</title>
+        
+        <comment><para>NOTE: Unions are a proposed feature for a future version 
+        of the language.</para></comment>
         
         <para>A <emphasis>union</emphasis> is a type with an enumerated list of
         subtypes, called the <emphasis>cases</emphasis> of the union. An instance 
@@ -1065,17 +1107,6 @@ TypeConstraints?
             
         <para>The <literal>of</literal> clause of a union declaration specifies the 
         list of cases of the union type.</para>
-        
-        <programlisting>CaseTypes := "of" CaseType ("," CaseType)*</programlisting>
-        
-        <para>The cases may be classes or anonymous classes. A case may be an 
-        <literal>abstract</literal> class.</para>
-        
-        <programlisting>CaseType := MemberName | Type</programlisting>
-        
-        <para>An anonymous class is identified by the name specified in the 
-        <literal>object</literal> declaration&mdash;an initial lowercase
-        identifier.</para>
         
         <programlisting>public choice Node of root, Branch, Leaf;</programlisting>
         
@@ -2203,10 +2234,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <para><literal>fixed</literal> specifies that a method or
                 attribute must be overridden by every subclass.</para>
             </listitem>
+            <!-- 
             <listitem>
                 <para><literal>final</literal> specifies that a class may not 
-                be extended, except by its enumerated subtypes, if any.</para>
+                be extended.</para>
             </listitem>
+             -->
             <listitem>
                 <para><literal>extension</literal> specifies that a method or
                 attribute getter is a converter, or that a class is a decorator.</para>
@@ -2221,6 +2254,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 attribute.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: should we have <literal>final</literal> to specify 
+        that a class may not be extended?</para></comment>
+        
+        <comment><para>TODO: should we make <literal>override</literal> a keyword, 
+        to save the effort of redeclaring the attribute type or method return type?</para></comment>
         
         <comment><para>TODO: should it be called <literal>overrides</literal>?</para></comment>
         
@@ -2845,6 +2884,9 @@ public Author[] by(String... authors) {
         <programlisting>public ThrownException throws(Type&lt;Exception&gt; type -> String description) {
     return ThrownException(type, description.normalize())
 }</programlisting>
+
+        <comment><para>TODO: Should the documentation annotations be erased by 
+        the compiler? Perhaps there should be a compiler switch.</para></comment>
         
      </section>
         

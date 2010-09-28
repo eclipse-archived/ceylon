@@ -143,6 +143,10 @@
         to one value when values of two different numeric types are compared. 
         If <literal>==</literal> were defined for any <literal>Object</literal>, 
         there would be no reason for the compiler to apply the type promotion.</para>
+        
+        <comment><para>TODO: Should we rename <literal>Equals</literal> to 
+        <literal>Comparable</literal> and <literal>Comparable</literal> to
+        <literal>Ordered</literal>?</para></comment>
     
     </section>
     
@@ -408,13 +412,13 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[public object true extends Case();
-public object false extends Case();
-public choice Boolean or true, false;]]></programlisting>
+        <programlisting><![CDATA[public object true extends Boolean();
+public object false extends Boolean();
+public abstract class Boolean() of true, false;]]></programlisting>
 
     </section>
     
-    <section id="cases">
+    <section id="matchersandcases">
         <title>Matchers and cases</title>
         
         <para>The interface <literal>Matcher</literal> represents a
@@ -1027,7 +1031,11 @@ while (exists local value = indexed.indexedValue(i)) {
     }
 
 }]]></programlisting>
-       
+        
+        <comment><para>TODO: Should we rename <literal>value()</literal>, <literal>define()</literal>
+        and <literal>defines()</literal> to <literal>get()</literal>, <literal>set()</literal>
+        and <literal>has()</literal>?</para></comment>
+        
     </section>
     
     <section id="comparableandordinal">
@@ -1054,19 +1062,19 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <programlisting><![CDATA[doc "The receiving object is larger than 
      the given object."
-public object larger extends Case();
+public object larger extends Comparison();
 
 doc "The receiving object is smaller than 
      the given object."
-public object smaller extends Case();
+public object smaller extends Comparison();
 
 doc "The receiving object is exactly equal 
      to the given object."
-public object equal extends Case();
+public object equal extends Comparison();
     
 doc "The result of a comparison between two
      objects."
-public choice Comparison of larger, smaller, equal;]]></programlisting>
+public abstract class Comparison() of larger, smaller, equal;]]></programlisting>
 
         <comment><para>TODO: should we support partial orders? Give
         <literal>Comparison</literal> an extra <literal>uncomparable</literal>
@@ -2515,13 +2523,16 @@ while (i<=max) {
         <para>The class <literal>LogPriority</literal> defines an extensible set of
         levels of importance for log messages.</para>
 
-        <programlisting><![CDATA[public object trace extends Case("Trace");
-public object info extends Case("Info");
-public object warn extends Case("Warn");
-public object error extends Case("Error");
+        <programlisting><![CDATA[public object trace extends LogPriority("Trace", 100);
+public object info extends LogPriority("Info", 200);
+public object warn extends LogPriority("Warn", 300);
+public object error extends LogPriority("Error", 400);
 
 doc "The severity of a log message."
-public choice LogPriority of trace, info, warn, error;]]></programlisting>
+public abstract class LogPriority(String string, Natural priority) {
+    override String string = string;
+    module Natural priority = priority;
+}]]></programlisting>
 
         <para>The class <literal>LogMessage</literal> describes a log message:</para>
         
@@ -2943,6 +2954,9 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
     }
     return list
 }]]></programlisting>
+        
+        <comment><para>TODO: We should define versions of these that return just a
+        lazily-evaluated <literal>Iterable</literal>.</para></comment>
         
         <para>The <literal>ceylon.language.comprehension.map</literal> package defines 
         support for <literal>Map</literal> comprehensions.</para>

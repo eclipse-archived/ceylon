@@ -409,6 +409,9 @@ try (lock) { ... }</programlisting>
         
         <programlisting>Throw := "throw" Expression?</programlisting>
         
+        <comment><para>TODO: Crazy idea: let <literal>...</literal> be a shortcut for
+        <literal>throw NotYetImplemented()</literal>. Too cute?</para></comment>
+        
         <para>A <literal>retry</literal> directive may not appear outside of a
         <literal>catch</literal> block.</para>
         

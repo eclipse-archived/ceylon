@@ -3601,6 +3601,10 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tgroup>
     </table>
     
+    <comment><para>TODO: Should <literal>x[i..j]</literal> return the elements
+    from <literal>i</literal> to <literal>j-1</literal>, like in most other
+    languages?</para></comment>
+    
     </section>
     
     <section id="constructors">
