@@ -237,6 +237,7 @@ String lastName;
         <programlisting>Interface :=
 Annotation*
 "interface" TypeName TypeParams?
+CaseTypes?
 SatisfiedTypes?
 TypeConstraints? 
 InterfaceBody</programlisting>
@@ -347,6 +348,22 @@ InterfaceBody</programlisting>
             -->
             
         </section>
+        
+    <section id="interfaceswithcases">
+        <title>Interfaces with enumerated cases</title>
+        
+        <para>The <literal>of</literal> clause of an interface declaration specifies the 
+        list of cases of the interface.</para>
+        
+        <programlisting>public interface class Node&lt;T&gt; of Root&lt;T&gt;, Branch&lt;T&gt;, Leaf&lt;T&gt; { ... }</programlisting>
+        
+        <para>The cases may be interfaces, classes, or anonymous classes. A case may be 
+        an <literal>abstract</literal> class.</para>
+        
+        <para>If an interface has an <literal>of</literal> clause, then all subtypes of 
+        the interface must be subtypes of one of the enumerated cases.</para>
+                
+    </section>
         
     </section>
     
@@ -1047,7 +1064,7 @@ public Color_red red = Color_red();</programlisting>
         
     </section>
     
-    <section>
+    <section id="classeswithcases">
         <title>Classes with enumerated cases</title>
         
         <para>The <literal>of</literal> clause of a class declaration specifies the 
@@ -1059,6 +1076,9 @@ public Color_red red = Color_red();</programlisting>
 public object false extends Boolean() {}
 public abstract class Boolean() of true, false extends Case() {}</programlisting>
 
+        <para>The cases may be classes, or anonymous classes. A case may be an 
+        <literal>abstract</literal> class.</para>
+        
         <para>If a class has an <literal>of</literal> clause, then all subtypes of the
         class must be subtypes of one of the enumerated cases.</para>
         
@@ -1111,6 +1131,9 @@ TypeConstraints?
         <programlisting>public choice Node of root, Branch, Leaf;</programlisting>
         
         <programlisting>choice Container&lt;T&gt; of T[], Set&lt;T&gt;;</programlisting>
+        
+        <para>The cases may be interfaces, classes, or anonymous classes. A case may 
+        be an <literal>abstract</literal> class.</para>
         
         <!-- {
     

@@ -546,20 +546,25 @@ String? firstWord = words[0];</programlisting>
     <section id="cases">
         <title>Cases</title>
         
-        <para>An <literal>abstract</literal> class may specify an enumerated list of 
-        all its subtypes. A union must specify an enumerated list of its subtypes.</para>
+        <para>An interface or <literal>abstract</literal> class may optionally 
+        specify an enumerated list of all its subtypes. A union must specify an 
+        enumerated list of its subtypes.</para>
     
         <programlisting>CaseTypes := "of" CaseType ("," CaseType)*</programlisting>
         
         <para>The <literal>of</literal> clause may specify multiple types, called
-        <emphasis>cases</emphasis>. The cases may be classes or anonymous classes. A 
-        case may be an <literal>abstract</literal> class.</para>
+        <emphasis>cases</emphasis>.</para>
         
         <programlisting>CaseType := MemberName | Type</programlisting>
         
         <para>An anonymous class is identified by the name specified in the 
         <literal>object</literal> declaration&mdash;an initial lowercase
         identifier.</para>
+        
+        <para>An explicit list of cases allows safe use of a type in a 
+        <literal>switch</literal> statement. The compiler is able to validate
+        that the <literal>switch</literal> contains an exhaustive list of all 
+        cases of the type.</para>
         
     </section>
         
