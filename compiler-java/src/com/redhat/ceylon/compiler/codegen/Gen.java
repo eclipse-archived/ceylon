@@ -257,14 +257,16 @@ public class Gen {
                     new Singleton<JCExpression>();
             	final ListBuffer<JCAnnotation> langAnnotations =
             		new ListBuffer<JCAnnotation>();
+            	final ListBuffer<JCTypeParameter> typeParams =
+            		new ListBuffer<JCTypeParameter>();
                 
-                processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
+                processMethodDeclaration(decl, params, body, restype, typeParams,
                         annotations, langAnnotations);
                 
                 JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
                         at(decl).TypeIdent(VOID),
-                        List.<JCTypeParameter>nil(),
+                        processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
                         params.toList(),
                         List.<JCExpression>nil(), body.thing(), null);
                 
@@ -336,7 +338,7 @@ public class Gen {
             final ListBuffer<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
-            final ListBuffer<JCTypeParameter> typarams,
+            final ListBuffer<JCTypeParameter> typeParams,
             final ListBuffer<JCStatement> annotations,
     		final ListBuffer<JCAnnotation> langAnnotations) {
         
@@ -344,6 +346,14 @@ public class Gen {
             params.append(convert(param));
         }
         
+        // FIXME: Should be a visitor
+        for (CeylonTree t: decl.typeParameters()) {
+        	typeParams.append(convert((CeylonTree.TypeParameter)t));        	
+        }
+        	
+/*        List<JCTypeParameter> l =
+        	processTypeConstraints(decl.typeConstraintList, typeParams.toList());
+*/        
         for (CeylonTree stmt: decl.stmts)
             stmt.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.Block b) {
@@ -710,8 +720,10 @@ public class Gen {
         Singleton<JCExpression> restypebuf =
             new Singleton<JCExpression>();
         ListBuffer<JCAnnotation> jcAnnotations = new ListBuffer<JCAnnotation>();
+    	final ListBuffer<JCTypeParameter> typeParams =
+    		new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(decl, params, body, restypebuf, (ListBuffer<JCTypeParameter>)null,
+    	processMethodDeclaration(decl, params, body, restypebuf, typeParams,
                 annotations, langAnnotations);
         
         JCExpression restype = restypebuf.thing();
@@ -731,7 +743,7 @@ public class Gen {
         JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC, jcAnnotations.toList()),
                 names.fromString(decl.nameAsString()),
                 restype,
-                List.<JCTypeParameter>nil(),
+                processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
                 params.toList(),
                 List.<JCExpression>nil(), body.thing(), null);;
         

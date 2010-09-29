@@ -1939,6 +1939,8 @@ public abstract class CeylonTree {
         public CeylonTree name;
 
         public BaseMethodDeclaration(BaseMemberDeclaration base) {
+        	// FIXME: This is very error-prone.  We need to make sure all
+        	// relevant fields are copied.
             source = base.source;
             returnType = base.type;
             setParameterList(base.params);
@@ -1947,6 +1949,7 @@ public abstract class CeylonTree {
             stmts = base.stmts;
             annotations = base.annotations;
             flags = base.flags;
+            typeConstraintList = base.typeConstraintList;
         }
 
         public void setName(CeylonTree name) {
@@ -1965,6 +1968,10 @@ public abstract class CeylonTree {
 
     public static class MethodDeclaration extends BaseMethodDeclaration {
         List<CeylonTree> typeParameters;
+        
+        public List<CeylonTree> typeParameters() {
+        	return this.typeParameters;
+        }
         
         public MethodDeclaration(BaseMemberDeclaration member) {
             super(member);
