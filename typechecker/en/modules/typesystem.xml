@@ -559,7 +559,8 @@ String? firstWord = words[0];</programlisting>
         
         <para>An anonymous class is identified by the name specified in the 
         <literal>object</literal> declaration&mdash;an initial lowercase
-        identifier.</para>
+        identifier. Any anonymous class that appears as a case must extend the 
+        class <literal>ceylon.language.Case</literal>.</para>
         
         <para>An explicit list of cases allows safe use of a type in a 
         <literal>switch</literal> statement. The compiler is able to validate
@@ -1402,7 +1403,7 @@ public deprecated</programlisting>
         follows:</para>
         
         <programlisting>public 
-annotation { occurs=onceEachElement; }
+annotation { of=any; occurs=onceEachElement; }
 Description doc(String description) { 
     return Description(description.normalize())
 }</programlisting>

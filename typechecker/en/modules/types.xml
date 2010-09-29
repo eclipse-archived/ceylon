@@ -43,7 +43,7 @@
         However, <literal>Void</literal> itself does not declare any 
         members.</para>
         
-        <programlisting>public abstract class Void extends null {}</programlisting>
+        <programlisting>public abstract class Void() extends null {}</programlisting>
         
         <para>The special syntax <literal>extends null</literal> indicates
         that <literal>Void</literal> has no superclass.</para>
@@ -502,6 +502,7 @@ public abstract class Case(String caseName)
         value that may be null.</para>
         
         <programlisting><![CDATA[public abstract class Optional<out X>() 
+        of Something<X>, Nothing<X>
         extends Void() {
     
     doc "The unary postfix existence operator 
@@ -550,31 +551,35 @@ public abstract class Case(String caseName)
         return value;
     }
 -->
+        <para>If an optional value is null, it is represented by an instance 
+        of the subclass <literal>Nothing</literal>.</para>
+
+        <programlisting><![CDATA[public class Nothing<out X>() 
+            extends X?() {
+    override Boolean defined { 
+        return false 
+    }
+}]]></programlisting>
+
         <para>Non-optional values are transparently assignable to optional
         values, since <literal>Something&lt;X&gt;</literal> is an extension of 
         <literal>X</literal> enabled in every compilation unit. Likewise, 
         instances of <literal>Something&lt;X&gt;</literal> are transparently 
         assignable to <literal>X</literal>.</para>
         
-        <para>If an optional value is null, it is represented by an instance 
-        of the subclass <literal>Nothing</literal>. The value 
-        <literal>null</literal> is transparently assignable to optional 
-        values, since <literal>Nothing&lt;X&gt;</literal> is an extension of 
-        <literal>Null</literal> enabled in every compilation unit.</para>
+        <para>The value <literal>null</literal> is transparently assignable to 
+        optional values, since <literal>Nothing&lt;X&gt;</literal> is an 
+        extension of <literal>Null</literal> enabled in every compilation unit.</para>
         
         <programlisting><![CDATA[doc "Represents a null reference."  
-public object null 
-        satisfies Matcher<Object?> {
-
-    public extension class Nothing<out X>() 
-            extends X?() {
-        override Boolean defined { 
-            return false 
-        }
-    }
+public object null extends Void() satisfies Matcher<Object?> {
 
     override Boolean matches(Object? value) {
         return !value exists;
+    }
+    
+    public extension Nothing<X> nothing<X>() {
+        return Nothing<X>()
     }
      
 }]]></programlisting>
@@ -2260,7 +2265,7 @@ while (i<=max) {
         
         <para>A <literal>Function</literal> represents a toplevel method.</para>
 
-        <programlisting><![CDATA[public interface Function<R, P...> 
+        <programlisting><![CDATA[public interface Function<out R, P...> 
         satisfies Callable<R, P...>, Annotated {
         
     public String name;
@@ -2271,6 +2276,30 @@ while (i<=max) {
     
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
+    
+}]]></programlisting>
+
+        <para>A <literal>Value</literal> represents a toplevel attribute.</para>
+
+        <programlisting><![CDATA[public interface Value<out T> 
+        satisfies Annotated {
+    
+    public String name;
+    
+    public Boolean mutable;    
+    
+    public Visiblity visibility;
+    
+    public Type<T> type;
+    
+    public extension Gettable<T> value;
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[public interface MutableValue<T> 
+        satisfies Value<T> {
+        
+    override Settable<T> value;
     
 }]]></programlisting>
 
@@ -2368,7 +2397,7 @@ while (i<=max) {
         <para>An <literal>Attribute</literal> represents an attribute declaration.</para>
 
         <programlisting><![CDATA[public interface Attribute<in X, T> 
-        satisfies Member<X, Gettable<T>> {
+        satisfies Member<X, Value<T>> {
         
     public Boolean mutable;
     
@@ -2379,7 +2408,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public interface MutableAttribute<in X, T> 
         extends Attribute<X, T>
-        satisfies Member<X, Settable<T>> {  //this is OK since Member is covariant in T
+        satisfies Member<X, MutableValue<T>> {  //this is OK since Member is covariant in T
         
     public void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
                     given S abstracts X;

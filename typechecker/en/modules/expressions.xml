@@ -2133,7 +2133,7 @@ setPerson(person);</programlisting>
         <para>The metamodel object representing a type or program element may be obtained
         using a completely typesafe syntax.</para>
         
-        <programlisting>Meta := TypeMeta | MethodMeta | AttributeMeta | FunctionMeta</programlisting>
+        <programlisting>Meta := TypeMeta | MethodMeta | AttributeMeta | FunctionMeta | ValueMeta</programlisting>
         
         <para>Metamodel references are compile-time typesafe.</para>
         
@@ -2245,6 +2245,40 @@ setPerson(person);</programlisting>
             </listitem>
         </itemizedlist>
          
+        </section>
+        
+        <section id="toplevelattributemetamodelreferences">
+            <title>Toplevel attribute metamodel references</title>
+            
+        <para>A <literal>Value</literal> object representing a toplevel attribute may be 
+        obtained by specifying the attribute name, with type arguments if the toplevel method 
+        is generic.</para>
+        
+        <programlisting>ValueMeta := MemberName TypeArguments?</programlisting>
+               
+        <para>The metamodel expression, <literal>attribute</literal>, for a toplevel attribute 
+        is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>of type <literal>Value&lt;T&gt;</literal> where 
+                <literal>T</literal> is the declared type of the attribute.<!-- ,
+                unless the attribute is declared <literal>mutable</literal>, or--></para>
+            </listitem>
+            <!-- 
+            <listitem>
+                <para>of type <literal>MutableValue&lt;T&gt;</literal> where 
+                <literal>T</literal> is the declared type of the attribute,
+                if the attribute is declared <literal>mutable</literal>.</para>
+            </listitem>
+            -->
+        </itemizedlist>
+        
+        <para>Note that for a toplevel attribute <literal>x</literal>, the expression <literal>x</literal>
+        is both a metamodel reference and a value reference. This is consistent, since
+        <literal>Value&lt;T&gt;</literal> is assignable to <literal>Gettable&lt;T&gt;</literal>.<!-- 
+        and <literal>MutableValue&lt;T&gt;</literal> is assignable to <literal>Settable&lt;T&gt;</literal>.--></para>
+           
         </section>
         
         <section id="attributemetamodelreferences">
