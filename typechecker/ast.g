@@ -205,7 +205,7 @@ declaration
 
 //special rule for syntactic predicates
 annotatedDeclarationStart
-    : 'enumeration' | userAnnotation* ( declarationAnnotation | declarationStart )
+    : userAnnotation* ( declarationAnnotation | declarationStart )
     ;
 
 declarationStart
@@ -273,7 +273,7 @@ returnDirective
     ;
 
 throwDirective
-    : 'throw' expression?
+    : 'throw' expression? //| '...'
     -> ^(THROW_STMT expression?)
     ;
 
@@ -343,6 +343,7 @@ interfaceDeclaration
         'interface'!
         typeName
         typeParameters?
+        caseTypes?
         satisfiedTypes?
         typeConstraints?
         interfaceBody
@@ -369,6 +370,7 @@ classDeclaration
         typeParameters?
         formalParameters
         extraFormalParameters
+        caseTypes?
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -422,7 +424,9 @@ caseTypes
     ;
 
 caseType 
-    : type | memberName
+    : type 
+    //| (annotations? 'case' memberName) => annotations? 'case' memberName 
+    | memberName
     ;
 
 typeConstraint
@@ -1208,10 +1212,6 @@ EXISTS
 
 EXTENDS
     :   'extends'
-    ;
-
-ENUMERATION
-    :   'enumeration'
     ;
 
 FINALLY
