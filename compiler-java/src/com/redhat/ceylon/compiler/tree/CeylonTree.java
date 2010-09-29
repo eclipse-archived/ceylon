@@ -48,12 +48,12 @@ public abstract class CeylonTree {
     
     public abstract static class Declaration extends CeylonTree {
         public List<CeylonTree> typeParameters;
-        public List<CeylonTree> typeConstraintList;
+        public List<TypeConstraint> typeConstraintList;
         
         public void addTypeConstraint(CeylonTree t) {
             if (typeConstraintList == null)
-                typeConstraintList = List.<CeylonTree>nil();
-            typeConstraintList = typeConstraintList.append(t);
+                typeConstraintList = List.<TypeConstraint>nil();
+            typeConstraintList = typeConstraintList.append((TypeConstraint) t);
         }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
@@ -1021,7 +1021,7 @@ public abstract class CeylonTree {
         public List<CeylonTree> typeParameters;
         public Superclass superclass;
       
-	public void append(CeylonTree stmt) {
+        public void append(CeylonTree stmt) {
             if (stmts == null)
                 stmts = List.<CeylonTree>nil();
             stmts = stmts.append(stmt);
@@ -2315,6 +2315,9 @@ public abstract class CeylonTree {
         void pushType(Type type) {
             types = types.append(type);
         }
+        public List<Type> types() {
+        	return this.types;
+        }
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -2587,7 +2590,7 @@ public abstract class CeylonTree {
     public static class TypeConstraint extends CeylonTree {
         @NotAChild
         public CeylonTree name;
-        public SatisfiesList satisfies; // XXXXXXXXXXXXX
+        public SatisfiesList satisfies;
         public AbstractsList abstracts;
         public List<FormalParameter> formalParameters;
 
