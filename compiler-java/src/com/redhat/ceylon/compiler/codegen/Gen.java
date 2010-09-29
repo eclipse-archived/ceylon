@@ -611,9 +611,6 @@ public class Gen {
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
                            cdecl.nameAsString());
         
-        List<JCTypeParameter> gTypeParams = typeParams.toList();
-        gTypeParams = processTypeConstraints(cdecl.typeConstraintList, gTypeParams);
-        
         JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(PUBLIC),
                 names.init,
                 at(cdecl).TypeIdent(VOID),
@@ -641,7 +638,7 @@ public class Gen {
         JCClassDecl classDef = 
             at(cdecl).ClassDef(at(cdecl).Modifiers(0, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
-                    gTypeParams,
+                    processTypeConstraints(cdecl.typeConstraintList, typeParams.toList()),
                     superclass,
                     List.<JCExpression>nil(),
                     defs.toList());
