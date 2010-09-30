@@ -1283,11 +1283,10 @@ public class Resolve {
             if (sym.kind >= WRONG_MTHS)
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
         } 
-        if (sym.kind == WRONG_MTHS) {
+        if (sym.kind >= WRONG_MTHS) {
             assert site.getKind() == TypeKind.DECLARED;
-            ClassType csite = (ClassType) site;
-
-            Name sitename = csite.tsym.getQualifiedName();
+            ClassType siteclass = (ClassType) site;
+            Name sitename = siteclass.tsym.getQualifiedName();
             if (!sitename.toString().contains("$$")) {
                 StringBuilder builder = new StringBuilder("$$");
                 for (Type arg : argtypes) {
@@ -1295,16 +1294,16 @@ public class Resolve {
                     builder.append(type.length());
                     builder.append(type);
                 }
-                Name mname = sitename.append(names.fromString(builder.toString()));
-                Symbol mssym = loadClass(env, mname);
+                Name mangled_name = sitename.append(names.fromString(builder.toString()));
+                Symbol mangled_symbol = loadClass(env, mangled_name);
                 if (true) { // FIXME: handle failed lookup
-                    assert mssym.getKind() == ElementKind.CLASS;
-                    TypeSymbol tmssym = (TypeSymbol) mssym;
-                    Type msite = new ClassType(site.getEnclosingType(), csite.typarams_field, tmssym);
-                    if (types.isSubtype(msite, site)) {
-                        Symbol msym = resolveConstructor(pos, env, msite, argtypes, typeargtypes);
-                        if (msym.kind == MTH)
-                            sym = msym;
+                    assert mangled_symbol.getKind() == ElementKind.CLASS;
+                    TypeSymbol class_symbol = (TypeSymbol) mangled_symbol;
+                    Type mangled_site = new ClassType(site.getEnclosingType(), siteclass.typarams_field, class_symbol);
+                    if (types.isSubtype(mangled_site, site)) {
+                        mangled_symbol = resolveConstructor(pos, env, mangled_site, argtypes, typeargtypes);
+                        if (mangled_symbol.kind == MTH)
+                            sym = mangled_symbol;
                     }
                 }
             }
