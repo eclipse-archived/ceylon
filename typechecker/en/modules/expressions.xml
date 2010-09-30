@@ -3396,7 +3396,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     
         <para>These operators provide a simplified syntax for accessing values 
         of a <literal>Correspondence</literal>, and for joining and obtaining
-        subranges of <literal>Sequences</literal>s.</para>
+        subranges of <literal>Sequence</literal>s.</para>
     
     <table>
     <tgroup cols="7">
