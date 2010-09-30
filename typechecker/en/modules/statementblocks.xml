@@ -66,13 +66,13 @@
                 variable of a body that contains the program element, or</para>
             </listitem>
             <listitem>
-                <para>it occurs earlier in a body that contains the program element, 
-                or</para>
+                <para>it directly occurs earlier in a body that contains the program 
+                element, or</para>
             </listitem>
             <listitem>
-                <para>it occurs in the second part of a class body, after the last 
-                statement or declaration of the initializer, and the program element 
-                is contained in the second part of the class body, or</para>
+                <para>it directly occurs in the second part of a class body, after the 
+                last statement or declaration of the initializer, and the program element 
+                also directly occurs in the second part of the class body, or</para>
             </listitem>
             <listitem>
                 <para>it is a declaration imported by the compilation unit containing 
@@ -93,7 +93,7 @@
         
         <itemizedlist>
             <listitem>
-                <para>if an inner body is contained (directly or indirectly) an outer body, 
+                <para>if an inner body is contained (directly or indirectly) in an outer body, 
                 a declaration, formal parameter, type parameter or control structure variable 
                 of the inner body hides a declaration, formal parameter, type parameter or 
                 control structure variable in the outer body,</para>
