@@ -1402,8 +1402,7 @@ public deprecated</programlisting>
         <para>For example, the built-in <literal>doc</literal> annotation is defined as 
         follows:</para>
         
-        <programlisting>public 
-annotation { of=any; occurs=onceEachElement; }
+        <programlisting>public annotation { of=any; occurs=onceEachElement; }
 Description doc(String description) { 
     return Description(description.normalize())
 }</programlisting>

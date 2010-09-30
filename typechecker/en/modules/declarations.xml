@@ -2857,8 +2857,7 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
             </listitem>
         </itemizedlist>
         
-        <programlisting>public 
-annotation { 
+        <programlisting>public annotation { 
     of = classes; 
     occurs = onceEachType; 
 }
@@ -2866,8 +2865,7 @@ Entity entity(LockMode lockMode) {
     return Entity(lockMode) 
 }</programlisting>
 
-        <programlisting>public 
-annotation { 
+        <programlisting>public annotation { 
     of = { attributes, parameters }; 
     withType = String; 
     occurs = onceEachElement; 
