@@ -346,14 +346,12 @@ public class Gen {
             params.append(convert(param));
         }
         
-        // FIXME: Should be a visitor
-        for (CeylonTree t: decl.typeParameters()) {
-        	typeParams.append(convert((CeylonTree.TypeParameter)t));        	
-        }
-        	
-/*        List<JCTypeParameter> l =
-        	processTypeConstraints(decl.typeConstraintList, typeParams.toList());
-*/        
+        if (decl.typeParameters() != null)
+        	for (CeylonTree t: decl.typeParameters()) {
+                // FIXME: Nasty cast here.  Should be a visitor
+        		typeParams.append(convert((CeylonTree.TypeParameter)t));        	
+        	}
+        
         for (CeylonTree stmt: decl.stmts)
             stmt.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.Block b) {
@@ -369,9 +367,23 @@ public class Gen {
     JCExpression convert(CeylonTree.Type type) {
     	ExpressionVisitor v = 
     		new ExpressionVisitor() {
+    			
     			public void visit(CeylonTree.Type t) {
     				result = makeIdent(t.name().components());
+    				
+    				CeylonTree.TypeArgumentList tal = t.getTypeArgumentList();
+    			  	if (tal != null) {
+    			  		ListBuffer<JCExpression> typeArgs =
+    			  			new ListBuffer<JCExpression>();
+    			  		
+    			  		for (CeylonTree.Type innerType: tal.types()) {
+    			  			typeArgs.add(convert(innerType));
+    			  		}
+    			  		
+    			  		result = at(t).TypeApply(result, typeArgs.toList());
+    			  	}
     			}
+    			
     			// FIXME: Add the other primitive types
        			public void visit(CeylonTree.Void v) {
     				result = make.TypeIdent(VOID);
@@ -967,7 +979,8 @@ public class Gen {
             new ListBuffer<JCStatement>();
         processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
     	
-        JCExpression type = makeIdent(decl.type.name().components());
+        JCExpression type = convert(decl.type);
+        
         
         if (((decl.flags | decl.type.flags) & CeylonTree.OPTIONAL) != 0)
         	type = optionalType(type);
@@ -979,14 +992,16 @@ public class Gen {
         					type, 
         					initialValue));
 
+        // XXXXXXXXXXXXXXXXXXX
+        
         if (annotations.length() > 0) {
         	result = result.append(registerAnnotations(annotations.toList()));
         }
 
         return result;
     }
-    
-    JCTypeParameter convert(CeylonTree.TypeParameter param) {
+
+	JCTypeParameter convert(CeylonTree.TypeParameter param) {
     	if (param.variance != null)
     		throw new RuntimeException();
     	TypeName name = (TypeName)param.name;

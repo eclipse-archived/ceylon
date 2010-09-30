@@ -3,20 +3,15 @@ import java.util.List;
 import java.util.Map;
 import java.lang.Comparable;
 
-Void foo<X> (X x) 
-   given X satisfies List
-{
-}
-    
-class P() {
-void foo<X> (X x) 
-   given X satisfies List
-{
-}
+// class P() {
+// void foo<X> (X x) 
+//    given X satisfies List
+// {
+// }
 
-}
+// }
 
-/*   class TypeWithParameter<X, Y>(X init)
+   class TypeWithParameter<X, Y>(X init)
        given X satisfies List
        given X satisfies Comparable
    {
@@ -29,4 +24,3 @@ class Generics () {
     Float? xx() { return null; }
 }
 
-*/
