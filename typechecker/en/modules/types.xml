@@ -275,7 +275,6 @@
         
         <programlisting><![CDATA[public interface Callable<out R, P...> {
     public R call(P... args);
-    public void intercept( R onInvoke(R proceed(P... args), P... args) )();
 }]]></programlisting>
     
         <para>An interceptor may be removed by invoking the returned method reference:</para>
@@ -368,9 +367,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         assignable to <literal>T</literal> (evaluation).</para>
         
         <programlisting><![CDATA[public abstract class Gettable<out T>()
-        extends Void() {    
-    public void intercept( T onGet(T proceed()) )();
-}]]></programlisting>
+        extends Void() {}]]></programlisting>
         
         <para>Note that <literal>Gettable</literal> is not a subclass of 
         <literal>Object</literal>.</para>
@@ -388,9 +385,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         operator <literal>:=</literal> (assign).</para>
         
         <programlisting><![CDATA[public abstract class Settable<T>()
-        extends Gettable<T>() {
-    public void intercept( void onSet(void proceed(T value), T value) )();
-}]]></programlisting>
+        extends Gettable<T>() {}]]></programlisting>
 
         <para>The following method allows an <literal>Settable&lt;T&gt;</literal>
         to be treated as a <literal>Callable&lt;T,T&gt;</literal>:</para>
@@ -414,7 +409,9 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         
         <programlisting><![CDATA[public object true extends Boolean() {}
 public object false extends Boolean() {}
-public abstract class Boolean() of true, false extends Case() {}]]></programlisting>
+public abstract class Boolean() 
+        of true, false 
+        extends Case() {}]]></programlisting>
 
     </section>
     
@@ -1079,7 +1076,9 @@ public object equal extends Comparison() {}
     
 doc "The result of a comparison between two
      objects."
-public abstract class Comparison() of larger, smaller, equal extends Case() {}]]></programlisting>
+public abstract class Comparison() 
+        of larger, smaller, equal 
+        extends Case() {}]]></programlisting>
 
         <comment><para>TODO: should we support partial orders? Give
         <literal>Comparison</literal> an extra <literal>uncomparable</literal>
@@ -2277,6 +2276,8 @@ while (i<=max) {
     public Type<R> returnType;
     public Parameter<Object>[] parameters;
     
+    public void intercept( R onInvoke(R proceed(P... args), P... args) )();
+
 }]]></programlisting>
 
         <para>A <literal>Value</literal> represents a toplevel attribute.</para>
@@ -2294,6 +2295,8 @@ while (i<=max) {
     
     public extension Gettable<T> value;
     
+    public void intercept( T onGet(T proceed()) )();
+
 }]]></programlisting>
 
         <programlisting><![CDATA[public interface MutableValue<T> 
@@ -2301,6 +2304,8 @@ while (i<=max) {
         
     override Settable<T> value;
     
+    public void intercept( void onSet(void proceed(T value), T value) )();
+
 }]]></programlisting>
 
         <para>An instance of <literal>Type</literal> represent a type: an interface, class 
