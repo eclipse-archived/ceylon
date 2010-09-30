@@ -414,7 +414,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         
         <programlisting><![CDATA[public object true extends Boolean();
 public object false extends Boolean();
-public abstract class Boolean() of true, false;]]></programlisting>
+public abstract class Boolean() of true, false extends Case() {}]]></programlisting>
 
     </section>
     
@@ -1079,7 +1079,7 @@ public object equal extends Comparison();
     
 doc "The result of a comparison between two
      objects."
-public abstract class Comparison() of larger, smaller, equal;]]></programlisting>
+public abstract class Comparison() of larger, smaller, equal extends Case() {}]]></programlisting>
 
         <comment><para>TODO: should we support partial orders? Give
         <literal>Comparison</literal> an extra <literal>uncomparable</literal>

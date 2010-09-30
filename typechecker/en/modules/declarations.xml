@@ -1088,7 +1088,7 @@ public Color_red red = Color_red();</programlisting>
         <para>The <literal>of</literal> clause of a class declaration specifies the 
         list of cases of the class.</para>
         
-        <programlisting>public abstract class Node(String name) of root, Branch, Leaf { ... }</programlisting>
+        <programlisting>public abstract class Node(String name) of root, Branch, Leaf extends Case() { ... }</programlisting>
                 
         <programlisting>public object true extends Boolean() {}
 public object false extends Boolean() {}
