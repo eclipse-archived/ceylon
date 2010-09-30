@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
@@ -256,14 +257,16 @@ public class Gen {
                     new Singleton<JCExpression>();
             	final ListBuffer<JCAnnotation> langAnnotations =
             		new ListBuffer<JCAnnotation>();
+            	final ListBuffer<JCTypeParameter> typeParams =
+            		new ListBuffer<JCTypeParameter>();
                 
-                processMethodDeclaration(decl, params, body, restype, (ListBuffer<JCTypeParameter>)null,
+                processMethodDeclaration(decl, params, body, restype, typeParams,
                         annotations, langAnnotations);
                 
                 JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
                         at(decl).TypeIdent(VOID),
-                        List.<JCTypeParameter>nil(),
+                        processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
                         params.toList(),
                         List.<JCExpression>nil(), body.thing(), null);
                 
@@ -335,7 +338,7 @@ public class Gen {
             final ListBuffer<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
-            final ListBuffer<JCTypeParameter> typarams,
+            final ListBuffer<JCTypeParameter> typeParams,
             final ListBuffer<JCStatement> annotations,
     		final ListBuffer<JCAnnotation> langAnnotations) {
         
@@ -343,6 +346,14 @@ public class Gen {
             params.append(convert(param));
         }
         
+        // FIXME: Should be a visitor
+        for (CeylonTree t: decl.typeParameters()) {
+        	typeParams.append(convert((CeylonTree.TypeParameter)t));        	
+        }
+        	
+/*        List<JCTypeParameter> l =
+        	processTypeConstraints(decl.typeConstraintList, typeParams.toList());
+*/        
         for (CeylonTree stmt: decl.stmts)
             stmt.accept(new CeylonTree.Visitor () {
                 public void visit(CeylonTree.Block b) {
@@ -529,7 +540,7 @@ public class Gen {
 			new ListBuffer<JCTypeParameter>();
 
         
-        cdecl.visitChildren(new CeylonTree.Visitor () {
+        	cdecl.visitChildren(new CeylonTree.Visitor () {
             public void visit(CeylonTree.FormalParameter param) {
                 JCExpression vartype = makeIdent(param.type().name().components());
                 JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(0), 
@@ -603,6 +614,8 @@ public class Gen {
                                                           args)));
                 }
             }
+            
+            public void visit(CeylonTree.TypeConstraint l) {}
          });
         
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
@@ -635,7 +648,7 @@ public class Gen {
         JCClassDecl classDef = 
             at(cdecl).ClassDef(at(cdecl).Modifiers(0, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
-                    typeParams.toList(),
+                    processTypeConstraints(cdecl.typeConstraintList, typeParams.toList()),
                     superclass,
                     List.<JCExpression>nil(),
                     defs.toList());
@@ -645,7 +658,57 @@ public class Gen {
         return classDef;
     }
 
-    public List<JCTree> convert(CeylonTree.MethodDeclaration decl) {
+    // Rewrite a list of Ceylon-style type constraints into Java trees.
+    //    class TypeWithParameter<X, Y>()
+    //    given X satisfies List
+    //    given Y satisfies Comparable
+    // becomes  
+    //	  class TypeWithParameter<X extends List, Y extends Comparable> extends ceylon.Object {
+    private List<JCTypeParameter> processTypeConstraints(
+			List<CeylonTree.TypeConstraint> typeConstraintList, List<JCTypeParameter> typeParams) {
+    	if (typeConstraintList == null)
+    		return typeParams;
+    		
+    	LinkedHashMap<String, JCTypeParameter> symtab = 
+    		new LinkedHashMap<String, JCTypeParameter>();
+    	for (JCTypeParameter item: typeParams) {
+    		symtab.put(item.getName().toString(), item);
+    	}
+    	
+    	for (final CeylonTree.TypeConstraint tc: typeConstraintList) {
+    		JCTypeParameter tp = symtab.get(tc.name.toString());
+    		if (tp == null)
+    			throw new RuntimeException("Class \"" + tc.name.toString() + 
+    					"\" in satisfies list not found");
+
+    		ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
+    		if (tc.satisfies != null) {
+    			for (CeylonTree.Type type: tc.satisfies.types())
+    				bounds.add(convert(type));
+
+    			if (tp.getBounds() != null) {
+    				tp.bounds = tp.getBounds().appendList(bounds.toList());
+    			} else {
+        			JCTypeParameter newTp = 
+        				at(tc).TypeParameter(names.fromString(tc.name.toString()), bounds.toList());
+    				symtab.put(tc.name.toString(), newTp);
+    			}
+    		}
+    		
+    		if (tc.abstracts != null)
+    			throw new RuntimeException("\"abstracts\" not supported yet");
+    	}
+    	
+    	// FIXME: This just converts a map to a List.  There ought to be a
+    	// better way to do it
+    	ListBuffer<JCTypeParameter> result = new ListBuffer<JCTypeParameter>();
+    	for (JCTypeParameter p: symtab.values()) {
+    		result.add(p);
+    	}
+		return result.toList();
+	}
+
+	public List<JCTree> convert(CeylonTree.MethodDeclaration decl) {
         final ListBuffer<JCVariableDecl> params = 
             new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCStatement> annotations = 
@@ -657,8 +720,10 @@ public class Gen {
         Singleton<JCExpression> restypebuf =
             new Singleton<JCExpression>();
         ListBuffer<JCAnnotation> jcAnnotations = new ListBuffer<JCAnnotation>();
+    	final ListBuffer<JCTypeParameter> typeParams =
+    		new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(decl, params, body, restypebuf, (ListBuffer<JCTypeParameter>)null,
+    	processMethodDeclaration(decl, params, body, restypebuf, typeParams,
                 annotations, langAnnotations);
         
         JCExpression restype = restypebuf.thing();
@@ -678,7 +743,7 @@ public class Gen {
         JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC, jcAnnotations.toList()),
                 names.fromString(decl.nameAsString()),
                 restype,
-                List.<JCTypeParameter>nil(),
+                processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
                 params.toList(),
                 List.<JCExpression>nil(), body.thing(), null);;
         
