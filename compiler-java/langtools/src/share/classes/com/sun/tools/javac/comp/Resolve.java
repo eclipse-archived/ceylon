@@ -38,7 +38,9 @@ import com.sun.tools.javac.tree.JCTree.*;
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
+import javax.lang.model.type.TypeKind;
 
 import com.sun.tools.javac.ceylon.ExtensionRequiredException;
 
@@ -1280,6 +1282,32 @@ public class Resolve {
             sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, false);
             if (sym.kind >= WRONG_MTHS)
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
+        } 
+        if (sym.kind == WRONG_MTHS) {
+            assert site.getKind() == TypeKind.DECLARED;
+            ClassType csite = (ClassType) site;
+
+            Name sitename = csite.tsym.getQualifiedName();
+            if (!sitename.toString().contains("$$")) {
+                StringBuilder builder = new StringBuilder("$$");
+                for (Type arg : argtypes) {
+                    String type = arg.tsym.getQualifiedName().toString().replace('.', '$');
+                    builder.append(type.length());
+                    builder.append(type);
+                }
+                Name mname = sitename.append(names.fromString(builder.toString()));
+                Symbol mssym = loadClass(env, mname);
+                if (true) { // FIXME: handle failed lookup
+                    assert mssym.getKind() == ElementKind.CLASS;
+                    TypeSymbol tmssym = (TypeSymbol) mssym;
+                    Type msite = new ClassType(site.getEnclosingType(), csite.typarams_field, tmssym);
+                    if (types.isSubtype(msite, site)) {
+                        Symbol msym = resolveConstructor(pos, env, msite, argtypes, typeargtypes);
+                        if (msym.kind == MTH)
+                            sym = msym;
+                    }
+                }
+            }
         }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, names.init, true, argtypes, typeargtypes);
