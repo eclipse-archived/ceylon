@@ -1819,6 +1819,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>A toplevel attribute may not be <literal>mutable</literal>.</para>
         
+        <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
+        may not be <literal>mutable</literal>.</para>
+        
         <para>There is no overloading for attributes. A class may not declare or inherit 
         multiple attributes with the same name.</para>
         
