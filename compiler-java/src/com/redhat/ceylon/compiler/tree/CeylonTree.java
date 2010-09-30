@@ -1871,6 +1871,10 @@ public abstract class CeylonTree {
         public CeylonTree initialValue() {
             return initialValue;
         }
+        
+        public List<CeylonTree> typeParameters() {
+        	return this.typeParameters;
+        }
     }
 
      /**
@@ -1935,6 +1939,8 @@ public abstract class CeylonTree {
         
         public List<CeylonTree> stmts;
         
+        List<CeylonTree> typeParameters = List.<CeylonTree>nil();
+        
         @NotAChild
         public CeylonTree name;
 
@@ -1944,7 +1950,7 @@ public abstract class CeylonTree {
             source = base.source;
             returnType = base.type;
             setParameterList(base.params);
-            setTypeParameterList(base.typeParameters);
+            typeParameters = base.typeParameters;
             setName(base.name);
             stmts = base.stmts;
             annotations = base.annotations;
@@ -1964,14 +1970,13 @@ public abstract class CeylonTree {
         public void setParameterList(List<FormalParameter> theList) {
             params = theList;
         }
-    }
-
-    public static class MethodDeclaration extends BaseMethodDeclaration {
-        List<CeylonTree> typeParameters;
         
         public List<CeylonTree> typeParameters() {
         	return this.typeParameters;
         }
+    }
+
+    public static class MethodDeclaration extends BaseMethodDeclaration {
         
         public MethodDeclaration(BaseMemberDeclaration member) {
             super(member);
@@ -1980,7 +1985,7 @@ public abstract class CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
-            assert(this.typeParameters == null);
+            assert(this.typeParameters.length() == 0);
             this.typeParameters = typeParameters;
         }
     }
@@ -2586,6 +2591,10 @@ public abstract class CeylonTree {
         List<Type> types = List.<Type>nil();
         void pushType(Type type) {
             types = types.append(type);
+        }
+        
+        public List<Type> types() {
+        	return this.types;
         }
         
         public void accept(Visitor v) { v.visit(this); }

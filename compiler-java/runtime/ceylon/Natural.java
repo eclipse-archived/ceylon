@@ -85,4 +85,15 @@ public final class Natural
     public ceylon.Decimal decimal() {
         throw new RuntimeException("not implemented");
     }
+
+    // Just a kludge til we have full autoboxing
+    @Extension
+    public long longValue() {
+        return value;
+    }
+
+    @Extension
+    public int intValue() {
+        return (int)value;
+    }
 }
