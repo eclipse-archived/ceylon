@@ -1659,7 +1659,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
        <section id="abstractmethods">
             <title>Interface methods and abstract methods</title>
             
-            <para>If there is no method body in a method declaration, the implementation 
+            <para>If there is no method implementation in a method declaration, the implementation 
             of the method must be specified later in the block, or the class that declares 
             the method must be annotated <literal>abstract</literal>. If no implementation 
             is specified, the method is considered an <emphasis>abstract method</emphasis>.</para>
@@ -1669,6 +1669,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>Methods declared by interfaces never specify an implementation:</para>
         
             <programlisting>AbstractMethod := MethodHeader ";"</programlisting>
+            
+            <para>A toplevel method declaration may not be abstract and must have a method
+            implementation (a block of code, or a reference to another method).</para>
 
         </section>
         
@@ -2062,6 +2065,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
             <programlisting>AbstractAttribute := AttributeHeader ";"</programlisting>
                         
+            <para>A toplevel attribute declaration may not be abstract and must have a 
+            specifier or getter implementation.</para>
+
         </section>
         
         <section id="overridingattributes">
