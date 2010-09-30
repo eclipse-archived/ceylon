@@ -412,8 +412,8 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[public object true extends Boolean();
-public object false extends Boolean();
+        <programlisting><![CDATA[public object true extends Boolean() {}
+public object false extends Boolean() {}
 public abstract class Boolean() of true, false extends Case() {}]]></programlisting>
 
     </section>
@@ -1067,15 +1067,15 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <programlisting><![CDATA[doc "The receiving object is larger than 
      the given object."
-public object larger extends Comparison();
+public object larger extends Comparison() {}
 
 doc "The receiving object is smaller than 
      the given object."
-public object smaller extends Comparison();
+public object smaller extends Comparison() {}
 
 doc "The receiving object is exactly equal 
      to the given object."
-public object equal extends Comparison();
+public object equal extends Comparison() {}
     
 doc "The result of a comparison between two
      objects."
@@ -2552,10 +2552,10 @@ while (i<=max) {
         <para>The class <literal>LogPriority</literal> defines an extensible set of
         levels of importance for log messages.</para>
 
-        <programlisting><![CDATA[public object trace extends LogPriority("Trace", 100);
-public object info extends LogPriority("Info", 200);
-public object warn extends LogPriority("Warn", 300);
-public object error extends LogPriority("Error", 400);
+        <programlisting><![CDATA[public object trace extends LogPriority("Trace", 100) {}
+public object info extends LogPriority("Info", 200) {}
+public object warn extends LogPriority("Warn", 300) {}
+public object error extends LogPriority("Error", 400) {}
 
 doc "The severity of a log message."
 public abstract class LogPriority(String string, Natural priority) {
