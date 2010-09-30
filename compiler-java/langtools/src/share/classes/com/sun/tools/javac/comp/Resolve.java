@@ -1296,8 +1296,7 @@ public class Resolve {
                 }
                 Name mangled_name = sitename.append(names.fromString(builder.toString()));
                 Symbol mangled_symbol = loadClass(env, mangled_name);
-                if (true) { // FIXME: handle failed lookup
-                    assert mangled_symbol.getKind() == ElementKind.CLASS;
+                if (mangled_symbol.getKind() == ElementKind.CLASS) {
                     TypeSymbol class_symbol = (TypeSymbol) mangled_symbol;
                     Type mangled_site = new ClassType(site.getEnclosingType(), siteclass.typarams_field, class_symbol);
                     if (types.isSubtype(mangled_site, site)) {
