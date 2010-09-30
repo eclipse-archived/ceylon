@@ -73,15 +73,13 @@ Body?</programlisting>
         <para>A <emphasis>toplevel expression</emphasis> is a shorthand toplevel 
         method declaration.</para>
         
-        <programlisting>ToplevelExpression := (Param ";")* Expression</programlisting>
+        <programlisting>ToplevelExpression := (Param ";")* Declaration* Expression</programlisting>
         
         <para>A toplevel expression is equivalent to a <literal>public</literal> 
         toplevel method declaration with the specified formal parameters, which returns 
         the specified expression. The name of the toplevel method is determined from 
         the name of the compilation unit (by removing the file suffix 
-        <literal>.ceylon</literal>).</para>
-        
-        <para>For example:</para>
+        <literal>.ceylon</literal>). For example:</para>
             
         <programlisting>String firstName; 
 String lastName; 
@@ -95,11 +93,28 @@ String lastName;
     return "Hello " firstName " " lastName "!"
 }</programlisting>
         
-        <!--
-        <comment><para>TODO: should we allow the definition of <literal>private</literal>
-        toplevel methods and types in a compilation unit containing a toplevel 
-        expression?</para></comment>
-        -->
+        <para>The compilation unit containing a toplevel expression may contain the 
+        definition of attributes, methods, and types. These are interpreted as 
+        block-local declarations of the method body. For example:</para>
+        
+        <programlisting>String firstName; 
+String lastName; 
+String name = firstName + " " + lastName;
+
+"Hello" name "!"</programlisting>
+
+        <para>is equivalent to:</para>
+            
+        <programlisting>public String hello(String firstName, String lastName) { 
+    String name = firstName + " " + lastName;
+    return "Hello " name "!"
+}</programlisting>
+
+        <comment><para>TODO: Alternatively, a toplevel expression could be a toplevel
+        attribute.</para></comment>
+        
+        <comment><para>TODO: Should we allow statements in the compilation unit? If
+        not, how do you write a "script" in Ceylon?</para></comment>
         
         </section>
         
