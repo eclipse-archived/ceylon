@@ -982,9 +982,14 @@ public class Gen {
     	
         JCExpression type = convert(decl.type);
         
+        int modifiers = 0;
+        
+        if ((decl.flags & CeylonTree.MUTABLE) == 0)
+        	modifiers |= FINAL;
+        
         List<JCStatement> result = 
         	List.<JCStatement>of(at(decl).VarDef
-        			(at(decl).Modifiers(0, langAnnotations.toList()), 
+        			(at(decl).Modifiers(modifiers, langAnnotations.toList()), 
         					names.fromString(decl.nameAsString()),
         					type, 
         					initialValue));

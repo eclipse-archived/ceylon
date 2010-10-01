@@ -1,8 +1,9 @@
 class Optional () {
 
     Integer? one = next(1);
-    Integer? two = null;
+    mutable Integer? two = null;
 
+    two := 3;
 
        public Integer next(Integer? a) {
            if (exists a) {
