@@ -265,7 +265,7 @@ public class Gen {
                 
                 JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC|STATIC),
                         names.fromString("run"),
-                        at(decl).TypeIdent(VOID),
+                        restype.thing(),
                         processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
                         params.toList(),
                         List.<JCExpression>nil(), body.thing(), null);
@@ -980,10 +980,6 @@ public class Gen {
         processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
     	
         JCExpression type = convert(decl.type);
-        
-        
-        if (((decl.flags | decl.type.flags) & CeylonTree.OPTIONAL) != 0)
-        	type = optionalType(type);
         
         List<JCStatement> result = 
         	List.<JCStatement>of(at(decl).VarDef
