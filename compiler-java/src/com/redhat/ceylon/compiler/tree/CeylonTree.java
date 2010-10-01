@@ -2882,12 +2882,12 @@ public abstract class CeylonTree {
      * A while statement
      */
     public static class WhileStatement extends ControlStructure {
-        Condition condition;
-        CeylonTree ifTrue; // FIXME: Always an instance of Block
+        public Condition condition;
+        public Block ifTrue;
         
         public void setIfTrue(CeylonTree t) {
             assert(ifTrue == null);
-            ifTrue = t;
+            ifTrue = (Block)t;
         }
             
         public void setCondition(Condition t) {

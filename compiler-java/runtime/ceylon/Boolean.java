@@ -15,4 +15,8 @@ public final class Boolean extends Object {
     public ceylon.String string() {
         return ceylon.String.instance(java.lang.Boolean.toString(value));
     }
+
+    public boolean booleanValue() {
+        return value;
+    }
 }
