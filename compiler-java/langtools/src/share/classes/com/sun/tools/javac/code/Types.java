@@ -281,6 +281,9 @@ public class Types {
         if (t.tag != CLASS || s.tag != CLASS)
             return null;
 
+        if (isSameType(s, syms.objectType))
+            return null;
+        
         ClassSymbol ceylonExtension =
             reader.enterClass(names.fromString("ceylon.Extension"));
 
