@@ -284,11 +284,8 @@ public class Types {
         if (isSameType(s, syms.objectType))
             return null;
         
-        ClassSymbol ceylonExtension =
-            reader.enterClass(names.fromString("ceylon.Extension"));
-
         for (Symbol sym : ((ClassSymbol) t.tsym).members().getElements()) {
-            if (sym.attribute(ceylonExtension) == null)
+            if (sym.attribute(syms.ceylonExtensionSym) == null)
                 continue;
 
             MethodSymbol msym = (MethodSymbol) sym;
