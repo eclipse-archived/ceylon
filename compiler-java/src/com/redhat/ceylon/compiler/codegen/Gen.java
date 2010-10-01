@@ -497,7 +497,6 @@ public class Gen {
                             make.Literal(toFlatName(v.result))));
         }
 
-        result.setPos(Position.encodePosition(value.source.line, value.source.column));
         return result;
     }
     
