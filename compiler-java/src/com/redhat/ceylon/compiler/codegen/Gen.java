@@ -551,8 +551,10 @@ public class Gen {
 		final ListBuffer<JCTypeParameter> typeParams =
 			new ListBuffer<JCTypeParameter>();
 
-        
-        	cdecl.visitChildren(new CeylonTree.Visitor () {
+        class ClassVisitor extends StatementVisitor {
+            ClassVisitor(ListBuffer<JCStatement> stmts) {
+                super(stmts);
+            }
             public void visit(CeylonTree.FormalParameter param) {
                 JCExpression vartype = makeIdent(param.type().name().components());
                 JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(0), 
@@ -592,19 +594,6 @@ public class Gen {
             	}
             }
             
-            // FIXME: Just a placeholder for all the control structures
-            public void visit(CeylonTree.IfStatement stmt) {
-            	stmts.append(convert(stmt));
-            }
-            
-            // FIME: Too many special cases.  We should use a StatementVisitor here.
-            public void visit(CeylonTree.CallExpression expr) {
-                stmts.append(at(expr).Exec(convert(expr)));
-            }
-            
-            public void visit(CeylonTree.Operator op) {
-            	stmts.append(at(op).Exec(convert(op)));
-            }
             
             public void visit(CeylonTree.TypeParameter param) {
             	typeParams.append(convert(param));
@@ -628,7 +617,9 @@ public class Gen {
             }
             
             public void visit(CeylonTree.TypeConstraint l) {}
-         });
+        }
+        
+        cdecl.visitChildren(new ClassVisitor (stmts));
         
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
                            cdecl.nameAsString());
@@ -775,34 +766,39 @@ public class Gen {
     }
     
     class StatementVisitor extends CeylonTree.Visitor {
-    	final ListBuffer<JCStatement> buf;
-    	StatementVisitor(ListBuffer<JCStatement> buf) {
-    		this.buf = buf;
+    	final ListBuffer<JCStatement> stmts;
+    	StatementVisitor(ListBuffer<JCStatement> stmts) {
+    		this.stmts = stmts;
     	}
         public void visit(CeylonTree.CallExpression expr) {
-            buf.append(at(expr).Exec(convert(expr)));
+            stmts.append(at(expr).Exec(convert(expr)));
         }
         public void visit(CeylonTree.ReturnStatement ret) {
-            buf.append(convert(ret));
+            stmts.append(convert(ret));
         }
         public void visit(CeylonTree.IfStatement stat) {
-            buf.append(convert(stat));
+            stmts.append(convert(stat));
+        }
+        public void visit(CeylonTree.WhileStatement stat) {
+            stmts.append(convert(stat));
         }
         public void visit(CeylonTree.MemberDeclaration decl) {
            	for (JCTree def: convert(decl))
-                 buf.append((JCStatement)def);
+                 stmts.append((JCStatement)def);
         }
         public void visit(CeylonTree.Operator op) {
-           	buf.append(at(op).Exec(convert(op)));
-       }
+            stmts.append(at(op).Exec(convert(op)));
+        }            
+        public ListBuffer<JCStatement> stmts() {
+            return stmts;
+        }
     }
     
     List<JCStatement> convertStmts(List<CeylonTree> stmts) {
         final ListBuffer<JCStatement> buf =
             new ListBuffer<JCStatement>();
         
-        StatementVisitor v = new StatementVisitor (buf) {
-            };
+        StatementVisitor v = new StatementVisitor (buf);
             
         for (CeylonTree stmt: stmts) 
         	stmt.accept(v);
@@ -874,6 +870,12 @@ public class Gen {
     	JCStatement result = at(stmt).If(cond, thenPart, elsePart);
     	
     	return result;
+    }
+    
+    JCStatement convert(CeylonTree.WhileStatement stmt) {
+    	JCBlock thenPart = convert(stmt.ifTrue);
+    	JCExpression cond = convertExpression(stmt.condition);
+    	return at(stmt).WhileLoop(cond, thenPart);
     }
     
     JCExpression convert(CeylonTree.CallExpression ce) {
@@ -987,8 +989,6 @@ public class Gen {
         					names.fromString(decl.nameAsString()),
         					type, 
         					initialValue));
-
-        // XXXXXXXXXXXXXXXXXXX
         
         if (annotations.length() > 0) {
         	result = result.append(registerAnnotations(annotations.toList()));
