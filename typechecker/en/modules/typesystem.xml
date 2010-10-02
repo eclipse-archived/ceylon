@@ -753,6 +753,9 @@ String? firstWord = words[0];</programlisting>
         
         <section id="dimensionaltypeparameters">
             <title>Dimensional type parameters</title>
+            
+            <comment><para>NOTE: dimensional type parameters are a proposed feature
+            for a future version of the language.</para></comment>
         
         <para>A dimensional type parameter allows a declaration to be abstracted over 
         the natural numbers.</para>
@@ -1005,6 +1008,9 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <section id="dimensions">
             <title>Dimensions</title>
+        
+            <comment><para>NOTE: dimensional type parameters are a proposed feature
+            for a future version of the language.</para></comment>
         
         <para>A <emphasis>dimension</emphasis> is an expression composed of natural number
         literals, locals of type <literal>Natural</literal>, the operators 
