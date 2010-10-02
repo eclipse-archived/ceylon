@@ -568,10 +568,35 @@ String? firstWord = words[0];</programlisting>
         cases of the type.</para>
         
     </section>
+    
+    <section id="typeclasses">
+        <title>Type classes</title>
+        
+        <comment><para>NOTE: Type classes are a proposed feature for a future
+        version of the language.</para></comment>
+        
+        <para>A type may optionally specify a <emphasis>type class</emphasis>, A
+        type class is a user-defined metamodel object for the type. A type class 
+        must be a toplevel anonymous class that extends:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>BasicInterface&lt;T&gt;</literal> where <literal>T</literal> 
+                is the interface, or</para>
+            </listitem>
+            <listitem>
+                <para><literal>BasicClass&lt;T&gt;</literal> where <literal>T</literal> 
+                is the class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>TypeClass := "is" MemberName</programlisting>
+        
+    </section>
         
     </section>
 
-    <section id="generictypeparameterlist">
+    <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
         <para>Methods, classes, interfaces, and aliases may declare one or more generic 
@@ -801,8 +826,13 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         attribute annotated <literal>fixed</literal>, where the class that declares the
         method or attribute is assignable to <literal>subtype</literal>.</para>
         
-        <comment><para>TODO: should we let you declare type constraints on 
+        <comment><para>TODO: Should we let you declare type constraints on 
         <literal>subtype</literal>?</para></comment>
+        
+        <comment><para>TODO: We should probably let you use <literal>subtype</literal>
+        is an expression, especially if we end up deciding to support type classes, in
+        which case <literal>x.subtype</literal> will be the only way to get the type
+        class polymorphically.</para></comment>
         
         </section>
         
@@ -850,7 +880,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
 
         </section>
         
-    <section id="generictypeconstraintlist">
+    <section id="generictypeconstraints">
     <title>Generic type constraints</title>
 
         <para>A parameterized method, class, interface, or alias declaration may 
@@ -859,14 +889,14 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     
-        <programlisting>TypeConstraint := "given" TypeName FormalParams? SatisfiedTypes? AbstractedType?</programlisting>
+        <programlisting>TypeConstraint := "given" TypeName FormalParams? TypeClass? SatisfiedTypes? AbstractedType?</programlisting>
         
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
         
         <para>Note that the syntax for a type constraint is essentially the same syntax used 
         for other type declarations such as class, interface, and type alias declarations.</para>
         
-        <para>There are three kinds of type constraint:</para>
+        <para>There are four kinds of type constraint:</para>
         
         <itemizedlist>
             <listitem>
@@ -884,6 +914,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 the type parameter <literal>X</literal> represents the concrete type
                 of the current instance, and</para>
             </listitem-->
+            <listitem>
+                <para>a type class bound, <literal>given X is T</literal>, specifies that the
+                type class of the type parameter is a subtype of a given type <literal>T</literal>
+                <emphasis>(note that type classes are a proposed feature for a future version
+                of the language)</emphasis>,</para>
+            </listitem>
             <listitem>
                 <para>an initialization parameter specification, <literal>given X(...)</literal>
                 specifies that the type parameter <literal>X</literal> is a class with
@@ -932,6 +968,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>The lower bound of a type parameter is considered a subtype of the
                 type parameter.</para>
             </listitem>
+            <listitem>
+                <para>A metamodel reference to the type parameter is assignable to the type
+                class bound.</para>
+            </listitem>
         </itemizedlist>
         
         <programlisting>given X satisfies Number&lt;X&gt;
@@ -941,9 +981,9 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
 
         <programlisting>given T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
     
-        <comment><para>TODO: Should the type parameter upper bound default to <literal>Object</literal>
-        instead of <literal>Void</literal>?</para></comment>
+        <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
         
+        <!--  
         <comment><para>TODO: eventually we should support the ability to implicitly pass in an
         extension that is imported by the client code, using a type constraint of form:</para>
         <programlisting>given extension E(X x) satisfies Format</programlisting>
@@ -954,7 +994,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <para>The extension type would be inferred at the point of invocation, using the usual
         rules for searching for extensions.</para>
         </comment>
-    
+        -->
+        
         <!-- 
         <comment><para>TODO: at some stage it would be very interesting to support "assignability
         upper bounds", for example <literal>given X is String</literal>, where the client code is
@@ -983,7 +1024,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
 
     </section>
 
-    <section id="typeargumentlist">
+    <section id="generictypearguments">
         <title>Generic type arguments</title>
             
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema from a 
@@ -1252,7 +1293,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                 
     </section>
     
-    <section id="formalparameterlist">
+    <section id="formalparameters">
         <title>Formal parameters</title>
     
         <para>A method or class declaration may declare a list or <emphasis>formal parameters</emphasis>, 
@@ -1375,8 +1416,8 @@ SequencedParam?
         
     </section>
     
-    <section id="annotationlist">
-        <title>Annotations</title>
+    <section id="annotations">
+        <title>Program element annotations</title>
 
         <para>Declarations may be preceded by a list of annotations. An annotation is an
         initial lowercase identifier, optionally followed by an argument list. A list of 

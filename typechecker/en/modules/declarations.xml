@@ -20,6 +20,7 @@
     <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
 CaseTypes?
+TypeClass?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
@@ -253,6 +254,7 @@ String name = firstName + " " + lastName;
 Annotation*
 "interface" TypeName TypeParams?
 CaseTypes?
+TypeClass?
 SatisfiedTypes?
 TypeConstraints? 
 InterfaceBody</programlisting>
@@ -397,6 +399,7 @@ InterfaceBody</programlisting>
 Annotation*
 "class" TypeName TypeParams? FormalParams
 CaseTypes?
+TypeClass?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
@@ -1013,7 +1016,7 @@ public class Person { ... }</programlisting>
         
         <programlisting>Object :=
 Annotation*
-"object" memberName
+"object" MemberName
 ExtendedType?
 SatisfiedTypes?
 ClassBody</programlisting>
@@ -1139,6 +1142,7 @@ public abstract class Boolean() of true, false extends Case() {}</programlisting
 Annotation* 
 "choice" TypeName TypeParams?
 CaseTypes
+TypeClass?
 SatisfiedTypes? 
 TypeConstraints?
 ";"</programlisting>
@@ -2238,10 +2242,13 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        alias&mdash;for example, <literal>People</literal>&mdash; returns the metamodel 
        object for the aliased type&mdash;in this case, <literal>List&lt;Person&gt;</literal>.</para>
        
-       <comment><para>TODO: could we reify them? This would let us define type aliases
+       <comment><para>TODO: Could we reify them? This would let us define type aliases
        that satisfy multiple interfaces. For example:</para>
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
        </comment>
+       
+       <comment><para>TODO: Could an alias have its own type class? Only if we decide to
+       reify it.</para></comment>
     
     </section>
     
