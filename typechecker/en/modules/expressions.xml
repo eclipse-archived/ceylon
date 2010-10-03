@@ -1354,20 +1354,39 @@ local comp = order(1,-1);</programlisting>
         <para>Arguments must be listed in the same order as the formal parameters are 
         declared by the method declaration.</para>
         
-        <comment><para>TODO: should we introduce the ability to declare functional parameters
+        <comment><para>TODO: Should we introduce the ability to declare functional parameters
         outside the parentheses in method and class definitions, in order to better respect the 
-        intended invocation syntax, for example:</para>
+        intended invocation syntax? For example:</para>
         <programlisting>public void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
         <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
         <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
         </comment>
         
-        <comment>
-        <para>TODO: should we support type inference for the formal parameters? It 
-        gets complicated with method overloading. For example:</para>
+        <comment><para>TODO: Since this is our solution for "anonymous methods" (lambda 
+        expressions), we could reuse exactly the same syntax for something like Java's 
+        anonymous classes. Essentially this would be an inline anonymous class declaration
+        where you are allowed to omit the <literal>object</literal> keyword. So you would 
+        be left with the parameter name, the <literal>extends</literal> and/or 
+        <literal>satisfies</literal> clauses, and the class body. For example:</para>
+        <programlisting>File file = ... ;
+using() resource satisfies Usable {
+    override void begin() {
+        file.create();
+    }
+    override void end() { 
+        file.close();
+    }
+    override void end(Exception e) { 
+        file.delete();
+    }
+}</programlisting>
+        <para>Perhaps the <literal>extends</literal> or <literal>satisfies</literal> 
+        clause could be inferred from the parameter type in some cases.</para></comment>
+        
+        <comment><para>TODO: Should we support type inference for the formal parameters? It 
+        gets complicated with method overloading? For example:</para>
         <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
-        <programlisting>where (local p) (p.age>18)</programlisting>
-        </comment>
+        <programlisting>where (local p) (p.age>18)</programlisting></comment>
 
         </section>
         
