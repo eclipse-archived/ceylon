@@ -1085,7 +1085,8 @@ ClassBody</programlisting>
          <para>If the <literal>object</literal> has a visibility modifier annotation, 
          the attribute has the specified visibility modifier. If the <literal>object</literal>
          is annotated <literal>override</literal>, it overrides an attribute of a
-         supertype.</para>
+         supertype. If the <literal>object</literal> is annotated <literal>extension</literal>, 
+         it is an extension attribute.</para>
          
          <para>The following declaration:</para>
          
