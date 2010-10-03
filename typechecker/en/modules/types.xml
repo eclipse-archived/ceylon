@@ -2763,7 +2763,7 @@ public Y ifExists<X,Y>(specified X? value,
      exception occurs that matches the second block, 
      evaluate the block."
 public Y attempt<Y,E>(Y seek(),
-                   Y except(E e)) {
+                      Y except(E e)) {
     try {
         return seek()
     }
