@@ -2762,7 +2762,7 @@ public Y ifExists<X,Y>(specified X? value,
         <programlisting><![CDATA[doc "Attempt to evaluate the first block. If an 
      exception occurs that matches the second block, 
      evaluate the block."
-public Y seek<Y,E>(Y seek(),
+public Y attempt<Y,E>(Y seek(),
                    Y except(E e)) {
     try {
         return seek()
