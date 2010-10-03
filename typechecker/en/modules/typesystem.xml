@@ -1031,6 +1031,12 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <comment><para>TODO: should we allow constraints on dimensional type parameters,
         for example <literal>given n&gt;=1</literal>.</para></comment>
         
+        <comment><para>TODO: Should we have constraints that specify that a type should be
+        an have a certain list of enumerated types, for example 
+        <literal>given T of Leaf, Branch</literal> or even 
+        <literal>given T of Leaf, Branch, P...</literal>? I suppose this is only truly useful 
+        if we decide to introduce unions.</para></comment>
+        
     </section>
 
     </section>
