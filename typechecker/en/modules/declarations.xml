@@ -1874,7 +1874,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
         <itemizedlist>
             <listitem>
-                <para>the methods are overloaded,</para>
+                <para>the attributes are overloaded,</para>
             </listitem>
             <listitem>
                 <para>one attribute overrides the other attribute, or</para>
