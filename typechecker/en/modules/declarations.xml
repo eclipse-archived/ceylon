@@ -942,10 +942,22 @@ public class Person { ... }</programlisting>
             instantiation expressions. An instantiation expression is resolved to a 
             particular overloaded class declaration at compile time, using the argument 
             expression types.</para>
-            
+        
             <para>A package or body may not declare or inherit two classes with the 
-            same name unless the classes are overloaded, or one class overrides the
-            other class.</para>
+            same name unless either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the classes are overloaded,</para>
+                </listitem>
+                <listitem>
+                    <para>one class overrides the other class, or</para>
+                </listitem>
+                <listitem>
+                    <para>one class is defined by a supertype, and is not visible
+                    to the subtype that defines the other class.</para>
+                </listitem>
+            </itemizedlist>
         
         </section>
         
@@ -1000,6 +1012,10 @@ public class Person { ... }</programlisting>
         <para>Finally, the overridden member class must be visible to the member
         class annotated <literal>override</literal>.</para>
         
+        <para>If a member class is annotated <literal>override</literal>, it must 
+        override some class defined by a supertype, and the class it overrides 
+        must be either <literal>abstract</literal> or <literal>default</literal>.</para>
+            
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
@@ -1663,8 +1679,20 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             declaration at compile time, using the argument expression types.</para>
             
             <para>A package or body may not declare or inherit two methods with the 
-            same name unless the methods are overloaded, or one method overrides the
-            other method.</para>
+            same name unless either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the methods are overloaded,</para>
+                </listitem>
+                <listitem>
+                    <para>one method overrides the other method, or</para>
+                </listitem>
+                <listitem>
+                    <para>one method is defined by a supertype, and is not visible
+                    to the subtype that defines the other method.</para>
+                </listitem>
+            </itemizedlist>
         
         </section>
         
@@ -1840,8 +1868,21 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>mutable</literal>.</para>
         
-        <para>There is no overloading for attributes. A class may not declare or inherit 
-        multiple attributes with the same name.</para>
+        <para>There is no overloading for attributes. A package or body may not declare 
+        or inherit two attributes with the same name unless either:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>the methods are overloaded,</para>
+            </listitem>
+            <listitem>
+                <para>one attribute overrides the other attribute, or</para>
+            </listitem>
+            <listitem>
+                <para>one attribute is defined by a supertype, and is not visible
+                to the subtype that defines the other attribute.</para>
+            </listitem>
+        </itemizedlist>
         
         <!--<section id="attributebodies">
             <title>Attribute bodies</title>-->
