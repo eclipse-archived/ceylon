@@ -989,20 +989,21 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>To override a member class, the subtype must declare a member class:</para>
+        <para>A member class of a subtype <emphasis>overrides</emphasis> a member 
+        class of a supertype if the member class:</para>
         
         <itemizedlist>
             <listitem>
-                <para>annotated <literal>override</literal>,</para>
+                <para>is annotated <literal>override</literal>,</para>
             </listitem>
             <listitem>
-                <para>with the same name as the member class it overrides,</para>
+                <para>has the same name as the member class it overrides,</para>
             </listitem>
             <listitem>
-                <para>that extends the member class it overrides, and</para>
+                <para>extends the member class it overrides, and</para>
             </listitem>
             <listitem>
-                <para>with a formal parameter list with the same signature as the 
+                <para>has a formal parameter list with the same signature as the 
                 member class it overrides, after substitution of type arguments
                 specified in the <literal>extends</literal> or <literal>satisfies</literal>
                 clause.</para>
