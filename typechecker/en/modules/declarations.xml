@@ -943,6 +943,10 @@ public class Person { ... }</programlisting>
             particular overloaded class declaration at compile time, using the argument 
             expression types.</para>
             
+            <para>A package or body may not declare or inherit two classes with the 
+            same name unless the classes are overloaded, or one class overrides the
+            other class.</para>
+        
         </section>
         
     <section id="overridingmemberclasses">
@@ -1639,9 +1643,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <title>Overloaded methods</title>
             
             <para>Multiple toplevel methods belonging to the same package, or multiple 
-            methods of the same containing body may may declare the same name. A class may 
-            declare or inherit multiple methods with the same name. The methods are called 
-            <emphasis>overloaded</emphasis>. Overloaded methods:</para>
+            methods of the same containing body may may declare the same name. A class or
+            interface may declare or inherit multiple methods with the same name. The 
+            methods are called <emphasis>overloaded</emphasis>. Overloaded methods:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1657,6 +1661,10 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>An invocation expression is resolved to a particular overloaded method 
             declaration at compile time, using the argument expression types.</para>
+            
+            <para>A package or body may not declare or inherit two methods with the 
+            same name unless the methods are overloaded, or one method overrides the
+            other method.</para>
         
         </section>
         
@@ -1707,23 +1715,24 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </listitem>
             </itemizedlist>           
             
-            <para>To override a method, the subtype must declare a method:</para>
+            <para>A method of a subtype <emphasis>overrides</emphasis> a method of
+            a supertype if the method:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>annotated <literal>override</literal>,</para>
+                    <para>is annotated <literal>override</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>with the same name as the method it overrides,</para>
+                    <para>has the same name as the method it overrides,</para>
                 </listitem>
                 <listitem>
-                    <para>the same number of formal parameter lists, with the same
+                    <para>has the same number of formal parameter lists, with the same
                     signatures, as the method it overrides, after substitution of 
                     type arguments specified in the <literal>extends</literal> or 
                     <literal>satisfies</literal> clause of the class, and</para>
                 </listitem>
                  <listitem>
-                    <para>with a return type that is assignable to the return type 
+                    <para>has a return type that is assignable to the return type 
                     of the method it overrides in the compilation unit containing
                     the method annotated <literal>override</literal>, after 
                     substitution of type arguments specified in the 
@@ -1734,6 +1743,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>Finally, the overridden method must be visible to the method
             annotated <literal>override</literal>.</para>
+            
+            <para>If a method is annotated <literal>override</literal>, it must 
+            override some method defined by a supertype, and the method it overrides 
+            must be either abstract, <literal>default</literal>, or 
+            <literal>fixed</literal>.</para>
             
             <para>A method may not, directly or indirectly, override two different
             methods not themselves annotated <literal>override</literal>.</para>
@@ -2111,38 +2125,44 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             overridden by a <literal>mutable</literal> simple attribute or by an attribute 
             getter and setter pair.</para>
             
-            <para>To override an attribute, the subtype must declare an attribute:</para>
+            <para>An attribute of a subtype <emphasis>overrides</emphasis> an attribute of
+            a supertype if the attribute:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>annotated <literal>override</literal>,</para>
+                    <para>is annotated <literal>override</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>with the same name as the attribute it overrides,</para>
+                    <para>has the same name as the attribute it overrides,</para>
                 </listitem>
                  <listitem>
-                    <para>with a type that is assignable to the type of the attribute it 
+                    <para>has a type that is assignable to the type of the attribute it 
                     overrides in the compilation unit containing the attribute annotated 
                     <literal>override</literal>, after substitution of type arguments 
                     specified in the <literal>extends</literal> or <literal>satisfies</literal> 
                     clause of the class,</para>
                 </listitem>
                  <listitem>
-                    <para>or with <emphasis>exactly the same type</emphasis> as the 
+                    <para>or has <emphasis>exactly the same type</emphasis> as the 
                     attribute it overrides, after substitution of type arguments specified 
                     in the <literal>extends</literal> or <literal>satisfies</literal> clause
                     of the class, if the attribute it overrides is <literal>mutable</literal>, 
                     and</para>
                 </listitem>
                 <listitem>
-                    <para>that is <literal>mutable</literal>, if the attribute it overrides 
-                    is <literal>mutable</literal>.</para>
+                    <para>is <literal>mutable</literal>, if the attribute it overrides is 
+                    <literal>mutable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
             <para>Finally, the overridden attribute must be visible to the attribute
             annotated <literal>override</literal>.</para>
         
+            <para>If an attribute is annotated <literal>override</literal>, it must 
+            override some attribute defined by a supertype, and the attribute it 
+            overrides must be either abstract, <literal>default</literal>, or 
+            <literal>fixed</literal>.</para>
+            
             <para>A method may not, directly or indirectly, override two different
             methods not themselves annotated <literal>override</literal>.</para>
         
