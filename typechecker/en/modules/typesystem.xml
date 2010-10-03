@@ -562,6 +562,10 @@ String? firstWord = words[0];</programlisting>
         identifier. Any anonymous class that appears as a case must extend the 
         class <literal>ceylon.language.Case</literal>.</para>
         
+        <programlisting>of larger, smaller, equal</programlisting>
+        
+        <programlisting>of Root&lt;T&gt;, Leaf&lt;T&gt;, Branch&lt;T&gt;</programlisting>
+        
         <para>An explicit list of cases allows safe use of a type in a 
         <literal>switch</literal> statement. The compiler is able to validate
         that the <literal>switch</literal> contains an exhaustive list of all 
@@ -591,6 +595,11 @@ String? firstWord = words[0];</programlisting>
         </itemizedlist>
         
         <programlisting>TypeClass := "is" MemberName</programlisting>
+        
+        <para>The <literal>is</literal> clause may specify exactly one anonymous
+        class:</para>
+        
+        <programlisting>is monoidClass</programlisting>
         
     </section>
         
@@ -980,6 +989,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>given S satisfies Decimal[n]</programlisting>
 
         <programlisting>given T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
+        
+        <programlisting>given N is Monoid&lt;N&gt;</programlisting>
     
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
         
