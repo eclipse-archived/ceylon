@@ -205,7 +205,13 @@ declaration
 
 //special rule for syntactic predicates
 annotatedDeclarationStart
-    : userAnnotation* ( declarationAnnotation | declarationStart )
+    : declarationStart
+    | annotationName
+      ( 
+          declarationStart
+        | annotationName
+        | annotationArguments annotatedDeclarationStart
+      )
     ;
 
 declarationStart
@@ -220,12 +226,13 @@ declarationKeyword
     | 'class' 
     | 'interface' 
     | 'alias'
+    | 'union'
     | 'choice'
     ;
 
 //by making these things keywords, we reduce the amount of
 //backtracking
-declarationAnnotation
+/*declarationAnnotation
     : 'abstract'
     | 'default'
     | 'override'
@@ -243,7 +250,7 @@ visibility
     | 'package'
     | 'private'
     | 'protected'
-    ;
+    ;*/
 
 statement 
     : specificationOrExpressionStatement
@@ -465,16 +472,10 @@ annotations
     -> ^(ANNOTATION_LIST annotation+)
     ;
 
-annotation
-    : declarationAnnotation
-    -> ^(ANNOTATION declarationAnnotation) 
-    | userAnnotation
-    ;
-
 //TODO: we could minimize backtracking by limiting the 
 //kind of expressions that can appear as arguments to
 //the annotation
-userAnnotation 
+annotation
     : annotationName annotationArguments?
     -> ^(ANNOTATION annotationName annotationArguments?)
     ;

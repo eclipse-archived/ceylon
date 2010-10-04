@@ -2430,9 +2430,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>By default, <literal>Natural</literal>, <literal>Integer</literal>
         and <literal>Float</literal> are assumed to represent 64-bit values.</para>
         
+        <!--
         <para>The annotation names in this section are treated as keywords by 
         the Ceylon compiler. This is a performance optimization to minimize 
         the need for lookahead in the parser.</para>
+        -->
         
     </section>
        
@@ -2604,11 +2606,13 @@ public Visibility private() {
     return private 
 }</programlisting>
         -->
-
+        
+        <!--
         <comment><para>TODO: how are we going to go about compiling these classes which
         <emphasis>define</emphasis> the reserved-word annotations? A special compiler
         switch to turn off these reserved words? (Seems reasonable.)</para></comment>
-       
+        -->
+        
     </section>
     
     <section id="extensions">
