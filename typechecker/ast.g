@@ -222,12 +222,11 @@ declarationKeyword
     : 'local' 
     | 'assign' 
     | 'void'
-    | 'object'
-    | 'class' 
     | 'interface' 
-    | 'alias'
-    | 'union'
+    | 'class' 
+    | 'object'
     | 'choice'
+    | 'alias'
     ;
 
 //by making these things keywords, we reduce the amount of
