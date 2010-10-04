@@ -2414,7 +2414,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         to save the effort of redeclaring the attribute type or method return type?</para></comment>
         
         <comment><para>TODO: should it be called <literal>overrides</literal>, or
-        even, perhaps <literal>specialized</literal>?</para></comment>
+        even <literal>specialized</literal>?</para></comment>
         
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
