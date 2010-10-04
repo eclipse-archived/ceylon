@@ -77,7 +77,7 @@
     }
     
     doc "A developer-friendly string representing the instance."
-    public String string;
+    public abstract String string;
     
     ...
         

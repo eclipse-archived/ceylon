@@ -839,7 +839,7 @@ class PersonalizedHello(String name) extends DefaultHello() {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    package String greeting;
+    package abstract String greeting;
     
     doc "Print the greeting"
     package void say(OutputStream stream) { 
@@ -850,12 +850,10 @@ abstract class Hello() {
 
             <para>Ceylon requires us to annotate abstract classes <literal>abstract</literal>,
             just like Java. This annotation specifies that a class cannot be instantiated,
-            and can define abstract members. Unlike Java, Ceylon doesn't require us to annotate 
-            abstract members&mdash;simply leaving out the implementation of the member is 
-            perfectly sufficient for the compiler to realize that it is abstract. An attribute
-            which is never initialized is always an abstract attribute because Ceylon doesn't 
-            have default attribute values like Java does. Attributes don't get initialized to 
-            zero unless you explicitly say they should be!</para>
+            and can define abstract members. Like Java, Ceylon also requires us to annotate 
+            abstract members. Note that an attribute that is never initialized is
+            <emphasis>always</emphasis> an <literal>abstract</literal> attribute&mdash;Ceylon
+            doesn't initialize attributes to zero unless you explicitly tell it to!</para>
 
             <para>One way to define an implementation for an inherited abstract attribute is 
             to simply assign a value to it in the subclass.</para>
@@ -1139,7 +1137,7 @@ package assign greeting {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    package String greeting;
+    package abstract String greeting;
     
     override Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
@@ -1178,7 +1176,7 @@ abstract class Hello() {
     
     id
     doc "The (abstract) greeting"
-    package String greeting;
+    package abstract String greeting;
     
     ...
         

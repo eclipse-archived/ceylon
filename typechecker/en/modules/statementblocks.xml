@@ -170,8 +170,9 @@
             that occur later in the same block, and therefore it may not declare a visibility 
             modifier.</para>
             
-            <para>A block may not contain an abstract method or attribute declaration or any
-            declaration annotated <literal>default</literal> or <literal>override</literal>.</para>
+            <para>A block may not contain a method or attribute declaration annotated 
+            <literal>abstract</literal>, <literal>default</literal>, or 
+            <literal>override</literal>.</para>
             
             <para>Classes bodies also contain declarations. Unlike a declaration nested inside
             a block, a declaration directly contained in the body of a class may declare a
