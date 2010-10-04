@@ -344,6 +344,7 @@ interfaceDeclaration
         typeName
         typeParameters?
         caseTypes?
+        typeClass?
         satisfiedTypes?
         typeConstraints?
         interfaceBody
@@ -371,6 +372,7 @@ classDeclaration
         formalParameters
         extraFormalParameters
         caseTypes?
+        typeClass?
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -429,8 +431,12 @@ caseType
     | memberName
     ;
 
+typeClass
+    : 'is' memberName
+    ;
+
 typeConstraint
-    : 'given' typeName formalParameters? satisfiedTypes? abstractedType?
+    : 'given' typeName formalParameters? typeClass? satisfiedTypes? abstractedType?
     -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
     ;
     
@@ -754,7 +760,7 @@ memberSelector
     ;
 
 nameAndTypeArguments
-    : ( memberName | typeName ) 
+    : ( memberName | typeName | 'subtype' ) 
       ( (typeArguments) => typeArguments )?
     ;
 
@@ -1292,6 +1298,10 @@ TRY
 
 RETRY
     : 'retry'
+    ;
+
+UNION
+    : 'union'
     ;
 
 VOID
