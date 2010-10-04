@@ -23,6 +23,9 @@
     files, and are not required to manually manage module archives using the 
     operating system file manager. Instead, the toolset helps automate the 
     management of modules within module repositories.</para>
+    
+    <para>Circular dependencies between modules are not supported. The
+    Ceylon compiler detects such dependencies and produces an error.</para>
 
 <section id="classloaders">
     <title>Class loader architecture</title>
