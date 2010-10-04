@@ -22,7 +22,7 @@
     <bookinfo>
         <title>Project Ceylon</title>
         <subtitle>A Better Java</subtitle>
-        <releaseinfo>For internal discussion only</releaseinfo>
+        <releaseinfo>For internal discussion</releaseinfo>
     </bookinfo>
 
     <toc/>
