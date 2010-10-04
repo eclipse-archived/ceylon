@@ -114,6 +114,10 @@ String name = firstName + " " + lastName;
         <comment><para>TODO: Alternatively, a toplevel expression could be a toplevel
         attribute.</para></comment>
         
+        <comment><para>TODO: Should we require that the parameter declarations be
+        annotated <literal>parameter</literal>, or even, perhaps, 
+        <literal>abstract</literal>?</para></comment>
+        
         <comment><para>TODO: Should we allow statements in the compilation unit? If
         not, how do you write a "script" in Ceylon?</para></comment>
         
