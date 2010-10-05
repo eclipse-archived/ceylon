@@ -1561,7 +1561,7 @@ cities.define("Emmanuel"->"Paris",
             <para>Or, much more commonly:</para>
             
             <programlisting>for (String person -> String city in cities) {
-    stream.writeLine(name + " lives in " + city);
+    stream.writeLine(person + " lives in " + city);
 }</programlisting>
             
             <para>(Note that in this case, the <literal>-&gt;</literal> symbol isn't
