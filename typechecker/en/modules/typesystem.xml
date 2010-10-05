@@ -1021,6 +1021,22 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         down to the <literal>given</literal> clause?</para></comment>
         -->
         
+        <para>Note that an upper bound type constraint of form:</para>
+        
+        <programlisting>given X satisfies T</programlisting>
+        
+        <para>is equivalent to a type class bound of this form:</para>
+        
+        <programlisting>given X is Type&lt;T&gt;</programlisting>
+        
+        <para>and that an initialization parameter specification type constraint of form:</para>
+        
+        <programlisting>given X(A a, B b)</programlisting>
+        
+        <para>is equivalent to a type class bound of this form:</para>
+        
+        <programlisting>given X is ConcreteClass&lt;X,A,B&gt;</programlisting>
+        
         <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
         parameter?</para>
         <programlisting>class Foo&lt;P...&gt;(P... args) 
