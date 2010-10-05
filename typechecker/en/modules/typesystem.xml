@@ -1016,11 +1016,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         the constrained type parameter. Scala calls this feature "view bounds".</para></comment>
         -->
         
-        <!--
-        <comment><para>TODO: Should we move <literal>in</literal> and <literal>out</literal>
-        down to the <literal>given</literal> clause?</para></comment>
-        -->
-        
         <para>Note that an upper bound type constraint of form:</para>
         
         <programlisting>given X satisfies T</programlisting>
