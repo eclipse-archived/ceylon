@@ -149,9 +149,6 @@ importElement
     : LIDENTIFIER | UIDENTIFIER
     ;
 
-//Note that this accepts more than the language spec
-//since it does not enforce that enumerated class 
-//instance lists are not allowed inside blocks
 block
     : '{' declarationOrStatement* directiveStatement? '}'
     -> ^(STMT_LIST declarationOrStatement* directiveStatement?)
@@ -170,12 +167,6 @@ inlineClassBody
     : '{' declarationOrStatement* '}'
     ;*/
 
-//We could eliminate the backtracking by requiring
-//all member declarations to begin with a keyword
-//Note that this accepts more than the language spec
-//since it does not enforce that enumerated class
-//instances have to be listed together at the top
-//of the class body
 declarationOrStatement
     : (annotatedDeclarationStart) => declaration | statement
     ;
