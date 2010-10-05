@@ -1633,18 +1633,15 @@ while (i<=max) {
     <section id="characterandstring">
         <title>Characters and strings</title>
         
-        <para>UTF-32 Unicode Characters are represented by the following class:</para>
+        <para>UTF-16 Unicode Characters are represented by the following class:</para>
 
-        <programlisting><![CDATA[public class Character(small Natural utf32)
+        <programlisting><![CDATA[public class Character(small Natural utf16)
         extends Object()
         satisfies Ordinal, Comparable<Character>, Matcher<Character> { 
     ... 
     
-    doc "The UTF-16 encoding"
-    public String utf16;
-    
     doc "The UTF-8 encoding"
-    public String utf8;
+    public String utf8 { return ... }
     
     public Character lowercase { return .. }
     public Character uppercase { return .. }
@@ -1721,11 +1718,6 @@ while (i<=max) {
     public String join(String... strings) { return ... }
     
 }]]></programlisting>
-        
-        <comment><para>TODO: What encoding is the default for Ceylon strings? Are there 
-        performance advantages to going with UTF-16 like Java? Can we easily abstract
-        this stuff? Does the JVM do all kinds of optimizations for 
-        <literal>java.String</literal>?</para></comment>
         
         <para>The extension class <literal>StringBuilder</literal> makes it more 
         efficient to produce a string using procedural code:</para>
