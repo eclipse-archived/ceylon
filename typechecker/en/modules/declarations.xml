@@ -2238,7 +2238,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>A non-<literal>mutable</literal> attribute may be overridden by a 
             <literal>mutable</literal> attribute.</para>
             
-            <comment><para>TODO: is that really allowed? It could break the superclass.
+            <comment><para>TODO: Is that really allowed? It could break the superclass.
             Should we say that you are allowed to do it when you implement an interface
             attribute, but not when you override a superclass attribute?</para></comment>
             
