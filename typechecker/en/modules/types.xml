@@ -2696,10 +2696,14 @@ public abstract class LogPriority(String string, Natural priority) {
      the block evaluates to false, throw an 
      |AssertionException| with the given message."
 public void assert(Gettable<String> message, Boolean that()) {
-    if ( assertionsEnabled() && !that() ) {
+    Boolean callerAssertionsEnabled  = ... ;
+    if ( assertionsEnabled && !that() ) {
         throw AssertionException(message)
     }
 }]]></programlisting>
+
+        <comment><para>TODO: or should we do something more like what we do for
+        logging, so that we get the caller class passed in?</para></comment>
     
         <para>The <literal>ceylon.language.conditional</literal> package defines 
         support for conditional expressions.</para>
