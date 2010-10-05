@@ -2974,9 +2974,6 @@ PatternValidator pattern(Regex regex) {
     return PatternValidator(regex)
 }</programlisting>
             
-        <comment><para>TODO: Should <literal>annotation</literal> be required
-        for toplevel methods which can be used as annotations?</para></comment>
-        
     </section>
     
     <section id="documentation">
