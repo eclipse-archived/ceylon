@@ -1030,7 +1030,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <para>is equivalent to a type class bound of this form:</para>
         
-        <programlisting>given X is ConcreteClass&lt;X,A,B&gt;</programlisting>
+        <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
         
         <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
         parameter?</para>
