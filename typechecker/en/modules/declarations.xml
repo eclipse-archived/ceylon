@@ -2479,6 +2479,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
              -->
             <listitem>
+                <para><literal>define</literal> specifies that the declared
+                type of a method specifies the callable type instead of the
+                return type.</para>
+            </listitem>
+            <listitem>
                 <para><literal>extension</literal> specifies that a method or
                 attribute getter is a converter, or that a class is a decorator.</para>
             </listitem>
