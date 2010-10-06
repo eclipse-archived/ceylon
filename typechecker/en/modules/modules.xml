@@ -379,20 +379,22 @@
     <section id="moduledescriptors">
         <title>Module descriptors</title>
         
-        <para>A <emphasis>module descriptor</emphasis> is a toplevel method
-        of the root package of the module&mdash;the package with the same name as 
+        <para>A <emphasis>module descriptor</emphasis> is a toplevel method of 
+        the root package of the module&mdash;the package with the same name as 
         the module&mdash;with the following signature:</para>
         
         <programlisting>public Module module() { ... }</programlisting>
         
-        <para>This method is usually specified as a toplevel expression.</para>
+        <para>This method is usually specified using <literal>define ModuleDescriptor</literal>.</para>
         
         <para>A module may be <emphasis>runnable</emphasis>. The module descriptor
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
         toplevel method or class with no formal parameters.</para>
         
-        <para>The following classes define the format of the Ceylon module
+        <para>The following types define the format of the Ceylon module
         descriptor:</para>
+        
+        <programlisting>alias ModuleDescriptor satisfies Callable&lt;Module&gt; {}</programlisting>
         
         <programlisting>doc "A module descriptor."
 public class Module(
@@ -452,7 +454,8 @@ public class Import(
                         
         <para>For example:</para>
         
-        <programlisting>Module {
+        <programlisting>define ModuleDescriptor module()
+Module {
     name = 'org.hibernate';
     version = '3.0.0.beta';
     doc = "The best-ever ORM solution!";
@@ -468,13 +471,14 @@ public class Import(
     }
 }</programlisting>
 
-        <programlisting>Module {
+        <programlisting>define ModuleDescriptor module()
+Module {
     name = 'org.hibernate.test';
     version = '3.0.0.beta';
     doc = "The test suite for Hibernate";
     license = 'http://www.gnu.org/licenses/lgpl.html';
     void run() {
-        new TestSuite(process).run();
+        new TestSuite().run();
     }
     Import {
         name = 'org.hibernate';

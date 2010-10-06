@@ -2044,19 +2044,20 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
 
 doc "A web page that displays a greeting"
 page '/hello.html'
-public class HelloHtml(Request request) 
-        extends Html(request) {
 
-    Hello hello = Hello(request.parameters["name"]);
+define Page hello(Request request)
+
+Html {
     
     head = Head { 
         title = "Hello World";
         cssStyleSheet = 'hello.css';
     };
+    
     body = Body {
         Div {
             cssClass = "greeting";
-            hello.greeting
+            Hello( request.parameters["name"] ).greeting
         },
         Div {
             cssClass = "footer";
