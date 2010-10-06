@@ -119,15 +119,6 @@ typeDeclaration
     | unionDeclaration
     ;
 
-specifyDeclaration
-    : 'specify' expression ';'
-    ;
-
-/*toplevelExpression
-    : ( (declarationStart) => formalParameter ';')* expression
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*) expression
-    ;*/
-
 importDeclaration
     : 'import' 'extension'? importPath ('.' wildcard | alias)? ';'
     -> ^(IMPORT_DECL importPath wildcard? alias?)
@@ -181,8 +172,7 @@ declaration
     :
     annotations?
     ( 
-        specifyDeclaration
-      | memberDeclaration 
+        memberDeclaration 
       -> ^(MEMBER_DECL memberDeclaration annotations?)
       | typeDeclaration 
       -> ^(TYPE_DECL typeDeclaration annotations?)
@@ -337,7 +327,7 @@ memberParameters
 //      style parameters below?
 memberDefinition
     : memberParameters?
-      ( /*'...' |*/ block | (specifier | initializer)? ';'! )
+      ( /*'...' |*/ block | structured | (specifier | initializer)? ';'! )
     ;
     
 interfaceDeclaration
@@ -552,6 +542,10 @@ initializer
 specifier
     : '=' expression
     -> ^(INIT_EXPR expression)
+    ;
+
+structured
+    : (memberName | typeName) namedArguments
     ;
 
 nonstringLiteral
