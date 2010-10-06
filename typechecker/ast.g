@@ -101,8 +101,7 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      ( (annotatedDeclarationStart) => declaration )+
-      expression?
+      ( /*(annotatedDeclarationStart) =>*/ declaration )+
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
        declaration+
@@ -118,6 +117,10 @@ typeDeclaration
     | objectDeclaration
     -> ^(OBJECT_DECL objectDeclaration)
     | unionDeclaration
+    ;
+
+specifyDeclaration
+    : 'specify' expression ';'
     ;
 
 /*toplevelExpression
@@ -176,9 +179,10 @@ declarationOrStatement
 //      do it later?
 declaration
     :
-    annotations? 
+    annotations?
     ( 
-        memberDeclaration 
+        specifyDeclaration
+      | memberDeclaration 
       -> ^(MEMBER_DECL memberDeclaration annotations?)
       | typeDeclaration 
       -> ^(TYPE_DECL typeDeclaration annotations?)
@@ -218,6 +222,7 @@ declarationKeyword
     | 'object'
     | 'choice'
     | 'alias'
+    | 'specify'
     ;
 
 //by making these things keywords, we reduce the amount of
@@ -1170,6 +1175,13 @@ MULTI_COMMENT
         )*
         '*/'
         ;
+ABSTRACTS
+    : 'abstracts'
+    ;
+
+ALIAS
+    : 'alias'
+    ;
 
 ASSIGN
     :   'assign'
@@ -1178,7 +1190,11 @@ ASSIGN
 BREAK
     :   'break'
     ;
-    
+
+CHOICE
+    :   'choice'
+    ;
+ 
 CASE
     :   'case'
     ;
@@ -1217,6 +1233,10 @@ FINALLY
 
 FOR
     :   'for'
+    ;
+
+FAIL
+    :   'fail'
     ;
 
 GIVEN
@@ -1273,6 +1293,10 @@ OBJECT
 
 OF
     :   'of'
+    ;
+
+SPECIFY
+    :   'specify'
     ;
 
 SUBTYPE
