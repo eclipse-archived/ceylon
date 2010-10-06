@@ -2040,13 +2040,11 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         
         <para>We're going to use this syntax to define our web page.</para>
         
-        <programlisting><![CDATA[import html.*;
+        <programlisting><![CDATA[import ceylon.html.*;
 
 doc "A web page that displays a greeting"
 page '/hello.html'
-
 define Page hello(Request request)
-
 Html {
     
     head = Head { 
@@ -2068,12 +2066,12 @@ Html {
 }]]></programlisting>
 
         <para>This program demonstrates Ceylon's support for defining structured 
-        data, in this case, HTML. The <literal>HelloHtml</literal> class extends 
-        Ceylon's <literal>Html</literal> class and specified its abstract 
-        <literal>head</literal> and <literal>body</literal> attributes. The 
-        <literal>page</literal> annotation specifies the URL at which this HTML 
+        data, in this case, HTML. Notice that Ceylon lets us omit the braces and 
+        <literal>return</literal> keyword in a method declaration that simply
+        returns the result of a named parameter instantiation or method invocation.
+        The <literal>page</literal> annotation specifies the URL at which this HTML 
         should be accessible. A single-quoted string literal is used, allowing the 
-        format of the URL to be validated by the Ceylon compiler.</para>
+        format of the URL to be validated at compile time.</para>
 
     </section>
     
