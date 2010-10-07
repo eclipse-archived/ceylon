@@ -1950,7 +1950,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
         <para>A simple attribute defines state.</para>
         
-        <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";" | NamedArguments</programlisting>
+        <programlisting>SimpleAttribute := AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
         
         <para>A simple attribute or local annotated <literal>mutable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
