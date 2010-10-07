@@ -2,68 +2,35 @@ package com.redhat.ceylon.compiler.tree;
 
 import java.math.BigInteger;
 
-import com.redhat.ceylon.compiler.tree.CeylonTree.ImportDeclaration;
 import com.sun.tools.javac.util.*;
 
 public class Grok extends CeylonTree.Visitor {
     Context current;
     int depth;
 
-    class Context implements Cloneable {
-        CeylonTree compilationUnit;
-        CeylonTree methodDeclaration;
-        CeylonTree block;
-        Context prev;
-        List<CeylonTree> accum;
-        List<CeylonTree.Annotation> annotations;
-        List<CeylonTree.ImportDeclaration> imports = List.<ImportDeclaration>nil();
-        CeylonTree context;
+    final class Context {
 
- /*       int getDepth(Context c) {
-            int i = 0;
-            while (c != null) {
-                c = c.prev;
-                i++;
-            }
-            return i;   
-        }
-        */
-        public void push() {
- /*           System.err.println();
-            indent();
-            System.err.print("+ " + current.context.getClass());
-            depth++; */
-            try {
-                Context c = (Context) clone();
-                c.prev = this;
-                current = c;
-            } catch (CloneNotSupportedException e) {
-                throw new Error(e);
-            }
-        }
+    	Context prev;
+    	CeylonTree context;
 
- /*       void indent(){
-            for (int i=0; i<getDepth(current);i++)
-                System.err.print(' ');
-        } */
-        
-        public void push(CeylonTree context) {
-            push();
-            current.context = context;
-        }
-        
-        public void pop() {
-            current = prev;
-/*            depth--;
-            System.err.println();
-            indent();
-            System.err.print("- " + current.context.getClass()); */
-        }
+    	private void push() {
+    		Context c = new Context();
+    		c.prev = this;
+    		current = c;
+    	}
+
+    	public void push(CeylonTree context) {
+    		push();
+    		current.context = context;
+    	}
+
+    	public void pop() {
+    		current = prev;
+    	}
     }
 
     public void visit(CeylonTree.CompilationUnit t) {
         current = new Context();
-        current.compilationUnit = t;
         current.context = t;
         inner(t);
     }
