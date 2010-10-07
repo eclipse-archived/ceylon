@@ -1851,7 +1851,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <comment><para>TODO: are you required to have the same formal parameter
             names in the two methods? I don't see that this would be necessary. In
-            a named parameter invocation, you just use the names declared by the
+            a named argument invocation, you just use the names declared by the
             member of the compile-time type, and they are mapped positionally to the
             parameters of the overriding method.</para></comment>
         

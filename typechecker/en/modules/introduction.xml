@@ -2090,7 +2090,7 @@ Html hello(Request request) {
         time.</para>
         
         <para>Notice that Ceylon provides an abbreviated syntax for a method or
-        attribute that simply returns the result of a named parameter instantiation 
+        attribute that simply returns the result of a named argument instantiation 
         or method invocation.</para>
         
         <para>We're allowed to write a method of the following form:</para>
@@ -2221,8 +2221,8 @@ package Set&lt;People&gt; people(Person... people) {
         
         <para>We're already ready to use our new annotation. Just like with other 
         method invocations, we have the choice between specifying the arguments of 
-        an annotation using a positional parameter list surrounded by parenthesis, 
-        or using a named parameter list surrounded by braces. In this case, the 
+        an annotation using a positional argument list surrounded by parenthesis, 
+        or using a named argument list surrounded by braces. In this case, the 
         braces look more visually appealing:</para>
         
         <programlisting>doc "A personalized greeting"

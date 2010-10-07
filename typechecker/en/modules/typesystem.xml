@@ -1243,7 +1243,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Method&lt;Order, Item, Product, Natural&gt;</programlisting>
         
         <comment><para>TODO: should we let you fill in the formal parameter names, so
-        you can call this thing using named parameters?
+        you can call this thing using named arguments?
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
         </para></comment>
         
@@ -1492,11 +1492,11 @@ Description doc(String description) {
         <para>The annotation may be specified at a program element using any one of three 
         forms.</para>
         
-        <para>Using a positional parameter invocation of the method:</para>
+        <para>Using a positional argument invocation of the method:</para>
         
         <programlisting>doc("the name") String name;</programlisting>
         
-        <para>Using a named parameter invocation of the method:</para>
+        <para>Using a named argument invocation of the method:</para>
         
         <programlisting>doc {description="the name";} String name;</programlisting>
         

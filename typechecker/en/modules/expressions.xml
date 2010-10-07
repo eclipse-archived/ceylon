@@ -795,7 +795,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             
         <para>An expression of type <literal>Callable</literal> may appear as an argument 
         to a callable parameter, either as a positional argument, or as an argument 
-        specified using <literal>=</literal> in a named parameter invocation. The expression 
+        specified using <literal>=</literal> in a named argument invocation. The expression 
         type must be assignable to the callable type of the callable parameter.</para>
         
         <para>This method has a callable parameter:</para>
@@ -1147,7 +1147,7 @@ local comp = order(1,-1);</programlisting>
     local by(X x, X y) { return x&lt;=&gt;y } 
 }</programlisting>
 
-        <comment><para>TODO: should the named parameter block be allowed to contain arbitrary statements?
+        <comment><para>TODO: should the named argument list be allowed to contain arbitrary statements?
         This is more regular, since you can do it in the body of a class, and attribute/method overriding
         is the model that we are following here. And it could be very useful when defining structured
         data.</para></comment>
@@ -1174,7 +1174,7 @@ local comp = order(1,-1);</programlisting>
         
         <para>An argument to a sequenced parameter may be a local declaration.</para>
         
-        <comment><para>TODO: figure this out. Is this only for arguments in a named parameter
+        <comment><para>TODO: figure this out. Is this only for arguments in a named argument
         invocation?</para></comment>
         
         <para>Alternatively, the argument to a sequence parameter may be a <literal>Sequence</literal> 
@@ -1182,9 +1182,11 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
         
+        <!--
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
-        regular to use semicolons to separate sequenced arguments in a named parameter 
+        regular to use semicolons to separate sequenced arguments in a named argument 
         invocation.</para></comment>
+        -->
         
         </section>
         
@@ -1331,7 +1333,7 @@ local comp = order(1,-1);</programlisting>
         </itemizedlist>
         
         <para>These arguments are called an <emphasis>inline callable arguments</emphasis> 
-        of a positional parameter invocation. (This is what Ceylon provides instead of
+        of a positional argument invocation. (This is what Ceylon provides instead of
         lambda expressions.)</para>
                 
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
@@ -1707,7 +1709,7 @@ except (SomethingElseWrong sew) {
             <programlisting>Person me = Person() { firstName="Gavin"; initial='A'; lastName="King"; }</programlisting>
             
             <para>The value of an attribute initialization is the instance being initialized.
-            The named parameter values are assigned to uninitialized attributes of the instance.</para>
+            The named argument values are assigned to uninitialized attributes of the instance.</para>
                                    
         </section>
         -->
@@ -2156,7 +2158,7 @@ setPerson(person);</programlisting>
         list of values without braces after <literal>=</literal>, <literal>in</literal> or 
         <literal>return</literal> and after <literal>:=</literal> in an attribute initializer. 
         The disadvantage to this approach is that enumerations would not be allowed in 
-        positional parameter invocations, or in expressions. It's also less regular. On the 
+        positional argument invocations, or in expressions. It's also less regular. On the 
         other hand, it is consistent with how we treat sequenced arguments.</para>
         <programlisting>Map&lt;String, String&gt; map = "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!";</programlisting>
         <programlisting>for (String lang in "Java", "Ceylon", "Scala", "C#") { ... }</programlisting>
