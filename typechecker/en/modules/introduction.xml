@@ -2037,7 +2037,26 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         }
     };
 }</programlisting>
+
+        <para>It's possible to further simplify this syntax to the following:</para>
         
+        <programlisting>Html {
+    Head head { 
+        title = "Hello World";
+        cssStyleSheet = 'hello.css';
+    }
+    Body body {
+        Div {
+            cssClass = "greeting";
+            "Hello World" 
+        },
+        Div {
+            cssClass = "footer";
+            "Powered by Ceylon" 
+        }
+    }
+}</programlisting>
+
         <para>We're going to use this syntax to define our web page.</para>
         
         <programlisting><![CDATA[import ceylon.html.*;
@@ -2046,12 +2065,12 @@ doc "A web page that displays a greeting"
 page '/hello.html'
 Html hello(Request request) {
     
-    head = Head { 
+    Head head { 
         title = "Hello World";
         cssStyleSheet = 'hello.css';
-    };
+    }
     
-    body = Body {
+    Body body {
         Div {
             cssClass = "greeting";
             Hello( request.parameters["name"] ).greeting
@@ -2060,7 +2079,7 @@ Html hello(Request request) {
             cssClass = "footer";
             "Powered by Ceylon"
         }
-    };
+    }
 
 }]]></programlisting>
 
@@ -2071,8 +2090,8 @@ Html hello(Request request) {
         time.</para>
         
         <para>Notice that Ceylon provides an abbreviated syntax for a method or
-        attribute getter that simply returns the result of a named parameter 
-        instantiation or method invocation.</para>
+        attribute that simply returns the result of a named parameter instantiation 
+        or method invocation.</para>
         
         <para>We're allowed to write a method of the following form:</para>
         

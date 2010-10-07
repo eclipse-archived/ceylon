@@ -1108,13 +1108,13 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>NamedArgument := SpecifiedNamedArgument | FunctionalNamedArgument | RecursiveNamedArgument</programlisting>
+        <programlisting>NamedArgument := SpecifiedNamedArgument | RecursiveNamedArgument | FunctionalNamedArgument</programlisting>
         
         <programlisting>SpecifiedNamedArgument := ParameterName Specifier ";"</programlisting>
         
-        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams+ (Block | NamedArguments)</programlisting>
-        
         <programlisting>RecursiveNamedArgument := Type ParameterName NamedArguments</programlisting>
+        
+        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams+ (Block | NamedArguments)</programlisting>
         
         <para>For example:</para>
         
