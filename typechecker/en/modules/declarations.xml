@@ -39,8 +39,8 @@ Body?</programlisting>
         <para>A <emphasis>compilation unit</emphasis> is a text file, with the 
         filename extension <literal>.ceylon</literal>.</para>
         
-        <para>A compilation unit consists of a list of imported types and methods, 
-        followed by one or more toplevel type or method definitions.<!--or by a single 
+        <para>A compilation unit consists of a list of imported types, attributes, and 
+        methods, followed by one or more toplevel type, attribute, or method definitions.<!--or by a single 
         toplevel expression:--></para>
         
         <programlisting>Import* ToplevelDeclaration+</programlisting>
@@ -95,10 +95,7 @@ Body?</programlisting>
                 <para>a single (toplevel or member) type,</para>
             </listitem>
             <listitem>
-                <para>a single toplevel method,</para>
-            </listitem>
-            <listitem>
-                <para>a single toplevel attribute,</para>
+                <para>a single toplevel method or attribute,</para>
             </listitem>
             <!--
             <listitem>
@@ -114,7 +111,7 @@ Body?</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>ImportSpec := TypeSpec | MethodSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
+        <programlisting>ImportSpec := TypeSpec | MethodAttributeSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
         
         <para>Note that toplevel types, toplevel methods, toplevel attributes, <!--enumerated instances,--> 
         and extensions in the module <literal>ceylon.language</literal> never need to be 
@@ -146,9 +143,10 @@ Body?</programlisting>
         <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
                 
         <para>An import statement that specifies a package name followed by a method
-        name imports the method with that name from the given package.</para>
+        name imports the toplevel method or attribute with that name from the given 
+        package.</para>
         
-        <programlisting>MethodSpec := MemberName ("alias" MemberName)?</programlisting>
+        <programlisting>MethodAttributeSpec := MemberName ("alias" MemberName)?</programlisting>
         
         <!--
         <para>An import statement that specifies a package name followed by a type
@@ -175,7 +173,7 @@ Body?</programlisting>
         <para>The character <literal>*</literal> acts as a wildcard in import statements.</para>
         
         <para>An import statement that specifies a package name followed by a wildcard
-        imports all toplevel types of the package.</para>
+        imports all toplevel declarations of the package.</para>
         
         <programlisting>PackageMembersSpec := "*"</programlisting>
         
