@@ -1093,20 +1093,28 @@ local comp = order(1,-1);</programlisting>
         
         <itemizedlist>
             <listitem>
-            <para>specifies its value using <literal>=</literal>, and is terminated by a semicolon, 
-            or</para>
+                <para>specifies its value using <literal>=</literal>, followed by an expression, 
+                and is terminated by a semicolon, or</para>
             </listitem>
             <listitem>
-            <para>only for callable parameters, specifies the type or <literal>local</literal>, a 
-            formal parameter list and a block of code (an inline method declaration).</para>
+                <para>specifies its value by declaring a non-<literal>abstract</literal> class 
+                as the type, and providing a named argument list to be used to instantiate the 
+                type, or</para>
+            </listitem>
+            <listitem>
+                <para>only for callable parameters, specifies the type or <literal>local</literal>, 
+                a formal parameter list and a block of code or named argument list (an inline 
+                method declaration).</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>NamedArgument := SpecifiedNamedArgument | FunctionalNamedArgument</programlisting>
+        <programlisting>NamedArgument := SpecifiedNamedArgument | FunctionalNamedArgument | RecursiveNamedArgument</programlisting>
         
         <programlisting>SpecifiedNamedArgument := ParameterName Specifier ";"</programlisting>
         
-        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams Block</programlisting>
+        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams+ (Block | NamedArguments)</programlisting>
+        
+        <programlisting>RecursiveNamedArgument := Type ParameterName NamedArguments</programlisting>
         
         <para>For example:</para>
         
@@ -1115,6 +1123,13 @@ local comp = order(1,-1);</programlisting>
     quantity = 1; 
 }</programlisting>
         
+        <programlisting>{
+    Head head { title="Hello"; }
+    Body body {
+        Div { "Hello " name "!" }
+    }
+}</programlisting>
+
         <programlisting>{ 
     label = "Say Hello"; 
     void onClick() { 
@@ -1136,6 +1151,9 @@ local comp = order(1,-1);</programlisting>
         This is more regular, since you can do it in the body of a class, and attribute/method overriding
         is the model that we are following here. And it could be very useful when defining structured
         data.</para></comment>
+        
+        <comment><para>TODO: why not let you specify a named argument using an <literal>object</literal>
+        declaration?</para></comment>
 
         <!--comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment-->
         
