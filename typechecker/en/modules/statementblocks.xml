@@ -205,7 +205,7 @@
             
             <para>For example:</para>
             
-            <programlisting>Outer outer = new Outer();
+            <programlisting>Outer outer = Outer();
 Inner inner = outer.Inner();
 inner.member();</programlisting>
             
