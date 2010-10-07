@@ -212,7 +212,6 @@ declarationKeyword
     | 'object'
     | 'choice'
     | 'alias'
-    | 'specify'
     ;
 
 //by making these things keywords, we reduce the amount of
@@ -318,7 +317,7 @@ memberType
     ;
 
 memberParameters
-    : typeParameters? formalParameters+ extraFormalParameters typeConstraints?
+    : typeParameters? formalParameters+ extraFormalParameters typeClass? typeConstraints?
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -327,7 +326,7 @@ memberParameters
 //      style parameters below?
 memberDefinition
     : memberParameters?
-      ( /*'...' |*/ block | structured | (specifier | initializer)? ';'! )
+      ( /*'...' |*/ block | (specifier | initializer)? ';'! )
     ;
     
 interfaceDeclaration
@@ -424,7 +423,7 @@ caseType
     ;
 
 typeClass
-    : 'is' memberName
+    : 'is' (memberName | type)
     ;
 
 typeConstraint
@@ -542,10 +541,6 @@ initializer
 specifier
     : '=' expression
     -> ^(INIT_EXPR expression)
-    ;
-
-structured
-    : (memberName | typeName) namedArguments
     ;
 
 nonstringLiteral
@@ -1287,10 +1282,6 @@ OBJECT
 
 OF
     :   'of'
-    ;
-
-SPECIFY
-    :   'specify'
     ;
 
 SUBTYPE
