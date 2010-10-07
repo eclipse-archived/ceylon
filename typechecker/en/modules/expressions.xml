@@ -156,13 +156,13 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
         of the expression <literal>calculatePi()</literal>:</para>
         
         <programlisting>Float pi = calculatePi();
-    Float area = pi * radius**2;</programlisting>
+Float area = pi * radius**2;</programlisting>
         
         <para>But in the following code, <literal>calculatePi()</literal> is not
         evaluated until the second statement:</para>
         
         <programlisting>Gettable&lt;Float&gt; pi = calculatePi();
-    Float area = pi * radius**2;</programlisting>
+Float area = pi * radius**2;</programlisting>
     
         <para>The type <literal>Gettable&lt;T&gt;</literal> represents a reference
         to a value of type <literal>T</literal> that can be computed if and when
@@ -173,11 +173,11 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
         be passed by reference, as in the following code:</para>
         
         <programlisting>void setGreeting(Settable&lt;String&gt; ref) {
-        ref:="Que honda!";
-    }
-    
-    mutable String greeting = "'sup!";
-    setGreeting(greeting);</programlisting>
+    ref:="Que honda!";
+}
+
+mutable String greeting = "'sup!";
+setGreeting(greeting);</programlisting>
         
         <para>A <literal>Gettable</literal> object representing an expression that 
         contains a reference to a <literal>mutable</literal> local may not be assigned 
