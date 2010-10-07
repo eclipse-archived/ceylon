@@ -2044,8 +2044,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
 
 doc "A web page that displays a greeting"
 page '/hello.html'
-define Page hello(Request request)
-Html {
+Html hello(Request request) {
     
     head = Head { 
         title = "Hello World";
@@ -2066,13 +2065,23 @@ Html {
 }]]></programlisting>
 
         <para>This program demonstrates Ceylon's support for defining structured 
-        data, in this case, HTML. Notice that Ceylon lets us omit the braces and 
-        <literal>return</literal> keyword in a method declaration that simply
-        returns the result of a named parameter instantiation or method invocation.
-        The <literal>page</literal> annotation specifies the URL at which this HTML 
-        should be accessible. A single-quoted string literal is used, allowing the 
-        format of the URL to be validated at compile time.</para>
+        data, in this case, HTML. The <literal>page</literal> annotation specifies 
+        the URL at which this HTML should be accessible. A single-quoted string 
+        literal is used, allowing the format of the URL to be validated at compile 
+        time.</para>
+        
+        <para>Notice that Ceylon provides an abbreviated syntax for a method or
+        attribute getter that simply returns the result of a named parameter 
+        instantiation or method invocation.</para>
+        
+        <para>We're allowed to write a method of the following form:</para>
+        
+        <programlisting>Html hello(Request request) { return Html { .... } }</programlisting>
+        
+        <para>Using the following abbreviated syntax:</para>
 
+        <programlisting>Html hello(Request request) { .... }</programlisting>
+        
     </section>
     
     <section>

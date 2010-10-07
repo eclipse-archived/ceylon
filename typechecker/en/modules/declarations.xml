@@ -1420,7 +1420,7 @@ public choice TransactionPropagationStyle
         <para>A <emphasis>method</emphasis> is a callable block of code. Methods may have 
         parameters and may return a value.</para>
         
-        <programlisting>Method := MethodHeader (Block | Specifier? ";" | NamedParameterInvocation)</programlisting>
+        <programlisting>Method := MethodHeader (Block | NamedArguments | Specifier? ";")</programlisting>
         
         <para>All method declarations specify the method name and one or more formal 
         parameter lists. A method declaration may specify a type, called the 
@@ -1429,7 +1429,11 @@ public choice TransactionPropagationStyle
         method&mdash;a method which does not return a value. The return type of a
         <literal>void</literal> method is considered to be <literal>Void</literal>.</para>
         
-        <programlisting>MethodHeader := Annotation* (InferableType | "void") MemberName TypeParams? FormalParams+ TypeConstraints?</programlisting>
+        <programlisting>MethodHeader :=
+Annotation*
+(InferableType | "void") MemberName TypeParams? FormalParams+
+TypeClass?
+TypeConstraints?</programlisting>
         
         <para>The Ceylon compiler preserves the names of method parameters.</para>
         
@@ -1446,7 +1450,7 @@ public choice TransactionPropagationStyle
                 <para>a reference to another method, or</para>
             </listitem>
             <listitem>
-                <para>a named parameter instantiation or method invocation.</para>
+                <para>a named argument list.</para>
             </listitem>
         </itemizedlist>
         
@@ -1495,38 +1499,29 @@ public choice TransactionPropagationStyle
         <para>A sequenced parameter is considered of type <literal>T[]</literal> where 
         <literal>T...</literal> is the declared sequenced type.</para>
         
-        <para>For methods not annotated <literal>define</literal>, the declared type of the
-        method specifies the return type.</para>
-            
         </section>
         
-        <section id="methodsannotateddefine">
-            <title>Methods annotated <literal>define</literal></title>
+        <section id="methodswithdeclaredcallabletype">
+            <title>Methods with declared callable type</title>
             
-            <para>The declared type of a method annotated <literal>define</literal> must 
-            specify the callable type of the method, rather than the method return type.
-            The return type of the method is the first type argument of <literal>Callable</literal>.
-            The declared types of the formal parameters of the method must be exactly the 
-            same as the parameter types specified by the remaining type arguments of 
-            <literal>Callable</literal>.</para>
+            <comment><para>NOTE: Declared callable type is a proposed feature for a future
+            version of the language.</para></comment>
+            
+            <para>A method declaration may explicitly specify the callable type of the method
+            using the <literal>is</literal> clause.</para>
             
             <para>For example, given the following type alias:</para>
             
             <programlisting>public alias Page satisfies Callable&lt;Html,HttpRequest&gt;;</programlisting>
             
-            <para>The return type of the following method is <literal>Html</literal>:</para>
+            <para>We can explicitly specify the callable type of the following method:</para>
             
-            <programlisting>define Page login(HttpRequest request) {
-    return Html { ... }
-}</programlisting>
+            <programlisting>Html login(HttpRequest request) is Page { ... }</programlisting>
             
             <para>This style of declaration is useful when the method is going to be discovered 
             and invoked reflectively, without a direct dependency from the calling code. The
             compiler validates the full signature of the method against the declared 
             callable type.</para>
-            
-            <para>A method annotated <literal>define</literal> must have exactly one formal
-            parameter list.</para>
             
         </section>
         
@@ -1618,26 +1613,25 @@ Void goodbye() {
         
         </section>
         
-        <section id="methodsthatdefinestructureddata">
-            <title>Methods that define structured data</title>
+        <section id="methodswithnamedarguments">
+            <title>Methods with named argument lists</title>
             
             <para>The final possibility is that a method implementation may be a named
-            parameter instantiation or method invocation expression. Such a method simply 
-            evaluates the invocation expression and returns the resulting value.</para>
+            argument list. A method with a named argument list must explicitly declare a 
+            non-<literal>abstract</literal> class as the return type. The method simply 
+            instantiates the return type with the specified named arguments and returns 
+            the resulting value.</para>
             
-            <programlisting>NamedParameterInvocation := (TypeName | MemberName) NamedArguments</programlisting>
-        
             <para>The following declarations are equivalent:</para>
             
-            <programlisting>define Page login(HttpRequest request)
-Html {
+            <programlisting>Html login(HttpRequest request) {
     head = Head { title="Hello" };
     body = Body { 
         Div { "Hello World" } 
     };
 }</programlisting>
             
-            <programlisting>define Page login(HttpRequest request) {
+            <programlisting>Html login(HttpRequest request) {
     return Html {
         head = Head { title="Hello" };
         body = Body { 
@@ -1645,6 +1639,13 @@ Html {
         };
     }
 }</programlisting>
+            
+            <comment><para>TODO: we could add a keyword to help disambiguate the two
+            forms of method implementation, for example:</para>
+            <programlisting>Html login(HttpRequest request) with {
+    head = ... ;
+    body = ... ;
+}</programlisting></comment>
             
         </section>
                 
@@ -2128,7 +2129,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             <para>An attribute getter is a callable block of code with no parameters,
             that returns a value.</para>
             
-            <programlisting>AttributeGetter := AttributeHeader Block</programlisting>
+            <programlisting>AttributeGetter := AttributeHeader (Block | NamedArguments)</programlisting>
             
             <para>An attribute getter defines how the value of a derived attribute is
             obtained.</para>
@@ -2171,6 +2172,31 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
     return Name(firstName, initial, lastName) 
 }</programlisting>
                 
+        </section>
+        
+        <section id="getterswithnamedarguments">
+            <title>Attribute getters with named argument lists</title>
+            
+            <para>Alternatively, an attribute getter may be a named
+            argument list. A getter with a named argument list must explicitly declare a 
+            non-<literal>abstract</literal> class as the attribute type. The getter simply 
+            instantiates the return type with the specified named arguments and returns 
+            the resulting value.</para>
+            
+            <para>The following declarations are equivalent:</para>
+            
+            <programlisting>Module module {
+    name = 'org.hibernate';
+    version = '3.0.0';
+}</programlisting>
+            
+            <programlisting>Module module {
+    return Module {
+        name = 'org.hibernate';
+        version = '3.0.0';
+    }
+}</programlisting>
+        
         </section>
         
         <section id="attributesetters">
@@ -2478,11 +2504,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 be extended.</para>
             </listitem>
              -->
-            <listitem>
-                <para><literal>define</literal> specifies that the declared
-                type of a method specifies the callable type instead of the
-                return type.</para>
-            </listitem>
             <listitem>
                 <para><literal>extension</literal> specifies that a method or
                 attribute getter is a converter, or that a class is a decorator.</para>

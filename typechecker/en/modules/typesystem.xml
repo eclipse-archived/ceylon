@@ -378,6 +378,9 @@
         <para>Type inference is only allowed for block local declarations. The keyword
         <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
         
+        <comment><para>TODO: should we call this keyword <literal>define</literal>, in
+        case we change our minds later about using it for non-local declarations?</para></comment>
+        
         </section>
         
         <section id="typenameabbreviations">
@@ -579,8 +582,8 @@ String? firstWord = words[0];</programlisting>
         <comment><para>NOTE: Type classes are a proposed feature for a future
         version of the language.</para></comment>
         
-        <para>A type may optionally specify a <emphasis>type class</emphasis>, A
-        type class is a user-defined metamodel object for the type. A type class 
+        <para>A class or interface may optionally specify a <emphasis>type class</emphasis>. 
+        A type class is a user-defined metamodel object for the type. A type class 
         must be a toplevel anonymous class that extends:</para>
         
         <itemizedlist>
@@ -594,12 +597,17 @@ String? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>TypeClass := "is" MemberName</programlisting>
+        <para>Furthermore, a type constraint may specify a type to which the type 
+        class of the type argument is assignable.</para>
+        
+        <programlisting>TypeClass := "is" (MemberName | Type)</programlisting>
         
         <para>The <literal>is</literal> clause may specify exactly one anonymous
-        class:</para>
+        class (in the case of a class or interface) or type (in the case of a type
+        constraint).</para>
         
         <programlisting>is monoidClass</programlisting>
+        <programlisting>is Monoid&lt;T&gt;</programlisting>
         
     </section>
         

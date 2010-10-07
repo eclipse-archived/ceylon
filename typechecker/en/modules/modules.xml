@@ -379,22 +379,16 @@
     <section id="moduledescriptors">
         <title>Module descriptors</title>
         
-        <para>A <emphasis>module descriptor</emphasis> is a toplevel method of 
-        the root package of the module&mdash;the package with the same name as 
-        the module&mdash;with the following signature:</para>
-        
-        <programlisting>public Module module() { ... }</programlisting>
-        
-        <para>This method is usually specified using <literal>define ModuleDescriptor</literal>.</para>
+        <para>A <emphasis>module descriptor</emphasis> is a toplevel attribute 
+        named <literal>module</literal> of type <literal>Module</literal> of the 
+        root package of the module (the package with the same name as the module).</para>
         
         <para>A module may be <emphasis>runnable</emphasis>. The module descriptor
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
         toplevel method or class with no formal parameters.</para>
         
-        <para>The following types define the format of the Ceylon module
+        <para>The following classes define the format of the Ceylon module
         descriptor:</para>
-        
-        <programlisting>alias ModuleDescriptor satisfies Callable&lt;Module&gt; {}</programlisting>
         
         <programlisting>doc "A module descriptor."
 public class Module(
@@ -454,8 +448,7 @@ public class Import(
                         
         <para>For example:</para>
         
-        <programlisting>define ModuleDescriptor module()
-Module {
+        <programlisting>Module module {
     name = 'org.hibernate';
     version = '3.0.0.beta';
     doc = "The best-ever ORM solution!";
@@ -471,8 +464,7 @@ Module {
     }
 }</programlisting>
 
-        <programlisting>define ModuleDescriptor module()
-Module {
+        <programlisting>Module module {
     name = 'org.hibernate.test';
     version = '3.0.0.beta';
     doc = "The test suite for Hibernate";
