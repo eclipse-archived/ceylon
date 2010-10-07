@@ -147,6 +147,9 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
     <section id="lazyevaluation">
         <title>Lazy evaluation</title>
         
+        <comment><para>NOTE: Lazy evaluation of expressions is a proposed feature for 
+        a future version of the language.</para></comment>
+        
         <para>Ceylon supports <emphasis>lazy evaluation</emphasis> of expressions.
         Conceptually, what triggers evaluation of an expression is not execution
         of the expression itself, but use of the expression in a context where its 
