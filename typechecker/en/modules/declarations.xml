@@ -2053,7 +2053,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         </section>
         
         <section id="attributeswithnamedarguments">
-            <title>Attributea with named argument lists</title>
+            <title>Attributes with named argument lists</title>
             
             <para>Alternatively, a non-<literal>mutable</literal> simple attribute may 
             specify a named argument list. An attribute with a named argument list must 
