@@ -637,6 +637,9 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <section id="passbyreference">
             <title>Pass by reference</title>
             
+            <comment><para>NOTE: Lazy evaluation and pass by reference is a proposed feature for 
+            a future version of the language.</para></comment>
+        
             <para>An expression of type <literal>Gettable</literal> or <literal>Settable</literal> 
             may be assigned to an attribute or local, passed as an argument to a method or initializer, 
             or returned by a method. If the attribute, local, or formal parameter to which the 
@@ -1423,6 +1426,9 @@ using() resource satisfies Usable {
         <section id="iteration">
             <title>Iteration</title>
             
+            <comment><para>NOTE: The following syntax extension is a proposed feature for 
+            a future version of the language.</para></comment>
+        
         <para>A specialized invocation syntax is provided for toplevel methods which iterate 
         collections. (This is Ceylon's much more flexible version of C#'s LINQ.) If the first 
         parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>, annotated 
@@ -1477,6 +1483,9 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         <section id="localdefinition">
             <title>Variable definition</title>
             
+            <comment><para>NOTE: The following syntax extension is a proposed feature for 
+            a future version of the language.</para></comment>
+        
         <para>A specialized invocation syntax is also provided for toplevel methods which define 
         a variable. If the first parameter of the method is of type <literal>X</literal>,
         annotated <literal>specified</literal>, and all remaining parameters are callable
