@@ -1950,7 +1950,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
         <para>A simple attribute defines state.</para>
         
-        <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";"</programlisting>
+        <programlisting>SimpleAttribute := AttributeHeader (Specifier | Initializer)? ";" | NamedArguments</programlisting>
         
         <para>A simple attribute or local annotated <literal>mutable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
@@ -2052,13 +2052,36 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
                 
         </section>
         
+        <section id="attributeswithnamedarguments">
+            <title>Attributea with named argument lists</title>
+            
+            <para>Alternatively, a non-<literal>mutable</literal> simple attribute may 
+            specify a named argument list. An attribute with a named argument list must 
+            explicitly declare a non-<literal>abstract</literal> class as the attribute 
+            type. The attribute value is determined by simply instantiating the return 
+            type with the specified named arguments.</para>
+            
+            <para>The following declarations are equivalent:</para>
+            
+            <programlisting>Module module {
+    name = 'org.hibernate';
+    version = '3.0.0';
+}</programlisting>
+            
+            <programlisting>Module module = Module {
+    name = 'org.hibernate';
+    version = '3.0.0';
+}</programlisting>
+
+        </section>
+        
          <section id="attributegetters">
             <title>Attribute getters</title>
             
             <para>An attribute getter is a callable block of code with no parameters,
             that returns a value.</para>
             
-            <programlisting>AttributeGetter := AttributeHeader (Block | NamedArguments)</programlisting>
+            <programlisting>AttributeGetter := AttributeHeader Block</programlisting>
             
             <para>An attribute getter defines how the value of a derived attribute is
             obtained.</para>
@@ -2103,6 +2126,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
                 
         </section>
         
+        <!--
         <section id="getterswithnamedarguments">
             <title>Attribute getters with named argument lists</title>
             
@@ -2125,8 +2149,13 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
         version = '3.0.0';
     }
 }</programlisting>
+
+            <comment><para>TODO: should this syntax build a new object each time the attribute 
+            is evaluated, or should it construct the object once and return the same object
+            each time?</para></comment>
         
         </section>
+        -->
         
         <section id="attributesetters">
             <title>Attribute setters</title>
