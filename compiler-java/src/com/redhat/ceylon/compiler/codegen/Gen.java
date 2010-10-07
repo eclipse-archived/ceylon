@@ -39,12 +39,10 @@ import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
-import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Context.SourceLanguage;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -58,20 +56,6 @@ import static com.sun.tools.javac.code.TypeTags.*;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.tree.CeylonTree.*;
 
-class TreeMakerProxy implements InvocationHandler {
-	public TreeMaker maker;
-	
-	public TreeMakerProxy(TreeMaker maker) {
-		this.maker = maker;
-	}
-	
-	public Object invoke(Object proxy, Method method, Object[] args)
-	throws Throwable {
-		JCTree result = (JCTree)method.invoke(maker, args);
-		return result;
-	}
-}
-
 public class Gen {
     Context context;
     TreeMaker make;
@@ -84,7 +68,6 @@ public class Gen {
     JavacTaskImpl task;
     Options options;
     LineMap map;
-    JCTree.Factory makerProxy;
     
     JCCompilationUnit jcCompilationUnit;
 
@@ -122,9 +105,7 @@ public class Gen {
         options.put("invokedynamic", "invokedynamic");
         make = TreeMaker.instance(context);
         Class<?>[] interfaces = {JCTree.Factory.class};
-        makerProxy = (JCTree.Factory)
-        	Proxy.newProxyInstance(getClass().getClassLoader(), interfaces,
-        		new TreeMakerProxy(make));
+
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         resolve = Resolve.instance(context);
@@ -134,11 +115,11 @@ public class Gen {
         if (t.source != null) {
         	make.at(map.getStartPosition(t.source.line) + t.source.column);
         }
-        return makerProxy;
+        return make;
     }
     
     JCTree.Factory make() {
-        return makerProxy;
+        return make;
     }
     
     class Singleton<T> implements Iterable<T>{
