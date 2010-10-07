@@ -26,7 +26,6 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
-import java.util.Set;
 import javax.tools.JavaFileObject;
 
 import com.sun.tools.javac.code.*;
@@ -518,10 +517,10 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         annotateLater(tree.packageAnnotations, env, tree.packge);
 
         // Import-on-demand java.lang.
-        if (! tree.forCeylon)
-            importAll(tree.pos, reader.enterPackage(names.java_lang), env);
-        else
+        if (Context.isCeylon())
             importAll(tree.pos, reader.enterPackage(names.ceylon), env);
+        else
+            importAll(tree.pos, reader.enterPackage(names.java_lang), env);
 
         // Process all import clauses.
         memberEnter(tree.defs, env);
@@ -631,7 +630,7 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
                 v.setLazyConstValue(initEnv(tree, env), log, attr, tree.init);
         }
         if (chk.checkUnique(tree.pos(), v, enclScope)) {
-        	if (! tree.forCeylon)
+        	if (! Context.isCeylon())
         		chk.checkTransparentVar(tree.pos(), v, enclScope);
             enclScope.enter(v);
         }

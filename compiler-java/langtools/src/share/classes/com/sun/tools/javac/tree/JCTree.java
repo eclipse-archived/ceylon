@@ -331,8 +331,6 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
      */
     public Type type;
     
-    public boolean forCeylon;
-    
     /* The tag of this node -- one of the constants declared above.
      */
     public abstract int getTag();

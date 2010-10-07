@@ -733,7 +733,7 @@ public class Attr extends JCTree.Visitor {
                 }
             }
             
-            if (tree.forCeylon) {
+            if (Context.isCeylon()) {
             	TypeSymbol tsym = v.type.tsym;
             	String sStr = tsym.toString();
             	// Generate a ceylon temporary whose type comes from its initializer.
@@ -1898,6 +1898,9 @@ public class Attr extends JCTree.Visitor {
             sym = selectSym(tree, site, env, pt, pkind);
         }
         catch (ExtensionRequiredException e) {
+        	if (!Context.isCeylon())
+        		throw e;
+        	
             // FIXME: this is a hack to allow conversion of the left hand sides
             // of binary operations.  It needs to be generalized to cope with any
             // number of arguments.

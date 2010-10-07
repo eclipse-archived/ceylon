@@ -26,6 +26,7 @@
 package com.sun.tools.javac.main;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
@@ -45,6 +46,7 @@ import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskListener;
 
 import com.sun.tools.javac.util.*;
+import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.tree.*;
 import com.sun.tools.javac.parser.*;
@@ -705,55 +707,63 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
      *  @param f          An input stream that reads the source file.
      */
     public void complete(ClassSymbol c) throws CompletionFailure {
-//      System.err.println("completing " + c);//DEBUG
-        if (completionFailureName == c.fullname) {
-            throw new CompletionFailure(c, "user-selected completion failure by class name");
-        }
-        JCCompilationUnit tree;
-        JavaFileObject filename = c.classfile;
-        JavaFileObject prev = log.useSource(filename);
+    	//      System.err.println("completing " + c);//DEBUG
 
-        try {
-            tree = parse(filename, filename.getCharContent(false));
-        } catch (IOException e) {
-            log.error("error.reading.file", filename, e);
-            tree = make.TopLevel(List.<JCTree.JCAnnotation>nil(), null, List.<JCTree>nil());
-        } finally {
-            log.useSource(prev);
-        }
+    	try {
+        	Context.SourceLanguage.push(Language.JAVA);
 
-        if (taskListener != null) {
-            TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
-            taskListener.started(e);
-        }
+    		if (completionFailureName == c.fullname) {
+    			throw new CompletionFailure(c, "user-selected completion failure by class name");
+    		}
+    		JCCompilationUnit tree;
+    		JavaFileObject filename = c.classfile;
+    		JavaFileObject prev = log.useSource(filename);
 
-        enter.complete(List.of(tree), c);
+    		try {
+    			tree = parse(filename, filename.getCharContent(false));
+    		} catch (IOException e) {
+    			log.error("error.reading.file", filename, e);
+    			tree = make.TopLevel(List.<JCTree.JCAnnotation>nil(), null, List.<JCTree>nil());
+    		} finally {
+    			log.useSource(prev);
+    		}
 
-        if (taskListener != null) {
-            TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
-            taskListener.finished(e);
-        }
+    		if (taskListener != null) {
+    			TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
+    			taskListener.started(e);
+    		}
 
-        if (enter.getEnv(c) == null) {
-            boolean isPkgInfo =
-                tree.sourcefile.isNameCompatible("package-info",
-                                                 JavaFileObject.Kind.SOURCE);
-            if (isPkgInfo) {
-                if (enter.getEnv(tree.packge) == null) {
-                    String msg
-                        = log.getLocalizedString("file.does.not.contain.package",
-                                                 c.location());
-                    throw new ClassReader.BadClassFile(c, filename, msg);
-                }
-            } else {
-                throw new
-                    ClassReader.BadClassFile(c, filename, log.
-                                             getLocalizedString("file.doesnt.contain.class",
-                                                                c.fullname));
-            }
-        }
+    		enter.complete(List.of(tree), c);
 
-        implicitSourceFilesRead = true;
+    		if (taskListener != null) {
+    			TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
+    			taskListener.finished(e);
+    		}
+
+    		if (enter.getEnv(c) == null) {
+    			boolean isPkgInfo =
+    				tree.sourcefile.isNameCompatible("package-info",
+    						JavaFileObject.Kind.SOURCE);
+    			if (isPkgInfo) {
+    				if (enter.getEnv(tree.packge) == null) {
+    					String msg
+    					= log.getLocalizedString("file.does.not.contain.package",
+    							c.location());
+    					throw new ClassReader.BadClassFile(c, filename, msg);
+    				}
+    			} else {
+    				throw new
+    				ClassReader.BadClassFile(c, filename, log.
+    						getLocalizedString("file.doesnt.contain.class",
+    								c.fullname));
+    			}
+    		}
+
+    		implicitSourceFilesRead = true;
+
+    	} finally {
+    		Context.SourceLanguage.pop();
+    	}
     }
 
     /** Track when the JavaCompiler has been used to compile something. */

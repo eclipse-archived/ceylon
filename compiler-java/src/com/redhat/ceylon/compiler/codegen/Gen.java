@@ -44,6 +44,8 @@ import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Context.SourceLanguage;
+import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -66,7 +68,6 @@ class TreeMakerProxy implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 	throws Throwable {
 		JCTree result = (JCTree)method.invoke(maker, args);
-		result.forCeylon = true;
 		return result;
 	}
 }
@@ -226,13 +227,20 @@ public class Gen {
         
         System.out.println(tree);
         
-        Iterable<? extends TypeElement> result =
-            task.enter(List.of(tree));
-        /*Iterable<? extends JavaFileObject> files =*/ task.generate(result);
+        try {
+        	Context.SourceLanguage.push(Language.CEYLON);
 
-        System.out.println(diagnostics.getDiagnostics());
+        	Iterable<? extends TypeElement> result =
+        		task.enter(List.of(tree));
+        	/*Iterable<? extends JavaFileObject> files =*/ task.generate(result);
+
+        	System.out.println(diagnostics.getDiagnostics());
+
+        } finally {
+        	Context.SourceLanguage.pop();
+        }
     }
-    
+
     public JCCompilationUnit convert(CeylonTree.CompilationUnit t) {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
                 

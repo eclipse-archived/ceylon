@@ -2039,7 +2039,7 @@ public class Lower extends TreeTranslator {
         tree.mods.flags &= ClassFlags;
 
         // If this is an overloaded top-level class then fix up the names.
-        if (tree.isOverloadedToplevelCeylonClass) {
+        if (Context.isCeylon() && tree.isOverloadedToplevelCeylonClass) {
             JCMethodDecl constructor = null;
             for (JCTree def : tree.defs) {
                 if (def.getKind() == Kind.METHOD) {
@@ -2614,7 +2614,7 @@ public class Lower extends TreeTranslator {
                 return;
             }
 
-            if (meth.name.toString().equals("$internalErasedExists")) {
+            if (Context.isCeylon() && meth.name.toString().equals("$internalErasedExists")) {
             	if (tree.meth.getTag() == JCTree.SELECT) {
             		JCExpression selected = ((JCFieldAccess) tree.meth).selected;
             		Type t = ((JCFieldAccess) tree.meth).type.baseType();
@@ -2683,7 +2683,8 @@ public class Lower extends TreeTranslator {
     /** Expand a boxing or unboxing conversion if needed. */
     @SuppressWarnings("unchecked") // XXX unchecked
     <T extends JCTree> T boxIfNeeded(T tree, Type type) {
-        tree = (T)ceylonExtensionIfNeeded((JCExpression)tree, type);
+    	if (Context.isCeylon())
+    		tree = (T)ceylonExtensionIfNeeded((JCExpression)tree, type);
         boolean havePrimitive = tree.type.isPrimitive();
         if (havePrimitive == type.isPrimitive())
             return tree;

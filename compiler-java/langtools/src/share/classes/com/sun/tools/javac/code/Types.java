@@ -300,37 +300,39 @@ public class Types {
     	if (isConvertibleNotOptional(t, s, warn))
     		return true;
     	
-    	if (getCeylonExtension(t, s) != null)
-            return true;
+    	if (Context.isCeylon()) {
+    		if (getCeylonExtension(t, s) != null)
+    			return true;
 
-        Type base = s.baseType();
-        TypeSymbol tsym = s.tsym;
-        String sStr = tsym.toString();
-        
-        if (sStr.equals("ceylon.Optional") &&
-        		base.tag == CLASS) {
+    		Type base = s.baseType();
+    		TypeSymbol tsym = s.tsym;
+    		String sStr = tsym.toString();
 
-            if (t.baseType().tag == CLASS &&
-            		t.tsym.toString().equals("ceylon.Nothing"))
-            	return true;
-            
-        	ClassType klass = (ClassType)base;
-        	List<Type> typeArgs = klass.getTypeArguments();
-        	if (typeArgs.length() == 1) {
-        		Type s1 = typeArgs.last();
-        		if (s1.tag == CLASS) {
-        			return isConvertible(t, s1, warn);
-        		}
-        	}
-        }
-        
-        // The placeholder type for ceylon temporaries.  It only exists
-        // while a temporary is declared, and will be replaced by the
-        // type of an expression.
-        if (sStr.equals("ceylon.Any"))
-        	return true;
-        
-        return false;
+    		if (sStr.equals("ceylon.Optional") &&
+    				base.tag == CLASS) {
+
+    			if (t.baseType().tag == CLASS &&
+    					t.tsym.toString().equals("ceylon.Nothing"))
+    				return true;
+
+    			ClassType klass = (ClassType)base;
+    			List<Type> typeArgs = klass.getTypeArguments();
+    			if (typeArgs.length() == 1) {
+    				Type s1 = typeArgs.last();
+    				if (s1.tag == CLASS) {
+    					return isConvertible(t, s1, warn);
+    				}
+    			}
+    		}
+
+    		// The placeholder type for ceylon temporaries.  It only exists
+    		// while a temporary is declared, and will be replaced by the
+    		// type of an expression.
+    		if (sStr.equals("ceylon.Any"))
+    			return true;
+    	}
+
+    	return false;
     }
 
     /**
@@ -1584,8 +1586,7 @@ public class Types {
             @Override
             public Type visitClassType(ClassType t, Void ignored) {
                	// Erase ceylon.Optional<T> to T
-            	if (t.tsym.toString().equals("ceylon.Optional"))
-            	{
+            	if (Context.isCeylon() && t.tsym.toString().equals("ceylon.Optional")) {
             		List<Type> l = t.getTypeArguments();
             		if (l.length() == 1) {
             			Type t1 = l.last();
