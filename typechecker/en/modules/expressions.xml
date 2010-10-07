@@ -3226,6 +3226,9 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
         <comment><para>TODO: Should we have allow the operators <literal>&lt;=</literal> 
         and <literal>&gt;=</literal> to handle partial orders? A particular usecase is
         <literal>Set</literal> comparison.</para></comment>
+        
+        <comment><para>TODO: Should we have <literal>satisfies</literal> and
+        <literal>extends</literal> operators, just for completeness?</para></comment>
     
     </section>
                 
