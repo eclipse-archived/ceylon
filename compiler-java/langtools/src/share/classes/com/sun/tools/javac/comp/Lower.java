@@ -2667,8 +2667,6 @@ public class Lower extends TreeTranslator {
 
     /** Convert using a Ceylon extension if needed */
     JCExpression ceylonExtensionIfNeeded(JCExpression tree, Type dstType) {
-        if (dstType.isPrimitive())
-            return tree;
         Type srcType = tree.type;
         if (srcType.isPrimitive())
             return tree;
