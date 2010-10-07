@@ -386,14 +386,6 @@
                </listitem>
            </itemizedlist>
            
-           <comment><para>TODO: should we add:</para>
-           <itemizedlist>
-               <listitem>
-                   <para><literal>java.lang.String</literal> with
-                   <literal>String</literal></para>
-               </listitem>
-           </itemizedlist></comment>
-           
         </section>
                 
     </section>

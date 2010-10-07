@@ -394,9 +394,6 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
     return value := newValue; 
 }]]></programlisting>
     
-        <comment><para>TODO: should <literal>onSet()</literal> return the new value of
-        the attribute instead of being <literal>void</literal>?</para></comment>
-
     </section>
     
     <section id="boolean">
@@ -2299,6 +2296,9 @@ while (i<=max) {
     public void intercept( void onSet(void proceed(T value), T value) )();
 
 }]]></programlisting>
+
+        <comment><para>TODO: should <literal>onSet()</literal> return the new value of
+        the attribute instead of being <literal>void</literal>?</para></comment>
 
         <para>An instance of <literal>Type</literal> represent a type: an interface, class 
         or alias, together with type arguments.</para>
