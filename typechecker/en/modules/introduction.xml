@@ -1474,20 +1474,19 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <literal>Correspondence&lt;Natural, X&gt;</literal>.</para>
             
             <para>We often use the class <literal>Entry</literal>, which represents a 
-            key/value pair when working with <literal>Correspndences</literal>. The
+            key/value pair, when working with <literal>Correspndences</literal>. The
             operator <literal>-></literal> constructs a new <literal>Entry</literal>.</para>
             
             <programlisting>Entry&lt;String,Person&gt; entry = person.name->person;</programlisting>
             
-            <para>We can assign a sequence of <literal>Entry</literal>s to 
-            <literal>Correspondence</literal>. A built-in extension takes care of 
-            performing the type conversion. This is mainly useful when we're 
-            constructing a <literal>Correspondence</literal> for the first time:</para>
+            <para>We can instantiate a <literal>Correspondence</literal> using a similar
+            syntax to the one we used for sequences:</para>
                               
-            <programlisting>Correspondence&lt;String,String&gt; cities = { "Emmanuel"->"Paris",
-                                           "Andrew"->"Cambridge", 
-                                             "Pete"->"Edinburgh",
-                                            "Gavin"->"Guanajuato" };</programlisting>
+            <programlisting>Correspondence&lt;String,String&gt; cities = 
+        Correspondence&lt;String,String&gt; { "Emmanuel"->"Paris",
+                                        "Andrew"->"Cambridge", 
+                                          "Pete"->"Edinburgh",
+                                         "Gavin"->"Guanajuato" };</programlisting>
             
             <para>We can extract values from a <literal>Correspondence</literal> by key 
             using the lookup operator:</para>
