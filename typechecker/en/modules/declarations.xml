@@ -1544,10 +1544,11 @@ Void goodbye() {
             <title>Methods with named argument lists</title>
             
             <para>The final possibility is that a method implementation may be a named
-            argument list. A method with a named argument list must explicitly declare a 
-            non-<literal>abstract</literal> class as the return type. The method simply 
-            instantiates the return type with the specified named arguments and returns 
-            the resulting value.</para>
+            argument list. A method with a named argument list must explicitly declare 
+            an invocable type (a non-<literal>abstract</literal> class, or any other
+            type with a callable type class) as the return type. The method simply 
+            invokes the return type with the specified named arguments and returns the 
+            resulting value.</para>
             
             <para>The following declarations are equivalent:</para>
             
@@ -2055,9 +2056,10 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             
             <para>Alternatively, a non-<literal>mutable</literal> simple attribute may 
             specify a named argument list. An attribute with a named argument list must 
-            explicitly declare a non-<literal>abstract</literal> class as the attribute 
-            type. The attribute value is determined by simply instantiating the return 
-            type with the specified named arguments.</para>
+            explicitly declare an invocable type (a non-<literal>abstract</literal> 
+            class, or any other type with a callable type class) as the attribute type. 
+            The attribute value is determined by simply invoking the return type with 
+            the specified named arguments.</para>
             
             <para>The following declarations are equivalent:</para>
             
