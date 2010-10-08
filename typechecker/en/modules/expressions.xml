@@ -1110,10 +1110,10 @@ local comp = order(1,-1);</programlisting>
                 followed by an expression, and is terminated by a semicolon, or</para>
             </listitem>
             <listitem>
-                <para>a local declaration with a getter or named argument list where the name of 
-                the local is the formal parameter name&mdash;it specifies its value by declaring 
-                a non-<literal>abstract</literal> class as the type, and a named argument list 
-                used to instantiate the type, or</para>
+                <para>a local declaration with a getter or named argument list where the name 
+                of the local is the formal parameter name&mdash;it specifies the type of the 
+                attribute or <literal>local</literal>, and a block or code or named argument 
+                list used to instantiate the return type, or</para>
             </listitem>
             <listitem>
                 <para>a local anonymous class declaration where the name of the local is the
@@ -1123,7 +1123,8 @@ local comp = order(1,-1);</programlisting>
                 <para>only for callable parameters, a local method declaration with a block or
                 named parameter list where the name of the method is the formal parameter 
                 name&mdash;it specifies the return type or <literal>local</literal>, a formal 
-                parameter list and a block of code or named argument list.</para>
+                parameter list and a block of code or named argument list used to instantiate 
+                the return type.</para>
             </listitem>
         </itemizedlist>
         
@@ -1131,7 +1132,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>SpecifiedNamedArgument := ParameterName Specifier ";"</programlisting>
         
-        <programlisting>LocalNamedArgument := Type ParameterName (Block | NamedArguments)</programlisting>
+        <programlisting>LocalNamedArgument := InferableType ParameterName (Block | NamedArguments)</programlisting>
         
         <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams+ (Block | NamedArguments)</programlisting>
         
