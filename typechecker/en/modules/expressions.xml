@@ -185,9 +185,8 @@ setGreeting(greeting);</programlisting>
         <para>A <literal>Gettable</literal> object representing an expression that 
         contains a reference to a <literal>mutable</literal> local may not be assigned 
         to an attribute, passed as a method argument, passed to a control directive, 
-        enumerated as the value of a sequence enumeration, or referred to by a nested 
-        method or class. It may be assigned to a local, or invoked directly inside the 
-        block that obtained it.</para>
+        or referred to by a nested method or class. It may be assigned to a local, or 
+        invoked directly inside the block that obtained it.</para>
                 
         <comment><para>TODO: nail down these rules a little better.</para></comment>
     
@@ -501,7 +500,7 @@ if you prefer.";</programlisting>
     
         <programlisting>Primary := Atom | Meta | MemberReference | Invocation</programlisting>
 
-        <programlisting>MemberReference := OuterReference | EnumeratedInstanceReference | CallableReference | ValueReference</programlisting>
+        <programlisting>MemberReference := OuterReference | CallableReference | ValueReference</programlisting>
     
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators.</para>    
