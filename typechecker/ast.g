@@ -1,4 +1,4 @@
-grammar ast;
+grammar Ceylon;
 
 options {
     //backtrack=true;
@@ -98,6 +98,9 @@ tokens {
     SET_EXPR;
     //PRIMARY;
 }
+
+@parser::header { package com.redhat.ceylon.compiler.parser; }
+@lexer::header { package com.redhat.ceylon.compiler.parser; }
 
 compilationUnit
     : importDeclaration*
@@ -444,7 +447,7 @@ type
     ;
 
 abbreviation
-    : '[' dimension? ']' | '?'
+    : LBRACKET dimension? ']' | '?'
     ;
 
 typeNameWithArguments
@@ -741,7 +744,7 @@ selector
     ;
 
 memberSelector
-    : ('.' | '?.' | '[].') ( nameAndTypeArguments | 'outer' )
+    : ('.' | '?.' | SPREAD) ( nameAndTypeArguments | 'outer' )
     ;
 
 nameAndTypeArguments
@@ -750,7 +753,7 @@ nameAndTypeArguments
     ;
 
 elementSelector
-    : '?'? '[' elementsSpec ']'
+    : '?'? LBRACKET elementsSpec ']'
     -> ^(SUBSCRIPT_EXPR '?'? elementsSpec)
     ;
 
@@ -835,7 +838,7 @@ specialArgument
 
 extraFormalParameters
     : extraFormalParameter*
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)*)
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)*)?
     ;
 
 formalParameters
@@ -1069,15 +1072,33 @@ fragment
 FractionalMagnitude
     : 'm' | 'u' | 'n' | 'p'
     ;
+    
+fragment ELLIPSIS
+    :   '...'
+    ;
+
+fragment RANGE
+    :   '..'
+    ;
+
+fragment DOT
+    :   '.'
+    ;
+
 fragment FLOATLITERAL :;
-fragment ELLIPSIS :;
-fragment RANGE :;
-fragment DOT :;
 NATURALLITERAL
     : Digits
       ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOATLITERAL; } )?
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
+    
+fragment SPREAD :;
+fragment LBRACKET :;
+BRACKETS
+    : '['
+    ( ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
+     | { $type = LBRACKET; } )
+    ;    
 
 CHARLITERAL
     :   '`' ( ~ NonCharacterChars | EscapeSequence ) '`'
@@ -1328,10 +1349,6 @@ RBRACE
     :   '}'
     ;
 
-LBRACKET
-    :   '['
-    ;
-
 RBRACKET
     :   ']'
     ;
@@ -1360,7 +1377,7 @@ BITWISENOT
     :   '~'
     ;
 
-DEFAULT
+QMARK
     :   '?'
     ;
 
@@ -1468,12 +1485,8 @@ HASH
     :   '#'
     ;
 
-NULLSAFE
+QMARKDOT
     :    '?.'
-    ;
-
-SPREAD
-    :    '[].'
     ;
 
 POWER
@@ -1519,7 +1532,7 @@ REMAINDEREQ
     :   '%='
     ;
 
-DEFAULTEQ
+QMARKEQ
     :   '?='
     ;
 
