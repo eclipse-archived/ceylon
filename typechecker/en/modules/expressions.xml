@@ -741,6 +741,10 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         callable type of every overloaded version of the class. Calling the initializer 
         reference results in instantiation of the class.</para>
         
+        <comment><para>TODO: Are we going to support leaving out the type name for a
+        sequence instantiation, for example: <literal>{ "foo", "bar" }</literal> 
+        instead of <literal>Sequence { "foo", "bar" }</literal>?</para></comment>
+        
         </section>
         
         <!--

@@ -1425,9 +1425,9 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <para>The closest thing to a raw type, in this case, would be a 
             <literal>Sequence&lt;Object&gt;</literal>.</para>
             
-            <programlisting>Sequence&lt;Object&gt; voyage = Sequence&lt;Object&gt; { "Atlanta", "Boston", "San Francisco" };</programlisting>
+            <programlisting>Sequence&lt;Object&gt; voyage = Sequence { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
-            <para>Which we could abbreviate, of course:</para>
+            <para>Which we usually abbreviate like this:</para>
             
             <programlisting>Object[] voyage = Object[] { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
@@ -1483,10 +1483,10 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             syntax to the one we used for sequences:</para>
                               
             <programlisting>Correspondence&lt;String,String&gt; cities = 
-        Correspondence&lt;String,String&gt; { "Emmanuel"->"Paris",
-                                        "Andrew"->"Cambridge", 
-                                          "Pete"->"Edinburgh",
-                                         "Gavin"->"Guanajuato" };</programlisting>
+        Correspondence { "Emmanuel"->"Paris",
+                           "Andrew"->"Cambridge", 
+                             "Pete"->"Edinburgh",
+                            "Gavin"->"Guanajuato" };</programlisting>
             
             <para>We can extract values from a <literal>Correspondence</literal> by key 
             using the lookup operator:</para>
