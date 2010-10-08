@@ -2000,7 +2000,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 
         <programlisting>public Decimal pi = calculatePi();</programlisting>
         
-        <programlisting>public Natural[5] evenDigits = {0,2,4,6,8};</programlisting>
+        <programlisting>public Natural[] evenDigits = Natural[] {0,2,4,6,8};</programlisting>
 
         <para>A simple attribute declared directly inside the body of a class represents state 
         associated with the instance of the class. Repeated evaluation of the attribute of a 
