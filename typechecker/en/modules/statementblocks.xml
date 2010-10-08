@@ -325,7 +325,7 @@ String result = middle.string;</programlisting>
     
     </section>
     
-    <section id="blocks">
+    <section id="blocksandstatements">
         <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
@@ -371,6 +371,9 @@ String result = middle.string;</programlisting>
         The Ceylon compiler guarantees this by evaluating all conditional branches that lead 
         to termination of the method. Each conditional branch must end in a 
         <literal>return</literal> or <literal>throw</literal> directive.</para>
+        
+        <para>Every block local declaration must be used somewhere inside the block in which
+        it is declared.</para>
         
         <comment><para>TODO: chapter 16 of the JLS goes into way more detail about the notion
         of "definite assignment" and "definite unassignment". We eventually need something
