@@ -2071,11 +2071,6 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
     version = '3.0.0';
 }</programlisting>
             
-            <comment><para>TODO: I suppose we should also let you declare a sequence
-            enumeration using the same syntax, for example:</para>
-            <programlisting>String[] cities { "Melbourne", "Atlanta", "Paris", "San Francisco" }</programlisting>
-            </comment>
-            
         </section>
         
          <section id="attributegetters">

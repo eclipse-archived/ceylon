@@ -1448,11 +1448,16 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     public Settable<X> value(Bounded<#n> index);
 }]]></programlisting>
 
+        <para>The following extension allows direct instantiation of <literal>X[]</literal>:</para>
+        
+        <programlisting><![CDATA[public extension X[] sequence(Type<X[]> this)(X... elements) {
+    return ArrayList(elements)
+}]]></programlisting>
+        
         <para>The value <literal>none</literal> is transparently assignable to 
         <literal>X[]</literal> and <literal>X[0]</literal>.</para>
         
-        <programlisting><![CDATA[doc "Represents an empty sequence. The value of 
-     the empty sequence enumeration |{}|."
+        <programlisting><![CDATA[doc "Represents an empty sequence."
 public object none {
 
     public extension class EmptySequence<out X>() 
@@ -3177,6 +3182,12 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     
 }]]></programlisting>
 
+            <para>This extension allows direct instantiation of the interface:</para>
+
+            <programlisting><![CDATA[public extension Set<T> set(Type<Set<T>> this)(T... elements) {
+    return HashSet(elements)
+}]]></programlisting>
+
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenSet<X> 
@@ -3282,6 +3293,12 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     
     public override OpenList<T> copy<T>() given T abstracts X;
 
+}]]></programlisting>
+
+            <para>This extension allows direct instantiation of the interface:</para>
+
+            <programlisting><![CDATA[public extension List<T> list(Type<List<T>> this)(T... elements) {
+    return ArrayList(elements)
 }]]></programlisting>
 
             <para>Any <literal>Sequence</literal> may be transparently converted to a 
@@ -3436,6 +3453,12 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     
 }]]></programlisting>
 
+            <para>This extension allows direct instantiation of the interface:</para>
+
+            <programlisting><![CDATA[public extension Map<U,V> map(Type<Map<U,V>> this)(Entry<U,V>... elements) {
+    return HashMap(elements)
+}]]></programlisting>
+
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public mutable interface OpenMap<U,V> 
@@ -3479,6 +3502,12 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     public override Bag<T> with<T>(T... elements) given T abstracts X;
     public override OpenBag<T> copy<T>() given T abstracts X;
     
+}]]></programlisting>
+
+            <para>This extension allows direct instantiation of the interface:</para>
+
+            <programlisting><![CDATA[public extension Bag<T> bag(Type<Bag<T>> this)(T... elements) {
+    return HashBag(elements)
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>

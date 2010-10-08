@@ -22,11 +22,11 @@
             <para>invocation of methods and instantiation of classes,</para> 
         </listitem>
         <listitem>
-            <para>evaluation and assignment of attributes,</para>
+            <para>evaluation and assignment of attributes, and</para>
         </listitem>
-        <listitem>
+        <!--listitem>
             <para>enumeration of sequences, and</para>
-        </listitem>
+        </listitem-->
         <listitem>
             <para>operators.</para>
         </listitem>
@@ -50,7 +50,7 @@
     </itemizedlist>
     <para>For example, a constant expression might be anything formed from
     literals, metamodel references, the <literal>..</literal> and 
-    <literal>-></literal> operators, and sequence enumerations.</para>
+    <literal>-></literal> operators.</para>
     </comment>
     
     <section id="objectinstancesidentity">
@@ -493,7 +493,7 @@ if you prefer.";</programlisting>
         <para>An <emphasis>atom</emphasis> is a literal or self reference, an 
         enumeration expression, or a parenthesized expression.</para>
     
-        <programlisting>Atom := Literal | StringTemplate | SelfReference | Enumeration | ParExpression</programlisting>
+        <programlisting>Atom := Literal | StringTemplate | SelfReference | ParExpression</programlisting>
     
         <para>A <emphasis>primary</emphasis> is formed by recursively invoking or 
         evaluating members of an atom, toplevel method, toplevel attribute, or
@@ -2157,6 +2157,7 @@ setPerson(person);</programlisting>
     
     </section>
     
+    <!--
     <section id="enumeration">
         <title>Enumeration</title>
         
@@ -2211,6 +2212,7 @@ setPerson(person);</programlisting>
         </comment>
             
     </section>
+    -->
     
     <section id="metamodelreferences">
         <title>Metamodel references</title>
