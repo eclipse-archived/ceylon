@@ -2506,7 +2506,7 @@ createItemMethod.intercept()
     
     <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
     
-    <programlisting>log.info( "Hello " + $person + "!")</programlisting>
+    <programlisting>log.info("Hello " + $person + "!")</programlisting>
     
     <programlisting>List&lt;String&gt; names = Person[](person1, person2, person3)[].name;</programlisting>
     
