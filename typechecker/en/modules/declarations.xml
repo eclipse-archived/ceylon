@@ -607,7 +607,7 @@ public class Person { ... }</programlisting>
         <para>For example, the following code fragments are not legal:</para>
         
         <programlisting>class Graph() {
-    OpenList&lt;Node&gt; nodes = {};
+    OpenList&lt;Node&gt; nodes = none;
     class Node() {
         nodes.add(this);    //compiler error (this reference in initializer)
     }
@@ -620,13 +620,13 @@ public class Person { ... }</programlisting>
         nodes.add(node);    //compiler error (forward reference in initializer)
         return node
     }
-    OpenList&lt;Node&gt; nodes = {};
+    OpenList&lt;Node&gt; nodes = none;
 }</programlisting>
 
         <para>But this code fragment is legal:</para>
         
         <programlisting>class Graph() {
-    OpenList&lt;Node&gt; nodes = {};
+    OpenList&lt;Node&gt; nodes = none;
     Node createNode() {
         Node node = Node();
         nodes.add(node);

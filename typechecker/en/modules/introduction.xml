@@ -1372,7 +1372,7 @@ for (Person p in people) { ... }</programlisting>
               
             <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
-            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
+            <programlisting>String[] voyage = String[] { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
 String? sf = voyage[2];
 String[] usLeg = voyage[1..3];
 String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlisting>
@@ -1384,9 +1384,13 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             But sequences of values are a common occurrence in computing, so Ceylon provides 
             a streamlined syntax for dealing with them. Let's break down this code.</para>
             
-            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
+            <programlisting>String[] voyage = String[] { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
             
-            <para>A list of values enclosed in braces instantiates a sequence.</para>
+            <para>Even though <literal>Sequence</literal> is an interface, we can instantiate 
+            it using a syntax that closely resembles Java's syntax for instantiating arrays.
+            However, in Ceylon, this is not a special syntax defined at the language level.  
+            Rather, it's just an ordinary method call, disguised using a clever trick by the 
+            <literal>ceylon.language</literal> module.</para>
             
             <programlisting>String? sf = voyage[2];</programlisting>
             
@@ -1416,16 +1420,16 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             a type declares type parameters, a type argument for each parameter is required
             everywhere the type is used. For example, the following declaration is not legal:</para>
             
-            <programlisting>Sequence voyage = { "Atlanta", "Boston", "San Francisco" };  //error! missing type argument</programlisting>
+            <programlisting>Sequence voyage = Sequence { "Atlanta", "Boston", "San Francisco" };  //error! missing type argument</programlisting>
             
             <para>The closest thing to a raw type, in this case, would be a 
             <literal>Sequence&lt;Object&gt;</literal>.</para>
             
-            <programlisting>Sequence&lt;Object&gt; voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
+            <programlisting>Sequence&lt;Object&gt; voyage = Sequence&lt;Object&gt; { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
             <para>Which we could abbreviate, of course:</para>
             
-            <programlisting>Object[] voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
+            <programlisting>Object[] voyage = Object[] { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
             <para>Sequences of ordinal values are especially common, so there's an
             operator for constructing them, called the <emphasis>range</emphasis>
@@ -1532,7 +1536,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <literal>Correspondence</literal>. We can add or override entries in an 
             <literal>OpenMap</literal> using the assignment operator:</para>
             
-            <programlisting><![CDATA[OpenMap<String,String> cities = {}
+            <programlisting><![CDATA[OpenMap<String,String> cities = none;
 cities["Gavin"] := "Guanajuato";
 cities["Emmanuel"] := "Paris";
 cities["Pete"] := "Edinburgh";
@@ -1540,7 +1544,7 @@ cities["Andrew"] := "Cambridge";]]></programlisting>
             
             <para>It's even possible to define multiple entries at once:</para>
             
-            <programlisting><![CDATA[OpenMap<String,String> cities = {}
+            <programlisting><![CDATA[OpenMap<String,String> cities = none;
 cities.define("Emmanuel"->"Paris",
                  "Gavin"->"Guanajuato",
                   "Pete"->"Edinburgh",
@@ -1573,14 +1577,14 @@ cities.define("Emmanuel"->"Paris",
             <literal>OpenList</literal> using the <literal>append()</literal> 
             method:</para>
             
-            <programlisting><![CDATA[OpenList<String> voyage = {}
+            <programlisting><![CDATA[OpenList<String> voyage = none;
 voyage.append("Melbourne");
 voyage.append("San Francisco");
 voyage.append("Atlanta);]]></programlisting>
             
             <para>It's even possible to add multiple elements at once:</para>
             
-            <programlisting><![CDATA[OpenList<String> voyage = {}
+            <programlisting><![CDATA[OpenList<String> voyage = none;
 voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
 
             <para>We can also change the value at a particular index in an 
@@ -1644,7 +1648,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             
             <programlisting>public abstract class Component() {
             
-    OpenList&lt;Observer&gt; observers = {};
+    OpenList&lt;Observer&gt; observers = none;
     
     void addObserver(Observer o) {
         observers.append(o);
@@ -1667,7 +1671,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
 
             <programlisting>public abstract class Component() {
             
-    OpenList&lt;Callable&lt;Void,Event&gt;&gt; observers = {};
+    OpenList&lt;Callable&lt;Void,Event&gt;&gt; observers = none;
     
     void addObserver(void observe(Event event)) {
         observers.append(observe);

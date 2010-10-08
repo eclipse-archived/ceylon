@@ -1219,7 +1219,7 @@ local comp = order(1,-1);</programlisting>
         <para>Alternatively, the argument to a sequence parameter may be a <literal>Sequence</literal> 
         of the parameter type.</para>
         
-        <programlisting>( {1, 1, 2, 3, 5, 8} )</programlisting>
+        <programlisting>(Natural[](1, 1, 2, 3, 5, 8))</programlisting>
         
         <!--
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
@@ -2499,13 +2499,13 @@ createItemMethod.intercept()
     
     <programlisting>if (char in `A`..`Z`) { ... }</programlisting>
     
-    <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
+    <programlisting>List&lt;Day&gt; nonworkDays = days[Natural[](0,7)];</programlisting>
     
     <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
     
     <programlisting>log.info( "Hello " + $person + "!")</programlisting>
     
-    <programlisting>List&lt;String&gt; names = { person1, person2, person3 }[].name;</programlisting>
+    <programlisting>List&lt;String&gt; names = Person[](person1, person2, person3)[].name;</programlisting>
     
     <programlisting>String? name = person?.name;</programlisting>
     
