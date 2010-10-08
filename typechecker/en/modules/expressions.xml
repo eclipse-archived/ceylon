@@ -1164,7 +1164,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>{
     object values satisfies Iterable&lt;Order&gt; {
         head = order;
-        override tail satisfies Iterable&lt;Order&gt; {
+        override object tail satisfies Iterable&lt;Order&gt; {
             head = null;
             tail = this;
         }
