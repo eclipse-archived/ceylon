@@ -1162,9 +1162,12 @@ local comp = order(1,-1);</programlisting>
 }</programlisting>
 
         <programlisting>{
-    object values satisfies Iterable&lt;Object&gt; {
-        Object? head = null;
-        Iterable&lt;Object&gt; tail = this;
+    object values satisfies Iterable&lt;Order&gt; {
+        head = order;
+        override tail satisfies Iterable&lt;Order&gt; {
+            head = null;
+            tail = this;
+        }
     }   
 }</programlisting>
 
