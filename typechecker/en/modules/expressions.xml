@@ -1144,6 +1144,17 @@ local comp = order(1,-1);</programlisting>
 }</programlisting>
         
         <programlisting>{
+    description = "Total";
+    Float amount { 
+        mutable Float total = 0.0;
+        for (Item item in items) {
+            sum += item.amount;
+        }
+        return total
+    }
+}</programlisting>
+        
+        <programlisting>{
     Head head { title="Hello"; }
     Body body {
         Div { "Hello " name "!" }
