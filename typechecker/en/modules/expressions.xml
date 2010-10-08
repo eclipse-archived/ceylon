@@ -1101,22 +1101,29 @@ local comp = order(1,-1);</programlisting>
         a sequenced parameter are specified by listing them, without specifying a name, at the 
         end of the argument list.</para>
 
-        <para>A named argument either:</para> 
+        <para>A named argument is either:</para> 
         
         <itemizedlist>
             <listitem>
-                <para>specifies its value using <literal>=</literal>, followed by an expression, 
-                and is terminated by a semicolon, or</para>
+                <para>a specification statement where the name of the value being specified is
+                the formal parameter name&mdash;it specifies its value using <literal>=</literal>, 
+                followed by an expression, and is terminated by a semicolon, or</para>
             </listitem>
             <listitem>
-                <para>specifies its value by declaring a non-<literal>abstract</literal> class 
-                as the type, and providing a named argument list to be used to instantiate the 
-                type, or</para>
+                <para>a local declaration with a getter or named argument list where the name of 
+                the local is the formal parameter name&mdash;it specifies its value by declaring 
+                a non-<literal>abstract</literal> class as the type, and a named argument list 
+                used to instantiate the type, or</para>
             </listitem>
             <listitem>
-                <para>only for callable parameters, specifies the type or <literal>local</literal>, 
-                a formal parameter list and a block of code or named argument list (an inline 
-                method declaration).</para>
+                <para>a local anonymous class declaration where the name of the local is the
+                formal parameter name&mdash;an <literal>object</literal> declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>only for callable parameters, a local method declaration with a block or
+                named parameter list where the name of the method is the formal parameter 
+                name&mdash;it specifies the return type or <literal>local</literal>, a formal 
+                parameter list and a block of code or named argument list.</para>
             </listitem>
         </itemizedlist>
         
@@ -1142,6 +1149,13 @@ local comp = order(1,-1);</programlisting>
     }
 }</programlisting>
 
+        <programlisting>{
+    object values satisfies Iterable&lt;Object&gt; {
+        Object? head = null;
+        Iterable&lt;Object&gt; tail = this;
+    }   
+}</programlisting>
+
         <programlisting>{ 
     label = "Say Hello"; 
     void onClick() { 
@@ -1164,10 +1178,8 @@ local comp = order(1,-1);</programlisting>
         is the model that we are following here. And it could be very useful when defining structured
         data.</para></comment>
         
-        <comment><para>TODO: why not let you specify a named argument using an <literal>object</literal>
-        declaration?</para></comment>
-
-        <!--comment><para>TODO: Getter, setter specification for parameters declared <literal>mutable</literal>?</para></comment-->
+        <comment><para>TODO: Should we let you define a getter/setter pair for parameters of type 
+        <literal>Settable</literal>?</para></comment>
         
         </section>
 
