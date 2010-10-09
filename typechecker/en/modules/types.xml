@@ -986,6 +986,14 @@ while (exists local value = indexed.indexedValue(i)) {
 }]]></programlisting>
         -->
         
+        <para>The following extension allows direct instantiation of the
+        <literal>Correspondence</literal> interface:</para>
+        
+        <programlisting><![CDATA[public extension Correspondence<U,V> newCorrespondence<U,V>(Type<Correspondence<U,V>> this)
+        (Entry<U,V>... elements) {
+    return HashMap(elements)
+}]]></programlisting>
+        
         <para>There is a mutable subtype, representing a correspondence
         for which new mappings may be defined, and existing mappings 
         modified. It provides for the use of element expressions in
@@ -1450,7 +1458,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
 
         <para>The following extension allows direct instantiation of <literal>X[]</literal>:</para>
         
-        <programlisting><![CDATA[public extension X[] sequence(Type<X[]> this)(X... elements) {
+        <programlisting><![CDATA[public extension X[] newSequence<X>(Type<X[]> this)(X... elements) {
     return ArrayList(elements)
 }]]></programlisting>
         
@@ -3184,7 +3192,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension Set<T> set(Type<Set<T>> this)(T... elements) {
+            <programlisting><![CDATA[public extension Set<T> newSet<T>(Type<Set<T>> this)(T... elements) {
     return HashSet(elements)
 }]]></programlisting>
 
@@ -3297,7 +3305,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension List<T> list(Type<List<T>> this)(T... elements) {
+            <programlisting><![CDATA[public extension List<T> newList<T>(Type<List<T>> this)(T... elements) {
     return ArrayList(elements)
 }]]></programlisting>
 
@@ -3455,7 +3463,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension Map<U,V> map(Type<Map<U,V>> this)(Entry<U,V>... elements) {
+            <programlisting><![CDATA[public extension Map<U,V> newMap<U,V>(Type<Map<U,V>> this)(Entry<U,V>... elements) {
     return HashMap(elements)
 }]]></programlisting>
 
@@ -3506,7 +3514,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension Bag<T> bag(Type<Bag<T>> this)(T... elements) {
+            <programlisting><![CDATA[public extension Bag<T> newBag<T>(Type<Bag<T>> this)(T... elements) {
     return HashBag(elements)
 }]]></programlisting>
 
