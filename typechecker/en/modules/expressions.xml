@@ -2248,7 +2248,10 @@ setPerson(person);</programlisting>
         
         <comment><para>TODO: should we have typesafe metamodel reference expressions for 
         parameters, for example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
-                
+        
+        <comment><para>TODO: we should remodel member metamodel references as actual members
+        of the type class. Then we can get rid of two of the following sections.</para></comment>
+        
         <section id="interfaceandclassmetamodelreferences">
             <title>Interface and class metamodel references</title>
             
