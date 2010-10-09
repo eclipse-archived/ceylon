@@ -2740,6 +2740,14 @@ public Visibility private() {
     ...   
 }</programlisting>
         
+        <programlisting>public extension homogeneous&lt;T&gt;(Type&lt;T[]&gt; this)(Natural size, T value) {
+    OpenList&lt;T&gt; result = none;
+    for (Natural i in 0..size-1) {
+        result.append(value);
+    }
+    return result
+}</programlisting>
+        
         <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
         
         <itemizedlist>
@@ -2798,7 +2806,8 @@ public Visibility private() {
         the extension is not enabled in the compilation unit.</para>
         
         <programlisting>import extension org.domain.app.extensions.objectToLog;
-import extension org.domain.utils.SequenceUtils;</programlisting>
+import extension org.domain.utils.SequenceUtils;
+import extension org.domain.utils.homogeneous;</programlisting>
 
         <para>A wildcard <literal>.*</literal>-style import may not be used to import 
         an extension.</para>
@@ -2907,6 +2916,14 @@ Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);<
         <programlisting>Collection&lt;Integer&gt; ints = ...;
 Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements();</programlisting>
         -->
+        
+        <comment><para>TODO: You can also introduce <literal>Callable</literal> to a type,
+        in which case there is no member reference, just an argument list.</para></comment>
+        
+        <programlisting>import extension org.domain.utils.homogeneous;
+...
+Float[] tenZeroes = Foat[](10,0.0);</programlisting>
+        
         <!-- 
         <para>An introduced type may result in an ambiguity:</para>
         
