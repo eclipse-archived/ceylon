@@ -2318,7 +2318,7 @@ class Hello(String? name) {
         to specify type arguments in a type declaration (there are no raw types in 
         Ceylon).</para>
         
-        <programlisting>Array&lt;String&gt; strings = new Array("Hello", "World");</programlisting>
+        <programlisting>Array&lt;String&gt; strings = Array("Hello", "World");</programlisting>
         <programlisting>Person[] onlyMe = singleton(me);</programlisting>
         <programlisting>Collection&lt;Order&gt; orders = getOrders();</programlisting>
         
