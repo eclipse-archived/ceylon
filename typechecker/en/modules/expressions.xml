@@ -734,7 +734,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <para>If a callable reference specifies a class name, it is called an 
         <emphasis>initializer reference</emphasis>.</para>
         
-        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments?</programlisting>
+        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments? "[]"*</programlisting>
         
         <para>The type of an initializer reference expression is assignable to the 
         callable type of every overloaded version of the class. Calling the initializer 

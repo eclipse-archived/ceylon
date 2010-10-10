@@ -403,11 +403,11 @@
             </listitem>
         </itemizedlist>
         
-        <programlisting>Abbreviation := "?" | "[" dimension? "]"</programlisting>
+        <programlisting>Abbreviation := "[]" | "?" | "[" dimension? "]"</programlisting>
         
         <para>Abbreviations may be combined:</para>
         
-        <programlisting>String?[3] words = { "hello", "world", null };
+        <programlisting>String?[] words = ... ;
 String? firstWord = words[0];</programlisting>
         
         <comment><para>TODO: It might be difficult to support <literal>T??</literal>
