@@ -361,7 +361,9 @@
         type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
-        <programlisting>Type := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) Abbreviation*</programlisting>
+        <programlisting>Type := UnabbreviatedType Abbreviation*</programlisting>
+        
+        <programlisting>UnabbreviatedType := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
         
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
         list must be specified. If a type has no type parameters, and no sequenced type 
@@ -410,6 +412,10 @@
         <programlisting>String?[] words = ... ;
 String? firstWord = words[0];</programlisting>
         
+        <para>When a type appears in an expression, the abbreviations <literal>X?</literal>,
+        <literal>X[]</literal> and <literal>X[n]</literal> cannot be used (they cannot be 
+        disambiguated from operator expressions).</para>
+        
         <comment><para>TODO: It might be difficult to support <literal>T??</literal>
         since <literal>Optional</literal> is erased.</para></comment>
         
@@ -419,21 +425,6 @@ String? firstWord = words[0];</programlisting>
         
         </section>
         
-        <section id="typesinexpresssions">
-            <title>Types in expressions</title>
-            
-            <para>When a type appears in an expression, the abbreviations <literal>X?</literal>
-            and <literal>X[n]</literal> cannot be used (they cannot be disambiguated from 
-            operator expressions). However, the abbreviation <literal>X[]</literal> is
-            allowed.</para>
-            
-            <programlisting>ExpressionType := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) "[]"*</programlisting>
-            
-            <comment><para>TODO: this is probably overly conservative&mdash;we could support 
-            the syntax using a syntactic predicate.</para></comment>
-        
-        </section>
-    
     </section>
         
     <section id="inheritance">

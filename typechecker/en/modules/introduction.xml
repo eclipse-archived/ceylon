@@ -1372,7 +1372,7 @@ for (Person p in people) { ... }</programlisting>
               
             <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
-            <programlisting>String[] voyage = String[] { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
+            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
 String? sf = voyage[2];
 String[] usLeg = voyage[1..3];
 String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlisting>
@@ -1384,13 +1384,10 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             But sequences of values are a common occurrence in computing, so Ceylon provides 
             a streamlined syntax for dealing with them. Let's break down this code.</para>
             
-            <programlisting>String[] voyage = String[] { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
+            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
             
-            <para>Even though <literal>Sequence</literal> is an interface, we can instantiate 
-            it using a syntax that closely resembles Java's syntax for instantiating arrays.
-            However, in Ceylon, this is not a special syntax defined at the language level.  
-            Rather, it's just an ordinary method call, disguised using a clever trick by the 
-            <literal>ceylon.language</literal> module.</para>
+            <para>We can instantiate a <literal>Sequence</literal> using a streamlined syntax
+            where the elements of the sequence are enclosed in braces.</para>
             
             <programlisting>String? sf = voyage[2];</programlisting>
             
@@ -1429,7 +1426,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <para>Which we usually abbreviate like this:</para>
             
-            <programlisting>Object[] voyage = Object[] { "Atlanta", "Boston", "San Francisco" };</programlisting>
+            <programlisting>Object[] voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
             <para>Sequences of ordinal values are especially common, so there's an
             operator for constructing them, called the <emphasis>range</emphasis>

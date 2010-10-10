@@ -734,29 +734,11 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <para>If a callable reference specifies a class name, it is called an 
         <emphasis>initializer reference</emphasis>.</para>
         
-        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments? | ExpressionType "[]"</programlisting>
+        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments?</programlisting>
         
         <para>The type of an initializer reference expression is assignable to the 
         callable type of every overloaded version of the class. Calling the initializer 
         reference results in instantiation of the class.</para>
-        
-        <!--
-        <comment><para>TODO: grammatical ambiguity: the <literal>Type</literal> rule
-        allows abbreviations like <literal>?</literal> and <literal>[n]</literal>
-        which cannot be easily disambiguated from operator expresssion. The actual
-        ANTL grammar disallows use of these abbreviations inside expressions.</para></comment>
-        -->
-        
-        <comment><para>TODO: Are we going to support leaving out the type name for a
-        sequence instantiation, for example: <literal>{ "foo", "bar" }</literal> 
-        instead of <literal>Sequence { "foo", "bar" }</literal> or 
-        <literal>String[] { "foo", "bar" }</literal>?</para></comment>
-        
-        <comment><para>TODO: <literal>X[]</literal> is the only type name abbreviation
-        supported inside expression syntax. This feels a little special-casey. Should
-        we simply drop support for the Java-style array instantiation syntax and force
-        you to write <literal>Sequence { "foo", "bar" }</literal> (or allow leaving
-        out the type name, as suggested above).</para></comment>
         
         </section>
         
@@ -916,7 +898,7 @@ local comp = order(1,-1);</programlisting>
         <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;T,P...&gt;</literal>, 
         together with an argument list and, optionally, an explicit type argument list.</para>
         
-        <programlisting>Invocation := Primary Arguments</programlisting>
+        <programlisting>Invocation := Primary Arguments | SequenceInstantiation</programlisting>
             
         <para>Any invocation expression where the invoked expression is a callable reference 
         expression is called a <emphasis>direct invocation expression</emphasis> of the 
@@ -1066,6 +1048,27 @@ local comp = order(1,-1);</programlisting>
     }
 }</programlisting>
             
+        </section>
+        
+        <section id="sequenceinstantiation">
+            <title>Sequence instantiation</title>
+            
+            <para>An instantiation expression for the type <literal>Sequence</literal> may
+            be written in an abbreviated form where the type name is eliminated.</para>
+        
+            <programlisting>SequenceInstantiation = "{" SequencedArguments "}"</programlisting>
+            
+            <para>The following expression:</para>
+            
+            <programlisting>{ "hello", "world" }</programlisting>
+            
+            <para>Is equivalent to:</para>
+            
+            <programlisting>Sequence { "hello", "world" }</programlisting>
+            
+            <comment><para>TODO: alternatively, we could support a Java-style syntax of form
+            <literal>String[] { "hello", "world" }</literal>.</para></comment>
+        
         </section>
         
         <section id="positionalarguments">
@@ -1236,7 +1239,7 @@ local comp = order(1,-1);</programlisting>
         <para>Alternatively, the argument to a sequence parameter may be a <literal>Sequence</literal> 
         of the parameter type.</para>
         
-        <programlisting>(Natural[](1, 1, 2, 3, 5, 8))</programlisting>
+        <programlisting>({1, 1, 2, 3, 5, 8})</programlisting>
         
         <!--
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
@@ -2272,9 +2275,10 @@ setPerson(person);</programlisting>
         <para>A <literal>Type</literal> object may be obtained by specifying the full
         type, including type arguments if the type is generic.</para>
         
-        <programlisting>TypeMeta := ExpressionType</programlisting>
+        <programlisting>TypeMeta := UnabbreviatedType</programlisting>
         
-        <para>The metamodel expression, <literal>X</literal>, for a type, class or interface is:</para>
+        <para>The metamodel expression, <literal>X</literal>, for a type, class or interface 
+        is:</para>
         
         <itemizedlist>
             <listitem>
@@ -2304,13 +2308,6 @@ setPerson(person);</programlisting>
         class is assignable. <emphasis>(Note that type classes are a proposed feature for 
         a future version of the language.)</emphasis></para>
         
-        <!--
-        <comment><para>TODO: grammatical ambiguity: the <literal>Type</literal> rule
-        allows abbreviations like <literal>?</literal> and <literal>[n]</literal>
-        which cannot be easily disambiguated from operator expresssion. The actual
-        ANTL grammar disallows use of these abbreviations inside expressions.</para></comment>
-        -->
-         
         </section>
         
         <section id="toplevelmethodmetamodelreferences">
@@ -2526,13 +2523,13 @@ createItemMethod.intercept()
     
     <programlisting>if (char in `A`..`Z`) { ... }</programlisting>
     
-    <programlisting>List&lt;Day&gt; nonworkDays = days[Natural[](0,7)];</programlisting>
+    <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
     
     <programlisting>Natural lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
     
     <programlisting>log.info("Hello " + $person + "!")</programlisting>
     
-    <programlisting>List&lt;String&gt; names = Person[](person1, person2, person3)[].name;</programlisting>
+    <programlisting>List&lt;String&gt; names = {person1, person2, person3}[].name;</programlisting>
     
     <programlisting>String? name = person?.name;</programlisting>
     
