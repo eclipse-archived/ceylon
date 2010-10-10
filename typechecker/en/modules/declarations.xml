@@ -118,7 +118,7 @@ Body?</programlisting>
         explicitly imported. They are implicitly imported by every compilation unit.</para>
         
         <para>If the <literal>implicit</literal> modifier appears, the import statement
-        must refer to a toplevel type or method annotated <literal>extension</literal>,
+        must specify a single toplevel type or method annotated <literal>extension</literal>,
         and no <literal>alias</literal> clause may appear.</para>
                 
         <comment><para>TODO: Would it be better to specify that there is at most a single 
