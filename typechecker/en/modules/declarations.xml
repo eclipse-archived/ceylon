@@ -233,8 +233,6 @@ InterfaceBody</programlisting>
 
         <para>Interface method and attribute declarations may not specify implementation.</para>
 
-        <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?</para></comment>
-        
         <programlisting>public interface Comparable&lt;T&gt; {
     Comparison compare(T other);
 }</programlisting>
@@ -246,6 +244,19 @@ InterfaceBody</programlisting>
     Comparison compare(T other);
 }</programlisting>
         -->
+        
+        <comment><para>TODO: I now know how to support non-<literal>abstract</literal> methods,
+        getters and setters on interfaces, without loss of binary compatibility. It basically
+        boils down to the same thing as a member <literal>default extension</literal> class.
+        Overriding members on a subclass boils down to overriding the member class and
+        overriding its members. I think we should probably support this. We would solve the
+        diamond inheritance problem by forcing the subtype to override any 
+        non-<literal>abstract</literal> member inherited from more than one supertype. Or,
+        even better perhaps, by preventing overriding of members by interface members.</para></comment>
+        
+        <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?
+        What about the diamond inheritance problem? I think the solution is just to prevent 
+        overriding of member classes by interfaces.</para></comment>
         
         <comment><para>TODO: if methods of interfaces can define defaulted parameters,
         precisely how do we implement that?</para></comment>
