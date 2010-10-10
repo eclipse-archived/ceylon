@@ -749,9 +749,18 @@ memberSelector
     ;
 
 nameAndTypeArguments
-    : ( memberName | typeName | 'subtype' ) 
+    : typeNameAndTypeArguments | memberNameAndTypeArguments
+    ;
+
+typeNameAndTypeArguments
+    : ( typeName | 'subtype' ) 
       ( (typeArguments) => typeArguments )?
-      ARRAY*
+      (ARRAY | ('?') => '?' )*
+    ;
+
+memberNameAndTypeArguments
+    : memberName 
+      ( (typeArguments) => typeArguments )?
     ;
 
 elementSelector
