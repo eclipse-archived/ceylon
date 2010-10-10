@@ -2788,7 +2788,7 @@ say(outputStream);</programlisting>
         it is used. To activate an extension we <literal>import</literal> 
         it.</para>
         
-        <programlisting>import extension com.domain.util.objectToLog;
+        <programlisting>import implicit com.domain.util.objectToLog;
         
 class Hello(String? name) {
 
@@ -2912,7 +2912,7 @@ class Hello(String? name) {
         <para>And we can enable the appropriate default format by 
         <literal>import</literal>ing the extension:</para>
         
-        <programlisting>import extension org.mycompany.format.FloatFormat;</programlisting>
+        <programlisting>import implicit org.mycompany.format.FloatFormat;</programlisting>
         
         <para>And now, when we don't explicitly specify a format, the format defaults
         to the extension format:</para>

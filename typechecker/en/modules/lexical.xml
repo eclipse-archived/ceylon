@@ -98,7 +98,7 @@
         <para>The following reserved words are not legal identifier names:</para>
         
         <para><literal>
-        import
+        import implicit
         class interface choice alias object
         satisfies extends abstracts of
         in out
@@ -125,6 +125,10 @@
         <comment><para>TODO: Eventually we will probably want to support identifiers 
         in non-European character sets. We can use an initial underscore to distinguish
         "initial lowercase" identifiers.</para></comment>
+        
+        <comment><para>TODO: Should we really be making <literal>implicit</literal> a
+        keyword? It would be possible to parse an <literal>import implicit</literal> 
+        statement without it being a keyword.</para></comment>
         
     </section>
     

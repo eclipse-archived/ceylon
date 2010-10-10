@@ -36,6 +36,7 @@ tokens {
     IF_FALSE;
     IF_STMT;
     IF_TRUE;
+    EXTENSION_DECL;
     IMPORT_DECL;
     IMPORT_LIST;
     IMPORT_WILDCARD;
@@ -123,8 +124,13 @@ typeDeclaration
     ;
 
 importDeclaration
-    : 'import' 'extension'? importPath ('.' wildcard | alias)? ';'
-    -> ^(IMPORT_DECL importPath wildcard? alias?)
+    : 'import' 
+      ( 
+        importPath ('.' wildcard | alias)? ';'
+        -> ^(IMPORT_DECL importPath wildcard? alias?)
+      | 'implicit' importPath ';'
+        -> ^(EXTENSION_DECL importPath)
+      )
     ;
     
 importPath
@@ -1281,6 +1287,10 @@ SATISFIES
 
 IMPORT
     :   'import'
+    ;
+
+IMPLICIT
+    :   'implicit'
     ;
 
 INTERFACE

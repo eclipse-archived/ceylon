@@ -81,7 +81,7 @@ Body?</programlisting>
         only if it explicitly imports the declaration using the <literal>import</literal> 
         statement.</para>
         
-        <programlisting>Import := "import" "extension"? FullPackageName "." ImportSpec ";"</programlisting>
+        <programlisting>Import := "import" "implicit"? FullPackageName "." ImportSpec ";"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>
@@ -117,9 +117,10 @@ Body?</programlisting>
         and extensions in the module <literal>ceylon.language</literal> never need to be 
         explicitly imported. They are implicitly imported by every compilation unit.</para>
         
-        <para>If the <literal>extension</literal> annotation appears, the imported declaration
-        must also be annotated <literal>extension</literal>.</para>
-        
+        <para>If the <literal>implicit</literal> modifier appears, the import statement
+        must refer to a toplevel type or method annotated <literal>extension</literal>,
+        and no <literal>alias</literal> clause may appear.</para>
+                
         <comment><para>TODO: Would it be better to specify that there is at most a single 
         <literal>import</literal> statement per source file, for example:</para>
         <programlisting>import my.query.Order, ceylon.collection.*, java.util.Map.Entry alias MapEntry;</programlisting></comment>
@@ -2801,13 +2802,13 @@ public Visibility private() {
         <para>We say that a converter or decorator is <emphasis>enabled</emphasis> in 
         a compilation unit if the toplevel class or toplevel method is imported by that 
         compilation unit, and the <literal>import</literal> statement is annotated 
-        <literal>extension</literal>. If the <literal>import</literal> statement is not 
-        annotated <literal>extension</literal>, the declaration is imported normally but 
+        <literal>implicit</literal>. If the <literal>import</literal> statement is not 
+        annotated <literal>implicit</literal>, the declaration is imported normally but 
         the extension is not enabled in the compilation unit.</para>
         
-        <programlisting>import extension org.domain.app.extensions.objectToLog;
-import extension org.domain.utils.SequenceUtils;
-import extension org.domain.utils.homogeneous;</programlisting>
+        <programlisting>import implicit org.domain.app.extensions.objectToLog;
+import implicit org.domain.utils.SequenceUtils;
+import implicit org.domain.utils.homogeneous;</programlisting>
 
         <para>A wildcard <literal>.*</literal>-style import may not be used to import 
         an extension.</para>
@@ -2892,7 +2893,7 @@ import extension org.domain.utils.homogeneous;</programlisting>
         
         <para>Otherwise, the member reference is ambiguous and results in a compiler error.</para>
         
-        <programlisting>import extension org.mydomain.myproject.extensions.objectToLog;
+        <programlisting>import implicit org.mydomain.myproject.extensions.objectToLog;
 ...
 Person person = ...;
 User user = person;
@@ -2905,7 +2906,7 @@ info("person is a User and this is a Log!");</programlisting>
 User user = personToUser(person);</programlisting>
         -->
         
-        <programlisting>import extension org.domain.utils.SequenceUtils;
+        <programlisting>import implicit org.domain.utils.SequenceUtils;
 ...
 Integer[] zeroToOneHundred = 0..100;
 Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);</programlisting>
@@ -2920,7 +2921,7 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         <comment><para>TODO: You can also introduce <literal>Callable</literal> to a type,
         in which case there is no member reference, just an argument list.</para></comment>
         
-        <programlisting>import extension org.domain.utils.homogeneous;
+        <programlisting>import implicit org.domain.utils.homogeneous;
 ...
 Float[] tenZeroes = Sequence(10,0.0);</programlisting>
         
