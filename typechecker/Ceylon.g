@@ -701,7 +701,7 @@ selfReference
     ;
 
 enumeration
-    : '{' expressions? '}'
+    : '{' expressions '}'
     -> ^(ENUM_LIST expressions?)
     ;
     
@@ -758,7 +758,7 @@ nameAndTypeArguments
 typeNameAndTypeArguments
     : ( typeName | 'subtype' ) 
       ( (typeArguments) => typeArguments )?
-      (ARRAY | ('?') => '?' )*
+      //(ARRAY | ('?') => '?' )*
     ;
 
 memberNameAndTypeArguments
