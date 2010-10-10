@@ -2262,7 +2262,7 @@ class Hello(String? name) {
     
     doc "The word for \"Hello\" in the given 
          language"
-    String word(Language lang) {
+    String word(Language language) {
         switch (language) {
             case (english) { return "Hello"; }
             case (spanish) { return "Hola"; }
