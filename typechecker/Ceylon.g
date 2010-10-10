@@ -447,7 +447,7 @@ type
     ;
 
 abbreviation
-    : ARRAY | '?' | LBRACKET dimension ']'
+    : '?' | ARRAY | LBRACKET dimension ']'
     ;
 
 
