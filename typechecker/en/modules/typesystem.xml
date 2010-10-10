@@ -419,7 +419,7 @@ String? firstWord = words[0];</programlisting>
         
         </section>
         
-        <section>
+        <section id="typesinexpresssions">
             <title>Types in expressions</title>
             
             <para>When a type appears in an expression, the abbreviations <literal>X?</literal>
@@ -428,6 +428,9 @@ String? firstWord = words[0];</programlisting>
             allowed.</para>
             
             <programlisting>ExpressionType := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) "[]"*</programlisting>
+            
+            <comment><para>TODO: this is probably overly conservative&mdash;we could support 
+            the syntax using a syntactic predicate.</para></comment>
         
         </section>
     
