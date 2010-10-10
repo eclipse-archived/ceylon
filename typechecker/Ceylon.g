@@ -447,8 +447,9 @@ type
     ;
 
 abbreviation
-    : LBRACKET dimension? ']' | '?'
+    : ARRAY | '?' | LBRACKET dimension ']'
     ;
+
 
 typeNameWithArguments
     : typeName typeArguments?
@@ -750,6 +751,7 @@ memberSelector
 nameAndTypeArguments
     : ( memberName | typeName | 'subtype' ) 
       ( (typeArguments) => typeArguments )?
+      ARRAY*
     ;
 
 elementSelector
@@ -1094,10 +1096,14 @@ NATURALLITERAL
     
 fragment SPREAD :;
 fragment LBRACKET :;
+fragment ARRAY :;
 BRACKETS
     : '['
-    ( ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
-     | { $type = LBRACKET; } )
+    ( 
+      ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
+    | ( { input.LA(1) == ']' }? => ']' { $type = ARRAY; } )
+    | { $type = LBRACKET; } 
+    )
     ;    
 
 CHARLITERAL
