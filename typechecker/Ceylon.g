@@ -245,6 +245,9 @@ statement
     //| '...'
     ;
 
+//Note that this rule is way too permissive,
+//and we need to do a lot more work later in
+//the compiler
 specificationOrExpressionStatement
     : expression specifier? ';'!
     ;
