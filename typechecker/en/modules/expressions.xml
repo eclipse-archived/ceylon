@@ -734,11 +734,18 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <para>If a callable reference specifies a class name, it is called an 
         <emphasis>initializer reference</emphasis>.</para>
         
-        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments? "[]"*</programlisting>
+        <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments? | ExpressionType "[]"</programlisting>
         
         <para>The type of an initializer reference expression is assignable to the 
         callable type of every overloaded version of the class. Calling the initializer 
         reference results in instantiation of the class.</para>
+        
+        <!--
+        <comment><para>TODO: grammatical ambiguity: the <literal>Type</literal> rule
+        allows abbreviations like <literal>?</literal> and <literal>[n]</literal>
+        which cannot be easily disambiguated from operator expresssion. The actual
+        ANTL grammar disallows use of these abbreviations inside expressions.</para></comment>
+        -->
         
         <comment><para>TODO: Are we going to support leaving out the type name for a
         sequence instantiation, for example: <literal>{ "foo", "bar" }</literal> 
@@ -2258,7 +2265,7 @@ setPerson(person);</programlisting>
         <para>A <literal>Type</literal> object may be obtained by specifying the full
         type, including type arguments if the type is generic.</para>
         
-        <programlisting>TypeMeta := Type</programlisting>
+        <programlisting>TypeMeta := ExpressionType</programlisting>
         
         <para>The metamodel expression, <literal>X</literal>, for a type, class or interface is:</para>
         
@@ -2290,6 +2297,13 @@ setPerson(person);</programlisting>
         class is assignable. <emphasis>(Note that type classes are a proposed feature for 
         a future version of the language.)</emphasis></para>
         
+        <!--
+        <comment><para>TODO: grammatical ambiguity: the <literal>Type</literal> rule
+        allows abbreviations like <literal>?</literal> and <literal>[n]</literal>
+        which cannot be easily disambiguated from operator expresssion. The actual
+        ANTL grammar disallows use of these abbreviations inside expressions.</para></comment>
+        -->
+         
         </section>
         
         <section id="toplevelmethodmetamodelreferences">

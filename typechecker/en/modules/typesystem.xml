@@ -418,6 +418,18 @@ String? firstWord = words[0];</programlisting>
         with how we declare functional parameters!</para></comment>
         
         </section>
+        
+        <section>
+            <title>Types in expressions</title>
+            
+            <para>When a type appears in an expression, the abbreviations <literal>X?</literal>
+            and <literal>X[n]</literal> cannot be used (they cannot be disambiguated from 
+            operator expressions). However, the abbreviation <literal>X[]</literal> is
+            allowed.</para>
+            
+            <programlisting>ExpressionType := ( TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype" ) "[]"*</programlisting>
+        
+        </section>
     
     </section>
         
