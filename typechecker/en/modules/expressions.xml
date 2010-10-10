@@ -749,7 +749,14 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <comment><para>TODO: Are we going to support leaving out the type name for a
         sequence instantiation, for example: <literal>{ "foo", "bar" }</literal> 
-        instead of <literal>Sequence { "foo", "bar" }</literal>?</para></comment>
+        instead of <literal>Sequence { "foo", "bar" }</literal> or 
+        <literal>String[] { "foo", "bar" }</literal>?</para></comment>
+        
+        <comment><para>TODO: <literal>X[]</literal> is the only type name abbreviation
+        supported inside expression syntax. This feels a little special-casey. Should
+        we simply drop support for the Java-style array instantiation syntax and force
+        you to write <literal>Sequence { "foo", "bar" }</literal> (or allow leaving
+        out the type name, as suggested above).</para></comment>
         
         </section>
         
