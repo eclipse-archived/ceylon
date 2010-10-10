@@ -2260,20 +2260,24 @@ class Hello(String? name) {
         throw Exception("Not annotated people")
     }
     
+    doc "The word for \"Hello\" in the given 
+         language"
+    String word(Language lang) {
+        switch (language) {
+            case (english) { return "Hello"; }
+            case (spanish) { return "Hola"; }
+            case (french) { return "Bonjour"; }
+            case (italian) { return "Ciao"; }
+        }
+    }
+    
     doc "The greeting"
     package String greeting {
         if (exists name) {
             if (exists Person person = 
                     first (Person p in people) 
                         where (p.firstName &equals; name)) {
-                String word;
-                switch (language) {
-                    case (english) { word = "Hello"; }
-                    case (spanish) { word = "Hola"; }
-                    case (french) { word = "Bonjour"; }
-                    case (italian) { word = "Ciao"; }
-                }
-                return "" word ", " person.firstName " " person.lastName "!"
+                return "" word(p.language) ", " person.firstName " " person.lastName "!"
             }
             else {
                 return "Hello, " name "!";
