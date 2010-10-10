@@ -409,7 +409,7 @@
         
         <para>Abbreviations may be combined:</para>
         
-        <programlisting>String?[] words = ... ;
+        <programlisting>String?[] words = { "hello", "world", null };
 String? firstWord = words[0];</programlisting>
         
         <para>When a type appears in an expression, the abbreviations <literal>X?</literal>,
