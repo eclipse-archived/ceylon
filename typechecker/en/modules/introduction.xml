@@ -2264,10 +2264,10 @@ class Hello(String? name) {
          language"
     String word(Language language) {
         switch (language) {
-            case (english) { return "Hello"; }
-            case (spanish) { return "Hola"; }
-            case (french) { return "Bonjour"; }
-            case (italian) { return "Ciao"; }
+            case (english) { return "Hello" }
+            case (spanish) { return "Hola" }
+            case (french) { return "Bonjour" }
+            case (italian) { return "Ciao" }
         }
     }
     
