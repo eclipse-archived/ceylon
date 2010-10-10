@@ -403,7 +403,7 @@
             </listitem>
         </itemizedlist>
         
-        <programlisting>Abbreviation := "[]" | "?" | "[" dimension "]"</programlisting>
+        <programlisting>Abbreviation := "?" | "[]" | "[" dimension "]"</programlisting>
         
         <para>Abbreviations may be combined:</para>
         
