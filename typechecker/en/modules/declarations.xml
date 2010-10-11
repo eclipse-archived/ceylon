@@ -252,7 +252,9 @@ InterfaceBody</programlisting>
         overriding its members. I think we should probably support this. We would solve the
         diamond inheritance problem by forcing the subtype to override any 
         non-<literal>abstract</literal> member inherited from more than one supertype. Or,
-        even better perhaps, by preventing overriding of members by interface members.</para></comment>
+        even better perhaps, by preventing overriding of members by interface members.<!--Note
+        that you would not be allowed to override a non<literal>abstract</literal> member
+        from within the initializer section of the class body.--></para></comment>
         
         <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?
         What about the diamond inheritance problem? I think the solution is just to prevent 
