@@ -501,7 +501,7 @@ public abstract class Case(String caseName)
     
     doc "The unary postfix existence operator 
          |x exists|."
-    public Boolean defined;
+    public abstract Boolean defined;
     
 }]]></programlisting>
 
