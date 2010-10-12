@@ -1800,7 +1800,7 @@ public abstract class CeylonTree {
      * A lower bound
      */
     public static class LowerBound extends CeylonTree {
-        CeylonTree initializer;
+        public CeylonTree initializer;
         
         void append(CeylonTree expr) {
             if (this.initializer != null)
@@ -2395,9 +2395,9 @@ public abstract class CeylonTree {
      * A subscript expression
      */
     public static class SubscriptExpression extends CeylonTree {
-        CeylonTree operand;
-        CeylonTree lowerBound;
-        UpperBound upperBound;
+        public CeylonTree operand;
+        public CeylonTree lowerBound;
+        public UpperBound upperBound;
         
         public void append(CeylonTree expr) {
             if (lowerBound != null || upperBound != null)
@@ -2539,6 +2539,8 @@ public abstract class CeylonTree {
         Type type;
         TypeArgumentList argList;
         Subtype subtype;
+        @NotAChild
+		public int sequenceCount = 0;
         
         public CeylonTree name;
 
@@ -2571,9 +2573,19 @@ public abstract class CeylonTree {
             expr.accept(new CeylonTree.Visitor () {
                 public void visit(TypeName t) { self.setName(t); }
                 public void visit(Operator op) {
-                	if (op.operatorKind != CeylonParser.QMARK)
+                	switch (op.operatorKind) {
+                	case CeylonParser.QMARK:
+                    	self.flags |= OPTIONAL; 
+                    	break;
+                	case CeylonParser.LBRACKET:
+                		// FIXME: Ignore for now
+                		break;
+                	case CeylonParser.RBRACKET:
+                		sequenceCount++;
+                		break;
+                	default:
                 		bomb();
-                	self.flags |= OPTIONAL; 
+                	}
                 }
            });
         }

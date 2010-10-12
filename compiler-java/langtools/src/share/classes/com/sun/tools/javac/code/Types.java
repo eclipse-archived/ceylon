@@ -283,7 +283,7 @@ public class Types {
 
         if (isSameType(s, syms.objectType))
             return null;
-        
+
         for (Symbol sym : ((ClassSymbol) t.tsym).members().getElements()) {
             if (sym.attribute(syms.ceylonExtensionSym) == null)
                 continue;
@@ -307,9 +307,25 @@ public class Types {
     		Type base = s.baseType();
     		TypeSymbol tsym = s.tsym;
     		String sStr = tsym.toString();
+    		String tStr = t.tsym.toString();
 
-    		if (sStr.equals("ceylon.Optional") &&
-    				base.tag == CLASS) {
+    		if (tStr.equals("ceylon.Mutable") &&
+    				t.baseType().tag == CLASS) {
+    			ClassType klass = (ClassType)t.baseType();
+    			List<Type> typeArgs = klass.getTypeArguments();
+    			if (typeArgs.length() == 1) {
+    				Type t1 = typeArgs.last();
+    				if (t1.tag == CLASS) {
+    					return isConvertible(t1, s, warn);
+    				} 
+    			} else if (typeArgs.length() == 0) {
+    				// Everything is convertible to plain ceylon.Mutable
+    				return true;
+    			}    			
+    		}
+    		
+    		if ((sStr.equals("ceylon.Optional") || (sStr.equals("ceylon.Mutable")))
+    				&& base.tag == CLASS) {
 
     			if (t.baseType().tag == CLASS &&
     					t.tsym.toString().equals("ceylon.Nothing"))
@@ -317,11 +333,18 @@ public class Types {
 
     			ClassType klass = (ClassType)base;
     			List<Type> typeArgs = klass.getTypeArguments();
-    			if (typeArgs.length() == 1) {
+    			
+    			if (typeArgs.length() == 0) {
+    				// Type is already erased
+    				return true;
+    			} else if (typeArgs.length() == 1) {
     				Type s1 = typeArgs.last();
     				if (s1.tag == CLASS) {
     					return isConvertible(t, s1, warn);
     				}
+    			} else if (typeArgs.length() == 0) {
+					// Everything is convertible from plain ceylon.Mutable.
+					return true;
     			}
     		}
 

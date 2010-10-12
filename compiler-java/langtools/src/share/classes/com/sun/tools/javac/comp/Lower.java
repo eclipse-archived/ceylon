@@ -1913,7 +1913,11 @@ public class Lower extends TreeTranslator {
         if (tree == null) {
             return null;
         } else {
-            make_at(tree.pos());
+        	if (tree.toString().contains("Mutable")) {
+        		System.err.println("Feck");
+        	}
+
+        	make_at(tree.pos());
             T result = super.translate(tree);
             if (endPositions != null && result != tree) {
                 Integer endPos = endPositions.remove(tree);
@@ -2671,12 +2675,41 @@ public class Lower extends TreeTranslator {
         if (srcType.isPrimitive())
             return tree;
 
+        // Handle conversions to and from Mutable.
+    	// We know that srcType != dstType, and the type parameters
+    	// have been checked earlier in the compilation.
+        // First we strip Mutable from the source by applying get().
+  
+        // Mutable -> immutable conversion
+        if (srcType.tsym.toString().equals("ceylon.Mutable")&&
+        		! dstType.tsym.toString().equals("ceylon.Mutable")) {
+        	// Immutable -> mutable conversion
+        	Scope scope = ((ClassSymbol) srcType.tsym).members();
+        	Scope.Entry entry = scope.lookup(names.fromString("get"));
+        	Symbol sym = entry.sym;
+        	MethodSymbol msym = (MethodSymbol) sym;
+        	tree = make.Apply(null, 
+        			make.Select(tree, msym), List.<JCExpression>nil()).setType(dstType);
+        	srcType = dstType;
+        }
+        
         Symbol methodSym = types.getCeylonExtension(srcType, dstType);
         if (methodSym != null) {
             make_at(tree.pos());
             tree = make.App(make.Select(tree, methodSym));
+        } 
+        
+    	// Immutable -> mutable conversion
+        if (dstType.tsym.toString().equals("ceylon.Mutable") &&
+        		! srcType.tsym.toString().equals("ceylon.Mutable")) {
+        	Scope scope = ((ClassSymbol) dstType.tsym).members();
+        	Scope.Entry entry = scope.lookup(names.fromString("of"));
+        	Symbol sym = entry.sym;
+        	MethodSymbol msym = (MethodSymbol) sym;
+        	tree = make.Apply(null, make.Select(make.Type(dstType), sym),
+        			List.of(tree)).setType(dstType);
         }
-
+        
         return tree;
     }
 

@@ -219,7 +219,7 @@ public class Context {
     		push(Language.JAVA);
     	}
 
-    	public static void push(Language lang) {
+    	public static void push(final Language lang) {
     		stack.add(lang);
     	}
     	public static Language pop() {
