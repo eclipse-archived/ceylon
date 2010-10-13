@@ -294,25 +294,6 @@ retryDirective
     -> ^(RETRY_STMT)
     ;
 
-abstractDeclaration
-    : annotations? 
-    ( 
-        abstractMemberDeclaration 
-      -> ^(ABSTRACT_MEMBER_DECL abstractMemberDeclaration annotations?)
-      | typeDeclaration 
-      -> ^(TYPE_DECL typeDeclaration annotations?)
-    )
-/*    (((memberHeader memberParameters) => 
-        (memberHeader memberParameters ';'
-          -> ^(ABSTRACT_METHOD_DECL $ann? memberHeader memberParameters)))
-    | (mem=memberDeclaration 
-            -> ^(MEMBER_DECL $mem $ann?)))*/
-    ;
-
-abstractMemberDeclaration
-    : memberHeader memberParameters? ';'!
-    ;
-
 memberDeclaration
     : memberHeader memberDefinition
     ;
@@ -354,7 +335,7 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    : '{'! abstractDeclaration* '}'!
+    : '{'! declaration* '}'!
     ;
 
 aliasDeclaration
