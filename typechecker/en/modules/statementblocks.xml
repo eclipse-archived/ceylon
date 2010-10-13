@@ -70,9 +70,13 @@
                 element, or</para>
             </listitem>
             <listitem>
+                <para>it directly occurs in an interface body, and the program element 
+                also occurs in the interface body, or</para>
+            </listitem>
+            <listitem>
                 <para>it directly occurs in the second part of a class body, after the 
                 last statement or declaration of the initializer, and the program element 
-                also directly occurs in the second part of the class body, or</para>
+                also occurs in the second part of the class body, or</para>
             </listitem>
             <listitem>
                 <para>it is a declaration imported by the compilation unit containing 
@@ -174,10 +178,12 @@
             <literal>abstract</literal>, <literal>default</literal>, or 
             <literal>override</literal>.</para>
             
-            <para>Classes bodies also contain declarations. Unlike a declaration nested inside
-            a block, a declaration directly contained in the body of a class may declare a
-            visibility modifier, thus making the member accessible outside the body of the 
-            class.</para>
+            <para>Class and interface bodies also contain declarations. Unlike a declaration 
+            nested inside a block, a declaration directly contained in the body of a class 
+            may declare a visibility modifier, thus making the member accessible outside the 
+            body of the class. similarly, a declaration contained in the body of an interface
+            inherits the visibility modifier of the interface, making the member accessible 
+            outside the body of the interface.</para>
             
             <para>The body of a nested class, method, or attribute declaration may invoke, 
             evaluate, or assign any class, method, or attribute whose declaration is in scope 
@@ -282,11 +288,11 @@ String result = middle.string;</programlisting>
         explicitly specifying the receiver, or by specifying a self reference 
         <literal>this</literal> as the receiver.</para>
 
-        <para>The initializer of a member class, or the body of a member of a member class 
-        may invoke, evaluate or assign members of the current instance of the containing 
-        class or interface&mdash;the parent instance of the instance being instantiated
-        or invoked&mdash;without explicitly specifying the receiver, or by specifying an 
-        outer instance reference <literal>outer</literal> as the receiver.</para>
+        <para>The initializer of a member class, or the body of a member of a member class
+        or nested interface may invoke, evaluate or assign members of the current instance 
+        of the containing class or interface&mdash;the parent instance of the instance being 
+        instantiated or invoked&mdash;without explicitly specifying the receiver, or by 
+        specifying an outer instance reference <literal>outer</literal> as the receiver.</para>
 
         <para>A toplevel method or attribute body may not refer to a self reference or outer 
         instance reference, since there is no current instance.</para>

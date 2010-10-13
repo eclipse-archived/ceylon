@@ -196,8 +196,9 @@ Body?</programlisting>
     <section id="interfaces">
         <title>Interfaces</title>
         
-        <para>An <emphasis>interface</emphasis> is a type schema. Interfaces do not 
-        specify the implementation of their members and may not be directly instantiated.</para>
+        <para>An <emphasis>interface</emphasis> is a type schema, together with 
+        implementation details for some members of the type. Interfaces may not be 
+        directly instantiated.</para>
         
         <programlisting>Interface :=
 Annotation*
@@ -214,27 +215,39 @@ InterfaceBody</programlisting>
         
         <!--<section id="interfacebodies">
             <title>Interface bodies</title>-->
+            
+        <para>Unlike the body of a class, method, or attribute, the body of an interface
+        is not executable, and does not directly contain procedural code.</para>
 
         <para>The body of an interface contains:</para>
         
         <itemizedlist>
             <listitem>
-                <para>member (abstract method, abstract attribute, and member class) 
-                declarations, and</para>
+                <para>member (method, attribute, and member class) declarations, and</para>
             </listitem>
             <listitem>
                 <para>nested interface declarations.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>InterfaceBody := "{" AbstractDeclaration* "}"</programlisting>
+        <programlisting>InterfaceBody := "{" Declaration* "}"</programlisting>
         
-        <programlisting>AbstractDeclaration := AbstractMethod | AbstractAttribute | Class | Interface</programlisting>
-
-        <para>Interface method and attribute declarations may not specify implementation.</para>
+        <para>An interface may declare <literal>abstract</literal> methods or attributes 
+        and non-<literal>abstract</literal> methods, attribute getters, and attribute 
+        setters. An interface may not declare a simple attribute.</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
-    Comparison compare(T other);
+    
+    abstract Comparison compare(T other);
+    
+    Boolean greaterThan(T other) {
+        return compare(other)==larger
+    }
+    
+    Boolean lessThan(T other) {
+        return compare(other)==smaller
+    }
+    
 }</programlisting>
 
         <!-- 
@@ -258,10 +271,10 @@ InterfaceBody</programlisting>
         <comment><para>TODO: are member classes of interfaces required to be <literal>abstract</literal>?
         What about the diamond inheritance problem? I think the solution is just to prevent 
         overriding of member classes by interfaces.</para></comment>
-        -->
-        
+
         <comment><para>TODO: fix the diamond inheritance problem that affects classes
         defined by interfaces.</para></comment>
+        -->
         
         <comment><para>TODO: if methods of interfaces can define defaulted parameters,
         precisely how do we implement that?</para></comment>
@@ -271,7 +284,8 @@ InterfaceBody</programlisting>
             
             <para>Interface members inherit the visibility modifier of the interface.</para>
         
-            <comment><para>TODO: Refine this. Consider block-local interface declarations.</para></comment>
+            <comment><para>TODO: Is this still the right thing to say? Or should we just
+            use member-level visibility modifiers like for classes?</para></comment>
             
         </section>
         
@@ -313,11 +327,15 @@ InterfaceBody</programlisting>
             </para-->
         
             <para>An interface inherits all members (methods, attributes and member types) 
-            of every supertype.</para>
-        
+            of every supertype, except for members overridden by the interface or by some 
+            supertype of the interface.</para>
+            
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
         
+            <para>An interface may not inherit two non-<literal>abstract</literal> members
+            of different supertypes that both override the same member of a third supertype.</para>
+            
             <!--
             <para>and the above declaration is equivalent to the following 
             Java declaration: 
@@ -329,6 +347,10 @@ InterfaceBody</programlisting>
 }</programlisting>
             -->
             
+             <para>An interface that extends a nested interface must be a member of the type 
+             that declares the nested interface or of a subtype of the type that declares the 
+             nested interface.</para>
+         
         </section>
         
     <section id="interfaceswithcases">
@@ -657,18 +679,18 @@ public class Person { ... }</programlisting>
     <section id="declarationsection">
         <title>Declaration section</title>
         
-        <para>The remainder of the body of the class consists purely of declarations. <!--including
-        <literal>abstract</literal> and <literal>default</literal> methods and attributes. --> It 
-        may not contain:</para>
+        <para>The remainder of the body of the class consists purely of declarations, similar 
+        to the body of an interface. <!--including <literal>abstract</literal> and 
+        <literal>default</literal> methods and attributes. --> It may not contain:</para>
         
         <itemizedlist>
             <listitem>
                 <para>a statement or control structure, unless it is nested inside a method,
-                attribute, or member class declaration,</para>
+                attribute, member class, or nested interface declaration,</para>
             </listitem>
             <listitem>
                 <para>a declaration with a specifier or initializer, unless it is nested inside 
-                a method, attribute, or member class declaration, or</para>
+                a method, attribute, member class, or nested interface declaration, or</para>
             </listitem>
             <listitem>
                 <para>a specification or initialization statement for a member of the instance 
@@ -718,7 +740,8 @@ public class Person { ... }</programlisting>
                 <para>a toplevel class, or</para>
             </listitem>
             <listitem>
-                <para>a member class of an <literal>abstract</literal> class.</para>
+                <para>a member class of an <literal>abstract</literal> class or
+                interface.</para>
             </listitem>
         </itemizedlist>
         
@@ -765,9 +788,7 @@ public class Person { ... }</programlisting>
         <section id="classinheritance">
              <title>Class inheritance</title>
         
-        <para>
-        A class may extend another class, and implement any number of interfaces.
-        </para>
+        <para>A class may extend another class, and implement any number of interfaces.</para>
         
         <programlisting>public mutable class Customer(Name name, Organization? org = null) 
         extends Person(name, org) { 
@@ -779,27 +800,27 @@ public class Person { ... }</programlisting>
     ... 
 }</programlisting>
         
-        <para>
-        The types listed after the <literal>satisfies</literal> keyword are the implemented
-        interfaces. The type specified after the <literal>extends</literal> keyword is a 
-        superclass. A class may not implement the same interface twice (not even with distinct
-        type arguments).
-        </para>
+        <para>The types listed after the <literal>satisfies</literal> keyword are the 
+        implemented interfaces. The type specified after the <literal>extends</literal> 
+        keyword is a superclass. A class may not implement the same interface twice (not 
+        even with distinct type arguments).</para>
         
-        <para>The semantics of class inheritance are exactly the same as Java. A class:</para>
+        <para>A class:</para>
         
         <itemizedlist>
             <listitem>
-                <para>inherits all members (methods, attributes, and member types) of 
-                its superclass, except for members that it <emphasis>overrides</emphasis>,</para>
+                <para>inherits all members (methods, attributes, and member types) of every 
+                supertype, except for members overridden by the class or by some supertype 
+                of the class,</para>
             </listitem>
             <!--listitem>
                 <para>is assignable to any type to which its superclass is assignable,</para>
             </listitem-->
             <listitem>
-                <para>must declare or inherit a member that overrides each member of 
-                every interface it implements directly or indirectly, unless the class 
-                is declared <literal>abstract</literal>, and</para>
+                <para>must declare or inherit a member that overrides each 
+                <literal>abstract</literal> member of every interface it implements directly 
+                or indirectly, unless the class is declared <literal>abstract</literal>, 
+                and</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that overrides each 
@@ -815,10 +836,11 @@ public class Person { ... }</programlisting>
         <para>The schema of the inherited members is formed by substituting type arguments
         specified in the <literal>extends</literal> clause.</para>
         
-        <para>
-        Furthermore, the initializer of the superclass is always executed before the
-        initializer of the subclass whenever the subclass is instantiated.
-        </para>
+        <para>An class may not inherit two non-<literal>abstract</literal> members of 
+        different supertypes that both override the same member of a third supertype.</para>
+            
+        <para>Furthermore, the initializer of the superclass is always executed before the
+        initializer of the subclass whenever the subclass is instantiated.</para>
         
         <para>A subclass must pass values to each superclass initialization parameter in 
         the <literal>extends</literal> clause.</para>
@@ -872,6 +894,13 @@ public class Person { ... }</programlisting>
     ... 
 }</programlisting>
          -->
+         
+         <para>A sublass of a member class must be a member of the type that declares 
+         the member class or of a subtype of the type that declares the member class. 
+         A class that implements a member interface must be a member of the type that 
+         declares the member interface or of a subtype of the type that declares the 
+         member interface.</para>
+         
         </section>
        
         <section id="overloadedclasses">
@@ -1281,11 +1310,14 @@ public choice Boolean of true, false;</programlisting>
             the interface type itself is considered assignable to <literal>lang.Object</literal>.
             </para-->
         
-            <para>An union inherits all members (methods, attributes and member types) 
+            <para>A union inherits all members (methods, attributes and member types) 
             of every supertype.</para>
         
             <para>The schema of the inherited members is formed by substituting type 
             arguments specified in the <literal>satisfies</literal> clause.</para>
+            
+            <para>A union may not inherit two non-<literal>abstract</literal> members of 
+            different supertypes that both override the same member of a third supertype.</para>
             
         <!-- <programlisting>public interface TransactionPropagation {
     void propagate(Transaction tx);
@@ -1734,7 +1766,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </section>
         
        <section id="abstractmethods">
-            <title>Interface methods and abstract methods</title>
+            <title>Abstract methods</title>
             
             <para>If there is no method implementation in a method declaration, then
             either:</para>
@@ -1745,7 +1777,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     the body in the body containing the method declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the method must be a member of an interface, or</para>
+                    <para>the method must be a member of an interface, and the method
+                    must be annotated <literal>abstract</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>the method must be a member of a class and both the method 
@@ -1754,18 +1787,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist> 
             
-            <para>A class may not specify an implementation for a method annotated 
-            <literal>abstract</literal>.</para>
+            <para>A method annotated <literal>abstract</literal> may not specify an
+            implementation (a block, specifier, or named argument list).</para>
         
             <programlisting>public abstract U? get(V key);</programlisting>
         
-            <para>Methods declared by interfaces never specify an implementation:</para>
-        
-            <programlisting>AbstractMethod := MethodHeader ";"</programlisting>
-            
-            <para>The <literal>abstract</literal> annotation is not required for interface
-            methods.</para>
-            
             <para>A toplevel method may not be annotated <literal>abstract</literal> and 
             must have a method implementation (a block of code, or a reference to another 
             method).</para>
@@ -1779,14 +1805,14 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <itemizedlist>
             <listitem>
-                <para>A class or interface may override any interface method, <literal>abstract</literal> 
-                method, or <literal>default</literal> method it inherits, unless it inherits 
+                <para>A class or interface may override any <literal>abstract</literal> 
+                method or <literal>default</literal> method it inherits, unless it inherits 
                 a non-<literal>abstract</literal> non-<literal>default</literal> method that 
                 overrides the method.</para>
             </listitem>
             <listitem>
-                <para>A non-<literal>abstract</literal> class must override every interface 
-                method, <literal>abstract</literal> method, or <literal>fixed</literal> 
+                <para>A non-<literal>abstract</literal> class must override every 
+                <literal>abstract</literal> method or <literal>fixed</literal> 
                 method it inherits, unless it inherits a non-<literal>abstract</literal>
                 non-<literal>fixed</literal> method that overrides the method.</para>
             </listitem>
@@ -1823,8 +1849,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>If a method is annotated <literal>override</literal>, it must 
             override some method defined by a supertype, and the method it overrides 
-            must be either an interface method, <literal>abstract</literal>, 
-            <literal>default</literal>, or <literal>fixed</literal>.</para>
+            must be either <literal>abstract</literal>, <literal>default</literal>, 
+            or <literal>fixed</literal>.</para>
             
             <para>A method may not, directly or indirectly, override two different
             methods not themselves annotated <literal>override</literal>.</para>
@@ -1846,12 +1872,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     override Float squareRoot(Float x) { ... }
 }</programlisting>
             
-            <para>For interface methods or <literal>abstract</literal> methods, a 
-            special shortcut form of overriding is permitted. A subclass initializer 
-            may simply specify an instance of <literal>Callable</literal> as the 
-            implementation of the method declared by the supertype. No formal parameter 
-            list, return type declaration, or <literal>override</literal> annotation is 
-            necessary.</para>
+            <para>For <literal>abstract</literal> methods, a special shortcut form of 
+            overriding is permitted. A subclass initializer may simply specify an 
+            instance of <literal>Callable</literal> as the implementation of the method 
+            declared by the supertype. No formal parameter list, return type declaration, 
+            or <literal>override</literal> annotation is necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
@@ -2216,11 +2241,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         </section>
         
         <section id="abstractattributes">
-            <title>Interface attributes and abstract attributes</title>
+            <title>Abstract attributes</title>
             
-            <para>If there is no specifier, initializer or getter implementation, then
+            <para>If there is no specifier, initializer, or getter implementation, then
             either:</para>
-        
             
             <itemizedlist>
                 <listitem>
@@ -2228,7 +2252,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     later in the body containing the attribute declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the attribute must be a member of an interface, or</para>
+                    <para>the attribute must be a member of an interface, and the 
+                    attribute must be annotated <literal>abstract</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>the attribute must be a member of a class and both the attribute 
@@ -2237,19 +2262,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 </listitem>
             </itemizedlist> 
             
-            <para>A class may not specify an implementation for an attribute annotated 
-            <literal>abstract</literal>.</para>
+            <para>An attribute annotated <literal>abstract</literal> may not specify an
+            implementation (a specifier, initializer, or getter implementation).</para>
         
             <programlisting>package abstract mutable String firstName;</programlisting>
 
-            <para>Attributes declared by interfaces never specify an initalizer, getter 
-            or setter:</para>
-        
-            <programlisting>AbstractAttribute := AttributeHeader ";"</programlisting>
-                        
-            <para>The <literal>abstract</literal> annotation is not required for interface
-            attributes.</para>
-            
             <para>A toplevel attribute declaration may not be annotated <literal>abstract</literal> 
             and must have a specifier or getter implementation.</para>
 
@@ -2263,15 +2280,15 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <itemizedlist>
             <listitem>
-                <para>A class or interface may override any interface attribute, <literal>abstract</literal> 
-                attribute, or <literal>default</literal> attribute it inherits, unless it inherits 
+                <para>A class or interface may override any <literal>abstract</literal> 
+                attribute or <literal>default</literal> attribute it inherits, unless it inherits 
                 a non-<literal>abstract</literal> non-<literal>default</literal> attribute that 
                 overrides the method.</para>
             </listitem>
             <listitem>
-                <para>A non-<literal>abstract</literal> class must override every interface 
-                method, <literal>abstract</literal> attribute, or <literal>fixed</literal> 
-                attribute it inherits, unless it inherits a non-<literal>abstract</literal>
+                <para>A non-<literal>abstract</literal> class must override every 
+                <literal>abstract</literal> attribute, or <literal>fixed</literal> attribute 
+                it inherits, unless it inherits a non-<literal>abstract</literal>
                 non-<literal>fixed</literal> attribute that overrides the attribute.</para>
             </listitem>
             </itemizedlist>           
@@ -2316,8 +2333,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
             <para>If an attribute is annotated <literal>override</literal>, it must 
             override some attribute defined by a supertype, and the attribute it 
-            overrides must be either an interface attribute, <literal>abstract</literal>, 
-            <literal>default</literal>, or <literal>fixed</literal>.</para>
+            overrides must be either <literal>abstract</literal>, <literal>default</literal>, 
+            or <literal>fixed</literal>.</para>
             
             <para>A method may not, directly or indirectly, override two different
             methods not themselves annotated <literal>override</literal>.</para>
@@ -2347,11 +2364,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     override Float pi { ... }
 }</programlisting>
             
-            <para>For interface attributes or <literal>abstract</literal> attributes, 
-            a special shortcut form of overriding is permitted. A subclass initializer 
-            may simply specify or assign a value to the attribute declared by the 
-            superclass. No type declaration or <literal>override</literal> annotation 
-            is necessary.</para>
+            <para>For <literal>abstract</literal> attributes, a special shortcut form 
+            of overriding is permitted. A subclass initializer may simply specify or 
+            assign a value to the attribute declared by the superclass. No type 
+            declaration or <literal>override</literal> annotation is necessary.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {

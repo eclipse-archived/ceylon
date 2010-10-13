@@ -463,12 +463,14 @@ if you prefer.";</programlisting>
         declaration that overrides the method on the current class or any subclass 
         of the current class. Invocation of <literal>fixed</literal> members upon 
         <literal>super</literal> is not allowed. The <literal>super</literal> 
-        reference is not assignable to any type.</para>
+        reference is not assignable to any type. There is no <literal>super</literal>
+        reference in an interface member body.</para>
         
         <para>The keyword <literal>this</literal> refers to the current instance, 
-        and is assignable to both the type of the current class (the class in which 
-        the expression appears), and to the special type <literal>subtype</literal>, 
-        which represents the concrete type of the current instance.</para>
+        and is assignable to both the type of the current class or interface (the 
+        class or interface in which the expression appears), and to the special 
+        type <literal>subtype</literal>, which represents the concrete type of the 
+        current instance.</para>
         
         <para>In a toplevel extension method or class, <literal>this</literal> is 
         also assignable to the extended type, and when a member of the extended type
@@ -562,8 +564,8 @@ if you prefer.";</programlisting>
         the declaration of the receiver expression type (which must be a member 
         class). If no receiver expression is specified, the type of the outer 
         instance reference is the type that contains the declaration of the 
-        current class (the class in which the expression appears, which must be a 
-        member class).</para>
+        current class (the class in which the expression appears, which must be 
+        a member class).</para>
         
         <programlisting>Node node = tree.Node().Node();
 assert() that (tree &equals; node.outer.outer);</programlisting>
@@ -1667,10 +1669,10 @@ except (SomethingElseWrong sew) {
                     </listitem>
                     <listitem>
                         <para>replacing each occurrence of any type parameter of the method or class 
-                        in the signature with the explicitly specified type argument, if type arguments 
-                        were specified, or with the first declared upper bound of the type parameter, 
-                        or <literal>ceylon.language.Void</literal> if the type parameter has no declared 
-                        upper bound.</para>
+                        in the signature with the explicitly specified type argument, if type 
+                        arguments were specified, or with the first declared upper bound of the type 
+                        parameter, or <literal>ceylon.language.Void</literal> if the type parameter 
+                        has no declared upper bound.</para>
                     </listitem>
                 </itemizedlist>
         
