@@ -2,9 +2,6 @@ package com.redhat.ceylon.compiler.codegen;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -998,6 +995,9 @@ public class Gen {
 
         if ((decl.flags & CeylonTree.MUTABLE) != 0) {
     		type = mutableType(type);
+    	}
+        if ((decl.flags & CeylonTree.OPTIONAL) != 0) {
+    		type = optionalType(type);
     	}
     	
         int modifiers = FINAL;

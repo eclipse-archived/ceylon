@@ -1913,10 +1913,6 @@ public class Lower extends TreeTranslator {
         if (tree == null) {
             return null;
         } else {
-        	if (tree.toString().contains("Mutable")) {
-        		System.err.println("Feck");
-        	}
-
         	make_at(tree.pos());
             T result = super.translate(tree);
             if (endPositions != null && result != tree) {
@@ -2617,18 +2613,6 @@ public class Lower extends TreeTranslator {
                 result = app;
                 return;
             }
-
-            if (Context.isCeylon() && meth.name.toString().equals("$internalErasedExists")) {
-            	if (tree.meth.getTag() == JCTree.SELECT) {
-            		JCExpression selected = ((JCFieldAccess) tree.meth).selected;
-            		Type t = ((JCFieldAccess) tree.meth).type.baseType();
-            		if (tree.args.length() == 0) {
-            			result = selected;
-            			return;
-            		}
-                } 
-            }
-            
         }
         result = tree;
     }
@@ -2669,55 +2653,9 @@ public class Lower extends TreeTranslator {
         return result.toList();
     }
 
-    /** Convert using a Ceylon extension if needed */
-    JCExpression ceylonExtensionIfNeeded(JCExpression tree, Type dstType) {
-        Type srcType = tree.type;
-        if (srcType.isPrimitive())
-            return tree;
-
-        // Handle conversions to and from Mutable.
-    	// We know that srcType != dstType, and the type parameters
-    	// have been checked earlier in the compilation.
-        // First we strip Mutable from the source by applying get().
-  
-        // Mutable -> immutable conversion
-        if (srcType.tsym.toString().equals("ceylon.Mutable")&&
-        		! dstType.tsym.toString().equals("ceylon.Mutable")) {
-        	// Immutable -> mutable conversion
-        	Scope scope = ((ClassSymbol) srcType.tsym).members();
-        	Scope.Entry entry = scope.lookup(names.fromString("get"));
-        	Symbol sym = entry.sym;
-        	MethodSymbol msym = (MethodSymbol) sym;
-        	tree = make.Apply(null, 
-        			make.Select(tree, msym), List.<JCExpression>nil()).setType(dstType);
-        	srcType = dstType;
-        }
-        
-        Symbol methodSym = types.getCeylonExtension(srcType, dstType);
-        if (methodSym != null) {
-            make_at(tree.pos());
-            tree = make.App(make.Select(tree, methodSym));
-        } 
-        
-    	// Immutable -> mutable conversion
-        if (dstType.tsym.toString().equals("ceylon.Mutable") &&
-        		! srcType.tsym.toString().equals("ceylon.Mutable")) {
-        	Scope scope = ((ClassSymbol) dstType.tsym).members();
-        	Scope.Entry entry = scope.lookup(names.fromString("of"));
-        	Symbol sym = entry.sym;
-        	MethodSymbol msym = (MethodSymbol) sym;
-        	tree = make.Apply(null, make.Select(make.Type(dstType), sym),
-        			List.of(tree)).setType(dstType);
-        }
-        
-        return tree;
-    }
-
     /** Expand a boxing or unboxing conversion if needed. */
     @SuppressWarnings("unchecked") // XXX unchecked
     <T extends JCTree> T boxIfNeeded(T tree, Type type) {
-    	if (Context.isCeylon())
-    		tree = (T)ceylonExtensionIfNeeded((JCExpression)tree, type);
         boolean havePrimitive = tree.type.isPrimitive();
         if (havePrimitive == type.isPrimitive())
             return tree;

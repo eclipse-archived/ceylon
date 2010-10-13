@@ -106,18 +106,6 @@ public class TransTypes extends TreeTranslator {
         if (!types.isSameType(tree.type, target)) {
             if (!resolve.isAccessible(env, target.tsym))
                 resolve.logAccessError(env, tree, target);
-            
-            if (Context.isCeylon() && target.baseType().tag == CLASS) {
-            	if (target.tsym.toString().equals("ceylon.Mutable")) {
-            		// We already know that the types are compatible,
-            		// so the type parameter of the Mutable type must
-            		// be compatible with the type of expression.
-
-                    make.pos = oldpos;
-            		return tree;
-            	}
-            } 
-            
             tree = make.TypeCast(make.Type(target), tree).setType(target);
         }
         make.pos = oldpos;
@@ -135,9 +123,6 @@ public class TransTypes extends TreeTranslator {
      *  @param target  The target type.
      */
     JCExpression coerce(JCExpression tree, Type target) {
-    	if (target.toString().contains("Mutable") || tree.type.toString().contains("Mutable")) {
-    		System.err.println("Cock");
-    	}
         Type btarget = target.baseType();
         if (tree.type.isPrimitive() == target.isPrimitive()) {
             return types.isAssignable(tree.type, btarget, Warner.noWarnings)
