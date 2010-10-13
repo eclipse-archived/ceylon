@@ -6,10 +6,12 @@
     define any primitive or compound types that cannot, in principle, be expressed within 
     the language itself.</para>
     
-    <para>A class is a recipe for producing new values, and defines the operations and
-    attributes of the resulting values. Each class declaration defines a type. However, 
-    not all types are classes. It is often advantageous to write generic code that 
-    abstracts the concrete class of a value. This technique is called 
+    <para>A class is a recipe for producing new values, called <emphasis>instances</emphasis>
+    of the class (or simply <emphasis>objects</emphasis>), and defines the operations and 
+    attributes of the resulting values. A class instance may hold references to other 
+    objects, and has an identity distinct from these references. Each class declaration 
+    defines a type. However, not all types are classes. It is often advantageous to write 
+    generic code that abstracts the concrete class of a value. This technique is called 
     <emphasis>polymorphism</emphasis>. Ceylon supports two different kinds of polymorphism:</para>
     
     <itemizedlist>
@@ -35,9 +37,11 @@
     
     <itemizedlist>
         <listitem>
-            <para>An <emphasis>interface</emphasis> declares a set of operations and
-            attributes that must be provided by every class that <emphasis>implements</emphasis>
-            the interface. A class may implement many interfaces.</para>
+            <para>An <emphasis>interface</emphasis> is an abstract type schema that cannot
+            itself be directly instantiated. An interface may define concrete members, but
+            these members may not hold references to other objects. A class may 
+            <emphasis>implement</emphasis> one or more interfaces. An instance of a class 
+            that implements an interface is also considered an instance of the interface.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>union</emphasis> is a type whose value may be a value of 
