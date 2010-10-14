@@ -344,7 +344,10 @@ InterfaceBody</programlisting>
             specified in the <literal>satisfies</literal> clause.</para>
         
             <para>An interface may not inherit two non-<literal>abstract</literal> members
-            of different supertypes that both override the same member of a third supertype.</para>
+            of different supertypes that both override the same member of a third supertype.
+            If two supertypes both declare non-<literal>abstract</literal> members that
+            override the same member of a third supertype, the interface must also override
+            the member.</para>
             
             <!--
             <para>and the above declaration is equivalent to the following 
@@ -852,7 +855,10 @@ public class Person { ... }</programlisting>
         specified in the <literal>extends</literal> clause.</para>
         
         <para>An class may not inherit two non-<literal>abstract</literal> members of 
-        different supertypes that both override the same member of a third supertype.</para>
+        different supertypes that both override the same member of a third supertype.
+        If two supertypes both declare non-<literal>abstract</literal> members that
+        override the same member of a third supertype, the class must also override
+        the member.</para>
             
         <para>Furthermore, the initializer of the superclass is always executed before the
         initializer of the subclass whenever the subclass is instantiated.</para>
