@@ -274,7 +274,9 @@
         and <literal>{}</literal>.</para>
         
         <programlisting><![CDATA[public interface Callable<out R, P...> {
-    public R call(P... args);
+        
+    R call(P... args);
+    
 }]]></programlisting>
     
         <para>An interceptor may be removed by invoking the returned method reference:</para>
@@ -424,7 +426,7 @@ public abstract class Boolean()
     doc "Determine if the given value matches
          this case, returning |true| iff the
          value matches."
-    public Boolean matches(X value);
+    Boolean matches(X value);
     
 }]]></programlisting>
 
@@ -630,14 +632,16 @@ public object null extends Void() satisfies Matcher<Object?> {
         <programlisting><![CDATA[public interface Usable {
 
     doc "Called before entry into a |try| block."
-    public void begin();
+    void begin();
     
     doc "Called before normal exit from a |try| block."
-    public void end();
+    void end();
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    public void end(Exception e);
+    void end(Exception e) {
+        end();
+    }
     
 }]]></programlisting>
        
@@ -669,7 +673,7 @@ catch (Exception e) {
         
     doc "The nonempty operator. Determine 
          if the container is empty."
-    public Boolean empty;
+    Boolean empty;
     
 }]]></programlisting>
     
@@ -680,10 +684,17 @@ catch (Exception e) {
         
         <programlisting><![CDATA[public interface Category {
     
+    doc "Determine if the given object belongs to the category.
+         Return |true| iff the given object belongs to the 
+         category."
+    Boolean contains(Object object);
+
     doc "Determine if the given objects belong to the category.
          Return |true| iff all the given objects belong to the 
          category."
-    public Boolean contains(Object... objects);
+    Boolean contains(Object... objects) {
+        return forAll(Object object in objects) every (contains(object))
+    }
 
 }]]></programlisting>
         
@@ -773,7 +784,7 @@ catch (Exception e) {
     
     doc "A sequence of objects belonging
          to the container."
-    public Iterator<X> iterator();
+    Iterator<X> iterator();
     
 }]]></programlisting>
         
@@ -781,8 +792,8 @@ catch (Exception e) {
         that produces a theoretically unbounded sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
-    public X? head;
-    public Iterator<X> tail;
+    X? head;
+    Iterator<X> tail;
 }]]></programlisting>
         
         <para>An <literal>Iterator</literal> is used according to the
@@ -794,12 +805,12 @@ while (exists local value = iter.head) {
     iter.=tail;
 }]]></programlisting>
     
-    <para>The following extension allows <literal>Iterable</literal> objects
+    <para>The following interface allows <literal>Iterable</literal> objects
     to be used with the <literal>in</literal> operator.</para>
     
-    <programlisting><![CDATA[public extension class IterableCategory<T>(Iterable<T> this) 
-        satisfies Category
-        given T satisfies Equals<T> {
+    <programlisting><![CDATA[public interface FiniteCategory<T>
+        satisfies Iterable<T>, Category, Container
+        given T satisfies Object, Equals<T> {
         
     override Boolean contains(Object... objects) {
         for (Object obj in objects) {
@@ -815,6 +826,10 @@ while (exists local value = iter.head) {
         fail {
             return true
         }
+    }
+    
+    override Boolean empty {
+        return !(iterator().head exists)
     }
 
 }]]></programlisting>
@@ -839,8 +854,8 @@ while (exists local value = iter.head) {
         <programlisting><![CDATA[public interface Indexed<out X, I> 
         given I satisfies Ordinal {
     
-    public I firstIndex;
-    public Gettable<X>? indexedValue(I index);
+    I firstIndex;
+    Gettable<X>? indexedValue(I index);
     
 }]]></programlisting>
         <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
@@ -908,21 +923,14 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    public Gettable<V?> value(U key);
+    Gettable<V?> value(U key);
     
-}]]></programlisting>
-
-        <para>A decorator allows retrieval of lists and sets of values.</para>
-
-        <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> this)
-        given U satisfies Object, Equals<U> {
-
     doc "Binary sequenced lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    public V[] values(U... keys) {
+    V[] values(U... keys) {
         return from (U key in keys) select (this[key])
     }
     
@@ -931,14 +939,14 @@ while (exists local value = indexed.indexedValue(i)) {
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    public Iterable<V> values(Iterable<U> keys) {
+    Iterable<V> values(Iterable<U> keys) {
         return from (U key in keys) select (this[key])
     }
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
          given keys."
-    public Boolean defines(U... keys) {
+    Boolean defines(U... keys) {
         return forAll (U key in keys) every (this[key] exists)
     }
     
@@ -990,7 +998,8 @@ while (exists local value = indexed.indexedValue(i)) {
         <literal>Correspondence</literal> interface:</para>
         
         <programlisting><![CDATA[public extension Correspondence<U,V> newCorrespondence<U,V>(Type<Correspondence<U,V>> this)
-        (Entry<U,V>... elements) {
+        (Entry<U,V>... elements) 
+        given U satisfies Object, Equals<U> {
     return HashMap(elements)
 }]]></programlisting>
         
@@ -1003,24 +1012,17 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public mutable interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> 
-        given U satisfies Object, Equals<U> {
-    
-    override Settable<V?> value(U key);
-    
-}]]></programlisting>
-
-        <para>A decorator allows addition of multiple <literal>Entry</literal>s.</para>
-
-        <programlisting><![CDATA[public extension class OpenCorrespondences<in U, V>(OpenCorrespondence<U, V> this) 
         given U satisfies Object, Equals<U> 
         given V satisfies Object, Equals<V> {
-
+    
+    abstract override Settable<V?> value(U key);
+    
     doc "Add the given entries, overriding any definitions that 
          already exist."
     throws (UndefinedKeyException
             -> "if a value can not be defined for one of the 
                 given keys")
-    public void define(Entry<U, V>... definitions) {
+    public default void define(Entry<U, V>... definitions) {
         for (U key->V value in definitions) {
             this[key] := value;
         }
@@ -1030,7 +1032,7 @@ while (exists local value = indexed.indexedValue(i)) {
          for the key, or |null| if there was no value defined."
     throws (UndefinedKeyException
             -> "if a value can not be defined for the given key")
-    public V? define(U key -> V value) {
+    public default V? define(U key -> V value) {
         Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;
@@ -1063,7 +1065,7 @@ while (exists local value = indexed.indexedValue(i)) {
          |x<=>y == Comparison.equal|, the constraint that 
          if |x>y| then |y<x|, and the constraint that if 
          |x>y| and |y>z| then |x>z|."
-    public Comparison compare(T other);
+    Comparison compare(T other);
     
 }]]></programlisting>
         
@@ -1131,12 +1133,12 @@ public abstract class Comparison()
     doc "The unary |++| operator. The successor of this instance."
     throws (OutOfRangeException
             -> "if this is the maximum value")
-    public subtype successor;
+    subtype successor;
     
     doc "The unary |--| operator. The predecessor of this instance."
     throws (OutOfRangeException
             -> "if this is the minimum value")
-    public subtype predecessor;
+    subtype predecessor;
     
 }]]></programlisting>
 
@@ -1188,20 +1190,12 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         inherited from <literal>Correspondence</literal>:</para>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
-        satisfies Correspondence<Natural, X> {
+        satisfies Correspondence<Natural, X>, Iterable<X>, Container {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
-    public Natural? lastIndex;
+    Natural? lastIndex;
     
-}]]></programlisting>
-
-        <para>Any <literal>Sequence</literal> is <literal>Iterable</literal>
-        and is a <literal>Container</literal>, according to the following 
-        decorator:</para>
-        
-        <programlisting><![CDATA[public extension class SequenceIterable<X>(X[] this) 
-        satisfies Iterable<X>, Container {
     override Iterator<X> iterator() {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
@@ -1218,9 +1212,34 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
             return SequenceIterator(0)
         }
     }
+    
     override Boolean empty {
         return !(this.lastIndex exists)
     }
+    
+    doc "The first element of the sequence, or
+         |null| if the sequence has no elements."
+    X? first {
+        return this[0]
+    }
+    
+    doc "The rest of the sequence, after removing 
+         the first element."
+    X[] rest {
+        return this[1...]
+    }
+
+    doc "The last element of the sequence, or
+         |null| if the sequence has no elements."
+    X? last {
+        if (exists Natural index = sequence.lastIndex) {
+            return this[index]
+        }
+        else {
+            return null
+        }
+    }
+   
 }]]></programlisting>
         
         <para>The following extension provides access to the indices 
@@ -1228,6 +1247,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[] this)
         satisfies Iterable<Entry<Natural,X>> {
+        
     override Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
                 satisfies Iterator<Entry<Natural,X>> {
@@ -1245,6 +1265,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         }
         return EntryIterator(0)
     }
+    
 }]]></programlisting>
 
         <comment><para>TODO: or should we just directly make <literal>X[]</literal> 
@@ -1364,36 +1385,6 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     
 }]]></programlisting>
         
-        <para>A helper class decorates <literal>Sequence</literal> with 
-        some convenience attributes:</para>
-
-        <programlisting><![CDATA[public extension class Sequences<out X>(X[] this) {
-
-    doc "The first element of the sequence, or
-         |null| if the sequence has no elements."
-    public X? first {
-        return this[0]
-    }
-    
-    doc "The rest of the sequence, after removing 
-         the first element."
-    public X[] rest {
-        return this[1...]
-    }
-
-    doc "The last element of the sequence, or
-         |null| if the sequence has no elements."
-    public X? last {
-        if (exists Natural index = sequence.lastIndex) {
-            return this[index]
-        }
-        else {
-            return null
-        }
-    }
-   
-}]]></programlisting>
-
         <para>There is a mutable subtype which allows assignment to
         an index.</para>
         
@@ -1405,8 +1396,10 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, #n>
         satisfies X[] {
-    public Gettable<X> value(Bounded<#n> index);
+        
+    Gettable<X> value(Bounded<#n> index);
     override Bounded<#n>? lastIndex;
+    
 }]]></programlisting>
 
         <para>The following extension provides access to the indices 
@@ -1415,6 +1408,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[n] this)
         satisfies Iterable<Entry<Bounded<#n>,X>> {
+        
     override Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
                 satisfies Iterator<Entry<Bounded<#n>,X>> {
@@ -1432,6 +1426,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         }
         return EntryIterator(0)
     }
+    
 }]]></programlisting>
 
         <!--
@@ -1859,33 +1854,33 @@ while (i<=max) {
     
     doc "Determine if the number represents
          an integer value"
-    public Boolean integral;
+    Boolean integral;
     
     doc "Determine if the number is positive"
-    public Boolean positive;
+    Boolean positive;
     
     doc "Determine if the number is negative"    
-    public Boolean negative;
+    Boolean negative;
 
     doc "Determine if the number is zero"
-    public Boolean zero;
+    Boolean zero;
     
     doc "Determine if the number is one"
-    public Boolean unit;
+    Boolean unit;
     
     doc "The number, represented as a |Decimal|"
-    public Decimal decimal;
+    Decimal decimal;
 
     doc "The number, represented as a |Float|"
     throws (FloatOverflowException
             -> "if the number is too large to be
                 represented as a |Float|")
-    public Float float;
+    Float float;
     
     doc "The number, represented as an |Whole|,
          after truncation of any fractional 
          part"
-    public Whole whole;
+    Whole whole;
     
     doc "The number, represented as an |Integer|,
          after truncation of any fractional 
@@ -1893,31 +1888,31 @@ while (i<=max) {
     throws (IntegerOverflowException
             -> "if the number is too large to be
                 represented as an |Integer|")
-    public Integer integer;
+    Integer integer;
     
     doc "The number, represented as a |Natural|,
          after truncation of any fractional 
          part"
     throws (NegativeNumberException
             -> "if the number is negative")
-    public Natural natural;
+    Natural natural;
     
     doc "The magnitude of the number"
-    public subtype magnitude;
+    subtype magnitude;
     
     doc "1 if the number is positive, -1 if it
          is negative, or 0 if it is zero."
-    public subtype sign;
+    subtype sign;
     
     doc "The fractional part of the number,
          after truncation of the integral
          part"
-    public subtype fractionalPart;
+    subtype fractionalPart;
     
     doc "The integral value of the number 
          after truncation of the fractional
          part"
-    public subtype wholePart;
+    subtype wholePart;
 
 }]]></programlisting>
 
@@ -1936,19 +1931,19 @@ while (i<=max) {
         given N satisfies Numeric<N> {
 
     doc "The binary |+| operator"
-    public N plus(N number);
+    N plus(N number);
 
     doc "The binary |-| operator"
-    public N minus(N number);
+    N minus(N number);
 
     doc "The binary |*| operator"
-    public N times(N number);
+    N times(N number);
 
     doc "The binary |/| operator"
-    public N divided(N number);
+    N divided(N number);
 
     doc "The binary |**| operator"
-    public N power(N number);
+    N power(N number);
     
 }]]></programlisting>
 
@@ -1965,7 +1960,7 @@ while (i<=max) {
         given N satisfies Number {
 
     doc "The binary |%| operator"
-    public N remainder(N number);
+    N remainder(N number);
 
 }]]></programlisting>
 
@@ -1976,7 +1971,7 @@ while (i<=max) {
     given I satisfies Number {
     
     doc "The unary |-| operator"
-    public I inverse;
+    I inverse;
 
 }]]></programlisting>
         
@@ -2131,22 +2126,22 @@ while (i<=max) {
     doc "Slotwise or operator |x | y|. Implementations
          should respect the constraint that 
          |(x|y).slot(z)==(x.slot(z)||y.slot(z))|."
-    public B or(B bits);
+    B or(B bits);
     
     doc "Slotwise and operator |x & y|. Implementations
          should respect the constraint that 
          |(x&y).slot(z)==(x.slot(z)&&y.slot(z))|."
-    public B and(B bits);
+    B and(B bits);
     
     doc "Slotwise xor operator |x ^ y|. Implementations
          should respect the constraint that 
          |(x^y).slot(z)==((x|y).slot(z)&&!(x&y).slot(z))|.""
-    public B xor(B bits);
+    B xor(B bits);
     
     doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
          that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|.""
-    public B complement(B bits);
+    B complement(B bits);
     
 }]]></programlisting>
 
@@ -2164,7 +2159,7 @@ while (i<=max) {
     doc "Slotwise complement operator |~x|. 
          Implementations should respect the constraint 
          that |(~x).slot(z)==!x.slot(z)|."
-    public Bits<#n> complement;
+    Bits<#n> complement;
     
 }]]></programlisting>
 
@@ -2184,7 +2179,8 @@ while (i<=max) {
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
         <literal>String</literal> and <literal>Character[]</literal>?</para></comment>
 
-        <para>Boolean values are transparently converted to and from <literal>Bits&lt;1&gt;</literal>.</para>
+        <para>Boolean values are transparently converted to and from 
+        <literal>Bits&lt;1&gt;</literal>.</para>
 
         <programlisting><![CDATA[public extension class BooleanBit(Boolean this)
         satisfies Bits<1> {

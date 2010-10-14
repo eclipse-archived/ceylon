@@ -238,7 +238,7 @@ InterfaceBody</programlisting>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     
-    abstract Comparison compare(T other);
+    Comparison compare(T other);
     
     Boolean greaterThan(T other) {
         return compare(other)==larger
@@ -279,13 +279,23 @@ InterfaceBody</programlisting>
         <comment><para>TODO: if methods of interfaces can define defaulted parameters,
         precisely how do we implement that?</para></comment>
 
-        <section id="interfacemembervisibility">
-            <title>Interface member visibility</title>
+        <section id="interfacemembermodifiers">
+            <title>Interface member modifiers</title>
             
-            <para>Interface members inherit the visibility modifier of the interface.</para>
+            <para>Every member of an interface is implicitly either <literal>default</literal> 
+            or <literal>abstract</literal>. No member of an interface may be explicitly 
+            annotated <literal>default</literal> or <literal>abstract</literal>.</para>
         
-            <comment><para>TODO: Is this still the right thing to say? Or should we just
-            use member-level visibility modifiers like for classes?</para></comment>
+            <para>Every member of an interface inherits the visibility modifier of the 
+            interface. No member of an interface may explicitly specify a visibilty
+            modifer.</para>
+            
+            <para>An interface member is always visible to all other members of the
+            interface.</para>
+        
+            <para>These rules insure that the "diamond inheritance" problem&mdash;where
+            a type inherits two different concrete declarations of the same 
+            member&mdash;can always be resolved by overriding the member.</para>
             
         </section>
         
@@ -628,9 +638,10 @@ public class Person { ... }</programlisting>
            </listitem>
            -->
            <listitem>
-              <para>They may not invoke or evaluate <literal>abstract</literal> or 
-              <literal>default</literal> members of the instance that is being initialized, 
-              except via the special <literal>super</literal> self reference.</para>
+              <para>They may not invoke or evaluate an <literal>abstract</literal>, 
+              <literal>default</literal>, or <literal>fixed</literal> member of the instance 
+              that is being initialized, except via the special <literal>super</literal> self 
+              reference.</para>
            </listitem>
         </itemizedlist>
         
@@ -709,8 +720,12 @@ public class Person { ... }</programlisting>
         
     </section>
            
-    <section id="classmembervisibility">
-        <title>Class member visibility</title>
+    <section id="classmembermodifiers">
+        <title>Class member modifiers</title>
+        
+        <para>An <literal>abstract</literal>, <literal>default</literal>, or
+        <literal>fixed</literal> member of a class must be explicitly annotated as such.
+        No member may be annotated by more than one of these three annotations.</para>
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
@@ -963,13 +978,13 @@ public class Person { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>A member class annotated <literal>default</literal> may be 
-                overridden by any subtype of the class or interface which declares 
-                the member class.</para>
+                overridden by any class which is a subtype of the class or interface 
+                which declares the member class.</para>
             </listitem>
             <listitem>
                 <para>A member class annotated <literal>abstract</literal> may be 
-                overridden by any subtype of the class or interface which declares 
-                the member class.</para>
+                overridden by any class which is a subtype of the class or interface 
+                which declares the member class.</para>
             </listitem>
             <listitem>
                 <para>A member class annotated <literal>abstract</literal> 
@@ -982,8 +997,11 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A member class of a subtype <emphasis>overrides</emphasis> a member 
-        class of a supertype if the member class:</para>
+        <para>An interface may not override a member class of an interface it
+        extends.</para>
+        
+        <para>A member class of a class <emphasis>overrides</emphasis> a member 
+        class of a supertype if the first member class:</para>
         
         <itemizedlist>
             <listitem>
@@ -1777,8 +1795,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     the body in the body containing the method declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the method must be a member of an interface, and the method
-                    must be annotated <literal>abstract</literal>, or</para>
+                    <para>the method must be a member of an interface, <!--and the method
+                    must be annotated <literal>abstract</literal>,--> or</para>
                 </listitem>
                 <listitem>
                     <para>the method must be a member of a class and both the method 
@@ -1786,6 +1804,10 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <literal>abstract</literal>.</para>
                 </listitem>
             </itemizedlist> 
+            
+            <para>If the method is a member of an interface or is annotated 
+            <literal>abstract</literal>, it is called an <literal>abstract</literal> 
+            method.</para>
             
             <para>A method annotated <literal>abstract</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
@@ -1819,7 +1841,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </itemizedlist>           
             
             <para>A method of a subtype <emphasis>overrides</emphasis> a method of
-            a supertype if the method:</para>
+            a supertype if the first method:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2252,8 +2274,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     later in the body containing the attribute declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the attribute must be a member of an interface, and the 
-                    attribute must be annotated <literal>abstract</literal>, or</para>
+                    <para>the attribute must be a member of an interface, <!--and the 
+                    attribute must be annotated <literal>abstract</literal>,--> or</para>
                 </listitem>
                 <listitem>
                     <para>the attribute must be a member of a class and both the attribute 
@@ -2261,6 +2283,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <literal>abstract</literal>.</para>
                 </listitem>
             </itemizedlist> 
+            
+            <para>If the attribute is a member of an interface or is annotated 
+            <literal>abstract</literal>, it is called an <literal>abstract</literal> 
+            attribute.</para>
             
             <para>An attribute annotated <literal>abstract</literal> may not specify an
             implementation (a specifier, initializer, or getter implementation).</para>
@@ -2283,7 +2309,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <para>A class or interface may override any <literal>abstract</literal> 
                 attribute or <literal>default</literal> attribute it inherits, unless it inherits 
                 a non-<literal>abstract</literal> non-<literal>default</literal> attribute that 
-                overrides the method.</para>
+                overrides the attribute.</para>
             </listitem>
             <listitem>
                 <para>A non-<literal>abstract</literal> class must override every 
@@ -2299,7 +2325,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             getter and setter pair.</para>
             
             <para>An attribute of a subtype <emphasis>overrides</emphasis> an attribute of
-            a supertype if the attribute:</para>
+            a supertype if the first attribute:</para>
             
             <itemizedlist>
                 <listitem>

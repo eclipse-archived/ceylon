@@ -175,8 +175,8 @@
             modifier.</para>
             
             <para>A block may not contain a method or attribute declaration annotated 
-            <literal>abstract</literal>, <literal>default</literal>, or 
-            <literal>override</literal>.</para>
+            <literal>abstract</literal>, <literal>default</literal>, <literal>fixed</literal>, 
+            or <literal>override</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
             nested inside a block, a declaration directly contained in the body of a class 
