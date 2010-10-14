@@ -26,7 +26,6 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
-import java.util.Set;
 import javax.lang.model.element.ElementKind;
 import javax.tools.JavaFileObject;
 
@@ -1860,6 +1859,18 @@ public class Attr extends JCTree.Visitor {
         Type site = attribTree(tree.selected, env, skind, Infer.anyPoly);
         if ((pkind & (PCK | TYP)) == 0)
             site = capture(site); // Capture field access
+
+        // Insert a get() to access a Mutable
+        if (Context.isCeylon() && site.tsym.toString().equals("ceylon.Mutable")) {
+        	if (!tree.getIdentifier().contentEquals("get") && 
+        			!tree.getIdentifier().contentEquals("set")) {
+        		tree.selected = make.Apply(null, 
+        				make.Select(tree.selected, names.fromString("get")),
+        				List.<JCExpression>nil());
+        		visitSelect(tree);
+        		return;
+        	}
+        }
 
         // don't allow T.class T[].class, etc
         if (skind == TYP) {

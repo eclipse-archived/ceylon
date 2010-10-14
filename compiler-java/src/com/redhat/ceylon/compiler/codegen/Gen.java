@@ -517,9 +517,7 @@ public class Gen {
     	}
         if ((param.flags & CeylonTree.OPTIONAL) != 0)
         	type = optionalType(type);
-        
-        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-       
+
         JCVariableDecl v = at(param).VarDef(make.Modifiers(0), name,
                 type, null);
         
@@ -916,6 +914,18 @@ public class Gen {
         	return at(ce).Apply(null, expr.thing(), args.toList());
     }
     
+    JCExpression convertApply(JCExpression method, List<CeylonTree> args) {
+        final ListBuffer<JCExpression> argbuf =
+            new ListBuffer<JCExpression>();
+        
+        for (CeylonTree arg: args)
+            argbuf.append(convertArg(arg));
+
+        
+        return make.Apply(null, method, argbuf.toList());
+    }
+    
+    
     JCExpression convertArg(CeylonTree arg) {
         return convertExpression(arg);
     }
@@ -953,14 +963,9 @@ public class Gen {
             public void visit(CeylonTree.PrefixExpression expr) {
                 visit(expr.operator);
             }
-            public void visit(CeylonTree.NaturalLiteral lit) {
-                result = at(access).Select(convertExpression(lit), names.fromString(memberName.name));
-            }
-            public void visit(CeylonTree.FloatLiteral lit) {
-                result = at(access).Select(convertExpression(lit), names.fromString(memberName.name));
-            }
-            public void visit(CeylonTree.SimpleStringLiteral lit) {
-                result = at(access).Select(convert(lit), names.fromString(memberName.name));
+            public void visitDefault(CeylonTree tree) {
+            	result = at(access).Select(convertExpression(tree),
+            			names.fromString(memberName.name));
             }
         }
 
