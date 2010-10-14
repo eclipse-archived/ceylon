@@ -101,8 +101,8 @@ tokens {
     //PRIMARY;
 }
 
-// @parser::header { package com.redhat.ceylon.compiler.parser; }
-// @lexer::header { package com.redhat.ceylon.compiler.parser; }
+@parser::header { package com.redhat.ceylon.compiler.parser; }
+@lexer::header { package com.redhat.ceylon.compiler.parser; }
 
 compilationUnit
     : importDeclaration*

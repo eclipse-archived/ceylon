@@ -914,18 +914,6 @@ public class Gen {
         	return at(ce).Apply(null, expr.thing(), args.toList());
     }
     
-    JCExpression convertApply(JCExpression method, List<CeylonTree> args) {
-        final ListBuffer<JCExpression> argbuf =
-            new ListBuffer<JCExpression>();
-        
-        for (CeylonTree arg: args)
-            argbuf.append(convertArg(arg));
-
-        
-        return make.Apply(null, method, argbuf.toList());
-    }
-    
-    
     JCExpression convertArg(CeylonTree arg) {
         return convertExpression(arg);
     }
