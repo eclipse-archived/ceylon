@@ -775,7 +775,10 @@ public class Gen {
     	StatementVisitor(ListBuffer<JCStatement> stmts) {
     		this.stmts = stmts;
     	}
-        public void visit(CeylonTree.CallExpression expr) {
+    	public ListBuffer<JCStatement> stmts() {
+            return stmts;
+        }
+    	public void visit(CeylonTree.CallExpression expr) {
             stmts.append(at(expr).Exec(convert(expr)));
         }
         public void visit(CeylonTree.ReturnStatement ret) {
@@ -794,8 +797,8 @@ public class Gen {
         public void visit(CeylonTree.Operator op) {
             stmts.append(at(op).Exec(convert(op)));
         }            
-        public ListBuffer<JCStatement> stmts() {
-            return stmts;
+        public void visit(CeylonTree.MethodDeclaration meth) {
+        	throw new RuntimeException("Nested methods are not supported");
         }
     }
     

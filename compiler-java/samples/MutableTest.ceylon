@@ -32,6 +32,7 @@ public class MutableTest () {
         b(n);
         if (exists nn) {
             b(nn);
+            a(nn);
         }
 
         mutable Test t = Test();

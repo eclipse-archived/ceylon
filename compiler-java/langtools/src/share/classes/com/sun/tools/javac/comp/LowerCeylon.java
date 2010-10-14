@@ -92,7 +92,6 @@ public class LowerCeylon extends TreeTranslator {
 
     public void visitAssign(JCAssign tree) {
         tree.lhs = translate(tree.lhs);
-        tree.rhs = translate(tree.rhs);
         tree.rhs = translate(tree.rhs, tree.type);
         result = tree;
     }
@@ -139,6 +138,9 @@ public class LowerCeylon extends TreeTranslator {
         if (srcType.isPrimitive())
             return tree;
 	
+        srcType = nonOptionalTypeFor(srcType);
+        dstType = nonOptionalTypeFor(dstType);
+        
         MethodSymbol methodSym = types.getCeylonExtension(srcType, dstType);
         if (methodSym != null) {
             make.at(tree.pos());
@@ -189,12 +191,22 @@ public class LowerCeylon extends TreeTranslator {
         			return ceylonExtensionIfNeeded(tree, dstType);
         		}
         	}
+        	
         }
         
         return tree;
     }
     
-    List<JCExpression> lowerArgs(List<Type> parameters, List<JCExpression> _args, Type varargsElement) {
+	static private Type nonOptionalTypeFor(Type t) {
+		while (t.tsym.toString().equals("ceylon.Optional")) {
+			List<Type> l = t.getTypeArguments();
+			assert l.length() == 1;
+			t = l.last();
+		}
+		return t;
+	}
+
+	List<JCExpression> lowerArgs(List<Type> parameters, List<JCExpression> _args, Type varargsElement) {
         List<JCExpression> args = _args;
         if (parameters.isEmpty()) return args;
         boolean anyChanges = false;
