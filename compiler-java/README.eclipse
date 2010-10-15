@@ -1,0 +1,99 @@
+Setting up Eclipse to build the Ceylon compiler
+===============================================
+
+ 1. NB, in this file, "/path/to/ceylon" should be replaced with the
+    full path of the directory containing this file.
+
+ 2. Select "File -> New -> Java Project" from the main menu.
+
+ 3. In the "New Java Project" dialog:
+
+    a) Enter "Ceylon" in the "Project name" box.
+
+    b) Ensure "Create new project in workspace" is selected
+
+    c) Select "Use project folder as root for sources and class files"
+
+    d) Click "Next >"
+
+ 4. In the next page of the "New Java Project" dialog:
+
+    a) Click "Link additional source"
+
+    b) In the "Link Source" dialog:
+
+       i) Set "Linked folder location" to "/path/to/ceylon/src".
+
+       ii) Change "Folder name" to "compiler"
+
+       iii) Ensure "Replace existing project source folder entry to
+            solve nesting" is selected.
+
+       iv) Click "Finish"
+
+ 5. Back in the "New Java Project" dialog:
+
+    a) Click "Link additional source"
+
+    b) In the "Link Source" dialog:
+
+       i) Set "Linked folder location" to
+          "/path/to/ceylon/langtools/src/share/classes".
+
+       ii) Change "Folder name" to "langtools"
+
+       iii) Click "Finish"
+
+ 6. Back in the "New Java Project" dialog:
+
+    a) Click "Link additional source"
+
+    b) In the "Link Source" dialog:
+
+       i) Set "Linked folder location" to "/path/to/ceylon/runtime".
+
+       ii) Ensure "Folder name" is set to "runtime"
+
+       iii) Click "Finish"
+
+ 7. Back in the "New Java Project" dialog:
+
+    a) Select the "Libraries" tab.
+
+    b) Click "Add External JARs..."
+
+    c) Select "/path/to/ceylon/lib/antlrworks-1.3.1.jar"
+
+    d) Click "Finish"
+
+ 8. The project should now be correctly set up.  To test it:
+
+ 9. Select "Run -> Run Configurations..." from the main menu.
+
+10. In the "Run Configurations" dialog:
+
+    a) Right click on "Java Application" in the list on the left
+       and select "New" from the popup menu.
+ 
+    b) Change "Name" to "hello"
+ 
+    c) In the "Main" tab, next to "Main class", click "Search..."
+    
+    d) In the "Select Main Type" dialog:
+ 
+       i) Select "CeylonCompiler - com.redhat.ceylon.compiler.launcher"
+ 
+       ii) Click "Ok"
+ 
+    e) Select the "Arguments" tab.
+  
+    f) Set "Program arguments" to "-t samples/hello.ceylon".
+ 
+    g) Set "VM arguments" to "-ea"
+ 
+    h) In "Working directory", select "Other", and enter "/path/to/ceylon".
+ 
+    i) Click "Run"
+
+11. You should see some output from the Ceylon compiler in the
+    "Console" tab at the bottom of the screen.
