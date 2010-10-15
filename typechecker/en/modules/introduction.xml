@@ -978,7 +978,7 @@ public String greeting {
 
 doc "sets the greeting"
 package assign greeting { 
-    grtng = greeting; 
+    grtng := greeting; 
 }</programlisting>
 
             <para>Yes, this is a <emphasis>lot</emphasis> like a Java get/set method pair.
@@ -996,7 +996,7 @@ public String greeting {
 doc "sets the greeting"
 package assign greeting {
     if (nonempty greeting) {
-        grtng = greeting.strip().normalize();
+        grtng := greeting.strip().normalize();
     }
     else {
         throw IllegalArgumentException("greeting can not be empty)
@@ -1761,7 +1761,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             It's much more likely that we're planning to store or pass the 
             reference to the inner method somewhere before invoking it.</para>
 
-            <programlisting>Natural inc(Natural arg) incrementor = incrementor(3);
+            <programlisting>Natural inc(Natural arg) = incrementor(3);
 Natural five = inc(2);</programlisting>
 
             <para>The first line demonstrates how a method can be defined using
