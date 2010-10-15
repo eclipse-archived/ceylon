@@ -919,7 +919,8 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public interface Correspondence<in U, out V>
         is EnumerableCorrespondence<U,V>
-        given U satisfies Object, Equals<U> {
+        given U satisfies Object, Equals<U> 
+        given V satisfies Object, Equals<V> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
@@ -1000,7 +1001,8 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <programlisting><![CDATA[public interface EnumerableCorrespondence<U,V>
         satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
-        given U satisfies Object, Equals<U> {
+        given U satisfies Object, Equals<U> 
+        given V satisfies Object, Equals<V> {
     override Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
@@ -1198,7 +1200,8 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X>, Iterable<X>, Container {
+        satisfies Correspondence<Natural, X>, Iterable<X>, Container 
+        given X satisfies Object, Equals<X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
@@ -1253,7 +1256,8 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         <para>The type class allows direct instantiation of <literal>X[]</literal>:</para>
         
         <programlisting><![CDATA[public interface EnumerableSequence<X>
-        satisfies Callable<X[],X...> {
+        satisfies Callable<X[],X...> 
+        given X satisfies Object, Equals<X> {
     override X[] call(X... elements) {
         return elements
     }
@@ -1263,7 +1267,8 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         of the sequence in a <literal>for</literal> loop.</para>
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[] this)
-        satisfies Iterable<Entry<Natural,X>> {
+        satisfies Iterable<Entry<Natural,X>> 
+        given X satisfies Object, Equals<X> {
         
     override Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
@@ -1322,7 +1327,8 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         <programlisting><![CDATA[doc "The binary join operator |x + y|. The returned 
      sequence does not reflect changes to the original 
      sequences."
-public T[] join<T>(T[]... sequences) {
+public T[] join<T>(T[]... sequences) 
+        given T satisfies Object, Equals<T> {
             
     object joinedSequence satisfies T[] {
         override Natural? lastIndex {
@@ -1367,7 +1373,8 @@ public T[] join<T>(T[]... sequences) {
      with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) {
+public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
+        given T satisfies Object, Equals<T> {
          
     object rangeSequence satisfies T[] {
         override Natural? lastIndex {
@@ -1406,13 +1413,15 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         an index.</para>
         
         <programlisting><![CDATA[public mutable interface OpenSequence<X>
-        satisfies X[], OpenCorrespondence<Natural,X> {}]]></programlisting>
+        satisfies X[], OpenCorrespondence<Natural,X> 
+        given X satisfies Object, Equals<X> {}]]></programlisting>
 
         <para>A <literal>BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, #n>
-        satisfies X[] {
+        satisfies X[] 
+        given X satisfies Object, Equals<X> {
         
     Gettable<X> value(Bounded<#n> index);
     override Bounded<#n>? lastIndex;
@@ -1424,7 +1433,8 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         indices are of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[n] this)
-        satisfies Iterable<Entry<Bounded<#n>,X>> {
+        satisfies Iterable<Entry<Bounded<#n>,X>> 
+        given X satisfies Object, Equals<X> {
         
     override Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
@@ -1464,7 +1474,8 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         <para>There is a mutable subtype which allows assignment to an index.</para>
         
         <programlisting><![CDATA[public mutable interface OpenBoundedSequence<X,#n>
-        satisfies X[n], OpenSequence<X> {
+        satisfies X[n], OpenSequence<X> 
+        given X satisfies Object, Equals<X> {
     public Settable<X> value(Bounded<#n> index);
 }]]></programlisting>
 
@@ -1475,7 +1486,8 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
 public object none {
 
     public extension class EmptySequence<out X>() 
-            satisfies X[0] {
+            satisfies X[0] 
+            given X satisfies Object, Equals<X> {
         override Natural? lastIndex = null;
         override Gettable<X?> value(Natural index) {
             X? nullValue = null;
@@ -1523,7 +1535,7 @@ public object none {
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         extends Object() 
         satisfies Category, X[], Matcher<X>, Iterable<X>, Equals<Range<X>>
-        given X satisfies Ordinal, Comparable<X> { 
+        given X satisfies Object, Ordinal, Comparable<X>, Equals<X> { 
     
     doc "The first value in the range."
     public X first = first;
