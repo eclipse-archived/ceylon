@@ -416,7 +416,7 @@ caseType
     ;
 
 typeClass
-    : 'is' (memberName | type)
+    : 'is' type (',' type)* 
     ;
 
 typeConstraint
