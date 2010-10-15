@@ -32,6 +32,13 @@
     </para>
     
     <para>
+    Ceylon interfaces may define concrete members, allowing a restricted form of
+    multiple inheritance, but may not hold state (references to other objects), 
+    which eliminates the problems traditionally associated with multiple 
+    inheritance.
+    </para>
+    
+    <para>
     There are no primitive types or arrays in Ceylon&mdash;every Ceylon type can 
     be represented within the language itself. So all values are instances of the 
     type hierarchy root <literal>lang.Void</literal>. However, the Ceylon compiler 
@@ -879,6 +886,42 @@ class PersonalizedHello(String name) extends Hello() {
 }]]></programlisting>
 
         </section>
+    
+    <section>
+        <title>Anonymous classes</title>
+        
+        <para>If a class has no formal parameters, it's often possible to use a shortcut 
+        declaration which defines a named instance of the class, without providing any 
+        actual name for the class itself.</para>
+        
+        <programlisting><![CDATA[doc "A default greeting"
+object defaultHello extends Hello() {
+    
+    greeting = "Hello, World!";
+    
+}]]></programlisting>
+        
+        <para>A toplevel <literal>object</literal> declaration defines a singleton. An
+        <literal>object</literal> declaration nested inside a class defines an object
+        per instance of the containing class. An <literal>object</literal> declaration
+        nested inside a method, getter, or setter results in an new object each time the 
+        method, getter, or setter is executed.</para>
+        
+        <programlisting><![CDATA[public Subscription register(Subscriber s) {
+    subscribers.append(s);
+    object subscription satisfies Subscription {
+        override void cancel() {
+            subscribers.remove(s);
+        }
+    }
+    return subscription
+}]]></programlisting>
+        
+        <para>Notice how this code example makes clever use of the fact that the nested
+        <literal>object</literal> declaration recieves a closure of the locals defined 
+        in the containing method declaration!</para>
+        
+    </section>
         
     <section>
         <title>Testing the type of an object</title>
@@ -930,7 +973,37 @@ else {
         || payment is DirectDebitPayment
 }</programlisting>
                 
-        --> 
+        -->
+        
+        <para>Usually, the Ceylon compiler forces us to write an <literal>else</literal>
+        clause in a <literal>switch</literal>, to remind us that there might be
+        additional cases which we have not handled. If we want to write an 
+        <emphasis>exhaustive</emphasis> list of cases in a switch statement, and 
+        have the compiler check that we really did provide for every possibility, 
+        we need to define an abstract type with an enumerated list of cases.</para>
+        
+        <programlisting>abstract class Hello() 
+        of defaultHello, PersonalizedHello
+        extends Case() {
+    ...
+}</programlisting>
+        
+        <para>When a type definition specifies an <literal>of</literal> clause,
+        the compiler prevents us declaring any additional subtypes of the type.
+        Therefore, we can write <literal>switch</literal> statements without an
+        <literal>else</literal> clause:</para>
+        
+        <programlisting>Hello hello = ... ;
+switch(hello)
+case (defaultHello) {
+    process.writeLine("What's your name?");
+}
+case (is PersonalizedHello) {
+    process.writeLine("Nice to hear from you again!");
+}</programlisting>
+        
+        <para>This is Ceylon's version of a Java <literal>enum</literal>.</para>
+        
     </section>
 
         <section>
