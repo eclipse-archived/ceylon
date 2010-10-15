@@ -21,8 +21,6 @@
   <!-- The directory that the tools sources live in,
        and the directories they get built to -->
   <property name="tools.src" location="langtools/src/share/classes"/>
-  <property name="tools.classes" location="${build}/tools"/>
-  <property name="tools.lib" location="${build.lib}/tools.jar"/>
 
   <!-- The directory that tests live in, and the
        directory test results get written into -->
@@ -54,29 +52,14 @@
     </java>
   </target>
 
-  <!-- Rules to build tools.jar from its Java sources -->
-  <target name="tools.classes">
-    <mkdir dir="${tools.classes}"/>
-    <javac
-       srcdir="${tools.src}"
-       destdir="${tools.classes}"
-       debug="true">
-    </javac>
-  </target>
-  <target name="tools.jar" depends="tools.classes">
-    <mkdir dir="${build.lib}"/>
-    <jar destfile="${tools.lib}"
-         basedir="${tools.classes}"/>
-  </target>
-
   <!-- Rule to build test classes from their Java sources -->
-  <target name="test.classes" depends="antlr,tools.jar">
+  <target name="test.classes" depends="antlr">
     <mkdir dir="${build.classes}"/>
     <javac
-       srcdir="${compiler.src}"
+       srcdir="${tools.src}:${compiler.src}"
        destdir="${build.classes}"
        debug="true"
-       classpath="${antlr.lib}:${tools.lib}">
+       classpath="${antlr.lib}">
     </javac>
   </target>
 
