@@ -43,6 +43,7 @@ import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.type.TypeKind;
 
 import com.sun.tools.javac.ceylon.ExtensionRequiredException;
+import com.sun.tools.javac.ceylon.ManglingRequiredException;
 
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
@@ -1302,7 +1303,7 @@ public class Resolve {
                     if (types.isSubtype(mangled_site, site)) {
                         mangled_symbol = resolveConstructor(pos, env, mangled_site, argtypes, typeargtypes);
                         if (mangled_symbol.kind == MTH)
-                            sym = mangled_symbol;
+                            throw new ManglingRequiredException(mangled_symbol.owner);
                     }
                 }
             }

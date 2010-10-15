@@ -51,6 +51,7 @@ import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 
 import com.sun.tools.javac.ceylon.ExtensionRequiredException;
+import com.sun.tools.javac.ceylon.ManglingRequiredException;
 
 /** This is the main context-dependent analysis phase in GJC. It
  *  encompasses name resolution, type checking and constant folding as
@@ -1362,6 +1363,20 @@ public class Attr extends JCTree.Visitor {
         }
 
     public void visitNewClass(JCNewClass tree) {
+        if (Context.isCeylon()) {
+            try {
+                visitNewClassImpl(tree);
+            }
+            catch (ManglingRequiredException e) {
+                JCIdent ident = (JCIdent) tree.clazz;
+                ident.sym = e.mangled;
+                ident.name = ident.sym.name;
+            }
+        }
+        visitNewClassImpl(tree);
+    }
+
+    private void visitNewClassImpl(JCNewClass tree) {
         Type owntype = syms.errType;
 
         // The local environment of a class creation is
