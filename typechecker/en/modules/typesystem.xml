@@ -1083,6 +1083,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                 values of some specified type.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A sequenced type argumement must appear last in the list of type arguments.</para>
                 
         <programlisting>SequencedType := TypeName "..."</programlisting>
         
