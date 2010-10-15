@@ -1728,6 +1728,9 @@ except (SomethingElseWrong sew) {
                 <comment><para>TODO: Figure out the details of the type inference implied by this 
                 last bit!</para></comment>
                 
+                <comment><para>TODO: We should be able to disambiguate <literal>X x(Y y)</literal>
+                from <literal>X x(Y... ys)</literal> when called as <literal>x(y)</literal>.</para></comment>
+                
                 <comment><para>TODO: For type constraints with an initialization parameter 
                 specification, the actual parameter type may not declare such signature, but
                 one of its superclasses may. Is the compiler allowed to infer the superclass
@@ -2305,10 +2308,10 @@ setPerson(person);</programlisting>
         is both a metamodel reference and a callable reference. This is consistent, since
         <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
         
-        <para>If the type has a type class, the metamodel expression evaluates to the
-        type class, and the expression type is assignable to all types to which the type 
-        class is assignable. <emphasis>(Note that type classes are a proposed feature for 
-        a future version of the language.)</emphasis></para>
+        <para>Furthermore, the expression type is assignable to all types implemented 
+        by the type class&mdash;the types listed in the <literal>is</literal> clause
+        of the type definition. <emphasis>(Note that type classes are a proposed feature 
+        for a future version of the language.)</emphasis></para>
         
         </section>
         

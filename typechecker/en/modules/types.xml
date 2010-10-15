@@ -917,7 +917,8 @@ while (exists local value = indexed.indexedValue(i)) {
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
 
-        <programlisting><![CDATA[public interface Correspondence<in U, out V> 
+        <programlisting><![CDATA[public interface Correspondence<in U, out V>
+        is EnumerableCorrespondence<U,V>
         given U satisfies Object, Equals<U> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
@@ -994,13 +995,19 @@ while (exists local value = indexed.indexedValue(i)) {
 }]]></programlisting>
         -->
         
-        <para>The following extension allows direct instantiation of the
+        <para>The type class allows direct instantiation of the
         <literal>Correspondence</literal> interface:</para>
         
-        <programlisting><![CDATA[public extension Correspondence<U,V> newCorrespondence<U,V>(Type<Correspondence<U,V>> this)
-        (Entry<U,V>... elements) 
+        <programlisting><![CDATA[public interface EnumerableCorrespondence<U,V>
+        satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
         given U satisfies Object, Equals<U> {
-    return HashMap(elements)
+    override Correspondence<U,V> call(Entry<U,V>... entries) {
+        object correspondence 
+                satisfies Correspondence<U,V> {
+            ...
+        }
+        return correspondence
+    }
 }]]></programlisting>
         
         <para>There is a mutable subtype, representing a correspondence
@@ -1190,6 +1197,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         inherited from <literal>Correspondence</literal>:</para>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
+        is EnumerableSequence<X>
         satisfies Correspondence<Natural, X>, Iterable<X>, Container {
 
     doc "The index of the last element of the sequence,
@@ -1240,6 +1248,15 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         }
     }
    
+}]]></programlisting>
+        
+        <para>The type class allows direct instantiation of <literal>X[]</literal>:</para>
+        
+        <programlisting><![CDATA[public interface EnumerableSequence<X>
+        satisfies Callable<X[],X...> {
+    override X[] call(X... elements) {
+        return elements
+    }
 }]]></programlisting>
         
         <para>The following extension provides access to the indices 
@@ -1451,12 +1468,6 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
     public Settable<X> value(Bounded<#n> index);
 }]]></programlisting>
 
-        <para>The following extension allows direct instantiation of <literal>X[]</literal>:</para>
-        
-        <programlisting><![CDATA[public extension X[] newSequence<X>(Type<X[]> this)(X... elements) {
-    return ArrayList(elements)
-}]]></programlisting>
-        
         <para>The value <literal>none</literal> is transparently assignable to 
         <literal>X[]</literal> and <literal>X[0]</literal>.</para>
         

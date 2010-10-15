@@ -592,31 +592,19 @@ String? firstWord = words[0];</programlisting>
         <comment><para>NOTE: Type classes are a proposed feature for a future
         version of the language.</para></comment>
         
-        <para>A class or interface may optionally specify a <emphasis>type class</emphasis>. 
-        A type class is a user-defined metamodel object for the type. A type class 
-        must be a toplevel anonymous class that extends:</para>
+        <para>A class or interface may optionally specify a list of interfaces
+        implemented by the <emphasis>type class</emphasis> (metamodel object) of 
+        the type. The interfaces implemented by the type class may not define
+        abstract members.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para><literal>BasicInterface&lt;T&gt;</literal> where <literal>T</literal> 
-                is the interface, or</para>
-            </listitem>
-            <listitem>
-                <para><literal>BasicClass&lt;T&gt;</literal> where <literal>T</literal> 
-                is the class.</para>
-            </listitem>
-        </itemizedlist>
+        <para>Similarly, a type constraint may specify a list of types to which 
+        the type class of the type argument is assignable.</para>
         
-        <para>Furthermore, a type constraint may specify a type to which the type 
-        class of the type argument is assignable.</para>
+        <programlisting>TypeClass := "is" Type ("," Type)*</programlisting>
         
-        <programlisting>TypeClass := "is" (MemberName | Type)</programlisting>
+        <para>The type class of a type <literal>T</literal> is the concrete class
+        of the object to which the expression <literal>T</literal> evaluates.</para>
         
-        <para>The <literal>is</literal> clause may specify exactly one anonymous
-        class (in the case of a class or interface) or type (in the case of a type
-        constraint).</para>
-        
-        <programlisting>is monoidClass</programlisting>
         <programlisting>is Monoid&lt;T&gt;</programlisting>
         
     </section>
@@ -881,10 +869,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>Inside the declaration of the parameterized type or method, a sequenced type 
         parameter may be used as a type argument to other types which accept a sequenced type 
         parameter, or it may be used as the type of the last formal parameter declared by a 
-        method. It may not appear in any other position. The sequenced type parameter acts as 
-        a pseudo-type. It is treated by the Ceylon compiler as if it were a type with no 
-        members, to which no other type may be assigned, and which can only by assigned to 
-        itself.</para>
+        formal parameter list. It may not appear in any other position. The sequenced type 
+        parameter acts as a pseudo-type. It is treated by the Ceylon compiler as if it were a 
+        type with no members, to which no other type may be assigned, and which can only by 
+        assigned to itself.</para>
         
         <programlisting>Type&lt;X, P...&gt;</programlisting>
         <programlisting>Method&lt;X, T, P...&gt;</programlisting>
@@ -1083,12 +1071,22 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
         
-        <para>A sequenced type argument is a reference to a sequenced type parameter of the
-        containing declaration.</para>
+        <para>A <emphasis>sequenced type argument</emphasis> is either:</para>
         
+        <itemizedlist>
+            <listitem>
+                <para>a reference to a sequenced type parameter of the containing declaration, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>a <emphasis>sequenced type</emphasis>, which represents a sequence of
+                values of some specified type.</para>
+            </listitem>
+        </itemizedlist>
+                
         <programlisting>SequencedType := TypeName "..."</programlisting>
         
-        <para>A type argument is a type or a dimension:</para>
+        <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
         <programlisting>TypeArgument := Type | "#" Dimension</programlisting>
         
@@ -1157,6 +1155,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
         <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
         <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        <programlisting>Callable&lt;String,Object...&gt;</programlisting>
         
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
@@ -1245,13 +1244,23 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         </listitem>
         <listitem> 
             <para>a list of formal parameters whose types are the type arguments is
-            appended to the list of formal parameters of every method declaration in
+            appended to the list of formal parameters of every formal parameter list in
             which the sequenced type parameter appears.</para>
         </listitem>
         </itemizedlist>
         
         <programlisting>Method&lt;Order, Item, Product, Natural&gt;</programlisting>
         
+        <para>A sequenced type in a type argument list results in a sequenced type
+        parameter in a formal parameter list.</para>
+        
+        <programlisting>Method&lt;String, Object...&gt;</programlisting>
+
+        <para>A reference to a sequenced type parameter in a type argument list results in 
+        a tuple parameter in a formal parameter list.</para>
+        
+        <programlisting>Method&lt;String, String, P...&gt;</programlisting>
+
         <comment><para>TODO: should we let you fill in the formal parameter names, so
         you can call this thing using named arguments?
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
@@ -1422,14 +1431,14 @@ SequencedParam?
             <listitem>
                 <para>A <emphasis>sequenced parameter</emphasis>, which accepts a list of 
                 arguments of the specified type <literal>T</literal>, or a single argument of 
-                type <literal>T[]</literal>. Inside the method, the sequenced parameter 
+                type <literal>T[]</literal>. Inside the method or class, the sequenced parameter 
                 has type <literal>T[]</literal>.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
-                whose types are defined by a sequenced type parameter. Inside the method, the 
-                argument has the pseudo-type of the sequenced type parameter and is assignable to 
-                any tuple parameter of the same pseudo-type.</para>
+                whose types are defined by a sequenced type parameter. Inside the method or class, 
+                the argument has the pseudo-type of the sequenced type parameter and is assignable 
+                to any tuple parameter of the same pseudo-type.</para>
             </listitem>
         </itemizedlist>
         
