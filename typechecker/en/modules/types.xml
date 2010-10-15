@@ -889,7 +889,8 @@ while (exists local value = indexed.indexedValue(i)) {
         operator.</para>
 
             <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
-        extends Object() satisfies Equals<Entry<U,V>>
+        extends Object() 
+        satisfies Equals<Entry<U,V>>
         given U satisfies Object, Equals<U> 
         given V satisfies Object, Equals<V> {
     
