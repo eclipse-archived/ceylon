@@ -1201,7 +1201,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X>, Iterable<X>, Container 
+        satisfies Correspondence<Natural, X>, Iterable<X>, Container, Category
         given X satisfies Object, Equals<X> {
 
     doc "The index of the last element of the sequence,
@@ -1227,6 +1227,15 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
     
     override Boolean empty {
         return !(this.lastIndex exists)
+    }
+    
+    override Boolean contains(Object object) {
+        if (is X object) {
+            return forAny (X x in this) some (x==object)
+        }
+        else {
+            return false
+        }
     }
     
     doc "The first element of the sequence, or
@@ -1535,7 +1544,7 @@ public object none {
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         extends Object() 
-        satisfies Category, X[], Matcher<X>, Iterable<X>, Equals<Range<X>>
+        satisfies X[], Matcher<X>, Equals<Range<X>>
         given X satisfies Object, Ordinal, Comparable<X>, Equals<X> { 
     
     doc "The first value in the range."

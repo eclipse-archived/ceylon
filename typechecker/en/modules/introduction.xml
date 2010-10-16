@@ -32,13 +32,6 @@
     </para>
     
     <para>
-    Ceylon interfaces may define concrete members, allowing a restricted form of
-    multiple inheritance, but may not hold state (references to other objects), 
-    which eliminates the problems traditionally associated with multiple 
-    inheritance.
-    </para>
-    
-    <para>
     There are no primitive types or arrays in Ceylon&mdash;every Ceylon type can 
     be represented within the language itself. So all values are instances of the 
     type hierarchy root <literal>lang.Void</literal>. However, the Ceylon compiler 
@@ -129,6 +122,18 @@
     <para>
     As an alternative to method or class overloading, Ceylon supports method 
     and class initializer parameters with default values. 
+    </para>
+    
+    </section>
+    
+    <section id="mixininheritance">
+    <title>"Mixin" inheritance</title>
+
+    <para>
+    Ceylon interfaces may define concrete members, allowing a restricted form of
+    multiple inheritance, but may not hold state (references to other objects)
+    or initialization logic, which eliminates the problems traditionally 
+    associated with multiple inheritance.
     </para>
     
     </section>
@@ -939,7 +944,15 @@ class PersonalizedHello(String name) extends Hello() {
             interface extends another interface or that a class implements an interface.
             Unlike an <literal>extends</literal> declaration, a <literal>satisfies</literal>
             declaration does not specify arguments, since interfaces do not have formal
-            parameters or initialization logic.</para>
+            parameters or initialization logic. Furthermore, the <literal>satisfies</literal>
+            declaration can specify more than one interface.</para>
+            
+            <para>Ceylon's approach to interfaces eliminates a common pattern in Java
+            where a separate abstract class defines a default implementation of some of 
+            the members of an interface. In Ceylon, the default implementations can be
+            specified by the interface itself. Even better, it's possible to add a new
+            member to an interface without breaking existsing implementations of the
+            interface.</para>
             
         </section>
     
@@ -1068,7 +1081,21 @@ case (is PersonalizedHello) {
     process.writeLine("Nice to hear from you again!");
 }</programlisting>
         
-        <para>This is Ceylon's version of a Java <literal>enum</literal>.</para>
+        <para>This is Ceylon's version of a Java <literal>enum</literal>:</para>
+        
+        <programlisting>public class Suit() 
+        of hearts, diamonds, clubs, spades 
+        extends Case() {}
+        
+public object hearts extends Suit() {}
+public object diamonds extends Suit() {}
+public object clubs extends Suit() {}
+public object spades extends Suit() {}</programlisting>
+        
+        <para>Of course, this is significantly more verbose than Java's version.
+        But Ceylon's <literal>of</literal> clause is also a lot more flexible 
+        than Java's <literal>enum</literal>, since it allows both classes and
+        values in the enumerated list of subtypes.</para>
         
     </section>
 
@@ -1575,7 +1602,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <programlisting>Integer[] fromNegative10To10 = -10..10;</programlisting>
             <programlisting>Character[] alphanum = (`A`..`Z`) + (`0`..`9`);</programlisting>
 
-            <para>The <literal>Sequence</literal> interface as assignable to <literal>Iterable</literal>,
+            <para>The <literal>Sequence</literal> interface extends <literal>Iterable</literal>,
             so we can iterate a <literal>Sequence</literal> using a <literal>for</literal>
             loop:</para>
             
@@ -1594,9 +1621,8 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             meet later) that produces an <literal>Iterable&lt;Entry&lt;Natural,X&gt;&gt;</literal>
             for any <literal>Sequence&lt;X&gt;</literal>.</para>
             
-            <para>There's another extension which produces a <literal>Category</literal>
-            from any <literal>Sequence</literal>. Therefore, you can use the <literal>in</literal>
-            operator with sequences:</para>
+            <para>A <literal>Sequence</literal> is a <literal>Category</literal>, so we can 
+            use the <literal>in</literal> operator with sequences:</para>
             
             <programlisting>if ("Paris" in voyage) { ... }</programlisting>
 
@@ -2255,15 +2281,16 @@ class Person(String firstName, String lastName, Language lang) {
     package Language language = lang;
 }</programlisting>
         
-        <para>Now, we'll create a union which enumerates its cases&mdash;almost 
+        <para>Now, we'll create an interface which enumerates its cases&mdash;almost 
         exactly like a Java <literal>enum</literal>&mdash;to represent the built-in 
         languages that our program supports.</para>
         
-        <programlisting>object english extends Case("English");
-object french extends Case("French");
-object spanish extends Case("Spanish");
-object italian extends Case("Italian");
-choice Language of english, french, spanish, italian;</programlisting>
+        <programlisting>interface Language of english, french, spanish, italian;
+
+object english extends Case("English") satisfies Language;
+object french extends Case("French") satisfies Language;
+object spanish extends Case("Spanish") satisfies Language;
+object italian extends Case("Italian") satisfies Language;</programlisting>
 
 <!--
         <para>The use of <literal>...</literal> at the end of the list of enumerated
@@ -2963,29 +2990,6 @@ class Hello(String? name) {
         <literal>objectToLog</literal> won't be affected by the extension, and
         won't be able to call the <literal>info()</literal> method without
         explicitly invoking the <literal>log</literal> attribute.</para>
-        
-        <para>So you might think that extensions are just a trivial trick that
-        saves a few keystrokes of typing effort. But the history of Java 
-        demonstrates why extensions are an important feature. Java defines its
-        collections framework in terms of various interfaces, for example, 
-        <literal>List</literal>, each with very many methods, mostly convenience 
-        methods for the benefit of the user of these interfaces. Because 
-        implementing the whole interface from scratch is a daunting task, the 
-        collections framework includes abstract classes like 
-        <literal>AbstractList</literal> that define a smaller contract for
-        classes that implement the collection interfaces. But there's no way
-        for the collections framework to force you to implement 
-        <literal>AbstractList</literal> instead of implementing <literal>List</literal> 
-        directly. And, of course, the world is now full of Java code that does
-        implement <literal>List</literal> directly. Which means that introducing 
-        a new method to the <literal>List</literal> interface is a huge breaking 
-        change that affects a great deal of working, production code.</para>
-        
-        <para>Ceylon takes a different approach to its collection types. The 
-        basic collection interfaces like <literal>List</literal> define a small
-        set of operations. Convenience methods for users of the collections 
-        framework are defined by built-in extensions. So we can add new convenience 
-        methods whenever we like. And so can you!</para>
         
         <para>In the next sections, we're going to see a two very different 
         applications of extensions.</para>
