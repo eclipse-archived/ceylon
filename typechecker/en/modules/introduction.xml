@@ -1365,8 +1365,23 @@ abstract class Hello() {
                     <para><literal>Slots</literal> supports bitwise operators,</para>
                 </listitem>
                 <listitem>
+                    <para><literal>Comparable</literal> supports the comparison operators,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Container</literal> and <literal>Category</literal>
+                    support the <literal>nonempty</literal> and <literal>in</literal> 
+                    operators, respectively,</para>
+                </listitem>
+                <listitem>
                     <para><literal>Correspondence</literal> and <literal>Sequence</literal>
                     support indexing and subrange operators,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Boolean</literal> is the basis of the logical operators,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Optional</literal> supports the <literal>exists</literal>
+                    and <literal>?</literal> operators,</para>
                 </listitem>
                 <listitem>
                     <para><literal>Callable</literal> supports invocation, and</para>
@@ -1985,7 +2000,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
             
             <para>As you've probably noticed, all the functions we've defined so far 
             have been declared with a name, using a traditional C-like syntax. Now 
-            lets see what Ceylon has instead of anonymous functions.</para>
+            let's see what Ceylon has instead of anonymous functions.</para>
             
         </section>
 
