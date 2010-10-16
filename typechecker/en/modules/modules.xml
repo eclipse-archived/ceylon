@@ -95,6 +95,12 @@
     
     <comment><para>TODO: but where do they obtain the public keys from?</para></comment>
     
+    <comment><para>TODO: we will probably need to add the notion of an
+    <emphasis>assembly</emphasis> at some stage, to package together
+    multiple modules into an application. It might just be an archived
+    module repository with a descriptor that overrides dependency 
+    versions.</para></comment>
+    
     <section id="modulenamesandversionidentifiers">
         <title>Module names and version identifiers</title>
         
@@ -138,6 +144,9 @@
         
         <programlisting>1.0.1</programlisting>
         <programlisting>3.0.0.beta</programlisting>
+        
+        <comment><para>TODO: at some stage we will probably need to add a format
+        for specifying version ranges.</para></comment>
         
         <para>A <emphasis>module archive name</emphasis> is constructed from 
         the module name and version identifier. A module archive name is of 
