@@ -893,7 +893,7 @@ class PersonalizedHello(String name) extends Hello() {
         </section>
         
         <section>
-            <title>Interfaces</title>
+            <title>Interfaces and "mixin" inheritance</title>
             
             <para>From time to time we come across a case where a class needs to inherit
             functionality from more than one supertype. Java's inheritance model doesn't
@@ -1098,13 +1098,112 @@ public object spades extends Suit() {}</programlisting>
         values in the enumerated list of subtypes.</para>
         
     </section>
+    
+       <section>
+           <title>Named arguments</title>
+           
+           <para>Consider the following declarations:</para>
+           
+           <programlisting>void printf(OutputStream to, String format, Object... values) { ... }</programlisting>
+           
+           <programlisting>class Table(String title, Natural rows, Column... columns) { ... }</programlisting>
+           
+           <para>(The last formal parameter of each declaration is a 
+           <emphasis>sequenced parameter</emphasis> which accepts multiple 
+           arguments, just like a Java "varargs" parameter.)</para>
+           
+           <para>Ceylon lets us invoke a method or instantiate a class using a
+           familiar C-like syntax:</para>
+           
+           <programlisting>printf("Hello %s. Your number is %d\n", name, num);</programlisting>
+           
+           <programlisting>Table table = Table("Sums", 5, Column("x",10), Column("y",10), Column("x+y",12));</programlisting>
+           
+           <para>However, Ceylon also provides an alternative method invocation
+           protocol that is usually easier to read when more than one or two 
+           arguments:</para>
+           
+           <programlisting>printf { 
+    to=process; 
+    format="Hello %s. Your number is %d\n"; 
+    name, num 
+};</programlisting>
+           
+           <programlisting>Table table = Table { 
+    title="Sums"; 
+    rows=5; 
+    Column { 
+        title="x"; 
+        width=10; 
+    }, 
+    Column { 
+        title="y"; 
+        width=10; 
+    }, 
+    Column { 
+        title="x+y"; 
+        width=12; 
+    }
+};</programlisting>
+           
+           <para>This invocation protocol is called a <emphasis>named argument 
+           list</emphasis>.</para>
+           
+           <para>Ceylon also let's us abbreviate an attribute declaration of form
+           <literal>Table table = Table { ... };</literal> to the more declarative 
+           style <literal>Table table { ... }</literal>, so we can also write:</para>
+           
+           <programlisting>Table table { 
+    title="Sums"; 
+    rows=5; 
+    Column { 
+        title="x"; 
+        width=10; 
+    }, 
+    Column { 
+        title="y"; 
+        width=10; 
+    }, 
+    Column { 
+        title="x+y"; 
+        width=12; 
+    }
+}</programlisting>
+            
+            <para>A named argument list may even contain method or 
+            <literal>object</literal> declarations, for example:</para>
+            
+            <programlisting><![CDATA[public void addObserver<T>(Observer<T> observer) { ... }]]></programlisting>
+            
+            <programlisting><![CDATA[observable.addObserver {
+    object observer satisfies Observer<UpdateEvent> {
+        override void onUpdate(UpdateEvent e) {
+            log.info("Update:" + $e);
+        }
+    }
+};]]></programlisting>
+            
+            <para>Or:</para>
+            
+            <programlisting><![CDATA[public void addObserver<T>(void onUpdate(T e)) { ... }]]></programlisting>
+            
+            <programlisting><![CDATA[observable.addObserver {
+    void onUpdate(UpdateEvent e) {
+        log.info("Update:" + $e);
+    }
+};]]></programlisting>
+            
+            <para>Don't worry if you didn't follow this last example. We'll talk about
+            first-class functions and functional-style programming later.</para>
+            
+       </section>
 
         <section>
             <title>Working with mutable state</title>
 
             <para>Ceylon encourages you to use <emphasis>immutable</emphasis> attributes
-            as much as possible. An immutable attribute has its value specified when 
-            the object is initialized, and is never reassigned. If we want to be able to
+            as much as possible. An immutable attribute has its value specified when the 
+            object is initialized, and is never reassigned. If we want to be able to
             assign a value to a simple attribute we need to annotate it 
             <literal>mutable</literal>:</para>
             
@@ -1125,8 +1224,8 @@ if (exists name) {
             yourself doing this less frequently than you would do it in Java.</para>
             
             <para>If we want to make an attribute with a getter mutable, we need to 
-            define a matching <emphasis>setter</emphasis>. Usually this is only useful
-            if you have some other internal attribute you're trying to set the value of
+            define a matching <emphasis>setter</emphasis>. Usually this is only useful if 
+            you have some other internal attribute you're trying to set the value of
             indirectly.</para>
             
             <para>Suppose our class has the following mutable simple attribute, intended
@@ -1149,10 +1248,9 @@ package assign greeting {
 
             <para>Yes, this is a <emphasis>lot</emphasis> like a Java get/set method pair.
             But since Ceylon attributes are polymorphic, and since you can redefine a simple
-            attribute as a getter or getter/setter pair without affecting clients that
-            call the attribute, you rarely need to write this code unless you're doing
-            something special in the getter or setter. So here's a more realistic 
-            example:</para>
+            attribute as a getter or getter/setter pair without affecting clients that call 
+            the attribute, you rarely need to write this code unless you're doing something 
+            special in the getter or setter. So here's a more realistic example:</para>
        
             <programlisting>doc "gets the greeting"
 public String greeting { 
