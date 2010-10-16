@@ -1170,7 +1170,7 @@ public object spades extends Suit() {}</programlisting>
     }
 }</programlisting>
             
-            <para>A named argument list may even contain method or 
+            <para>A named argument list may even contain method, getter, or 
             <literal>object</literal> declarations, for example:</para>
             
             <programlisting><![CDATA[public void addObserver<T>(Observer<T> observer) { ... }]]></programlisting>
