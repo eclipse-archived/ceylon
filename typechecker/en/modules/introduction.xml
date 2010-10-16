@@ -1177,7 +1177,7 @@ public object spades extends Suit() {}</programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     object observer satisfies Observer<UpdateEvent> {
-        override void onUpdate(UpdateEvent e) {
+        override void on(UpdateEvent e) {
             log.info("Update:" + $e);
         }
     }
@@ -1185,10 +1185,10 @@ public object spades extends Suit() {}</programlisting>
             
             <para>Or:</para>
             
-            <programlisting><![CDATA[public void addObserver<T>(void onUpdate(T e)) { ... }]]></programlisting>
+            <programlisting><![CDATA[public void addObserver<T>(void on(T e)) { ... }]]></programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
-    void onUpdate(UpdateEvent e) {
+    void on(UpdateEvent e) {
         log.info("Update:" + $e);
     }
 };]]></programlisting>
