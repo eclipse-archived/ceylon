@@ -1136,6 +1136,55 @@ public object spades extends Suit() {}</programlisting>
            parameter, except for the sequenced parameter, whose arguments always
            appear at the end of the named parameter list.</para>
            
+           <para>Named arguments are very commonly used for building graphs of
+           objects. Therefore, Ceylon provides a special abbreviated syntax that
+           simplifies the declaration of an attribute getter, named parameter, or 
+           method that builds an object by specifying named arguments to the 
+           class initializer.</para>
+           
+           <para>We're allowed to abbreviate an attribute definition of the 
+           following form:</para>
+           
+           <programlisting>Payment payment = Payment {
+    method = user.paymentMethod;
+    currency = order.currency;
+    amount = order.total;
+};</programlisting>
+    
+           <para>or a named argument specification of this form:</para>
+           
+           <programlisting>payment = Payment {
+    method = user.paymentMethod;
+    currency = order.currency;
+    amount = order.total;
+};</programlisting>
+           
+           <para>to the following more declarative (and less redundant) style:</para> 
+           
+           <programlisting>Payment payment {
+    method = user.paymentMethod;
+    currency = order.currency;
+    amount = order.total;
+}</programlisting>
+
+           <para>We're even allowed to write a method of the following form:</para>
+        
+           <programlisting>Payment createPayment(Order order) {
+    return Payment {
+        method = user.paymentMethod;
+        currency = order.currency;
+        amount = order.total;
+    }
+}</programlisting>
+        
+           <para>using the following abbreviated syntax:</para>
+
+           <programlisting>Payment createPayment(Order order) {
+    method = user.paymentMethod;
+    currency = order.currency;
+    amount = order.total;
+}</programlisting>
+        
            <para>We'll have much more to say on the topic of named argument lists 
            later. For now, all we need to know is that there are two different 
            syntaxes for calling a method or instantiating a class. </para>
@@ -2298,17 +2347,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
            <literal>content</literal> using the usual syntax for declaring a
            method.</para>
            
-           <para>Ceylon provides an additional way of abbreviating code that
-           uses named arguments. We're allowed to abbreviate an attribute or 
-           named parameter definition of the following form:</para>
-           
-           <programlisting>Table table = Table { ... };</programlisting> 
-           
-           <para>to the following more declarative (and less redundant) style:</para> 
-           
-           <programlisting>Table table { ... }</programlisting> 
-           
-           <para>So our example can be rewritten like this:</para>
+           <para>Even better, our example can be abbreviated like this:</para>
            
            <programlisting>Table table { 
     title="Squares"; 
@@ -2339,7 +2378,24 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             structure. Semantically, the two forms are equivalent. But in
             terms of readability, they are very different.</para>
             
-            <para>Now let's see an example of a named parameter list with 
+            <para>Now let's see an example of a named argument list with 
+            an inline getter declaration:</para>
+            
+            <programlisting>public Payment(PaymentMethod method, Currency currency, Float amount) { ... }</programlisting>
+            
+            <programlisting>Payment payment {
+    method = user.paymentMethod;
+    currency = order.currency;
+    Float amount { 
+        mutable Float total := 0.0;
+        for (Item item in order.items) {
+            total += item.quantity * item.product.unitPrice;
+        }
+        return total
+    }
+}</programlisting>
+            
+            <para>Finally, here's an example of a named argument list with 
             an inline <literal>object</literal> declaration:</para>
             
             <programlisting><![CDATA[public void addObserver<T>(Observer<T> observer) { ... }]]></programlisting>
@@ -2425,19 +2481,6 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
     }
 }</programlisting>
 
-        <para>We mentioned earlier that Ceylon provides this abbreviated syntax for 
-        an attribute or named argument that simply returns the result of a named 
-        argument instantiation. What we didn't mention is that the same abbreviation 
-        is supported for method declarations.</para>
-        
-        <para>We're allowed to write a method of the following form:</para>
-        
-        <programlisting>Html hello(Request request) { return Html { .... } }</programlisting>
-        
-        <para>Using the following abbreviated syntax:</para>
-
-        <programlisting>Html hello(Request request) { .... }</programlisting>
-        
         <para>We're going to use this syntax to define our web page.</para>
         
         <programlisting><![CDATA[import ceylon.html.*;
