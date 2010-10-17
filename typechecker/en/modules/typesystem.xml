@@ -1535,5 +1535,45 @@ Description doc(String description) {
         return values of the same type.</para>
         
     </section>
+    
+    <!--
+    <section id="metatype">
+        <title>Metatypes</title>
+        
+        <para>For every type <literal>X</literal>, the <emphasis>metatype</emphasis> 
+        <literal>MX</literal> of the type defines a typesafe metamodel of the members of 
+        the type.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>For each non-<literal>mutable</literal> attribute of <literal>X</literal> 
+                with type <literal>T</literal>, <literal>MX</literal> has an attribute with 
+                the same name and type <literal>Attribute&lt;X,T&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each <literal>mutable</literal> attribute of <literal>X</literal> 
+                with type <literal>T</literal>, <literal>MX</literal> has an attribute with 
+                the same name and type <literal>MutableAttribute&lt;X,T&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each method of <literal>X</literal> with return type <literal>R</literal> 
+                and formal parameter types <literal>P...</literal>, <literal>MX</literal> has 
+                an attribute with the same name and type <literal>Method&lt;X,R,P...&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each <literal>abstract</literal> member class <literal>Y</literal> 
+                of <literal>X</literal>, <literal>MX</literal> has an attribute with the same 
+                name and type <literal>MemberClass&lt;X,Y&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For each non-<literal>abstract</literal> member class <literal>Y</literal> 
+                of <literal>X</literal> with initializer parameter types <literal>P...</literal>, 
+                <literal>MX</literal> has an attribute with the same name and type 
+                <literal>MemberConcreteClass&lt;X,Y,P...&gt;</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        -->
+        
+    </section>
         
 </chapter>
