@@ -1697,7 +1697,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <programlisting>Sequence&lt;Object&gt; voyage = Sequence { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
-            <para>Which we usually abbreviate like this:</para>
+            <para>Which Ceylon lets us abbreviate like this:</para>
             
             <programlisting>Object[] voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
