@@ -827,7 +827,7 @@ sort(names, reverseAlpha);</programlisting>
         <para>This code instantiates the class, passing references to methods which set and
         get the attribute <literal>person.name</literal>:</para>
         
-        <programlisting>TextInput it = TextInput { 
+        <programlisting>TextInput input { 
     size=15; 
     onInit = set(person.name);
     onUpdate = get(person.name);
@@ -1492,10 +1492,9 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public
-List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
-                  Boolean where(coordinated X x),
-                  Y select(coordinated X x));</programlisting>
+        <programlisting>public List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
+                         Boolean where(coordinated X x),
+                         Y select(coordinated X x));</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1524,8 +1523,8 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
         <programlisting>public List&lt;Y&gt; from&lt;X,Y&gt;(X x in Iterable&lt;X&gt; elements)
-             Boolean where(coordinated X x)
-             Y select(coordinated X x);</programlisting></comment>
+               Boolean where(coordinated X x)
+               Y select(coordinated X x);</programlisting></comment>
                 
         </section>
         
@@ -1549,10 +1548,9 @@ List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public
-Y ifExists&lt;X,Y&gt;(specified X? value, 
-                Y then(coordinated X x), 
-                Y otherwise());</programlisting>
+        <programlisting>public Y ifExists&lt;X,Y&gt;(specified X? value, 
+                       Y then(coordinated X x), 
+                       Y otherwise());</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1564,9 +1562,8 @@ Y ifExists&lt;X,Y&gt;(specified X? value,
         
         <para>And for the following method declaration:</para>
         
-        <programlisting>public
-Y using&lt;X,Y&gt;(specified X resource, 
-             Y seek(coordinated X x))
+        <programlisting>public Y using&lt;X,Y&gt;(specified X resource, 
+                    Y seek(coordinated X x))
   given X satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
@@ -1585,8 +1582,8 @@ Y using&lt;X,Y&gt;(specified X resource,
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
         <programlisting>public Y ifExists&lt;X,Y&gt;(X x = X? value) 
-            Y then(coordinated X x)
-            Y otherwise;</programlisting></comment>
+         Y then(coordinated X x)
+         Y otherwise;</programlisting></comment>
                 
         </section>
         
