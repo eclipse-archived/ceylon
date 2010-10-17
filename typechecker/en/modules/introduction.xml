@@ -2264,6 +2264,10 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
                </listitem>    
            </itemizedlist>
            
+           <para>This helps explain why named argument lists are delimited by
+           braces: the fully general syntax for a named argument list is very, 
+           very close to the syntax for a class, method, or attribute body.</para>
+           
            <para>So we could rewrite the code that builds a <literal>Table</literal>
            as follows:</para>
            
