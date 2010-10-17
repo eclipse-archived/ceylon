@@ -1168,7 +1168,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>{
     description = "Total";
     Float amount { 
-        mutable Float total = 0.0;
+        mutable Float total := 0.0;
         for (Item item in items) {
             sum += item.amount;
         }
