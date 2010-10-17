@@ -1366,13 +1366,14 @@ package assign greeting {
             is considered a shortcut way of writing some more complex expression involving
             other operators and ordinary method calls. For example, the <literal>&lt;</literal>
             operator is defined in terms of the interface <literal>Comparable&lt;T&gt;</literal>, 
-            which has a method named <literal>compare()</literal>.</para>
+            which has a method named <literal>smallerThan()</literal>, which is in turn defined
+            in terms of another method named <literal>compare()</literal>.</para>
             
             <programlisting>x&lt;y</programlisting>
             
             <para>means, by definition,</para>
             
-            <programlisting>x.compare(y)==smaller</programlisting>
+            <programlisting>x.smallerThan(y)</programlisting>
             
             <para>The equality operator <literal>==</literal> is defined in terms of the 
             interface <literal>Equals&lt;T&gt;</literal>, which has a method named 

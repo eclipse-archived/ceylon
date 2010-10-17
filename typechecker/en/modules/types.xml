@@ -1077,6 +1077,26 @@ while (exists local value = indexed.indexedValue(i)) {
          |x>y| and |y>z| then |x>z|."
     Comparison compare(T other);
     
+    doc "The binary |>| operator."
+    Boolean largerThan(T other) {
+        return compare(other)==larger
+    }
+    
+    doc "The binary |<| operator."
+    Boolean smallerThan(T other) {
+        return compare(other)==smaller
+    }
+    
+    doc "The binary |>=| operator."
+    Boolean asLargeAs(T other) {
+        return compare(other)!=smaller
+    }
+    
+    doc "The binary |<=| operator."
+    Boolean asSmallAs(T other) {
+        return compare(other)!=larger
+    }
+    
 }]]></programlisting>
         
         <programlisting><![CDATA[doc "The receiving object is larger than 

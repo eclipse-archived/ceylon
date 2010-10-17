@@ -3254,7 +3254,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>&lt;</literal></entry>
             <entry><literal>lhs &lt; rhs</literal></entry>
             <entry>smaller</entry>
-            <entry><literal>(lhs&lt;=&gt;rhs)==smaller</literal></entry>
+            <entry><literal>lhs.smallerThan(rhs)</literal></entry>
             <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -3263,7 +3263,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>&gt;</literal></entry>
             <entry><literal>lhs &gt; rhs</literal></entry>
             <entry>larger</entry>
-            <entry><literal>(lhs&lt;=&gt;rhs)==larger</literal></entry>
+            <entry><literal>lhs.greaterThan(rhs)</literal></entry>
             <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -3272,7 +3272,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>&lt;=</literal></entry>
             <entry><literal>lhs &lt;= rhs</literal></entry>
             <entry>small as</entry>
-            <entry><literal>(lhs&lt;=&gt;rhs)!=larger</literal></entry>
+            <entry><literal>lhs.asSmallAs(rhs)</literal></entry>
             <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -3281,7 +3281,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>&gt;=</literal></entry>
             <entry><literal>lhs &gt;= rhs</literal></entry>
             <entry>large as</entry>
-            <entry><literal>(lhs&lt;=&gt;rhs)!=smaller</literal></entry>
+            <entry><literal>lhs.asLargeAs(rhs)</literal></entry>
             <entry><literal>Comparable &lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
