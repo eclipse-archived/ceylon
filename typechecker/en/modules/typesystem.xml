@@ -1572,8 +1572,8 @@ Description doc(String description) {
                 <literal>MemberConcreteClass&lt;X,Y,P...&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
-        -->
         
     </section>
+    -->
         
 </chapter>
