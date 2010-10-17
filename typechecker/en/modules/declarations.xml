@@ -2694,24 +2694,28 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
 doc "A program element visible to all 
      compilation units."
-public object publicVisibility extends Case() 
+public object publicVisibility 
+        extends Case() 
         implements Visibility {}
 
 doc "A program element visible to  
      compilation units in the same
      module."
-public object moduleVisibility extends Case() 
+public object moduleVisibility 
+        extends Case() 
         implements Visibility {}
 
 doc "A program element visible to  
      compilation units in the same
      package."
-public object packageVisibility extends Case() 
+public object packageVisibility 
+        extends Case() 
         implements Visibility {}
 
 doc "A program element local to the
      block in which it is defined."
-public object blockVisibility extends Case() 
+public object blockVisibility 
+        extends Case() 
         implements Visibility {}</programlisting>
 
 <!--
