@@ -2669,6 +2669,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <literal>shared</literal>, <literal>internal</literal> so they are all adjectives 
         rather than nouns?</para></comment>
         
+        <comment><para>TODO: Should we add the visibility modifier <literal>protected</literal>,
+        which specifies that the declaration is visible to the immediately containing 
+        body?</para></comment>
+        
         <para>The visibility of a nested declaration may not be less strict than the 
         visibility of the body (class body, interface body, or block) which contains 
         it. For example, a <literal>package</literal>-visibility class may not contain 
