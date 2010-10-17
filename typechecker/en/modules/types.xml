@@ -2495,7 +2495,7 @@ while (i<=max) {
         <para>An instance of <literal>MemberConcreteClass</literal> represents a member 
         class that can be directly instantiated.</para>
         
-        <programlisting><![CDATA[public interface MemberClass<X, Y, P...> 
+        <programlisting><![CDATA[public interface MemberConcreteClass<X, Y, P...> 
         satisfies MemberType<X, Y>, Member<X, ConcreteClass<Y,P...>> {
     
     public Parameter<Object>[] parameters;
