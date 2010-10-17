@@ -2686,27 +2686,33 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <para>The class <literal>ceylon.language.Visibility</literal> defines the visibility 
         levels:</para>
         
-        <programlisting>public class Visibility {
+        <programlisting>public interface Visibility 
+        of publicVisibility, 
+           moduleVisibility, 
+           packageVisibility, 
+           blockVisibility {}
         
-    doc "A program element visible to all 
-         compilation units."
-    case public, 
-    
-    doc "A program element visible to  
-         compilation units in the same
-         module."
-    case module, 
+doc "A program element visible to all 
+     compilation units."
+public object publicVisibility extends Case() 
+        implements Visibility {}
 
-    doc "A program element visible to  
-         compilation units in the same
-         package."
-    case package, 
+doc "A program element visible to  
+     compilation units in the same
+     module."
+public object moduleVisibility extends Case() 
+        implements Visibility {}
 
-    doc "A program element local to the
-         block in which it is defined."
-    case block; 
-    
-}</programlisting>
+doc "A program element visible to  
+     compilation units in the same
+     package."
+public object packageVisibility extends Case() 
+        implements Visibility {}
+
+doc "A program element local to the
+     block in which it is defined."
+public object blockVisibility extends Case() 
+        implements Visibility {}</programlisting>
 
 <!--
     doc "A program element visible to  
@@ -2722,21 +2728,21 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
      annotation." 
 annotation { of=any; occurs=onceEachElement; } 
 public Visibility public() { 
-    return public 
+    return publicVisibility
 }</programlisting>
 
         <programlisting>doc "The |module| visibility modifier 
      annotation."
 annotation { of=any; occurs=onceEachElement; } 
 public Visibility module() { 
-    return module
+    return moduleVisibility
 }</programlisting>
 
         <programlisting>doc "The |package| visibility modifier 
      annotation."
 annotation { of=any; occurs=onceEachElement; } 
 public Visibility package() { 
-    return package 
+    return packageVisibility
 }</programlisting>
         
         <!--
