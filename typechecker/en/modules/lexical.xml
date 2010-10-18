@@ -76,6 +76,9 @@
         <programlisting>LowercaseChar := "a".."z" | "_"</programlisting>
         <programlisting>UppercaseChar := "A".."Z"</programlisting>
         
+        <para>All identifiers are case sensitive: <literal>Person</literal> and
+        <literal>person</literal> are two different legal identifiers.</para>
+        
         <para>The Ceylon lexer distinguishes identifiers which begin with an initial 
         uppercase character from identifiers which begin with an initial lowercase
         character or underscore.</para>
