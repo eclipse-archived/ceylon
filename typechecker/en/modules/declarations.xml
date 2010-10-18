@@ -1126,12 +1126,20 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         <para>The <literal>of</literal> clause of a class declaration specifies the 
         list of cases of the class.</para>
         
-        <programlisting>public abstract class Node(String name) of root, Branch, Leaf extends Case() { ... }</programlisting>
-                
-        <programlisting>public object true extends Boolean() {}
-public object false extends Boolean() {}
-public abstract class Boolean() of true, false extends Case() {}</programlisting>
+        <programlisting>public abstract class Boolean() 
+        of true, false 
+        extends Case() {}
+        
+public object true extends Boolean() {}
+public object false extends Boolean() {}</programlisting>
 
+        <programlisting>public abstract class Node&lt;T&gt;(String name) 
+        of Branch, Leaf 
+        extends Case(name) { ... }
+        
+public class Leaf&lt;T&gt;(String name, T value) extends Node&lt;T&gt;(name) { ... }
+public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; right) extends Node&lt;T&gt;(name) { ... }</programlisting>
+                
         <para>The cases may be classes, or anonymous classes. A case may be an 
         <literal>abstract</literal> class. Each case must be a subclass of the
         class.</para>
