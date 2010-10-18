@@ -150,8 +150,6 @@ public class LowerCeylon extends TreeTranslator {
         } 
         
         // Handle conversions to and from Mutable.
-    	// We know that srcType != dstType, and the type parameters
-    	// have been checked earlier in the compilation.
         // First we strip Mutable from the source by applying get().
   
         // Mutable -> immutable conversion

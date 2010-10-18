@@ -800,6 +800,12 @@ public class Gen {
         public void visit(CeylonTree.MethodDeclaration meth) {
         	throw new RuntimeException("Nested methods are not supported");
         }
+        public void visit(CeylonTree.PostfixExpression expr) {
+            stmts.append(at(expr).Exec(convert(expr)));
+        }
+        public void visit(CeylonTree.PrefixExpression expr) {
+            stmts.append(at(expr).Exec(convert(expr)));
+        }
     }
     
     List<JCStatement> convertStmts(List<CeylonTree> stmts) {
@@ -814,7 +820,46 @@ public class Gen {
         return buf.toList();
     }
 
-    long counter = 0;
+    JCExpression convert(PostfixExpression expr) {
+        int operator = expr.operator.operatorKind;
+        String methodName;
+        switch (operator) {
+        case CeylonParser.INCREMENT:
+        	methodName = "postIncrement";
+        	break;
+        case CeylonParser.DECREMENT:
+        	methodName = "postDecrement";
+        	break;
+        default:
+        	throw new RuntimeException(expr.toString());
+        }
+        return convert(expr, methodName);
+	}
+    
+    JCExpression convert(PrefixExpression expr) {
+        int operator = expr.operator.operatorKind;
+        String methodName;
+        switch (operator) {
+        case CeylonParser.INCREMENT:
+        	methodName = "preIncrement";
+        	break;
+        case CeylonParser.DECREMENT:
+        	methodName = "preDecrement";
+        	break;
+        default:
+        	throw new RuntimeException(expr.toString());
+        }
+        return convert(expr, methodName);
+	}
+
+    JCExpression convert(UnaryExpression expr, String methodName) {
+        JCExpression operand = convertExpression(expr.operand);
+    	return at(expr).Apply(null, makeSelect("ceylon", "Mutable", methodName),
+    			List.<JCExpression>of(operand));
+    }
+   
+    
+	long counter = 0;
     
     String tempName () {
     	String result = "$ceylontmp" + counter;
@@ -952,6 +997,7 @@ public class Gen {
                 result = at(access).Select(convertExpression(op), names.fromString(memberName.name));
             }
             public void visit(CeylonTree.PrefixExpression expr) {
+            	// FIXME: I don't understand this
                 visit(expr.operator);
             }
             public void visitDefault(CeylonTree tree) {
@@ -1030,7 +1076,10 @@ public class Gen {
                 result = convert(op);
             }
             public void visit(PrefixExpression expr) {
-                expr.operator.accept(this);
+                result = convert(expr);
+            }
+            public void visit(PostfixExpression expr) {
+                result = convert(expr);
             }
             // NB spec 1.3.11 says "There are only two types of numeric
             // literals: literals for Naturals and literals for Floats."

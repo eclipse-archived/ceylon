@@ -16,4 +16,8 @@ public interface Numeric<N> extends Number, Comparable<N> {
 
     /** The binary |**| operator. */
     public N power(N number);
+
+    /** The ++ and -- operators.  */
+    public N succ();
+    public N pred();
 }

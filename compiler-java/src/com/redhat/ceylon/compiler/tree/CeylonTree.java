@@ -2190,35 +2190,32 @@ public abstract class CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
-    /**
-     * A postfix expression
-     */
-    public static class PostfixExpression extends CeylonTree {
-        Operator operator;
+    public abstract static class UnaryExpression extends CeylonTree {
+    	public Operator operator;
+        public CeylonTree operand;
         void append(CeylonTree expr) {
             if (expr instanceof Operator) {
                 assert(operator == null);
                 operator = (Operator)expr;
+            } else {
+            	assert operand == null;
+            	operand = expr;
             }
         }
+    }
+        
+    /**
+     * A postfix expression
+     */
+    public static class PostfixExpression extends UnaryExpression {
         public void accept(Visitor v) { v.visit(this); }
     }
 
     /**
      * A prefix expression
      */
-    public static class PrefixExpression extends CeylonTree {
-        public Operator operator;
-        void append(CeylonTree expr) {
-            if (operator == null) {
-                assert expr instanceof Operator;
-                operator = (Operator) expr;
-            }
-            else {
-                operator.append(expr);
-            }
-        }
-        public void accept(Visitor v) { v.visit(this); }
+    public static class PrefixExpression extends UnaryExpression {
+    	public void accept(Visitor v) { v.visit(this); }
     }
 
     /**
