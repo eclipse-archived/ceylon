@@ -92,4 +92,12 @@ public final class Integer
     public int intValue() {
         return (int)value;
     }
+
+    public ceylon.Integer pred() {
+        return Integer.instance(value - 1);
+    }
+
+    public ceylon.Integer succ() {
+        return Integer.instance(value + 1);
+    }
 }

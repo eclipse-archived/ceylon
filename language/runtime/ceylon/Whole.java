@@ -63,4 +63,12 @@ public final class Whole
     public ceylon.Decimal decimal() {
         throw new RuntimeException("not implemented");
     }
+
+    public ceylon.Whole pred() {
+        throw new RuntimeException("not implemented");
+    }
+
+    public ceylon.Whole succ() {
+        throw new RuntimeException("not implemented");
+    }
 }
