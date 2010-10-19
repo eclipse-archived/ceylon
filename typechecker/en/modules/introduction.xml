@@ -2,17 +2,18 @@
     <title>Introduction</title>
     
     <para>
-    Ceylon is a statically-typed, general-purpose, object-oriented language
-    featuring a syntax similar to Java and C#. Ceylon programs execute in any 
-    standard Java Virtual Machine and, like Java, take advantage of the memory 
-    management and concurrency features of that environment. The Ceylon 
-    compiler is able to compile Ceylon code that calls Java classes or 
-    interfaces, and Java code that calls Ceylon classes or interfaces. Ceylon 
-    improves upon the Java language and type system to reduce verbosity and 
-    increase typesafety compared to Java and C#. Ceylon encourages a more 
-    functional style of programming, resulting in code which is easier to 
-    reason about, and easier to refactor. Moreover, Ceylon provides its 
-    own native SDK as a replacement for the Java platform class libraries.
+    Ceylon is a general-purpose, statically-typed, object-oriented, imperative, 
+    higher-order language featuring a syntax similar to Java and C#. Ceylon 
+    programs execute in any standard Java Virtual Machine and, like Java, take 
+    advantage of the memory management and concurrency features of that 
+    environment. The Ceylon compiler is able to compile Ceylon code that calls 
+    Java classes or interfaces, and Java code that calls Ceylon classes or 
+    interfaces. Ceylon improves upon the Java language and type system to 
+    reduce verbosity and increase typesafety compared to Java and C#. Ceylon 
+    encourages a more functional style of programming, resulting in code which 
+    is easier to reason about, and easier to refactor. Moreover, Ceylon 
+    provides its own native SDK as a replacement for the Java platform class 
+    libraries.
     </para>
     
     <section id="languageoverview">
@@ -139,7 +140,7 @@
     </section>
     
     <section id="firstclassfunctions">
-    <title>First-class functions</title>
+    <title>First-class functions and higher-order programming</title>
     
     <para>
     Ceylon supports first-class function types and higher-order functions, 
@@ -298,6 +299,12 @@
     and by the much more complex features found in aspect oriented languages
     like Aspect J. Ceylon does not, however, support aspect oriented
     programming as a language feature.
+    </para>
+    
+    <para>
+    Even better, Ceylon features Haskell-style <emphasis>type classes</emphasis>,
+    allowing an even more exotic form of generic programing using polymorphic 
+    abstraction over metatypes.
     </para>
     
     </section>

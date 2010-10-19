@@ -50,7 +50,7 @@
     <para>Java is a simple language to learn and Java code is easy to read and
     understand. Java provides a level of typesafety that is appropriate for
     business computing and enables sophisticated tooling with features like
-    refactoring support, code completion and code navigation. Ceylon aims to 
+    refactoring support, code completion, and code navigation. Ceylon aims to 
     retain the overall model of Java, while getting rid of some of Java's warts,
     including: primitive types, arrays, constructors, getters/setters, checked 
     exceptions, raw types, wildcard types, thread synchronization, finalizers, 
