@@ -120,7 +120,6 @@ typeDeclaration
     -> ^(ALIAS_DECL aliasDeclaration)
     | objectDeclaration
     -> ^(OBJECT_DECL objectDeclaration)
-    | unionDeclaration
     ;
 
 importDeclaration
@@ -219,7 +218,6 @@ declarationKeyword
     | 'interface' 
     | 'class' 
     | 'object'
-    | 'choice'
     | 'alias'
     ;
 
@@ -343,9 +341,12 @@ aliasDeclaration
         'alias'!
         typeName
         typeParameters?
-        satisfiedTypes?
         typeConstraints?
-        ';'!
+        aliasBody
+    ;
+
+aliasBody
+    : '='! type ';'!
     ;
 
 classDeclaration
@@ -361,17 +362,6 @@ classDeclaration
         satisfiedTypes?
         typeConstraints?
         classBody
-    ;
-
-unionDeclaration
-    :
-        'choice'!
-        typeName
-        typeParameters?
-        caseTypes
-        satisfiedTypes?
-        typeConstraints?
-        ';'
     ;
 
 objectDeclaration
@@ -1206,10 +1196,6 @@ BREAK
     :   'break'
     ;
 
-CHOICE
-    :   'choice'
-    ;
- 
 CASE
     :   'case'
     ;
