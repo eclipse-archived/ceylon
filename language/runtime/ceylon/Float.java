@@ -71,4 +71,12 @@ public final class Float
     public ceylon.Decimal decimal() {
         throw new RuntimeException("not implemented");
     }
+
+    public ceylon.Float pred() {
+        return Float.instance(value - 1);
+    }
+
+    public ceylon.Float succ() {
+        return Float.instance(value + 1);
+    }
 }
