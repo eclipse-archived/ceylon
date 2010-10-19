@@ -213,7 +213,7 @@ setGreeting(greeting);</programlisting>
     </itemizedlist>
     
     <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
-    values, since <literal>Boolean</literal> is just a union of the anonymous classes 
+    values, since <literal>Boolean</literal> is just a class with the cases 
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para>
     

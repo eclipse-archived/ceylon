@@ -102,7 +102,7 @@
         
         <para><literal>
         import implicit
-        class interface choice alias object
+        class interface alias object
         satisfies extends abstracts of
         in out
         given

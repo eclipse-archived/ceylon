@@ -54,7 +54,7 @@ Body?</programlisting>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
-        <programlisting>TypeDeclaration := Class | Object | Interface | Union | Alias</programlisting>
+        <programlisting>TypeDeclaration := Class | Object | Interface | Alias</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -1172,6 +1172,7 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         
     </section>
     
+    <!--  
     <section id="unions">
         <title>Unions</title>
         
@@ -1194,9 +1195,6 @@ SatisfiedTypes?
 TypeConstraints?
 ";"</programlisting>
 
-        <!--<section id="unionbodies">
-            <title>Union bodies</title>-->
-            
         <para>The <literal>of</literal> clause of a union declaration specifies the 
         list of cases of the union type.</para>
         
@@ -1207,24 +1205,6 @@ TypeConstraints?
         <para>The cases may be interfaces, classes, or anonymous classes. A case may 
         be an <literal>abstract</literal> class.</para>
         
-        <!-- {
-    
-    abstract class Parent() {}
-    
-    object root extends Parent() {}
-    
-    class Branch(String name, Parent parent) 
-            extends ParentNode() {
-        String name = name;
-        String parent = parent;
-    }
-    
-    class Leaf(String name, Parent parent) { 
-        String name = name;
-        String parent = parent;
-    }
-    
-}</programlisting> -->
 
         <para>If an anonymous class is a case of a union type, it must extend
         <literal>ceylon.language.Case</literal>, directly or indirectly.</para>
@@ -1233,48 +1213,6 @@ TypeConstraints?
 public object false extends Case() {}
 public choice Boolean of true, false;</programlisting>
         
-        <!--  
-        <programlisting>public class DayOfWeek() {
-    case sun,
-    case mon, 
-    case tues, 
-    case wed, 
-    case thurs, 
-    case fri, 
-    case sat; 
-}</programlisting>
-
-        <comment><para>TODO: Should we make the parens on the class declaration optional 
-        in this case: a closed instance list with no parameters?</para></comment>
-
-        <programlisting>public class DayOfWeek(String name) {
-        
-    doc "Sunday"
-    case sun("Sunday"),
-    
-    doc "Monday" 
-    case mon("Monday"),
-    
-    doc "Tuesday"
-    case tues("Tuesday"),
-    
-    doc "Wednesday"
-    case wed("Wednesday"),
-    
-    doc "Thursday"
-    case thurs("Thursday"),
-    
-    doc "Friday"
-    case fri("Friday"),
-    
-    doc "Saturday"
-    case sat("Saturday");
-       
-    public String name = name;
-    
-}</programlisting>
--->
-
         <section id="mutableunions">
             <title>Mutable and immutable unions</title>
             
@@ -1300,33 +1238,6 @@ public choice Boolean of true, false;</programlisting>
         
         <programlisting>public choice Node of root, Branch, Leaf satisfies Observable;</programlisting>
         
-        <!--  {
-    
-    abstract class ObservableNode()
-            satisfies Observable {
-        ...
-    }
-    
-    abstract class Parent() 
-            extends ObservableNode() {}
-    
-    object root extends Parent() {}
-    
-    class Branch(String name, Parent parent) 
-            extends Parent() {
-        String name = name;
-        String parent = parent;
-    }
-    
-    class Leaf(String name, Parent parent) 
-             extends ObservableNode() { 
-        String name = name;
-        String parent = parent;
-        ...
-    }
-    
-}</programlisting> -->
-        
             <para>The types listed after the <literal>satisfies</literal> keyword are 
             the supertypes. All supertypes of a union must be interfaces. A union may 
             not extend the same interface twice (not even with distinct type arguments).</para>
@@ -1334,10 +1245,6 @@ public choice Boolean of true, false;</programlisting>
             <para>Every case of the union must be a subtype of every interface satisfied 
             by the union type.</para>
             
-            <!--para>
-            Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
-            the interface type itself is considered assignable to <literal>lang.Object</literal>.
-            </para-->
         
             <para>A union inherits all members (methods, attributes and member types) 
             of every supertype.</para>
@@ -1347,7 +1254,12 @@ public choice Boolean of true, false;</programlisting>
             
             <para>A union may not inherit two non-<literal>abstract</literal> members of 
             different supertypes that both override the same member of a third supertype.</para>
+        
+        </section>
+        
+    </section>
             
+        -->
         <!-- <programlisting>public interface TransactionPropagation {
     void propagate(Transaction tx);
 }
@@ -1415,10 +1327,6 @@ public choice TransactionPropagationStyle
     
 }</programlisting>-->
         
-        </section>
-        
-    </section>
-    
     <section id="methods">
         <title>Methods</title>
         

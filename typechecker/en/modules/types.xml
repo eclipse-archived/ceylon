@@ -83,7 +83,7 @@
         
 }]]></programlisting>
     
-        <para>All interface and union types are assignable to 
+        <para>All interface <!--and union--> types are assignable to 
         <literal>Object</literal>.</para>
     
         <para>Classes which are optimized by the compiler to Java primitive 
@@ -472,7 +472,7 @@ public abstract class Boolean()
 }]]></programlisting>
         
         <para>The class <literal>Case</literal> is the supertype of anonymous 
-        classes that may be used as cases of unions.</para>
+        classes that may be cases in an <literal>of</literal> clause.</para>
         
         <programlisting><![CDATA[public abstract class Case() 
         satisfies Matcher<Object> {
