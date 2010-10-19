@@ -734,11 +734,9 @@ public class Attr extends JCTree.Visitor {
             }
             
             if (Context.isCeylon()) {
-            	TypeSymbol tsym = v.type.tsym;
-            	String sStr = tsym.toString();
             	// Generate a ceylon temporary whose type comes from its initializer.
-            	if (sStr.equals("ceylon.Any") &&
-            			v.type.tag == CLASS) {
+            	if (v.type == syms.ceylonAnyType) {
+            	    assert v.type.tag == CLASS;
             		v.type = tree.init.type;
             	}
             }

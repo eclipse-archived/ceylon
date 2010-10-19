@@ -351,7 +351,7 @@ public class Types {
     		// The placeholder type for ceylon temporaries.  It only exists
     		// while a temporary is declared, and will be replaced by the
     		// type of an expression.
-    		if (sStr.equals("ceylon.Any"))
+    		if (base == syms.ceylonAnyType)
     			return true;
     	}
 

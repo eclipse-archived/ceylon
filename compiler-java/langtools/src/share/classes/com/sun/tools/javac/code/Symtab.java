@@ -147,6 +147,7 @@ public class Symtab {
     public final Type proprietaryType;
     public final Type systemType;
     public final Type ceylonExtensionType;
+    public final Type ceylonAnyType;
 
     /** The symbol representing the length field of an array.
      */
@@ -438,6 +439,7 @@ public class Symtab {
         inheritedType = enterClass("java.lang.annotation.Inherited");
         systemType = enterClass("java.lang.System");
         ceylonExtensionType = enterClass("ceylon.Extension");
+        ceylonAnyType = enterClass("ceylon.Any");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);

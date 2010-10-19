@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.util.JavacFileManager;
@@ -65,6 +66,7 @@ public class Gen {
     JavacTaskImpl task;
     Options options;
     LineMap map;
+    Symtab syms;
     
     JCCompilationUnit jcCompilationUnit;
 
@@ -106,6 +108,7 @@ public class Gen {
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         resolve = Resolve.instance(context);
+        syms = Symtab.instance(context);
     }
 
     JCTree.Factory at(CeylonTree t) {
@@ -836,7 +839,7 @@ public class Gen {
 
     		JCExpression type;
     		if (exists.type == null) {
-    			type = makeSelect("ceylon", "Any");
+    			type = make.Ident(syms.ceylonAnyType.tsym);
     		} else {    		
     			type = variableType(exists.type, null);
     		}
