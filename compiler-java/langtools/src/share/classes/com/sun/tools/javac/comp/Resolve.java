@@ -1197,14 +1197,6 @@ public class Resolve {
             if (sym.kind >= WRONG_MTHS)
                 sym = findFun(env, name, argtypes, typeargtypes, true, env.info.varArgs=true);
         }
-        // Look for a top-level method
-        if (Context.isCeylon() && sym.kind >= WRONG_MTHS) {
-        	Symbol site = findIdent(env, name, TYP | VAR);
-        	if (site.exists()) {
-        		sym = resolveQualifiedMethod(pos, env, site.type, names.fromString("run"),
-        				argtypes, typeargtypes);
-        	}
-        }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(
                 sym, pos, env.enclClass.sym.type, name, false, argtypes, typeargtypes);

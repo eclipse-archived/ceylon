@@ -822,9 +822,11 @@ public class Gen {
         		JCClassDecl innerDecl = (JCClassDecl)def;
         		stmts.append(innerDecl);
         		JCExpression id = makeIdent(decl.nameAsString());
-            	stmts.append(at(decl).VarDef(make.Modifiers(0), names.fromString(decl.nameAsString()), make.Ident(innerDecl.name),
+            	stmts.append(at(decl).VarDef(make.Modifiers(FINAL), 
+            			names.fromString(decl.nameAsString()), 
+            			make.Ident(innerDecl.name),
             			at(decl).NewClass(null, null, make.Ident(innerDecl.name), 
-            			List.<JCExpression>nil(), null)));
+            					List.<JCExpression>nil(), null)));
         	}
         }
         

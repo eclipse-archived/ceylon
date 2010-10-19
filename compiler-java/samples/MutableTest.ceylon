@@ -1,11 +1,6 @@
-
-class Test () {
-    Integer value() { return val; }
-
-    Integer val = 99;
-}
-
 public class MutableTest () {
+       Test tt = Test();
+
     optional mutable Integer nnn = 2;
 
     void a(mutable Integer x) {
@@ -54,3 +49,11 @@ public class MutableTest () {
 //     }
 
 }
+
+
+class Test () {
+    Integer value() { return val; }
+
+    Integer val = 99;
+}
+

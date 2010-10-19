@@ -1299,6 +1299,29 @@ public class Attr extends JCTree.Visitor {
             argtypes = attribArgs(tree.args, localEnv);
             typeargtypes = attribTypes(tree.typeargs, localEnv);
 
+            if (Context.isCeylon() && tree.meth.getTag() == JCTree.IDENT) {
+                // Look for a nested method
+            	JCIdent id = (JCIdent)tree.meth;
+            	Symbol site = rs.findIdent(env, id.name, VAR);
+            	if (site.exists()) {
+            		Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
+            				argtypes, typeargtypes);
+            		if (sym.exists()) {
+            			tree.meth = make.at(tree).Select(id, names.fromString("run"));
+            		}
+            	} else {
+            		// Look for a top-level method
+            		site = rs.findIdent(env, id.name, TYP);
+            		if (site.exists()) {
+            			Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
+            					argtypes, typeargtypes);
+            			if (sym.exists()) {
+            				tree.meth = make.at(tree).Select(id, names.fromString("run"));
+            			}
+            		}
+            	}
+            }
+
             // ... and attribute the method using as a prototype a methodtype
             // whose formal argument types is exactly the list of actual
             // arguments (this will also set the method symbol).

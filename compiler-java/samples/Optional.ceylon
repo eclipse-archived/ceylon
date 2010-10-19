@@ -6,7 +6,9 @@ class Optional () {
     two := 3;
 
        public Integer next(Integer? a) {
-           if (exists a) {
+           if (exists a) {	   
+               mutable Integer b := a;
+               b++;
                return a + 1;
            } else {	 
                return -1;
