@@ -821,20 +821,21 @@ public class Gen {
         	for (JCTree def: defs.toList()) {
         		JCClassDecl innerDecl = (JCClassDecl)def;
         		stmts.append(innerDecl);
-        		JCExpression id = makeIdent(decl.nameAsString());
+        		JCExpression id = make.Ident(innerDecl.name);
             	stmts.append(at(decl).VarDef(make.Modifiers(FINAL), 
-            			names.fromString(decl.nameAsString()), 
-            			make.Ident(innerDecl.name),
-            			at(decl).NewClass(null, null, make.Ident(innerDecl.name), 
+            			names.fromString(decl.nameAsString()), id, 
+            			at(decl).NewClass(null, null, id, 
             					List.<JCExpression>nil(), null)));
         	}
         }
-        
 		public void visit(CeylonTree.PostfixExpression expr) {
             stmts.append(at(expr).Exec(convert(expr)));
         }
         public void visit(CeylonTree.PrefixExpression expr) {
             stmts.append(at(expr).Exec(convert(expr)));
+        }
+    	public void visit(CeylonTree.ClassDeclaration decl) {
+            stmts.append(convert(decl));
         }
     }
     
