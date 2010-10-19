@@ -196,6 +196,9 @@ public class LowerCeylon extends TreeTranslator {
     }
     
 	private Type nonOptionalTypeFor(Type t) {
+        // We need to compare symbols (tsym) here rather
+        // than directly comparing types because t has type
+        // parameters and syms.ceylonOptionalType does not.
 		while (t.tsym == syms.ceylonOptionalType.tsym) {
 			List<Type> l = t.getTypeArguments();
 			assert l.length() == 1;
