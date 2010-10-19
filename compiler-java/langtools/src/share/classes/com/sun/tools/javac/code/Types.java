@@ -327,9 +327,8 @@ public class Types {
     		if ((sStr.equals("ceylon.Optional") || (sStr.equals("ceylon.Mutable")))
     				&& base.tag == CLASS) {
 
-    			if (t.baseType().tag == CLASS &&
-    					t.tsym.toString().equals("ceylon.Nothing"))
-    				return true;
+    		    if (t == syms.ceylonNothingType)
+    		        return true;
 
     			ClassType klass = (ClassType)base;
     			List<Type> typeArgs = klass.getTypeArguments();

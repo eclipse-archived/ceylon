@@ -1063,7 +1063,7 @@ public class Gen {
                 result = convertExpression(value.value());
             }
             public void visit(CeylonTree.Null value) {
-            	result = makeSelect("ceylon", "Nothing", "NULL");
+            	result = makeSelect(make.Ident(syms.ceylonNothingType.tsym), "NULL");
             }
             public void visit(CeylonTree.Condition value) {
             	result = convertExpression(value.operand);

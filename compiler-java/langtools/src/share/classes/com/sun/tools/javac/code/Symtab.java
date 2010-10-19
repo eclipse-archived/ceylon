@@ -148,6 +148,7 @@ public class Symtab {
     public final Type systemType;
     public final Type ceylonExtensionType;
     public final Type ceylonAnyType;
+    public final Type ceylonNothingType;
 
     /** The symbol representing the length field of an array.
      */
@@ -440,6 +441,7 @@ public class Symtab {
         systemType = enterClass("java.lang.System");
         ceylonExtensionType = enterClass("ceylon.Extension");
         ceylonAnyType = enterClass("ceylon.Any");
+        ceylonNothingType = enterClass("ceylon.Nothing");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
