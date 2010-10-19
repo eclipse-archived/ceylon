@@ -736,7 +736,7 @@ public class Attr extends JCTree.Visitor {
             if (Context.isCeylon()) {
             	// Generate a ceylon temporary whose type comes from its initializer.
             	if (v.type == syms.ceylonAnyType) {
-            		if (tree.init.type.tsym.toString().equals("ceylon.Mutable")
+            		if (tree.init.type.tsym == syms.ceylonMutableType.tsym
             				&& tree.init instanceof JCMethodInvocation) {
             			JCMethodInvocation meth = (JCMethodInvocation)tree.init;
             			if (! meth.toString().contains("$internalErasedExists")) {
@@ -1883,7 +1883,7 @@ public class Attr extends JCTree.Visitor {
             site = capture(site); // Capture field access
 
         // Insert a get() to access a Mutable
-        if (Context.isCeylon() && site.tsym.toString().equals("ceylon.Mutable")) {
+        if (Context.isCeylon() && site.tsym == syms.ceylonMutableType.tsym) {
 			Scope scope = ((ClassSymbol) site.tsym).members();
 			Scope.Entry entry = scope.lookup(tree.getIdentifier());
         	if (entry.sym == null) {

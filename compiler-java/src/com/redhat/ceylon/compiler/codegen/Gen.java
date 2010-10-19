@@ -522,7 +522,7 @@ public class Gen {
     }
     
     JCExpression mutableType(JCExpression type) {
-    	return make().TypeApply(makeSelect("ceylon", "Mutable"), 
+    	return make().TypeApply(make.Ident(syms.ceylonMutableType.tsym), 
                                 List.<JCExpression>of(type));
     }
     
@@ -887,7 +887,7 @@ public class Gen {
 
     JCExpression convert(UnaryExpression expr, String methodName) {
         JCExpression operand = convertExpression(expr.operand);
-    	return at(expr).Apply(null, makeSelect("ceylon", "Mutable", methodName),
+    	return at(expr).Apply(null, makeSelect(make.Ident(syms.ceylonMutableType.tsym), methodName),
     			List.<JCExpression>of(operand));
     }
    

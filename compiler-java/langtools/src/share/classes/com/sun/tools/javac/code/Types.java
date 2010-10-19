@@ -305,11 +305,8 @@ public class Types {
     			return true;
 
     		Type base = s.baseType();
-    		TypeSymbol tsym = s.tsym;
-    		String sStr = tsym.toString();
-    		String tStr = t.tsym.toString();
 
-    		if (tStr.equals("ceylon.Mutable") &&
+    		if (t.tsym == syms.ceylonMutableType.tsym &&
     				t.baseType().tag == CLASS) {
     			ClassType klass = (ClassType)t.baseType();
     			List<Type> typeArgs = klass.getTypeArguments();
@@ -324,7 +321,7 @@ public class Types {
     			}    			
     		}
     		
-    		if ((tsym == syms.ceylonOptionalType.tsym || (sStr.equals("ceylon.Mutable")))
+    		if ((s.tsym == syms.ceylonOptionalType.tsym || s.tsym == syms.ceylonMutableType.tsym)
     				&& base.tag == CLASS) {
 
     		    if (t == syms.ceylonNothingType)

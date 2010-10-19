@@ -153,8 +153,8 @@ public class LowerCeylon extends TreeTranslator {
         // First we strip Mutable from the source by applying get().
   
         // Mutable -> immutable conversion
-        if (srcType.tsym.toString().equals("ceylon.Mutable")&&
-        		! dstType.tsym.toString().equals("ceylon.Mutable")) {
+        if (srcType.tsym == syms.ceylonMutableType.tsym &&
+                dstType.tsym != syms.ceylonMutableType.tsym) {
         	// Immutable -> mutable conversion
         	List<Type> l = srcType.getTypeArguments();
         	if (l.length() == 1) {
@@ -172,8 +172,8 @@ public class LowerCeylon extends TreeTranslator {
         }
         
         // Immutable -> mutable conversion
-        if (dstType.tsym.toString().equals("ceylon.Mutable") &&
-        		! srcType.tsym.toString().equals("ceylon.Mutable")) {
+        if (dstType.tsym == syms.ceylonMutableType.tsym &&
+                srcType.tsym != syms.ceylonMutableType.tsym) {
         	List<Type> l = dstType.getTypeArguments();
         	if (l.length() == 1) {
         		Type t1 = l.last();
@@ -181,7 +181,6 @@ public class LowerCeylon extends TreeTranslator {
         			Scope scope = ((ClassSymbol) dstType.tsym).members();
         			Scope.Entry entry = scope.lookup(names.fromString("of"));
         			Symbol sym = entry.sym;
-        			MethodSymbol msym = (MethodSymbol) sym;
         			tree = make.Apply(null, make.Select(make.Type(types.erasure(dstType)), sym),
         					List.of(tree));
         			Type newType = new ClassType(Type.noType, List.of(srcType), dstType.tsym);
