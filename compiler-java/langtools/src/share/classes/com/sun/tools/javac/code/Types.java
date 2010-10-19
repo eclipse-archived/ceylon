@@ -324,7 +324,7 @@ public class Types {
     			}    			
     		}
     		
-    		if ((sStr.equals("ceylon.Optional") || (sStr.equals("ceylon.Mutable")))
+    		if ((tsym == syms.ceylonOptionalType.tsym || (sStr.equals("ceylon.Mutable")))
     				&& base.tag == CLASS) {
 
     		    if (t == syms.ceylonNothingType)
