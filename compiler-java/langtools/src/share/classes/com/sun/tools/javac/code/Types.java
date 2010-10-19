@@ -285,7 +285,7 @@ public class Types {
             return null;
 
         for (Symbol sym : ((ClassSymbol) t.tsym).members().getElements()) {
-            if (sym.attribute(syms.ceylonExtensionSym) == null)
+            if (sym.attribute(syms.ceylonExtensionType.tsym) == null)
                 continue;
 
             MethodSymbol msym = (MethodSymbol) sym;
