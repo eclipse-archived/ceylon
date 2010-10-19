@@ -125,13 +125,19 @@ typeDeclaration
 importDeclaration
     : 'import' 
       ( 
-        importPath ('.' wildcard | alias)? ';'
-        -> ^(IMPORT_DECL importPath wildcard? alias?)
-      | 'implicit' importPath ';'
+        'implicit' importPath ';'
         -> ^(EXTENSION_DECL importPath)
+      | (importAlias) => importAlias importPath ';'
+        -> ^(IMPORT_DECL ^(ALIAS_DECL typeName) importPath)
+      | importPath ('.' wildcard)? ';'
+        -> ^(IMPORT_DECL importPath wildcard?)
       )
     ;
-    
+
+importAlias
+    : (typeName|memberName) '='
+    ;
+
 importPath
     : importElement ('.' importElement)*
     -> ^(IMPORT_PATH importElement*)
@@ -140,11 +146,6 @@ importPath
 wildcard
     : '*'
     -> ^(IMPORT_WILDCARD)
-    ;
-    
-alias
-    : 'alias' typeName
-    -> ^(ALIAS_DECL typeName)
     ;
     
 importElement
