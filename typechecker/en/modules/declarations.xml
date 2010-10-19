@@ -1425,7 +1425,7 @@ TypeConstraints?</programlisting>
             
             <para>For example, given the following type alias:</para>
             
-            <programlisting>public alias Page satisfies Callable&lt;Html,HttpRequest&gt;;</programlisting>
+            <programlisting>public alias Page = Callable&lt;Html,HttpRequest&gt;;</programlisting>
             
             <para>We can explicitly specify the callable type of the following method:</para>
             
@@ -2367,15 +2367,16 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        <para>A <emphasis>type alias</emphasis> allows a type to be referred to more 
        compactly.</para>
        
-       <programlisting>Alias := Annotation* "alias" TypeName TypeParams? SatisfiedTypes? TypeConstraints? ";"</programlisting>
+       <programlisting>Alias := Annotation* "alias" TypeName TypeParams? TypeConstraints? AliasBody</programlisting>
        
-       <para>A type alias may satisfy either a single interface or a single class.</para>
+       <programlisting>AliasBody := "=" Type ";"</programlisting>
        
-       <para>The alias type is assignable to the satisfied type, and the satisfied type 
-       is assignable to the alias type.</para>
+       <para>A type alias assigns an alternative name to a type, called the 
+       <emphasis>aliased type</emphasis>. The aliased type may be a produced type
+       (it may have type arguments).</para>
        
-       <programlisting>public alias People satisfies List&lt;Person&gt;;</programlisting>
-       <programlisting>alias Compare&lt;T&gt; satisfies Callable&lt;Comparison,T,T&gt;;</programlisting>
+       <programlisting>public alias People = List&lt;Person&gt;;</programlisting>
+       <programlisting>alias Compare&lt;T&gt; = Callable&lt;Comparison,T,T&gt;;</programlisting>
        
        <para>A shortcut is provided for definition of compilation unit local aliases.</para>
        
@@ -2385,6 +2386,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        alias&mdash;for example, <literal>People</literal>&mdash; returns the metamodel 
        object for the aliased type&mdash;in this case, <literal>List&lt;Person&gt;</literal>.</para>
        
+       <!--
        <comment><para>TODO: Could we reify them? This would let us define type aliases
        that satisfy multiple interfaces. For example:</para>
        <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
@@ -2392,7 +2394,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        
        <comment><para>TODO: Could an alias have its own type class? Only if we decide to
        reify it.</para></comment>
-    
+       -->
+       
     </section>
     
    <section id="declaration modifiers">

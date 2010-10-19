@@ -2362,8 +2362,8 @@ while (i<=max) {
         <comment><para>TODO: should <literal>onSet()</literal> return the new value of
         the attribute instead of being <literal>void</literal>?</para></comment>
 
-        <para>An instance of <literal>Type</literal> represent a type: an interface, class 
-        or alias, together with type arguments.</para>
+        <para>An instance of <literal>Type</literal> represent a type: an interface or 
+        class, together with type arguments.</para>
         
         <programlisting><![CDATA[public interface Type<out X> 
         satisfies Annotated {

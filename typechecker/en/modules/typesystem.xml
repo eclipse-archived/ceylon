@@ -133,10 +133,10 @@
         
         <itemizedlist>
             <listitem>
-                <para>classes, interfaces and aliases share a single namespace,</para>
+                <para>classes, interfaces, and aliases share a single namespace,</para>
             </listitem>
             <listitem>
-                <para>methods, attributes and locals share a single namespace, and</para>
+                <para>methods, attributes, and locals share a single namespace, and</para>
             </listitem>
             <listitem>
                 <para>packages have their own dedicated namespace.</para>
@@ -363,7 +363,7 @@
         
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
-        <para>Types are identified by the name of the type (a class, interface, alias or 
+        <para>Types are identified by the name of the type (a class, interface, alias, or 
         type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
@@ -679,7 +679,7 @@ String? firstWord = words[0];</programlisting>
         
         <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
         itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
-        However, a class, interface, or alias may not extend or implement a type parameter.</para>
+        However, a class or interface may not extend or implement a type parameter.</para>
         
         <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
         A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
@@ -913,7 +913,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
         
         <para>Note that the syntax for a type constraint is essentially the same syntax used 
-        for other type declarations such as class, interface, and type alias declarations.</para>
+        for other type declarations such as class and interface declarations.</para>
         
         <para>There are four kinds of type constraint:</para>
         

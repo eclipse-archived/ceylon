@@ -101,8 +101,8 @@
         <para>The following reserved words are not legal identifier names:</para>
         
         <para><literal>
-        import implicit
-        class interface alias object
+        import implicit alias
+        class interface object
         satisfies extends abstracts of
         in out
         given
