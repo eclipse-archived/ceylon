@@ -587,12 +587,10 @@ public class Person { ... }</programlisting>
     
 }</programlisting>
         
-        <programlisting>public object Center 
+        <programlisting>public object center 
         extends Point() {
-    
     x = 0.0;
     y = 0.0;
-    
 }</programlisting>
         
         <!--
