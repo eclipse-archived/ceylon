@@ -1199,7 +1199,7 @@ public class Resolve {
         }
         // Look for a top-level method
         if (Context.isCeylon() && sym.kind >= WRONG_MTHS) {
-        	Symbol site = findIdent(env, name, TYP | PCK);
+        	Symbol site = findIdent(env, name, TYP | VAR);
         	if (site.exists()) {
         		sym = resolveQualifiedMethod(pos, env, site.type, names.fromString("run"),
         				argtypes, typeargtypes);
