@@ -1,6 +1,17 @@
 <chapter id="introduction">
     <title>Introduction</title>
     
+    <para>This document defines the syntax and semantics of the Ceylon language.
+    The intended audience includes compiler implementors, interested parties
+    who wish to contribute to the evolution of the language, and experienced 
+    developers seeking a precise definition of language constructs. However, in
+    light of the newness of the language, we will begin with an overview of the
+    main features of the language and SDK and a brief introduction to programming 
+    in the language.</para>
+    
+    <section id="languageoverview">
+        <title>Language overview</title>
+    
     <para>
     Ceylon is a general-purpose, statically-typed, object-oriented, imperative, 
     higher-order language featuring a syntax similar to Java and C#. Ceylon 
@@ -15,9 +26,6 @@
     provides its own native SDK as a replacement for the Java platform class 
     libraries.
     </para>
-    
-    <section id="languageoverview">
-        <title>Language overview</title>
     
     <section id="thetypesystem">
     <title>The type system</title>
