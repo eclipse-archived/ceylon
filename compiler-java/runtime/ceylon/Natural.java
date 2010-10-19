@@ -96,4 +96,12 @@ public final class Natural
     public int intValue() {
         return (int)value;
     }
+
+    public ceylon.Natural pred() {
+        return Natural.instance(value - 1);
+    }
+
+    public ceylon.Natural succ() {
+        return Natural.instance(value + 1);
+    }
 }

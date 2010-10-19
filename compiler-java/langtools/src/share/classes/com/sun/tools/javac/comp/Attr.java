@@ -736,7 +736,16 @@ public class Attr extends JCTree.Visitor {
             if (Context.isCeylon()) {
             	// Generate a ceylon temporary whose type comes from its initializer.
             	if (v.type == syms.ceylonAnyType) {
-            	    assert v.type.tag == CLASS;
+            		if (tree.init.type.tsym.toString().equals("ceylon.Mutable")
+            				&& tree.init instanceof JCMethodInvocation) {
+            			JCMethodInvocation meth = (JCMethodInvocation)tree.init;
+            			if (! meth.toString().contains("$internalErasedExists")) {
+            				// Insert a get() to access a Mutable
+            				JCFieldAccess acc = make.Select(tree.init, names.fromString("get"));
+            				tree.init = make.Apply(null, acc, List.<JCExpression>nil());
+            				visitApply((JCMethodInvocation)tree.init);
+            			}
+            		}
             		v.type = tree.init.type;
             	}
             }
@@ -1875,8 +1884,9 @@ public class Attr extends JCTree.Visitor {
 
         // Insert a get() to access a Mutable
         if (Context.isCeylon() && site.tsym.toString().equals("ceylon.Mutable")) {
-        	if (!tree.getIdentifier().contentEquals("get") && 
-        			!tree.getIdentifier().contentEquals("set")) {
+			Scope scope = ((ClassSymbol) site.tsym).members();
+			Scope.Entry entry = scope.lookup(tree.getIdentifier());
+        	if (entry.sym == null) {
         		tree.selected = make.Apply(null, 
         				make.Select(tree.selected, names.fromString("get")),
         				List.<JCExpression>nil());

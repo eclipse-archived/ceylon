@@ -58,4 +58,12 @@ public final class Decimal
     public ceylon.Decimal decimal() {
         return this;
     }
+
+    public ceylon.Decimal pred() {
+        throw new RuntimeException("not implemented");
+    }
+
+    public ceylon.Decimal succ() {
+        throw new RuntimeException("not implemented");
+    }
 }

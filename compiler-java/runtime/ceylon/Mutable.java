@@ -16,4 +16,32 @@ public final class Mutable<T> {
     public static final <T> Mutable<T> of(T t) {
         return new Mutable(t);
     }
+    @SuppressWarnings("unchecked")
+        public static final <N,T extends Numeric<N>> T postIncrement(Mutable<T> op) {
+        Numeric<N> n = op.t;
+        N m = n.succ();
+        op.t = (T)m;
+        return (T)n;
+    }
+    @SuppressWarnings("unchecked")
+        public static final <N,T extends Numeric<N>> T postDecrement(Mutable<T> op) {
+        Numeric<N> n = op.t;
+        N m = n.succ();
+        op.t = (T)m;
+        return (T)n;
+    }
+    @SuppressWarnings("unchecked")
+        public static final <N,T extends Numeric<N>> T preIncrement(Mutable<T> op) {
+        Numeric<N> n = op.t;
+        N m = n.succ();
+        op.t = (T)m;
+        return (T)n;
+    }
+    @SuppressWarnings("unchecked")
+        public static final <N,T extends Numeric<N>> T preDecrement(Mutable<T> op) {
+        Numeric<N> n = op.t;
+        N m = n.succ();
+        op.t = (T)m;
+        return (T)n;
+    }
 }

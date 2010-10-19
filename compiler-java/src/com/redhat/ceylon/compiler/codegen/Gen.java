@@ -197,6 +197,10 @@ public class Gen {
         return type;
     }
     
+    private JCExpression makeIdent(String nameAsString) {
+		return makeIdent(List.of(nameAsString));
+	}
+    
     public void run(CeylonTree.CompilationUnit t) throws IOException {
 
         CeylonFileObject file = new CeylonFileObject(fileManager.getFileForInput(t.source.path));
@@ -232,67 +236,9 @@ public class Gen {
         	public void visit(CeylonTree.ClassDeclaration decl) {
                 defs.append(convert(decl));
             }
-            public void visit(CeylonTree.MethodDeclaration decl) {
-                // This is a top-level method.  Generate a class with the
-                // name of the method and a corresponding run() method.
-                
-                final ListBuffer<JCVariableDecl> params = 
-                    new ListBuffer<JCVariableDecl>();
-                final ListBuffer<JCStatement> annotations = 
-                    new ListBuffer<JCStatement>();
-                final Singleton<JCBlock> body = 
-                    new Singleton<JCBlock>();
-                Singleton<JCExpression> restype =
-                    new Singleton<JCExpression>();
-            	final ListBuffer<JCAnnotation> langAnnotations =
-            		new ListBuffer<JCAnnotation>();
-            	final ListBuffer<JCTypeParameter> typeParams =
-            		new ListBuffer<JCTypeParameter>();
-                
-                processMethodDeclaration(decl, params, body, restype, typeParams,
-                        annotations, langAnnotations);
-                
-                JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC|STATIC),
-                        names.fromString("run"),
-                        restype.thing(),
-                        processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
-                        params.toList(),
-                        List.<JCExpression>nil(), body.thing(), null);
-                
-                
-                List<JCTree> innerDefs = List.<JCTree>of(meth);
-                
-                // FIXME: This is wrong because the annotation registration is done
-                // within the scope of the class, but the annotations are lexically
-                // outside it.
-                if (annotations.length() > 0) {
-                    innerDefs = innerDefs.append(registerAnnotations(annotations.toList()));
-                }
-                
-                // Try and find a class to insert this method into
-                JCClassDecl classDef = null;
-                for (JCTree def : defs) {
-                    if (def.getKind() == Kind.CLASS) {
-                        classDef = (JCClassDecl) def;
-                        break;
-                    }
-                }
-                
-                // No class has been made yet so make one
-                if (classDef == null) {
-                    classDef = at(decl).ClassDef(
-                        at(decl).Modifiers(PUBLIC, List.<JCAnnotation>nil()),
-                        names.fromString(decl.nameAsString()),
-                        List.<JCTypeParameter>nil(),
-                        makeSelect("ceylon", "Object"),
-                        List.<JCExpression>nil(),
-                        List.<JCTree>nil());
-                
-                    defs.append(classDef);
-                }
-                
-                classDef.defs = classDef.defs.appendList(innerDefs);
-            }
+        	public void visit(CeylonTree.MethodDeclaration decl) {
+        		methodClass(decl, defs, true);
+        	}
         });
 
         // Mark overloaded top-level classes and make their names unique
@@ -322,6 +268,75 @@ public class Gen {
         return topLev;
     }
 
+    public void methodClass(CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
+    		boolean topLevel) {
+        // Generate a class with the
+        // name of the method and a corresponding run() method.
+        
+        final ListBuffer<JCVariableDecl> params = 
+            new ListBuffer<JCVariableDecl>();
+        final ListBuffer<JCStatement> annotations = 
+            new ListBuffer<JCStatement>();
+        final Singleton<JCBlock> body = 
+            new Singleton<JCBlock>();
+        Singleton<JCExpression> restype =
+            new Singleton<JCExpression>();
+    	final ListBuffer<JCAnnotation> langAnnotations =
+    		new ListBuffer<JCAnnotation>();
+    	final ListBuffer<JCTypeParameter> typeParams =
+    		new ListBuffer<JCTypeParameter>();
+        
+        processMethodDeclaration(decl, params, body, restype, typeParams,
+                annotations, langAnnotations);
+        
+        JCMethodDecl meth = at(decl).MethodDef(make.Modifiers((topLevel ? PUBLIC|STATIC : 0)),
+                names.fromString("run"),
+                restype.thing(),
+                processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
+                params.toList(),
+                List.<JCExpression>nil(), body.thing(), null);
+        
+        
+        List<JCTree> innerDefs = List.<JCTree>of(meth);
+        
+        // FIXME: This is wrong because the annotation registration is done
+        // within the scope of the class, but the annotations are lexically
+        // outside it.
+        if (annotations.length() > 0) {
+            innerDefs = innerDefs.append(registerAnnotations(annotations.toList()));
+        }
+        
+        // Try and find a class to insert this method into
+        JCClassDecl classDef = null;
+        for (JCTree def : defs) {
+            if (def.getKind() == Kind.CLASS) {
+                classDef = (JCClassDecl) def;
+                break;
+            }
+        }
+        
+        String name;
+        if (topLevel)
+        	name = decl.nameAsString();
+        else
+        	name = tempName();
+        
+        // No class has been made yet so make one
+        if (classDef == null) {
+            classDef = at(decl).ClassDef(
+                at(decl).Modifiers((topLevel ? PUBLIC : 0), List.<JCAnnotation>nil()),
+                names.fromString(name),
+                List.<JCTypeParameter>nil(),
+                makeSelect("ceylon", "Object"),
+                List.<JCExpression>nil(),
+                List.<JCTree>nil());
+        
+            defs.append(classDef);
+        }
+        
+        classDef.defs = classDef.defs.appendList(innerDefs);
+    }
+    
     // FIXME: There must be a better way to do this.
     void processMethodDeclaration(final CeylonTree.MethodDeclaration decl, 
             final ListBuffer<JCVariableDecl> params, 
@@ -800,8 +815,24 @@ public class Gen {
         public void visit(CeylonTree.Operator op) {
             stmts.append(at(op).Exec(convert(op)));
         }            
-        public void visit(CeylonTree.MethodDeclaration meth) {
-        	throw new RuntimeException("Nested methods are not supported");
+        public void visit(CeylonTree.MethodDeclaration decl) {
+        	final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
+        	methodClass(decl, defs, false);
+        	for (JCTree def: defs.toList()) {
+        		JCClassDecl innerDecl = (JCClassDecl)def;
+        		stmts.append(innerDecl);
+        		JCExpression id = makeIdent(decl.nameAsString());
+            	stmts.append(at(decl).VarDef(make.Modifiers(0), names.fromString(decl.nameAsString()), make.Ident(innerDecl.name),
+            			at(decl).NewClass(null, null, make.Ident(innerDecl.name), 
+            			List.<JCExpression>nil(), null)));
+        	}
+        }
+        
+		public void visit(CeylonTree.PostfixExpression expr) {
+            stmts.append(at(expr).Exec(convert(expr)));
+        }
+        public void visit(CeylonTree.PrefixExpression expr) {
+            stmts.append(at(expr).Exec(convert(expr)));
         }
     }
     
@@ -817,7 +848,51 @@ public class Gen {
         return buf.toList();
     }
 
-    long counter = 0;
+    JCExpression convert(PostfixExpression expr) {
+        int operator = expr.operator.operatorKind;
+        String methodName;
+        switch (operator) {
+        case CeylonParser.INCREMENT:
+        	methodName = "postIncrement";
+        	break;
+        case CeylonParser.DECREMENT:
+        	methodName = "postDecrement";
+        	break;
+        default:
+        	throw new RuntimeException(expr.toString());
+        }
+        return convert(expr, methodName);
+	}
+    
+    JCExpression convert(PrefixExpression expr) {
+        int operator = expr.operator.operatorKind;
+        String methodName;
+        switch (operator) {
+        case CeylonParser.INCREMENT:
+        	methodName = "preIncrement";
+        	break;
+        case CeylonParser.DECREMENT:
+        	methodName = "preDecrement";
+        	break;
+        case CeylonParser.MINUS:
+        	// ????  Make a new operator with expr.operand as its operands.
+        	// This is rather evil.
+        	expr.operator.operands = List.of(expr.operand);
+        	return convert(expr.operator);
+        default:
+        	throw new RuntimeException(expr.toString());
+        }
+        return convert(expr, methodName);
+	}
+
+    JCExpression convert(UnaryExpression expr, String methodName) {
+        JCExpression operand = convertExpression(expr.operand);
+    	return at(expr).Apply(null, makeSelect("ceylon", "Mutable", methodName),
+    			List.<JCExpression>of(operand));
+    }
+   
+    
+	long counter = 0;
     
     String tempName () {
     	String result = "$ceylontmp" + counter;
@@ -955,6 +1030,7 @@ public class Gen {
                 result = at(access).Select(convertExpression(op), names.fromString(memberName.name));
             }
             public void visit(CeylonTree.PrefixExpression expr) {
+            	// FIXME: I don't understand this
                 visit(expr.operator);
             }
             public void visitDefault(CeylonTree tree) {
@@ -1033,7 +1109,10 @@ public class Gen {
                 result = convert(op);
             }
             public void visit(PrefixExpression expr) {
-                expr.operator.accept(this);
+                result = convert(expr);
+            }
+            public void visit(PostfixExpression expr) {
+                result = convert(expr);
             }
             // NB spec 1.3.11 says "There are only two types of numeric
             // literals: literals for Naturals and literals for Floats."
