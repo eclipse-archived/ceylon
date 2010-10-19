@@ -78,10 +78,10 @@ Body?</programlisting>
         Code in one compilation unit may refer to a toplevel declaration in another 
         compilation unit in the same package without explicitly importing the declaration. 
         It may refer to a declaration defined in a compilation unit in another package 
-        only if it explicitly imports the declaration using the <literal>import</literal> 
-        statement.</para>
+        only if it explicitly <emphasis>imports</emphasis> the declaration using the 
+        <literal>import</literal> statement.</para>
         
-        <programlisting>Import := "import" "implicit"? FullPackageName "." ImportSpec ";"</programlisting>
+        <programlisting>Import := "import" ImportSpec ";"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>
@@ -113,14 +113,16 @@ Body?</programlisting>
         
         <programlisting>ImportSpec := TypeSpec | MethodAttributeSpec | PackageMembersSpec | TypeMembersSpec</programlisting>
         
+        <para>The name of a member type must be qualified by the names of its containing
+        types.</para>
+        
+        <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
+                
         <para>Note that toplevel types, toplevel methods, toplevel attributes, <!--enumerated instances,--> 
         and extensions in the module <literal>ceylon.language</literal> never need to be 
         explicitly imported. They are implicitly imported by every compilation unit.</para>
         
-        <para>If the <literal>implicit</literal> modifier appears, the import statement
-        must specify a single toplevel type or method annotated <literal>extension</literal>,
-        and no <literal>alias</literal> clause may appear.</para>
-                
+        <!--
         <comment><para>TODO: Would it be better to specify that there is at most a single 
         <literal>import</literal> statement per source file, for example:</para>
         <programlisting>import my.query.Order, ceylon.collection.*, java.util.Map.Entry alias MapEntry;</programlisting></comment>
@@ -129,25 +131,22 @@ Body?</programlisting>
         in single quotes, as they would need to appear in the body of the source file,
         for example: <literal>'my.query.Order'</literal>, <literal>'ceylon.collection.*'</literal>,
         <literal>'java.util.Map.Entry' alias MapEntry</literal>.</para></comment>
+        -->
         
         <section id="fullyexplicitimports">
             <title>Fully explicit imports</title>
         
-        <para>An import statement that specifies a package name followed by a type
-        name imports the type with that name from the given package.</para>
-        
-        <programlisting>TypeSpec := QualifiedTypeName ("alias" TypeName)?</programlisting>
-        
-        <para>The name of a member type must be qualified by the names of its containing
-        types.</para>
-        
-        <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
-                
-        <para>An import statement that specifies a package name followed by a method
-        name imports the toplevel method or attribute with that name from the given 
+        <para>An <literal>import</literal> statement that specifies a package name 
+        followed by a type name imports the type with that name from the given 
         package.</para>
         
-        <programlisting>MethodAttributeSpec := MemberName ("alias" MemberName)?</programlisting>
+        <programlisting>TypeSpec := (TypeAlias | "implicit")? FullPackageName "." QualifiedTypeName</programlisting>
+        
+        <para>An <literal>import</literal> statement that specifies a package name 
+        followed by a method or attribute name imports the toplevel method or 
+        attribute with that name from the given package.</para>
+        
+        <programlisting>MethodAttributeSpec := (MethodAttributeAlias | "implicit")? FullPackageName "." MemberName</programlisting>
         
         <!--
         <para>An import statement that specifies a package name followed by a type
@@ -157,15 +156,23 @@ Body?</programlisting>
         <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
         -->
         
-        <para>The optional <literal>alias</literal> clause in a fully-explicit import
-        allows resolution of cross-namespace declaration name collisions.</para>
+        <para>If the <literal>implicit</literal> modifier appears, the 
+        <literal>import</literal> statement must specify a toplevel type or method 
+        annotated <literal>extension</literal>.</para>
+                
+        <para>The optional alias clause in a fully-explicit import allows resolution 
+        of cross-namespace declaration name collisions.</para>
         
-        <programlisting>import java.util.Map.Entry alias MapEntry;</programlisting>
+        <programlisting>TypeAlias := TypeName "="</programlisting>
+
+        <programlisting>MethodAttributeAlias := MemberName "="</programlisting>
         
-        <programlisting>import my.math.fibonnacciNumber alias fib;</programlisting>
+        <para>An alias assigns a different name to the imported declaration.</para>
         
-        <programlisting>import my.query.Order.descending alias desc;</programlisting>
+        <programlisting>import MapEntry = java.util.Map.Entry;</programlisting>
         
+        <programlisting>import fib = my.math.fibonnacciNumber;</programlisting>
+                
         </section>
         
         <section id="wildcardimports">
@@ -173,15 +180,15 @@ Body?</programlisting>
         
         <para>The character <literal>*</literal> acts as a wildcard in import statements.</para>
         
-        <para>An import statement that specifies a package name followed by a wildcard
-        imports all toplevel declarations of the package.</para>
+        <para>An <literal>import</literal> statement that specifies a package name 
+        followed by a wildcard imports all toplevel declarations of the package.</para>
         
-        <programlisting>PackageMembersSpec := "*"</programlisting>
+        <programlisting>PackageMembersSpec := FullPackageName "." "*"</programlisting>
         
-        <para>An import statement that specifies a type name followed by a wildcard
-        imports all member types of the type.</para>
+        <para>An <literal>import</literal> statement that specifies a type name 
+        followed by a wildcard imports all member types of the type.</para>
                 
-        <programlisting>TypeMembersSpec := QualifiedTypeName "." "*"</programlisting>
+        <programlisting>TypeMembersSpec := FullPackageName "." QualifiedTypeName "." "*"</programlisting>
         
         <para>Overuse of wildcard imports is discouraged.</para>
         
@@ -2380,7 +2387,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
        
        <para>A shortcut is provided for definition of compilation unit local aliases.</para>
        
-       <programlisting>import java.util.List alias JavaList;</programlisting>
+       <programlisting>import JavaList = java.util.List;</programlisting>
        
        <para>Type aliases are not reified types. The metamodel reference for a type
        alias&mdash;for example, <literal>People</literal>&mdash; returns the metamodel 
