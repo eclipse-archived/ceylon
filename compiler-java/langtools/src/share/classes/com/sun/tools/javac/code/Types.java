@@ -1608,7 +1608,7 @@ public class Types {
             @Override
             public Type visitClassType(ClassType t, Void ignored) {
                	// Erase ceylon.Optional<T> to T
-            	if (Context.isCeylon() && t.tsym.toString().equals("ceylon.Optional")) {
+            	if (Context.isCeylon() && t.tsym == syms.ceylonOptionalType.tsym) {
             		List<Type> l = t.getTypeArguments();
             		if (l.length() == 1) {
             			Type t1 = l.last();

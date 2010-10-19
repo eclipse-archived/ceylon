@@ -197,8 +197,8 @@ public class LowerCeylon extends TreeTranslator {
         return tree;
     }
     
-	static private Type nonOptionalTypeFor(Type t) {
-		while (t.tsym.toString().equals("ceylon.Optional")) {
+	private Type nonOptionalTypeFor(Type t) {
+		while (t.tsym == syms.ceylonOptionalType.tsym) {
 			List<Type> l = t.getTypeArguments();
 			assert l.length() == 1;
 			t = l.last();

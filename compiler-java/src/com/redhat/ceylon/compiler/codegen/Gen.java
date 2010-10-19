@@ -502,7 +502,7 @@ public class Gen {
     }
     
     JCExpression optionalType(JCExpression type) {
-    	return make().TypeApply(makeSelect("ceylon", "Optional"), 
+    	return make().TypeApply(make.Ident(syms.ceylonOptionalType.tsym), 
                                 List.<JCExpression>of(type));
     }
     

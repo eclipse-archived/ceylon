@@ -149,6 +149,7 @@ public class Symtab {
     public final Type ceylonExtensionType;
     public final Type ceylonAnyType;
     public final Type ceylonNothingType;
+    public final Type ceylonOptionalType;
 
     /** The symbol representing the length field of an array.
      */
@@ -442,6 +443,7 @@ public class Symtab {
         ceylonExtensionType = enterClass("ceylon.Extension");
         ceylonAnyType = enterClass("ceylon.Any");
         ceylonNothingType = enterClass("ceylon.Nothing");
+        ceylonOptionalType = enterClass("ceylon.Optional");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
