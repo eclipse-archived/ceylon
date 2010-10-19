@@ -172,13 +172,26 @@ Body?</programlisting>
         <programlisting>import MapEntry = java.util.Map.Entry;</programlisting>
         
         <programlisting>import fib = my.math.fibonnacciNumber;</programlisting>
+        
+        <comment><para>TODO: would it be better to organize the import list by 
+        package:</para>
+        <programlisting>import ceylon.collection
+    alias Set
+    alias Strings = List&lt;String&gt;;
+
+import com.acme.xyz
+    alias Inv = Invoice
+    alias Rep = Report
+    implicit InvoiceFormat
+    implicit ReportFormat;</programlisting></comment>
                 
         </section>
         
         <section id="wildcardimports">
             <title>Wildcard imports</title>
         
-        <para>The character <literal>*</literal> acts as a wildcard in import statements.</para>
+        <para>The character <literal>*</literal> acts as a wildcard in import 
+        statements.</para>
         
         <para>An <literal>import</literal> statement that specifies a package name 
         followed by a wildcard imports all toplevel declarations of the package.</para>
