@@ -127,15 +127,16 @@ importDeclaration
       ( 
         'implicit' importPath ';'
         -> ^(EXTENSION_DECL importPath)
-      | (importAlias) => importAlias importPath ';'
-        -> ^(IMPORT_DECL ^(ALIAS_DECL typeName) importPath)
+      | importAlias importPath ';'
+        -> ^(IMPORT_DECL importAlias importPath)
       | importPath ('.' wildcard)? ';'
         -> ^(IMPORT_DECL importPath wildcard?)
       )
     ;
 
 importAlias
-    : (typeName|memberName) '='
+    : 'alias' (typeName|memberName) '='
+    -> ^(ALIAS_DECL typeName? memberName?)
     ;
 
 importPath
