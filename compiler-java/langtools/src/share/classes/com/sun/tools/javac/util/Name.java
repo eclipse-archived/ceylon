@@ -512,7 +512,7 @@ public class Name implements javax.lang.model.element.Name {
             ex = fromString("ex");
             finalize = fromString("finalize");
             // Ceylon additions
-            ceylon = fromString("ceylon");
+            ceylon_language = fromString("ceylon");
 
         }
 
@@ -650,7 +650,7 @@ public class Name implements javax.lang.model.element.Name {
         public final Name finalize;
 
         // Ceylon additions
-        public final Name ceylon;
+        public final Name ceylon_language;
     }
 
     public boolean isEmpty() {
