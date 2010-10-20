@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 public class ClassAnnotations
 {
 }

@@ -1,6 +1,6 @@
-package ceylon;
+package ceylon.language;
 
-public final class Optional<T> extends ceylon.Nothing {
+public final class Optional<T> extends ceylon.language.Nothing {
     public Optional(T t) {
         this.t = t;
     }

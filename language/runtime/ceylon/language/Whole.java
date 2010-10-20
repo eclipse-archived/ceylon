@@ -1,74 +1,74 @@
-package ceylon;
+package ceylon.language;
 
 public final class Whole
     extends Object
     implements Integral<Whole>, Invertable<Whole> {
 
-    public ceylon.Whole plus(ceylon.Whole op) {
+    public ceylon.language.Whole plus(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole minus(ceylon.Whole op) {
+    public ceylon.language.Whole minus(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole times(ceylon.Whole op) {
+    public ceylon.language.Whole times(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole divided(ceylon.Whole op) {
+    public ceylon.language.Whole divided(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole power(ceylon.Whole op) {
+    public ceylon.language.Whole power(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole remainder(ceylon.Whole op) {
+    public ceylon.language.Whole remainder(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole inverse() {
+    public ceylon.language.Whole inverse() {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Comparison compare(ceylon.Whole op) {
+    public ceylon.language.Comparison compare(ceylon.language.Whole op) {
         throw new RuntimeException("not implemented");
     }
 
     @Extension
-    public ceylon.String string() {
+    public ceylon.language.String string() {
         throw new RuntimeException("not implemented");
     }
 
     // Conversions between numeric types
 
-    public ceylon.Natural natural() {
+    public ceylon.language.Natural natural() {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Integer integer() {
+    public ceylon.language.Integer integer() {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole whole() {
+    public ceylon.language.Whole whole() {
         return this;
     }
 
-    public ceylon.Float floatXXX() {
+    public ceylon.language.Float floatXXX() {
         throw new RuntimeException("not implemented");
     }
 
     @Extension
-    public ceylon.Decimal decimal() {
+    public ceylon.language.Decimal decimal() {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole pred() {
+    public ceylon.language.Whole pred() {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.Whole succ() {
+    public ceylon.language.Whole succ() {
         throw new RuntimeException("not implemented");
     }
 }

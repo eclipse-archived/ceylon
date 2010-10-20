@@ -1,10 +1,10 @@
-package ceylon;
+package ceylon.language;
 
 public abstract class Object extends Void {
 
     /** A developer-friendly string representing the instance. */
     @Extension
-    public ceylon.String string() {
+    public ceylon.language.String string() {
         return String.instance("");
     }
 

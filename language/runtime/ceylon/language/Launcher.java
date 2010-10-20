@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 import java.lang.reflect.Method;
 
 public class Launcher
@@ -8,7 +8,7 @@ public class Launcher
     {
         Class<?> c = Class.forName(args[0]);
         
-        Method m = c.getMethod("run", ceylon.Process.class);
+        Method m = c.getMethod("run", ceylon.language.Process.class);
         m.invoke(null, new Process());
     }
 }
