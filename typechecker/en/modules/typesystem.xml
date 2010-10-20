@@ -369,6 +369,9 @@
         
         <programlisting>Type := UnabbreviatedType Abbreviation*</programlisting>
         
+        <para>If the type is a member class or nested interface, the type must be fully 
+        qualified by its containing types.</para>
+        
         <programlisting>UnabbreviatedType := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
         
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
