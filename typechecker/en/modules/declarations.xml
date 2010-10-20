@@ -168,8 +168,15 @@ import com.acme.xyz
     alias Inv = Invoice
     alias Rep = Report
     implicit InvoiceFormat
-    implicit ReportFormat;</programlisting></comment>
-                
+    implicit ReportFormat;</programlisting>
+        <para>Or even:</para>
+        <programlisting>import ceylon.collection { Set }
+import ceylon.collection { Set, List, alias Coll = Collection }
+import ceylon.collection { ... }
+import ceylon.collection { alias Coll = Collection, ... }
+import com.acme.abd.formats { implicit ReportFormat }
+import com.acme.abd.formats { implicit ReportFormat, implicit InvoiceFormat }</programlisting></comment>
+
         </section>
         
         <section id="wildcardimports">
