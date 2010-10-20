@@ -378,7 +378,7 @@ public class Gen {
     	if (type.sequenceCount > 0) {
     		type.sequenceCount--;
     		result = convert(type);
-    		result = at(type).TypeApply(makeSelect("ceylon", "Sequence"),
+    		result = at(type).TypeApply(makeIdent(syms.ceylonSequenceType),
                     List.<JCExpression>of(result));
     	} else {
     		ExpressionVisitor v = 
