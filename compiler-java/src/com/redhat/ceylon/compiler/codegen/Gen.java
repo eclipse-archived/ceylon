@@ -825,18 +825,21 @@ public class Gen {
         	for (JCTree def: defs.toList()) {
         		JCClassDecl innerDecl = (JCClassDecl)def;
         		stmts.append(innerDecl);
-        		JCExpression id = makeIdent(decl.nameAsString());
-            	stmts.append(at(decl).VarDef(make.Modifiers(0), names.fromString(decl.nameAsString()), make.Ident(innerDecl.name),
-            			at(decl).NewClass(null, null, make.Ident(innerDecl.name), 
-            			List.<JCExpression>nil(), null)));
+        		JCExpression id = make.Ident(innerDecl.name);
+            	stmts.append(at(decl).VarDef(make.Modifiers(FINAL), 
+            			names.fromString(decl.nameAsString()), id, 
+            			at(decl).NewClass(null, null, id, 
+            					List.<JCExpression>nil(), null)));
         	}
         }
-        
 		public void visit(CeylonTree.PostfixExpression expr) {
             stmts.append(at(expr).Exec(convert(expr)));
         }
         public void visit(CeylonTree.PrefixExpression expr) {
             stmts.append(at(expr).Exec(convert(expr)));
+        }
+    	public void visit(CeylonTree.ClassDeclaration decl) {
+            stmts.append(convert(decl));
         }
     }
     
@@ -1063,7 +1066,7 @@ public class Gen {
     	JCExpression initialValue = null;
     	if (decl.initialValue() != null)
     		initialValue = convertExpression(decl.initialValue());
-    		
+    	
     	final ListBuffer<JCAnnotation> langAnnotations =
     		new ListBuffer<JCAnnotation>();
     	final ListBuffer<JCStatement> annotations = 
@@ -1081,7 +1084,12 @@ public class Gen {
     	
         int modifiers = FINAL;
         
-        List<JCStatement> result = 
+       	if (initialValue == null) {
+       		if ((decl.flags & CeylonTree.OPTIONAL) == 0)
+       			throw new RuntimeException("Member needs a value");
+       	}
+ 
+       	List<JCStatement> result = 
         	List.<JCStatement>of(at(decl).VarDef
         			(at(decl).Modifiers(modifiers, langAnnotations.toList()), 
         					names.fromString(decl.nameAsString()),
