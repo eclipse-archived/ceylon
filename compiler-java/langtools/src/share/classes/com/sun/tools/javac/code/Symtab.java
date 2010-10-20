@@ -152,6 +152,8 @@ public class Symtab {
     public final Type ceylonOptionalType;
     public final Type ceylonMutableType;
     public final Type ceylonObjectType;
+    public final Type ceylonNaturalType;
+    public final Type ceylonFloatType;
 
     /** The symbol representing the length field of an array.
      */
@@ -448,6 +450,8 @@ public class Symtab {
         ceylonOptionalType = enterClass("ceylon.Optional");
         ceylonMutableType = enterClass("ceylon.Mutable");
         ceylonObjectType = enterClass("ceylon.Object");
+        ceylonNaturalType = enterClass("ceylon.Natural");
+        ceylonFloatType = enterClass("ceylon.Float");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);

@@ -1122,12 +1122,12 @@ public class Gen {
             // literals: literals for Naturals and literals for Floats."
             public void visit(NaturalLiteral lit) {
                 JCExpression n = make.Literal(lit.value.longValue());
-                result = at(expr).Apply (null, makeSelect("ceylon", "Natural", "instance"),
+                result = at(expr).Apply (null, makeSelect(makeIdent(syms.ceylonNaturalType), "instance"),
                         List.of(n));
             }
             public void visit(FloatLiteral lit) {
                 JCExpression n = make.Literal(lit.value);
-                result = at(expr).Apply (null, makeSelect("ceylon", "Float", "instance"),
+                result = at(expr).Apply (null, makeSelect(makeIdent(syms.ceylonFloatType), "instance"),
                         List.of(n));
             }
             public void visit(CeylonTree.SimpleStringLiteral string) {
