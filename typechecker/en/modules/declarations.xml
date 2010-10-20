@@ -81,69 +81,88 @@ Body?</programlisting>
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
-        <programlisting>Import := "import" ImportSpec ";"</programlisting>
+        <programlisting>Import := "import" FullPackageName "{" ImportElements "}"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>
         
         <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
         
-        <para>An <literal>import</literal> statement may import either:</para>
+        <para>For a given package, there may be at most one <literal>import</literal>
+        statement per compilation unit.</para>
+        
+        <para>Each <literal>import</literal> statement imports one or more toplevel 
+        declarations from the given package, specifying a list of <emphasis>import
+        elements</emphasis>.</para>
+        
+        <programlisting>ImportElements := ImportElement ("," ImportElement)* ("," ImportWildcard)? | ImportWildcard</programlisting>
+        
+        <programlisting>ImportElement := ImportTypeElement | ImportMethodAttributeElement</programlisting>
+        
+        <para>An import element is a reference to either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>a single toplevel type (a class, interface, or alias),</para>
+                <para>a single toplevel type (a class, interface, or alias) of the 
+                package,</para>
             </listitem>
             <listitem>
-                <para>a single toplevel method or attribute, or</para>
+                <para>a single toplevel method or attribute of the package, or</para>
             </listitem>
             <listitem>
-                <para>all toplevel declarations of a specified package.</para>
+                <para>all toplevel declarations of the package.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>ImportSpec := TypeSpec | MethodAttributeSpec | PackageMembersSpec</programlisting>
-        
-        <!-- 
-        <para>The name of a member type must be qualified by the names of its containing
-        types.</para>
-        
-        <programlisting>QualifiedTypeName := (TypeName ".")* TypeName</programlisting>
-        -->
-                
         <para>Note that toplevel types, toplevel methods, toplevel attributes,
         and extensions in the module <literal>ceylon.language</literal> never need to be 
         explicitly imported. They are implicitly imported by every compilation unit.</para>
                 
-        <section id="fullyexplicitimports">
-            <title>Fully explicit imports</title>
+        <section id="typeimports">
+            <title>Type imports</title>
         
-        <para>An <literal>import</literal> statement that specifies a package name 
-        followed by a type name imports the toplevel type with that name from the given 
-        package.</para>
+        <para>An import element that specifies a type name imports the toplevel type with 
+        that name from the given package.</para>
         
-        <programlisting>TypeSpec := (TypeAlias | "implicit")? FullPackageName "." TypeName</programlisting>
+        <programlisting>ImportTypeElement := (TypeAlias | "implicit")? TypeName</programlisting>
         
-        <para>An <literal>import</literal> statement that specifies a package name 
-        followed by a method or attribute name imports the toplevel method or 
-        attribute with that name from the given package.</para>
+        <para>A compilation unit may not import two types with the same name.</para>
         
-        <programlisting>MethodAttributeSpec := (MethodAttributeAlias | "implicit")? FullPackageName "." MemberName</programlisting>
+        <programlisting>import ceylon.collection { Set, List, Map }</programlisting>
         
-        <!--
-        <para>An import statement that specifies a package name followed by a type
-        name and the name of an enumerated instance imports the named enumerated 
-        instance.</para>
-                
-        <programlisting>InstanceSpec := QualifiedTypeName "." MemberName ("alias" MemberName)?</programlisting>
-        -->
+        </section>
         
+        <section id="methodattributeimports">
+            <title>Method and attribute imports</title>
+        
+        <para>An import element that specifies a method or attribute name imports the 
+        toplevel method or attribute with that name from the given package.</para>
+        
+        <programlisting>ImportMethodAttributeElement := (MethodAttributeAlias | "implicit")? MemberName</programlisting>
+        
+        <para>A compilation unit may not import two methods or attributes with the same 
+        name.</para>
+        
+        <programlisting>import math { sqr, sqrt, e, pi }</programlisting>
+        
+        </section>
+                 
+        <section id="implicitimports">
+            <title>Implicit imports</title>
+               
         <para>If the <literal>implicit</literal> modifier appears, the 
         <literal>import</literal> statement must specify a toplevel type or method 
         annotated <literal>extension</literal>.</para>
         
-        <programlisting>import implicit com.acme.xyz.ReportFormat;</programlisting>
+        <programlisting>import com.acme.formats { implicit ReportFormat, implicit InvoiceFormat }</programlisting>
         
+        <programlisting>import com.acme.currencies { implicit CurrencyToDecimal, ... }</programlisting>
+        
+        </section>
+                
+         <section id="aliasimports">
+            <title>Alias imports</title>
+               
         <para>The optional <literal>alias</literal> clause in a fully-explicit 
         import allows resolution of cross-namespace declaration name collisions.</para>
         
@@ -153,55 +172,24 @@ Body?</programlisting>
         
         <para>An alias assigns a different name to the imported declaration.</para>
         
-        <programlisting>import alias JavaMap = java.util.Map;</programlisting>
+        <programlisting>import java.util { alias JavaMap = Map }</programlisting>
         
-        <programlisting>import alias fib = my.math.fibonnacciNumber;</programlisting>
+        <programlisting>import math { alias fib = fibonnacciNumber, ... }</programlisting>
         
-        <comment><para>TODO: would it be better to organize the import list by 
-        package:</para>
-        <programlisting>import ceylon.collection
-    include Set
-    include List
-    alias Strings = List&lt;String&gt;;
-
-import com.acme.xyz
-    alias Inv = Invoice
-    alias Rep = Report
-    implicit InvoiceFormat
-    implicit ReportFormat;</programlisting>
-        <para>Or even:</para>
-        <programlisting>import ceylon.collection { Set }
-import ceylon.collection { Set, List, alias Coll = Collection }
-import ceylon.collection { ... }
-import ceylon.collection { alias Coll = Collection, ... }
-import com.acme.abd.formats { implicit ReportFormat }
-import com.acme.abd.formats { implicit ReportFormat, implicit InvoiceFormat }</programlisting></comment>
-
         </section>
         
         <section id="wildcardimports">
             <title>Wildcard imports</title>
         
-        <para>The character <literal>*</literal> acts as a wildcard in import 
-        statements. An <literal>import</literal> statement that specifies a 
-        package name followed by a wildcard imports all toplevel declarations 
-        of the package.</para>
+        <para>The elipsis <literal>...</literal> acts as a wildcard in 
+        <literal>import</literal> statements. An <literal>import</literal> statement 
+        that specifies a wildcard imports all toplevel declarations of the package.</para>
         
-        <programlisting>PackageMembersSpec := FullPackageName "." "*"</programlisting>
+        <programlisting>ImportWildcard := "..."</programlisting>
         
-        <!--
-        <para>An <literal>import</literal> statement that specifies a type name 
-        followed by a wildcard imports all member types of the type.</para>
-                
-        <programlisting>TypeMembersSpec := FullPackageName "." QualifiedTypeName "." "*"</programlisting>
-        -->
         <para>Overuse of wildcard imports is discouraged.</para>
         
-        <programlisting>import ceylon.collection.*;</programlisting>
-        
-        <!--
-        <programlisting>import transaction.propagation.TxPropagationType.*;</programlisting>
-        -->
+        <programlisting>import ceylon.collection { ... }</programlisting>
         
         </section>
         

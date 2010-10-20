@@ -36,11 +36,11 @@ tokens {
     IF_FALSE;
     IF_STMT;
     IF_TRUE;
-    EXTENSION_DECL;
     IMPORT_DECL;
     IMPORT_LIST;
     IMPORT_WILDCARD;
     IMPORT_PATH;
+    IMPORT_ELEM;
     INIT_EXPR;
     INTERFACE_DECL;
     MEMBER_NAME;
@@ -105,7 +105,7 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      ( /*(annotatedDeclarationStart) =>*/ declaration )+
+      declaration+
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
        declaration+
@@ -123,36 +123,39 @@ typeDeclaration
     ;
 
 importDeclaration
-    : 'import' 
-      ( 
-        'implicit' importPath ';'
-        -> ^(EXTENSION_DECL importPath)
-      | importAlias importPath ';'
-        -> ^(IMPORT_DECL importAlias importPath)
-      | importPath ('.' wildcard)? ';'
-        -> ^(IMPORT_DECL importPath wildcard?)
-      )
+    : 'import' packagePath '{' importElements '}'
+      -> ^(IMPORT_DECL packagePath importElements)
+    ;
+
+importElements
+    : importElement (',' importElement)* (',' importWildcard)?
+    | importWildcard
+    ;
+
+importElement
+    : ('implicit' | importAlias)? importedName
+    -> ^(IMPORT_ELEM 'implicit'? importAlias? importedName)
+    ;
+
+importWildcard
+    : '...'
+    -> ^(IMPORT_WILDCARD)
     ;
 
 importAlias
-    : 'alias' (typeName|memberName) '='
-    -> ^(ALIAS_DECL typeName? memberName?)
+    : 'alias' importedName '='
+    -> ^(ALIAS_DECL importedName)
     ;
 
-importPath
-    : importElement ('.' importElement)*
-    -> ^(IMPORT_PATH importElement*)
-    ;
-    
-wildcard
-    : '*'
-    -> ^(IMPORT_WILDCARD)
-    ;
-    
-importElement
-    : LIDENTIFIER | UIDENTIFIER
+importedName
+    : typeName | memberName
     ;
 
+packagePath
+    : LIDENTIFIER ('.' LIDENTIFIER)*
+    -> ^(IMPORT_PATH LIDENTIFIER*)
+    ;
+    
 block
     : '{' declarationOrStatement* directiveStatement? '}'
     -> ^(STMT_LIST declarationOrStatement* directiveStatement?)
