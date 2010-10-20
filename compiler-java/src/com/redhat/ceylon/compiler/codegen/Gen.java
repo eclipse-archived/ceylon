@@ -331,7 +331,7 @@ public class Gen {
                 at(decl).Modifiers((topLevel ? PUBLIC : 0), List.<JCAnnotation>nil()),
                 names.fromString(name),
                 List.<JCTypeParameter>nil(),
-                makeSelect("ceylon", "Object"),
+                makeIdent(syms.ceylonObjectType),
                 List.<JCExpression>nil(),
                 List.<JCTree>nil());
         
@@ -667,7 +667,7 @@ public class Gen {
         
         JCTree superclass;
         if (cdecl.superclass == null) {
-            superclass = makeSelect("ceylon", "Object");
+            superclass = makeIdent(syms.ceylonObjectType);
         }
         else {
             List<String> name = cdecl.superclass.theSuperclass.name().components();
