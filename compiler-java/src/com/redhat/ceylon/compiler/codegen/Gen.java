@@ -512,7 +512,7 @@ public class Gen {
            // In the case of method literals, we're going to do this lazily.
            // To do otherwise would be very expensive
            
-            result = at(value).Apply (null, makeSelect("ceylon", "Method", "instance"),
+            result = at(value).Apply (null, makeSelect(makeIdent(syms.ceylonMethodType), "instance"),
                     List.<JCExpression>of(
                             make.Literal(toFlatName(v.result))));
         }
@@ -1005,7 +1005,7 @@ public class Gen {
     
     JCExpression ceylonLiteral(String s) {
     	JCLiteral lit = make.Literal(s);
-        return make().Apply (null, makeSelect("ceylon", "String", "instance"),
+        return make().Apply (null, makeSelect(makeIdent(syms.ceylonStringType), "instance"),
                 List.<JCExpression>of(lit));
     }
     
@@ -1269,7 +1269,7 @@ public class Gen {
     		assert operands.length == 1;
         	if (operands[0] instanceof CeylonTree.NaturalLiteral && operator == CeylonParser.MINUS) {
         		CeylonTree.NaturalLiteral lit = (CeylonTree.NaturalLiteral)operands[0];
-        		result = at(op).Apply(null, makeSelect("ceylon", "Integer", "instance"),
+        		result = at(op).Apply(null, makeSelect(makeIdent(syms.ceylonIntegerType), "instance"),
                         List.<JCExpression>of(make.Literal(-lit.value.longValue())));
         		
         	} else {
