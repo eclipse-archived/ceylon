@@ -201,6 +201,10 @@ public class Gen {
 		return makeIdent(List.of(nameAsString));
 	}
     
+    private JCExpression makeIdent(com.sun.tools.javac.code.Type type) {
+        return make.Ident(type.tsym);
+    }
+    
     public void run(CeylonTree.CompilationUnit t) throws IOException {
 
         CeylonFileObject file = new CeylonFileObject(fileManager.getFileForInput(t.source.path));
@@ -517,12 +521,12 @@ public class Gen {
     }
     
     JCExpression optionalType(JCExpression type) {
-    	return make().TypeApply(make.Ident(syms.ceylonOptionalType.tsym), 
+    	return make().TypeApply(makeIdent(syms.ceylonOptionalType), 
                                 List.<JCExpression>of(type));
     }
     
     JCExpression mutableType(JCExpression type) {
-    	return make().TypeApply(make.Ident(syms.ceylonMutableType.tsym), 
+    	return make().TypeApply(makeIdent(syms.ceylonMutableType), 
                                 List.<JCExpression>of(type));
     }
     
@@ -887,7 +891,7 @@ public class Gen {
 
     JCExpression convert(UnaryExpression expr, String methodName) {
         JCExpression operand = convertExpression(expr.operand);
-    	return at(expr).Apply(null, makeSelect(make.Ident(syms.ceylonMutableType.tsym), methodName),
+    	return at(expr).Apply(null, makeSelect(makeIdent(syms.ceylonMutableType), methodName),
     			List.<JCExpression>of(operand));
     }
    
@@ -914,7 +918,7 @@ public class Gen {
 
     		JCExpression type;
     		if (exists.type == null) {
-    			type = make.Ident(syms.ceylonAnyType.tsym);
+    			type = makeIdent(syms.ceylonAnyType);
     		} else {    		
     			type = variableType(exists.type, null);
     		}
@@ -1142,7 +1146,7 @@ public class Gen {
                 result = convertExpression(value.value());
             }
             public void visit(CeylonTree.Null value) {
-            	result = makeSelect(make.Ident(syms.ceylonNothingType.tsym), "NULL");
+            	result = makeSelect(makeIdent(syms.ceylonNothingType), "NULL");
             }
             public void visit(CeylonTree.Condition value) {
             	result = convertExpression(value.operand);
