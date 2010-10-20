@@ -762,7 +762,7 @@ public class Gen {
         
         if ((decl.flags & CeylonTree.EXTENSION) != 0) {
         	JCAnnotation ann =
-                make.Annotation(makeSelect("ceylon", "Extension"),
+                make.Annotation(makeIdent(syms.ceylonExtensionType),
                         List.<JCExpression>nil());
         	jcAnnotations.append(ann);
         }
