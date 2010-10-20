@@ -1062,7 +1062,7 @@ public class Gen {
     	JCExpression initialValue = null;
     	if (decl.initialValue() != null)
     		initialValue = convertExpression(decl.initialValue());
-    		
+    	
     	final ListBuffer<JCAnnotation> langAnnotations =
     		new ListBuffer<JCAnnotation>();
     	final ListBuffer<JCStatement> annotations = 
@@ -1080,7 +1080,12 @@ public class Gen {
     	
         int modifiers = FINAL;
         
-        List<JCStatement> result = 
+       	if (initialValue == null) {
+       		if ((decl.flags & CeylonTree.OPTIONAL) == 0)
+       			throw new RuntimeException("Member needs a value");
+       	}
+ 
+       	List<JCStatement> result = 
         	List.<JCStatement>of(at(decl).VarDef
         			(at(decl).Modifiers(modifiers, langAnnotations.toList()), 
         					names.fromString(decl.nameAsString()),
