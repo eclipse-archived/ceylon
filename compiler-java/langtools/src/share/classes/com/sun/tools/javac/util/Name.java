@@ -512,7 +512,7 @@ public class Name implements javax.lang.model.element.Name {
             ex = fromString("ex");
             finalize = fromString("finalize");
             // Ceylon additions
-            ceylon_language = fromString("ceylon");
+            ceylon_language = fromString("ceylon.language");
 
         }
 

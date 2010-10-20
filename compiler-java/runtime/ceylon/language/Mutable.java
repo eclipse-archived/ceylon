@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 
 public final class Mutable<T> {
     private T t;

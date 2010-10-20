@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 
 public final class String extends Object
 {
@@ -12,11 +12,11 @@ public final class String extends Object
         return value;
     }
 
-    public static ceylon.String instance(java.lang.String s) {
-        return new ceylon.String(s);
+    public static ceylon.language.String instance(java.lang.String s) {
+        return new ceylon.language.String(s);
     }
 
-    public ceylon.String string() {
+    public ceylon.language.String string() {
         return this;
     }
 }

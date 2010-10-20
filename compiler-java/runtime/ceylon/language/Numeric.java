@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 
 public interface Numeric<N> extends Number, Comparable<N> {
 

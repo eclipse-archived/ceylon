@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 
 public interface Integral<N> extends Numeric<N>, Ordinal {
 

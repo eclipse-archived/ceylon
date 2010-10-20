@@ -1,4 +1,4 @@
-package ceylon;
+package ceylon.language;
 
 public interface Comparable<T> {
     /** The binary compare operator |<=>|.  Compares this
