@@ -846,6 +846,7 @@ sort(names, reverseAlpha);</programlisting>
     if (reverse) {
         Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x }
         return reverse
+    }
     else {
         Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y }
         return natural
@@ -858,6 +859,7 @@ sort(names, reverseAlpha);</programlisting>
     if (reverse) {
         local reverse(Natural x, Natural y) { return y&lt;=&gt;x }
         return reverse
+    }
     else {
         local natural(Natural x, Natural y) { return x&lt;=&gt;y }
         return natural
