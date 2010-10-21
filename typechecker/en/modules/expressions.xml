@@ -1225,23 +1225,22 @@ local comp = order(1,-1);</programlisting>
             
         <para>Arguments to a sequenced parameter are seperated by commas.</para>
 
-        <programlisting>SequencedArguments := SequencedArgument ("," SequencedArgument)*</programlisting>
+        <programlisting>SequencedArguments := Expression ("," Expression)*</programlisting>
 
-        <programlisting>SequencedArgument := Expression | InferableVariable Specifier</programlisting>
-        
         <para>For example:</para>
         
         <programlisting>(1, 1, 2, 3, 5, 8)</programlisting>
-        
-        <para>An argument to a sequenced parameter may be a local declaration.</para>
-        
-        <comment><para>TODO: figure this out. Is this only for arguments in a named argument
-        invocation?</para></comment>
         
         <para>Alternatively, the argument to a sequence parameter may be a <literal>Sequence</literal> 
         of the parameter type.</para>
         
         <programlisting>({1, 1, 2, 3, 5, 8})</programlisting>
+        
+        <!--
+        <comment><para>TODO: Should we allow an argument to a sequenced parameter in a named
+        argument list to be a local declaration, thus allowing the object to be referred to
+        later?</para></comment>
+        -->
         
         <!--
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
@@ -1725,6 +1724,10 @@ except (SomethingElseWrong sew) {
                 <comment><para>TODO: Figure out the details of the type inference implied by this 
                 last bit!</para></comment>
                 
+                <para>If no such combination of type arguments exists, the invocation or 
+                instantiation is illegal. (Note that Ceylon is less strict than Java with this 
+                rule.)</para>
+                
                 <comment><para>TODO: We should be able to disambiguate <literal>X x(Y y)</literal>
                 from <literal>X x(Y... ys)</literal> when called as <literal>x(y)</literal>.</para></comment>
                 
@@ -1734,6 +1737,7 @@ except (SomethingElseWrong sew) {
                 type in this situation? If so, what happens when both the class and its 
                 superclass satisfy the constraint?</para></comment>
                 
+                <!--
                 <comment><para>TODO: What about the case of an "unbound" type parameter which does
                 not appear in the formal parameter list? Is it an error, or should the compiler 
                 search through all imported types (in the calling scope) looking for a type that 
@@ -1754,10 +1758,7 @@ except (SomethingElseWrong sew) {
 }]]></programlisting>
                 <para>Note that the difference is that a constraint (or expected return type) poses 
                 an upper bound, whereas an argument poses a lower bound.</para></comment>
-                
-                <para>If no such combination of type arguments exists, the invocation or 
-                instantiation is illegal. (Note that Ceylon is less strict than Java with this 
-                rule.)</para>
+                -->
                 
             </section>
 
@@ -2257,19 +2258,21 @@ setPerson(person);</programlisting>
         <para>A metamodel reference that refers to a generic declaration must specify type
         arguments.</para>
         
-        <comment><para>TODO: can we just default the type arguments to the upper bounds of 
+        <comment><para>TODO: Can we just default the type arguments to the upper bounds of 
         the type parameters if the type arguments are missing? Or do we need some kind of
         <literal>GenericType</literal> object to represent generic declarations?</para></comment>
         
-        <comment><para>TODO: are there metamodel objects for block local declarations? This
+        <comment><para>TODO: Are there metamodel objects for block local declarations? This
         includes block local declarations inside a class body, and block local declarations
         inside a method or attribute body.</para></comment>
         
-        <comment><para>TODO: should we have typesafe metamodel reference expressions for 
-        parameters, for example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
+        <comment><para>TODO: Should we have typesafe metamodel reference expressions for 
+        parameters? For example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
         
-        <comment><para>TODO: we should remodel member metamodel references as actual members
-        of the type class. Then we can get rid of two of the following sections.</para></comment>
+        <comment><para>TODO: Should we remodel member metamodel references as actual members
+        of the type class? Then we can get rid of two of the following sections. The reason
+        to not do this is that member class metamodel references have the wrong case for an
+        attribute.</para></comment>
         
         <section id="interfaceandclassmetamodelreferences">
             <title>Interface and class metamodel references</title>
@@ -3865,10 +3868,6 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     
         <comment><para>TODO: Should we have a binary <literal>upto</literal> operator
         for producing ranges of <literal>Bounded&lt;#n&gt;</literal>?</para></comment>
-    
-        <comment><para>TODO: Should we have operators for performing arithmetic with
-        datetimes and durations, constructing intervals and combining dates and 
-        times?</para></comment>
     
     </section>
     

@@ -27,11 +27,11 @@
             <para>the body of an interface may contain only abstract declarations.</para>
         </listitem>
     </itemizedlist>
-        
+    
     <comment><para>TODO: a named argument list looks very much like a block, but is not 
     currently defined that way. The language would be more regular if we decided to just 
     make it a block.</para></comment>
-        
+    
     <comment><para>TODO: Note that Java does not let you define an interface inside a 
     method, so we should either add the same restriction, or figure out workaround. Java 
     doesn't let you define a method inside a method either, but we can wrap the nested 
@@ -595,8 +595,8 @@ else {
         <para>Control structures are not considered to be expressions, and therefore do not evaluate
         to a value.</para>
         
-        <comment><para>TODO: Should we support, like Java, single-statement control structure bodies 
-        without the braces.</para></comment>
+        <comment><para>TODO: Should we support, like C and Java, single-statement control structure 
+        bodies without the braces.</para></comment>
         
         <section id="controlstructurevariables">
             <title>Control structure variables</title>

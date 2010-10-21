@@ -7,8 +7,8 @@
     is then processed by the lexer to produce a stream of terminal tokens of the 
     Ceylon grammar.</para>
         
-        <comment><para>TODO: what is the character encoding? Does it work just like
-        <literal>javac</literal>?</para></comment>
+    <comment><para>TODO: what is the character encoding? Does it work just like
+    <literal>javac</literal>?</para></comment>
         
     <section id="whitespace">
         <title>Whitespace</title>
@@ -129,10 +129,6 @@
         in non-European character sets. We can use an initial underscore to distinguish
         "initial lowercase" identifiers.</para></comment>
         
-        <comment><para>TODO: Should we really be making <literal>implicit</literal> a
-        keyword? It would be possible to parse an <literal>import implicit</literal> 
-        statement without it being a keyword.</para></comment>
-        
     </section>
     
     <section id="literals">
@@ -187,10 +183,6 @@
         expressions like <literal>1.decimal</literal> and <literal>1.0.whole</literal>
         allowed, or do we force the use of parentheses as in <literal>(1).decimal</literal> 
         and <literal>(1.0).whole</literal>?</para></comment>
-        
-        <!--comment><para>TODO: Would it be a good idea to let you use SI prefixes for large and small numbers,
-        for example: <literal>3k</literal>, <literal>1G</literal>, <literal>2.5T</literal> and
-        <literal>1.34m</literal>, <literal>12u</literal>, <literal>4p</literal>?</para></comment-->
         
     </section>
     

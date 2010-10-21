@@ -435,10 +435,10 @@ public abstract class Boolean()
     
 }]]></programlisting>
 
-        <comment><para>TODO: the two extensions that follow don't actually work, 
-        since they overload the <literal>matches()</literal> method of
-        <literal>Matcher</literal> in a way that doesn't permit resolution according 
-        to the rules we have written down.</para></comment>
+        <comment><para>TODO: the two extensions that follow don't actually 
+        work, since they overload the <literal>matches()</literal> method of
+        <literal>Matcher</literal> in a way that doesn't permit resolution 
+        according to the rules we have written down.</para></comment>
 
         <para>An extension allows <literal>Matcher&lt;X&gt;</literal> to 
         function as <literal>Matcher&lt;X?&gt;</literal>.</para>
