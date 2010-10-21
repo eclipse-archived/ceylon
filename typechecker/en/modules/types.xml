@@ -161,6 +161,11 @@
         <programlisting><![CDATA[public abstract class IdentifiableObject() 
         extends Object() satisfies Equals<IdentifiableObject> {
 
+    doc "The |Class| of the instance."
+    override Class<subtype> type {
+        return ... 
+    }
+    
     default override Boolean equals(IdentifiableObject that) {
         return this===that
     }
