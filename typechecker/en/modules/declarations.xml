@@ -124,7 +124,10 @@ Body?</programlisting>
         <para>An import element that specifies a type name imports the toplevel type with 
         that name from the given package.</para>
         
-        <programlisting>ImportTypeElement := (TypeAlias | "implicit")? TypeName</programlisting>
+        <programlisting>ImportTypeElement := "implicit"? TypeAlias? TypeName</programlisting>
+        
+        <para>An <literal>import</literal> statement may not contain two import elements
+        which refer to the same type.</para>
         
         <para>A compilation unit may not import two types with the same name.</para>
         
@@ -138,7 +141,10 @@ Body?</programlisting>
         <para>An import element that specifies a method or attribute name imports the 
         toplevel method or attribute with that name from the given package.</para>
         
-        <programlisting>ImportMethodAttributeElement := (MethodAttributeAlias | "implicit")? MemberName</programlisting>
+        <programlisting>ImportMethodAttributeElement := "implicit"? MethodAttributeAlias? MemberName</programlisting>
+        
+        <para>An <literal>import</literal> statement may not contain two import elements
+        which refer to the same method or attribute.</para>
         
         <para>A compilation unit may not import two methods or attributes with the same 
         name.</para>
@@ -156,8 +162,6 @@ Body?</programlisting>
         
         <programlisting>import com.acme.formats { implicit ReportFormat, implicit InvoiceFormat }</programlisting>
         
-        <programlisting>import com.acme.currencies { implicit CurrencyToDecimal, ... }</programlisting>
-        
         </section>
                 
          <section id="aliasimports">
@@ -170,11 +174,10 @@ Body?</programlisting>
 
         <programlisting>MethodAttributeAlias := "alias" MemberName "="</programlisting>
         
-        <para>An alias assigns a different name to the imported declaration.</para>
+        <para>An <literal>alias</literal> assigns a different name to the imported 
+        declaration.</para>
         
         <programlisting>import java.util { alias JavaMap = Map }</programlisting>
-        
-        <programlisting>import math { alias fib = fibonnacciNumber, ... }</programlisting>
         
         </section>
         
@@ -187,9 +190,18 @@ Body?</programlisting>
         
         <programlisting>ImportWildcard := "..."</programlisting>
         
-        <para>Overuse of wildcard imports is discouraged.</para>
+        <para>An <literal>import</literal> statement may specify a list of <literal>alias</literal>
+        imports followed by a wildcard. In this case, the <literal>alias</literal> imports
+        are imported with the specified names, and all other toplevel declarations are
+        imported with their declared names.</para>
         
         <programlisting>import ceylon.collection { ... }</programlisting>
+        
+        <programlisting>import math { alias fib = fibonnacciNumber, ... }</programlisting>
+        
+        <programlisting>import com.acme.currencies { implicit CurrencyToDecimal, ... }</programlisting>
+        
+        <para>Overuse of wildcard imports is discouraged.</para>
         
         </section>
         

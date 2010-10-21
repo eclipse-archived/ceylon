@@ -133,7 +133,7 @@ importElements
     ;
 
 importElement
-    : ('implicit' | importAlias)? importedName
+    : 'implicit'? importAlias? importedName
     -> ^(IMPORT_ELEM 'implicit'? importAlias? importedName)
     ;
 
