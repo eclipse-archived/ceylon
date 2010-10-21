@@ -3322,7 +3322,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry>extends</entry>
             <entry><literal>lhs.extendsType(rhs)</literal></entry>
             <entry><literal>Type&lt;Void&gt;</literal></entry>
-            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry><literal>Class &lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
