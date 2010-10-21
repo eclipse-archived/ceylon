@@ -2754,7 +2754,7 @@ createItemMethod.intercept()
             -->
             <row>
                 <entry>Comparison, <!--set comparison,--> containment,
-                assignability:</entry> 
+                assignability, inheritance:</entry> 
                 <entry>
                 <literal>&lt;=&gt;</literal>,
                 <literal>&lt;</literal>, 
@@ -2765,7 +2765,9 @@ createItemMethod.intercept()
                 <literal>!~></literal>,
                 <literal>*~></literal>-->
                 <literal>in</literal>,
-                <literal>is</literal>
+                <literal>is</literal>,
+                <literal>extends</literal>,
+                <literal>satisfies</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
@@ -3312,6 +3314,28 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>Boolean</literal></entry>
         </row>
                 
+        <row><entry namest="first" nameend="last"><emphasis>Inheritance</emphasis></entry></row>
+        
+        <row>
+            <entry><literal>extends</literal></entry>
+            <entry><literal>lhs extends rhs</literal></entry>
+            <entry>extends</entry>
+            <entry><literal>lhs.extendsType(rhs)</literal></entry>
+            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>satisfies</literal></entry>
+            <entry><literal>lhs satisfies rhs</literal></entry>
+            <entry>satisfies</entry>
+            <entry><literal>lhs.satisfiesType(rhs)</literal></entry>
+            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+        </row>
+        
     </tbody>
     </tgroup>
     </table>
@@ -3320,9 +3344,6 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
         and <literal>&gt;=</literal> to handle partial orders? A particular usecase is
         <literal>Set</literal> comparison.</para></comment>
         
-        <comment><para>TODO: Should we have <literal>satisfies</literal> and
-        <literal>extends</literal> operators, just for completeness?</para></comment>
-    
     </section>
                 
     <section id="logical">
