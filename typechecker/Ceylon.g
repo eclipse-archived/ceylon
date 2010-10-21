@@ -619,7 +619,7 @@ equalityExpression
 
 comparisonExpression
     : existenceEmptinessExpression
-      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^) existenceEmptinessExpression)?
+      (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^|'extends'^|'satisfies'^) existenceEmptinessExpression)?
     ;
 
 /*
