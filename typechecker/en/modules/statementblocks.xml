@@ -1001,10 +1001,12 @@ else {
         handleBranchNode(node);
     }
 }</programlisting>
-
-            <comment><para>TODO: should it be a <literal>catch</literal>-style syntax 
-            instead of <literal>case (is ...)</literal>?</para></comment>
             
+            <!--
+            <comment><para>TODO: should it be a <literal>catch</literal>-style syntax,
+            for example <literal>is (Leaf)</literal> instead of 
+            <literal>case (is ...)</literal>?</para></comment>
+            -->
         </section>
         
         <section id="forfail">

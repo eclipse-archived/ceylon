@@ -2248,6 +2248,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             overridden by a <literal>mutable</literal> simple attribute or by an attribute 
             getter and setter pair.</para>
             
+            <comment><para>TODO: are you allowed to override a getter or setter without also 
+            overriding its matching setter or getter?</para></comment>
+            
             <para>An attribute of a subtype <emphasis>overrides</emphasis> an attribute of
             a supertype if the first attribute:</para>
             
@@ -2286,8 +2289,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             overrides must be either <literal>abstract</literal>, <literal>default</literal>, 
             or <literal>fixed</literal>.</para>
             
-            <para>A method may not, directly or indirectly, override two different
-            methods not themselves annotated <literal>override</literal>.</para>
+            <para>An attribute may not, directly or indirectly, override two different
+            attributes not themselves annotated <literal>override</literal>.</para>
         
             <para>A non-<literal>mutable</literal> attribute may be overridden by a 
             <literal>mutable</literal> attribute.</para>
