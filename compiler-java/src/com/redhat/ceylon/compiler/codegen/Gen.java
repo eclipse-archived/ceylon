@@ -202,7 +202,7 @@ public class Gen {
 	}
     
     private JCExpression makeIdent(com.sun.tools.javac.code.Type type) {
-        return make.Ident(type.tsym);
+        return make.QualIdent(type.tsym);
     }
     
     public void run(CeylonTree.CompilationUnit t) throws IOException {
@@ -350,7 +350,7 @@ public class Gen {
             final ListBuffer<JCStatement> annotations,
     		final ListBuffer<JCAnnotation> langAnnotations) {
         
-        for (FormalParameter param: decl.params) {
+        for (CeylonTree.FormalParameter param: decl.params) {
             params.append(convert(param));
         }
         
@@ -409,11 +409,11 @@ public class Gen {
     		type.accept(v);
     		result = v.result;
     		
-    		if ((type.flags & CeylonTree.MUTABLE) != 0) {
-        		result = mutableType(result);
-        	}
     		if ((type.flags & CeylonTree.OPTIONAL) != 0) {
     			result = optionalType(result);
+    		}
+    		if ((type.flags & CeylonTree.MUTABLE) != 0) {
+    			result = mutableType(result);
     		}
     	}
 
@@ -534,34 +534,21 @@ public class Gen {
         at(param);
         Name name = names.fromString(param.name());
         JCExpression type = variableType(param.type(), param.annotations());
-		if ((param.flags & CeylonTree.MUTABLE) != 0) {
-    		type = mutableType(type);
-    	}
-        if ((param.flags & CeylonTree.OPTIONAL) != 0)
-        	type = optionalType(type);
 
-        JCVariableDecl v = at(param).VarDef(make.Modifiers(0), name,
-                type, null);
+        if ((param.flags & CeylonTree.OPTIONAL) != 0) {
+        	type = optionalType(type);
+        }
+        if ((param.flags & CeylonTree.MUTABLE) != 0) {
+        	type = mutableType(type);
+        }
         
+        JCVariableDecl v = at(param).VarDef(make.Modifiers(0), name,
+        		type, null);
+
         return v;
     }
-
     JCExpression variableType(CeylonTree.Type t, List<Annotation> annotations) {
-        final Singleton<JCExpression>result =
-            new Singleton<JCExpression>();
-        t.visitChildren(new CeylonTree.Visitor () {
-            public void visit(CeylonTree.Void v) {
-                result.thing = at(v).TypeIdent(VOID);
-            }
-            public void visit(CeylonTree.TypeName name) {
-                result.thing = makeIdent(name.components());
-            }
-        });
-        
-        JCExpression type = result.thing();
-        if ((t.flags & CeylonTree.OPTIONAL) != 0)
-        	type = optionalType(type);
-        return type;
+        return convert(t);
     }
     
     public JCClassDecl convert(final CeylonTree.ClassDeclaration cdecl) {
@@ -1075,20 +1062,27 @@ public class Gen {
     	
         JCExpression type = convert(decl.type);
 
-        if ((decl.flags & CeylonTree.MUTABLE) != 0) {
-    		type = mutableType(type);
-    	}
         if ((decl.flags & CeylonTree.OPTIONAL) != 0) {
     		type = optionalType(type);
     	}
-    	
-        int modifiers = FINAL;
-        
+        JCExpression innerType = type;
+        if ((decl.flags & CeylonTree.MUTABLE) != 0) {
+    		type = mutableType(type);
+    	}
+    	        
        	if (initialValue == null) {
-       		if ((decl.flags & CeylonTree.OPTIONAL) == 0)
+       		if ((decl.flags & CeylonTree.MUTABLE) == 0)
        			throw new RuntimeException("Member needs a value");
+       		else {
+       			initialValue = at(decl).Apply(List.of(innerType), 
+       					makeSelect(makeIdent(syms.ceylonMutableType), "of"),
+       					List.<JCExpression>of(at(decl).Literal(
+       							TypeTags.BOT,
+       							null)));
+       		}		
        	}
  
+        int modifiers = FINAL;
        	List<JCStatement> result = 
         	List.<JCStatement>of(at(decl).VarDef
         			(at(decl).Modifiers(modifiers, langAnnotations.toList()), 
@@ -1154,7 +1148,8 @@ public class Gen {
                 result = convertExpression(value.value());
             }
             public void visit(CeylonTree.Null value) {
-            	result = makeSelect(makeIdent(syms.ceylonNothingType), "NULL");
+            	result = at(value).TypeCast(makeIdent(syms.ceylonNothingType), 
+            			make.Literal(TypeTags.BOT, null));
             }
             public void visit(CeylonTree.Condition value) {
             	result = convertExpression(value.operand);
@@ -1169,6 +1164,15 @@ public class Gen {
             }
             public void visit(CeylonTree.LowerBound expr) {
             	result = convertExpression(expr.initializer);
+            }
+            public void visit(CeylonTree.EnumList list) {
+            	ListBuffer<JCExpression> values = new ListBuffer<JCExpression>();
+            	for (CeylonTree expr: list.members) {
+                    values.append(convertExpression(expr));
+                }
+                result = at(list).Apply(null,
+                			makeSelect("ceylon", "language", "ArrayList", "of"),
+                        values.toList());
             }
           }
 
@@ -1258,12 +1262,22 @@ public class Gen {
 
         case CeylonParser.COLONEQ:
         {
-        	JCExpression lhs = convertExpression(operands[0]);
         	JCExpression rhs = convertExpression(operands[1]);
-        	
-        	return at(op).Apply(null,
-        			at(op).Select(lhs, names.fromString("set")),
-        					List.of(rhs));
+        	if (operands[0] instanceof CeylonTree.SubscriptExpression) {
+        		CeylonTree.SubscriptExpression expr = 
+        			(CeylonTree.SubscriptExpression)operands[0];
+        		assert expr.lowerBound != null;
+            	assert expr.upperBound == null;
+            	JCExpression lowerBound = convertExpression(expr.lowerBound);
+            	return at(op).Apply(null,
+        				at(op).Select(convertExpression(expr.operand), names.fromString("set")),
+        				List.of(lowerBound, rhs));
+        	} else {
+        		JCExpression lhs = convertExpression(operands[0]);
+        		return at(op).Apply(null,
+        				at(op).Select(lhs, names.fromString("set")),
+        				List.of(rhs));
+        	}
         }
         
         default:

@@ -67,6 +67,11 @@ public class Resolve {
     public final boolean boxingEnabled; // = source.allowBoxing();
     public final boolean varargsEnabled; // = source.allowVarargs();
     private final boolean debugResolve;
+    
+ 	// Set to false in order to be able
+	// to call access() without generating a diagnostic
+    // if it fails.
+    boolean generateAccessDiagnostic = true;
 
     public static Resolve instance(Context context) {
         Resolve instance = context.get(resolveKey);
@@ -1090,6 +1095,7 @@ public class Resolve {
 //          printscopes(site.tsym.members());//DEBUG
             if (!site.isErroneous() &&
                 !Type.isErroneous(argtypes) &&
+                generateAccessDiagnostic &&
                 (typeargtypes==null || !Type.isErroneous(typeargtypes)))
                 ((ResolveError)sym).report(log, pos, site, name, argtypes, typeargtypes);
             do {

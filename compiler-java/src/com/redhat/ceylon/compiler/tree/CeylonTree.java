@@ -1183,7 +1183,7 @@ public abstract class CeylonTree {
      * A list of enums
      */
     public static class EnumList extends CeylonTree {
-        List<CeylonTree> members = List.<CeylonTree>nil();;
+        public List<CeylonTree> members = List.<CeylonTree>nil();;
                 
         public void append(CeylonTree expr) {
             members = members.append(expr);

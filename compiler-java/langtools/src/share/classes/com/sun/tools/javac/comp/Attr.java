@@ -1906,16 +1906,27 @@ public class Attr extends JCTree.Visitor {
             site = capture(site); // Capture field access
 
         // Insert a get() to access a Mutable
-        if (Context.isCeylon() && site.tsym == syms.ceylonMutableType.tsym) {
-			Scope scope = ((ClassSymbol) site.tsym).members();
-			Scope.Entry entry = scope.lookup(tree.getIdentifier());
-        	if (entry.sym == null) {
-        		tree.selected = make.Apply(null, 
+        if (Context.isCeylon() && site.tag == CLASS
+        		&& types.isSubtype(types.erasure(syms.ceylonMutableType), 
+        				types.erasure(site))) {
+        	boolean tmp = rs.generateAccessDiagnostic;
+        	rs.generateAccessDiagnostic = false;
+        	Symbol sym = selectSym(tree, site, env, pt, pkind);
+        	if (sym.kind >= ERR) {
+        		JCExpression application = make.Apply(null, 
         				make.Select(tree.selected, names.fromString("get")),
         				List.<JCExpression>nil());
-        		visitSelect(tree);
-        		return;
+        		Type innerType = attribTree(application, env, skind, Infer.anyPoly);
+        		JCFieldAccess trial = make.Select(application, tree.name);
+        		sym = selectSym(trial, innerType, env, pt, pkind);
+            	rs.generateAccessDiagnostic = tmp;
+            	if (sym.kind < ERR) {
+            		tree.selected = application;
+                	visitSelect(tree);
+                	return;
+            	}
         	}
+        	rs.generateAccessDiagnostic = tmp;
         }
 
         // don't allow T.class T[].class, etc
