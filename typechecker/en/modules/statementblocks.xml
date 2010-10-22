@@ -891,34 +891,40 @@ else {
             there must be an explicit <literal>case (null)</literal>.</para>
             -->
             
-            <para>The <literal>case</literal>s of a <literal>switch</literal> are 
-            <emphasis>exhaustive</emphasis> if the switch expression type is <literal>T</literal> 
-            or <literal>T?</literal> where <literal>T</literal> is a type with an enumerated list 
-            of cases and:</para>
+            <para>A <literal>switch</literal> has an <emphasis>exhaustive</emphasis> list of cases
+            of a type <literal>T</literal> with an enumerated list of cases if:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>every case of the type which is an anonymous class is explicitly listed 
-                    as an ordinary <literal>case</literal> value of the <literal>switch</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para>every other case of the type (every named class or interface) is 
-                    explicitly listed as a <literal>case (is ...)</literal> assignability condition, 
+                    <para>every case of <literal>T</literal> which is an anonymous class is explicitly 
+                    listed as an ordinary <literal>case</literal> value of the <literal>switch</literal>,
                     and</para>
                 </listitem>
                 <listitem>
-                    <para>there is a <literal>case (null)</literal> if the switch expression type 
-                    is <literal>T?</literal>.</para>
+                    <para>for every other case <literal>U</literal> of the type (every named class or 
+                    interface), either <literal>U</literal> is explicitly listed as a 
+                    <literal>case (is U)</literal> assignability condition, or, if <literal>U</literal> 
+                    is also a type with an enumerated list of cases, the <literal>switch</literal> has 
+                    an exhaustive list of cases of <literal>U</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: make this recursive (you can list all cases of a case instead of 
-            listing the case).</para></comment>
+            <para>A <literal>switch</literal> has an exhaustive list of cases of <literal>T?</literal> 
+            where <literal>T</literal> is a type with an enumerated list of cases if:</para>
             
-            <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
-            must have an exhaustive <literal>case</literal> list. Conversely, if the <literal>switch</literal> 
-            has an exhaustive <literal>case</literal> list, no <literal>else</literal> block may be 
-            specified.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>it has an exhaustive list of cases of <literal>T</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>it has is a <literal>case (null)</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>We say that a <literal>switch</literal> is exhaustive if it has an exhaustive list 
+            of cases of the switch expression type. If no <literal>else</literal> block is specified, 
+            the <literal>switch</literal> must be exhaustive. Conversely, if the <literal>switch</literal> 
+            is exhaustive, no <literal>else</literal> block may be specified.</para>
             
             <para>When the construct is executed, the <literal>switch</literal> expression is 
             evaluated, and the resulting value is tested against the <literal>case</literal> values 
