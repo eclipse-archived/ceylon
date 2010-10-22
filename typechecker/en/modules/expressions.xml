@@ -179,7 +179,7 @@ Float area = pi * radius**2;</programlisting>
     ref:="Que honda!";
 }
 
-mutable String greeting = "'sup!";
+public mutable String greeting := "'sup!";
 setGreeting(greeting);</programlisting>
         
         <para>A <literal>Gettable</literal> object representing an expression that 
@@ -2035,7 +2035,7 @@ String name = getName();</programlisting>
         <para>Therefore an element expression can be passed by reference:</para>
         
         <programlisting>Gettable&lt;Person?&gt; personRef = person[index];
-Person? person = person;</programlisting>
+Person? person = personRef;</programlisting>
         
         <para>And an element expression can be transformed into method reference:</para>
         
@@ -2062,7 +2062,7 @@ void invoke(Void v) {}
 invoke(logInfoHello);</programlisting>
 
         <programlisting>Gettable&lt;Map&lt;String, Person&gt;&gt; createMapFromEntries = HashMap&lt;String, Person&gt;(entries);
-Map&lt;String, Person&gt; map = logInfoHello;</programlisting>
+Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
         
         <para>When an evaluation of an invocation expression of a callable reference is 
         executed:</para>
