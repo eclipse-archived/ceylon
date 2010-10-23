@@ -785,7 +785,7 @@ catch (Exception e) {
         object which can produce a sequence of values, and which can
         be iterated using a <literal>for</literal> loop.</para>
         
-        <programlisting><![CDATA[public interface Iterable<out X> {
+        <programlisting><![CDATA[public interface Iterable<out X> satisfies Container {
     
     doc "A sequence of objects belonging
          to the container."
@@ -797,8 +797,14 @@ catch (Exception e) {
         that produces a theoretically unbounded sequence of values.</para>
         
         <programlisting><![CDATA[public interface Iterator<out X> {
+
     X? head;
     Iterator<X> tail;
+
+    override Boolean empty {
+        return !(head exists)
+    }
+
 }]]></programlisting>
         
         <para>An <literal>Iterator</literal> is used according to the
@@ -814,7 +820,7 @@ while (exists local value = iter.head) {
     to be used with the <literal>in</literal> operator.</para>
     
     <programlisting><![CDATA[public interface FiniteCategory<T>
-        satisfies Iterable<T>, Category, Container
+        satisfies Iterable<T>, Category
         given T satisfies Object, Equals<T> {
         
     override Boolean contains(Object... objects) {
@@ -833,10 +839,6 @@ while (exists local value = iter.head) {
         }
     }
     
-    override Boolean empty {
-        return !(iterator().head exists)
-    }
-
 }]]></programlisting>
     
         <comment><para>TODO: should we provide for mutation/removal during 
@@ -2816,6 +2818,20 @@ public Y ifExists<X,Y>(specified X? value,
     }
     else {
         return otherwise()
+    }
+}]]></programlisting>
+
+        <programlisting><![CDATA[doc "If the given list is empty, evaluate first block,
+     otherwise, evaluate second block. Return result
+     of evaluation."
+public Y ifEmpty<X,Y>(X[] list,
+                      Y then(), 
+                      Y otherwise(X first, X... rest)) {
+    if (exists X first = list.first) {
+        return otherwise(first, list.rest)
+    }
+    else {
+        return then()
     }
 }]]></programlisting>
 
