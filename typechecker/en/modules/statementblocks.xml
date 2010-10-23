@@ -704,13 +704,20 @@ else {
         <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
         of <literal>name</literal> inside the block that follows.</para>
         
-        <comment><para>Note: I suppose we could have a <literal>nonempty</literal> condition on 
-        a <literal>Sequence&lt;X&gt;</literal> let you treat <literal>seq.first</literal> and
-        <literal>seq.last</literal> as type <literal>X</literal> instead of <literal>X?</literal>,
-        but the danger is that the list could change underneath us. And we do already have the idiom 
-        <literal>if (exists X first = seq.first) { doSomething(first); }</literal> which is only 
-        a little more verbose than <literal>if (nonempty seq) { doSomething(seq.first); }</literal>
-        </para></comment>
+        <comment><para>TODO: Should have a more powerful <literal>nonempty</literal> condition for 
+        a <literal>Sequence&lt;X&gt;</literal>, for example:</para>
+        <programlisting>String join(String[] strings, String with) {
+    if (nonempty String first, String... rest = strings) {
+        return first + with + join(rest, with)
+    }
+}</programlisting>
+        <para>This looks very much like Haskell/ML-style list pattern matching, but it's not any 
+        simpler to write than this idiom:</para>
+        <programlisting>String join(String[] strings) {
+    if (exists String first = strings.first) {
+        return first + with + join(strings.rest, with)
+    }
+}</programlisting></comment>
                         
         <para>For <literal>is</literal> conditions:</para>
         

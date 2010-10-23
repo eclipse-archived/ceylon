@@ -2511,6 +2511,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         the need for lookahead in the parser.</para>
         -->
         
+        <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>
+        annotation to force the compiler to optimize a tail-recursive method or
+        getter?</para></comment>
+        
     </section>
        
        <!--
