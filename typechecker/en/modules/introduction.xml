@@ -2218,23 +2218,25 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <itemizedlist>
             <listitem>
                 <para><emphasis>assertion</emphasis>, such as: 
-                <literal>assert("x must be zero") that (x&equals;0.0);</literal></para>
-            </listitem>
-            <listitem>
-                <para><emphasis>comprehension</emphasis>, such as:
-                <literal>String[] names = from (people) select (Person p) (p.name);</literal></para>
-            </listitem>
-            <listitem>
-                <para><emphasis>quantification</emphasis>, such as:
-                <literal>Boolean adults = forAll (people) every (Person p) (p.age>=18);</literal></para>
-            </listitem>
-            <listitem>
-                <para><emphasis>folds</emphasis>, such as:
-                <literal>Float total = fold (items) with (Float sum, Item item) (sum + item.quantity*item.product.price);</literal></para>
+                <programlisting>assert ("x must be zero") that (x&equals;0.0);</programlisting></para>
             </listitem>
             <listitem>
                 <para><emphasis>repetition</emphasis>, such as:
-                <literal>repeat (3) times { stream.writeLine("Hello!"); }</literal></para>
+                <programlisting>repeat (3) times { stream.writeLine("Hello!"); }</programlisting></para>
+            </listitem>
+            <listitem>
+                <para><emphasis>comprehension</emphasis>, such as:
+                <programlisting>String[] names = from (people) select (Person p) (p.name);</programlisting></para>
+            </listitem>
+            <listitem>
+                <para><emphasis>quantification</emphasis>, such as:
+                <programlisting>Boolean adults = forAll (people) every (Person p) (p.age>=18);</programlisting></para>
+            </listitem>
+            <listitem>
+                <para><emphasis>folds</emphasis>, such as:
+                <programlisting>Float total = fold (items, 0.0) 
+                using (Float sum, Item item) 
+                    (sum + item.quantity*item.product.price);</programlisting></para>
             </listitem>
         </itemizedlist>
         
