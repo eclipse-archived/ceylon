@@ -2914,7 +2914,7 @@ public Y select<X,Y>(X selector,
         
         <programlisting><![CDATA[doc "Repeat the block the given number of times."
 public void repeat(Natural repetitions, void times()) {
-    do(mutable Natural n:=0) 
+    mutable Natural n:=0; 
     while (n<repetitions) {
         times();
         n++;
@@ -2986,7 +2986,7 @@ public X first<X>(iterated Iterable<X> elements,
 }]]></programlisting>
         
         <para>The <literal>ceylon.language.comprehension.list</literal> package defines 
-        support for <literal>List</literal> comprehensions.</para>
+        support for <literal>List</literal> comprehensions, tabulations, and folds.</para>
         
         <programlisting><![CDATA[doc "Iterate elements and return those for which 
      the first block evaluates to true, ordered 
@@ -3066,6 +3066,14 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         list.append(x);
     }
     return list
+}]]></programlisting>
+
+        <programlisting><![CDATA[public Y fold<X,Y>(X[] list, Y initial, Y using(Y y, X x)) {
+    mutable Y y:=initial;
+    for (X x in list) {
+        y:=using(u,x);
+    }
+    return y
 }]]></programlisting>
         
         <comment><para>TODO: We should define versions of these that return just a
