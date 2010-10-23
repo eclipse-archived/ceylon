@@ -2225,6 +2225,10 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <programlisting>repeat (3) times { stream.writeLine("Hello!"); }</programlisting></para>
             </listitem>
             <listitem>
+                <para><emphasis>tabulation</emphasis>, such as:
+                <programlisting>Natural[] cubes = list (30) containing (Natural i) (i**3);</programlisting></para>
+            </listitem>
+            <listitem>
                 <para><emphasis>comprehension</emphasis>, such as:
                 <programlisting>String[] names = from (people) select (Person p) (p.name);</programlisting></para>
             </listitem>
