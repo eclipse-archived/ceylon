@@ -2229,7 +2229,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <literal>Boolean adults = forAll (people) every (Person p) (p.age>=18);</literal></para>
             </listitem>
             <listitem>
-                <para><emphasis>folds</emphasis></listitem>, such as:
+                <para><emphasis>folds</emphasis>, such as:
                 <literal>Float total = fold (items) with (Float sum, Item item) (sum + item.quantity*item.product.price);</literal></para>
             </listitem>
             <listitem>
