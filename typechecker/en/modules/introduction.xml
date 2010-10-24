@@ -13,18 +13,29 @@
         <title>Language overview</title>
     
     <para>
-    Ceylon is a general-purpose, statically-typed, object-oriented, imperative, 
-    higher-order language featuring a syntax similar to Java and C#. Ceylon 
-    programs execute in any standard Java Virtual Machine and, like Java, take 
-    advantage of the memory management and concurrency features of that 
+    Ceylon is a general-purpose, imperative, statically-typed, object-oriented, 
+    higher-order language featuring a syntax similar to Java and C#. By 
+    <emphasis>object-oriented</emphasis>, we mean that the language features a 
+    nominative type system where a type is a set of named attributes and 
+    operations, and that it supports inheritance and subtype polymorphism. By 
+    <emphasis>higher-order</emphasis>, we mean that every named program element
+    (every attribute, every operation, and every type) is a value. 
+    </para>
+    
+    <para>
+    Ceylon programs execute in any standard Java Virtual Machine and, like Java, 
+    take advantage of the memory management and concurrency features of that 
     environment. The Ceylon compiler is able to compile Ceylon code that calls 
     Java classes or interfaces, and Java code that calls Ceylon classes or 
-    interfaces. Ceylon improves upon the Java language and type system to 
-    reduce verbosity and increase typesafety compared to Java and C#. Ceylon 
-    encourages a more functional style of programming, resulting in code which 
-    is easier to reason about, and easier to refactor. Moreover, Ceylon 
-    provides its own native SDK as a replacement for the Java platform class 
-    libraries.
+    interfaces. 
+    </para>
+    
+    <para>
+    Ceylon improves upon the Java language and type system to reduce verbosity 
+    and increase typesafety compared to Java and C#. Ceylon encourages a more 
+    functional style of programming, resulting in code which is easier to reason 
+    about, and easier to refactor. Moreover, Ceylon provides its own native SDK 
+    as a replacement for the Java platform class libraries.
     </para>
     
     <section id="thetypesystem">
