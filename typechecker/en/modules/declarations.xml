@@ -751,6 +751,11 @@ public class Person { ... }</programlisting>
         <literal>fixed</literal> member of a class must be explicitly annotated as such.
         No member may be annotated by more than one of these three annotations.</para>
         
+        <para>A block-local member may not be annotated <literal>default</literal> or
+        <literal>fixed</literal>. A block local method or attribute may not be annotated 
+        <literal>abstract</literal>. A block local member class <emphasis>may</emphasis> 
+        be annotated <literal>abstract</literal>.</para>
+        
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
         later in the same block. This rule is relaxed for certain declarations that occur 
@@ -772,8 +777,8 @@ public class Person { ... }</programlisting>
     <section id="abstractclasses">
         <title>Abstract classes</title>
         
+        <!--  
         <para>A class may be annotated <literal>abstract</literal> only if it is:</para>
-        
         <itemizedlist>
             <listitem>
                 <para>a toplevel class, or</para>
@@ -783,9 +788,10 @@ public class Person { ... }</programlisting>
                 interface.</para>
             </listitem>
         </itemizedlist>
+        -->
         
-        <para>If and only if a class is annotated <literal>abstract</literal> it may 
-        declare:</para>
+        <para>A class may be annotated <literal>abstract</literal>. If and only if a 
+        class is annotated <literal>abstract</literal> it may declare:</para>
         
         <itemizedlist>
             <listitem>
@@ -801,9 +807,12 @@ public class Person { ... }</programlisting>
         
         <programlisting>abstract class Buffer(Character...) satisfies Character[];</programlisting>
         
-        <para>Toplevel classes annotated <literal>abstract</literal> may not be 
-        instantiated. Member class annotated <literal>abstract</literal> may be
-        instantiated.</para>
+        <para>Toplevel classes and block local classes annotated <literal>abstract</literal> 
+        may not be instantiated.</para> 
+        
+        <para>A member class annotated <literal>abstract</literal> which also specifies 
+        a visibility modifier may be instantiated. Every subtype of the type which 
+        declares the member class must override the member class.</para>
         
     </section>
         
@@ -1012,20 +1021,21 @@ public class Person { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>A member class annotated <literal>default</literal> may be 
-                overridden by any class which is a subtype of the class or interface 
-                which declares the member class.</para>
+                overridden by any class which is a subtype of the class or 
+                interface which declares the member class.</para>
             </listitem>
             <listitem>
-                <para>A member class annotated <literal>abstract</literal> may be 
-                overridden by any class which is a subtype of the class or interface 
-                which declares the member class.</para>
+                <para>A member class annotated <literal>abstract</literal> which 
+                also specifies a visibility modifier may be overridden by any class 
+                which is a subtype of the class or interface which declares the 
+                member class.</para>
             </listitem>
             <listitem>
-                <para>A member class annotated <literal>abstract</literal> 
-                <emphasis>must</emphasis> be overridden by every 
-                non-<literal>abstract</literal> class which is a subtype of the 
-                <literal>abstract</literal> class or interface that declares the 
-                member class, unless the class inherits a 
+                <para>A member class annotated <literal>abstract</literal> which 
+                also specifies a visibility modifier <emphasis>must</emphasis> be 
+                overridden by every non-<literal>abstract</literal> class which is 
+                a subtype of the <literal>abstract</literal> class or interface that 
+                declares the member class, unless the class inherits a 
                 non-<literal>abstract</literal> member class from a superclass that 
                 overrides the <literal>abstract</literal> member class.</para>
             </listitem>
@@ -1862,6 +1872,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>A toplevel method may not be annotated <literal>abstract</literal> and 
             must have a method implementation (a block of code, or a reference to another 
             method).</para>
+            
+            <para>A block local method may not be annotated <literal>abstract</literal> and 
+            must have a method implementation.</para>
 
         </section>
         
@@ -2341,6 +2354,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <programlisting>package abstract mutable String firstName;</programlisting>
 
             <para>A toplevel attribute declaration may not be annotated <literal>abstract</literal> 
+            and must have a specifier or getter implementation.</para>
+
+            <para>A block local attribute may not be annotated <literal>abstract</literal> 
             and must have a specifier or getter implementation.</para>
 
         </section>
