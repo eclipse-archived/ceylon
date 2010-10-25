@@ -54,8 +54,8 @@
         
         <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
         <literal>[].</literal> or <literal>?.</literal>) that appears in a program 
-        element refers to a declaration elsewhere: a class, interface, alias, method, 
-        attribute, or local.</para>
+        element refers to a declaration elsewhere: a class, interface, type parameter, 
+        method, attribute, or local.</para>
         
         <para>A <emphasis>body</emphasis> is a block, class body or interface body.
         A declaration is <emphasis>in scope</emphasis> at a program element if:</para>

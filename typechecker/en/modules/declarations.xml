@@ -1,9 +1,8 @@
 <chapter id="declarations">
     <title>Declarations</title>
     
-    <para>Ceylon is a statically typed language. Classes, interfaces, aliases, methods, 
-    attributes and locals must be declared. This allows the compiler to detect many
-    errors, including:</para>
+    <para>Ceylon is a statically typed language. Classes, interfaces, methods, attributes 
+    and locals must be declared. This allows the compiler to detect many errors, including:</para>
     
     <itemizedlist>
         <listitem><para>typing errors in identifier names,</para></listitem>
@@ -26,9 +25,9 @@ SatisfiedTypes?
 TypeConstraints?
 Body?</programlisting>
 
-    <para>A type parameter does not need an explicit declaration of this form unless it 
-    has constraints. In the case that it does have constraints, the constraint declaration 
-    does follow the general pattern.</para>
+    <para>A type parameter does not need an explicit declaration of this form unless it has 
+    constraints. In the case that it does have constraints, the constraint declaration does 
+    follow the general pattern.</para>
     
     <para>This consistent pattern for declarations, together with the strict block structure
     of the language, makes Ceylon a highly regular language.</para>
@@ -48,13 +47,12 @@ Body?</programlisting>
         <section id="topleveldeclarations">
             <title>Toplevel declarations</title>
         
-        <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class, 
-        interface, or type alias&mdash;or a method or non-<literal>mutable</literal>
-        attribute.</para>
+        <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class or 
+        interface&mdash;or a method or non-<literal>mutable</literal> attribute.</para>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
-        <programlisting>TypeDeclaration := Class | Object | Interface | Alias</programlisting>
+        <programlisting>TypeDeclaration := Class | Object | Interface</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -103,8 +101,7 @@ Body?</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>a single toplevel type (a class, interface, or alias) of the 
-                package,</para>
+                <para>a single toplevel type (a class or interface) of the package,</para>
             </listitem>
             <listitem>
                 <para>a single toplevel method or attribute of the package, or</para>
@@ -221,7 +218,7 @@ CaseTypes?
 TypeClass?
 SatisfiedTypes?
 TypeConstraints? 
-InterfaceBody</programlisting>
+(InterfaceBody | TypeSpecifier)</programlisting>
 
         <para>To obtain a concrete instance of an interface, it is necessary to define 
         and instantiate a class that implements the interface, or define an object that
@@ -381,6 +378,30 @@ InterfaceBody</programlisting>
         the interface must be subtype of one of the enumerated cases.</para>
                 
     </section>
+    
+    <section id="interfacealiases">
+        <title>Interface aliases</title>
+        
+        <para>An interface declaration which specifies a reference to another interface
+        type defines an <emphasis>interface alias</emphasis> of the specified interface 
+        type.</para>
+        
+        <programlisting>TypeSpecifier := "=" Type ";"</programlisting>
+
+        <para>The specified interface type may be a produced type (it may specify type 
+        arguments). An interface alias simply assigns an alternative name to the original 
+        interface type or produced type.</para>
+        
+        <programlisting>public interface PeopleByName = Map&lt;String,Person&gt;;</programlisting>
+        
+        <programlisting>interface Compare&lt;T&gt; = Callable&lt;Comparison,T,T&gt;;</programlisting>
+                
+        <para>Interface aliases are not reified types. The metamodel reference for an 
+        interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
+        the metamodel object for the aliased interface&mdash;in this case, 
+        <literal>Map&lt;String,Person&gt;</literal>.</para>
+    
+    </section>
         
     </section>
     
@@ -400,7 +421,7 @@ TypeClass?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
-ClassBody</programlisting>
+(ClassBody | TypeSpecifier | ";")</programlisting>
 
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
@@ -770,7 +791,14 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>Classes annotated <literal>abstract</literal> may not be instantiated.</para>
+        <para>If and only if a class is an <literal>abstract</literal> member class 
+        it may omit a class body entirely.</para>
+        
+        <programlisting>abstract class Buffer(Character...) satisfies Character[];</programlisting>
+        
+        <para>Toplevel classes annotated <literal>abstract</literal> may not be 
+        instantiated. Member class annotated <literal>abstract</literal> may be
+        instantiated.</para>
         
     </section>
         
@@ -1009,10 +1037,17 @@ public class Person { ... }</programlisting>
                 <para>is annotated <literal>override</literal>,</para>
             </listitem>
             <listitem>
-                <para>has the same name as the member class it overrides,</para>
+                <para>has the same name as the member class it overrides, and
+                either</para>
             </listitem>
             <listitem>
-                <para>extends the member class it overrides, and</para>
+                <para>extends the member class it overrides, or, alternatively,</para>
+            </listitem>
+            <listitem>
+               <para>extends the superclass of the member class it overrides and 
+               implements all interfaces implemented by the member class it 
+               overrides, where the member class it overrides is an 
+               <literal>abstract</literal> member class with no body, and</para>
             </listitem>
             <listitem>
                 <para>has a formal parameter list with the same signature as the 
@@ -1037,7 +1072,52 @@ public class Person { ... }</programlisting>
         has the same visibility modifier as the member class it overrides. The
         member class may not declare a stricter visibility modifier than the member 
         class it overrides.</para>
-    
+        
+        <para>Note that, according to the rules above, the overriding class usually
+        extends the member class it overrides:</para>
+        
+        <programlisting>public abstract class Reader() {
+    module abstract class Buffer(Character... chars) 
+            satisfies Character[] {}
+    ...
+}</programlisting>
+
+        <programlisting>public class FileReader(File file) 
+        extends Reader() {
+    override class Buffer(Character... chars) 
+            extends Reader.Buffer(chars) {
+        ...
+    }
+    ...
+}</programlisting>
+        
+        <para>But in the special case where the member class it overrides does not
+        specify a body, the overriding class is not required to extend the member 
+        class it overrides:</para>
+        
+        <programlisting>public abstract class Reader() {
+    module abstract class Buffer(Character... chars) 
+            satisfies Character[];
+    ...
+}</programlisting>
+
+        <programlisting>public class FileReader(File file) 
+        extends Reader() {
+    override class Buffer(Character... chars) 
+            satisfies Character[] {
+        ...
+    }
+    ...
+}</programlisting>
+        
+        <para>A class alias may override a member class.</para>
+        
+        <programlisting>public class FileReader(File file) 
+        extends Reader() {
+    override class Buffer(Character... chars) = String;
+    ...
+}</programlisting>
+        
     </section>
     
     <section id="anonymousclasses">
@@ -1182,6 +1262,25 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         a declaration.</para>
         </comment>
         
+    </section>
+        
+    <section id="classaliases">
+        <title>Class aliases</title>
+        
+        <para>A class declaration which specifies a reference to another class type 
+        defines a <emphasis>class alias</emphasis> of the specified class type.</para>
+        
+        <para>The specified class type may be a produced type (it may specify type 
+        arguments). A class alias simply assigns an alternative name to the original 
+        class type or produced type.</para>
+        
+        <programlisting>public class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
+        
+        <para>Class aliases are not reified types. The metamodel reference for a class 
+        alias&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
+        object for the aliased class&mdash;in this case, 
+        <literal>ArrayList&lt;Person&gt;</literal>.</para>
+    
     </section>
         
     </section>
@@ -1437,9 +1536,9 @@ TypeConstraints?</programlisting>
             <para>A method declaration may explicitly specify the callable type of the method
             using the <literal>is</literal> clause.</para>
             
-            <para>For example, given the following type alias:</para>
+            <para>For example, given the following interface alias:</para>
             
-            <programlisting>public alias Page = Callable&lt;Html,HttpRequest&gt;;</programlisting>
+            <programlisting>public interface Page = Callable&lt;Html,HttpRequest&gt;;</programlisting>
             
             <para>We can explicitly specify the callable type of the following method:</para>
             
@@ -2378,46 +2477,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 
     </section>
         
-    <section id="typealiases">
-       <title>Type aliases</title>
-    
-       <para>A <emphasis>type alias</emphasis> allows a type to be referred to more 
-       compactly.</para>
-       
-       <programlisting>Alias := Annotation* "alias" TypeName TypeParams? TypeConstraints? AliasBody</programlisting>
-       
-       <programlisting>AliasBody := "=" Type ";"</programlisting>
-       
-       <para>A type alias assigns an alternative name to a type, called the 
-       <emphasis>aliased type</emphasis>. The aliased type may be a produced type
-       (it may have type arguments).</para>
-       
-       <programlisting>public alias People = List&lt;Person&gt;;</programlisting>
-       <programlisting>alias Compare&lt;T&gt; = Callable&lt;Comparison,T,T&gt;;</programlisting>
-       
-       <!--  
-       <para>A shortcut is provided for definition of compilation unit local aliases.</para>
-       
-       <programlisting>import alias JavaList = java.util.List;</programlisting>
-       -->
-       
-       <para>Type aliases are not reified types. The metamodel reference for a type
-       alias&mdash;for example, <literal>People</literal>&mdash; returns the metamodel 
-       object for the aliased type&mdash;in this case, <literal>List&lt;Person&gt;</literal>.</para>
-       
-       <!--
-       <comment><para>TODO: Could we reify them? This would let us define type aliases
-       that satisfy multiple interfaces. For example:</para>
-       <programlisting>package alias ComparableCollection&lt;X&gt; satisfies Collection&lt;X&gt;, Comparable&lt;X&gt;;</programlisting>
-       </comment>
-       
-       <comment><para>TODO: Could an alias have its own type class? Only if we decide to
-       reify it.</para></comment>
-       -->
-       
-    </section>
-    
-   <section id="declaration modifiers">
+    <section id="declaration modifiers">
         <title>Declaration modifiers</title>
         
         <para>In Ceylon, all declaration modifiers are annotations.</para>
@@ -2546,13 +2606,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     <section id="visibility">
         <title>Visibility and name resolution</title>
         
-        <para>Classes, interfaces, aliases, methods, attributes, locals, formal 
-        parameters and type parameters have names. Occurrence of a name in code implies 
-        a hard dependency from the code in which the name occurs to the schema of the 
-        named declaration. We say that a class, interface, alias, method, attribute, 
-        formal parameter or type parameter is <emphasis>visible</emphasis> to a certain 
-        program element if its name may occur in the code that defines that program 
-        element.</para>
+        <para>Classes, interfaces, methods, attributes, locals, formal parameters and 
+        type parameters have names. Occurrence of a name in code implies a hard 
+        dependency from the code in which the name occurs to the schema of the named 
+        declaration. We say that a class, interface, method, attribute, formal parameter 
+        or type parameter is <emphasis>visible</emphasis> to a certain program element 
+        if its name may occur in the code that defines that program element.</para>
         
         <itemizedlist>
             <listitem>

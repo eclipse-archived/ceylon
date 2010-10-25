@@ -133,7 +133,8 @@
         
         <itemizedlist>
             <listitem>
-                <para>classes, interfaces, and aliases share a single namespace,</para>
+                <para>classes, interfaces, and type parameters share a single 
+                namespace,</para>
             </listitem>
             <listitem>
                 <para>methods, attributes, and locals share a single namespace, and</para>
@@ -363,7 +364,7 @@
         
         <para>Method, attribute and formal parameter declarations must declare a type.</para>
         
-        <para>Types are identified by the name of the type (a class, interface, alias, or 
+        <para>Types are identified by the name of the type (a class, interface, or 
         type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
@@ -626,8 +627,8 @@ String? firstWord = words[0];</programlisting>
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Methods, classes, interfaces, and aliases may declare one or more generic 
-        type parameters.</para>
+        <para>Methods, classes, and interfaces may declare one or more generic type 
+        parameters.</para>
         
         <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
         
@@ -910,9 +911,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     <section id="generictypeconstraints">
     <title>Generic type constraints</title>
 
-        <para>A parameterized method, class, interface, or alias declaration may 
-        declare constraints upon ordinary type parameters using the <literal>given</literal> 
-        clause.</para>
+        <para>A parameterized method, class, or interface declaration may declare constraints 
+        upon ordinary type parameters using the <literal>given</literal> clause.</para>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     

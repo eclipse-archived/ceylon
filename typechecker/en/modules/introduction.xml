@@ -599,12 +599,13 @@ process.writeLine(greeting);]]></programlisting>
         </itemizedlist>
           
         <para>
-        Types (interfaces, classes, and aliases) have names that begin with uppercase 
-        letters. Members (methods and attributes) and locals have names that begin with 
-        lowercase letters. This is the rule you're used to from Java. <!--(it's different to, 
-        and much prettier than, the naming conventions in C#)--> Unlike Java, the Ceylon 
-        compiler enforces these rules. If you try to write <literal>class hello</literal>
-        or <literal>String Name</literal>, you'll get a compilation error.
+        Types (interfaces, classes, and type parameters) have names that begin with 
+        uppercase letters. Members (methods and attributes) and locals have names that 
+        begin with lowercase letters. This is the rule you're used to from Java. <!--
+        (it's different to, and much prettier than, the naming conventions in C#)--> 
+        Unlike Java, the Ceylon compiler enforces these rules. If you try to write 
+        <literal>class hello</literal> or <literal>String Name</literal>, you'll get a 
+        compilation error.
         </para>
         
         <para>
