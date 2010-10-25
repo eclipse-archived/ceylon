@@ -1909,24 +1909,52 @@ public class Attr extends JCTree.Visitor {
         if (Context.isCeylon() && site.tag == CLASS
         		&& types.isSubtype(types.erasure(syms.ceylonMutableType), 
         				types.erasure(site))) {
-        	boolean tmp = rs.generateAccessDiagnostic;
-        	rs.generateAccessDiagnostic = false;
-        	Symbol sym = selectSym(tree, site, env, pt, pkind);
-        	if (sym.kind >= ERR) {
-        		JCExpression application = make.Apply(null, 
-        				make.Select(tree.selected, names.fromString("get")),
-        				List.<JCExpression>nil());
-        		Type innerType = attribTree(application, env, skind, Infer.anyPoly);
-        		JCFieldAccess trial = make.Select(application, tree.name);
-        		sym = selectSym(trial, innerType, env, pt, pkind);
-            	rs.generateAccessDiagnostic = tmp;
-            	if (sym.kind < ERR) {
-            		tree.selected = application;
-                	visitSelect(tree);
-                	return;
-            	}
+        	// FIXME.  This is horrible, but it's rather forced upon us
+        	// because of the way that selectSym is factored: if it
+        	// fails, it'll generate a diagnostic.  So, we have two
+        	// versions of resolveQualifiedMethod, one that fails and
+        	// generates a diagnostic, and one that doesn't.
+        	
+        	// The only real way to fix this is completely to refactor selectSym
+        	// so that it doesn't generate diagnostics when there is no target
+        	// method found.
+        	if (pt.tag == METHOD || pt.tag == FORALL) {
+        		Symbol sym = rs.resolveQualifiedMethod(
+        				env, site, tree.name, pt.getParameterTypes(), pt.getTypeArguments());
+        		if (sym.kind >= ERR) {
+        			JCExpression application = make.Apply(null, 
+        					make.Select(tree.selected, names.fromString("get")),
+        					List.<JCExpression>nil());
+        			Type innerType = attribTree(application, env, skind, Infer.anyPoly);
+        			JCFieldAccess trial = make.Select(application, tree.name);
+        			// FIXME: This doesn't cope with extensions.  So, if the
+        			// method we're looking for is an extension we'll miss it.
+        			sym = rs.resolveQualifiedMethod(
+        					env, innerType, trial.name, pt.getParameterTypes(), pt.getTypeArguments());
+        			if (sym.kind < ERR) {
+        				tree.selected = application;
+        				visitSelect(tree);
+        				return;
+        			}
+        		}
+        		
+        	} else if (pt.tag == NONE || pt.tag == CLASS) {
+        		// We are seeing a plain identifier as selector.
+        		Symbol sym = rs.findIdentInType(env, site, tree.name, pkind);
+        		if (sym.kind >= ERR) {
+        			JCExpression application = make.Apply(null, 
+        					make.Select(tree.selected, names.fromString("get")),
+        					List.<JCExpression>nil());
+        			Type innerType = attribTree(application, env, skind, Infer.anyPoly);
+        			JCFieldAccess trial = make.Select(application, tree.name);
+        			sym = rs.findIdentInType(env, innerType, trial.name, pkind);
+        			if (sym.kind < ERR) {
+        				tree.selected = application;
+        				visitSelect(tree);
+        				return;
+        			} 
+        		}
         	}
-        	rs.generateAccessDiagnostic = tmp;
         }
 
         // don't allow T.class T[].class, etc

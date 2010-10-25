@@ -67,11 +67,6 @@ public class Resolve {
     public final boolean boxingEnabled; // = source.allowBoxing();
     public final boolean varargsEnabled; // = source.allowVarargs();
     private final boolean debugResolve;
-    
- 	// Set to false in order to be able
-	// to call access() without generating a diagnostic
-    // if it fails.
-    boolean generateAccessDiagnostic = true;
 
     public static Resolve instance(Context context) {
         Resolve instance = context.get(resolveKey);
@@ -1095,7 +1090,6 @@ public class Resolve {
 //          printscopes(site.tsym.members());//DEBUG
             if (!site.isErroneous() &&
                 !Type.isErroneous(argtypes) &&
-                generateAccessDiagnostic &&
                 (typeargtypes==null || !Type.isErroneous(typeargtypes)))
                 ((ResolveError)sym).report(log, pos, site, name, argtypes, typeargtypes);
             do {
@@ -1220,32 +1214,43 @@ public class Resolve {
      *  @param typeargtypes  The types of the invocation's type arguments.
      */
     Symbol resolveQualifiedMethod(DiagnosticPosition pos, Env<AttrContext> env,
-                                  Type site, Name name, List<Type> argtypes,
-                                  List<Type> typeargtypes) {
-        Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,
-                                env.info.varArgs=false, false);
-        if (varargsEnabled && sym.kind >= WRONG_MTHS) {
-            sym = findMethod(env, site, name, argtypes, typeargtypes, true,
-                             false, false);
-            if (sym.kind >= WRONG_MTHS)
-                sym = findMethod(env, site, name, argtypes, typeargtypes, true,
-                                 env.info.varArgs=true, false);
-        }
-        if (Context.isCeylon() && sym.kind == WRONG_MTH) {
-            // FIXME: this is a hack to allow conversion of the left hand sides
-            // of binary operations.  It needs to be generalized to cope with any
-            // number of arguments.
-            if (argtypes.size() == 1) {
-                MethodSymbol extension = types.getCeylonExtension(site, argtypes.head);
-                if (extension != null) {
-                    throw new ExtensionRequiredException(extension);
-                }
-            }
-        }
-        if (sym.kind >= AMBIGUOUS) {
-            sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
-        }
-        return sym;
+    		Type site, Name name, List<Type> argtypes,
+    		List<Type> typeargtypes) {
+    	Symbol sym = resolveQualifiedMethod(env,
+    			site,
+    			name,
+    			argtypes,
+    			typeargtypes);
+    	if (Context.isCeylon() && sym.kind == WRONG_MTH) {
+    		// FIXME: this is a hack to allow conversion of the left hand sides
+    		// of binary operations.  It needs to be generalized to cope with any
+    		// number of arguments.
+    		if (argtypes.size() == 1) {
+    			MethodSymbol extension = types.getCeylonExtension(site, argtypes.head);
+    			if (extension != null) {
+    				throw new ExtensionRequiredException(extension);
+    			}
+    		}
+    	}
+    	if (sym.kind >= AMBIGUOUS) {
+    		sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
+    	}
+    	return sym;
+    }
+
+    Symbol resolveQualifiedMethod(Env<AttrContext> env,
+    		Type site, Name name, List<Type> argtypes,
+    		List<Type> typeargtypes) {
+    	Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,
+    			env.info.varArgs=false, false);
+    	if (varargsEnabled && sym.kind >= WRONG_MTHS) {
+    		sym = findMethod(env, site, name, argtypes, typeargtypes, true,
+    				false, false);
+    		if (sym.kind >= WRONG_MTHS)
+    			sym = findMethod(env, site, name, argtypes, typeargtypes, true,
+    					env.info.varArgs=true, false);
+    	}
+    	return sym;
     }
 
     /** Resolve a qualified method identifier, throw a fatal error if not

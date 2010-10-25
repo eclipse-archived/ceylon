@@ -36,4 +36,20 @@ public void mutableTest2 (Process process) {
     Integer inner(Integer i) {
         return i+1;
     }
+
+    class T3 () {
+        mutable Integer f := 99;
+    }
+
+     class T2 () {
+        mutable T3 b = T3();
+    }
+
+    class T1 () {
+        mutable T2 a = T2();
+    }
+
+   T1 t1 = T1();
+
+   Integer n1 = t1.a.b.f;
 }

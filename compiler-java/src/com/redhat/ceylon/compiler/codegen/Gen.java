@@ -240,7 +240,10 @@ public class Gen {
         	public void visit(CeylonTree.ClassDeclaration decl) {
                 defs.append(convert(decl));
             }
-        	public void visit(CeylonTree.MethodDeclaration decl) {
+        	public void visit(CeylonTree.InterfaceDeclaration decl) {
+                defs.append(convert(decl));
+            }
+         	public void visit(CeylonTree.MethodDeclaration decl) {
         		methodClass(decl, defs, true);
         	}
         });
@@ -272,7 +275,12 @@ public class Gen {
         return topLev;
     }
 
-    public void methodClass(CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
+    public JCTree convert(InterfaceDeclaration decl) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void methodClass(CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
     		boolean topLevel) {
         // Generate a class with the
         // name of the method and a corresponding run() method.
