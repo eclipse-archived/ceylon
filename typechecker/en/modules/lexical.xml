@@ -101,16 +101,15 @@
         <para>The following reserved words are not legal identifier names:</para>
         
         <para><literal>
-        import implicit alias
-        class interface object
-        satisfies extends abstracts of
+        import implicit
+        class interface object given
+        assign void subtype local
+        of extends satisfies abstracts
         in out
-        given
-        void subtype local assign
-        return break throw retry 
-        this super outer
+        return break throw retry
         if else switch case for fail do while try catch finally
-        exists nonempty is
+        this outer super
+        is exists nonempty
         </literal></para>
         
         <!--

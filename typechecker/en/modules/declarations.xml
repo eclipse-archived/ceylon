@@ -164,17 +164,22 @@ Body?</programlisting>
          <section id="aliasimports">
             <title>Alias imports</title>
                
-        <para>The optional <literal>alias</literal> clause in a fully-explicit 
-        import allows resolution of cross-namespace declaration name collisions.</para>
+        <para>The optional alias clause in a fully-explicit import allows resolution 
+        of cross-namespace declaration name collisions.</para>
         
-        <programlisting>TypeAlias := "alias" TypeName "="</programlisting>
+        <programlisting>TypeAlias := "local" TypeName "="</programlisting>
+        
+        <comment><para>TODO: Should we use <literal>class</literal> and 
+        <literal>interface</literal> for declaring type aliases, instead of
+        <literal>local</literal>?</para></comment>
 
-        <programlisting>MethodAttributeAlias := "alias" MemberName "="</programlisting>
+        <programlisting>MethodAttributeAlias := "local" MemberName "="</programlisting>
         
-        <para>An <literal>alias</literal> assigns a different name to the imported 
-        declaration.</para>
+        <para>An alias assigns a different name to the imported declaration.</para>
         
-        <programlisting>import java.util { alias JavaMap = Map }</programlisting>
+        <programlisting>import java.util { local JavaMap = Map }</programlisting>
+        
+        <programlisting>import math { local fib = fibonnacciNumber }</programlisting>
         
         </section>
         
@@ -187,14 +192,14 @@ Body?</programlisting>
         
         <programlisting>ImportWildcard := "..."</programlisting>
         
-        <para>An <literal>import</literal> statement may specify a list of <literal>alias</literal>
-        imports followed by a wildcard. In this case, the <literal>alias</literal> imports
-        are imported with the specified names, and all other toplevel declarations are
-        imported with their declared names.</para>
+        <para>An <literal>import</literal> statement may specify a list of alias imports 
+        followed by a wildcard. In this case, the alias imports are imported with the 
+        specified names, and all other toplevel declarations are imported with their 
+        declared names.</para>
         
         <programlisting>import ceylon.collection { ... }</programlisting>
         
-        <programlisting>import math { alias fib = fibonnacciNumber, ... }</programlisting>
+        <programlisting>import math { local fib = fibonnacciNumber, ... }</programlisting>
         
         <programlisting>import com.acme.currencies { implicit CurrencyToDecimal, ... }</programlisting>
         
