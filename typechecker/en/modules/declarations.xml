@@ -1281,6 +1281,9 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         
         <programlisting>public class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
         
+        <para>The callable type of the specified class must be assignable to the 
+        callable type of the class alias.</para>
+        
         <para>Class aliases are not reified types. The metamodel reference for a class 
         alias&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
         object for the aliased class&mdash;in this case, 
