@@ -464,7 +464,9 @@ if you prefer.";</programlisting>
         of the current class. Invocation of <literal>fixed</literal> members upon 
         <literal>super</literal> is not allowed. The <literal>super</literal> 
         reference is not assignable to any type. There is no <literal>super</literal>
-        reference in an interface member body.</para>
+        reference in an interface member body. <emphasis>(Note that 
+        <literal>fixed</literal> is a proposed feature for a future version of the 
+        language.)</emphasis></para>
         
         <para>The keyword <literal>this</literal> refers to the current instance, 
         and is assignable to both the type of the current class or interface (the 

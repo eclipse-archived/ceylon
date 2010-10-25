@@ -852,13 +852,31 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>The only expression assignable to the type <literal>subtype</literal> is
         the special value <literal>this</literal>, except inside the body of a method or
         attribute annotated <literal>fixed</literal>, where the class that declares the
-        method or attribute is assignable to <literal>subtype</literal>.</para>
+        method or attribute is assignable to <literal>subtype</literal>. <emphasis>(Note 
+        that <literal>fixed</literal> is a proposed feature for a future version of the 
+        language.)</emphasis></para>
+        
+        <comment><para>TODO: Should we allow you to refer to the concrete type of an 
+        overriding member class in a subclass of the current class using the syntax
+        <literal>subtype.MemberClass</literal>, to which the expression 
+        <literal>MemberClass(...)</literal> is assignable? And/or the concrete type of 
+        the containing class of a subtype of the current member class, using the syntax
+        <literal>outer.subtype</literal>, to which <literal>outer</literal> is 
+        assignable? Both would be considered implicit covariant 
+        type parameters.</para></comment>
         
         <comment><para>TODO: Should we let you declare type constraints on 
-        <literal>subtype</literal>?</para></comment>
+        <literal>subtype</literal>? The only really useful case I can think of would 
+        be an initialization parameter constraint: <literal>given subtype(Foo foo, Bar bar)</literal>,
+        which would let you do <literal>subtype(foo, bar)</literal> to instantiate a new
+        instance of the concrete subclass of the current class, getting an expression
+        of type <literal>subtype</literal>. Note that <literal>given subtype satisfies Foo</literal>
+        is equivalent to declaring the type <literal>satisfies Foo</literal>. Perhaps
+        <literal>given subtype is TypeClass</literal> would also be useful.</para>
+        </comment>
         
         <comment><para>TODO: We should probably let you use <literal>subtype</literal>
-        is an expression, especially if we end up deciding to support type classes, in
+        in an expression, especially if we end up deciding to support type classes, in
         which case <literal>x.subtype</literal> will be the only way to get the type
         class polymorphically.</para></comment>
         

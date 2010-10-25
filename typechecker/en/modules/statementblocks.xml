@@ -174,12 +174,9 @@
             that occur later in the same block, and therefore it may not declare a visibility 
             modifier.</para>
             
-            <para>A block may not contain a method or attribute declaration annotated 
+            <para>A block may not contain a class, method, or attribute declaration annotated 
             <literal>abstract</literal>, <literal>default</literal>, <literal>fixed</literal>, 
-            or <literal>override</literal>. A block may not contain a class declaration
-            annotated <literal>default</literal> or <literal>override</literal>. A block 
-            <emphasis>may</emphasis> contain a class declaration annotated 
-            <literal>abstract</literal>.</para>
+            or <literal>override</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
             nested inside a block, a declaration directly contained in the body of a class 

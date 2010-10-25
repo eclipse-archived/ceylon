@@ -751,10 +751,10 @@ public class Person { ... }</programlisting>
         <literal>fixed</literal> member of a class must be explicitly annotated as such.
         No member may be annotated by more than one of these three annotations.</para>
         
-        <para>A block-local member may not be annotated <literal>default</literal> or
-        <literal>fixed</literal>. A block local method or attribute may not be annotated 
-        <literal>abstract</literal>. A block local member class <emphasis>may</emphasis> 
-        be annotated <literal>abstract</literal>.</para>
+        <para>Every member annotated <literal>abstract</literal>, <literal>default</literal> 
+        or <literal>fixed</literal> must declare or inherit a visibility modifier. A 
+        block-local member may not be annotated <literal>abstract</literal>, 
+        <literal>default</literal> or <literal>fixed</literal>.</para>
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
@@ -777,7 +777,6 @@ public class Person { ... }</programlisting>
     <section id="abstractclasses">
         <title>Abstract classes</title>
         
-        <!--  
         <para>A class may be annotated <literal>abstract</literal> only if it is:</para>
         <itemizedlist>
             <listitem>
@@ -788,10 +787,9 @@ public class Person { ... }</programlisting>
                 interface.</para>
             </listitem>
         </itemizedlist>
-        -->
         
-        <para>A class may be annotated <literal>abstract</literal>. If and only if a 
-        class is annotated <literal>abstract</literal> it may declare:</para>
+        <para>If and only if a class is annotated <literal>abstract</literal> it may 
+        declare:</para>
         
         <itemizedlist>
             <listitem>
@@ -807,12 +805,16 @@ public class Person { ... }</programlisting>
         
         <programlisting>abstract class Buffer(Character...) satisfies Character[];</programlisting>
         
-        <para>Toplevel classes and block local classes annotated <literal>abstract</literal> 
-        may not be instantiated.</para> 
+        <comment><para>TODO: In this case, do we need to limit the class to specifying 
+        at most one supertype? Not sure exactly what limitations exist at the bytecode
+        level.</para></comment>
         
-        <para>A member class annotated <literal>abstract</literal> which also specifies 
-        a visibility modifier may be instantiated. Every subtype of the type which 
-        declares the member class must override the member class.</para>
+        <para>Toplevel classes annotated <literal>abstract</literal> may not be 
+        instantiated.</para> 
+        
+        <para>A member class annotated <literal>abstract</literal> may be instantiated. 
+        Every subtype of the type which declares the member class must override the 
+        member class.</para>
         
     </section>
         
@@ -1020,24 +1022,19 @@ public class Person { ... }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>A member class annotated <literal>default</literal> may be 
-                overridden by any class which is a subtype of the class or 
-                interface which declares the member class.</para>
+                <para>A member class annotated <literal>abstract</literal> or
+                <literal>default</literal> may be overridden by any class which 
+                is a subtype of the class or interface which declares the member 
+                class.</para>
             </listitem>
             <listitem>
-                <para>A member class annotated <literal>abstract</literal> which 
-                also specifies a visibility modifier may be overridden by any class 
-                which is a subtype of the class or interface which declares the 
-                member class.</para>
-            </listitem>
-            <listitem>
-                <para>A member class annotated <literal>abstract</literal> which 
-                also specifies a visibility modifier <emphasis>must</emphasis> be 
-                overridden by every non-<literal>abstract</literal> class which is 
-                a subtype of the <literal>abstract</literal> class or interface that 
-                declares the member class, unless the class inherits a 
-                non-<literal>abstract</literal> member class from a superclass that 
-                overrides the <literal>abstract</literal> member class.</para>
+                <para>A member class annotated <literal>abstract</literal> 
+                <emphasis>must</emphasis> be overridden by every 
+                non-<literal>abstract</literal> class which is a subtype of the 
+                <literal>abstract</literal> class or interface that declares the 
+                member class, unless the class inherits a 
+                non-<literal>abstract</literal> member class from a superclass 
+                that overrides the <literal>abstract</literal> member class.</para>
             </listitem>
         </itemizedlist>
         
@@ -2545,7 +2542,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <listitem>
                 <para><literal>fixed</literal> specifies that a method or
                 attribute must be overridden by every non-<literal>abstract</literal> 
-                subclass.</para>
+                subclass. <emphasis>(Note that <literal>fixed</literal> is a
+                proposed feature for a future version of the language.)</emphasis></para>
             </listitem>
             <!-- 
             <listitem>
