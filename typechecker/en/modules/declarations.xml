@@ -14,6 +14,10 @@
         program element of a different type.</para></listitem>
     </itemizedlist>
     
+    <programlisting>Declaration := Method | Attribute | TypeDeclaration</programlisting>
+    
+    <programlisting>TypeDeclaration := Class | Object | Interface</programlisting>
+        
     <para>All declarations follow a general pattern:</para>
         
     <programlisting>Annotation* 
@@ -51,8 +55,6 @@ Body?</programlisting>
         interface&mdash;or a method or non-<literal>mutable</literal> attribute.</para>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
-        
-        <programlisting>TypeDeclaration := Class | Object | Interface</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -449,8 +451,6 @@ TypeConstraints?
         </itemizedlist>
 
         <programlisting>ClassBody := "{" (Declaration | Statement)* "}"</programlisting>
-        
-        <programlisting>Declaration := Method | SimpleAttribute | AttributeGetter | AttributeSetter | TypeDeclaration</programlisting>
         
         <!--
         <para>The body of a class may invoke, evaluate or assign members of the instance 
@@ -1985,6 +1985,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
+        <programlisting>Attribute := SimpleAttribute | AttributeGetter | AttributeSetter</programlisting>
+    
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
         definitions may be overridden by subclasses.</para>
         
