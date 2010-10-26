@@ -1179,7 +1179,7 @@ public class Gen {
                     values.append(convertExpression(expr));
                 }
                 result = at(list).Apply(null,
-                			makeSelect("ceylon", "language", "ArrayList", "of"),
+                			makeSelect(makeIdent(syms.ceylonArrayListType), "of"),
                         values.toList());
             }
           }
