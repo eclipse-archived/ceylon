@@ -143,7 +143,7 @@ importWildcard
     ;
 
 importAlias
-    : 'alias' importedName '='
+    : 'local' importedName '='
     -> ^(ALIAS_DECL importedName)
     ;
 
@@ -223,7 +223,6 @@ declarationKeyword
     | 'interface' 
     | 'class' 
     | 'object'
-    | 'alias'
     ;
 
 //by making these things keywords, we reduce the amount of
@@ -334,24 +333,11 @@ interfaceDeclaration
         typeClass?
         satisfiedTypes?
         typeConstraints?
-        interfaceBody
+        (classBody | typeSpecifier)
     ;
 
 interfaceBody
     : '{'! declaration* '}'!
-    ;
-
-aliasDeclaration
-    :
-        'alias'!
-        typeName
-        typeParameters?
-        typeConstraints?
-        aliasBody
-    ;
-
-aliasBody
-    : '='! type ';'!
     ;
 
 classDeclaration
@@ -366,7 +352,7 @@ classDeclaration
         extendedType?
         satisfiedTypes?
         typeConstraints?
-        classBody
+        (classBody | typeSpecifier | ';')
     ;
 
 objectDeclaration
@@ -530,6 +516,10 @@ initializer
 specifier
     : '=' expression
     -> ^(INIT_EXPR expression)
+    ;
+
+typeSpecifier
+    : '='! type ';'!
     ;
 
 nonstringLiteral
@@ -1187,10 +1177,6 @@ MULTI_COMMENT
         ;
 ABSTRACTS
     : 'abstracts'
-    ;
-
-ALIAS
-    : 'alias'
     ;
 
 ASSIGN
