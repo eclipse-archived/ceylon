@@ -36,6 +36,8 @@ import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.comp.Infer;
 import com.sun.tools.javac.comp.Check;
 
+import com.sun.tools.javac.ceylon.ExtensionFinder;
+
 import static com.sun.tools.javac.code.Type.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 import static com.sun.tools.javac.code.Symbol.*;
@@ -77,6 +79,7 @@ public class Types {
     final Check chk;
     List<Warner> warnStack = List.nil();
     final Name capturedName;
+    final ExtensionFinder extensionFinder;
 
     // <editor-fold defaultstate="collapsed" desc="Instantiating">
     public static Types instance(Context context) {
@@ -95,6 +98,7 @@ public class Types {
         source = Source.instance(context);
         chk = Check.instance(context);
         capturedName = names.fromString("<captured wildcard>");
+        extensionFinder = ExtensionFinder.instance(context); 
     }
     // </editor-fold>
 
@@ -278,6 +282,8 @@ public class Types {
      }
 
     public MethodSymbol getCeylonExtension(Type t, Type s) {
+        extensionFinder.extend(t, s);
+
         if (t.tag != CLASS)
             return null;
 
