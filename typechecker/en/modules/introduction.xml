@@ -2637,7 +2637,7 @@ annotation {
     occurs = onceEachType; 
 }
 package Set&lt;People&gt; people(Person... people) {
-    return HashSet(people);
+    return HashSet(people)
 }</programlisting>
 
         <para>The meta-annotation <literal>annotation</literal> specifies that this 
@@ -2732,14 +2732,15 @@ class Hello(String? name) {
             if (exists Person person = 
                     first (Person p in people) 
                         where (p.firstName &equals; name)) {
-                return "" word(p.language) ", " person.firstName " " person.lastName "!"
+                return "" word(p.language) ", " 
+                       person.firstName " " person.lastName "!"
             }
             else {
-                return "Hello, " name "!";
+                return "Hello, " name "!"
             }
         }
         else {
-            return "Hello, World!";
+            return "Hello, World!"
         }
     }
     
