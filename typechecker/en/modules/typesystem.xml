@@ -468,13 +468,15 @@ String? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
+        <!-- 
         <comment><para>TODO: should we let an interface extend a class other than 
         <literal>Object</literal>? What this would mean is that every class that implements
         the interface, and every interface that extends the interface, would need to directly 
         or indirectly extend the given class, and the interface type would be considered
         assignable to the class. It would mean some hacking around the VM-level type system,
         unfortunately.</para></comment>
-    
+        -->
+        
     <section id="extendedclass">
         <title>Extension</title>
     
