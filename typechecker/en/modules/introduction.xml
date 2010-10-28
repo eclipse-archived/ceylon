@@ -94,15 +94,15 @@
     <title>Class initialization and instantiation</title>
     
     <para>
-    Ceylon does not feature any Java-like constructor declaration and so 
-    each Ceylon class has a parameter list, and exactly one 
+    Ceylon does not feature any Java-like constructor declaration and so each 
+    Ceylon class has a parameter list, and exactly one 
     <emphasis>initializer</emphasis>&mdash;the body of the class. This helps
     reduce verbosity and results in a more regular block structure.
     </para>
     
     <para>
     In place of constructor overloading, Ceylon allows class names to be 
-    overloaded. Even better, member classes of a class may be refined by 
+    overloaded. Even better, member classes of a class may be overridden by 
     subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
     eliminating the need for factory methods.
     </para>
@@ -675,7 +675,8 @@ class Hello(String? name) {
             of the notion of a value. Some attributes are simple value holders like
             the one we've just seen; others are more like a getter method, or, sometimes, 
             like a getter and setter method pair. Like methods, attributes are 
-            polymorphic&mdash;an attribute definition may be refined by a subclass.</para>
+            polymorphic&mdash;an attribute definition may be refined (overridden) by a 
+            subclass.</para>
             
             <para>We could rewrite the attribute <literal>greeting</literal> as a 
             <emphasis>getter</emphasis>:</para>
@@ -847,7 +848,7 @@ class DefaultHello() {
 }]]></programlisting>
 
             <para>Notice that Ceylon forces as to declare attributes or methods that can be 
-            refined by annotating them <literal>default</literal>.</para>
+            refined (overridden) by annotating them <literal>default</literal>.</para>
             
             <para>Subclasses specify their superclass using the <literal>extends</literal>
             keyword, followed by the name of the superclass, followed by a list of arguments
@@ -864,8 +865,8 @@ class PersonalizedHello(String name) extends DefaultHello() {
     
 }]]></programlisting>
 
-            <para>Ceylon also forces us to declare that an attribute or method refines an 
-            attribute or method of a superclass by annotating it <literal>refine</literal>. 
+            <para>Ceylon also forces us to declare that an attribute or method refines (overrides) 
+            an attribute or method of a superclass by annotating it <literal>refine</literal>. 
             All this annotating stuff costs a few extra keystrokes, but it helps the compiler
             detect errors. We can't inadvertantly refine a member or the superclass, or
             inadvertantly <emphasis>fail</emphasis> to refine it.</para>
