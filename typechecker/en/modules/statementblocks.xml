@@ -48,8 +48,8 @@
         
         <itemizedlist>
             <listitem>
-                <para>it is a formal parameter, type parameter, or control structure 
-                variable of a body that contains the program element, or</para>
+                <para>it is a parameter, type parameter, or control structure variable 
+                of a body that contains the program element, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs earlier in a body that contains the program 
@@ -83,13 +83,13 @@
         
         <itemizedlist>
             <listitem>
-                <para>if an inner body is contained (directly or indirectly) in an outer body, 
-                a declaration, formal parameter, type parameter or control structure variable 
-                of the inner body hides a declaration, formal parameter, type parameter or 
-                control structure variable in the outer body,</para>
+                <para>if an inner body is contained (directly or indirectly) in an outer 
+                body, a declaration, parameter, type parameter or control structure 
+                variable of the inner body hides a declaration, parameter, type parameter 
+                or control structure variable in the outer body,</para>
             </listitem>
             <listitem>
-                <para>a formal parameter of a class body hides an attribute of the class,</para>
+                <para>a parameter of a class body hides an attribute of the class,</para>
             </listitem>
             <listitem>
                 <para>a declaration occurring in a body containing the program element 
@@ -106,7 +106,7 @@
         is ambiguous, and a compilation error occurs.</para>
         
         <para>A body may not contain two declarations with the same name unless they are 
-        overloaded versions of the same method or class, or unless one is a formal parameter 
+        overloaded versions of the same method or class, or unless one is a parameter 
         of the class body and the other is an attribute of the class. A package may not 
         contain two toplevel declarations with the same name unless they are overloaded 
         versions of the same method or class.</para>
@@ -598,7 +598,7 @@ else {
         
         <programlisting>InferableVariable := InferableType MemberName FormalParams*</programlisting>
         
-        <para>A variable is treated as a formal parameter of the control structure body.</para>
+        <para>A variable is treated as a parameter of the control structure body.</para>
         
         </section>
         

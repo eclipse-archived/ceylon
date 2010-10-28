@@ -344,7 +344,7 @@ void hello() = info.partial("Hello!");</programlisting>
        
        <programlisting>void say(Person p, String words) = Person.say.flatten;</programlisting>
        
-       <para>Finally, this extension swaps the first and second formal parameter lists of
+       <para>Finally, this extension swaps the first and second parameter lists of
        a function with multiple parameter lists, transforming a 
        <literal>Callable&lt;Callable&lt;R,Q...&gt;,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,Q...&gt;</literal>:</para>
@@ -2512,7 +2512,7 @@ while (i<=max) {
     
 }]]></programlisting>
 
-        <para>A <literal>Parameter</literal> represents a formal parameter of a method 
+        <para>A <literal>Parameter</literal> represents a parameter of a method 
         or class.</para>
 
         <programlisting><![CDATA[public interface Parameter<out T> 

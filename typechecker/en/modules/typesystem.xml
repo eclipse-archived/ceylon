@@ -182,17 +182,17 @@
                 <para>A <emphasis>method schema</emphasis> is a name (an initial lowercase 
                 identifier) and an optional list of type parameters, with a type (often 
                 called the <emphasis>return type</emphasis>) and a list of one or more 
-                formal parameter lists.</para>
+                parameter lists.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>class schema</emphasis> is a type schema with a formal 
+                <para>A <emphasis>class schema</emphasis> is a type schema with a 
                 parameter list.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>formal parameter list</emphasis> is a list of names 
-                (initial lowercase identifiers) with types. The 
-                <emphasis>signature</emphasis> of a formal parameter list is formed by 
-                discarding the names, leaving the list of types.</para>
+                <para>A <emphasis>parameter list</emphasis> is a list of names (initial 
+                lowercase identifiers) with types. The <emphasis>signature</emphasis> of 
+                a parameter list is formed by discarding the names, leaving the list of 
+                types.</para>
             </listitem>
         </itemizedlist>
         
@@ -207,8 +207,8 @@
         
         <itemizedlist>
             <listitem>
-                <para>taking the signature of the formal parameter list of the member class, 
-                or of the first formal parameter list of the method, and</para>
+                <para>taking the signature of the parameter list of the member class, or of 
+                the first parameter list of the method, and</para>
             </listitem>
             <listitem>
                 <para>replacing each occurrence of any type alias in the signature with the
@@ -312,16 +312,15 @@
                 same name and the same type.</para>
             </listitem>
             <listitem>
-                <para>For each method of <literal>Y</literal>, <literal>X</literal>
-                has a method with the same name, with the same number of formal parameter 
-                lists, with the same signatures, and whose return type is assignable to the 
-                return type of the method of <literal>Y</literal>.</para>
+                <para>For each method of <literal>Y</literal>, <literal>X</literal> has a 
+                method with the same name, with the same number of parameter lists, with 
+                the same signatures, and whose return type is assignable to the return type 
+                of the method of <literal>Y</literal>.</para>
             </listitem>
             <listitem>
                 <para>For each member class of <literal>Y</literal>, <literal>X</literal>
-                has a member class of the same name, with a formal parameter list with 
-                the same signature, that is assignable to the member class of 
-                <literal>Y</literal>.</para>
+                has a member class of the same name, with a parameter list with the same 
+                signature, that is assignable to the member class of <literal>Y</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -362,7 +361,7 @@
         <section id="typeofaprogramelement">
             <title>Type of a program element</title>
         
-        <para>Method, attribute and formal parameter declarations must declare a type.</para>
+        <para>Method, attribute, and parameter declarations must declare a type.</para>
         
         <para>Types are identified by the name of the type (a class, interface, or 
         type parameter), together with a list of type arguments if the type definition 
@@ -719,13 +718,13 @@ String? firstWord = words[0];</programlisting>
                 <para>The return type of a method is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter type of a method is a contravariant position.</para>
+                <para>A parameter type of a method is a contravariant position.</para>
             </listitem>
             <listitem>
                 <para>A type parameter of a method is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter type of a nested class initializer is a contravariant 
+                <para>A parameter type of a nested class initializer is a contravariant 
                 position.</para>
             </listitem>
             <listitem>
@@ -783,11 +782,11 @@ String? firstWord = words[0];</programlisting>
                 <para>A nonvariant type argument of a type is a nonvariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a callable parameter in a contravariant position is 
+                <para>A parameter of a callable parameter in a contravariant position is 
                 covariant.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a callable parameter in a covariant position is 
+                <para>A parameter of a callable parameter in a covariant position is 
                 contravariant.</para>
             </listitem>
             <listitem>
@@ -888,7 +887,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>A <emphasis>sequenced type parameter</emphasis> allows a declaration to be 
         abstracted over a variable length list of arbitrary types. This allows declarations 
-        with formal parameter lists to be represented by metamodel objects within the 
+        with parameter lists to be represented by metamodel objects within the 
         language.</para>
         
         <para>A sequenced type parameter is identified by an elipsis <literal>...</literal>,
@@ -899,12 +898,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>Sequenced type parameters are always non-variant.</para>
         
         <para>Inside the declaration of the parameterized type or method, a sequenced type 
-        parameter may be used as a type argument to other types which accept a sequenced type 
-        parameter, or it may be used as the type of the last formal parameter declared by a 
-        formal parameter list. It may not appear in any other position. The sequenced type 
-        parameter acts as a pseudo-type. It is treated by the Ceylon compiler as if it were a 
-        type with no members, to which no other type may be assigned, and which can only by 
-        assigned to itself.</para>
+        parameter may be used as a type argument to other types which accept a sequenced 
+        type parameter, or it may be used as the type of the last parameter declared by a 
+        parameter list. It may not appear in any other position. The sequenced type 
+        parameter acts as a pseudo-type. It is treated by the Ceylon compiler as if it were 
+        a type with no members, to which no other type may be assigned, and which can only 
+        by assigned to itself.</para>
         
         <programlisting>Type&lt;X, P...&gt;</programlisting>
         <programlisting>Method&lt;X, T, P...&gt;</programlisting>
@@ -969,7 +968,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             <listitem>
                 <para>an initialization parameter specification, <literal>given X(...)</literal>
                 specifies that the type parameter <literal>X</literal> is a class with
-                the given formal parameter types.</para>
+                the given parameter types.</para>
             </listitem>
         </itemizedlist>
         
@@ -1253,10 +1252,10 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                 <para>method return types,</para>
             </listitem>
             <listitem>
-                <para>method formal parameter types,</para>
+                <para>method parameter types,</para>
             </listitem>
             <listitem>
-                <para>initializer formal parameter types, and</para>
+                <para>initializer parameter types, and</para>
             </listitem>
             <listitem>
                 <para>type arguments of extended classes and satisfied interfaces.</para>
@@ -1276,26 +1275,26 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
             parameterized type in which the sequenced type parameter appears, and</para>
         </listitem>
         <listitem> 
-            <para>a list of formal parameters whose types are the type arguments is
-            appended to the list of formal parameters of every formal parameter list in
-            which the sequenced type parameter appears.</para>
+            <para>a list of parameters whose types are the type arguments is appended to 
+            the list of parameters of every parameter list in which the sequenced type 
+            parameter appears.</para>
         </listitem>
         </itemizedlist>
         
         <programlisting>Method&lt;Order, Item, Product, Natural&gt;</programlisting>
         
         <para>A sequenced type in a type argument list results in a sequenced type
-        parameter in a formal parameter list.</para>
+        parameter in a parameter list.</para>
         
         <programlisting>Method&lt;String, Object...&gt;</programlisting>
 
-        <para>A reference to a sequenced type parameter in a type argument list results in 
-        a tuple parameter in a formal parameter list.</para>
+        <para>A reference to a sequenced type parameter in a type argument list results 
+        in a tuple parameter in a parameter list.</para>
         
         <programlisting>Method&lt;String, String, P...&gt;</programlisting>
 
-        <comment><para>TODO: should we let you fill in the formal parameter names, so
-        you can call this thing using named arguments?
+        <comment><para>TODO: should we let you fill in the parameter names, so you can 
+        call this thing using named arguments?
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
         </para></comment>
         
@@ -1380,15 +1379,15 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                 
     </section>
     
-    <section id="formalparameters">
-        <title>Formal parameters</title>
+    <section id="parameters">
+        <title>Parameters</title>
     
-        <para>A method or class declaration may declare a list or <emphasis>formal parameters</emphasis>, 
+        <para>A method or class declaration may declare a list or <emphasis>parameters</emphasis>, 
         including, optionally, <emphasis>defaulted parameters</emphasis> (parameters with default
         values) and a <emphasis>sequenced parameter</emphasis> (a "vararg" parameter).</para>
         
-        <para>In a formal parameter list, parameters with default values must occur after 
-        required parameters. The sequenced parameter, if any, must occur last.</para>
+        <para>In a parameter list, parameters with default values must occur after required 
+        parameters. The sequenced parameter, if any, must occur last.</para>
         
         <programlisting>FormalParams := 
 "("
@@ -1404,8 +1403,8 @@ SequencedParam?
         
         <programlisting>Param := Annotation* (Type|"void") (ParameterName|"this") FormalParams*</programlisting>
         
-        <para>A formal parameter may not be be declared <literal>mutable</literal>, and may not 
-        be assigned to within the body of the method or class.</para>
+        <para>A parameter may not be be declared <literal>mutable</literal>, and may not be 
+        assigned to within the body of the method or class.</para>
         
         <para>Only a parameter of a toplevel extension method or class may define a parameter
         named <literal>this</literal>.</para>
@@ -1422,9 +1421,9 @@ SequencedParam?
         
         <programlisting>(Comparison by(X x, X y))</programlisting>
         
-        <para>A callable parameter declaration is equivalent to a formal parameter declaration 
-        with no parameter lists where the type is the callable type of the method declaration.
-        So the above are equivalent to:</para>
+        <para>A callable parameter declaration is equivalent to a parameter declaration with 
+        no parameter lists where the type is the callable type of the method declaration. So 
+        the above are equivalent to:</para>
         
         <programlisting>(String label, Callable&lt;Object&gt; onClick)</programlisting>
         
@@ -1444,21 +1443,20 @@ SequencedParam?
         
         <programlisting>Specifier := "=" Expression</programlisting>
         
-        <para>Defaulted parameters must occur after non-defaulted parameters in the formal
-        parameter list.</para>
+        <para>Defaulted parameters must occur after non-defaulted parameters in the parameter 
+        list.</para>
         
         <programlisting>(Product product, Natural quantity=1)</programlisting>
         
         <para>The type of the default argument expression must be assignable to the declared
-        type of the formal parameter.</para>
+        type of the parameter.</para>
         
         </section>
         
         <section id="sequencedandtupleparameters">
             <title>Sequenced and tuple parameters</title>
         
-        <para>The elipsis <literal>...</literal> indicates that a formal parameter is 
-        either:</para>
+        <para>The elipsis <literal>...</literal> indicates that a parameter is either:</para>
         
         <itemizedlist>
             <listitem>
@@ -1477,7 +1475,7 @@ SequencedParam?
         
         <programlisting>SequencedParam := Annotation* Type "..." ParameterName</programlisting>
         
-        <para>The sequenced parameter or tuple parameter must be the last formal parameter in the 
+        <para>The sequenced parameter or tuple parameter must be the last parameter in the 
         list.</para>
         
         <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
@@ -1588,8 +1586,8 @@ Description doc(String description) {
             </listitem>
             <listitem>
                 <para>For each method of <literal>X</literal> with return type <literal>R</literal> 
-                and formal parameter types <literal>P...</literal>, <literal>MX</literal> has 
-                an attribute with the same name and type <literal>Method&lt;X,R,P...&gt;</literal>.</para>
+                and parameter types <literal>P...</literal>, <literal>MX</literal> has an 
+                attribute with the same name and type <literal>Method&lt;X,R,P...&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>For each <literal>abstract</literal> member class <literal>Y</literal> 

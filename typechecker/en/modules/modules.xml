@@ -394,7 +394,7 @@
         
         <para>A module may be <emphasis>runnable</emphasis>. The module descriptor
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
-        toplevel method or class with no formal parameters.</para>
+        toplevel method or class with no parameters.</para>
         
         <para>The following classes define the format of the Ceylon module
         descriptor:</para>
@@ -609,7 +609,7 @@ public class Import(
             <listitem>
                 <para><literal>-run</literal> specifies the fully 
                 qualified name of a toplevel method or class with 
-                no formal parameters.</para>
+                no parameters.</para>
             </listitem>
             <listitem>
                 <para><literal>-rep</literal> specifies a module

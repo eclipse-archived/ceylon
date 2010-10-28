@@ -49,9 +49,9 @@
         erased by the transformation process.</para>
         
         <para>In the case of a class, the Java class has a constructor with 
-        the same formal parameters as the Ceylon class. The types of the
-        constructor parameters are formed by transforming the types of the
-        initializer parameters of the Ceylon class.</para>
+        the same parameters as the Ceylon class. The types of the constructor 
+        parameters are formed by transforming the types of the initializer 
+        parameters of the Ceylon class.</para>
         
         <para>The supertypes of the Java type are formed by transforming the
         supertypes of the Ceylon type.</para>
@@ -69,7 +69,7 @@
         </itemizedlist>
         
         <para>The return type of the Java method is formed by transforming the 
-        return type toplevel Ceylon method. The Java method has the same formal 
+        return type toplevel Ceylon method. The Java method has the same 
         parameters as the Ceylon method. The types of the method parameters are 
         formed by transforming the types of the method parameters of the Ceylon 
         method.</para>
@@ -117,10 +117,9 @@
         of the Java type is formed by transforming the member type of the member
         of the Ceylon type.</para>
         
-        <para>In the case of a method, the Java method has the same formal 
-        parameters as the Ceylon method. The types of the method parameters are 
-        formed by transforming the types of the method parameters of the Ceylon 
-        method.</para>
+        <para>In the case of a method, the Java method has the same parameters 
+        as the Ceylon method. The types of the method parameters are formed by 
+        transforming the types of the method parameters of the Ceylon method.</para>
         
         </section>
         
@@ -248,7 +247,7 @@
         by transforming the upper bounds of the type parameter of the Java 
         type.</para>
         
-        <para>In the case of a class, the Ceylon class has the same formal 
+        <para>In the case of a class, the Ceylon class has the same 
         parameters as the Java constructor. The types of the initializer 
         parameters are formed by transforming the types of the constructor 
         parameters of the Java class.</para>
@@ -311,7 +310,7 @@
         of the Ceylon type or extension class is formed by transforming the member 
         type of the member of the Java type.</para>
         
-        <para>In the case of a method, the Ceylon method has the same formal 
+        <para>In the case of a method, the Ceylon method has the same 
         parameters as the Java method. The types of the method parameters are 
         formed by transforming the types of the method parameters of the Java 
         method.</para>

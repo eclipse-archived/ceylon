@@ -32,13 +32,13 @@
         </listitem>
     </itemizedlist>
     
-    <para>Ceylon expressions are validated for typesafety at compile time.
-    To determine whether an expression is assignable to a program element 
-    such as an attribute, local or formal parameter, Ceylon considers the 
-    <emphasis>type</emphasis> of the expression (the type of the objects 
-    that are produced when the expression is evaluated). An expression is 
-    assignable to a program element if the type of the expression is 
-    assignable to the declared type of the program element.</para>
+    <para>Ceylon expressions are validated for typesafety at compile time. To 
+    determine whether an expression is assignable to a program element such as 
+    an attribute, local, or parameter, Ceylon considers the 
+    <emphasis>type</emphasis> of the expression (the type of the objects that 
+    are produced when the expression is evaluated). An expression is assignable 
+    to a program element if the type of the expression is assignable to the 
+    declared type of the program element.</para>
     
     <comment><para>TODO: Do we need a definition of "constant expression"? 
     We might use it for:</para>
@@ -64,23 +64,23 @@
         <para>A <emphasis>value</emphasis> is a reference to an object (a copy of its 
         unique identifier). At a particular point in the execution of the program, 
         every attribute of every object that exists, and every initialized local of 
-        every method or initializer that is currently executing has a value. Furthermore, 
-        every time an expression is executed, it produces a value.</para>
+        every method or initializer that is currently executing has a value. 
+        Furthermore, every time an expression is executed, it produces a value.</para>
         
         <para>Two values are said to be <emphasis>identical</emphasis> if they are
         references to the same object&mdash;if they hold the same unique identifier. The 
         program may determine if two values of type <literal>IdentifiableObject</literal> 
-        are identical using the <literal>&identical;</literal> operator. It may not directly 
-        obtain the unique identifier (which is a purely abstract construct). The program has 
-        no way of determining the identity of a value which is not of type 
+        are identical using the <literal>&identical;</literal> operator. It may not 
+        directly obtain the unique identifier (which is a purely abstract construct). The 
+        program has no way of determining the identity of a value which is not of type 
         <literal>IdentifiableObject</literal>.</para>
         
         <para>Invocation of a method or class initializer results in execution of the 
-        method with formal parameter values that are copies of the value produced by 
-        executing the argument expressions of the invocation, and a reference to the 
-        receiving instance that is a copy of the value produced by executing the receiver
-        expression. The value produced by the invocation expression is a copy of the value 
-        produced by execution of the <literal>return</literal> directive expression.</para>
+        method with parameter values that are copies of the value produced by executing 
+        the argument expressions of the invocation, and a reference to the receiving 
+        instance that is a copy of the value produced by executing the receiver expression. 
+        The value produced by the invocation expression is a copy of the value produced by 
+        execution of the <literal>return</literal> directive expression.</para>
         
         <programlisting>Person myself(Person me) { return me }
 Person p = ...;
@@ -533,7 +533,7 @@ if you prefer.";</programlisting>
                 or class,</para>
             </listitem>
             <listitem>
-                <para>the reference is to a local or formal parameter, or</para>
+                <para>the reference is to a local or parameter, or</para>
             </listitem>
             <listitem>
                 <para>the current instance of a containing class is the receiver.</para>
@@ -608,13 +608,13 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
         of some object. A <emphasis>local reference</emphasis> is a reference to a 
-        local or formal parameter. An attribute reference specifies the name of the 
-        attribute. A local reference specifies the name of the local or formal parameter.</para>
+        local or parameter. An attribute reference specifies the name of the attribute. 
+        A local reference specifies the name of the local or parameter.</para>
         
         <programlisting>ValueReference := (Receiver ".")? MemberName</programlisting>
         
         <para>The type of an attribute reference or local reference expression for an 
-        attribute, local, or formal parameter of declared type <literal>X</literal> is:</para>
+        attribute, local, or parameter of declared type <literal>X</literal> is:</para>
         
         <itemizedlist>
             <listitem>
@@ -622,15 +622,15 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
                 to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
             </listitem>
             <listitem>
-                <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, 
-                local, or formal parameter is not <literal>mutable</literal>, or if 
-                the setter is not visible to the block containing the attribute or 
-                local reference, or</para>
+                <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, local, 
+                or parameter is not <literal>mutable</literal>, or if the setter is 
+                not visible to the block containing the attribute or local reference, 
+                or</para>
             </listitem>
             <listitem>
                 <para><literal>Settable&lt;X&gt;</literal>, if the attribute, local, 
-                or formal parameter is <literal>mutable</literal> and the setter, if 
-                any, is visible to the block containing the attribute or local 
+                or parameter is <literal>mutable</literal> and the setter, if any, 
+                is visible to the block containing the attribute or local 
                 reference.</para>
             </listitem>
         </itemizedlist>
@@ -645,14 +645,13 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
             <para>An expression of type <literal>Gettable</literal> or <literal>Settable</literal> 
             may be assigned to an attribute or local, passed as an argument to a method or initializer, 
-            or returned by a method. If the attribute, local, or formal parameter to which the 
-            expression is assigned is of declared type <literal>Gettable</literal> or 
-            <literal>Settable</literal>, or if the method which returns the expression is of declared  
-            type <literal>Gettable</literal> or <literal>Settable</literal>, this is called 
-            <emphasis>pass by reference</emphasis>, since it does not result in immediate evaluation of 
-            the referenced value. Instead, the attribute, local, or formal parameter holds a 
-            <emphasis>reference</emphasis> to the value of some other attribute, local, or formal 
-            parameter.</para>
+            or returned by a method. If the attribute, local, or parameter to which the expression is 
+            assigned is of declared type <literal>Gettable</literal> or <literal>Settable</literal>, 
+            or if the method which returns the expression is of declared type <literal>Gettable</literal> 
+            or <literal>Settable</literal>, this is called <emphasis>pass by reference</emphasis>, 
+            since it does not result in immediate evaluation of the referenced value. Instead, the 
+            attribute, local, or parameter holds a <emphasis>reference</emphasis> to the value of some 
+            other attribute, local, or parameter.</para>
             
             <para>This local holds a reference:</para>
             
@@ -688,8 +687,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <para>A callable reference may be invoked immediately, or it may be passed 
         to other code which may invoke the reference. A callable reference captures 
-        the return type and formal parameter lists of the method, callable parameter, 
-        or class it refers to, allowing compile-time validation of argument types when 
+        the return type and parameter lists of the method, callable parameter, or 
+        class it refers to, allowing compile-time validation of argument types when 
         the callable reference is invoked.</para>
         
         <para>A callable reference expression is assignable to 
@@ -765,7 +764,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
                 return type of the method or functional parameter, and</para>
             </listitem>
             <listitem>
-                <para> the method reference has exactly the same number of formal parameters, 
+                <para> the method reference has exactly the same number of parameters, 
                 with the same types, as the method or functional parameter.</para>
             </listitem>
         </itemizedlist>
@@ -778,7 +777,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <para>Additionally, method references are assignable to <literal>Callable&lt;X&gt;</literal>
         where <literal>X</literal> is the return type. Note that <literal>Callable</literal>
-        does not capture formal parameter types, and so references of type 
+        does not capture parameter types, and so references of type 
         <literal>Callable&lt;X&gt;</literal> are therefore not method references.</para>
         
         <comment><para>TODO: could we make method references contravariant in the parameter
@@ -919,14 +918,13 @@ local comp = order(1,-1);</programlisting>
                 expression is assignable),</para>
             </listitem>
             <listitem>
-                <para>the names of the formal parameters of the method or class,</para>
+                <para>the names of the parameters of the method or class,</para>
             </listitem>
             <listitem>
-                <para>which formal parameters are defaulted, and their default
-                values, and</para>
+                <para>which parameters are defaulted, and their default values, and</para>
             </listitem>
             <listitem>
-                <para>whether the last formal parameter in the list is a sequenced
+                <para>whether the last parameter in the list is a sequenced
                 parameter.</para>
             </listitem>
         </itemizedlist>
@@ -947,9 +945,8 @@ local comp = order(1,-1);</programlisting>
         optionally be specified. Otherwise, an argument must be specified for each defaulted 
         parameter, and a single argument must be specified for the sequenced parameter.</para>
         
-        <para>For a required or defaulted formal parameter of type <literal>T</literal>, 
-        the type of the corresponding argument expression must be assignable to 
-        <literal>T</literal>.</para>
+        <para>For a required or defaulted parameter of type <literal>T</literal>, the type 
+        of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
         
         <para>For a tuple parameter of psuedo-type <literal>P...</literal>, the type of the 
         corresponding argument expression must be <literal>P...</literal>. (That is, it
@@ -1084,14 +1081,14 @@ local comp = order(1,-1);</programlisting>
             
         <programlisting>PositionalArguments := "(" ( Expression ("," Expression)* )? ")"</programlisting>
         
-        <para>Positional arguments must be listed in the same order as the corresponding formal
+        <para>Positional arguments must be listed in the same order as the corresponding
         parameters.</para>
         
         <itemizedlist>
             <listitem>
                 <para>First, an argument of each required parameters must be specified, in the 
                 order in which the required parameters were declared. There must be at least as 
-                many arguments as required formal parameters.</para>
+                many arguments as required parameters.</para>
             </listitem>
             <listitem>
                 <para>Next, arguments of the first arbitrary number of defaulted parameters may 
@@ -1120,7 +1117,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>NamedArguments := "{" NamedArgument* SequencedArguments? "}"</programlisting>
         
-        <para>Named arguments may be listed in a different order to the corresponding formal
+        <para>Named arguments may be listed in a different order to the corresponding
         parameters.</para>
 
         <para>Required and defaulted parameter arguments are specified by name. Arguments to
@@ -1132,23 +1129,23 @@ local comp = order(1,-1);</programlisting>
         <itemizedlist>
             <listitem>
                 <para>a specification statement where the name of the value being specified is
-                the formal parameter name&mdash;it specifies its value using <literal>=</literal>, 
+                the parameter name&mdash;it specifies its value using <literal>=</literal>, 
                 followed by an expression, and is terminated by a semicolon, or</para>
             </listitem>
             <listitem>
                 <para>a local declaration with a getter or named argument list where the name 
-                of the local is the formal parameter name&mdash;it specifies the type of the 
-                attribute or <literal>local</literal>, and a block or code or named argument 
-                list used to instantiate the return type, or</para>
+                of the local is the parameter name&mdash;it specifies the type of the attribute 
+                or <literal>local</literal>, and a block or code or named argument list used to 
+                instantiate the return type, or</para>
             </listitem>
             <listitem>
                 <para>a local anonymous class declaration where the name of the local is the
-                formal parameter name&mdash;an <literal>object</literal> declaration, or</para>
+                parameter name&mdash;an <literal>object</literal> declaration, or</para>
             </listitem>
             <listitem>
                 <para>only for callable parameters, a local method declaration with a block or
-                named parameter list where the name of the method is the formal parameter 
-                name&mdash;it specifies the return type or <literal>local</literal>, a formal 
+                named parameter list where the name of the method is the parameter 
+                name&mdash;it specifies the return type or <literal>local</literal>, a 
                 parameter list and a block of code or named argument list used to instantiate 
                 the return type.</para>
             </listitem>
@@ -1258,9 +1255,9 @@ local comp = order(1,-1);</programlisting>
             <title>Default arguments</title>
         
         <para>When no argument is assigned to a defaulted parameter by the caller, the 
-        default argument defined by the formal parameter declaration is used. The default
-        argument expression is evaluated every time the method is invoked with no argument
-        specified for the defaulted parameter.</para>
+        default argument defined by the parameter declaration is used. The default argument 
+        expression is evaluated every time the method is invoked with no argument specified 
+        for the defaulted parameter.</para>
         
         <para>This class:</para>
         
@@ -1380,8 +1377,8 @@ local comp = order(1,-1);</programlisting>
                 <para>the return type is not declared,</para>
             </listitem>
             <listitem>
-                <para>if the callable parameter has an empty formal parameter list, 
-                the empty parentheses may be eliminated, and</para>
+                <para>if the callable parameter has an empty parameter list, the 
+                empty parentheses may be eliminated, and</para>
             </listitem>
             <listitem>
                 <para>if the body of the method implementation consists of a single
@@ -1390,7 +1387,7 @@ local comp = order(1,-1);</programlisting>
                 eliminated.</para>
             </listitem>
             <!--listitem>
-                <para>formal parameter declarations may omit the explicit type, 
+                <para>parameter declarations may omit the explicit type, 
                 forcing the compiler to infer it, by specifying the keyword 
                 <literal>local</literal> where the type usually appears.</para>
             </listitem-->
@@ -1402,7 +1399,7 @@ local comp = order(1,-1);</programlisting>
                 
         <programlisting>FunctionalArguments := (ParameterName FunctionalBody)+</programlisting>
         
-        <programlisting>FunctionalBody := FormalParameters? ( Block | "(" Expression ")" )</programlisting>
+        <programlisting>FunctionalBody := Parameters? ( Block | "(" Expression ")" )</programlisting>
         
         <!--
                 
@@ -1436,8 +1433,8 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>select (Person p) (p.name) where (Person p) (p.age>18)</programlisting>
         
-        <para>Arguments must be listed in the same order as the formal parameters are 
-        declared by the method declaration.</para>
+        <para>Arguments must be listed in the same order as the parameters are declared by the 
+        method declaration.</para>
         
         <comment><para>TODO: Should we introduce the ability to declare functional parameters
         outside the parentheses in method and class definitions, in order to better respect the 
@@ -1468,7 +1465,7 @@ using() resource satisfies Usable {
         <para>Perhaps the <literal>extends</literal> or <literal>satisfies</literal> 
         clause could be inferred from the parameter type in some cases.</para></comment>
         
-        <comment><para>TODO: Should we support type inference for the formal parameters? It 
+        <comment><para>TODO: Should we support type inference for the parameters? It 
         gets complicated with method overloading? For example:</para>
         <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
         <programlisting>where (local p) (p.age>18)</programlisting></comment>
@@ -1489,9 +1486,9 @@ using() resource satisfies Usable {
         
         <programlisting>Primary "(" ForIterator ")" FunctionalArguments</programlisting>
         
-        <para>And then if a callable parameter has a formal parameter of type 
-        <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
-        not be declared by its argument. Instead, the parameter is declared by the iterator.</para>
+        <para>And then if a callable parameter has a parameter of type <literal>X</literal> 
+        annotated <literal>coordinated</literal>, that parameter need not be declared by its 
+        argument. Instead, the parameter is declared by the iterator.</para>
         
         <para>For example, for the following method declaration:</para>
         
@@ -1544,10 +1541,9 @@ using() resource satisfies Usable {
         
         <programlisting>Primary "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
         
-        <para>And then if a callable parameter has a formal parameter of type 
-        <literal>X</literal> annotated <literal>coordinated</literal>, that parameter need 
-        not be declared by its argument. Instead, the parameter is declared by the variable 
-        specifier.</para>
+        <para>And then if a callable parameter has a parameter of type <literal>X</literal> 
+        annotated <literal>coordinated</literal>, that parameter need not be declared by its 
+        argument. Instead, the parameter is declared by the variable specifier.</para>
         
         <para>For example, for the following method declaration:</para>
         
@@ -1647,16 +1643,16 @@ except (SomethingElseWrong sew) {
                 <title>Resolving direct invocations of overloaded methods and classes</title>
                 
                 <para>A direct invocation is resolved to a specific toplevel declaration or 
-                member of the receiving type at compile time, even if the method or class 
-                it refers to is overloaded.</para>
+                member of the receiving type at compile time, even if the method or class it 
+                refers to is overloaded.</para>
                 
                 <para>The <emphasis>initial signature</emphasis> of a method or class in a direct
                 invocation is formed by:</para>
         
                 <itemizedlist>
                     <listitem>
-                        <para>taking the signature of the formal parameter list of the class, 
-                        or of the first formal parameter list of the method, and</para>
+                        <para>taking the signature of the parameter list of the class, or of the 
+                        first parameter list of the method, and</para>
                     </listitem>
             <!--listitem>
                 <para>replacing each occurrence of any type alias in the signature with the
@@ -1700,8 +1696,8 @@ except (SomethingElseWrong sew) {
                     </listitem>
                 </itemizedlist>
                 
-                <para>In the case of a method with multiple formal parameter lists, only the first
-                formal parameter list is considered.</para>
+                <para>In the case of a method with multiple parameter lists, only the first
+                parameter list is considered.</para>
                 
                 <para>If more than one overloaded declaration has an initial signature to which 
                 the arguments are assignable, or if there is no declaration with an initial 
@@ -1743,7 +1739,7 @@ except (SomethingElseWrong sew) {
                 
                 <!--
                 <comment><para>TODO: What about the case of an "unbound" type parameter which does
-                not appear in the formal parameter list? Is it an error, or should the compiler 
+                not appear in the parameter list? Is it an error, or should the compiler 
                 search through all imported types (in the calling scope) looking for a type that 
                 satisfies the constraints? This would work out a bit like Scala implicit parameters. 
                 For example:</para>
@@ -2097,7 +2093,7 @@ Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
         
         <para>A method invocation evaluates to the return value of the method, as specified 
         by the <literal>return</literal> directive. The argument values are passed to the 
-        formal parameters of the method, and the body of the method is executed.</para>
+        parameters of the method, and the body of the method is executed.</para>
             
         <para>The actual value that invocation of a <literal>void</literal> method returns
         is not specified here. The type system and the definition of the <literal>is</literal> 
@@ -2297,14 +2293,14 @@ setPerson(person);</programlisting>
             <listitem>
                 <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
                 <literal>X</literal> is the toplevel class and <literal>P...</literal> 
-                are the types of the formal parameter list of the class, for every
-                overloaded version of the class, or</para>
+                are the types of the parameter list of the class, for every overloaded 
+                version of the class, or</para>
             </listitem>
             <listitem>
                 <para>assignable to <literal>MemberClass&lt;X,Y,P...&gt;</literal> where 
                 <literal>Y</literal> is the member class and <literal>P...</literal> 
-                are the types of the formal parameter list of the class, for every
-                overloaded version of the class.</para>
+                are the types of the parameter list of the class, for every overloaded 
+                version of the class.</para>
             </listitem>
         </itemizedlist>
         
@@ -2335,15 +2331,16 @@ setPerson(person);</programlisting>
             <listitem>
                 <para>assignable to <literal>Function&lt;R,P...&gt;</literal> where 
                 <literal>R</literal> is the callable type of a method produced by 
-                removing the first formal parameter list of the method, and 
-                <literal>P...</literal> are the types of the first formal parameter 
-                lists of the method, for every overloaded version of the method.</para>
+                removing the first parameter list of the method, and <literal>P...</literal> 
+                are the types of the first parameter lists of the method, for every 
+                overloaded version of the method.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Note that for a toplevel method <literal>x()</literal>, the expression <literal>x</literal>
-        is both a metamodel reference and a callable reference. This is consistent, since
-        <literal>Function&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
+        <para>Note that for a toplevel method <literal>x()</literal>, the expression 
+        <literal>x</literal> is both a metamodel reference and a callable reference. This 
+        is consistent, since <literal>Function&lt;X,P...&gt;</literal> is a subtype of 
+        <literal>Callable&lt;X,P...&gt;</literal>.</para>
            
         </section>
         
@@ -2364,9 +2361,9 @@ setPerson(person);</programlisting>
                 <para>assignable to <literal>Method&lt;X,R,P...&gt;</literal> where 
                 <literal>X</literal> is the type that defines the method, and 
                 <literal>R</literal> is the callable type of a method produced by 
-                removing the first formal parameter list of the method, and 
-                <literal>P...</literal> are the types of the first formal parameter 
-                lists of the method, for every overloaded version of the method.</para>
+                removing the first parameter list of the method, and 
+                <literal>P...</literal> are the types of the first parameter list of 
+                the method, for every overloaded version of the method.</para>
             </listitem>
         </itemizedlist>
          
@@ -3184,7 +3181,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>The arguments specified in the argument specification must be assignable to the formal
+        <para>The arguments specified in the argument specification must be assignable to the
         parameters of the method reference.</para>
         -->
         

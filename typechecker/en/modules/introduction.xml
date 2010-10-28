@@ -95,7 +95,7 @@
     
     <para>
     Ceylon does not feature any Java-like constructor declaration and so 
-    each Ceylon class has a formal parameter list, and exactly one 
+    each Ceylon class has a parameter list, and exactly one 
     <emphasis>initializer</emphasis>&mdash;the body of the class. This helps
     reduce verbosity and results in a more regular block structure.
     </para>
@@ -690,7 +690,7 @@ class Hello(String? name) {
 }]]></programlisting>
 
             <para>Notice that the syntax of a getter declaration looks a lot like a 
-            method declaration with no formal parameter list.</para>
+            method declaration with no parameter list.</para>
 
             <para>Clients of a class never need to know whether the attribute they 
             access holds state directly, or is a getter that derives its value from
@@ -976,7 +976,7 @@ class PersonalizedHello(String name) extends Hello() {
             <para>The <literal>satisfies</literal> keyword is used to specify that an 
             interface extends another interface or that a class implements an interface.
             Unlike an <literal>extends</literal> declaration, a <literal>satisfies</literal>
-            declaration does not specify arguments, since interfaces do not have formal
+            declaration does not specify arguments, since interfaces do not have
             parameters or initialization logic. Furthermore, the <literal>satisfies</literal>
             declaration can specify more than one interface.</para>
             
@@ -992,7 +992,7 @@ class PersonalizedHello(String name) extends Hello() {
     <section>
         <title>Anonymous classes</title>
         
-        <para>If a class has no formal parameters, it's often possible to use a shortcut 
+        <para>If a class has no parameters, it's often possible to use a shortcut 
         declaration which defines a named instance of the class, without providing any 
         actual name for the class itself. This is usually most useful when we're extending
         an abstract class or implementing an interface.</para>
@@ -1139,7 +1139,7 @@ public object spades extends Suit() {}</programlisting>
            
            <programlisting>void printf(OutputStream to, String format, Object... values) { ... }</programlisting>
            
-           <para>(The last formal parameter is a <emphasis>sequenced parameter</emphasis> 
+           <para>(The last parameter is a <emphasis>sequenced parameter</emphasis> 
            which accepts multiple arguments, just like a Java "varargs" parameter.)</para>
            
            <para>We've seen lots of examples of invoking a method or instantiating
@@ -1968,7 +1968,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             we cut out the interface, and let event observers just register a
             function object as their event listener? In the following code,
             we define the <literal>addObserver()</literal> method to accept
-            a function as a formal parameter.</para>
+            a function as a parameter.</para>
 
             <programlisting>public abstract class Component() {
             
@@ -1992,8 +1992,8 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para><literal>void observe(Event event)</literal> is more
-                    readable in formal parameter lists, where <literal>observe</literal>
-                    is the name of the formal parameter, but</para>
+                    readable in parameter lists, where <literal>observe</literal>
+                    is the name of the parameter, but</para>
                 </listitem>
                 <listitem>
                     <para><literal>Callable&lt;Void,Event&gt;</literal> is useful
@@ -2025,9 +2025,9 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             method <literal>onEvent()</literal>.</para>
             
             <para>It's also possible to declare a method that returns a function.
-            A method that returns a function has multiple formal parameter lists.
-            The following method returns a function which increments its argument
-            by <literal>n</literal>:</para>
+            A method that returns a function has multiple parameter lists. The 
+            following method returns a function which increments its argument by 
+            <literal>n</literal>:</para>
             
             <programlisting>Natural incrementor(Natural n)(Natural arg) {
     Natural increment(Natural arg) {
@@ -2062,9 +2062,9 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             <programlisting>Natural five = incrementor(3)(2);</programlisting>
             
             <para>But if we were planning to use the method in this way, there 
-            would be no good reason for giving it two formal parameter lists.
-            It's much more likely that we're planning to store or pass the 
-            reference to the inner method somewhere before invoking it.</para>
+            would be no good reason for giving it two parameter lists. It's much 
+            more likely that we're planning to store or pass the reference to the 
+            inner method somewhere before invoking it.</para>
 
             <programlisting>Natural inc(Natural arg) = incrementor(3);
 Natural five = inc(2);</programlisting>
@@ -2078,10 +2078,10 @@ Natural five = inc(2);</programlisting>
             code. Now we see that a method can be defined using a specifier. So, if 
             you like, you can start thinking of a method as an attribute of type 
             <literal>Callable</literal>&mdash;an attribute with parameters. Or if you 
-            prefer, you can think of an attribute as member with zero formal parameter 
-            lists, and of a method as a member with one or more formal parameter lists. 
-            Either kind of member can be defined by reference, using <literal>=</literal>, 
-            or directly, by specifying a block of code to be executed.</para>
+            prefer, you can think of an attribute as member with zero parameter lists, 
+            and of a method as a member with one or more parameter lists. Either kind 
+            of member can be defined by reference, using <literal>=</literal>, or 
+            directly, by specifying a block of code to be executed.</para>
                         
             <para>There are two alternative, shorter ways to write the 
             <literal>incrementor()</literal> function. Here's the first 
@@ -2204,15 +2204,14 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>eliminating the empty formal parameter lists&mdash;we 
-                can leave off the <literal>()</literal>, and</para>
+                <para>eliminating the empty parameter lists&mdash;we can leave off the 
+                <literal>()</literal>, and</para>
             </listitem>
             <listitem>
-                <para>specifying the method return values in parentheses, 
-                instead of writing <literal>return</literal> statements
-                surrounded by braces&mdash;we're allowed to write
-                <literal>("Hello, World!")</literal> instead of 
-                <literal>{ return "Hello, World!" }</literal>.</para>
+                <para>specifying the method return values in parentheses, instead of 
+                writing <literal>return</literal> statements surrounded by 
+                braces&mdash;we're allowed to write <literal>("Hello, World!")</literal> 
+                instead of <literal>{ return "Hello, World!" }</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -2271,7 +2270,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <para>Which is the inline callable argument? What is its name?</para>
             </listitem>
             <listitem>
-                <para>Are there any formal parameters of the inline callable argument? 
+                <para>Are there any parameters of the inline callable argument? 
                 What are the parameter names?</para>
             </listitem>
             <listitem>
@@ -2283,8 +2282,8 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <para>Well, if you thought you were starting to feel comfortable with this new 
         syntax, I've got something extra to throw at you! A method parameter can be 
         declared as an <emphasis>iterator</emphasis> method, which allows us to move 
-        the declaration of the formal parameters of the inline callable arguments. For 
-        example, the <literal>ceylon.language</literal> package defines a <literal>from()</literal> 
+        the declaration of the parameters of the inline callable arguments. For example, 
+        the <literal>ceylon.language</literal> package defines a <literal>from()</literal> 
         method that is intended to be called like this:</para>
         
         <programlisting>String[] names = from (Person p in people) select (p.name) where (p.age>18);</programlisting>
@@ -2760,7 +2759,7 @@ class Hello(String? name) {
         language and SDK were designed for generics from the ground up, Ceylon is
         able to alleviate the most painful aspects of Java's bolted-on-later model.</para>
         
-        <para>Just like in Java, type parameters are listed before ordinary formal
+        <para>Just like in Java, type parameters are listed before ordinary
         parameters, enclosed in angle brackets.</para>
         
         <programlisting>interface Collection&lt;X&gt; { ... }</programlisting>  
@@ -3147,8 +3146,8 @@ say(stream);</programlisting>
             <para>Sequenced type parameters are the foundation of Ceylon's unique 
             statically typesafe metamodel (Ceylon's version of Java's reflection API).
             A metamodel type like <literal>Class</literal> and <literal>Method</literal>
-            is a generic type with a sequenced type parameter representing the formal 
-            parameter types of the class or method.</para>
+            is a generic type with a sequenced type parameter representing the parameter 
+            types of the class or method.</para>
             
             <programlisting>Class&lt;DefaultHello&gt; dh = DefaultHello;</programlisting>
             <programlisting>Class&lt;PersonalizedHello,String&gt; ph = PersonalizedHello;</programlisting>

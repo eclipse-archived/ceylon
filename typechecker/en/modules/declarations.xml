@@ -8,7 +8,7 @@
         <listitem><para>typing errors in identifier names,</para></listitem>
         <listitem><para>references to types which do not exist or are not visible,</para></listitem>
         <listitem><para>references to type members which do not exist or are not visible,</para></listitem>
-        <listitem><para>argument lists which do not match formal parameter lists,</para></listitem>
+        <listitem><para>argument lists which do not match parameter lists,</para></listitem>
         <listitem><para>type argument lists which do not match type parameter lists, and</para></listitem>
         <listitem><para>incompatible assignment of an expression of one type to a
         program element of a different type.</para></listitem>
@@ -426,8 +426,8 @@ TypeConstraints?
         
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.
-        An ordinary class declaration specifies a list of formal parameters required 
-        to instantiate the type.</para>
+        An ordinary class declaration specifies a list of parameters required to 
+        instantiate the type.</para>
         
         <programlisting>Class :=
 Annotation*
@@ -584,9 +584,9 @@ public class Person { ... }</programlisting>
     <section id="callabletypeofclass">
         <title>Callable type of a class</title>
         
-        <para>The <emphasis>callable type</emphasis> of a class captures the type and formal parameter 
+        <para>The <emphasis>callable type</emphasis> of a class captures the type and parameter 
         types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
-        <literal>T</literal> is the class and <literal>P...</literal> are the formal parameter types 
+        <literal>T</literal> is the class and <literal>P...</literal> are the parameter types 
         of the class. A sequenced parameter is considered of type <literal>T[]</literal>
         where <literal>T...</literal> is the declared sequenced type.</para>
         
@@ -1088,9 +1088,9 @@ public class Person { ... }</programlisting>
                <literal>formal</literal> member class with no body, and</para>
             </listitem>
             <listitem>
-                <para>has a formal parameter list with the same signature as the 
-                member class it overrides, after substitution of type arguments
-                specified in the <literal>extends</literal> or <literal>satisfies</literal>
+                <para>has a parameter list with the same signature as the member 
+                class it overrides, after substitution of type arguments specified 
+                in the <literal>extends</literal> or <literal>satisfies</literal>
                 clause.</para>
             </listitem>
         </itemizedlist>
@@ -1490,8 +1490,8 @@ public choice TransactionPropagationStyle
         
         <programlisting>Method := MethodHeader (Block | NamedArguments | Specifier? ";")</programlisting>
         
-        <para>All method declarations specify the method name and one or more formal 
-        parameter lists. A method declaration may specify a type, called the 
+        <para>All method declarations specify the method name and one or more parameter 
+        lists. A method declaration may specify a type, called the 
         <emphasis>return type</emphasis>, to which the values the method returns is 
         assignable, or it may specify that the method is a <literal>void</literal>
         method&mdash;a method which does not return a value. The return type of a
@@ -1545,22 +1545,22 @@ TypeConstraints?</programlisting>
             <title>Callable type of a method</title>
             
         <para>The <emphasis>callable type</emphasis> of a method captures the return
-        type and formal parameter types of the method.</para>
+        type and parameter types of the method.</para>
         
         <itemizedlist>
         <listitem>
             <para>The callable type of a method with a single parameter list is 
             <literal>Callable&lt;R,P...&gt;</literal> where <literal>R</literal> is the 
             return type of the method, or <literal>Void</literal> if the method is 
-            <literal>void</literal>, and <literal>P...</literal> are the formal 
-            parameter types of the method.</para>
+            <literal>void</literal>, and <literal>P...</literal> are the parameter types 
+            of the method.</para>
         </listitem>
         <listitem>
             <para>The callable type of a method with multiple parameter lists is 
             <literal>Callable&lt;O,P...&gt;</literal>, where <literal>O</literal> is the
-            callable type of a method produced by eliminating the first formal parameter
-            list, and <literal>P...</literal> are the formal parameter types of the first 
-            formal parameter list of the method.</para>
+            callable type of a method produced by eliminating the first parameter list, 
+            and <literal>P...</literal> are the parameter types of the first parameter 
+            list of the method.</para>
         </listitem>
         </itemizedlist>
         
@@ -1668,7 +1668,7 @@ Void goodbye() {
         
         <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
         
-        <para>The callable object expression may not refer to formal parameters of the
+        <para>The callable object expression may not refer to parameters of the
         method.</para>
         
         <para>A block local method which specifies a callable object expression may be 
@@ -1721,8 +1721,8 @@ Void goodbye() {
         <section id="multipleparameterlists">
             <title>Methods with multiple parameter lists</title>
             
-        <para>A method may declare multiple lists of formal parameters. A method which 
-        declares more than one formal parameter list returns instances of 
+        <para>A method may declare multiple lists of parameters. A method which 
+        declares more than one parameter list returns instances of 
         <literal>Callable</literal>, usually method references.</para>
         
         <para>The type of the expression specified by the <literal>return</literal> 
@@ -1730,13 +1730,13 @@ Void goodbye() {
         
         <itemizedlist>
             <listitem><para>the callable type of a method produced by taking the 
-            method with multiple parameter lists and eliminating the first formal 
-            parameter list, or</para></listitem>
+            method with multiple parameter lists and eliminating the first parameter 
+            list, or</para></listitem>
             <listitem><para>the declared return type of the method.</para></listitem>
         </itemizedlist>
         
         <para>If the <literal>return</literal> expression type is assignable to the 
-        callable type of the method produced by eliminating the first formal parameter 
+        callable type of the method produced by eliminating the first parameter 
         list of the method, the method body may <emphasis>only</emphasis> refer to 
         parameters in the first parameter list. It may not refer to parameters of 
         other parameter lists. Parameters declared by parameter lists other than the 
@@ -1750,10 +1750,10 @@ Void goodbye() {
 
         <para>Otherwise, if the <literal>return</literal> expression type is assignable 
         to the declared return type of the method, the method body may refer to any
-        formal parameter in any one of the formal parameter lists of the method. The 
-        compiler automatically infers a series of nested methods, one for each parameter 
-        list of the method. The declarations and statements in the method body form the 
-        body of the most nested inferred method.</para>
+        parameter in any one of the parameter lists of the method. The compiler 
+        automatically infers a series of nested methods, one for each parameter list of 
+        the method. The declarations and statements in the method body form the body of 
+        the most nested inferred method.</para>
         
         <para>This method declaration:</para>
         
@@ -1773,8 +1773,8 @@ Void goodbye() {
                 <para>has the same return type as the original declared method,</para>
             </listitem>
             <listitem>
-                <para>has the same formal parameter lists as the declared method, after 
-                eliminating the first <literal>i-1</literal> formal parameter lists, 
+                <para>has the same parameter lists as the declared method, after 
+                eliminating the first <literal>i-1</literal> parameter lists, 
                 and</para>
             </listitem>
             <listitem>
@@ -1937,7 +1937,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>has the same name as the method it overrides,</para>
                 </listitem>
                 <listitem>
-                    <para>has the same number of formal parameter lists, with the same
+                    <para>has the same number of parameter lists, with the same
                     signatures, as the method it overrides, after substitution of 
                     type arguments specified in the <literal>extends</literal> or 
                     <literal>satisfies</literal> clause of the class, and</para>
@@ -1983,8 +1983,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>For <literal>formal</literal> methods, a special shortcut form of 
             overriding is permitted. A subclass initializer may simply specify an 
             instance of <literal>Callable</literal> as the implementation of the method 
-            declared by the supertype. No formal parameter list, return type declaration, 
-            or <literal>override</literal> annotation is necessary.</para>
+            declared by the supertype. No parameter list, return type declaration, or 
+            <literal>override</literal> annotation is necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
@@ -1998,11 +1998,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <comment><para>TODO: are you allowed to override the default value of
             a defaulted parameter?</para></comment>
             
-            <comment><para>TODO: are you required to have the same formal parameter
-            names in the two methods? I don't see that this would be necessary. In
-            a named argument invocation, you just use the names declared by the
-            member of the compile-time type, and they are mapped positionally to the
-            parameters of the overriding method.</para></comment>
+            <comment><para>TODO: are you required to have the same parameter names 
+            in the two methods? I don't see that this would be necessary. In a named 
+            argument invocation, you just use the names declared by the member of the 
+            compile-time type, and they are mapped positionally to the parameters of 
+            the overriding method.</para></comment>
         
         </section>
         
@@ -2044,8 +2044,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <programlisting>AttributeHeader := Annotation* InferableType MemberName</programlisting>
         
         <para>Note that an attribute declaration is essentially a method declaration with 
-        zero formal parameter lists. Likewise, an attribute evaluation is essentially a 
-        method invocation with zero argument lists.</para>
+        zero parameter lists. Likewise, an attribute evaluation is essentially a method 
+        invocation with zero argument lists.</para>
         
         <para>A toplevel attribute may not be <literal>mutable</literal>.</para>
         
@@ -2113,8 +2113,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
         <programlisting>Initializer := ":=" Expression</programlisting>
 
-        <para>Formal parameters of classes and methods are also considered to be simple 
-        attributes.</para>
+        <para>Parameters of classes and methods are also considered to be locals.</para>
         
         <!--
         <para>For a simple attribute that is not a local, the Java field is initialized to an 
@@ -2175,11 +2174,11 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
                 declaration.</para>
             </listitem>
            <listitem>
-                <para>A formal parameter of a class is a local if it is not used inside a method, 
+                <para>A parameter of a class is a local if it is not used inside a method, 
                 attribute setter or attribute getter declaration.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter of a method is a local.</para>
+                <para>A parameter of a method is a local.</para>
             </listitem>
         </itemizedlist>
         
@@ -2667,16 +2666,16 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     <section id="visibility">
         <title>Visibility and name resolution</title>
         
-        <para>Classes, interfaces, methods, attributes, locals, formal parameters and 
-        type parameters have names. Occurrence of a name in code implies a hard 
-        dependency from the code in which the name occurs to the schema of the named 
-        declaration. We say that a class, interface, method, attribute, formal parameter 
-        or type parameter is <emphasis>visible</emphasis> to a certain program element 
-        if its name may occur in the code that defines that program element.</para>
+        <para>Classes, interfaces, methods, attributes, locals, parameters and type 
+        parameters have names. Occurrence of a name in code implies a hard dependency 
+        from the code in which the name occurs to the schema of the named declaration. 
+        We say that a class, interface, method, attribute, parameter or type parameter 
+        is <emphasis>visible</emphasis> to a certain program element if its name may 
+        occur in the code that defines that program element.</para>
         
         <itemizedlist>
             <listitem>
-                <para>A formal parameter or type parameter is never visible outside the 
+                <para>A parameter or type parameter is never visible outside the 
                 declaration it belongs to.</para> 
             </listitem>
             <listitem>
@@ -2837,7 +2836,7 @@ public Visibility private() {
         
         <itemizedlist>
             <listitem>
-                <para>a toplevel method with exactly one formal parameter named
+                <para>a toplevel method with exactly one parameter named
                 <literal>this</literal>,</para>
             </listitem>
             <listitem>
@@ -2845,7 +2844,7 @@ public Visibility private() {
                 <literal>this</literal>,</para>
             </listitem>
             <listitem>
-                <para>a member method with no formal parameters,</para>
+                <para>a member method with no parameters,</para>
             </listitem>
             <listitem>
                 <para>a member class with no initializer parameters, or</para>
@@ -2899,7 +2898,7 @@ public Visibility private() {
         <itemizedlist>
             <listitem>
                 <para>for toplevel extension methods, the extended type is the 
-                declared type of the formal parameter,</para>
+                declared type of the parameter,</para>
             </listitem>
             <listitem>
                 <para>for toplevel extension classes, the extended type is the 
@@ -3182,7 +3181,7 @@ Float[] tenZeroes = Sequence(10,0.0);</programlisting>
             </listitem>
             <listitem>
                 <para><literal>withParameterTypes</literal> specifies that the annotation 
-                may only be applied to methods with the specified formal parameter types.</para>
+                may only be applied to methods with the specified parameter types.</para>
             </listitem>
             <listitem>
                 <para><literal>withAnnotation</literal> specifies that the annotation may 
