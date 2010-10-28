@@ -1073,7 +1073,7 @@ public class Person { ... }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>is annotated <literal>refine</literal>,</para>
+                <para>is annotated <literal>actual</literal>,</para>
             </listitem>
             <listitem>
                 <para>has the same name as the member class it refines, and
@@ -1097,9 +1097,9 @@ public class Person { ... }</programlisting>
         </itemizedlist>
         
         <para>Finally, the refined member class must be visible to the member
-        class annotated <literal>refine</literal>.</para>
+        class annotated <literal>actual</literal>.</para>
         
-        <para>If a member class is annotated <literal>refine</literal>, it must 
+        <para>If a member class is annotated <literal>actual</literal>, it must 
         refine some class defined by a supertype, and the class it refines 
         must be either <literal>formal</literal> or <literal>default</literal>.</para>
             
@@ -1107,7 +1107,7 @@ public class Person { ... }</programlisting>
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
         
-        <para>By default, the member class annotated <literal>refine</literal> 
+        <para>By default, the member class annotated <literal>actual</literal> 
         has the same visibility modifier as the member class it refines. The
         member class may not declare a stricter visibility modifier than the member 
         class it refines.</para>
@@ -1123,7 +1123,7 @@ public class Person { ... }</programlisting>
 
         <programlisting>public class FileReader(File file) 
         extends Reader() {
-    refine class Buffer(Character... chars) 
+    actual class Buffer(Character... chars) 
             extends Reader.Buffer(chars) {
         ...
     }
@@ -1142,7 +1142,7 @@ public class Person { ... }</programlisting>
 
         <programlisting>public class FileReader(File file) 
         extends Reader() {
-    refine class Buffer(Character... chars) 
+    actual class Buffer(Character... chars) 
             satisfies Character[] {
         ...
     }
@@ -1153,7 +1153,7 @@ public class Person { ... }</programlisting>
         
         <programlisting>public class FileReader(File file) 
         extends Reader() {
-    refine class Buffer(Character... chars) = String;
+    actual class Buffer(Character... chars) = String;
     ...
 }</programlisting>
         
@@ -1216,20 +1216,20 @@ ClassBody</programlisting>
          
          <para>If the <literal>object</literal> has a visibility modifier annotation, 
          the attribute has the specified visibility modifier. If the <literal>object</literal>
-         is annotated <literal>refine</literal>, it refines an attribute of a
+         is annotated <literal>actual</literal>, it refines an attribute of a
          supertype. If the <literal>object</literal> is annotated <literal>extension</literal>, 
          it is an extension attribute.</para>
          
          <para>The following declaration:</para>
          
          <programlisting>public object red extends Color('FF0000') {
-     refine String string = "Red";
+     actual String string = "Red";
 }</programlisting>
 
          <para>Is exactly equivalent to:</para>
          
          <programlisting>class Color_red extends Color('FF0000') {
-     refine String string = "Red";
+     actual String string = "Red";
 }
 
 public Color_red red = Color_red();</programlisting>
@@ -1238,7 +1238,7 @@ public Color_red red = Color_red();</programlisting>
          The algorithm for generating this name is not specified here.</para>
          
          <para>Note that a member of an anonymous class that is not annotated 
-         <literal>refine</literal> may only be accessed from within the body of 
+         <literal>actual</literal> may only be accessed from within the body of 
          the anonymous class or by directly invoking the <literal>object</literal> 
          attribute.</para>
          
@@ -1426,7 +1426,7 @@ public choice TransactionPropagationStyle
     abstract class BaseTransactionPropagation()
             satisfies TransactionPropagation {
         
-        refine void propagate(Transaction tx) {
+        actual void propagate(Transaction tx) {
             if (tx.inProgress) {
                 inProgress(tx);
             }
@@ -1443,40 +1443,40 @@ public choice TransactionPropagationStyle
     
     public object required 
             extends BaseTransactionPropagation() { 
-        refine void inProgress(Transaction tx) {}
-        refine void notInProgress(Transaction tx) {
+        actual void inProgress(Transaction tx) {}
+        actual void notInProgress(Transaction tx) {
             tx.begin();
         }
     }
     
     public object supports 
             extends BaseTransactionPropagation() {
-        refine void inProgress(Transaction tx) {}
-        refine void notInProgress(Transaction tx) {}
+        actual void inProgress(Transaction tx) {}
+        actual void notInProgress(Transaction tx) {}
     }
     
     public object mandatory 
             extends BaseTransactionPropagation() { 
-        refine void inProgress(Transaction tx) {}
-        refine void notInProgress(Transaction tx) {
+        actual void inProgress(Transaction tx) {}
+        actual void notInProgress(Transaction tx) {
             throw TransactionMandatory()
         }
     }
     
     public object notSupported 
             extends BaseTransactionPropagation() { 
-        refine void inProgress(Transaction tx) {
+        actual void inProgress(Transaction tx) {
             throw TransactionNotSupported()
         }
-        refine void notInProgress(Transaction tx) {}
+        actual void notInProgress(Transaction tx) {}
     }
     
     public object requiresNew 
             extends BaseTransactionPropagation() { 
-        refine void inProgress(Transaction tx) {
+        actual void inProgress(Transaction tx) {
             throw TransactionRequiresNew()
         }
-        refine void notInProgress(Transaction tx) {
+        actual void notInProgress(Transaction tx) {
             tx.begin();
         }
     }
@@ -1932,7 +1932,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>is annotated <literal>refine</literal>,</para>
+                    <para>is annotated <literal>actual</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>has the same name as the method it refines,</para>
@@ -1946,7 +1946,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                  <listitem>
                     <para>has a return type that is assignable to the return type 
                     of the method it refines in the compilation unit containing
-                    the method annotated <literal>refine</literal>, after 
+                    the method annotated <literal>actual</literal>, after 
                     substitution of type arguments specified in the 
                     <literal>extends</literal> or <literal>satisfies</literal> 
                     clause of the class.</para>
@@ -1954,20 +1954,20 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </itemizedlist>
             
             <para>Finally, the refined method must be visible to the method
-            annotated <literal>refine</literal>.</para>
+            annotated <literal>actual</literal>.</para>
             
-            <para>If a method is annotated <literal>refine</literal>, it must 
+            <para>If a method is annotated <literal>actual</literal>, it must 
             refine some method defined by a supertype, and the method it refines 
             must be either <literal>formal</literal>, <literal>default</literal>, 
             or <literal>definite</literal>.</para>
             
             <para>A method may not, directly or indirectly, refine two different
-            methods not themselves annotated <literal>refine</literal>.</para>
+            methods not themselves annotated <literal>actual</literal>.</para>
         
             <para>Then invocation of the method is polymorphic, and the actual
             method invoked depends upon the concrete type of the class instance.</para>
             
-            <para>By default, the method annotated <literal>refine</literal> has 
+            <para>By default, the method annotated <literal>actual</literal> has 
             the same visibility modifier as the method it refines. The method may 
             not declare a stricter visibility modifier than the method it 
             refines.</para>
@@ -1978,14 +1978,14 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
-    refine Float squareRoot(Float x) { ... }
+    actual Float squareRoot(Float x) { ... }
 }</programlisting>
             
             <para>For <literal>formal</literal> methods, a special shortcut form of 
             refinement is permitted. A subclass initializer may simply specify an 
             instance of <literal>Callable</literal> as the implementation of the method 
             declared by the supertype. No parameter list, return type declaration, or 
-            <literal>refine</literal> annotation is necessary.</para>
+            <literal>actual</literal> annotation is necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
@@ -2427,7 +2427,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>is annotated <literal>refine</literal>,</para>
+                    <para>is annotated <literal>actual</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>has the same name as the attribute it refines,</para>
@@ -2435,7 +2435,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                  <listitem>
                     <para>has a type that is assignable to the type of the attribute it 
                     refines in the compilation unit containing the attribute annotated 
-                    <literal>refine</literal>, after substitution of type arguments 
+                    <literal>actual</literal>, after substitution of type arguments 
                     specified in the <literal>extends</literal> or <literal>satisfies</literal> 
                     clause of the class,</para>
                 </listitem>
@@ -2453,15 +2453,15 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </itemizedlist>
             
             <para>Finally, the refined attribute must be visible to the attribute 
-            annotated <literal>refine</literal>.</para>
+            annotated <literal>actual</literal>.</para>
         
-            <para>If an attribute is annotated <literal>refine</literal>, it must 
+            <para>If an attribute is annotated <literal>actual</literal>, it must 
             refine some attribute defined by a supertype, and the attribute it 
             refines must be either <literal>formal</literal>, <literal>default</literal>, 
             or <literal>definite</literal>.</para>
             
             <para>An attribute may not, directly or indirectly, refine two different
-            attributes not themselves annotated <literal>refine</literal>.</para>
+            attributes not themselves annotated <literal>actual</literal>.</para>
         
             <para>A non-<literal>mutable</literal> attribute may be refined by a 
             <literal>mutable</literal> attribute.</para>
@@ -2474,7 +2474,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             the actual attribute evaluated or assigned depends upon the concrete type 
             of the class instance.</para>
             
-            <para>By default, the attribute annotated <literal>refine</literal>
+            <para>By default, the attribute annotated <literal>actual</literal>
             has the same visibility modifier as the attribute it refines. The
             attribute may not declare a stricter visibility modifier than the 
             attribute it refines.</para>
@@ -2485,13 +2485,13 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
-    refine Float pi { ... }
+    actual Float pi { ... }
 }</programlisting>
             
             <para>For <literal>formal</literal> attributes, a special shortcut form 
             of refinement is permitted. A subclass initializer may simply specify or 
             assign a value to the attribute declared by the superclass. No type 
-            declaration or <literal>refine</literal> annotation is necessary.</para>
+            declaration or <literal>actual</literal> annotation is necessary.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
@@ -2567,7 +2567,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 attribute, or member class may be refined by subclasses.</para>
             </listitem>
             <listitem>
-                <para><literal>refine</literal> indicates that a method,
+                <para><literal>actual</literal> indicates that a method,
                 attribute, or member type refines a method, attribute, 
                 or member type defined by a supertype.</para>
             </listitem>
@@ -2603,15 +2603,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: should we have <literal>final</literal> to specify 
-        that a class may not be extended?</para></comment>
-        
-        <comment><para>TODO: should we make <literal>refine</literal> a keyword, 
-        to save the effort of redeclaring the attribute type or method return type?</para></comment>
-        
-        <comment><para>TODO: should it be called <literal>refines</literal>, or
-        even <literal>specialized</literal>?</para></comment>
-        
         <para>The following annotation is a hint to the compiler that lets 
         the compiler optimize compiled bytecode for non-64 bit architectures:</para>
         
@@ -2631,6 +2622,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         the Ceylon compiler. This is a performance optimization to minimize 
         the need for lookahead in the parser.</para>
         -->
+        
+        <comment><para>TODO: should we have <literal>final</literal> to specify 
+        that a class may not be extended?</para></comment>
+        
+        <comment><para>TODO: should we make <literal>actual</literal> a keyword, 
+        to save the effort of redeclaring the attribute type or method return type?</para></comment>
         
         <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>
         annotation to force the compiler to optimize a tail-recursive method or
@@ -2742,7 +2739,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         Likewise, a block may not declare a visibility modifier, so a declaration that 
         occurs inside a block may not declare a visibility modifier. Note, however, 
         that this restriction does not apply to the visibility of nested declarations 
-        annotated <literal>refine</literal> which inherit their visibility from the 
+        annotated <literal>actual</literal> which inherit their visibility from the 
         declaration they refine.</para>
         
         <para>The class <literal>ceylon.language.Visibility</literal> defines the visibility 
@@ -3024,8 +3021,8 @@ import implicit org.domain.utils.homogeneous;</programlisting>
                 resolveable, and if for every type <literal>Y</literal> to which <literal>X</literal> 
                 is extendable that also has a member to which the reference is resolveable,
                 the member of <literal>X</literal> and the member of <literal>Y</literal>
-                both <literal>refine</literal> a member of a common supertype, then no 
-                extension sequence is introduced, but</para>
+                both refine a member of a common supertype, then no extension sequence is 
+                introduced, but</para>
             </listitem>
             <listitem>
                 <para>if <literal>X</literal> does not have a member to which the reference 

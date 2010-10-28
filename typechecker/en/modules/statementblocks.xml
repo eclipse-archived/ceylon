@@ -162,7 +162,7 @@
             
             <para>A block may not contain a class, method, or attribute declaration annotated 
             <literal>formal</literal>, <literal>default</literal>, <literal>definite</literal>, 
-            or <literal>refine</literal>.</para>
+            or <literal>actual</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
             nested inside a block, a declaration directly contained in the body of a class 
@@ -245,7 +245,7 @@ String result = inner();</programlisting>
 
             <programlisting>Object outer(String s) {
     object middle {
-        refine String string {
+        actual String string {
             return s;
         }
     }

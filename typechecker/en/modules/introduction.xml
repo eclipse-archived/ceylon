@@ -859,20 +859,20 @@ class DefaultHello() {
 class PersonalizedHello(String name) extends DefaultHello() {
     
     doc "The personalized greeting"
-    refine String greeting { 
+    actual String greeting { 
         return "Hello, " name "!" 
     }
     
 }]]></programlisting>
 
             <para>Ceylon also forces us to declare that an attribute or method refines (overrides) 
-            an attribute or method of a superclass by annotating it <literal>refine</literal>. 
+            an attribute or method of a superclass by annotating it <literal>actual</literal>. 
             All this annotating stuff costs a few extra keystrokes, but it helps the compiler
             detect errors. We can't inadvertantly refine a member or the superclass, or
             inadvertantly <emphasis>fail</emphasis> to refine it.</para>
             
             <para>On the other hand, we don't need to declare the visibility of the attribute
-            annotated <literal>refine</literal>. The <literal>package</literal> annotation
+            annotated <literal>actual</literal>. The <literal>package</literal> annotation
             is inherited from the attribute it refines.</para>
             
             <para>There's one problem with what we've just seen. A personalized greeting 
@@ -918,7 +918,7 @@ class DefaultHello() extends Hello() {
 class PersonalizedHello(String name) extends Hello() {
     
     doc "The personalized greeting"
-    refine String greeting { 
+    actual String greeting { 
         return "Hello, " name "!" 
     }
     
@@ -968,7 +968,7 @@ class PersonalizedHello(String name) extends Hello() {
     
     formatter = StringFormatter();
     
-    refine void write(String string) {
+    actual void write(String string) {
         process.write(string);
     }
     
@@ -1005,7 +1005,7 @@ object defaultHello extends Hello() {
         
             <programlisting>public object consoleWriter satisfies Writer {
     formatter = StringFormatter();
-    refine void write(String string) {
+    actual void write(String string) {
         process.write(string);
     }
 }</programlisting>
@@ -1023,7 +1023,7 @@ object defaultHello extends Hello() {
         <programlisting><![CDATA[public Subscription register(Subscriber s) {
     subscribers.append(s);
     object subscription satisfies Subscription {
-        refine void cancel() {
+        actual void cancel() {
             subscribers.remove(s);
         }
     }
@@ -1431,7 +1431,7 @@ abstract class Hello() {
     doc "The (abstract) greeting"
     package formal String greeting;
     
-    refine Boolean equals(IdentifiableObject that) {
+    actual Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
             if (this.type!=that.type) {
                 return false
@@ -1445,9 +1445,9 @@ abstract class Hello() {
         }
     }
     
-    refine Integer hash = greeting.hash;
+    actual Integer hash = greeting.hash;
     
-    refine String string { 
+    actual String string { 
         return greeting 
     }
     
@@ -1835,7 +1835,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             allowed to do with it.</para>
         
             <para>A <literal>Map</literal> is the most important kind of 
-            <literal>Correspondence</literal>. We can add or refine entries in an 
+            <literal>Correspondence</literal>. We can add or override entries in an 
             <literal>OpenMap</literal> using the assignment operator:</para>
             
             <programlisting><![CDATA[OpenMap<String,String> cities = none;
@@ -2446,7 +2446,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     object observer satisfies Observer<UpdateEvent> {
-        refine void on(UpdateEvent e) {
+        actual void on(UpdateEvent e) {
             log.info("Update:" + $e);
         }
     }
@@ -3321,7 +3321,7 @@ class Hello(String? name) {
         
         <programlisting>public class FloatFormat(Float float) 
         satisfies Format {
-    refine String formatted {
+    actual String formatted {
         return ... 
     }
 }</programlisting>
@@ -3336,7 +3336,7 @@ class Hello(String? name) {
         
         <programlisting>public extension class FloatFormat(Float float) 
         satisfies Format {
-    refine String formatted {
+    actual String formatted {
         return ... 
     }
 }</programlisting>

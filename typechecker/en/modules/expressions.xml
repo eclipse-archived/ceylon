@@ -1187,7 +1187,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>{
     object values satisfies Iterable&lt;Order&gt; {
         head = order;
-        refine object tail satisfies Iterable&lt;Order&gt; {
+        actual object tail satisfies Iterable&lt;Order&gt; {
             head = null;
             tail = this;
         }
@@ -1452,13 +1452,13 @@ local comp = order(1,-1);</programlisting>
         <literal>satisfies</literal> clauses, and the class body. For example:</para>
         <programlisting>File file = ... ;
 using() resource satisfies Usable {
-    refine void begin() {
+    actual void begin() {
         file.create();
     }
-    refine void end() { 
+    actual void end() { 
         file.close();
     }
-    refine void end(Exception e) { 
+    actual void end(Exception e) { 
         file.delete();
     }
 }</programlisting>
@@ -1879,8 +1879,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
             <programlisting>Task task = new Task() {
     timeout := 1000;
-    refine void run() { ... }
-    refine void fail(Exception e) { ... }
+    actual void run() { ... }
+    actual void fail(Exception e) { ... }
 };</programlisting>
 
             <programlisting>return new transactional Database 
@@ -1888,8 +1888,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
-    refine void create() { open(); }
-    refine void destroy() { close(); }
+    actual void create() { open(); }
+    actual void destroy() { close(); }
 };</programlisting>
             
             <para>An inline class is a literal object expression which may additionally:</para>
@@ -2269,7 +2269,7 @@ setPerson(person);</programlisting>
         <comment><para>TODO: Should we have typesafe metamodel reference expressions for 
         parameters? For example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
         
-        <comment><para>TODO: Should we remodel member metamodel references as actual members
+        <comment><para>TODO: Should we remodel member metamodel references as members
         of the type class? Then we can get rid of two of the following sections. The reason
         to not do this is that member class metamodel references have the wrong case for an
         attribute.</para></comment>
