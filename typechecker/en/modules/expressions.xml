@@ -457,15 +457,15 @@ if you prefer.";</programlisting>
 
         <para>The keyword <literal>super</literal> refers to the current instance 
         (the instance that is being invoked), and has the same members as the 
-        immediate superclass of the class, except for <literal>fixed</literal> 
+        immediate superclass of the class, except for <literal>definite</literal> 
         members. Any invocation of this reference is processed by the method or 
         attribute defined or inherited by this superclass, bypassing any method 
         declaration that refines the method on the current class or any subclass 
-        of the current class. Invocation of <literal>fixed</literal> members upon 
+        of the current class. Invocation of <literal>definite</literal> members upon 
         <literal>super</literal> is not allowed. The <literal>super</literal> 
         reference is not assignable to any type. There is no <literal>super</literal>
         reference in an interface member body. <emphasis>(Note that 
-        <literal>fixed</literal> is a proposed feature for a future version of the 
+        <literal>definite</literal> is a proposed feature for a future version of the 
         language.)</emphasis></para>
         
         <para>The keyword <literal>this</literal> refers to the current instance, 

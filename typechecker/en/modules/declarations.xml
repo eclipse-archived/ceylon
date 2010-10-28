@@ -678,7 +678,7 @@ public class Person { ... }</programlisting>
            -->
            <listitem>
               <para>They may not invoke or evaluate a <literal>formal</literal>, 
-              <literal>default</literal>, or <literal>fixed</literal> member of the instance 
+              <literal>default</literal>, or <literal>definite</literal> member of the instance 
               that is being initialized, except via the special <literal>super</literal> self 
               reference.</para>
            </listitem>
@@ -763,13 +763,13 @@ public class Person { ... }</programlisting>
         <title>Class member modifiers</title>
         
         <para>A <literal>formal</literal>, <literal>default</literal>, or
-        <literal>fixed</literal> member of a class must be explicitly annotated as such.
+        <literal>definite</literal> member of a class must be explicitly annotated as such.
         No member may be annotated by more than one of these three annotations.</para>
         
         <para>Every member annotated <literal>formal</literal>, <literal>default</literal> 
-        or <literal>fixed</literal> must declare or inherit a visibility modifier. A 
+        or <literal>definite</literal> must declare or inherit a visibility modifier. A 
         block-local member may not be annotated <literal>formal</literal>, 
-        <literal>default</literal> or <literal>fixed</literal>.</para>
+        <literal>default</literal> or <literal>definite</literal>.</para>
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
@@ -1921,8 +1921,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> method 
-                or <literal>fixed</literal> method it inherits, unless it inherits a 
-                non-<literal>formal</literal> non-<literal>fixed</literal> method that 
+                or <literal>definite</literal> method it inherits, unless it inherits a 
+                non-<literal>formal</literal> non-<literal>definite</literal> method that 
                 refines the method.</para>
             </listitem>
             </itemizedlist>           
@@ -1959,7 +1959,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>If a method is annotated <literal>refine</literal>, it must 
             refine some method defined by a supertype, and the method it refines 
             must be either <literal>formal</literal>, <literal>default</literal>, 
-            or <literal>fixed</literal>.</para>
+            or <literal>definite</literal>.</para>
             
             <para>A method may not, directly or indirectly, refine two different
             methods not themselves annotated <literal>refine</literal>.</para>
@@ -2408,8 +2408,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> 
-                attribute, or <literal>fixed</literal> attribute it inherits, unless it 
-                inherits a non-<literal>formal</literal> non-<literal>fixed</literal>
+                attribute, or <literal>definite</literal> attribute it inherits, unless it 
+                inherits a non-<literal>formal</literal> non-<literal>definite</literal>
                 attribute that refines the attribute.</para>
             </listitem>
             </itemizedlist>           
@@ -2458,7 +2458,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>If an attribute is annotated <literal>refine</literal>, it must 
             refine some attribute defined by a supertype, and the attribute it 
             refines must be either <literal>formal</literal>, <literal>default</literal>, 
-            or <literal>fixed</literal>.</para>
+            or <literal>definite</literal>.</para>
             
             <para>An attribute may not, directly or indirectly, refine two different
             attributes not themselves annotated <literal>refine</literal>.</para>
@@ -2577,9 +2577,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 assignable attributes.</para>
             </listitem>
             <listitem>
-                <para><literal>fixed</literal> specifies that a method or
+                <para><literal>definite</literal> specifies that a method or
                 attribute must be refined by every concrete subclass. 
-                <emphasis>(Note that <literal>fixed</literal> is a proposed 
+                <emphasis>(Note that <literal>definite</literal> is a proposed 
                 feature for a future version of the language.)</emphasis></para>
             </listitem>
             <!-- 

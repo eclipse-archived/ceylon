@@ -161,7 +161,7 @@
             modifier.</para>
             
             <para>A block may not contain a class, method, or attribute declaration annotated 
-            <literal>formal</literal>, <literal>default</literal>, <literal>fixed</literal>, 
+            <literal>formal</literal>, <literal>default</literal>, <literal>definite</literal>, 
             or <literal>refine</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
