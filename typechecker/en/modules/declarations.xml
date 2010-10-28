@@ -244,15 +244,16 @@ TypeConstraints?
                 <para>member (method, attribute, and member class) declarations, and</para>
             </listitem>
             <listitem>
-                <para>nested interface declarations.</para>
+                <para>nested interface and <literal>abstract</literal> class declarations.</para>
             </listitem>
         </itemizedlist>
         
         <programlisting>InterfaceBody := "{" Declaration* "}"</programlisting>
         
-        <para>An interface may declare <literal>abstract</literal> methods or attributes 
-        and non-<literal>abstract</literal> methods, attribute getters, and attribute 
-        setters. An interface may not declare a simple attribute.</para>
+        <para>An interface may declare <literal>formal</literal> methods, attributes,
+        and member classes, and <literal>default</literal> methods, attribute getters, 
+        attribute setters, and member classes. An interface may not declare a simple 
+        attribute.</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     
@@ -268,6 +269,11 @@ TypeConstraints?
     
 }</programlisting>
 
+        <para>A non-<literal>abstract </literal> nested class declaration is called a
+        <emphasis>member class</emphasis> of the interface. A nested interface or 
+        <literal>abstract</literal> class declaration is not part of the schema of the 
+        interface type, and is therefore not considered a member of the interface.</para>
+        
         <!-- 
         <para>Which is equivalent to the following Java interface:</para>
 
@@ -283,8 +289,11 @@ TypeConstraints?
             <title>Interface member modifiers</title>
             
             <para>Every member of an interface is implicitly either <literal>default</literal> 
-            or <literal>abstract</literal>. No member of an interface may be explicitly 
-            annotated <literal>default</literal> or <literal>abstract</literal>.</para>
+            or <literal>formal</literal>. No member of an interface may be explicitly 
+            annotated <literal>default</literal> or <literal>formal</literal>.</para>
+            
+            <comment><para>TODO: is this really the right thing to say? We could require
+            that you specify one of the two annotations on every member.</para></comment>
         
             <para>Every member of an interface inherits the visibility modifier of the 
             interface. No member of an interface may explicitly specify a visibilty
@@ -343,9 +352,9 @@ TypeConstraints?
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
         
-            <para>An interface may not inherit two non-<literal>abstract</literal> members
+            <para>An interface may not inherit two non-<literal>formal</literal> members
             of different supertypes that both override the same member of a third supertype.
-            If two supertypes both declare non-<literal>abstract</literal> members that
+            If two supertypes both declare non-<literal>formal</literal> members that
             override the same member of a third supertype, the interface must also override
             the member.</para>
             
@@ -443,7 +452,8 @@ TypeConstraints?
                 <para>member (method, attribute, and member class) declarations,</para>
             </listitem>
             <listitem>
-                <para>nested interface declarations, and</para>
+                <para>nested interface and <literal>abstract</literal> class declarations, 
+                and</para>
             </listitem>
             <listitem>
                 <para>instance initialization code.</para>
@@ -451,6 +461,11 @@ TypeConstraints?
         </itemizedlist>
 
         <programlisting>ClassBody := "{" (Declaration | Statement)* "}"</programlisting>
+        
+        <para>A non-<literal>abstract </literal> nested class declaration is called a
+        <emphasis>member class</emphasis> of the class. A nested interface or 
+        <literal>abstract</literal> class declaration is not part of the schema of the 
+        class type, and is therefore not considered a member of the class.</para>
         
         <!--
         <para>The body of a class may invoke, evaluate or assign members of the instance 
@@ -591,8 +606,8 @@ public class Person { ... }</programlisting>
         clients.</para>
         
         <programlisting>public abstract class Point() {
-    public abstract Decimal x;
-    public abstract Decimal y;
+    public formal Decimal x;
+    public formal Decimal y;
 }</programlisting>
         
         <programlisting>public class DiagonalPoint(Decimal distance) 
@@ -662,19 +677,19 @@ public class Person { ... }</programlisting>
            </listitem>
            -->
            <listitem>
-              <para>They may not invoke or evaluate an <literal>abstract</literal>, 
+              <para>They may not invoke or evaluate a <literal>formal</literal>, 
               <literal>default</literal>, or <literal>fixed</literal> member of the instance 
               that is being initialized, except via the special <literal>super</literal> self 
               reference.</para>
            </listitem>
         </itemizedlist>
         
-        <para>It is acceptable to invoke or evaluate an <literal>abstract</literal> or 
+        <para>It is acceptable to invoke or evaluate a <literal>formal</literal> or 
         <literal>default</literal> member of a superclass that is overridden by a 
-        non-<literal>abstract</literal>, non-<literal>default</literal> declaration of a 
+        non-<literal>formal</literal>, non-<literal>default</literal> declaration of a 
         different superclass or that appears earlier in the body of the class.</para>
         
-        <para>Non-<literal>abstract</literal>, non-<literal>default</literal> superclass 
+        <para>Non-<literal>formal</literal>, non-<literal>default</literal> superclass 
         members may be invoked, evaluated or assigned anywhere inside the body of the class. 
         The superclass initializer is executed before the subclass initializer.</para>
         
@@ -721,11 +736,11 @@ public class Person { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>a statement or control structure, unless it is nested inside a method,
-                attribute, member class, or nested interface declaration,</para>
+                attribute, nested class, or nested interface declaration,</para>
             </listitem>
             <listitem>
                 <para>a declaration with a specifier or initializer, unless it is nested inside 
-                a method, attribute, member class, or nested interface declaration, or</para>
+                a method, attribute, nested class, or nested interface declaration, or</para>
             </listitem>
             <listitem>
                 <para>a specification or initialization statement for a member of the instance 
@@ -747,13 +762,13 @@ public class Person { ... }</programlisting>
     <section id="classmembermodifiers">
         <title>Class member modifiers</title>
         
-        <para>An <literal>abstract</literal>, <literal>default</literal>, or
+        <para>A <literal>formal</literal>, <literal>default</literal>, or
         <literal>fixed</literal> member of a class must be explicitly annotated as such.
         No member may be annotated by more than one of these three annotations.</para>
         
-        <para>Every member annotated <literal>abstract</literal>, <literal>default</literal> 
+        <para>Every member annotated <literal>formal</literal>, <literal>default</literal> 
         or <literal>fixed</literal> must declare or inherit a visibility modifier. A 
-        block-local member may not be annotated <literal>abstract</literal>, 
+        block-local member may not be annotated <literal>formal</literal>, 
         <literal>default</literal> or <literal>fixed</literal>.</para>
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
@@ -773,51 +788,7 @@ public class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
     </section>
-        
-    <section id="abstractclasses">
-        <title>Abstract classes</title>
-        
-        <para>A class may be annotated <literal>abstract</literal> only if it is:</para>
-        <itemizedlist>
-            <listitem>
-                <para>a toplevel class, or</para>
-            </listitem>
-            <listitem>
-                <para>a member class of an <literal>abstract</literal> class or
-                interface.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If and only if a class is annotated <literal>abstract</literal> it may 
-        declare:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>abstract</literal> methods and attributes, and/or</para>
-            </listitem>
-            <listitem>
-                <para><literal>abstract</literal> member classes.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If and only if a class is an <literal>abstract</literal> member class 
-        it may omit a class body entirely.</para>
-        
-        <programlisting>abstract class Buffer(Character...) satisfies Character[];</programlisting>
-        
-        <comment><para>TODO: In this case, do we need to limit the class to specifying 
-        at most one supertype? Not sure exactly what limitations exist at the bytecode
-        level.</para></comment>
-        
-        <para>Toplevel classes annotated <literal>abstract</literal> may not be 
-        instantiated.</para> 
-        
-        <para>A member class annotated <literal>abstract</literal> may be instantiated. 
-        Every subtype of the type which declares the member class must override the 
-        member class.</para>
-        
-    </section>
-        
+    
     <section id="mutableclasses">
         <title>Mutable and immutable classes</title>
         
@@ -875,14 +846,14 @@ public class Person { ... }</programlisting>
             </listitem-->
             <listitem>
                 <para>must declare or inherit a member that overrides each 
-                <literal>abstract</literal> member of every interface it implements directly 
-                or indirectly, unless the class is declared <literal>abstract</literal>, 
-                and</para>
+                <literal>formal</literal> member of every interface it implements directly 
+                or indirectly, unless the class is declared <literal>abstract</literal> or
+                <literal>formal</literal>, and</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that overrides each 
-                <literal>abstract</literal> member of its superclass, unless the class is 
-                declared <literal>abstract</literal>.</para>
+                <literal>formal</literal> member of its superclass, unless the class is 
+                declared <literal>abstract</literal> or <literal>formal</literal>.</para>
             </listitem>
             <!--listitem>
                 <para>is assignable to any type to which any interface it implements is 
@@ -893,9 +864,9 @@ public class Person { ... }</programlisting>
         <para>The schema of the inherited members is formed by substituting type arguments
         specified in the <literal>extends</literal> clause.</para>
         
-        <para>An class may not inherit two non-<literal>abstract</literal> members of 
+        <para>An class may not inherit two non-<literal>formal</literal> members of 
         different supertypes that both override the same member of a third supertype.
-        If two supertypes both declare non-<literal>abstract</literal> members that
+        If two supertypes both declare non-<literal>formal</literal> members that
         override the same member of a third supertype, the class must also override
         the member.</para>
             
@@ -955,8 +926,8 @@ public class Person { ... }</programlisting>
 }</programlisting>
          -->
          
-         <para>A sublass of a member class must be a member of the type that declares 
-         the member class or of a subtype of the type that declares the member class. 
+         <para>A sublass of a nested class must be a member of the type that declares 
+         the nested class or of a subtype of the type that declares the nested class. 
          A class that implements a member interface must be a member of the type that 
          declares the member interface or of a subtype of the type that declares the 
          member interface.</para>
@@ -967,7 +938,7 @@ public class Person { ... }</programlisting>
             <title>Overloaded classes</title>
             
             <para>Multiple toplevel classes belonging to the same package, or multiple 
-            member classes of the same containing body may declare the same name. The 
+            nested classes of the same containing body may declare the same name. The 
             classes are called <emphasis>overloaded</emphasis>.</para>
             
             <para>For any class name and package or containing body, there must be a 
@@ -1014,6 +985,62 @@ public class Person { ... }</programlisting>
         
         </section>
         
+    <section id="abstractandformalclasses">
+        <title>Abstract and formal classes</title>
+        
+        <para>A class may contain members annotated <literal>formal</literal>. Then
+        the class must be either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a toplevel or nested class annotated 
+                <literal>abstract</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>a member class of an interface, or</para>
+            </listitem>
+            <listitem>
+                <para>a member class annotated <literal>formal</literal> of a class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If the class is a member of an interface or is annotated <literal>formal</literal>,
+        it is called a <literal>formal</literal> member class.</para>
+        
+        <para>If the class is annotated <literal>abstract</literal>, it is called an
+        <literal>abstract</literal> class.</para>
+                
+        <para>Alternatively, a class may omit a class body entirely.</para>
+        
+        <programlisting>formal class Buffer(Character...) satisfies Character[];</programlisting>
+        
+        <para>Then the class must be either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a member class of an interface, or</para>
+            </listitem>
+            <listitem>
+                <para>a member class annotated <literal>formal</literal> of a class.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In this case, also, it is considered a <literal>formal</literal> member 
+        class.</para>
+        
+        <comment><para>TODO: In this case, do we need to limit the class to specifying 
+        at most one supertype? Not sure exactly what limitations exist at the bytecode
+        level.</para></comment>
+        
+        <para>A class annotated <literal>abstract</literal> may not be instantiated.</para>
+          
+        <para>A member class annotated <literal>formal</literal> may be instantiated.</para>
+        
+        <para>A class which is not annotated <literal>abstract</literal> or 
+        <literal>formal</literal> is called a <emphasis>concrete</emphasis> class.</para>
+        
+    </section>
+        
     <section id="overridingmemberclasses">
         <title>Overriding member classes</title>
         
@@ -1022,19 +1049,18 @@ public class Person { ... }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>A member class annotated <literal>abstract</literal> or
+                <para>A member class annotated <literal>formal</literal> or
                 <literal>default</literal> may be overridden by any class which 
                 is a subtype of the class or interface which declares the member 
                 class.</para>
             </listitem>
             <listitem>
-                <para>A member class annotated <literal>abstract</literal> 
-                <emphasis>must</emphasis> be overridden by every 
-                non-<literal>abstract</literal> class which is a subtype of the 
-                <literal>abstract</literal> class or interface that declares the 
-                member class, unless the class inherits a 
-                non-<literal>abstract</literal> member class from a superclass 
-                that overrides the <literal>abstract</literal> member class.</para>
+                <para>A member class annotated <literal>formal</literal> 
+                <emphasis>must</emphasis> be overridden by every concrete class 
+                which is a subtype of the class or interface that declares the 
+                member class, unless the class inherits a concrete member class 
+                from a superclass that overrides the <literal>formal</literal> 
+                member class.</para>
             </listitem>
         </itemizedlist>
         
@@ -1059,7 +1085,7 @@ public class Person { ... }</programlisting>
                <para>extends the superclass of the member class it overrides and 
                implements all interfaces implemented by the member class it 
                overrides, where the member class it overrides is an 
-               <literal>abstract</literal> member class with no body, and</para>
+               <literal>formal</literal> member class with no body, and</para>
             </listitem>
             <listitem>
                 <para>has a formal parameter list with the same signature as the 
@@ -1074,7 +1100,7 @@ public class Person { ... }</programlisting>
         
         <para>If a member class is annotated <literal>override</literal>, it must 
         override some class defined by a supertype, and the class it overrides 
-        must be either <literal>abstract</literal> or <literal>default</literal>.</para>
+        must be either <literal>formal</literal> or <literal>default</literal>.</para>
             
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
@@ -1089,7 +1115,7 @@ public class Person { ... }</programlisting>
         extends the member class it overrides:</para>
         
         <programlisting>public abstract class Reader() {
-    module abstract class Buffer(Character... chars) 
+    module formal class Buffer(Character... chars) 
             satisfies Character[] {}
     ...
 }</programlisting>
@@ -1108,7 +1134,7 @@ public class Person { ... }</programlisting>
         class it overrides:</para>
         
         <programlisting>public abstract class Reader() {
-    module abstract class Buffer(Character... chars) 
+    module formal class Buffer(Character... chars) 
             satisfies Character[];
     ...
 }</programlisting>
@@ -1163,7 +1189,8 @@ ClassBody</programlisting>
                  <para>may not be extended by another class,</para>
              </listitem>
              <listitem>
-                 <para>may not be <literal>abstract</literal>, and</para>
+                 <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
+                 and</para>
              </listitem>
              <listitem>
                  <para>may not declare <literal>default</literal> members.</para>
@@ -1835,8 +1862,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         </section>
         
-       <section id="abstractmethods">
-            <title>Abstract methods</title>
+       <section id="formalmethods">
+            <title>Virtual methods</title>
             
             <para>If there is no method implementation in a method declaration, then
             either:</para>
@@ -1851,28 +1878,32 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     must be annotated <literal>abstract</literal>,--> or</para>
                 </listitem>
                 <listitem>
-                    <para>the method must be a member of a class and both the method 
-                    and the class that declares the method must be annotated 
+                    <para>the method must be a member of a class, the method must be 
+                    annotated <literal>formal</literal>, and the class that declares 
+                    the method must be annotated <literal>formal</literal> or
                     <literal>abstract</literal>.</para>
                 </listitem>
             </itemizedlist> 
             
             <para>If the method is a member of an interface or is annotated 
-            <literal>abstract</literal>, it is called an <literal>abstract</literal> 
+            <literal>formal</literal>, it is called a <literal>formal</literal> 
             method.</para>
             
-            <para>A method annotated <literal>abstract</literal> may not specify an
+            <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
         
-            <programlisting>public abstract U? get(V key);</programlisting>
+            <programlisting>public formal U? get(V key);</programlisting>
         
-            <para>A toplevel method may not be annotated <literal>abstract</literal> and 
+            <para>A toplevel method may not be annotated <literal>formal</literal> and 
             must have a method implementation (a block of code, or a reference to another 
             method).</para>
             
-            <para>A block local method may not be annotated <literal>abstract</literal> and 
-            must have a method implementation.</para>
+            <para>A block local method may not be annotated <literal>formal</literal> 
+            and must have a method implementation.</para>
 
+            <para>A method which is not annotated <literal>formal</literal> is called a 
+            <emphasis>concrete</emphasis> method.</para>
+        
         </section>
         
         <section id="overridingmethods">
@@ -1882,16 +1913,16 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <itemizedlist>
             <listitem>
-                <para>A class or interface may override any <literal>abstract</literal> 
+                <para>A class or interface may override any <literal>formal</literal> 
                 method or <literal>default</literal> method it inherits, unless it inherits 
-                a non-<literal>abstract</literal> non-<literal>default</literal> method that 
+                a non-<literal>formal</literal> non-<literal>default</literal> method that 
                 overrides the method.</para>
             </listitem>
             <listitem>
-                <para>A non-<literal>abstract</literal> class must override every 
-                <literal>abstract</literal> method or <literal>fixed</literal> 
-                method it inherits, unless it inherits a non-<literal>abstract</literal>
-                non-<literal>fixed</literal> method that overrides the method.</para>
+                <para>A concrete class must override every <literal>formal</literal> method 
+                or <literal>fixed</literal> method it inherits, unless it inherits a 
+                non-<literal>formal</literal> non-<literal>fixed</literal> method that 
+                overrides the method.</para>
             </listitem>
             </itemizedlist>           
             
@@ -1926,7 +1957,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>If a method is annotated <literal>override</literal>, it must 
             override some method defined by a supertype, and the method it overrides 
-            must be either <literal>abstract</literal>, <literal>default</literal>, 
+            must be either <literal>formal</literal>, <literal>default</literal>, 
             or <literal>fixed</literal>.</para>
             
             <para>A method may not, directly or indirectly, override two different
@@ -1941,7 +1972,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             overrides.</para>
             
             <programlisting>public abstract class AbstractSquareRooter() {
-    public abstract Float squareRoot(Float x);
+    public formal Float squareRoot(Float x);
 }</programlisting>
 
             <programlisting>class ConcreteSquareRooter()
@@ -1949,7 +1980,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     override Float squareRoot(Float x) { ... }
 }</programlisting>
             
-            <para>For <literal>abstract</literal> methods, a special shortcut form of 
+            <para>For <literal>formal</literal> methods, a special shortcut form of 
             overriding is permitted. A subclass initializer may simply specify an 
             instance of <literal>Callable</literal> as the implementation of the method 
             declared by the supertype. No formal parameter list, return type declaration, 
@@ -2319,8 +2350,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             -->
         </section>
         
-        <section id="abstractattributes">
-            <title>Abstract attributes</title>
+        <section id="formalattributes">
+            <title>Virtual attributes</title>
             
             <para>If there is no specifier, initializer, or getter implementation, then
             either:</para>
@@ -2335,27 +2366,31 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     attribute must be annotated <literal>abstract</literal>,--> or</para>
                 </listitem>
                 <listitem>
-                    <para>the attribute must be a member of a class and both the attribute 
-                    and the class that declares the attribute must be annotated 
+                    <para>the attribute must be a member of a class, the attribute must 
+                    be annotated <literal>formal</literal>, and the class that declares 
+                    the attribute must be annotated <literal>formal</literal> or
                     <literal>abstract</literal>.</para>
                 </listitem>
             </itemizedlist> 
             
             <para>If the attribute is a member of an interface or is annotated 
-            <literal>abstract</literal>, it is called an <literal>abstract</literal> 
+            <literal>formal</literal>, it is called a <literal>formal</literal> 
             attribute.</para>
             
-            <para>An attribute annotated <literal>abstract</literal> may not specify an
+            <para>An attribute annotated <literal>formal</literal> may not specify an
             implementation (a specifier, initializer, or getter implementation).</para>
         
-            <programlisting>package abstract mutable String firstName;</programlisting>
+            <programlisting>package formal mutable String firstName;</programlisting>
 
-            <para>A toplevel attribute declaration may not be annotated <literal>abstract</literal> 
+            <para>A toplevel attribute declaration may not be annotated <literal>formal</literal> 
             and must have a specifier or getter implementation.</para>
 
-            <para>A block local attribute may not be annotated <literal>abstract</literal> 
+            <para>A block local attribute may not be annotated <literal>formal</literal> 
             and must have a specifier or getter implementation.</para>
 
+            <para>An attribute which is not annotated <literal>formal</literal> is called 
+            a <emphasis>concrete</emphasis> attribute.</para>
+        
         </section>
         
         <section id="overridingattributes">
@@ -2366,16 +2401,16 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <itemizedlist>
             <listitem>
-                <para>A class or interface may override any <literal>abstract</literal> 
-                attribute or <literal>default</literal> attribute it inherits, unless it inherits 
-                a non-<literal>abstract</literal> non-<literal>default</literal> attribute that 
-                overrides the attribute.</para>
+                <para>A class or interface may override any <literal>formal</literal> 
+                attribute or <literal>default</literal> attribute it inherits, unless it 
+                inherits a non-<literal>formal</literal> non-<literal>default</literal> 
+                attribute that overrides the attribute.</para>
             </listitem>
             <listitem>
-                <para>A non-<literal>abstract</literal> class must override every 
-                <literal>abstract</literal> attribute, or <literal>fixed</literal> attribute 
-                it inherits, unless it inherits a non-<literal>abstract</literal>
-                non-<literal>fixed</literal> attribute that overrides the attribute.</para>
+                <para>A concrete class must override every <literal>formal</literal> 
+                attribute, or <literal>fixed</literal> attribute it inherits, unless it 
+                inherits a non-<literal>formal</literal> non-<literal>fixed</literal>
+                attribute that overrides the attribute.</para>
             </listitem>
             </itemizedlist>           
             
@@ -2422,7 +2457,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
             <para>If an attribute is annotated <literal>override</literal>, it must 
             override some attribute defined by a supertype, and the attribute it 
-            overrides must be either <literal>abstract</literal>, <literal>default</literal>, 
+            overrides must be either <literal>formal</literal>, <literal>default</literal>, 
             or <literal>fixed</literal>.</para>
             
             <para>An attribute may not, directly or indirectly, override two different
@@ -2445,7 +2480,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             attribute it overrides.</para>
             
             <programlisting>module abstract class AbstractPi() {
-    module abstract Float pi;
+    module formal Float pi;
 }</programlisting>
 
             <programlisting>class ConcretePi() 
@@ -2453,7 +2488,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     override Float pi { ... }
 }</programlisting>
             
-            <para>For <literal>abstract</literal> attributes, a special shortcut form 
+            <para>For <literal>formal</literal> attributes, a special shortcut form 
             of overriding is permitted. A subclass initializer may simply specify or 
             assign a value to the attribute declared by the superclass. No type 
             declaration or <literal>override</literal> annotation is necessary.</para>
@@ -2520,10 +2555,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>abstract</literal> specifies that a class
-                cannot be instantiated or that a method or attribute of 
-                an <literal>abstract</literal> class does not specify an
-                implementation and must therefore be overridden by every 
-                non-<literal>abstract</literal> subclass.</para>
+                cannot be instantiated.</para>
+            </listitem>
+             <listitem>
+                <para><literal>formal</literal> specifies that a member 
+                does not specify an implementation and must therefore be 
+                overridden by every concrete subclass.</para>
             </listitem>
             <listitem>
                 <para><literal>default</literal> specifies that a method, 
@@ -2541,9 +2578,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>fixed</literal> specifies that a method or
-                attribute must be overridden by every non-<literal>abstract</literal> 
-                subclass. <emphasis>(Note that <literal>fixed</literal> is a
-                proposed feature for a future version of the language.)</emphasis></para>
+                attribute must be overridden by every concrete subclass. 
+                <emphasis>(Note that <literal>fixed</literal> is a proposed 
+                feature for a future version of the language.)</emphasis></para>
             </listitem>
             <!-- 
             <listitem>
@@ -2817,6 +2854,9 @@ public Visibility private() {
                 <para>a member attribute.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>An extension must not be annotated <literal>formal</literal> or 
+        <literal>abstract</literal>.</para>
         
         <para>An toplevel extension method is called a <emphasis>converter</emphasis>. 
         An toplevel extension class is called a <emphasis>decorator</emphasis>.</para>

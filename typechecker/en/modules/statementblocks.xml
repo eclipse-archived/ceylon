@@ -11,22 +11,8 @@
     are, in general, also syntactically valid in the body of a nested declaration or 
     of a control structure, and vice-versa.</para>
     
-    <para>There exist two exceptions to this rule:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para>a class body may not end in a control directive,</para>
-        </listitem>
-        <!--
-        <listitem>
-            <para>an enumerated named instance list may only appear directly in the body 
-            of a toplevel class, and</para> 
-        </listitem>
-        -->
-        <listitem>
-            <para>the body of an interface may contain only abstract declarations.</para>
-        </listitem>
-    </itemizedlist>
+    <para>There exists just one exception to this rule: a class body may not end in a 
+    control directive.</para>
     
     <comment><para>TODO: a named argument list looks very much like a block, but is not 
     currently defined that way. The language would be more regular if we decided to just 
@@ -175,7 +161,7 @@
             modifier.</para>
             
             <para>A block may not contain a class, method, or attribute declaration annotated 
-            <literal>abstract</literal>, <literal>default</literal>, <literal>fixed</literal>, 
+            <literal>formal</literal>, <literal>default</literal>, <literal>fixed</literal>, 
             or <literal>override</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
@@ -288,7 +274,7 @@ String result = middle.string;</programlisting>
         explicitly specifying the receiver, or by specifying a self reference 
         <literal>this</literal> as the receiver.</para>
 
-        <para>The initializer of a member class, or the body of a member of a member class
+        <para>The initializer of a nested class, or the body of a member of a nested class
         or nested interface may invoke, evaluate or assign members of the current instance 
         of the containing class or interface&mdash;the parent instance of the instance being 
         instantiated or invoked&mdash;without explicitly specifying the receiver, or by 
@@ -358,7 +344,7 @@ String result = middle.string;</programlisting>
         of local in an expression. Each conditional branch must specify or assign a value 
         to the simple attribute or local before using it in an expression.</para>
         
-        <para>Every simple attribute of a non-<literal>abstract</literal> class must be 
+        <para>Every simple attribute of a concrete class must be 
         explicitly specified or initialized by the initializer of the class or by the
         initializer of one of its superclasses. The Ceylon compiler guarantees this by 
         evaluating all conditional branches that lead to termination of the initializer

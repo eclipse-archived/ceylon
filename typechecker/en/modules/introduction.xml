@@ -882,7 +882,7 @@ class PersonalizedHello(String name) extends DefaultHello() {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    package abstract String greeting;
+    package formal String greeting;
     
     doc "Print the greeting"
     package void say(OutputStream stream) { 
@@ -894,9 +894,11 @@ abstract class Hello() {
             <para>Ceylon requires us to annotate abstract classes <literal>abstract</literal>,
             just like Java. This annotation specifies that a class cannot be instantiated,
             and can define abstract members. Like Java, Ceylon also requires us to annotate 
-            abstract members. Note that an attribute that is never initialized is
-            <emphasis>always</emphasis> an <literal>abstract</literal> attribute&mdash;Ceylon
-            doesn't initialize attributes to zero unless you explicitly tell it to!</para>
+            "abstract"" members that don't specify an implementation. However, in this case, 
+            the required annotation is <literal>formal</literal>. Note that an attribute 
+            that is never initialized is <emphasis>always</emphasis> a <literal>formal</literal> 
+            attribute&mdash;Ceylon doesn't initialize attributes to zero unless you explicitly 
+            tell it to!</para>
 
             <para>One way to define an implementation for an inherited abstract attribute is 
             to simply assign a value to it in the subclass.</para>
@@ -951,7 +953,7 @@ class PersonalizedHello(String name) extends Hello() {
     
 }]]></programlisting>
             
-            <para>All members of an interface are either <literal>abstract</literal> or 
+            <para>All members of an interface are either <literal>formal</literal> or 
             <literal>default</literal>, and they all inherit the same visibility modifier
             as the interface. Therefore, we don't need to annotate the members explicitly.</para>
             
@@ -1426,7 +1428,7 @@ package assign greeting {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    package abstract String greeting;
+    package formal String greeting;
     
     override Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
@@ -1465,7 +1467,7 @@ abstract class Hello() {
     
     id
     doc "The (abstract) greeting"
-    package abstract String greeting;
+    package formal String greeting;
     
     ...
         
@@ -1799,9 +1801,9 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <para>So far we haven't met anything from the collections module proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
-            of the module <literal>ceylon.language</literal>. They're there to abstract away 
-            the nice syntax we've just met from the (relatively) gory details of the 
-            collections package.</para>
+            of the module <literal>ceylon.language</literal>. They're there to abstract 
+            away the nice syntax we've just met from the (relatively) gory details of 
+            the collections package.</para>
             
         </section>
         

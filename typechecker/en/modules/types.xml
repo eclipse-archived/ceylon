@@ -77,7 +77,7 @@
     }
     
     doc "A developer-friendly string representing the instance."
-    public abstract String string;
+    public formal String string;
     
     ...
         
@@ -508,7 +508,7 @@ public abstract class Case(String caseName)
     
     doc "The unary postfix existence operator 
          |x exists|."
-    public abstract Boolean defined;
+    public formal Boolean defined;
     
 }]]></programlisting>
 
@@ -1032,7 +1032,7 @@ while (exists local value = indexed.indexedValue(i)) {
         given U satisfies Object, Equals<U> 
         given V satisfies Object, Equals<V> {
     
-    abstract override Settable<V?> value(U key);
+    override Settable<V?> value(U key);
     
     doc "Add the given entries, overriding any definitions that 
          already exist."
@@ -2437,7 +2437,7 @@ while (i<=max) {
     
     public Boolean abstract;
     public Boolean default;
-    public Boolean default;
+    public Boolean formal;
     public Boolean override;
     public Boolean extension;
     

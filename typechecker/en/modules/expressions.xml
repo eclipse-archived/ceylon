@@ -563,11 +563,11 @@ if you prefer.";</programlisting>
         <programlisting>OuterReference := (Receiver ".") "outer"</programlisting>
         
         <para>The type of the outer instance reference is the type that contains 
-        the declaration of the receiver expression type (which must be a member 
+        the declaration of the receiver expression type (which must be a nested 
         class). If no receiver expression is specified, the type of the outer 
         instance reference is the type that contains the declaration of the 
         current class (the class in which the expression appears, which must be 
-        a member class).</para>
+        a nested class).</para>
         
         <programlisting>Node node = tree.Node().Node();
 assert() that (tree &equals; node.outer.outer);</programlisting>
@@ -1655,7 +1655,7 @@ except (SomethingElseWrong sew) {
         
                 <itemizedlist>
                     <listitem>
-                        <para>taking the signature of the formal parameter list of the member class, 
+                        <para>taking the signature of the formal parameter list of the class, 
                         or of the first formal parameter list of the method, and</para>
                     </listitem>
             <!--listitem>

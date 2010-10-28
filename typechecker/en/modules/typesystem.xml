@@ -370,8 +370,9 @@
         
         <programlisting>Type := UnabbreviatedType Abbreviation*</programlisting>
         
-        <para>If the type is a member class or nested interface, the type must be fully 
-        qualified by its containing types.</para>
+        <para>If the type is a class or interface nested inside a containing class or 
+        interface, the type must be fully qualified by its containing types, except when 
+        used inside the body of a containing type.</para>
         
         <programlisting>UnabbreviatedType := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
         
@@ -608,7 +609,7 @@ String? firstWord = words[0];</programlisting>
         <para>A class or interface may optionally specify a list of interfaces
         implemented by the <emphasis>type class</emphasis> (metamodel object) of 
         the type. The interfaces implemented by the type class may not define
-        abstract members.</para>
+        <literal>formal</literal> members.</para>
         
         <para>Similarly, a type constraint may specify a list of types to which 
         the type class of the type argument is assignable.</para>
@@ -724,11 +725,11 @@ String? firstWord = words[0];</programlisting>
                 <para>A type parameter of a method is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A formal parameter type of a member class initializer is a contravariant 
+                <para>A formal parameter type of a nested class initializer is a contravariant 
                 position.</para>
             </listitem>
             <listitem>
-                <para>A type parameter of a member class is a contravariant position.</para>
+                <para>A type parameter of a nested class is a contravariant position.</para>
             </listitem>
             <listitem>
                 <para>The type of a non-<literal>mutable</literal> attribute is a covariant 
