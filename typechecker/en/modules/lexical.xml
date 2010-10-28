@@ -112,18 +112,6 @@
         is exists nonempty
         </literal></para>
         
-        <!--
-        public module package private protected
-        abstract final default fixed override mutable extension 
-        deprecated volatile small
-        -->
-        
-        <!--  
-        <para>Note that the keywords <literal>private</literal>, <literal>protected</literal>,
-        and <literal>final</literal> are currently not part of the language. They are reserved 
-        for possible future use.</para>
-        -->
-        
         <comment><para>TODO: Eventually we will probably want to support identifiers 
         in non-European character sets. We can use an initial underscore to distinguish
         "initial lowercase" identifiers.</para></comment>
