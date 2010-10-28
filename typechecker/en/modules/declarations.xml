@@ -173,7 +173,7 @@ Body?</programlisting>
         
         <comment><para>TODO: Should we use <literal>class</literal> and 
         <literal>interface</literal> for declaring type aliases, instead of
-        <literal>local</literal>?</para></comment>
+        <literal>local</literal>? Or should we just drop the keyword altogether?</para></comment>
 
         <programlisting>MethodAttributeAlias := "local" MemberName "="</programlisting>
         
@@ -2577,6 +2577,17 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 assignable attributes.</para>
             </listitem>
             <listitem>
+                <para><literal>extension</literal> specifies that a method or
+                attribute getter is a converter, or that a class is a decorator.</para>
+            </listitem>
+            <listitem>
+                <para><literal>deprecated</literal> indicates that a method, 
+                attribute or type is deprecated. It accepts an optional
+                <literal>String</literal> argument. The compiler produces a
+                warning when compiling code that depends upon a deprecated
+                program element.</para>
+            </listitem>
+            <listitem>
                 <para><literal>definite</literal> specifies that a method or
                 attribute must be refined by every concrete subclass. 
                 <emphasis>(Note that <literal>definite</literal> is a proposed 
@@ -2588,19 +2599,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 be extended.</para>
             </listitem>
              -->
-            <listitem>
-                <para><literal>extension</literal> specifies that a method or
-                attribute getter is a converter, or that a class is a decorator.</para>
-            </listitem>
-            <listitem>
-                <para><literal>deprecated</literal> indicates that a method, 
-                attribute or type is deprecated. It accepts an optional
-                <literal>String</literal> argument.</para>
-            </listitem>
-            <listitem>
-                <para><literal>volatile</literal> indicates a volatile simple 
-                attribute.</para>
-            </listitem>
         </itemizedlist>
         
         <para>The following annotation is a hint to the compiler that lets 
