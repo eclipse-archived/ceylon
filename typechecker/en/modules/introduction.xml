@@ -102,7 +102,7 @@
     
     <para>
     In place of constructor overloading, Ceylon allows class names to be 
-    overloaded. Even better, member classes of a class may be overridden by 
+    overloaded. Even better, member classes of a class may be refined by 
     subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
     eliminating the need for factory methods.
     </para>
@@ -675,7 +675,7 @@ class Hello(String? name) {
             of the notion of a value. Some attributes are simple value holders like
             the one we've just seen; others are more like a getter method, or, sometimes, 
             like a getter and setter method pair. Like methods, attributes are 
-            polymorphic&mdash;an attribute definition may be overridden by a subclass.</para>
+            polymorphic&mdash;an attribute definition may be refined by a subclass.</para>
             
             <para>We could rewrite the attribute <literal>greeting</literal> as a 
             <emphasis>getter</emphasis>:</para>
@@ -826,7 +826,7 @@ public void hello() {
         </section>
         
         <section>
-            <title>Inheritance and overriding</title>
+            <title>Inheritance and refinement</title>
         
             <para>In object-oriented programming, we often replace conditionals 
             (<literal>if</literal>, and especially <literal>switch</literal>) with
@@ -847,7 +847,7 @@ class DefaultHello() {
 }]]></programlisting>
 
             <para>Notice that Ceylon forces as to declare attributes or methods that can be 
-            overridden by annotating them <literal>default</literal>.</para>
+            refined by annotating them <literal>default</literal>.</para>
             
             <para>Subclasses specify their superclass using the <literal>extends</literal>
             keyword, followed by the name of the superclass, followed by a list of arguments
@@ -858,21 +858,21 @@ class DefaultHello() {
 class PersonalizedHello(String name) extends DefaultHello() {
     
     doc "The personalized greeting"
-    override String greeting { 
+    refine String greeting { 
         return "Hello, " name "!" 
     }
     
 }]]></programlisting>
 
-            <para>Ceylon also forces us to declare that an attribute or method overrides an 
-            attribute or method of a superclass by annotating it <literal>override</literal>. 
+            <para>Ceylon also forces us to declare that an attribute or method refines an 
+            attribute or method of a superclass by annotating it <literal>refine</literal>. 
             All this annotating stuff costs a few extra keystrokes, but it helps the compiler
-            detect errors. We can't inadvertantly override a member or the superclass, or
-            inadvertantly <emphasis>fail</emphasis> to override it.</para>
+            detect errors. We can't inadvertantly refine a member or the superclass, or
+            inadvertantly <emphasis>fail</emphasis> to refine it.</para>
             
             <para>On the other hand, we don't need to declare the visibility of the attribute
-            annotated <literal>override</literal>. The <literal>package</literal> annotation
-            is inherited from the attribute it overrides.</para>
+            annotated <literal>refine</literal>. The <literal>package</literal> annotation
+            is inherited from the attribute it refines.</para>
             
             <para>There's one problem with what we've just seen. A personalized greeting 
             is not really a kind of default greeting. This is a case for introducing an
@@ -911,13 +911,13 @@ class DefaultHello() extends Hello() {
 }]]></programlisting>
 
         <para>Of course, we can also define an implementation for an inherited abstract 
-        attribute by overriding it.</para>
+        attribute by refining it.</para>
 
         <programlisting><![CDATA[doc "A personalized greeting"
 class PersonalizedHello(String name) extends Hello() {
     
     doc "The personalized greeting"
-    override String greeting { 
+    refine String greeting { 
         return "Hello, " name "!" 
     }
     
@@ -967,7 +967,7 @@ class PersonalizedHello(String name) extends Hello() {
     
     formatter = StringFormatter();
     
-    override void write(String string) {
+    refine void write(String string) {
         process.write(string);
     }
     
@@ -1004,7 +1004,7 @@ object defaultHello extends Hello() {
         
             <programlisting>public object consoleWriter satisfies Writer {
     formatter = StringFormatter();
-    override void write(String string) {
+    refine void write(String string) {
         process.write(string);
     }
 }</programlisting>
@@ -1022,7 +1022,7 @@ object defaultHello extends Hello() {
         <programlisting><![CDATA[public Subscription register(Subscriber s) {
     subscribers.append(s);
     object subscription satisfies Subscription {
-        override void cancel() {
+        refine void cancel() {
             subscribers.remove(s);
         }
     }
@@ -1360,7 +1360,7 @@ package assign greeting {
             <para><literal>IdentifiableObject</literal> defines a default implementation of the
             interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
             to the <literal>equals()</literal> and <literal>hashCode()</literal> methods defined
-            by <literal>java.lang.Object</literal>. Just like in Java, you can override this
+            by <literal>java.lang.Object</literal>. Just like in Java, you can refine this
             default implementation in your own classes. This is the normal way to get a customized 
             behavior for the <literal>==</literal> operator, the only constraint being, that for
             subtypes of <literal>IdentifiableObject</literal>, <literal>x==y</literal> should
@@ -1384,7 +1384,7 @@ package assign greeting {
             <para>Finally, the <literal>BaseObject</literal> class&mdash;which is the class you extend
             by default if you don't specify a superclass explicitly in the <literal>extends</literal>
             declaration&mdash;is a subclass of <literal>Object</literal> that implements support for
-            using the <literal>id</literal> annotation to override <literal>equals()</literal>, 
+            using the <literal>id</literal> annotation to refine <literal>equals()</literal>, 
             <literal>hash</literal> and <literal>string</literal>, as we're about to see.</para>
             
         </section>
@@ -1420,7 +1420,7 @@ package assign greeting {
             
             <para>Therefore, it's easy to customize operators like <literal>&lt;</literal> 
             and <literal>==</literal> with specific behavior for our own classes, just by 
-            implementing or overriding methods like <literal>compare()</literal> and 
+            implementing or refining methods like <literal>compare()</literal> and 
             <literal>equals()</literal>. Thus, we say that operators are 
             <emphasis>polymorphic</emphasis> in Ceylon.</para>
             
@@ -1430,7 +1430,7 @@ abstract class Hello() {
     doc "The (abstract) greeting"
     package formal String greeting;
     
-    override Boolean equals(IdentifiableObject that) {
+    refine Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
             if (this.type!=that.type) {
                 return false
@@ -1444,9 +1444,9 @@ abstract class Hello() {
         }
     }
     
-    override Integer hash = greeting.hash;
+    refine Integer hash = greeting.hash;
     
-    override String string { 
+    refine String string { 
         return greeting 
     }
     
@@ -1454,10 +1454,10 @@ abstract class Hello() {
     
 }]]></programlisting>
 
-            <para>If we override <literal>equals()</literal>, we're required to also override
+            <para>If we refine <literal>equals()</literal>, we're required to also refine
             the <literal>hash</literal> attribute.</para>
             
-            <para>Since it's very common to override <literal>equals()</literal>, <literal>hash</literal>
+            <para>Since it's very common to refine <literal>equals()</literal>, <literal>hash</literal>
             and <literal>string</literal> at the same time, there's an easy way to do it using
             the <literal>id</literal> annotation. The previous code is equivalent to this much
             shorter version:</para>
@@ -1834,7 +1834,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             allowed to do with it.</para>
         
             <para>A <literal>Map</literal> is the most important kind of 
-            <literal>Correspondence</literal>. We can add or override entries in an 
+            <literal>Correspondence</literal>. We can add or refine entries in an 
             <literal>OpenMap</literal> using the assignment operator:</para>
             
             <programlisting><![CDATA[OpenMap<String,String> cities = none;
@@ -2331,11 +2331,11 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
            convenient to build object graphs.</para>
            
            <para>First, note that the syntax we've already seen for specifying
-           a named argument value looks exactly like the syntax for overriding
+           a named argument value looks exactly like the syntax for refining
            an abstract attribute. If you think about it, taking into account
            that a method parameter may accept references to other methods, the 
            whole problem of specifying values for named parameters starts to
-           look a lot like the problem of overriding abstract members. Therefore,
+           look a lot like the problem of refining abstract members. Therefore,
            Ceylon let's us reuse much of the member declaration syntax inside a
            named argument list, including:</para>
            
@@ -2445,7 +2445,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     object observer satisfies Observer<UpdateEvent> {
-        override void on(UpdateEvent e) {
+        refine void on(UpdateEvent e) {
             log.info("Update:" + $e);
         }
     }
@@ -3320,7 +3320,7 @@ class Hello(String? name) {
         
         <programlisting>public class FloatFormat(Float float) 
         satisfies Format {
-    override String formatted {
+    refine String formatted {
         return ... 
     }
 }</programlisting>
@@ -3335,7 +3335,7 @@ class Hello(String? name) {
         
         <programlisting>public extension class FloatFormat(Float float) 
         satisfies Format {
-    override String formatted {
+    refine String formatted {
         return ... 
     }
 }</programlisting>

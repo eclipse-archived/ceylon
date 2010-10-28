@@ -162,7 +162,7 @@
             
             <para>A block may not contain a class, method, or attribute declaration annotated 
             <literal>formal</literal>, <literal>default</literal>, <literal>fixed</literal>, 
-            or <literal>override</literal>.</para>
+            or <literal>refine</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
             nested inside a block, a declaration directly contained in the body of a class 
@@ -245,7 +245,7 @@ String result = inner();</programlisting>
 
             <programlisting>Object outer(String s) {
     object middle {
-        override String string {
+        refine String string {
             return s;
         }
     }

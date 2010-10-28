@@ -162,15 +162,15 @@
         extends Object() satisfies Equals<IdentifiableObject> {
 
     doc "The |Class| of the instance."
-    override Class<subtype> type {
+    refine Class<subtype> type {
         return ... 
     }
     
-    default override Boolean equals(IdentifiableObject that) {
+    default refine Boolean equals(IdentifiableObject that) {
         return this===that
     }
     
-    default override Integer hash {
+    default refine Integer hash {
         return identityHash(this);
     }
         
@@ -203,7 +203,7 @@
     doc "The equals operator |x == y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
-    default override Boolean equals(IdentifiableObject that) {
+    default refine Boolean equals(IdentifiableObject that) {
         if (that.type!=type) {
             return false
         }
@@ -231,7 +231,7 @@
     doc "The hash code of the instance. Default implementation compares
          attributes annotated |id|, or assumes identity equality."
     see (id)
-    default override Integer hash { 
+    default refine Integer hash { 
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
             return hash(idAttributes)
@@ -248,7 +248,7 @@
     doc "A developer-friendly string representing the instance. 
          By default, the string contains the name of the type, 
          and the values of all attributes annotated |id|."
-    default override String string {
+    default refine String string {
         return string(idAttributes())
     }
     
@@ -446,7 +446,7 @@ public abstract class Boolean()
         <programlisting><![CDATA[public extension class OptionalMatcher<X>(Matcher<X> this) 
         satisfies Matcher<X?> {
         
-    override Boolean matches(X? x) {
+    refine Boolean matches(X? x) {
         if (exists value) {
             return this.matches(x)
         }
@@ -465,7 +465,7 @@ public abstract class Boolean()
         satisfies Matcher<Y> 
         given X satisfies Y {
         
-    override Boolean matches(Y y) {
+    refine Boolean matches(Y y) {
         if (is X y) {
             return this.matches(y)
         }
@@ -481,17 +481,17 @@ public abstract class Boolean()
         
         <programlisting><![CDATA[public abstract class Case() 
         satisfies Matcher<Object> {
-    override Boolean matches(Object that) {
+    refine Boolean matches(Object that) {
         return this===that
     }
-    override default String string { 
+    refine default String string { 
         return type.declarationName
     }
 }
 
 public abstract class Case(String caseName) 
         extends Case() {
-    override String string = caseName
+    refine String string = caseName
 }]]></programlisting>
 
     </section>
@@ -540,14 +540,14 @@ public abstract class Case(String caseName)
 
     public extension X value = this;
     
-    override Boolean defined { 
+    refine Boolean defined { 
         return true 
     }
     
 }]]></programlisting>
 
 <!-- 
-    override T default<T>(T defaultValue) 
+    refine T default<T>(T defaultValue) 
             given T abstracts X {
         return value;
     }
@@ -557,7 +557,7 @@ public abstract class Case(String caseName)
 
         <programlisting><![CDATA[public class Nothing<out X>() 
             extends X?() {
-    override Boolean defined { 
+    refine Boolean defined { 
         return false 
     }
 }]]></programlisting>
@@ -575,7 +575,7 @@ public abstract class Case(String caseName)
         <programlisting><![CDATA[doc "Represents a null reference."  
 public object null extends Void() satisfies Matcher<Object?> {
 
-    override Boolean matches(Object? value) {
+    refine Boolean matches(Object? value) {
         return !value exists;
     }
     
@@ -586,7 +586,7 @@ public object null extends Void() satisfies Matcher<Object?> {
 }]]></programlisting>
         
 <!--
-    override T default<T>(T defaultValue) 
+    refine T default<T>(T defaultValue) 
             given T abstracts X {
         return defaultValue;
     }
@@ -615,7 +615,7 @@ public object null extends Void() satisfies Matcher<Object?> {
     
     public StackTrace stackTrace { return ... }
     
-    override String string {
+    refine String string {
         if (nonempty message) {
             return type.name + ": " + message
         }
@@ -801,7 +801,7 @@ catch (Exception e) {
     X? head;
     Iterator<X> tail;
 
-    override Boolean empty {
+    refine Boolean empty {
         return !(head exists)
     }
 
@@ -823,7 +823,7 @@ while (exists local value = iter.head) {
         satisfies Iterable<T>, Category
         given T satisfies Object, Equals<T> {
         
-    override Boolean contains(Object... objects) {
+    refine Boolean contains(Object... objects) {
         for (Object obj in objects) {
             if (is T obj) {
                 if ( forAll (Object elem in this) every (elem != obj) ) {
@@ -845,11 +845,11 @@ while (exists local value = iter.head) {
         iteration:</para>
         <programlisting><![CDATA[public mutable interface OpenIterable<X> 
         satisfies Iterable<X> {
-    override OpenIterator<X> iterator();
+    refine OpenIterator<X> iterator();
 }]]></programlisting>
         <programlisting><![CDATA[public mutable interface OpenIterator<X> 
         satisfies Iterator<X> {
-    override mutable X? head;
+    refine mutable X? head;
     public void remove();
 }]]></programlisting></comment>
 
@@ -879,7 +879,7 @@ while (exists local value = indexed.indexedValue(i)) {
         <programlisting><![CDATA[public mutable interface OpenIndexed<X, I> 
         satisfies Indexed<X,I>
         given I satisfies Ordinal {
-    override mutable Settable<X>? indexedValue(I index);
+    refine mutable Settable<X>? indexedValue(I index);
     public void removeIndex(I index);
 }]]></programlisting>
 </comment>
@@ -907,11 +907,11 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "The value associated with the key."
     public V value = value;
     
-    override Boolean equals(Entry<U,V> that) {
+    refine Boolean equals(Entry<U,V> that) {
         return this.key==that.key && this.value==that.value
     }
     
-    override Integer hash = ... ; 
+    refine Integer hash = ... ; 
 
 }]]></programlisting>
 
@@ -1011,7 +1011,7 @@ while (exists local value = indexed.indexedValue(i)) {
         satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
         given U satisfies Object, Equals<U> 
         given V satisfies Object, Equals<V> {
-    override Correspondence<U,V> call(Entry<U,V>... entries) {
+    refine Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
             ...
@@ -1032,7 +1032,7 @@ while (exists local value = indexed.indexedValue(i)) {
         given U satisfies Object, Equals<U> 
         given V satisfies Object, Equals<V> {
     
-    override Settable<V?> value(U key);
+    refine Settable<V?> value(U key);
     
     doc "Add the given entries, overriding any definitions that 
          already exist."
@@ -1195,7 +1195,7 @@ public abstract class Comparison()
          number."
     public extension Natural natural { ... }
 
-    override Comparison compare(Bounded<#max> other) {
+    refine Comparison compare(Bounded<#max> other) {
         return natural.compare(other.natural)
     }
 
@@ -1235,13 +1235,13 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
          or |null| if the sequence has no elements."
     Natural? lastIndex;
     
-    override Iterator<X> iterator() {
+    refine Iterator<X> iterator() {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
-            override X? head { 
+            refine X? head { 
                 return this[from] 
             }
-            override Iterable<X> tail {
+            refine Iterable<X> tail {
                 return SequenceIterator(from+1)
             }
         }
@@ -1252,11 +1252,11 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         }
     }
     
-    override Boolean empty {
+    refine Boolean empty {
         return !(this.lastIndex exists)
     }
     
-    override Boolean contains(Object object) {
+    refine Boolean contains(Object object) {
         if (is X object) {
             return forAny (X x in this) some (x==object)
         }
@@ -1295,7 +1295,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         <programlisting><![CDATA[public interface EnumerableSequence<X>
         satisfies Callable<X[],X...> 
         given X satisfies Object, Equals<X> {
-    override X[] call(X... elements) {
+    refine X[] call(X... elements) {
         return elements
     }
 }]]></programlisting>
@@ -1307,10 +1307,10 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         satisfies Iterable<Entry<Natural,X>> 
         given X satisfies Object, Equals<X> {
         
-    override Iterator<Entry<Natural,X>> iterator() {
+    refine Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
                 satisfies Iterator<Entry<Natural,X>> {
-            override Entry<Natural,X>? head {
+            refine Entry<Natural,X>? head {
                 if (exists X x = this[from]) {
                     return from->x
                 }
@@ -1318,7 +1318,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
                     return null;
                 }
             }
-            override Iterable<Entry<Natural,X>> tail {
+            refine Iterable<Entry<Natural,X>> tail {
                 return EntryIterator(from+1)
             }
         }
@@ -1368,7 +1368,7 @@ public T[] join<T>(T[]... sequences)
         given T satisfies Object, Equals<T> {
             
     object joinedSequence satisfies T[] {
-        override Natural? lastIndex {
+        refine Natural? lastIndex {
             mutable Natural? result := null;
             for (T[] s in sequences) {
                 if (exists Natural last = s.lastIndex) {
@@ -1382,7 +1382,7 @@ public T[] join<T>(T[]... sequences)
             }
             return result
         }
-        override Gettable<T?> value(Natural index) {
+        refine Gettable<T?> value(Natural index) {
             T? value {
                 mutable Natural i := index;
                 for (T[] s in sequences) {
@@ -1414,7 +1414,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         given T satisfies Object, Equals<T> {
          
     object rangeSequence satisfies T[] {
-        override Natural? lastIndex {
+        refine Natural? lastIndex {
             if (exists Natural last = sequence.lastIndex) {
                 if (exists to) {
                     if (to<last) {
@@ -1429,7 +1429,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
                 return null
             }
         } 
-        override Gettable<T?> value(Natural index) {
+        refine Gettable<T?> value(Natural index) {
             T? value {
                 if (exists to) {
                     if (index>to) {
@@ -1461,7 +1461,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         given X satisfies Object, Equals<X> {
         
     Gettable<X> value(Bounded<#n> index);
-    override Bounded<#n>? lastIndex;
+    refine Bounded<#n>? lastIndex;
     
 }]]></programlisting>
 
@@ -1473,13 +1473,13 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         satisfies Iterable<Entry<Bounded<#n>,X>> 
         given X satisfies Object, Equals<X> {
         
-    override Iterator<Entry<Bounded<#n>,X>> iterator() {
+    refine Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
                 satisfies Iterator<Entry<Bounded<#n>,X>> {
-            override Entry<Bounded<#n>,X>? head {
+            refine Entry<Bounded<#n>,X>? head {
                 return from->this[from]
             }
-            override Iterable<Entry<Bounded<#n>,X>> tail {
+            refine Iterable<Entry<Bounded<#n>,X>> tail {
                 if (from+1<n) {
                     return EntryIterator(from.successor)
                 }
@@ -1525,12 +1525,12 @@ public object none {
     public extension class EmptySequence<out X>() 
             satisfies X[0] 
             given X satisfies Object, Equals<X> {
-        override Natural? lastIndex = null;
-        override Gettable<X?> value(Natural index) {
+        refine Natural? lastIndex = null;
+        refine Gettable<X?> value(Natural index) {
             X? nullValue = null;
             return nullValue 
         }
-        override Gettable<X> value(Bounded<#0> index) {
+        refine Gettable<X> value(Bounded<#0> index) {
             throw Exception()
         }
     }
@@ -1606,7 +1606,7 @@ public object none {
         }
     }
     
-    override Iterator<X> iterator() {
+    refine Iterator<X> iterator() {
         class RangeIterator(X x) satisfies Iterator<X> {
             X? head { 
                 if (x>last) { 
@@ -1623,9 +1623,9 @@ public object none {
         return RangeIterator(first)
     }
     
-    override Boolean empty = last<first;
+    refine Boolean empty = last<first;
     
-    override Boolean contains(Object... objects) {
+    refine Boolean contains(Object... objects) {
         for (Object x in objects) {
             if (is X x) {
                 if ( x<first || x>last ) ) {
@@ -1641,13 +1641,13 @@ public object none {
         } 
     }
     
-    override Boolean matches(X x) {
+    refine Boolean matches(X x) {
         return x>first && x<last
     }
     
-    override Natural? lastIndex = index(last);
+    refine Natural? lastIndex = index(last);
     
-    override Gettable<X?> value(Natural n) {
+    refine Gettable<X?> value(Natural n) {
         //optimize this for numbers!
         mutable Natural index:=0;
         mutable X? value:=first;
@@ -1662,7 +1662,7 @@ public object none {
         return value
     }
     
-    override Boolean equals(Range<X> that) {
+    refine Boolean equals(Range<X> that) {
         return that.first==first && that.last==last
     }
     
@@ -1850,7 +1850,7 @@ while (i<=max) {
     public Match? matchList(String string)() { return ... }
     
     doc "Determine if the given string matches the regex."
-    override Boolean matches(String string) { return ... }
+    refine Boolean matches(String string) { return ... }
     
     ... 
     
@@ -2046,16 +2046,16 @@ while (i<=max) {
     ... 
     
     doc "Implicit type promotion to |Integer|"
-    override extension Integer integer { return ... }
+    refine extension Integer integer { return ... }
     
     doc "Implicit type promotion to |Whole|"
-    override extension Whole whole { return ... }
+    refine extension Whole whole { return ... }
     
     doc "Implicit type promotion to |Float|"
-    override extension Float float { return ... }
+    refine extension Float float { return ... }
     
     doc "Implicit type promotion to |Decimal|"
-    override extension Decimal decimal { return ... }
+    refine extension Decimal decimal { return ... }
 
     doc "Shift bits left by the given number of places"
     public Natural leftShift(Natural digits) { return ... }
@@ -2087,13 +2087,13 @@ while (i<=max) {
     ...
     
     doc "Implicit type promotion to |Whole|"
-    override extension Whole whole { return ... }
+    refine extension Whole whole { return ... }
     
     doc "Implicit type promotion to |Float|"
-    override extension Float float { return ... }
+    refine extension Float float { return ... }
 
     doc "Implicit type promotion to |Decimal|"
-    override extension Decimal decimal { return ... }
+    refine extension Decimal decimal { return ... }
 
     public extension class StringToInteger(String this) {
     
@@ -2115,7 +2115,7 @@ while (i<=max) {
     public small Natural precision = ...;
     
     doc "Implicit type promotion to |Decimal|"
-    override extension Decimal decimal { return ... }
+    refine extension Decimal decimal { return ... }
     
     public extension class StringToWhole(String this) {
     
@@ -2138,7 +2138,7 @@ while (i<=max) {
     public Float ln { return ... }
     
     doc "Implicit type promotion to |Decimal|"
-    override extension Decimal decimal { return ... }
+    refine extension Decimal decimal { return ... }
     
     public extension class StringToFloat(String this) {
     
@@ -2247,7 +2247,7 @@ while (i<=max) {
 
     public extension Boolean boolean { return this }
 
-    override Bits<1> or(Bits<1> bit) {
+    refine Bits<1> or(Bits<1> bit) {
         if (this) {
             return this
         else {
@@ -2255,7 +2255,7 @@ while (i<=max) {
         }
     }
     
-    override Bits<1> and(Bits<1> bit) {
+    refine Bits<1> and(Bits<1> bit) {
         if (this) {
             return bit
         else {
@@ -2263,7 +2263,7 @@ while (i<=max) {
         }
     }
     
-    override Bits<1> xor(Bits<1> bit) {
+    refine Bits<1> xor(Bits<1> bit) {
         if (this) {
             return bit.complement
         else {
@@ -2271,7 +2271,7 @@ while (i<=max) {
         }
     }
     
-    override Bits<1> complement(Bits<1> bit) {
+    refine Bits<1> complement(Bits<1> bit) {
         if (this) {
             return bit.complement
         else {
@@ -2279,15 +2279,15 @@ while (i<=max) {
         }
     }
     
-    override Bits<1> complement {
+    refine Bits<1> complement {
         return BooleanBit(!this)
     }
     
-    override Gettable<Boolean> value(Bounded<1> index) {
+    refine Gettable<Boolean> value(Bounded<1> index) {
         return this
     }
     
-    override Gettable<Boolean?> value(Natural key) {
+    refine Gettable<Boolean?> value(Natural key) {
         Boolean? result;
         if (key==0) {
             result = boolean 
@@ -2298,7 +2298,7 @@ while (i<=max) {
         return result
     }
     
-    override Bounded<1> lastIndex {
+    refine Bounded<1> lastIndex {
         return 0
     }
     
@@ -2360,7 +2360,7 @@ while (i<=max) {
         <programlisting><![CDATA[public interface MutableValue<T> 
         satisfies Value<T> {
         
-    override Settable<T> value;
+    refine Settable<T> value;
     
     public void intercept( void onSet(void proceed(T value), T value) )();
 
@@ -2438,7 +2438,7 @@ while (i<=max) {
     public Boolean abstract;
     public Boolean default;
     public Boolean formal;
-    public Boolean override;
+    public Boolean refine;
     public Boolean extension;
     
     public Visiblity visibility;
@@ -2574,7 +2574,7 @@ while (i<=max) {
         
         <programlisting>public extension class DebugFormat(Object? obj) 
         satisfies Format {
-    override String formatted {
+    refine String formatted {
         if (obj exists) {
             return obj.string;
         }
@@ -2625,7 +2625,7 @@ public object error extends LogPriority("Error", 400) {}
 
 doc "The severity of a log message."
 public abstract class LogPriority(String string, Natural priority) {
-    override String string = string;
+    refine String string = string;
     module Natural priority = priority;
 }]]></programlisting>
 
@@ -3226,8 +3226,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
          Return |true| if it is a subset."
     public Boolean subset(Set<Object> set);
     
-    public override Set<T> with<T>(T... elements) given T abstracts X;
-    public override OpenSet<T> copy<T>() given T abstracts X;
+    public refine Set<T> with<T>(T... elements) given T abstracts X;
+    public refine OpenSet<T> copy<T>() given T abstracts X;
 
     public Set<T> union<T>(Set<T> set) 
             given T abstracts X;
@@ -3249,20 +3249,20 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <programlisting><![CDATA[public extension class SetSlots<X>(Set<X> this) 
         satisfies Slots<Set<X>> {
     
-    override Set<X> or(Set<X> set) {
+    refine Set<X> or(Set<X> set) {
         return this.union(set)
     }
     
-    override Set<X> and(Set<X> set) {
+    refine Set<X> and(Set<X> set) {
         return this.intersection(set)
     }
     
-    override Set<X> xor(Set<X> set) {
+    refine Set<X> xor(Set<X> set) {
         return this.exclusiveUnion(set)
     
     }
     
-    override Set<X> complement(Set<X> set) {
+    refine Set<X> complement(Set<X> set) {
         return this.complement(set)
     }
     
@@ -3354,7 +3354,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public override List<T> with<T>(T... elements) given T abstracts X;
+    public refine List<T> with<T>(T... elements) given T abstracts X;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
@@ -3377,7 +3377,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
          every element of the list."
     public List<Y> transform<Y>(Y select(X element));
     
-    public override OpenList<T> copy<T>() given T abstracts X;
+    public refine OpenList<T> copy<T>() given T abstracts X;
 
 }]]></programlisting>
 
@@ -3479,11 +3479,11 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          given comparison."
     public void resort(Comparison by(X x, X y));
     
-    override OpenList<X> leading(Natural length);
-    override OpenList<X> trailing(Natural length);
-    override OpenList<X> sublist(Natural from, Natural to);
-    override OpenList<X> reversed;
-    override OpenMap<Natural,X> map;
+    refine OpenList<X> leading(Natural length);
+    refine OpenList<X> trailing(Natural length);
+    refine OpenList<X> sublist(Natural from, Natural to);
+    refine OpenList<X> reversed;
+    refine OpenMap<Natural,X> map;
     
 }]]></programlisting>
             
@@ -3534,8 +3534,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          evaluates to |true|, as a |Map|."
     public Map<U, V> entries(Boolean where(U key -> V value));
     
-    public override Map<U, T> with<T>(Entry<U, T>... entries) given T abstracts V;
-    public override OpenMap<U,T> copy<T>() given T abstracts V;
+    public refine Map<U, T> with<T>(Entry<U, T>... entries) given T abstracts V;
+    public refine OpenMap<U,T> copy<T>() given T abstracts V;
     
 }]]></programlisting>
 
@@ -3563,9 +3563,9 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          entries which were removed."
     public Map<U,V> remove(Boolean where(U key));
     
-    override OpenSet<U> keys;
-    override OpenBag<V> values;
-    override OpenMap<V, Set<U>> inverse;
+    refine OpenSet<U> keys;
+    refine OpenBag<V> values;
+    refine OpenMap<V, Set<U>> inverse;
     
 }]]></programlisting>
             
@@ -3585,8 +3585,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          the original bag."
     public Map<X,Natural> map;
     
-    public override Bag<T> with<T>(T... elements) given T abstracts X;
-    public override OpenBag<T> copy<T>() given T abstracts X;
+    public refine Bag<T> with<T>(T... elements) given T abstracts X;
+    public refine OpenBag<T> copy<T>() given T abstracts X;
     
 }]]></programlisting>
 
@@ -3602,7 +3602,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         satisfies Bag<X>, OpenCollection<X> 
         given X satisfies Object, Equals<X> {
         
-    override OpenMap<X,Natural> map;
+    refine OpenMap<X,Natural> map;
     
 }]]></programlisting>
             

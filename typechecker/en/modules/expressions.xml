@@ -460,7 +460,7 @@ if you prefer.";</programlisting>
         immediate superclass of the class, except for <literal>fixed</literal> 
         members. Any invocation of this reference is processed by the method or 
         attribute defined or inherited by this superclass, bypassing any method 
-        declaration that overrides the method on the current class or any subclass 
+        declaration that refines the method on the current class or any subclass 
         of the current class. Invocation of <literal>fixed</literal> members upon 
         <literal>super</literal> is not allowed. The <literal>super</literal> 
         reference is not assignable to any type. There is no <literal>super</literal>
@@ -781,7 +781,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <literal>Callable&lt;X&gt;</literal> are therefore not method references.</para>
         
         <comment><para>TODO: could we make method references contravariant in the parameter
-        types? If so, we should use the same rule for overriding.</para></comment>
+        types? If so, we should use the same rule for refining.</para></comment>
         
         <comment><para>TODO: does a method schema with a defaulted parameter conform to a method 
         schema without that parameter?</para></comment>
@@ -1187,7 +1187,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>{
     object values satisfies Iterable&lt;Order&gt; {
         head = order;
-        override object tail satisfies Iterable&lt;Order&gt; {
+        refine object tail satisfies Iterable&lt;Order&gt; {
             head = null;
             tail = this;
         }
@@ -1211,13 +1211,13 @@ local comp = order(1,-1);</programlisting>
     local by(X x, X y) { return x&lt;=&gt;y } 
 }</programlisting>
 
-        <comment><para>TODO: should the named argument list be allowed to contain arbitrary statements?
-        This is more regular, since you can do it in the body of a class, and attribute/method overriding
-        is the model that we are following here. And it could be very useful when defining structured
-        data.</para></comment>
+        <comment><para>TODO: should the named argument list be allowed to contain arbitrary 
+        statements? This is more regular, since you can do it in the body of a class, and 
+        attribute/method refinement is the model that we are following here. And it could be 
+        very useful when defining structured data.</para></comment>
         
-        <comment><para>TODO: Should we let you define a getter/setter pair for parameters of type 
-        <literal>Settable</literal>?</para></comment>
+        <comment><para>TODO: Should we let you define a getter/setter pair for parameters of 
+        type <literal>Settable</literal>?</para></comment>
         
         </section>
 
@@ -1452,13 +1452,13 @@ local comp = order(1,-1);</programlisting>
         <literal>satisfies</literal> clauses, and the class body. For example:</para>
         <programlisting>File file = ... ;
 using() resource satisfies Usable {
-    override void begin() {
+    refine void begin() {
         file.create();
     }
-    override void end() { 
+    refine void end() { 
         file.close();
     }
-    override void end(Exception e) { 
+    refine void end(Exception e) { 
         file.delete();
     }
 }</programlisting>
@@ -1879,8 +1879,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
             <programlisting>Task task = new Task() {
     timeout := 1000;
-    override void run() { ... }
-    override void fail(Exception e) { ... }
+    refine void run() { ... }
+    refine void fail(Exception e) { ... }
 };</programlisting>
 
             <programlisting>return new transactional Database 
@@ -1888,8 +1888,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
-    override void create() { open(); }
-    override void destroy() { close(); }
+    refine void create() { open(); }
+    refine void destroy() { close(); }
 };</programlisting>
             
             <para>An inline class is a literal object expression which may additionally:</para>
@@ -1900,7 +1900,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
                     evaluated,</para>
                 </listitem>
                 <listitem>
-                    <para>declare and override members, and</para>
+                    <para>declare and refine members, and</para>
                 </listitem>
                 <listitem>
                     <para>declare annotations.</para>

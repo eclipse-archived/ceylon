@@ -856,8 +856,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         that <literal>fixed</literal> is a proposed feature for a future version of the 
         language.)</emphasis></para>
         
-        <comment><para>TODO: Should we allow you to refer to the concrete type of an 
-        overriding member class in a subclass of the current class using the syntax
+        <comment><para>TODO: Should we allow you to refer to the concrete type of a
+        refining member class in a subclass of the current class using the syntax
         <literal>subtype.MemberClass</literal>, to which the expression 
         <literal>MemberClass(...)</literal> is assignable? And/or the concrete type of 
         the containing class of a subtype of the current member class, using the syntax

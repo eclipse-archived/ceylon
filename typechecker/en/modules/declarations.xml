@@ -304,7 +304,7 @@ TypeConstraints?
         
             <para>These rules insure that the "diamond inheritance" problem&mdash;where
             a type inherits two different concrete declarations of the same 
-            member&mdash;can always be resolved by overriding the member.</para>
+            member&mdash;can always be resolved by refining the member.</para>
             
         </section>
         
@@ -346,16 +346,16 @@ TypeConstraints?
             </para-->
         
             <para>An interface inherits all members (methods, attributes and member types) 
-            of every supertype, except for members overridden by the interface or by some 
+            of every supertype, except for members refined by the interface or by some 
             supertype of the interface.</para>
             
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
         
             <para>An interface may not inherit two non-<literal>formal</literal> members
-            of different supertypes that both override the same member of a third supertype.
+            of different supertypes that both refine the same member of a third supertype.
             If two supertypes both declare non-<literal>formal</literal> members that
-            override the same member of a third supertype, the interface must also override
+            refine the same member of a third supertype, the interface must also refine
             the member.</para>
             
             <!--
@@ -685,7 +685,7 @@ public class Person { ... }</programlisting>
         </itemizedlist>
         
         <para>It is acceptable to invoke or evaluate a <literal>formal</literal> or 
-        <literal>default</literal> member of a superclass that is overridden by a 
+        <literal>default</literal> member of a superclass that is refined by a 
         non-<literal>formal</literal>, non-<literal>default</literal> declaration of a 
         different superclass or that appears earlier in the body of the class.</para>
         
@@ -838,20 +838,20 @@ public class Person { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>inherits all members (methods, attributes, and member types) of every 
-                supertype, except for members overridden by the class or by some supertype 
+                supertype, except for members refined by the class or by some supertype 
                 of the class,</para>
             </listitem>
             <!--listitem>
                 <para>is assignable to any type to which its superclass is assignable,</para>
             </listitem-->
             <listitem>
-                <para>must declare or inherit a member that overrides each 
+                <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of every interface it implements directly 
                 or indirectly, unless the class is declared <literal>abstract</literal> or
                 <literal>formal</literal>, and</para>
             </listitem>
              <listitem>
-                <para>must declare or inherit a member that overrides each 
+                <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of its superclass, unless the class is 
                 declared <literal>abstract</literal> or <literal>formal</literal>.</para>
             </listitem>
@@ -865,9 +865,9 @@ public class Person { ... }</programlisting>
         specified in the <literal>extends</literal> clause.</para>
         
         <para>An class may not inherit two non-<literal>formal</literal> members of 
-        different supertypes that both override the same member of a third supertype.
+        different supertypes that both refine the same member of a third supertype.
         If two supertypes both declare non-<literal>formal</literal> members that
-        override the same member of a third supertype, the class must also override
+        refine the same member of a third supertype, the class must also refine
         the member.</para>
             
         <para>Furthermore, the initializer of the superclass is always executed before the
@@ -975,7 +975,7 @@ public class Person { ... }</programlisting>
                     <para>the classes are overloaded,</para>
                 </listitem>
                 <listitem>
-                    <para>one class overrides the other class, or</para>
+                    <para>one class refines the other class, or</para>
                 </listitem>
                 <listitem>
                     <para>one class is defined by a supertype, and is not visible
@@ -1042,78 +1042,78 @@ public class Person { ... }</programlisting>
         
     </section>
         
-    <section id="overridingmemberclasses">
-        <title>Overriding member classes</title>
+    <section id="refiningmemberclasses">
+        <title>Member class refinement</title>
         
-        <para>Member class overriding is a unique feature of Ceylon, akin to the
+        <para>Member class refinement is a unique feature of Ceylon, akin to the
         "factory method" pattern of many other languages.</para>
         
         <itemizedlist>
             <listitem>
                 <para>A member class annotated <literal>formal</literal> or
-                <literal>default</literal> may be overridden by any class which 
+                <literal>default</literal> may be refined by any class which 
                 is a subtype of the class or interface which declares the member 
                 class.</para>
             </listitem>
             <listitem>
                 <para>A member class annotated <literal>formal</literal> 
-                <emphasis>must</emphasis> be overridden by every concrete class 
+                <emphasis>must</emphasis> be refined by every concrete class 
                 which is a subtype of the class or interface that declares the 
                 member class, unless the class inherits a concrete member class 
-                from a superclass that overrides the <literal>formal</literal> 
+                from a superclass that refines the <literal>formal</literal> 
                 member class.</para>
             </listitem>
         </itemizedlist>
         
-        <para>An interface may not override a member class of an interface it
+        <para>An interface may not refine a member class of an interface it
         extends.</para>
         
-        <para>A member class of a class <emphasis>overrides</emphasis> a member 
+        <para>A member class of a class <emphasis>refines</emphasis> a member 
         class of a supertype if the first member class:</para>
         
         <itemizedlist>
             <listitem>
-                <para>is annotated <literal>override</literal>,</para>
+                <para>is annotated <literal>refine</literal>,</para>
             </listitem>
             <listitem>
-                <para>has the same name as the member class it overrides, and
+                <para>has the same name as the member class it refines, and
                 either</para>
             </listitem>
             <listitem>
-                <para>extends the member class it overrides, or, alternatively,</para>
+                <para>extends the member class it refines, or, alternatively,</para>
             </listitem>
             <listitem>
-               <para>extends the superclass of the member class it overrides and 
+               <para>extends the superclass of the member class it refines and 
                implements all interfaces implemented by the member class it 
-               overrides, where the member class it overrides is an 
+               refines, where the member class it refines is an 
                <literal>formal</literal> member class with no body, and</para>
             </listitem>
             <listitem>
                 <para>has a parameter list with the same signature as the member 
-                class it overrides, after substitution of type arguments specified 
+                class it refines, after substitution of type arguments specified 
                 in the <literal>extends</literal> or <literal>satisfies</literal>
                 clause.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Finally, the overridden member class must be visible to the member
-        class annotated <literal>override</literal>.</para>
+        <para>Finally, the refined member class must be visible to the member
+        class annotated <literal>refine</literal>.</para>
         
-        <para>If a member class is annotated <literal>override</literal>, it must 
-        override some class defined by a supertype, and the class it overrides 
+        <para>If a member class is annotated <literal>refine</literal>, it must 
+        refine some class defined by a supertype, and the class it refines 
         must be either <literal>formal</literal> or <literal>default</literal>.</para>
             
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
         
-        <para>By default, the member class annotated <literal>override</literal> 
-        has the same visibility modifier as the member class it overrides. The
+        <para>By default, the member class annotated <literal>refine</literal> 
+        has the same visibility modifier as the member class it refines. The
         member class may not declare a stricter visibility modifier than the member 
-        class it overrides.</para>
+        class it refines.</para>
         
-        <para>Note that, according to the rules above, the overriding class usually
-        extends the member class it overrides:</para>
+        <para>Note that, according to the rules above, the refining class usually
+        extends the member class it refines:</para>
         
         <programlisting>public abstract class Reader() {
     module formal class Buffer(Character... chars) 
@@ -1123,16 +1123,16 @@ public class Person { ... }</programlisting>
 
         <programlisting>public class FileReader(File file) 
         extends Reader() {
-    override class Buffer(Character... chars) 
+    refine class Buffer(Character... chars) 
             extends Reader.Buffer(chars) {
         ...
     }
     ...
 }</programlisting>
         
-        <para>But in the special case where the member class it overrides does not
-        specify a body, the overriding class is not required to extend the member 
-        class it overrides:</para>
+        <para>But in the special case where the member class it refines does not
+        specify a body, the refining class is not required to extend the member 
+        class it refines:</para>
         
         <programlisting>public abstract class Reader() {
     module formal class Buffer(Character... chars) 
@@ -1142,18 +1142,18 @@ public class Person { ... }</programlisting>
 
         <programlisting>public class FileReader(File file) 
         extends Reader() {
-    override class Buffer(Character... chars) 
+    refine class Buffer(Character... chars) 
             satisfies Character[] {
         ...
     }
     ...
 }</programlisting>
         
-        <para>A class alias may override a member class.</para>
+        <para>A class alias may refine a member class.</para>
         
         <programlisting>public class FileReader(File file) 
         extends Reader() {
-    override class Buffer(Character... chars) = String;
+    refine class Buffer(Character... chars) = String;
     ...
 }</programlisting>
         
@@ -1210,26 +1210,26 @@ ClassBody</programlisting>
                  <para>is non-<literal>mutable</literal>, and</para>
              </listitem>
              <listitem>
-                 <para>may not be overridden or declared <literal>default</literal>.</para>
+                 <para>may not be refined or declared <literal>default</literal>.</para>
              </listitem>
          </itemizedlist>
          
          <para>If the <literal>object</literal> has a visibility modifier annotation, 
          the attribute has the specified visibility modifier. If the <literal>object</literal>
-         is annotated <literal>override</literal>, it overrides an attribute of a
+         is annotated <literal>refine</literal>, it refines an attribute of a
          supertype. If the <literal>object</literal> is annotated <literal>extension</literal>, 
          it is an extension attribute.</para>
          
          <para>The following declaration:</para>
          
          <programlisting>public object red extends Color('FF0000') {
-     override String string = "Red";
+     refine String string = "Red";
 }</programlisting>
 
          <para>Is exactly equivalent to:</para>
          
          <programlisting>class Color_red extends Color('FF0000') {
-     override String string = "Red";
+     refine String string = "Red";
 }
 
 public Color_red red = Color_red();</programlisting>
@@ -1238,7 +1238,7 @@ public Color_red red = Color_red();</programlisting>
          The algorithm for generating this name is not specified here.</para>
          
          <para>Note that a member of an anonymous class that is not annotated 
-         <literal>override</literal> may only be accessed from within the body of 
+         <literal>refine</literal> may only be accessed from within the body of 
          the anonymous class or by directly invoking the <literal>object</literal> 
          attribute.</para>
          
@@ -1409,7 +1409,7 @@ public choice Boolean of true, false;</programlisting>
             arguments specified in the <literal>satisfies</literal> clause.</para>
             
             <para>A union may not inherit two non-<literal>abstract</literal> members of 
-            different supertypes that both override the same member of a third supertype.</para>
+            different supertypes that both refine the same member of a third supertype.</para>
         
         </section>
         
@@ -1426,7 +1426,7 @@ public choice TransactionPropagationStyle
     abstract class BaseTransactionPropagation()
             satisfies TransactionPropagation {
         
-        override void propagate(Transaction tx) {
+        refine void propagate(Transaction tx) {
             if (tx.inProgress) {
                 inProgress(tx);
             }
@@ -1443,40 +1443,40 @@ public choice TransactionPropagationStyle
     
     public object required 
             extends BaseTransactionPropagation() { 
-        override void inProgress(Transaction tx) {}
-        override void notInProgress(Transaction tx) {
+        refine void inProgress(Transaction tx) {}
+        refine void notInProgress(Transaction tx) {
             tx.begin();
         }
     }
     
     public object supports 
             extends BaseTransactionPropagation() {
-        override void inProgress(Transaction tx) {}
-        override void notInProgress(Transaction tx) {}
+        refine void inProgress(Transaction tx) {}
+        refine void notInProgress(Transaction tx) {}
     }
     
     public object mandatory 
             extends BaseTransactionPropagation() { 
-        override void inProgress(Transaction tx) {}
-        override void notInProgress(Transaction tx) {
+        refine void inProgress(Transaction tx) {}
+        refine void notInProgress(Transaction tx) {
             throw TransactionMandatory()
         }
     }
     
     public object notSupported 
             extends BaseTransactionPropagation() { 
-        override void inProgress(Transaction tx) {
+        refine void inProgress(Transaction tx) {
             throw TransactionNotSupported()
         }
-        override void notInProgress(Transaction tx) {}
+        refine void notInProgress(Transaction tx) {}
     }
     
     public object requiresNew 
             extends BaseTransactionPropagation() { 
-        override void inProgress(Transaction tx) {
+        refine void inProgress(Transaction tx) {
             throw TransactionRequiresNew()
         }
-        override void notInProgress(Transaction tx) {
+        refine void notInProgress(Transaction tx) {
             tx.begin();
         }
     }
@@ -1853,7 +1853,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     <para>the methods are overloaded,</para>
                 </listitem>
                 <listitem>
-                    <para>one method overrides the other method, or</para>
+                    <para>one method refines the other method, or</para>
                 </listitem>
                 <listitem>
                     <para>one method is defined by a supertype, and is not visible
@@ -1907,70 +1907,70 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         </section>
         
-        <section id="overridingmethods">
-            <title>Overriding methods</title>
+        <section id="refiningmethods">
+            <title>Method refinement</title>
             
-            <para>Method overriding is the foundation of polymorphism in Ceylon.</para>
+            <para>Method refinement is the foundation of polymorphism in Ceylon.</para>
             
             <itemizedlist>
             <listitem>
-                <para>A class or interface may override any <literal>formal</literal> 
+                <para>A class or interface may refine any <literal>formal</literal> 
                 method or <literal>default</literal> method it inherits, unless it inherits 
                 a non-<literal>formal</literal> non-<literal>default</literal> method that 
-                overrides the method.</para>
+                refines the method.</para>
             </listitem>
             <listitem>
-                <para>A concrete class must override every <literal>formal</literal> method 
+                <para>A concrete class must refine every <literal>formal</literal> method 
                 or <literal>fixed</literal> method it inherits, unless it inherits a 
                 non-<literal>formal</literal> non-<literal>fixed</literal> method that 
-                overrides the method.</para>
+                refines the method.</para>
             </listitem>
             </itemizedlist>           
             
-            <para>A method of a subtype <emphasis>overrides</emphasis> a method of
+            <para>A method of a subtype <emphasis>refines</emphasis> a method of
             a supertype if the first method:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>is annotated <literal>override</literal>,</para>
+                    <para>is annotated <literal>refine</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>has the same name as the method it overrides,</para>
+                    <para>has the same name as the method it refines,</para>
                 </listitem>
                 <listitem>
                     <para>has the same number of parameter lists, with the same
-                    signatures, as the method it overrides, after substitution of 
+                    signatures, as the method it refines, after substitution of 
                     type arguments specified in the <literal>extends</literal> or 
                     <literal>satisfies</literal> clause of the class, and</para>
                 </listitem>
                  <listitem>
                     <para>has a return type that is assignable to the return type 
-                    of the method it overrides in the compilation unit containing
-                    the method annotated <literal>override</literal>, after 
+                    of the method it refines in the compilation unit containing
+                    the method annotated <literal>refine</literal>, after 
                     substitution of type arguments specified in the 
                     <literal>extends</literal> or <literal>satisfies</literal> 
                     clause of the class.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Finally, the overridden method must be visible to the method
-            annotated <literal>override</literal>.</para>
+            <para>Finally, the refined method must be visible to the method
+            annotated <literal>refine</literal>.</para>
             
-            <para>If a method is annotated <literal>override</literal>, it must 
-            override some method defined by a supertype, and the method it overrides 
+            <para>If a method is annotated <literal>refine</literal>, it must 
+            refine some method defined by a supertype, and the method it refines 
             must be either <literal>formal</literal>, <literal>default</literal>, 
             or <literal>fixed</literal>.</para>
             
-            <para>A method may not, directly or indirectly, override two different
-            methods not themselves annotated <literal>override</literal>.</para>
+            <para>A method may not, directly or indirectly, refine two different
+            methods not themselves annotated <literal>refine</literal>.</para>
         
             <para>Then invocation of the method is polymorphic, and the actual
             method invoked depends upon the concrete type of the class instance.</para>
             
-            <para>By default, the method annotated <literal>override</literal> has 
-            the same visibility modifier as the method it overrides. The method may 
+            <para>By default, the method annotated <literal>refine</literal> has 
+            the same visibility modifier as the method it refines. The method may 
             not declare a stricter visibility modifier than the method it 
-            overrides.</para>
+            refines.</para>
             
             <programlisting>public abstract class AbstractSquareRooter() {
     public formal Float squareRoot(Float x);
@@ -1978,14 +1978,14 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
-    override Float squareRoot(Float x) { ... }
+    refine Float squareRoot(Float x) { ... }
 }</programlisting>
             
             <para>For <literal>formal</literal> methods, a special shortcut form of 
-            overriding is permitted. A subclass initializer may simply specify an 
+            refinement is permitted. A subclass initializer may simply specify an 
             instance of <literal>Callable</literal> as the implementation of the method 
             declared by the supertype. No parameter list, return type declaration, or 
-            <literal>override</literal> annotation is necessary.</para>
+            <literal>refine</literal> annotation is necessary.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
@@ -1993,17 +1993,17 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
     squareRoot = sqrt;
 }</programlisting>
             
-            <para>Toplevel methods cannot be overridden, and so toplevel method 
-            invocation is never polymorphic.</para>
+            <para>Toplevel methods cannot be refined, and so toplevel method invocation 
+            is never polymorphic.</para>
             
-            <comment><para>TODO: are you allowed to override the default value of
-            a defaulted parameter?</para></comment>
+            <comment><para>TODO: are you allowed to refine the default value of a 
+            defaulted parameter?</para></comment>
             
-            <comment><para>TODO: are you required to have the same parameter names 
-            in the two methods? I don't see that this would be necessary. In a named 
+            <comment><para>TODO: are you required to have the same parameter names in 
+            the two methods? I don't see that this would be necessary. In a named 
             argument invocation, you just use the names declared by the member of the 
             compile-time type, and they are mapped positionally to the parameters of 
-            the overriding method.</para></comment>
+            the refining method.</para></comment>
         
         </section>
         
@@ -2033,7 +2033,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <programlisting>Attribute := SimpleAttribute | AttributeGetter | AttributeSetter</programlisting>
     
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
-        definitions may be overridden by subclasses.</para>
+        definitions may be refined by subclasses.</para>
         
         <para>All attributes have a type and name. The type of the attribute is specified
         by the simple attribute declaration or attribute getter declaration. An attribute 
@@ -2061,7 +2061,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 <para>the attributes are overloaded,</para>
             </listitem>
             <listitem>
-                <para>one attribute overrides the other attribute, or</para>
+                <para>one attribute refines the other attribute, or</para>
             </listitem>
             <listitem>
                 <para>one attribute is defined by a supertype, and is not visible
@@ -2241,7 +2241,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             <!--
             <para>For an attribute getter, the Java field is initialized to an instance 
             of an anonymous inner subclass of <literal>lang.Attribute</literal> or
-            <literal>lang.ReadAttribute</literal> that overrides the <literal>get()</literal> 
+            <literal>lang.ReadAttribute</literal> that refines the <literal>get()</literal> 
             method with the content of the getter block. For example: </para>
             -->
                     
@@ -2327,7 +2327,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
             <!--
             <para>For an attribute with a setter, the Java field is initialized to an 
             instance of an anonymous inner subclass of <literal>lang.Attribute</literal> 
-            that overrides the <literal>set()</literal> method with the content of the 
+            that refines the <literal>set()</literal> method with the content of the 
             setter block. For example:
             </para>
             -->
@@ -2393,91 +2393,91 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
         </section>
         
-        <section id="overridingattributes">
-            <title>Overriding attributes</title>
+        <section id="refiningattributes">
+            <title>Attribute refinement</title>
             
-            <para>Ceylon allows attributes to be overridden, just like methods. This helps
+            <para>Ceylon allows attributes to be refined, just like methods. This helps
             eliminate the need for Java-style getter and setter methods.</para>
             
             <itemizedlist>
             <listitem>
-                <para>A class or interface may override any <literal>formal</literal> 
+                <para>A class or interface may refine any <literal>formal</literal> 
                 attribute or <literal>default</literal> attribute it inherits, unless it 
                 inherits a non-<literal>formal</literal> non-<literal>default</literal> 
-                attribute that overrides the attribute.</para>
+                attribute that refines the attribute.</para>
             </listitem>
             <listitem>
-                <para>A concrete class must override every <literal>formal</literal> 
+                <para>A concrete class must refine every <literal>formal</literal> 
                 attribute, or <literal>fixed</literal> attribute it inherits, unless it 
                 inherits a non-<literal>formal</literal> non-<literal>fixed</literal>
-                attribute that overrides the attribute.</para>
+                attribute that refines the attribute.</para>
             </listitem>
             </itemizedlist>           
             
-            <para>A non-<literal>mutable</literal> attribute may be overridden by a simple 
+            <para>A non-<literal>mutable</literal> attribute may be refined by a simple 
             attribute or attribute getter. A <literal>mutable</literal> attribute may be 
-            overridden by a <literal>mutable</literal> simple attribute or by an attribute 
+            refined by a <literal>mutable</literal> simple attribute or by an attribute 
             getter and setter pair.</para>
             
-            <comment><para>TODO: are you allowed to override a getter or setter without also 
-            overriding its matching setter or getter?</para></comment>
+            <comment><para>TODO: are you allowed to refine a getter or setter without also 
+            refining its matching setter or getter?</para></comment>
             
-            <para>An attribute of a subtype <emphasis>overrides</emphasis> an attribute of
+            <para>An attribute of a subtype <emphasis>refines</emphasis> an attribute of
             a supertype if the first attribute:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>is annotated <literal>override</literal>,</para>
+                    <para>is annotated <literal>refine</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>has the same name as the attribute it overrides,</para>
+                    <para>has the same name as the attribute it refines,</para>
                 </listitem>
                  <listitem>
                     <para>has a type that is assignable to the type of the attribute it 
-                    overrides in the compilation unit containing the attribute annotated 
-                    <literal>override</literal>, after substitution of type arguments 
+                    refines in the compilation unit containing the attribute annotated 
+                    <literal>refine</literal>, after substitution of type arguments 
                     specified in the <literal>extends</literal> or <literal>satisfies</literal> 
                     clause of the class,</para>
                 </listitem>
                  <listitem>
                     <para>or has <emphasis>exactly the same type</emphasis> as the 
-                    attribute it overrides, after substitution of type arguments specified 
+                    attribute it refines, after substitution of type arguments specified 
                     in the <literal>extends</literal> or <literal>satisfies</literal> clause
-                    of the class, if the attribute it overrides is <literal>mutable</literal>, 
+                    of the class, if the attribute it refines is <literal>mutable</literal>, 
                     and</para>
                 </listitem>
                 <listitem>
-                    <para>is <literal>mutable</literal>, if the attribute it overrides is 
+                    <para>is <literal>mutable</literal>, if the attribute it refines is 
                     <literal>mutable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Finally, the overridden attribute must be visible to the attribute
-            annotated <literal>override</literal>.</para>
+            <para>Finally, the refined attribute must be visible to the attribute 
+            annotated <literal>refine</literal>.</para>
         
-            <para>If an attribute is annotated <literal>override</literal>, it must 
-            override some attribute defined by a supertype, and the attribute it 
-            overrides must be either <literal>formal</literal>, <literal>default</literal>, 
+            <para>If an attribute is annotated <literal>refine</literal>, it must 
+            refine some attribute defined by a supertype, and the attribute it 
+            refines must be either <literal>formal</literal>, <literal>default</literal>, 
             or <literal>fixed</literal>.</para>
             
-            <para>An attribute may not, directly or indirectly, override two different
-            attributes not themselves annotated <literal>override</literal>.</para>
+            <para>An attribute may not, directly or indirectly, refine two different
+            attributes not themselves annotated <literal>refine</literal>.</para>
         
-            <para>A non-<literal>mutable</literal> attribute may be overridden by a 
+            <para>A non-<literal>mutable</literal> attribute may be refined by a 
             <literal>mutable</literal> attribute.</para>
             
             <comment><para>TODO: Is that really allowed? It could break the superclass.
             Should we say that you are allowed to do it when you implement an interface
-            attribute, but not when you override a superclass attribute?</para></comment>
+            attribute, but not when you refine a superclass attribute?</para></comment>
             
             <para>Then evaluation and assignment of the attribute is polymorphic, and 
             the actual attribute evaluated or assigned depends upon the concrete type 
             of the class instance.</para>
             
-            <para>By default, the attribute annotated <literal>override</literal>
-            has the same visibility modifier as the attribute it overrides. The
+            <para>By default, the attribute annotated <literal>refine</literal>
+            has the same visibility modifier as the attribute it refines. The
             attribute may not declare a stricter visibility modifier than the 
-            attribute it overrides.</para>
+            attribute it refines.</para>
             
             <programlisting>module abstract class AbstractPi() {
     module formal Float pi;
@@ -2485,13 +2485,13 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
-    override Float pi { ... }
+    refine Float pi { ... }
 }</programlisting>
             
             <para>For <literal>formal</literal> attributes, a special shortcut form 
-            of overriding is permitted. A subclass initializer may simply specify or 
+            of refinement is permitted. A subclass initializer may simply specify or 
             assign a value to the attribute declared by the superclass. No type 
-            declaration or <literal>override</literal> annotation is necessary.</para>
+            declaration or <literal>refine</literal> annotation is necessary.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
@@ -2502,7 +2502,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <comment><para>TODO: Why not also allow this for <literal>default</literal>
             attributes and methods??</para></comment>
             
-            <para>Toplevel attributes cannot be overridden, and so toplevel attribute 
+            <para>Toplevel attributes cannot be refined, and so toplevel attribute 
             evaluation and assignment is never polymorphic.</para>
             
         </section>
@@ -2560,15 +2560,15 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
              <listitem>
                 <para><literal>formal</literal> specifies that a member 
                 does not specify an implementation and must therefore be 
-                overridden by every concrete subclass.</para>
+                refined by every concrete subclass.</para>
             </listitem>
             <listitem>
                 <para><literal>default</literal> specifies that a method, 
-                attribute, or member class may be overridden by subclasses.</para>
+                attribute, or member class may be refined by subclasses.</para>
             </listitem>
             <listitem>
-                <para><literal>override</literal> indicates that a method,
-                attribute, or member type overrides a method, attribute, 
+                <para><literal>refine</literal> indicates that a method,
+                attribute, or member type refines a method, attribute, 
                 or member type defined by a supertype.</para>
             </listitem>
             <listitem>
@@ -2578,7 +2578,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>fixed</literal> specifies that a method or
-                attribute must be overridden by every concrete subclass. 
+                attribute must be refined by every concrete subclass. 
                 <emphasis>(Note that <literal>fixed</literal> is a proposed 
                 feature for a future version of the language.)</emphasis></para>
             </listitem>
@@ -2606,10 +2606,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         <comment><para>TODO: should we have <literal>final</literal> to specify 
         that a class may not be extended?</para></comment>
         
-        <comment><para>TODO: should we make <literal>override</literal> a keyword, 
+        <comment><para>TODO: should we make <literal>refine</literal> a keyword, 
         to save the effort of redeclaring the attribute type or method return type?</para></comment>
         
-        <comment><para>TODO: should it be called <literal>overrides</literal>, or
+        <comment><para>TODO: should it be called <literal>refines</literal>, or
         even <literal>specialized</literal>?</para></comment>
         
         <para>The following annotation is a hint to the compiler that lets 
@@ -2742,8 +2742,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         Likewise, a block may not declare a visibility modifier, so a declaration that 
         occurs inside a block may not declare a visibility modifier. Note, however, 
         that this restriction does not apply to the visibility of nested declarations 
-        annotated <literal>override</literal> which inherit their visibility from the 
-        declaration they override.</para>
+        annotated <literal>refine</literal> which inherit their visibility from the 
+        declaration they refine.</para>
         
         <para>The class <literal>ceylon.language.Visibility</literal> defines the visibility 
         levels:</para>
@@ -3024,7 +3024,7 @@ import implicit org.domain.utils.homogeneous;</programlisting>
                 resolveable, and if for every type <literal>Y</literal> to which <literal>X</literal> 
                 is extendable that also has a member to which the reference is resolveable,
                 the member of <literal>X</literal> and the member of <literal>Y</literal>
-                both <literal>override</literal> a member of a common supertype, then no 
+                both <literal>refine</literal> a member of a common supertype, then no 
                 extension sequence is introduced, but</para>
             </listitem>
             <listitem>
