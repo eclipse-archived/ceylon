@@ -465,7 +465,7 @@ public void hello() {
         <programlisting>ceylon hello</programlisting>
         
         <para>This command compiles the source to bytecode and runs the Java 
-        virtual machine. You should see the following output in the console:</para>
+        Virtual Machine. You should see the following output in the console:</para>
         
         <programlisting>Hello World!</programlisting>
         
@@ -1347,7 +1347,7 @@ package assign greeting {
             to a more specific type.</para>
             
             <para>Since <literal>Object</literal> is a supertype of types like <literal>Float</literal>
-            which are passed by value at the level of the Java virtual machine, you can't use 
+            which are passed by value at the level of the Java Virtual Machine, you can't use 
             the <literal>===</literal> operator to test the identity of two values of type
             <literal>Object</literal>. Instead, there is a subclass of <literal>Object</literal>,
             named <literal>IdentifiableObject</literal>, which represents a type which is always 

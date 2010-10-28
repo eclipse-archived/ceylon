@@ -1005,10 +1005,11 @@ public class Person { ... }</programlisting>
         </itemizedlist>
         
         <para>If the class is a member of an interface or is annotated <literal>formal</literal>,
-        it is called a <literal>formal</literal> member class.</para>
+        it is called a <literal>formal</literal> member class, or, sometimes, an
+        <emphasis>abstract member class</emphasis>.</para>
         
         <para>If the class is annotated <literal>abstract</literal>, it is called an
-        <literal>abstract</literal> class.</para>
+        <literal>abstract</literal> class, or an <emphasis>abstract nested class</emphasis>.</para>
                 
         <para>Alternatively, a class may omit a class body entirely.</para>
         
@@ -1863,7 +1864,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </section>
         
        <section id="formalmethods">
-            <title>Virtual methods</title>
+            <title>Formal methods</title>
             
             <para>If there is no method implementation in a method declaration, then
             either:</para>
@@ -1887,7 +1888,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>If the method is a member of an interface or is annotated 
             <literal>formal</literal>, it is called a <literal>formal</literal> 
-            method.</para>
+            method, or, sometimes, an <emphasis>abstract method</emphasis>.</para>
             
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
@@ -2350,7 +2351,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         </section>
         
         <section id="formalattributes">
-            <title>Virtual attributes</title>
+            <title>Formal attributes</title>
             
             <para>If there is no specifier, initializer, or getter implementation, then
             either:</para>
@@ -2374,7 +2375,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <para>If the attribute is a member of an interface or is annotated 
             <literal>formal</literal>, it is called a <literal>formal</literal> 
-            attribute.</para>
+            attribute, or, sometimes, an <emphasis>abstract method</emphasis>.</para>
             
             <para>An attribute annotated <literal>formal</literal> may not specify an
             implementation (a specifier, initializer, or getter implementation).</para>
