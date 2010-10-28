@@ -282,12 +282,15 @@ public class Types {
      }
 
     public MethodSymbol getCeylonExtension(Type t, Type s) {
+        if (isSameType(s, t))
+            return null;
+        
+        if (isSameType(s, syms.objectType))
+            return null;
+        
         extensionFinder.extend(t, s);
 
         if (t.tag != CLASS)
-            return null;
-
-        if (isSameType(s, syms.objectType))
             return null;
 
         for (Symbol sym : ((ClassSymbol) t.tsym).members().getElements()) {
