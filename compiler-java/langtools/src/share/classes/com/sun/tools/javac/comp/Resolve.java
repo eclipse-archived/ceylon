@@ -1222,7 +1222,7 @@ public class Resolve {
     			name,
     			argtypes,
     			typeargtypes);
-    	if (Context.isCeylon() && sym.kind == WRONG_MTH) {
+    	if (Context.isCeylon() && sym.kind >= WRONG_MTH) {
     		// FIXME: this is a hack to allow conversion of the left hand sides
     		// of binary operations.  It needs to be generalized to cope with any
     		// number of arguments.
