@@ -1608,7 +1608,7 @@ public object none {
     
     actual Iterator<X> iterator() {
         class RangeIterator(X x) satisfies Iterator<X> {
-            X? head { 
+            actual X? head { 
                 if (x>last) { 
                     return null 
                 } 
@@ -1616,7 +1616,7 @@ public object none {
                     return x 
                 }
             }
-            Iterator<X> tail {
+            actual Iterator<X> tail {
                 return RangeIterator(x.successor)
             }
         }
