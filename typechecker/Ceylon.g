@@ -49,7 +49,7 @@ tokens {
     SEQ_ARG;
     NIL;
     RET_STMT;
-    STMT_LIST;
+    BLOCK;
     THROW_STMT;
     RETRY_STMT;
     TRY_BLOCK;
@@ -156,7 +156,7 @@ packagePath
     
 block
     : '{' declarationOrStatement* directiveStatement? '}'
-    -> ^(STMT_LIST declarationOrStatement* directiveStatement?)
+    -> ^(BLOCK declarationOrStatement* directiveStatement?)
     ;
 
 /*inlineClassDeclaration
@@ -364,7 +364,7 @@ objectDeclaration
 
 classBody
     : '{' declarationOrStatement* '}'
-    -> ^(STMT_LIST declarationOrStatement*)
+    -> ^(BLOCK declarationOrStatement*)
  //    -> ^(CLASS_BODY ^(STMT_LIST $stmts))
     ;
 
@@ -498,7 +498,7 @@ ordinaryTypeParameter
     ;
 
 variance
-    : 'in' | 'out'
+    : 'in' -> IN | 'out' -> OUT
     ;
     
 dimensionalTypeParameter
@@ -672,7 +672,7 @@ selfReference
 
 enumeration
     : '{' expressions '}'
-    -> ^(ENUM_LIST expressions?)
+    -> ^(ENUM_LIST expressions)
     ;
     
 primary
@@ -1287,6 +1287,10 @@ OBJECT
 
 OF
     :   'of'
+    ;
+
+OUT
+    :   'out'
     ;
 
 SUBTYPE
