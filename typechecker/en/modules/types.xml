@@ -1525,14 +1525,18 @@ public object none {
     public extension class EmptySequence<out X>() 
             satisfies X[0] 
             given X satisfies Object, Equals<X> {
+        
         actual Natural? lastIndex = null;
+        
         actual Gettable<X?> value(Natural index) {
             X? nullValue = null;
             return nullValue 
         }
+        
         actual Gettable<X> value(Bounded<#0> index) {
             throw Exception()
         }
+        
     }
     
 }]]></programlisting>
