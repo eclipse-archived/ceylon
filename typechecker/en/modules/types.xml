@@ -124,12 +124,12 @@
          the constraint that if |x==y| then |y==x|,
          and the constraint that if |x==y| and |y==z| then
          |x==z|."
-    Boolean equals(T other);
+    formal Boolean equals(T other);
     
     doc "The hash code of the instance. Implementations of |hash| 
          must respect the constraint that if |x==y| then 
          |x.hash==y.hash|."
-    Integer hash;
+    formal Integer hash;
     
 }]]></programlisting>
 
@@ -280,7 +280,7 @@
         
         <programlisting><![CDATA[public interface Callable<out R, P...> {
         
-    R call(P... args);
+    formal R call(P... args);
     
 }]]></programlisting>
     
@@ -431,7 +431,7 @@ public abstract class Boolean()
     doc "Determine if the given value matches
          this case, returning |true| iff the
          value matches."
-    Boolean matches(X value);
+    formal Boolean matches(X value);
     
 }]]></programlisting>
 
@@ -637,14 +637,14 @@ public object null extends Void() satisfies Matcher<Object?> {
         <programlisting><![CDATA[public interface Usable {
 
     doc "Called before entry into a |try| block."
-    void begin();
+    formal void begin();
     
     doc "Called before normal exit from a |try| block."
-    void end();
+    formal void end();
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    void end(Exception e) {
+    default void end(Exception e) {
         end();
     }
     
@@ -678,7 +678,7 @@ catch (Exception e) {
         
     doc "The nonempty operator. Determine 
          if the container is empty."
-    Boolean empty;
+    formal Boolean empty;
     
 }]]></programlisting>
     
@@ -692,12 +692,12 @@ catch (Exception e) {
     doc "Determine if the given object belongs to the category.
          Return |true| iff the given object belongs to the 
          category."
-    Boolean contains(Object object);
+    formal Boolean contains(Object object);
 
     doc "Determine if the given objects belong to the category.
          Return |true| iff all the given objects belong to the 
          category."
-    Boolean contains(Object... objects) {
+    default Boolean contains(Object... objects) {
         return forAll(Object object in objects) every (contains(object))
     }
 
@@ -789,7 +789,7 @@ catch (Exception e) {
     
     doc "A sequence of objects belonging
          to the container."
-    Iterator<X> iterator();
+    formal Iterator<X> iterator();
     
 }]]></programlisting>
         
@@ -798,10 +798,10 @@ catch (Exception e) {
         
         <programlisting><![CDATA[public interface Iterator<out X> {
 
-    X? head;
-    Iterator<X> tail;
+    formal X? head;
+    formal Iterator<X> tail;
 
-    actual Boolean empty {
+    actual default Boolean empty {
         return !(head exists)
     }
 
@@ -823,7 +823,7 @@ while (exists local value = iter.head) {
         satisfies Iterable<T>, Category
         given T satisfies Object, Equals<T> {
         
-    actual Boolean contains(Object... objects) {
+    actual default Boolean contains(Object... objects) {
         for (Object obj in objects) {
             if (is T obj) {
                 if ( forAll (Object elem in this) every (elem != obj) ) {
@@ -861,8 +861,8 @@ while (exists local value = iter.head) {
         <programlisting><![CDATA[public interface Indexed<out X, I> 
         given I satisfies Ordinal {
     
-    I firstIndex;
-    Gettable<X>? indexedValue(I index);
+    formal I firstIndex;
+    formal Gettable<X>? indexedValue(I index);
     
 }]]></programlisting>
         <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
@@ -933,14 +933,14 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    Gettable<V?> value(U key);
+    formal Gettable<V?> value(U key);
     
     doc "Binary sequenced lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    V[] values(U... keys) {
+    default V[] values(U... keys) {
         return from (U key in keys) select (this[key])
     }
     
@@ -949,14 +949,14 @@ while (exists local value = indexed.indexedValue(i)) {
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    Iterable<V> values(Iterable<U> keys) {
+    default Iterable<V> values(Iterable<U> keys) {
         return from (U key in keys) select (this[key])
     }
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
          given keys."
-    Boolean defines(U... keys) {
+    default Boolean defines(U... keys) {
         return forAll (U key in keys) every (this[key] exists)
     }
     
@@ -1011,7 +1011,7 @@ while (exists local value = indexed.indexedValue(i)) {
         satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
         given U satisfies Object, Equals<U> 
         given V satisfies Object, Equals<V> {
-    actual Correspondence<U,V> call(Entry<U,V>... entries) {
+    actual default Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
             ...
@@ -1082,7 +1082,7 @@ while (exists local value = indexed.indexedValue(i)) {
          |x<=>y == Comparison.equal|, the constraint that 
          if |x>y| then |y<x|, and the constraint that if 
          |x>y| and |y>z| then |x>z|."
-    Comparison compare(T other);
+    formal Comparison compare(T other);
     
     doc "The binary |>| operator."
     Boolean largerThan(T other) {
@@ -1170,12 +1170,12 @@ public abstract class Comparison()
     doc "The unary |++| operator. The successor of this instance."
     throws (OutOfRangeException
             -> "if this is the maximum value")
-    subtype successor;
+    formal subtype successor;
     
     doc "The unary |--| operator. The predecessor of this instance."
     throws (OutOfRangeException
             -> "if this is the minimum value")
-    subtype predecessor;
+    formal subtype predecessor;
     
 }]]></programlisting>
 
@@ -1233,9 +1233,9 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
-    Natural? lastIndex;
+    formal Natural? lastIndex;
     
-    actual Iterator<X> iterator() {
+    actual default Iterator<X> iterator() {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
             actual X? head { 
@@ -1252,11 +1252,11 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         }
     }
     
-    actual Boolean empty {
+    actual default Boolean empty {
         return !(this.lastIndex exists)
     }
     
-    actual Boolean contains(Object object) {
+    actual default Boolean contains(Object object) {
         if (is X object) {
             return forAny (X x in this) some (x==object)
         }
@@ -1267,19 +1267,19 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
     
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
-    X? first {
+    default X? first {
         return this[0]
     }
     
     doc "The rest of the sequence, after removing 
          the first element."
-    X[] rest {
+    default X[] rest {
         return this[1...]
     }
 
     doc "The last element of the sequence, or
          |null| if the sequence has no elements."
-    X? last {
+    default X? last {
         if (exists Natural index = sequence.lastIndex) {
             return this[index]
         }
@@ -1295,7 +1295,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         <programlisting><![CDATA[public interface EnumerableSequence<X>
         satisfies Callable<X[],X...> 
         given X satisfies Object, Equals<X> {
-    actual X[] call(X... elements) {
+    actual default X[] call(X... elements) {
         return elements
     }
 }]]></programlisting>
@@ -1460,8 +1460,8 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         satisfies X[] 
         given X satisfies Object, Equals<X> {
         
-    Gettable<X> value(Bounded<#n> index);
-    actual Bounded<#n>? lastIndex;
+    formal Gettable<X> value(Bounded<#n> index);
+    actual default Bounded<#n>? lastIndex;
     
 }]]></programlisting>
 
@@ -1914,33 +1914,33 @@ while (i<=max) {
     
     doc "Determine if the number represents
          an integer value"
-    Boolean integral;
+    formal Boolean integral;
     
     doc "Determine if the number is positive"
-    Boolean positive;
+    formal Boolean positive;
     
     doc "Determine if the number is negative"    
-    Boolean negative;
+    formal Boolean negative;
 
     doc "Determine if the number is zero"
-    Boolean zero;
+    formal Boolean zero;
     
     doc "Determine if the number is one"
-    Boolean unit;
+    formal Boolean unit;
     
     doc "The number, represented as a |Decimal|"
-    Decimal decimal;
+    formal Decimal decimal;
 
     doc "The number, represented as a |Float|"
     throws (FloatOverflowException
             -> "if the number is too large to be
                 represented as a |Float|")
-    Float float;
+    formal Float float;
     
     doc "The number, represented as an |Whole|,
          after truncation of any fractional 
          part"
-    Whole whole;
+    formal Whole whole;
     
     doc "The number, represented as an |Integer|,
          after truncation of any fractional 
@@ -1948,31 +1948,31 @@ while (i<=max) {
     throws (IntegerOverflowException
             -> "if the number is too large to be
                 represented as an |Integer|")
-    Integer integer;
+    formal Integer integer;
     
     doc "The number, represented as a |Natural|,
          after truncation of any fractional 
          part"
     throws (NegativeNumberException
             -> "if the number is negative")
-    Natural natural;
+    formal Natural natural;
     
     doc "The magnitude of the number"
-    subtype magnitude;
+    formal subtype magnitude;
     
     doc "1 if the number is positive, -1 if it
          is negative, or 0 if it is zero."
-    subtype sign;
+    formal subtype sign;
     
     doc "The fractional part of the number,
          after truncation of the integral
          part"
-    subtype fractionalPart;
+    formal subtype fractionalPart;
     
     doc "The integral value of the number 
          after truncation of the fractional
          part"
-    subtype wholePart;
+    formal subtype wholePart;
 
 }]]></programlisting>
 
@@ -1991,19 +1991,19 @@ while (i<=max) {
         given N satisfies Numeric<N> {
 
     doc "The binary |+| operator"
-    N plus(N number);
+    formal N plus(N number);
 
     doc "The binary |-| operator"
-    N minus(N number);
+    formal N minus(N number);
 
     doc "The binary |*| operator"
-    N times(N number);
+    formal N times(N number);
 
     doc "The binary |/| operator"
-    N divided(N number);
+    formal N divided(N number);
 
     doc "The binary |**| operator"
-    N power(N number);
+    formal N power(N number);
     
 }]]></programlisting>
 
@@ -2020,7 +2020,7 @@ while (i<=max) {
         given N satisfies Number {
 
     doc "The binary |%| operator"
-    N remainder(N number);
+    formal N remainder(N number);
 
 }]]></programlisting>
 
@@ -2031,7 +2031,7 @@ while (i<=max) {
     given I satisfies Number {
     
     doc "The unary |-| operator"
-    I inverse;
+    formal I inverse;
 
 }]]></programlisting>
         
@@ -2186,22 +2186,22 @@ while (i<=max) {
     doc "Slotwise or operator |x | y|. Implementations
          should respect the constraint that 
          |(x|y).slot(z)==(x.slot(z)||y.slot(z))|."
-    B or(B bits);
+    formal B or(B bits);
     
     doc "Slotwise and operator |x & y|. Implementations
          should respect the constraint that 
          |(x&y).slot(z)==(x.slot(z)&&y.slot(z))|."
-    B and(B bits);
+    formal B and(B bits);
     
     doc "Slotwise xor operator |x ^ y|. Implementations
          should respect the constraint that 
          |(x^y).slot(z)==((x|y).slot(z)&&!(x&y).slot(z))|.""
-    B xor(B bits);
+    formal B xor(B bits);
     
     doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
          that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|.""
-    B complement(B bits);
+    formal B complement(B bits);
     
 }]]></programlisting>
 
@@ -2219,7 +2219,7 @@ while (i<=max) {
     doc "Slotwise complement operator |~x|. 
          Implementations should respect the constraint 
          that |(~x).slot(z)==!x.slot(z)|."
-    Bits<#n> complement;
+    formal Bits<#n> complement;
     
 }]]></programlisting>
 
@@ -2325,16 +2325,16 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Function<out R, P...> 
         satisfies Callable<R, P...>, Annotated {
         
-    public String name;
+    formal String name;
     
-    public Boolean extension;
+    formal Boolean extension;
     
-    public Visiblity visibility;
+    formal Visiblity visibility;
     
-    public Type<R> returnType;
-    public Parameter<Object>[] parameters;
+    formal Type<R> returnType;
+    formal Parameter<Object>[] parameters;
     
-    public void intercept( R onInvoke(R proceed(P... args), P... args) )();
+    formal void intercept( R onInvoke(R proceed(P... args), P... args) )();
 
 }]]></programlisting>
 
@@ -2343,26 +2343,26 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Value<out T> 
         satisfies Annotated {
     
-    public String name;
+    formal String name;
     
-    public Boolean mutable;    
+    formal Boolean mutable;    
     
-    public Visiblity visibility;
+    formal Visiblity visibility;
     
-    public Type<T> type;
+    formal Type<T> type;
     
-    public extension Gettable<T> value;
+    formal extension Gettable<T> value;
     
-    public void intercept( T onGet(T proceed()) )();
+    formal void intercept( T onGet(T proceed()) )();
 
 }]]></programlisting>
 
         <programlisting><![CDATA[public interface MutableValue<T> 
         satisfies Value<T> {
         
-    actual Settable<T> value;
+    actual formal Settable<T> value;
     
-    public void intercept( void onSet(void proceed(T value), T value) )();
+    formal void intercept( void onSet(void proceed(T value), T value) )();
 
 }]]></programlisting>
 
@@ -2375,27 +2375,27 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Type<out X> 
         satisfies Annotated {
         
-    public String name;
+    formal String name;
     
-    public Boolean mutable;
+    formal Boolean mutable;
     
-    public Visiblity visibility;
+    formal Visiblity visibility;
     
     doc "Return all the attributes of the given 
          type."
-    public Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
+    formal Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
     
     doc "Return all the methods of the given 
          callable type."
-    public Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
+    formal Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
     
     doc "Return all the instantiable member classes 
          of the given callable type."
-    public Set<MemberConcreteClass<X,Y,P...>> concreteClasses<Y,P...>(Type<Callable<Y,P...>> type);
+    formal Set<MemberConcreteClass<X,Y,P...>> concreteClasses<Y,P...>(Type<Callable<Y,P...>> type);
     
     doc "Return all the member types which are subtypes 
          of the given type."
-    public Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
+    formal Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
     
     ...
     
@@ -2411,7 +2411,7 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Class<out X> 
         satisfies Type<X> {
     
-    public Boolean abstract;
+    formal Boolean abstract;
     
 }]]></programlisting>
 
@@ -2421,9 +2421,9 @@ while (i<=max) {
         <programlisting><![CDATA[public interface ConcreteClass<out X, P...> 
         satisfies Class<X>, Callable<X,P...> {
     
-    public Boolean extension;
+    formal Boolean extension;
     
-    public Parameter<Object>[] parameters;
+    formal Parameter<Object>[] parameters;
     
 }]]></programlisting>
 
@@ -2433,17 +2433,16 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Member<in X, out T> 
         satisfies Annotated, Callable<T,X> {
     
-    public String name;
+    formal String name;
     
-    public Boolean abstract;
-    public Boolean default;
-    public Boolean formal;
-    public Boolean actual;
-    public Boolean extension;
+    formal Boolean default;
+    formal Boolean formal;
+    formal Boolean actual;
+    formal Boolean extension;
     
-    public Visiblity visibility;
+    formal Visiblity visibility;
     
-    public Type<T> memberType;
+    formal Type<T> memberType;
     
 }]]></programlisting>
 
@@ -2452,10 +2451,10 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Method<in X, R, P...> 
         satisfies Member<X, Function<R, P...>> {
         
-    public Type<R> returnType;
-    public Parameter<Object>[] parameters;
+    formal Type<R> returnType;
+    formal Parameter<Object>[] parameters;
     
-    public void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
+    formal void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
                     given S abstracts X;
     
 }]]></programlisting>
@@ -2465,9 +2464,9 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Attribute<in X, T> 
         satisfies Member<X, Value<T>> {
         
-    public Boolean mutable;
+    formal Boolean mutable;
     
-    public void intercept<S>( T onGet(S instance, T proceed()) )()
+    formal void intercept<S>( T onGet(S instance, T proceed()) )()
                     given S abstracts X;
     
 }]]></programlisting>
@@ -2476,7 +2475,7 @@ while (i<=max) {
         extends Attribute<X, T>
         satisfies Member<X, MutableValue<T>> {  //this is OK since Member is covariant in T
         
-    public void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
+    formal void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
                     given S abstracts X;
     
 }]]></programlisting>
@@ -2505,9 +2504,9 @@ while (i<=max) {
         <programlisting><![CDATA[public interface MemberConcreteClass<X, Y, P...> 
         satisfies MemberType<X, Y>, Member<X, ConcreteClass<Y,P...>> {
     
-    public Parameter<Object>[] parameters;
+    formal Parameter<Object>[] parameters;
     
-    public void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
+    formal void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
                     given S abstracts X;
     
 }]]></programlisting>
@@ -2517,8 +2516,8 @@ while (i<=max) {
 
         <programlisting><![CDATA[public interface Parameter<out T> 
         satisfies Annotated {
-    public String name;
-    public Type<T> type;
+    formal String name;
+    formal Type<T> type;
 }]]></programlisting>
 
         <para>An <literal>Annotated</literal> program element may be asked for a
@@ -2527,7 +2526,7 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Annotated {
     doc "Return all the annotation values that are 
          assignable to the given type."
-    public T[] annotations<T>(Type<T> type = Object) 
+    formal T[] annotations<T>(Type<T> type = Object) 
             given T satisfies Object;
 }]]></programlisting>
 
@@ -2566,7 +2565,7 @@ while (i<=max) {
         in a particular format.</para>
         
         <programlisting>public interface Format {
-    String formatted;
+    formal String formatted;
 }</programlisting>
 
         <para>The package <literal>ceylon.language.util</literal>, which is not imported

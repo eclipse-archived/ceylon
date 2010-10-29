@@ -939,9 +939,9 @@ class PersonalizedHello(String name) extends Hello() {
             
             <programlisting><![CDATA[public interface Writer {
     
-    Formatter formatter;
+    formal Formatter formatter;
     
-    void write(String string);
+    formal void write(String string);
     
     void writeLine(String string) {
         write(string);
@@ -954,9 +954,9 @@ class PersonalizedHello(String name) extends Hello() {
     
 }]]></programlisting>
             
-            <para>All members of an interface are either <literal>formal</literal> or 
-            <literal>default</literal>, and they all inherit the same visibility modifier
-            as the interface. Therefore, we don't need to annotate the members explicitly.</para>
+            <para>All members of an interface inherit the visibility modifier of the interface. 
+            Therefore, we don't need to explcitly annotate the members with a visibility
+            modifier.</para>
             
             <para>Note that we can't define a concrete value for the <literal>formatter</literal>
             attribute, since an interface may not define a simple attribute, and may not 
@@ -1945,7 +1945,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             <literal>Observer</literal>/<literal>Observable</literal> pattern:</para>
             
             <programlisting>public interface Observer {
-    void observe(Event event);
+    formal void observe(Event event);
 }</programlisting>
             
             <programlisting>public abstract class Component() {
@@ -2822,9 +2822,9 @@ assert() that (otype.arguments.first == String);  //assertion succeeds</programl
         collections can be mutable, it turns out to be incorrect. Consider the
         following possible definition of <literal>Collection</literal>:</para>
         
-        <programlisting>interface Collection&lt;X&gt; {
-    Iterator&lt;X&gt; iterator();
-    void add(X x);
+        <programlisting>public interface Collection&lt;X&gt; {
+    formal Iterator&lt;X&gt; iterator();
+    formal void add(X x);
 }</programlisting>
 
         <para>And let's suppose that <literal>Geek</literal> is a subtype of 
@@ -2863,12 +2863,12 @@ people.add( Person("Fonzie") );</programlisting>
         <para>Instead, we're going to refactor <literal>Collection</literal> into
         a pure producer interface and a pure consumer interface:</para>
         
-        <programlisting>interface Producer&lt;out X&gt; {
-    Iterator&lt;X&gt; iterator();
+        <programlisting>public interface Producer&lt;out X&gt; {
+    formal Iterator&lt;X&gt; iterator();
 }</programlisting>
 
-        <programlisting>interface Consumer&lt;in X&gt; {
-    void add(X x);
+        <programlisting>public interface Consumer&lt;in X&gt; {
+    formal void add(X x);
 }</programlisting>
 
         <para>Notice that we've annotated the type parameters of these interfaces.</para>
@@ -2921,7 +2921,7 @@ people.add( Person("Fonzie") );</programlisting>
         <para>We can define our <literal>Collection</literal> interface as a
         mixin of <literal>Producer</literal> with <literal>Consumer</literal>.</para>
         
-        <programlisting>interface Collection&lt;X&gt; 
+        <programlisting>public interface Collection&lt;X&gt; 
         satisfies Producer&lt;X&gt;, Consumer&lt;X&gt; {}</programlisting>
         
         <para>Notice that <literal>Collection</literal> remains nonvariant in
@@ -3112,7 +3112,7 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
             
             <programlisting><![CDATA[public interface Callable<out R, P...> { 
             
-    R call(P... args);
+    formal R call(P... args);
     
     ...
 }]]></programlisting>

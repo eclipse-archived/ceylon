@@ -251,13 +251,12 @@ TypeConstraints?
         <programlisting>InterfaceBody := "{" Declaration* "}"</programlisting>
         
         <para>An interface may declare <literal>formal</literal> methods, attributes,
-        and member classes, and <literal>default</literal> methods, attribute getters, 
-        attribute setters, and member classes. An interface may not declare a simple 
-        attribute.</para>
+        and member classes, and concrete methods, attribute getters, attribute setters, 
+        and member classes. An interface may not declare a concrete simple attribute.</para>
 
         <programlisting>public interface Comparable&lt;T&gt; {
     
-    Comparison compare(T other);
+    formal Comparison compare(T other);
     
     Boolean greaterThan(T other) {
         return compare(other)==larger
@@ -288,8 +287,16 @@ TypeConstraints?
         <section id="interfacemembermodifiers">
             <title>Interface member modifiers</title>
             
-            <para>Every member of an interface must be annotated either <literal>default</literal> 
-            or <literal>formal</literal>. No member may have both annotations.</para>
+            <para>A <literal>default</literal> or <literal>formal</literal> member of
+            an interface must be explicitly annotated as such. No member may have both 
+            annotations. A member may have neither annotation. A member of an interface
+            may not be annotated <literal>definite</literal>.</para>
+            
+            <para>A non-<literal>default</literal>, non-<literal>formal</literal> member
+            of an interface may not be annotated <literal>actual</literal>, and may not 
+            refine a member of a supertype. A <literal>formal</literal> or 
+            <literal>default</literal> member may be annotated <literal>actual</literal>,
+            and may refine a member of a supertype.</para>
                     
             <para>Every member of an interface inherits the visibility modifier of the 
             interface. No member of an interface may explicitly specify a visibilty
@@ -2561,7 +2568,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>default</literal> specifies that a method, 
-                attribute, or member class may be refined by subclasses.</para>
+                attribute, or member class may be refined by subtypes.</para>
             </listitem>
             <listitem>
                 <para><literal>actual</literal> indicates that a method,
