@@ -6,6 +6,8 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.tree.TreeMaker;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 
@@ -32,7 +34,7 @@ public class ExtensionFinder {
         types = Types.instance(context);        
     }
     
-    public/*XXX private*/ static class RouteElement {
+    private static class RouteElement {
         public final Type type; // the type we are extending from
         public Symbol sym;      // the symbol we are extending with
     
@@ -143,12 +145,21 @@ public class ExtensionFinder {
     }
 
     public static class Route {
-        public/*XXX private*/ final List<RouteElement> elements; 
+        private final List<RouteElement> elements; 
         
         private Route(List<RouteElement> elements) {
             this.elements = elements;
         }
-    }
+
+        public JCExpression apply(JCExpression tree, TreeMaker make) {
+            for (RouteElement element : elements) {
+                MethodSymbol methodSym = (MethodSymbol) element.sym; // TODO: needs generalizing
+                tree = make.App(make.Select(tree, methodSym));
+                tree.setType(methodSym.getReturnType());
+            }
+            return tree;
+        }
+   }
     
     public Route findUniqueRoute(Type source, Type target) {
         Finder finder = new Finder(target);

@@ -1,11 +1,11 @@
 package com.sun.tools.javac.ceylon;
 
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 
 public class ExtensionRequiredException extends RuntimeException {
-    public MethodSymbol extension;
+    public Route extension;
 
-    public ExtensionRequiredException(MethodSymbol extension) {
+    public ExtensionRequiredException(Route extension) {
         super();
         this.extension = extension;
     }

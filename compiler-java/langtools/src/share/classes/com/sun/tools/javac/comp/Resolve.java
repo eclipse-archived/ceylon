@@ -44,6 +44,7 @@ import javax.lang.model.type.TypeKind;
 
 import com.sun.tools.javac.ceylon.ExtensionRequiredException;
 import com.sun.tools.javac.ceylon.ManglingRequiredException;
+import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
@@ -1226,7 +1227,7 @@ public class Resolve {
     		// of binary operations.  It needs to be generalized to cope with any
     		// number of arguments.
     		if (argtypes.size() == 1) {
-    			MethodSymbol extension = types.getCeylonExtension(site, argtypes.head);
+    			Route extension = types.getCeylonExtension(site, argtypes.head);
     			if (extension != null) {
     				throw new ExtensionRequiredException(extension);
     			}

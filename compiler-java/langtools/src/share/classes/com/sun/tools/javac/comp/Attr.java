@@ -2005,10 +2005,10 @@ public class Attr extends JCTree.Visitor {
   
             // Mutate the tree (is this even vaguely allowed?)
             make.at(fat.selected);
-            fat.selected = make.App(make.Select(fat.selected, e.extension));
+            fat.selected = e.extension.apply(fat.selected, make);
 
             // Replace the site type and try selecting the symbol again
-            site = e.extension.getReturnType();
+            site = fat.selected.type;
             sym = selectSym(tree, site, env, pt, pkind);
         }
         if (sym.exists() && !isType(sym) && (pkind & (PCK | TYP)) != 0) {

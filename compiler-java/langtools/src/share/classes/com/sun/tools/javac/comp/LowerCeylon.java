@@ -2,6 +2,7 @@ package com.sun.tools.javac.comp;
 
 import static com.sun.tools.javac.code.TypeTags.CLASS;
 
+import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.code.Symbol;
@@ -141,11 +142,10 @@ public class LowerCeylon extends TreeTranslator {
         srcType = nonOptionalTypeFor(srcType);
         dstType = nonOptionalTypeFor(dstType);
         
-        MethodSymbol methodSym = types.getCeylonExtension(srcType, dstType);
-        if (methodSym != null) {
+        Route route = types.getCeylonExtension(srcType, dstType);
+        if (route != null) {
             make.at(tree.pos());
-            tree = make.App(make.Select(tree, methodSym));
-            tree.setType(methodSym.getReturnType());
+            tree = route.apply(tree, make) ;
             return ceylonExtensionIfNeeded(tree, dstType);
         } 
         

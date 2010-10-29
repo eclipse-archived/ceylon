@@ -281,17 +281,12 @@ public class Types {
             : isSubtype(unboxedType(t), s);
      }
 
-    public MethodSymbol getCeylonExtension(Type t, Type s) {
+    public ExtensionFinder.Route getCeylonExtension(Type t, Type s) {
         if (isSameType(s, t))
             return null;
-        
         if (isSameType(s, syms.objectType))
             return null;
-        
-        ExtensionFinder.Route route = extensionFinder.findUniqueRoute(t, s);
-        
-        assert route.elements.size() == 1;
-        return (MethodSymbol) route.elements.head.sym;
+        return extensionFinder.findUniqueRoute(t, s);
     }
 
     public boolean isConvertible(Type t, Type s, Warner warn) {
