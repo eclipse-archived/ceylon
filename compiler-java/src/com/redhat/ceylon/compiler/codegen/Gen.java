@@ -1070,6 +1070,12 @@ public class Gen {
     	
         JCExpression type = convert(decl.type);
 
+        if ((decl.flags & CeylonTree.EXTENSION) != 0) {
+            JCAnnotation ann =
+                make.Annotation(makeIdent(syms.ceylonExtensionType),
+                        List.<JCExpression>nil());
+            langAnnotations.append(ann);
+        }
         if ((decl.flags & CeylonTree.OPTIONAL) != 0) {
     		type = optionalType(type);
     	}
