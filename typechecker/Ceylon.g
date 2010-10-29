@@ -116,8 +116,6 @@ typeDeclaration
     -> ^(CLASS_DECL classDeclaration)
     | interfaceDeclaration
     -> ^(INTERFACE_DECL interfaceDeclaration)
-    | aliasDeclaration
-    -> ^(ALIAS_DECL aliasDeclaration)
     | objectDeclaration
     -> ^(OBJECT_DECL objectDeclaration)
     ;
