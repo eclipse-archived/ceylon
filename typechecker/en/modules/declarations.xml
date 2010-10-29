@@ -774,6 +774,9 @@ public class Person { ... }</programlisting>
         No member may have more than one of these three annotations. A member may have none
         of these annotations.</para>
         
+        <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
+        may not by annotated <literal>definite</literal>.</para>
+        
         <para>Every member annotated <literal>formal</literal>, <literal>default</literal> 
         or <literal>definite</literal> must declare or inherit a visibility modifier. A 
         block-local member may not be annotated <literal>formal</literal>, 
