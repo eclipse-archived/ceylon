@@ -997,6 +997,15 @@ public abstract class Symbol implements Element {
             assert !(data instanceof Env<?>) : this;
             this.data = data;
         }
+        
+        public Type ceylonIntroducedType() {
+            assert getKind() == ElementKind.FIELD;
+            return asType();
+        }
+        
+        public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
+            return make.Select(tree, this);
+        }
     }
 
     /** A class for method symbols.
