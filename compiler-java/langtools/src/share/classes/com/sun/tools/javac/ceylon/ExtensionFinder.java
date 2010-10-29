@@ -57,6 +57,36 @@ public class ExtensionFinder {
                     this.elements = this.elements.prepend(new RouteElement(element.type, element.sym));
                 }
             }
+            
+            public boolean isLongerVersionOf(Route other) {
+                RouteElement start = new RouteElement(target, null);
+                return isSubset(other.elements.append(start), elements.append(start));
+            }
+            
+            private boolean isSubset(List<RouteElement> a, List<RouteElement> b) {
+                // If this is the last step of either list then we're done
+                if (a.tail.isEmpty() || b.tail.isEmpty())
+                    return false;
+                
+                // If we aren't starting from the same place then these are different routes
+                Type source = a.head.type;
+                if (!types.isSameType(source, b.head.type))
+                    return false;
+                
+                // If we're going to the same place then check the next hop 
+                Type target = a.tail.head.type;
+                if (types.isSameType(target, b.tail.head.type))
+                    return isSubset(a.tail, b.tail);
+                
+                // Have we found a subchain?
+                for (RouteElement element : b.tail) {
+                    if (types.isSameType(target, element.type))
+                        return true;
+                }
+
+                // This route isn't a subset of the other
+                return false;
+            }
         }
         
         private List<RouteElement> stack = List.<RouteElement>nil();
@@ -91,12 +121,32 @@ public class ExtensionFinder {
             // Pop our level off the stack before returning
             stack = stack.tail;
         }
+        
+        // Remove routes that contain multi-step conversions that are possible with a single step
+        // XXX: with lots of routes this has the potential to be very slow!
+        public void cull() {
+            List<Route> tmp = List.<Route>nil();
+            for (Route a : routes) {
+                boolean culled = false;
+                for (Route b : routes) {
+                    if (a != b && a.isLongerVersionOf(b)) {
+                        culled = true;
+                        break;
+                    }
+                }
+                if (!culled) {
+                    tmp = tmp.append(a);
+                }
+            }
+            routes = tmp;
+        }
     }
 
     public void extend(Type source, Type target) {
         System.out.println("Attempting to extend " + source + " to " + target + "...");
         Finder finder = new Finder(target);
         finder.visit(source);
+        finder.cull();
         System.out.println("Found " + finder.routes.size() + " routes:");
         for (Finder.Route route : finder.routes) {
             for (Finder.RouteElement element : route.elements) {
