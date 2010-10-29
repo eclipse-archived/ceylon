@@ -43,6 +43,8 @@ import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.model.*;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.TreeMaker;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
@@ -446,6 +448,18 @@ public abstract class Symbol implements Element {
             l.append(t.tsym);
         }
         return l.toList();
+    }
+    
+    /** The type you end up with if this symbol is used as an extension in Ceylon.
+     */
+    public Type ceylonIntroducedType() {
+        throw new AssertionError();
+    }
+
+    /** Apply this symbol as a Ceylon extension
+     */
+    public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
+        throw new AssertionError();
     }
 
     public static class DelegatedSymbol extends Symbol {
@@ -1252,6 +1266,14 @@ public abstract class Symbol implements Element {
 
         public List<Type> getThrownTypes() {
             return asType().getThrownTypes();
+        }
+        
+        public Type ceylonIntroducedType() {
+            return getReturnType();
+        }
+        
+        public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
+            return make.App(make.Select(tree, this));
         }
     }
 

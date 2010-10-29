@@ -116,7 +116,7 @@ public class ExtensionFinder {
                         continue;
 
                     stack.head.sym = sym;
-                    visit(((MethodSymbol) sym).getReturnType());
+                    visit(sym.ceylonIntroducedType());
                 }
             }
             
@@ -153,9 +153,9 @@ public class ExtensionFinder {
 
         public JCExpression apply(JCExpression tree, TreeMaker make) {
             for (RouteElement element : elements) {
-                MethodSymbol methodSym = (MethodSymbol) element.sym; // TODO: needs generalizing
-                tree = make.App(make.Select(tree, methodSym));
-                tree.setType(methodSym.getReturnType());
+                Symbol sym = element.sym;
+                tree = sym.doCeylonExtension(tree, make);
+                tree.setType(sym.ceylonIntroducedType());
             }
             return tree;
         }
