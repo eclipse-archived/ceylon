@@ -288,13 +288,9 @@ TypeConstraints?
         <section id="interfacemembermodifiers">
             <title>Interface member modifiers</title>
             
-            <para>Every member of an interface is implicitly either <literal>default</literal> 
-            or <literal>formal</literal>. No member of an interface may be explicitly 
-            annotated <literal>default</literal> or <literal>formal</literal>.</para>
-            
-            <comment><para>TODO: is this really the right thing to say? We could require
-            that you specify one of the two annotations on every member.</para></comment>
-        
+            <para>Every member of an interface must be annotated either <literal>default</literal> 
+            or <literal>formal</literal>. No member may have both annotations.</para>
+                    
             <para>Every member of an interface inherits the visibility modifier of the 
             interface. No member of an interface may explicitly specify a visibilty
             modifer.</para>
@@ -305,6 +301,10 @@ TypeConstraints?
             <para>These rules insure that the "diamond inheritance" problem&mdash;where
             a type inherits two different concrete declarations of the same 
             member&mdash;can always be resolved by refining the member.</para>
+            
+            <comment><para>Note: this means that interfaces can't have block-local members,
+            even though a block-local helper method, attribute getter, or class could be 
+            useful, and would not cause diamond inheritance problems.</para></comment>
             
         </section>
         
@@ -764,7 +764,8 @@ public class Person { ... }</programlisting>
         
         <para>A <literal>formal</literal>, <literal>default</literal>, or
         <literal>definite</literal> member of a class must be explicitly annotated as such.
-        No member may be annotated by more than one of these three annotations.</para>
+        No member may have more than one of these three annotations. A member may have none
+        of these annotations.</para>
         
         <para>Every member annotated <literal>formal</literal>, <literal>default</literal> 
         or <literal>definite</literal> must declare or inherit a visibility modifier. A 
@@ -928,9 +929,9 @@ public class Person { ... }</programlisting>
          
          <para>A sublass of a nested class must be a member of the type that declares 
          the nested class or of a subtype of the type that declares the nested class. 
-         A class that implements a member interface must be a member of the type that 
-         declares the member interface or of a subtype of the type that declares the 
-         member interface.</para>
+         A class that implements a nested interface must be a member of the type that 
+         declares the nested interface or of a subtype of the type that declares the 
+         nested interface.</para>
          
         </section>
        
@@ -993,19 +994,15 @@ public class Person { ... }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>a toplevel or nested class annotated 
-                <literal>abstract</literal>,</para>
+                <para>a toplevel or nested class annotated <literal>abstract</literal>,</para>
             </listitem>
             <listitem>
-                <para>a member class of an interface, or</para>
-            </listitem>
-            <listitem>
-                <para>a member class annotated <literal>formal</literal> of a class.</para>
+                <para>a member class annotated <literal>formal</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>If the class is a member of an interface or is annotated <literal>formal</literal>,
-        it is called a <literal>formal</literal> member class, or, sometimes, an
+        <para>If the class is annotated <literal>formal</literal>, it is called a 
+        <literal>formal</literal> member class, or, sometimes, an
         <emphasis>abstract member class</emphasis>.</para>
         
         <para>If the class is annotated <literal>abstract</literal>, it is called an
@@ -1875,8 +1872,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                     the body in the body containing the method declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the method must be a member of an interface, <!--and the method
-                    must be annotated <literal>abstract</literal>,--> or</para>
+                    <para>the method must be a member of an interface, and the method
+                    must be annotated <literal>formal</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>the method must be a member of a class, the method must be 
@@ -2362,8 +2359,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     later in the body containing the attribute declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the attribute must be a member of an interface, <!--and the 
-                    attribute must be annotated <literal>abstract</literal>,--> or</para>
+                    <para>the attribute must be a member of an interface, and the 
+                    attribute must be annotated <literal>formal</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>the attribute must be a member of a class, the attribute must 
