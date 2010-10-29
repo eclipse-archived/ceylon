@@ -386,11 +386,6 @@ public abstract class CeylonTree {
         append(decl);
     }
   
-    public void setAnnotations(List<Annotation> annotations) {
-        // FIXME: This should not be a method of CeylonTree
-        this.annotations = annotations;
-    }
-    
     public void setCondition(Condition t) {
         bomb();
     }

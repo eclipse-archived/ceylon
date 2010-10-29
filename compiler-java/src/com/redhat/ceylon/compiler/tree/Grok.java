@@ -61,9 +61,10 @@ public class Grok extends CeylonTree.Visitor {
         inner(decl);
         current.pop();
         CeylonTree.Declaration def = decl.decl;
-        // FIXME: Is this the right test?
-        if (def.annotations == null)
-            def.setAnnotations(decl.annotations);
+        for (CeylonTree.Annotation ann : decl.annotations)
+            def.add(ann);
+        assert def.flags == 0;
+        def.flags = decl.flags;
         current.context.add(def);
     }
     

@@ -670,6 +670,13 @@ public class Gen {
             superclass = make().Ident(names.fromString(name.head));
         }
         
+        if ((cdecl.flags & CeylonTree.EXTENSION) != 0) {
+            JCAnnotation ann =
+                make.Annotation(makeIdent(syms.ceylonExtensionType),
+                        List.<JCExpression>nil());
+            langAnnotations.append(ann);
+        }
+
         JCClassDecl classDef = 
             at(cdecl).ClassDef(at(cdecl).Modifiers(0, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
