@@ -288,21 +288,10 @@ public class Types {
         if (isSameType(s, syms.objectType))
             return null;
         
-        extensionFinder.extend(t, s);
-
-        if (t.tag != CLASS)
-            return null;
-
-        for (Symbol sym : ((ClassSymbol) t.tsym).members().getElements()) {
-            if (sym.attribute(syms.ceylonExtensionType.tsym) == null)
-                continue;
-
-            MethodSymbol msym = (MethodSymbol) sym;
-            if (isSubtype(msym.getReturnType(), s))
-                return msym;
-        }
-
-        return null;
+        ExtensionFinder.Route route = extensionFinder.findUniqueRoute(t, s);
+        
+        assert route.elements.size() == 1;
+        return (MethodSymbol) route.elements.head.sym;
     }
 
     public boolean isConvertible(Type t, Type s, Warner warn) {

@@ -32,22 +32,22 @@ public class ExtensionFinder {
         types = Types.instance(context);        
     }
     
-    class Finder {
+    public/*XXX private*/ static class RouteElement {
+        public final Type type; // the type we are extending from
+        public Symbol sym;      // the symbol we are extending with
+    
+        public RouteElement(Type type, Symbol sym) {
+            this.type = type;
+            this.sym = sym;
+        }
+    }        
+
+    private class Finder {
         private final Type target;
         
         public Finder(Type target) {
             this.target = target;
         }
-
-        public class RouteElement {
-            public final Type type; // the type we are extending from
-            public Symbol sym;      // the symbol we are extending with
-        
-            public RouteElement(Type type, Symbol sym) {
-                this.type = type;
-                this.sym = sym;
-            }
-        }        
 
         public class Route {
             private List<RouteElement> elements = List.<RouteElement>nil();
@@ -142,12 +142,20 @@ public class ExtensionFinder {
         }
     }
 
-    public Finder.Route extend(Type source, Type target) {
+    public static class Route {
+        public/*XXX private*/ final List<RouteElement> elements; 
+        
+        private Route(List<RouteElement> elements) {
+            this.elements = elements;
+        }
+    }
+    
+    public Route findUniqueRoute(Type source, Type target) {
         Finder finder = new Finder(target);
         finder.visit(source);
         finder.cull();
         if (finder.routes.size() == 1)
-            return finder.routes.head;
+            return new Route(finder.routes.head.elements);
         return null;
     }
 }
