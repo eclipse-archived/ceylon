@@ -142,17 +142,12 @@ public class ExtensionFinder {
         }
     }
 
-    public void extend(Type source, Type target) {
-        System.out.println("Attempting to extend " + source + " to " + target + "...");
+    public Finder.Route extend(Type source, Type target) {
         Finder finder = new Finder(target);
         finder.visit(source);
         finder.cull();
-        System.out.println("Found " + finder.routes.size() + " routes:");
-        for (Finder.Route route : finder.routes) {
-            for (Finder.RouteElement element : route.elements) {
-                System.out.print(" -> " + element.type + "." + element.sym);
-            }
-            System.out.println();
-        }
+        if (finder.routes.size() == 1)
+            return finder.routes.head;
+        return null;
     }
 }
