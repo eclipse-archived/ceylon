@@ -3110,10 +3110,8 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
             written as <literal>P...</literal> in the type parameter list of a generic
             type. Here's how Ceylon represents the type of a function:</para>
             
-            <programlisting><![CDATA[public interface Callable<out R, P...> { 
-            
+            <programlisting><![CDATA[public interface Callable<out R, P...> {
     formal R call(P... args);
-    
     ...
 }]]></programlisting>
             

@@ -279,20 +279,9 @@
         and <literal>{}</literal>.</para>
         
         <programlisting><![CDATA[public interface Callable<out R, P...> {
-        
     formal R call(P... args);
-    
 }]]></programlisting>
     
-        <para>An interceptor may be removed by invoking the returned method reference:</para>
-
-        <programlisting><![CDATA[void removeSayInterceptor() = person.say.intercept() 
-    onInvoke(void proceed(String words), String words) { 
-        proceed(words.uppercase);
-    };
-...
-removeSayInterceptor();]]></programlisting>
-
         <para>The following extension provides function <emphasis>composition</emphasis>, 
         combining a <literal>Callable&lt;Y,X&gt;</literal> with a <literal>Callable&lt;X,P...&gt;</literal>
         to produce a <literal>Callable&lt;Y,P...&gt;</literal>:</para>
@@ -2534,6 +2523,15 @@ while (i<=max) {
     formal T[] annotations<T>(Type<T> type = Object) 
             given T satisfies Object;
 }]]></programlisting>
+
+        <para>An interceptor may be removed by invoking the returned method reference:</para>
+
+        <programlisting><![CDATA[void removeSayInterceptor() = person.say.intercept() 
+    onInvoke(void proceed(String words), String words) { 
+        proceed(words.uppercase);
+    };
+...
+removeSayInterceptor();]]></programlisting>
 
     </section>
     
