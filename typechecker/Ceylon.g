@@ -310,7 +310,7 @@ memberType
     ;
 
 memberParameters
-    : typeParameters? formalParameters+ extraFormalParameters typeClass? typeConstraints?
+    : typeParameters? formalParameters+ extraFormalParameters metatypes? typeConstraints?
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -328,7 +328,7 @@ interfaceDeclaration
         typeName
         typeParameters?
         caseTypes?
-        typeClass?
+        metatypes?
         satisfiedTypes?
         typeConstraints?
         (classBody | typeSpecifier)
@@ -346,7 +346,7 @@ classDeclaration
         formalParameters
         extraFormalParameters
         caseTypes?
-        typeClass?
+        metatypes?
         extendedType?
         satisfiedTypes?
         typeConstraints?
@@ -394,12 +394,12 @@ caseType
     | memberName
     ;
 
-typeClass
+metatypes
     : 'is' type (',' type)* 
     ;
 
 typeConstraint
-    : 'given' typeName formalParameters? typeClass? satisfiedTypes? abstractedType?
+    : 'given' typeName formalParameters? metatypes? satisfiedTypes? abstractedType?
     -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
     ;
     

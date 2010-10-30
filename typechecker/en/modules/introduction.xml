@@ -321,9 +321,9 @@
     </para>
     
     <para>
-    Even better, Ceylon features Haskell-style <emphasis>type classes</emphasis>,
-    allowing an even more exotic form of generic programing using polymorphic 
-    abstraction over metatypes.
+    Even better, Ceylon supports user-defined <emphasis>metatypes</emphasis>,
+    allowing an even more exotic form of generic programing with polymorphic 
+    abstraction at the meta level.
     </para>
     
     </section>

@@ -601,24 +601,25 @@ String? firstWord = words[0];</programlisting>
         
     </section>
     
-    <section id="typeclasses">
-        <title>Type classes</title>
+    <section id="metatypes">
+        <title>Metatypes</title>
         
-        <comment><para>NOTE: Type classes are a proposed feature for a future
+        <comment><para>NOTE: Metatypes are a proposed feature for a future
         version of the language.</para></comment>
         
-        <para>A class or interface may optionally specify a list of interfaces
-        implemented by the <emphasis>type class</emphasis> (metamodel object) of 
-        the type. The interfaces implemented by the type class may not define
-        <literal>formal</literal> members.</para>
+        <para>A class or interface may optionally specify a list of 
+        <emphasis>metatypes</emphasis>, interfaces implemented by the concrete
+        metatype of the type. The metatypes may not define <literal>formal</literal> 
+        members.</para>
         
-        <para>Similarly, a type constraint may specify a list of types to which 
-        the type class of the type argument is assignable.</para>
+        <para>Similarly, a type constraint may specify a list of types which 
+        must be supertypes of the metatype of the type argument.</para>
         
-        <programlisting>TypeClass := "is" Type ("," Type)*</programlisting>
+        <programlisting>Metatypes := "is" Type ("," Type)*</programlisting>
         
-        <para>The type class of a type <literal>T</literal> is the concrete class
-        of the object to which the expression <literal>T</literal> evaluates.</para>
+        <para>The concrete metatype of a type <literal>T</literal> is the concrete 
+        class of the object to which the expression <literal>T</literal> evaluates.
+        The name of this class is not specified here.</para>
         
         <programlisting>is Monoid&lt;T&gt;</programlisting>
         
@@ -874,13 +875,13 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         instance of the concrete subclass of the current class, getting an expression
         of type <literal>subtype</literal>. Note that <literal>given subtype satisfies Foo</literal>
         is equivalent to declaring the type <literal>satisfies Foo</literal>. Perhaps
-        <literal>given subtype is TypeClass</literal> would also be useful.</para>
+        <literal>given subtype is Metatype</literal> would also be useful.</para>
         </comment>
         
         <comment><para>TODO: We should probably let you use <literal>subtype</literal>
-        in an expression, especially if we end up deciding to support type classes, in
-        which case <literal>x.subtype</literal> will be the only way to get the type
-        class polymorphically.</para></comment>
+        in an expression, especially if we end up deciding to support metatypes, in
+        which case <literal>x.subtype</literal> will be the only way to get the 
+        metatype polymorphically.</para></comment>
         
         </section>
         
@@ -936,7 +937,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     
-        <programlisting>TypeConstraint := "given" TypeName FormalParams? TypeClass? SatisfiedTypes? AbstractedType?</programlisting>
+        <programlisting>TypeConstraint := "given" TypeName FormalParams? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
         
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
         
@@ -962,10 +963,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 of the current instance, and</para>
             </listitem-->
             <listitem>
-                <para>a type class bound, <literal>given X is T</literal>, specifies that the
-                type class of the type parameter is a subtype of a given type <literal>T</literal>
-                <emphasis>(note that type classes are a proposed feature for a future version
-                of the language)</emphasis>,</para>
+                <para>a metatype bound, <literal>given X is T</literal>, specifies that the
+                concrete metatype of the type parameter is a subtype of a given type <literal>T</literal>
+                <emphasis>(note that metatypes are a proposed feature for a future version
+                of the language)</emphasis>, and</para>
             </listitem>
             <listitem>
                 <para>an initialization parameter specification, <literal>given X(...)</literal>
@@ -1016,8 +1017,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 type parameter.</para>
             </listitem>
             <listitem>
-                <para>A metamodel reference to the type parameter is assignable to the type
-                class bound.</para>
+                <para>A metamodel reference to the type parameter is assignable to the
+                metatype bound.</para>
             </listitem>
         </itemizedlist>
         
@@ -1058,7 +1059,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>given X satisfies T</programlisting>
         
-        <para>is equivalent to a type class bound of this form:</para>
+        <para>is equivalent to a metatype bound of this form:</para>
         
         <programlisting>given X is Type&lt;T&gt;</programlisting>
         
@@ -1066,7 +1067,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>given X(A a, B b)</programlisting>
         
-        <para>is equivalent to a type class bound of this form:</para>
+        <para>is equivalent to a metatype bound of this form:</para>
         
         <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
         

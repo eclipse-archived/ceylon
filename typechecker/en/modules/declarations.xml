@@ -23,7 +23,7 @@
     <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
 CaseTypes?
-TypeClass?
+Metatypes?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
@@ -222,7 +222,7 @@ Body?</programlisting>
 Annotation*
 "interface" TypeName TypeParams?
 CaseTypes?
-TypeClass?
+Metatypes?
 SatisfiedTypes?
 TypeConstraints? 
 (InterfaceBody | TypeSpecifier)</programlisting>
@@ -440,7 +440,7 @@ TypeConstraints?
 Annotation*
 "class" TypeName TypeParams? FormalParams
 CaseTypes?
-TypeClass?
+Metatypes?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
@@ -1353,7 +1353,7 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
 Annotation* 
 "choice" TypeName TypeParams?
 CaseTypes
-TypeClass?
+Metatypes?
 SatisfiedTypes? 
 TypeConstraints?
 ";"</programlisting>
@@ -1508,7 +1508,7 @@ public choice TransactionPropagationStyle
         <programlisting>MethodHeader :=
 Annotation*
 (InferableType | "void") MemberName TypeParams? FormalParams+
-TypeClass?
+Metatypes?
 TypeConstraints?</programlisting>
         
         <para>The Ceylon compiler preserves the names of method parameters.</para>
@@ -1695,7 +1695,7 @@ Void goodbye() {
             <para>The final possibility is that a method implementation may be a named
             argument list. A method with a named argument list must explicitly declare 
             an invocable type (a non-<literal>abstract</literal> class, or any other
-            type with a callable type class) as the return type. The method simply 
+            type with a callable metatype) as the return type. The method simply 
             invokes the return type with the specified named arguments and returns the 
             resulting value.</para>
             
@@ -2216,7 +2216,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             <para>Alternatively, a non-<literal>mutable</literal> simple attribute may 
             specify a named argument list. An attribute with a named argument list must 
             explicitly declare an invocable type (a non-<literal>abstract</literal> 
-            class, or any other type with a callable type class) as the attribute type. 
+            class, or any other type with a callable metatype) as the attribute type. 
             The attribute value is determined by simply invoking the return type with 
             the specified named arguments.</para>
             

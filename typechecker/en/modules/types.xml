@@ -1004,7 +1004,7 @@ while (exists local value = indexed.indexedValue(i)) {
 }]]></programlisting>
         -->
         
-        <para>The type class allows direct instantiation of the
+        <para>The metatype allows direct instantiation of the
         <literal>Correspondence</literal> interface:</para>
         
         <programlisting><![CDATA[public interface EnumerableCorrespondence<U,V>
@@ -1290,7 +1290,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
    
 }]]></programlisting>
         
-        <para>The type class allows direct instantiation of <literal>X[]</literal>:</para>
+        <para>The metatype allows direct instantiation of <literal>X[]</literal>:</para>
         
         <programlisting><![CDATA[public interface EnumerableSequence<X>
         satisfies Callable<X[],X...> 

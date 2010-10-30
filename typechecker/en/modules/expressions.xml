@@ -2269,9 +2269,9 @@ setPerson(person);</programlisting>
         <comment><para>TODO: Should we have typesafe metamodel reference expressions for 
         parameters? For example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
         
-        <comment><para>TODO: Should we remodel member metamodel references as members
-        of the type class? Then we can get rid of two of the following sections. The reason
-        to not do this is that member class metamodel references have the wrong case for an
+        <comment><para>TODO: Should we remodel member metamodel references as members of the 
+        metatype? Then we can get rid of two of the following sections. The reason to not do 
+        this is that member class metamodel references have the wrong case for an 
         attribute.</para></comment>
         
         <section id="interfaceandclassmetamodelreferences">
@@ -2308,10 +2308,10 @@ setPerson(person);</programlisting>
         is both a metamodel reference and a callable reference. This is consistent, since
         <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
         
-        <para>Furthermore, the expression type is assignable to all types implemented 
-        by the type class&mdash;the types listed in the <literal>is</literal> clause
-        of the type definition. <emphasis>(Note that type classes are a proposed feature 
-        for a future version of the language.)</emphasis></para>
+        <para>Furthermore, the expression type is assignable to all metatypes of the 
+        type&mdash;the types listed in the <literal>is</literal> clause of the type 
+        definition. <emphasis>(Note that metatypes are a proposed feature for a 
+        future version of the language.)</emphasis></para>
         
         </section>
         
