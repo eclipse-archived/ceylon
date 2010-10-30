@@ -1717,11 +1717,15 @@ Void goodbye() {
     }
 }</programlisting>
             
-            <comment><para>TODO: we could add a keyword to help disambiguate the two
-            forms of method implementation, for example:</para>
+            <comment><para>TODO: we could add a keyword or punctuation to help disambiguate 
+            the two forms of method implementation, for example:</para>
             <programlisting>Html login(HttpRequest request) with {
-    head = ... ;
-    body = ... ;
+    Head head with { ... }
+    Body body with { ... }
+}</programlisting>
+            <programlisting>Html login(HttpRequest request): {
+    Head head: { ... }
+    Body body: { ... }
 }</programlisting></comment>
             
         </section>

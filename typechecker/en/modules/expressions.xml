@@ -2559,6 +2559,10 @@ createItemMethod.intercept()
     remaining argument expressions. Optimizations performed by the Ceylon compiler 
     must not alter these behaviours.</para>
     
+    <comment><para>TODO: Should we have operators for function composition, or 
+    even partial application. Perhaps infix <literal>:</literal> could be 
+    composition and postfix <literal>@</literal> could be partial application.</para></comment>
+    
     <section id="operatorexpressions">
         <title>Operator expressions</title>
         
