@@ -331,7 +331,7 @@ interfaceDeclaration
         metatypes?
         satisfiedTypes?
         typeConstraints?
-        (classBody | typeSpecifier)
+        (classBody | typeSpecifier ';'!)
     ;
 
 interfaceBody
@@ -350,7 +350,7 @@ classDeclaration
         extendedType?
         satisfiedTypes?
         typeConstraints?
-        (classBody | typeSpecifier | ';')
+        (classBody | typeSpecifier? ';'!)
     ;
 
 objectDeclaration
@@ -517,7 +517,7 @@ specifier
     ;
 
 typeSpecifier
-    : '='! type ';'!
+    : '='! type
     ;
 
 nonstringLiteral

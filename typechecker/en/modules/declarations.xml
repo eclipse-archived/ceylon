@@ -225,7 +225,7 @@ CaseTypes?
 Metatypes?
 SatisfiedTypes?
 TypeConstraints? 
-(InterfaceBody | TypeSpecifier)</programlisting>
+(InterfaceBody | TypeSpecifier ";")</programlisting>
 
         <para>To obtain a concrete instance of an interface, it is necessary to define 
         and instantiate a class that implements the interface, or define an object that
@@ -409,7 +409,7 @@ TypeConstraints?
         type defines an <emphasis>interface alias</emphasis> of the specified interface 
         type.</para>
         
-        <programlisting>TypeSpecifier := "=" Type ";"</programlisting>
+        <programlisting>TypeSpecifier := "=" Type</programlisting>
 
         <para>The specified interface type may be a produced type (it may specify type 
         arguments). An interface alias simply assigns an alternative name to the original 
@@ -444,7 +444,7 @@ Metatypes?
 ExtendedType?
 SatisfiedTypes?
 TypeConstraints?
-(ClassBody | TypeSpecifier | ";")</programlisting>
+(ClassBody | TypeSpecifier? ";")</programlisting>
 
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
