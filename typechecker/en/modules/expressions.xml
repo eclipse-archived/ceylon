@@ -1563,7 +1563,7 @@ using() resource satisfies Usable {
         
         <programlisting>public Y using&lt;X,Y&gt;(specified X resource, 
                     Y seek(coordinated X x))
-  given X satisfies Usable;</programlisting>
+    given X satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
