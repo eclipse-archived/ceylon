@@ -777,7 +777,7 @@ public class Person { ... }</programlisting>
         of these annotations.</para>
         
         <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
-        may not by annotated <literal>definite</literal>.</para>
+        may not be annotated <literal>definite</literal>.</para>
         
         <para>Every member annotated <literal>formal</literal>, <literal>default</literal> 
         or <literal>definite</literal> must declare or inherit a visibility modifier. A 
