@@ -1323,7 +1323,7 @@ package assign greeting {
             <para>Therefore, Ceylon's <literal>Object</literal> has a superclass, named 
             <literal>Void</literal>. All Ceylon types are assignable to <literal>Void</literal>.
             Expressions of type <literal>Void</literal> aren't useful for very much, 
-            since <literal>Void</literal> has no members or operators. You can't even narrow 
+            since <literal>Void</literal> has no members or operations. You can't even narrow 
             an expression of type <literal>Void</literal> to a different type. The one useful 
             thing you <emphasis>can</emphasis> do with <literal>Void</literal> is use it to 
             represent the signature of a method when you don't care about the return type, 
