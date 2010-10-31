@@ -2277,6 +2277,20 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>And, finally, coming back to the example from the previous section, 
+        <emphasis>callback registration</emphasis>:</para>
+        
+        <programlisting>public class Listener(Component component) {
+        
+        component.addObserver() onEvent(Event e) {
+            //respond to the event
+            ...
+        }
+        
+        ...
+        
+}</programlisting>
+        
         <para>Look at each of these examples, and ask yourself:</para>
         
         <itemizedlist>
