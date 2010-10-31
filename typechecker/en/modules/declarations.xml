@@ -2985,9 +2985,8 @@ public Visibility private() {
         annotated <literal>implicit</literal>, the declaration is imported normally but 
         the extension is not enabled in the compilation unit.</para>
         
-        <programlisting>import implicit org.domain.app.extensions.objectToLog;
-import implicit org.domain.utils.SequenceUtils;
-import implicit org.domain.utils.homogeneous;</programlisting>
+        <programlisting>import org.domain.app.extensions { implicit objectToLog }
+import org.domain.utils { implicit SequenceUtils, implicit homogeneous }</programlisting>
 
         <para>A wildcard <literal>.*</literal>-style import may not be used to import 
         an extension.</para>
@@ -3072,7 +3071,7 @@ import implicit org.domain.utils.homogeneous;</programlisting>
         
         <para>Otherwise, the member reference is ambiguous and results in a compiler error.</para>
         
-        <programlisting>import implicit org.mydomain.myproject.extensions.objectToLog;
+        <programlisting>import org.mydomain.myproject.extensions { implicit objectToLog }
 ...
 Person person = ...;
 User user = person;
@@ -3085,7 +3084,7 @@ info("person is a User and this is a Log!");</programlisting>
 User user = personToUser(person);</programlisting>
         -->
         
-        <programlisting>import implicit org.domain.utils.SequenceUtils;
+        <programlisting>import org.domain.utils { implicit SequenceUtils }
 ...
 Integer[] zeroToOneHundred = 0..100;
 Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);</programlisting>
@@ -3100,7 +3099,7 @@ Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements
         <comment><para>TODO: You can also introduce <literal>Callable</literal> to a type,
         in which case there is no member reference, just an argument list.</para></comment>
         
-        <programlisting>import implicit org.domain.utils.homogeneous;
+        <programlisting>import org.domain.utils { implicit homogeneous }
 ...
 Float[] tenZeroes = Sequence(10,0.0);</programlisting>
         

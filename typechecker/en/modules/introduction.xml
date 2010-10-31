@@ -2602,7 +2602,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
 
         <para>We're going to use this syntax to define our web page.</para>
         
-        <programlisting><![CDATA[import ceylon.html.*;
+        <programlisting><![CDATA[import ceylon.html { ... };
 
 doc "A web page that displays a greeting"
 page '/hello.html'
@@ -3329,7 +3329,7 @@ say(outputStream);</programlisting>
         it is used. To activate an extension we <literal>import</literal> 
         it.</para>
         
-        <programlisting>import implicit com.domain.util.objectToLog;
+        <programlisting>import com.domain.util { implicit objectToLog }
         
 class Hello(String? name) {
 
@@ -3344,7 +3344,7 @@ class Hello(String? name) {
         <para>The compiler automatically inserts a call to <literal>objectToLog()</literal>. 
         So the above code is equivalent to:</para>
 
-        <programlisting>import com.domain.util.objectToLog;
+        <programlisting>import com.domain.util { objectToLog }
         
 class Hello(String? name) {
 
@@ -3430,7 +3430,7 @@ class Hello(String? name) {
         <para>And we can enable the appropriate default format by 
         <literal>import</literal>ing the extension:</para>
         
-        <programlisting>import implicit org.mycompany.format.FloatFormat;</programlisting>
+        <programlisting>import org.mycompany.format { implicit FloatFormat }</programlisting>
         
         <para>And now, when we don't explicitly specify a format, the format defaults
         to the extension format:</para>
