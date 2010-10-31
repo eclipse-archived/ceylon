@@ -3147,7 +3147,6 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
             
             <programlisting><![CDATA[public interface Callable<out R, P...> {
     formal R call(P... args);
-    ...
 }]]></programlisting>
             
             <para>For example:</para>
