@@ -2324,7 +2324,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         
         <programlisting>public class Listener(Component component) {
         
-        component.addObserver() onEvent(Event e) {
+        component.addObserver() onEvent (Event e) {
             //respond to the event
             ...
         }
