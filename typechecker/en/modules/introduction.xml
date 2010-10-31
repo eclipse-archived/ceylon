@@ -3327,7 +3327,7 @@ say(outputStream);</programlisting>
         attributes. So the client code that uses the extension is responsible
         for explicitly activating the extension in the compilation unit where
         it is used. To activate an extension we <literal>import</literal> 
-        it.</para>
+        it, specifying that it is <literal>implicit</literal>.</para>
         
         <programlisting>import com.domain.util { implicit objectToLog }
         
@@ -3361,10 +3361,11 @@ class Hello(String? name) {
 
 }</programlisting>
 
-        <para>A compilation unit that doesn't explicitly import 
-        <literal>objectToLog</literal> won't be affected by the extension, and
-        won't be able to call the <literal>info()</literal> method without
-        explicitly invoking the <literal>log</literal> attribute.</para>
+        <para>A compilation unit that doesn't <literal>implicit</literal>ly 
+        import <literal>objectToLog</literal> won't be affected by the 
+        extension, and won't be able to call the <literal>info()</literal> 
+        method without explicitly invoking the <literal>log</literal> 
+        attribute.</para>
         
         <para>In the next sections, we're going to see a two very different 
         applications of extensions.</para>
