@@ -2067,16 +2067,16 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             own methods to <literal>addObserver()</literal>:</para>
             
             <programlisting>public class Listener(Component component) {
-        
-        void onEvent(Event e) {
-            //respond to the event
-            ...
-        }
-        
-        component.addObserver(onEvent);
-        
+    
+    void onEvent(Event e) {
+        //respond to the event
         ...
-        
+    }
+    
+    component.addObserver(onEvent);
+    
+    ...
+    
 }</programlisting>
 
             <para>When the name of a method appears in an expression without a
@@ -2317,22 +2317,19 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 using (Float sum, Item item) 
                     (sum + item.quantity*item.product.price);</programlisting></para>
             </listitem>
-        </itemizedlist>
-        
-        <para>And, finally, coming back to the example from the previous section, 
-        <emphasis>callback registration</emphasis>:</para>
-        
-        <programlisting>public class Listener(Component component) {
-        
-        component.addObserver() onEvent (Event e) {
-            //respond to the event
-            ...
-        }
-        
+            <listitem>
+                <para>and, finally, coming back to the example from the previous section, 
+                <emphasis>callback registration</emphasis>:</para>
+                <programlisting>public class Listener(Component component) {
+    component.addObserver() onEvent (Event e) {
+        //respond to the event
         ...
-        
+    }
+    ...
 }</programlisting>
-        
+            </listitem>
+        </itemizedlist>
+                
         <para>Look at each of these examples, and ask yourself:</para>
         
         <itemizedlist>
