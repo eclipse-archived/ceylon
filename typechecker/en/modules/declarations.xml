@@ -66,7 +66,17 @@ Body?</programlisting>
         attribute named <literal>pi</literal> must be defined in a file named
         <literal>pi.ceylon</literal>. Unlike Java, a compilation unit may contain multiple 
         toplevel class or method declarations with the same name.</para>
-                    
+        
+        <para>A toplevel declaration may not be annotated <literal>formal</literal>,
+        <literal>default</literal>, <literal>definite</literal>, or
+        <literal>actual</literal>.</para>
+        
+        <comment><para>TODO: In a future version of the language, we might relax this 
+        restriction and support package extension with toplevel member refinement. This
+        can be viewed as a regularization of the language. The practical application is
+        that it would make toplevel invocations and instantiations polymorphic, obviating
+        the need for things like dependency injection.</para></comment>
+        
         </section>
         
     </section>
