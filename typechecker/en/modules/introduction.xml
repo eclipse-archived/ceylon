@@ -1034,6 +1034,13 @@ object defaultHello extends Hello() {
         <literal>object</literal> declaration recieves a closure of the locals defined 
         in the containing method declaration!</para>
         
+        <para>A different way to think about the difference between <literal>object</literal> 
+        and <literal>class</literal> is to think of a class as a parameterized 
+        <literal>object</literal>. (Of course, there's one big difference: a 
+        <literal>class</literal> declaration defines a named type that we can refer to in
+        other parts of the program.) We'll see later that Ceylon also lets us think of
+        a method as a parameterized attribute.</para>
+        
     </section>
         
     <section>

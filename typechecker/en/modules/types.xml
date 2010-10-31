@@ -2335,7 +2335,7 @@ while (i<=max) {
         <para>A <literal>Value</literal> represents a toplevel attribute.</para>
 
         <programlisting><![CDATA[public interface Value<out T> 
-        satisfies Annotated {
+        satisfies Gettable<T>, Annotated {
     
     formal String name;
     
@@ -2345,17 +2345,13 @@ while (i<=max) {
     
     formal Type<T> type;
     
-    formal extension Gettable<T> value;
-    
     formal void intercept( T onGet(T proceed()) )();
 
 }]]></programlisting>
 
         <programlisting><![CDATA[public interface MutableValue<T> 
-        satisfies Value<T> {
+        satisfies Settable<T>, Value<T> {
         
-    actual formal Settable<T> value;
-    
     formal void intercept( void onSet(void proceed(T value), T value) )();
 
 }]]></programlisting>
