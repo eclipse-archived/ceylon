@@ -189,12 +189,10 @@
     <title>Immutability by default</title>
     
     <para>
-    By default, Ceylon classes, attributes and locals are immutable. 
-    Mutable classes, attributes and locals must be explicitly declared
-    using the <literal>mutable</literal> annotation. An immutable class may 
-    not declare <literal>mutable</literal> attributes or extend a 
-    <literal>mutable</literal> class. An immutable attribute or local may 
-    not be assigned after its initial value is specified.
+    By default, Ceylon attributes and locals are immutable. Mutable attributes 
+    and locals must be explicitly declared using the <literal>mutable</literal> 
+    annotation. An immutable attribute or local may not be assigned after its 
+    initial value is specified.
     </para>
     
     </section>
@@ -1252,10 +1250,12 @@ if (exists name) {
             attribute or local is considered a different kind of thing, always performed 
             using the <literal>:=</literal> operator.</para>
             
+            <!--
             <para>To force you to think twice before adding a <literal>mutable</literal>
             attribute to your class, Ceylon requires that classes with mutable attributes
             be explicitly annotated <literal>mutable</literal>. Hopefully, you'll find
             yourself doing this less frequently than you would do it in Java.</para>
+            -->
             
             <para>If we want to make an attribute with a getter mutable, we need to 
             define a matching <emphasis>setter</emphasis>. Usually this is only useful if 
@@ -1362,8 +1362,8 @@ package assign greeting {
             passed by reference. The <literal>===</literal> operator accepts expressions of 
             type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
             directly extend <literal>Object</literal>, but most of the classes you write will be
-            subclasses of <literal>IdentifiableObject</literal>. All <literal>mutable</literal>
-            classes must extend <literal>IdentifiableObject</literal>.</para>
+            subclasses of <literal>IdentifiableObject</literal>. All classes with 
+            <literal>mutable</literal>attributes must extend <literal>IdentifiableObject</literal>.</para>
             
             <para><literal>IdentifiableObject</literal> defines a default implementation of the
             interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
