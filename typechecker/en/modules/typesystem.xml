@@ -233,9 +233,6 @@
             </listitem>
         </itemizedlist>
         
-        <comment><para>Note: I really, really hate this stuff. Is there any way we can do 
-        better than Java here?</para></comment>
-        
         <para>Two erased signatures are considered <emphasis>distinct</emphasis> if they 
         have different lengths, or if at some position within the lists, the two types are 
         non-identical.</para>
@@ -243,6 +240,13 @@
         <comment><para>TODO: non-identical, or non-assignable?</para></comment>
         
         <comment><para>TODO: what about sequenced parameters? what does Java do?</para></comment>
+        
+        <comment><para>Note: I really, really hate this stuff. Is there any way we can do 
+        better than Java here?</para></comment>
+        
+        <comment><para>TODO: I think we should nuke all the above, and simply outlaw 
+        overloading by parameter type, while retaining the ability to overload by
+        arity.</para></comment>
             
         <para>A type may not have:</para>
         
