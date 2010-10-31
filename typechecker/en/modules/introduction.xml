@@ -987,7 +987,7 @@ class PersonalizedHello(String name) extends Hello() {
         </section>
     
     <section>
-        <title>Anonymous classes</title>
+        <title>Anonymous classes and type aliases</title>
         
         <para>If a class has no parameters, it's often possible to use a shortcut 
         declaration which defines a named instance of the class, without providing any 
@@ -1039,6 +1039,15 @@ object defaultHello extends Hello() {
         <literal>class</literal> declaration defines a named type that we can refer to in
         other parts of the program.) We'll see later that Ceylon also lets us think of
         a method as a parameterized attribute.</para>
+                    
+        <para>It's often useful to provide a shorter, or more semantic name to an 
+        existing class or interface. For this, we use a type alias, for example:</para>
+        
+        <programlisting>interface People = Set&lt;Person&gt;;</programlisting>
+        
+        <para>or:</para>
+        
+        <programlisting>public class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
         
     </section>
         
@@ -1307,6 +1316,39 @@ package assign greeting {
             actual non-empty string of characters. It's much more readable than the 
             equivalent Java idiom <literal>!"".equals(greeting)</literal>.</para>
             
+        </section>
+        
+        <section>
+            <title>Packages and imports</title>
+            
+            <para>There's no special <literal>package</literal> statement in Ceylon. The 
+            compiler determines the package and module to which a toplevel program element
+            belongs by the location of the source file to which it belongs. A class named
+            <literal>Hello</literal> in the package <literal>org.jboss.hello</literal>
+            must be defined in the file <literal>org/jboss/hello/Hello.ceylon</literal>.</para>
+            
+            <para>When a source file in one package refers to a toplevel program element
+            in another package, it must explicitly import that program element. Ceylon, 
+            unlike Java, does not support the use of qualified names within the source file.
+            We can't write <literal>org.jboss.hello.Hello</literal> in Ceylon.</para> 
+            
+            <para>The syntax of the <literal>import</literal> statement is slightly different 
+            to Java. To import a program element, we write:</para>
+            
+            <programlisting>import org.jboss.hello { Hello }</programlisting>
+            
+            <para>To import several program elements from the same package, we write:</para>
+            
+            <programlisting>import org.jboss.hello { Hello, defaultHello, PersonalizedHello }</programlisting>
+           
+            <para>To import all toplevel program elements of a package, we write:</para>
+            
+            <programlisting>import org.jboss.hello { ... }</programlisting>
+            
+            <para>To resolve a name conflict, we can rename an imported declaration:</para>
+            
+            <programlisting>import org.jboss.hello { local Hi = Hello, ... }</programlisting>
+        
         </section>
         
         <section>
@@ -3166,6 +3208,12 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
                     <literal>call()</literal> method has the signature 
                     <literal>Integer call(Integer arg1, Integer arg2)</literal>.</para>
                 </listitem>
+                <listitem>
+                    <para>A <literal>void</literal> function that accepts a sequence of
+                    <literal>String</literal>s is a <literal>Callable&lt;Void,String...&gt;</literal>.
+                    Its <literal>call()</literal> method has the signature 
+                    <literal>void call(String... args)</literal>.</para>
+                </listitem>
             </itemizedlist>
             
             <para>Thus, sequenced type parameters let us write types that abstract over 
@@ -3201,15 +3249,20 @@ say(outputStream);</programlisting>
             <programlisting>Hello hello = PersonalizedHello("gavin");
 void say(OutputStream stream) = hello.say;
 say(outputStream);</programlisting>
-
+            
+            <para>Thus, we say that Ceylon is a <emphasis>higher-order</emphasis>
+            language, since almost any declaration, including classes, interfaces, 
+            methods, attributes, locals, and type parameters are values that can
+            be passed around.</para>
+            
     </section>
     
     <section>
         <title>Introducing a new type to an object</title>
         
-        <para>Ceylon doesn't have multiple inheritance or mixins. If you're used
-        to the single-inheritance-with-interfaces model of Java, you'll find
-        yourself pretty much right at home with inheritance in Ceylon.</para>
+        <para>Ceylon doesn't have full multiple inheritance. If you're used to the 
+        single-inheritance-with-interfaces model of Java, you'll find yourself 
+        pretty much right at home with inheritance in Ceylon.</para>
         
         <para>However, Ceylon does have something else, that's usually almost as
         good as, and often better than, true multiple inheritance. An
