@@ -3491,7 +3491,7 @@ class Hello(String? name) {
         We write an extension to convert an instance of <literal>Quoted</literal> to a
         more semantic type, for example:</para>
         
-        <programlisting>public extension Color hexToColor(Quoted hex) { return ... }</programlisting>
+        <programlisting>public extension Color hexToColor(Quoted this) { return ... }</programlisting>
         
         <para>The Ceylon compiler treats extensions with the extended type 
         <literal>Quoted</literal> as a very special case. Unlike other extensions, an 
