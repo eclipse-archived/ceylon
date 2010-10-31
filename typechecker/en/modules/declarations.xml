@@ -1259,13 +1259,15 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
 
         <comment><para>TODO: I'm increasingly inclined to think that this is backwards:
         a class should be an <literal>object</literal> with parameters. We could rewrite
-        this stuff so that a <literal>class</literal> is equivalent to a method that 
-        returns a nested <literal>object</literal>. We would have to make an 
-        <literal>object</literal> a type, and give it an uppercase name, but that would
-        end up a little more regular anyway, since the <literal>of</literal> clause would
-        now always contain a list of types. The only oddity would be that some common 
-        values would getter uppercase names: <literal>True</literal>, <literal>False</literal>,
-        <literal>Null</literal>, etc.</para></comment>
+        this stuff so that a <literal>class</literal> is equivalent to an interface with
+        a typeclass that implements <literal>Callable</literal> and returns a nested 
+        <literal>object</literal>. We might have to make an <literal>object</literal> a 
+        type, and give it an uppercase name, and/or let you <literal>extend</literal> an
+        <literal>object</literal> but that would end up a little more regular anyway, 
+        since the <literal>of</literal> clause would now always contain a list of types. 
+        The only oddity would be that some common values would getter uppercase names: 
+        <literal>True</literal>, <literal>False</literal>, <literal>Null</literal>, 
+        etc.</para></comment>
         
     </section>
     
