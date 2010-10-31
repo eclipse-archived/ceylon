@@ -2096,7 +2096,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>A toplevel attribute may not be <literal>mutable</literal>.</para>
         
         <para>If a class declares or inherits a <literal>mutable</literal> attribute, it 
-        must (directly or indirectly) extend <literal>ceylon.language.IdentifiableObject</literal>.</para>
+        must (directly or indirectly) extend the class 
+        <literal>ceylon.language.IdentifiableObject</literal>.</para>
         
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>mutable</literal>.</para>
