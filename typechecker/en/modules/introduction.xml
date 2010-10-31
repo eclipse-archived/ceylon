@@ -904,9 +904,7 @@ abstract class Hello() {
 
             <programlisting><![CDATA[doc "A default greeting"
 class DefaultHello() extends Hello() {
-    
     greeting = "Hello, World!";
-    
 }]]></programlisting>
 
         <para>Of course, we can also define an implementation for an inherited abstract 
@@ -1002,10 +1000,13 @@ object defaultHello extends Hello() {
 }]]></programlisting>
         
             <programlisting>public object consoleWriter satisfies Writer {
+    
     formatter = StringFormatter();
+    
     actual void write(String string) {
         process.write(string);
     }
+    
 }</programlisting>
         
         <para>The downside to an <literal>object</literal> declaration is that we can't
@@ -1297,7 +1298,7 @@ package assign greeting {
         grtng := greeting.strip().normalize();
     }
     else {
-        throw IllegalArgumentException("greeting can not be empty)
+        throw IllegalArgumentException("greeting can not be empty")
     }
 }</programlisting>
 
@@ -1363,7 +1364,7 @@ package assign greeting {
             type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
             directly extend <literal>Object</literal>, but most of the classes you write will be
             subclasses of <literal>IdentifiableObject</literal>. All classes with 
-            <literal>mutable</literal>attributes must extend <literal>IdentifiableObject</literal>.</para>
+            <literal>mutable</literal> attributes must extend <literal>IdentifiableObject</literal>.</para>
             
             <para><literal>IdentifiableObject</literal> defines a default implementation of the
             interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
@@ -1698,33 +1699,44 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             But sequences of values are a common occurrence in computing, so Ceylon provides 
             a streamlined syntax for dealing with them. Let's break down this code.</para>
             
-            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
-            
             <para>We can instantiate a <literal>Sequence</literal> using a streamlined syntax
             where the elements of the sequence are enclosed in braces.</para>
             
-            <programlisting>String? sf = voyage[2];</programlisting>
+            <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
+            
+            <para>Again, this is just syntactic sugar. The above is <emphasis>exactly</emphasis> 
+            equivalent to the following regular instantiation:</para>
+
+            <programlisting>String[] voyage = Sequence { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };</programlisting>
             
             <para>The expression <literal>voyage[2]</literal> evaluates to the third item in 
-            the sequence (the item with index <literal>2</literal>). Note that the lookup
-            operator returns an optional type, in this case <literal>String?</literal>, to
-            account for the possibility that the given index was outside of the range of
-            indexes of the sequence. As we'll soon see, the lookup operator works with more 
-            than just sequences.</para>
+            the sequence (the item with index <literal>2</literal>).</para>
             
-            <programlisting>String[] usLeg = voyage[1..3];</programlisting>
+            <programlisting>String? sf = voyage[2];</programlisting>
+            
+            <para>Note that the lookup operator returns an optional type, in this case 
+            <literal>String?</literal>, to account for the possibility that the given index 
+            was outside of the range of indexes of the sequence. As we'll soon see, the lookup 
+            operator works with more than just sequences.</para>
             
             <para>The range expression <literal>voyage[1..3]</literal> evaluates to the 
             subsequence from the lower index <literal>1</literal> to the upper index 
             <literal>3</literal> (a subsequence containing the second, third, and fourth items 
-            of the sequence). The range operator only works for sequences.</para> 
+            of the sequence).</para> 
+            
+            <programlisting>String[] usLeg = voyage[1..3];</programlisting>
+            
+            <para>The range operator only works for sequences.</para>
+            
+            <para>The <literal>+</literal> operator joins two sequences together.</para>
             
             <programlisting>String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlisting>
             
-            <para>The <literal>+</literal> operator joins two sequences together. This
-            <literal>+</literal> operator has absolutely nothing to do with addition of 
-            numeric values. Rather, this is the single example of an overloaded operator in 
+            <para>This <literal>+</literal> operator has absolutely nothing to do with addition 
+            of numeric values. Rather, this is the single example of an overloaded operator in 
             Ceylon.</para>
+            
+            <para>(Remember, these operators are just syntactic sugar for method invocation.)</para>
             
             <para>Just like in Java, the collection types are <emphasis>parameterized</emphasis> 
             or <emphasis>generic</emphasis> types. Unlike Java, there are no raw types&mdash;if
