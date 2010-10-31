@@ -3421,7 +3421,7 @@ class Hello(String? name) {
         <para>But this gets verbose and boring. So we can define our format as an 
         extension, for example:</para>
         
-        <programlisting>public extension class FloatFormat(Float float) 
+        <programlisting>public extension class FloatFormat(Float this) 
         satisfies Format {
     actual String formatted {
         return ... 
