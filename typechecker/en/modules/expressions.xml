@@ -379,8 +379,8 @@ if you prefer.";</programlisting>
         structured data.</para>
         
         <para>A single quoted literal is an expression of type 
-        <literal>ceylon.language.Quoted</literal>. An extension is responsible for converting 
-        it to the appropriate type.</para>
+        <literal>ceylon.language.Quoted</literal>. An extension is responsible for 
+        converting it to the appropriate type.</para>
                 
         <programlisting>Date date = '25/03/2005';</programlisting>
         <programlisting>Time time = '12:00 AM PST';</programlisting>
@@ -398,6 +398,15 @@ if you prefer.";</programlisting>
         
         <programlisting>public extension Date date(Quoted this) { return ... }</programlisting>
         <programlisting>public extension class Regex(Quoted this) { return ... }</programlisting>
+        
+        <comment><para>Note: for now we're only going to support validation against
+        a regex, for example:</para>
+        <programlisting>public extension Date date(
+        matches('^(19|20)\d\d/(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])$') 
+        Quoted this) { 
+    return ... 
+}</programlisting>
+        </comment>
         
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
