@@ -2451,7 +2451,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             
             <para>Notice how we've transformed our code from a form which 
             emphasized <emphasis>invocation</emphasis> into a form that 
-            emphasizes <emphasis>declaration</emphasis> or a hierarchical
+            emphasizes <emphasis>declaration</emphasis> of a hierarchical
             structure. Semantically, the two forms are equivalent. But in
             terms of readability, they are very different.</para>
             
