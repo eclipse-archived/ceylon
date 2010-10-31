@@ -2107,9 +2107,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
         <itemizedlist>
             <listitem>
-                <para>the attributes are overloaded,</para>
-            </listitem>
-            <listitem>
                 <para>one attribute refines the other attribute, or</para>
             </listitem>
             <listitem>
