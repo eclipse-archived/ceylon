@@ -2958,7 +2958,9 @@ people.add( Person("Fonzie") );</programlisting>
         satisfies Producer&lt;X&gt;, Consumer&lt;X&gt; {}</programlisting>
         
         <para>Notice that <literal>Collection</literal> remains nonvariant in
-        <literal>X</literal>.</para>
+        <literal>X</literal>. If we tried to add a variance annotation to
+        <literal>X</literal> in <literal>Collection</literal>, a compile time
+        error would result.</para>
         
         <para>Now, the following code finally compiles:</para>
 
@@ -2982,7 +2984,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         built in. But you'll still appreciate Ceylon's approach to covariance
         as a user of the built-in collection types. The collections framework 
         defines two interfaces for each basic kind of collection. For example, 
-        there is an interface <literal>List&lt;X&gt;</literal> which represents 
+        there's an interface <literal>List&lt;X&gt;</literal> which represents 
         a read-only view of a list, and is covariant in <literal>X</literal>, 
         and <literal>OpenList&lt;X&gt;</literal>, which represents a mutable 
         list, and is nonvariant in <literal>X</literal>.</para>
