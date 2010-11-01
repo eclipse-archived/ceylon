@@ -211,7 +211,7 @@ annotatedDeclarationStart
     ;
 
 declarationStart
-    : declarationKeyword | type '...'? LIDENTIFIER
+    : declarationKeyword | union '...'? LIDENTIFIER
     ;
 
 declarationKeyword
@@ -306,7 +306,7 @@ memberHeader
     ;
 
 memberType
-    : type | 'void' | 'local'
+    : union | 'void' | 'local'
     ;
 
 memberParameters
@@ -374,7 +374,7 @@ extendedType
     ;
 
 satisfiedTypes
-    : 'satisfies' type (',' type)*
+    : 'satisfies' type ('&' type)*
     -> ^(SATISFIES_LIST type+)
     ;
 
@@ -384,18 +384,18 @@ abstractedType
     ;
     
 caseTypes
-    : 'of' caseType (',' caseType)*
+    : 'of' caseType ('|' caseType)*
     -> ^(ABSTRACTS_LIST caseType+)
     ;
 
 caseType 
     : type 
-    //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     | memberName
+    //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     ;
 
 metatypes
-    : 'is' type (',' type)* 
+    : 'is' type ('&' type)* 
     ;
 
 typeConstraint
@@ -406,6 +406,10 @@ typeConstraint
 typeConstraints
     : typeConstraint+
     -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
+    ;
+
+union
+    : type ('|' type)*
     ;
 
 type
@@ -462,7 +466,7 @@ typeArguments
     ;
 
 typeArgument
-    : type '...'? | '#'! dimension
+    : union '...'? | '#'! dimension
     ;
 
 dimension
@@ -815,7 +819,7 @@ functionalArgumentDefinition
     ;
 
 specialArgument
-    : (type | 'local') memberName (containment | specifier)
+    : (union | 'local') memberName (containment | specifier)
     //| isCondition
     //| existsCondition
     ;
@@ -849,15 +853,15 @@ formalParameter
     ;
 
 valueFormalParameter
-    : '->' type parameterName
+    : '->' union parameterName
     ;
 
 iteratedFormalParameter
-    : 'in' type parameterName
+    : 'in' union parameterName
     ;
 
 specifiedFormalParameter
-    : '=' type parameterName
+    : '=' union parameterName
     ;
 
 specifiedFormalParameterStart
@@ -869,7 +873,7 @@ extraFormalParameter
     ;
 
 formalParameterType
-    : type '...'? | 'void'
+    : union '...'? | 'void'
     ;
 
 // Control structures.
@@ -889,8 +893,8 @@ nonemptyCondition
     ;
 
 isCondition
-    : 'is' type ( (memberName '=') => memberName specifier | expression )
-    -> ^(IS_EXPR type memberName? specifier? expression?)
+    : 'is' union ( (memberName '=') => memberName specifier | expression )
+    -> ^(IS_EXPR union memberName? specifier? expression?)
     ;
 
 controlStructure
@@ -947,8 +951,8 @@ expressions
     ;
 
 isCaseCondition
-    : 'is' type
-    -> ^(IS_EXPR type)
+    : 'is' union
+    -> ^(IS_EXPR union)
     ;
 
 forFail
@@ -1032,7 +1036,7 @@ controlVariableOrExpression
     ;
 
 variable
-    : (type | 'local') memberName formalParameters*
+    : (union | 'local') memberName formalParameters*
     ;
 
 // Lexer
@@ -1072,8 +1076,8 @@ fragment DOT
 fragment FLOATLITERAL :;
 NATURALLITERAL
     : Digits
-      ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOATLITERAL; } )?
-    | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
+      ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $union = FLOATLITERAL; } )?
+    | '.' ( '..' { $union = ELLIPSIS; } | '.'  { $union = RANGE; } | { $union = DOT; } )
     ;
     
 fragment SPREAD :;
@@ -1082,9 +1086,9 @@ fragment ARRAY :;
 BRACKETS
     : '['
     ( 
-      ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
-    | ( { input.LA(1) == ']' }? => ']' { $type = ARRAY; } )
-    | { $type = LBRACKET; } 
+      ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $union = SPREAD; } )
+    | ( { input.LA(1) == ']' }? => ']' { $union = ARRAY; } )
+    | { $union = LBRACKET; } 
     )
     ;    
 
