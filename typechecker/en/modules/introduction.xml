@@ -819,7 +819,10 @@ public void hello() {
         <itemizedlist>
             <listitem>
                 <para><emphasis>defaulted parameters</emphasis>, to emulate the effect of
-                overloading a method or class by "arity" (the number of parameters), and</para>
+                overloading a method or class by "arity" (the number of parameters),</para>
+            </listitem>
+            <listitem>
+                <para><emphasis>sequenced parameters</emphasis>, i.e. "varargs", and</para>
             </listitem>
             <listitem>
                 <para><emphasis>union types</emphasis>, to emulate the effect of overloading
