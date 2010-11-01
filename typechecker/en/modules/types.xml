@@ -422,8 +422,19 @@ public abstract class Boolean()
          value matches."
     formal Boolean matches(X value);
     
+    Boolean matchesCase<Y>(Y? y) 
+            given Y abstracts X {
+        if (exists y) {
+            if (is X y) {
+                return matches(y)
+            }
+        }
+        return false
+    }
+        
 }]]></programlisting>
 
+        <!-- 
         <comment><para>TODO: the two extensions that follow don't actually 
         work, since they overload the <literal>matches()</literal> method 
         of <literal>Matcher</literal>.</para></comment>
@@ -439,10 +450,10 @@ public abstract class Boolean()
             return this.matches(x)
         }
         else {
-            return false;
+            return false
         }
     }
-        
+    
 }]]></programlisting>
 
         <para>An extension allows <literal>Matcher&lt;X&gt;</literal> to 
@@ -458,12 +469,13 @@ public abstract class Boolean()
             return this.matches(y)
         }
         else {
-            return false;
+            return false
         }
     }
         
 }]]></programlisting>
-        
+        -->
+
         <para>The class <literal>Case</literal> is the supertype of anonymous 
         classes that may be cases in an <literal>of</literal> clause.</para>
         

@@ -871,8 +871,9 @@ else {
 
             <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 
             value must be a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
-            where <literal>X</literal> is the <literal>switch</literal> expression type. Alternatively, 
-            a <literal>case</literal> may be an assignability condition of form <literal>case (is ...)</literal>.</para>
+            where <literal>X</literal> is a subtype of the <literal>switch</literal> expression type. 
+            Alternatively, a <literal>case</literal> may be an assignability condition of form 
+            <literal>case (is ...)</literal>.</para>
 
             <programlisting>Case := Expression ("," Expression)* | "is" Union</programlisting>
             
@@ -933,7 +934,7 @@ else {
             
             <para>When the construct is executed, the <literal>switch</literal> expression is 
             evaluated, and the resulting value is tested against the <literal>case</literal> values 
-            using <literal>Matcher.matches()</literal>. The <literal>case</literal> block for the 
+            using <literal>Matcher.matchesCase()</literal>. The <literal>case</literal> block for the 
             first <literal>case</literal> value that tests <literal>true</literal> is executed. If 
             no <literal>case</literal> value tests <literal>true</literal>, and an <literal>else</literal> 
             block is defined, the <literal>else</literal> block is executed.</para>
