@@ -735,8 +735,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <programlisting>MethodReference := (Receiver ".")? MemberName TypeArguments?</programlisting>        
 
         <para>The type of a method reference expression is assignable to the callable 
-        type of every overloaded version of the method. Calling the method reference 
-        results in execution of the method.</para>
+        type of <!--every overloaded version of--> the method. Calling the method 
+        reference results in execution of the method.</para>
         
         </section>
 
@@ -749,8 +749,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <programlisting>InitializerReference := (Receiver ".")? TypeName TypeArguments?</programlisting>
         
         <para>The type of an initializer reference expression is assignable to the 
-        callable type of every overloaded version of the class. Calling the initializer 
-        reference results in instantiation of the class.</para>
+        callable type of <!-- every overloaded version of--> the class. Calling the 
+        initializer reference results in instantiation of the class.</para>
         
         </section>
         
@@ -810,6 +810,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <programlisting>void display(String message) = log.info;</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
+        
+        <programlisting>void print(String|Integer|Float val) = printer.print;</programlisting>
         
         </section>
         
@@ -921,11 +923,13 @@ local comp = order(1,-1);</programlisting>
         is not reified by the <literal>Callable</literal> interface. The compiler is aware of:</para>
         
         <itemizedlist>
+            <!--
             <listitem>
                 <para>all the overloaded versions of the method or class (the various
                 <literal>Callable</literal> types to which the callable reference
                 expression is assignable),</para>
             </listitem>
+            -->
             <listitem>
                 <para>the names of the parameters of the method or class,</para>
             </listitem>
@@ -1474,8 +1478,8 @@ using() resource satisfies Usable {
         <para>Perhaps the <literal>extends</literal> or <literal>satisfies</literal> 
         clause could be inferred from the parameter type in some cases.</para></comment>
         
-        <comment><para>TODO: Should we support type inference for the parameters? It 
-        gets complicated with method overloading? For example:</para>
+        <comment><para>TODO: Should we support type inference for the parameters?
+        For example:</para>
         <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
         <programlisting>where (local p) (p.age>18)</programlisting></comment>
 
@@ -1647,7 +1651,8 @@ except (SomethingElseWrong sew) {
     produce -2;
 }</programlisting>
         -->
-
+            
+            <!--
             <section id="resolvingoverloadedmethodsandtypes">
                 <title>Resolving direct invocations of overloaded methods and classes</title>
                 
@@ -1663,10 +1668,10 @@ except (SomethingElseWrong sew) {
                         <para>taking the signature of the parameter list of the class, or of the 
                         first parameter list of the method, and</para>
                     </listitem>
-            <!--listitem>
+            --><!--listitem>
                 <para>replacing each occurrence of any type alias in the signature with the
                 aliased type, and</para>
-            </listitem-->
+            </listitem--><!--
                     <listitem>
                         <para>replacing each occurrence of any type parameter of the receiving type
                         in the signature with the type argument of that parameter in the callable 
@@ -1746,6 +1751,9 @@ except (SomethingElseWrong sew) {
                 type in this situation? If so, what happens when both the class and its 
                 superclass satisfy the constraint?</para></comment>
                 
+            </section>
+            -->
+
                 <!--
                 <comment><para>TODO: What about the case of an "unbound" type parameter which does
                 not appear in the parameter list? Is it an error, or should the compiler 
@@ -1767,9 +1775,7 @@ except (SomethingElseWrong sew) {
 }]]></programlisting>
                 <para>Note that the difference is that a constraint (or expected return type) poses 
                 an upper bound, whereas an argument poses a lower bound.</para></comment>
-                -->
-                
-            </section>
+                -->                
 
         </section>
         
@@ -2302,14 +2308,14 @@ setPerson(person);</programlisting>
             <listitem>
                 <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
                 <literal>X</literal> is the toplevel class and <literal>P...</literal> 
-                are the types of the parameter list of the class, for every overloaded 
-                version of the class, or</para>
+                are the types of the parameter list of the class, <!--for every overloaded 
+                version of the class,--> or</para>
             </listitem>
             <listitem>
                 <para>assignable to <literal>MemberClass&lt;X,Y,P...&gt;</literal> where 
                 <literal>Y</literal> is the member class and <literal>P...</literal> 
-                are the types of the parameter list of the class, for every overloaded 
-                version of the class.</para>
+                are the types of the parameter list of the class. <!--for every overloaded 
+                version of the class.--></para>
             </listitem>
         </itemizedlist>
         
@@ -2341,8 +2347,8 @@ setPerson(person);</programlisting>
                 <para>assignable to <literal>Function&lt;R,P...&gt;</literal> where 
                 <literal>R</literal> is the callable type of a method produced by 
                 removing the first parameter list of the method, and <literal>P...</literal> 
-                are the types of the first parameter lists of the method, for every 
-                overloaded version of the method.</para>
+                are the types of the first parameter lists of the method. <!--for every 
+                overloaded version of the method.--></para>
             </listitem>
         </itemizedlist>
         
@@ -2372,7 +2378,7 @@ setPerson(person);</programlisting>
                 <literal>R</literal> is the callable type of a method produced by 
                 removing the first parameter list of the method, and 
                 <literal>P...</literal> are the types of the first parameter list of 
-                the method, for every overloaded version of the method.</para>
+                the method. <!--for every overloaded version of the method.--></para>
             </listitem>
         </itemizedlist>
          
@@ -3835,7 +3841,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
-            <entry><literal>T given T satisfies Ordinal, Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Range&lt;T&gt;</literal></entry>
         </row>
@@ -3845,8 +3851,8 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs -> rhs</literal></entry>
             <entry>entry</entry>
             <entry><literal>Entry(lhs, rhs)</literal></entry>
-            <entry><literal>U given U satisfies Object, Equals&lt;U&gt;</literal></entry>
-            <entry><literal>V given V satisfies Object, Equals&lt;V&gt;</literal></entry>
+            <entry><literal>U given U satisfies Object &amp; Equals&lt;U&gt;</literal></entry>
+            <entry><literal>V given V satisfies Object &amp; Equals&lt;V&gt;</literal></entry>
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         

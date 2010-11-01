@@ -43,13 +43,6 @@
             <emphasis>implement</emphasis> one or more interfaces. An instance of a class 
             that implements an interface is also considered an instance of the interface.</para>
         </listitem>
-        <!--
-        <listitem>
-            <para>A <emphasis>union</emphasis> is a type whose value may be a value of 
-            any one of an enumerated list of classes. <emphasis>NOTE: Union types are 
-            a feature proposed for inclusion in a future version of the language.</emphasis></para>
-        </listitem>
-        -->
         <listitem>
             <para>A <emphasis>generic type parameter</emphasis> is considered a type
             within the declaration that it parameterizes. In fact, it is an abstraction
@@ -59,6 +52,11 @@
         <listitem>
             <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
             for the generic type parameters of a parameterized type.</para>
+        </listitem>
+        <listitem>
+            <para>A <emphasis>union</emphasis> is a type whose value may be a value of 
+            any one of an enumerated list of types. <emphasis>NOTE: Union types are a 
+            feature proposed for inclusion in a future version of the language.</emphasis></para>
         </listitem>
     </itemizedlist>
     
@@ -203,6 +201,7 @@
         <section id="memberdistinctness">
             <title>Member distinctness</title>
         
+        <!--
         <para>The <emphasis>erased signature</emphasis> of a method or class is formed by:</para>
         
         <itemizedlist>
@@ -247,7 +246,8 @@
         <comment><para>TODO: I think we should nuke all the above, and simply outlaw 
         overloading by parameter type, while retaining the ability to overload by
         arity.</para></comment>
-            
+        -->
+        
         <para>A type may not have:</para>
         
         <itemizedlist>
@@ -258,12 +258,20 @@
                 <para>a method and an attribute with the same name,</para>
             </listitem>
             <listitem>
+                <para>two methods with the same name, or</para>
+            </listitem>
+            <listitem>
+                <para>two member classes with the same name.</para>
+            </listitem>
+            <!--  
+            <listitem>
                 <para>two methods with the same name and non-distinct erased signatures, 
                 or</para>
             </listitem>
             <listitem>
                 <para>two member classes with the same name and non-distinct erased signatures.</para>
             </listitem>
+            -->
         </itemizedlist>
         
         </section>
@@ -284,6 +292,13 @@
                 <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
             </listitem>
             <listitem>
+                <para>Unions: <literal>X</literal> is a subtype of <literal>X|Y</literal> for 
+                any types <literal>X</literal> and <literal>Y</literal>. Furthermore, if both 
+                <literal>X</literal> and <literal>Y</literal> are subtypes of <literal>Z</literal>,
+                then <literal>X|Y</literal> is also a subtype of <literal>Z</literal>.
+                </para>
+            </listitem>
+            <listitem>
                 <para>Interfaces <!--and unions--> are objects: all interfaces <!--and unions--> 
                 are subtypes of <literal>ceylon.language.Object</literal>. Conversely, only 
                 a subtype of <literal>ceylon.language.Object</literal> may satisfy an interface.
@@ -294,7 +309,22 @@
             </listitem>
         </itemizedlist>
         
+        </section>
         
+        <section id="unions">
+            <title>Unions</title>
+            
+            <para>For any types <literal>X</literal> and <literal>Y</literal>, a <emphasis>union</emphasis>,
+            <literal>X|Y</literal>, of the types may be formed.</para>
+            
+            <programlisting>Union := Type ("|" Type)*</programlisting>
+            
+            <para>The union type constructor <literal>|</literal> is associative, so the union of 
+            three types may be written <literal>X|Y|Z</literal>.</para>
+            
+            <para>If <literal>X</literal> and <literal>Y</literal> are both subtypes of a third type 
+            <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
+            
         </section>
         
         <section id="assignability">
@@ -389,7 +419,7 @@
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
         where the type usually appears.</para>
         
-        <programlisting>InferableType := Type | "local"</programlisting>
+        <programlisting>InferableType := Union | "local"</programlisting>
         
         <para>Type inference is only allowed for block local declarations. The keyword
         <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
@@ -541,13 +571,13 @@ String? firstWord = words[0];</programlisting>
         or more interfaces. <!--A union may satisfy one or more interfaces.--> A type 
         parameter may satisfy one or more interfaces and, optionally, a class.</para>
         
-        <programlisting>SatisfiedTypes = "satisfies" Type ("," Type)*</programlisting>
+        <programlisting>SatisfiedTypes = "satisfies" Type ("&amp;" Type)*</programlisting>
     
         <para>The <literal>satisfies</literal> clause may specify multiple types. If 
         a satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
         must specify type arguments.</para>
         
-        <programlisting>satisfies T[], Collection&lt;T&gt;</programlisting>
+        <programlisting>satisfies T[] &amp; Collection&lt;T&gt;</programlisting>
         
         <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
         a class or interface.</para>
@@ -582,7 +612,7 @@ String? firstWord = words[0];</programlisting>
         specify an enumerated list of all its subtypes.<!--A union must specify an 
         enumerated list of its subtypes.--></para>
     
-        <programlisting>CaseTypes := "of" CaseType ("," CaseType)*</programlisting>
+        <programlisting>CaseTypes := "of" CaseType ("|" CaseType)*</programlisting>
         
         <para>The <literal>of</literal> clause may specify multiple types, called
         <emphasis>cases</emphasis>.</para>
@@ -594,9 +624,9 @@ String? firstWord = words[0];</programlisting>
         identifier. Any anonymous class that appears as a case must extend the 
         class <literal>ceylon.language.Case</literal>.</para>
         
-        <programlisting>of larger, smaller, equal</programlisting>
+        <programlisting>of larger | smaller | equal</programlisting>
         
-        <programlisting>of Root&lt;T&gt;, Leaf&lt;T&gt;, Branch&lt;T&gt;</programlisting>
+        <programlisting>of Root&lt;T&gt; | Leaf&lt;T&gt; | Branch&lt;T&gt;</programlisting>
         
         <para>An explicit list of cases allows safe use of a type in a 
         <literal>switch</literal> statement. The compiler is able to validate
@@ -608,8 +638,8 @@ String? firstWord = words[0];</programlisting>
     <section id="metatypes">
         <title>Metatypes</title>
         
-        <comment><para>NOTE: Metatypes are a proposed feature for a future
-        version of the language.</para></comment>
+        <comment><para>NOTE: Metatypes are a proposed feature for a future version 
+        of the language.</para></comment>
         
         <para>A class or interface may optionally specify a list of 
         <emphasis>metatypes</emphasis>, interfaces implemented by the concrete
@@ -619,7 +649,7 @@ String? firstWord = words[0];</programlisting>
         <para>Similarly, a type constraint may specify a list of types which 
         must be supertypes of the metatype of the type argument.</para>
         
-        <programlisting>Metatypes := "is" Type ("," Type)*</programlisting>
+        <programlisting>Metatypes := "is" Type ("&amp;" Type)*</programlisting>
         
         <para>The concrete metatype of a type <literal>T</literal> is the concrete 
         class of the object to which the expression <literal>T</literal> evaluates.
@@ -1059,7 +1089,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
        
         <programlisting>given S satisfies Decimal[n]</programlisting>
 
-        <programlisting>given T satisfies Ordinal, Comparable&lt;T&gt; abstracts X</programlisting>
+        <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
         
         <programlisting>given N is Monoid&lt;N&gt;</programlisting>
     
@@ -1155,7 +1185,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
-        <programlisting>TypeArgument := Type | "#" Dimension</programlisting>
+        <programlisting>TypeArgument := Union | "#" Dimension</programlisting>
         
         <section id="dimensions">
             <title>Dimensions</title>
@@ -1223,6 +1253,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
         <programlisting>Map&lt;Key, Value&gt;</programlisting>
         <programlisting>Callable&lt;String,Object...&gt;</programlisting>
+        <programlisting>Method&lt;Void,String|Integer|Float&gt;</programlisting>
         
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
@@ -1337,6 +1368,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
+        <!--overloading:
         <para>Substitution of type arguments may result in an ambiguity:</para>
         
         <itemizedlist>
@@ -1356,6 +1388,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <para>A type with an ambiguity may never be extended or implemented by another type.
         It may not appear in an <literal>extends</literal>, <literal>satisfies</literal> or
         <literal>abstracts</literal> clause.</para>
+        -->
         
         </section>
                 
@@ -1436,13 +1469,23 @@ SequencedParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* (Type|"void") (ParameterName|"this") Params*</programlisting>
+        <programlisting>Param := Annotation* (Union | "void") (ParameterName | "this") Params*</programlisting>
         
         <para>A parameter may not be be declared <literal>mutable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
         
         <para>Only a parameter of a toplevel extension method or class may define a parameter
         named <literal>this</literal>.</para>
+        
+        <section id="unionparameters">
+            <title>Union parameters</title>
+            
+            <para>A parameter may be of union type. This allows a method to emulate a Java-style 
+            overloaded method, or a class to emulate Java-style constructor overloading.</para>
+            
+            <programlisting>(String|Integer|Float value)</programlisting>
+            
+        </section>
         
         <section id="callableparameters">
             <title>Callable parameters</title>
@@ -1508,7 +1551,7 @@ SequencedParam?
             </listitem>
         </itemizedlist>
         
-        <programlisting>SequencedParam := Annotation* Type "..." ParameterName</programlisting>
+        <programlisting>SequencedParam := Annotation* Union "..." ParameterName</programlisting>
         
         <para>The sequenced parameter or tuple parameter must be the last parameter in the 
         list.</para>
@@ -1524,7 +1567,7 @@ SequencedParam?
         
         <para>A parameter of type <literal>Entry</literal> may be specified as a pair of variables.</para>
         
-        <programlisting>EntryParamPair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
+        <programlisting>EntryParamPair := Annotation* Union ParameterName "->" Union ParameterName</programlisting>
         
         <para>A key/value parameter pair declaration of form <literal>U u -> V v</literal> results 
         in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>

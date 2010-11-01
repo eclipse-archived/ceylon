@@ -1111,7 +1111,7 @@ else {
         we need to define an abstract type with an enumerated list of cases.</para>
         
         <programlisting>abstract class Hello() 
-        of defaultHello, PersonalizedHello
+        of defaultHello | PersonalizedHello
         extends Case() {
     ...
 }</programlisting>
@@ -1133,7 +1133,7 @@ case (is PersonalizedHello) {
         <para>This is Ceylon's version of a Java <literal>enum</literal>:</para>
         
         <programlisting>public class Suit() 
-        of hearts, diamonds, clubs, spades 
+        of hearts | diamonds | clubs | spades 
         extends Case() {}
         
 public object hearts extends Suit() {}
@@ -2646,7 +2646,7 @@ class Person(String firstName, String lastName, Language lang) {
         exactly like a Java <literal>enum</literal>&mdash;to represent the built-in 
         languages that our program supports.</para>
         
-        <programlisting>interface Language of english, french, spanish, italian;
+        <programlisting>interface Language of english | french | spanish | italian;
 
 object english extends Case("English") satisfies Language;
 object french extends Case("French") satisfies Language;
@@ -2994,7 +2994,7 @@ people.add( Person("Fonzie") );</programlisting>
         mixin of <literal>Producer</literal> with <literal>Consumer</literal>.</para>
         
         <programlisting>public interface Collection&lt;X&gt; 
-        satisfies Producer&lt;X&gt;, Consumer&lt;X&gt; {}</programlisting>
+        satisfies Producer&lt;X&gt; &amp; Consumer&lt;X&gt; {}</programlisting>
         
         <para>Notice that <literal>Collection</literal> remains nonvariant in
         <literal>X</literal>. If we tried to add a variance annotation to

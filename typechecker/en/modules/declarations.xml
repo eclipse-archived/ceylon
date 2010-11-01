@@ -21,7 +21,7 @@
     <para>All declarations follow a general pattern:</para>
         
     <programlisting>Annotation* 
-(keyword|Type) (TypeName|MemberName) TypeParams? Params*
+(keyword | InferableType) (TypeName | MemberName) TypeParams? Params*
 CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?
 TypeConstraints?
 (Definition | ";")</programlisting>
@@ -359,7 +359,7 @@ TypeConstraints?
             <para>An interface may extend any number of other interfaces.</para>
         
             <programlisting>public interface List&lt;T&gt;
-        satisfies T[], Collection&lt;T&gt; {
+        satisfies T[] &amp; Collection&lt;T&gt; {
     ...
 }</programlisting>
         
@@ -408,7 +408,7 @@ TypeConstraints?
         <para>The <literal>of</literal> clause of an interface declaration specifies the 
         list of cases of the interface.</para>
         
-        <programlisting>public interface class Node&lt;T&gt; of Root&lt;T&gt;, Branch&lt;T&gt;, Leaf&lt;T&gt; { ... }</programlisting>
+        <programlisting>public interface Node&lt;T&gt; of Root&lt;T&gt; | Branch&lt;T&gt; | Leaf&lt;T&gt; { ... }</programlisting>
         
         <para>The cases may be interfaces, classes, or anonymous classes. A case may be 
         an <literal>abstract</literal> class. Each case must be a subtype of the
@@ -508,6 +508,19 @@ TypeConstraints?
         containing scope. It may not refer to <literal>mutable</literal> locals from the 
         containing scope.</para>
         -->
+
+            <para>A package or body may not declare or inherit two classes with the 
+            same name unless either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>one class refines the other class, or</para>
+                </listitem>
+                <listitem>
+                    <para>one class is defined by a supertype, and is not visible
+                    to the subtype that defines the other class.</para>
+                </listitem>
+            </itemizedlist>
 
     <section id="initializerparameters">
         <title>Initializer parameters</title>
@@ -853,9 +866,10 @@ public class Person { ... }</programlisting>
         extends Person(name, org) { 
     ... 
 }</programlisting>
+
         <programlisting>class Token() 
         extends Datetime()
-        satisfies Comparable&lt;Token&gt;, Identifier {
+        satisfies Comparable&lt;Token&gt; &amp; Identifier {
     ... 
 }</programlisting>
         
@@ -965,6 +979,7 @@ public class Person { ... }</programlisting>
          
         </section>
        
+        <!--
         <section id="overloadedclasses">
             <title>Overloaded classes</title>
             
@@ -1015,6 +1030,7 @@ public class Person { ... }</programlisting>
             </itemizedlist>
         
         </section>
+        -->
         
     <section id="abstractandformalclasses">
         <title>Abstract and formal classes</title>
@@ -1301,14 +1317,14 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         list of cases of the class.</para>
         
         <programlisting>public abstract class Boolean() 
-        of true, false 
+        of true | false 
         extends Case() {}
         
 public object true extends Boolean() {}
 public object false extends Boolean() {}</programlisting>
 
         <programlisting>public abstract class Node&lt;T&gt;(String name) 
-        of Branch, Leaf 
+        of Branch | Leaf 
         extends Case(name) { ... }
         
 public class Leaf&lt;T&gt;(String name, T value) extends Node&lt;T&gt;(name) { ... }
@@ -1338,7 +1354,7 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         -->
         
         <comment><para>TODO: Should we introduce an abbreviated syntax like:</para>
-        <programlisting>public abstract class Boolean() of case true, case false {}</programlisting>
+        <programlisting>public abstract class Boolean() of case true | case false {}</programlisting>
         <para>Note that it must be <literal>case</literal> instead of <literal>object</literal>
         to resolve an ambiguity between an annotation and the class body followed by 
         a declaration.</para>
@@ -1580,6 +1596,19 @@ public choice TransactionPropagationStyle
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         -->
         
+            <para>A package or body may not declare or inherit two methods with the 
+            same name unless either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>one method refines the other method, or</para>
+                </listitem>
+                <listitem>
+                    <para>one method is defined by a supertype, and is not visible
+                    to the subtype that defines the other method.</para>
+                </listitem>
+            </itemizedlist>
+
         <section id="callabletype">
             <title>Callable type of a method</title>
             
@@ -1864,6 +1893,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 
         </section>
         
+        <!--
         <section id="overloadedmethods">
             <title>Overloaded methods</title>
             
@@ -1904,6 +1934,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </itemizedlist>
         
         </section>
+        -->
         
        <section id="formalmethods">
             <title>Formal methods</title>
@@ -2099,8 +2130,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>mutable</literal>.</para>
         
-        <para>There is no overloading for attributes. A package or body may not declare 
-        or inherit two attributes with the same name unless either:</para>
+        <para><!--There is no overloading for attributes.--> A package or body may not 
+        declare or inherit two attributes with the same name unless either:</para>
             
         <itemizedlist>
             <listitem>
@@ -2378,9 +2409,11 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
             <comment><para>TODO: should we require that the corresponding getter be 
             annotated <literal>mutable</literal>?</para></comment>
             
+            <!--
             <comment><para>TODO: should we allow overloaded attribute setters, for example:</para>
             <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
             </comment>
+            -->
             
             <!--
             <para>is equivalent to this Java code:</para>
@@ -2787,10 +2820,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         levels:</para>
         
         <programlisting>public interface Visibility 
-        of publicVisibility, 
-           moduleVisibility, 
-           packageVisibility, 
-           blockVisibility {}
+        of publicVisibility 
+         | moduleVisibility 
+         | packageVisibility 
+         | blockVisibility {}
         
 doc "A program element visible to all 
      compilation units."

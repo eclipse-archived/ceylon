@@ -403,7 +403,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <programlisting><![CDATA[public object true extends Boolean() {}
 public object false extends Boolean() {}
 public abstract class Boolean() 
-        of true, false 
+        of true | false 
         extends Case() {}]]></programlisting>
 
     </section>
@@ -425,9 +425,8 @@ public abstract class Boolean()
 }]]></programlisting>
 
         <comment><para>TODO: the two extensions that follow don't actually 
-        work, since they overload the <literal>matches()</literal> method of
-        <literal>Matcher</literal> in a way that doesn't permit resolution 
-        according to the rules we have written down.</para></comment>
+        work, since they overload the <literal>matches()</literal> method 
+        of <literal>Matcher</literal>.</para></comment>
 
         <para>An extension allows <literal>Matcher&lt;X&gt;</literal> to 
         function as <literal>Matcher&lt;X?&gt;</literal>.</para>
@@ -492,7 +491,7 @@ public abstract class Case(String caseName)
         value that may be null.</para>
         
         <programlisting><![CDATA[public abstract class Optional<out X>() 
-        of Something<X>, Nothing<X>
+        of Something<X> | Nothing<X>
         extends Void() {
     
     doc "The unary postfix existence operator 
@@ -809,8 +808,8 @@ while (exists local value = iter.head) {
     to be used with the <literal>in</literal> operator.</para>
     
     <programlisting><![CDATA[public interface FiniteCategory<T>
-        satisfies Iterable<T>, Category
-        given T satisfies Object, Equals<T> {
+        satisfies Iterable<T> & Category
+        given T satisfies Object & Equals<T> {
         
     actual default Boolean contains(Object... objects) {
         for (Object obj in objects) {
@@ -887,8 +886,8 @@ while (exists local value = indexed.indexedValue(i)) {
             <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
         extends Object() 
         satisfies Equals<Entry<U,V>>
-        given U satisfies Object, Equals<U> 
-        given V satisfies Object, Equals<V> {
+        given U satisfies Object & Equals<U> 
+        given V satisfies Object & Equals<V> {
     
     doc "The key used to access the entry."
     public U key = key;
@@ -916,8 +915,8 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public interface Correspondence<in U, out V>
         is EnumerableCorrespondence<U,V>
-        given U satisfies Object, Equals<U> 
-        given V satisfies Object, Equals<V> {
+        given U satisfies Object & Equals<U> 
+        given V satisfies Object & Equals<V> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
@@ -998,8 +997,8 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <programlisting><![CDATA[public interface EnumerableCorrespondence<U,V>
         satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
-        given U satisfies Object, Equals<U> 
-        given V satisfies Object, Equals<V> {
+        given U satisfies Object & Equals<U> 
+        given V satisfies Object & Equals<V> {
     actual default Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
@@ -1018,8 +1017,8 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> 
-        given U satisfies Object, Equals<U> 
-        given V satisfies Object, Equals<V> {
+        given U satisfies Object & Equals<U> 
+        given V satisfies Object & Equals<V> {
     
     actual Settable<V?> value(U key);
     
@@ -1110,7 +1109,7 @@ public object equal extends Comparison() {}
 doc "The result of a comparison between two
      objects."
 public abstract class Comparison() 
-        of larger, smaller, equal 
+        of larger | smaller | equal 
         extends Case() {}]]></programlisting>
 
         <comment><para>TODO: should we support partial orders? Give
@@ -1217,8 +1216,8 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X>, Iterable<X>, Container, Category
-        given X satisfies Object, Equals<X> {
+        satisfies Correspondence<Natural, X> & Iterable<X> & Container & Category
+        given X satisfies Object & Equals<X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
@@ -1283,7 +1282,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         
         <programlisting><![CDATA[public interface EnumerableSequence<X>
         satisfies Callable<X[],X...> 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
     actual default X[] call(X... elements) {
         return elements
     }
@@ -1294,7 +1293,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[] this)
         satisfies Iterable<Entry<Natural,X>> 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
         
     actual Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
@@ -1354,7 +1353,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
      sequence does not reflect changes to the original 
      sequences."
 public T[] join<T>(T[]... sequences) 
-        given T satisfies Object, Equals<T> {
+        given T satisfies Object & Equals<T> {
             
     object joinedSequence satisfies T[] {
         actual Natural? lastIndex {
@@ -1400,7 +1399,7 @@ public T[] join<T>(T[]... sequences)
      The returned sequence does not reflect changes 
      to the original sequence."
 public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
-        given T satisfies Object, Equals<T> {
+        given T satisfies Object & Equals<T> {
          
     object rangeSequence satisfies T[] {
         actual Natural? lastIndex {
@@ -1439,15 +1438,15 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         an index.</para>
         
         <programlisting><![CDATA[public interface OpenSequence<X>
-        satisfies X[], OpenCorrespondence<Natural,X> 
-        given X satisfies Object, Equals<X> {}]]></programlisting>
+        satisfies X[] & OpenCorrespondence<Natural,X> 
+        given X satisfies Object & Equals<X> {}]]></programlisting>
 
         <para>A <literal>BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, #n>
         satisfies X[] 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
         
     formal Gettable<X> value(Bounded<#n> index);
     actual default Bounded<#n>? lastIndex;
@@ -1460,7 +1459,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[n] this)
         satisfies Iterable<Entry<Bounded<#n>,X>> 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
         
     actual Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
@@ -1500,8 +1499,8 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         <para>There is a mutable subtype which allows assignment to an index.</para>
         
         <programlisting><![CDATA[public interface OpenBoundedSequence<X,#n>
-        satisfies X[n], OpenSequence<X> 
-        given X satisfies Object, Equals<X> {
+        satisfies X[n] & OpenSequence<X> 
+        given X satisfies Object & Equals<X> {
     public Settable<X> value(Bounded<#n> index);
 }]]></programlisting>
 
@@ -1513,7 +1512,7 @@ public object none {
 
     public extension class EmptySequence<out X>() 
             satisfies X[0] 
-            given X satisfies Object, Equals<X> {
+            given X satisfies Object & Equals<X> {
         
         actual Natural? lastIndex = null;
         
@@ -1564,8 +1563,8 @@ public object none {
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         extends Object() 
-        satisfies X[], Matcher<X>, Equals<Range<X>>
-        given X satisfies Object, Ordinal, Comparable<X>, Equals<X> { 
+        satisfies X[] & Matcher<X> & Equals<Range<X>>
+        given X satisfies Object & Ordinal & Comparable<X> & Equals<X> { 
     
     doc "The first value in the range."
     public X first = first;
@@ -1696,7 +1695,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Character(small Natural utf16)
         extends Object()
-        satisfies Ordinal, Comparable<Character>, Matcher<Character> { 
+        satisfies Ordinal & Comparable<Character> & Matcher<Character> { 
     ... 
     
     doc "The UTF-8 encoding"
@@ -1724,7 +1723,7 @@ while (i<=max) {
                 
         <programlisting><![CDATA[public extension class String(Character[] this) 
         extends Object() 
-        satisfies Character[], Comparable<String>, Matcher<String>, Format {
+        satisfies Character[] & Comparable<String> & Matcher<String> & Format {
     
     Character[] chars;
     if (is String this) {
@@ -1981,7 +1980,7 @@ while (i<=max) {
         <literal>+=, -=, /=, *=</literal>.</para>
 
 <programlisting><![CDATA[public interface Numeric<N>
-        satisfies Number, Comparable<N>
+        satisfies Number & Comparable<N>
         given N satisfies Numeric<N> {
 
     doc "The binary |+| operator"
@@ -2010,7 +2009,7 @@ while (i<=max) {
         <literal>Ordinal</literal>.</para>
 
 <programlisting><![CDATA[public interface Integral<N>
-        satisfies Numeric<N>, Ordinal
+        satisfies Numeric<N> & Ordinal
         given N satisfies Number {
 
     doc "The binary |%| operator"
@@ -2036,7 +2035,7 @@ while (i<=max) {
         
         <programlisting><![CDATA[public class Natural(Natural natural)
         extends Object() 
-        satisfies Integral<Natural>, Invertable<Integer>, Matcher<Integer> { 
+        satisfies Integral<Natural> & Invertable<Integer> & Matcher<Integer> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
@@ -2077,7 +2076,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
         extends Object() 
-        satisfies Integral<Integer>, Invertable<Integer>, Matcher<Integer> {
+        satisfies Integral<Integer> & Invertable<Integer> & Matcher<Integer> {
     ...
     
     doc "Implicit type promotion to |Whole|"
@@ -2103,7 +2102,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
         extends Object() 
-        satisfies Integral<Whole>, Invertable<Whole> {
+        satisfies Integral<Whole> & Invertable<Whole> {
     ...
     
     public small Natural precision = ...;
@@ -2125,7 +2124,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Float(Float float)
         extends Object() 
-        satisfies Numeric<Float>, Invertable<Float> { 
+        satisfies Numeric<Float> & Invertable<Float> { 
     ... 
     
     doc "The natural logarithm of the number"
@@ -2148,7 +2147,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
         extends Object() 
-        satisfies Numeric<Decimal>, Invertable<Decimal> {
+        satisfies Numeric<Decimal> & Invertable<Decimal> {
     ...
 
     public small Natural precision = ...;
@@ -2227,7 +2226,7 @@ while (i<=max) {
         <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n], Equals<Bits<#n>>, FixedSlots<Bits<#n>> {}]]></programlisting>
+        satisfies Boolean[n] & Equals<Bits<#n>> & FixedSlots<Bits<#n>> {}]]></programlisting>
 
         <comment><para>TODO: should we model <literal>Bits&lt;#n&gt;</literal> as 
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
@@ -2317,7 +2316,7 @@ while (i<=max) {
         <para>A <literal>Function</literal> represents a toplevel method.</para>
 
         <programlisting><![CDATA[public interface Function<out R, P...> 
-        satisfies Callable<R, P...>, Annotated {
+        satisfies Callable<R, P...> & Annotated {
         
     formal String name;
     
@@ -2413,7 +2412,7 @@ while (i<=max) {
         which can be directly instantiated.</para>
         
         <programlisting><![CDATA[public interface ConcreteClass<out X, P...> 
-        satisfies Class<X>, Callable<X,P...> {
+        satisfies Class<X> & Callable<X,P...> {
     
     formal Boolean extension;
     
@@ -2425,7 +2424,7 @@ while (i<=max) {
         or member type.</para>
 
         <programlisting><![CDATA[public interface Member<in X, out T> 
-        satisfies Annotated, Callable<T,X> {
+        satisfies Annotated & Callable<T,X> {
     
     formal String name;
     
@@ -2478,25 +2477,25 @@ while (i<=max) {
         type.</para>
         
         <programlisting><![CDATA[public interface MemberType<X, Y> 
-        satisfies Type<Y>, Member<X, Type<Y>> {}]]></programlisting>
+        satisfies Type<Y> & Member<X, Type<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberInterface</literal> represents a member 
         interface.</para>
         
         <programlisting><![CDATA[public interface MemberInterface<X, Y> 
-        satisfies MemberType<X, Y>, Member<X, Interface<Y>> {}]]></programlisting>
+        satisfies MemberType<X, Y> & Member<X, Interface<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberClass</literal> represents a member 
         class.</para>
         
         <programlisting><![CDATA[public interface MemberClass<X, Y> 
-        satisfies MemberType<X, Y>, Member<X, Class<Y>> {}]]></programlisting>
+        satisfies MemberType<X, Y> & Member<X, Class<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberConcreteClass</literal> represents a member 
         class that can be directly instantiated.</para>
         
         <programlisting><![CDATA[public interface MemberConcreteClass<X, Y, P...> 
-        satisfies MemberType<X, Y>, Member<X, ConcreteClass<Y,P...>> {
+        satisfies MemberType<X, Y> & Member<X, ConcreteClass<Y,P...>> {
     
     formal Parameter<Object>[] parameters;
     
@@ -3132,8 +3131,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         root of the Ceylon collections framework.</para>
         
         <programlisting><![CDATA[public interface Collection<out X> 
-        satisfies Iterable<X>, Container, Category
-        given X satisfies Object, Equals<X> {
+        satisfies Iterable<X> & Container & Category
+        given X satisfies Object & Equals<X> {
     
     doc "The number of elements or entries belonging to the 
          collection."
@@ -3191,7 +3190,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
         <programlisting><![CDATA[public interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
     
     doc "Remove all elements or entries of the collection,
          resulting in an empty collection."
@@ -3218,7 +3217,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public interface Set<out X> 
         satisfies Collection<X> 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
     
     doc "Determine if the set is a superset of the given set.
          Return |true| if it is a superset."
@@ -3279,8 +3278,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public interface OpenSet<X> 
-        satisfies Set<X>, OpenCollection<X> 
-        given X satisfies Object, Equals<X> {}]]></programlisting>
+        satisfies Set<X> & OpenCollection<X> 
+        given X satisfies Object & Equals<X> {}]]></programlisting>
 
         </section>
         
@@ -3292,8 +3291,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <literal>Sequence</literal>:</para>
             
             <programlisting><![CDATA[public interface List<out X> 
-        satisfies Collection<X>, X[] 
-        given X satisfies Object, Equals<X> {
+        satisfies Collection<X> & X[] 
+        given X satisfies Object & Equals<X> {
     
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
@@ -3427,8 +3426,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public interface OpenList<X> 
-        satisfies List<X>, OpenCollection<X>, OpenSequence<X> 
-        given X satisfies Object, Equals<X> {
+        satisfies List<X> & OpenCollection<X> & OpenSequence<X> 
+        given X satisfies Object & Equals<X> {
 
     doc "Remove the element at the given index, decrementing
          the index of every element with an index greater
@@ -3514,9 +3513,9 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             in the key type?</para></comment>
             
             <programlisting><![CDATA[public interface Map<U, out V>
-        satisfies Collection<Entry<U,V>>, Correspondence<U, V> 
-        given U satisfies Object, Equals<U> 
-        given V satisfies Object, Equals<V> {
+        satisfies Collection<Entry<U,V>> & Correspondence<U, V> 
+        given U satisfies Object & Equals<U> 
+        given V satisfies Object & Equals<V> {
     
     doc "The keys of the map, as a |Set|."
     public Set<U> keys;
@@ -3550,9 +3549,9 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public interface OpenMap<U,V> 
-        satisfies Map<U,V>, OpenCollection<Entry<U,V>>, OpenCorrespondence<U, V> 
-        given U satisfies Object, Equals<U> 
-        given V satisfies Object, Equals<V> {
+        satisfies Map<U,V> & OpenCollection<Entry<U,V>> & OpenCorrespondence<U, V> 
+        given U satisfies Object & Equals<U> 
+        given V satisfies Object & Equals<V> {
     
     doc "Remove the entry for the given key, returning the 
          value of the removed entry."
@@ -3580,7 +3579,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X> 
-        given X satisfies Object, Equals<X> {
+        given X satisfies Object & Equals<X> {
     
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
@@ -3601,8 +3600,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>There is a mutable subtype:</para>
             
             <programlisting><![CDATA[public interface OpenBag<X> 
-        satisfies Bag<X>, OpenCollection<X> 
-        given X satisfies Object, Equals<X> {
+        satisfies Bag<X> & OpenCollection<X> 
+        given X satisfies Object & Equals<X> {
         
     actual OpenMap<X,Natural> map;
     
