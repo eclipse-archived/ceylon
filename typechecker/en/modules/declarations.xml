@@ -22,12 +22,9 @@
         
     <programlisting>Annotation* 
 keyword? Type? (TypeName|MemberName) TypeParams? FormalParams*
-CaseTypes?
-Metatypes?
-ExtendedType?
-SatisfiedTypes?
+CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?
 TypeConstraints?
-Body?</programlisting>
+(Definition | ";")</programlisting>
 
     <para>A type parameter does not need an explicit declaration of this form unless it has 
     constraints. In the case that it does have constraints, the constraint declaration does 
@@ -237,14 +234,18 @@ Body?</programlisting>
         implementation details for some members of the type. Interfaces may not be 
         directly instantiated.</para>
         
-        <programlisting>Interface :=
+        <programlisting>Interface := InterfaceHeader (InterfaceBody | TypeSpecifier ";")</programlisting>
+        
+        <para>An interface declaration may optionally specify a list of type 
+        parameters. An interface declaration may have a list of extended interfaces,
+        a list of metatypes, an enumerated list of subtypes, and/or a list of type 
+        constraints.</para>
+        
+        <programlisting>InterfaceHeader :=
 Annotation*
 "interface" TypeName TypeParams?
-CaseTypes?
-Metatypes?
-SatisfiedTypes?
-TypeConstraints? 
-(InterfaceBody | TypeSpecifier ";")</programlisting>
+CaseTypes? Metatypes? SatisfiedTypes?
+TypeConstraints?</programlisting>
 
         <para>To obtain a concrete instance of an interface, it is necessary to define 
         and instantiate a class that implements the interface, or define an object that
@@ -453,20 +454,21 @@ TypeConstraints?
         <title>Classes</title>
         
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
-        type schema, together with implementation details of the members of the type.
-        An ordinary class declaration specifies a list of parameters required to 
-        instantiate the type.</para>
+        type schema, together with implementation details of the members of the type.</para>
+
+        <programlisting>Class := ClassHeader (ClassBody | TypeSpecifier? ";")</programlisting>
         
-        <programlisting>Class :=
+        <para>An ordinary class declaration specifies a list of parameters required to 
+        instantiate the type, and, optionally a list of type parameters.  A class 
+        declaration may have a superclass, a list of extended interfaces, a list of 
+        metatypes, an enumerated list of subtypes, and/or a list of type constraints.</para>
+        
+        <programlisting>ClassHeader := 
 Annotation*
 "class" TypeName TypeParams? FormalParams
-CaseTypes?
-Metatypes?
-ExtendedType?
-SatisfiedTypes?
-TypeConstraints?
-(ClassBody | TypeSpecifier? ";")</programlisting>
-
+CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?
+TypeConstraints?</programlisting>
+        
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
         
@@ -1195,13 +1197,17 @@ public class Person { ... }</programlisting>
         a class, instantiate an instance of the class, and declare an attribute 
         referring to the class instance in a single declaration.</para>
         
-        <programlisting>Object :=
+        <programlisting>Object := ClassHeader ClassBody</programlisting>
+        
+        <para>An <literal>object</literal> has an initial lowercase identifier.
+        An <literal>object</literal> declaration does not specify parameters or
+        type parameters.</para>
+        
+         <programlisting>ObjectHeader := 
 Annotation*
 "object" MemberName
-ExtendedType?
-SatisfiedTypes?
-ClassBody</programlisting>
-
+ExtendedType? SatisfiedTypes?</programlisting>
+         
          <para>An <literal>object</literal> declaration specifies the name of the
          attribute and the schema, supertypes, and implementation of the class. It
          does not specify a type name. Instead, the type has a name assigned 
@@ -1386,9 +1392,7 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         <programlisting>Union := 
 Annotation* 
 "choice" TypeName TypeParams?
-CaseTypes
-Metatypes?
-SatisfiedTypes? 
+CaseTypes Metatypes? SatisfiedTypes? 
 TypeConstraints?
 ";"</programlisting>
 
@@ -1527,17 +1531,19 @@ public choice TransactionPropagationStyle
     <section id="methods">
         <title>Methods</title>
         
-        <para>A <emphasis>method</emphasis> is a callable block of code. Methods may have 
-        parameters and may return a value.</para>
+        <para>A <emphasis>method</emphasis> is a callable block of code. Methods may 
+        have parameters and may return a value.</para>
         
         <programlisting>Method := MethodHeader (Block | NamedArguments | Specifier? ";")</programlisting>
         
-        <para>All method declarations specify the method name and one or more parameter 
-        lists. A method declaration may specify a type, called the 
-        <emphasis>return type</emphasis>, to which the values the method returns is 
-        assignable, or it may specify that the method is a <literal>void</literal>
-        method&mdash;a method which does not return a value. The return type of a
-        <literal>void</literal> method is considered to be <literal>Void</literal>.</para>
+        <para>All method declarations specify the method name, one or more parameter 
+        lists, and, optionally, a list of type parameters. A method declaration may 
+        specify a type, called the <emphasis>return type</emphasis>, to which the 
+        values the method returns are assignable, or it may specify that the method 
+        is a <literal>void</literal> method&mdash;a method which does not return a 
+        value. The return type of a <literal>void</literal> method is considered to 
+        be <literal>Void</literal>. A method declaration may have a list of type 
+        constraints.</para>
         
         <programlisting>MethodHeader :=
 Annotation*
