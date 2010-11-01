@@ -491,7 +491,7 @@ public abstract class Boolean()
 
 public abstract class Case(String caseName) 
         extends Case() {
-    actual String string = caseName
+    actual String string = caseName;
 }]]></programlisting>
 
     </section>
