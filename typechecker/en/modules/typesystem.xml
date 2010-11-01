@@ -627,6 +627,34 @@ String? firstWord = words[0];</programlisting>
         
         <programlisting>is Monoid&lt;T&gt;</programlisting>
         
+        <comment><para>Note: metatypes are somewhat like Haskell type classes. They
+        allow functions which operate polymorphically over the metamodel object 
+        that represents a type:</para>
+        <programlisting><![CDATA[public interface Joinable<S> {
+    formal S empty;
+    formal S join(S x, S y); 
+}
+
+public S join<S>(S... sequences)
+        given S is Joinable<S> {
+    S result := S.empty;
+    for (S s in sequences) {
+        result := S.join(result,s);
+    }
+    return result 
+}]]></programlisting>
+<programlisting><![CDATA[public interface JoinableLinkedList<T> 
+        satisfies Joinable<LinkedList<T>> {
+    actual LinkedList<T> empty = LinkedList<T>();
+    actual LinkedList<T> join(LinkedList<T> x, LinkedList<T> y) {
+        return x.append(y)
+    }
+}
+
+public class LinkedList<T>(T... elements) 
+        is JoinableLinkedList<T> 
+        satisfies T[] { ... }]]></programlisting></comment>
+        
     </section>
         
     </section>
