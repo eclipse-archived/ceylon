@@ -1166,7 +1166,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>LocalNamedArgument := InferableType ParameterName (Block | NamedArguments)</programlisting>
         
-        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName FormalParams+ (Block | NamedArguments)</programlisting>
+        <programlisting>FunctionalNamedArgument := (InferableType | "void") ParameterName Params+ (Block | NamedArguments)</programlisting>
         
         <para>For example:</para>
         
@@ -1416,7 +1416,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>InferableFormalParam := InferableParam | InferableEntryParamPair | InferableRangeParamPair</programlisting>
         
-        <programlisting>InferableParam := Annotation* (InferableType|"void") ParameterName FormalParams*</programlisting>
+        <programlisting>InferableParam := Annotation* (InferableType|"void") ParameterName Params*</programlisting>
         
         <programlisting>InferableEntryParamPair := Annotation* InferableType ParameterName "->" Type ParameterName</programlisting>
         

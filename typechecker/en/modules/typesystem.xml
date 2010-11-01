@@ -969,7 +969,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     
-        <programlisting>TypeConstraint := "given" TypeName FormalParams? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
+        <programlisting>TypeConstraint := "given" TypeName Params? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
         
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
         
@@ -1424,7 +1424,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <para>In a parameter list, parameters with default values must occur after required 
         parameters. The sequenced parameter, if any, must occur last.</para>
         
-        <programlisting>FormalParams := 
+        <programlisting>Params := 
 "("
 FormalParam ("," FormalParam)* ("," DefaultParam)* ("," SequencedParam)? | 
 DefaultParam ("," DefaultParam)* ("," SequencedParam)? | 
@@ -1436,7 +1436,7 @@ SequencedParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* (Type|"void") (ParameterName|"this") FormalParams*</programlisting>
+        <programlisting>Param := Annotation* (Type|"void") (ParameterName|"this") Params*</programlisting>
         
         <para>A parameter may not be be declared <literal>mutable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
