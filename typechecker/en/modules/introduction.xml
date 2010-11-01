@@ -100,13 +100,14 @@
     reduce verbosity and results in a more regular block structure.
     </para>
     
+    
     <para>
-    In place of constructor overloading, Ceylon allows class names to be 
-    overloaded. Even better, member classes of a class may be overridden by 
+    <!--In place of constructor overloading, Ceylon allows class names to be 
+    overloaded. Even better,--> Member classes of a class may be overridden by 
     subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
     eliminating the need for factory methods.
     </para>
-    
+     
     <para>
     Ceylon provides a streamlined syntax for defining an anonymous class which 
     is only instantiated in exactly the place it is defined. Among other uses,
@@ -116,7 +117,7 @@
     
     </section>
     
-    <section id="methodsandattributes">
+   <section id="methodsandattributes">
     <title>Methods and attributes</title>
     
     <para>
@@ -128,6 +129,11 @@
     internal representation of the state of an object.
     </para>
     
+    <para>
+    Ceylon does not support method overloading. Each method of a class has
+    a distinct name.
+    </para>
+    
     <para>There are no <literal>static</literal> members. Instead, 
     <emphasis>toplevel</emphasis> methods and attributes are declared as direct 
     members of a package. This, along with certain other features, gives the 
@@ -136,17 +142,19 @@
 
     </section>
     
-    <section id="defaultparameters">
-    <title>Defaulted parameters</title>
+    <section id="uniontypesanddefaultparameters">
+    <title>Union types and defaulted parameters</title>
     
     <para>
-    As an alternative to method or class overloading, Ceylon supports method 
-    and class initializer parameters with default values. 
+    Instead of method and constructor overloading, Ceylon supports 
+    <emphasis>union types</emphasis> and parameters with default values. A 
+    single method in Ceylon may emulate the signatures of several overloaded 
+    methods in Java. 
     </para>
     
     </section>
     
-    <section id="mixininheritance">
+     <section id="mixininheritance">
     <title>"Mixin" inheritance</title>
 
     <para>
@@ -800,26 +808,62 @@ public void hello() {
         
         <para>I suppose you're worried that if Ceylon classes don't have constructors,
         then they also can't have multiple constructors. Does that mean we can't overload
-        the initialization parameter list of a class? Well, not exactly. Ceylon doesn't
+        the initialization parameter list of a class?</para>
+        
+        <para>I suppose now's a good time to break some more bad news: Ceylon doesn't
+        support method overloading either! But, actually, this is not as bad as it sounds. 
+        The truth is that overloading causes all kinds of problems in Java, especially 
+        when generics come into play. And in Ceylon, we can emulate any non-evil use of 
+        constructor or method overloading using:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><emphasis>defaulted parameters</emphasis>, to emulate the effect of
+                overloading a method or class by "arity" (the number of parameters), and</para>
+            </listitem>
+            <listitem>
+                <para><emphasis>union types</emphasis>, to emulate the effect of overloading
+                a method or class by parameter type.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>To be completely honest, there are some circumstances where this approach ends
+        up slightly more awkward than Java-style overloading. But that's a small price to pay
+        for a language with clearer semantics, without nasty corner cases, that is ultimately
+        more powerful.</para>
+        
+        <!--<para>Well, not exactly. Ceylon doesn't
         have constructor overloading, but it does have <emphasis>class overloading</emphasis>.
         Believe it or not, Ceylon lets you write multiple classes with the same name! Let's
-        overload <literal>Hello</literal>:</para>
+        overload <literal>Hello</literal>:</para>-->
+        
+        <para>Let's "overload" <literal>Hello</literal>, and its <literal>say()</literal>
+        method, using defaulted parameters:</para>
         
         <programlisting><![CDATA[doc "A command line greeting"
-class Hello() 
-    extends Hello(process.args.first) {}]]></programlisting>
+class Hello(String? name = process.args.first) {
+    ...
+
+    doc "Print the greeting" 
+    package void say(OutputStream stream = process) {
+        stream.writeLine(greeting);
+    }
     
+}]]></programlisting>
+        
+        <!--
         <para>A class can overload a second class by extending it and declaring different
         initializer parameters. An overloaded class with an empty body is the Ceylon
         approach to "constructor" overloading. Of course, overloaded classes can do much
         more than just this!</para>
+        -->
         
         <para>Our <literal>hello()</literal> method is now looking <emphasis>really</emphasis>
         simple:</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 public void hello() {
-    Hello().say(process);
+    Hello().say();
 }]]></programlisting>
         
         </section>
@@ -1145,6 +1189,46 @@ public object spades extends Suit() {}</programlisting>
         But Ceylon's <literal>of</literal> clause is also a lot more flexible 
         than Java's <literal>enum</literal>, since it allows both classes and
         values in the enumerated list of subtypes.</para>
+        
+        <para>Another situation where we're allowed to use an exhaustive list of 
+        cases is with a <emphasis>union type</emphasis>. A union type is just
+        a type whose values are instances of any one of several types. We write
+        the union of types <literal>X</literal> and <literal>Y</literal> as
+        <literal>X|Y</literal>. The main usecase for union types is emulating
+        method overloading. For example:</para>
+        
+        <programlisting>void say(OutputStream|Log|Buffer out) {
+    switch(out)
+    case (is Outputstream) {
+        out.writeLine(greeting);
+    }
+    case (is Log) {
+        out.info(greeting);
+    }
+    case (is Buffer) {
+        out.append(greeting);
+    }
+}</programlisting>
+        
+        <para>We can call this method passing any instance of <literal>OutputStream</literal>,
+        <literal>Log</literal>, or <literal>Buffer</literal>.</para>
+        
+        <para>A second usecase for union types is writing a <literal>catch</literal>
+        block which handles multiple disjoint types:</para>
+        
+        <programlisting>try (File file = File(path)) {
+    file.open();
+    file.writeLine("Hello, world!");
+    file.close();
+}
+catch (FileExistsException|FileWriteException fe) {
+    log.error("Could not write file", fe); 
+    throw fe
+}
+catch (FileCloseEception fe) {
+    log.error("Could not close file", fe); 
+    throw fe
+}</programlisting>
         
     </section>
     
