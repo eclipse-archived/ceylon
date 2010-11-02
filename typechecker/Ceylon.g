@@ -211,7 +211,7 @@ annotatedDeclarationStart
     ;
 
 declarationStart
-    : declarationKeyword | union '...'? LIDENTIFIER
+    : declarationKeyword | type '...'? LIDENTIFIER
     ;
 
 declarationKeyword
@@ -306,7 +306,7 @@ memberHeader
     ;
 
 memberType
-    : union | 'void' | 'local'
+    : type | 'void' | 'local'
     ;
 
 memberParameters
@@ -399,17 +399,13 @@ metatypes
     ;
 
 typeConstraint
-    : 'given' typeName formalParameters? metatypes? satisfiedTypes? abstractedType?
+    : 'given' typeName formalParameters? caseTypes? metatypes? satisfiedTypes? abstractedType?
     -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
     ;
     
 typeConstraints
     : typeConstraint+
     -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
-    ;
-
-union
-    : type ('|' type)*
     ;
 
 type
@@ -466,7 +462,7 @@ typeArguments
     ;
 
 typeArgument
-    : union '...'? | '#'! dimension
+    : type '...'? | '#'! dimension
     ;
 
 dimension
@@ -819,7 +815,7 @@ functionalArgumentDefinition
     ;
 
 specialArgument
-    : (union | 'local') memberName (containment | specifier)
+    : (type | 'local') memberName (containment | specifier)
     //| isCondition
     //| existsCondition
     ;
@@ -853,15 +849,15 @@ formalParameter
     ;
 
 valueFormalParameter
-    : '->' union parameterName
+    : '->' type parameterName
     ;
 
 iteratedFormalParameter
-    : 'in' union parameterName
+    : 'in' type parameterName
     ;
 
 specifiedFormalParameter
-    : '=' union parameterName
+    : '=' type parameterName
     ;
 
 specifiedFormalParameterStart
@@ -873,7 +869,7 @@ extraFormalParameter
     ;
 
 formalParameterType
-    : union '...'? | 'void'
+    : type '...'? | 'void'
     ;
 
 // Control structures.
@@ -893,8 +889,8 @@ nonemptyCondition
     ;
 
 isCondition
-    : 'is' union ( (memberName '=') => memberName specifier | expression )
-    -> ^(IS_EXPR union memberName? specifier? expression?)
+    : 'is' type ( (memberName '=') => memberName specifier | expression )
+    -> ^(IS_EXPR type memberName? specifier? expression?)
     ;
 
 controlStructure
@@ -951,8 +947,8 @@ expressions
     ;
 
 isCaseCondition
-    : 'is' union
-    -> ^(IS_EXPR union)
+    : 'is' type
+    -> ^(IS_EXPR type)
     ;
 
 forFail
@@ -1036,7 +1032,7 @@ controlVariableOrExpression
     ;
 
 variable
-    : (union | 'local') memberName formalParameters*
+    : (type | 'local') memberName formalParameters*
     ;
 
 // Lexer
