@@ -197,9 +197,9 @@
             
             <para>For example:</para>
             
-            <programlisting>Outer outer = Outer();
-Inner inner = outer.Inner();
-inner.member();</programlisting>
+            <programlisting>Outer outerObject = Outer();
+Inner innerObject = outerObject.Inner();
+innerObject.member();</programlisting>
             
             <para>In this example, <literal>inner</literal> is the current instance of 
             <literal>Inner</literal> when <literal>member()</literal> is executed, and
@@ -229,31 +229,31 @@ inner.member();</programlisting>
             
             <para>For example:</para>
             
-            <programlisting>String outer(String s)()() {
-    String middle()() {
-        String inner() {
+            <programlisting>String outerMethod(String s)()() {
+    String middleMethod()() {
+        String innerMethod() {
             return s;
         }
-        return inner
+        return innerMethod
     }
-    return middle
+    return middleMethod
 }
 
-String middle()() = outer("hello");
-String inner() = middle();
-String result = inner();</programlisting>
+String middleMethod()() = outerMethod("hello");
+String innerMethod() = middleMethod();
+String result = innerMethod();</programlisting>
 
-            <programlisting>Object outer(String s) {
-    object middle {
+            <programlisting>Object outerMethod(String s) {
+    object middleObject {
         actual String string {
             return s;
         }
     }
-    return middle
+    return middleObject
 }
 
-Object middle = outer("hello");
-String result = middle.string;</programlisting>
+Object middleObject = outerMethod("hello");
+String result = middleObject.string;</programlisting>
 
             <para>In both examples, <literal>result</literal> refers to the value 
             <literal>"hello"</literal>.</para>

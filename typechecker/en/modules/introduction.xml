@@ -1200,16 +1200,16 @@ public object spades extends Suit() {}</programlisting>
         <literal>X|Y</literal>. The main usecase for union types is emulating
         method overloading. For example:</para>
         
-        <programlisting>void say(OutputStream|Log|Buffer out) {
-    switch(out)
+        <programlisting>void say(OutputStream|Log|Buffer dest) {
+    switch(dest)
     case (is Outputstream) {
-        out.writeLine(greeting);
+        dest.writeLine(greeting);
     }
     case (is Log) {
-        out.info(greeting);
+        dest.info(greeting);
     }
     case (is Buffer) {
-        out.append(greeting);
+        dest.append(greeting);
     }
 }</programlisting>
         
