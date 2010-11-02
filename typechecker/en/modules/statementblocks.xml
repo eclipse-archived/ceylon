@@ -1045,15 +1045,37 @@ else {
             <literal>case (is ...)</literal>?</para></comment>
             -->
             
-            <para>An Java-style overloaded method may be emulated as follows:</para>
+            <para>A Java-style overloaded method may be emulated as follows:</para>
             
             <programlisting>public void print(T value) 
         given T of String | Integer | Float {
     switch (value)
-    case (is String) { stream.writeLine(value); }
-    case (is Integer) { print($value); }
-    case (is Float) { print( FloatFormat(value, 2) ); }
+    case (is String) { 
+        stream.writeLine(value); 
+    }
+    case (is Integer) { 
+        print($value); 
+    }
+    case (is Float) { 
+        print( FloatFormat(value, 2) ); 
+    }
 }</programlisting>
+
+            <comment><para>TODO: Actually, this is not quite enough. We really need
+            to be able to write stuff like this:</para>
+            <programlisting>public T join(T x, T y) 
+        given T of String | Integer {
+    switch (T)
+    case (satisfies String) { 
+        return x+y 
+    }
+    case (satisfies Integer) { 
+        return (digits(x)+digits(y)).parseInteger() 
+    }
+}</programlisting>
+            <para>But that means introducing a new kind of condition, as described 
+            above.</para>
+            </comment>
             
         </section>
         
