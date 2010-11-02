@@ -1314,8 +1314,11 @@ public object false extends Boolean() {}</programlisting>
         of Branch | Leaf 
         extends Case(name) { ... }
         
-public class Leaf&lt;T&gt;(String name, T value) extends Node&lt;T&gt;(name) { ... }
-public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; right) extends Node&lt;T&gt;(name) { ... }</programlisting>
+public class Leaf&lt;T&gt;(String name, T value) 
+        extends Node&lt;T&gt;(name) { ... }
+        
+public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; right) 
+        extends Node&lt;T&gt;(name) { ... }</programlisting>
                 
         <para>The cases may be classes, or anonymous classes. A case may be an 
         <literal>abstract</literal> class. Each case must be a subclass of the
