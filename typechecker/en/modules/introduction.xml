@@ -178,8 +178,8 @@
     a callable parameter may be either a reference to a named method declared 
     elsewhere, or a new method defined inline as part of the method invocation. 
     A method may even return an invocable reference to another method. Finally, 
-    nested method declarations receive a closure of immutable values in the 
-    surrounding scope.
+    nested method declarations receive a closure of immutable references defined 
+    in the surrounding scope.
     </para>
     
     </section>
@@ -199,7 +199,7 @@
     
     <para>
     By default, Ceylon attributes and locals are immutable. Mutable attributes 
-    and locals must be explicitly declared using the <literal>mutable</literal> 
+    and variable locals must be explicitly declared using the <literal>variable</literal> 
     annotation. An immutable attribute or local may not be assigned after its 
     initial value is specified.
     </para>
@@ -777,10 +777,10 @@ else {
         
         <para>We've just met our first example of <emphasis>closure</emphasis>, 
         a concept from functional programming. We say that method and attribute 
-        definitions receive a closure of immutable values defined in the class 
-        body to which they belong. That's just a fancy way of obfuscating the 
-        idea that <literal>greeting</literal> holds onto the value of 
-        <literal>name</literal>, even after the initializer completes.</para>
+        definitions receive a closure of values defined in the class body to which 
+        they belong. That's just a fancy way of obfuscating the idea that 
+        <literal>greeting</literal> holds onto the value of <literal>name</literal>, 
+        even after the initializer completes.</para>
         
         <para>In fact, one way to look at the whole notion of a class in Ceylon 
         is to think of it as a function which returns a closure of its own local 
@@ -1337,23 +1337,23 @@ catch (FileCloseEception fe) {
             as much as possible. An immutable attribute has its value specified when the 
             object is initialized, and is never reassigned. If we want to be able to
             assign a value to a simple attribute we need to annotate it 
-            <literal>mutable</literal>:</para>
+            <literal>variable</literal>:</para>
             
-            <programlisting>package mutable String greeting := "Hello World";
+            <programlisting>package variable String greeting := "Hello World";
 if (exists name) {
     greeting := "Hello, " name "!";
 }</programlisting>
 
             <para>Notice the use of <literal>:=</literal> instead of <literal>=</literal>
             here. This is important! In Ceylon, specification of an immutable value is 
-            done using <literal>=</literal>. Assignment to a <literal>mutable</literal> 
+            done using <literal>=</literal>. Assignment to a <literal>variable</literal> 
             attribute or local is considered a different kind of thing, always performed 
             using the <literal>:=</literal> operator.</para>
             
             <!--
-            <para>To force you to think twice before adding a <literal>mutable</literal>
+            <para>To force you to think twice before adding a <literal>variable</literal>
             attribute to your class, Ceylon requires that classes with mutable attributes
-            be explicitly annotated <literal>mutable</literal>. Hopefully, you'll find
+            be explicitly annotated <literal>variable</literal>. Hopefully, you'll find
             yourself doing this less frequently than you would do it in Java.</para>
             -->
             
@@ -1362,13 +1362,13 @@ if (exists name) {
             you have some other internal attribute you're trying to set the value of
             indirectly.</para>
             
-            <para>Suppose our class has the following mutable simple attribute, intended
-            for internal consumption only:</para>
+            <para>Suppose our class has the following <literal>variable</literal> simple 
+            attribute, intended for internal consumption only:</para>
             
-            <programlisting>mutable String grtng := "Hello World";</programlisting>
+            <programlisting>variable String grtng := "Hello World";</programlisting>
             
-            <para>Then we can abstract the simple attribute using a mutable attribute
-            defined as a getter/setter pair:</para>
+            <para>Then we can abstract the simple attribute using a second attribute defined 
+            as a getter/setter pair:</para>
             
             <programlisting>doc "gets the greeting"
 public String greeting { 
@@ -1496,7 +1496,7 @@ package assign greeting {
             type <literal>IdentifiableObject</literal>. It's possible for a user-written class to 
             directly extend <literal>Object</literal>, but most of the classes you write will be
             subclasses of <literal>IdentifiableObject</literal>. All classes with 
-            <literal>mutable</literal> attributes must extend <literal>IdentifiableObject</literal>.</para>
+            <literal>variable</literal> attributes must extend <literal>IdentifiableObject</literal>.</para>
             
             <para><literal>IdentifiableObject</literal> defines a default implementation of the
             interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
@@ -1728,11 +1728,11 @@ abstract class Hello() {
             <para>Of course, if you want to use the increment <literal>++</literal> operator,
             decrement <literal>--</literal> operator, or one of the compound assignment
             operators such as <literal>+=</literal>, you'll have to declare the value 
-            <literal>mutable</literal>.</para>
+            <literal>variable</literal>.</para>
             
             <programlisting>module class Counter() {
             
-    mutable Natural count := 0;
+    variable Natural count := 0;
 
     module Natural next() {
         return ++count
@@ -2069,7 +2069,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
         <section>
             <title>Understanding first-class functions</title>
             
-            <para>Ceylon isn't a functional language: it has mutable locals and mutable 
+            <para>Ceylon isn't a functional language: it has variable locals and mutable 
             attributes and so methods can have side effects. But Ceylon does let you use 
             functions as values, which makes the language a kind of hybrid of the functional 
             and procedural. There's nothing very new about this idea&mdash;Smalltalk, one of 
@@ -2200,12 +2200,12 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             <para>Notice that <literal>increment()</literal> is able to use the 
             parameter <literal>n</literal> of <literal>incrementor()</literal>. 
             We say that the inner method receives a closure of the 
-            non-<literal>mutable</literal> locals and parameters of the outer 
+            non-<literal>variable</literal> locals and parameters of the outer 
             method&mdash;just like a method of a class receives a closure of the
-            class initialization parameters and non-<literal>mutable</literal> 
+            class initialization parameters and non-<literal>variable</literal> 
             locals of the class initializer. In general, any inner class, method, 
             or attribute declaration always receives the closure of the 
-            non-<literal>mutable</literal> values of the class, method, or attribute 
+            non-<literal>variable</literal> values of the class, method, or attribute 
             declaration in which it is enclosed. This is an example of how regular
             the language is.</para>
             
@@ -2593,7 +2593,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
     method = user.paymentMethod;
     currency = order.currency;
     Float amount { 
-        mutable Float total := 0.0;
+        variable Float total := 0.0;
         for (Item item in order.items) {
             total += item.quantity * item.product.unitPrice;
         }
@@ -3570,7 +3570,7 @@ class Hello(String? name) {
         example:</para>
         
         <programlisting>Datetime datetime = Datetime('25/03/2005', '12:00 AM PST');</programlisting>
-        <programlisting>public pattern('^\w+@((\w+)\.)+$') mutable String emailAddress; </programlisting>
+        <programlisting>public pattern('^\w+@((\w+)\.)+$') variable String emailAddress; </programlisting>
         <programlisting>Button { color = 'FF3B66'; label = "Click me"; }</programlisting>
         <programlisting>A { href = 'http://jboss.org/ceylon'; "Ceylon site" }</programlisting>
         

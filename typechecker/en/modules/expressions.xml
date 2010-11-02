@@ -93,7 +93,7 @@ assert() that (semaphore&identical;s) //assertion never fails</programlisting>
         <para>A new object is produced by execution of a class instantiation expression.
         The Ceylon compiler guarantees that if execution of a class initializer terminates
         with no uncaught exception, then every simple attribute of the object has been
-        initialized. The value of an non-<literal>mutable</literal> simple attribute or 
+        initialized. The value of an non-<literal>variable</literal> simple attribute or 
         local is initialized for the first time by execution of a specifier. Every class 
         instantiation expression results in an object with a new unique identifier shared 
         by no other existing object. The object exists from the point at which execution 
@@ -172,18 +172,18 @@ Float area = pi * radius**2;</programlisting>
         required.</para>
         
         <para>One application of lazy evaluation is <emphasis>pass by 
-        reference</emphasis>. Even <emphasis>mutable</emphasis> attributes may
-        be passed by reference, as in the following code:</para>
+        reference</emphasis>. Even <literal>variable</literal> attributes may be 
+        passed by reference, as in the following code:</para>
         
         <programlisting>void setGreeting(Settable&lt;String&gt; ref) {
     ref:="Que honda!";
 }
 
-public mutable String greeting := "'sup!";
+public variable String greeting := "'sup!";
 setGreeting(greeting);</programlisting>
         
         <para>A <literal>Gettable</literal> object representing an expression that 
-        contains a reference to a <literal>mutable</literal> local may not be assigned 
+        contains a reference to a <literal>variable</literal> local may not be assigned 
         to an attribute, passed as a method argument, passed to a control directive, 
         or referred to by a nested method or class. It may be assigned to a local, or 
         invoked directly inside the block that obtained it.</para>
@@ -441,14 +441,14 @@ if you prefer.";</programlisting>
                 which the literal appears, and</para>
             </listitem>
             <listitem>
-                <para>any non-<literal>mutable</literal> local, block local attribute 
+                <para>any non-<literal>variable</literal> local, block local attribute 
                 getter or block local method declared earlier within the containing 
                 scope.</para>
             </listitem>
         </itemizedlist>
         
         <para>An interpolated expression in a string template may not refer to 
-        <literal>mutable</literal> locals from the containing scope.</para>
+        <literal>variable</literal> locals from the containing scope.</para>
         
         <para>Interpolated expressions are evaluated when the 
         <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a constant 
@@ -604,7 +604,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         value of the attribute or local, or to the return value of the invocation, or 
         it may be passed, as a reference, to other code, which may use the reference to 
         <emphasis>evaluate</emphasis> the current value of the attribute or local, or
-        to perform the invocation. A reference to a <literal>mutable</literal> attribute 
+        to perform the invocation. A reference to a <literal>variable</literal> attribute 
         or local may be used to <emphasis>assign</emphasis> a new value to the attribute 
         or local.</para>
         
@@ -632,13 +632,13 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             </listitem>
             <listitem>
                 <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, local, 
-                or parameter is not <literal>mutable</literal>, or if the setter is 
+                or parameter is not <literal>variable</literal>, or if the setter is 
                 not visible to the block containing the attribute or local reference, 
                 or</para>
             </listitem>
             <listitem>
                 <para><literal>Settable&lt;X&gt;</literal>, if the attribute, local, 
-                or parameter is <literal>mutable</literal> and the setter, if any, 
+                or parameter is <literal>variable</literal> and the setter, if any, 
                 is visible to the block containing the attribute or local 
                 reference.</para>
             </listitem>
@@ -679,7 +679,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             <programlisting>public Gettable&lt;Decimal&gt; total = order.calculateTotal();</programlisting>
             
             <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
-            may not be declared <literal>mutable</literal>.</para>
+            may not be declared <literal>variable</literal>.</para>
             
         </section>
         
@@ -811,7 +811,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
-        <programlisting>void print&lt;T&gt;(T val) given T of String|Integer|Float = printer.print;</programlisting>
+        <programlisting>void print&lt;T&gt;(T val) given T of String | Integer | Float = printer.print;</programlisting>
         <programlisting>void printStr(String string) = printer.print&lt;String&gt;;</programlisting>
         
         </section>
@@ -1183,7 +1183,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>{
     description = "Total";
     Float amount { 
-        mutable Float total := 0.0;
+        variable Float total := 0.0;
         for (Item item in items) {
             sum += item.amount;
         }
@@ -1277,7 +1277,7 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>public class Counter(Natural initialCount=0) {
     
-    mutable Natural count := initialCount;
+    variable Natural count := initialCount;
     
     ...
     
@@ -1328,7 +1328,7 @@ local comp = order(1,-1);</programlisting>
         
             <programlisting>public class Counter() {
     
-    mutable Natural count := 0;
+    variable Natural count := 0;
     
     package void init(Natural initialCount=0) {
         count:=initialCount;
@@ -1768,7 +1768,7 @@ except (SomethingElseWrong sew) {
                 <programlisting><![CDATA[T sum<T,M>(T[] ts) 
         given M() satisfies Monoid<T> {
     Monoid<T> monoid = M();
-    mutable T result := monoid.zero;
+    variable T result := monoid.zero;
     for (T t in ts) {
         result := monoid.sum(result,t);
     }
@@ -2126,18 +2126,19 @@ Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
         <title>Assignment</title>
             
         <para>The assignment operator <literal>:=</literal> assigns a new value to an 
-        attribute reference for a mutable attribute or local.</para>
+        attribute reference for a <literal>variable</literal> attribute or local.</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
-        <para>Sometimes we need to pass a mutable attribute by reference:</para>
+        <para>Sometimes we need to pass a <literal>variable</literal> attribute by 
+        reference:</para>
         
         <programlisting>Settable&lt;String&gt; nameRef = person.name;
 nameRef := "Gavin";</programlisting>
 
-        <para>Sometimes we need to transform a mutable attribute reference into a method 
-        reference. The toplevel method <literal>lang.set()</literal> is provided 
-        for this purpose:</para>
+        <para>Sometimes we need to transform a <literal>variable</literal> attribute 
+        reference into a method reference. The toplevel method <literal>lang.set()</literal> 
+        is provided for this purpose:</para>
         
         <programlisting>String setName(String name) = set(person.name);
 setName("Gavin");</programlisting>
@@ -2401,13 +2402,13 @@ setPerson(person);</programlisting>
             <listitem>
                 <para>of type <literal>Value&lt;T&gt;</literal> where 
                 <literal>T</literal> is the declared type of the attribute.<!-- ,
-                unless the attribute is declared <literal>mutable</literal>, or--></para>
+                unless the attribute is declared <literal>variable</literal>, or--></para>
             </listitem>
             <!-- 
             <listitem>
                 <para>of type <literal>MutableValue&lt;T&gt;</literal> where 
                 <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>mutable</literal>.</para>
+                if the attribute is declared <literal>variable</literal>.</para>
             </listitem>
             -->
         </itemizedlist>
@@ -2435,13 +2436,13 @@ setPerson(person);</programlisting>
                 <para>of type <literal>Attribute&lt;X,T&gt;</literal> where 
                 <literal>X</literal> is the type that defines the attribute, 
                 and <literal>T</literal> is the declared type of the attribute,
-                unless the attribute is declared <literal>mutable</literal>, or</para>
+                unless the attribute is declared <literal>variable</literal>, or</para>
             </listitem>
             <listitem>
                 <para>of type <literal>MutableAttribute&lt;X,T&gt;</literal> where 
                 <literal>X</literal> is the type that defines the attribute, 
                 and <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>mutable</literal>.</para>
+                if the attribute is declared <literal>variable</literal>.</para>
             </listitem>
         </itemizedlist>
          

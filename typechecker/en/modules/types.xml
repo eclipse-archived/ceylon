@@ -256,7 +256,7 @@
          containing the name of the type, and the value of the
          given attributes." 
     public default String string(Attribute<subtype,Object>... attributes) {
-        mutable Character[] result := "";
+        variable Character[] result := "";
         result .= with (type.name, "{");
         result .= forEach (Attribute<subtype,Object> a in attributes)
                     with ({ a.name, "=", $a(this), ";" });
@@ -810,7 +810,7 @@ catch (Exception e) {
         <para>An <literal>Iterator</literal> is used according to the
         following idiom:</para>
             
-        <programlisting><![CDATA[mutable local iter := iterable.iterator();
+        <programlisting><![CDATA[variable local iter := iterable.iterator();
 while (exists local value = iter.head) {
     ...
     iter.=tail;
@@ -849,7 +849,7 @@ while (exists local value = iter.head) {
 }]]></programlisting>
         <programlisting><![CDATA[public interface OpenIterator<X> 
         satisfies Iterator<X> {
-    actual mutable X? head;
+    actual variable X? head;
     public void remove();
 }]]></programlisting></comment>
 
@@ -870,7 +870,7 @@ while (exists local value = iter.head) {
         <literal>LinkedList&lt;X&gt;</literal> would be an 
         <literal>Indexed&lt;X, Link&lt;X&gt;&gt;</literal>. The idiom
         would be:</para>
-        <programlisting><![CDATA[mutable local i := indexed.firstIndex;
+        <programlisting><![CDATA[variable local i := indexed.firstIndex;
 while (exists local value = indexed.indexedValue(i)) {
     ...
     ++i;
@@ -879,7 +879,7 @@ while (exists local value = indexed.indexedValue(i)) {
         <programlisting><![CDATA[public interface OpenIndexed<X, I> 
         satisfies Indexed<X,I>
         given I satisfies Ordinal {
-    actual mutable Settable<X>? indexedValue(I index);
+    actual variable Settable<X>? indexedValue(I index);
     public void removeIndex(I index);
 }]]></programlisting>
 </comment>
@@ -1137,7 +1137,7 @@ public abstract class Comparison()
         
         <programlisting><![CDATA[public X min<X>(X x, X... xs) 
         given X satisfies Comparable<X> {
-    mutable X min := x;
+    variable X min := x;
     for (X y in xs) { 
         if (y<min) { 
             min:=y;
@@ -1148,7 +1148,7 @@ public abstract class Comparison()
 
         <programlisting><![CDATA[public X max<X>(X x, X... xs) 
         given X satisfies Comparable<X> {
-    mutable X max := x;
+    variable X max := x;
     for (X y in xs) { 
         if (y>max) { 
             max:=y;
@@ -1346,7 +1346,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         <para>which are both equivalent to:</para>
         
         <programlisting><![CDATA[if (exists Natural last=sequence.lastIndex) {
-    mutable Natural n := 0;
+    variable Natural n := 0;
     while (n<=last) { 
         local elem = sequence[n];
         ...
@@ -1369,7 +1369,7 @@ public T[] join<T>(T[]... sequences)
             
     object joinedSequence satisfies T[] {
         actual Natural? lastIndex {
-            mutable Natural? result := null;
+            variable Natural? result := null;
             for (T[] s in sequences) {
                 if (exists Natural last = s.lastIndex) {
                     if (exists result) {
@@ -1384,7 +1384,7 @@ public T[] join<T>(T[]... sequences)
         }
         actual Gettable<T?> value(Natural index) {
             T? value {
-                mutable Natural i := index;
+                variable Natural i := index;
                 for (T[] s in sequences) {
                     if (exists Natural last = s.lastIndex) {
                         if (i<=last) {
@@ -1600,8 +1600,8 @@ public object none {
         }
         else {
             //optimize this for numbers!
-            mutable Natural index:=0;
-            mutable X value:=first;
+            variable Natural index:=0;
+            variable X value:=first;
             while (value<x) {
                 ++index;
                 ++value;
@@ -1654,8 +1654,8 @@ public object none {
     
     actual Gettable<X?> value(Natural n) {
         //optimize this for numbers!
-        mutable Natural index:=0;
-        mutable X? value:=first;
+        variable Natural index:=0;
+        variable X? value:=first;
         while (index<n) {
             ++index;
             ++value;
@@ -1692,7 +1692,7 @@ public object none {
     
         <para>which is equivalent to:</para>
         
-        <programlisting><![CDATA[mutable local i := min;
+        <programlisting><![CDATA[variable local i := min;
 while (i<=max) {
     ...
     i.=successor;
@@ -1795,7 +1795,7 @@ while (i<=max) {
         <programlisting><![CDATA[public extension class StringBuilder(Character[] this) {
         
     Character[] with(Character[] appendedStrings...) {
-        mutable OpenList<Character> list = ArrayList<Character>(this);
+        variable OpenList<Character> list = ArrayList<Character>(this);
         list.append(string);
         for (Character[] s in appendedStrings) {
             list.append(s);
@@ -1804,7 +1804,7 @@ while (i<=max) {
     
     Character[] forEach<X>(iterated Iterable<X> objects, 
                            Character[] with(coordinated X x)) {
-        mutable OpenList<Character> list = ArrayList<Character>(this);
+        variable OpenList<Character> list = ArrayList<Character>(this);
         for (X x in objects) {
             list.append(with(x));
         }
@@ -1813,7 +1813,7 @@ while (i<=max) {
     
     Character[] forEach<X>(iterated Iterable<X> objects, 
                            Character[][] with(coordinated X x)) {
-        mutable OpenList<Character> list = ArrayList<Character>(this);
+        variable OpenList<Character> list = ArrayList<Character>(this);
         for (X x in objects) {
             for (Character[] s in with(x)) {
                 list.append(s);
@@ -1987,7 +1987,7 @@ while (i<=max) {
 
         <para>The subtype <literal>Numeric</literal> supports the binary 
         operators <literal>+,-, *, /, **</literal>. In addition, 
-        <literal>mutable</literal> values of type <literal>Numeric</literal> 
+        <literal>variable</literal> values of type <literal>Numeric</literal> 
         support the compound assignment operators 
         <literal>+=, -=, /=, *=</literal>.</para>
 
@@ -2350,7 +2350,7 @@ while (i<=max) {
     
     formal String name;
     
-    formal Boolean mutable;    
+    formal Boolean variable;    
     
     formal Visiblity visibility;
     
@@ -2382,7 +2382,7 @@ while (i<=max) {
         
     formal String name;
     
-    formal Boolean mutable;
+    formal Boolean variable;
     
     formal Visiblity visibility;
     
@@ -2469,7 +2469,7 @@ while (i<=max) {
         <programlisting><![CDATA[public interface Attribute<in X, T> 
         satisfies Member<X, Value<T>> {
         
-    formal Boolean mutable;
+    formal Boolean variable;
     
     formal void intercept<S>( T onGet(S instance, T proceed()) )()
                     given S abstracts X;
@@ -2927,7 +2927,7 @@ public Y select<X,Y>(X selector,
         
         <programlisting><![CDATA[doc "Repeat the block the given number of times."
 public void repeat(Natural repetitions, void times()) {
-    mutable Natural n:=0; 
+    variable Natural n:=0; 
     while (n<repetitions) {
         times();
         n++;
@@ -2941,7 +2941,7 @@ public void repeat(Natural repetitions, void times()) {
      evaluates to true."
 public Natural count<X>(iterated Iterable<X> elements,
                         Boolean where(coordinated X x)) {
-    mutable Natural count := 0;
+    variable Natural count := 0;
     for (X x in elements) {
         if ( where(x) ) {
             ++count;
@@ -3058,7 +3058,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         <programlisting><![CDATA[public List<X> list(X first, X? next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
-    mutable X? x := first;
+    variable X? x := first;
     while (true) {
         x := element(x);
         if (exists x) {
@@ -3073,7 +3073,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         <programlisting><![CDATA[public List<X> list(Natural length, X first, X next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
-    mutable X x := first;
+    variable X x := first;
     for (Natural i in 0..length-1) {
         x := element(x);
         list.append(x);
@@ -3082,7 +3082,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
 }]]></programlisting>
 
         <programlisting><![CDATA[public Y fold<X,Y>(X[] list, Y initial, Y using(Y y, X x)) {
-    mutable Y y:=initial;
+    variable Y y:=initial;
     for (X x in list) {
         y:=using(u,x);
     }

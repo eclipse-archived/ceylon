@@ -196,7 +196,7 @@
             
             <para>The body of a nested class, method, or attribute declaration may invoke, 
             evaluate, or assign any class, method, or attribute whose declaration is in scope 
-            at the nested declaration, except for <literal>mutable</literal> locals of a 
+            at the nested declaration, except for <literal>variable</literal> locals of a 
             containing method or attribute.</para>
             
             <para>If the nested declaration is nested directly or indirectly inside a class or 
@@ -231,7 +231,7 @@ innerObject.member();</programlisting>
             <para>If the nested declaration is nested directly or indirectly inside a block,
             then there is always a <emphasis>current frame</emphasis> of the block when the
             nested declaration is executed. The current frame contains the values of all
-            non-<literal>mutable</literal> locals declared by the block. The current frame
+            non-<literal>variable</literal> locals declared by the block. The current frame
             is determined as follows:</para>
             
             <itemizedlist>
@@ -307,9 +307,9 @@ String result = middleObject.string;</programlisting>
         instance reference, since there is no current instance.</para>
 
         <para>The body of a method, class, or attribute nested inside the body of another 
-        method or attribute may invoke or evaluate any non-<literal>mutable</literal> local, 
+        method or attribute may invoke or evaluate any non-<literal>variable</literal> local, 
         block local attribute getter or block local method declared earlier within the 
-        containing scope. It may not refer to <literal>mutable</literal> locals defined 
+        containing scope. It may not refer to <literal>variable</literal> locals defined 
         within the containing method or attribute body.</para>
         
         <para>When a member is hidden by a block local declaration, the member may be
@@ -317,7 +317,7 @@ String result = middleObject.string;</programlisting>
         reference <literal>outer</literal>. For example:</para>
         
         <programlisting>public class Item(String name) {
-    mutable String name := name;
+    variable String name := name;
     public void changeName(String name) {
         this.name := name;
     }
@@ -528,16 +528,16 @@ try (lock) { ... }</programlisting>
         <section id="specificationstatements">
             <title>Specification statements</title>
             
-        <para>A specification statement may specify the value of a non-<literal>mutable</literal> 
+        <para>A specification statement may specify the value of a non-<literal>variable</literal> 
         attribute or local that has already been declared earlier in the block. It may 
         even specify a value of type <literal>Callable</literal> for a method that was 
         declared earlier in the block.</para>
         
         <programlisting>Specification := MemberName Specifier ";"</programlisting>
                 
-        <para>The Ceylon language distinguishes between assignment to a <literal>mutable</literal> 
+        <para>The Ceylon language distinguishes between assignment to a <literal>variable</literal> 
         value (the <literal>:=</literal> operator) and specification of the value of a 
-        non-<literal>mutable</literal> local or attribute (using <literal>=</literal>). 
+        non-<literal>variable</literal> local or attribute (using <literal>=</literal>). 
         A specification is not an expression.</para>
         
         <para>The specified expression type must be assignable to the type of the 
@@ -696,7 +696,7 @@ else {
             </listitem>
             <listitem>
                 <para>If the condition expression is a local, the local will be treated by the 
-                compiler as non-<literal>mutable</literal> and as having type <literal>X</literal> 
+                compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
                 inside the block that follows immediately, where the conditional expression is of 
                 type <literal>Optional&lt;X&gt;</literal>.</para>
             </listitem>
@@ -737,7 +737,7 @@ else {
             </listitem>
             <listitem>
                 <para>if the condition is a local, the local will be treated by the compiler 
-                as non-<literal>mutable</literal> and as having the specified type inside the block 
+                as non-<literal>variable</literal> and as having the specified type inside the block 
                 that follows immediately.</para>
             </listitem>
         </itemizedlist>
@@ -1149,7 +1149,7 @@ else {
     log.info(p.name);
 }</programlisting>
 
-            <programlisting>mutable Float sum := 0.0;
+            <programlisting>variable Float sum := 0.0;
 for (Integer i in -10..10) {
     sum += x[i] ? 0.0;
 }</programlisting>
@@ -1218,7 +1218,7 @@ fail {
             
             <para>For example:</para>
             
-            <programlisting>mutable Natural n:=0;
+            <programlisting>variable Natural n:=0;
 OpenList&lt;Natural&gt; seq = ArrayList&lt;Natural&gt;();
 while (n&lt;=max) {
     seq.append(n);
@@ -1231,7 +1231,7 @@ while (exists Person p = iter.head) {
     iter.=tail;
 }</programlisting>
                   
-            <programlisting>mutable Person person := ....;
+            <programlisting>variable Person person := ....;
 do {
     log.info(person.name);
     person.=parent;
@@ -1330,11 +1330,11 @@ finally {
             calling <literal>begin()</literal> and <literal>end()</literal> upon the 
             resource instance.</para>
 
-            <programlisting>mutable Natural retries := 0;
+            <programlisting>variable Natural retries := 0;
 try ( Transaction() ) {
     ...
 }
-catch (TransactionTimeoutException|RemoteException e) {
+catch (TransactionTimeoutException e) {
     if (retries &lt; 3) {
         retries++;
         retry

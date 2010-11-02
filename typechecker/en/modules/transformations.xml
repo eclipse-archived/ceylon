@@ -94,8 +94,8 @@
                 getter method of the Java type.</para>
             </listitem>
             <listitem>
-                <para>For each mutable Ceylon attribute, there is a 
-                JavaBeans-style setter method of the Java type.</para>
+                <para>For each <literal>variable</literal> Ceylon attribute, 
+                there is a JavaBeans-style setter method of the Java type.</para>
             </listitem>
             <listitem>
                 <para>For each Ceylon member class, there is a non-<literal>static</literal> 

@@ -342,13 +342,13 @@
         
         <itemizedlist>
             <listitem>
-                <para>For each non-<literal>mutable</literal> attribute of <literal>Y</literal>, 
+                <para>For each non-<literal>variable</literal> attribute of <literal>Y</literal>, 
                 <literal>X</literal> has an attribute with the same name, whose type is 
                 assignable to the type of the attribute of <literal>Y</literal>.</para>
             </listitem>
             <listitem>
-                <para>For each <literal>mutable</literal> attribute of <literal>Y</literal>, 
-                <literal>X</literal> has a <literal>mutable</literal> attribute with the 
+                <para>For each <literal>variable</literal> attribute of <literal>Y</literal>, 
+                <literal>X</literal> has a <literal>variable</literal> attribute with the 
                 same name and the same type.</para>
             </listitem>
             <listitem>
@@ -802,11 +802,11 @@ public class LinkedList<T>(T... elements)
                 <para>A type parameter of a nested class is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>The type of a non-<literal>mutable</literal> attribute is a covariant 
+                <para>The type of a non-<literal>variable</literal> attribute is a covariant 
                 position.</para>
             </listitem>
             <listitem>
-                <para>The type of a <literal>mutable</literal> attribute is a nonvariant 
+                <para>The type of a <literal>variable</literal> attribute is a nonvariant 
                 position.</para>
             </listitem>
             <listitem>
@@ -1499,7 +1499,7 @@ SequencedParam?
         
         <programlisting>Param := Annotation* (Type | "void") (ParameterName | "this") Params*</programlisting>
         
-        <para>A parameter may not be be declared <literal>mutable</literal>, and may not be 
+        <para>A parameter may not be be declared <literal>variable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
         
         <para>Only a parameter of a toplevel extension method or class may define a parameter
@@ -1671,12 +1671,12 @@ Description doc(String description) {
         
         <itemizedlist>
             <listitem>
-                <para>For each non-<literal>mutable</literal> attribute of <literal>X</literal> 
+                <para>For each non-<literal>variable</literal> attribute of <literal>X</literal> 
                 with type <literal>T</literal>, <literal>MX</literal> has an attribute with 
                 the same name and type <literal>Attribute&lt;X,T&gt;</literal>.</para>
             </listitem>
             <listitem>
-                <para>For each <literal>mutable</literal> attribute of <literal>X</literal> 
+                <para>For each <literal>variable</literal> attribute of <literal>X</literal> 
                 with type <literal>T</literal>, <literal>MX</literal> has an attribute with 
                 the same name and type <literal>MutableAttribute&lt;X,T&gt;</literal>.</para>
             </listitem>

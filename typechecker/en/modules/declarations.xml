@@ -49,7 +49,7 @@ TypeConstraints?
             <title>Toplevel declarations</title>
         
         <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class or 
-        interface&mdash;or a method or non-<literal>mutable</literal> attribute.</para>
+        interface&mdash;or a method or non-<literal>variable</literal> attribute.</para>
         
         <programlisting>ToplevelDeclaration := TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
@@ -337,16 +337,16 @@ TypeConstraints?
         <section id="mutableinterfaces">
             <title>Mutable and immutable interfaces</title>
             
-            <para>An interface may be annotated <literal>mutable</literal>. If an interface 
-            is not annotated <literal>mutable</literal> it is called an <emphasis>immutable 
+            <para>An interface may be annotated <literal>variable</literal>. If an interface 
+            is not annotated <literal>variable</literal> it is called an <emphasis>immutable 
             type</emphasis>, and it may not:</para>
         
             <itemizedlist>
                 <listitem>
-                    <para>declare or inherit <literal>mutable</literal> attributes, or</para>
+                    <para>declare or inherit <literal>variable</literal> attributes, or</para>
                 </listitem>
                 <listitem>
-                    <para>extend an interface annotated <literal>mutable</literal>.</para>
+                    <para>extend an interface annotated <literal>variable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -503,9 +503,9 @@ TypeConstraints?
         of the instantiation expression&mdash;without explicitly specifying the receiver.</para>
         
         <para>A class may be declared inside the body of a method, or attribute, in which 
-        case the body of the class may refer to any non-<literal>mutable</literal> local, 
+        case the body of the class may refer to any non-<literal>variable</literal> local, 
         block local attribute getter or block local method declared earlier within the 
-        containing scope. It may not refer to <literal>mutable</literal> locals from the 
+        containing scope. It may not refer to <literal>variable</literal> locals from the 
         containing scope.</para>
         -->
 
@@ -525,7 +525,7 @@ TypeConstraints?
 }</programlisting>
         
         <programlisting>public class Counter(Natural start=0) {
-    public mutable Natural count := start;
+    public variable Natural count := start;
     public void inc() { count++; }
 }</programlisting>
         
@@ -823,22 +823,22 @@ public class Person { ... }</programlisting>
     <section id="mutableclasses">
         <title>Mutable and immutable classes</title>
         
-        <para>A class may be annotated <literal>mutable</literal>. If a class is 
-        annotated <literal>mutable</literal> it must (directly or indirectly) extend 
+        <para>A class may be annotated <literal>variable</literal>. If a class is 
+        annotated <literal>variable</literal> it must (directly or indirectly) extend 
         <literal>ceylon.language.IdentifiableObject</literal>.</para>
         
-        <para>If a class is not annotated <literal>mutable</literal> it is called an 
+        <para>If a class is not annotated <literal>variable</literal> it is called an 
         <emphasis>immutable type</emphasis>, and it may not:</para>
         
         <itemizedlist>
             <listitem>
-                <para>declare or inherit <literal>mutable</literal> attributes,</para>
+                <para>declare or inherit <literal>variable</literal> attributes,</para>
             </listitem>
             <listitem>
-                <para>extend a <literal>mutable</literal> superclass, or</para>
+                <para>extend a <literal>variable</literal> superclass, or</para>
             </listitem>
             <listitem>
-                <para>implement an interface annotated <literal>mutable</literal>.</para>
+                <para>implement an interface annotated <literal>variable</literal>.</para>
             </listitem>
         </itemizedlist>
     
@@ -1233,14 +1233,14 @@ public class Person { ... }</programlisting>
          
          <para>If the <literal>object</literal> has a visibility modifier annotation, 
          the class has the specified visibility modifier.<!-- If the <literal>object</literal> 
-         is annotated <literal>mutable</literal>, the class is a <literal>mutable</literal> 
+         is annotated <literal>variable</literal>, the class is a <literal>variable</literal> 
          class.--></para>
          
          <para>An <literal>object</literal> attribute:</para>
          
          <itemizedlist>
              <listitem>
-                 <para>is non-<literal>mutable</literal>, and</para>
+                 <para>is non-<literal>variable</literal>, and</para>
              </listitem>
              <listitem>
                  <para>may not be refined or declared <literal>default</literal>.</para>
@@ -1418,16 +1418,16 @@ public choice Boolean of true, false;</programlisting>
         <section id="mutableunions">
             <title>Mutable and immutable unions</title>
             
-            <para>A union may be annotated <literal>mutable</literal>. If a union is not 
-            annotated <literal>mutable</literal> it is called an <emphasis>immutable 
+            <para>A union may be annotated <literal>variable</literal>. If a union is not 
+            annotated <literal>variable</literal> it is called an <emphasis>immutable 
             type</emphasis>, and it may not:</para>
         
             <itemizedlist>
                 <listitem>
-                    <para>declare a <literal>mutable</literal> case, or</para>
+                    <para>declare a <literal>variable</literal> case, or</para>
                 </listitem>
                 <listitem>
-                    <para>satisfy an interface annotated <literal>mutable</literal>.</para>
+                    <para>satisfy an interface annotated <literal>variable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1581,9 +1581,9 @@ public choice TransactionPropagationStyle
         <literal>super</literal>, since there is no current instance.</para>
         
         <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any non-<literal>mutable</literal> local, block local 
+        which case it may refer to any non-<literal>variable</literal> local, block local 
         attribute getter or block local method declared earlier within the containing scope. 
-        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        It may not refer to <literal>variable</literal> locals from the containing scope.</para>
         -->
         
         <section id="callabletype">
@@ -2088,9 +2088,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>All attributes have a type and name. The type of the attribute is specified
         by the simple attribute declaration or attribute getter declaration. An attribute 
-        may be <literal>mutable</literal>, in which case its value can be assigned using 
+        may be <literal>variable</literal>, in which case its value can be assigned using 
         the <literal>:=</literal> and compound assignment operators. This is the case for
-        simple attributes explicitly annotated <literal>mutable</literal>, or for 
+        simple attributes explicitly annotated <literal>variable</literal>, or for 
         attributes with a setter declaration.</para>
             
         <programlisting>AttributeHeader := InferableType MemberName</programlisting>
@@ -2099,14 +2099,14 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         zero parameter lists. Likewise, an attribute evaluation is essentially a method 
         invocation with zero argument lists.</para>
         
-        <para>A toplevel attribute may not be <literal>mutable</literal>.</para>
+        <para>A toplevel attribute may not be <literal>variable</literal>.</para>
         
-        <para>If a class declares or inherits a <literal>mutable</literal> attribute, it 
+        <para>If a class declares or inherits a <literal>variable</literal> attribute, it 
         must (directly or indirectly) extend the class 
         <literal>ceylon.language.IdentifiableObject</literal>.</para>
         
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
-        may not be <literal>mutable</literal>.</para>
+        may not be <literal>variable</literal>.</para>
         
         <!--<section id="attributebodies">
             <title>Attribute bodies</title>-->
@@ -2124,9 +2124,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <literal>super</literal>, since there is no current instance.</para>
         
         <para>An attribute may be declared inside the body of another method or attribute, 
-        in which case it may refer to any non-<literal>mutable</literal> local, block local 
+        in which case it may refer to any non-<literal>variable</literal> local, block local 
         attribute getter or block local method declared earlier withing the containing scope. 
-        It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
+        It may not refer to <literal>variable</literal> locals from the containing scope.</para>
         -->
         <!--
         <para>
@@ -2143,12 +2143,12 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <programlisting>SimpleAttribute := AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
         
-        <para>A simple attribute or local annotated <literal>mutable</literal> represents a
+        <para>A simple attribute or local annotated <literal>variable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
-        <literal>mutable</literal> represents a value that can be specified exactly once.</para>
+        <literal>variable</literal> represents a value that can be specified exactly once.</para>
         
-        <para>The value of a non-<literal>mutable</literal> attribute is specified using 
-        <literal>=</literal>. A <literal>mutable</literal> attribute may be initialized using 
+        <para>The value of a non-<literal>variable</literal> attribute is specified using 
+        <literal>=</literal>. A <literal>variable</literal> attribute may be initialized using 
         the assignment operator <literal>:=</literal>.</para>
 
         <programlisting>Initializer := ":=" Expression</programlisting>
@@ -2170,7 +2170,7 @@ Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
         <para>While:</para>
          -->
          
-        <programlisting>mutable Natural count := 0;</programlisting>
+        <programlisting>variable Natural count := 0;</programlisting>
         
         <!--
         <para>is equivalent to this Java code:</para>
@@ -2238,14 +2238,14 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
         initializer expression.</para>
         
         <programlisting>local names = List&lt;String&gt;();</programlisting>
-        <programlisting>mutable local count:=0;</programlisting>
+        <programlisting>variable local count:=0;</programlisting>
                 
         </section>
         
         <section id="attributeswithnamedarguments">
             <title>Attributes with named argument lists</title>
             
-            <para>Alternatively, a non-<literal>mutable</literal> simple attribute may 
+            <para>Alternatively, a non-<literal>variable</literal> simple attribute may 
             specify a named argument list. An attribute with a named argument list must 
             explicitly declare an invocable type (a non-<literal>abstract</literal> 
             class, or any other type with a callable metatype) as the attribute type. 
@@ -2293,8 +2293,8 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
 }</programlisting>
         
             <para>If an attribute getter has a matching attribute setter, we say that 
-            the attribute is <literal>mutable</literal>. Otherwise we say it is 
-            non-<literal>mutable</literal>.</para>
+            the attribute is <literal>variable</literal>. Otherwise we say it is 
+            non-<literal>variable</literal>.</para>
             
             <!--
             <programlisting>public Float total { return items.totalPrice }</programlisting>
@@ -2372,7 +2372,7 @@ public assign name { firstName = first(name); lastName = last(name); }</programl
             -->
             
             <comment><para>TODO: should we require that the corresponding getter be 
-            annotated <literal>mutable</literal>?</para></comment>
+            annotated <literal>variable</literal>?</para></comment>
             
             <!--
             <comment><para>TODO: should we allow overloaded attribute setters, for example:</para>
@@ -2421,7 +2421,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>An attribute annotated <literal>formal</literal> may not specify an
             implementation (a specifier, initializer, or getter implementation).</para>
         
-            <programlisting>package formal mutable String firstName;</programlisting>
+            <programlisting>package formal variable String firstName;</programlisting>
 
             <para>A toplevel attribute declaration may not be annotated <literal>formal</literal> 
             and must have a specifier or getter implementation.</para>
@@ -2455,9 +2455,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             </itemizedlist>           
             
-            <para>A non-<literal>mutable</literal> attribute may be refined by a simple 
-            attribute or attribute getter. A <literal>mutable</literal> attribute may be 
-            refined by a <literal>mutable</literal> simple attribute or by an attribute 
+            <para>A non-<literal>variable</literal> attribute may be refined by a simple 
+            attribute or attribute getter. A <literal>variable</literal> attribute may be 
+            refined by a <literal>variable</literal> simple attribute or by an attribute 
             getter and setter pair.</para>
             
             <comment><para>TODO: are you allowed to refine a getter or setter without also 
@@ -2484,12 +2484,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                     <para>or has <emphasis>exactly the same type</emphasis> as the 
                     attribute it refines, after substitution of type arguments specified 
                     in the <literal>extends</literal> or <literal>satisfies</literal> clause
-                    of the class, if the attribute it refines is <literal>mutable</literal>, 
+                    of the class, if the attribute it refines is <literal>variable</literal>, 
                     and</para>
                 </listitem>
                 <listitem>
-                    <para>is <literal>mutable</literal>, if the attribute it refines is 
-                    <literal>mutable</literal>.</para>
+                    <para>is <literal>variable</literal>, if the attribute it refines is 
+                    <literal>variable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2504,8 +2504,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>An attribute may not, directly or indirectly, refine two different
             attributes not themselves annotated <literal>actual</literal>.</para>
         
-            <para>A non-<literal>mutable</literal> attribute may be refined by a 
-            <literal>mutable</literal> attribute.</para>
+            <para>A non-<literal>variable</literal> attribute may be refined by a 
+            <literal>variable</literal> attribute.</para>
             
             <comment><para>TODO: Is that really allowed? It could break the superclass.
             Should we say that you are allowed to do it when you implement an interface
@@ -2561,7 +2561,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 <listitem>
                     <para>a <literal>void</literal> <emphasis>setter method</emphasis> 
                     with a single parameter of the attribute type, if the attribute is 
-                    <literal>mutable</literal>.</para>
+                    <literal>variable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2613,7 +2613,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 or member type defined by a supertype.</para>
             </listitem>
             <listitem>
-                <para><literal>mutable</literal> specifies that an attribute
+                <para><literal>variable</literal> specifies that an attribute
                 or local may be assigned.<!--, or that an interface or class has 
                 assignable attributes.--></para>
             </listitem>
@@ -2971,7 +2971,7 @@ public Visibility private() {
             </listitem>
         </itemizedlist>
         <!--
-        <para>The introduced type may not be a <literal>mutable</literal> type.</para>
+        <para>The introduced type may not be a <literal>variable</literal> type.</para>
         -->
         <!-- 
         <comment><para>Note: I actually much prefer the readability of 
