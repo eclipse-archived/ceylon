@@ -1195,10 +1195,10 @@ public object spades extends Suit() {}</programlisting>
         values in the enumerated list of subtypes.</para>
         
         <para>Another situation where we're allowed to use an exhaustive list of 
-        cases is with an <emphasis>enumerated type constraint</emphasis>. This 
-        is a constraint upon a generic type parameter that restricts the type
-        argument to any one of several types. The main usecase for union types 
-        is emulating method overloading. For example:</para>
+        cases is with an <emphasis>enumerated type bound</emphasis>. This is a 
+        constraint upon a generic type parameter that restricts the type
+        argument to any one of several types. The main usecase for enumerated 
+        type bound is emulating method overloading. For example:</para>
         
         <programlisting>void say&lt;T&gt;(T dest) 
         given T of OutputStream | Log | Buffer {
