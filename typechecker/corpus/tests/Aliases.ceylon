@@ -3,19 +3,27 @@ class Aliases() {
 	interface Foo<X,Y,Z> {}
 	interface Bar<X> {}
 	interface Baz<X> {}
+	class Qux<T>(T value) {}
 	
-	alias Simple satisfies Bar<Baz<String>>;
+	interface Simple = Bar<Baz<String>>;
 	
-	alias WithTypeParameter<X> satisfies Bar<Baz<X>>;
+	interface WithTypeParameter<X> = Bar<Baz<X>>;
 	
-	alias WithTypeConstraint<X> satisfies Bar<Baz<X>>
-		given X satisfies String;
+	interface WithTypeConstraint<X>
+		given X satisfies String 
+		= Bar<Baz<X>>;
 	
-	alias Multiple satisfies Foo<Bar<Baz<String>>, Natural, Character>, Bar<Baz<String>>;
+	class Class(Natural n) = Qux<Natural>;
 	
+    class ClassWithTypeParameter<T>(T value) = Qux<T>;
+
+    class ClassWithTypeConstraint<T>(T value) 
+        given T satisfies Object & Equals<T>
+        = Qux<T>;
+
 	doc "an alias"
 	by "Gavin King" "Andrew Haley"
 	see (Foo, Bar, Baz)
-	public alias WithAnnotations satisfies Foo<Bar<Baz<String>>, Natural, Character>;
+	public interface WithAnnotations = Bar<Baz<String>>;
 	
 }

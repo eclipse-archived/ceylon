@@ -110,7 +110,7 @@ class Classes() {
 		void inc() { count++; }
 	}
 	
-	class SatisfiesMultiple() satisfies Counter, Resettable {
+	class SatisfiesMultiple() satisfies Counter & Resettable {
 		mutable Natural count := 0;
 		void inc() { count++; }
 		void reset() { count := 0; }

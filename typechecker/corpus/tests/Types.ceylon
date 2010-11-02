@@ -19,6 +19,8 @@ abstract class Types() {
 	Foo<#2> typeWithDimension;
 	Foo<#3,#5> typeWithMultipleDimensions;
 	Foo[10] sequenceWithDimension;
+	Foo|Bar<T>|Baz union;
+	Foo<Bar|Baz> withUnionArg;
 	
 	abstract class Bar<#n,#m,P...>() {
 	    Foo<#n> typeWithVariantDimension;
