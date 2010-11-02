@@ -934,7 +934,7 @@ else {
                     <para>it has an exhaustive list of cases of <literal>T</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>it has is a <literal>case (null)</literal>.</para>
+                    <para>it has a <literal>case (null)</literal>.</para>
                 </listitem>
             </itemizedlist>
             
