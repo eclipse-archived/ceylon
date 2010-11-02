@@ -649,17 +649,30 @@ else {
                  of type <literal>Object</literal> evaluates to an instance of a type assignable to 
                  the specified type.</para>
             </listitem>
+            <listitem>
+                <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
+                subtype of the specified type.</para>
+            </listitem>
         </itemizedlist>
         
         <comment><para>TODO: does <literal>is</literal> really test assignability, or should it 
         it test that the value is an instance of a <emphasis>subtype</emphasis> of the given type?</para></comment>
         
         <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
-       
+        
+        <para>An existence or nonemptiness condition specifies an expression or variable.</para>
+        
         <programlisting>ExistsCondition := ("exists" | "nonempty") (InferableVariable Specifier | Expression)</programlisting>
-       
+        
+        <para>An assignability condition specifies an expression or variable and a type.</para>
+        
         <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
         
+        <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
+        <emphasis>given type</emphasis> (second).</para>
+        
+        <programlisting>SatisfiesCondition := "satisfies" Type Type</programlisting>
+
         <para>Any condition contains an expression. In the case of existence, nonemptiness and 
         assignability conditions, the expression may be a specifier of a variable declaration.</para>
 
@@ -676,6 +689,10 @@ else {
                 be of type <literal>Object</literal>.</para>
             </listitem>
             <listitem>
+                <para>If the <literal>satisfies</literal> modifier appears, the condition expression 
+                must be of type <literal>Type&lt;T&gt;</literal> for some type <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition expression 
                 must be of type <literal>Optional&lt;X&gt;</literal> for some type 
                 <literal>X</literal>.</para>
@@ -690,8 +707,8 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>If the condition declares a variable, the variable must be declared of 
-                type <literal>X</literal>, where the specifier expression is of type 
+                <para>If the condition declares a variable, the variable must be declared of type 
+                <literal>X</literal>, where the specifier expression is of type 
                 <literal>Optional&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
@@ -753,6 +770,15 @@ else {
         <para>Where the <literal>obj</literal> declared by the condition hides the outer declaration
         of <literal>obj</literal> inside the block that follows.</para>
         
+        <para>For <literal>satisfies</literal> conditions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the given type will be treated by the compiler as a subtype of the specified 
+                type inside the block that follows immediately.</para>
+            </listitem>
+        </itemizedlist>
+                        
         <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
         <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
 
@@ -766,6 +792,11 @@ else {
                 <para>If the <literal>is</literal> modifier appears, the condition is satisfied 
                 if the expression evaluates to an instance of a class that is assignable to the 
                 specified type when the control structure is executed.</para>
+            </listitem>
+            <listitem>
+                <para>If the <literal>satisfies</literal> modifier appears, the condition is satisfied 
+                if the given type is a subtype of the specified type when the control structure is 
+                executed.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
@@ -785,30 +816,6 @@ else {
         So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
         by the virtual machine.</para>
         
-        <comment><para>TODO: should we have a new kind of condition which directly compares types,
-        allowing you to treat multiple variables as having the tested type inside the block, for 
-        example:</para>
-        <programlisting>List&lt;X&gt; xs = ...;
-X x = ...;
-if (X satisfies Comparable&lt;X&gt;) {
-    X x0;
-    if (exists X first = xs.first) {
-        x0 = max(x, first);
-    }
-    else {
-        x0 = x;
-    }
-    return forAll(X y in xs) every (x&lt;=x0)
-}</programlisting>
-        <programlisting>String string&lt;P...&gt;(Tuple&lt;P...&gt; tuple) {
-    if (T, Q... satisfies P...) {
-        return $tuple.head + ", " + string(tuple.tail);
-    }
-    else {
-        return ";"
-    }
-}</programlisting></comment>
-
         </section>
         
         <section id="ifelse">
@@ -876,6 +883,28 @@ else {
     return p.card
 }</programlisting>
             
+        <programlisting>List&lt;X&gt; xs = ...;
+X x = ...;
+if (X satisfies Comparable&lt;X&gt;) {
+    X x0;
+    if (exists X first = xs.first) {
+        x0 = max(x, first);
+    }
+    else {
+        x0 = x;
+    }
+    return forAll(X y in xs) every (x&lt;=x0)
+}</programlisting>
+<!-- 
+        <programlisting>String string&lt;P...&gt;(Tuple&lt;P...&gt; tuple) {
+    if (T, Q... satisfies P...) {
+        return $tuple.head + ", " + string(tuple.tail);
+    }
+    else {
+        return ";"
+    }
+}</programlisting>
+-->
         </section>
         
         <section id="switchcaseelse">
@@ -893,12 +922,25 @@ else {
             <programlisting>DefaultCaseItem := "else" Block</programlisting>
 
             <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 
-            value must be a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
-            where <literal>X</literal> is a subtype of the <literal>switch</literal> expression type. 
-            Alternatively, a <literal>case</literal> may be an assignability condition of form 
-            <literal>case (is ...)</literal>.</para>
+            value must be:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
+                    where <literal>X</literal> is a subtype of the <literal>switch</literal> expression 
+                    type, or</para>
+                </listitem>
+                <listitem>
+                    <para>an assignability condition of form <literal>case (is ...)</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the <literal>switch</literal> expression type is a subtype of 
+                    <literal>Type&lt;T&gt;</literal> for some type <literal>T</literal>, a subtype 
+                    condition of form <literal>case (satisfies ...)</literal>.</para>
+                </listitem>
+            </itemizedlist>
 
-            <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
+            <programlisting>Case := Expression ("," Expression)* | "is" Type | "satisfies" Type</programlisting>
             
             <!--
             <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
@@ -935,6 +977,23 @@ else {
                 </listitem>
                 <listitem>
                     <para>it has a <literal>case (null)</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A <literal>switch</literal> has an <emphasis>exhaustive</emphasis> list of cases of 
+            a metatype <literal>Type&lt;T&gt;</literal> where <literal>T</literal> is a type with an 
+            enumerated list of cases if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>T</literal> has no cases which are anonymous classes, and</para>
+                </listitem>
+                <listitem>
+                    <para>for every case <literal>U</literal> of the type (every named class or 
+                    interface), either <literal>U</literal> is explicitly listed as a 
+                    <literal>case (satisfies U)</literal> subtype condition, or, if <literal>U</literal> 
+                    is also a type with an enumerated list of cases, the <literal>switch</literal> has 
+                    an exhaustive list of cases of <literal>Type&lt;U&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1047,7 +1106,7 @@ else {
             
             <para>A Java-style overloaded method may be emulated as follows:</para>
             
-            <programlisting>public void print(T value) 
+            <programlisting>public void print&lt;T&gt;(T value) 
         given T of String | Integer | Float {
     switch (value)
     case (is String) { 
@@ -1061,9 +1120,9 @@ else {
     }
 }</programlisting>
 
-            <comment><para>TODO: Actually, this is not quite enough. We really need
-            to be able to write stuff like this:</para>
-            <programlisting>public T join(T x, T y) 
+            <para>Or, even better:</para>
+            
+            <programlisting>public T join&lt;T&gt;(T x, T y) 
         given T of String | Integer {
     switch (T)
     case (satisfies String) { 
@@ -1073,9 +1132,6 @@ else {
         return (IntegerFormat(x,2)+IntegerFormat(y,2)).parseInteger(2) 
     }
 }</programlisting>
-            <para>But that means introducing a new kind of condition, as described 
-            above.</para>
-            </comment>
             
         </section>
         

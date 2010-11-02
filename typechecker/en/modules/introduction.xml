@@ -1200,7 +1200,7 @@ public object spades extends Suit() {}</programlisting>
         argument to any one of several types. The main usecase for union types 
         is emulating method overloading. For example:</para>
         
-        <programlisting>void say(T dest) 
+        <programlisting>void say&lt;T&gt;(T dest) 
         given T of OutputStream | Log | Buffer {
     switch(dest)
     case (is Outputstream) {
@@ -1216,6 +1216,27 @@ public object spades extends Suit() {}</programlisting>
         
         <para>We can call this method passing any instance of <literal>OutputStream</literal>,
         <literal>Log</literal>, or <literal>Buffer</literal>.</para>
+        
+        <para>Actually, a better, more elegant, more flexible, way to implement an 
+        "overloaded" method is to write a <literal>switch</literal> against the type 
+        parameter itself:</para>
+        
+        <programlisting>void say&lt;T&gt;(T dest) 
+        given T of OutputStream | Log | Buffer {
+    switch(T)
+    case (satisfies Outputstream) {
+        dest.writeLine(greeting);
+    }
+    case (satisfies Log) {
+        dest.info(greeting);
+    }
+    case (satisfies Buffer) {
+        dest.append(greeting);
+    }
+}</programlisting>
+        
+        <para>Don't worry if you don't completely understand this code. We'll come
+        back to the topic of generics and type constraints later.</para>
         
         <!--
         <para>A second usecase for union types is writing a <literal>catch</literal>
@@ -3134,7 +3155,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         assert that <literal>T</literal> is a subtype of 
         <literal>Equals&lt;T&gt;</literal>. This is an example of a
         <emphasis>type constraint</emphasis>&mdash;in fact, it's an example of 
-        the most common kind of type constraint, a <emphasis>lower 
+        the most common kind of type constraint, an <emphasis>upper 
         bound</emphasis>.</para>
         
         <programlisting>public class Set&lt;out T&gt;(T... elements)
@@ -3164,7 +3185,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         This is another way in which Ceylon is more regular than some other
         C-like languages.</para>
         
-        <para>A lower bound lets us call methods and attributes of the bound, 
+        <para>An upper bound lets us call methods and attributes of the bound, 
         but it doesn't let us instantiate new instances of <literal>T</literal>.  
         The second-most common kind of type constraint in Ceylon is an 
         <emphasis>initialization parameter specification</emphasis>.</para>
@@ -3183,11 +3204,27 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         
         <programlisting>Factory&lt;Hello&gt; = Factory&lt;PersonalizedHello&gt;();  //ok</programlisting>
         <programlisting>Factory&lt;Hello&gt; = Factory&lt;DefaultHello&gt;();  //compile error</programlisting>
+        
+        <para>We've already seen an example of the third kind of type constraint.
+        An <emphasis>enumerated type bound</emphasis> constrains the type argument
+        to be one of an enumerated list of types. It lets us write an exhaustive 
+        <literal>switch</literal> on the type parameter:</para>
+        
+        <programlisting>T sqrt&lt;T&gt;(T x) 
+        given T of Float | Decimal {
+    switch (T)
+    case (satisfies Float) {
+        return sqrtFloat(x)
+    }
+    case (satisfies Decimal) {
+        return sqrtDecimal(x)
+    }
+}</programlisting>
 
-        <para>Finally, the third kind of type constraint, which is much less
-        common, and which most people find much more confusing, is an 
-        <emphasis>upper bound</emphasis>. An upper bound is the opposite of a 
-        lower bound. It says that a type parameter is a supertype of some other 
+        <para>Finally, the fourth kind of type constraint, which is much less
+        common, and which most people find much more confusing, is a 
+        <emphasis>lower bound</emphasis>. A lower bound is the opposite of an 
+        upper bound. It says that a type parameter is a supertype of some other 
         type. There's only really one situation where this is useful. Consider 
         adding a <literal>union()</literal> operation to our <literal>Set</literal> 
         interface. We might try the following:</para>
