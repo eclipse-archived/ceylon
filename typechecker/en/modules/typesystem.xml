@@ -53,11 +53,13 @@
             <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
             for the generic type parameters of a parameterized type.</para>
         </listitem>
+        <!--
         <listitem>
             <para>A <emphasis>union</emphasis> is a type whose value may be a value of 
             any one of an enumerated list of types. <emphasis>NOTE: Union types are a 
             feature proposed for inclusion in a future version of the language.</emphasis></para>
         </listitem>
+        -->
     </itemizedlist>
     
     <para>The Ceylon type system is much more complete than most other object oriented
@@ -291,6 +293,7 @@
                 and <literal>Y</literal> is a subtype of <literal>Z</literal> then
                 <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
             </listitem>
+            <!--
             <listitem>
                 <para>Unions: <literal>X</literal> is a subtype of <literal>X|Y</literal> for 
                 any types <literal>X</literal> and <literal>Y</literal>. Furthermore, if both 
@@ -298,6 +301,7 @@
                 then <literal>X|Y</literal> is also a subtype of <literal>Z</literal>.
                 </para>
             </listitem>
+            -->
             <listitem>
                 <para>Interfaces <!--and unions--> are objects: all interfaces <!--and unions--> 
                 are subtypes of <literal>ceylon.language.Object</literal>. Conversely, only 
@@ -311,6 +315,7 @@
         
         </section>
         
+        <!--
         <section id="unions">
             <title>Unions</title>
             
@@ -326,6 +331,7 @@
             <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
             
         </section>
+        -->
         
         <section id="assignability">
             <title>Assignability</title>
@@ -419,7 +425,7 @@
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
         where the type usually appears.</para>
         
-        <programlisting>InferableType := Union | "local"</programlisting>
+        <programlisting>InferableType := Type | "local"</programlisting>
         
         <para>Type inference is only allowed for block local declarations. The keyword
         <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
@@ -999,7 +1005,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
     
-        <programlisting>TypeConstraint := "given" TypeName Params? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
+        <programlisting>TypeConstraint := "given" TypeName Params? CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
         
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
         
@@ -1025,6 +1031,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 of the current instance, and</para>
             </listitem-->
             <listitem>
+                <para>an enumerated type bound, <literal>given X of T | U | V</literal>
+                specifies that the type parameter <literal>X</literal> represents one of the 
+                enumerated types,</para>
+            </listitem>
+            <listitem>
                 <para>a metatype bound, <literal>given X is T</literal>, specifies that the
                 concrete metatype of the type parameter is a subtype of a given type <literal>T</literal>
                 <emphasis>(note that metatypes are a proposed feature for a future version
@@ -1039,6 +1050,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>An initialization parameter specification allows instantiation of the type 
         represented by the type parameter within the body of the declaration.</para>
+        
+        <para>An enumerated type bound allows the use of an exhaustive <literal>switch</literal>
+        with expressions of the parameter type.</para>
         
         <para>A constraint may not refer to a sequenced type parameter.</para>
         
@@ -1065,6 +1079,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A type argument to a type parameter with a lower bound must be a type 
                 of which all lower bounds are subtypes.</para>
             </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with an enumerated type bound must 
+                be a subtype of one of the enumerated types.</para>
+            </listitem>
         </itemizedlist>
         
         <para>Within the body of the declaration, a constraint affects the assignability of 
@@ -1082,6 +1100,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A metamodel reference to the type parameter is assignable to the
                 metatype bound.</para>
             </listitem>
+            <listitem>
+                <para>A type parameter is considered a supertype of its enumerated type
+                bounds.</para>
+            </listitem>
         </itemizedlist>
         
         <programlisting>given X satisfies Number&lt;X&gt;
@@ -1092,6 +1114,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
         
         <programlisting>given N is Monoid&lt;N&gt;</programlisting>
+        
+        <programlisting>given T of String | Natural | Integer | Float</programlisting>
     
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
         
@@ -1143,11 +1167,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <comment><para>TODO: should we allow constraints on dimensional type parameters,
         for example <literal>given n&gt;=1</literal>.</para></comment>
         
-        <comment><para>TODO: Should we have constraints that specify that a type should be
-        an have a certain list of enumerated types, for example 
-        <literal>given T of Leaf, Branch</literal>? I suppose this is only useful if we 
-        decide to introduce unions. Even then, it seems of relatively limited utility.</para></comment>
-        
     </section>
 
     </section>
@@ -1185,7 +1204,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
-        <programlisting>TypeArgument := Union | "#" Dimension</programlisting>
+        <programlisting>TypeArgument := Type | "#" Dimension</programlisting>
         
         <section id="dimensions">
             <title>Dimensions</title>
@@ -1253,7 +1272,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
         <programlisting>Map&lt;Key, Value&gt;</programlisting>
         <programlisting>Callable&lt;String,Object...&gt;</programlisting>
-        <programlisting>Method&lt;Void,String|Integer|Float&gt;</programlisting>
         
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
@@ -1469,23 +1487,13 @@ SequencedParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* (Union | "void") (ParameterName | "this") Params*</programlisting>
+        <programlisting>Param := Annotation* (Type | "void") (ParameterName | "this") Params*</programlisting>
         
         <para>A parameter may not be be declared <literal>mutable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
         
         <para>Only a parameter of a toplevel extension method or class may define a parameter
         named <literal>this</literal>.</para>
-        
-        <section id="unionparameters">
-            <title>Union parameters</title>
-            
-            <para>A parameter may be of union type. This allows a method to emulate a Java-style 
-            overloaded method, or a class to emulate Java-style constructor overloading.</para>
-            
-            <programlisting>(String|Integer|Float value)</programlisting>
-            
-        </section>
         
         <section id="callableparameters">
             <title>Callable parameters</title>
@@ -1551,7 +1559,7 @@ SequencedParam?
             </listitem>
         </itemizedlist>
         
-        <programlisting>SequencedParam := Annotation* Union "..." ParameterName</programlisting>
+        <programlisting>SequencedParam := Annotation* Type "..." ParameterName</programlisting>
         
         <para>The sequenced parameter or tuple parameter must be the last parameter in the 
         list.</para>
@@ -1567,7 +1575,7 @@ SequencedParam?
         
         <para>A parameter of type <literal>Entry</literal> may be specified as a pair of variables.</para>
         
-        <programlisting>EntryParamPair := Annotation* Union ParameterName "->" Union ParameterName</programlisting>
+        <programlisting>EntryParamPair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
         
         <para>A key/value parameter pair declaration of form <literal>U u -> V v</literal> results 
         in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>

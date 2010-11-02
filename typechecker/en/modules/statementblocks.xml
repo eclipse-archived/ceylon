@@ -613,7 +613,7 @@ else {
         <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
         that is available inside the control structure body.</para>
         
-        <programlisting>Variable := Union MemberName</programlisting>
+        <programlisting>Variable := Type MemberName</programlisting>
         
         <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
         specifying the keyword <literal>local</literal> where the type usually appears. The type of 
@@ -658,7 +658,7 @@ else {
        
         <programlisting>ExistsCondition := ("exists" | "nonempty") (InferableVariable Specifier | Expression)</programlisting>
        
-        <programlisting>IsCondition := "is" (Variable Specifier | Union Expression)</programlisting>
+        <programlisting>IsCondition := "is" (Variable Specifier | Type Expression)</programlisting>
         
         <para>Any condition contains an expression. In the case of existence, nonemptiness and 
         assignability conditions, the expression may be a specifier of a variable declaration.</para>
@@ -898,7 +898,7 @@ else {
             Alternatively, a <literal>case</literal> may be an assignability condition of form 
             <literal>case (is ...)</literal>.</para>
 
-            <programlisting>Case := Expression ("," Expression)* | "is" Union</programlisting>
+            <programlisting>Case := Expression ("," Expression)* | "is" Type</programlisting>
             
             <!--
             <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
@@ -938,6 +938,7 @@ else {
                 </listitem>
             </itemizedlist>
             
+            <!--
             <para>A <literal>switch</literal> has an <emphasis>exhaustive</emphasis> list of cases
             of a union type <literal>T|U|V|...</literal> if:</para>
             
@@ -949,6 +950,7 @@ else {
                     list of cases of <literal>U</literal>.</para>
                 </listitem>
             </itemizedlist>
+            -->
             
             <para>We say that a <literal>switch</literal> is exhaustive if it has an exhaustive list 
             of cases of the switch expression type. If no <literal>else</literal> block is specified, 
@@ -1045,7 +1047,8 @@ else {
             
             <para>An Java-style overloaded method may be emulated as follows:</para>
             
-            <programlisting>public void print(String|Integer|Float value) {
+            <programlisting>public void print(T value) 
+        given T of String | Integer | Float {
     switch (value)
     case (is String) { stream.writeLine(value); }
     case (is Integer) { print($value); }

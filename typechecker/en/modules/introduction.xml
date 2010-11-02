@@ -142,14 +142,15 @@
 
     </section>
     
-    <section id="uniontypesanddefaultparameters">
-    <title>Union types and defaulted parameters</title>
+    <section id="defaultparameters">
+    <title>Defaulted parameters and sequenced parameters</title>
     
     <para>
-    Instead of method and constructor overloading, Ceylon supports 
-    <emphasis>union types</emphasis> and parameters with default values. A 
-    single method in Ceylon may emulate the signatures of several overloaded 
-    methods in Java. 
+    Instead of method and constructor overloading, Ceylon supports parameters 
+    with default values and <emphasis>sequenced</emphasis> ("varargs") 
+    parameters. Furthermore, a generic method may be used to emulate parameter
+    type overloading. Therefore, a single method in Ceylon may emulate the 
+    signatures of several overloaded methods in Java. 
     </para>
     
     </section>
@@ -825,8 +826,8 @@ public void hello() {
                 <para><emphasis>sequenced parameters</emphasis>, i.e. "varargs", and</para>
             </listitem>
             <listitem>
-                <para><emphasis>union types</emphasis>, to emulate the effect of overloading
-                a method or class by parameter type.</para>
+                <para><emphasis>enumerated type constraints</emphasis>, to emulate the effect 
+                of overloading a method or class by parameter type.</para>
             </listitem>
         </itemizedlist>
         
@@ -1194,13 +1195,13 @@ public object spades extends Suit() {}</programlisting>
         values in the enumerated list of subtypes.</para>
         
         <para>Another situation where we're allowed to use an exhaustive list of 
-        cases is with a <emphasis>union type</emphasis>. A union type is just
-        a type whose values are instances of any one of several types. We write
-        the union of types <literal>X</literal> and <literal>Y</literal> as
-        <literal>X|Y</literal>. The main usecase for union types is emulating
-        method overloading. For example:</para>
+        cases is with an <emphasis>enumerated type constraint</emphasis>. This 
+        is a constraint upon a generic type parameter that restricts the type
+        argument to any one of several types. The main usecase for union types 
+        is emulating method overloading. For example:</para>
         
-        <programlisting>void say(OutputStream|Log|Buffer dest) {
+        <programlisting>void say(T dest) 
+        given T of OutputStream | Log | Buffer {
     switch(dest)
     case (is Outputstream) {
         dest.writeLine(greeting);
@@ -1216,6 +1217,7 @@ public object spades extends Suit() {}</programlisting>
         <para>We can call this method passing any instance of <literal>OutputStream</literal>,
         <literal>Log</literal>, or <literal>Buffer</literal>.</para>
         
+        <!--
         <para>A second usecase for union types is writing a <literal>catch</literal>
         block which handles multiple disjoint types:</para>
         
@@ -1232,6 +1234,7 @@ catch (FileCloseEception fe) {
     log.error("Could not close file", fe); 
     throw fe
 }</programlisting>
+        -->
         
     </section>
     
