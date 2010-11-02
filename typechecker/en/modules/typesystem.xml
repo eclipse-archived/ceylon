@@ -1004,8 +1004,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         upon ordinary type parameters using the <literal>given</literal> clause.</para>
         
         <programlisting>TypeConstraints = TypeConstraint+</programlisting>
-    
-        <programlisting>TypeConstraint := "given" TypeName Params? CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
+        
+        <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
+        
+        <programlisting>TypeConstraint := "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
+        
+        <programlisting>TypeConstraintInheritance := CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
         
         <programlisting>AbstractedType := "abstracts" Type</programlisting>
         
@@ -1039,14 +1043,21 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>a metatype bound, <literal>given X is T</literal>, specifies that the
                 concrete metatype of the type parameter is a subtype of a given type <literal>T</literal>
                 <emphasis>(note that metatypes are a proposed feature for a future version
-                of the language)</emphasis>, and</para>
+                of the language)</emphasis>,</para>
             </listitem>
             <listitem>
                 <para>an initialization parameter specification, <literal>given X(...)</literal>
                 specifies that the type parameter <literal>X</literal> is a class with
-                the given parameter types.</para>
+                the given parameter types, and</para>
+            </listitem>
+            <listitem>
+                <para>a recursive type parameter, <literal>given X&lt;T&gt;</literal> specifies
+                that the type parameter is itself a parameterized type.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>NOTE: Recursive type parameters is a proposed feature for a future version 
+        of the language.</para></comment>
         
         <para>An initialization parameter specification allows instantiation of the type 
         represented by the type parameter within the body of the declaration.</para>
@@ -1072,8 +1083,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>A type argument to a type parameter with an upper bound must be a type 
-                which is a subtype of all upper bounds.</para>
+                <para>A type argument to a type parameter with an upper bound must be a 
+                type which is a subtype of all upper bounds.</para>
             </listitem>
             <listitem>
                 <para>A type argument to a type parameter with a lower bound must be a type 
@@ -1092,6 +1103,14 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A type argument to a type parameter with an initialization parameter
                 specification must be a class with the given initialization parameter
                 types.</para>
+            </listitem>
+            <listitem>
+                <para>A type parameter <literal>X</literal> may specify type parameters, which 
+                may themselves have constraints. In this case, a type argument <literal>A</literal> 
+                must specify the same number of type parameters, and its type parameters are 
+                considered arguments to the type parameters of <literal>X</literal>, and must 
+                therefore conform to the constraints defined for the type parameters of
+                <literal>X</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1126,6 +1145,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>given N is Monoid&lt;N&gt;</programlisting>
         
         <programlisting>given T of String | Natural | Integer | Float</programlisting>
+        
+        <programlisting>given M&lt;T&gt;(T... elements) satisfies Iterable&lt;T&gt;</programlisting>
     
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
         
@@ -1166,6 +1187,26 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <para>is equivalent to a metatype bound of this form:</para>
         
         <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
+        
+        <comment>
+        <para>Note: recursive type parameters allow functions to operate generically 
+        over "container" types:</para>
+                
+        <programlisting><![CDATA[M<U> map<M,U,V>(U function(V v), M<V> inputs)
+        given M<T>() satisfies Iterable<T> & Addable<T> 
+        given T satisfies Object {
+    M<U> outputs := M<U>();
+    for (V input in inputs) {
+        outputs.=add(function(input));
+    }
+    return outputs
+}]]></programlisting>
+
+        <programlisting>Set&lt;Person&gt; people = ... ;
+Set&lt;String&gt; names = map(Person.name, people);</programlisting>
+
+        <para>This effect can not even be achieved with metatypes.</para>
+        </comment>
         
         <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
         parameter?</para>
