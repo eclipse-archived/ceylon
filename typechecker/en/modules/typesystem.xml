@@ -1084,6 +1084,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 be a subtype of one of the enumerated types, or a type with an enumerated 
                 subtype list that is a subset of the enumerated types of the constraint.</para>
             </listitem>
+            <listitem>
+                <para>A type argument to a type paramemeter with a metatype bound must have 
+                a metatype assignable to all metatype bounds.</para>
+            </listitem>
         </itemizedlist>
         
         <para>Within the body of the declaration, a constraint affects the assignability of 
