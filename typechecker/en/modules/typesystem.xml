@@ -1081,7 +1081,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
             <listitem>
                 <para>A type argument to a type parameter with an enumerated type bound must 
-                be a subtype of one of the enumerated types.</para>
+                be a subtype of one of the enumerated types, or a type with an enumerated 
+                subtype list that is a subset of the enumerated types of the constraint.</para>
             </listitem>
         </itemizedlist>
         
