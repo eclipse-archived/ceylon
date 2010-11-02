@@ -509,19 +509,6 @@ TypeConstraints?
         containing scope.</para>
         -->
 
-            <para>A package or body may not declare or inherit two classes with the 
-            same name unless either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>one class refines the other class, or</para>
-                </listitem>
-                <listitem>
-                    <para>one class is defined by a supertype, and is not visible
-                    to the subtype that defines the other class.</para>
-                </listitem>
-            </itemizedlist>
-
     <section id="initializerparameters">
         <title>Initializer parameters</title>
         
@@ -1596,19 +1583,6 @@ public choice TransactionPropagationStyle
         It may not refer to <literal>mutable</literal> locals from the containing scope.</para>
         -->
         
-            <para>A package or body may not declare or inherit two methods with the 
-            same name unless either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>one method refines the other method, or</para>
-                </listitem>
-                <listitem>
-                    <para>one method is defined by a supertype, and is not visible
-                    to the subtype that defines the other method.</para>
-                </listitem>
-            </itemizedlist>
-
         <section id="callabletype">
             <title>Callable type of a method</title>
             
@@ -2129,19 +2103,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>mutable</literal>.</para>
-        
-        <para><!--There is no overloading for attributes.--> A package or body may not 
-        declare or inherit two attributes with the same name unless either:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para>one attribute refines the other attribute, or</para>
-            </listitem>
-            <listitem>
-                <para>one attribute is defined by a supertype, and is not visible
-                to the subtype that defines the other attribute.</para>
-            </listitem>
-        </itemizedlist>
         
         <!--<section id="attributebodies">
             <title>Attribute bodies</title>-->

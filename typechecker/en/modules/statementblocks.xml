@@ -33,8 +33,31 @@
     <section id="declarationvisibilityandblockstructure">
         <title>Declaration visibility and block structure</title>
     
-        <para>The scope of a declaration is governed by the block in which it occurs.</para>
+        <para>A <emphasis>body</emphasis> is a block, class body or interface 
+        body.</para>
     
+        <para>The scope of a declaration is governed by the body or package in 
+        which it occurs.</para>
+        
+        <para>A package may not contain two toplevel declarations (interfaces, 
+        classes, methods, or attributes) with the same name.</para>
+        
+        <para>A body may not contain two declarations with the same name.</para>
+        
+        <para>A class or interface may not inherit a declaration with the same 
+        name as a declaration it contains unless either:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>the contained declaration refines the inherited 
+                declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>the inherited declaration is not visible to the 
+                type.</para>
+            </listitem>
+        </itemizedlist>
+
     <section id="nameresolution">
         <title>Name resolution</title>
         
@@ -43,7 +66,7 @@
         element refers to a declaration elsewhere: a class, interface, type parameter, 
         method, attribute, or local.</para>
         
-        <para>A <emphasis>body</emphasis> is a block, class body or interface body.
+        <para>
         A declaration is <emphasis>in scope</emphasis> at a program element if:</para>
         
         <itemizedlist>
