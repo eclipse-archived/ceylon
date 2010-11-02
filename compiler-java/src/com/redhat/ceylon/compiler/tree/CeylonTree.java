@@ -47,13 +47,28 @@ public abstract class CeylonTree {
     }
     
     public abstract static class Declaration extends CeylonTree {
-        public List<CeylonTree> typeParameters;
-        public List<TypeConstraint> typeConstraintList;
+        List<CeylonTree> typeParameters;
+        List<TypeConstraint> typeConstraintList;
+        List<CeylonTree> satisfiesList;
         
-        public void addTypeConstraint(CeylonTree t) {
+        public List<CeylonTree> satisfiesList() {
+            if (satisfiesList == null)
+            	satisfiesList = List.<CeylonTree>nil();       	
+            return satisfiesList;
+        }
+        
+        public List<TypeConstraint> typeConstraintList() {
             if (typeConstraintList == null)
                 typeConstraintList = List.<TypeConstraint>nil();
-            typeConstraintList = typeConstraintList.append((TypeConstraint) t);
+            return typeConstraintList;
+        }
+        
+        public void addTypeConstraint(CeylonTree t) {
+            if (t instanceof TypeConstraint)
+                typeConstraintList = typeConstraintList().append((TypeConstraint)t);
+            else {
+            	satisfiesList = satisfiesList().append(t);
+           }
         }
 
         public void setTypeParameterList(List<CeylonTree> typeParameters) {
@@ -666,17 +681,19 @@ public abstract class CeylonTree {
         public void visit(WhileBlock that)                { visitDefault(that); }
         public void visit(WhileStatement that)            { visitDefault(that); }
         public void visit(Whitespace that)                { visitDefault(that); }
-        public void visit(BaseMemberDeclaration that)     { visitDefault(that); }
-        public void visit(BaseMethodDeclaration that)     { visitDefault(that); }
 
         public void visitDefault(CeylonTree tree) {
             tree.bomb();
         }
     
         // Synthetic tree nodes generated during analysis
+        public void visit(BaseMemberDeclaration that)     { visitDefault(that); }
+        public void visit(BaseMethodDeclaration that)     { visitDefault(that); }
         public void visit(MethodType that)          { visitDefault(that); }
         public void visit(Name that)                { visitDefault(that); }
         public void visit(Annotation that)          { visitDefault(that); }
+        public void visit(ClassOrInterfaceDeclaration that)          
+                                                    { visitDefault(that); }
     }
 
     /**
@@ -1007,14 +1024,34 @@ public abstract class CeylonTree {
         public void accept(Visitor v) { v.visit(this); }
     }
 
-    /**
+     /**
      * A class declaration
      */
-    public static class ClassDeclaration extends Declaration {
-        public List<FormalParameter> params;
+    public static abstract class ClassOrInterfaceDeclaration extends Declaration {
+        @NotAChild
+        public CeylonTree name;
+
         public List<CeylonTree> stmts;
         public List<CeylonTree> typeParameters;
-        public Superclass superclass;
+        public List<FormalParameter> params;
+
+        public final void setName(CeylonTree name) {
+            this.name = name;
+        }
+        
+        public String nameAsString() {
+            return ((TypeName)name).toString();
+        }
+        
+        public abstract Type getSuperclass();
+    
+        public abstract boolean isInterface();
+        
+        public void accept(Visitor v) { v.visit(this); }
+    }
+
+    public static class ClassDeclaration extends ClassOrInterfaceDeclaration {
+    	public Superclass superclass;
       
         public void append(CeylonTree stmt) {
             if (stmts == null)
@@ -1023,16 +1060,6 @@ public abstract class CeylonTree {
         }
           
         public void setVisibility(CeylonTree v) {           
-        }
-        @NotAChild
-        // FIXME: Should be a TypeName
-        public CeylonTree name;
-        public void setName(CeylonTree name) {
-            this.name = name;
-        }
-    
-        public String nameAsString() {
-            return ((TypeName)name).toString();
         }
         
         public void accept(Visitor v) { v.visit(this); }
@@ -1053,6 +1080,17 @@ public abstract class CeylonTree {
             assert(this.superclass == null);
             this.superclass = superclass;
         }
+
+        public Type getSuperclass() {
+        	if (superclass != null)
+        		return superclass.theSuperclass;
+        	else
+        		return null;
+        }
+
+		public boolean isInterface() {
+			return false;
+		}
     }
 
     /**
@@ -1707,18 +1745,7 @@ public abstract class CeylonTree {
     /**
      * An interface declaration
      */
-    public static class InterfaceDeclaration extends Declaration {
-        public List<CeylonTree> stmts;
-        public List<CeylonTree> typeParameters;
-        public List<FormalParameter> params;
-        
-        @NotAChild
-        public CeylonTree name;
-
-        public void setName(CeylonTree name) {
-            this.name = name;
-        }
-
+    public static class InterfaceDeclaration extends ClassOrInterfaceDeclaration {
          public void append(CeylonTree stmt) {
             if (stmts == null)
                 stmts = List.<CeylonTree>nil();
@@ -1737,6 +1764,14 @@ public abstract class CeylonTree {
             bomb();
     
         }
+
+		public Type getSuperclass() {
+			return null;
+		}
+
+		public boolean isInterface() {
+			return true;
+		}
     }
 
     /**
