@@ -811,7 +811,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
-        <programlisting>void print(String|Integer|Float val) = printer.print;</programlisting>
+        <programlisting>void print&lt;T&gt;(T val) given T of String|Integer|Float = printer.print;</programlisting>
+        <programlisting>void printStr(String string) = printer.print&lt;String&gt;;</programlisting>
         
         </section>
         
