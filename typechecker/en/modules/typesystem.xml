@@ -1088,6 +1088,11 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A type argument to a type paramemeter with a metatype bound must have 
                 a metatype assignable to all metatype bounds.</para>
             </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with an initialization parameter
+                specification must be a class with the given initialization parameter
+                types.</para>
+            </listitem>
         </itemizedlist>
         
         <para>Within the body of the declaration, a constraint affects the assignability of 
