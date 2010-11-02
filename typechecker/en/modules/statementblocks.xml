@@ -475,7 +475,7 @@ try (lock) { ... }</programlisting>
         <programlisting>retry</programlisting>
         <programlisting>return x+y</programlisting>
         <programlisting>return "Hello"</programlisting>
-        <programlisting>break true</programlisting>
+        <programlisting>break</programlisting>
         <programlisting>continue</programlisting>
         
         <para>The <literal>return</literal> directive may not appear outside the body of 
@@ -489,14 +489,14 @@ try (lock) { ... }</programlisting>
         <programlisting>Return := "return" Expression?</programlisting>
         
         <para>The <literal>break</literal> directive may not be appear outside the body 
-        of a loop. If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
+        of a loop.<!--If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
         directive may not specify an expression. If the loop has a <literal>fail</literal> 
-        block, the <literal>break</literal> directive must specify an expression of 
-        type <literal>ceylon.language.Boolean</literal>. When the directive is executed, the expression 
-        is evaluated and a value of <literal>false</literal> specifies that the 
-        <literal>fail</literal> block should be executed.</para>
+        block, the <literal>break</literal> directive must specify an expression of type 
+        <literal>ceylon.language.Boolean</literal>. When the directive is executed, the 
+        expression is evaluated and a value of <literal>false</literal> specifies that the 
+        <literal>fail</literal> block should be executed.--></para>
         
-        <programlisting>Break := "break" Expression?</programlisting>
+        <programlisting>Break := "break"</programlisting>
         
         <para>The <literal>continue</literal> directive may not be appear outside the body 
         of a loop.</para>
@@ -1133,9 +1133,9 @@ else {
             </itemizedlist>
             
             <para>If the loop exits early via execution of one of the control directives 
-            <literal>break true</literal>, <literal>return</literal> or <literal>throw</literal>, 
+            <literal>break</literal>, <literal>return</literal> or <literal>throw</literal>, 
             the <literal>fail</literal> block is not executed. Otherwise, if the loop completes, 
-            or if the loop exits early via execution of the control directive <literal>break false</literal>, 
+            <!--or if the loop exits early via execution of the control directive <literal>break false</literal>,-->
             the <literal>fail</literal> block, if any, is executed.</para>
             
             <para>A <literal>for</literal> loop may ensure initialization of a local variable or 
@@ -1166,7 +1166,7 @@ for (Integer i in -10..10) {
     log.debug("Testing person: " p.name ".");
     if (p.age >= 18) {
         log.info("Found an adult: " p.name ".");
-        break true
+        break
     }
 }
 fail {
