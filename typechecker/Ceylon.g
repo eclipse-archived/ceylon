@@ -1076,8 +1076,8 @@ fragment DOT
 fragment FLOATLITERAL :;
 NATURALLITERAL
     : Digits
-      ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $union = FLOATLITERAL; } )?
-    | '.' ( '..' { $union = ELLIPSIS; } | '.'  { $union = RANGE; } | { $union = DOT; } )
+      ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOATLITERAL; } )?
+    | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
     
 fragment SPREAD :;
@@ -1086,9 +1086,9 @@ fragment ARRAY :;
 BRACKETS
     : '['
     ( 
-      ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $union = SPREAD; } )
-    | ( { input.LA(1) == ']' }? => ']' { $union = ARRAY; } )
-    | { $union = LBRACKET; } 
+      ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
+    | ( { input.LA(1) == ']' }? => ']' { $type = ARRAY; } )
+    | { $type = LBRACKET; } 
     )
     ;    
 
