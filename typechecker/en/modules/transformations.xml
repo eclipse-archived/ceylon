@@ -35,7 +35,7 @@
             <listitem>
                 <para>For each overloaded toplevel Ceylon class, there is a 
                 Java class whose name is formed from the Ceylon class name
-                and the names of the types of the initializer paramemeters.</para>
+                and the names of the types of the initializer parameters.</para>
             </listitem>
             -->
             <listitem>
