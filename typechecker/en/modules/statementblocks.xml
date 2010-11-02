@@ -1070,7 +1070,7 @@ else {
         return x+y 
     }
     case (satisfies Integer) { 
-        return (digits(x)+digits(y)).parseInteger() 
+        return (IntegerFormat(x,2)+IntegerFormat(y,2)).parseInteger(2) 
     }
 }</programlisting>
             <para>But that means introducing a new kind of condition, as described 
