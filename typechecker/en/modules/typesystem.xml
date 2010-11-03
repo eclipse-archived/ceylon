@@ -1271,7 +1271,12 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         given X<E> of id | Sequence
         given K satisfies Equals<K> {
     ...
-}]]></programlisting><para>Or we could keep it simple :-)</para></comment>
+}]]></programlisting>
+        <programlisting>Person p = findByKey(Person, personId);</programlisting>
+        <programlisting>Order[] orders = findByKey(Order, orderIds);</programlisting>
+        <programlisting><![CDATA[T[] findManyByIntegerKey<T>(Type<T> type, Integer[] keys) = findByKey<Sequence,T,Integer>;
+T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>;]]></programlisting>
+<para>Or we could keep it simple :-)</para></comment>
         
     </section>
 
