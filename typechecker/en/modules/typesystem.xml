@@ -1232,11 +1232,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         constructor</emphasis>. <literal>Sequence</literal> is viewed as a function from 
         types <literal>T</literal> to produced types <literal>Sequence&lt;T&gt;</literal>.</para>
         
-        <comment><para>TODO: We could allow other valid type constructors here. Especially,
-        the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
-        type constructors (non-parameterized types), for example, 
-        <literal>String&lt;T&gt; == String</literal>. Or we could keep it simple :-)</para></comment>
-        
         <comment>
         <para>Note: parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
@@ -1267,6 +1262,16 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
     return S(joinSequences(sequences))
 }]]></programlisting>
         </comment>
+        
+        <comment><para>TODO: We could allow other valid type constructors here. Especially,
+        the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
+        type constructors (non-parameterized types), for example, 
+        <literal>String&lt;T&gt; == String</literal>. For example:</para>
+        <programlisting><![CDATA[X<T> findByKey<X,T,K>(Type<T> type, X<K> keys)
+        given X<E> of id | Sequence
+        given K satisfies Equals<K> {
+    ...
+}]]></programlisting><para>Or we could keep it simple :-)</para></comment>
         
     </section>
 
