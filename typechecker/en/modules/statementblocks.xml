@@ -658,7 +658,7 @@ else {
         <comment><para>TODO: does <literal>is</literal> really test assignability, or should it 
         it test that the value is an instance of a <emphasis>subtype</emphasis> of the given type?</para></comment>
         
-        <programlisting>Condition := Expression | ExistsCondition | IsCondition</programlisting>
+        <programlisting>Condition := Expression | ExistsCondition | IsCondition | SatisfiesCondition</programlisting>
         
         <para>An existence or nonemptiness condition specifies an expression or variable.</para>
         
