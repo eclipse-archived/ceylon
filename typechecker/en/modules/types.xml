@@ -479,19 +479,15 @@ public abstract class Boolean()
         <para>The class <literal>Case</literal> is the supertype of anonymous 
         classes that may be cases in an <literal>of</literal> clause.</para>
         
-        <programlisting><![CDATA[public abstract class Case() 
+        <programlisting><![CDATA[public abstract class Case(String caseName=type.declarationName) 
         satisfies Matcher<Object> {
+    
     actual Boolean matches(Object that) {
         return this===that
     }
-    actual default String string { 
-        return type.declarationName
-    }
-}
-
-public abstract class Case(String caseName) 
-        extends Case() {
-    actual String string = caseName;
+    
+    actual default String string = caseName;
+    
 }]]></programlisting>
 
     </section>
