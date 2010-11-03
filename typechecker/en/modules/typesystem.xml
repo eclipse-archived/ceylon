@@ -1209,10 +1209,10 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         which can be expressed using metatypes are more elegantly expressed using
         recursive type parameters:</para>
         
-        <programlisting><![CDATA[M<T> join<M,T>(M<T>... sequences)
-        given M<T>(T... ts) satisfies T[] 
+        <programlisting><![CDATA[S<T> join<S,T>(S<T>... sequences)
+        given S<T>(T... ts) satisfies T[] 
         given T satisfies Object {
-    return M(joinSequences(sequences))
+    return S(joinSequences(sequences))
 }]]></programlisting>
         </comment>
         
