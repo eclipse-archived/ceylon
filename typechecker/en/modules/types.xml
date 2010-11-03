@@ -1072,8 +1072,12 @@ while (exists local value = indexed.indexedValue(i)) {
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
         
+        <programlisting><![CDATA[public interface PartlyComparable<in T>
+    formal PartialComparison compare(T other);
+}]]></programlisting>
+
         <programlisting><![CDATA[public interface Comparable<in T> 
-        satisfies Equals<T>
+        satisfies Equals<T>, PartlyComparable<T>
         given T satisfies Comparable<T> {
     
     doc "The binary compare operator |<=>|. Compares this 
@@ -1082,7 +1086,7 @@ while (exists local value = indexed.indexedValue(i)) {
          |x<=>y == Comparison.equal|, the constraint that 
          if |x>y| then |y<x|, and the constraint that if 
          |x>y| and |y>z| then |x>z|."
-    formal Comparison compare(T other);
+    actual formal Comparison compare(T other);
     
     doc "The binary |>| operator."
     Boolean largerThan(T other) {
@@ -1117,12 +1121,22 @@ public object smaller extends Comparison() {}
 doc "The receiving object is exactly equal 
      to the given object."
 public object equal extends Comparison() {}
-    
+
+doc "The receiving object is not comparable 
+     to the given object."
+public object uncomparable extends PartialComparison() {}
+
 doc "The result of a comparison between two
-     objects."
+     |PartlyComparable| objects."
+partial abstract class PartialComparison
+        of uncomparable | Comparison
+        extends Case() {}
+
+doc "The result of a comparison between two
+     |Comparable| objects."
 public abstract class Comparison() 
         of larger | smaller | equal 
-        extends Case() {}]]></programlisting>
+        extends PartialComparison() {}]]></programlisting>
 
         <comment><para>TODO: should we support partial orders? Give
         <literal>Comparison</literal> an extra <literal>uncomparable</literal>
