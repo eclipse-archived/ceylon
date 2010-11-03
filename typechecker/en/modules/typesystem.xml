@@ -1205,7 +1205,15 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>Set&lt;Person&gt; people = ... ;
 Set&lt;String&gt; names = map(Person.name, people);</programlisting>
 
-        <para>This effect can not even be achieved with metatypes.</para>
+        <para>This effect can not even be achieved with metatypes. Even some cases
+        which can be expressed using metatypes are more elegantly expressed using
+        recursive type parameters:</para>
+        
+        <programlisting><![CDATA[M<T> join<M,T>(M<T>... sequences)
+        given M<T>(T... ts) satisfies T[] 
+        given T satisfies Object {
+    return M(joinSequences(sequences))
+}]]></programlisting>
         </comment>
         
         <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
