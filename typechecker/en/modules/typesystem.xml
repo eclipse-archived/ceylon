@@ -1016,18 +1016,18 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>Note that the syntax for a type constraint is essentially the same syntax used 
         for other type declarations such as class and interface declarations.</para>
         
-        <para>There are four kinds of type constraint:</para>
+        <para>There are five kinds of type constraint:</para>
         
         <itemizedlist>
             <listitem>
-                <para>an upper bound, <literal>given X satisfies T</literal>, specifies that 
-                the type parameter <literal>X</literal> is a subtype of a given
-                type <literal>T</literal>,</para>
+                <para>an <emphasis>upper bound</emphasis>, <literal>given X satisfies T</literal>, 
+                specifies that the type parameter <literal>X</literal> is a subtype of a 
+                given type <literal>T</literal>,</para>
             </listitem>
             <listitem>
-                <para>a lower bound, <literal>given X abstracts T</literal>, specifies that 
-                a given type <literal>T</literal> is a subtype of the type parameter 
-                <literal>X</literal>,</para>
+                <para>a <emphasis>lower bound</emphasis>, <literal>given X abstracts T</literal>, 
+                specifies that a given type <literal>T</literal> is a subtype of the type 
+                parameter <literal>X</literal>,</para>
             </listitem>
             <!--listitem>
                 <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
@@ -1035,29 +1035,22 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 of the current instance, and</para>
             </listitem-->
             <listitem>
-                <para>an enumerated type bound, <literal>given X of T | U | V</literal>
-                specifies that the type parameter <literal>X</literal> represents one of the 
-                enumerated types,</para>
+                <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T | U | V</literal>
+                specifies that the type parameter <literal>X</literal> represents one of 
+                the enumerated types,</para>
             </listitem>
             <listitem>
-                <para>a metatype bound, <literal>given X is T</literal>, specifies that the
-                concrete metatype of the type parameter is a subtype of a given type <literal>T</literal>
-                <emphasis>(note that metatypes are a proposed feature for a future version
-                of the language)</emphasis>,</para>
+                <para>a <emphasis>metatype bound</emphasis>, <literal>given X is T</literal>, 
+                specifies that the concrete metatype of the type parameter is a subtype of 
+                a given type <literal>T</literal> <emphasis>(note that metatypes are a 
+                proposed feature for a future version of the language)</emphasis>, and</para>
             </listitem>
             <listitem>
-                <para>an initialization parameter specification, <literal>given X(...)</literal>
-                specifies that the type parameter <literal>X</literal> is a class with
-                the given parameter types, and</para>
-            </listitem>
-            <listitem>
-                <para>a parameterized type parameter, <literal>given X&lt;T&gt;</literal>, 
-                specifies that the type parameter is itself a parameterized type.</para>
+                <para>an <emphasis>initialization parameter specification</emphasis>, 
+                <literal>given X(...)</literal> specifies that the type parameter 
+                <literal>X</literal> is a class with the given parameter types.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>NOTE: Parameterized type parameters is a proposed feature for a 
-        future version of the language.</para></comment>
         
         <para>An initialization parameter specification allows instantiation of the type 
         represented by the type parameter within the body of the declaration.</para>
@@ -1067,7 +1060,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     return T(object.string.lowercase) 
 }]]></programlisting>
         
-        <para>An enumerated type bound allows the use of an exhaustive <literal>switch</literal>
+        <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
         with expressions of the parameter type.</para>
         
         <programlisting><![CDATA[T uppercase<T>(T t) 
@@ -1081,34 +1074,12 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
     }
 }]]></programlisting>
         
-        <para>A parameterized type parameter appears as a produced type (with type 
-        arguments) in the body of the declaration.</para>
-        
-        <programlisting><![CDATA[X<Entry<U,V>> entry<X,U,V>(X<U> u, X<V> v) 
-        given X<E>(E e) satisfies Reference<E> {
-    return X(u.value->v.value)
-}]]></programlisting>
-
-        <para>Note that the argument to a parameterized type parameter is not, strictly
-        speaking, a type. Rather, it is a parameterized type&mdash;a <emphasis>type
-        constructor</emphasis>. <literal>Sequence</literal> is viewed as a function from 
-        types <literal>T</literal> to produced types <literal>Sequence&lt;T&gt;</literal>.</para>
-        
-        <comment><para>TODO: We could allow other valid type constructors here. Especially,
-        the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
-        type constructors (non-parameterized types), for example, 
-        <literal>String&lt;T&gt; == String</literal>. Or we could keep it simple :-)</para></comment>
-        
         <para>A constraint may not refer to a sequenced type parameter.</para>
         
         <para>A single <literal>given</literal> clause may specify multiple constraints
         on a certain type parameter. For example, it may specify multiple upper bounds
         together with an initialization parameter specification. If multiple upper bounds
         are specified, at most one upper bound may be a class.</para>
-        
-        <para>The parameters of a parameterized type parameter may themselves have 
-        constraints. These constraints are be defined in the same list of type
-        constraints.</para>
         
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
@@ -1141,11 +1112,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 <para>A type argument to a type parameter with an initialization parameter
                 specification must be a class with the given initialization parameter
                 types.</para>
-            </listitem>
-            <listitem>
-                <para>A type argument to a parameterized type parameter must be a parameterized 
-                type with type parameters to which the the type parameters of the parameterized
-                type parameter are assignable.</para>
             </listitem>
         </itemizedlist>
         
@@ -1181,8 +1147,6 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>given T of String | Natural | Integer | Float</programlisting>
         
-        <programlisting>given M&lt;T&gt;(T... elements) satisfies Iterable&lt;T&gt;</programlisting>
-    
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
         
         <!--  
@@ -1223,6 +1187,56 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
         
+        <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
+        parameter?</para>
+        <programlisting>class Foo&lt;P...&gt;(P... args) 
+        given P satisfies Comparable&lt;P&gt; {
+    ...
+}</programlisting></comment>
+
+        <comment><para>TODO: should we allow constraints on dimensional type parameters,
+        for example <literal>given n&gt;=1</literal>.</para></comment>
+        
+    </section>
+    
+    <section id="parameterizedtypeparameters">
+        <title>Parameterized type parameters</title>
+
+        <comment><para>NOTE: Parameterized type parameters is a proposed feature for a 
+        future version of the language.</para></comment>
+        
+        <para>A <emphasis>parameterized type parameter</emphasis> is defined using a type
+        constraint of form <literal>given X&lt;T&gt;</literal>, which specifies that the 
+        type parameter is itself a parameterized type.</para>
+            
+        <programlisting>given M&lt;T&gt;(T... elements) satisfies Iterable&lt;T&gt;</programlisting>
+    
+        <para>The parameters of a parameterized type parameter may themselves have 
+        constraints. These constraints are be defined in the same list of type
+        constraints.</para>
+        
+        <para>A type argument to a parameterized type parameter must be a parameterized 
+        type with type parameters to which the the type parameters of the parameterized
+        type parameter are assignable.</para>
+        
+        <para>A parameterized type parameter appears as a produced type (with type 
+        arguments) in the body of the declaration.</para>
+        
+        <programlisting><![CDATA[X<Entry<U,V>> entry<X,U,V>(X<U> u, X<V> v) 
+        given X<E>(E e) satisfies Reference<E> {
+    return X(u.value->v.value)
+}]]></programlisting>
+
+        <para>Note that the argument to a parameterized type parameter is not, strictly
+        speaking, a type. Rather, it is a parameterized type&mdash;a <emphasis>type
+        constructor</emphasis>. <literal>Sequence</literal> is viewed as a function from 
+        types <literal>T</literal> to produced types <literal>Sequence&lt;T&gt;</literal>.</para>
+        
+        <comment><para>TODO: We could allow other valid type constructors here. Especially,
+        the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
+        type constructors (non-parameterized types), for example, 
+        <literal>String&lt;T&gt; == String</literal>. Or we could keep it simple :-)</para></comment>
+        
         <comment>
         <para>Note: parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
@@ -1253,16 +1267,6 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
     return S(joinSequences(sequences))
 }]]></programlisting>
         </comment>
-        
-        <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
-        parameter?</para>
-        <programlisting>class Foo&lt;P...&gt;(P... args) 
-        given P satisfies Comparable&lt;P&gt; {
-    ...
-}</programlisting></comment>
-
-        <comment><para>TODO: should we allow constraints on dimensional type parameters,
-        for example <literal>given n&gt;=1</literal>.</para></comment>
         
     </section>
 
