@@ -399,7 +399,7 @@ metatypes
     ;
 
 typeConstraint
-    : 'given' typeName formalParameters? caseTypes? metatypes? satisfiedTypes? abstractedType?
+    : 'given' typeName typeArguments? formalParameters? caseTypes? metatypes? satisfiedTypes? abstractedType?
     -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
     ;
     
@@ -875,7 +875,11 @@ formalParameterType
 // Control structures.
 
 condition
-    : expression | existsCondition | nonemptyCondition | isCondition
+    : expression 
+    | existsCondition 
+    | nonemptyCondition 
+    | isCondition 
+    | satisfiesCondition
     ;
 
 existsCondition
@@ -891,6 +895,10 @@ nonemptyCondition
 isCondition
     : 'is' type ( (memberName '=') => memberName specifier | expression )
     -> ^(IS_EXPR type memberName? specifier? expression?)
+    ;
+
+satisfiesCondition
+    : 'satisfies' type type
     ;
 
 controlStructure
@@ -938,7 +946,7 @@ defaultCaseItem
     ;
 
 caseCondition
-    : expressions | isCaseCondition
+    : expressions | isCaseCondition | satisfiesCaseCondition
     ;
 
 expressions
@@ -949,6 +957,10 @@ expressions
 isCaseCondition
     : 'is' type
     -> ^(IS_EXPR type)
+    ;
+
+satisfiesCaseCondition
+    : 'satisfies' type
     ;
 
 forFail
