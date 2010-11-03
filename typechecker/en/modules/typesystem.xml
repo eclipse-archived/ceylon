@@ -698,8 +698,8 @@ public class LinkedList<T>(T... elements)
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Methods, classes, and interfaces may declare one or more generic type 
-        parameters.</para>
+        <para>Methods, classes, interfaces, and type parameters may declare one or more generic 
+        type parameters.</para>
         
         <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
         
@@ -1051,19 +1051,43 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 the given parameter types, and</para>
             </listitem>
             <listitem>
-                <para>a recursive type parameter, <literal>given X&lt;T&gt;</literal> specifies
-                that the type parameter is itself a parameterized type.</para>
+                <para>a parameterized type parameter, <literal>given X&lt;T&gt;</literal>, 
+                specifies that the type parameter is itself a parameterized type.</para>
             </listitem>
         </itemizedlist>
         
-        <comment><para>NOTE: Recursive type parameters is a proposed feature for a future version 
-        of the language.</para></comment>
+        <comment><para>NOTE: Parameterized type parameters is a proposed feature for a 
+        future version of the language.</para></comment>
         
         <para>An initialization parameter specification allows instantiation of the type 
         represented by the type parameter within the body of the declaration.</para>
         
+        <programlisting><![CDATA[T create<T>(Object object) 
+        given T(String s) { 
+    return T(object.string.lowercase) 
+}]]></programlisting>
+        
         <para>An enumerated type bound allows the use of an exhaustive <literal>switch</literal>
         with expressions of the parameter type.</para>
+        
+        <programlisting><![CDATA[T uppercase<T>(T t) 
+        given T of String | Range<Character> { 
+    switch (T)
+    case (satisfies String) { 
+        return t.uppercase 
+    }
+    case (satisfies Range<Character>) { 
+        return t.first.uppercase..t.last.uppercase 
+    }
+}]]></programlisting>
+        
+        <para>A parameterized type parameter appears as a produced type (with type 
+        arguments) in the body of the declaration.</para>
+        
+        <programlisting><![CDATA[X<Entry<U,V>> entry<X,U,V>(X<U> u, X<V> v) 
+        given X<E>(E e) satisfies Reference<E> {
+    return X(u.value->v.value)
+}]]></programlisting>
         
         <para>A constraint may not refer to a sequenced type parameter.</para>
         
@@ -1071,6 +1095,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         on a certain type parameter. For example, it may specify multiple upper bounds
         together with an initialization parameter specification. If multiple upper bounds
         are specified, at most one upper bound may be a class.</para>
+        
+        <para>The parameters of a parameterized type parameter may themselves have 
+        constraints. These constraints are be defined in the same list of type
+        constraints.</para>
         
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
@@ -1105,12 +1133,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 types.</para>
             </listitem>
             <listitem>
-                <para>A type parameter <literal>X</literal> may specify type parameters, which 
-                may themselves have constraints. In this case, a type argument <literal>A</literal> 
-                must specify the same number of type parameters, and its type parameters are 
-                considered arguments to the type parameters of <literal>X</literal>, and must 
-                therefore conform to the constraints defined for the type parameters of
-                <literal>X</literal>.</para>
+                <para>A type argument to a parameterized type parameter must be a parameterized 
+                type with type parameters to which the the type parameters of the parameterized
+                type parameter are assignable.</para>
             </listitem>
         </itemizedlist>
         
@@ -1189,12 +1214,14 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
         
         <comment>
-        <para>Note: recursive type parameters allow functions to operate generically 
+        <para>Note: parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
                 
         <programlisting><![CDATA[M<U> map<M,U,V>(U function(V v), M<V> inputs)
         given M<T>() satisfies Iterable<T> & Addable<T> 
-        given T satisfies Object {
+        given T satisfies Object 
+        given U satisfies Object 
+        given V satisfies Object {
     M<U> outputs := M<U>();
     for (V input in inputs) {
         outputs.=add(function(input));
@@ -1207,10 +1234,11 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
 
         <para>This effect can not even be achieved with metatypes. Even some cases
         which can be expressed using metatypes are more elegantly expressed using
-        recursive type parameters:</para>
+        parameterized type parameters:</para>
         
         <programlisting><![CDATA[S<T> join<S,T>(S<T>... sequences)
-        given S<T>(T... ts) satisfies T[] 
+        given S<E>(E... es) satisfies E[] 
+        given E satisfies Object
         given T satisfies Object {
     return S(joinSequences(sequences))
 }]]></programlisting>
