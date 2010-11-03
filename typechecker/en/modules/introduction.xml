@@ -2406,6 +2406,9 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <para><emphasis>assertion</emphasis>, such as: 
                 <programlisting>assert ("x must be zero") that (x&equals;0.0);</programlisting></para>
             </listitem>
+            <listitem><emphasis>conditional expressions</emphasis>, such as:
+            <programlisting>return when (x>100.0) then (100.0) else (x)</programlisting>
+            </listitem>
             <listitem>
                 <para><emphasis>repetition</emphasis>, such as:
                 <programlisting>repeat (3) times { stream.writeLine("Hello!"); }</programlisting></para>
@@ -2430,14 +2433,14 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
             </listitem>
             <listitem>
                 <para>and, finally, coming back to the example from the previous section, 
-                <emphasis>callback registration</emphasis>:</para>
+                <emphasis>callback registration</emphasis>:
                 <programlisting>public class Listener(Component component) {
     component.addObserver() onEvent (Event e) {
         //respond to the event
         ...
     }
     ...
-}</programlisting>
+}</programlisting></para>
             </listitem>
         </itemizedlist>
                 
