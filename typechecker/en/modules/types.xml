@@ -552,10 +552,12 @@ public abstract class Boolean()
         of the subclass <literal>Nothing</literal>.</para>
 
         <programlisting><![CDATA[public class Nothing<out X>() 
-            extends X?() {
+        extends X?() {
+        
     actual Boolean defined { 
         return false 
     }
+    
 }]]></programlisting>
 
         <para>Non-optional values are transparently assignable to optional
@@ -569,7 +571,9 @@ public abstract class Boolean()
         extension of <literal>Null</literal> enabled in every compilation unit.</para>
         
         <programlisting><![CDATA[doc "Represents a null reference."  
-public object null extends Void() satisfies Matcher<Object?> {
+public object null 
+        extends Void() 
+        satisfies Matcher<Object?> {
 
     actual Boolean matches(Object? value) {
         return !value exists;
