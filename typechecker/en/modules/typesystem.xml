@@ -1088,6 +1088,16 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         given X<E>(E e) satisfies Reference<E> {
     return X(u.value->v.value)
 }]]></programlisting>
+
+        <para>Note that the argument to a parameterized type parameter is not, strictly
+        speaking, a type. Rather, it is a parameterized type&mdash;a <emphasis>type
+        constructor</emphasis>. <literal>Sequence</literal> is viewed as a function from 
+        types <literal>T</literal> to produced types <literal>Sequence&lt;T&gt;</literal>.</para>
+        
+        <comment><para>TODO: We could allow other valid type constructors here. Especially,
+        the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
+        type constructors (non-parameterized types), for example, 
+        <literal>String&lt;T&gt; == String</literal>. Or we could keep it simple :-)</para></comment>
         
         <para>A constraint may not refer to a sequenced type parameter.</para>
         
