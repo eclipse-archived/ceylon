@@ -1500,9 +1500,9 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
    
     doc "A sequence of all indices of the the sequence."
     public Bounded<n>[n] indices {
-        return ifTrue(n>0)
-            then Bounded<n>(0)..Bounded<n>(n-1)
-            otherwise {}
+        return when (n>0)
+            then (Bounded<n>(0)..Bounded<n>(n-1))
+            otherwise none
     }
    
 }]]></programlisting>
@@ -1758,7 +1758,7 @@ while (i<=max) {
     
     public String replace(Character character -> Character replacement) {
         return replace() with (Character c) 
-            (ifTrue (c==character) then (replacement) otherwise (c))
+            (when (c==character) then (replacement) otherwise (c))
     }
     
     public String replace(Correspondence<Character,Character> replacements) { 
@@ -2784,7 +2784,7 @@ public void assert(Gettable<String> message, Boolean that()) {
         
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      and return the result. Otherwise, return |null|."
-public Y? ifTrue<Y>(Boolean condition,
+public Y? when<Y>(Boolean condition,
                     Y then()) {
     if (condition) {
         return then()
@@ -2797,7 +2797,7 @@ public Y? ifTrue<Y>(Boolean condition,
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y ifTrue<Y>(Boolean condition,
+public Y when<Y>(Boolean condition,
                    Y then(), 
                    Y otherwise()) {
     if (condition) {

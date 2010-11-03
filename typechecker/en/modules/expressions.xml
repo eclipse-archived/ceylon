@@ -1454,7 +1454,7 @@ local comp = order(1,-1);</programlisting>
         outside the parentheses in method and class definitions, in order to better respect the 
         intended invocation syntax? For example:</para>
         <programlisting>public void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
-        <programlisting>public Y ifTrue&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
+        <programlisting>public Y when&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
         <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
         </comment>
         
@@ -2974,9 +2974,9 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     -->
     
     <para>means the same value produced by the Ceylon library method 
-    <literal>ifTrue()</literal>:</para>
+    <literal>when()</literal>:</para>
     
-    <programlisting>ifTrue (b) then (x) else (y)</programlisting>
+    <programlisting>when (b) then (x) else (y)</programlisting>
     
     <para>Second,</para>
     
