@@ -2785,7 +2785,7 @@ public void assert(Gettable<String> message, Boolean that()) {
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      and return the result. Otherwise, return |null|."
 public Y? when<Y>(Boolean condition,
-                    Y then()) {
+                  Y then()) {
     if (condition) {
         return then()
     }
@@ -2798,8 +2798,8 @@ public Y? when<Y>(Boolean condition,
      otherwise, evaluate second block. Return result
      of evaluation."
 public Y when<Y>(Boolean condition,
-                   Y then(), 
-                   Y otherwise()) {
+                 Y then(), 
+                 Y otherwise()) {
     if (condition) {
         return then()
     }
