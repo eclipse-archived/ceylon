@@ -1237,10 +1237,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         over "container" types:</para>
                 
         <programlisting><![CDATA[M<U> map<M,U,V>(U function(V v), M<V> inputs)
-        given M<T>() satisfies Iterable<T> & Addable<T> 
-        given T satisfies Object 
-        given U satisfies Object 
-        given V satisfies Object {
+        given M<T>() satisfies Iterable<T> & Addable<T> {
     M<U> outputs := M<U>();
     for (V input in inputs) {
         outputs.=add(function(input));
@@ -1257,8 +1254,8 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         
         <programlisting><![CDATA[S<T> join<S,T>(S<T>... sequences)
         given S<E>(E... es) satisfies E[] 
-        given E satisfies Object
-        given T satisfies Object {
+        given E satisfies Equals<E>
+        given T satisfies Equals<T> {
     return S(joinSequences(sequences))
 }]]></programlisting>
         </comment>

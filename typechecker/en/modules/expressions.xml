@@ -3853,8 +3853,8 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>lhs -> rhs</literal></entry>
             <entry>entry</entry>
             <entry><literal>Entry(lhs, rhs)</literal></entry>
-            <entry><literal>U given U satisfies Object &amp; Equals&lt;U&gt;</literal></entry>
-            <entry><literal>V given V satisfies Object &amp; Equals&lt;V&gt;</literal></entry>
+            <entry><literal>U given U satisfies Equals&lt;U&gt;</literal></entry>
+            <entry><literal>V given V satisfies Equals&lt;V&gt;</literal></entry>
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         
