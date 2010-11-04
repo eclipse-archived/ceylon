@@ -2852,7 +2852,7 @@ public Y with<X,Y>(specified X? value,
      otherwise, evaluate second block. Return result
      of evaluation."
 public Y withFirst<X,Y>(X[] list,
-                        Y then(X first, X... rest), 
+                        Y pop(X first, X... rest), 
                         Y otherwise()) {
     if (exists X first = list.first) {
         return otherwise(first, list.rest)
