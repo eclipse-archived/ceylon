@@ -60,16 +60,32 @@
     </para>
     
     <para>
-    Ceylon does not support Java-style wildcard type parameters or raw types. 
-    Instead, like Scala, a type parameter may be marked as covariant or 
-    contravariant by the class or interface that declares the parameter. Type 
-    arguments are reified in Ceylon, eliminating many problems related to 
-    type erasure in Java. 
+    Interfaces may define concrete members, allowing a restricted form of multiple 
+    inheritance ("mixin" inheritance), but may not hold state (references to other 
+    objects) or initialization logic, which eliminates the problems traditionally 
+    associated with multiple inheritance.
+    </para>
+    
+    <para>
+    Ceylon does not feature enumerated types as a first-class construct. Instead,
+    any abstract type may specify its <emphasis>cases</emphasis>&mdash;an 
+    enumerated list of subtypes. This facility may be used to simulate both
+    enumerated types and functional-style algebraic data types.  
     </para>
     
     <para>
     Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style 
     <literal>typedef</literal>.
+    </para>
+    
+    <para>
+    Ceylon does not support Java-style wildcard type parameters or raw types. 
+    Instead, like Scala, a type parameter may be marked as covariant or 
+    contravariant by the class or interface that declares the parameter. Type 
+    arguments are reified in Ceylon, eliminating many problems related to type 
+    erasure in Java. Ceylon supports parameterization of type parameters (a form 
+    of higher-order polymorphism), and a more expressive system of generic type 
+    constraints.
     </para>
     
     </section>
@@ -107,7 +123,7 @@
     subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
     eliminating the need for factory methods.
     </para>
-     
+    
     <para>
     Ceylon provides a streamlined syntax for defining an anonymous class which 
     is only instantiated in exactly the place it is defined. Among other uses,
@@ -151,18 +167,6 @@
     parameters. Furthermore, a generic method may be used to emulate parameter
     type overloading. Therefore, a single method in Ceylon may emulate the 
     signatures of several overloaded methods in Java. 
-    </para>
-    
-    </section>
-    
-     <section id="mixininheritance">
-    <title>"Mixin" inheritance</title>
-
-    <para>
-    Ceylon interfaces may define concrete members, allowing a restricted form of
-    multiple inheritance, but may not hold state (references to other objects)
-    or initialization logic, which eliminates the problems traditionally 
-    associated with multiple inheritance.
     </para>
     
     </section>
@@ -293,8 +297,8 @@
     <emphasis>extensions</emphasis>, which allow addition of methods and 
     interfaces to existing types, and transparent conversion between types, 
     within a textual scope. Extensions only affect the operations provided 
-    by a type, not its state. <!--This facility makes it easy for Ceylon code to 
-    transparently interoperate and inter-compile with Java code.-->
+    by a type, not its state. <!--This facility makes it easy for Ceylon code 
+    to transparently interoperate and inter-compile with Java code.-->
     </para>
     
     </section>
@@ -319,18 +323,19 @@
     <title>Metaprogramming</title>
     
     <para>
-    Ceylon provides sophisticated support for meta-programming, including 
-    a typesafe metamodel and events. This facility is inspired by similar 
-    features found in dynamic languages such as Smalltalk, Python and Ruby, 
-    and by the much more complex features found in aspect oriented languages
-    like Aspect J. Ceylon does not, however, support aspect oriented
-    programming as a language feature.
+    Ceylon provides sophisticated support for meta-programming, including a 
+    typesafe <emphasis>metamodel</emphasis> and <emphasis>events</emphasis>. 
+    Generic code may invoke members reflectively and intercept member invocations. 
+    This facility is more powerful, and much more typesafe, than reflection in 
+    Java.
     </para>
     
     <para>
-    Even better, Ceylon supports user-defined <emphasis>metatypes</emphasis>,
-    allowing an even more exotic form of generic programing with polymorphic 
-    abstraction at the meta level.
+    An even more powerful feature is <emphasis>metatypes</emphasis>&mdash;a
+    type definition may introduce a user-defined interface to its metamodel,
+    allowing a form of generic programing with polymorphic abstraction at the 
+    meta level. This facility is an object-oriented flavor of the notion of 
+    "type classes" in Haskell.
     </para>
     
     </section>
