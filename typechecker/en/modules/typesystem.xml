@@ -942,8 +942,9 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         which would let you do <literal>subtype(foo, bar)</literal> to instantiate a new
         instance of the concrete subclass of the current class, getting an expression
         of type <literal>subtype</literal>. Note that <literal>given subtype satisfies Foo</literal>
-        is equivalent to declaring the type <literal>satisfies Foo</literal>. Perhaps
-        <literal>given subtype is Metatype</literal> would also be useful.</para>
+        (like a Scala "self type" declaration) is really not very different to declaring 
+        the type <literal>satisfies Foo</literal>. Perhaps <literal>given subtype is 
+        Metatype</literal> would also be useful.</para>
         </comment>
         
         <comment><para>TODO: We should probably let you use <literal>subtype</literal>
