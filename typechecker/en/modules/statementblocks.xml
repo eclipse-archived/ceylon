@@ -778,7 +778,13 @@ else {
                 type inside the block that follows immediately.</para>
             </listitem>
         </itemizedlist>
-                        
+        
+        <comment><para>TODO: Should we support simultaneous narrowing to multiple types:</para>
+        <programlisting>if (is Format &amp; IdentifiableObject object) { ... }</programlisting>
+        <programlisting>if (satisfies Keyed &amp; Persistent T) { ... }</programlisting>
+        <para>(This would fall out naturally if we add ad hoc intersection types.)</para>
+        </comment>
+        
         <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
         <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
 
@@ -1421,8 +1427,13 @@ catch (TransactionTimeoutException e) {
         throw e
     }
 }</programlisting>
-            
-         </section>
+        
+        <comment><para>TODO: Should we support a catch that handles multiple types:</para>
+        <programlisting>catch (TransactionTimeoutException|RemoteException e) { ... }</programlisting>
+        <para>(This would fall out naturally if we add ad hoc union types.)</para>
+        </comment>
+        
+        </section>
          
     </section>
 
