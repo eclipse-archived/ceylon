@@ -41,7 +41,6 @@ import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -217,7 +216,7 @@ public class Gen {
         System.out.println(tree);
         
         try {
-        	Context.SourceLanguage.push(Language.CEYLON);
+            context.enterCeylon(t);
 
         	Iterable<? extends TypeElement> result =
         		task.enter(List.of(tree));
@@ -226,7 +225,7 @@ public class Gen {
         	System.out.println(diagnostics.getDiagnostics());
 
         } finally {
-        	Context.SourceLanguage.pop();
+            context.leaveCeylon();
         }
     }
 

@@ -27,6 +27,7 @@ package com.sun.tools.javac.util;
 
 import com.sun.tools.javac.Main;
 import java.util.*;
+import com.redhat.ceylon.compiler.tree.CeylonTree.CompilationUnit;
 
 /**
  * Support for an abstract context, modelled loosely after ThreadLocal
@@ -230,6 +231,22 @@ public class Context {
     	}
     }
     
+    public void enterCeylon(CompilationUnit t) {
+        SourceLanguage.push(SourceLanguage.Language.CEYLON);
+    }
+
+    public void leaveCeylon() {
+        SourceLanguage.pop();
+    }
+
+    public void enterJava() {
+        SourceLanguage.push(SourceLanguage.Language.JAVA);
+    }
+
+    public void leaveJava() {
+        SourceLanguage.pop();
+    }
+
     public static boolean isCeylon() {
     	return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
     }
