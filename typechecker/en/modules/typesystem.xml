@@ -517,6 +517,13 @@ String? firstWord = words[0];</programlisting>
         unfortunately.</para></comment>
         -->
         
+        <para>Ceylon visually distinguishes between a list of types which represents a
+        combination (intersection) of the types, and a list of types which represents a 
+        choice between (union of) the types. An intersection is written as 
+        <literal>X &amp; Y &amp; Z</literal>. A union is written as <literal>X | Y | Z</literal>.
+        <emphasis>(Note that this is consistent with the interpretation of these operators
+        as set intersection and union.)</emphasis></para>
+        
     <section id="extendedclass">
         <title>Extension</title>
     
