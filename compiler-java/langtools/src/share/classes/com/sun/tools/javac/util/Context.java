@@ -240,4 +240,8 @@ public class Context {
         int size = ceylonContextStack.size();
         return size > 0 && ceylonContextStack.get(size - 1) != null;
     }
+    
+    public static CompilationUnit ceylonCompilationUnit() {
+        return ceylonContextStack.get(ceylonContextStack.size() - 1);
+    }
 }

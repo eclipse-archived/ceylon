@@ -46,6 +46,8 @@ import com.sun.tools.javac.ceylon.ExtensionRequiredException;
 import com.sun.tools.javac.ceylon.ManglingRequiredException;
 import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 
+import com.redhat.ceylon.compiler.tree.CeylonTree;
+
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
  *  <p><b>This is NOT part of any supported API.
@@ -1232,6 +1234,37 @@ public class Resolve {
     				throw new ExtensionRequiredException(extension);
     			}
     		}
+    	}
+    	if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
+    	    // Look for toplevel extension classes
+    	    List<Route> candidates = List.<Route>nil();
+            CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
+    	    for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
+    	        for (CeylonTree.ImportPath path : id.path()) {
+    	            List<String> elements = path.pathElements;
+    	            if (elements.get(elements.size() - 1).equals("*"))
+    	                continue;
+    	            // TODO: check for "import implicit"
+    	            StringBuilder sb = new StringBuilder();
+    	            for (String element : elements) {
+    	                if (sb.length() > 0)
+    	                    sb.append('.');
+    	                sb.append(element);
+    	            }
+    	            ClassSymbol candidate = reader.enterClass(names.fromString(sb.toString()));
+    	            if (candidate.attribute(syms.ceylonExtensionType.tsym) == null)
+                        continue;
+    	            Symbol resolved = resolveQualifiedMethod(
+    	                env, candidate.type, name, argtypes, typeargtypes);
+    	            if (resolved.kind != MTH)
+    	                continue;
+    	            Route extension = types.getCeylonExtension(site, candidate.type);
+    	            if (extension == null)
+    	                continue;
+    	            candidates = candidates.append(extension);
+    	        }
+    	    }
+    	    assert candidates.size() == 0; // XXX < 2
     	}
     	if (sym.kind >= AMBIGUOUS) {
     		sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
