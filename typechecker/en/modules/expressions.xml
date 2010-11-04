@@ -217,7 +217,7 @@ setGreeting(greeting);</programlisting>
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para>
     
-    <programlisting>Literal ::= NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
+    <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
 
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -228,14 +228,14 @@ setGreeting(greeting);</programlisting>
         
         <para>A <literal>Date</literal> literal has the form:</para>
         
-        <programlisting>DateLiteral ::= 
+        <programlisting>DateLiteral: 
 "'" 
 Digit{1,2} "/" Digit{1,2} "/" Digit{4} 
 "'"</programlisting>
         
         <para>A <literal>Time</literal> literal has the form:</para>
         
-        <programlisting>TimeLiteral ::= 
+        <programlisting>TimeLiteral: 
 "'" 
 Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )? 
 (" " "AM"|"PM")? 
@@ -421,7 +421,7 @@ if you prefer.";</programlisting>
         <para>A character string <emphasis>template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <programlisting>StringTemplate ::= StringLiteral (Expression? StringLiteral)+</programlisting>
+        <programlisting>StringTemplate: StringLiteral (Expression? StringLiteral)+</programlisting>
         
         <para>Each interpolated expression contained in the string template must be 
         an expression of type <literal>ceylon.language.Format</literal>.</para>
@@ -462,7 +462,7 @@ if you prefer.";</programlisting>
         <para>The type of the following special values depends upon the context 
         in which they appear.</para>
         
-        <programlisting>SelfReference ::= "this" | "super"</programlisting>
+        <programlisting>SelfReference: "this" | "super"</programlisting>
 
         <para>The keyword <literal>super</literal> refers to the current instance 
         (the instance that is being invoked), and has the same members as the 
@@ -505,24 +505,24 @@ if you prefer.";</programlisting>
         <para>An <emphasis>atom</emphasis> is a literal or self reference, an 
         enumeration expression, or a parenthesized expression.</para>
     
-        <programlisting>Atom ::= Literal | StringTemplate | SelfReference | ParExpression</programlisting>
+        <programlisting>Atom: Literal | StringTemplate | SelfReference | ParExpression</programlisting>
     
         <para>A <emphasis>primary</emphasis> is formed by recursively invoking or 
         evaluating members of an atom, toplevel method, toplevel attribute, or
         class.</para>
     
-        <programlisting>Primary ::= Atom | Meta | MemberReference | Invocation</programlisting>
+        <programlisting>Primary: Atom | Meta | MemberReference | Invocation</programlisting>
 
-        <programlisting>MemberReference ::= OuterReference | CallableReference | ValueReference</programlisting>
+        <programlisting>MemberReference: OuterReference | CallableReference | ValueReference</programlisting>
     
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators.</para>    
     
-        <programlisting>Expression ::= Primary | OperatorExpression</programlisting>
+        <programlisting>Expression: Primary | OperatorExpression</programlisting>
     
         <para>Parentheses are used for grouping:</para>
     
-        <programlisting>ParExpression ::= "(" Expression ")"</programlisting>
+        <programlisting>ParExpression: "(" Expression ")"</programlisting>
     
     <section id="receiverexpressions">
         <title>Receiver expressions</title>
@@ -532,7 +532,7 @@ if you prefer.";</programlisting>
         a member is invoked or evaluated. The type of the receiver expression must have 
         a member with the specified name.</para>
         
-        <programlisting>Receiver ::= Primary</programlisting>
+        <programlisting>Receiver: Primary</programlisting>
         
         <para>A receiver expression must be explicitly specified, unless:</para>
         
@@ -569,7 +569,7 @@ if you prefer.";</programlisting>
         <para>For a nested class, the containing instance may be obtained using
         the keyword <literal>outer</literal>.</para>
         
-        <programlisting>OuterReference ::= (Receiver ".") "outer"</programlisting>
+        <programlisting>OuterReference: (Receiver ".") "outer"</programlisting>
         
         <para>The type of the outer instance reference is the type that contains 
         the declaration of the receiver expression type (which must be a nested 
@@ -620,7 +620,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         local or parameter. An attribute reference specifies the name of the attribute. 
         A local reference specifies the name of the local or parameter.</para>
         
-        <programlisting>ValueReference ::= (Receiver ".")? MemberName</programlisting>
+        <programlisting>ValueReference: (Receiver ".")? MemberName</programlisting>
         
         <para>The type of an attribute reference or local reference expression for an 
         attribute, local, or parameter of declared type <literal>X</literal> is:</para>
@@ -692,7 +692,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         something&mdash;a method, callable parameter, or class&mdash;that can be 
         <emphasis>invoked</emphasis> by specifying a list of arguments.</para>
         
-        <programlisting>CallableReference ::= MethodReference | InitializerReference</programlisting>
+        <programlisting>CallableReference: MethodReference | InitializerReference</programlisting>
         
         <para>A callable reference may be invoked immediately, or it may be passed 
         to other code which may invoke the reference. A callable reference captures 
@@ -732,7 +732,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <para>If a callable reference specifies a method name (or callable parameter 
         name), it is called a <emphasis>method reference</emphasis>.</para>
 
-        <programlisting>MethodReference ::= (Receiver ".")? MemberName TypeArguments?</programlisting>        
+        <programlisting>MethodReference: (Receiver ".")? MemberName TypeArguments?</programlisting>        
 
         <para>The type of a method reference expression is assignable to the callable 
         type of <!--every overloaded version of--> the method. Calling the method 
@@ -746,7 +746,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <para>If a callable reference specifies a class name, it is called an 
         <emphasis>initializer reference</emphasis>.</para>
         
-        <programlisting>InitializerReference ::= (Receiver ".")? TypeName TypeArguments?</programlisting>
+        <programlisting>InitializerReference: (Receiver ".")? TypeName TypeArguments?</programlisting>
         
         <para>The type of an initializer reference expression is assignable to the 
         callable type of <!-- every overloaded version of--> the class. Calling the 
@@ -915,7 +915,7 @@ local comp = order(1,-1);</programlisting>
         <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;T,P...&gt;</literal>, 
         together with an argument list and, optionally, an explicit type argument list.</para>
         
-        <programlisting>Invocation ::= Primary Arguments | SequenceInstantiation</programlisting>
+        <programlisting>Invocation: Primary Arguments | SequenceInstantiation</programlisting>
             
         <para>Any invocation expression where the invoked expression is a callable reference 
         expression is called a <emphasis>direct invocation expression</emphasis> of the 
@@ -951,7 +951,7 @@ local comp = order(1,-1);</programlisting>
         object, either by listing parameter values in order or, in the case of a direct 
         invocation, listing named parameter values.</para>
         
-        <programlisting>Arguments ::= PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
+        <programlisting>Arguments: PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
         <para>Arguments to required parameters must be specified. If the invocation 
         expression is a direct invocation expression, arguments to defaulted parameters may 
@@ -1093,7 +1093,7 @@ local comp = order(1,-1);</programlisting>
         
         <para>When arguments are listed, the arguments list is enclosed in parentheses.</para>
             
-        <programlisting>PositionalArguments ::= "(" ( Expression ("," Expression)* )? ")"</programlisting>
+        <programlisting>PositionalArguments: "(" ( Expression ("," Expression)* )? ")"</programlisting>
         
         <para>Positional arguments must be listed in the same order as the corresponding
         parameters.</para>
@@ -1129,7 +1129,7 @@ local comp = order(1,-1);</programlisting>
             
         <para>When arguments are named, the argument list is enclosed in braces.</para>
         
-        <programlisting>NamedArguments ::= "{" NamedArgument* SequencedArguments? "}"</programlisting>
+        <programlisting>NamedArguments: "{" NamedArgument* SequencedArguments? "}"</programlisting>
         
         <para>Named arguments may be listed in a different order to the corresponding
         parameters.</para>
@@ -1165,13 +1165,13 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>NamedArgument ::= SpecifiedNamedArgument | LocalNamedArgument | FunctionalNamedArgument | Object</programlisting>
+        <programlisting>NamedArgument: SpecifiedNamedArgument | LocalNamedArgument | FunctionalNamedArgument | Object</programlisting>
         
-        <programlisting>SpecifiedNamedArgument ::= ParameterName Specifier ";"</programlisting>
+        <programlisting>SpecifiedNamedArgument: ParameterName Specifier ";"</programlisting>
         
-        <programlisting>LocalNamedArgument ::= InferableType ParameterName (Block | NamedArguments)</programlisting>
+        <programlisting>LocalNamedArgument: InferableType ParameterName (Block | NamedArguments)</programlisting>
         
-        <programlisting>FunctionalNamedArgument ::= (InferableType | "void") ParameterName Params+ (Block | NamedArguments)</programlisting>
+        <programlisting>FunctionalNamedArgument: (InferableType | "void") ParameterName Params+ (Block | NamedArguments)</programlisting>
         
         <para>For example:</para>
         
@@ -1240,7 +1240,7 @@ local comp = order(1,-1);</programlisting>
             
         <para>Arguments to a sequenced parameter are seperated by commas.</para>
 
-        <programlisting>SequencedArguments ::= Expression ("," Expression)*</programlisting>
+        <programlisting>SequencedArguments: Expression ("," Expression)*</programlisting>
 
         <para>For example:</para>
         
@@ -1411,21 +1411,21 @@ local comp = order(1,-1);</programlisting>
         of a positional argument invocation. (This is what Ceylon provides instead of
         lambda expressions.)</para>
                 
-        <programlisting>FunctionalArguments ::= (ParameterName FunctionalBody)+</programlisting>
+        <programlisting>FunctionalArguments: (ParameterName FunctionalBody)+</programlisting>
         
-        <programlisting>FunctionalBody ::= Parameters? ( Block | "(" Expression ")" )</programlisting>
+        <programlisting>FunctionalBody: Parameters? ( Block | "(" Expression ")" )</programlisting>
         
         <!--
                 
-        <programlisting>InferableFormalParameters ::= "(" (InferableFormalParam ("," InferableFormalParam))? ")"</programlisting>
+        <programlisting>InferableFormalParameters: "(" (InferableFormalParam ("," InferableFormalParam))? ")"</programlisting>
         
-        <programlisting>InferableFormalParam ::= InferableParam | InferableEntryParamPair | InferableRangeParamPair</programlisting>
+        <programlisting>InferableFormalParam: InferableParam | InferableEntryParamPair | InferableRangeParamPair</programlisting>
         
-        <programlisting>InferableParam ::= Annotation* (InferableType|"void") ParameterName Params*</programlisting>
+        <programlisting>InferableParam: Annotation* (InferableType|"void") ParameterName Params*</programlisting>
         
-        <programlisting>InferableEntryParamPair ::= Annotation* InferableType ParameterName "->" Type ParameterName</programlisting>
+        <programlisting>InferableEntryParamPair: Annotation* InferableType ParameterName "->" Type ParameterName</programlisting>
         
-        <programlisting>InferableRangeParamPair ::= Annotation* InferableType ParameterName ".." ParameterName</programlisting>
+        <programlisting>InferableRangeParamPair: Annotation* InferableType ParameterName ".." ParameterName</programlisting>
         
         -->
         
@@ -1786,7 +1786,7 @@ except (SomethingElseWrong sew) {
             
             <para>Attribute initialization follows the following schema.</para>
             
-            <programlisting>AttributeInitialization ::= Instantiation "{" Initialization* "}"</programlisting>
+            <programlisting>AttributeInitialization: Instantiation "{" Initialization* "}"</programlisting>
             
             <para>For example:</para>
             
@@ -1829,7 +1829,7 @@ except (SomethingElseWrong sew) {
         
         <para>A literal object is specified according to:</para>
         
-        <programlisting>LiteralObject ::= "new" Type PositionalArguments? "{" (Assignment | Specification)* "}"</programlisting>
+        <programlisting>LiteralObject: "new" Type PositionalArguments? "{" (Assignment | Specification)* "}"</programlisting>
         
         <para>For example:</para>
         
@@ -1889,7 +1889,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
             <para>Inline classes may be specified according to:</para>
             
-            <programlisting>InlineClass ::= "new" Annotation* Type PositionalArguments? Interfaces "{" Statement* "}"</programlisting>
+            <programlisting>InlineClass: "new" Annotation* Type PositionalArguments? Interfaces "{" Statement* "}"</programlisting>
 
             <para>For example:</para>
             
@@ -2203,7 +2203,7 @@ setPerson(person);</programlisting>
         
         <para>A sequence may be instantiated by enumerating the elements inside braces:</para>
         
-        <programlisting>Enumeration ::= "{" ( Expression ("," Expression)* )? "}"</programlisting>
+        <programlisting>Enumeration: "{" ( Expression ("," Expression)* )? "}"</programlisting>
         
         <para>Each enumerated element expression type must be assignable to 
         <literal>Object</literal>.</para>
@@ -2260,7 +2260,7 @@ setPerson(person);</programlisting>
         <para>The metamodel object representing a type or program element may be obtained
         using a completely typesafe syntax.</para>
         
-        <programlisting>Meta ::= TypeMeta | MethodMeta | AttributeMeta | FunctionMeta | ValueMeta</programlisting>
+        <programlisting>Meta: TypeMeta | MethodMeta | AttributeMeta | FunctionMeta | ValueMeta</programlisting>
         
         <para>Metamodel references are compile-time typesafe.</para>
         
@@ -2297,7 +2297,7 @@ setPerson(person);</programlisting>
         <para>A <literal>Type</literal> object may be obtained by specifying the full
         type, including type arguments if the type is generic.</para>
         
-        <programlisting>TypeMeta ::= UnabbreviatedType</programlisting>
+        <programlisting>TypeMeta: UnabbreviatedType</programlisting>
         
         <para>The metamodel expression, <literal>X</literal>, for a type, class or interface 
         is:</para>
@@ -2339,7 +2339,7 @@ setPerson(person);</programlisting>
         obtained by specifying the method name, with type arguments if the toplevel method 
         is generic.</para>
         
-        <programlisting>FunctionMeta ::= MemberName TypeArguments?</programlisting>
+        <programlisting>FunctionMeta: MemberName TypeArguments?</programlisting>
                
         <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
         is:</para>
@@ -2368,7 +2368,7 @@ setPerson(person);</programlisting>
         obtained by specifying the type (with type arguments) and member name, together 
         with type arguments if the method is generic.</para>
         
-        <programlisting>MethodMeta ::= Type "." MemberName TypeArguments?</programlisting>
+        <programlisting>MethodMeta: Type "." MemberName TypeArguments?</programlisting>
                
         <para>The metamodel expression, <literal>X.member</literal>, for a member method 
         is:</para>
@@ -2393,7 +2393,7 @@ setPerson(person);</programlisting>
         obtained by specifying the attribute name, with type arguments if the toplevel method 
         is generic.</para>
         
-        <programlisting>ValueMeta ::= MemberName TypeArguments?</programlisting>
+        <programlisting>ValueMeta: MemberName TypeArguments?</programlisting>
                
         <para>The metamodel expression, <literal>attribute</literal>, for a toplevel attribute 
         is:</para>
@@ -2426,7 +2426,7 @@ setPerson(person);</programlisting>
         <para>An <literal>Attribute</literal> object representing a member attribute may 
         be obtained by specifying the type (with type arguments) and member name.</para>
         
-        <programlisting>AttributeMeta ::= Type "." MemberName</programlisting>
+        <programlisting>AttributeMeta: Type "." MemberName</programlisting>
 
         <para>The metamodel expression, <literal>X.member</literal>, for a member 
         attribute is:</para>

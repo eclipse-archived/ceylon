@@ -353,13 +353,13 @@ String result = middleObject.string;</programlisting>
         block finishes executing, when a control directive that terminates the block is 
         executed, or when an exception is thrown.</para>
 
-        <programlisting>Block ::= "{" (Declaration | Statement)* DirectiveStatement? "}"</programlisting>
+        <programlisting>Block: "{" (Declaration | Statement)* DirectiveStatement? "}"</programlisting>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
         invocation of a method, an instantiation of a class, a control structure or a 
         control directive.</para>
 
-        <programlisting>Statement ::= ExpressionStatement | Specification | ControlStructure</programlisting>
+        <programlisting>Statement: ExpressionStatement | Specification | ControlStructure</programlisting>
         
         <para>A simple attribute or local may not be used in an expression until its value 
         has been explicitly specified or initialized. The Ceylon compiler guarantees this
@@ -425,7 +425,7 @@ try (lock) { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>ExpressionStatement ::= ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
+        <programlisting>ExpressionStatement: ( Assignment | IncrementOrDecrement | Invocation ) ";"</programlisting>
         
         <para>For example:</para>
         
@@ -452,7 +452,7 @@ try (lock) { ... }</programlisting>
         the flow of execution to resume in some outer scope. They may only appear at the 
         end of a block, so the semicolon terminator is optional.</para>
 
-        <programlisting>DirectiveStatement ::= Directive ";"?</programlisting>
+        <programlisting>DirectiveStatement: Directive ";"?</programlisting>
         
         <para>Ceylon provides the following control directives:</para>
         
@@ -467,7 +467,7 @@ try (lock) { ... }</programlisting>
             block, reinitializing all resources.</listitem>
         </itemizedlist>
                 
-        <programlisting>Directive ::= Return | Throw | Break | Continue | Retry</programlisting>
+        <programlisting>Directive: Return | Throw | Break | Continue | Retry</programlisting>
 
         <para>For example:</para>
         
@@ -486,7 +486,7 @@ try (lock) { ... }</programlisting>
         expression is evaluated to determine the return value of the method or attribute 
         getter.</para>
         
-        <programlisting>Return ::= "return" Expression?</programlisting>
+        <programlisting>Return: "return" Expression?</programlisting>
         
         <para>The <literal>break</literal> directive may not be appear outside the body 
         of a loop.<!--If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
@@ -496,19 +496,19 @@ try (lock) { ... }</programlisting>
         expression is evaluated and a value of <literal>false</literal> specifies that the 
         <literal>fail</literal> block should be executed.--></para>
         
-        <programlisting>Break ::= "break"</programlisting>
+        <programlisting>Break: "break"</programlisting>
         
         <para>The <literal>continue</literal> directive may not be appear outside the body 
         of a loop.</para>
         
-        <programlisting>Continue ::= "continue"</programlisting>
+        <programlisting>Continue: "continue"</programlisting>
         
         <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
         expression of type <literal>ceylon.language.Exception</literal>. When the directive is executed, 
         the expression is evaluated and the resulting exception is thrown. If no expression 
         is specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
         
-        <programlisting>Throw ::= "throw" Expression?</programlisting>
+        <programlisting>Throw: "throw" Expression?</programlisting>
         
         <comment><para>TODO: Crazy idea: let <literal>...</literal> be a shortcut for
         <literal>throw NotYetImplemented()</literal>. Too cute?</para></comment>
@@ -516,7 +516,7 @@ try (lock) { ... }</programlisting>
         <para>A <literal>retry</literal> directive may not appear outside of a
         <literal>catch</literal> block.</para>
         
-        <programlisting>Retry ::= "retry"</programlisting>
+        <programlisting>Retry: "retry"</programlisting>
         
         <!--comment><para>TODO: We could support <literal>for/fail</literal> loops 
         that return a value by supporting a <literal>found expr</literal> directive. 
@@ -533,7 +533,7 @@ try (lock) { ... }</programlisting>
         even specify a value of type <literal>Callable</literal> for a method that was 
         declared earlier in the block.</para>
         
-        <programlisting>Specification ::= MemberName Specifier ";"</programlisting>
+        <programlisting>Specification: MemberName Specifier ";"</programlisting>
                 
         <para>The Ceylon language distinguishes between assignment to a <literal>variable</literal> 
         value (the <literal>:=</literal> operator) and specification of the value of a 
@@ -599,7 +599,7 @@ else {
             </listitem>
         </itemizedlist>
                 
-        <programlisting>ControlStructure ::= IfElse | SwitchCaseElse | While | DoWhile | ForFail | TryCatchFinally</programlisting>
+        <programlisting>ControlStructure: IfElse | SwitchCaseElse | While | DoWhile | ForFail | TryCatchFinally</programlisting>
        
         <para>Control structures are not considered to be expressions, and therefore do not evaluate
         to a value.</para>
@@ -613,13 +613,13 @@ else {
         <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
         that is available inside the control structure body.</para>
         
-        <programlisting>Variable ::= Type MemberName</programlisting>
+        <programlisting>Variable: Type MemberName</programlisting>
         
         <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
         specifying the keyword <literal>local</literal> where the type usually appears. The type of 
         the variable is inferred to be the type of the expression that follows.</para>
         
-        <programlisting>InferableVariable ::= InferableType MemberName Params*</programlisting>
+        <programlisting>InferableVariable: InferableType MemberName Params*</programlisting>
         
         <para>A variable is treated as a parameter of the control structure body.</para>
         
@@ -658,20 +658,20 @@ else {
         <comment><para>TODO: does <literal>is</literal> really test assignability, or should it 
         it test that the value is an instance of a <emphasis>subtype</emphasis> of the given type?</para></comment>
         
-        <programlisting>Condition ::= Expression | ExistsCondition | IsCondition | SatisfiesCondition</programlisting>
+        <programlisting>Condition: Expression | ExistsCondition | IsCondition | SatisfiesCondition</programlisting>
         
         <para>An existence or nonemptiness condition specifies an expression or variable.</para>
         
-        <programlisting>ExistsCondition ::= ("exists" | "nonempty") (InferableVariable Specifier | Expression)</programlisting>
+        <programlisting>ExistsCondition: ("exists" | "nonempty") (InferableVariable Specifier | Expression)</programlisting>
         
         <para>An assignability condition specifies an expression or variable and a type.</para>
         
-        <programlisting>IsCondition ::= "is" (Variable Specifier | Type Expression)</programlisting>
+        <programlisting>IsCondition: "is" (Variable Specifier | Type Expression)</programlisting>
         
         <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
         <emphasis>given type</emphasis> (second).</para>
         
-        <programlisting>SatisfiesCondition ::= "satisfies" Type Type</programlisting>
+        <programlisting>SatisfiesCondition: "satisfies" Type Type</programlisting>
 
         <para>Any condition contains an expression. In the case of existence, nonemptiness and 
         assignability conditions, the expression may be a specifier of a variable declaration.</para>
@@ -829,13 +829,13 @@ else {
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <programlisting>IfElse ::= If Else?</programlisting>
+            <programlisting>IfElse: If Else?</programlisting>
 
-            <programlisting>If ::= "if" "(" Condition ")" Block</programlisting>
+            <programlisting>If: "if" "(" Condition ")" Block</programlisting>
             
-            <programlisting>Else ::= "else" (Block | IfElse)</programlisting>
+            <programlisting>Else: "else" (Block | IfElse)</programlisting>
 
-            <!--programlisting>IfElse ::= 
+            <!--programlisting>IfElse: 
 "if" "(" Condition ("," Condition)* ")"
 ( ClosedBlock | OpenBlock "else" ClosedBlock )</programlisting-->
 
@@ -918,14 +918,14 @@ if (X satisfies Comparable&lt;X&gt;) {
             
             <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
             
-            <programlisting>SwitchCaseElse ::= Switch ( Cases | "{" Cases "}" )</programlisting>
+            <programlisting>SwitchCaseElse: Switch ( Cases | "{" Cases "}" )</programlisting>
             
-            <programlisting>Switch ::= "switch" "(" Expression ")"</programlisting>
+            <programlisting>Switch: "switch" "(" Expression ")"</programlisting>
             
-            <programlisting>Cases ::= CaseItem+ DefaultCaseItem?</programlisting>
+            <programlisting>Cases: CaseItem+ DefaultCaseItem?</programlisting>
 
-            <programlisting>CaseItem ::= "case" "(" Case ")" Block</programlisting>
-            <programlisting>DefaultCaseItem ::= "else" Block</programlisting>
+            <programlisting>CaseItem: "case" "(" Case ")" Block</programlisting>
+            <programlisting>DefaultCaseItem: "else" Block</programlisting>
 
             <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 
             value must be:</para> 
@@ -946,7 +946,7 @@ if (X satisfies Comparable&lt;X&gt;) {
                 </listitem>
             </itemizedlist>
 
-            <programlisting>Case ::= Expression ("," Expression)* | "is" Type | "satisfies" Type</programlisting>
+            <programlisting>Case: Expression ("," Expression)* | "is" Type | "satisfies" Type</programlisting>
             
             <!--
             <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
@@ -1146,11 +1146,11 @@ if (X satisfies Comparable&lt;X&gt;) {
             
              <para>The <literal>for/fail</literal> loop has the following form:</para>
              
-            <programlisting>ForFail ::= For Fail?</programlisting>
+            <programlisting>ForFail: For Fail?</programlisting>
 
-            <programlisting>For ::= "for" "(" ForIterator ")" Block</programlisting>
+            <programlisting>For: "for" "(" ForIterator ")" Block</programlisting>
             
-            <programlisting>Fail ::= "fail" Block</programlisting>
+            <programlisting>Fail: "fail" Block</programlisting>
 
             <!--programlisting>ForFail :=
 "for" "(" Iteration (";" Iteration)* ")" 
@@ -1162,9 +1162,9 @@ if (X satisfies Comparable&lt;X&gt;) {
             be iterated. <!--It may optionally specify one or more iteration constraint 
             expressions (conditions).--></para>
 
-            <programlisting>ForIterator ::= InferableVariable ("->" InferableVariable)? "in" Expression</programlisting>
+            <programlisting>ForIterator: InferableVariable ("->" InferableVariable)? "in" Expression</programlisting>
 
-            <!--programlisting>Iteration ::= FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
+            <!--programlisting>Iteration: FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
 
             <para>The type of the iterated expression depends upon the iteration variable 
             declarations:</para>
@@ -1265,17 +1265,17 @@ fail {
             
             <para>The <literal>while</literal> loop has the form:</para>
             
-            <programlisting>While ::= LoopCondition Block</programlisting>
+            <programlisting>While: LoopCondition Block</programlisting>
 
             <para>The <literal>do/while</literal> loop has the form:</para>
             
-            <programlisting>DoWhile ::= "do" Block LoopCondition ";"</programlisting>
+            <programlisting>DoWhile: "do" Block LoopCondition ";"</programlisting>
 
             <para>The loop condition determines when the loop terminates.</para>
             
-            <programlisting>LoopCondition ::= "while" "(" Condition ")"</programlisting>
+            <programlisting>LoopCondition: "while" "(" Condition ")"</programlisting>
 
-            <!--programlisting>DoWhileFail ::= 
+            <!--programlisting>DoWhileFail: 
 ( "do" ("(" Variable Specifier ")")? OpenBlock? )?
 "while" "(" Condition ("," Condition)* ")" 
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
@@ -1329,13 +1329,13 @@ while (!person.dead);</programlisting>
             
             <para>The <literal>try/catch/finally</literal> exception manager has the form:</para>
             
-            <programlisting>TryCatchFinally ::= Try Catch* Finally?</programlisting>
+            <programlisting>TryCatchFinally: Try Catch* Finally?</programlisting>
 
-            <programlisting>Try ::= "try" ("(" Resource ")")? Block</programlisting>
+            <programlisting>Try: "try" ("(" Resource ")")? Block</programlisting>
             
-            <programlisting>Catch ::= "catch" "(" Variable ")" Block</programlisting>
+            <programlisting>Catch: "catch" "(" Variable ")" Block</programlisting>
             
-            <programlisting>Finally ::= "finally" Block</programlisting>
+            <programlisting>Finally: "finally" Block</programlisting>
 
             <para>The type of each <literal>catch</literal> variable declaration must be 
             assignable to <literal>ceylon.language.Exception</literal>.</para>
@@ -1345,7 +1345,7 @@ while (!person.dead);</programlisting>
             released when execution of the <literal>try</literal> terminates. Each resource 
             expression must be of type assignable to <literal>ceylon.language.Usable</literal>.</para>
             
-            <programlisting>Resource ::= InferableVariable Specifier | Expression</programlisting>
+            <programlisting>Resource: InferableVariable Specifier | Expression</programlisting>
             
             <para>When the construct is executed:</para>
             
