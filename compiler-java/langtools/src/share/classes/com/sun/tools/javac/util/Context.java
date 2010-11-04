@@ -207,48 +207,37 @@ public class Context {
             throw new IllegalStateException();
     }
     
-    
-    public static class SourceLanguage {
-    	public enum Language {
-    		JAVA, CEYLON
-    	}
-    	
-    	static ArrayList<Language> stack =
-    		new ArrayList<Language>();
-    	
-    	static {
-    		push(Language.JAVA);
-    	}
+    /**
+     * TODO: Ideally this stack should not be static, but Context.isCeylon
+     * is required in one or two places where a context is unavailable.  
+     */
+    private static ArrayList<CompilationUnit> ceylonContextStack =
+        new ArrayList<CompilationUnit>();
 
-    	public static void push(final Language lang) {
-    		stack.add(lang);
-    	}
-    	public static Language pop() {
-    		return stack.remove(stack.size() - 1);
-    	}
-    	public static Language current() {
-    		return stack.get(stack.size() - 1);
-    	}
-    }
-    
-    public void enterCeylon(CompilationUnit t) {
-        SourceLanguage.push(SourceLanguage.Language.CEYLON);
+    public void enterCeylon(CompilationUnit cu) {
+        ceylonContextStack.add(cu);
     }
 
     public void leaveCeylon() {
-        SourceLanguage.pop();
+        int size = ceylonContextStack.size();
+        assert size > 0;
+        CompilationUnit cu = ceylonContextStack.remove(size - 1);
+        assert cu != null;
     }
 
     public void enterJava() {
-        SourceLanguage.push(SourceLanguage.Language.JAVA);
+        ceylonContextStack.add(null);
     }
 
     public void leaveJava() {
-        SourceLanguage.pop();
+        int size = ceylonContextStack.size();
+        assert size > 0;
+        CompilationUnit cu = ceylonContextStack.remove(size - 1);
+        assert cu == null;
     }
 
     public static boolean isCeylon() {
-    	return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
+        int size = ceylonContextStack.size();
+        return size > 0 && ceylonContextStack.get(size - 1) != null;
     }
-    
 }
