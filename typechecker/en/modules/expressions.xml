@@ -1481,7 +1481,7 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: Should we support type inference for the parameters?
         For example:</para>
-        <programlisting>by (local x, local y) ( x&lt;=&gt;y )</programlisting>
+        <programlisting>by (local x, y) ( x&lt;=&gt;y )</programlisting>
         <programlisting>where (local p) (p.age>18)</programlisting></comment>
 
         </section>
