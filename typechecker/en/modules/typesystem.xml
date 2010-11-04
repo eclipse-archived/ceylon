@@ -122,10 +122,10 @@
         named with an initial lowercase or underscore. A package name element is an
         all-lowercase identifier.</para>
         
-        <programlisting>PackageName := PIdentifier</programlisting>
-        <programlisting>TypeName := UIdentifier</programlisting>
-        <programlisting>MemberName := LIdentifier</programlisting>
-        <programlisting>ParameterName := LIdentifier</programlisting>
+        <programlisting>PackageName ::= PIdentifier</programlisting>
+        <programlisting>TypeName ::= UIdentifier</programlisting>
+        <programlisting>MemberName ::= LIdentifier</programlisting>
+        <programlisting>ParameterName ::= LIdentifier</programlisting>
         
         <para>An underscore <literal>_</literal> is considered a lowercase letter.</para>
         
@@ -322,7 +322,7 @@
             <para>For any types <literal>X</literal> and <literal>Y</literal>, a <emphasis>union</emphasis>,
             <literal>X|Y</literal>, of the types may be formed.</para>
             
-            <programlisting>Union := Type ("|" Type)*</programlisting>
+            <programlisting>Union ::= Type ("|" Type)*</programlisting>
             
             <para>The union type constructor <literal>|</literal> is associative, so the union of 
             three types may be written <literal>X|Y|Z</literal>.</para>
@@ -407,13 +407,13 @@
         type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
-        <programlisting>Type := UnabbreviatedType Abbreviation*</programlisting>
+        <programlisting>Type ::= UnabbreviatedType Abbreviation*</programlisting>
         
         <para>If the type is a class or interface nested inside a containing class or 
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
-        <programlisting>UnabbreviatedType := TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
+        <programlisting>UnabbreviatedType ::= TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
         
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
         list must be specified. If a type has no type parameters, and no sequenced type 
@@ -425,7 +425,7 @@
         forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
         where the type usually appears.</para>
         
-        <programlisting>InferableType := Type | "local"</programlisting>
+        <programlisting>InferableType ::= Type | "local"</programlisting>
         
         <para>Type inference is only allowed for block local declarations. The keyword
         <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
@@ -455,7 +455,7 @@
             </listitem>
         </itemizedlist>
         
-        <programlisting>Abbreviation := "?" | "[]" | "[" dimension "]"</programlisting>
+        <programlisting>Abbreviation ::= "?" | "[]" | "[" dimension "]"</programlisting>
         
         <para>Abbreviations may be combined:</para>
         
@@ -535,7 +535,7 @@ String? firstWord = words[0];</programlisting>
     
         <para>A class may extend another class.</para>
         
-        <programlisting>ExtendedType := "extends" Type PositionalArguments</programlisting>
+        <programlisting>ExtendedType ::= "extends" Type PositionalArguments</programlisting>
     
         <para>The <literal>extends</literal> clause must specify exactly one superclass. 
         If the superclass is a parameterized type, the <literal>extends</literal> clause 
@@ -590,7 +590,7 @@ String? firstWord = words[0];</programlisting>
         or more interfaces. <!--A union may satisfy one or more interfaces.--> A type 
         parameter may satisfy one or more interfaces and, optionally, a class.</para>
         
-        <programlisting>SatisfiedTypes = "satisfies" Type ("&amp;" Type)*</programlisting>
+        <programlisting>SatisfiedTypes ::= "satisfies" Type ("&amp;" Type)*</programlisting>
     
         <para>The <literal>satisfies</literal> clause may specify multiple types. If 
         a satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
@@ -631,12 +631,12 @@ String? firstWord = words[0];</programlisting>
         specify an enumerated list of all its subtypes.<!--A union must specify an 
         enumerated list of its subtypes.--></para>
     
-        <programlisting>CaseTypes := "of" CaseType ("|" CaseType)*</programlisting>
+        <programlisting>CaseTypes ::= "of" CaseType ("|" CaseType)*</programlisting>
         
         <para>The <literal>of</literal> clause may specify multiple types, called
         <emphasis>cases</emphasis>.</para>
         
-        <programlisting>CaseType := MemberName | Type</programlisting>
+        <programlisting>CaseType ::= MemberName | Type</programlisting>
         
         <para>An anonymous class is identified by the name specified in the 
         <literal>object</literal> declaration&mdash;an initial lowercase
@@ -668,7 +668,7 @@ String? firstWord = words[0];</programlisting>
         <para>Similarly, a type constraint may specify a list of types which 
         must be supertypes of the metatype of the type argument.</para>
         
-        <programlisting>Metatypes := "is" Type ("&amp;" Type)*</programlisting>
+        <programlisting>Metatypes ::= "is" Type ("&amp;" Type)*</programlisting>
         
         <para>The concrete metatype of a type <literal>T</literal> is the concrete 
         class of the object to which the expression <literal>T</literal> evaluates.
@@ -714,7 +714,7 @@ public class LinkedList<T>(T... elements)
         <para>Methods, classes, interfaces, and type parameters may declare one or more generic 
         type parameters.</para>
         
-        <programlisting>TypeParams := "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
+        <programlisting>TypeParams ::= "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
@@ -758,7 +758,7 @@ public class LinkedList<T>(T... elements)
         </listitem>
         </itemizedlist>
         
-        <programlisting>TypeParam := OrdinaryTypeParam | "#" DimensionalTypeParam</programlisting>
+        <programlisting>TypeParam ::= OrdinaryTypeParam | "#" DimensionalTypeParam</programlisting>
         
         <section id="ordinarytypeparameters">
             <title>Ordinary type parameters and variance</title>
@@ -768,7 +768,7 @@ public class LinkedList<T>(T... elements)
         
         <para>Each ordinary type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
-        <programlisting>OrdinaryTypeParam := Variance TypeName</programlisting>
+        <programlisting>OrdinaryTypeParam ::= Variance TypeName</programlisting>
         
         <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
         itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
@@ -777,7 +777,7 @@ public class LinkedList<T>(T... elements)
         <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
         A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
         
-        <programlisting>Variance :=  ("out" | "in")?</programlisting>
+        <programlisting>Variance ::=  ("out" | "in")?</programlisting>
         
         <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> 
         is called <emphasis>nonvariant</emphasis>.</para>
@@ -900,7 +900,7 @@ public class LinkedList<T>(T... elements)
         <para>A dimensional type parameter is distinguished by a <literal>#</literal>
         prefix, and must be an initial lowercase identifier.</para>
         
-        <programlisting>DimensionalTypeParam := MemberName</programlisting>
+        <programlisting>DimensionalTypeParam ::= MemberName</programlisting>
         
         <para>Within the body of the declaration it parameterized, a dimensional type 
         parameter is a local of type <literal>Natural</literal>.</para>
@@ -982,7 +982,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>A sequenced type parameter is identified by an elipsis <literal>...</literal>,
         indicating that it accepts a list of zero or more type arguments.</para>
         
-        <programlisting>SequencedTypeParam := TypeName "..."</programlisting>
+        <programlisting>SequencedTypeParam ::= TypeName "..."</programlisting>
         
         <para>Sequenced type parameters are always non-variant.</para>
         
@@ -1021,15 +1021,15 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <para>A parameterized method, class, or interface declaration may declare constraints 
         upon ordinary type parameters using the <literal>given</literal> clause.</para>
         
-        <programlisting>TypeConstraints = TypeConstraint+</programlisting>
+        <programlisting>TypeConstraints ::= TypeConstraint+</programlisting>
         
         <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
         
-        <programlisting>TypeConstraint := "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
+        <programlisting>TypeConstraint ::= "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
         
-        <programlisting>TypeConstraintInheritance := CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
+        <programlisting>TypeConstraintInheritance ::= CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
         
-        <programlisting>AbstractedType := "abstracts" Type</programlisting>
+        <programlisting>AbstractedType ::= "abstracts" Type</programlisting>
         
         <para>Note that the syntax for a type constraint is essentially the same syntax used 
         for other type declarations such as class and interface declarations.</para>
@@ -1304,12 +1304,12 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         parameterized type schema, or a new method schema from a method schema with type 
         parameters.</para>
         
-        <programlisting>TypeNameWithArguments := TypeName TypeArguments?</programlisting>
+        <programlisting>TypeNameWithArguments ::= TypeName TypeArguments?</programlisting>
         
         <para>A type argument list is a list of types and dimensions, and an optional sequenced 
         type argument.</para>
         
-        <programlisting>TypeArguments := "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
+        <programlisting>TypeArguments ::= "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
         
         <para>A <emphasis>sequenced type argument</emphasis> is either:</para>
         
@@ -1326,11 +1326,11 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <para>A sequenced type argumement must appear last in the list of type arguments.</para>
                 
-        <programlisting>SequencedType := TypeName "..."</programlisting>
+        <programlisting>SequencedType ::= TypeName "..."</programlisting>
         
         <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
-        <programlisting>TypeArgument := Type | "#" Dimension</programlisting>
+        <programlisting>TypeArgument ::= Type | "#" Dimension</programlisting>
         
         <section id="dimensions">
             <title>Dimensions</title>
@@ -1342,10 +1342,10 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         literals, locals of type <literal>Natural</literal>, the operators 
         <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
         
-        <programlisting>Dimension := DimensionTerm ("+" DimensionTerm)*</programlisting>
-        <programlisting>DimensionTerm := (NaturalLiteral "*")* DimensionAtom</programlisting>
-        <programlisting>DimensionAtom := NaturalLiteral | MemberName | ParenDimension</programlisting>
-        <programlisting>ParenDimension := "(" Dimension ")"</programlisting>
+        <programlisting>Dimension ::= DimensionTerm ("+" DimensionTerm)*</programlisting>
+        <programlisting>DimensionTerm ::= (NaturalLiteral "*")* DimensionAtom</programlisting>
+        <programlisting>DimensionAtom ::= NaturalLiteral | MemberName | ParenDimension</programlisting>
+        <programlisting>ParenDimension ::= "(" Dimension ")"</programlisting>
         
         <para>The <emphasis>canonical form</emphasis> of a dimension expression is formed
         by algebraically simplifying the expression to a dimension expression of form:</para>
@@ -1601,19 +1601,19 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>In a parameter list, parameters with default values must occur after required 
         parameters. The sequenced parameter, if any, must occur last.</para>
         
-        <programlisting>Params := 
+        <programlisting>Params ::= 
 "("
 FormalParam ("," FormalParam)* ("," DefaultParam)* ("," SequencedParam)? | 
 DefaultParam ("," DefaultParam)* ("," SequencedParam)? | 
 SequencedParam?
 ")"</programlisting>
 
-        <programlisting>FormalParam := Param | EntryParamPair</programlisting>
+        <programlisting>FormalParam ::= Param | EntryParamPair</programlisting>
         
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param := Annotation* (Type | "void") (ParameterName | "this") Params*</programlisting>
+        <programlisting>Param ::= Annotation* (Type | "void") (ParameterName | "this") Params*</programlisting>
         
         <para>A parameter may not be be declared <literal>variable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
@@ -1648,12 +1648,12 @@ SequencedParam?
         
         <para>Defaulted parameters specify a default argument.</para>
     
-        <programlisting>DefaultParam := FormalParam Specifier</programlisting>
+        <programlisting>DefaultParam ::= FormalParam Specifier</programlisting>
         
         <para>The <literal>=</literal> specifier is used throughout the language to indicate a 
         value which cannot be reassigned.</para>
         
-        <programlisting>Specifier := "=" Expression</programlisting>
+        <programlisting>Specifier ::= "=" Expression</programlisting>
         
         <para>Defaulted parameters must occur after non-defaulted parameters in the parameter 
         list.</para>
@@ -1685,7 +1685,7 @@ SequencedParam?
             </listitem>
         </itemizedlist>
         
-        <programlisting>SequencedParam := Annotation* Type "..." ParameterName</programlisting>
+        <programlisting>SequencedParam ::= Annotation* Type "..." ParameterName</programlisting>
         
         <para>The sequenced parameter or tuple parameter must be the last parameter in the 
         list.</para>
@@ -1701,7 +1701,7 @@ SequencedParam?
         
         <para>A parameter of type <literal>Entry</literal> may be specified as a pair of variables.</para>
         
-        <programlisting>EntryParamPair := Annotation* Type ParameterName "->" Type ParameterName</programlisting>
+        <programlisting>EntryParamPair ::= Annotation* Type ParameterName "->" Type ParameterName</programlisting>
         
         <para>A key/value parameter pair declaration of form <literal>U u -> V v</literal> results 
         in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
@@ -1721,7 +1721,7 @@ SequencedParam?
         annotations does not require punctuation between the individual annotations in the 
         list.</para>
     
-        <programlisting>Annotation := MemberName ( Arguments | Literal+ )?</programlisting>
+        <programlisting>Annotation ::= MemberName ( Arguments | Literal+ )?</programlisting>
         
         <para>Unlike Java, the name of an annotation may not be a qualified name.</para>
         

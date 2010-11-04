@@ -14,9 +14,9 @@
         program element of a different type.</para></listitem>
     </itemizedlist>
     
-    <programlisting>Declaration := Method | Attribute | TypeDeclaration</programlisting>
+    <programlisting>Declaration ::= Method | Attribute | TypeDeclaration</programlisting>
     
-    <programlisting>TypeDeclaration := Class | Object | Interface</programlisting>
+    <programlisting>TypeDeclaration ::= Class | Object | Interface</programlisting>
         
     <para>All declarations follow a general pattern:</para>
         
@@ -51,7 +51,7 @@ TypeConstraints?
         <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class or 
         interface&mdash;or a method or non-<literal>variable</literal> attribute.</para>
         
-        <programlisting>ToplevelDeclaration := TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
+        <programlisting>ToplevelDeclaration ::= TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
         <para>All toplevel declarations <!--with a visibility modifier less strict than
         <literal>private</literal>--> must have the same name as the compilation unit 
@@ -88,12 +88,12 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
-        <programlisting>Import := "import" FullPackageName "{" ImportElements "}"</programlisting>
+        <programlisting>Import ::= "import" FullPackageName "{" ImportElements "}"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>
         
-        <programlisting>FullPackageName := PackageName ("." PackageName)*</programlisting>
+        <programlisting>FullPackageName ::= PackageName ("." PackageName)*</programlisting>
         
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
@@ -102,9 +102,9 @@ TypeConstraints?
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
         
-        <programlisting>ImportElements := ImportElement ("," ImportElement)* ("," ImportWildcard)? | ImportWildcard</programlisting>
+        <programlisting>ImportElements ::= ImportElement ("," ImportElement)* ("," ImportWildcard)? | ImportWildcard</programlisting>
         
-        <programlisting>ImportElement := ImportTypeElement | ImportMethodAttributeElement</programlisting>
+        <programlisting>ImportElement ::= ImportTypeElement | ImportMethodAttributeElement</programlisting>
         
         <para>An import element is a reference to either:</para>
         
@@ -130,7 +130,7 @@ TypeConstraints?
         <para>An import element that specifies a type name imports the toplevel type with 
         that name from the given package.</para>
         
-        <programlisting>ImportTypeElement := "implicit"? TypeAlias? TypeName</programlisting>
+        <programlisting>ImportTypeElement ::= "implicit"? TypeAlias? TypeName</programlisting>
         
         <para>An <literal>import</literal> statement may not contain two import elements
         which refer to the same type.</para>
@@ -147,7 +147,7 @@ TypeConstraints?
         <para>An import element that specifies a method or attribute name imports the 
         toplevel method or attribute with that name from the given package.</para>
         
-        <programlisting>ImportMethodAttributeElement := "implicit"? MethodAttributeAlias? MemberName</programlisting>
+        <programlisting>ImportMethodAttributeElement ::= "implicit"? MethodAttributeAlias? MemberName</programlisting>
         
         <para>An <literal>import</literal> statement may not contain two import elements
         which refer to the same method or attribute.</para>
@@ -176,13 +176,13 @@ TypeConstraints?
         <para>The optional alias clause in a fully-explicit import allows resolution 
         of cross-namespace declaration name collisions.</para>
         
-        <programlisting>TypeAlias := "local" TypeName "="</programlisting>
+        <programlisting>TypeAlias ::= "local" TypeName "="</programlisting>
         
         <comment><para>TODO: Should we use <literal>class</literal> and 
         <literal>interface</literal> for declaring type aliases, instead of
         <literal>local</literal>? Or should we just drop the keyword altogether?</para></comment>
 
-        <programlisting>MethodAttributeAlias := "local" MemberName "="</programlisting>
+        <programlisting>MethodAttributeAlias ::= "local" MemberName "="</programlisting>
         
         <para>An alias assigns a different name to the imported declaration.</para>
         
@@ -208,7 +208,7 @@ TypeConstraints?
         <literal>import</literal> statements. An <literal>import</literal> statement 
         that specifies a wildcard imports all toplevel declarations of the package.</para>
         
-        <programlisting>ImportWildcard := "..."</programlisting>
+        <programlisting>ImportWildcard ::= "..."</programlisting>
         
         <para>An <literal>import</literal> statement may specify a list of alias imports 
         followed by a wildcard. In this case, the alias imports are imported with the 
@@ -234,16 +234,16 @@ TypeConstraints?
         implementation details for some members of the type. Interfaces may not be 
         directly instantiated.</para>
         
-        <programlisting>Interface := Annotation* InterfaceHeader (InterfaceBody | TypeSpecifier ";")</programlisting>
+        <programlisting>Interface ::= Annotation* InterfaceHeader (InterfaceBody | TypeSpecifier ";")</programlisting>
         
         <para>An interface declaration may optionally specify a list of type 
         parameters. An interface declaration may have a list of extended interfaces,
         a list of metatypes, an enumerated list of subtypes, and/or a list of type 
         constraints.</para>
         
-        <programlisting>InterfaceHeader := "interface" TypeName TypeParams? InterfaceInheritance TypeConstraints?</programlisting>
+        <programlisting>InterfaceHeader ::= "interface" TypeName TypeParams? InterfaceInheritance TypeConstraints?</programlisting>
         
-        <programlisting>InterfaceInheritance := CaseTypes? Metatypes? SatisfiedTypes?</programlisting>
+        <programlisting>InterfaceInheritance ::= CaseTypes? Metatypes? SatisfiedTypes?</programlisting>
         
         <para>To obtain a concrete instance of an interface, it is necessary to define 
         and instantiate a class that implements the interface, or define an object that
@@ -266,7 +266,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <programlisting>InterfaceBody := "{" Declaration* "}"</programlisting>
+        <programlisting>InterfaceBody ::= "{" Declaration* "}"</programlisting>
         
         <para>An interface may declare <literal>formal</literal> methods, attributes,
         and member classes, and concrete methods, attribute getters, attribute setters, 
@@ -429,7 +429,7 @@ TypeConstraints?
         type defines an <emphasis>interface alias</emphasis> of the specified interface 
         type.</para>
         
-        <programlisting>TypeSpecifier := "=" Type</programlisting>
+        <programlisting>TypeSpecifier ::= "=" Type</programlisting>
 
         <para>The specified interface type may be a produced type (it may specify type 
         arguments). An interface alias simply assigns an alternative name to the original 
@@ -454,16 +454,16 @@ TypeConstraints?
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.</para>
 
-        <programlisting>Class := Annotation* ClassHeader (ClassBody | TypeSpecifier? ";")</programlisting>
+        <programlisting>Class ::= Annotation* ClassHeader (ClassBody | TypeSpecifier? ";")</programlisting>
         
         <para>An ordinary class declaration specifies a list of parameters required to 
         instantiate the type, and, optionally a list of type parameters.  A class 
         declaration may have a superclass, a list of extended interfaces, a list of 
         metatypes, an enumerated list of subtypes, and/or a list of type constraints.</para>
         
-        <programlisting>ClassHeader := "class" TypeName TypeParams? Params ClassInheritance TypeConstraints?</programlisting>
+        <programlisting>ClassHeader ::= "class" TypeName TypeParams? Params ClassInheritance TypeConstraints?</programlisting>
         
-        <programlisting>ClassInheritance := CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?</programlisting>
+        <programlisting>ClassInheritance ::= CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?</programlisting>
         
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
@@ -486,7 +486,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
 
-        <programlisting>ClassBody := "{" (Declaration | Statement)* "}"</programlisting>
+        <programlisting>ClassBody ::= "{" (Declaration | Statement)* "}"</programlisting>
         
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the class. A nested interface or 
@@ -1196,15 +1196,15 @@ public class Person { ... }</programlisting>
         a class, instantiate an instance of the class, and declare an attribute 
         referring to the class instance in a single declaration.</para>
         
-        <programlisting>Object := Annotation* ObjectHeader ClassBody</programlisting>
+        <programlisting>Object ::= Annotation* ObjectHeader ClassBody</programlisting>
         
         <para>An <literal>object</literal> has an initial lowercase identifier.
         An <literal>object</literal> declaration does not specify parameters or
         type parameters.</para>
         
-         <programlisting>ObjectHeader := "object" MemberName ObjectInheritance</programlisting>
+         <programlisting>ObjectHeader ::= "object" MemberName ObjectInheritance</programlisting>
          
-         <programlisting>ObjectInheritance := ExtendedType? SatisfiedTypes?</programlisting>
+         <programlisting>ObjectInheritance ::= ExtendedType? SatisfiedTypes?</programlisting>
          
          <para>An <literal>object</literal> declaration specifies the name of the
          attribute and the schema, supertypes, and implementation of the class. It
@@ -1389,7 +1389,7 @@ public class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         type of the union must also satisfy these interfaces. A union itself 
         does not define members.</para>
         
-        <programlisting>Union := 
+        <programlisting>Union ::= 
 Annotation* 
 "choice" TypeName TypeParams?
 CaseTypes Metatypes? SatisfiedTypes? 
@@ -1534,7 +1534,7 @@ public choice TransactionPropagationStyle
         <para>A <emphasis>method</emphasis> is a callable block of code. Methods may 
         have parameters and may return a value.</para>
         
-        <programlisting>Method := Annotation* MethodHeader (Block | NamedArguments | Specifier? ";")</programlisting>
+        <programlisting>Method ::= Annotation* MethodHeader (Block | NamedArguments | Specifier? ";")</programlisting>
         
         <para>All method declarations specify the method name, one or more parameter 
         lists, and, optionally, a list of type parameters. A method declaration may 
@@ -1545,7 +1545,7 @@ public choice TransactionPropagationStyle
         be <literal>Void</literal>. A method declaration may have a list of type 
         constraints.</para>
         
-        <programlisting>MethodHeader := (InferableType | "void") MemberName TypeParams? Params+ Metatypes? TypeConstraints?</programlisting>
+        <programlisting>MethodHeader ::= (InferableType | "void") MemberName TypeParams? Params+ Metatypes? TypeConstraints?</programlisting>
         
         <para>The Ceylon compiler preserves the names of method parameters.</para>
         
@@ -2080,7 +2080,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <programlisting>Attribute := Annotation* (SimpleAttribute | AttributeGetter | AttributeSetter)</programlisting>
+        <programlisting>Attribute ::= Annotation* (SimpleAttribute | AttributeGetter | AttributeSetter)</programlisting>
     
         <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
         definitions may be refined by subclasses.</para>
@@ -2092,7 +2092,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         simple attributes explicitly annotated <literal>variable</literal>, or for 
         attributes with a setter declaration.</para>
             
-        <programlisting>AttributeHeader := InferableType MemberName</programlisting>
+        <programlisting>AttributeHeader ::= InferableType MemberName</programlisting>
         
         <para>Note that an attribute declaration is essentially a method declaration with 
         zero parameter lists. Likewise, an attribute evaluation is essentially a method 
@@ -2140,7 +2140,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
         <para>A simple attribute defines state.</para>
         
-        <programlisting>SimpleAttribute := AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
+        <programlisting>SimpleAttribute ::= AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
         
         <para>A simple attribute or local annotated <literal>variable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
@@ -2150,7 +2150,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <literal>=</literal>. A <literal>variable</literal> attribute may be initialized using 
         the assignment operator <literal>:=</literal>.</para>
 
-        <programlisting>Initializer := ":=" Expression</programlisting>
+        <programlisting>Initializer ::= ":=" Expression</programlisting>
 
         <para>Parameters of classes and methods are also considered to be locals.</para>
         
@@ -2271,7 +2271,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             <para>An attribute getter is a callable block of code with no parameters,
             that returns a value.</para>
             
-            <programlisting>AttributeGetter := AttributeHeader Block</programlisting>
+            <programlisting>AttributeGetter ::= AttributeHeader Block</programlisting>
             
             <para>An attribute getter defines how the value of a derived attribute is
             obtained.</para>
@@ -2353,7 +2353,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             <para>An attribute setter is a callable block of code that accepts a
             single value and does not return a value.</para>
             
-            <programlisting>AttributeSetter := "assign" MemberName Block</programlisting>
+            <programlisting>AttributeSetter ::= "assign" MemberName Block</programlisting>
 
             <para>An attribute setter defines how the value of a derived attribute is
             assigned. Every attribute setter must have a corresponding getter with the
