@@ -2796,6 +2796,7 @@ public void assert(Gettable<String> message, Boolean that()) {
         <para>The <literal>ceylon.language.conditional</literal> package defines 
         support for conditional expressions.</para>
         
+        <!--
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      and return the result. Otherwise, return |null|."
 public Y? when<Y>(Boolean condition,
@@ -2807,13 +2808,13 @@ public Y? when<Y>(Boolean condition,
         return null
     }
 }]]></programlisting>
-
+        -->
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
 public Y when<Y>(Boolean condition,
                  Y then(), 
-                 Y otherwise()) {
+                 Y otherwise()=get(null)) {
     if (condition) {
         return then()
     }
@@ -2821,7 +2822,7 @@ public Y when<Y>(Boolean condition,
         return otherwise()
     }
 }]]></programlisting>
-
+<!--
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      and return the result. Otherwise, return |null|."
 public Y? with<X,Y>(specified X? value,
@@ -2833,13 +2834,13 @@ public Y? with<X,Y>(specified X? value,
         return null
     }
 }]]></programlisting>
-
+-->
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
 public Y with<X,Y>(specified X? value,
                    Y then(coordinated X x), 
-                   Y otherwise()) {
+                   Y otherwise()=get(null)) {
     if (exists value) {
         return then(value)
     }
@@ -2853,12 +2854,12 @@ public Y with<X,Y>(specified X? value,
      of evaluation."
 public Y withFirst<X,Y>(X[] list,
                         Y pop(X first, X... rest), 
-                        Y otherwise()) {
+                        Y otherwise()=get(null)) {
     if (exists X first = list.first) {
-        return otherwise(first, list.rest)
+        return pop(first, list.rest)
     }
     else {
-        return then()
+        return otherwise()
     }
 }]]></programlisting>
 
@@ -2888,6 +2889,7 @@ public Y using<X,Y>(specified X resource,
     }
 }]]></programlisting>
 
+<!--
         <programlisting><![CDATA[doc "Using the given resource, attempt to evaluate 
      the first block. If an exception occurs that 
      matches the second block, evaluate the second 
@@ -2903,7 +2905,7 @@ public Y using<X,Y,E>(specified X resource,
         return except(e)
     }
 }]]></programlisting>
-    
+-->  
 <!--
 
         <programlisting><![CDATA[doc "Evaluate the block which matches the selector value, and
@@ -2984,10 +2986,11 @@ public Boolean forAny<X>(iterated Iterable<X> elements,
     return !forAll(elements, where)
 }]]></programlisting>
 
+<!--
         <programlisting><![CDATA[doc "Return the first element for which the block 
-     evaluates to true, or |null|if no such element 
+     evaluates to true, or |null| if no such element 
      is found."
-public X? first<X>(iterated Iterable<X> elements,
+public X? firstOrNull<X>(iterated Iterable<X> elements,
                    Boolean where(coordinated X x)) {
     for (X x in elements) {
         if ( where(x) ) {
@@ -2996,14 +2999,14 @@ public X? first<X>(iterated Iterable<X> elements,
     }
     return null
 }]]></programlisting>
-
+-->
         <programlisting><![CDATA[doc "Return the first element for which the first 
      block evaluates to true, or the result of 
      evaluating the second block, if no such 
      element is found."
 public X first<X>(iterated Iterable<X> elements,
                   Boolean where(coordinated X x),
-                  X otherwise()) {
+                  X otherwise()=get(null)) {
     if (exists X first = first(elements, where)) {
         return first
     }
@@ -3015,38 +3018,15 @@ public X first<X>(iterated Iterable<X> elements,
         <para>The <literal>ceylon.language.comprehension.list</literal> package defines 
         support for <literal>List</literal> comprehensions, tabulations, and folds.</para>
         
-        <programlisting><![CDATA[doc "Iterate elements and return those for which 
-     the first block evaluates to true, ordered 
-     using the second block, if specified."
-public List<X> from<X,C>(iterated Iterable<X> elements,
-                         Boolean where(coordinated X x),
-                         C by(coordinated X x) = naturalOrder) 
-        given C satisfies Comparable<C> {
-    X select(X x) { return x }
-    return from(elements, where, select, by)
-}]]></programlisting>
-
-        <programlisting><![CDATA[doc "Iterate elements and for each element evaluate 
-     the first block. Build a list of the resulting 
-     values, ordered using the second block, if 
-     specified."
-public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
-                           Y select(coordinated X x),
-                           C by(coordinated X x) = naturalOrder) 
-        given C satisfies Comparable<C> {
-    Boolean where(X x) { return true }
-    return from(elements, where, select, by)
-}]]></programlisting>
-
         <programlisting><![CDATA[doc "Iterate elements and select those for which 
      the first block evaluates to true. For each of 
      these, evaluate the second block. Build a list 
      of the resulting values, ordered using the 
      third block, if specified."
 public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
-                           Boolean where(coordinated X x), 
-                           Y select(coordinated X x),
-                           C by(coordinated X x) = naturalOrder) 
+                           Boolean where(coordinated X x) = always, 
+                           Y select(coordinated X x) = id,
+                           C by(coordinated X x) = id) 
         given C satisfies Comparable<C> {
     OpenList<Y> list = ArrayList<Y>();
     for (X x in elements) {
