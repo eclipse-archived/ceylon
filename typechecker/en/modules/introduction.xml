@@ -2328,21 +2328,21 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         operation, and returns a value, or, perhaps, a different operation.</para>
         
         <para>For example, the Ceylon standard librares define a method called
-        <literal>ifExists()</literal> that accepts an object and two <emphasis>callable 
-        objects</emphasis>. (A method parameter that accepts a callable objects is called 
-        a <emphasis>callable parameter</emphasis>.) If the object is not null, 
-        <literal>ifExists()</literal> invokes the first method. Otherwise, 
-        <literal>ifExists()</literal> invokes the second method. We can use 
-        <literal>ifExists()</literal> to rewrite <literal>greeting</literal>:</para>
+        <literal>with()</literal> that accepts an <literal>Optional</literal> value and 
+        two functions. (A method parameter that accepts a function is called a 
+        <emphasis>callable parameter</emphasis>.) If the first value is not null, 
+        <literal>with()</literal> invokes the first function. Otherwise, 
+        <literal>with()</literal> invokes the second function. We can use 
+        <literal>with()</literal> to rewrite <literal>greeting</literal>:</para>
 
 <programlisting><![CDATA[package String greeting {
     String helloName() { return "Hello, " name "!" }
     String helloWorld() { return "Hello, World!" }
-    return ifExists(name, helloName, helloWorld)
+    return with(name, helloName, helloWorld)
 }]]></programlisting>
 
         <para>Well, that's certainly more functional, but it's also a lot more verbose. 
-        But this is not the way <literal>ifExists()</literal> is really intended to be
+        But this is not the way <literal>with()</literal> is really intended to be
         used. Ceylon provides a special method argument syntax for defining a method 
         that is passed to another method inline, as part of the invocation. An inline 
         method definition is called an <emphasis>inline callable argument</emphasis>. 
@@ -2354,7 +2354,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <literal>otherwise</literal>.</para>
 
 <programlisting><![CDATA[package String greeting {
-    return ifExists(name)
+    return with (name)
         //first inline callable argument
         then () {
             return "Hello, " name "!"
@@ -2391,7 +2391,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <para>The abbreviated code looks like this:</para>
 
 <programlisting><![CDATA[package String greeting {
-    return ifExists(name) 
+    return with (name) 
         then ("Hello, " name "!")
         otherwise ("Hello, World!")
 }]]></programlisting>

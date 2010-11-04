@@ -2824,8 +2824,8 @@ public Y when<Y>(Boolean condition,
 
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      and return the result. Otherwise, return |null|."
-public Y? ifExists<X,Y>(specified X? value,
-                        Y then(coordinated X x)) {
+public Y? with<X,Y>(specified X? value,
+                    Y then(coordinated X x)) {
     if (exists value) {
         return then(value)
     }
@@ -2837,9 +2837,9 @@ public Y? ifExists<X,Y>(specified X? value,
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y ifExists<X,Y>(specified X? value,
-                       Y then(coordinated X x), 
-                       Y otherwise()) {
+public Y with<X,Y>(specified X? value,
+                   Y then(coordinated X x), 
+                   Y otherwise()) {
     if (exists value) {
         return then(value)
     }
@@ -2848,12 +2848,12 @@ public Y ifExists<X,Y>(specified X? value,
     }
 }]]></programlisting>
 
-        <programlisting><![CDATA[doc "If the given list is empty, evaluate first block,
+        <programlisting><![CDATA[doc "If the given list is nonempty, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y ifEmpty<X,Y>(X[] list,
-                      Y then(), 
-                      Y otherwise(X first, X... rest)) {
+public Y withFirst<X,Y>(X[] list,
+                        Y then(X first, X... rest), 
+                        Y otherwise()) {
     if (exists X first = list.first) {
         return otherwise(first, list.rest)
     }

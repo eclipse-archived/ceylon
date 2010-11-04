@@ -1561,17 +1561,17 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public Y ifExists&lt;X,Y&gt;(specified X? value, 
-                       Y then(coordinated X x), 
-                       Y otherwise());</programlisting>
+        <programlisting>public Y with&lt;X,Y&gt;(specified X? value, 
+                   Y then(coordinated X x), 
+                   Y otherwise());</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
-        <programlisting>Decimal amount = ifExists(Payment p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
+        <programlisting>Decimal amount = with (Payment p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
         
         <para>Which is equivalent to:</para>
         
-        <programlisting>Decimal amount = ifExists(order.payment) then (Payment p) (p.amount) otherwise (0.0);</programlisting>
+        <programlisting>Decimal amount = with (order.payment) then (Payment p) (p.amount) otherwise (0.0);</programlisting>
         
         <para>And for the following method declaration:</para>
         
@@ -1589,14 +1589,14 @@ using() resource satisfies Usable {
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local amount = ifExists(local p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
+        <programlisting>local amount = with (local p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
         <programlisting>local order = using (local s = Session()) seek (s.get(Order, oid));</programlisting>
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>public Y ifExists&lt;X,Y&gt;(X x = X? value) 
-         Y then(coordinated X x)
-         Y otherwise;</programlisting></comment>
+        <programlisting>public Y with&lt;X,Y&gt;(X x = X? value) 
+     Y then(coordinated X x)
+     Y otherwise;</programlisting></comment>
                 
         </section>
         
@@ -2983,9 +2983,9 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     <programlisting>if (exists o) then x else y   //pseudocode</programlisting>
     
     <para>means the same value produced by the Ceylon library method 
-    <literal>ifExists()</literal>:</para>
+    <literal>with()</literal>:</para>
     
-    <programlisting>ifExists (o) then (x) else (y)</programlisting>
+    <programlisting>with (o) then (x) else (y)</programlisting>
     
     <para>Third,</para>
     
