@@ -1,7 +1,6 @@
-import F;
-import /*implicit*/ fx;
+import /*implicit*/ ceylon.language.ObjectLog;
 
 public void f(Process process) {
-    F f = F(1);
-    Integer i = f + 2;
+    Natural n = 1;
+    Log l = n.log();
 }
