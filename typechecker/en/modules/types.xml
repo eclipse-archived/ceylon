@@ -3041,7 +3041,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         <comment><para>TODO: rewrite <literal>from()</literal> to delegate to 
         <literal>list()</literal>.</para></comment>
 
-        <programlisting><![CDATA[public List<X> list(Natural length, X containing(Natural index)) {
+        <programlisting><![CDATA[public List<X> tabulate(Natural length, X containing(Natural index)) {
     OpenList<X> list = ArrayList<X>();
     for (Natural i in 0..length-1) {
         list.append(containing(i));
@@ -3049,7 +3049,8 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
     return list
 }]]></programlisting>
         
-        <programlisting><![CDATA[public List<X> list(X first, X? next(X previous)) {
+        <!--
+        <programlisting><![CDATA[public List<X> generate(X first, X? next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
     variable X? x := first;
@@ -3063,8 +3064,9 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         }
     }
 }]]></programlisting>
+        -->
         
-        <programlisting><![CDATA[public List<X> list(Natural length, X first, X next(X previous)) {
+        <programlisting><![CDATA[public List<X> generate(Natural length, X first, X next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
     variable X x := first;
@@ -3075,16 +3077,18 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
     return list
 }]]></programlisting>
 
-        <programlisting><![CDATA[public Y fold<X,Y>(X[] list, Y initial, Y using(Y y, X x)) {
+        <comment><para>TODO: Actually, <literal>generate()</literal> should return just a
+        lazily-evaluated <literal>Iterable</literal>. (Perhaps it should be a class 
+        <literal>Generator</literal> instead of a method) Then to map its values into a 
+        <literal>List</literal>, instantiate <literal>IteratorList</literal>.</para></comment>
+        
+        <programlisting><![CDATA[public Y fold<X,Y>(Iterable<X> iterable, Y initial, Y using(Y y, X x)) {
     variable Y y:=initial;
-    for (X x in list) {
-        y:=using(u,x);
+    for (X x in iterable) {
+        y:=using(y,x);
     }
     return y
 }]]></programlisting>
-        
-        <comment><para>TODO: We should define versions of these that return just a
-        lazily-evaluated <literal>Iterable</literal>.</para></comment>
         
         <para>The <literal>ceylon.language.comprehension.map</literal> package defines 
         support for <literal>Map</literal> comprehensions.</para>
