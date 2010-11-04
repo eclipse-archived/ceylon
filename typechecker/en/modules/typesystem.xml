@@ -520,9 +520,15 @@ String? firstWord = words[0];</programlisting>
         <para>Ceylon visually distinguishes between a list of types which represents a
         combination (intersection) of the types, and a list of types which represents a 
         choice between (union of) the types. An intersection is written as 
-        <literal>X &amp; Y &amp; Z</literal>. A union is written as <literal>X | Y | Z</literal>.
-        <emphasis>(Note that this is consistent with the interpretation of these operators
-        as set intersection and union.)</emphasis></para>
+        <literal>X &amp; Y &amp; Z</literal>. A union is written as 
+        <literal>X | Y | Z</literal>.</para>
+        
+        <comment><para>Note: Ceylon does not currently support ad hoc union types and/or 
+        intersection types, but this would be the syntax if we ever decided to do so.</para>
+        <programlisting>void write(String|Integer|Float value) { ... }</programlisting>
+        <programlisting>void store(Persistent&amp;Format&amp;IdentifiableObject object) { ... }</programlisting>
+        <para>This syntax is consistent with the interpretation of these operators as set 
+        intersection and union.</para></comment>
         
     <section id="extendedclass">
         <title>Extension</title>
