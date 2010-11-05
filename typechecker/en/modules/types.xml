@@ -666,7 +666,7 @@ catch (Exception e) {
         -->
     </section>
     
-    <section id="category">
+    <section id="containersizedcategory">
         <title>Containers and categories</title>
         
         <para>The interface <literal>Container</literal> represents
@@ -676,11 +676,27 @@ catch (Exception e) {
         
         <programlisting><![CDATA[public interface Container {
         
-    doc "The nonempty operator. Determine 
-         if the container is empty."
+    doc "The nonempty operator. Determine if the container 
+         is empty."
     formal Boolean empty;
     
 }]]></programlisting>
+        
+        <para>The interface <literal>Sized</literal> represents a 
+        <literal>Container</literal> whose number of elements may be 
+        determined.</para>
+        
+        <programlisting>public interface Sized satisfies Container {
+        
+    doc "The number of elements or entries belonging to the 
+         container."
+    formal Natural size;
+    
+    actual default Boolean empty {
+        return size==0
+    }
+    
+}</programlisting>
     
         <para>The interface <literal>Category</literal> represents the 
         abstract notion of an object that contains other objects. An 
@@ -1242,7 +1258,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
 
         <programlisting><![CDATA[public interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Container & Category
+        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
         given X satisfies Equals<X> {
 
     doc "The index of the last element of the sequence,
@@ -1264,6 +1280,15 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         else {
             return SequenceIterator(0)
         }
+    }
+    
+    actual default Boolean size {
+        if (exists lastIndex) {
+            return lastIndex+1
+        }
+        else {
+            return 0
+        } 
     }
     
     actual default Boolean empty {
@@ -3141,13 +3166,9 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         root of the Ceylon collections framework.</para>
         
         <programlisting><![CDATA[public interface Collection<out X> 
-        satisfies Iterable<X> & Container & Category
+        satisfies Iterable<X> & Sized & Category
         given X satisfies Equals<X> {
-    
-    doc "The number of elements or entries belonging to the 
-         collection."
-    public Natural size;
-    
+        
     doc "Determine the number of times the given element
          appears in the collection."
     public Natural count(Object element);
