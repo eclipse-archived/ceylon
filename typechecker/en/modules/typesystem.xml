@@ -1294,6 +1294,104 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
 <para>Or we could keep it simple :-)</para></comment>
         
     </section>
+    
+    <section id="conditionalinheritance">
+        <title>Conditional inheritance</title>
+        
+        <comment><para>NOTE: This section is really speculative! A similar effect 
+        can already be achieved with extensions.</para></comment>
+        
+        <para>A class or interface may conditionally implement or extend an interface, 
+        called a <emphasis>conditional supertype</emphasis>, depending upon the argument 
+        of a type parameter.</para>
+        
+        <programlisting>ConditionalType: "satisfies" Type ("&amp;" Type)* "if" Condition ("&amp;&amp;" Condition)*</programlisting>
+        
+        <para>A <emphasis>condition</emphasis> is a list of upper bounds and metatype
+        bounds applying to a type parameter of the class of interface.</para>
+        
+        <programlisting>Condition: TypeName Metatypes? SatisfiedTypes?</programlisting>
+        
+        <para>The type parameter must be a covariant or nonvariant type parameter of
+        the class or interface.</para>
+        
+        <programlisting>satisfies SequenceEquals&lt;T&gt; if T satisfies Equals&lt;T&gt;</programlisting>
+        
+        <para>Then a produced type for the class or interface is a subtype of the
+        conditional supertype if the type arguments satisfy the bounds specified
+        by the condition.</para>
+        
+        <programlisting><![CDATA[public interface Sequence<out T>
+        satisfies Iterable<T> &
+                  Category &
+                  Correspondence<Natural,T> & 
+                  Sized
+        satisfies ElementwiseEquals 
+                  if T satisfies Equals<IdentifiableObject> {        
+    ... 
+}
+
+public interface ElementwiseEquals
+        satisfies Equals<Sequence<IdentifiableObject>> &
+                  Correspondence<Natural,IdentifiableObject> & 
+                  Sized
+        given T satisfies Equals<IdentifiableObject> {
+
+    actual Boolean equals(Sequence<IdentifiableObject> that) {
+        if (this.size!=that.size) { return false }
+        for (Integer i in 0..size-1) {
+            if (this[i]!=that[i]) { return false }
+        }
+        fail {
+            return true
+        }
+    }
+
+    actual Integer hash {
+        Integer h:=0;
+        for (Integer i in 0..size-1) {
+            h^=this[i].hash
+        }
+        return h
+    }
+      
+}]]></programlisting>
+        
+        <comment><para>TODO: A more flexible form of this, which allows "conditional members",
+        would allow the following simplification to the above example:</para>
+        <programlisting><![CDATA[public interface Sequence<out T>
+        satisfies Iterable<T> &
+                  Category &
+                  Correspondence<Natural,T> & 
+                  Sized
+        satisfies Equals<Sequence<IdentifiableObject>> 
+                  if T satisfies Equals<IdentifiableObject> {        
+    ... 
+
+    actual Boolean equals(Sequence<IdentifiableObject> that) 
+            if T satisfies Equals<IdentifiableObject> {
+        if (this.size!=that.size) { return false }
+        for (Integer i in 0..size-1) {
+            if (this[i]!=that[i]) { return false }
+        }
+        fail {
+            return true
+        }
+    }
+
+    actual Integer hash 
+            if T satisfies Equals<IdentifiableObject> {
+        Integer h:=0;
+        for (Integer i in 0..size-1) {
+            h^=this[i].hash
+        }
+        return h
+    }
+      
+}]]></programlisting>
+        </comment>
+        
+    </section>
 
     </section>
 
