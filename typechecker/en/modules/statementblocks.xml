@@ -1258,6 +1258,9 @@ fail {
 }
 </programlisting>
 
+            <comment><para>TODO: should we call it <literal>else</literal> instead of
+            <literal>fail</literal>, like in Python?</para></comment>
+
         </section>
         
         <section id="dowhile">
@@ -1291,8 +1294,8 @@ fail {
             or attribute getter in a <literal>return</literal> or <literal>throw</literal> 
             directive only if it is of form <literal>do/while</literal>.</para>
                     
-            <comment><para>TODO: does <literal>do/while</literal> need a fail block? Python 
-            has it, but what is the real usecase?</para></comment>
+            <comment><para>TODO: does <literal>do/while</literal> need a <literal>fail</literal> 
+            block? Python has it, but what is the real usecase?</para></comment>
             
             <!--para>If the loop exits early via execution of one of the control directives 
             <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
