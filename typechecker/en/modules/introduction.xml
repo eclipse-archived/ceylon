@@ -79,13 +79,13 @@
     </para>
     
     <para>
-    Ceylon does not support Java-style wildcard type parameters or raw types. 
-    Instead, like Scala, a type parameter may be marked as covariant or 
-    contravariant by the class or interface that declares the parameter. Type 
-    arguments are reified in Ceylon, eliminating many problems related to type 
-    erasure in Java. Ceylon supports parameterization of type parameters (a form 
-    of higher-order polymorphism), and a more expressive system of generic type 
-    constraints.
+    Ceylon does not support Java-style wildcard type parameters, raw types, or
+    any other kind of "existential type". Instead, a type parameter may be marked 
+    as covariant or contravariant by the class or interface that declares the 
+    parameter. Type arguments are reified in Ceylon, eliminating many problems 
+    related to type erasure in Java. Ceylon supports parameterization of type 
+    parameters (a form of higher-order polymorphism), and a more expressive 
+    system of generic type constraints.
     </para>
     
     </section>
