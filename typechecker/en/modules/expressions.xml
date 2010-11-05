@@ -4306,7 +4306,8 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tgroup>
     </table>
     
-        <comment><para>TODO: should we support the traditional C-style bitshift operators?</para></comment>
+        <comment><para>TODO: should we support the traditional C-style <literal>&gt;&gt;</literal> 
+        and <literal>&lt;&lt;</literal> bitshift operators?</para></comment>
     
     </section>
     
