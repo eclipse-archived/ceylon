@@ -53,6 +53,9 @@
     <literal>-></literal> operators.</para>
     </comment>
     
+    <comment><para>TODO: Or, if not, we at least need to properly define the scope
+    in which these things are actually executed.</para></comment>
+    
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
         
