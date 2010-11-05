@@ -64,16 +64,16 @@ import com.sun.tools.javac.main.JavaCompiler;
  * @author Jonathan Gibbons
  */
 public class JavacTaskImpl extends JavacTask {
-    private JavacTool tool;
+    protected JavacTool tool;
     private Main compilerMain;
     private JavaCompiler compiler;
     private String[] args;
-    private Context context;
+    protected Context context;
     private List<JavaFileObject> fileObjects;
     private Map<JavaFileObject, JCCompilationUnit> notYetEntered;
     private ListBuffer<Env<AttrContext>> genList;
-    private TaskListener taskListener;
-    private AtomicBoolean used = new AtomicBoolean();
+    protected TaskListener taskListener;
+    protected AtomicBoolean used = new AtomicBoolean();
     private Iterable<? extends Processor> processors;
 
     private Integer result = null;
@@ -95,7 +95,7 @@ public class JavacTaskImpl extends JavacTask {
         fileObjects.getClass();
     }
 
-    JavacTaskImpl(JavacTool tool,
+    protected JavacTaskImpl(JavacTool tool,
                 Main compilerMain,
                 Iterable<String> flags,
                 Context context,
@@ -157,7 +157,7 @@ public class JavacTaskImpl extends JavacTask {
             throw new IllegalStateException();
     }
 
-    private void prepareCompiler() throws IOException {
+    protected void prepareCompiler() throws IOException {
         if (!used.getAndSet(true)) {
             beginContext();
             compilerMain.setOptions(Options.instance(context));
@@ -182,7 +182,7 @@ public class JavacTaskImpl extends JavacTask {
         }
     }
 
-    private void beginContext() {
+    protected void beginContext() {
         context.put(JavacTaskImpl.class, this);
         if (context.get(TaskListener.class) != null)
             context.put(TaskListener.class, (TaskListener)null);
@@ -191,7 +191,7 @@ public class JavacTaskImpl extends JavacTask {
         tool.beginContext(context);
     }
     // where
-    private TaskListener wrap(final TaskListener tl) {
+    protected TaskListener wrap(final TaskListener tl) {
         tl.getClass(); // null check
         return new TaskListener() {
             public void started(TaskEvent e) {
@@ -213,7 +213,7 @@ public class JavacTaskImpl extends JavacTask {
         };
     }
 
-    private void endContext() {
+    protected void endContext() {
         tool.endContext();
     }
 

@@ -51,6 +51,8 @@ import com.sun.tools.javac.util.Position.LineMap;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.TypeTags.*;
+
+import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.tree.CeylonTree.*;
 
@@ -71,27 +73,29 @@ public class Gen {
     JCCompilationUnit jcCompilationUnit;
 
     public Gen() throws Exception {
-        compiler = ToolProvider.getSystemJavaCompiler();
-        diagnostics
-        = new DiagnosticCollector<JavaFileObject>();
-        fileManager
-        = (JavacFileManager)compiler.getStandardFileManager(diagnostics, null, null);
-        fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
-                Arrays.asList(new File("/tmp")));
+    	compiler = new CeyloncTool();
+    	// compiler = ToolProvider.getSystemJavaCompiler();
 
-        fileManager.setLocation(StandardLocation.CLASS_PATH,
-                Arrays.asList(new File("/tmp"), new File(System.getProperty("user.dir") + "/runtime")));
-        Iterable<? extends JavaFileObject> compilationUnits
-        = fileManager.getJavaFileObjectsFromStrings(new ArrayList<String>());
+    	diagnostics = 
+    		new DiagnosticCollector<JavaFileObject>();
+    	fileManager
+    		= (JavacFileManager)compiler.getStandardFileManager(diagnostics, null, null);
+    	fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
+    			Arrays.asList(new File("/tmp")));
 
-        JavaCompiler.CompilationTask aTask
-        = compiler.getTask(null, fileManager,
-                diagnostics,
-                Arrays.asList("-g"/* , /* "-verbose", */
-                        // "-source", "7", "-XDallowFunctionTypes"
-                        ),
-                        null, compilationUnits);
-        setup((JavacTaskImpl)aTask);
+    	fileManager.setLocation(StandardLocation.CLASS_PATH,
+    			Arrays.asList(new File("/tmp"), new File(System.getProperty("user.dir") + "/runtime")));
+    	Iterable<? extends JavaFileObject> compilationUnits
+    	= fileManager.getJavaFileObjectsFromStrings(new ArrayList<String>());
+
+    	JavaCompiler.CompilationTask aTask
+    	= compiler.getTask(null, fileManager,
+    			diagnostics,
+    			Arrays.asList("-g"/* , /* "-verbose", */
+    					// "-source", "7", "-XDallowFunctionTypes"
+    			),
+    			null, compilationUnits);
+    	setup((JavacTaskImpl)aTask);
     }
 
     void setup (JavacTaskImpl task) {

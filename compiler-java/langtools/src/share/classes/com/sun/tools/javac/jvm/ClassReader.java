@@ -43,7 +43,6 @@ import com.sun.tools.javac.code.Type.*;
 import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.util.*;
-import com.sun.tools.javac.util.List;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
@@ -1741,7 +1740,9 @@ public class ClassReader extends ClassFile implements Completer {
      * @throws AssertionError if the class symbol already exists
      */
     public ClassSymbol enterClass(Name flatName, JavaFileObject classFile) {
-        ClassSymbol cs = classes.get(flatName);
+    	if (flatName.toString().equals("X"))
+    		System.err.println(flatName);
+       ClassSymbol cs = classes.get(flatName);
         if (cs != null) {
             String msg = Log.format("%s: completer = %s; class file = %s; source file = %s",
                                     cs.fullname,

@@ -64,7 +64,7 @@ import java.nio.charset.Charset;
  *
  * @author Peter von der Ah\u00e9
  */
-public final class JavacTool implements JavaCompiler {
+public class JavacTool implements JavaCompiler {
     private final List<Pair<String,String>> options
         = new ArrayList<Pair<String,String>>();
     private final Context dummyContext = new Context();
@@ -156,7 +156,7 @@ public final class JavacTool implements JavaCompiler {
     /**
      * Register that a compilation is about to start.
      */
-    void beginContext(final Context context) {
+    public void beginContext(final Context context) {
         if (compilationInProgress)
             throw new IllegalStateException("Compilation in progress");
         compilationInProgress = true;
@@ -222,7 +222,7 @@ public final class JavacTool implements JavaCompiler {
         return new JavacTaskImpl(this, compiler, options, context, classes, compilationUnits);
     }
 
-    private static void processOptions(Context context,
+    protected static void processOptions(Context context,
                                        JavaFileManager fileManager,
                                        Iterable<String> options)
     {
