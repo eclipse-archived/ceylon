@@ -2006,8 +2006,16 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <literal>copy()</literal>. You can obtain a mutable copy of a collection
             by calling <literal>openCopy()</literal>.</para>
             
-            <programlisting>Set&lt;String&gt; names = set.copy();</programlisting>
-            <programlisting>OpenMap&lt;String,Person&gt; people = map.openCopy();</programlisting>
+            <programlisting>Set&lt;String&gt; names {
+    OpenSet&lt;String&gt; set = none;
+    for (Person p in people) { set.add(p.name); }
+    return set.copy();
+}
+
+...
+
+OpenSet&lt;String&gt; set = names.openCopy();</programlisting>
+
         
             <para>Splitting the collection interfaces into a "read-only" view and a
             "writable" view has several advantages, but the most important is that you
