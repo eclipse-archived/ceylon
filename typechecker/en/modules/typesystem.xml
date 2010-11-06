@@ -683,6 +683,12 @@ class Disjunction(Expression<Boolean>... terms)
         <para>However, initially we can support only enumerated types and plain
         old algebraic datatypes, simply by imposing the restriction that each case
         must include all the type parameters of the type.</para>
+        
+        <para>Actually, a potentially better syntax would be:</para>
+        <programlisting><![CDATA[interface Expression<T> 
+        of Constant<Number> | Sum | Product if T satisfies Number
+        of Constant<Boolean> | Conjunction | Disjunction if T satisfies Boolean
+        given T of Number | Boolean { ... }]]></programlisting>
         </comment>
         
     </section>
