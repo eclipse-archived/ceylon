@@ -2016,7 +2016,6 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
 
 OpenSet&lt;String&gt; set = names.openCopy();</programlisting>
 
-        
             <para>Splitting the collection interfaces into a "read-only" view and a
             "writable" view has several advantages, but the most important is that you
             now don't need to worry about exposing collections as part of the public 
