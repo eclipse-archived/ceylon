@@ -2014,6 +2014,13 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             internal data structures by simply not returning the "writable" view to 
             clients. Send them back a <literal>List</literal>, and they know what they're 
             allowed to do with it.</para>
+            
+            <para>You can obtain an immutable copy of any collection by calling
+            <literal>copy()</literal>. You can obtain a mutable copy of a collection
+            by calling <literal>openCopy()</literal>.</para>
+            
+            <programlisting>Set&lt;String&gt; names = set.copy();</programlisting>
+            <programlisting>OpenMap&lt;String,Person&gt; people = map.openCopy();</programlisting>
         
             <para>A <literal>Map</literal> is the most important kind of 
             <literal>Correspondence</literal>. We can add or override entries in an 

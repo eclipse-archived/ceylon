@@ -3199,7 +3199,10 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     public Collection<T> with<T>(T... elements) given T abstracts X;
 
     doc "A mutable copy of the collection."
-    public OpenCollection<T> copy<T>() given T abstracts X;
+    public OpenCollection<T> openCopy<T>() given T abstracts X;
+    
+    doc "An immutable copy of the collection."
+    public Collection<T> copy<T>() given T abstracts X;
     
 }]]></programlisting>
 
@@ -3260,7 +3263,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     public Boolean subset(Set<Object> set);
     
     public actual Set<T> with<T>(T... elements) given T abstracts X;
-    public actual OpenSet<T> copy<T>() given T abstracts X;
+    public actual OpenSet<T> openCopy<T>() given T abstracts X;
+    public actual Set<T> copy<T>() given T abstracts X;    
 
     public Set<T> union<T>(Set<T> set) 
             given T abstracts X;
@@ -3410,7 +3414,8 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
          every element of the list."
     public List<Y> transform<Y>(Y select(X element));
     
-    public actual OpenList<T> copy<T>() given T abstracts X;
+    public actual OpenList<T> openCopy<T>() given T abstracts X;
+    public actual List<T> copy<T>() given T abstracts X;    
 
 }]]></programlisting>
 
@@ -3567,8 +3572,9 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          evaluates to |true|, as a |Map|."
     public Map<U, V> entries(Boolean where(U key -> V value));
     
-    public actual Map<U, T> with<T>(Entry<U, T>... entries) given T abstracts V;
-    public actual OpenMap<U,T> copy<T>() given T abstracts V;
+    public actual Map<U, T> with<U,T>(Entry<U, T>... entries) given T abstracts V;
+    public actual OpenMap<U,T> openCopy<T>() given T abstracts V;
+    public actual Map<U,T> copy<U,T>() given T abstracts X;    
     
 }]]></programlisting>
 
@@ -3619,7 +3625,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     public Map<X,Natural> map;
     
     public actual Bag<T> with<T>(T... elements) given T abstracts X;
-    public actual OpenBag<T> copy<T>() given T abstracts X;
+    public actual OpenBag<T> openCopy<T>() given T abstracts X;
+    public actual Bag<T> copy<T>() given T abstracts X;    
     
 }]]></programlisting>
 
