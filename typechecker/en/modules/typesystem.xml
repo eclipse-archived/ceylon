@@ -686,8 +686,10 @@ class Disjunction(Expression<Boolean>... terms)
         
         <para>Actually, a potentially better syntax would be:</para>
         <programlisting><![CDATA[interface Expression<T> 
-        of Constant<Number> | Sum | Product if T satisfies Number
-        of Constant<Boolean> | Conjunction | Disjunction if T satisfies Boolean
+        of Constant<Number> | Sum | Product 
+                if T satisfies Number
+        of Constant<Boolean> | Conjunction | Disjunction 
+                if T satisfies Boolean
         given T of Number | Boolean { ... }]]></programlisting>
         </comment>
         
