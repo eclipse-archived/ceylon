@@ -2002,6 +2002,13 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <literal>OpenSet</literal>, <literal>OpenList</literal> and 
             <literal>OpenMap</literal> (and we can't forget <literal>OpenBag</literal>).</para>
             
+            <para>You can obtain an immutable copy of any collection by calling
+            <literal>copy()</literal>. You can obtain a mutable copy of a collection
+            by calling <literal>openCopy()</literal>.</para>
+            
+            <programlisting>Set&lt;String&gt; names = set.copy();</programlisting>
+            <programlisting>OpenMap&lt;String,Person&gt; people = map.openCopy();</programlisting>
+        
             <para>Splitting the collection interfaces into a "read-only" view and a
             "writable" view has several advantages, but the most important is that you
             now don't need to worry about exposing collections as part of the public 
@@ -2015,13 +2022,6 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             clients. Send them back a <literal>List</literal>, and they know what they're 
             allowed to do with it.</para>
             
-            <para>You can obtain an immutable copy of any collection by calling
-            <literal>copy()</literal>. You can obtain a mutable copy of a collection
-            by calling <literal>openCopy()</literal>.</para>
-            
-            <programlisting>Set&lt;String&gt; names = set.copy();</programlisting>
-            <programlisting>OpenMap&lt;String,Person&gt; people = map.openCopy();</programlisting>
-        
             <para>A <literal>Map</literal> is the most important kind of 
             <literal>Correspondence</literal>. We can add or override entries in an 
             <literal>OpenMap</literal> using the assignment operator:</para>
