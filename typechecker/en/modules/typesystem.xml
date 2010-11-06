@@ -1305,7 +1305,9 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         called a <emphasis>conditional supertype</emphasis>, depending upon the argument 
         of a type parameter.</para>
         
-        <programlisting>ConditionalType: "satisfies" Type ("&amp;" Type)* "if" Condition ("&amp;&amp;" Condition)*</programlisting>
+        <programlisting>ConditionalTypes: SatisfiedTypes Conditions</programlisting>
+        
+        <programlisting>Conditions: "if" Condition ("&amp;&amp;" Condition)*</programlisting>
         
         <para>A <emphasis>condition</emphasis> is a list of upper bounds and metatype
         bounds applying to a type parameter of the class of interface.</para>
