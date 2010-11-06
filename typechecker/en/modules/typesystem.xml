@@ -665,15 +665,10 @@ String? firstWord = words[0];</programlisting>
         of Constant<T> | Sum | Product | Conjunction | Disjunction
         given T of Number | Boolean { ... }
         
-abstract class Constant<T>() 
-        extends Case() 
+class Constant<T>(T value) 
+        extends Case($value)
         satisfies Expression<T> 
         given T of Number | Boolean { ... }
-class NumericConstant(Number n) 
-        extends Constant<Number> { ... }
-abstract class BooleanConstant() 
-        of true | false 
-        extends Constant<Boolean> { ... }
 
 class Sum(Expression<Number>... terms) 
         satisfies Expression<Number> { ... }
