@@ -1525,7 +1525,7 @@ package assign greeting {
             <literal>variable</literal> attributes must extend <literal>IdentifiableObject</literal>.</para>
             
             <para><literal>IdentifiableObject</literal> defines a default implementation of the
-            interface <literal>Equals&lt;IdentifiableObject&gt;</literal>, which is very similar
+            interface <literal>Equality&lt;IdentifiableObject&gt;</literal>, which is very similar
             to the <literal>equals()</literal> and <literal>hashCode()</literal> methods defined
             by <literal>java.lang.Object</literal>. Just like in Java, you can refine this
             default implementation in your own classes. This is the normal way to get a customized 
@@ -1539,7 +1539,7 @@ package assign greeting {
             numeric types must extend <literal>Object</literal> directly. Indeed, all the built in
             numeric types do directly extend <literal>Object</literal>. The built-in numeric types
             also implement the interface <literal>Numeric&lt;T&gt;</literal>, which extends 
-            <literal>Equals&lt;T&gt;</literal>. This captures the notion that equality for numeric
+            <literal>Equality&lt;T&gt;</literal>. This captures the notion that equality for numeric
             types is fundamentally different to equality for objects with well-defined identity.
             It's not possible to compare an <literal>Integer</literal> with an <literal>Order</literal>
             using <literal>==</literal> (at least not if you expect to have a symmetrical 
@@ -1576,7 +1576,7 @@ package assign greeting {
             <programlisting>x.smallerThan(y)</programlisting>
             
             <para>The equality operator <literal>==</literal> is defined in terms of the 
-            interface <literal>Equals&lt;T&gt;</literal>, which has a method named 
+            interface <literal>Equality&lt;T&gt;</literal>, which has a method named 
             <literal>equals()</literal>.</para>
             
             <programlisting>x==y</programlisting>
@@ -1590,6 +1590,10 @@ package assign greeting {
             implementing or refining methods like <literal>compare()</literal> and 
             <literal>equals()</literal>. Thus, we say that operators are 
             <emphasis>polymorphic</emphasis> in Ceylon.</para>
+            
+            <para>For example, we could refine the <literal>default</literal> 
+            implementations of <literal>equals()</literal> and <literal>hash</literal> that
+            <literal>Hello</literal> inherits from <literal>BaseObject</literal>:</para>
             
         <programlisting><![CDATA[doc "A greeting"
 abstract class Hello() {
@@ -1644,7 +1648,7 @@ abstract class Hello() {
             <literal>hash</literal> and <literal>string</literal> in <literal>BaseObject</literal>
             to see exactly how this works.</para>
             
-            <para>Apart from <literal>Comparable</literal> and <literal>Equals</literal>, 
+            <para>Apart from <literal>Comparable</literal> and <literal>Equality</literal>, 
             which provide the underlying definition of comparison and equality operators,
             the following interfaces are also important in the definition of Ceylon's
             polymorphic operators:</para>
@@ -1690,8 +1694,8 @@ abstract class Hello() {
             <title>Using numeric types</title>
             
             <para>Ceylon doesn't have anything like Java's primitive types. The types that
-            represent numeric values are just ordinary classes. Ceylon has fewer numeric
-            types than other C-like languages:</para>
+            represent numeric values are just ordinary classes. Ceylon has fewer built-in
+            numeric types than other C-like languages:</para>
             
             <itemizedlist>
                 <listitem>
@@ -3159,15 +3163,15 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         instances of <literal>T</literal> using <literal>==</literal> to see if 
         a certain instance of <literal>T</literal> is contained in the
         <literal>Set</literal>. Since <literal>==</literal> is only defined for 
-        expressions of type <literal>Equals</literal>, we need some way to 
+        expressions of type <literal>Equality</literal>, we need some way to 
         assert that <literal>T</literal> is a subtype of 
-        <literal>Equals&lt;T&gt;</literal>. This is an example of a
+        <literal>Equality&lt;T&gt;</literal>. This is an example of a
         <emphasis>type constraint</emphasis>&mdash;in fact, it's an example of 
         the most common kind of type constraint, an <emphasis>upper 
         bound</emphasis>.</para>
         
         <programlisting>public class Set&lt;out T&gt;(T... elements)
-        given T satisfies Equals&lt;T&gt; {
+        given T satisfies Equality&lt;T&gt; {
     ...
         
     public Boolean contains(Object obj) {
@@ -3183,7 +3187,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
 }</programlisting>
         
         <para>A type argument to <literal>T</literal> must be a type that
-        extends or implements <literal>Equals&lt;T&gt;</literal>.</para>
+        extends or implements <literal>Equality&lt;T&gt;</literal>.</para>
         
         <programlisting>Set&lt;String&gt; set = Set("C", "Java", "Ceylon");  //ok</programlisting>
         <programlisting>Set&lt;Character[]&gt; set = Set("C", "Java", "Ceylon"); //compile error</programlisting>
@@ -3238,7 +3242,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         interface. We might try the following:</para>
         
         <programlisting>public class Set&lt;out T&gt;(T... elements)
-        given T satisfies Equals&lt;T&gt; {
+        given T satisfies Equality&lt;T&gt; {
     ...
     
     public Set&lt;T&gt; union(Set&lt;T&gt; set) {   //compile error
@@ -3252,7 +3256,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         parameter. The following declaration would compile:</para>
         
         <programlisting>public class Set&lt;out T&gt;(T... elements)
-        given T satisfies Equals&lt;T&gt; {
+        given T satisfies Equality&lt;T&gt; {
     ...
     
     public Set&lt;Object&gt; union(Set&lt;Object&gt; set) {
@@ -3266,7 +3270,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         to our dilemma:</para>
         
         <programlisting>public class Set&lt;out T&gt;(T... elements)
-        given T satisfies Equals&lt;T&gt; {
+        given T satisfies Equality&lt;T&gt; {
     ...
     
     public Set&lt;X&gt; union(Set&lt;X&gt; set) 

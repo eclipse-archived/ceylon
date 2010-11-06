@@ -1272,8 +1272,8 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         
         <programlisting><![CDATA[S<T> join<S,T>(S<T>... sequences)
         given S<E>(E... es) satisfies E[] 
-        given E satisfies Equals<E>
-        given T satisfies Equals<T> {
+        given E satisfies Equality<E>
+        given T satisfies Equality<T> {
     return S(joinSequences(sequences))
 }]]></programlisting>
         </comment>
@@ -1284,7 +1284,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         <literal>String&lt;T&gt; == String</literal>. For example:</para>
         <programlisting><![CDATA[X<T> findByKey<X,T,K>(Type<T> type, X<K> keys)
         given X<E> of id | Sequence
-        given K satisfies Equals<K> {
+        given K satisfies Equality<K> {
     ...
 }]]></programlisting>
         <programlisting>Person p = findByKey(Person, personId);</programlisting>
@@ -1315,7 +1315,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>The type parameter must be a covariant or nonvariant type parameter of
         the class or interface.</para>
         
-        <programlisting>satisfies SequenceEquals&lt;T&gt; if T satisfies Equals&lt;T&gt;</programlisting>
+        <programlisting>satisfies SequenceEquality&lt;T&gt; if T satisfies Equality&lt;T&gt;</programlisting>
         
         <para>Then a produced type for the class or interface is a subtype of the
         conditional supertype if the type arguments satisfy the bounds specified
@@ -1326,16 +1326,16 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
                   Category &
                   Correspondence<Natural,T> & 
                   Sized
-        satisfies ElementwiseEquals 
-                  if T satisfies Equals<IdentifiableObject> {        
+        satisfies ElementwiseEquality 
+                  if T satisfies Equality<IdentifiableObject> {        
     ... 
 }
 
-public interface ElementwiseEquals
-        satisfies Equals<Sequence<IdentifiableObject>> &
+public interface ElementwiseEquality
+        satisfies Equality<Sequence<IdentifiableObject>> &
                   Correspondence<Natural,IdentifiableObject> & 
                   Sized
-        given T satisfies Equals<IdentifiableObject> {
+        given T satisfies Equality<IdentifiableObject> {
 
     actual Boolean equals(Sequence<IdentifiableObject> that) {
         if (this.size!=that.size) { return false }
@@ -1364,12 +1364,12 @@ public interface ElementwiseEquals
                   Category &
                   Correspondence<Natural,T> & 
                   Sized
-        satisfies Equals<Sequence<IdentifiableObject>> 
-                  if T satisfies Equals<IdentifiableObject> {        
+        satisfies Equality<Sequence<IdentifiableObject>> 
+                  if T satisfies Equality<IdentifiableObject> {        
     ... 
 
     actual Boolean equals(Sequence<IdentifiableObject> that) 
-            if T satisfies Equals<IdentifiableObject> {
+            if T satisfies Equality<IdentifiableObject> {
         if (this.size!=that.size) { return false }
         for (Integer i in 0..size-1) {
             if (this[i]!=that[i]) { return false }
@@ -1380,7 +1380,7 @@ public interface ElementwiseEquals
     }
 
     actual Integer hash 
-            if T satisfies Equals<IdentifiableObject> {
+            if T satisfies Equality<IdentifiableObject> {
         Integer h:=0;
         for (Integer i in 0..size-1) {
             h^=this[i].hash

@@ -111,13 +111,13 @@
         <title>Objects which support equality</title>
         
         <para>Types which can be compared for equality must satisfy the interface 
-        <literal>Equals&lt;T&gt;</literal>. Two expressions of type
-        <literal>Equals&lt;T&gt;</literal>, for the same type <literal>T</literal>,
+        <literal>Equality&lt;T&gt;</literal>. Two expressions of type
+        <literal>Equality&lt;T&gt;</literal>, for the same type <literal>T</literal>,
         may be compared using the binary operators <literal>&equals;</literal> 
         (equals) and <literal>!=</literal> (not equals).</para>
         
-        <programlisting><![CDATA[public interface Equals<in T> 
-        given T satisfies Equals<T> {
+        <programlisting><![CDATA[public interface Equality<in T> 
+        given T satisfies Equality<T> {
     
     doc "The equals operator |x == y|. Implementations should 
          respect the constraint that if |x===y| then |x==y|,
@@ -144,7 +144,7 @@
         If <literal>==</literal> were defined for any <literal>Object</literal>, 
         there would be no reason for the compiler to apply the type promotion.</para>
         
-        <comment><para>TODO: Should we rename <literal>Equals</literal> to 
+        <comment><para>TODO: Should we rename <literal>Equality</literal> to 
         <literal>Comparable</literal> and <literal>Comparable</literal> to
         <literal>Ordered</literal>?</para></comment>
     
@@ -159,7 +159,8 @@
         <literal>&identical;</literal> (identity equals).</para>
         
         <programlisting><![CDATA[public abstract class IdentifiableObject() 
-        extends Object() satisfies Equals<IdentifiableObject> {
+        extends Object() 
+        satisfies Equality<IdentifiableObject> {
 
     doc "The |Class| of the instance."
     actual Class<subtype> type {
@@ -837,7 +838,7 @@ while (exists local value = iter.head) {
     
     <programlisting><![CDATA[public interface FiniteCategory<T>
         satisfies Iterable<T> & Category
-        given T satisfies Equals<T> {
+        given T satisfies Equality<T> {
         
     actual default Boolean contains(Object... objects) {
         for (Object obj in objects) {
@@ -913,9 +914,9 @@ while (exists local value = indexed.indexedValue(i)) {
 
             <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
         extends Object() 
-        satisfies Equals<Entry<U,V>>
-        given U satisfies Equals<U> 
-        given V satisfies Equals<V> {
+        satisfies Equality<Entry<U,V>>
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     
     doc "The key used to access the entry."
     public U key = key;
@@ -943,8 +944,8 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public interface Correspondence<in U, out V>
         is EnumerableCorrespondence<U,V>
-        given U satisfies Equals<U> 
-        given V satisfies Equals<V> {
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
@@ -1025,8 +1026,8 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <programlisting><![CDATA[public interface EnumerableCorrespondence<U,V>
         satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
-        given U satisfies Equals<U> 
-        given V satisfies Equals<V> {
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     actual default Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
@@ -1045,8 +1046,8 @@ while (exists local value = indexed.indexedValue(i)) {
 
         <programlisting><![CDATA[public interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> 
-        given U satisfies Equals<U> 
-        given V satisfies Equals<V> {
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     
     actual Settable<V?> value(U key);
     
@@ -1093,7 +1094,7 @@ while (exists local value = indexed.indexedValue(i)) {
 }]]></programlisting>
 
         <programlisting><![CDATA[public interface Comparable<in T> 
-        satisfies Equals<T>, PartlyComparable<T>
+        satisfies Equality<T>, PartlyComparable<T>
         given T satisfies Comparable<T> {
     
     doc "The binary compare operator |<=>|. Compares this 
@@ -1259,7 +1260,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         <programlisting><![CDATA[public interface Sequence<out X> 
         is EnumerableSequence<X>
         satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
@@ -1333,7 +1334,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         
         <programlisting><![CDATA[public interface EnumerableSequence<X>
         satisfies Callable<X[],X...> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
     actual default X[] call(X... elements) {
         return elements
     }
@@ -1344,7 +1345,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[] this)
         satisfies Iterable<Entry<Natural,X>> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
         
     actual Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
@@ -1404,7 +1405,7 @@ public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
      sequence does not reflect changes to the original 
      sequences."
 public T[] join<T>(T[]... sequences) 
-        given T satisfies Equals<T> {
+        given T satisfies Equality<T> {
             
     object joinedSequence satisfies T[] {
         actual Natural? lastIndex {
@@ -1450,7 +1451,7 @@ public T[] join<T>(T[]... sequences)
      The returned sequence does not reflect changes 
      to the original sequence."
 public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
-        given T satisfies Equals<T> {
+        given T satisfies Equality<T> {
          
     object rangeSequence satisfies T[] {
         actual Natural? lastIndex {
@@ -1490,14 +1491,14 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         
         <programlisting><![CDATA[public interface OpenSequence<X>
         satisfies X[] & OpenCorrespondence<Natural,X> 
-        given X satisfies Equals<X> {}]]></programlisting>
+        given X satisfies Equality<X> {}]]></programlisting>
 
         <para>A <literal>BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
         <programlisting><![CDATA[public interface BoundedSequence<out X, #n>
         satisfies X[] 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
         
     formal Gettable<X> value(Bounded<#n> index);
     actual default Bounded<#n>? lastIndex;
@@ -1510,7 +1511,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         
         <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[n] this)
         satisfies Iterable<Entry<Bounded<#n>,X>> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
         
     actual Iterator<Entry<Bounded<#n>,X>> iterator() {
         class EntryIterator(Bounded<#n> from) 
@@ -1551,7 +1552,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         
         <programlisting><![CDATA[public interface OpenBoundedSequence<X,#n>
         satisfies X[n] & OpenSequence<X> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
     public Settable<X> value(Bounded<#n> index);
 }]]></programlisting>
 
@@ -1563,7 +1564,7 @@ public object none {
 
     public extension class EmptySequence<out X>() 
             satisfies X[0] 
-            given X satisfies Equals<X> {
+            given X satisfies Equality<X> {
         
         actual Natural? lastIndex = null;
         
@@ -1614,8 +1615,8 @@ public object none {
         
         <programlisting><![CDATA[public class Range<X>(X first, X last) 
         extends Object() 
-        satisfies X[] & Matcher<X> & Equals<Range<X>>
-        given X satisfies Ordinal & Comparable<X> & Equals<X> { 
+        satisfies X[] & Matcher<X> & Equality<Range<X>>
+        given X satisfies Ordinal & Comparable<X> & Equality<X> { 
     
     doc "The first value in the range."
     public X first = first;
@@ -2277,7 +2278,7 @@ while (i<=max) {
         <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n] & Equals<Bits<#n>> & FixedSlots<Bits<#n>> {}]]></programlisting>
+        satisfies Boolean[n] & Equality<Bits<#n>> & FixedSlots<Bits<#n>> {}]]></programlisting>
 
         <comment><para>TODO: should we model <literal>Bits&lt;#n&gt;</literal> as 
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
@@ -3167,7 +3168,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
         <programlisting><![CDATA[public interface Collection<out X> 
         satisfies Iterable<X> & Sized & Category
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
         
     doc "Determine the number of times the given element
          appears in the collection."
@@ -3221,7 +3222,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
         <programlisting><![CDATA[public interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
     
     doc "Remove all elements or entries of the collection,
          resulting in an empty collection."
@@ -3248,7 +3249,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public interface Set<out X> 
         satisfies Collection<X> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
     
     doc "Determine if the set is a superset of the given set.
          Return |true| if it is a superset."
@@ -3310,7 +3311,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public interface OpenSet<X> 
         satisfies Set<X> & OpenCollection<X> 
-        given X satisfies Equals<X> {}]]></programlisting>
+        given X satisfies Equality<X> {}]]></programlisting>
 
         </section>
         
@@ -3323,7 +3324,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting><![CDATA[public interface List<out X> 
         satisfies Collection<X> & X[] 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
     
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
@@ -3458,7 +3459,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface OpenList<X> 
         satisfies List<X> & OpenCollection<X> & OpenSequence<X> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
 
     doc "Remove the element at the given index, decrementing
          the index of every element with an index greater
@@ -3545,8 +3546,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Map<U, out V>
         satisfies Collection<Entry<U,V>> & Correspondence<U, V> 
-        given U satisfies Equals<U> 
-        given V satisfies Equals<V> {
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     
     doc "The keys of the map, as a |Set|."
     public Set<U> keys;
@@ -3581,8 +3582,8 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface OpenMap<U,V> 
         satisfies Map<U,V> & OpenCollection<Entry<U,V>> & OpenCorrespondence<U, V> 
-        given U satisfies Equals<U> 
-        given V satisfies Equals<V> {
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     
     doc "Remove the entry for the given key, returning the 
          value of the removed entry."
@@ -3610,7 +3611,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface Bag<out X> 
         satisfies Collection<X> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
     
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
@@ -3632,7 +3633,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <programlisting><![CDATA[public interface OpenBag<X> 
         satisfies Bag<X> & OpenCollection<X> 
-        given X satisfies Equals<X> {
+        given X satisfies Equality<X> {
         
     actual OpenMap<X,Natural> map;
     
