@@ -687,9 +687,9 @@ class Disjunction(Expression<Boolean>... terms)
         <para>Actually, a potentially better syntax would be:</para>
         <programlisting><![CDATA[interface Expression<T> 
         of Constant<Number> | Sum | Product 
-                if T satisfies Number
+                if (T satisfies Number)
         of Constant<Boolean> | Conjunction | Disjunction 
-                if T satisfies Boolean
+                if (T satisfies Boolean)
         given T of Number | Boolean { ... }]]></programlisting>
         </comment>
         
@@ -1348,7 +1348,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <programlisting>ConditionalTypes: SatisfiedTypes Conditions</programlisting>
         
-        <programlisting>Conditions: "if" Condition ("&amp;&amp;" Condition)*</programlisting>
+        <programlisting>Conditions: "if" "(" Condition ("&amp;&amp;" Condition)* ")"</programlisting>
         
         <para>A <emphasis>condition</emphasis> is a list of upper bounds and metatype
         bounds applying to a type parameter of the class of interface.</para>
@@ -1358,7 +1358,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>The type parameter must be a covariant or nonvariant type parameter of
         the class or interface.</para>
         
-        <programlisting>satisfies SequenceEquality&lt;T&gt; if T satisfies Equality&lt;T&gt;</programlisting>
+        <programlisting>satisfies SequenceEquality&lt;T&gt; if (T satisfies Equality&lt;T&gt;)</programlisting>
         
         <para>Then a produced type for the class or interface is a subtype of the
         conditional supertype if the type arguments satisfy the bounds specified
@@ -1370,7 +1370,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
                   Correspondence<Natural,T> & 
                   Sized
         satisfies ElementwiseEquality 
-                  if T satisfies Equality<IdentifiableObject> {        
+                  if (T satisfies Equality<IdentifiableObject>) {        
     ... 
 }
 
@@ -1408,11 +1408,11 @@ public interface ElementwiseEquality
                   Correspondence<Natural,T> & 
                   Sized
         satisfies Equality<Sequence<IdentifiableObject>> 
-                  if T satisfies Equality<IdentifiableObject> {        
+                  if (T satisfies Equality<IdentifiableObject>) {        
     ... 
 
     actual Boolean equals(Sequence<IdentifiableObject> that) 
-            if T satisfies Equality<IdentifiableObject> {
+            if (T satisfies Equality<IdentifiableObject>) {
         if (this.size!=that.size) { return false }
         for (Integer i in 0..size-1) {
             if (this[i]!=that[i]) { return false }
@@ -1423,7 +1423,7 @@ public interface ElementwiseEquality
     }
 
     actual Integer hash 
-            if T satisfies Equality<IdentifiableObject> {
+            if (T satisfies Equality<IdentifiableObject>) {
         Integer h:=0;
         for (Integer i in 0..size-1) {
             h^=this[i].hash
