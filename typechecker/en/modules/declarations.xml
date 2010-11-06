@@ -1311,7 +1311,7 @@ public object true extends Boolean() {}
 public object false extends Boolean() {}</programlisting>
 
         <programlisting>public abstract class Node&lt;T&gt;(String name) 
-        of Branch | Leaf { ... }
+        of Branch&lt;T&gt; | Leaf&lt;T&gt; { ... }
         
 public class Leaf&lt;T&gt;(String name, T value) 
         extends Node&lt;T&gt;(name) { ... }

@@ -630,6 +630,9 @@ String? firstWord = words[0];</programlisting>
         <para>An interface or <literal>abstract</literal> class may optionally 
         specify an enumerated list of all its subtypes.<!--A union must specify an 
         enumerated list of its subtypes.--></para>
+        
+        <para>Likewise, a type parameter may specify an enumerated list of all
+        types which it accepts as a type argument.</para>
     
         <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
         
@@ -648,9 +651,44 @@ String? firstWord = words[0];</programlisting>
         <programlisting>of Root&lt;T&gt; | Leaf&lt;T&gt; | Branch&lt;T&gt;</programlisting>
         
         <para>An explicit list of cases allows safe use of a type in a 
-        <literal>switch</literal> statement. The compiler is able to validate
-        that the <literal>switch</literal> contains an exhaustive list of all 
-        cases of the type.</para>
+        <literal>switch</literal> statement. The compiler is able to validate that 
+        the <literal>switch</literal> contains an exhaustive list of all cases of 
+        the type.</para>
+        
+        <para>Therefore, the <literal>of</literal> declaration is used to simulate 
+        enumerated types and algebraic datatypes.</para>
+        
+        <comment><para>Note: Eventually, this syntax can easily support 
+        <emphasis>generalized algebraic datatypes</emphasis>. For example:</para>
+        
+        <programlisting><![CDATA[interface Expression<T> 
+        of Constant<T> | Sum | Product | Conjunction | Disjunction
+        given T of Number | Boolean { ... }
+        
+abstract class Constant<T>() 
+        extends Case() 
+        satisfies Expression<T> 
+        given T of Number | Boolean { ... }
+class NumericConstant(Number n) 
+        extends Constant<Number> { ... }
+abstract class BooleanConstant() 
+        of true | false 
+        extends Constant<Boolean> { ... }
+
+class Sum(Expression<Number>... terms) 
+        satisfies Expression<Number> { ... }
+class Product(Expression<Number>... terms) 
+        satisfies Expression<Number> { ... }
+
+class Conjunction(Expression<Boolean>... terms) 
+        satisfies Expression<Boolean> { ... }
+class Disjunction(Expression<Boolean>... terms) 
+        satisfies Expression<Boolean> { ... }]]></programlisting>
+        
+        <para>However, initially we can support only enumerated types and plain
+        old algebraic datatypes, simply by imposing the restriction that each case
+        must include all the type parameters of the type.</para>
+        </comment>
         
     </section>
     
