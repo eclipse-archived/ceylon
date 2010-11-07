@@ -1090,6 +1090,7 @@ while (exists local value = indexed.indexedValue(i)) {
         (compare).</para>
         
         <programlisting><![CDATA[public interface PartlyComparable<in T>
+        given T satisfies PartlyComparable<T>
     formal PartialComparison compare(T other);
 }]]></programlisting>
 
