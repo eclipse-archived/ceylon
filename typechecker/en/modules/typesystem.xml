@@ -1353,7 +1353,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>A <emphasis>condition</emphasis> is a list of upper bounds and metatype
         bounds applying to a type parameter of the class of interface.</para>
         
-        <programlisting>Condition: TypeName Metatypes? SatisfiedTypes?</programlisting>
+        <programlisting>Condition: TypeName (Metatypes SatisfiedTypes? | SatisfiedTypes)</programlisting>
         
         <para>The type parameter must be a covariant or nonvariant type parameter of
         the class or interface.</para>
