@@ -100,7 +100,7 @@ public class Infer {
             return diagnostic;
         }
     }
-    
+
     public static class NoInstanceException extends InferenceException {
     	private static final long serialVersionUID = 1;
 

@@ -97,7 +97,7 @@ public final class ZipFileIndexEntry implements Comparable<ZipFileIndexEntry> {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
-    
+
     void setNativeTime(int natTime) {
         nativetime = natTime;
     }

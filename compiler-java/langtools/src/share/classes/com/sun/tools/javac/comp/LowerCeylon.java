@@ -32,14 +32,14 @@ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 public class LowerCeylon extends TreeTranslator {
 	protected static final Context.Key<LowerCeylon> lowerKey =
         new Context.Key<LowerCeylon>();
-	
+
 	public static LowerCeylon instance(Context context) {
 		LowerCeylon instance = context.get(lowerKey);
 		if (instance == null)
 			instance = new LowerCeylon(context);
 		return instance;
 	}
-	
+
 	private Name.Table names;
     private Log log;
     private Symtab syms;
@@ -96,11 +96,11 @@ public class LowerCeylon extends TreeTranslator {
         tree.rhs = translate(tree.rhs, tree.type);
         result = tree;
     }
-    
+
     public void visitApply(JCMethodInvocation tree) {
     	tree.meth = translate(tree.meth);
         tree.args = translate(tree.args);
-        
+
         Symbol meth = TreeInfo.symbol(tree.meth);
         List<Type> argtypes = meth.type.getParameterTypes();
         if (allowEnums &&
@@ -108,7 +108,7 @@ public class LowerCeylon extends TreeTranslator {
             meth.owner == syms.enumSym)
             argtypes = argtypes.tail.tail;
         tree.args = lowerArgs(argtypes, tree.args, tree.varargsElement);
-        
+
         if (meth.name.toString().equals("$internalErasedExists")) {
         	if (tree.meth.getTag() == JCTree.SELECT) {
         		JCExpression selected = ((JCFieldAccess) tree.meth).selected;
@@ -116,42 +116,42 @@ public class LowerCeylon extends TreeTranslator {
         			result = selected;
         			return;
         		}
-            } 
+            }
         }
-        
+
         result = tree;
     }
-  
+
     public JCTree translateTopLevelClass(JCTree tree, TreeMaker localMake) {
 		return translate(tree);
 	}
-	
+
 	public <T extends JCTree> T translate(T tree, Type type) {
 		tree = translate(tree);
 		if (tree != null) tree =
         	(T)ceylonExtensionIfNeeded((JCExpression)tree, type);
 		return tree;
     }
-	
+
 	/** Convert using a Ceylon extension if needed */
     JCExpression ceylonExtensionIfNeeded(JCExpression tree, Type dstType) {
         Type srcType = tree.type;
         if (srcType.isPrimitive())
             return tree;
-	
+
         srcType = nonOptionalTypeFor(srcType);
         dstType = nonOptionalTypeFor(dstType);
-        
+
         Route route = types.getCeylonExtension(srcType, dstType);
         if (route != null) {
             make.at(tree.pos());
             tree = route.apply(tree, make) ;
             return ceylonExtensionIfNeeded(tree, dstType);
-        } 
-        
+        }
+
         // Handle conversions to and from Mutable.
         // First we strip Mutable from the source by applying get().
-  
+
         // Mutable -> immutable conversion
         if (srcType.tsym == syms.ceylonMutableType.tsym &&
                 dstType.tsym != syms.ceylonMutableType.tsym) {
@@ -164,13 +164,13 @@ public class LowerCeylon extends TreeTranslator {
         			Scope.Entry entry = scope.lookup(names.fromString("get"));
         			Symbol sym = entry.sym;
         			MethodSymbol msym = (MethodSymbol) sym;
-        			tree = make.Apply(null, 
+        			tree = make.Apply(null,
         					make.Select(tree, msym), List.<JCExpression>nil()).setType(t1);
         			return ceylonExtensionIfNeeded(tree, dstType);
         		}
         	}
         }
-        
+
         // Immutable -> mutable conversion
         if (dstType.tsym == syms.ceylonMutableType.tsym &&
                 srcType.tsym != syms.ceylonMutableType.tsym) {
@@ -188,12 +188,12 @@ public class LowerCeylon extends TreeTranslator {
         			return ceylonExtensionIfNeeded(tree, dstType);
         		}
         	}
-        	
+
         }
-        
+
         return tree;
     }
-    
+
 	private Type nonOptionalTypeFor(Type t) {
         // We need to compare symbols (tsym) here rather
         // than directly comparing types because t has type

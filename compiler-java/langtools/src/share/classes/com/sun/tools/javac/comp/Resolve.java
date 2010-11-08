@@ -1295,7 +1295,7 @@ public class Resolve {
             sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, false);
             if (sym.kind >= WRONG_MTHS)
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
-        } 
+        }
         if (Context.isCeylon() && sym.kind >= WRONG_MTHS) {
             assert site.getKind() == TypeKind.DECLARED;
             ClassType siteclass = (ClassType) site;

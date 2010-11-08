@@ -98,7 +98,7 @@ public class Types {
         source = Source.instance(context);
         chk = Check.instance(context);
         capturedName = names.fromString("<captured wildcard>");
-        extensionFinder = ExtensionFinder.instance(context); 
+        extensionFinder = ExtensionFinder.instance(context);
     }
     // </editor-fold>
 
@@ -292,7 +292,7 @@ public class Types {
     public boolean isConvertible(Type t, Type s, Warner warn) {
     	if (isConvertibleNotOptional(t, s, warn))
     		return true;
-    	
+
     	if (Context.isCeylon()) {
     		if (getCeylonExtension(t, s) != null)
     			return true;
@@ -307,13 +307,13 @@ public class Types {
     				Type t1 = typeArgs.last();
     				if (t1.tag == CLASS) {
     					return isConvertible(t1, s, warn);
-    				} 
+    				}
     			} else if (typeArgs.length() == 0) {
     				// Everything is convertible to plain ceylon.Mutable
     				return true;
-    			}    			
+    			}
     		}
-    		
+
     		if ((s.tsym == syms.ceylonOptionalType.tsym || s.tsym == syms.ceylonMutableType.tsym)
     				&& base.tag == CLASS) {
 
@@ -322,7 +322,7 @@ public class Types {
 
     			ClassType klass = (ClassType)base;
     			List<Type> typeArgs = klass.getTypeArguments();
-    			
+
     			if (typeArgs.length() == 0) {
     				// Type is already erased
     				return true;
@@ -1609,7 +1609,7 @@ public class Types {
             				return visitClassType((ClassType)t1, ignored);
             		}
             	}
-            	
+
                 return t.tsym.erasure(Types.this);
             }
 

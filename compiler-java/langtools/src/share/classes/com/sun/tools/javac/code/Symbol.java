@@ -449,7 +449,7 @@ public abstract class Symbol implements Element {
         }
         return l.toList();
     }
-    
+
     /** The type you end up with if this symbol is used as an extension in Ceylon.
      */
     public Type ceylonIntroducedType() {
@@ -997,12 +997,12 @@ public abstract class Symbol implements Element {
             assert !(data instanceof Env<?>) : this;
             this.data = data;
         }
-        
+
         public Type ceylonIntroducedType() {
             assert getKind() == ElementKind.FIELD;
             return asType();
         }
-        
+
         public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
             return make.Select(tree, this);
         }
@@ -1276,11 +1276,11 @@ public abstract class Symbol implements Element {
         public List<Type> getThrownTypes() {
             return asType().getThrownTypes();
         }
-        
+
         public Type ceylonIntroducedType() {
             return getReturnType();
         }
-        
+
         public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
             return make.App(make.Select(tree, this));
         }

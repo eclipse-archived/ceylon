@@ -2064,11 +2064,11 @@ public class Lower extends TreeTranslator {
 
             // This name gets stored in the bytecode
             tree.name = ceylonMangle(tree.name, suffix);
-            
-            // This name is used to figure out the output filename 
+
+            // This name is used to figure out the output filename
             tree.sym.flatname = ceylonMangle(tree.sym.flatname, suffix);
         }
-        
+
         // Convert name to flat representation, replacing '.' by '$'.
         tree.name = Convert.shortName(currentClass.flatName());
 

@@ -263,10 +263,10 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
      */
     protected TransTypes transTypes;
 
-    /** 
+    /**
      */
     protected LowerCeylon lowerCeylon;
-    
+
     /** The syntactic sugar desweetener.
      */
     protected Lower lower;
@@ -1283,7 +1283,7 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
             TreeMaker localMake = make.forToplevel(env.toplevel);
 
             env.tree = lowerCeylon.translateTopLevelClass(env.tree, localMake);
-            
+
             if (env.tree instanceof JCCompilationUnit) {
                 if (!(stubOutput || sourceOutput || printFlat)) {
                     if (shouldStop(CompileState.LOWER))
@@ -1333,7 +1333,7 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
             List<JCTree> cdefs = lower.translateTopLevelClass(env, env.tree, localMake);
 
             System.out.println(cdefs);
-            
+
             if (shouldStop(CompileState.LOWER))
                 return;
 

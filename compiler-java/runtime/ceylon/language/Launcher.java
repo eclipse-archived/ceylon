@@ -7,9 +7,8 @@ public class Launcher
         throws Throwable
     {
         Class<?> c = Class.forName(args[0]);
-        
+
         Method m = c.getMethod("run", ceylon.language.Process.class);
         m.invoke(null, new Process());
     }
 }
-

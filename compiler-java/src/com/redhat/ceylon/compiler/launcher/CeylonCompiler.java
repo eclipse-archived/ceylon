@@ -64,7 +64,7 @@ final PrintStream out;
     		w.flush();
     		out.println();
     	}
-    	
+
     	cu.accept(new Grok());
 
     	if (false) {

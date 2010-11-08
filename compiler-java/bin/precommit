@@ -4,12 +4,24 @@ import os
 import sys
 
 def tidy(path):
-    print path
+    src, dst = [], []
+    for line in open(path, "r").readlines():
+        src.append(line)
+        line = line.rstrip()
+        dst.append(line + "\n")
+    while dst[0] == "\n":
+        dst.pop(0)
+    while dst[-1] == "\n":
+        dst.pop()
+    if src != dst:
+        open(path, "w").writelines(dst)
 
 def main():
     topdir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
     for subdir in ("src", "langtools", "runtime"):
         for root, dirs, files in os.walk(os.path.join(topdir, subdir)):
+            if root.endswith("langtools") and "test" in dirs:
+                dirs.remove("test")
             for file in files:
                 for ext in (".java", ".ceylon"):
                     if file.endswith(ext):

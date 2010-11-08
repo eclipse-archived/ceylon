@@ -732,7 +732,7 @@ public class Attr extends JCTree.Visitor {
                     v.pos = tree.pos;
                 }
             }
-            
+
             if (Context.isCeylon()) {
             	// Generate a ceylon temporary whose type comes from its initializer.
             	if (v.type == syms.ceylonAnyType) {
@@ -1907,14 +1907,14 @@ public class Attr extends JCTree.Visitor {
 
         // Insert a get() to access a Mutable
         if (Context.isCeylon() && site.tag == CLASS
-        		&& types.isSubtype(types.erasure(syms.ceylonMutableType), 
+        		&& types.isSubtype(types.erasure(syms.ceylonMutableType),
         				types.erasure(site))) {
         	// FIXME.  This is horrible, but it's rather forced upon us
         	// because of the way that selectSym is factored: if it
         	// fails, it'll generate a diagnostic.  So, we have two
         	// versions of resolveQualifiedMethod, one that fails and
         	// generates a diagnostic, and one that doesn't.
-        	
+
         	// The only real way to fix this is completely to refactor selectSym
         	// so that it doesn't generate diagnostics when there is no target
         	// method found.
@@ -1922,7 +1922,7 @@ public class Attr extends JCTree.Visitor {
         		Symbol sym = rs.resolveQualifiedMethod(
         				env, site, tree.name, pt.getParameterTypes(), pt.getTypeArguments());
         		if (sym.kind >= ERR) {
-        			JCExpression application = make.Apply(null, 
+        			JCExpression application = make.Apply(null,
         					make.Select(tree.selected, names.fromString("get")),
         					List.<JCExpression>nil());
         			Type innerType = attribTree(application, env, skind, Infer.anyPoly);
@@ -1937,12 +1937,12 @@ public class Attr extends JCTree.Visitor {
         				return;
         			}
         		}
-        		
+
         	} else if (pt.tag == NONE || pt.tag == CLASS) {
         		// We are seeing a plain identifier as selector.
         		Symbol sym = rs.findIdentInType(env, site, tree.name, pkind);
         		if (sym.kind >= ERR) {
-        			JCExpression application = make.Apply(null, 
+        			JCExpression application = make.Apply(null,
         					make.Select(tree.selected, names.fromString("get")),
         					List.<JCExpression>nil());
         			Type innerType = attribTree(application, env, skind, Infer.anyPoly);
@@ -1952,7 +1952,7 @@ public class Attr extends JCTree.Visitor {
         				tree.selected = application;
         				visitSelect(tree);
         				return;
-        			} 
+        			}
         		}
         	}
         }
@@ -1996,13 +1996,13 @@ public class Attr extends JCTree.Visitor {
         catch (ExtensionRequiredException e) {
         	if (!Context.isCeylon())
         		throw e;
-        	
+
             // FIXME: this is a hack to allow conversion of the left hand sides
             // of binary operations.  It needs to be generalized to cope with any
             // number of arguments.
             assert tree.getTag() == JCTree.SELECT;
             JCTree.JCFieldAccess fat = (JCTree.JCFieldAccess) tree;
-  
+
             // Mutate the tree (is this even vaguely allowed?)
             make.at(fat.selected);
             fat.selected = e.extension.apply(fat.selected, make);

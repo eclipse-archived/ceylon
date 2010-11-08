@@ -25,61 +25,61 @@ public class ExtensionFinder {
         }
         return instance;
     }
-    
+
     private final Symtab syms;
     private final Types types;
 
     private ExtensionFinder(Context context) {
         syms = Symtab.instance(context);
-        types = Types.instance(context);        
+        types = Types.instance(context);
     }
-    
+
     private static class RouteElement {
         public final Type type; // the type we are extending from
         public Symbol sym;      // the symbol we are extending with
-    
+
         public RouteElement(Type type, Symbol sym) {
             this.type = type;
             this.sym = sym;
         }
-    }        
+    }
 
     private class Finder {
         private final Type target;
-        
+
         public Finder(Type target) {
             this.target = target;
         }
 
         public class Route {
             private List<RouteElement> elements = List.<RouteElement>nil();
-            
+
             public Route(List<RouteElement> elements) {
                 for (RouteElement element : elements) {
                     this.elements = this.elements.prepend(new RouteElement(element.type, element.sym));
                 }
             }
-            
+
             public boolean isLongerVersionOf(Route other) {
                 RouteElement start = new RouteElement(target, null);
                 return isSubset(other.elements.append(start), elements.append(start));
             }
-            
+
             private boolean isSubset(List<RouteElement> a, List<RouteElement> b) {
                 // If this is the last step of either list then we're done
                 if (a.tail.isEmpty() || b.tail.isEmpty())
                     return false;
-                
+
                 // If we aren't starting from the same place then these are different routes
                 Type source = a.head.type;
                 if (!types.isSameType(source, b.head.type))
                     return false;
-                
-                // If we're going to the same place then check the next hop 
+
+                // If we're going to the same place then check the next hop
                 Type target = a.tail.head.type;
                 if (types.isSameType(target, b.tail.head.type))
                     return isSubset(a.tail, b.tail);
-                
+
                 // Have we found a subchain?
                 for (RouteElement element : b.tail) {
                     if (types.isSameType(target, element.type))
@@ -90,7 +90,7 @@ public class ExtensionFinder {
                 return false;
             }
         }
-        
+
         private List<RouteElement> stack = List.<RouteElement>nil();
         private List<Route> routes = List.<Route>nil();
 
@@ -99,7 +99,7 @@ public class ExtensionFinder {
                 routes = routes.append(new Route(stack));
                 return;
             }
-            
+
             // Check we are not about to loop
             // FIXME: this is linear and hence potentially slow
             // XXX: should we report errors if loops are found?
@@ -119,11 +119,11 @@ public class ExtensionFinder {
                     visit(sym.ceylonIntroducedType());
                 }
             }
-            
+
             // Pop our level off the stack before returning
             stack = stack.tail;
         }
-        
+
         // Remove routes that contain multi-step conversions that are possible with a single step
         // XXX: with lots of routes this has the potential to be very slow!
         public void cull() {
@@ -145,8 +145,8 @@ public class ExtensionFinder {
     }
 
     public static class Route {
-        private final List<RouteElement> elements; 
-        
+        private final List<RouteElement> elements;
+
         private Route(List<RouteElement> elements) {
             this.elements = elements;
         }
@@ -160,7 +160,7 @@ public class ExtensionFinder {
             return tree;
         }
    }
-    
+
     public Route findUniqueRoute(Type source, Type target) {
         Finder finder = new Finder(target);
         finder.visit(source);

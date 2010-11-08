@@ -205,16 +205,16 @@ public class Context {
         if (t == null)
             throw new IllegalStateException();
     }
-    
-    
+
+
     public static class SourceLanguage {
     	public enum Language {
     		JAVA, CEYLON
     	}
-    	
+
     	static ArrayList<Language> stack =
     		new ArrayList<Language>();
-    	
+
     	static {
     		push(Language.JAVA);
     	}
@@ -229,9 +229,9 @@ public class Context {
     		return stack.get(stack.size() - 1);
     	}
     }
-    
+
     public static boolean isCeylon() {
     	return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
     }
-    
+
 }
