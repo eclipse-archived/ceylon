@@ -334,9 +334,9 @@ public class Check {
      *  @param req        The type that was required.
      */
     Type checkType(DiagnosticPosition pos, Type found, Type req) {
-    	if (req.toString().contains("Mutable")) {
-    		System.err.println();
-    	}
+        if (req.toString().contains("Mutable")) {
+            System.err.println();
+        }
         if (req.tag == ERROR)
             return req;
         if (found.tag == FORALL)

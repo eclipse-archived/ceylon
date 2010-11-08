@@ -732,22 +732,22 @@ public class Attr extends JCTree.Visitor {
                     v.pos = tree.pos;
                 }
             }
-            
+
             if (Context.isCeylon()) {
-            	// Generate a ceylon temporary whose type comes from its initializer.
-            	if (v.type == syms.ceylonAnyType) {
-            		if (tree.init.type.tsym == syms.ceylonMutableType.tsym
-            				&& tree.init instanceof JCMethodInvocation) {
-            			JCMethodInvocation meth = (JCMethodInvocation)tree.init;
-            			if (! meth.toString().contains("$internalErasedExists")) {
-            				// Insert a get() to access a Mutable
-            				JCFieldAccess acc = make.Select(tree.init, names.fromString("get"));
-            				tree.init = make.Apply(null, acc, List.<JCExpression>nil());
-            				visitApply((JCMethodInvocation)tree.init);
-            			}
-            		}
-            		v.type = tree.init.type;
-            	}
+                // Generate a ceylon temporary whose type comes from its initializer.
+                if (v.type == syms.ceylonAnyType) {
+                    if (tree.init.type.tsym == syms.ceylonMutableType.tsym
+                            && tree.init instanceof JCMethodInvocation) {
+                        JCMethodInvocation meth = (JCMethodInvocation)tree.init;
+                        if (! meth.toString().contains("$internalErasedExists")) {
+                            // Insert a get() to access a Mutable
+                            JCFieldAccess acc = make.Select(tree.init, names.fromString("get"));
+                            tree.init = make.Apply(null, acc, List.<JCExpression>nil());
+                            visitApply((JCMethodInvocation)tree.init);
+                        }
+                    }
+                    v.type = tree.init.type;
+                }
             }
 
             result = tree.type = v.type;
@@ -1301,25 +1301,25 @@ public class Attr extends JCTree.Visitor {
 
             if (Context.isCeylon() && tree.meth.getTag() == JCTree.IDENT) {
                 // Look for a nested method
-            	JCIdent id = (JCIdent)tree.meth;
-            	Symbol site = rs.findIdent(env, id.name, VAR);
-            	if (site.exists()) {
-            		Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
-            				argtypes, typeargtypes);
-            		if (sym.exists()) {
-            			tree.meth = make.at(tree).Select(id, names.fromString("run"));
-            		}
-            	} else {
-            		// Look for a top-level method
-            		site = rs.findIdent(env, id.name, TYP);
-            		if (site.exists()) {
-            			Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
-            					argtypes, typeargtypes);
-            			if (sym.exists()) {
-            				tree.meth = make.at(tree).Select(id, names.fromString("run"));
-            			}
-            		}
-            	}
+                JCIdent id = (JCIdent)tree.meth;
+                Symbol site = rs.findIdent(env, id.name, VAR);
+                if (site.exists()) {
+                    Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
+                            argtypes, typeargtypes);
+                    if (sym.exists()) {
+                        tree.meth = make.at(tree).Select(id, names.fromString("run"));
+                    }
+                } else {
+                    // Look for a top-level method
+                    site = rs.findIdent(env, id.name, TYP);
+                    if (site.exists()) {
+                        Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
+                                argtypes, typeargtypes);
+                        if (sym.exists()) {
+                            tree.meth = make.at(tree).Select(id, names.fromString("run"));
+                        }
+                    }
+                }
             }
 
             // ... and attribute the method using as a prototype a methodtype
@@ -1907,54 +1907,54 @@ public class Attr extends JCTree.Visitor {
 
         // Insert a get() to access a Mutable
         if (Context.isCeylon() && site.tag == CLASS
-        		&& types.isSubtype(types.erasure(syms.ceylonMutableType), 
-        				types.erasure(site))) {
-        	// FIXME.  This is horrible, but it's rather forced upon us
-        	// because of the way that selectSym is factored: if it
-        	// fails, it'll generate a diagnostic.  So, we have two
-        	// versions of resolveQualifiedMethod, one that fails and
-        	// generates a diagnostic, and one that doesn't.
-        	
-        	// The only real way to fix this is completely to refactor selectSym
-        	// so that it doesn't generate diagnostics when there is no target
-        	// method found.
-        	if (pt.tag == METHOD || pt.tag == FORALL) {
-        		Symbol sym = rs.resolveQualifiedMethod(
-        				env, site, tree.name, pt.getParameterTypes(), pt.getTypeArguments());
-        		if (sym.kind >= ERR) {
-        			JCExpression application = make.Apply(null, 
-        					make.Select(tree.selected, names.fromString("get")),
-        					List.<JCExpression>nil());
-        			Type innerType = attribTree(application, env, skind, Infer.anyPoly);
-        			JCFieldAccess trial = make.Select(application, tree.name);
-        			// FIXME: This doesn't cope with extensions.  So, if the
-        			// method we're looking for is an extension we'll miss it.
-        			sym = rs.resolveQualifiedMethod(
-        					env, innerType, trial.name, pt.getParameterTypes(), pt.getTypeArguments());
-        			if (sym.kind < ERR) {
-        				tree.selected = application;
-        				visitSelect(tree);
-        				return;
-        			}
-        		}
-        		
-        	} else if (pt.tag == NONE || pt.tag == CLASS) {
-        		// We are seeing a plain identifier as selector.
-        		Symbol sym = rs.findIdentInType(env, site, tree.name, pkind);
-        		if (sym.kind >= ERR) {
-        			JCExpression application = make.Apply(null, 
-        					make.Select(tree.selected, names.fromString("get")),
-        					List.<JCExpression>nil());
-        			Type innerType = attribTree(application, env, skind, Infer.anyPoly);
-        			JCFieldAccess trial = make.Select(application, tree.name);
-        			sym = rs.findIdentInType(env, innerType, trial.name, pkind);
-        			if (sym.kind < ERR) {
-        				tree.selected = application;
-        				visitSelect(tree);
-        				return;
-        			} 
-        		}
-        	}
+                && types.isSubtype(types.erasure(syms.ceylonMutableType),
+                        types.erasure(site))) {
+            // FIXME.  This is horrible, but it's rather forced upon us
+            // because of the way that selectSym is factored: if it
+            // fails, it'll generate a diagnostic.  So, we have two
+            // versions of resolveQualifiedMethod, one that fails and
+            // generates a diagnostic, and one that doesn't.
+
+            // The only real way to fix this is completely to refactor selectSym
+            // so that it doesn't generate diagnostics when there is no target
+            // method found.
+            if (pt.tag == METHOD || pt.tag == FORALL) {
+                Symbol sym = rs.resolveQualifiedMethod(
+                        env, site, tree.name, pt.getParameterTypes(), pt.getTypeArguments());
+                if (sym.kind >= ERR) {
+                    JCExpression application = make.Apply(null,
+                            make.Select(tree.selected, names.fromString("get")),
+                            List.<JCExpression>nil());
+                    Type innerType = attribTree(application, env, skind, Infer.anyPoly);
+                    JCFieldAccess trial = make.Select(application, tree.name);
+                    // FIXME: This doesn't cope with extensions.  So, if the
+                    // method we're looking for is an extension we'll miss it.
+                    sym = rs.resolveQualifiedMethod(
+                            env, innerType, trial.name, pt.getParameterTypes(), pt.getTypeArguments());
+                    if (sym.kind < ERR) {
+                        tree.selected = application;
+                        visitSelect(tree);
+                        return;
+                    }
+                }
+
+            } else if (pt.tag == NONE || pt.tag == CLASS) {
+                // We are seeing a plain identifier as selector.
+                Symbol sym = rs.findIdentInType(env, site, tree.name, pkind);
+                if (sym.kind >= ERR) {
+                    JCExpression application = make.Apply(null,
+                            make.Select(tree.selected, names.fromString("get")),
+                            List.<JCExpression>nil());
+                    Type innerType = attribTree(application, env, skind, Infer.anyPoly);
+                    JCFieldAccess trial = make.Select(application, tree.name);
+                    sym = rs.findIdentInType(env, innerType, trial.name, pkind);
+                    if (sym.kind < ERR) {
+                        tree.selected = application;
+                        visitSelect(tree);
+                        return;
+                    }
+                }
+            }
         }
 
         // don't allow T.class T[].class, etc
@@ -1994,15 +1994,15 @@ public class Attr extends JCTree.Visitor {
             sym = selectSym(tree, site, env, pt, pkind);
         }
         catch (ExtensionRequiredException e) {
-        	if (!Context.isCeylon())
-        		throw e;
-        	
+            if (!Context.isCeylon())
+                throw e;
+
             // FIXME: this is a hack to allow conversion of the left hand sides
             // of binary operations.  It needs to be generalized to cope with any
             // number of arguments.
             assert tree.getTag() == JCTree.SELECT;
             JCTree.JCFieldAccess fat = (JCTree.JCFieldAccess) tree;
-  
+
             // Mutate the tree (is this even vaguely allowed?)
             make.at(fat.selected);
             fat.selected = e.extension.apply(fat.selected, make);

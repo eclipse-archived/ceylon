@@ -100,24 +100,24 @@ public class Infer {
             return diagnostic;
         }
     }
-    
+
     public static class NoInstanceException extends InferenceException {
-    	private static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
-    	boolean isAmbiguous; // exist several incomparable best instances?
+        boolean isAmbiguous; // exist several incomparable best instances?
 
-    	NoInstanceException(boolean isAmbiguous) {
-    		super(isAmbiguous);
-    		this.isAmbiguous = isAmbiguous;
-    	}
+        NoInstanceException(boolean isAmbiguous) {
+            super(isAmbiguous);
+            this.isAmbiguous = isAmbiguous;
+        }
     }
 
     public static class InvalidInstanceException extends InferenceException {
-    	private static final long serialVersionUID = 2;
+        private static final long serialVersionUID = 2;
 
-    	InvalidInstanceException(boolean isAmbiguous) {
-    		super(isAmbiguous);
-    	}
+        InvalidInstanceException(boolean isAmbiguous) {
+            super(isAmbiguous);
+        }
     }
 
     private final NoInstanceException ambiguousNoInstanceException =

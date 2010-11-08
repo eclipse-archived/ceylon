@@ -1217,74 +1217,74 @@ public class Resolve {
      *  @param typeargtypes  The types of the invocation's type arguments.
      */
     Symbol resolveQualifiedMethod(DiagnosticPosition pos, Env<AttrContext> env,
-    		Type site, Name name, List<Type> argtypes,
-    		List<Type> typeargtypes) {
-    	Symbol sym = resolveQualifiedMethod(env,
-    			site,
-    			name,
-    			argtypes,
-    			typeargtypes);
-    	if (Context.isCeylon() && sym.kind >= WRONG_MTH) {
-    		// FIXME: this is a hack to allow conversion of the left hand sides
-    		// of binary operations.  It needs to be generalized to cope with any
-    		// number of arguments.
-    		if (argtypes.size() == 1) {
-    			Route extension = types.getCeylonExtension(site, argtypes.head);
-    			if (extension != null) {
-    				throw new ExtensionRequiredException(extension);
-    			}
-    		}
-    	}
-    	if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
-    	    // Look for toplevel extension classes
-    	    List<Route> candidates = List.<Route>nil();
+            Type site, Name name, List<Type> argtypes,
+            List<Type> typeargtypes) {
+        Symbol sym = resolveQualifiedMethod(env,
+                site,
+                name,
+                argtypes,
+                typeargtypes);
+        if (Context.isCeylon() && sym.kind >= WRONG_MTH) {
+            // FIXME: this is a hack to allow conversion of the left hand sides
+            // of binary operations.  It needs to be generalized to cope with any
+            // number of arguments.
+            if (argtypes.size() == 1) {
+                Route extension = types.getCeylonExtension(site, argtypes.head);
+                if (extension != null) {
+                    throw new ExtensionRequiredException(extension);
+                }
+            }
+        }
+        if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
+            // Look for toplevel extension classes
+            List<Route> candidates = List.<Route>nil();
             CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
-    	    for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
-    	        for (CeylonTree.ImportPath path : id.path()) {
-    	            List<String> elements = path.pathElements;
-    	            if (elements.get(elements.size() - 1).equals("*"))
-    	                continue;
-    	            // TODO: check for "import implicit"
-    	            StringBuilder sb = new StringBuilder();
-    	            for (String element : elements) {
-    	                if (sb.length() > 0)
-    	                    sb.append('.');
-    	                sb.append(element);
-    	            }
-    	            ClassSymbol candidate = reader.enterClass(names.fromString(sb.toString()));
-    	            if (candidate.attribute(syms.ceylonExtensionType.tsym) == null)
+            for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
+                for (CeylonTree.ImportPath path : id.path()) {
+                    List<String> elements = path.pathElements;
+                    if (elements.get(elements.size() - 1).equals("*"))
                         continue;
-    	            Symbol resolved = resolveQualifiedMethod(
-    	                env, candidate.type, name, argtypes, typeargtypes);
-    	            if (resolved.kind != MTH)
-    	                continue;
-    	            Route extension = types.getCeylonExtension(site, candidate.type);
-    	            if (extension == null)
-    	                continue;
-    	            candidates = candidates.append(extension);
-    	        }
-    	    }
-    	    assert candidates.size() == 0; // XXX < 2
-    	}
-    	if (sym.kind >= AMBIGUOUS) {
-    		sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
-    	}
-    	return sym;
+                    // TODO: check for "import implicit"
+                    StringBuilder sb = new StringBuilder();
+                    for (String element : elements) {
+                        if (sb.length() > 0)
+                            sb.append('.');
+                        sb.append(element);
+                    }
+                    ClassSymbol candidate = reader.enterClass(names.fromString(sb.toString()));
+                    if (candidate.attribute(syms.ceylonExtensionType.tsym) == null)
+                        continue;
+                    Symbol resolved = resolveQualifiedMethod(
+                        env, candidate.type, name, argtypes, typeargtypes);
+                    if (resolved.kind != MTH)
+                        continue;
+                    Route extension = types.getCeylonExtension(site, candidate.type);
+                    if (extension == null)
+                        continue;
+                    candidates = candidates.append(extension);
+                }
+            }
+            assert candidates.size() == 0; // XXX < 2
+        }
+        if (sym.kind >= AMBIGUOUS) {
+            sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
+        }
+        return sym;
     }
 
     Symbol resolveQualifiedMethod(Env<AttrContext> env,
-    		Type site, Name name, List<Type> argtypes,
-    		List<Type> typeargtypes) {
-    	Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,
-    			env.info.varArgs=false, false);
-    	if (varargsEnabled && sym.kind >= WRONG_MTHS) {
-    		sym = findMethod(env, site, name, argtypes, typeargtypes, true,
-    				false, false);
-    		if (sym.kind >= WRONG_MTHS)
-    			sym = findMethod(env, site, name, argtypes, typeargtypes, true,
-    					env.info.varArgs=true, false);
-    	}
-    	return sym;
+            Type site, Name name, List<Type> argtypes,
+            List<Type> typeargtypes) {
+        Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,
+                env.info.varArgs=false, false);
+        if (varargsEnabled && sym.kind >= WRONG_MTHS) {
+            sym = findMethod(env, site, name, argtypes, typeargtypes, true,
+                    false, false);
+            if (sym.kind >= WRONG_MTHS)
+                sym = findMethod(env, site, name, argtypes, typeargtypes, true,
+                        env.info.varArgs=true, false);
+        }
+        return sym;
     }
 
     /** Resolve a qualified method identifier, throw a fatal error if not
@@ -1328,7 +1328,7 @@ public class Resolve {
             sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, false);
             if (sym.kind >= WRONG_MTHS)
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
-        } 
+        }
         if (Context.isCeylon() && sym.kind >= WRONG_MTHS) {
             assert site.getKind() == TypeKind.DECLARED;
             ClassType siteclass = (ClassType) site;

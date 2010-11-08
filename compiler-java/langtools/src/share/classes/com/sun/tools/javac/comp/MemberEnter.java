@@ -630,8 +630,8 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
                 v.setLazyConstValue(initEnv(tree, env), log, attr, tree.init);
         }
         if (chk.checkUnique(tree.pos(), v, enclScope)) {
-        	if (! Context.isCeylon())
-        		chk.checkTransparentVar(tree.pos(), v, enclScope);
+            if (! Context.isCeylon())
+                chk.checkTransparentVar(tree.pos(), v, enclScope);
             enclScope.enter(v);
         }
         annotateLater(tree.mods.annotations, localEnv, v);

@@ -39,7 +39,7 @@ implements JavaFileObject
       * otherwise
       */
      public boolean isNameCompatible(String simpleName, Kind kind)
-     {     
+     {
          if (kind == Kind.SOURCE)
          {
              String name = f.getName();
@@ -47,7 +47,7 @@ implements JavaFileObject
              if (name.endsWith(n)) {
                  return true;
              }
-         }               
+         }
 
          return f.isNameCompatible(simpleName, kind);
      }
@@ -80,6 +80,6 @@ implements JavaFileObject
      }
 
      public String toString() {
-    	 return f.toString();
+         return f.toString();
      }
 }

@@ -206,10 +206,10 @@ public class Context {
         if (t == null)
             throw new IllegalStateException();
     }
-    
+
     /**
      * TODO: Ideally this stack should not be static, but Context.isCeylon
-     * is required in one or two places where a context is unavailable.  
+     * is required in one or two places where a context is unavailable.
      */
     private static ArrayList<CompilationUnit> ceylonContextStack =
         new ArrayList<CompilationUnit>();
@@ -240,7 +240,7 @@ public class Context {
         int size = ceylonContextStack.size();
         return size > 0 && ceylonContextStack.get(size - 1) != null;
     }
-    
+
     public static CompilationUnit ceylonCompilationUnit() {
         return ceylonContextStack.get(ceylonContextStack.size() - 1);
     }
