@@ -273,12 +273,7 @@ public class Gen {
         // System.out.println(topLev);
         return topLev;
     }
-
-    public JCTree convert(InterfaceDeclaration decl) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    
 	public void methodClass(CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
     		boolean topLevel) {
         // Generate a class with the
@@ -303,7 +298,7 @@ public class Gen {
         JCMethodDecl meth = at(decl).MethodDef(make.Modifiers((topLevel ? PUBLIC|STATIC : 0)),
                 names.fromString("run"),
                 restype.thing(),
-                processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
+                processTypeConstraints(decl.typeConstraintList(), typeParams.toList()),
                 params.toList(),
                 List.<JCExpression>nil(), body.thing(), null);
         
@@ -349,7 +344,7 @@ public class Gen {
     }
     
     // FIXME: There must be a better way to do this.
-    void processMethodDeclaration(final CeylonTree.MethodDeclaration decl, 
+    void processMethodDeclaration(final CeylonTree.BaseMethodDeclaration decl, 
             final ListBuffer<JCVariableDecl> params, 
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
@@ -367,12 +362,13 @@ public class Gen {
         		typeParams.append(convert((CeylonTree.TypeParameter)t));        	
         	}
         
-        for (CeylonTree stmt: decl.stmts)
-            stmt.accept(new CeylonTree.Visitor () {
-                public void visit(CeylonTree.Block b) {
-                    block.thing = convert(b);
-                }
-            });
+        if (decl.stmts != null)
+        	for (CeylonTree stmt: decl.stmts)
+        		stmt.accept(new CeylonTree.Visitor () {
+        			public void visit(CeylonTree.Block b) {
+        				block.thing = convert(b);
+        			}
+        		});
         
         processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
         
@@ -558,7 +554,7 @@ public class Gen {
         return convert(t);
     }
     
-    public JCClassDecl convert(final CeylonTree.ClassDeclaration cdecl) {
+    public JCClassDecl convert(final CeylonTree.ClassOrInterfaceDeclaration cdecl) {
         final ListBuffer<JCVariableDecl> params = 
             new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCTree> defs =
@@ -571,6 +567,8 @@ public class Gen {
 			new ListBuffer<JCStatement>();
 		final ListBuffer<JCTypeParameter> typeParams =
 			new ListBuffer<JCTypeParameter>();
+		final ListBuffer<JCExpression> satisfies =
+			new ListBuffer<JCExpression>();
 
         class ClassVisitor extends StatementVisitor {
             ClassVisitor(ListBuffer<JCStatement> stmts) {
@@ -591,7 +589,11 @@ public class Gen {
                 defs.appendList(convert(meth));
             }
             
-            public void visit(CeylonTree.LanguageAnnotation ann) {
+            public void visit(CeylonTree.AbstractMethodDeclaration meth) {
+                defs.appendList(convert(meth));
+            }
+            
+             public void visit(CeylonTree.LanguageAnnotation ann) {
                 // Handled in processAnnotations
             }
             
@@ -599,7 +601,13 @@ public class Gen {
                 // Handled in processAnnotations
             }
             
-            public void visit(CeylonTree.MemberDeclaration mem) {
+            public void visit(CeylonTree.SatisfiesList theList) {
+            	for (Type t: theList.types()) {
+            		satisfies.append(convert(t));
+            	}
+            }
+            
+             public void visit(CeylonTree.MemberDeclaration mem) {
             	for (JCStatement def: convert(mem)) {
             		if (def instanceof JCVariableDecl &&
             				((JCVariableDecl) def).init != null) {
@@ -621,7 +629,7 @@ public class Gen {
             }
             
             public void visit(CeylonTree.Type type) {
-                assert type == cdecl.superclass.theSuperclass;
+                assert type == cdecl.getSuperclass();
             }
             
             public void visit(CeylonTree.Superclass sc) {
@@ -645,26 +653,29 @@ public class Gen {
         processAnnotations(cdecl.annotations, annotations, langAnnotations, 
                            cdecl.nameAsString());
         
-        JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(PUBLIC),
-                names.init,
-                at(cdecl).TypeIdent(VOID),
-                List.<JCTypeParameter>nil(),
-                params.toList(),
-                List.<JCExpression>nil(),
-                at(cdecl).Block(0, stmts.toList()), null);
-        
-        defs.append(meth);
-        
+        if (!cdecl.isInterface()) {
+        	cdecl.toString();
+        	JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(PUBLIC),
+        			names.init,
+        			at(cdecl).TypeIdent(VOID),
+        			List.<JCTypeParameter>nil(),
+        			params.toList(),
+        			List.<JCExpression>nil(),
+        			at(cdecl).Block(0, stmts.toList()), null);
+
+        	defs.append(meth);
+        }
+
         if (annotations.length() > 0) {
             defs.append(registerAnnotations(annotations.toList()));
         }
         
         JCTree superclass;
-        if (cdecl.superclass == null) {
+        if (cdecl.getSuperclass() == null) {
             superclass = makeIdent(syms.ceylonObjectType);
         }
         else {
-            List<String> name = cdecl.superclass.theSuperclass.name().components();
+            List<String> name = cdecl.getSuperclass().name().components();
             assert name.size() == 1;
             superclass = make().Ident(names.fromString(name.head));
         }
@@ -676,12 +687,16 @@ public class Gen {
             langAnnotations.append(ann);
         }
 
-        JCClassDecl classDef = 
-            at(cdecl).ClassDef(at(cdecl).Modifiers(0, langAnnotations.toList()),
+        long mods = 0;
+        if (cdecl.isInterface())
+        	mods |= INTERFACE;
+        
+         JCClassDecl classDef = 
+            at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()),
                     names.fromString(cdecl.nameAsString()),
-                    processTypeConstraints(cdecl.typeConstraintList, typeParams.toList()),
+                    processTypeConstraints(cdecl.typeConstraintList(), typeParams.toList()),
                     superclass,
-                    List.<JCExpression>nil(),
+                    satisfies.toList(),
                     defs.toList());
 
         // System.out.println(classDef);
@@ -739,7 +754,7 @@ public class Gen {
 		return result.toList();
 	}
 
-	public List<JCTree> convert(CeylonTree.MethodDeclaration decl) {
+	public List<JCTree> convert(CeylonTree.BaseMethodDeclaration decl) {
         final ListBuffer<JCVariableDecl> params = 
             new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCStatement> annotations = 
@@ -774,7 +789,7 @@ public class Gen {
         JCMethodDecl meth = at(decl).MethodDef(make.Modifiers(PUBLIC, jcAnnotations.toList()),
                 names.fromString(decl.nameAsString()),
                 restype,
-                processTypeConstraints(decl.typeConstraintList, typeParams.toList()),
+                processTypeConstraints(decl.typeConstraintList(), typeParams.toList()),
                 params.toList(),
                 List.<JCExpression>nil(), body.thing(), null);;
         
