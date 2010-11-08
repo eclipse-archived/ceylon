@@ -1564,10 +1564,10 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public JCTree clazz;
         public JCExpression expr;
         protected JCTypeCast(JCTree clazz, JCExpression expr) {
-        	if (clazz.toString().contains("Mutable")) {
-        		 System.err.println();
+            if (clazz.toString().contains("Mutable")) {
+                 System.err.println();
 
-        	}
+            }
             this.clazz = clazz;
             this.expr = expr;
         }

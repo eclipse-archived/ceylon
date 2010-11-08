@@ -290,61 +290,61 @@ public class Types {
     }
 
     public boolean isConvertible(Type t, Type s, Warner warn) {
-    	if (isConvertibleNotOptional(t, s, warn))
-    		return true;
+        if (isConvertibleNotOptional(t, s, warn))
+            return true;
 
-    	if (Context.isCeylon()) {
-    		if (getCeylonExtension(t, s) != null)
-    			return true;
+        if (Context.isCeylon()) {
+            if (getCeylonExtension(t, s) != null)
+                return true;
 
-    		Type base = s.baseType();
+            Type base = s.baseType();
 
-    		if (t.tsym == syms.ceylonMutableType.tsym &&
-    				t.baseType().tag == CLASS) {
-    			ClassType klass = (ClassType)t.baseType();
-    			List<Type> typeArgs = klass.getTypeArguments();
-    			if (typeArgs.length() == 1) {
-    				Type t1 = typeArgs.last();
-    				if (t1.tag == CLASS) {
-    					return isConvertible(t1, s, warn);
-    				}
-    			} else if (typeArgs.length() == 0) {
-    				// Everything is convertible to plain ceylon.Mutable
-    				return true;
-    			}
-    		}
+            if (t.tsym == syms.ceylonMutableType.tsym &&
+                    t.baseType().tag == CLASS) {
+                ClassType klass = (ClassType)t.baseType();
+                List<Type> typeArgs = klass.getTypeArguments();
+                if (typeArgs.length() == 1) {
+                    Type t1 = typeArgs.last();
+                    if (t1.tag == CLASS) {
+                        return isConvertible(t1, s, warn);
+                    }
+                } else if (typeArgs.length() == 0) {
+                    // Everything is convertible to plain ceylon.Mutable
+                    return true;
+                }
+            }
 
-    		if ((s.tsym == syms.ceylonOptionalType.tsym || s.tsym == syms.ceylonMutableType.tsym)
-    				&& base.tag == CLASS) {
+            if ((s.tsym == syms.ceylonOptionalType.tsym || s.tsym == syms.ceylonMutableType.tsym)
+                    && base.tag == CLASS) {
 
-    		    if (t == syms.ceylonNothingType)
-    		        return true;
+                if (t == syms.ceylonNothingType)
+                    return true;
 
-    			ClassType klass = (ClassType)base;
-    			List<Type> typeArgs = klass.getTypeArguments();
+                ClassType klass = (ClassType)base;
+                List<Type> typeArgs = klass.getTypeArguments();
 
-    			if (typeArgs.length() == 0) {
-    				// Type is already erased
-    				return true;
-    			} else if (typeArgs.length() == 1) {
-    				Type s1 = typeArgs.last();
-    				if (s1.tag == CLASS) {
-    					return isConvertible(t, s1, warn);
-    				}
-    			} else if (typeArgs.length() == 0) {
-					// Everything is convertible from plain ceylon.Mutable.
-					return true;
-    			}
-    		}
+                if (typeArgs.length() == 0) {
+                    // Type is already erased
+                    return true;
+                } else if (typeArgs.length() == 1) {
+                    Type s1 = typeArgs.last();
+                    if (s1.tag == CLASS) {
+                        return isConvertible(t, s1, warn);
+                    }
+                } else if (typeArgs.length() == 0) {
+                    // Everything is convertible from plain ceylon.Mutable.
+                    return true;
+                }
+            }
 
-    		// The placeholder type for ceylon temporaries.  It only exists
-    		// while a temporary is declared, and will be replaced by the
-    		// type of an expression.
-    		if (base == syms.ceylonAnyType)
-    			return true;
-    	}
+            // The placeholder type for ceylon temporaries.  It only exists
+            // while a temporary is declared, and will be replaced by the
+            // type of an expression.
+            if (base == syms.ceylonAnyType)
+                return true;
+        }
 
-    	return false;
+        return false;
     }
 
     /**
@@ -1576,10 +1576,10 @@ public class Types {
      * type parameters in t are deleted.
      */
     public Type erasure(Type t) {
-    	if (t.tag <= lastBaseTag)
-    		return t; /* fast special case */
-    	else
-    		return erasure.visit(t);
+        if (t.tag <= lastBaseTag)
+            return t; /* fast special case */
+        else
+            return erasure.visit(t);
     }
     // where
         private UnaryVisitor<Type> erasure = new UnaryVisitor<Type>() {
@@ -1597,18 +1597,18 @@ public class Types {
 
             @Override
             public Type visitClassType(ClassType t, Void ignored) {
-               	// Erase ceylon.Optional<T> to T
+                // Erase ceylon.Optional<T> to T
                 // We need to compare symbols (tsym) here rather
                 // than directly comparing types because t has type
                 // parameters and syms.ceylonOptionalType does not.
-            	if (Context.isCeylon() && t.tsym == syms.ceylonOptionalType.tsym) {
-            		List<Type> l = t.getTypeArguments();
-            		if (l.length() == 1) {
-            			Type t1 = l.last();
-            			if (t1.tag == CLASS)
-            				return visitClassType((ClassType)t1, ignored);
-            		}
-            	}
+                if (Context.isCeylon() && t.tsym == syms.ceylonOptionalType.tsym) {
+                    List<Type> l = t.getTypeArguments();
+                    if (l.length() == 1) {
+                        Type t1 = l.last();
+                        if (t1.tag == CLASS)
+                            return visitClassType((ClassType)t1, ignored);
+                    }
+                }
 
                 return t.tsym.erasure(Types.this);
             }

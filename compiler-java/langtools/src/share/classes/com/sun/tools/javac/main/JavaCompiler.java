@@ -712,63 +712,63 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
      *  @param f          An input stream that reads the source file.
      */
     public void complete(ClassSymbol c) throws CompletionFailure {
-    	//      System.err.println("completing " + c);//DEBUG
+        //      System.err.println("completing " + c);//DEBUG
 
-    	try {
-        	Context.SourceLanguage.push(Language.JAVA);
+        try {
+            Context.SourceLanguage.push(Language.JAVA);
 
-    		if (completionFailureName == c.fullname) {
-    			throw new CompletionFailure(c, "user-selected completion failure by class name");
-    		}
-    		JCCompilationUnit tree;
-    		JavaFileObject filename = c.classfile;
-    		JavaFileObject prev = log.useSource(filename);
+            if (completionFailureName == c.fullname) {
+                throw new CompletionFailure(c, "user-selected completion failure by class name");
+            }
+            JCCompilationUnit tree;
+            JavaFileObject filename = c.classfile;
+            JavaFileObject prev = log.useSource(filename);
 
-    		try {
-    			tree = parse(filename, filename.getCharContent(false));
-    		} catch (IOException e) {
-    			log.error("error.reading.file", filename, e);
-    			tree = make.TopLevel(List.<JCTree.JCAnnotation>nil(), null, List.<JCTree>nil());
-    		} finally {
-    			log.useSource(prev);
-    		}
+            try {
+                tree = parse(filename, filename.getCharContent(false));
+            } catch (IOException e) {
+                log.error("error.reading.file", filename, e);
+                tree = make.TopLevel(List.<JCTree.JCAnnotation>nil(), null, List.<JCTree>nil());
+            } finally {
+                log.useSource(prev);
+            }
 
-    		if (taskListener != null) {
-    			TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
-    			taskListener.started(e);
-    		}
+            if (taskListener != null) {
+                TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
+                taskListener.started(e);
+            }
 
-    		enter.complete(List.of(tree), c);
+            enter.complete(List.of(tree), c);
 
-    		if (taskListener != null) {
-    			TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
-    			taskListener.finished(e);
-    		}
+            if (taskListener != null) {
+                TaskEvent e = new TaskEvent(TaskEvent.Kind.ENTER, tree);
+                taskListener.finished(e);
+            }
 
-    		if (enter.getEnv(c) == null) {
-    			boolean isPkgInfo =
-    				tree.sourcefile.isNameCompatible("package-info",
-    						JavaFileObject.Kind.SOURCE);
-    			if (isPkgInfo) {
-    				if (enter.getEnv(tree.packge) == null) {
-    					String msg
-    					= log.getLocalizedString("file.does.not.contain.package",
-    							c.location());
-    					throw new ClassReader.BadClassFile(c, filename, msg);
-    				}
-    			} else {
-    				throw new
-    				ClassReader.BadClassFile(c, filename, log.
-    						getLocalizedString("file.doesnt.contain.class",
-    								c.fullname));
-    			}
-    		}
+            if (enter.getEnv(c) == null) {
+                boolean isPkgInfo =
+                    tree.sourcefile.isNameCompatible("package-info",
+                            JavaFileObject.Kind.SOURCE);
+                if (isPkgInfo) {
+                    if (enter.getEnv(tree.packge) == null) {
+                        String msg
+                        = log.getLocalizedString("file.does.not.contain.package",
+                                c.location());
+                        throw new ClassReader.BadClassFile(c, filename, msg);
+                    }
+                } else {
+                    throw new
+                    ClassReader.BadClassFile(c, filename, log.
+                            getLocalizedString("file.doesnt.contain.class",
+                                    c.fullname));
+                }
+            }
 
-    		implicitSourceFilesRead = true;
+            implicitSourceFilesRead = true;
 
-    	} finally {
-    		Context.SourceLanguage.pop();
-    	}
+        } finally {
+            Context.SourceLanguage.pop();
+        }
     }
 
     /** Track when the JavaCompiler has been used to compile something. */

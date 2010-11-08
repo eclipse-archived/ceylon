@@ -10,23 +10,23 @@ public class Grok extends CeylonTree.Visitor {
 
     final class Context {
 
-    	Context prev;
-    	CeylonTree context;
+        Context prev;
+        CeylonTree context;
 
-    	private void push() {
-    		Context c = new Context();
-    		c.prev = this;
-    		current = c;
-    	}
+        private void push() {
+            Context c = new Context();
+            c.prev = this;
+            current = c;
+        }
 
-    	public void push(CeylonTree context) {
-    		push();
-    		current.context = context;
-    	}
+        public void push(CeylonTree context) {
+            push();
+            current.context = context;
+        }
 
-    	public void pop() {
-    		current = prev;
-    	}
+        public void pop() {
+            current = prev;
+        }
     }
 
     public void visit(CeylonTree.CompilationUnit t) {
@@ -136,11 +136,11 @@ public class Grok extends CeylonTree.Visitor {
         // current.annotations = null;
 
         for (CeylonTree.Annotation ann: member.annotations) {
-        	if (ann instanceof CeylonTree.LanguageAnnotation) {
-        		CeylonTree.LanguageAnnotation la =
-        			(CeylonTree.LanguageAnnotation)ann;
-        		throw new RuntimeException();
-        	}
+            if (ann instanceof CeylonTree.LanguageAnnotation) {
+                CeylonTree.LanguageAnnotation la =
+                    (CeylonTree.LanguageAnnotation)ann;
+                throw new RuntimeException();
+            }
         }
 
         if (member.attributeSetter != null) {

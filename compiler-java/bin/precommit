@@ -8,6 +8,13 @@ def tidy(path):
     for line in open(path, "r").readlines():
         src.append(line)
         line = line.rstrip()
+        while True:
+            parts = line.split("\t", 1)
+            if len(parts) == 1:
+                break
+            line, rest = parts
+            line += " " * (4 - len(line) % 4)
+            line += rest
         dst.append(line + "\n")
     while dst[0] == "\n":
         dst.pop(0)

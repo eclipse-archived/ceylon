@@ -46,36 +46,36 @@ final PrintStream out;
     CommonTree t = (CommonTree)r.getTree();
 
     if (comment != null)
-    	out.println("# "+ comment);
+        out.println("# "+ comment);
 
     if (! consumeTree) {
-    	new TreeVisitor().visit(t, new PrintTree());
-    	out.println();
+        new TreeVisitor().visit(t, new PrintTree());
+        out.println();
     }
 
     if (parser.getNumberOfSyntaxErrors() == 0 &&
-    		lexer.getNumberOfSyntaxErrors() == 0 &&
-    		consumeTree) {
-    	CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename);
+            lexer.getNumberOfSyntaxErrors() == 0 &&
+            consumeTree) {
+        CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename);
 
-    	if (false) {
-    		PrintWriter w = new PrintWriter(out);
-    		cu.accept(new CeylonTreePrinter(w));
-    		w.flush();
-    		out.println();
-    	}
+        if (false) {
+            PrintWriter w = new PrintWriter(out);
+            cu.accept(new CeylonTreePrinter(w));
+            w.flush();
+            out.println();
+        }
 
-    	cu.accept(new Grok());
+        cu.accept(new Grok());
 
-    	if (false) {
-    		out.print(cu);
-    		out.println();
-    	}
+        if (false) {
+            out.print(cu);
+            out.println();
+        }
 
-    	if (generateCode) {
-    		out.println();
-    		new Gen().run(cu);
-    	}
+        if (generateCode) {
+            out.println();
+            new Gen().run(cu);
+        }
     }
   }
 
@@ -85,7 +85,7 @@ final PrintStream out;
     {
       out.println();
       for (int i = 0; i < depth; i++)
-	out.print("  ");
+    out.print("  ");
     }
 
     public Object pre (Object o)
@@ -117,7 +117,7 @@ final PrintStream out;
       if (tok != null)
         s = tok.getText();
       if (t.getChildCount()!=0 || s == null)
-	out.print(")");
+    out.print(")");
       depth--;
 
       return o;

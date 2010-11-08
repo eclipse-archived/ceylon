@@ -1913,7 +1913,7 @@ public class Lower extends TreeTranslator {
         if (tree == null) {
             return null;
         } else {
-        	make_at(tree.pos());
+            make_at(tree.pos());
             T result = super.translate(tree);
             if (endPositions != null && result != tree) {
                 Integer endPos = endPositions.remove(tree);
