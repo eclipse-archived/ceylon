@@ -1251,14 +1251,14 @@ public class Resolve {
                             sb.append('.');
                         sb.append(element);
                     }
-                    ClassSymbol candidate = reader.enterClass(names.fromString(sb.toString()));
-                    if (candidate.attribute(syms.ceylonExtensionType.tsym) == null)
+                    ClassSymbol csym = reader.enterClass(names.fromString(sb.toString()));
+                    if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
                         continue;
                     Symbol resolved = resolveQualifiedMethod(
-                        env, candidate.type, name, argtypes, typeargtypes);
+                        env, csym.type, name, argtypes, typeargtypes);
                     if (resolved.kind != MTH)
                         continue;
-                    Route extension = types.getCeylonExtension(site, candidate.type);
+                    Route extension = types.getCeylonExtension(site, csym.type);
                     if (extension == null)
                         continue;
                     candidates = candidates.append(extension);
