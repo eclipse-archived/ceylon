@@ -5,9 +5,9 @@ import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.Context;
@@ -15,6 +15,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 
+import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 
 public class ExtensionFinder {
@@ -32,10 +33,12 @@ public class ExtensionFinder {
 
     private final Symtab syms;
     private final Types types;
+    private final Resolve rs;
 
     private ExtensionFinder(Context context) {
         syms = Symtab.instance(context);
         types = Types.instance(context);
+        rs = Resolve.instance(context);
     }
 
     private static class RouteElement {
@@ -174,7 +177,7 @@ public class ExtensionFinder {
         }
 
         protected boolean isTarget(Type type) {
-            throw new RuntimeException();
+            return rs.resolveQualifiedMethod(env, type, name, argtypes, typeargtypes).kind == MTH;
         }
     }
 

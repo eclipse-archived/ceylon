@@ -1287,7 +1287,7 @@ public class Resolve {
         return sym;
     }
 
-    Symbol resolveQualifiedMethod(Env<AttrContext> env,
+    public Symbol resolveQualifiedMethod(Env<AttrContext> env,
             Type site, Name name, List<Type> argtypes,
             List<Type> typeargtypes) {
         Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,
