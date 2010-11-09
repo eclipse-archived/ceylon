@@ -1251,8 +1251,13 @@ public class Resolve {
                             sb.append('.');
                         sb.append(element);
                     }
+                    // TODO: handle overloaded top-level classes
                     ClassSymbol csym = reader.enterClass(names.fromString(sb.toString()));
                     if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
+                        continue;
+                    Symbol cons = resolveConstructor(
+                        pos, env, csym.type, List.of(site), List.<Type>nil());
+                    if (cons.kind != MTH)
                         continue;
                     Symbol resolved = resolveQualifiedMethod(
                         env, csym.type, name, argtypes, typeargtypes);
