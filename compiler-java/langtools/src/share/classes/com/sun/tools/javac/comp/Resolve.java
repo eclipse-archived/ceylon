@@ -44,6 +44,7 @@ import javax.lang.model.type.TypeKind;
 
 import com.sun.tools.javac.ceylon.ExtensionRequiredException;
 import com.sun.tools.javac.ceylon.ManglingRequiredException;
+import com.sun.tools.javac.ceylon.ExtensionFinder;
 import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 
 import com.redhat.ceylon.compiler.tree.CeylonTree;
@@ -70,6 +71,7 @@ public class Resolve {
     public final boolean boxingEnabled; // = source.allowBoxing();
     public final boolean varargsEnabled; // = source.allowVarargs();
     private final boolean debugResolve;
+    final ExtensionFinder extensionFinder;
 
     public static Resolve instance(Context context) {
         Resolve instance = context.get(resolveKey);
@@ -105,6 +107,7 @@ public class Resolve {
         varargsEnabled = source.allowVarargs();
         Options options = Options.instance(context);
         debugResolve = options.get("debugresolve") != null;
+        extensionFinder = ExtensionFinder.instance(context);
     }
 
     /** error symbols, which are returned when resolution fails
@@ -1236,6 +1239,12 @@ public class Resolve {
             }
         }
         if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
+            Route extension = extensionFinder.findUniqueRoute(
+                site, name, argtypes, typeargtypes, pos, env);
+            if (extension != null) {
+                throw new ExtensionRequiredException(extension);
+            }
+/*
             // Look for toplevel extension classes
             List<Route> candidates = List.<Route>nil();
             CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
@@ -1270,6 +1279,7 @@ public class Resolve {
                 }
             }
             assert candidates.size() == 0; // XXX < 2
+            */
         }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, name, true, argtypes, typeargtypes);

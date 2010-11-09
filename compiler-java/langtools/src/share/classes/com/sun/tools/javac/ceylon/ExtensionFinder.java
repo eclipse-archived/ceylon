@@ -6,10 +6,14 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.comp.AttrContext;
+import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 
 import static com.sun.tools.javac.code.TypeTags.*;
 
@@ -44,20 +48,16 @@ public class ExtensionFinder {
         }
     }
 
-    private class Finder {
-        private final Type target;
-
-        public Finder(Type target) {
-            this.target = target;
-        }
-
+    private abstract class Finder {
         public class Route {
             private List<RouteElement> elements = List.<RouteElement>nil();
+            private final Type target;
 
             public Route(List<RouteElement> elements) {
                 for (RouteElement element : elements) {
                     this.elements = this.elements.prepend(new RouteElement(element.type, element.sym));
                 }
+                target = elements.head.type;
             }
 
             public boolean isLongerVersionOf(Route other) {
@@ -94,8 +94,10 @@ public class ExtensionFinder {
         private List<RouteElement> stack = List.<RouteElement>nil();
         private List<Route> routes = List.<Route>nil();
 
+        protected abstract boolean isTarget(Type type);
+
         public void visit(Type source) {
-            if (types.isSubtype(source, target)) {
+            if (isTarget(source)) {
                 routes = routes.append(new Route(stack));
                 return;
             }
@@ -144,6 +146,38 @@ public class ExtensionFinder {
         }
     }
 
+    private class TypeFinder extends Finder {
+        private final Type target;
+
+        public TypeFinder(Type target) {
+            this.target = target;
+        }
+
+        protected boolean isTarget(Type type) {
+            return types.isSubtype(type, target);
+        }
+    }
+
+    private class MethodFinder extends Finder {
+        private final DiagnosticPosition pos;
+        private final Env<AttrContext> env;
+        private final Name name;
+        private final List<Type> argtypes;
+        private final List<Type> typeargtypes;
+
+        public MethodFinder(DiagnosticPosition pos, Env<AttrContext> env, Name name, List<Type> argtypes, List<Type> typeargtypes) {
+            this.pos = pos;
+            this.env = env;
+            this.name = name;
+            this.argtypes = argtypes;
+            this.typeargtypes = typeargtypes;
+        }
+
+        protected boolean isTarget(Type type) {
+            throw new RuntimeException();
+        }
+    }
+
     public static class Route {
         private final List<RouteElement> elements;
 
@@ -159,14 +193,31 @@ public class ExtensionFinder {
             }
             return tree;
         }
-   }
+    }
 
-    public Route findUniqueRoute(Type source, Type target) {
-        Finder finder = new Finder(target);
+    private Route findUniqueRoute(Type source, Finder finder) {
         finder.visit(source);
         finder.cull();
         if (finder.routes.size() == 1)
             return new Route(finder.routes.head.elements);
         return null;
+    }
+
+    /**
+     * Find a unique route of extensions to convert from one type
+     * to the specified other type.
+     */
+    public Route findUniqueRoute(Type source, Type target) {
+        return findUniqueRoute(source, new TypeFinder(target));
+    }
+
+    /**
+     * Find a unique route of extensions to convert from one type
+     * to an unspecified other type that has the specified method.
+     */
+    public Route findUniqueRoute(Type source,
+                                 Name name, List<Type> argtypes, List<Type> typeargtypes,
+                                 DiagnosticPosition pos, Env<AttrContext> env) {
+        return findUniqueRoute(source, new MethodFinder(pos, env, name, argtypes, typeargtypes));
     }
 }
