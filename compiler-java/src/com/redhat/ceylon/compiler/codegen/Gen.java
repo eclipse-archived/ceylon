@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.lang.model.element.TypeElement;
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
+import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
@@ -67,7 +68,7 @@ public class Gen {
     JavacFileManager fileManager;
     JavacTaskImpl task;
     Options options;
-    LineMap map;
+    private LineMap map;
     Symtab syms;
     
     JCCompilationUnit jcCompilationUnit;
@@ -100,8 +101,11 @@ public class Gen {
 
     void setup (JavacTaskImpl task) {
         this.task = task;
-
-        context = task.getContext();
+        setup (task.getContext());
+    }
+    
+    void setup (Context context) {
+    	this.context = context;
         options = Options.instance(context);
         // It's a bit weird to see "invokedynamic" set here,
         // but it has to be done before Resolve.instance().
@@ -113,11 +117,18 @@ public class Gen {
         reader = ClassReader.instance(context);
         resolve = Resolve.instance(context);
         syms = Symtab.instance(context);
+        
+        fileManager = (JavacFileManager) context.get(JavaFileManager.class);
     }
-
-    JCTree.Factory at(CeylonTree t) {
+    
+    
+    public Gen(Context context) {
+    	setup(context);
+    }
+    
+   JCTree.Factory at(CeylonTree t) {
         if (t.source != null) {
-        	make.at(map.getStartPosition(t.source.line) + t.source.column);
+        	make.at(getMap().getStartPosition(t.source.line) + t.source.column);
         }
         return make;
     }
@@ -211,12 +222,7 @@ public class Gen {
     
     public void run(CeylonTree.CompilationUnit t) throws IOException {
 
-        CeylonFileObject file = new CeylonFileObject(fileManager.getFileForInput(t.source.path));
-        char[] chars = file.getCharContent(true).toString().toCharArray();
-        map = Position.makeLineMap(chars, chars.length, false);
-
         JCCompilationUnit tree = convert(t);
-        tree.sourcefile = file;
         
         System.out.println(tree);
         
@@ -235,11 +241,11 @@ public class Gen {
     }
 
     public JCCompilationUnit convert(CeylonTree.CompilationUnit t) {
-        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-                
-        t.visitChildren(new CeylonTree.Visitor () {
-            public void visit(CeylonTree.ImportDeclaration imp) {
-            	defs.appendList(convert(imp));
+    	final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
+
+     	t.visitChildren(new CeylonTree.Visitor () {
+    		public void visit(CeylonTree.ImportDeclaration imp) {
+    			defs.appendList(convert(imp));
             }
         	public void visit(CeylonTree.ClassDeclaration decl) {
                 defs.append(convert(decl));
@@ -273,7 +279,8 @@ public class Gen {
             at(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
                     /* package id*/ null, defs.toList());
         
-        topLev.lineMap = map;
+        topLev.lineMap = getMap();
+        topLev.sourcefile = t.file;
 
         // System.out.println(topLev);
         return topLev;
@@ -1358,6 +1365,14 @@ public class Gen {
 
         return result;
     }
+
+	public void setMap(LineMap map) {
+		this.map = map;
+	}
+
+	public LineMap getMap() {
+		return map;
+	}
 
 }
 

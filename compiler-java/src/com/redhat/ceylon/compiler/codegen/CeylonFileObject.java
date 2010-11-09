@@ -5,7 +5,9 @@ import javax.lang.model.element.NestingKind;
 import javax.tools.ForwardingFileObject;
 import javax.tools.JavaFileObject;
 
-class CeylonFileObject
+import static javax.tools.JavaFileObject.Kind.*;
+
+public class CeylonFileObject
 extends ForwardingFileObject<JavaFileObject>
 implements JavaFileObject
 {
@@ -16,17 +18,30 @@ implements JavaFileObject
         super(f);
         this.f = f;
     }
+    
+    public JavaFileObject getFile() {
+    	return f;
+    }
 
     /**
      * Gets the kind of this file object.
      *
      * @return the kind
      */
-     public Kind getKind() {
-         return f.getKind();
-     }
+    public JavaFileObject.Kind getKind() {
+        String n = f.getName();
+        if (n.endsWith(CLASS.extension))
+            return CLASS;
+        else if (n.endsWith(SOURCE.extension)
+        		|| n.endsWith(".ceylon"))
+            return SOURCE;
+        else if (n.endsWith(HTML.extension))
+            return HTML;
+        else
+            return OTHER;
+    }
 
-     /**
+    /**
       * Checks if this file object is compatible with the specified
       * simple name and kind.  A simple name is a single identifier
       * (not qualified) as defined in the <a

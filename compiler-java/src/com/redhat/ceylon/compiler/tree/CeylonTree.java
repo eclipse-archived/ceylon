@@ -11,10 +11,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.tools.JavaFileObject;
+
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
+import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -1109,6 +1112,8 @@ public abstract class CeylonTree {
       
         public List <AliasDeclaration> aliases;
       
+        @NotAChild @NotPrintedInDump
+        public JavaFileObject file;
 
         List<CeylonTree.Annotation> pendingAnnotations;
         public void add(Annotation ann) {
