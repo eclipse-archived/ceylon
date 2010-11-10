@@ -5,6 +5,8 @@ import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.comp.Resolve;
@@ -155,8 +157,18 @@ public class ExtensionFinder {
                     ClassSymbol csym = reader.enterClass(name);
                     if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
                         continue;
-                    for (Symbol msym : csym.members().getElements()) {
-                        System.out.println("> " + msym);
+                    for (Symbol sym : csym.members().getElements()) {
+                        if (!sym.isConstructor())
+                            continue;
+                        MethodSymbol msym = (MethodSymbol) sym;
+                        List<VarSymbol> params = msym.params();
+                        if (params.size() != 1)
+                            continue;
+                        if (!types.isConvertible(source, params.head.type))
+                            continue;
+
+                        stack.head.sym = sym;
+                        visit(sym.ceylonIntroducedType());
                     }
                 }
             }

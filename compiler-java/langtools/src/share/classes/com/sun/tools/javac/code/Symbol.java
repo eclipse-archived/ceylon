@@ -1278,7 +1278,10 @@ public abstract class Symbol implements Element {
         }
 
         public Type ceylonIntroducedType() {
-            return getReturnType();
+            if (isConstructor())
+                return owner.type;
+            else
+                return getReturnType();
         }
 
         public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
