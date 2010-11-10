@@ -516,8 +516,8 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         // process package annotations
         annotateLater(tree.packageAnnotations, env, tree.packge);
 
-        // Import-on-demand java.lang.
-        if (Context.isCeylon())
+        // Import-on-demand java.lang or ceylon.language.
+        if (tree.isCeylonProgram)
             importAll(tree.pos, reader.enterPackage(names.ceylon_language), env);
         else
             importAll(tree.pos, reader.enterPackage(names.java_lang), env);

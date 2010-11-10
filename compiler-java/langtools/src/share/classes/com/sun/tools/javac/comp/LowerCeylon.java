@@ -187,8 +187,7 @@ public class LowerCeylon extends TreeTranslator {
         			tree.setType(newType);
         			return ceylonExtensionIfNeeded(tree, dstType);
         		}
-        	}
-        	
+        	}	
         }
         
         return tree;

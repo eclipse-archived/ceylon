@@ -1112,7 +1112,7 @@ public class JavacFileManager implements StandardJavaFileManager {
         return getFileForOutput(location, name, sibling);
     }
 
-    private JavaFileObject getFileForOutput(Location location,
+    protected JavaFileObject getFileForOutput(Location location,
                                             String fileName,
                                             FileObject sibling)
         throws IOException

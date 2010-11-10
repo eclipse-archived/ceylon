@@ -281,6 +281,7 @@ public class Gen {
         
         topLev.lineMap = getMap();
         topLev.sourcefile = t.file;
+        topLev.isCeylonProgram = true;
 
         // System.out.println(topLev);
         return topLev;

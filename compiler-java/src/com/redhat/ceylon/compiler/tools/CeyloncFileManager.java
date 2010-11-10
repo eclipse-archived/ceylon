@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
+import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
@@ -25,9 +25,7 @@ public class CeyloncFileManager extends JavacFileManager
 	}
 
 	protected JavaFileObject.Kind getKind(String extension) {
-		if (extension.equals(".ceylon"))
-			System.err.println(extension);
-        if (extension.equals(JavaFileObject.Kind.CLASS.extension))
+		if (extension.equals(JavaFileObject.Kind.CLASS.extension))
             return JavaFileObject.Kind.CLASS;
         else if (extension.equals(JavaFileObject.Kind.SOURCE.extension) 
         		|| extension.equals(".ceylon")
@@ -70,10 +68,7 @@ public class CeyloncFileManager extends JavacFileManager
             Set<JavaFileObject.Kind> kinds,
             boolean recurse) 
             throws IOException {
-		 if (packageName.contains("ceylon")) {
-			 System.out.println();
-		 }
-    	 Iterable<JavaFileObject> result = super.list(location, packageName,
+    	Iterable<JavaFileObject> result = super.list(location, packageName,
     			 kinds, recurse);
     	 ListBuffer<JavaFileObject> buf = new ListBuffer<JavaFileObject>();
     	 for (JavaFileObject f: result) {
@@ -92,5 +87,16 @@ public class CeyloncFileManager extends JavacFileManager
     		return super.inferBinaryName(location, fo.getFile());
     	}
 		return super.inferBinaryName(location, file);
+    }
+    
+    protected JavaFileObject getFileForOutput(Location location,
+            String fileName,
+            FileObject sibling)
+    throws IOException
+    {
+    	if (sibling instanceof CeylonFileObject) {
+    		sibling = ((CeylonFileObject)sibling).getFile();
+    	}
+		return super.getFileForOutput(location, fileName, sibling);    	
     }
 }

@@ -224,7 +224,7 @@ public class RecognizedOptions {
         XJCOV,
         XD);
 
-    static Option[] getJavaCompilerOptions(OptionHelper helper) {
+    public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
     }
 
@@ -589,10 +589,13 @@ public class RecognizedOptions {
             public boolean matches(String s) {
                 this.s = s;
                 return s.endsWith(".java")  // Java source file
+                	|| s.endsWith(".ceylon") // FIXME: Should be a FileManager query
                     || SourceVersion.isName(s);   // Legal type name
             }
             public boolean process(Options options, String option) {
-                if (s.endsWith(".java") ) {
+                if (s.endsWith(".java")
+                		|| s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                ) {
                     File f = new File(s);
                     if (!f.exists()) {
                         helper.error("err.file.not.found", f);

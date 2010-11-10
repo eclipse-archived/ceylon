@@ -115,7 +115,7 @@ public interface JavacOption {
 
         /** Print a line of documentation describing this option, if standard.
          */
-        void help(PrintWriter out) {
+        public void help(PrintWriter out) {
             String s = "  " + helpSynopsis();
             out.print(s);
             for (int j = s.length(); j < 29; j++) out.print(" ");
@@ -130,7 +130,7 @@ public interface JavacOption {
 
         /** Print a line of documentation describing this option, if non-standard.
          */
-        void xhelp(PrintWriter out) {}
+        public void xhelp(PrintWriter out) {}
 
         /** Process the option (with arg). Return true if error detected.
          */
@@ -163,8 +163,8 @@ public interface JavacOption {
         XOption(OptionName name, String descrKey) {
             this(name, null, descrKey);
         }
-        void help(PrintWriter out) {}
-        void xhelp(PrintWriter out) { super.help(out); }
+        public void help(PrintWriter out) {}
+        public void xhelp(PrintWriter out) { super.help(out); }
         public OptionKind getKind() { return OptionKind.EXTENDED; }
     };
 
@@ -177,8 +177,8 @@ public interface JavacOption {
         HiddenOption(OptionName name, String argsNameKey) {
             super(name, argsNameKey, null);
         }
-        void help(PrintWriter out) {}
-        void xhelp(PrintWriter out) {}
+        public void help(PrintWriter out) {}
+        public void xhelp(PrintWriter out) {}
         public OptionKind getKind() { return OptionKind.HIDDEN; }
     };
 
