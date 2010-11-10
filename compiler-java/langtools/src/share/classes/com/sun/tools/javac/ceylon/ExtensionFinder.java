@@ -115,17 +115,24 @@ public class ExtensionFinder {
 
             // Visit class members
             if (source.tag == CLASS) {
-                for (Symbol sym : ((ClassSymbol) source.tsym).members().getElements()) {
-                    if (sym.attribute(syms.ceylonExtensionType.tsym) == null)
-                        continue;
-
-                    stack.head.sym = sym;
-                    visit(sym.ceylonIntroducedType());
-                }
+                visitMemberMethodsAndAttributes(source);
             }
 
             // Pop our level off the stack before returning
             stack = stack.tail;
+        }
+
+        /**
+         * Visit this class's member methods and member attributes.
+         */
+        private void visitMemberMethodsAndAttributes(Type source) {
+            for (Symbol sym : ((ClassSymbol) source.tsym).members().getElements()) {
+                if (sym.attribute(syms.ceylonExtensionType.tsym) == null)
+                    continue;
+
+                stack.head.sym = sym;
+                visit(sym.ceylonIntroducedType());
+            }
         }
 
         // Remove routes that contain multi-step conversions that are possible with a single step
