@@ -1285,7 +1285,10 @@ public abstract class Symbol implements Element {
         }
 
         public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
-            return make.App(make.Select(tree, this));
+            if (isConstructor())
+                return make.NewClass(null, null, make.QualIdent(owner.type.tsym), List.of(tree), null);
+            else
+                return make.App(make.Select(tree, this));
         }
     }
 
