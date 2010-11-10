@@ -68,7 +68,7 @@ public class ExtensionFinder {
                 for (RouteElement element : elements) {
                     this.elements = this.elements.prepend(new RouteElement(element.type, element.sym));
                 }
-                target = elements.head.type;
+                target = elements.head.sym.ceylonIntroducedType();
             }
 
             public boolean isLongerVersionOf(Route other) {
