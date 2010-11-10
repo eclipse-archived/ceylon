@@ -13,7 +13,6 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 
 import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
@@ -162,14 +161,12 @@ public class ExtensionFinder {
     }
 
     private class MethodFinder extends Finder {
-        private final DiagnosticPosition pos;
         private final Env<AttrContext> env;
         private final Name name;
         private final List<Type> argtypes;
         private final List<Type> typeargtypes;
 
-        public MethodFinder(DiagnosticPosition pos, Env<AttrContext> env, Name name, List<Type> argtypes, List<Type> typeargtypes) {
-            this.pos = pos;
+        public MethodFinder(Env<AttrContext> env, Name name, List<Type> argtypes, List<Type> typeargtypes) {
             this.env = env;
             this.name = name;
             this.argtypes = argtypes;
@@ -220,7 +217,7 @@ public class ExtensionFinder {
      */
     public Route findUniqueRoute(Type source,
                                  Name name, List<Type> argtypes, List<Type> typeargtypes,
-                                 DiagnosticPosition pos, Env<AttrContext> env) {
-        return findUniqueRoute(source, new MethodFinder(pos, env, name, argtypes, typeargtypes));
+                                 Env<AttrContext> env) {
+        return findUniqueRoute(source, new MethodFinder(env, name, argtypes, typeargtypes));
     }
 }

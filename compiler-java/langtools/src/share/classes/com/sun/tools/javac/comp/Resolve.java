@@ -1240,7 +1240,7 @@ public class Resolve {
         }
         if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
             Route extension = extensionFinder.findUniqueRoute(
-                site, name, argtypes, typeargtypes, pos, env);
+                site, name, argtypes, typeargtypes, env);
             if (extension != null) {
                 throw new ExtensionRequiredException(extension);
             }
