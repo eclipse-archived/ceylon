@@ -8,11 +8,14 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.comp.Resolve;
+import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
+
+import com.redhat.ceylon.compiler.tree.CeylonTree;
 
 import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
@@ -30,14 +33,18 @@ public class ExtensionFinder {
         return instance;
     }
 
+    private final Name.Table names;
     private final Symtab syms;
     private final Types types;
     private final Resolve rs;
+    private final ClassReader reader;
 
     private ExtensionFinder(Context context) {
+        names = Name.Table.instance(context);
         syms = Symtab.instance(context);
         types = Types.instance(context);
         rs = Resolve.instance(context);
+        reader = ClassReader.instance(context);
     }
 
     private static class RouteElement {
@@ -115,11 +122,44 @@ public class ExtensionFinder {
 
             // Visit class members
             if (source.tag == CLASS) {
+                visitToplevelClasses(source);
                 visitMemberMethodsAndAttributes(source);
             }
 
             // Pop our level off the stack before returning
             stack = stack.tail;
+        }
+
+        /**
+         * Visit top-level classes.
+         */
+        private void visitToplevelClasses(Type source) {
+            CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
+            for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
+                for (CeylonTree.ImportPath path : id.path()) {
+                    // Build the name of the class being imported.
+                    // TODO: check for "import implicit"
+                    List<String> elements = path.pathElements;
+                    if (elements.get(elements.size() - 1).equals("*"))
+                        continue;
+                    StringBuilder sb = new StringBuilder();
+                    for (String element : elements) {
+                        if (sb.length() > 0)
+                            sb.append('.');
+                        sb.append(element);
+                    }
+                    Name name = names.fromString(sb.toString());
+
+                    // Read the class and look for suitable constructors.
+                    // TODO: handle overloaded top-level classes
+                    ClassSymbol csym = reader.enterClass(name);
+                    if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
+                        continue;
+                    for (Symbol msym : csym.members().getElements()) {
+                        System.out.println("> " + msym);
+                    }
+                }
+            }
         }
 
         /**
