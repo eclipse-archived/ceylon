@@ -71,7 +71,7 @@ public class Resolve {
     public final boolean boxingEnabled; // = source.allowBoxing();
     public final boolean varargsEnabled; // = source.allowVarargs();
     private final boolean debugResolve;
-    final ExtensionFinder extensionFinder;
+    ExtensionFinder extensionFinder;
 
     public static Resolve instance(Context context) {
         Resolve instance = context.get(resolveKey);
@@ -1244,42 +1244,6 @@ public class Resolve {
             if (extension != null) {
                 throw new ExtensionRequiredException(extension);
             }
-/*
-            // Look for toplevel extension classes
-            List<Route> candidates = List.<Route>nil();
-            CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
-            for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
-                for (CeylonTree.ImportPath path : id.path()) {
-                    List<String> elements = path.pathElements;
-                    if (elements.get(elements.size() - 1).equals("*"))
-                        continue;
-                    // TODO: check for "import implicit"
-                    StringBuilder sb = new StringBuilder();
-                    for (String element : elements) {
-                        if (sb.length() > 0)
-                            sb.append('.');
-                        sb.append(element);
-                    }
-                    // TODO: handle overloaded top-level classes
-                    ClassSymbol csym = reader.enterClass(names.fromString(sb.toString()));
-                    if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
-                        continue;
-                    Symbol cons = resolveConstructor(
-                        pos, env, csym.type, List.of(site), List.<Type>nil());
-                    if (cons.kind != MTH)
-                        continue;
-                    Symbol resolved = resolveQualifiedMethod(
-                        env, csym.type, name, argtypes, typeargtypes);
-                    if (resolved.kind != MTH)
-                        continue;
-                    Route extension = types.getCeylonExtension(site, csym.type);
-                    if (extension == null)
-                        continue;
-                    candidates = candidates.append(extension);
-                }
-            }
-            assert candidates.size() == 0; // XXX < 2
-            */
         }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
