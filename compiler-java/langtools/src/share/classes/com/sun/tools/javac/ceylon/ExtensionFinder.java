@@ -41,6 +41,8 @@ public class ExtensionFinder {
     private final Resolve rs;
     private final ClassReader reader;
 
+    private boolean hunting = false;
+
     private ExtensionFinder(Context context) {
         names = Name.Table.instance(context);
         syms = Symtab.instance(context);
@@ -124,7 +126,8 @@ public class ExtensionFinder {
 
             // Visit class members
             if (source.tag == CLASS) {
-                visitToplevelClasses(source);
+                visitImportedToplevelClasses(source);
+                visitDeclaredToplevelClasses(source);
                 visitMemberMethodsAndAttributes(source);
             }
 
@@ -133,9 +136,9 @@ public class ExtensionFinder {
         }
 
         /**
-         * Visit top-level classes.
+         * Visit imported top-level classes.
          */
-        private void visitToplevelClasses(Type source) {
+        private void visitImportedToplevelClasses(Type source) {
             CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
             for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
                 for (CeylonTree.ImportPath path : id.path()) {
@@ -150,27 +153,45 @@ public class ExtensionFinder {
                             sb.append('.');
                         sb.append(element);
                     }
-                    Name name = names.fromString(sb.toString());
-
-                    // Read the class and look for suitable constructors.
-                    // TODO: handle overloaded top-level classes
-                    ClassSymbol csym = reader.enterClass(name);
-                    if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
-                        continue;
-                    for (Symbol sym : csym.members().getElements()) {
-                        if (!sym.isConstructor())
-                            continue;
-                        MethodSymbol msym = (MethodSymbol) sym;
-                        List<VarSymbol> params = msym.params();
-                        if (params.size() != 1)
-                            continue;
-                        if (!types.isConvertible(source, params.head.type))
-                            continue;
-
-                        stack.head.sym = sym;
-                        visit(sym.ceylonIntroducedType());
-                    }
+                    visitClass(source, names.fromString(sb.toString()));
                 }
+            }
+        }
+
+        /**
+         * Visit declared top-level classes.
+         */
+        private void visitDeclaredToplevelClasses(Type source) {
+            CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
+            if (cu.classDecls != null) {
+                for (CeylonTree.ClassDeclaration cd : cu.classDecls) {
+                    visitClass(source, names.fromString(cd.nameAsString()));
+                }
+            }
+        }
+
+        /**
+         * Visit a class specified by name.
+         */
+        private void visitClass(Type source, Name name) {
+            // Read the class and look for suitable constructors.
+            // TODO: handle overloaded top-level classes
+            ClassSymbol csym = reader.enterClass(name);
+            if (csym.attribute(syms.ceylonExtensionType.tsym) == null)
+                return;
+
+            for (Symbol sym : csym.members().getElements()) {
+                if (!sym.isConstructor())
+                    continue;
+                MethodSymbol msym = (MethodSymbol) sym;
+                List<VarSymbol> params = msym.params();
+                if (params.size() != 1)
+                    continue;
+                if (!types.isConvertible(source, params.head.type))
+                    continue;
+
+                stack.head.sym = sym;
+                visit(sym.ceylonIntroducedType());
             }
         }
 
@@ -255,10 +276,18 @@ public class ExtensionFinder {
     }
 
     private Route findUniqueRoute(Type source, Finder finder) {
-        finder.visit(source);
-        finder.cull();
-        if (finder.routes.size() == 1)
-            return new Route(finder.routes.head.elements);
+        if (!hunting) {
+            hunting = true;
+            try {
+                finder.visit(source);
+                finder.cull();
+                if (finder.routes.size() == 1)
+                    return new Route(finder.routes.head.elements);
+            }
+            finally {
+                hunting = false;
+            }
+        }
         return null;
     }
 
