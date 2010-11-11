@@ -26,7 +26,7 @@
 package com.redhat.ceylon.compiler.launcher;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.LanguageCompiler;
+import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.sun.tools.javac.util.Options;
 import java.io.File;
 import java.io.IOException;

@@ -23,7 +23,7 @@
  * questions.
  */
 
-package com.redhat.ceylon.compiler;
+package com.redhat.ceylon.compiler.tools;
 
 import java.io.InputStream;
 import java.util.Queue;
