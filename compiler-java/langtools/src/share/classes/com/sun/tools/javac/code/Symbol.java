@@ -710,7 +710,6 @@ public abstract class Symbol implements Element {
         public Pool pool;
 
         public ClassSymbol(long flags, Name name, Type type, Symbol owner) {
-  	
             super(flags, name, type, owner);
             this.members_field = null;
             this.fullname = formFullName(name, owner);
@@ -718,8 +717,6 @@ public abstract class Symbol implements Element {
             this.sourcefile = null;
             this.classfile = null;
             this.pool = null;
-           	if (name.toString().equals("X"))
-        		System.err.println(name);
         }
 
         public ClassSymbol(long flags, Name name, Symbol owner) {
