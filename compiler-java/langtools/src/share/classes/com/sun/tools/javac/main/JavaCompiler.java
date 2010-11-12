@@ -46,6 +46,7 @@ import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskListener;
 
 import com.sun.tools.javac.util.*;
+import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.tree.*;
 import com.sun.tools.javac.parser.*;
@@ -714,7 +715,7 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
         //      System.err.println("completing " + c);//DEBUG
 
         try {
-            context.enterJava();
+            Context.SourceLanguage.push(Language.JAVA);
 
             if (completionFailureName == c.fullname) {
                 throw new CompletionFailure(c, "user-selected completion failure by class name");
@@ -766,7 +767,7 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
             implicitSourceFilesRead = true;
 
         } finally {
-            context.leaveJava();
+            Context.SourceLanguage.pop();
         }
     }
 

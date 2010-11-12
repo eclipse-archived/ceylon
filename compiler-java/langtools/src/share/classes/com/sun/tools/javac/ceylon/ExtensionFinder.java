@@ -139,6 +139,7 @@ public class ExtensionFinder {
          * Visit imported top-level classes.
          */
         private void visitImportedToplevelClasses(Type source) {
+/*
             CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
             for (CeylonTree.ImportDeclaration id : cu.importDeclarations) {
                 for (CeylonTree.ImportPath path : id.path()) {
@@ -156,18 +157,21 @@ public class ExtensionFinder {
                     visitClass(source, names.fromString(sb.toString()));
                 }
             }
+*/
         }
 
         /**
          * Visit declared top-level classes.
          */
         private void visitDeclaredToplevelClasses(Type source) {
+/*
             CeylonTree.CompilationUnit cu = Context.ceylonCompilationUnit();
             if (cu.classDecls != null) {
                 for (CeylonTree.ClassDeclaration cd : cu.classDecls) {
                     visitClass(source, names.fromString(cd.nameAsString()));
                 }
             }
+*/
         }
 
         /**

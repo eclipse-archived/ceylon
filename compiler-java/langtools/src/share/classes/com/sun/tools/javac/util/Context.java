@@ -27,7 +27,6 @@ package com.sun.tools.javac.util;
 
 import com.sun.tools.javac.Main;
 import java.util.*;
-import com.redhat.ceylon.compiler.tree.CeylonTree.CompilationUnit;
 
 /**
  * Support for an abstract context, modelled loosely after ThreadLocal
@@ -207,41 +206,32 @@ public class Context {
             throw new IllegalStateException();
     }
 
-    /**
-     * TODO: Ideally this stack should not be static, but Context.isCeylon
-     * is required in one or two places where a context is unavailable.
-     */
-    private static ArrayList<CompilationUnit> ceylonContextStack =
-        new ArrayList<CompilationUnit>();
 
-    public void enterCeylon(CompilationUnit cu) {
-        ceylonContextStack.add(cu);
-    }
+    public static class SourceLanguage {
+        public enum Language {
+            JAVA, CEYLON
+        }
 
-    public void leaveCeylon() {
-        int size = ceylonContextStack.size();
-        assert size > 0;
-        CompilationUnit cu = ceylonContextStack.remove(size - 1);
-        assert cu != null;
-    }
+        static ArrayList<Language> stack =
+            new ArrayList<Language>();
 
-    public void enterJava() {
-        ceylonContextStack.add(null);
-    }
+        static {
+            push(Language.JAVA);
+        }
 
-    public void leaveJava() {
-        int size = ceylonContextStack.size();
-        assert size > 0;
-        CompilationUnit cu = ceylonContextStack.remove(size - 1);
-        assert cu == null;
+        public static void push(final Language lang) {
+            stack.add(lang);
+        }
+        public static Language pop() {
+            return stack.remove(stack.size() - 1);
+        }
+        public static Language current() {
+            return stack.get(stack.size() - 1);
+        }
     }
 
     public static boolean isCeylon() {
-        int size = ceylonContextStack.size();
-        return size > 0 && ceylonContextStack.get(size - 1) != null;
+        return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
     }
 
-    public static CompilationUnit ceylonCompilationUnit() {
-        return ceylonContextStack.get(ceylonContextStack.size() - 1);
-    }
 }
