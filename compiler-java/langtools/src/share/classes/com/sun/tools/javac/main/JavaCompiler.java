@@ -1282,7 +1282,8 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
             make.at(Position.FIRSTPOS);
             TreeMaker localMake = make.forToplevel(env.toplevel);
 
-            env.tree = lowerCeylon.translateTopLevelClass(env.tree, localMake);
+            if (Context.isCeylon())
+            	env.tree = lowerCeylon.translateTopLevelClass(env.tree, localMake);
 
             if (env.tree instanceof JCCompilationUnit) {
                 if (!(stubOutput || sourceOutput || printFlat)) {
