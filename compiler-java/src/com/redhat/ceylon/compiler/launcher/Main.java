@@ -125,7 +125,7 @@ public class Main extends com.sun.tools.javac.main.Main {
      * Construct a compiler instance.
      */
     public Main(String name, PrintWriter out) {
-    	super(name, out);
+        super(name, out);
         this.ownName = name;
         this.out = out;
     }

@@ -54,9 +54,9 @@ import com.sun.tools.javac.util.Position.LineMap;
 
 public class LanguageCompiler extends JavaCompiler {
 
-	private Gen gen;
-	
-	/** Get the JavaCompiler instance for this context. */
+    private Gen gen;
+
+    /** Get the JavaCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
@@ -64,16 +64,16 @@ public class LanguageCompiler extends JavaCompiler {
         return instance;
     }
 
-	public LanguageCompiler(Context context) {
-		super(context);
-		try {
-			gen = new Gen(context);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public LanguageCompiler(Context context) {
+        super(context);
+        try {
+            gen = new Gen(context);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	/** Parse contents of file.
+    /** Parse contents of file.
      *  @param filename     The name of the file to be parsed.
      */
     public JCTree.JCCompilationUnit parse(JavaFileObject filename) {
@@ -81,10 +81,10 @@ public class LanguageCompiler extends JavaCompiler {
         try {
             JCTree.JCCompilationUnit t;
             if (filename.getName().endsWith(".java")) {
-            
-            	t = parse(filename, readSource(filename));
+
+                t = parse(filename, readSource(filename));
             } else {
-            	t = ceylonParse(filename, readSource(filename));
+                t = ceylonParse(filename, readSource(filename));
             }
             if (t.endPositions != null)
                 log.setEndPosTable(filename, t.endPositions);
@@ -95,70 +95,70 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     protected JCCompilationUnit parse(JavaFileObject filename,
-			CharSequence readSource) {
-    	// FIXME
-    	if (filename instanceof CeylonFileObject)
-    		return ceylonParse(filename, readSource);	
-    	else
-    		return super.parse(filename, readSource);
+            CharSequence readSource) {
+        // FIXME
+        if (filename instanceof CeylonFileObject)
+            return ceylonParse(filename, readSource);
+        else
+            return super.parse(filename, readSource);
     }
-    
-	 JCCompilationUnit ceylonParse(JavaFileObject filename,
-			CharSequence readSource) {
-		try {
-			InputStream is = filename.openInputStream();
-			ANTLRInputStream input = new ANTLRInputStream(is);
-			CeylonLexer lexer = new CeylonLexer(input);
 
-			CommonTokenStream tokens = new CommonTokenStream(lexer);
+     JCCompilationUnit ceylonParse(JavaFileObject filename,
+            CharSequence readSource) {
+        try {
+            InputStream is = filename.openInputStream();
+            ANTLRInputStream input = new ANTLRInputStream(is);
+            CeylonLexer lexer = new CeylonLexer(input);
 
-			CeylonParser parser = new CeylonParser(tokens);
-			CeylonParser.compilationUnit_return r = parser.compilationUnit();
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-			CommonTree t = (CommonTree)r.getTree();
+            CeylonParser parser = new CeylonParser(tokens);
+            CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
-			if (parser.getNumberOfSyntaxErrors() == 0 &&
-					lexer.getNumberOfSyntaxErrors() == 0) {
-				CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename.getName());
-				cu.file = filename;
-		    	cu.accept(new Grok());
+            CommonTree t = (CommonTree)r.getTree();
 
-				char[] chars = readSource.toString().toCharArray();
-				LineMap map = Position.makeLineMap(chars, chars.length, false);
-				gen.setMap(map);
+            if (parser.getNumberOfSyntaxErrors() == 0 &&
+                    lexer.getNumberOfSyntaxErrors() == 0) {
+                CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename.getName());
+                cu.file = filename;
+                cu.accept(new Grok());
 
-				return gen.convert(cu);
-			}			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+                char[] chars = readSource.toString().toCharArray();
+                LineMap map = Position.makeLineMap(chars, chars.length, false);
+                gen.setMap(map);
 
-		return null;
-	}
-	
+                return gen.convert(cu);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
     public Env<AttrContext> attribute(Env<AttrContext> env) {
-    	if (env.toplevel.sourcefile instanceof CeylonFileObject) {
-    		try {
-    			Context.SourceLanguage.push(Language.CEYLON);
-    			return super.attribute(env);
-    		} finally {
-    			Context.SourceLanguage.pop();
-    		}
-    	}
-		return super.attribute(env);
+        if (env.toplevel.sourcefile instanceof CeylonFileObject) {
+            try {
+                Context.SourceLanguage.push(Language.CEYLON);
+                return super.attribute(env);
+            } finally {
+                Context.SourceLanguage.pop();
+            }
+        }
+        return super.attribute(env);
     }
-    
+
     protected void desugar(final Env<AttrContext> env, Queue<Pair<Env<AttrContext>, JCClassDecl>> results) {
-    	if (env.toplevel.sourcefile instanceof CeylonFileObject) {
-    		try {
-    			Context.SourceLanguage.push(Language.CEYLON);
-    			super.desugar(env, results);
-    			return;
-    		} finally {
-    			Context.SourceLanguage.pop();
-    		}
-    	}
-    	super.desugar(env, results);
+        if (env.toplevel.sourcefile instanceof CeylonFileObject) {
+            try {
+                Context.SourceLanguage.push(Language.CEYLON);
+                super.desugar(env, results);
+                return;
+            } finally {
+                Context.SourceLanguage.pop();
+            }
+        }
+        super.desugar(env, results);
     }
 
 }

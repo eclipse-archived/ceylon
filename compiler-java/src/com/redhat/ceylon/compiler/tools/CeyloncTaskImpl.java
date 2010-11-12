@@ -38,15 +38,15 @@ import com.sun.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
 
-	CeyloncTaskImpl(JavacTool tool, Main compilerMain, Iterable<String> flags,
-			Context context, Iterable<String> classes,
-			Iterable<? extends JavaFileObject> fileObjects) {
-		super(tool, compilerMain, flags, context, classes, fileObjects);
-	}
+    CeyloncTaskImpl(JavacTool tool, Main compilerMain, Iterable<String> flags,
+            Context context, Iterable<String> classes,
+            Iterable<? extends JavaFileObject> fileObjects) {
+        super(tool, compilerMain, flags, context, classes, fileObjects);
+    }
 
-	protected void prepareCompiler() throws IOException {
-		// Register the CeylonCompiler with the context
-		CeylonCompiler.instance(context);
+    protected void prepareCompiler() throws IOException {
+        // Register the CeylonCompiler with the context
+        CeylonCompiler.instance(context);
         super.prepareCompiler();
    }
 }

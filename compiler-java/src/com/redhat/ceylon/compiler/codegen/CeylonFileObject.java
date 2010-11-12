@@ -18,9 +18,9 @@ implements JavaFileObject
         super(f);
         this.f = f;
     }
-    
+
     public JavaFileObject getFile() {
-    	return f;
+        return f;
     }
 
     /**
@@ -33,7 +33,7 @@ implements JavaFileObject
         if (n.endsWith(CLASS.extension))
             return CLASS;
         else if (n.endsWith(SOURCE.extension)
-        		|| n.endsWith(".ceylon"))
+                || n.endsWith(".ceylon"))
             return SOURCE;
         else if (n.endsWith(HTML.extension))
             return HTML;
@@ -54,7 +54,7 @@ implements JavaFileObject
       * otherwise
       */
      public boolean isNameCompatible(String simpleName, Kind kind)
-     {     
+     {
          if (kind == Kind.SOURCE)
          {
              String name = f.getName();
@@ -62,7 +62,7 @@ implements JavaFileObject
              if (name.endsWith(n)) {
                  return true;
              }
-         }               
+         }
 
          return f.isNameCompatible(simpleName, kind);
      }
@@ -95,6 +95,6 @@ implements JavaFileObject
      }
 
      public String toString() {
-    	 return f.toString();
+         return f.toString();
      }
 }

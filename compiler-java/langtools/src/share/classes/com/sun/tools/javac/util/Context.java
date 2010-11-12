@@ -205,33 +205,33 @@ public class Context {
         if (t == null)
             throw new IllegalStateException();
     }
-    
-    
-    public static class SourceLanguage {
-    	public enum Language {
-    		JAVA, CEYLON
-    	}
-    	
-    	static ArrayList<Language> stack =
-    		new ArrayList<Language>();
-    	
-    	static {
-    		push(Language.JAVA);
-    	}
 
-    	public static void push(final Language lang) {
-    		stack.add(lang);
-    	}
-    	public static Language pop() {
-    		return stack.remove(stack.size() - 1);
-    	}
-    	public static Language current() {
-    		return stack.get(stack.size() - 1);
-    	}
+
+    public static class SourceLanguage {
+        public enum Language {
+            JAVA, CEYLON
+        }
+
+        static ArrayList<Language> stack =
+            new ArrayList<Language>();
+
+        static {
+            push(Language.JAVA);
+        }
+
+        public static void push(final Language lang) {
+            stack.add(lang);
+        }
+        public static Language pop() {
+            return stack.remove(stack.size() - 1);
+        }
+        public static Language current() {
+            return stack.get(stack.size() - 1);
+        }
     }
-    
+
     public static boolean isCeylon() {
-    	return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
+        return SourceLanguage.current() == SourceLanguage.Language.CEYLON;
     }
-    
+
 }

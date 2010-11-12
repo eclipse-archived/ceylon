@@ -33,21 +33,21 @@ import com.sun.tools.javac.util.JavacFileManager;
 
 public class Main extends com.sun.tools.javac.Main {
 
-	/** Programmatic interface to the Java Programming Language
-	 * compiler, javac.
-	 *
-	 * @param args The command line arguments that would normally be
-	 * passed to the javac program as described in the man page.
-	 * @return an integer equivalent to the exit value from invoking
-	 * javac, see the man page for details.
-	 */
-	public static int compile(String[] args) {
-		com.sun.tools.javac.main.Main compiler =
-			new com.redhat.ceylon.compiler.launcher.Main("javac");
-		return compiler.compile(args);
-	}
+    /** Programmatic interface to the Java Programming Language
+     * compiler, javac.
+     *
+     * @param args The command line arguments that would normally be
+     * passed to the javac program as described in the man page.
+     * @return an integer equivalent to the exit value from invoking
+     * javac, see the man page for details.
+     */
+    public static int compile(String[] args) {
+        com.sun.tools.javac.main.Main compiler =
+            new com.redhat.ceylon.compiler.launcher.Main("javac");
+        return compiler.compile(args);
+    }
 
-	/** Unsupported command line interface.
+    /** Unsupported command line interface.
      * @param args   The command line parameters.
      */
     public static void main(String[] args) throws Exception {

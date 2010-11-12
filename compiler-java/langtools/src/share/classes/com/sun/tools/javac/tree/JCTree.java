@@ -330,7 +330,7 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
     /* The type of this node.
      */
     public Type type;
-    
+
     /* The tag of this node -- one of the constants declared above.
      */
     public abstract int getTag();
@@ -607,7 +607,7 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public int getTag() {
             return CLASSDEF;
         }
-        
+
         public boolean isOverloadedToplevelCeylonClass;
     }
 
@@ -1564,10 +1564,10 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public JCTree clazz;
         public JCExpression expr;
         protected JCTypeCast(JCTree clazz, JCExpression expr) {
-        	if (clazz.toString().contains("Mutable")) {
-        		 System.err.println();
+            if (clazz.toString().contains("Mutable")) {
+                 System.err.println();
 
-        	}
+            }
             this.clazz = clazz;
             this.expr = expr;
         }

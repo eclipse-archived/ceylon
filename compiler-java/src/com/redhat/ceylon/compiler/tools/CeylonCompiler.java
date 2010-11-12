@@ -41,16 +41,16 @@ import com.sun.tools.javac.main.Main;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Log;
 
-public class CeylonCompiler extends JavaCompiler 
-	implements ClassReader.SourceCompleter
+public class CeylonCompiler extends JavaCompiler
+    implements ClassReader.SourceCompleter
 {
 
-	public CeylonCompiler(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-	}
+    public CeylonCompiler(Context context) {
+        super(context);
+        // TODO Auto-generated constructor stub
+    }
 
-	/** Get the CeylonCompiler instance for this context. */
+    /** Get the CeylonCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
