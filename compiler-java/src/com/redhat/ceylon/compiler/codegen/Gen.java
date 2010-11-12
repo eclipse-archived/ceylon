@@ -870,6 +870,9 @@ public class Gen {
         public void visit(CeylonTree.ClassDeclaration decl) {
             stmts.append(convert(decl));
         }
+        public void visitDefault(CeylonTree tree) {
+            stmts.append(at(tree).Exec(convertExpression(tree)));
+        }
     }
 
     List<JCStatement> convertStmts(List<CeylonTree> stmts) {
@@ -1156,6 +1159,10 @@ public class Gen {
         class V extends CeylonTree.Visitor {
             public JCExpression result;
 
+            public void visit(This expr) {
+            	at(expr);
+            	result = makeIdent("this");
+            }
             public void visit(OperatorDot access) {
                 result = convert(access);
             }

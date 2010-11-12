@@ -34,6 +34,8 @@ public class MutableTest () {
         process.writeLine(t.value());
 
 	String? another = c("poo");
+
+	this.nnn;
     }
 
 //     public void arrayTest (Process process) {
