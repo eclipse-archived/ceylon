@@ -52,6 +52,4 @@ public void mutableTest2 (Process process) {
    T1 t1 = T1();
 
    Integer n1 = t1.a.b.f;
-
-   this.mutt;
 }
