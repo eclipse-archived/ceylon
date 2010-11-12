@@ -66,28 +66,41 @@ Setting up Eclipse to build the Ceylon compiler
 
     d) Click "Finish"
 
- 8. The project should now be correctly set up.  To test it:
+ 8. If you see an error of the form
 
- 9. Select "Run -> Run Configurations..." from the main menu.
+    "Access restriction: Class is not accessible due to restriction on
+    required library"
 
-10. In the "Run Configurations" dialog:
+    Go into
+
+    (Project) Properties -> Java Compiler -> Errors/Warnings -> 
+
+    Locate the "Forbidden reference (access rules)" option under
+    "Deprecated and restricted API" section in the dialog box.  Set
+    this to Warning" or "Ignore".
+
+ 9. The project should now be correctly set up.  To test it:
+
+10. Select "Run -> Run Configurations..." from the main menu.
+
+11. In the "Run Configurations" dialog:
 
     a) Right click on "Java Application" in the list on the left
        and select "New" from the popup menu.
  
-    b) Change "Name" to "hello"
+    b) Change "Name" to "CeylonCompiler"
  
     c) In the "Main" tab, next to "Main class", click "Search..."
     
     d) In the "Select Main Type" dialog:
  
-       i) Select "CeylonCompiler - com.redhat.ceylon.compiler.launcher"
+       i) Select "CeylonCompiler - com.redhat.ceylon.compiler.Main"
  
        ii) Click "Ok"
  
     e) Select the "Arguments" tab.
   
-    f) Set "Program arguments" to "-t samples/hello.ceylon".
+    f) Set "Program arguments" to "-cp samples:runtime samples/hello.ceylon".
  
     g) Set "VM arguments" to "-ea"
  
@@ -95,5 +108,5 @@ Setting up Eclipse to build the Ceylon compiler
  
     i) Click "Run"
 
-11. You should see some output from the Ceylon compiler in the
+12. You should see some output from the Ceylon compiler in the
     "Console" tab at the bottom of the screen.
