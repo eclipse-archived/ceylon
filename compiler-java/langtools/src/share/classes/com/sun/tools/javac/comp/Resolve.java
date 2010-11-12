@@ -44,7 +44,10 @@ import javax.lang.model.type.TypeKind;
 
 import com.sun.tools.javac.ceylon.ExtensionRequiredException;
 import com.sun.tools.javac.ceylon.ManglingRequiredException;
+import com.sun.tools.javac.ceylon.ExtensionFinder;
 import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
+
+import com.redhat.ceylon.compiler.tree.CeylonTree;
 
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
@@ -68,6 +71,7 @@ public class Resolve {
     public final boolean boxingEnabled; // = source.allowBoxing();
     public final boolean varargsEnabled; // = source.allowVarargs();
     private final boolean debugResolve;
+    ExtensionFinder extensionFinder;
 
     public static Resolve instance(Context context) {
         Resolve instance = context.get(resolveKey);
@@ -103,6 +107,7 @@ public class Resolve {
         varargsEnabled = source.allowVarargs();
         Options options = Options.instance(context);
         debugResolve = options.get("debugresolve") != null;
+        extensionFinder = ExtensionFinder.instance(context);
     }
 
     /** error symbols, which are returned when resolution fails
@@ -1233,13 +1238,20 @@ public class Resolve {
                 }
             }
         }
+        if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
+            Route extension = extensionFinder.findUniqueRoute(
+                site, name, argtypes, typeargtypes, env);
+            if (extension != null) {
+                throw new ExtensionRequiredException(extension);
+            }
+        }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
         }
         return sym;
     }
 
-    Symbol resolveQualifiedMethod(Env<AttrContext> env,
+    public Symbol resolveQualifiedMethod(Env<AttrContext> env,
             Type site, Name name, List<Type> argtypes,
             List<Type> typeargtypes) {
         Symbol sym = findMethod(env, site, name, argtypes, typeargtypes, false,

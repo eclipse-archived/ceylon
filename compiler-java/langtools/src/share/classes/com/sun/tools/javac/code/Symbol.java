@@ -45,6 +45,7 @@ import com.sun.tools.javac.model.*;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
@@ -1278,11 +1279,24 @@ public abstract class Symbol implements Element {
         }
 
         public Type ceylonIntroducedType() {
-            return getReturnType();
+            if (isConstructor()) {
+                return owner.type;
+            }
+            else {
+                return getReturnType();
+            }
         }
 
         public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
-            return make.App(make.Select(tree, this));
+            if (isConstructor()) {
+                JCNewClass result = make.NewClass(
+                    null, null, make.QualIdent(owner.type.tsym), List.of(tree), null);
+                result.constructor = this;
+                return result;
+            }
+            else {
+                return make.App(make.Select(tree, this));
+            }
         }
     }
 
