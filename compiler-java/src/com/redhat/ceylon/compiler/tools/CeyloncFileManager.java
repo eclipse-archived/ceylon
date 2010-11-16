@@ -44,6 +44,15 @@ import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 public class CeyloncFileManager extends JavacFileManager
     implements StandardJavaFileManager
 {
+    protected String sourcePath;
+
+    public void setSourcePath(String sourcePath) {
+        this.sourcePath = sourcePath;
+    }
+
+    public String getSourcePath() {
+        return sourcePath;
+    }
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
@@ -80,7 +89,7 @@ public class CeyloncFileManager extends JavacFileManager
         ArrayList<JavaFileObject> result = new ArrayList<JavaFileObject>();
         for (JavaFileObject file : theCollection) {
             if (file.getName().endsWith(".ceylon")) {
-                result.add(new CeylonFileObject(file));
+                result.add(new CeylonFileObject(file, sourcePath));
             } else {
                 result.add(file);
             }

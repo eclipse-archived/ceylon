@@ -166,7 +166,8 @@ public class RecognizedOptions {
         O,
         XJCOV,
         XD,
-        SOURCEFILE);
+        SOURCEFILE,
+        SRC);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -184,7 +185,8 @@ public class RecognizedOptions {
         D,
         S,
         ENCODING,
-        SOURCE);
+        SOURCE,
+        SRC);
 
     static Set<OptionName> javacToolOptions = EnumSet.of(
         G,
@@ -478,6 +480,13 @@ public class RecognizedOptions {
         // treat warnings as errors
         new Option(WERROR,                                      "opt.Werror"),
 
+
+        new Option(SRC,                     "opt.arg.src",      "opt.src") {
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-src", arg);
+            }
+        },
+
         // use complex inference from context in the position of a method call argument
         new HiddenOption(COMPLEXINFERENCE),
 
@@ -598,6 +607,17 @@ public class RecognizedOptions {
                 ) {
                     File f = new File(s);
                     if (!f.exists()) {
+                        if (s.endsWith(".ceylon")) {
+                            String path = options.get("-src");
+                            if (path != null) {
+                                File ff = new File(path + File.separator + s);
+                                if (ff.isFile()) {
+                                    helper.addFile(ff);
+                                    return false;
+                                }
+                            }
+                        }
+
                         helper.error("err.file.not.found", f);
                         return true;
                     }
@@ -612,7 +632,7 @@ public class RecognizedOptions {
                 return false;
             }
         },
-    };
+        };
     }
 
 }

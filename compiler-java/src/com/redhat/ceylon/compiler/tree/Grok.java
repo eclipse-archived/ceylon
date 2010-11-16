@@ -288,6 +288,28 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
+
+        if (expr.typeArgumentList != null) {
+            // We have something like (expr (call (typename)) typeArgList)
+            // We want to turn it into (call (type (typename typeArgList)))
+            if (expr.thing instanceof CeylonTree.CallExpression) {
+                CeylonTree.CallExpression ce =
+                    (CeylonTree.CallExpression)expr.thing;
+                if (ce.method instanceof CeylonTree.TypeName) {
+                    CeylonTree.TypeName tn =
+                        (CeylonTree.TypeName)ce.method;
+                    CeylonTree.Type type = new CeylonTree.Type();
+                    type.setName(tn);
+                    type.setTypeArgumentList(expr.typeArgumentList);
+                    ce.method = type;
+                } else {
+                    throw new RuntimeException();
+                }
+            } else {
+                throw new RuntimeException();
+            }
+        }
+
         current.context.append(expr.thing);
     }
 

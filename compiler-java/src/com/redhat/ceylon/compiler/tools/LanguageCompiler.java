@@ -44,9 +44,11 @@ import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
@@ -103,7 +105,7 @@ public class LanguageCompiler extends JavaCompiler {
             return super.parse(filename, readSource);
     }
 
-     JCCompilationUnit ceylonParse(JavaFileObject filename,
+     private JCCompilationUnit ceylonParse(JavaFileObject filename,
             CharSequence readSource) {
         try {
             InputStream is = filename.openInputStream();
@@ -133,7 +135,10 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RuntimeException(e);
         }
 
-        return null;
+        JCCompilationUnit result =
+            make.TopLevel(List.<JCAnnotation>nil(), null, List.<JCTree>of(make.Erroneous()));
+        result.sourcefile = filename;
+        return result;
     }
 
     public Env<AttrContext> attribute(Env<AttrContext> env) {

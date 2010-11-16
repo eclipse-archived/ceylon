@@ -1279,12 +1279,6 @@ public abstract class CeylonTree {
         CeylonTree typeArgumentList;
 
         public void setTypeArgumentList(CeylonTree t) {
-            // FIXME: An expression has a type argument list in the case of something like
-            //
-            // String stringify<Y>(Y y) where Y satisfies Number;
-            // String zero = stringify<Natural>(0);
-            //
-            // The TypeArgumentList should be attached to the CallExpression
             assert(typeArgumentList == null);
             typeArgumentList = t;
         }

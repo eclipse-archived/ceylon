@@ -21,6 +21,8 @@ import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.comp.Resolve;
@@ -43,6 +45,7 @@ import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
+import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -53,6 +56,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 
+import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.tree.CeylonTree.*;
@@ -65,7 +69,7 @@ public class Gen {
     Resolve resolve;
     JavaCompiler compiler;
     DiagnosticCollector<JavaFileObject> diagnostics;
-    JavacFileManager fileManager;
+    CeyloncFileManager fileManager;
     JavacTaskImpl task;
     Options options;
     private LineMap map;
@@ -80,7 +84,7 @@ public class Gen {
         diagnostics =
             new DiagnosticCollector<JavaFileObject>();
         fileManager
-            = (JavacFileManager)compiler.getStandardFileManager(diagnostics, null, null);
+            = (CeyloncFileManager)compiler.getStandardFileManager(diagnostics, null, null);
         fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
                 Arrays.asList(new File("/tmp")));
 
@@ -118,7 +122,7 @@ public class Gen {
         resolve = Resolve.instance(context);
         syms = Symtab.instance(context);
 
-        fileManager = (JavacFileManager) context.get(JavaFileManager.class);
+        fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
     }
 
 
@@ -275,16 +279,38 @@ public class Gen {
             }
         }
 
+        String prefix = fileManager.getSourcePath();
+        JCExpression pkg = null;
+
+        // Figure out the package name by stripping the "-src" prefix and extracting
+        // the package part of the fullname.
+        if (prefix != null && t.file.toString().startsWith(prefix)) {
+            String fullname = t.file.toString().substring(prefix.length());
+            assert fullname.endsWith(".ceylon");
+            fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
+            fullname = fullname.replace(File.separator, ".");
+            pkg = getPackage(Convert.packagePart(fullname));
+        }
+
         JCCompilationUnit topLev =
             at(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
-                    /* package id*/ null, defs.toList());
+                    pkg, defs.toList());
 
         topLev.lineMap = getMap();
         topLev.sourcefile = t.file;
         topLev.isCeylonProgram = true;
 
-        // System.out.println(topLev);
+        System.out.println(topLev);
         return topLev;
+    }
+
+    private JCExpression getPackage(String fullname) {
+        String shortName = Convert.shortName(fullname);
+        String packagePart = Convert.packagePart(fullname);
+        if (packagePart == null || packagePart.length() == 0)
+            return make.Ident(names.fromString(shortName));
+        else
+            return make.Select(getPackage(packagePart), names.fromString(shortName));
     }
 
     public void methodClass(CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
@@ -588,9 +614,8 @@ public class Gen {
                 super(stmts);
             }
             public void visit(CeylonTree.FormalParameter param) {
-                JCExpression vartype = makeIdent(param.type().name().components());
                 JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(0),
-                        makeName(param.names), vartype, null);
+                        makeName(param.names), convert(param.type()), null);
                 params.append(var);
             }
 
@@ -620,7 +645,7 @@ public class Gen {
                 }
             }
 
-             public void visit(CeylonTree.MemberDeclaration mem) {
+            public void visit(CeylonTree.MemberDeclaration mem) {
                 for (JCStatement def: convert(mem)) {
                     if (def instanceof JCVariableDecl &&
                             ((JCVariableDecl) def).init != null) {
@@ -636,6 +661,13 @@ public class Gen {
                 }
             }
 
+            public void visit(final CeylonTree.ClassDeclaration cdecl) {
+                defs.append(convert(cdecl));
+            }
+
+            public void visit(final CeylonTree.InterfaceDeclaration cdecl) {
+                defs.append(convert(cdecl));
+            }
 
             public void visit(CeylonTree.TypeParameter param) {
                 typeParams.append(convert(param));
@@ -667,7 +699,6 @@ public class Gen {
                            cdecl.nameAsString());
 
         if (!cdecl.isInterface()) {
-            cdecl.toString();
             JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(PUBLIC),
                     names.init,
                     at(cdecl).TypeIdent(VOID),
@@ -711,8 +742,6 @@ public class Gen {
                     superclass,
                     satisfies.toList(),
                     defs.toList());
-
-        // System.out.println(classDef);
 
         return classDef;
     }
@@ -1021,7 +1050,11 @@ public class Gen {
                 JCExpression id = makeIdent(name.components());
                 expr.append(at(name).NewClass(null, null, id, args.toList(), null));
             }
-            public void visit(CeylonTree.CallExpression chainedCall) {
+            public void visit(CeylonTree.Type type) {
+                // A constructor
+                expr.append(at(type).NewClass(null, null, convert(type), args.toList(), null));
+            }
+             public void visit(CeylonTree.CallExpression chainedCall) {
                 expr.append(convert(chainedCall));
             }
             public void visit(CeylonTree.MemberName access) {
@@ -1160,8 +1193,8 @@ public class Gen {
             public JCExpression result;
 
             public void visit(This expr) {
-            	at(expr);
-            	result = makeIdent("this");
+                at(expr);
+                result = makeIdent("this");
             }
             public void visit(OperatorDot access) {
                 result = convert(access);
