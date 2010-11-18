@@ -699,7 +699,7 @@ public class Gen {
                            cdecl.nameAsString());
 
         if (!cdecl.isInterface()) {
-            JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(PUBLIC),
+            JCMethodDecl meth = at(cdecl).MethodDef(make.Modifiers(convertDeclFlags(cdecl.flags)),
                     names.init,
                     at(cdecl).TypeIdent(VOID),
                     List.<JCTypeParameter>nil(),
@@ -716,7 +716,11 @@ public class Gen {
 
         JCTree superclass;
         if (cdecl.getSuperclass() == null) {
-            superclass = makeIdent(syms.ceylonObjectType);
+            if (cdecl.isInterface())
+                // The VM insists that interfaces have java.lang.Object as their superclass
+                superclass = makeIdent(syms.objectType);
+            else
+                superclass = makeIdent(syms.ceylonObjectType);
         }
         else {
             List<String> name = cdecl.getSuperclass().name().components();
@@ -731,7 +735,7 @@ public class Gen {
             langAnnotations.append(ann);
         }
 
-        long mods = 0;
+        long mods = convertDeclFlags(cdecl.flags);
         if (cdecl.isInterface())
             mods |= INTERFACE;
 
@@ -744,6 +748,40 @@ public class Gen {
                     defs.toList());
 
         return classDef;
+    }
+
+    int convertDeclFlags(int ceylonFlags) {
+        int result = 0;
+
+        /* Standard Java flags.
+
+        public static final int PUBLIC       = 1<<0;
+        public static final int PRIVATE      = 1<<1;
+        public static final int PROTECTED    = 1<<2;
+        public static final int STATIC       = 1<<3;
+        public static final int FINAL        = 1<<4;
+        public static final int SYNCHRONIZED = 1<<5;
+        public static final int VOLATILE     = 1<<6;
+        public static final int TRANSIENT    = 1<<7;
+        public static final int NATIVE       = 1<<8;
+        public static final int INTERFACE    = 1<<9;
+        public static final int ABSTRACT     = 1<<10;
+        public static final int STRICTFP     = 1<<11;*/
+
+        /* Standard Ceylon flags
+
+        public static final int PUBLIC = 1 << 0;
+        public static final int DEFAULT = 1 << 1;
+        public static final int PACKAGE = 1 << 2;
+        public static final int ABSTRACT = 1 << 3;
+        public static final int MODULE = 1 << 4;
+        public static final int OPTIONAL = 1 << 5;
+        public static final int MUTABLE = 1 << 6;
+        public static final int EXTENSION = 1 << 7;*/
+
+        result |= ((ceylonFlags & CeylonTree.PUBLIC) != 0) ? PUBLIC : 0;
+
+        return result;
     }
 
     // Rewrite a list of Ceylon-style type constraints into Java trees.

@@ -12,8 +12,6 @@ extends ForwardingFileObject<JavaFileObject>
 implements JavaFileObject
 {
     private final JavaFileObject f;
-    private String sourcePath;
-
     public CeylonFileObject(JavaFileObject f)
     {
         super(f);
@@ -23,7 +21,6 @@ implements JavaFileObject
     public CeylonFileObject(JavaFileObject f, String sourcePath) {
         super(f);
         this.f = f;
-        this.sourcePath = sourcePath;
     }
 
     public JavaFileObject getFile() {

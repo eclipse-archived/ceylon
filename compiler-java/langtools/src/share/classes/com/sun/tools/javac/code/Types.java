@@ -1605,8 +1605,8 @@ public class Types {
                     List<Type> l = t.getTypeArguments();
                     if (l.length() == 1) {
                         Type t1 = l.last();
-                        if (t1.tag == CLASS)
-                            return visitClassType((ClassType)t1, ignored);
+                        if (t1.tag == CLASS || t1.tag == TYPEVAR)
+                            return t1.accept(this, ignored);
                     }
                 }
 

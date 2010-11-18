@@ -27,6 +27,8 @@ public abstract class CeylonTree {
     @NotAChild
     public int flags;
 
+    /* Standard Ceylon flags */
+
     public static final int PUBLIC = 1 << 0;
     public static final int DEFAULT = 1 << 1;
     public static final int PACKAGE = 1 << 2;
