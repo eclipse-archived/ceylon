@@ -8,6 +8,7 @@ import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
@@ -131,6 +132,17 @@ public class LowerCeylon extends TreeTranslator {
         if (tree != null) tree =
             (T)ceylonExtensionIfNeeded((JCExpression)tree, type);
         return tree;
+    }
+
+    public void visitTypeCast(JCTypeCast tree) {
+        // Convert (Nothing)null to just null
+        tree.clazz = translate(tree.clazz);
+        tree.expr = translate(tree.expr);
+        if (tree.expr.type.tag == TypeTags.BOT
+                && tree.type == syms.ceylonNothingType)
+            result = tree.expr;
+        else
+            result = tree;
     }
 
     /** Convert using a Ceylon extension if needed */
