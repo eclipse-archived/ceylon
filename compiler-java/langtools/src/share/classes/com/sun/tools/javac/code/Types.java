@@ -282,7 +282,7 @@ public class Types {
      }
 
     public ExtensionFinder.Route getCeylonExtension(Type t, Type s) {
-        if (isSameType(s, t))
+        if (isSubtype(t, s))
             return null;
         if (isSameType(s, syms.objectType))
             return null;
