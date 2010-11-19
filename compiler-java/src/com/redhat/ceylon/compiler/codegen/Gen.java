@@ -1006,6 +1006,12 @@ public class Gen {
         return result;
     }
 
+    String tempName (String s) {
+        String result = "$ceylontmp" + s + counter;
+        counter++;
+        return result;
+    }
+
     JCStatement convert(CeylonTree.IfStatement stmt) {
         JCBlock thenPart = convert(stmt.ifTrue);
         JCBlock elsePart = convert(stmt.ifFalse);
@@ -1025,7 +1031,10 @@ public class Gen {
                 (CeylonTree.ExistsExpression)cond;
             CeylonTree.MemberName name = exists.name;
 
-            Name tmp = names.fromString(tempName());
+            // We're going to give this variable an initializer in order to be
+            // able to determine its type, but the initializer will be deleted
+            // in CeylonLower.  Do not change the string "DeletedExists".
+            Name tmp = names.fromString(tempName("DeletedExists"));
             Name tmp2 = names.fromString(name.asString());
 
             JCExpression type;
@@ -1050,29 +1059,31 @@ public class Gen {
             // won't let you use it...
             JCVariableDecl decl =
                 at(cond).VarDef
-                        (make.Modifiers(FINAL), tmp, type, expr);
+                        (make.Modifiers(0), tmp, type,
+                        exists.type == null ? expr : null);
             JCVariableDecl decl2 =
                 at(cond).VarDef
                         (make.Modifiers(FINAL), tmp2, type, at(cond).Ident(tmp));
             thenPart = at(cond).Block(0, List.<JCStatement>of(decl2, thenPart));
 
-            JCTree.JCBinary test = at(cond).Binary(JCTree.NE, at(cond).Ident(tmp),
-                    make.Literal(TypeTags.BOT, null));
-            JCStatement cond1;
+            JCExpression assignment = at(cond).Assign(make.Ident(decl.name), expr);
 
+            JCTree.JCBinary test = at(cond).Binary(JCTree.NE, assignment,
+                    make.Literal(TypeTags.BOT, null));
+
+            JCStatement cond1;
             switch (tag) {
             case JCTree.IF:
                 cond1 = at(cond).If(test, thenPart, elsePart);
-                break;
+                return at(cond).Block(0, List.<JCStatement>of(decl, cond1));
             case JCTree.WHILELOOP:
                 assert elsePart == null;
                 cond1 = at(cond).WhileLoop(test, thenPart);
-                break;
+                return at(cond).Block(0, List.<JCStatement>of(decl, cond1));
             default:
                 throw new RuntimeException();
             }
 
-            return at(cond).Block(0, List.<JCStatement>of(decl, cond1));
 
         } else {
             JCExpression test = convertExpression(cond);

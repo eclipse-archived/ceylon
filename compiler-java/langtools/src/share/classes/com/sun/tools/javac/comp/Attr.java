@@ -747,6 +747,7 @@ public class Attr extends JCTree.Visitor {
                         }
                     }
                     v.type = tree.init.type;
+                    tree.vartype = make.Ident(v.type.tsym);
                 }
             }
 
