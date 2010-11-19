@@ -1009,10 +1009,20 @@ public class Gen {
     JCStatement convert(CeylonTree.IfStatement stmt) {
         JCBlock thenPart = convert(stmt.ifTrue);
         JCBlock elsePart = convert(stmt.ifFalse);
+        return convertCondition(stmt.condition.operand, JCTree.IF, thenPart, elsePart);
+    }
 
-        if (stmt.condition.operand instanceof CeylonTree.ExistsExpression) {
+    JCStatement convert(CeylonTree.WhileStatement stmt) {
+        JCBlock thenPart = convert(stmt.ifTrue);
+        return convertCondition(stmt.condition.operand, JCTree.WHILELOOP, thenPart, null);
+    }
+
+    JCStatement convertCondition(CeylonTree cond, int tag,
+            JCBlock thenPart, JCBlock elsePart) {
+
+        if (cond instanceof CeylonTree.ExistsExpression) {
             CeylonTree.ExistsExpression exists =
-                (CeylonTree.ExistsExpression)stmt.condition.operand;
+                (CeylonTree.ExistsExpression)cond;
             CeylonTree.MemberName name = exists.name;
 
             Name tmp = names.fromString(tempName());
@@ -1027,47 +1037,61 @@ public class Gen {
 
             JCExpression expr;
             if (exists.expr == null) {
-                expr = at(stmt).Ident(tmp2);
+                expr = at(cond).Ident(tmp2);
             } else {
                 expr = convertExpression(exists.expr);
             }
 
-            expr = at(stmt).Apply(null,
-                    at(stmt).Select(expr, names.fromString("$internalErasedExists")),
+            expr = at(cond).Apply(null,
+                    at(cond).Select(expr, names.fromString("$internalErasedExists")),
                         List.<JCExpression>nil());
 
             // This temp variable really should be SYNTHETIC, but then javac
             // won't let you use it...
             JCVariableDecl decl =
-                at(stmt).VarDef
+                at(cond).VarDef
                         (make.Modifiers(FINAL), tmp, type, expr);
             JCVariableDecl decl2 =
-                at(stmt).VarDef
-                        (make.Modifiers(FINAL), tmp2, type, at(stmt).Ident(tmp));
-            thenPart = at(stmt).Block(0, List.<JCStatement>of(decl2, thenPart));
+                at(cond).VarDef
+                        (make.Modifiers(FINAL), tmp2, type, at(cond).Ident(tmp));
+            thenPart = at(cond).Block(0, List.<JCStatement>of(decl2, thenPart));
 
-            JCStatement cond =
-                at(stmt).If(at(stmt).Binary
-                        (JCTree.NE, at(stmt).Ident(tmp),
-                                make.Literal(TypeTags.BOT, null)),
-                                thenPart, elsePart);
+            JCTree.JCBinary test = at(cond).Binary(JCTree.NE, at(cond).Ident(tmp),
+                    make.Literal(TypeTags.BOT, null));
+            JCStatement cond1;
 
-            JCBlock result =
-                at(stmt).Block(0, List.<JCStatement>of(decl, cond));
+            switch (tag) {
+            case JCTree.IF:
+                cond1 = at(cond).If(test, thenPart, elsePart);
+                break;
+            case JCTree.WHILELOOP:
+                assert elsePart == null;
+                cond1 = at(cond).WhileLoop(test, thenPart);
+                break;
+            default:
+                throw new RuntimeException();
+            }
+
+            return at(cond).Block(0, List.<JCStatement>of(decl, cond1));
+
+        } else {
+            JCExpression test = convertExpression(cond);
+            JCStatement result;
+
+            switch (tag) {
+            case JCTree.IF:
+                result = at(cond).If(test, thenPart, elsePart);
+                break;
+            case JCTree.WHILELOOP:
+                assert elsePart == null;
+                result = at(cond).WhileLoop(test, thenPart);
+                break;
+            default:
+                throw new RuntimeException();
+            }
 
             return result;
         }
-
-        JCExpression cond = convertExpression(stmt.condition);
-        JCStatement result = at(stmt).If(cond, thenPart, elsePart);
-
-        return result;
-    }
-
-    JCStatement convert(CeylonTree.WhileStatement stmt) {
-        JCBlock thenPart = convert(stmt.ifTrue);
-        JCExpression cond = convertExpression(stmt.condition);
-        return at(stmt).WhileLoop(cond, thenPart);
     }
 
     JCExpression convert(CeylonTree.CallExpression ce) {
