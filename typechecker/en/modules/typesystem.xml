@@ -1319,12 +1319,42 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
 }]]></programlisting>
         </comment>
         
-        <comment><para>TODO: We could allow other valid type constructors here. Especially,
+        <comment>
+        <para>TODO: We could allow other valid type constructors here. Especially,
         the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
         type constructors (non-parameterized types), for example, 
         <literal>String&lt;T&gt; == String</literal>. For example:</para>
+        
+        <programlisting><![CDATA[Comparison compare<S,T>(S<T> x, S<T> y)
+        given S<X> satisfies X[] | X
+        given T satisfies PartlyComparable<T> {
+    switch (S<T>)
+    case (T) {
+        return x<=>y
+    }
+    case (T[]) {
+        for (local i in 0..min(x.size,y.size)) {
+            Comparison c = x[i]<=>y[i];
+            switch (c)
+            case (larger) {
+                return larger
+            }
+            case (smaller) {
+                return smaller
+            }
+            else {
+                continue
+            }
+        }
+        return uncomparable
+    }
+}]]></programlisting>
+
+        <para>Note that <literal>given S&lt;X&gt; satisfies X[] | X</literal> is a way of writing
+        <literal>given S&lt;X&gt; satisfies X[] | id&lt;X&gt;</literal>. A second example:</para>
+        
         <programlisting><![CDATA[X<T> findByKey<X,T,K>(Type<T> type, X<K> keys)
-        given X<E> of id | Sequence
+        given X<E> of E | E[]
         given K satisfies Equality<K> {
     ...
 }]]></programlisting>
@@ -1332,7 +1362,8 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         <programlisting>Order[] orders = findByKey(Order, orderIds);</programlisting>
         <programlisting><![CDATA[T[] findManyByIntegerKey<T>(Type<T> type, Integer[] keys) = findByKey<Sequence,T,Integer>;
 T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>;]]></programlisting>
-<para>Or we could keep it simple :-)</para></comment>
+<para>Or we could keep it simple :-)</para>
+        </comment>
         
     </section>
     
