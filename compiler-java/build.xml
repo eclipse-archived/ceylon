@@ -2,12 +2,10 @@
 
   <!-- Directories containing java source files -->
   <property name="compiler.src" location="src"/>
-  <property name="runtime.src" location="runtime"/>
 
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
-  <property name="build.lib" location="${build}/lib"/>
 
   <!-- The ANTLR source file for the parser,
        the directory the java files generated
@@ -85,24 +83,8 @@
     </apply>
   </target>
 
-  <!-- Rules to build the runtime -->
-  <target name="runtime.classes">
-    <mkdir dir="${build.classes}"/>
-    <javac
-       srcdir="${runtime.src}"
-       destdir="${build.classes}"
-       debug="true">
-    </javac>
-  </target>
-  <target name="runtime.jar" depends="runtime.classes">
-    <mkdir dir="${build.lib}"/>
-    <jar destfile="${build.lib}/runtime.jar"
-         basedir="${build.classes}"
-         excludes="com/**"/>
-  </target>
-
   <!-- Rule to just do everything -->
-  <target name="all" depends="runtime.jar,test"/>
+  <target name="all" depends="test"/>
 
   <!-- Rule to clean everything up -->
   <target name="clean">
