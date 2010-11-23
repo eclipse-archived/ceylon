@@ -45,11 +45,12 @@
           (TYPE
             (TYPE_NAME Natural)))
         (MEMBER_NAME x))
-      (EXPR
-        (MEMBER_NAME x))
       (INIT_EXPR
         (EXPR
-          (INT_CST 0)))
+          (MEMBER_NAME x))
+        (INIT_EXPR
+          (EXPR
+            (INT_CST 0))))
       (MEMBER_DECL
         (MEMBER_TYPE
           (TYPE
