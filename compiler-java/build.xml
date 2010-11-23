@@ -10,15 +10,18 @@
   <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
 
   <!-- The Java source files for the compiler -->
-  <property name="compiler.src.1" location="src"/>
-  <property name="compiler.src.2" location="langtools/src/share/classes"/>
+  <property name="javac.src" location="langtools/src/share/classes"/>
+  <property name="ceylonc.src" location="src"/>
 
+  <!-- The Java and Ceylon source files for the runtime -->
+  <property name="runtime.src" location="runtime"/>  
+  
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
 
-  <!-- The directory that tests live in, and the
-       directory test results get written into -->
+  <!-- The directory that parser tests live in, and
+       the directory test results get written into -->
   <property name="parser.test.src" location="corpus/tests"/>
   <property name="parser.test.dst" location="${build}/test/parser"/>
 
@@ -47,17 +50,34 @@
     </java>
   </target>
 
-  <!-- Rule to build test classes from their Java sources -->
+  <!-- Rule to build compiler classes from their Java sources -->
   <target name="compiler.classes" depends="antlr">
     <mkdir dir="${build.classes}"/>
     <javac
-       srcdir="${compiler.src.1}:${compiler.src.2}"
+       srcdir="${javac.src}:${ceylonc.src}"
        destdir="${build.classes}"
        debug="true"
        classpath="${antlr.lib}">
     </javac>
   </target>
 
+  <!-- Rule to build runtime classes from their Java and Ceylon sources -->
+  <target name="runtime.classes" depends="compiler.classes">
+    <apply executable="java">
+      <arg value="-ea"/>
+      <arg value="-cp"/>
+      <arg value="${build.classes}:${javac.src}:${antlr.lib}:${runtime.src}"/>
+      <arg value="com.redhat.ceylon.compiler.Main"/>
+      <arg value="-d"/>
+      <arg value="${build.classes}"/>
+      <arg value="-src"/>
+      <arg value="${runtime.src}"/>
+      <fileset dir="${runtime.src}/ceylon/language">
+	<include name="*.ceylon"/>
+      </fileset>
+    </apply>
+  </target>
+  
   <!-- Rule to run the regression tests -->
   <target name="test.parser" depends="compiler.classes">
     <mkdir dir="${parser.test.dst}"/>
