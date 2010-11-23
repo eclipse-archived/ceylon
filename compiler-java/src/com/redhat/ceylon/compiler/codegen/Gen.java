@@ -289,7 +289,9 @@ public class Gen {
             assert fullname.endsWith(".ceylon");
             fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
             fullname = fullname.replace(File.separator, ".");
-            pkg = getPackage(Convert.packagePart(fullname));
+            String packageName = Convert.packagePart(fullname);
+            if (! packageName.equals(""))
+                pkg = getPackage(packageName);
         }
 
         JCCompilationUnit topLev =
@@ -1033,7 +1035,7 @@ public class Gen {
 
             // We're going to give this variable an initializer in order to be
             // able to determine its type, but the initializer will be deleted
-            // in CeylonLower.  Do not change the string "DeletedExists".
+            // in LowerCeylon.  Do not change the string "Deleted".
             Name tmp = names.fromString(tempName("DeletedExists"));
             Name tmp2 = names.fromString(name.asString());
 
@@ -1083,8 +1085,57 @@ public class Gen {
             default:
                 throw new RuntimeException();
             }
+        } else if (cond instanceof CeylonTree.IsExpression) {
+            // FIXME: This code has a lot in common with the ExistsExpression
+            // above, but it has a niggling few things that are different.
+            // It needs to be refactored.
 
+            CeylonTree.IsExpression isExpr =
+                (CeylonTree.IsExpression)cond;
+            CeylonTree.MemberName name = isExpr.name;
+            JCExpression type = variableType(isExpr.type, null);
 
+            // We're going to give this variable an initializer in order to be
+            // able to determine its type, but the initializer will be deleted
+            // in LowerCeylon.  Do not change the string "Deleted".
+            Name tmp = names.fromString(tempName("DeletedIs"));
+            Name tmp2 = names.fromString(name.asString());
+
+            JCExpression expr;
+            if (isExpr.expr == null) {
+                expr = convert(name);
+            } else {
+                expr = convertExpression(isExpr.expr);
+            }
+
+            // This temp variable really should be SYNTHETIC, but then javac
+            // won't let you use it...
+            JCVariableDecl decl =
+                at(cond).VarDef
+                        (make.Modifiers(0), tmp, makeIdent(syms.ceylonAnyType),
+                        expr);
+            JCVariableDecl decl2 =
+                at(cond).VarDef
+                        (make.Modifiers(FINAL), tmp2, type,
+                                at(cond).TypeCast(type, at(cond).Ident(tmp)));
+            thenPart = at(cond).Block(0, List.<JCStatement>of(decl2, thenPart));
+
+            JCExpression assignment = at(cond).Assign(make.Ident(decl.name), expr);
+
+            JCExpression test = at(cond).TypeTest(assignment, type);
+
+            JCStatement cond1;
+            switch (tag) {
+            case JCTree.IF:
+                cond1 = at(cond).If(test, thenPart, elsePart);
+                return at(cond).Block(0, List.<JCStatement>of(decl, cond1));
+            case JCTree.WHILELOOP:
+                assert elsePart == null;
+                cond1 = at(cond).WhileLoop(test, thenPart);
+                return at(cond).Block(0, List.<JCStatement>of(decl, cond1));
+            default:
+                throw new RuntimeException();
+            }
         } else {
             JCExpression test = convertExpression(cond);
             JCStatement result;
@@ -1305,6 +1356,9 @@ public class Gen {
             public void visit(CeylonTree.MemberName value) {
                 result = convert(value);
             }
+            public void visit(CeylonTree.TypeName name) {
+                result = makeIdent(name.components);
+            }
             public void visit(CeylonTree.InitializerExpression value) {
                 result = convertExpression(value.value());
             }
@@ -1440,6 +1494,9 @@ public class Gen {
                         List.of(rhs));
             }
         }
+
+        case CeylonParser.IS:
+            return at(op).TypeTest(convertExpression(operands[0]), convertExpression(operands[1]));
 
         default:
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);

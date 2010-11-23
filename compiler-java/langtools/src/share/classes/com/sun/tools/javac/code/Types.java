@@ -950,6 +950,22 @@ public class Types {
         if (t.isPrimitive() != s.isPrimitive())
             return allowBoxing && isConvertible(t, s, warn);
 
+        if (Context.isCeylon() &&
+                t.tsym == syms.ceylonMutableType.tsym &&
+                t.baseType().tag == CLASS) {
+            ClassType klass = (ClassType)t.baseType();
+            List<Type> typeArgs = klass.getTypeArguments();
+            if (typeArgs.length() == 1) {
+                Type t1 = typeArgs.last();
+                if (t1.tag == CLASS) {
+                    return isCastable(t1, s, warn);
+                }
+            } else if (typeArgs.length() == 0) {
+                // Everything is castable to plain ceylon.Mutable
+                return true;
+            }
+        }
+
         if (warn != warnStack.head) {
             try {
                 warnStack = warnStack.prepend(warn);
@@ -1605,7 +1621,7 @@ public class Types {
                     List<Type> l = t.getTypeArguments();
                     if (l.length() == 1) {
                         Type t1 = l.last();
-                        if (t1.tag == CLASS || t1.tag == TYPEVAR)
+                        if (t1.tag == CLASS)
                             return t1.accept(this, ignored);
                     }
                 }

@@ -1779,9 +1779,9 @@ public abstract class CeylonTree {
      * An is expression
      */
     public static class IsExpression extends CeylonTree {
-        Type type;
-        MemberName name;
-        InitializerExpression expr;
+        public Type type;
+        public MemberName name;
+        public InitializerExpression expr;
 
         void pushType(Type type) {
             assert(this.type == null);

@@ -88,7 +88,7 @@ public class LowerCeylon extends TreeTranslator {
     public void visitVarDef(JCVariableDecl tree) {
         tree.mods = translate(tree.mods);
         tree.vartype = translate(tree.vartype);
-        if (tree.name.toString().startsWith("$ceylontmpDeletedExists"))
+        if (tree.name.toString().startsWith("$ceylontmpDeleted"))
             // We don't want the initializer expression: we were only using it
             // to provide the type of the variable.
             tree.init = null;
@@ -143,6 +143,8 @@ public class LowerCeylon extends TreeTranslator {
         // Convert (Nothing)null to just null
         tree.clazz = translate(tree.clazz);
         tree.expr = translate(tree.expr);
+        tree.expr = ceylonExtensionIfNeeded(tree.expr, tree.clazz.type);
+
         if (tree.expr.type.tag == TypeTags.BOT
                 && tree.type == syms.ceylonNothingType)
             result = tree.expr;
