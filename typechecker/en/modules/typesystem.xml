@@ -786,6 +786,7 @@ public class LinkedList<T>(T... elements)
         </listitem>
         </itemizedlist>
         
+        <!--
         <para>There are two kinds of type parameter:</para>
         
         <itemizedlist>
@@ -798,18 +799,17 @@ public class LinkedList<T>(T... elements)
             natural number.</para>
         </listitem>
         </itemizedlist>
+        -->
+                
+        <section id="typeparametersandvariance">
+            <title>Type parameters and variance</title>
         
-        <programlisting>TypeParam: OrdinaryTypeParam | "#" DimensionalTypeParam</programlisting>
+        <para>A type parameter allows a declaration to be abstracted over a constrained set of 
+        types.</para>
         
-        <section id="ordinarytypeparameters">
-            <title>Ordinary type parameters and variance</title>
+        <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
         
-        <para>An ordinary type parameter allows a declaration to be abstracted over a constrained 
-        set of types.</para>
-        
-        <para>Each ordinary type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
-        
-        <programlisting>OrdinaryTypeParam: Variance TypeName</programlisting>
+        <programlisting>TypeParam: Variance TypeName</programlisting>
         
         <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
         itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
@@ -929,29 +929,7 @@ public class LinkedList<T>(T... elements)
         
         </section>
         
-        <section id="dimensionaltypeparameters">
-            <title>Dimensional type parameters</title>
-            
-            <comment><para>NOTE: dimensional type parameters are a proposed feature
-            for a future version of the language.</para></comment>
-        
-        <para>A dimensional type parameter allows a declaration to be abstracted over 
-        the natural numbers.</para>
-        
-        <para>A dimensional type parameter is distinguished by a <literal>#</literal>
-        prefix, and must be an initial lowercase identifier.</para>
-        
-        <programlisting>DimensionalTypeParam: MemberName</programlisting>
-        
-        <para>Within the body of the declaration it parameterized, a dimensional type 
-        parameter is a local of type <literal>Natural</literal>.</para>
-        
-        <programlisting>Vector&lt;#n&gt;</programlisting>
-        <programlisting>Matrix&lt;#h,#w&gt;</programlisting>
-        
-        </section>
-        
-        <section id="thesubtypekeyword">
+       <section id="thesubtypekeyword">
             <title>The <literal>subtype</literal> keyword</title>
         
         <para>Every Ceylon class or interface has an implicit type parameter that never
@@ -1253,12 +1231,34 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     ...
 }</programlisting></comment>
 
-        <comment><para>TODO: should we allow constraints on dimensional type parameters,
-        for example <literal>given n&gt;=1</literal>.</para></comment>
-        
     </section>
     
-    <section id="parameterizedtypeparameters">
+    <section id="dimensionaltypeparameters">
+        <title>Dimensional type parameters</title>
+            
+        <comment><para>NOTE: dimensional type parameters are a proposed feature
+        for a future version of the language.</para></comment>
+        
+        <para>A dimensional type parameter allows a declaration to be abstracted over 
+        the natural numbers.</para>
+        
+        <para>A dimensional type parameter is distinguished by an upper bound of the
+        following form:</para>
+        
+        <programlisting>given N satisfies Dimension</programlisting>
+        
+        <para>Where the type <literal>Dimension</literal> represents the natural numbers:</para>
+        
+        <programlisting>public interface Dimension of Zero | Successor&lt;Nat&gt; {}
+public interface Zero satisfies Dimension {}
+public interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Dimension {}</programlisting>
+        
+        <comment><para>TODO: should we allow more specific constraints on dimensional 
+        type parameters, for example <literal>given N&gt;=#1</literal>.</para></comment>
+        
+     </section>
+        
+     <section id="parameterizedtypeparameters">
         <title>Parameterized type parameters</title>
 
         <comment><para>NOTE: Parameterized type parameters is a proposed feature for a 
@@ -1502,7 +1502,7 @@ public interface ElementwiseEquality
         
         <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
-        <programlisting>TypeArgument: Type | "#" Dimension</programlisting>
+        <programlisting>TypeArgument: Type | Dimension</programlisting>
         
         <section id="dimensions">
             <title>Dimensions</title>
@@ -1510,37 +1510,60 @@ public interface ElementwiseEquality
             <comment><para>NOTE: dimensional type parameters are a proposed feature
             for a future version of the language.</para></comment>
         
-        <para>A <emphasis>dimension</emphasis> is an expression composed of natural number
-        literals, locals of type <literal>Natural</literal>, the operators 
-        <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
+        <para>A <emphasis>dimension</emphasis> is an expression composed of dimensional
+        type parameters, natural number literals, locals of type <literal>Natural</literal>, 
+        the operators <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
         
         <programlisting>Dimension: DimensionTerm ("+" DimensionTerm)*</programlisting>
-        <programlisting>DimensionTerm: (NaturalLiteral "*")* DimensionAtom</programlisting>
-        <programlisting>DimensionAtom: NaturalLiteral | MemberName | ParenDimension</programlisting>
+        <programlisting>DimensionTerm: (DimensionConstant "*")* DimensionAtom</programlisting>
+        <programlisting>DimensionAtom: DimensionConstant | DimensionVariable | ParenDimension</programlisting>
         <programlisting>ParenDimension: "(" Dimension ")"</programlisting>
+        
+        <para>A <emphasis>dimensional type constant</emphasis> is an expression of form
+        <literal>#c</literal> where <literal>c</literal> is a natural number literal.</para>
+        
+        <programlisting>DimensionConstant: "#" NaturalLiteral</programlisting>
+        
+        <para>A <emphasis>dimensional type variable</emphasis> is a dimensional type parameter, 
+        or an expression of form <literal>#n</literal> where <literal>n</literal> is a local of 
+        type <literal>Natural</literal>.</para>
+        
+        <programlisting>DimensionVariable: TypeName | "#" MemberName</programlisting>
         
         <para>The <emphasis>canonical form</emphasis> of a dimension expression is formed
         by algebraically simplifying the expression to a dimension expression of form:</para>
         
-        <programlisting>C + N * n + M * m + ...</programlisting>
+        <programlisting>#c + #n * N + #m * M + ...</programlisting>
         
-        <para>where <literal>C</literal> <literal>N</literal>, <literal>M</literal>, 
-        <literal>...</literal> are constant natural numbers and <literal>n</literal>, 
-        <literal>m</literal>, <literal>...</literal> are distinct locals of type 
-        <literal>Natural</literal>.</para>
+        <para>where <literal>c</literal>, <literal>n</literal>, <literal>m</literal>, 
+        <literal>...</literal> are constant natural numbers and <literal>N</literal>, 
+        <literal>M</literal>, <literal>...</literal> are distinct dimensional type
+        variables.</para>
         
         <para>Two dimension expressions are considered <emphasis>equivalent</emphasis> if 
         they have the same canonical form, ignoring the order of terms. For example, the
         following represent the same type:</para>
         
-        <programlisting>Vector&lt;#2*n+m+3&gt;</programlisting>
-        <programlisting>Vector&lt;#(n+2)+(m+n+1)&gt;</programlisting>
+        <programlisting>Vector&lt;#2*N+#i+#3&gt;</programlisting>
+        <programlisting>Vector&lt;(N+#2)+(#i+N+#1)&gt;</programlisting>
+        
+        <comment><para>Note: the <literal>#</literal> symbol acts almost like an operator 
+        that accepts a value of type <literal>Natural</literal>, and returns a 
+        <literal>Type&lt;Dimension&gt;</literal>, where <literal>#0 == Zero</literal>,
+        <literal>#1 == Successor&lt;Zero&gt;</literal>, 
+        <literal>#2 == Successor&lt;Successor&lt;Zero&gt;&gt;</literal>,
+        etc.</para></comment>
+        
+        <comment><para>Note: we will provide a function that does the opposite and obtains 
+        the <literal>Natural</literal> that corresponds to a dimensional type, something
+        like: 
+        <programlisting>public Natural natural&lt;N&gt;() given N satisfies Dimension { ... }</programlisting></para></comment>
         
         <comment><para>TODO: should we allow ranges as arguments to dimensional type 
         parameters, for example, <literal>Vector&lt;#0...&gt;</literal> or
-        <literal>Vector&lt;#1..10&gt;</literal>, where <literal>Vector&lt;#n&gt;</literal>
-        is a subtype of <literal>Vector&lt;#min..max&gt;</literal> if 
-        <literal>min&lt;=n&lt;=max</literal>. If so, we should also allow abbreviations 
+        <literal>Vector&lt;#1..#10&gt;</literal>, where <literal>Vector&lt;#c&gt;</literal>
+        is a subtype of <literal>Vector&lt;#m..#n&gt;</literal> if 
+        <literal>m&lt;=c&lt;=n</literal>. If so, we should also allow abbreviations 
         like <literal>String[1..n]</literal> for sequences.</para></comment>
         
         </section>
