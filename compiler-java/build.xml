@@ -1,12 +1,5 @@
 <project name="MyProject" default="all" basedir=".">
 
-  <!-- Directories containing java source files -->
-  <property name="compiler.src" location="src"/>
-
-  <!-- Directories everything gets built into -->
-  <property name="build" location="build"/>
-  <property name="build.classes" location="${build}/classes"/>
-
   <!-- The ANTLR source file for the parser,
        the directory the java files generated
        from it end up in, and the ANTLR jar
@@ -16,14 +9,18 @@
   <property name="antlr.dst" location="src/com/redhat/ceylon/compiler/parser"/>
   <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
 
-  <!-- The directory that the tools sources live in,
-       and the directories they get built to -->
-  <property name="tools.src" location="langtools/src/share/classes"/>
+  <!-- The Java source files for the compiler -->
+  <property name="compiler.src.1" location="src"/>
+  <property name="compiler.src.2" location="langtools/src/share/classes"/>
+
+  <!-- Directories everything gets built into -->
+  <property name="build" location="build"/>
+  <property name="build.classes" location="${build}/classes"/>
 
   <!-- The directory that tests live in, and the
        directory test results get written into -->
-  <property name="test.src" location="corpus/tests"/>
-  <property name="test.dst" location="${build}/test"/>
+  <property name="parser.test.src" location="corpus/tests"/>
+  <property name="parser.test.dst" location="${build}/test/parser"/>
 
   <!-- Rules to build parser classes from the ANTLR grammar -->
   <condition property="antlr.needed">
@@ -51,10 +48,10 @@
   </target>
 
   <!-- Rule to build test classes from their Java sources -->
-  <target name="test.classes" depends="antlr">
+  <target name="compiler.classes" depends="antlr">
     <mkdir dir="${build.classes}"/>
     <javac
-       srcdir="${tools.src}:${compiler.src}"
+       srcdir="${compiler.src.1}:${compiler.src.2}"
        destdir="${build.classes}"
        debug="true"
        classpath="${antlr.lib}">
@@ -62,29 +59,30 @@
   </target>
 
   <!-- Rule to run the regression tests -->
-  <target name="test" depends="test.classes">
+  <target name="test.parser" depends="compiler.classes">
+    <mkdir dir="${parser.test.dst}"/>
     <apply executable="java">
       <arg value="-ea"/>
       <arg value="-cp"/>
       <arg value="${build.classes}:${antlr.lib}"/>
       <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>
       <arg value="-d"/>
-      <arg value="${test.dst}"/>
-      <fileset dir="${test.src}">
+      <arg value="${parser.test.dst}"/>
+      <fileset dir="${parser.test.src}">
 	<include name="*.ceylon"/>
       </fileset>
     </apply>
     <apply executable="diff" failonerror="true">
       <arg value="-w"/>
-      <arg value="${test.dst}"/>
-      <fileset dir="${test.src}">
+      <arg value="${parser.test.dst}"/>
+      <fileset dir="${parser.test.src}">
 	<include name="*.ceylon.out"/>
       </fileset>
     </apply>
   </target>
 
   <!-- Rule to just do everything -->
-  <target name="all" depends="test"/>
+  <target name="all" depends="test.parser"/>
 
   <!-- Rule to clean everything up -->
   <target name="clean">
