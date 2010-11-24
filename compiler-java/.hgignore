@@ -1,6 +1,3 @@
 syntax: glob
 build
 src/com/redhat/ceylon/compiler/parser
-
-syntax: re
-^langtools/src/share/classes/.*\.class$
