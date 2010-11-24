@@ -103,7 +103,7 @@
   </target>
 
   <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="compiler.classes,runtime.classes">
+  <target name="test.compiler" depends="compiler.classes">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 

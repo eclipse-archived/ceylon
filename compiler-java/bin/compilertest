@@ -1,14 +1,68 @@
 #!/usr/bin/env python
 
 import os
+import subprocess
 import sys
 
 class TestHarness:
     def __init__(self, basedir):
         self.basedir = basedir
+        self.antlr_jarfile = os.path.join(
+            self.basedir, "lib/antlrworks-1.3.1.jar")
+        self.javac_srcdir = os.path.join(
+            self.basedir, "langtools/src/share/classes")
+        self.runtime_srcdir = os.path.join(self.basedir, "runtime")
+        self.runtime_builddir = os.path.join(self.basedir, "build/classes")
+        
+    """The classpath required to run the Ceylon compiler
+    """
+    def classpath(self, *extras):
+        return ":".join((self.runtime_builddir,
+                         self.javac_srcdir,
+                         self.antlr_jarfile) + extras)
+
+    """Make sure the runtime classes are up to date.  It would
+    be preferable if this were done using Ant, but to avoid an
+    complete rebuild each time would require a rewritten javac
+    task, which is currently written assuming that all source
+    files have the same extension.  Extending it to allow source
+    files with two different extensions would take far longer
+    than it took me to write this little hack.
+    """
+    def update_runtime(self):
+        todo = []
+        for srcdir, dirs, files in os.walk(self.runtime_srcdir):
+            assert srcdir.startswith(self.runtime_srcdir)
+            dstdir = self.runtime_builddir + srcdir[len(self.runtime_srcdir):]
+            for file in files:
+                file = file.split(".")
+                ext = file.pop()
+                if ext in ("java", "ceylon"):
+                    file = ".".join(file)
+                    src = os.path.join(srcdir, file + "." + ext)
+                    dst = os.path.join(dstdir, file + ".class")
+                    if os.path.exists(dst):
+                        if os.path.getmtime(src) < os.path.getmtime(dst):
+                            continue
+                    todo.append(src)
+        if todo:
+            sp = subprocess.Popen(
+                ["java",
+                 "-ea",
+                 "-cp", self.classpath(self.runtime_srcdir),
+                 "com.redhat.ceylon.compiler.Main",
+                 "-d", self.runtime_builddir,
+                 "-src", self.runtime_srcdir] + todo,
+                stdout = subprocess.PIPE,
+                stderr = subprocess.PIPE)
+            out, err = sp.communicate()
+            if sp.returncode != 0:
+                sys.stdout.write(out)
+                sys.stdout.write(err)
+                sys.exit(sp.returncode)
 
     def run(self, cases = None):
-        print "running tests in", self.basedir
+        self.update_runtime()
 
 if __name__ == "__main__":
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
