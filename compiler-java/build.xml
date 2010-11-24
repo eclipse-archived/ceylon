@@ -73,6 +73,7 @@
       <arg value="-src"/>
       <arg value="${runtime.src}"/>
       <fileset dir="${runtime.src}/ceylon/language">
+	<include name="*.java"/>
 	<include name="*.ceylon"/>
       </fileset>
     </apply>
