@@ -68,7 +68,6 @@ class TestHarness:
         for dir, dirs, files in os.walk(self.testdir):
             if "expect.out" in files:
                 paths.append(dir)
-                break
         paths.sort()
         return paths
 
@@ -114,28 +113,31 @@ class TestCase:
                 stderr = subprocess.PIPE)
             out, err = sp.communicate()
             if sp.returncode == 0:
-                self.log_success()
+                self.handle_success()
             elif sp.returncode == 1:
-                self.log_failure()
-                print out
+                self.handle_failure()
             else:
-                self.log_error(out, err)
+                self.handle_error(out, err)
         else:
-            self.log_error(out, err)
+            self.handle_error(out, err)
 
-    def log_success(self):
-        print "ok:", self.dir
+    def handle_success(self):
+        self.log()
         os.unlink(self.actualfile)
         for path in glob.glob(os.path.join(self.dir, "*.class")):
             os.unlink(path)
 
-    def log_failure(self):
-        print "FAIL:", self.dir
+    def handle_failure(self):
+        self.log("FAIL")
 
-    def log_error(self, out, err):
-        print "ERROR:", self.dir
+    def handle_error(self, out, err):
+        self.log("ERROR")
         sys.stdout.write(out)
         sys.stdout.write(err)
+
+    def log(self, status = "-"):
+        print "%-48s %s" % (self.dir, status)
+        sys.stdout.flush()
 
 if __name__ == "__main__":
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
