@@ -116,7 +116,9 @@ class TestCase:
             self.log_error(out, err)
 
     def log_success(self):
-        pass
+        os.unlink(self.actualfile)
+        for path in glob.glob(os.path.join(self.dir, "*.class")):
+            os.unlink(path)
 
     def log_failure(self):
         print "FAIL:", self.dir
