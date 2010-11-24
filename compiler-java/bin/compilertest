@@ -88,8 +88,12 @@ class TestCase:
         self.actualfile = os.path.join(self.dir, "actual.out")
 
     def run(self, harness):
-        paths = glob.glob(os.path.join(self.dir, "*.ceylon")) + \
-                glob.glob(os.path.join(self.dir, "*.java"))
+        paths = []
+        for dir, dirs, files in os.walk(self.dir):
+            for file in files:
+                ext = file.split(".")[-1]
+                if ext in ("java", "ceylon"):
+                    paths.append(os.path.join(dir, file))
         if not paths:
             self.log_error("", "nothing to compile\n")
             return
@@ -120,6 +124,7 @@ class TestCase:
             self.log_error(out, err)
 
     def log_success(self):
+        print "ok:", self.dir
         os.unlink(self.actualfile)
         for path in glob.glob(os.path.join(self.dir, "*.class")):
             os.unlink(path)

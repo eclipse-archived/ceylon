@@ -1,0 +1,21 @@
+The compiler regression test harness is the file "bin/compilertest".
+
+You can execute it directly, or by invoking Ant.
+
+Any directory under the top-level directory "test" containing a
+file called "expect.out" is a test case.  When a test case is run,
+the harness will compile all *.ceylon and *.java files under that
+directory and compare the output of the compiler to the contents
+of expect.out.  If they are different then the compiler's output
+will be saved in a file called "actual.out".
+
+Note that a sneaky way to make a new test is to put the Java and
+Ceylon files into a directory with an empty expect.out, then run
+the test, then rename actual.out as expect.out.
+
+Specific tests can be run by supplying their paths as arguments:
+
+  bin/compilertest test/extensions/001
+
+Running the harness with no arguments will result in every test
+being run.
