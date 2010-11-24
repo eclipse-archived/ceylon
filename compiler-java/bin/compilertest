@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+class TestHarness:
+    def __init__(self, basedir):
+        self.basedir = basedir
+
+    def run(self, cases = None):
+        print "running tests in", self.basedir
+
+if __name__ == "__main__":
+    basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
+    TestHarness(basedir).run(sys.argv[1:])

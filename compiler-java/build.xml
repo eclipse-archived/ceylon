@@ -79,7 +79,7 @@
     </apply>
   </target>
   
-  <!-- Rule to run the regression tests -->
+  <!-- Rule to run the parser regression tests -->
   <target name="test.parser" depends="compiler.classes">
     <mkdir dir="${parser.test.dst}"/>
     <apply executable="java">
@@ -102,8 +102,13 @@
     </apply>
   </target>
 
+  <!-- Rule to run the compiler regression tests -->
+  <target name="test.compiler" depends="compiler.classes,runtime.classes">
+    <exec executable="bin/compilertest" failonerror="true"/>
+  </target>
+
   <!-- Rule to just do everything -->
-  <target name="all" depends="test.parser"/>
+  <target name="all" depends="test.parser,test.compiler"/>
 
   <!-- Rule to clean everything up -->
   <target name="clean">
