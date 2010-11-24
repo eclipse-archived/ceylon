@@ -75,8 +75,25 @@ class TestHarness:
         self.update_runtime()
         if not cases:
             cases = self.find_test_cases()
+        self.success = self.failure = self.error = 0
         for case in cases:
             TestCase(case).run(self)
+        print ", ".join(map(self.report, ("success", "failure", "error")))
+
+    def report(self, what):
+        count = getattr(self, what)
+        if count != 1:
+            if what.endswith("s"):
+                what += "e"
+            what += "s"
+        return "%d %s" % (count, what)
+
+    def log(self, dir, what):
+        setattr(self, what, getattr(self, what) + 1)
+        print "%-48s %s" % (dir, {"success": "-",
+                                  "failure": "FAIL",
+                                  "error": "ERROR"}[what])
+        sys.stdout.flush()
 
 class TestCase:
     def __init__(self, path):
@@ -113,31 +130,27 @@ class TestCase:
                 stderr = subprocess.PIPE)
             out, err = sp.communicate()
             if sp.returncode == 0:
-                self.handle_success()
+                self.handle_success(harness)
             elif sp.returncode == 1:
-                self.handle_failure()
+                self.handle_failure(harness)
             else:
-                self.handle_error(out, err)
+                self.handle_error(harness, out, err)
         else:
-            self.handle_error(out, err)
+            self.handle_error(harness, out, err)
 
-    def handle_success(self):
-        self.log()
+    def handle_success(self, harness):
+        harness.log(self.dir, "success")
         os.unlink(self.actualfile)
         for path in glob.glob(os.path.join(self.dir, "*.class")):
             os.unlink(path)
 
-    def handle_failure(self):
-        self.log("FAIL")
+    def handle_failure(self, harness):
+        harness.log(self.dir, "failure")
 
-    def handle_error(self, out, err):
-        self.log("ERROR")
+    def handle_error(self, harness, out, err):
+        harness.log(self.dir, "error")
         sys.stdout.write(out)
         sys.stdout.write(err)
-
-    def log(self, status = "-"):
-        print "%-48s %s" % (self.dir, status)
-        sys.stdout.flush()
 
 if __name__ == "__main__":
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
