@@ -1219,21 +1219,23 @@ public abstract class Comparison()
         <para>The <literal>Bounded</literal> class represents a value
         from an upper-bounded list of natural numbers.</para>
         
-        <programlisting><![CDATA[public class Bounded<#max>(Bounded<#max> b)
+        <programlisting><![CDATA[public class Bounded<M>(Bounded<M> b)
        extends Object()
-       satisfies Comparable<Bounded<#max>>, Number {
+       satisfies Comparable<Bounded<M>>, Number 
+       given M satisfies Dimension {
    
     doc "The |Natural| representing this natural
          number."
     public extension Natural natural { ... }
 
-    actual Comparison compare(Bounded<#max> other) {
+    actual Comparison compare(Bounded<M> other) {
         return natural.compare(other.natural)
     }
 
-    doc "This natural number, as a |Bounded<#nmax>| where
-         |nmax>=max|."
-    public extension Bounded<#max+inc> bounded<#inc>() { ... }
+    doc "This natural number, as a |Bounded<N>| where
+         |N>=M|."
+    public extension Bounded<M+I> bounded<I>() 
+            given I satisfies Dimension { ... }
    
 }]]></programlisting>
         
@@ -1242,9 +1244,10 @@ public abstract class Comparison()
         <literal>Range&lt;Bounded&lt;#n&gt;&gt;</literal> does not exist.
         Instead, the following utility method is provided:</para> 
         
-        <programlisting><![CDATA[doc "A sequence of |Bounded<#n+1>| from
-     from |0| to |n|."
-public Bounded<#n+1>[n+1] zeroTo<#n>() { ... }]]></programlisting>
+        <programlisting><![CDATA[doc "A sequence of |Bounded<N+#1>| from
+     from |#0| to |N|."
+public Sequence<Bounded<N+#1>,N+#1> zeroTo<N>() 
+        given N satisfies Dimension  { ... }]]></programlisting>
 
     </section>
     
@@ -1497,31 +1500,33 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         <para>A <literal>BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public interface BoundedSequence<out X, #n>
+        <programlisting><![CDATA[public interface BoundedSequence<out X, N>
         satisfies X[] 
-        given X satisfies Equality<X> {
+        given X satisfies Equality<X> 
+        given N satisfies Dimension {
         
-    formal Gettable<X> value(Bounded<#n> index);
-    actual default Bounded<#n>? lastIndex;
+    formal Gettable<X> value(Bounded<N> index);
+    actual default Bounded<N>? lastIndex;
     
 }]]></programlisting>
 
         <para>The following extension provides access to the indices 
         of the bounded sequence in a <literal>for</literal> loop. The
-        indices are of type <literal>Bounded&lt;#n&gt;</literal>.</para>
+        indices are of type <literal>Bounded&lt;N&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[n] this)
-        satisfies Iterable<Entry<Bounded<#n>,X>> 
-        given X satisfies Equality<X> {
+        <programlisting><![CDATA[public extension class SequenceEntryIterable<X,N>(Sequence<X,N> this)
+        satisfies Iterable<Entry<Bounded<N>,X>> 
+        given X satisfies Equality<X> 
+        given N satisfies Dimension {
         
-    actual Iterator<Entry<Bounded<#n>,X>> iterator() {
-        class EntryIterator(Bounded<#n> from) 
-                satisfies Iterator<Entry<Bounded<#n>,X>> {
-            actual Entry<Bounded<#n>,X>? head {
+    actual Iterator<Entry<Bounded<N>,X>> iterator() {
+        class EntryIterator(Bounded<N> from) 
+                satisfies Iterator<Entry<Bounded<N>,X>> {
+            actual Entry<Bounded<N>,X>? head {
                 return from->this[from]
             }
-            actual Iterable<Entry<Bounded<#n>,X>> tail {
-                if (from+1<n) {
+            actual Iterable<Entry<Bounded<N>,X>> tail {
+                if ( from+1 < natural<N>() ) {
                     return EntryIterator(from.successor)
                 }
                 else {
@@ -1551,10 +1556,10 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         
         <para>There is a mutable subtype which allows assignment to an index.</para>
         
-        <programlisting><![CDATA[public interface OpenBoundedSequence<X,#n>
-        satisfies X[n] & OpenSequence<X> 
+        <programlisting><![CDATA[public interface OpenBoundedSequence<X,N>
+        satisfies Sequence<X,N> & OpenSequence<X> 
         given X satisfies Equality<X> {
-    public Settable<X> value(Bounded<#n> index);
+    public Settable<X> value(Bounded<N> index);
 }]]></programlisting>
 
         <para>The value <literal>none</literal> is transparently assignable to 
@@ -1585,18 +1590,21 @@ public object none {
         <para>The <literal>zip()</literal> function combines <literal>BoundedSequence</literal>s 
         into a single <literal>BoundedSequence</literal>.</para>
 
-        <programlisting><![CDATA[public T[n] zip<T,X,Y,n>(X[n] x, Y[n] y, T producing(X x, Y y)) {
-    return from (Bounded<#n> i in zeroTo<#n>()) 
+        <programlisting><![CDATA[public Sequence<T,N> zip<T,X,Y,N>(Sequence<X,N> x, Sequence<Y,N> y, T producing(X x, Y y))
+        given N satisfies Dimension {
+    return from (Bounded<N> i in zeroTo<N>()) 
                 select (producing(x[i],y[i]))
 }]]></programlisting>
 
-        <programlisting><![CDATA[public Entry<X,Y>[n] zip<X,Y,n>(X[n] x, Y[n] y) {
+        <programlisting><![CDATA[public Sequence<Entry<X,Y>,N> zip<X,Y,N>(Sequence<X,N> x, Sequence<Y,N> y) 
+        given N satisfies Dimension {
     return zip(x,y,Entry)
 }]]></programlisting>
 
-        <programlisting><![CDATA[public T[n] zip<T,X,n>(X[n] lists..., T producing(X x...)) {
-    return from (Bounded<#n> i in zeroTo<#n>()) 
-                select (producing(from (X[n] list in lists) select (list[i]));
+        <programlisting><![CDATA[public T[n] zip<T,X,N>(Sequence<X,N> lists..., T producing(X x...))  
+        given N satisfies Dimension {
+    return from (Bounded<N> i in zeroTo<N>()) 
+                select (producing(from (Sequence<X,N> list in lists) select (list[i]));
 }]]></programlisting>
 
 <!--
@@ -2265,7 +2273,7 @@ while (i<=max) {
     doc "Slotwise complement operator |~x|. 
          Implementations should respect the constraint 
          that |(~x).slot(z)==!x.slot(z)|."
-    formal Bits<#n> complement;
+    formal Bits<B> complement;
     
 }]]></programlisting>
 
@@ -2278,10 +2286,11 @@ while (i<=max) {
         string of boolean values, and supports the unary operator 
         <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface Bits<#n> 
-        satisfies Boolean[n] & Equality<Bits<#n>> & FixedSlots<Bits<#n>> {}]]></programlisting>
+        <programlisting><![CDATA[public interface Bits<N> 
+        satisfies Sequence<Boolean,N> & Equality<Bits<N>> & FixedSlots<Bits<N>> 
+        given N satisfies Dimension {}]]></programlisting>
 
-        <comment><para>TODO: should we model <literal>Bits&lt;#n&gt;</literal> as 
+        <comment><para>TODO: should we model <literal>Bits&lt;N&gt;</literal> as 
         a decorator of <literal>Boolean[n]</literal>, like what we do with 
         <literal>String</literal> and <literal>Character[]</literal>?</para></comment>
 

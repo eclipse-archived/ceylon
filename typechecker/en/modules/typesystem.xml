@@ -1256,6 +1256,11 @@ public interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         <comment><para>TODO: should we allow more specific constraints on dimensional 
         type parameters, for example <literal>given N&gt;=#1</literal>.</para></comment>
         
+        <comment><para>TODO: should we let you declare <literal>X&lt;#n&gt;</literal>
+        instead of <literal>X&lt;N&gt; given N satisfies Dimension</literal>, since
+        actually the <literal>n</literal> is more useful than the <literal>N</literal>
+        inside the declaration.</para></comment>
+        
      </section>
         
      <section id="parameterizedtypeparameters">
