@@ -78,6 +78,7 @@ class TestHarness:
         self.success = self.failure = self.error = 0
         for case in cases:
             TestCase(case).run(self)
+        print
         print ", ".join(map(self.report, ("success", "failure", "error")))
 
     def report(self, what):
@@ -90,9 +91,11 @@ class TestHarness:
 
     def log(self, dir, what):
         setattr(self, what, getattr(self, what) + 1)
-        print "%-48s %s" % (dir, {"success": "-",
-                                  "failure": "FAIL",
-                                  "error": "ERROR"}[what])
+        if what == "success":
+            print dir
+        else:
+            print "%-48s %s" % (dir, {"failure": "FAIL",
+                                      "error": "ERROR"}[what])
         sys.stdout.flush()
 
 class TestCase:
