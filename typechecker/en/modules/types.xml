@@ -1246,7 +1246,7 @@ public abstract class Comparison()
         
         <programlisting><![CDATA[doc "A sequence of |Bounded<N+#1>| from
      from |#0| to |N|."
-public Sequence<Bounded<N+#1>,N+#1> zeroTo<N>() 
+public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>() 
         given N satisfies Dimension  { ... }]]></programlisting>
 
     </section>
@@ -1514,7 +1514,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         of the bounded sequence in a <literal>for</literal> loop. The
         indices are of type <literal>Bounded&lt;N&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension class SequenceEntryIterable<X,N>(Sequence<X,N> this)
+        <programlisting><![CDATA[public extension class SequenceEntryIterable<X,N>(BoundedSequence<X,N> this)
         satisfies Iterable<Entry<Bounded<N>,X>> 
         given X satisfies Equality<X> 
         given N satisfies Dimension {
@@ -1557,7 +1557,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         <para>There is a mutable subtype which allows assignment to an index.</para>
         
         <programlisting><![CDATA[public interface OpenBoundedSequence<X,N>
-        satisfies Sequence<X,N> & OpenSequence<X> 
+        satisfies BoundedSequence<X,N> & OpenSequence<X> 
         given X satisfies Equality<X> {
     public Settable<X> value(Bounded<N> index);
 }]]></programlisting>
@@ -1590,21 +1590,21 @@ public object none {
         <para>The <literal>zip()</literal> function combines <literal>BoundedSequence</literal>s 
         into a single <literal>BoundedSequence</literal>.</para>
 
-        <programlisting><![CDATA[public Sequence<T,N> zip<T,X,Y,N>(Sequence<X,N> x, Sequence<Y,N> y, T producing(X x, Y y))
+        <programlisting><![CDATA[public BoundedSequence<T,N> zip<T,X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y, T producing(X x, Y y))
         given N satisfies Dimension {
     return from (Bounded<N> i in zeroTo<N>()) 
                 select (producing(x[i],y[i]))
 }]]></programlisting>
 
-        <programlisting><![CDATA[public Sequence<Entry<X,Y>,N> zip<X,Y,N>(Sequence<X,N> x, Sequence<Y,N> y) 
+        <programlisting><![CDATA[public BoundedSequence<Entry<X,Y>,N> zip<X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y) 
         given N satisfies Dimension {
     return zip(x,y,Entry)
 }]]></programlisting>
 
-        <programlisting><![CDATA[public T[n] zip<T,X,N>(Sequence<X,N> lists..., T producing(X x...))  
+        <programlisting><![CDATA[public T[n] zip<T,X,N>(BoundedSequence<X,N> lists..., T producing(X x...))  
         given N satisfies Dimension {
     return from (Bounded<N> i in zeroTo<N>()) 
-                select (producing(from (Sequence<X,N> list in lists) select (list[i]));
+                select (producing(from (BoundedSequence<X,N> list in lists) select (list[i]));
 }]]></programlisting>
 
 <!--
@@ -2287,7 +2287,7 @@ while (i<=max) {
         <literal>~</literal>.</para>
         
         <programlisting><![CDATA[public interface Bits<N> 
-        satisfies Sequence<Boolean,N> & Equality<Bits<N>> & FixedSlots<Bits<N>> 
+        satisfies BoundedSequence<Boolean,N> & Equality<Bits<N>> & FixedSlots<Bits<N>> 
         given N satisfies Dimension {}]]></programlisting>
 
         <comment><para>TODO: should we model <literal>Bits&lt;N&gt;</literal> as 

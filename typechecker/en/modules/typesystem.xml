@@ -1176,7 +1176,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <programlisting>given X satisfies Number&lt;X&gt;
 given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
        
-        <programlisting>given S satisfies Decimal[n]</programlisting>
+        <programlisting>given S satisfies BoundedSequence&lt;Decimal,N&gt;</programlisting>
 
         <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
         
