@@ -88,7 +88,11 @@ class TestCase:
         self.actualfile = os.path.join(self.dir, "actual.out")
 
     def run(self, harness):
-        paths = glob.glob(os.path.join(self.dir, "*.ceylon"))
+        paths = glob.glob(os.path.join(self.dir, "*.ceylon")) + \
+                glob.glob(os.path.join(self.dir, "*.java"))
+        if not paths:
+            self.log_error("", "nothing to compile\n")
+            return
         paths.sort()
         sp = subprocess.Popen(
             ["java",
@@ -122,6 +126,11 @@ class TestCase:
 
     def log_failure(self):
         print "FAIL:", self.dir
+
+    def log_error(self, out, err):
+        print "ERROR:", self.dir
+        sys.stdout.write(out)
+        sys.stdout.write(err)
 
 if __name__ == "__main__":
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
