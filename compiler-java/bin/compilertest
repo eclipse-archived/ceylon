@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import glob
 import os
 import subprocess
 import sys
@@ -13,7 +14,8 @@ class TestHarness:
             self.basedir, "langtools/src/share/classes")
         self.runtime_srcdir = os.path.join(self.basedir, "runtime")
         self.runtime_builddir = os.path.join(self.basedir, "build/classes")
-        
+        self.testdir = os.path.join(self.basedir, "test")
+
     """The classpath required to run the Ceylon compiler
     """
     def classpath(self, *extras):
@@ -61,8 +63,63 @@ class TestHarness:
                 sys.stdout.write(err)
                 sys.exit(sp.returncode)
 
+    def find_test_cases(self):
+        paths = []
+        for dir, dirs, files in os.walk(self.testdir):
+            if "expect.out" in files:
+                paths.append(dir)
+                break
+        paths.sort()
+        return paths
+
     def run(self, cases = None):
         self.update_runtime()
+        if not cases:
+            cases = self.find_test_cases()
+        for case in cases:
+            TestCase(case).run(self)
+
+class TestCase:
+    def __init__(self, path):
+        if os.path.exists(path) and not os.path.isdir(path):
+            path = os.path.dirname(path)
+        self.dir = path
+        self.expectfile = os.path.join(self.dir, "expect.out")
+        self.actualfile = os.path.join(self.dir, "actual.out")
+
+    def run(self, harness):
+        paths = glob.glob(os.path.join(self.dir, "*.ceylon"))
+        paths.sort()
+        sp = subprocess.Popen(
+            ["java",
+             "-ea",
+             "-cp", harness.classpath(),
+             "com.redhat.ceylon.compiler.Main"] + paths,
+            stdout = subprocess.PIPE,
+            stderr = subprocess.PIPE)
+        out, err = sp.communicate()
+        if sp.returncode == 0:
+            open(self.actualfile, "w").write(out)
+            sp = subprocess.Popen(
+                ["diff", "-ubBw", self.expectfile, self.actualfile],
+                stdout = subprocess.PIPE,
+                stderr = subprocess.PIPE)
+            out, err = sp.communicate()
+            if sp.returncode == 0:
+                self.log_success()
+            elif sp.returncode == 1:
+                self.log_failure()
+                print out
+            else:
+                self.log_error(out, err)
+        else:
+            self.log_error(out, err)
+
+    def log_success(self):
+        pass
+
+    def log_failure(self):
+        print "FAIL:", self.dir
 
 if __name__ == "__main__":
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
