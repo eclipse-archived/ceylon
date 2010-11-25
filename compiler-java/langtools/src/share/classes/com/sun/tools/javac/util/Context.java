@@ -212,21 +212,27 @@ public class Context {
             JAVA, CEYLON
         }
 
-        static ArrayList<Language> stack =
-            new ArrayList<Language>();
+        private static ThreadLocal<ArrayList<Language>> theStack =
+            new ThreadLocal<ArrayList<Language>> () {
+            protected ArrayList<Language> initialValue() {
+                ArrayList<Language> l = new ArrayList<Language>();
+                l.add(Language.JAVA);
+                return l;
+            }
+        };
 
-        static {
-            push(Language.JAVA);
+        private static ArrayList<Language> stack() {
+            return theStack.get();
         }
 
         public static void push(final Language lang) {
-            stack.add(lang);
+            stack().add(lang);
         }
         public static Language pop() {
-            return stack.remove(stack.size() - 1);
+            return stack().remove(stack().size() - 1);
         }
         public static Language current() {
-            return stack.get(stack.size() - 1);
+            return stack().get(stack().size() - 1);
         }
     }
 
