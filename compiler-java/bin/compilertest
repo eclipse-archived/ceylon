@@ -15,6 +15,7 @@ class TestHarness:
         self.runtime_srcdir = os.path.join(self.basedir, "runtime")
         self.runtime_builddir = os.path.join(self.basedir, "build/classes")
         self.testdir = os.path.join(self.basedir, "test")
+        self.verbose = False
 
     """The classpath required to run the Ceylon compiler
     """
@@ -48,20 +49,25 @@ class TestHarness:
                             continue
                     todo.append(src)
         if todo:
-            sp = subprocess.Popen(
-                ["java",
+            sp = self.popen(
+                "java",
                  "-ea",
                  "-cp", self.classpath(self.runtime_srcdir),
                  "com.redhat.ceylon.compiler.Main",
                  "-d", self.runtime_builddir,
-                 "-src", self.runtime_srcdir] + todo,
-                stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE)
+                 "-src", self.runtime_srcdir,
+                *todo)
             out, err = sp.communicate()
             if sp.returncode != 0:
                 sys.stdout.write(out)
                 sys.stdout.write(err)
                 sys.exit(sp.returncode)
+
+    def popen(self, *cmd):
+        if self.verbose:
+            print "+ " + " ".join(cmd)
+        return subprocess.Popen(
+            cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 
     def find_test_cases(self):
         paths = []
@@ -117,25 +123,21 @@ class TestCase:
             self.handle_error(harness, "", "nothing to compile\n")
             return
         paths.sort()
-        sp = subprocess.Popen(
-            ["java",
-             "-ea",
-             "-cp", harness.classpath(),
-             "com.redhat.ceylon.compiler.Main"] + paths,
-            stdout = subprocess.PIPE,
-            stderr = subprocess.PIPE)
+        sp = harness.popen(
+            "java",
+            "-ea",
+            "-cp", harness.classpath(),
+            "com.redhat.ceylon.compiler.Main", *paths)
         out, err = sp.communicate()
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
             return
         cmdline = open(os.path.join(dir, "cmdline")).read().strip().split() #XXX
-        sp = subprocess.Popen(
-            ["java",
-             "-ea",
-             "-cp", ":".join((harness.runtime_builddir, dir)),
-             "ceylon.language.Launcher"] + cmdline,
-            stdout = subprocess.PIPE,
-            stderr = subprocess.PIPE)
+        sp = harness.popen(
+            "java",
+            "-ea",
+            "-cp", ":".join((harness.runtime_builddir, dir)),
+            "ceylon.language.Launcher", *cmdline)
         out, err = sp.communicate()
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
@@ -169,4 +171,11 @@ class TestCase:
 
 if __name__ == "__main__":
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
-    TestHarness(basedir).run(sys.argv[1:])
+    harness = TestHarness(basedir)
+    cases = []
+    for arg in sys.argv[1:]:
+        if arg == "-v":
+            harness.verbose = True
+        else:
+            cases.append(arg)
+    harness.run(cases)
