@@ -302,7 +302,7 @@ public class Gen {
         topLev.sourcefile = t.file;
         topLev.isCeylonProgram = true;
 
-        System.out.println(topLev);
+        // System.out.println(topLev);
         return topLev;
     }
 
