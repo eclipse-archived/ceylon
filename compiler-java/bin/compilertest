@@ -66,7 +66,7 @@ class TestHarness:
     def find_test_cases(self):
         paths = []
         for dir, dirs, files in os.walk(self.testdir):
-            if "expect.out" in files:
+            if "cmdline" in files:
                 paths.append(dir)
         paths.sort()
         return paths
@@ -114,7 +114,7 @@ class TestCase:
                 if ext in ("java", "ceylon"):
                     paths.append(os.path.join(dir, file))
         if not paths:
-            self.log_error("", "nothing to compile\n")
+            self.handle_error(harness, "", "nothing to compile\n")
             return
         paths.sort()
         sp = subprocess.Popen(
@@ -125,19 +125,31 @@ class TestCase:
             stdout = subprocess.PIPE,
             stderr = subprocess.PIPE)
         out, err = sp.communicate()
+        if sp.returncode != 0:
+            self.handle_error(harness, out, err)
+            return
+        cmdline = open(os.path.join(dir, "cmdline")).read().strip().split() #XXX
+        sp = subprocess.Popen(
+            ["java",
+             "-ea",
+             "-cp", ":".join((harness.runtime_builddir, dir)),
+             "ceylon.language.Launcher"] + cmdline,
+            stdout = subprocess.PIPE,
+            stderr = subprocess.PIPE)
+        out, err = sp.communicate()
+        if sp.returncode != 0:
+            self.handle_error(harness, out, err)
+            return
+        open(self.actualfile, "w").write(out)
+        sp = subprocess.Popen(
+            ["diff", "-ubBw", self.expectfile, self.actualfile],
+            stdout = subprocess.PIPE,
+            stderr = subprocess.PIPE)
+        out, err = sp.communicate()
         if sp.returncode == 0:
-            open(self.actualfile, "w").write(out)
-            sp = subprocess.Popen(
-                ["diff", "-ubBw", self.expectfile, self.actualfile],
-                stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE)
-            out, err = sp.communicate()
-            if sp.returncode == 0:
-                self.handle_success(harness)
-            elif sp.returncode == 1:
-                self.handle_failure(harness)
-            else:
-                self.handle_error(harness, out, err)
+            self.handle_success(harness)
+        elif sp.returncode == 1:
+            self.handle_failure(harness)
         else:
             self.handle_error(harness, out, err)
 
