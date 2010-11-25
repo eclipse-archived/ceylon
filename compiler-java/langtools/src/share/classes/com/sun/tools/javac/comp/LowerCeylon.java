@@ -114,6 +114,9 @@ public class LowerCeylon extends TreeTranslator {
             meth.owner == syms.enumSym)
             argtypes = argtypes.tail.tail;
         tree.args = lowerArgs(argtypes, tree.args, tree.varargsElement);
+        // Now that we have lowered all varargs, we must set varargsElement null
+        // or Lower will do it again.
+        tree.varargsElement = null;
 
         if (meth.name.toString().equals("$internalErasedExists")) {
             if (tree.meth.getTag() == JCTree.SELECT) {
