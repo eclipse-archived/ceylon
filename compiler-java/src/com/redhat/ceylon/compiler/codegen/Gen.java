@@ -520,7 +520,7 @@ public class Gen {
 
         JCExpression classLiteral;
         if (classDecl != null) {
-            classLiteral = makeSelect(classDecl.getClassName(), "class");
+            classLiteral = makeSelect(classDecl.nameAsString(), "class");
         } else {
             classLiteral = makeSelect(methodName, "class");
         }
