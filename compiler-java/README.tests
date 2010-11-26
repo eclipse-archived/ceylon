@@ -26,4 +26,8 @@ Running the harness with no arguments will result in every test
 being run.
 
 The harness has a single command line option, "-v", which causes
-it to be more verbose.
+it to be more verbose.  The option can be specified multiple times,
+to further increase verbosity.  So far:
+
+ -v   Prints detailed output when tests do not succeed.
+ -vv  As above, but also prints the commands it is executing.
