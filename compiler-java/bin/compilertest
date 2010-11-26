@@ -77,13 +77,13 @@ class TestHarness:
         paths.sort()
         return paths
 
-    def run(self, cases = None):
+    def run(self, tests = None):
         self.update_runtime()
-        if not cases:
-            cases = self.find_test_cases()
+        if not tests:
+            tests = self.find_test_cases()
         self.success = self.failure = self.error = 0
-        for case in cases:
-            TestCase(case).run(self)
+        for test in tests:
+            TestCase(test).run(self)
         print
         print ", ".join(map(self.report, ("success", "failure", "error")))
 
@@ -170,12 +170,15 @@ class TestCase:
         sys.stdout.write(err)
 
 if __name__ == "__main__":
+    import getopt
+    try:
+        opts, tests = getopt.getopt(sys.argv[1:], "v")
+    except getopt.GetoptError, e:
+        print "error:", e
+        sys.exit(1)
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
     harness = TestHarness(basedir)
-    cases = []
-    for arg in sys.argv[1:]:
-        if arg == "-v":
+    for opt, arg in opts:
+        if opt == "-v":
             harness.verbose = True
-        else:
-            cases.append(arg)
-    harness.run(cases)
+    harness.run(tests)
