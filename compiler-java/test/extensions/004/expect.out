@@ -1,31 +1,3 @@
-
-class Test extends .ceylon.language.Object {
-    
-    @.ceylon.language.Extension()
-    public Natural natural() {
-        return .ceylon.language.Natural.instance(1L);
-    }
-    
-    public void test() {
-        final Float f = .ceylon.language.Float.instance(3.142).plus(new Test());
-    }
-    
-    Test() {
-    }
-}
-
-class Test extends .ceylon.language.Object {
-    
-    @.ceylon.language.Extension()
-    public Natural natural() {
-        return .ceylon.language.Natural.instance(1L);
-    }
-    
-    public void test() {
-        final Float f = .ceylon.language.Float.instance(3.142).plus(new Test().natural().floatXXX());
-    }
-    
-    Test() {
-        super();
-    }
+ceylon.language.Float {
+  double value = 4.1419999999999995
 }

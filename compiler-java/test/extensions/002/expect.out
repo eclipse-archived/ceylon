@@ -1,18 +1,3 @@
-
-public class test extends .ceylon.language.Object {
-    
-    public static void run() {
-        final Float f = .ceylon.language.Float.instance(1.5).plus(.ceylon.language.Natural.instance(1L));
-    }
-}
-
-public class test extends .ceylon.language.Object {
-    
-    public test() {
-        super();
-    }
-    
-    public static void run() {
-        final Float f = .ceylon.language.Float.instance(1.5).plus(.ceylon.language.Natural.instance(1L).floatXXX());
-    }
+ceylon.language.Float {
+  double value = 2.5
 }

@@ -1,4 +1,7 @@
+import com.redhat.ceylon.compiler.test.dump;
+
 doc "Test multi-step extension"
-public void test(Process process) {
+void test(Process process) {
     Float f = 3.142 + Test();
+    dump(f);
 }
