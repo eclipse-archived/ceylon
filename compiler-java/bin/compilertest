@@ -69,23 +69,36 @@ class TestHarness:
         return subprocess.Popen(
             cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 
-    def find_test_cases(self):
+    def find_test_cases(self, restrictions):
         paths = []
         for dir, dirs, files in os.walk(self.testdir):
             if "cmdline" in files:
+                if restrictions:
+                    for restriction in restrictions:
+                        if (dir + os.sep).startswith(restriction):
+                            break
+                    else:
+                        continue
                 paths.append(dir)
         paths.sort()
         return paths
 
-    def run(self, tests = None):
+    def run(self, tests = ()):
         self.update_runtime()
-        if not tests:
-            tests = self.find_test_cases()
+        tests = self.find_test_cases(map(self.make_restriction, tests))
         self.success = self.failure = self.error = 0
         for test in tests:
             TestCase(test).run(self)
         print
         print ", ".join(map(self.report, ("success", "failure", "error")))
+
+    def make_restriction(self, path):
+        path = os.path.realpath(path)
+        if not os.path.exists(path):
+            raise IOError, path
+        if not os.path.isdir(path):
+            path = os.path.dirname(path)
+        return path + os.sep
 
     def report(self, what):
         count = getattr(self, what)
@@ -105,10 +118,8 @@ class TestHarness:
         sys.stdout.flush()
 
 class TestCase:
-    def __init__(self, path):
-        if os.path.exists(path) and not os.path.isdir(path):
-            path = os.path.dirname(path)
-        self.dir = path
+    def __init__(self, dir):
+        self.dir = dir
         self.expectfile = os.path.join(self.dir, "expect.out")
         self.actualfile = os.path.join(self.dir, "actual.out")
 

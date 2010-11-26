@@ -13,9 +13,17 @@ Note that a sneaky way to make a new test is to put the Java and
 Ceylon files into a directory with an empty expect.out, then run
 the test, then rename actual.out as expect.out.
 
-Specific tests can be run by supplying their paths as arguments:
+Individual tests can be run by supplying their paths as arguments:
 
-  bin/compilertest test/extensions/001
+  bin/compilertest test/extensions/003 test/annotations/001
 
+Groups of tests can be run too.  This command runs all tests under
+tests/extensions:
+
+  bin/compilertest test/extensions
+  
 Running the harness with no arguments will result in every test
 being run.
+
+The harness has a single command line option, "-v", which causes
+it to be more verbose.
