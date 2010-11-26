@@ -429,8 +429,14 @@ public abstract class Boolean()
             if (is X y) {
                 return matches(y)
             }
+            else {
+                return false
+            }
         }
-        return false
+        else {
+            //match only if this is a case(null)
+            return this==null.matcher
+        }
     }
         
 }]]></programlisting>
@@ -573,11 +579,13 @@ public abstract class Boolean()
         
         <programlisting><![CDATA[doc "Represents a null reference."  
 public object null 
-        extends Void() 
-        satisfies Matcher<Object?> {
+        extends Void() {
 
-    actual Boolean matches(Object? value) {
-        return !value exists;
+    public extension object matcher 
+            satisfies Matcher<Object> {
+        actual Boolean matches(Object value) {
+            return false
+        }
     }
     
     public extension Nothing<X> nothing<X>() {
@@ -595,7 +603,7 @@ public object null
         <para>Note that <literal>Optional</literal> is not a reified type. The compiler
         erases all references to <literal>Optional&lt;X&gt;</literal> to 
         <literal>X</literal> after performing type validation and before generating
-        bytecode. The compiler also replaces references to <literal>Null.null</literal>
+        bytecode. The compiler also replaces references to <literal>null</literal>
         with the Java <literal>null</literal>. Therefore, none of the extensions defined 
         in this section are actually executed.</para>
         

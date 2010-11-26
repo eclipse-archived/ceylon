@@ -933,8 +933,8 @@ if (X satisfies Comparable&lt;X&gt;) {
             <itemizedlist>
                 <listitem>
                     <para>a list of expressions of type assignable to <literal>Matcher&lt;X&gt;</literal>, 
-                    where <literal>X</literal> is a subtype of the <literal>switch</literal> expression 
-                    type, or</para>
+                    where <literal>X</literal> or <literal>X?</literal> is a subtype of the 
+                    <literal>switch</literal> expression type, or</para>
                 </listitem>
                 <listitem>
                     <para>an assignability condition of form <literal>case (is ...)</literal>, or</para>
@@ -948,10 +948,10 @@ if (X satisfies Comparable&lt;X&gt;) {
 
             <programlisting>Case: Expression ("," Expression)* | "is" Type | "satisfies" Type</programlisting>
             
-            <!--
             <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
-            must be of type <literal>Optional&lt;X&gt;</literal> for some type <literal>X</literal>.</para>
+            must be of type <literal>X?</literal>, for some type <literal>X</literal>.</para>
 
+            <!--
             <para>If the <literal>switch</literal> expression is of type <literal>Optional&lt;X&gt;</literal>, 
             there must be an explicit <literal>case (null)</literal>.</para>
             -->
