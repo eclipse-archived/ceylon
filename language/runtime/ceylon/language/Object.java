@@ -8,9 +8,10 @@ public abstract class Object extends Void {
         return String.instance("");
     }
 
-    public static void addAnnotation(Annotation ann) {
+    public synchronized static void addAnnotation(java.lang.Class klass, Annotation ann) {
+
     }
 
-    public static void addAnnotation(String memberName, Annotation ann) {
+    public static void addAnnotation(java.lang.Class klass, String memberName, Annotation ann) {
     }
 }
