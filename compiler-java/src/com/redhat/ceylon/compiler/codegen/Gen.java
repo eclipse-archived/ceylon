@@ -258,7 +258,7 @@ public class Gen {
                 defs.append(convert(decl));
             }
             public void visit(CeylonTree.MethodDeclaration decl) {
-                methodClass(decl, defs, true);
+                methodClass(null, decl, defs, true);
             }
         });
 
@@ -315,7 +315,8 @@ public class Gen {
             return make.Select(getPackage(packagePart), names.fromString(shortName));
     }
 
-    public void methodClass(CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
+    public void methodClass(CeylonTree.ClassOrInterfaceDeclaration classDecl,
+            CeylonTree.MethodDeclaration decl, final ListBuffer<JCTree> defs,
             boolean topLevel) {
         // Generate a class with the
         // name of the method and a corresponding run() method.
@@ -333,7 +334,7 @@ public class Gen {
         final ListBuffer<JCTypeParameter> typeParams =
             new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(decl, params, body, restype, typeParams,
+        processMethodDeclaration(classDecl, decl, params, body, restype, typeParams,
                 annotations, langAnnotations);
 
         JCMethodDecl meth = at(decl).MethodDef(make.Modifiers((topLevel ? PUBLIC|STATIC : 0)),
@@ -385,7 +386,8 @@ public class Gen {
     }
 
     // FIXME: There must be a better way to do this.
-    void processMethodDeclaration(final CeylonTree.BaseMethodDeclaration decl,
+    void processMethodDeclaration(final CeylonTree.ClassOrInterfaceDeclaration classDecl,
+            final CeylonTree.BaseMethodDeclaration decl,
             final ListBuffer<JCVariableDecl> params,
             final Singleton<JCBlock> block,
             final Singleton<JCExpression> restype,
@@ -407,11 +409,11 @@ public class Gen {
             for (CeylonTree stmt: decl.stmts)
                 stmt.accept(new CeylonTree.Visitor () {
                     public void visit(CeylonTree.Block b) {
-                        block.thing = convert(b);
+                        block.thing = convert(classDecl, b);
                     }
                 });
 
-        processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
+        processAnnotations(classDecl, decl.annotations, annotations, langAnnotations, decl.nameAsString());
 
         restype.append(convert(decl.returnType));
      }
@@ -474,14 +476,15 @@ public class Gen {
         return imports.toList();
     }
 
-    void processAnnotations(List<CeylonTree.Annotation> ceylonAnnos,
+    void processAnnotations(final CeylonTree.ClassOrInterfaceDeclaration classDecl,
+            List<CeylonTree.Annotation> ceylonAnnos,
             final ListBuffer<JCStatement> annotations,
             final ListBuffer<JCAnnotation> langAnnotations,
             final String declName) {
 
         class V extends CeylonTree.Visitor {
             public void visit(CeylonTree.UserAnnotation userAnn) {
-                annotations.append(at(userAnn).Exec(convert(userAnn, declName)));
+                annotations.append(at(userAnn).Exec(convert(userAnn, classDecl, declName)));
             }
             // FIXME: Shouldn't be here
             public void visit(CeylonTree.LanguageAnnotation langAnn) {
@@ -508,21 +511,31 @@ public class Gen {
         public List<T> result = List.<T>nil();
     }
 
-    JCExpression convert(CeylonTree.UserAnnotation userAnn, String methodName) {
+    JCExpression convert(final CeylonTree.UserAnnotation userAnn,
+            CeylonTree.ClassOrInterfaceDeclaration classDecl, String methodName) {
        List<JCExpression> values = List.<JCExpression>nil();
         for (CeylonTree expr: userAnn.values()) {
             values = values.append(convertExpression(expr));
         }
+
+        JCExpression classLiteral;
+        if (classDecl != null) {
+            classLiteral = makeSelect(classDecl.getClassName(), "class");
+        } else {
+            classLiteral = makeSelect(methodName, "class");
+        }
+
         JCExpression result = at(userAnn).Apply(null, makeSelect(userAnn.name, "run"),
                 values);
         JCIdent addAnnotation = at(userAnn).Ident(names.fromString("addAnnotation"));
         List<JCExpression> args;
         if (methodName != null)
-            args = List.<JCExpression>of(ceylonLiteral(methodName), result);
+            args = List.<JCExpression>of(classLiteral, ceylonLiteral(methodName), result);
         else
-            args = List.<JCExpression>of(result);
+            args = List.<JCExpression>of(classLiteral, result);
 
         result = at(userAnn).Apply(null, addAnnotation, args);
+
         return result;
     }
 
@@ -612,8 +625,9 @@ public class Gen {
             new ListBuffer<JCExpression>();
 
         class ClassVisitor extends StatementVisitor {
-            ClassVisitor(ListBuffer<JCStatement> stmts) {
-                super(stmts);
+            ClassVisitor(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+                    ListBuffer<JCStatement> stmts) {
+                super(cdecl, stmts);
             }
             public void visit(CeylonTree.FormalParameter param) {
                 JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(0),
@@ -626,11 +640,11 @@ public class Gen {
             }
 
             public void visit(CeylonTree.MethodDeclaration meth) {
-                defs.appendList(convert(meth));
+                defs.appendList(convert(cdecl, meth));
             }
 
             public void visit(CeylonTree.AbstractMethodDeclaration meth) {
-                defs.appendList(convert(meth));
+                defs.appendList(convert(cdecl, meth));
             }
 
              public void visit(CeylonTree.LanguageAnnotation ann) {
@@ -648,7 +662,7 @@ public class Gen {
             }
 
             public void visit(CeylonTree.MemberDeclaration mem) {
-                for (JCStatement def: convert(mem)) {
+                for (JCStatement def: convert(cdecl, mem)) {
                     if (def instanceof JCVariableDecl &&
                             ((JCVariableDecl) def).init != null) {
                         JCVariableDecl decl = (JCVariableDecl)def;
@@ -695,9 +709,9 @@ public class Gen {
             public void visit(CeylonTree.TypeConstraint l) {}
         }
 
-        cdecl.visitChildren(new ClassVisitor (stmts));
+        cdecl.visitChildren(new ClassVisitor (cdecl, stmts));
 
-        processAnnotations(cdecl.annotations, annotations, langAnnotations,
+        processAnnotations(cdecl, cdecl.annotations, annotations, langAnnotations,
                            cdecl.nameAsString());
 
         if (!cdecl.isInterface()) {
@@ -836,7 +850,8 @@ public class Gen {
         return result.toList();
     }
 
-    public List<JCTree> convert(CeylonTree.BaseMethodDeclaration decl) {
+    public List<JCTree> convert(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+            CeylonTree.BaseMethodDeclaration decl) {
         final ListBuffer<JCVariableDecl> params =
             new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCStatement> annotations =
@@ -851,7 +866,7 @@ public class Gen {
         final ListBuffer<JCTypeParameter> typeParams =
             new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(decl, params, body, restypebuf, typeParams,
+        processMethodDeclaration(cdecl, decl, params, body, restypebuf, typeParams,
                 annotations, langAnnotations);
 
         JCExpression restype = restypebuf.thing();
@@ -885,15 +900,19 @@ public class Gen {
     }
 
 
-    public JCBlock convert(CeylonTree.Block block) {
+    public JCBlock convert(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+            CeylonTree.Block block) {
         return block == null ? null :
-            at(block).Block(0, convertStmts(block.getStmts()));
+            at(block).Block(0, convertStmts(cdecl, block.getStmts()));
     }
 
     class StatementVisitor extends CeylonTree.Visitor {
         final ListBuffer<JCStatement> stmts;
-        StatementVisitor(ListBuffer<JCStatement> stmts) {
+        final CeylonTree.ClassOrInterfaceDeclaration cdecl;
+        StatementVisitor(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+                ListBuffer<JCStatement> stmts) {
             this.stmts = stmts;
+            this.cdecl = cdecl;
         }
         public ListBuffer<JCStatement> stmts() {
             return stmts;
@@ -905,13 +924,13 @@ public class Gen {
             stmts.append(convert(ret));
         }
         public void visit(CeylonTree.IfStatement stat) {
-            stmts.append(convert(stat));
+            stmts.append(convert(cdecl, stat));
         }
         public void visit(CeylonTree.WhileStatement stat) {
-            stmts.append(convert(stat));
+            stmts.append(convert(cdecl, stat));
         }
         public void visit(CeylonTree.MemberDeclaration decl) {
-            for (JCTree def: convert(decl))
+            for (JCTree def: convert(cdecl, decl))
                  stmts.append((JCStatement)def);
         }
         public void visit(CeylonTree.Operator op) {
@@ -919,7 +938,7 @@ public class Gen {
         }
         public void visit(CeylonTree.MethodDeclaration decl) {
             final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-            methodClass(decl, defs, false);
+            methodClass(cdecl, decl, defs, false);
             for (JCTree def: defs.toList()) {
                 JCClassDecl innerDecl = (JCClassDecl)def;
                 stmts.append(innerDecl);
@@ -944,11 +963,12 @@ public class Gen {
         }
     }
 
-    List<JCStatement> convertStmts(List<CeylonTree> stmts) {
+    List<JCStatement> convertStmts(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+            List<CeylonTree> stmts) {
         final ListBuffer<JCStatement> buf =
             new ListBuffer<JCStatement>();
 
-        StatementVisitor v = new StatementVisitor (buf);
+        StatementVisitor v = new StatementVisitor (cdecl, buf);
 
         for (CeylonTree stmt: stmts)
             stmt.accept(v);
@@ -1014,14 +1034,16 @@ public class Gen {
         return result;
     }
 
-    JCStatement convert(CeylonTree.IfStatement stmt) {
-        JCBlock thenPart = convert(stmt.ifTrue);
-        JCBlock elsePart = convert(stmt.ifFalse);
+    JCStatement convert(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+            CeylonTree.IfStatement stmt) {
+        JCBlock thenPart = convert(cdecl, stmt.ifTrue);
+        JCBlock elsePart = convert(cdecl, stmt.ifFalse);
         return convertCondition(stmt.condition.operand, JCTree.IF, thenPart, elsePart);
     }
 
-    JCStatement convert(CeylonTree.WhileStatement stmt) {
-        JCBlock thenPart = convert(stmt.ifTrue);
+    JCStatement convert(CeylonTree.ClassOrInterfaceDeclaration cdecl,
+            CeylonTree.WhileStatement stmt) {
+        JCBlock thenPart = convert(cdecl, stmt.ifTrue);
         return convertCondition(stmt.condition.operand, JCTree.WHILELOOP, thenPart, null);
     }
 
@@ -1249,7 +1271,8 @@ public class Gen {
         return at(member).Ident(names.fromString(member.asString()));
     }
 
-    List<JCStatement> convert(CeylonTree.MemberDeclaration decl) {
+    List<JCStatement> convert(CeylonTree.ClassOrInterfaceDeclaration classDecl,
+            CeylonTree.MemberDeclaration decl) {
         at(decl);
 
         JCExpression initialValue = null;
@@ -1260,7 +1283,7 @@ public class Gen {
             new ListBuffer<JCAnnotation>();
         final ListBuffer<JCStatement> annotations =
             new ListBuffer<JCStatement>();
-        processAnnotations(decl.annotations, annotations, langAnnotations, decl.nameAsString());
+        processAnnotations(classDecl, decl.annotations, annotations, langAnnotations, decl.nameAsString());
 
         JCExpression type = convert(decl.type);
 
