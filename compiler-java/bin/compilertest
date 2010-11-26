@@ -109,11 +109,14 @@ class TestHarness:
         return "%d %s" % (count, what)
 
     def log(self, dir, what):
+        prefix = self.basedir + os.sep
+        if dir.startswith(prefix):
+            dir = dir[len(prefix):]
         setattr(self, what, getattr(self, what) + 1)
         if what == "success":
             print dir
         else:
-            print "%-48s %s" % (dir, {"failure": "FAIL",
+            print "%-24s %s" % (dir, {"failure": "FAIL",
                                       "error": "ERROR"}[what])
         sys.stdout.flush()
 
