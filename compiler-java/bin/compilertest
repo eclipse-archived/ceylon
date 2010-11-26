@@ -69,23 +69,36 @@ class TestHarness:
         return subprocess.Popen(
             cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 
-    def find_test_cases(self):
+    def find_test_cases(self, restrictions):
         paths = []
         for dir, dirs, files in os.walk(self.testdir):
             if "cmdline" in files:
+                if restrictions:
+                    for restriction in restrictions:
+                        if (dir + os.sep).startswith(restriction):
+                            break
+                    else:
+                        continue
                 paths.append(dir)
         paths.sort()
         return paths
 
-    def run(self, cases = None):
+    def run(self, tests = ()):
         self.update_runtime()
-        if not cases:
-            cases = self.find_test_cases()
+        tests = self.find_test_cases(map(self.make_restriction, tests))
         self.success = self.failure = self.error = 0
-        for case in cases:
-            TestCase(case).run(self)
+        for test in tests:
+            TestCase(test).run(self)
         print
         print ", ".join(map(self.report, ("success", "failure", "error")))
+
+    def make_restriction(self, path):
+        path = os.path.realpath(path)
+        if not os.path.exists(path):
+            raise IOError, path
+        if not os.path.isdir(path):
+            path = os.path.dirname(path)
+        return path + os.sep
 
     def report(self, what):
         count = getattr(self, what)
@@ -105,10 +118,8 @@ class TestHarness:
         sys.stdout.flush()
 
 class TestCase:
-    def __init__(self, path):
-        if os.path.exists(path) and not os.path.isdir(path):
-            path = os.path.dirname(path)
-        self.dir = path
+    def __init__(self, dir):
+        self.dir = dir
         self.expectfile = os.path.join(self.dir, "expect.out")
         self.actualfile = os.path.join(self.dir, "actual.out")
 
@@ -151,7 +162,7 @@ class TestCase:
         if sp.returncode == 0:
             self.handle_success(harness)
         elif sp.returncode == 1:
-            self.handle_failure(harness)
+            self.handle_failure(harness, out, err)
         else:
             self.handle_error(harness, out, err)
 
@@ -161,8 +172,13 @@ class TestCase:
         for path in glob.glob(os.path.join(self.dir, "*.class")):
             os.unlink(path)
 
-    def handle_failure(self, harness):
+    def handle_failure(self, harness, out, err):
         harness.log(self.dir, "failure")
+        if harness.verbose:
+            if err:
+                sys.stdout.write(err)
+            else:
+                sys.stdout.write(out)
 
     def handle_error(self, harness, out, err):
         harness.log(self.dir, "error")
@@ -170,12 +186,15 @@ class TestCase:
         sys.stdout.write(err)
 
 if __name__ == "__main__":
+    import getopt
+    try:
+        opts, tests = getopt.getopt(sys.argv[1:], "v")
+    except getopt.GetoptError, e:
+        print "error:", e
+        sys.exit(1)
     basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
     harness = TestHarness(basedir)
-    cases = []
-    for arg in sys.argv[1:]:
-        if arg == "-v":
+    for opt, arg in opts:
+        if opt == "-v":
             harness.verbose = True
-        else:
-            cases.append(arg)
-    harness.run(cases)
+    harness.run(tests)

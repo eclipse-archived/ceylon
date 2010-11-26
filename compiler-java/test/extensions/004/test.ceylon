@@ -1,7 +1,7 @@
 import com.redhat.ceylon.compiler.test.dump;
 
-doc "Test widening of the right hand side of an expression"
+doc "Test multi-step extension"
 void test(Process process) {
-    Float f = 1.5 + 1;
+    Float f = 3.142 + Test();
     dump(f);
 }
