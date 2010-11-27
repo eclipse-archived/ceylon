@@ -622,6 +622,98 @@ String? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
+        <comment><para>TODO: We could let a class or interface conditionally implement or 
+        extend an interface, called a <emphasis>conditional supertype</emphasis>, depending 
+        upon the argument of a type parameter.</para>
+        
+        <programlisting>ConditionalTypes: SatisfiedTypes Conditions</programlisting>
+        
+        <programlisting>Conditions: "if" "(" Condition ("&amp;&amp;" Condition)* ")"</programlisting>
+        
+        <para>A <emphasis>condition</emphasis> would be a list of upper bounds and metatype
+        bounds applying to a type parameter of the class of interface.</para>
+        
+        <programlisting>Condition: TypeName (Metatypes SatisfiedTypes? | SatisfiedTypes)</programlisting>
+        
+        <para>The type parameter must be a covariant or nonvariant type parameter of
+        the class or interface.</para>
+        
+        <programlisting>satisfies SequenceEquality&lt;T&gt; if (T satisfies Equality&lt;T&gt;)</programlisting>
+        
+        <para>Then a produced type for the class or interface would be a subtype of the
+        conditional supertype if the type arguments satisfy the bounds specified by the 
+        condition.</para>
+        
+        <programlisting><![CDATA[public interface Sequence<out T>
+        satisfies Iterable<T> &
+                  Category &
+                  Correspondence<Natural,T> & 
+                  Sized
+        satisfies ElementwiseEquality 
+                  if (T satisfies Equality<IdentifiableObject>) {        
+    ... 
+}
+
+public interface ElementwiseEquality
+        satisfies Equality<Sequence<IdentifiableObject>> &
+                  Correspondence<Natural,IdentifiableObject> & 
+                  Sized
+        given T satisfies Equality<IdentifiableObject> {
+
+    actual Boolean equals(Sequence<IdentifiableObject> that) {
+        if (this.size!=that.size) { return false }
+        for (Integer i in 0..size-1) {
+            if (this[i]!=that[i]) { return false }
+        }
+        fail {
+            return true
+        }
+    }
+
+    actual Integer hash {
+        Integer h:=0;
+        for (Integer i in 0..size-1) {
+            h^=this[i].hash
+        }
+        return h
+    }
+      
+}]]></programlisting>
+        
+        <para>An even more flexible form of this, which allows "conditional members",
+        would allow the following simplification to the above example:</para>
+        <programlisting><![CDATA[public interface Sequence<out T>
+        satisfies Iterable<T> &
+                  Category &
+                  Correspondence<Natural,T> & 
+                  Sized
+        satisfies Equality<Sequence<IdentifiableObject>> 
+                  if (T satisfies Equality<IdentifiableObject>) {        
+    ... 
+
+    actual Boolean equals(Sequence<IdentifiableObject> that) 
+            if (T satisfies Equality<IdentifiableObject>) {
+        if (this.size!=that.size) { return false }
+        for (Integer i in 0..size-1) {
+            if (this[i]!=that[i]) { return false }
+        }
+        fail {
+            return true
+        }
+    }
+
+    actual Integer hash 
+            if (T satisfies Equality<IdentifiableObject>) {
+        Integer h:=0;
+        for (Integer i in 0..size-1) {
+            h^=this[i].hash
+        }
+        return h
+    }
+      
+}]]></programlisting>
+        </comment>
+
     </section>
     
     <section id="cases">
@@ -1372,106 +1464,6 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
     </section>
     
-    <section id="conditionalinheritance">
-        <title>Conditional inheritance</title>
-        
-        <comment><para>NOTE: This section is really speculative! A similar effect 
-        can already be achieved with extensions.</para></comment>
-        
-        <para>A class or interface may conditionally implement or extend an interface, 
-        called a <emphasis>conditional supertype</emphasis>, depending upon the argument 
-        of a type parameter.</para>
-        
-        <programlisting>ConditionalTypes: SatisfiedTypes Conditions</programlisting>
-        
-        <programlisting>Conditions: "if" "(" Condition ("&amp;&amp;" Condition)* ")"</programlisting>
-        
-        <para>A <emphasis>condition</emphasis> is a list of upper bounds and metatype
-        bounds applying to a type parameter of the class of interface.</para>
-        
-        <programlisting>Condition: TypeName (Metatypes SatisfiedTypes? | SatisfiedTypes)</programlisting>
-        
-        <para>The type parameter must be a covariant or nonvariant type parameter of
-        the class or interface.</para>
-        
-        <programlisting>satisfies SequenceEquality&lt;T&gt; if (T satisfies Equality&lt;T&gt;)</programlisting>
-        
-        <para>Then a produced type for the class or interface is a subtype of the
-        conditional supertype if the type arguments satisfy the bounds specified
-        by the condition.</para>
-        
-        <programlisting><![CDATA[public interface Sequence<out T>
-        satisfies Iterable<T> &
-                  Category &
-                  Correspondence<Natural,T> & 
-                  Sized
-        satisfies ElementwiseEquality 
-                  if (T satisfies Equality<IdentifiableObject>) {        
-    ... 
-}
-
-public interface ElementwiseEquality
-        satisfies Equality<Sequence<IdentifiableObject>> &
-                  Correspondence<Natural,IdentifiableObject> & 
-                  Sized
-        given T satisfies Equality<IdentifiableObject> {
-
-    actual Boolean equals(Sequence<IdentifiableObject> that) {
-        if (this.size!=that.size) { return false }
-        for (Integer i in 0..size-1) {
-            if (this[i]!=that[i]) { return false }
-        }
-        fail {
-            return true
-        }
-    }
-
-    actual Integer hash {
-        Integer h:=0;
-        for (Integer i in 0..size-1) {
-            h^=this[i].hash
-        }
-        return h
-    }
-      
-}]]></programlisting>
-        
-        <comment><para>TODO: A more flexible form of this, which allows "conditional members",
-        would allow the following simplification to the above example:</para>
-        <programlisting><![CDATA[public interface Sequence<out T>
-        satisfies Iterable<T> &
-                  Category &
-                  Correspondence<Natural,T> & 
-                  Sized
-        satisfies Equality<Sequence<IdentifiableObject>> 
-                  if (T satisfies Equality<IdentifiableObject>) {        
-    ... 
-
-    actual Boolean equals(Sequence<IdentifiableObject> that) 
-            if (T satisfies Equality<IdentifiableObject>) {
-        if (this.size!=that.size) { return false }
-        for (Integer i in 0..size-1) {
-            if (this[i]!=that[i]) { return false }
-        }
-        fail {
-            return true
-        }
-    }
-
-    actual Integer hash 
-            if (T satisfies Equality<IdentifiableObject>) {
-        Integer h:=0;
-        for (Integer i in 0..size-1) {
-            h^=this[i].hash
-        }
-        return h
-    }
-      
-}]]></programlisting>
-        </comment>
-        
-    </section>
-
     </section>
 
     <section id="generictypearguments">
