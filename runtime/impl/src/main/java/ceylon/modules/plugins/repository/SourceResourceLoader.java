@@ -34,7 +34,12 @@ import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import org.jboss.modules.*;
+import org.jboss.modules.ClassSpec;
+import org.jboss.modules.PackageSpec;
+import org.jboss.modules.PathFilter;
+import org.jboss.modules.PathFilters;
+import org.jboss.modules.Resource;
+import org.jboss.modules.ResourceLoader;
 
 import ceylon.modules.plugins.compiler.CompilerAdapterFactory;
 
@@ -45,17 +50,14 @@ import ceylon.modules.plugins.compiler.CompilerAdapterFactory;
  */
 public class SourceResourceLoader implements ResourceLoader
 {
-   private ModuleIdentifier moduleIdentifier;
    private File sourcesRoot;
    private File classesRoot;
    private String rootName;
    private PathFilter exportFilter;
    private Manifest manifest;
 
-   public SourceResourceLoader(ModuleIdentifier moduleIdentifier, File sourcesRoot, File classesRoot, String rootName, PathFilter exportFilter)
+   public SourceResourceLoader(File sourcesRoot, File classesRoot, String rootName, PathFilter exportFilter)
    {
-      if (moduleIdentifier == null)
-         throw new IllegalArgumentException("Null module identifier");
       if (sourcesRoot == null)
          throw new IllegalArgumentException("Null sources root");
       if (classesRoot == null)
@@ -65,7 +67,6 @@ public class SourceResourceLoader implements ResourceLoader
       if (exportFilter == null)
          exportFilter = PathFilters.acceptAll();
 
-      this.moduleIdentifier = moduleIdentifier;
       this.sourcesRoot = sourcesRoot;
       this.classesRoot = classesRoot;
       this.rootName = rootName;
@@ -198,7 +199,7 @@ public class SourceResourceLoader implements ResourceLoader
       spec.setImplVendor(getDefinedAttribute(Attributes.Name.IMPLEMENTATION_VENDOR, entryAttribute, mainAttribute));
       if (Boolean.parseBoolean(getDefinedAttribute(Attributes.Name.SEALED, entryAttribute, mainAttribute)))
       {
-         spec.setSealBase(moduleIdentifier.toURL(rootName));
+         spec.setSealBase(classesRoot.toURI().toURL());
       }
       return spec;
    }
@@ -216,7 +217,7 @@ public class SourceResourceLoader implements ResourceLoader
          File file = new File(classesRoot, name);
          if (file.exists())
          {
-            return new FileEntryResource(name, file, moduleIdentifier.toURL(rootName, name));
+            return new FileEntryResource(name, file, file.toURI().toURL());
          }
          else
          {
@@ -225,7 +226,7 @@ public class SourceResourceLoader implements ResourceLoader
                return null;
 
             // TODO -- fix url!
-            return new SourceEntryResource(name, file, moduleIdentifier.toURL(rootName, name), classesRoot);
+            return new SourceEntryResource(name, file, file.toURI().toURL(), classesRoot);
          }
       }
       catch (MalformedURLException e)

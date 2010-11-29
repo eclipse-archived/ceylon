@@ -117,7 +117,7 @@ public class LocalRepository extends AbstractRepository
       try
       {
          String rootName = moduleIdentifier + ".car"; // TODO -- ok?
-         return new CarFileResourceLoader(moduleIdentifier, new JarFile(file), rootName, PathFilters.exclude("META-INF"));
+         return new CarFileResourceLoader(new JarFile(file), rootName, PathFilters.getDefaultExportFilter());
       }
       catch (Exception e)
       {

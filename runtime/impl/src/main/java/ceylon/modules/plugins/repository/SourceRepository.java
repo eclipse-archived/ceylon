@@ -27,7 +27,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 
-import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.PathFilters;
 import org.jboss.modules.ResourceLoader;
 
@@ -106,7 +105,6 @@ public class SourceRepository extends AbstractRepository
 
    public ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file)
    {
-      ModuleIdentifier moduleIdentifier = createModuleIdentifier(name, version);
-      return new SourceResourceLoader(moduleIdentifier, sourcesRoot, classesRoot, "", PathFilters.acceptAll());
+      return new SourceResourceLoader(sourcesRoot, classesRoot, "", PathFilters.acceptAll());
    }
 }

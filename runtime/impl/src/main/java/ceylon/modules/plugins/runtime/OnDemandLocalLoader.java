@@ -25,7 +25,12 @@ package ceylon.modules.plugins.runtime;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.modules.*;
+import org.jboss.modules.DependencySpec;
+import org.jboss.modules.LocalLoader;
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoadException;
+import org.jboss.modules.Resource;
 
 import ceylon.lang.modules.Import;
 
@@ -38,14 +43,12 @@ class OnDemandLocalLoader implements LocalLoader
 {
    private ModuleIdentifier target;
    private CeylonModuleLoader loader;
-   private DependencySpec.DependencyBuilder dependencyBuilder;
    private Node<Import> root;
 
-   OnDemandLocalLoader(ModuleIdentifier target, CeylonModuleLoader loader, DependencySpec.DependencyBuilder dependencyBuilder, Node<Import> root)
+   OnDemandLocalLoader(ModuleIdentifier target, CeylonModuleLoader loader, Node<Import> root)
    {
       this.target = target;
       this.loader = loader;
-      this.dependencyBuilder = dependencyBuilder;
       this.root = root;
    }
 
@@ -67,13 +70,12 @@ class OnDemandLocalLoader implements LocalLoader
                current.remove(); // remove, so we don't loop; should not happen though
 
                // TODO -- relink depending modules ...
-               ModuleDependencySpec mds = CeylonModuleLoader.createModuleDependency(i);
-               DependencySpec dependencySpec = dependencyBuilder.addModuleDependency(mds).create();
+               DependencySpec mds = CeylonModuleLoader.createModuleDependency(i);
                try
                {
-                  Module module = Module.getModule(target);
-                  loader.updateModule(module, dependencySpec);
-                  return module.asLocalLoader();
+                  final Module module = loader.loadModule(target);
+                  loader.updateModule(module, mds);
+                  return new ModuleLocalLoader(module);
                }
                catch (ModuleLoadException ignored)
                {

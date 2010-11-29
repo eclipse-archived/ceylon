@@ -27,7 +27,6 @@ import java.util.Map;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
-import org.jboss.modules.SimpleModuleLoaderSelector;
 
 import ceylon.lang.modules.ModuleVersion;
 import ceylon.modules.spi.Constants;
@@ -54,7 +53,6 @@ public class DefaultRuntime extends AbstractRuntime
 
       ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
       ModuleLoader moduleLoader = createModuleLoader(args);
-      Module.setModuleLoaderSelector(new SimpleModuleLoaderSelector(moduleLoader));
       Module module = moduleLoader.loadModule(moduleIdentifier);
       ClassLoader cl = SecurityActions.getClassLoader(module);
 

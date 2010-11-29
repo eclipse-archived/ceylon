@@ -24,6 +24,7 @@ package ceylon.modules.plugins.repository;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.CodeSigner;
 import java.security.CodeSource;
 import java.util.Collection;
@@ -35,7 +36,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.jboss.modules.ClassSpec;
-import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.PackageSpec;
 import org.jboss.modules.PathFilter;
 import org.jboss.modules.Resource;
@@ -50,17 +50,12 @@ import org.jboss.modules.ResourceLoader;
  */
 final class CarFileResourceLoader implements ResourceLoader
 {
-   private final ModuleIdentifier moduleIdentifier;
    private final JarFile jarFile;
    private final String rootName;
    private final PathFilter exportFilter;
 
-   CarFileResourceLoader(final ModuleIdentifier moduleIdentifier, final JarFile jarFile, final String rootName, final PathFilter exportFilter)
+   CarFileResourceLoader(final JarFile jarFile, final String rootName, final PathFilter exportFilter)
    {
-      if (moduleIdentifier == null)
-      {
-         throw new IllegalArgumentException("moduleIdentifier is null");
-      }
       if (jarFile == null)
       {
          throw new IllegalArgumentException("jarFile is null");
@@ -75,7 +70,6 @@ final class CarFileResourceLoader implements ResourceLoader
       }
       this.jarFile = jarFile;
       this.rootName = rootName;
-      this.moduleIdentifier = moduleIdentifier;
       this.exportFilter = exportFilter;
    }
 
@@ -108,7 +102,7 @@ final class CarFileResourceLoader implements ResourceLoader
       final CodeSigner[] codeSigners = entry.getCodeSigners();
       if (codeSigners != null)
       {
-         spec.setCodeSource(new CodeSource(moduleIdentifier.toURL(rootName), codeSigners));
+         spec.setCodeSource(new CodeSource(new URL("jar", null, -1, jarFile.getName()), codeSigners));
       }
       final long size = entry.getSize();
       final InputStream is = jarFile.getInputStream(entry);
@@ -190,7 +184,7 @@ final class CarFileResourceLoader implements ResourceLoader
       spec.setImplVendor(getDefinedAttribute(Attributes.Name.IMPLEMENTATION_VENDOR, entryAttribute, mainAttribute));
       if (Boolean.parseBoolean(getDefinedAttribute(Attributes.Name.SEALED, entryAttribute, mainAttribute)))
       {
-         spec.setSealBase(moduleIdentifier.toURL(rootName));
+         spec.setSealBase(new URL("jar", null, -1, jarFile.getName()));
       }
       return spec;
    }
@@ -220,7 +214,7 @@ final class CarFileResourceLoader implements ResourceLoader
          {
             return null;
          }
-         return new CarEntryResource(jarFile, entry, moduleIdentifier.toURL(rootName, name));
+         return new CarEntryResource(jarFile, entry, new URL("jar", null, -1, "file:" + jarFile.getName() + "!/" + entryName));
       }
       catch (MalformedURLException e)
       {

@@ -23,6 +23,7 @@
 package ceylon.modules.plugins.runtime;
 
 import java.io.File;
+import java.util.Collections;
 
 import org.jboss.modules.*;
 
@@ -58,7 +59,7 @@ public class CeylonModuleLoader extends ModuleLoader
     */
    void updateModule(org.jboss.modules.Module module, DependencySpec dependencySpec) throws ModuleLoadException
    {
-      setAndRelinkDependencies(module, dependencySpec);
+      setAndRelinkDependencies(module, Collections.singletonList(dependencySpec));
    }
 
    @Override
@@ -84,7 +85,6 @@ public class CeylonModuleLoader extends ModuleLoader
          Import[] imports = module.getDependencies();
          if (imports != null && imports.length > 0)
          {
-            DependencySpec.DependencyBuilder dependencyBuilder = DependencySpec.build();
             Node<Import> root = new Node<Import>();
             for (Import i : imports)
             {
@@ -104,21 +104,19 @@ public class CeylonModuleLoader extends ModuleLoader
                }
                else
                {
-                  ModuleDependencySpec mds = createModuleDependency(i);
-                  builder.addModuleDependency(mds);
-                  dependencyBuilder.addModuleDependency(mds);
+                  DependencySpec mds = createModuleDependency(i);
+                  builder.addDependency(mds);
                }
             }
             if (root.isEmpty() == false)
             {
-               LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, dependencyBuilder, root);
+               LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
                builder.setFallbackLoader(onDemandLoader);
             }
          }
          // add system as a dependency to all modules, but filter it
-         ModuleDependencySpec.Builder sdb = ModuleDependencySpec.build(ModuleIdentifier.SYSTEM);
-         sdb.setImportFilter(PathFilters.include("ceylon/**"));
-         builder.addModuleDependency(sdb.create());
+         DependencySpec sds = DependencySpec.createModuleDependencySpec(PathFilters.match("ceylon/**"), ModuleIdentifier.SYSTEM, false);
+         builder.addDependency(sds);
          return builder.create();
       }
       catch (ModuleLoadException mle)
@@ -141,12 +139,15 @@ public class CeylonModuleLoader extends ModuleLoader
     * @param i the import
     * @return new module dependency
     */
-   static ModuleDependencySpec createModuleDependency(Import i)
+   static DependencySpec createModuleDependency(Import i)
    {
       ModuleIdentifier mi = ModuleIdentifier.create(i.getName().getName(), i.getVersion().toString());
-      ModuleDependencySpec.Builder mdsb = ModuleDependencySpec.build(mi).setOptional(i.isOptional());
-      if (i.isExport())
-         mdsb.setExportFilter(PathFilters.acceptAll());
-      return mdsb.create();
+      PathFilter exportFilter = i.isExport() ? PathFilters.acceptAll() : null;
+      return DependencySpec.createModuleDependencySpec(exportFilter, mi, i.isOptional());
+   }
+
+   public String toString()
+   {
+      return "Ceylon ModuleLoader: " + repository;
    }
 }
