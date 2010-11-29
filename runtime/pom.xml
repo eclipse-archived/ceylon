@@ -1,0 +1,264 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.jboss</groupId>
+      <artifactId>jboss-parent</artifactId>
+      <version>5</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>ceylon</groupId>
+   <artifactId>modules</artifactId>
+   <packaging>pom</packaging>
+   <version>1.0.0-SNAPSHOT</version>
+   <name>Ceylon Modules</name>
+   <url>http://www.jboss.org/ceylon</url>
+   <description>A Ceylon Modules</description>
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/ceylon/modules/trunk</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/ceylon/modules/trunk</developerConnection>
+      <url>https://svn.jboss.org/repos/ceylon/modules/trunk</url>
+   </scm>
+   <licenses>
+      <license>
+         <name>lgpl</name>
+         <url>http://repository.jboss.org/licenses/lgpl.txt</url>
+      </license>
+   </licenses>
+   <organization>
+      <name>JBoss, A division of Red Hat, Inc</name>
+      <url>http://www.jboss.org</url>
+   </organization>
+
+   <properties>
+      <version.org.jboss.logging>3.0.0.Beta3</version.org.jboss.logging>
+      <version.org.jboss.logmanager>1.2.0.CR6</version.org.jboss.logmanager>
+      <version.org.jboss.modules>1.0.0.Beta7-SNAPSHOT</version.org.jboss.modules>
+      <version.org.jboss.vfs>3.0.0.CR5</version.org.jboss.vfs>
+      <version.org.jboss.netty>3.2.2.Final</version.org.jboss.netty>
+      <version.org.jboss.common.core>2.1.17.GA</version.org.jboss.common.core>
+      <version.org.jboss.shrinkwrap>1.0.0-alpha-11</version.org.jboss.shrinkwrap>
+      <version.org.jboss.test>1.1.0.GA</version.org.jboss.test>
+      <version.junit>4.8.1</version.junit>
+   </properties>
+
+  <modules>
+    <module>sdk</module>
+    <module>spi</module>
+    <module>impl</module>
+  </modules>
+
+   <build>
+      <plugins>
+
+         <!-- define how we want compilation to take place
+         here, we accept most of the defaults but say that we want the
+         optimization flag set, and define the source and target to be 1.5,
+         these setting will be inherited by child projects -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.0</version>
+            <configuration>
+               <debug>true</debug>
+               <source>1.6</source>
+               <target>1.6</target>
+            </configuration>
+         </plugin>
+         <!-- define that we wish to create src jars -->
+         <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <inherited>true</inherited>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0-beta-1</version>
+            <executions>
+               <execution>
+                  <id>enforce-java-maven-versions</id>
+                  <goals>
+                     <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                     <rules>
+                        <requireJavaVersion>
+                           <version>1.6</version>
+                        </requireJavaVersion>
+                     </rules>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+            <configuration>
+               <forkMode>always</forkMode>
+               <!-- required to correctly run the PojoServer tests -->
+               <useSystemClassLoader>true</useSystemClassLoader>
+               <redirectTestOutputToFile>true</redirectTestOutputToFile>
+               <includes>
+                 <include>ceylon/test/**/*TestCase.java</include>
+               </includes>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.0-beta-9</version>
+            <configuration>
+               <tagBase>https://svn.jboss.org/repos/ceylon/modules/tags</tagBase>
+            </configuration>
+         </plugin>
+      </plugins>
+
+      <pluginManagement>
+         <plugins>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-idea-plugin</artifactId>
+               <version>2.2</version>
+               <configuration>
+                  <downloadSources>true</downloadSources>
+               </configuration>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+
+   </build>
+
+   <reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>2.0.1</version>
+            <configuration>
+               <findbugsXmlOutput>true</findbugsXmlOutput>
+               <!-- Optional directory to put findbugs xml report -->
+               <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+            </configuration>
+         </plugin>
+      </plugins>
+   </reporting>
+
+  <dependencyManagement>
+   <dependencies>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>sdk-mock</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-spi</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.logging</groupId>
+         <artifactId>jboss-logging</artifactId>
+         <version>${version.org.jboss.logging}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.logmanager</groupId>
+         <artifactId>jboss-logmanager</artifactId>
+         <version>${version.org.jboss.logmanager}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.modules</groupId>
+         <artifactId>jboss-modules</artifactId>
+         <version>${version.org.jboss.modules}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss</groupId>
+         <artifactId>jboss-vfs</artifactId>
+         <version>${version.org.jboss.vfs}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.netty</groupId>
+        <artifactId>netty</artifactId>
+        <version>${version.org.jboss.netty}</version>
+      </dependency>
+      <!-- dependency>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-common-core</artifactId>
+        <version>${version.jboss.common.core}</version>
+        <scope>provided</scope>
+     </dependency -->
+
+      <dependency>
+        <groupId>org.jboss.shrinkwrap</groupId>
+        <artifactId>shrinkwrap-api</artifactId>
+        <version>${version.org.jboss.shrinkwrap}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.shrinkwrap</groupId>
+        <artifactId>shrinkwrap-spi</artifactId>
+        <version>${version.org.jboss.shrinkwrap}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.shrinkwrap</groupId>
+        <artifactId>shrinkwrap-impl-base</artifactId>
+        <version>${version.org.jboss.shrinkwrap}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.test</groupId>
+         <artifactId>jboss-test</artifactId>
+         <version>${version.org.jboss.test}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>${version.junit}</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+ </dependencyManagement>
+
+   <repositories>
+      <repository>
+         <id>jboss-public-repository-group</id>
+         <name>JBoss Public Repository Group</name>
+         <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+         <layout>default</layout>
+         <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+   </repositories>
+
+   <pluginRepositories>
+      <pluginRepository>
+         <id>jboss-public-repository-group</id>
+         <name>JBoss Public Repository Group</name>
+         <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+         <releases>
+            <enabled>true</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+         </snapshots>
+      </pluginRepository>
+   </pluginRepositories>
+
+</project>

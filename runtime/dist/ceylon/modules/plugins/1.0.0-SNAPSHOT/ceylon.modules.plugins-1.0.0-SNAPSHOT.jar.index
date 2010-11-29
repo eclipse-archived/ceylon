@@ -1,0 +1,11 @@
+
+META-INF
+ceylon
+ceylon/modules
+ceylon/modules/plugins
+ceylon/modules/plugins/compiler
+ceylon/modules/plugins/repository
+ceylon/modules/plugins/runtime
+META-INF/maven
+META-INF/maven/ceylon
+META-INF/maven/ceylon/modules-impl

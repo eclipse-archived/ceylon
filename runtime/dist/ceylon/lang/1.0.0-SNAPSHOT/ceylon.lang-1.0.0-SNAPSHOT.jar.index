@@ -1,0 +1,8 @@
+
+META-INF
+ceylon
+ceylon/lang
+ceylon/lang/modules
+META-INF/maven
+META-INF/maven/ceylon
+META-INF/maven/ceylon/sdk-mock

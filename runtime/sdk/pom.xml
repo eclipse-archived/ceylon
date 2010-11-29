@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>ceylon</groupId>
+      <artifactId>modules</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>ceylon</groupId>
+   <artifactId>sdk-mock</artifactId>
+   <packaging>jar</packaging>
+   <version>1.0.0-SNAPSHOT</version>
+   <name>Ceylon SDK Mock</name>
+   <url>http://www.jboss.org/ceylon</url>
+
+</project>
+

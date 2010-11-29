@@ -1,0 +1,10 @@
+
+META-INF
+ceylon
+ceylon/modules
+ceylon/modules/spi
+ceylon/modules/spi/repository
+ceylon/modules/spi/runtime
+META-INF/maven
+META-INF/maven/ceylon
+META-INF/maven/ceylon/modules-spi
