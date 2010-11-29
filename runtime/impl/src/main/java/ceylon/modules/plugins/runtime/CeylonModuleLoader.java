@@ -63,6 +63,15 @@ public class CeylonModuleLoader extends ModuleLoader
    }
 
    @Override
+   protected org.jboss.modules.Module preloadModule(final ModuleIdentifier identifier) throws ModuleLoadException
+   {
+      if (identifier.equals(ModuleIdentifier.SYSTEM))
+         return preloadModule(ModuleIdentifier.SYSTEM, SystemModuleLoader.getInstance());
+
+      return super.preloadModule(identifier);
+   }
+
+   @Override
    protected ModuleSpec findModule(ModuleIdentifier moduleIdentifier) throws ModuleLoadException
    {
       ModuleName name = new ModuleName(moduleIdentifier.getName());
@@ -142,7 +151,7 @@ public class CeylonModuleLoader extends ModuleLoader
    static DependencySpec createModuleDependency(Import i)
    {
       ModuleIdentifier mi = ModuleIdentifier.create(i.getName().getName(), i.getVersion().toString());
-      PathFilter exportFilter = i.isExport() ? PathFilters.acceptAll() : null;
+      PathFilter exportFilter = i.isExport() ? PathFilters.acceptAll() : PathFilters.rejectAll();
       return DependencySpec.createModuleDependencySpec(exportFilter, mi, i.isOptional());
    }
 
