@@ -73,8 +73,10 @@ class OnDemandLocalLoader implements LocalLoader
                DependencySpec mds = CeylonModuleLoader.createModuleDependency(i);
                try
                {
-                  final Module module = loader.loadModule(target);
-                  loader.updateModule(module, mds);
+                  Module owner = loader.loadModule(target);
+                  loader.updateModule(owner, mds); // update / add lazy dep
+
+                  Module module = loader.loadModule(CeylonModuleLoader.createModuleIdentifier(i));                  
                   return new ModuleLocalLoader(module);
                }
                catch (ModuleLoadException ignored)

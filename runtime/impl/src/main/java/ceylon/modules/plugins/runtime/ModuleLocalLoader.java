@@ -24,7 +24,6 @@ package ceylon.modules.plugins.runtime;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -41,22 +40,6 @@ import org.jboss.modules.Resource;
  */
 class ModuleLocalLoader implements LocalLoader
 {
-   private static final Method loadModuleClass;
-
-   static
-   {
-      try
-      {
-         // TODO -- get this into Modules?
-         loadModuleClass = Module.class.getDeclaredMethod("loadModuleClass", String.class, boolean.class, boolean.class);
-         loadModuleClass.setAccessible(true);
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-   }
-
    private final Module module;
 
    ModuleLocalLoader(Module module)
@@ -68,14 +51,15 @@ class ModuleLocalLoader implements LocalLoader
    {
       try
       {
-         return (Class<?>) loadModuleClass.invoke(module, name, true, resolve);
+         return module.getClassLoader().loadClass(name, resolve);
       }
-      catch (Exception e)
+      catch (ClassNotFoundException ignored)
       {
-         throw new RuntimeException(e);
+         return null;
       }
    }
 
+   @SuppressWarnings({"unchecked"})
    public List<Resource> loadResourceLocal(final String name)
    {
       final Enumeration<URL> urls = module.getExportedResources(name);

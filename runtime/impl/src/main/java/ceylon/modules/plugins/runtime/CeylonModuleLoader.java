@@ -59,14 +59,15 @@ public class CeylonModuleLoader extends ModuleLoader
     */
    void updateModule(org.jboss.modules.Module module, DependencySpec dependencySpec) throws ModuleLoadException
    {
-      setAndRelinkDependencies(module, Collections.singletonList(dependencySpec));
+      setAndRelinkDependencies(module, Collections.singletonList(dependencySpec)); // TODO -- old deps
+      refreshResourceLoaders(module);
    }
 
    @Override
    protected org.jboss.modules.Module preloadModule(final ModuleIdentifier identifier) throws ModuleLoadException
    {
       if (identifier.equals(ModuleIdentifier.SYSTEM))
-         return preloadModule(ModuleIdentifier.SYSTEM, SystemModuleLoader.getInstance());
+         return org.jboss.modules.Module.getSystemModule();
 
       return super.preloadModule(identifier);
    }
@@ -157,9 +158,19 @@ public class CeylonModuleLoader extends ModuleLoader
     */
    static DependencySpec createModuleDependency(Import i)
    {
-      ModuleIdentifier mi = ModuleIdentifier.create(i.getName().getName(), i.getVersion().toString());
+      ModuleIdentifier mi = createModuleIdentifier(i);
       PathFilter exportFilter = i.isExport() ? PathFilters.acceptAll() : PathFilters.rejectAll();
       return DependencySpec.createModuleDependencySpec(exportFilter, mi, i.isOptional());
+   }
+
+   /**
+    * Create module identifier.
+    * @param i the import
+    * @return module identifer
+    */
+   static ModuleIdentifier createModuleIdentifier(Import i)
+   {
+      return ModuleIdentifier.create(i.getName().getName(), i.getVersion().toString());
    }
 
    public String toString()
