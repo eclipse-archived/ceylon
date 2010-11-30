@@ -75,6 +75,17 @@ public class CeylonModuleLoader extends ModuleLoader
       // TODO -- relink depending modules ...
    }
 
+   /**
+    * Unload module.
+    *
+    * @param module the module
+    */
+   void unloadModule(org.jboss.modules.Module module)
+   {
+      dependencies.remove(module.getIdentifier());
+      unloadModuleLocal(module);
+   }
+
    @Override
    protected org.jboss.modules.Module preloadModule(final ModuleIdentifier identifier) throws ModuleLoadException
    {
