@@ -23,7 +23,10 @@
 package ceylon.modules.plugins.runtime;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.modules.*;
 
@@ -42,6 +45,7 @@ import ceylon.modules.spi.repository.Repository;
 public class CeylonModuleLoader extends ModuleLoader
 {
    private Repository repository;
+   private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
 
    public CeylonModuleLoader(Repository repository)
    {
@@ -52,6 +56,7 @@ public class CeylonModuleLoader extends ModuleLoader
 
    /**
     * Update module.
+    * Should be thread safe per module.
     *
     * @param module the module to update
     * @param dependencySpec new dependency
@@ -59,8 +64,15 @@ public class CeylonModuleLoader extends ModuleLoader
     */
    void updateModule(org.jboss.modules.Module module, DependencySpec dependencySpec) throws ModuleLoadException
    {
-      setAndRelinkDependencies(module, Collections.singletonList(dependencySpec)); // TODO -- old deps
+      List<DependencySpec> deps = dependencies.get(module.getIdentifier());
+      if (deps == null) // should not really happen
+         return;
+
+      deps.add(dependencySpec);
+
+      setAndRelinkDependencies(module, deps);
       refreshResourceLoaders(module);
+      // TODO -- relink depending modules ...
    }
 
    @Override
@@ -89,10 +101,15 @@ public class CeylonModuleLoader extends ModuleLoader
          if (module == null)
             throw new ModuleLoadException("No module descriptor in module: " + moduleFile);
 
+         final List<DependencySpec> deps = new ArrayList<DependencySpec>();
          ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
          ResourceLoader resourceLoader = repository.createResourceLoader(name, version, moduleFile);
          builder.addResourceRoot(resourceLoader);
-         builder.addDependency(DependencySpec.createLocalDependencySpec()); // local resources
+
+         DependencySpec lds = DependencySpec.createLocalDependencySpec();
+         builder.addDependency(lds); // local resources
+         deps.add(lds);
+
          Import[] imports = module.getDependencies();
          if (imports != null && imports.length > 0)
          {
@@ -117,6 +134,7 @@ public class CeylonModuleLoader extends ModuleLoader
                {
                   DependencySpec mds = createModuleDependency(i);
                   builder.addDependency(mds);
+                  deps.add(mds);
                }
             }
             if (root.isEmpty() == false)
@@ -134,6 +152,10 @@ public class CeylonModuleLoader extends ModuleLoader
                false
          );
          builder.addDependency(sds);
+         deps.add(sds);
+
+         dependencies.put(moduleIdentifier, deps);
+
          return builder.create();
       }
       catch (ModuleLoadException mle)

@@ -69,7 +69,6 @@ class OnDemandLocalLoader implements LocalLoader
             {
                current.remove(); // remove, so we don't loop; should not happen though
 
-               // TODO -- relink depending modules ...
                DependencySpec mds = CeylonModuleLoader.createModuleDependency(i);
                try
                {
