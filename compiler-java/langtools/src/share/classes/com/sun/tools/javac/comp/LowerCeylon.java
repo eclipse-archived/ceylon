@@ -103,6 +103,27 @@ public class LowerCeylon extends TreeTranslator {
         result = tree;
     }
 
+    public void visitIf(JCIf tree) {
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.thenpart = translate(tree.thenpart);
+        tree.elsepart = translate(tree.elsepart);
+        result = tree;
+    }
+
+    public void visitForLoop(JCForLoop tree) {
+        tree.init = translate(tree.init);
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.step = translate(tree.step);
+        tree.body = translate(tree.body);
+        result = tree;
+    }
+
+    public void visitWhileLoop(JCWhileLoop tree) {
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.body = translate(tree.body);
+        result = tree;
+    }
+
     public void visitApply(JCMethodInvocation tree) {
         tree.meth = translate(tree.meth);
         tree.args = translate(tree.args);
