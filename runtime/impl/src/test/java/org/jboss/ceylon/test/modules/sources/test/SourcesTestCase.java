@@ -45,7 +45,7 @@ public class SourcesTestCase extends ModulesTest
       extra.put(Constants.CLASSES, "target/test-classes-bak");
 
       // TODO -- fix proper src path
-      src("org.jboss.acme", "/Users/alesj/projects/labs/ceylon/modules/impl", extra);
+      src("org.jboss.acme", "/Users/alesj/projects/labs/ceylon/modules/trunk/impl", extra);
    }
 
    @Test
@@ -56,6 +56,6 @@ public class SourcesTestCase extends ModulesTest
       extra.put(Constants.CLASSES, "target/test-classes-bak");
 
       // TODO -- fix proper src path
-      src("com.foobar.qwert", "/Users/alesj/projects/labs/ceylon/modules/impl", extra);
+      src("com.foobar.qwert", "/Users/alesj/projects/labs/ceylon/modules/trunk/impl", extra);
    }
 }

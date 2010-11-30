@@ -48,7 +48,7 @@ class ModuleLocalLoader implements LocalLoader
       try
       {
          // TODO -- get this into Modules?
-         loadModuleClass = Module.class.getMethod("loadModuleClass", String.class, boolean.class, boolean.class);
+         loadModuleClass = Module.class.getDeclaredMethod("loadModuleClass", String.class, boolean.class, boolean.class);
          loadModuleClass.setAccessible(true);
       }
       catch (Exception e)

@@ -91,6 +91,7 @@ public class CeylonModuleLoader extends ModuleLoader
          ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
          ResourceLoader resourceLoader = repository.createResourceLoader(name, version, moduleFile);
          builder.addResourceRoot(resourceLoader);
+         builder.addDependency(DependencySpec.createLocalDependencySpec()); // local resources
          Import[] imports = module.getDependencies();
          if (imports != null && imports.length > 0)
          {
@@ -124,7 +125,13 @@ public class CeylonModuleLoader extends ModuleLoader
             }
          }
          // add system as a dependency to all modules, but filter it
-         DependencySpec sds = DependencySpec.createModuleDependencySpec(PathFilters.match("ceylon/**"), ModuleIdentifier.SYSTEM, false);
+         DependencySpec sds = DependencySpec.createModuleDependencySpec(
+               PathFilters.match("ceylon/**"),
+               PathFilters.rejectAll(),
+               this,
+               ModuleIdentifier.SYSTEM,
+               false
+         );
          builder.addDependency(sds);
          return builder.create();
       }
@@ -143,7 +150,7 @@ public class CeylonModuleLoader extends ModuleLoader
    }
 
    /**
-    * Create module dependency form import.
+    * Create module dependency from import.
     *
     * @param i the import
     * @return new module dependency
