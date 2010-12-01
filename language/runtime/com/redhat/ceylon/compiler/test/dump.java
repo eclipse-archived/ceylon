@@ -7,6 +7,10 @@ public final class dump extends ceylon.language.Object {
         Class klass = obj.getClass();
         System.out.println(klass.getName() + " {");
         for (Field field: klass.getDeclaredFields()) {
+            String name = field.getName();
+            if (name.equals("$assertionsDisabled"))
+                continue;
+
             Object value;
             try {
                 if (!field.isAccessible())
@@ -19,7 +23,7 @@ public final class dump extends ceylon.language.Object {
             System.out.println("  "
                                + field.getType().getName()
                                + " "
-                               + field.getName()
+                               + name
                                + " = "
                                + value);
         }
