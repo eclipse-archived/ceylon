@@ -1227,17 +1227,6 @@ public class Resolve {
                 name,
                 argtypes,
                 typeargtypes);
-        if (Context.isCeylon() && sym.kind >= WRONG_MTH) {
-            // FIXME: this is a hack to allow conversion of the left hand sides
-            // of binary operations.  It needs to be generalized to cope with any
-            // number of arguments.
-            if (argtypes.size() == 1) {
-                Route extension = types.getCeylonExtension(site, argtypes.head);
-                if (extension != null) {
-                    throw new ExtensionRequiredException(extension);
-                }
-            }
-        }
         if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
             Route extension = extensionFinder.findUniqueRoute(
                 site, name, argtypes, typeargtypes, env);
