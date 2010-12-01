@@ -24,8 +24,10 @@ package ceylon.modules.plugins.runtime;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.modules.*;
@@ -46,6 +48,7 @@ public class CeylonModuleLoader extends ModuleLoader
 {
    private Repository repository;
    private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
+   private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<ModuleIdentifier, ModuleIdentifier, Boolean>();
 
    public CeylonModuleLoader(Repository repository)
    {
@@ -64,7 +67,8 @@ public class CeylonModuleLoader extends ModuleLoader
     */
    void updateModule(org.jboss.modules.Module module, DependencySpec dependencySpec) throws ModuleLoadException
    {
-      List<DependencySpec> deps = dependencies.get(module.getIdentifier());
+      ModuleIdentifier mi = module.getIdentifier();
+      List<DependencySpec> deps = dependencies.get(mi);
       if (deps == null) // should not really happen
          return;
 
@@ -72,7 +76,39 @@ public class CeylonModuleLoader extends ModuleLoader
 
       setAndRelinkDependencies(module, deps);
       refreshResourceLoaders(module);
-      // TODO -- relink depending modules ...
+
+      relink(mi, new HashSet<ModuleIdentifier>());
+   }
+
+   /**
+    * Relink modules.
+    *
+    * @param mi the current module identifier
+    * @param visited already visited modules
+    * @throws ModuleLoadException for any modules error
+    */
+   @SuppressWarnings({"unchecked"})
+   private void relink(ModuleIdentifier mi, Set<ModuleIdentifier> visited) throws ModuleLoadException
+   {
+      if (visited.add(mi) == false)
+         return;
+
+      Graph.Vertex v = graph.getVertex(mi);
+      if (v == null)
+         return;
+
+      org.jboss.modules.Module module = preloadModule(mi);
+      relink(module);
+
+      Set<Graph.Edge<ModuleIdentifier, Boolean>> in = v.getIn();
+      for (Graph.Edge<ModuleIdentifier, Boolean> edge : in)
+      {
+         if (edge.getCost())
+         {
+            Graph.Vertex<ModuleIdentifier, Boolean> from = edge.getFrom();
+            relink(from.getValue(), visited);
+         }
+      }
    }
 
    /**
@@ -117,6 +153,8 @@ public class CeylonModuleLoader extends ModuleLoader
          ResourceLoader resourceLoader = repository.createResourceLoader(name, version, moduleFile);
          builder.addResourceRoot(resourceLoader);
 
+         Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
+
          DependencySpec lds = DependencySpec.createLocalDependencySpec();
          builder.addDependency(lds); // local resources
          deps.add(lds);
@@ -147,6 +185,10 @@ public class CeylonModuleLoader extends ModuleLoader
                   builder.addDependency(mds);
                   deps.add(mds);
                }
+
+               ModuleIdentifier mi = createModuleIdentifier(i);
+               Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
+               Graph.Edge.create(i.isExport(), vertex, dv);
             }
             if (root.isEmpty() == false)
             {
@@ -166,6 +208,9 @@ public class CeylonModuleLoader extends ModuleLoader
          deps.add(sds);
 
          dependencies.put(moduleIdentifier, deps);
+
+         Graph.Vertex<ModuleIdentifier, Boolean> sv = graph.createVertex(ModuleIdentifier.SYSTEM, ModuleIdentifier.SYSTEM);
+         Graph.Edge.create(false, vertex, sv);
 
          return builder.create();
       }
