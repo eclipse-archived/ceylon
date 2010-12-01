@@ -1,3 +1,4 @@
 syntax: glob
 build
 src/com/redhat/ceylon/compiler/parser
+runtime/**/*.class
