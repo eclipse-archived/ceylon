@@ -177,7 +177,7 @@ class TestCase:
 
     def handle_failure(self, harness, out, err):
         harness.log(self.dir, "failure")
-        if harness.verbosity > 1:
+        if harness.verbosity >= 1:
             if err:
                 sys.stdout.write(err)
             else:
@@ -185,7 +185,7 @@ class TestCase:
 
     def handle_error(self, harness, out, err):
         harness.log(self.dir, "error")
-        if harness.verbosity > 1:
+        if harness.verbosity >= 1:
             sys.stdout.write(out)
             sys.stdout.write(err)
 
