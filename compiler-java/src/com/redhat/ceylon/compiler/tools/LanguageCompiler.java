@@ -49,6 +49,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
@@ -60,6 +61,8 @@ public class LanguageCompiler extends JavaCompiler {
 
     /** Get the JavaCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
+        Options options = Options.instance(context);
+        options.put("-Xprefer", "source");
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
             instance = new LanguageCompiler(context);
@@ -68,6 +71,7 @@ public class LanguageCompiler extends JavaCompiler {
 
     public LanguageCompiler(Context context) {
         super(context);
+
         try {
             gen = new Gen(context);
         } catch (Exception e) {
