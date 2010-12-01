@@ -119,8 +119,13 @@ public class LanguageCompiler extends JavaCompiler {
 
             CommonTree t = (CommonTree)r.getTree();
 
-            if (parser.getNumberOfSyntaxErrors() == 0 &&
-                    lexer.getNumberOfSyntaxErrors() == 0) {
+            if (lexer.getNumberOfSyntaxErrors() != 0) {
+                log.error("ceylon.lexer.failed");
+            }
+            else if (parser.getNumberOfSyntaxErrors() != 0) {
+                log.error("ceylon.parser.failed");
+            }
+            else {
                 CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename.getName());
                 cu.file = filename;
                 cu.accept(new Grok());
