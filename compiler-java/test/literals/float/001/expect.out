@@ -1,0 +1,6 @@
+ceylon.language.Float {
+  double value = 23.0
+}
+ceylon.language.Float {
+  double value = 0.23
+}
