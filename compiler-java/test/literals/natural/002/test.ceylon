@@ -1,4 +1,4 @@
-doc "Test Natural literal functionality"
+doc "Test member functions of Natural literals"
 void test(Process process) {
     // Basic Natural literal
     //TODOprocess.writeLine(23.pred());
