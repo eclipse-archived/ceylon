@@ -62,6 +62,8 @@
        destdir="${build.classes}"
        debug="true"
        classpath="${antlr.lib}">
+      <include name="com/redhat/**"/>
+      <include name="com/sun/tools/javac/**"/>
     </javac>
   </target>
 
