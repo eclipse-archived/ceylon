@@ -1010,7 +1010,7 @@ public abstract class CeylonTree {
      * A character literal
      */
     public static class CharLiteral extends CeylonTree {
-        public String value;
+        public char value;
 
         public void accept(Visitor v) { v.visit(this); }
     }

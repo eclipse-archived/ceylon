@@ -1,0 +1,21 @@
+ceylon.language.Character {
+  char value = '1'
+}
+ceylon.language.Character {
+  char value = 'A'
+}
+ceylon.language.Character {
+  char value = '#'
+}
+ceylon.language.Character {
+  char value = ' '
+}
+ceylon.language.Character {
+  char value = '`'
+}
+ceylon.language.Character {
+  char value = '\n'
+}
+ceylon.language.Character {
+  char value = '\t'
+}

@@ -390,10 +390,49 @@ public class Grok extends CeylonTree.Visitor {
     }
 
     public void visit(CeylonTree.CharLiteral lit) {
-        inner(lit);
-        lit.value = lit.token.getText();
+        String value = lit.token.getText();
+        int length = value.length();
+        assert length == 3 || length == 4;
+        assert value.charAt(0) == '`' && value.charAt(length - 1) == '`';
+        if (length == 3) {
+            lit.value = value.charAt(1);
+        }
+        else /* length == 4 */ {
+            assert value.charAt(1) == '\\';
+            char escaped = value.charAt(2);
+            switch (escaped) {
+            case 'b':
+                lit.value = '\b';
+                break;
+            case 't':
+                lit.value = '\t';
+                break;
+            case 'n':
+                lit.value = '\n';
+                break;
+            case 'f':
+                lit.value = '\f';
+                break;
+            case 'r':
+                lit.value = '\r';
+                break;
+            case '\\':
+                lit.value = '\\';
+                break;
+            case '"':
+                lit.value = '"';
+                break;
+            case '\'':
+                lit.value = '\'';
+                break;
+            case '`':
+                lit.value = '`';
+                break;
+            default:
+                assert false : "'\\" + escaped + "'";
+            }
+        }
         current.context.append(lit);
-
     }
 
     public void visit(CeylonTree.CallExpression expr) {

@@ -20,13 +20,41 @@ public final class dump extends ceylon.language.Object {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            String type = field.getType().getName();
+            if (type.equals("char")) {
+                value = formatChar((Character) value);
+            }
+
             System.out.println("  "
-                               + field.getType().getName()
+                               + type
                                + " "
                                + name
                                + " = "
                                + value);
         }
         System.out.println("}");
+    }
+
+    private static Object formatChar(char value) {
+        String result;
+        switch (value) {
+        case '\b':
+            return "'\\b'";
+        case '\t':
+            return "'\\t'";
+        case '\n':
+            return "'\\n'";
+        case '\f':
+            return "'\\f'";
+        case '\r':
+            return "'\\r'";
+        case '\\':
+            return "'\\\\'";
+        case '\'':
+            return "'\\''";
+        default:
+            return "'" + value + "'";
+        }
     }
 }
