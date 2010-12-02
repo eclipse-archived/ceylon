@@ -4,3 +4,12 @@ ceylon.language.Float {
 ceylon.language.Float {
   double value = 0.23
 }
+ceylon.language.Float {
+  double value = 2.3E24
+}
+ceylon.language.Float {
+  double value = 2300.0
+}
+ceylon.language.Float {
+  double value = 0.00174
+}

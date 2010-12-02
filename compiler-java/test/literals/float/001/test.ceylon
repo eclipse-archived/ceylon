@@ -6,7 +6,12 @@ void test(Process process) {
     dump(23.0);
     dump(0.23);
 
-    // Basic Float literals with magnitudes
+    // Float literals with exponents
+    dump(23.0e23);
+    dump(0.23E+4);
+    dump(17.4e-4);
+    
+    // Float literals with magnitudes
     //TODO dump(17.0p);
     //TODO dump(290.1n);
     //TODO dump(420.0u);
@@ -21,6 +26,9 @@ void test(Process process) {
     //TODO dump(1_123.435_32);
     //TODO dump(1.123_435_3);
 
+    // Float literals with underscores and exponents
+    //TODO
+
     // Float literals with underscores and magnitudes
-    //TODO yeah, add some of these too...
+    //TODO
 }
