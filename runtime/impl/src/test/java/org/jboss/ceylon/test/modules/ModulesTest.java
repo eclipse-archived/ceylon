@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+import org.jboss.util.file.Files;
 
 import ceylon.modules.Main;
 import ceylon.modules.plugins.runtime.DefaultRuntime;
@@ -46,7 +47,7 @@ import org.junit.Assert;
  */
 public abstract class ModulesTest
 {
-   protected void createModuleFile(File tmpdir, Archive module) throws Exception
+   protected File createModuleFile(File tmpdir, Archive module) throws Exception
    {
       String fullName = module.getName();
       int p = fullName.indexOf("-");
@@ -56,13 +57,15 @@ public abstract class ModulesTest
       String name = fullName.substring(0, p);
       String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-      ZipExporter exporter = module.as(ZipExporter.class);
       File targetDir = new File(tmpdir, toPathString(name, version));
       if (targetDir.exists() == false)
          Assert.assertTrue(targetDir.mkdirs());
       File targetFile = new File(targetDir, fullName);
+
+      ZipExporter exporter = module.as(ZipExporter.class);
       exporter.exportZip(targetFile, true);
-      targetFile.deleteOnExit();
+
+      return targetDir;
    }
 
    protected void testArchive(Archive module, Archive... libs) throws Exception
@@ -74,24 +77,34 @@ public abstract class ModulesTest
             return new File(System.getProperty("java.io.tmpdir"));
          }
       });
-      createModuleFile(tmpdir, module);
-      for (Archive lib : libs)
-         createModuleFile(tmpdir, lib);
 
-      String fullName = module.getName();
-      int p = fullName.indexOf("-");
-      if (p < 0)
-         throw new IllegalArgumentException("No name and version split: " + fullName);
+      List<File> files = new ArrayList<File>();
+      try
+      {
+         files.add(createModuleFile(tmpdir, module));
+         for (Archive lib : libs)
+            files.add(createModuleFile(tmpdir, lib));
 
-      String name = fullName.substring(0, p);
-      String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
+         String fullName = module.getName();
+         int p = fullName.indexOf("-");
+         if (p < 0)
+            throw new IllegalArgumentException("No name and version split: " + fullName);
 
-      Map<Constants, String> args = new HashMap<Constants, String>();
-      args.put(Constants.EXECUTABLE, DefaultRuntime.class.getName());
-      args.put(Constants.MODULE, name + "/" + version);
-      args.put(Constants.REPOSITORY, tmpdir.toString());
+         String name = fullName.substring(0, p);
+         String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-      execute(args);
+         Map<Constants, String> args = new HashMap<Constants, String>();
+         args.put(Constants.EXECUTABLE, DefaultRuntime.class.getName());
+         args.put(Constants.MODULE, name + "/" + version);
+         args.put(Constants.REPOSITORY, tmpdir.toString());
+
+         execute(args);
+      }
+      finally
+      {
+         for (File file : files)
+            Files.delete(file);
+      }
    }
 
    protected void src(String module, String src) throws Exception

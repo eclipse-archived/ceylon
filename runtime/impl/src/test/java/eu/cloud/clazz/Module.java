@@ -74,7 +74,7 @@ public class Module
             return path.contains("spi"); // only import spis
          }
       };
-      Import im = new Import(new ModuleName("org.jboss.filtered"), new ModuleVersion(1, 0, 0, "Alpha1"), false, false, null, null);
+      Import im = new Import(new ModuleName("org.jboss.filtered"), new ModuleVersion(1, 0, 0, "Alpha1"), false, false, null, imports);
       return new ceylon.lang.modules.Module(name, version, null, null, runnable, im);
    }
 }
