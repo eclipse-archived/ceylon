@@ -24,12 +24,14 @@ package ceylon.lang.modules;
 
 import java.net.URL;
 
+import ceylon.lang.modules.helpers.PathFilters;
+
 /**
  * Simple Module mock.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module
+public class Module extends Filterable
 {
    private ModuleName name;
    private ModuleVersion version;
@@ -38,14 +40,44 @@ public class Module
    private ceylon.lang.Runnable process;
    private Import[] dependencies;
 
-   public Module(ModuleName name, ModuleVersion version, String doc, URL license, ceylon.lang.Runnable process, Import... dependencies)
+   public Module(
+         ModuleName name,
+         ModuleVersion version,
+         String doc,
+         URL license,
+         ceylon.lang.Runnable process,
+         Import... dependencies)
    {
+      this(name, version, doc, license, process, null, null, dependencies);
+   }
+
+   public Module(
+         ModuleName name,
+         ModuleVersion version,
+         String doc,
+         URL license,
+         ceylon.lang.Runnable process,
+         PathFilter exports,
+         PathFilter imports,
+         Import... dependencies)
+   {
+      super(exports, imports);
       this.name = name;
       this.version = version;
       this.doc = doc;
       this.license = license;
       this.process = process;
       this.dependencies = dependencies;
+   }
+
+   protected PathFilter getDefaultExports()
+   {
+      return PathFilters.acceptAll();
+   }
+
+   protected PathFilter getDefaultImports()
+   {
+      return PathFilters.acceptAll();
    }
 
    public ModuleName getName()

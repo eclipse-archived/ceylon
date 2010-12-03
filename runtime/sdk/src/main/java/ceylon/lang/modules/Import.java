@@ -22,32 +22,47 @@
 
 package ceylon.lang.modules;
 
+import ceylon.lang.modules.helpers.PathFilters;
+
 /**
  * Simple Import mock.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Import
+public class Import extends Filterable
 {
    private ModuleName name;
    private ModuleVersion version;
    private Boolean optional = Boolean.FALSE;
    private Boolean onDemand = Boolean.FALSE;
-   private Boolean export = Boolean.FALSE;
 
    public Import(ModuleName name, ModuleVersion version)
    {
-      this.name = name;
-      this.version = version;
+      this(name, version, null, null);
    }
 
-   public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand, Boolean export)
+   public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand)
    {
+      this(name, version, optional, onDemand, null, null);
+   }
+
+   public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand, PathFilter exports, PathFilter imports)
+   {
+      super(exports, imports);
       this.name = name;
       this.version = version;
       this.optional = toBoolean(optional);
       this.onDemand = toBoolean(onDemand);
-      this.export = toBoolean(export);
+   }
+
+   protected PathFilter getDefaultExports()
+   {
+      return PathFilters.rejectAll();
+   }
+
+   protected PathFilter getDefaultImports()
+   {
+      return PathFilters.acceptAll();
    }
 
    private static Boolean toBoolean(Boolean value)
@@ -73,10 +88,5 @@ public class Import
    public Boolean isOnDemand()
    {
       return onDemand;
-   }
-
-   public Boolean isExport()
-   {
-      return export;
    }
 }

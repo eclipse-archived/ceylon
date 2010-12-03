@@ -52,8 +52,8 @@ public class Module
             System.out.println("URL: " + url);
          }
       };
-      Import im1 = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"), false, true, false);
-      Import im2 = new Import(new ModuleName("si.alesj.ceylon"), new ModuleVersion(1, 0, 0, "GA"), false, true, false);
+      Import im1 = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"), false, true);
+      Import im2 = new Import(new ModuleName("si.alesj.ceylon"), new ModuleVersion(1, 0, 0, "GA"), false, true);
       return new ceylon.lang.modules.Module(name, version, null, null, runnable, im1, im2);
    }
 }

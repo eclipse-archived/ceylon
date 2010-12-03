@@ -155,7 +155,9 @@ public class CeylonModuleLoader extends ModuleLoader
 
          Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
 
-         DependencySpec lds = DependencySpec.createLocalDependencySpec();
+         PathFilter exportFilter = new PathFilterWrapper(module.getExports());
+         PathFilter importFilter = new PathFilterWrapper(module.getImports());
+         DependencySpec lds = DependencySpec.createLocalDependencySpec(importFilter, exportFilter);
          builder.addDependency(lds); // local resources
          deps.add(lds);
 
@@ -188,7 +190,8 @@ public class CeylonModuleLoader extends ModuleLoader
 
                ModuleIdentifier mi = createModuleIdentifier(i);
                Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-               Graph.Edge.create(i.isExport(), vertex, dv);
+               boolean export = i.getExports() != ceylon.lang.modules.helpers.PathFilters.rejectAll();
+               Graph.Edge.create(export, vertex, dv);
             }
             if (root.isEmpty() == false)
             {
@@ -234,11 +237,12 @@ public class CeylonModuleLoader extends ModuleLoader
     * @param i the import
     * @return new module dependency
     */
-   static DependencySpec createModuleDependency(Import i)
+   DependencySpec createModuleDependency(Import i)
    {
       ModuleIdentifier mi = createModuleIdentifier(i);
-      PathFilter exportFilter = i.isExport() ? PathFilters.acceptAll() : PathFilters.rejectAll();
-      return DependencySpec.createModuleDependencySpec(exportFilter, mi, i.isOptional());
+      PathFilter exportFilter = new PathFilterWrapper(i.getExports());
+      PathFilter importFilter = new PathFilterWrapper(i.getImports());
+      return DependencySpec.createModuleDependencySpec(importFilter, exportFilter, this, mi, i.isOptional());
    }
 
    /**
