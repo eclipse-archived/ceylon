@@ -31,19 +31,31 @@ import ceylon.modules.jboss.repository.RepositoryExtension;
 import ceylon.modules.jboss.repository.RepositoryExtensionFactory;
 
 /**
- * Abstract Ceylon Modules runtime.
+ * Abstract Ceylon JBoss Modules runtime.
  * Useful for potential extension.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime
 {
-   public RepositoryExtension createRepository(Map<String, String> args)
+   /**
+    * Get repository extension.
+    *
+    * @param args the args
+    * @return repository extension
+    */
+   protected RepositoryExtension createRepository(Map<String, String> args)
    {
       return RepositoryExtensionFactory.createRepository(args);
    }
 
-   public ModuleLoader createModuleLoader(Map<String, String> args)
+   /**
+    * Create module loader.
+    *
+    * @param args the args
+    * @return the module loader
+    */
+   protected ModuleLoader createModuleLoader(Map<String, String> args)
    {
       RepositoryExtension repository = createRepository(args);
       return new CeylonModuleLoader(repository);

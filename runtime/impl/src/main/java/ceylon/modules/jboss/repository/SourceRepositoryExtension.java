@@ -43,6 +43,7 @@ public class SourceRepositoryExtension extends SourceRepository implements Repos
    {
       super(path, args);
    }
+
    public ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file)
    {
       return new SourceResourceLoader(getSourcesRoot(), getClassesRoot(), "", PathFilters.acceptAll());

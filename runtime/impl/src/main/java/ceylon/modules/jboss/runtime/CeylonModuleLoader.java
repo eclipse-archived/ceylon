@@ -39,7 +39,7 @@ import ceylon.lang.modules.ModuleVersion;
 import ceylon.modules.jboss.repository.RepositoryExtension;
 
 /**
- * Ceyon Module loader.
+ * Ceyon JBoss Module loader.
  * It understands Ceylon repository notion.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>

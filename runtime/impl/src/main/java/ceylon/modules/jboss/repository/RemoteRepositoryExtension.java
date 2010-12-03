@@ -42,6 +42,7 @@ public class RemoteRepositoryExtension extends RemoteRepository implements Repos
    {
       super(path, args);
    }
+
    public ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file)
    {
       return null;  // TODO
