@@ -103,12 +103,9 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.4.3</version>
             <configuration>
-               <forkMode>always</forkMode>
-               <!-- required to correctly run the PojoServer tests -->
-               <useSystemClassLoader>true</useSystemClassLoader>
                <redirectTestOutputToFile>true</redirectTestOutputToFile>
                <includes>
-                 <include>xorg/jboss/ceylon/test/**/*TestCase.java</include>
+                 <include>org/jboss/ceylon/test/**/*TestCase.java</include>
                </includes>
             </configuration>
          </plugin>
