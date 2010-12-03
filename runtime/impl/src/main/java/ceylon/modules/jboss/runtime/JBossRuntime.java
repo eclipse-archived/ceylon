@@ -24,12 +24,9 @@ package ceylon.modules.jboss.runtime;
 
 import java.util.Map;
 
-import org.jboss.modules.Module;
-import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.modules.spi.Constants;
+import ceylon.modules.jboss.repository.RepositoryExtension;
 
 /**
  * Default Ceylon Modules runtime.
@@ -38,21 +35,9 @@ import ceylon.modules.spi.Constants;
  */
 public class JBossRuntime extends AbstractJBossRuntime
 {
-   public ClassLoader createClassLoader(Map<String, String> args) throws Exception
+   protected ModuleLoader createModuleLoader(Map<String, String> args)
    {
-      String exe = args.get(Constants.MODULE.toString());
-      int p = exe.indexOf("/");
-      if (p == 0)
-         throw new IllegalArgumentException("Missing runnable info: " + exe);
-      if (p == exe.length() - 1)
-         throw new IllegalArgumentException("Missing version info: " + exe);
-
-      String name = exe.substring(0, p > 0 ? p : exe.length());
-      String version = (p > 0 ? exe.substring(p + 1) : ModuleVersion.DEFAULT_VERSION.toString());
-
-      ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
-      ModuleLoader moduleLoader = createModuleLoader(args);
-      Module module = moduleLoader.loadModule(moduleIdentifier);
-      return SecurityActions.getClassLoader(module);
+      RepositoryExtension repository = createRepository(args);
+      return new CeylonModuleLoader(repository);
    }
 }

@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import ceylon.lang.modules.Module;
+import ceylon.lang.modules.ModuleVersion;
 import ceylon.modules.spi.Constants;
 
 /**
@@ -71,11 +72,12 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
          throw new IllegalArgumentException("Missing version info: " + exe);
 
       String name = exe.substring(0, p > 0 ? p : exe.length());
+      ModuleVersion version = (p > 0 ? ModuleVersion.parseVersion(exe.substring(p + 1)) : ModuleVersion.DEFAULT_VERSION);
+
+      ClassLoader cl = createClassLoader(name, version, args);
       String moduleClassName = name + ".Module"; // TODO -- allow for top level method
-
-      ClassLoader cl = createClassLoader(args);
-
       ceylon.lang.modules.Module runtimeModule = loadModule(cl, moduleClassName);
+
       ceylon.lang.Runnable runnable = runtimeModule.getProcess();
       if (runnable != null)
          runnable.run(new ceylon.lang.Process(args));
