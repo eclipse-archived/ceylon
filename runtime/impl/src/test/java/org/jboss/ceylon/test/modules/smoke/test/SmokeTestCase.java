@@ -23,6 +23,9 @@
 package org.jboss.ceylon.test.modules.smoke.test;
 
 import org.jboss.ceylon.test.modules.ModulesTest;
+import org.jboss.filtered.api.SomeAPI;
+import org.jboss.filtered.impl.SomeImpl;
+import org.jboss.filtered.spi.SomeSPI;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
@@ -49,6 +52,21 @@ public class SmokeTestCase extends ModulesTest
 
       JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
       lib.addClass(org.jboss.acme.Module.class);
+
+      testArchive(module, lib);
+   }
+
+   @Test
+   public void filteredModule() throws Exception
+   {
+      JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
+      module.addClass(eu.cloud.clazz.Module.class);
+
+      JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.filtered-1.0.0.Alpha1.car");
+      lib.addClass(org.jboss.filtered.Module.class);
+      lib.addClass(SomeSPI.class);
+      lib.addClass(SomeAPI.class);
+      lib.addClass(SomeImpl.class);
 
       testArchive(module, lib);
    }
