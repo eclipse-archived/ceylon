@@ -182,6 +182,8 @@ public abstract class Symbol implements Element {
      */
     public Type externalType(Types types) {
         Type t = erasure(types);
+        if (t.tag == METHOD && Context.isCeylon())
+            t = eraseOptional(types, (MethodType)t);
         if (name == name.table.init && owner.hasOuterInstance()) {
             Type outerThisType = types.erasure(owner.type.getEnclosingType());
             return new MethodType(t.getParameterTypes().prepend(outerThisType),
@@ -191,6 +193,32 @@ public abstract class Symbol implements Element {
         } else {
             return t;
         }
+    }
+
+    private Type eraseOptional(Types types, MethodType mt) {
+        Type restype = mt.restype;
+        ListBuffer<Type> argtypes = new ListBuffer<Type>();
+        for (Type argtype : mt.argtypes) {
+            if (argtype.tag == CLASS) {
+                argtypes.add(eraseOptional(types, (ClassType)argtype));
+            } else {
+                argtypes.add(argtype);
+            }
+        }
+
+        if (restype.tag == CLASS) {
+            restype = eraseOptional(types, (ClassType)restype);
+        }
+
+        return new MethodType(argtypes.toList(),
+                restype, mt.getThrownTypes(), mt.tsym);
+    }
+
+    private Type eraseOptional(Types types, ClassType t) {
+        if (t.tsym == types.syms.ceylonOptionalType.tsym)
+            return types.syms.objectType;
+
+        return t;
     }
 
     public boolean isStatic() {

@@ -690,7 +690,7 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
      *                containing this class.
      *  @param cdef   The class definition from which code is generated.
      */
-    JavaFileObject genCode(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
+    protected JavaFileObject genCode(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
         try {
             if (gen.genClass(env, cdef) && (errorCount() == 0))
                 return writer.writeClass(cdef.sym);

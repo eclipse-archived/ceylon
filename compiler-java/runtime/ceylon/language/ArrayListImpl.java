@@ -27,14 +27,22 @@ public class ArrayListImpl<T>
     }
 
     public ArrayListImpl<T> append(ArrayListImpl<T> l) {
-        ArrayListImpl<T> newList = new ArrayListImpl();
+        ArrayListImpl<T> newList = newInstance();
 
-        newList.data = new java.util.ArrayList<T>(data);
+        newList.data = new java.util.ArrayList<T>(data) ;
         if (l != null) {
             newList.data.addAll(l.data);
         }
 
         return newList;
+    }
+
+    protected ArrayListImpl<T> newInstance() {
+        try {
+            return getClass().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void $set(Integer key, T value) {
@@ -45,5 +53,9 @@ public class ArrayListImpl<T>
         ArrayList l = new ArrayList();
         l.data = new java.util.ArrayList<T>(java.util.Arrays.asList(args));
         return l;
+    }
+
+    public Iterator<T> iterator() {
+        throw new RuntimeException(this.toString());
     }
 }
