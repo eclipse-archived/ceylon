@@ -329,21 +329,4 @@ public class LowerCeylon extends TreeTranslator {
         }
         return result.toList();
     }
-
-    public void visitNewClass(JCNewClass tree) {
-        tree.encl = translate(tree.encl);
-        tree.clazz = translate(tree.clazz);
-        Symbol meth = tree.constructor;
-        List<Type> argtypes = meth.type.getParameterTypes();
-
-        tree.args = translate(tree.args);
-        tree.def = translate(tree.def);
-        tree.args = lowerArgs(argtypes, tree.args, tree.varargsElement);
-
-        // Now that we have lowered all varargs, we must set varargsElement null
-        // or Lower will do it again.
-        tree.varargsElement = null;
-
-        result = tree;
-    }
 }
