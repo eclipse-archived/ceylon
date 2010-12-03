@@ -20,25 +20,45 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.api.compiler;
 
-import java.util.Map;
-
-import ceylon.modules.spi.Executable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
- * Ceylon Modules runtime spi.
+ * Plain copy compiler adapter.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+class CopyCompilerAdapter extends AbstractCompilerAdapter
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   CopyCompilerAdapter()
+   {
+      super("");
+   }
+
+   public File compile(File source, String name, File classesRoot) throws IOException
+   {
+      File copy = new File(classesRoot, name);
+      File parent = copy.getParentFile();
+      parent.mkdirs();
+
+      FileInputStream fis = new FileInputStream(source);
+      FileOutputStream fos = new FileOutputStream(copy);
+      try
+      {
+         int b;
+         while ((b = fis.read()) >= 0)
+            fos.write(b);
+      }
+      finally
+      {
+         safeClose(fis);
+         safeClose(fos);
+      }
+
+      return copy;
+   }
 }

@@ -20,25 +20,53 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.jboss.repository;
 
-import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import ceylon.modules.spi.Executable;
+import org.jboss.modules.Resource;
 
 /**
- * Ceylon Modules runtime spi.
+ * Car archive entry.
  *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+final class CarEntryResource implements Resource
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   private final JarFile jarFile;
+   private final JarEntry entry;
+   private final URL resourceURL;
+
+   CarEntryResource(final JarFile jarFile, final JarEntry entry, final URL resourceURL)
+   {
+      this.jarFile = jarFile;
+      this.entry = entry;
+      this.resourceURL = resourceURL;
+   }
+
+   public String getName()
+   {
+      return entry.getName();
+   }
+
+   public URL getURL()
+   {
+      return resourceURL;
+   }
+
+   public InputStream openStream() throws IOException
+   {
+      return jarFile.getInputStream(entry);
+   }
+
+   public long getSize()
+   {
+      final long size = entry.getSize();
+      return size == -1 ? 0 : size;
+   }
 }

@@ -20,25 +20,17 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
-
-import java.util.Map;
-
-import ceylon.modules.spi.Executable;
+package ceylon.modules.jboss.repository;
 
 /**
- * Ceylon Modules runtime spi.
+ * Maven repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public class MavenRepositoryExtension extends LocalRepositoryExtension
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   public MavenRepositoryExtension(String path)
+   {
+      super(getMavenRepositoryPath(path));
+   }
 }

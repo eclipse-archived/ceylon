@@ -20,49 +20,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.repository;
+package ceylon.modules.jboss.runtime;
 
-import java.io.File;
+import java.util.Map;
 
-import ceylon.lang.modules.Module;
-import ceylon.lang.modules.ModuleName;
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+
 import ceylon.lang.modules.ModuleVersion;
+import ceylon.modules.spi.Constants;
 
 /**
- * Ceylon Module repository.
+ * Default Ceylon Modules runtime.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Repository
+public class JBossRuntime extends AbstractJBossRuntime
 {
-   /**
-    * Begin lookup.
-    */
-   void begin();
+   public ClassLoader createClassLoader(Map<String, String> args) throws Exception
+   {
+      String exe = args.get(Constants.MODULE.toString());
+      int p = exe.indexOf("/");
+      if (p == 0)
+         throw new IllegalArgumentException("Missing runnable info: " + exe);
+      if (p == exe.length() - 1)
+         throw new IllegalArgumentException("Missing version info: " + exe);
 
-   /**
-    * End lookup.
-    */
-   void end();
+      String name = exe.substring(0, p > 0 ? p : exe.length());
+      String version = (p > 0 ? exe.substring(p + 1) : ModuleVersion.DEFAULT_VERSION.toString());
 
-   /**
-    * Find the matching module.
-    * Null if no such module is found.
-    *
-    * @param name the module name, must not be null
-    * @param version the module version, can be null
-    * @return module's file or null if not found
-    */
-   File findModule(ModuleName name, ModuleVersion version);
-
-   /**
-    * Initial read of the module instance.
-    * Should not load runnable.
-    *
-    * @param name the module name
-    * @param moduleFile the module file, must not be null
-    * @return initial read of the module instance or null if no descriptor
-    * @throws Exception for any error
-    */
-   Module readModule(ModuleName name, File moduleFile) throws Exception;
+      ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
+      ModuleLoader moduleLoader = createModuleLoader(args);
+      Module module = moduleLoader.loadModule(moduleIdentifier);
+      return SecurityActions.getClassLoader(module);
+   }
 }

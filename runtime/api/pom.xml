@@ -7,16 +7,26 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>ceylon</groupId>
-   <artifactId>modules-spi</artifactId>
+   <artifactId>modules-api</artifactId>
    <packaging>jar</packaging>
    <version>1.0.0-SNAPSHOT</version>
-   <name>Ceylon Modules SPI</name>
+   <name>Ceylon Modules API</name>
    <url>http://www.jboss.org/ceylon</url>
 
    <dependencies>
       <dependency>
          <groupId>ceylon</groupId>
          <artifactId>sdk-mock</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-spi</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <scope>test</scope>
       </dependency>
    </dependencies>
 

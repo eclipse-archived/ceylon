@@ -20,25 +20,42 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.api.repository;
 
+import java.io.File;
 import java.util.Map;
 
-import ceylon.modules.spi.Executable;
+import ceylon.lang.modules.Module;
+import ceylon.lang.modules.ModuleName;
+import ceylon.lang.modules.ModuleVersion;
+import ceylon.modules.spi.repository.Repository;
 
 /**
- * Ceylon Modules runtime spi.
+ * Remote repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public class RemoteRepository implements Repository
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   public RemoteRepository(String path, Map<String, String> args)
+   {
+   }
+
+   public void begin()
+   {
+   }
+
+   public void end()
+   {
+   }
+
+   public File findModule(ModuleName name, ModuleVersion version)
+   {
+      return null; // TODO
+   }
+
+   public Module readModule(ModuleName name, File moduleFile) throws Exception
+   {
+      return null;  // TODO
+   }
 }

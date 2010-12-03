@@ -20,25 +20,31 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.jboss.repository;
 
+import java.io.File;
 import java.util.Map;
 
-import ceylon.modules.spi.Executable;
+import org.jboss.modules.PathFilters;
+import org.jboss.modules.ResourceLoader;
+
+import ceylon.lang.modules.ModuleName;
+import ceylon.lang.modules.ModuleVersion;
+import ceylon.modules.api.repository.SourceRepository;
 
 /**
- * Ceylon Modules runtime spi.
+ * Source repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public class SourceRepositoryExtension extends SourceRepository implements RepositoryExtension
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   public SourceRepositoryExtension(String path, Map<String, String> args)
+   {
+      super(path, args);
+   }
+   public ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file)
+   {
+      return new SourceResourceLoader(getSourcesRoot(), getClassesRoot(), "", PathFilters.acceptAll());
+   }
 }

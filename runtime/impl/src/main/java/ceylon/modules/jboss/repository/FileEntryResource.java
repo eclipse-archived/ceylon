@@ -20,25 +20,52 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.jboss.repository;
 
-import java.util.Map;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
-import ceylon.modules.spi.Executable;
+import org.jboss.modules.Resource;
 
 /**
- * Ceylon Modules runtime spi.
+ * Source entry resource.
  *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+class FileEntryResource implements Resource
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   private final String name;
+   private final File file;
+   private final URL url;
+
+   FileEntryResource(final String name, final File file, final URL url)
+   {
+      this.name = name;
+      this.file = file;
+      this.url = url;
+   }
+
+   public long getSize()
+   {
+      return file.length();
+   }
+
+   public String getName()
+   {
+      return name;
+   }
+
+   public URL getURL()
+   {
+      return url;
+   }
+
+   public InputStream openStream() throws IOException
+   {
+      return new FileInputStream(file);
+   }
 }

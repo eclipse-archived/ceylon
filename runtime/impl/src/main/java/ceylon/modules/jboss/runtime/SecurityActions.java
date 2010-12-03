@@ -20,25 +20,34 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.jboss.runtime;
 
-import java.util.Map;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
-import ceylon.modules.spi.Executable;
+import org.jboss.modules.Module;
 
 /**
- * Ceylon Modules runtime spi.
+ * Security actions.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+class SecurityActions
 {
    /**
-    * Create modular ClassLoader.
+    * Get classloader from a module.
     *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
+    * @param module the current module
+    * @return module's classloader
     */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   static ClassLoader getClassLoader(final Module module)
+   {
+      return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>()
+      {
+         public ClassLoader run()
+         {
+            return module.getClassLoader();
+         }
+      });
+   }
 }

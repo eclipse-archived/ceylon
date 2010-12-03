@@ -44,7 +44,9 @@
   <modules>
     <module>sdk</module>
     <module>spi</module>
+    <module>api</module>
     <module>impl</module>
+    <module>testsuite</module>
   </modules>
 
    <build>
@@ -159,6 +161,16 @@
       <dependency>
          <groupId>ceylon</groupId>
          <artifactId>modules-spi</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-api</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-impl</artifactId>
          <version>${project.version}</version>
       </dependency>
       

@@ -20,25 +20,42 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package org.jboss.ceylon.test.modules.sources.test;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import ceylon.modules.spi.Executable;
+import org.jboss.ceylon.test.modules.ModulesTest;
+
+import ceylon.modules.spi.Constants;
+import org.junit.Test;
 
 /**
- * Ceylon Modules runtime spi.
+ * Test module usage from sources.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public class SourcesTestCase extends ModulesTest
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   @Test
+   public void testSimpleUsage() throws Exception
+   {
+      Map<Constants, String> extra = new HashMap<Constants, String>();
+      extra.put(Constants.SOURCES, "src/test/java");
+      extra.put(Constants.CLASSES, "target/test-classes-bak");
+
+      // TODO -- fix proper src path
+      src("org.jboss.acme", "/Users/alesj/projects/labs/ceylon/modules/trunk/testsuite", extra);
+   }
+
+   @Test
+   public void testDependencyUsage() throws Exception
+   {
+      Map<Constants, String> extra = new HashMap<Constants, String>();
+      extra.put(Constants.SOURCES, "src/test/java");
+      extra.put(Constants.CLASSES, "target/test-classes-bak");
+
+      // TODO -- fix proper src path
+      src("com.foobar.qwert", "/Users/alesj/projects/labs/ceylon/modules/trunk/testsuite", extra);
+   }
 }

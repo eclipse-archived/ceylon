@@ -20,25 +20,18 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
-
-import java.util.Map;
-
-import ceylon.modules.spi.Executable;
+package ceylon.modules.api.repository;
 
 /**
- * Ceylon Modules runtime spi.
+ * Default Ceylon SDK repository.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public class DefaultRepository extends LocalRepository
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   @Override
+   protected String getPath()
+   {
+      return getCeylonSDKModules();
+   }
 }

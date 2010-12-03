@@ -22,7 +22,7 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.modules.plugins" slot="1.0.0-SNAPSHOT">
+<module xmlns="urn:jboss:module:1.0" name="ceylon.modules.jboss" slot="1.0.0-SNAPSHOT">
     <resources>
         <resource-root path="ceylon.modules.plugins-1.0.0-SNAPSHOT.jar"/>
     </resources>

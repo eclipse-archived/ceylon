@@ -20,25 +20,59 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.api.compiler;
 
-import java.util.Map;
-
-import ceylon.modules.spi.Executable;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
 
 /**
- * Ceylon Modules runtime spi.
- *
+ * Abstract compiler adapter.
+ * 
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public abstract class AbstractCompilerAdapter implements CompilerAdapter
 {
+   private String languageSuffix;
+
    /**
-    * Create modular ClassLoader.
+    * Create new cmopiler adapter.
+    * The *true* lang suffix must contain a dot.
     *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
+    * @param languageSuffix the language suffix
     */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   protected AbstractCompilerAdapter(String languageSuffix)
+   {
+      if (languageSuffix == null)
+         throw new IllegalArgumentException("Null language suffix");
+      this.languageSuffix = languageSuffix;
+   }
+
+   public String languageSuffix()
+   {
+      return languageSuffix;
+   }
+
+   public File findSource(File root, String name)
+   {
+      File file = new File(root, name + languageSuffix);
+      return file.exists() ? file : null;
+   }
+
+   /**
+    * Safe close.
+    *
+    * @param closeable the closeable
+    */
+   protected static void safeClose(final Closeable closeable)
+   {
+      if (closeable != null) try
+      {
+         closeable.close();
+      }
+      catch (IOException e)
+      {
+         // ignore
+      }
+   }
 }

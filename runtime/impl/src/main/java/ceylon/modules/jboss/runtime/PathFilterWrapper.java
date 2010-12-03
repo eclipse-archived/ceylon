@@ -20,25 +20,28 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.jboss.runtime;
 
-import java.util.Map;
-
-import ceylon.modules.spi.Executable;
+import org.jboss.modules.PathFilter;
 
 /**
- * Ceylon Modules runtime spi.
+ * Ceylon to Module path filter wrapper.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+class PathFilterWrapper implements PathFilter
 {
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   private final ceylon.lang.modules.PathFilter filter;
+
+   PathFilterWrapper(ceylon.lang.modules.PathFilter filter)
+   {
+      if (filter == null)
+         throw new IllegalArgumentException("Null filter");
+      this.filter = filter;
+   }
+
+   public boolean accept(String path)
+   {
+      return filter.accept(path);
+   }
 }

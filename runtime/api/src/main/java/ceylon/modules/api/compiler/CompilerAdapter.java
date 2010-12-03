@@ -20,25 +20,42 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi.runtime;
+package ceylon.modules.api.compiler;
 
-import java.util.Map;
-
-import ceylon.modules.spi.Executable;
+import java.io.File;
+import java.io.IOException;
 
 /**
- * Ceylon Modules runtime spi.
+ * Compiler adapter.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
+public interface CompilerAdapter
 {
    /**
-    * Create modular ClassLoader.
+    * Get the language suffix.
     *
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
+    * @return the language suffix.
     */
-   ClassLoader createClassLoader(Map<String, String> args) throws Exception;
+   String languageSuffix();
+
+   /**
+    * Find soource.
+    *
+    * @param root the source root
+    * @param name the resource name
+    * @return found source or null if not found
+    */
+   File findSource(File root, String name);
+
+   /**
+    * Compile source.
+    *
+    * @param source the source
+    * @param name the resource name
+    * @param classesRoot the classes root
+    * @return compiled file
+    * @throws IOException for any I/O error
+    */
+   File compile(File source, String name, File classesRoot) throws IOException;
 }
