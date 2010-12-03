@@ -1936,6 +1936,8 @@ public class Attr extends JCTree.Visitor {
                         tree.selected = application;
                         visitSelect(tree);
                         return;
+                    } else {
+                        throw new RuntimeException();
                     }
                 }
 

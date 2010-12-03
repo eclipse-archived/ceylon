@@ -8,10 +8,18 @@ public abstract class Object extends Void {
         return String.instance("");
     }
 
-    public synchronized static void addAnnotation(java.lang.Class klass, Annotation ann) {
-
+    public synchronized static void addAnnotation(java.lang.Class klass,
+                                                  Sequence<?> annos) {
+        Types.create(klass).addAnnotations(klass, annos);
     }
 
-    public static void addAnnotation(java.lang.Class klass, String memberName, Annotation ann) {
+    public synchronized static void addAnnotation(java.lang.Class klass,
+                                         String memberName,
+                                         Sequence<?> annos) {
+        Types.create(klass).addAnnotations(klass, annos);
+    }
+
+    public Type getType () {
+        return Types.create(getClass());
     }
 }

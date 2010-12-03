@@ -2573,8 +2573,10 @@ public abstract class CeylonTree {
         public CeylonTree name;
 
         public void setName(CeylonTree name) {
-            assert(this.name == null);
-            this.name = name;
+            if (this.name == null)
+                this.name = name;
+            else
+                name().append((TypeName)name);
         }
 
         public TypeName name() {
@@ -2769,6 +2771,10 @@ public abstract class CeylonTree {
             }
 
             return b.toString();
+        }
+
+        public void append(TypeName name) {
+            components = components.appendList(name.components());
         }
 
         public void accept(Visitor v) { v.visit(this); }

@@ -25,6 +25,7 @@
 
 package com.redhat.ceylon.compiler.tools;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Queue;
 
@@ -40,8 +41,10 @@ import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.tree.Grok;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.jvm.ClassWriter;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -49,6 +52,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
@@ -60,6 +64,8 @@ public class LanguageCompiler extends JavaCompiler {
 
     /** Get the JavaCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
+        Options options = Options.instance(context);
+        options.put("-Xprefer", "source");
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
             instance = new LanguageCompiler(context);
@@ -68,6 +74,7 @@ public class LanguageCompiler extends JavaCompiler {
 
     public LanguageCompiler(Context context) {
         super(context);
+
         try {
             gen = new Gen(context);
         } catch (Exception e) {
@@ -151,6 +158,18 @@ public class LanguageCompiler extends JavaCompiler {
             }
         }
         return super.attribute(env);
+    }
+
+    protected JavaFileObject genCode(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
+        if (env.toplevel.sourcefile instanceof CeylonFileObject) {
+            try {
+                Context.SourceLanguage.push(Language.CEYLON);
+                return super.genCode(env, cdef);
+            } finally {
+                Context.SourceLanguage.pop();
+            }
+        }
+        return super.genCode(env, cdef);
     }
 
     protected void desugar(final Env<AttrContext> env, Queue<Pair<Env<AttrContext>, JCClassDecl>> results) {
