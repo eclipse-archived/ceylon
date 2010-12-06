@@ -16,7 +16,11 @@ public final class String extends Object
         return new ceylon.language.String(s);
     }
 
-    public ceylon.language.String string() {
-        return this;
+    public ceylon.language.String uppercase() {
+        return instance(value.toUpperCase());
+    }
+
+    public ceylon.language.String lowercase() {
+        return instance(value.toLowerCase());
     }
 }
