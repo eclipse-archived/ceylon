@@ -19,6 +19,10 @@
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
+  <property name="build.lib" location="${build}/lib"/>
+
+  <!-- Jarfiles everything ends up in -->
+  <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -58,15 +62,31 @@
        destdir="${build.classes}"
        debug="true"
        classpath="${antlr.lib}">
+      <include name="com/redhat/**"/>
+      <include name="com/sun/tools/javac/**"/>
     </javac>
   </target>
 
+  <!-- Rule to build compiler jar -->
+  <target name="compiler.jar" depends="compiler.classes">
+    <mkdir dir="${build.lib}"/>
+    <jar destfile="${compiler.jar}">
+      <fileset dir="${build.classes}">
+        <exclude name="ceylon/**"/>
+        <exclude name="com/redhat/ceylon/compiler/test/**"/>
+      </fileset>
+      <fileset dir="${javac.src}">
+        <include name="com/sun/tools/javac/resources/*.properties"/>
+      </fileset>
+    </jar>
+  </target>
+
   <!-- Rule to build runtime classes from their Java and Ceylon sources -->
-  <target name="runtime.classes" depends="compiler.classes">
+  <target name="runtime.classes" depends="compiler.jar">
     <apply executable="java">
       <arg value="-ea"/>
       <arg value="-cp"/>
-      <arg value="${build.classes}:${javac.src}:${antlr.lib}:${runtime.src}"/>
+      <arg value="${compiler.jar}:${antlr.lib}:${runtime.src}"/>
       <arg value="com.redhat.ceylon.compiler.Main"/>
       <arg value="-d"/>
       <arg value="${build.classes}"/>
@@ -80,12 +100,12 @@
   </target>
   
   <!-- Rule to run the parser regression tests -->
-  <target name="test.parser" depends="compiler.classes">
+  <target name="test.parser" depends="compiler.jar">
     <mkdir dir="${parser.test.dst}"/>
     <apply executable="java">
       <arg value="-ea"/>
       <arg value="-cp"/>
-      <arg value="${build.classes}:${antlr.lib}"/>
+      <arg value="${compiler.jar}:${antlr.lib}"/>
       <arg value="com.redhat.ceylon.compiler.launcher.CeylonCompiler"/>
       <arg value="-d"/>
       <arg value="${parser.test.dst}"/>
@@ -103,7 +123,7 @@
   </target>
 
   <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="compiler.classes">
+  <target name="test.compiler" depends="compiler.jar">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 

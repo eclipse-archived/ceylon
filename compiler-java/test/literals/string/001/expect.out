@@ -1,0 +1,9 @@
+ceylon.language.String {
+  java.lang.String value = "Hello world"
+}
+ceylon.language.String {
+  java.lang.String value = "\n"
+}
+ceylon.language.String {
+  java.lang.String value = "Hello\tworld"
+}

@@ -1370,6 +1370,12 @@ public class Gen {
                 result = at(expr).Apply (null, makeSelect(makeIdent(syms.ceylonFloatType), "instance"),
                         List.of(n));
             }
+            public void visit(CharLiteral lit) {
+                JCExpression n = make.Literal(TypeTags.CHAR, (int) lit.value);
+                // XXX make.Literal(lit.value) doesn't work here... something broken in javac?
+                result = at(expr).Apply (null, makeSelect(makeIdent(syms.ceylonCharacterType), "instance"),
+                        List.of(n));
+            }
             public void visit(CeylonTree.SimpleStringLiteral string) {
                 result = convert(string);
             }

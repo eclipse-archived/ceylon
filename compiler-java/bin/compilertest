@@ -10,10 +10,10 @@ class TestHarness:
         self.basedir = basedir
         self.antlr_jarfile = os.path.join(
             self.basedir, "lib/antlrworks-1.3.1.jar")
-        self.javac_srcdir = os.path.join(
-            self.basedir, "langtools/src/share/classes")
         self.runtime_srcdir = os.path.join(self.basedir, "runtime")
-        self.runtime_builddir = os.path.join(self.basedir, "build/classes")
+        builddir = os.path.join(self.basedir, "build")
+        self.runtime_builddir = os.path.join(builddir, "classes")
+        self.compiler_jarfile = os.path.join(builddir, "lib/compiler.jar")
         self.testdir = os.path.join(self.basedir, "test")
         self.verbosity = 0
 
@@ -21,7 +21,7 @@ class TestHarness:
     """
     def classpath(self, *extras):
         return ":".join((self.runtime_builddir,
-                         self.javac_srcdir,
+                         self.compiler_jarfile,
                          self.antlr_jarfile) + extras)
 
     """Make sure the runtime classes are up to date.  It would
@@ -177,7 +177,7 @@ class TestCase:
 
     def handle_failure(self, harness, out, err):
         harness.log(self.dir, "failure")
-        if harness.verbosity > 1:
+        if harness.verbosity >= 1:
             if err:
                 sys.stdout.write(err)
             else:
@@ -185,7 +185,7 @@ class TestCase:
 
     def handle_error(self, harness, out, err):
         harness.log(self.dir, "error")
-        if harness.verbosity > 1:
+        if harness.verbosity >= 1:
             sys.stdout.write(out)
             sys.stdout.write(err)
 
