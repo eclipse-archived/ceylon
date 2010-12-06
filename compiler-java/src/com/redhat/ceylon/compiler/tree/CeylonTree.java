@@ -426,7 +426,7 @@ public abstract class CeylonTree {
         bomb();
     }
 
-    void setInitialValue(CeylonTree expr) {
+    void setInitialValue(CeylonTree expr) throws AnalysisException {
         bomb();
     }
 
@@ -913,6 +913,10 @@ public abstract class CeylonTree {
 
         public List<CeylonTree> getStmts() {
             return stmts;
+        }
+
+        void setInitialValue(CeylonTree expr) throws AnalysisException {
+            throw new AnalysisException("Unexpected initializer (Did you write '=' instead of ':=' ?) ");
         }
     }
 
@@ -1677,6 +1681,10 @@ public abstract class CeylonTree {
         }
 
         public void accept(Visitor v) { v.visit(this); }
+
+        void setInitialValue(CeylonTree expr) throws AnalysisException {
+            throw new AnalysisException("Unexpected initializer (Did you write '=' instead of ':=' ?) ");
+        }
     }
 
     /**

@@ -8,6 +8,8 @@ public class Grok extends CeylonTree.Visitor {
     Context current;
     int depth;
 
+    private final Log log;
+
     final class Context {
 
         Context prev;
@@ -27,6 +29,10 @@ public class Grok extends CeylonTree.Visitor {
         public void pop() {
             current = prev;
         }
+    }
+
+    public Grok(Log log) {
+        this.log = log;
     }
 
     public void visit(CeylonTree.CompilationUnit t) {
@@ -346,7 +352,11 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
-        current.context.setInitialValue(expr);
+        try {
+            current.context.setInitialValue(expr);
+        } catch (AnalysisException e) {
+            log.error("proc.messager", expr.source.path + ":" + expr.source.line + ": " + e.getMsg());
+        }
     }
 
     public void visit(CeylonTree.NamedArgument expr) {
