@@ -25,6 +25,9 @@ public final class dump extends ceylon.language.Object {
             if (type.equals("char")) {
                 value = formatChar((Character) value);
             }
+            else if (type.equals("java.lang.String")) {
+                value = formatString((String) value);
+            }
 
             System.out.println("  "
                                + type
@@ -36,25 +39,39 @@ public final class dump extends ceylon.language.Object {
         System.out.println("}");
     }
 
-    private static Object formatChar(char value) {
-        String result;
+    private static String formatChar(char value) {
+        return "'" + escape(value, '\'') + "'";
+    }
+
+    private static String formatString(String value) {
+        StringBuilder builder = new StringBuilder();
+        builder.append('"');
+        for (int i = 0; i < value.length(); i++) {
+            builder.append(escape(value.charAt(i), '"'));
+        }
+        builder.append('"');
+        return builder.toString();
+    }
+
+    private static String escape(char value, char quote) {
+        if (value == quote)
+            return "\\" + value;
+
         switch (value) {
         case '\b':
-            return "'\\b'";
+            return "\\b";
         case '\t':
-            return "'\\t'";
+            return "\\t";
         case '\n':
-            return "'\\n'";
+            return "\\n";
         case '\f':
-            return "'\\f'";
+            return "\\f";
         case '\r':
-            return "'\\r'";
+            return "\\r";
         case '\\':
-            return "'\\\\'";
-        case '\'':
-            return "'\\''";
+            return "\\\\";
         default:
-            return "'" + value + "'";
+            return Character.toString(value);
         }
     }
 }
