@@ -336,9 +336,7 @@ public class Grok extends CeylonTree.Visitor {
     }
 
     public void visit(CeylonTree.SimpleStringLiteral lit) {
-        String s = lit.token.getText();
-        // Strip off quote markers from each end of the token
-        lit.value = s.substring(1, s.length()-1);
+        lit.value = unquoteAndUnescape(lit.token.getText(), '"');
         current.context.append(lit);
     }
 
@@ -390,49 +388,58 @@ public class Grok extends CeylonTree.Visitor {
     }
 
     public void visit(CeylonTree.CharLiteral lit) {
-        String value = lit.token.getText();
-        int length = value.length();
-        assert length == 3 || length == 4;
-        assert value.charAt(0) == '`' && value.charAt(length - 1) == '`';
-        if (length == 3) {
-            lit.value = value.charAt(1);
-        }
-        else /* length == 4 */ {
-            assert value.charAt(1) == '\\';
-            char escaped = value.charAt(2);
-            switch (escaped) {
-            case 'b':
-                lit.value = '\b';
-                break;
-            case 't':
-                lit.value = '\t';
-                break;
-            case 'n':
-                lit.value = '\n';
-                break;
-            case 'f':
-                lit.value = '\f';
-                break;
-            case 'r':
-                lit.value = '\r';
-                break;
-            case '\\':
-                lit.value = '\\';
-                break;
-            case '"':
-                lit.value = '"';
-                break;
-            case '\'':
-                lit.value = '\'';
-                break;
-            case '`':
-                lit.value = '`';
-                break;
-            default:
-                assert false : "'\\" + escaped + "'";
-            }
-        }
+        String value = unquoteAndUnescape(lit.token.getText(), '`');
+        assert value.length() == 1;
+        lit.value = value.charAt(0);
         current.context.append(lit);
+    }
+
+    private static String unquoteAndUnescape(String str, char quote) {
+        int length = str.length();
+        assert str.charAt(0) == quote && str.charAt(length - 1) == quote;
+        StringBuilder builder = new StringBuilder();
+        for (int i = 1; i < length - 1; i++) {
+            char c = str.charAt(i);
+            if (c == '\\') {
+                i++;
+                assert i < length;
+                c = str.charAt(i);
+                // Section 2.4.2 "Character Literals"
+                switch (c) {
+                case 'b':
+                    c = '\b';
+                    break;
+                case 't':
+                    c = '\t';
+                    break;
+                case 'n':
+                    c = '\n';
+                    break;
+                case 'f':
+                    c = '\f';
+                    break;
+                case 'r':
+                    c = '\r';
+                    break;
+                case '\\':
+                    c = '\\';
+                    break;
+                case '"':
+                    c = '"';
+                    break;
+                case '\'':
+                    c = '\'';
+                    break;
+                case '`':
+                    c = '`';
+                    break;
+                default:
+                    assert false : c;
+                }
+            }
+            builder.append(c);
+        }
+        return builder.toString();
     }
 
     public void visit(CeylonTree.CallExpression expr) {
