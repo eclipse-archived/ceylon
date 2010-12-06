@@ -14,6 +14,7 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Type.ArrayType;
 import com.sun.tools.javac.code.Type.ClassType;
+import com.sun.tools.javac.code.Type.MethodType;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.jvm.ClassWriter;
 import com.sun.tools.javac.jvm.Target;
@@ -97,9 +98,54 @@ public class LowerCeylon extends TreeTranslator {
         result = tree;
     }
 
+     public void visitMethodDef(JCMethodDecl tree) {
+        if (tree.type.toString().contains("Optional"))
+            System.err.print("");
+        tree.mods = translate(tree.mods);
+        tree.restype = translate(tree.restype);
+        tree.typarams = translateTypeParams(tree.typarams);
+        tree.params = translateVarDefs(tree.params);
+        tree.thrown = translate(tree.thrown);
+        tree.body = translate(tree.body);
+        result = tree;
+    }
+
+    public void visitTypeApply(JCTypeApply tree) {
+        tree.clazz = translate(tree.clazz);
+        tree.arguments = translate(tree.arguments);
+        if (tree.type.tsym == syms.ceylonOptionalType.tsym) {
+            // Check that arguments are well-formed
+            Type t = nonOptionalTypeFor(tree.type);
+            result = make.Ident(t.tsym);
+        } else {
+            result = tree;
+        }
+    }
+
     public void visitAssign(JCAssign tree) {
         tree.lhs = translate(tree.lhs);
         tree.rhs = translate(tree.rhs, tree.type);
+        result = tree;
+    }
+
+    public void visitIf(JCIf tree) {
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.thenpart = translate(tree.thenpart);
+        tree.elsepart = translate(tree.elsepart);
+        result = tree;
+    }
+
+    public void visitForLoop(JCForLoop tree) {
+        tree.init = translate(tree.init);
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.step = translate(tree.step);
+        tree.body = translate(tree.body);
+        result = tree;
+    }
+
+    public void visitWhileLoop(JCWhileLoop tree) {
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.body = translate(tree.body);
         result = tree;
     }
 
@@ -133,6 +179,23 @@ public class LowerCeylon extends TreeTranslator {
 
     public JCTree translateTopLevelClass(JCTree tree, TreeMaker localMake) {
         return translate(tree);
+    }
+
+    public void visitNewClass(JCNewClass tree) {
+        tree.encl = translate(tree.encl);
+        tree.clazz = translate(tree.clazz);
+
+        Symbol meth = tree.constructor;
+        List<Type> argtypes = meth.type.getParameterTypes();
+
+        tree.args = translate(tree.args);
+        tree.def = translate(tree.def);
+        tree.args = lowerArgs(argtypes, tree.args, tree.varargsElement);
+        // Now that we have lowered all varargs, we must set varargsElement null
+        // or Lower will do it again.
+        tree.varargsElement = null;
+
+        result = tree;
     }
 
     public <T extends JCTree> T translate(T tree, Type type) {
@@ -224,6 +287,10 @@ public class LowerCeylon extends TreeTranslator {
             assert l.length() == 1;
             t = l.last();
         }
+        if (t.tag == TypeTags.TYPEVAR) {
+            t = t.getUpperBound();
+        }
+
         return t;
     }
 
@@ -261,22 +328,5 @@ public class LowerCeylon extends TreeTranslator {
             if (!anyChanges) return _args;
         }
         return result.toList();
-    }
-
-    public void visitNewClass(JCNewClass tree) {
-        tree.encl = translate(tree.encl);
-        tree.clazz = translate(tree.clazz);
-        Symbol meth = tree.constructor;
-        List<Type> argtypes = meth.type.getParameterTypes();
-
-        tree.args = translate(tree.args);
-        tree.def = translate(tree.def);
-        tree.args = lowerArgs(argtypes, tree.args, tree.varargsElement);
-
-        // Now that we have lowered all varargs, we must set varargsElement null
-        // or Lower will do it again.
-        tree.varargsElement = null;
-
-        result = tree;
     }
 }

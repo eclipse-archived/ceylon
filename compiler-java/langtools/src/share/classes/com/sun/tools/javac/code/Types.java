@@ -328,7 +328,7 @@ public class Types {
                     return true;
                 } else if (typeArgs.length() == 1) {
                     Type s1 = typeArgs.last();
-                    if (s1.tag == CLASS) {
+                    if (s1.tag == CLASS || s1.tag == TYPEVAR) {
                         return isConvertible(t, s1, warn);
                     }
                 } else if (typeArgs.length() == 0) {

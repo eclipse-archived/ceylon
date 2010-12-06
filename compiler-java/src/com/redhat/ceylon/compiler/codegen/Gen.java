@@ -740,8 +740,7 @@ public class Gen {
         }
         else {
             List<String> name = cdecl.getSuperclass().name().components();
-            assert name.size() == 1;
-            superclass = make().Ident(names.fromString(name.head));
+            superclass = makeIdent(name);
         }
 
         if ((cdecl.flags & CeylonTree.EXTENSION) != 0) {
@@ -1343,6 +1342,10 @@ public class Gen {
                 at(expr);
                 result = makeIdent("this");
             }
+            public void visit(Super expr) {
+                at(expr);
+                result = makeIdent("super");
+            }
             public void visit(OperatorDot access) {
                 result = convert(access);
             }
@@ -1386,7 +1389,7 @@ public class Gen {
                 result = convert(value);
             }
             public void visit(CeylonTree.TypeName name) {
-                result = makeIdent(name.components);
+                result = makeIdent(name.components.append("class"));
             }
             public void visit(CeylonTree.InitializerExpression value) {
                 result = convertExpression(value.value());
