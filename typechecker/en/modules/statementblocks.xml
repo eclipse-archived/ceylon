@@ -739,7 +739,7 @@ else {
 }</programlisting>
         <para>This looks very much like Haskell/ML-style list pattern matching, but it's not any 
         simpler to write than this idiom:</para>
-        <programlisting>String join(String[] strings) {
+        <programlisting>String join(String[] strings, String with) {
     if (exists String first = strings.first) {
         return first + with + join(strings.rest, with)
     }
