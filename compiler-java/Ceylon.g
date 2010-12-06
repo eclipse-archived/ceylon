@@ -101,8 +101,8 @@ tokens {
     //PRIMARY;
 }
 
-// @parser::header { package com.redhat.ceylon.compiler.parser; }
-// @lexer::header { package com.redhat.ceylon.compiler.parser; }
+@parser::header { package com.redhat.ceylon.compiler.parser; }
+@lexer::header { package com.redhat.ceylon.compiler.parser; }
 
 compilationUnit
     : importDeclaration*
@@ -206,7 +206,7 @@ declarationOrStatement
 declaration
     : annotations? 
     ( 
-        memberDeclaration
+        memberDeclaration 
       -> ^(MEMBER_DECL memberDeclaration annotations?)
       | typeDeclaration 
       -> ^(TYPE_DECL typeDeclaration annotations?)
