@@ -23,8 +23,7 @@
 package ceylon.modules.jboss.runtime;
 
 import java.util.Map;
-
-import org.jboss.netty.util.internal.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Simple node impl.

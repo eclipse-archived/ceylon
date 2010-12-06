@@ -36,6 +36,8 @@
       <version.org.jboss.vfs>3.0.0.CR5</version.org.jboss.vfs>
       <version.org.jboss.netty>3.2.2.Final</version.org.jboss.netty>
       <version.org.jboss.common.core>2.2.17.GA</version.org.jboss.common.core>
+      <version.osgi>4.2.0</version.osgi>
+      <version.apache.felix>3.0.6</version.apache.felix>
       <version.org.jboss.shrinkwrap>1.0.0-alpha-11</version.org.jboss.shrinkwrap>
       <version.org.jboss.test>1.1.0.GA</version.org.jboss.test>
       <version.junit>4.8.1</version.junit>
@@ -46,6 +48,7 @@
     <module>spi</module>
     <module>api</module>
     <module>impl</module>
+    <module>osgi</module>
     <module>testsuite</module>
   </modules>
 
@@ -205,6 +208,23 @@
         <version>${version.jboss.common.core}</version>
         <scope>provided</scope>
      </dependency -->
+
+      <dependency>
+         <groupId>org.osgi</groupId>
+         <artifactId>org.osgi.core</artifactId>
+         <version>${version.osgi}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.osgi</groupId>
+         <artifactId>org.osgi.compendium</artifactId>
+         <version>${version.osgi}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.main</artifactId>
+        <version>${version.apache.felix}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.jboss.shrinkwrap</groupId>

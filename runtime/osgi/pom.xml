@@ -7,10 +7,10 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>ceylon</groupId>
-   <artifactId>modules-impl</artifactId>
+   <artifactId>modules-osgi</artifactId>
    <packaging>jar</packaging>
    <version>1.0.0-SNAPSHOT</version>
-   <name>Ceylon Modules Impl</name>
+   <name>Ceylon Modules OSGi</name>
    <url>http://www.jboss.org/ceylon</url>
 
    <dependencies>
@@ -36,13 +36,24 @@
          <artifactId>jboss-logmanager</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.jboss.modules</groupId>
-         <artifactId>jboss-modules</artifactId>
-      </dependency>
-      <dependency>
          <groupId>org.jboss</groupId>
          <artifactId>jboss-vfs</artifactId>
       </dependency>
+
+      <dependency>
+         <groupId>org.osgi</groupId>
+         <artifactId>org.osgi.core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.osgi</groupId>
+         <artifactId>org.osgi.compendium</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.main</artifactId>
+      </dependency>
+
    </dependencies>
 
 </project>

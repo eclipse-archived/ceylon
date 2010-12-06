@@ -65,6 +65,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
    public void execute(Map<String, String> args) throws Exception
    {
       String exe = args.get(Constants.MODULE.toString());
+      if (exe == null)
+         throw new IllegalArgumentException("No executable defined: " + args);
+
       int p = exe.indexOf("/");
       if (p == 0)
          throw new IllegalArgumentException("Missing runnable info: " + exe);
