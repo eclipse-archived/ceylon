@@ -1323,13 +1323,16 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     ...
 }</programlisting></comment>
 
+        <comment><para>TODO: Should be inherit generic type constraints from supertypes, 
+        like in C#, or require them to be re-declared, like in Java?</para></comment>
+        
     </section>
     
     <section id="dimensionaltypeparameters">
         <title>Dimensional type parameters</title>
             
-        <comment><para>NOTE: dimensional type parameters are a proposed feature
-        for a future version of the language.</para></comment>
+        <comment><para>NOTE: dimensional type parameters are a proposed feature for a 
+        future version of the language.</para></comment>
         
         <para>A dimensional type parameter allows a declaration to be abstracted over 
         the natural numbers.</para>
