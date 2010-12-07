@@ -15,7 +15,7 @@ class TestHarness:
         self.runtime_builddir = os.path.join(builddir, "classes")
         self.compiler_jarfile = os.path.join(builddir, "lib/compiler.jar")
         self.testdir = os.path.join(self.basedir, "test")
-        self.verbosity = 0
+        self.verbosity = 2
 
     """The classpath required to run the Ceylon compiler
     """
@@ -141,7 +141,9 @@ class TestCase:
             "java",
             "-ea",
             "-cp", harness.classpath(),
-            "com.redhat.ceylon.compiler.Main", *paths)
+            "com.redhat.ceylon.compiler.Main", 
+            "-src", self.dir,
+            *paths)
         out, err = sp.communicate()
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
