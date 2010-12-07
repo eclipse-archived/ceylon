@@ -1,0 +1,24 @@
+Test {
+  ceylon.language.Integer x = ceylon.language.Integer {
+    long value = 17
+  }
+  ceylon.language.String y = ceylon.language.String {
+    java.lang.String value = "xyz?"
+  }
+}
+Test {
+  ceylon.language.Integer x = ceylon.language.Integer {
+    long value = 23
+  }
+  ceylon.language.String y = ceylon.language.String {
+    java.lang.String value = "hello!"
+  }
+}
+Test {
+  ceylon.language.Integer x = ceylon.language.Integer {
+    long value = 99
+  }
+  ceylon.language.String y = ceylon.language.String {
+    java.lang.String value = "!"
+  }
+}
