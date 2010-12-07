@@ -4,8 +4,19 @@ import java.lang.reflect.Field;
 
 public final class dump extends ceylon.language.Object {
     public static void run(ceylon.language.Object obj) {
+        StringBuilder builder = new StringBuilder();
+        formatObject(builder, obj, "");
+        System.out.println(builder.toString());
+    }
+
+    private static void formatObject(StringBuilder builder,
+                                     Object obj,
+                                     String indent) {
         Class klass = obj.getClass();
-        System.out.println(klass.getName() + " {");
+        builder.append(klass.getName());
+        builder.append(" {\n");
+
+        String moreIndent = indent + "  ";
         for (Field field: klass.getDeclaredFields()) {
             String name = field.getName();
             if (name.equals("$assertionsDisabled"))
@@ -21,36 +32,46 @@ public final class dump extends ceylon.language.Object {
                 throw new RuntimeException(e);
             }
 
-            String type = field.getType().getName();
-            if (type.equals("char")) {
-                value = formatChar((Character) value);
+            Class type = field.getType();
+            String typeName = type.getName();
+
+            builder.append(moreIndent);
+            builder.append(typeName);
+            builder.append(' ');
+            builder.append(name);
+            builder.append(" = ");
+
+            if (typeName.equals("char")) {
+                formatChar(builder, (Character) value);
             }
-            else if (type.equals("java.lang.String")) {
-                value = formatString((String) value);
+            else if (typeName.equals("java.lang.String")) {
+                formatString(builder, (String) value);
+            }
+            else if (!type.isPrimitive()) {
+                formatObject(builder, value, moreIndent);
+            }
+            else {
+                builder.append(value);
             }
 
-            System.out.println("  "
-                               + type
-                               + " "
-                               + name
-                               + " = "
-                               + value);
+            builder.append('\n');
         }
-        System.out.println("}");
+        builder.append(indent);
+        builder.append("}");
     }
 
-    private static String formatChar(char value) {
-        return "'" + escape(value, '\'') + "'";
+    private static void formatChar(StringBuilder builder, char value) {
+        builder.append('\'');
+        builder.append(escape(value, '\''));
+        builder.append('\'');
     }
 
-    private static String formatString(String value) {
-        StringBuilder builder = new StringBuilder();
+    private static void formatString(StringBuilder builder, String value) {
         builder.append('"');
         for (int i = 0; i < value.length(); i++) {
             builder.append(escape(value.charAt(i), '"'));
         }
         builder.append('"');
-        return builder.toString();
     }
 
     private static String escape(char value, char quote) {
