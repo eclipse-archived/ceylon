@@ -311,8 +311,6 @@ public class Grok extends CeylonTree.Visitor {
                 } else {
                     throw new RuntimeException();
                 }
-            } else {
-                throw new RuntimeException();
             }
         }
 
@@ -737,6 +735,13 @@ public class Grok extends CeylonTree.Visitor {
     }
 
     public void visit(CeylonTree.SetExpression tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.append(tree);
+    }
+
+    public void visit(CeylonTree.StringConcatenation tree) {
         current.push(tree);
         inner(tree);
         current.pop();

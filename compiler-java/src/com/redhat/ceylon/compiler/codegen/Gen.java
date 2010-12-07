@@ -1421,11 +1421,24 @@ public class Gen {
                             makeSelect(makeIdent(syms.ceylonArrayListType), "of"),
                         values.toList());
             }
+            public void visit(CeylonTree.StringConcatenation expr) {
+                result = convertStringExpression(expr);
+            }
           }
 
         V v = new V();
         expr.accept(v);
         return v.result;
+    }
+
+    JCExpression convertStringExpression(CeylonTree.StringConcatenation expr) {
+        ListBuffer<JCExpression> strings = new ListBuffer<JCExpression>();
+        for (CeylonTree t: expr.strings) {
+            strings.append(convertExpression(t));
+        }
+
+        return make().Apply (null, makeSelect(makeIdent(syms.ceylonStringType), "instance"),
+                strings.toList());
     }
 
     private static Map<Integer, String> unaryOperators;
@@ -1450,7 +1463,7 @@ public class Gen {
         binaryOperators.put(CeylonParser.BITWISEAND, "and");
         binaryOperators.put(CeylonParser.BITWISEOR,  "or");
         binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
-        //binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
+        binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
         //binaryOperators.put(CeylonParser.IDENTICAL,  "operatorIdentical");
         //binaryOperators.put(CeylonParser.NOTEQ,      "operatorNotEqual");
         binaryOperators.put(CeylonParser.COMPARE,    "compare");
@@ -1491,7 +1504,7 @@ public class Gen {
         case CeylonParser.BITWISEAND:
         case CeylonParser.BITWISEOR:
         case CeylonParser.BITWISEXOR:
-        //case CeylonParser.EQEQ:
+        case CeylonParser.EQEQ:
         //case CeylonParser.IDENTICAL:
         //case CeylonParser.NOTEQ:
         case CeylonParser.COMPARE:

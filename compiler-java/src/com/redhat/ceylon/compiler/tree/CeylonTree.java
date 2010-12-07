@@ -2417,6 +2417,12 @@ public abstract class CeylonTree {
      * A string concatenation
      */
     public static class StringConcatenation extends CeylonTree {
+        public List<CeylonTree> strings = List.<CeylonTree>nil();
+
+        public void append(CeylonTree expr) {
+            strings = strings.append(expr);
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
