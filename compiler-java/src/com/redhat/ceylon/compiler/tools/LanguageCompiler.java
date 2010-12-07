@@ -135,7 +135,7 @@ public class LanguageCompiler extends JavaCompiler {
             else {
                 CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename.getName());
                 cu.file = filename;
-                cu.accept(new Grok());
+                cu.accept(new Grok(log));
 
                 char[] chars = readSource.toString().toCharArray();
                 LineMap map = Position.makeLineMap(chars, chars.length, false);
