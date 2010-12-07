@@ -36,7 +36,8 @@ import ceylon.lang.modules.Import;
 import ceylon.lang.modules.Module;
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
-import ceylon.modules.jboss.repository.RepositoryExtension;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+import ceylon.modules.spi.repository.Repository;
 
 /**
  * Ceyon JBoss Module loader.
@@ -46,11 +47,11 @@ import ceylon.modules.jboss.repository.RepositoryExtension;
  */
 public class CeylonModuleLoader extends ModuleLoader
 {
-   private RepositoryExtension repository;
+   private Repository repository;
    private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
    private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<ModuleIdentifier, ModuleIdentifier, Boolean>();
 
-   public CeylonModuleLoader(RepositoryExtension repository)
+   public CeylonModuleLoader(Repository repository)
    {
       if (repository == null)
          throw new IllegalArgumentException("Null repository adapter");
@@ -148,15 +149,16 @@ public class CeylonModuleLoader extends ModuleLoader
          if (module == null)
             throw new ModuleLoadException("No module descriptor in module: " + moduleFile);
 
+         PathFilter exportFilter = new PathFilterWrapper(module.getExports());
+         PathFilter importFilter = new PathFilterWrapper(module.getImports());
+
          final List<DependencySpec> deps = new ArrayList<DependencySpec>();
          ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
-         ResourceLoader resourceLoader = repository.createResourceLoader(name, version, moduleFile);
+         ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile, exportFilter);
          builder.addResourceRoot(resourceLoader);
 
          Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
 
-         PathFilter exportFilter = new PathFilterWrapper(module.getExports());
-         PathFilter importFilter = new PathFilterWrapper(module.getImports());
          DependencySpec lds = DependencySpec.createLocalDependencySpec(importFilter, exportFilter);
          builder.addDependency(lds); // local resources
          deps.add(lds);

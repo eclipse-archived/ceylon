@@ -20,32 +20,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.jboss.repository;
+package ceylon.modules.mc.runtime;
 
-import java.io.File;
-
-import org.jboss.modules.ResourceLoader;
-
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.modules.spi.repository.Repository;
+import org.jboss.classloader.spi.ClassNotFoundEvent;
+import org.jboss.classloader.spi.ClassNotFoundHandler;
+import org.jboss.vfs.VirtualFile;
 
 /**
- * Repository extension.
+ * Sources class not found handler
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface RepositoryExtension extends Repository
+public class SourcesClassNotFoundHandler implements ClassNotFoundHandler
 {
-   /**
-    * Create resource loader.
-    * Null if no module or module descriptior is found.
-    *
-    * @param name the module name, must not be null
-    * @param version the module version, can be null
-    * @param file the module file
-    *
-    * @return new resource loader instance or null if not found
-    */
-   ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file);
+   private VirtualFile root;
+   
+   public boolean classNotFound(ClassNotFoundEvent event)
+   {
+      return false;
+   }
 }

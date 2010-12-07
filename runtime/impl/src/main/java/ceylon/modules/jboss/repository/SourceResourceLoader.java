@@ -48,7 +48,7 @@ import ceylon.modules.api.compiler.CompilerAdapterFactory;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SourceResourceLoader implements ResourceLoader
+class SourceResourceLoader implements ResourceLoader
 {
    private File sourcesRoot;
    private File classesRoot;
@@ -56,7 +56,7 @@ public class SourceResourceLoader implements ResourceLoader
    private PathFilter exportFilter;
    private Manifest manifest;
 
-   public SourceResourceLoader(File sourcesRoot, File classesRoot, String rootName, PathFilter exportFilter)
+   SourceResourceLoader(File sourcesRoot, File classesRoot, String rootName, PathFilter exportFilter)
    {
       if (sourcesRoot == null)
          throw new IllegalArgumentException("Null sources root");

@@ -24,9 +24,8 @@ package ceylon.modules.mc.runtime;
 
 import java.util.Map;
 
-import org.jboss.classloader.spi.ClassLoaderPolicy;
 import org.jboss.classloader.spi.ClassLoaderSystem;
-import org.jboss.classloader.spi.ParentPolicy;
+import org.jboss.classloading.spi.dependency.policy.ClassLoaderPolicyModule;
 
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
@@ -49,26 +48,40 @@ public abstract class AbstractMicrocontainerRuntime extends AbstractRuntime
    protected abstract ClassLoaderSystem createClassLoaderSystem();
 
    /**
-    * Create parent policy.
-    *
-    * @return the parent policy
-    */
-   protected abstract ParentPolicy createParentPolicy();
-
-   /**
-    * Create classloader policy.
+    * Create classloader policy module.
     *
     * @param name the module name
     * @param version the module version
     * @param args the runtime args
     * @return the classloader policy
+    * @throws Exception for any error
     */
-   protected abstract ClassLoaderPolicy createClassLoaderPolicy(ModuleName name, ModuleVersion version, Map<String, String> args);
+   protected abstract ClassLoaderPolicyModule createClassLoaderPolicyModule(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception;
 
    public ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception
    {
-      ParentPolicy parentPolicy = createParentPolicy();
-      ClassLoaderPolicy policy = createClassLoaderPolicy(name, version, args);
-      return system.registerClassLoaderPolicy(ClassLoaderSystem.DEFAULT_DOMAIN_NAME, parentPolicy, policy);
+      ClassLoaderPolicyModule policyModule = createClassLoaderPolicyModule(name, version, args);
+      return registerModule(policyModule);
+   }
+
+   /**
+    * Register module.
+    *
+    * @param policyModule the module
+    * @return module's classloader
+    */
+   protected ClassLoader registerModule(ClassLoaderPolicyModule policyModule)
+   {
+      return policyModule.registerClassLoaderPolicy(system);
+   }
+
+   /**
+    * Get classloader system.
+    *
+    * @return the classloader system
+    */
+   protected ClassLoaderSystem getSystem()
+   {
+      return system;
    }
 }

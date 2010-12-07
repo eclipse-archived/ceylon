@@ -20,35 +20,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.jboss.repository;
+package ceylon.modules.mc.runtime;
 
-import java.io.File;
+import org.jboss.classloader.plugins.ClassLoaderUtils;
+import org.jboss.classloader.spi.filter.ClassFilter;
 
-import org.jboss.modules.ResourceLoader;
-
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.modules.api.repository.CombinedRepository;
-import ceylon.modules.spi.repository.Repository;
+import ceylon.lang.modules.PathFilter;
 
 /**
- * Combined repository extension.
+ * ClassFilter wrapper based on PathFilter.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class CombinedRepositoryExtension extends CombinedRepository implements RepositoryExtension
+class ClassFilterWrapper implements ClassFilter
 {
-   public CombinedRepositoryExtension(Repository... repositories)
+   private PathFilter filter;
+
+   ClassFilterWrapper(PathFilter filter)
    {
-      super(repositories);
+      this.filter = filter;
    }
 
-   public ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file)
+   public boolean matchesClassName(String className)
    {
-      RepositoryExtension repository = (RepositoryExtension) current();
-      if (repository == null)
-         return null;
+      return matchesResourcePath(ClassLoaderUtils.classNameToPath(className));
+   }
 
-      return repository.createResourceLoader(name, version, file);
+   public boolean matchesResourcePath(String resourcePath)
+   {
+      return filter.accept(resourcePath);
+   }
+
+   public boolean matchesPackageName(String packageName)
+   {
+      return matchesResourcePath(ClassLoaderUtils.packageToPath(packageName));
    }
 }

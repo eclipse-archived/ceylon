@@ -65,6 +65,8 @@ public class SourceRepository extends AbstractRepository
       if (classesRoot.exists() == false)
          if (classesRoot.mkdirs() == false)
             throw new IllegalArgumentException("Cannot create classes dir: " + classesRoot);
+
+      args.put(Constants.CLASSES.toString(), classesRoot.toString());
    }
 
    /**
@@ -100,12 +102,7 @@ public class SourceRepository extends AbstractRepository
       return AbstractRuntime.loadModule(cl, moduleClassName);
    }
 
-   protected File getSourcesRoot()
-   {
-      return sourcesRoot;
-   }
-
-   protected File getClassesRoot()
+   public File getCompileDirectory()
    {
       return classesRoot;
    }

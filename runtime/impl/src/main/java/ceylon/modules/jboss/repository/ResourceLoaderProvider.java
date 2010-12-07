@@ -23,44 +23,48 @@
 package ceylon.modules.jboss.repository;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.jar.JarFile;
 
 import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.PathFilters;
+import org.jboss.modules.PathFilter;
 import org.jboss.modules.ResourceLoader;
 
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.modules.api.repository.LocalRepository;
+import ceylon.modules.spi.repository.Repository;
 
 /**
- * Local repository.
+ * Provide proper resource loader.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class LocalRepositoryExtension extends LocalRepository implements RepositoryExtension
+public class ResourceLoaderProvider
 {
-   protected LocalRepositoryExtension()
+   /**
+    * Get resource loader.
+    *
+    * @param moduleIdentifier the module identifier
+    * @param repository the repository
+    * @param moduleFile the module file
+    * @param filter the filter
+    * @return new resource loader
+    * @throws IOException for any I/O error
+    */
+   public static ResourceLoader getResourceLoader(
+         ModuleIdentifier moduleIdentifier,
+         Repository repository,
+         File moduleFile,
+         PathFilter filter) throws IOException
    {
-      super();
-   }
-
-   public LocalRepositoryExtension(String path)
-   {
-      super(path);
-   }
-
-   public ResourceLoader createResourceLoader(ModuleName name, ModuleVersion version, File file)
-   {
-      ModuleIdentifier moduleIdentifier = ModuleIdentifier.create(name.getName(), version.toString());
-      try
+      File classesRoot = repository.getCompileDirectory();
+      if (classesRoot != null)
       {
-         String rootName = moduleIdentifier + ".car"; // TODO -- ok?
-         return new CarFileResourceLoader(new JarFile(file), rootName, PathFilters.getDefaultExportFilter());
+         return new SourceResourceLoader(moduleFile, classesRoot, "", filter);
       }
-      catch (Exception e)
+      else
       {
-         throw new RuntimeException(e);
+         JarFile jarFile = new JarFile(moduleFile);
+         String rootName = moduleIdentifier + ".car"; // TODO -- ok?         
+         return new CarFileResourceLoader(jarFile, rootName, filter);
       }
    }
 }

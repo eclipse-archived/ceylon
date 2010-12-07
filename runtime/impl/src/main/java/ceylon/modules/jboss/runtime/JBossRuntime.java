@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.jboss.modules.ModuleLoader;
 
-import ceylon.modules.jboss.repository.RepositoryExtension;
+import ceylon.modules.spi.repository.Repository;
 
 /**
  * Default Ceylon Modules runtime.
@@ -37,7 +37,7 @@ public class JBossRuntime extends AbstractJBossRuntime
 {
    protected ModuleLoader createModuleLoader(Map<String, String> args)
    {
-      RepositoryExtension repository = createRepository(args);
+      Repository repository = createRepository(args);
       return new CeylonModuleLoader(repository);
    }
 }

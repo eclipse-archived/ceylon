@@ -46,6 +46,11 @@ public abstract class AbstractRepository implements Repository
    {
    }
 
+   public File getCompileDirectory()
+   {
+      return null;
+   }
+
    /**
     * Get system property.
     *

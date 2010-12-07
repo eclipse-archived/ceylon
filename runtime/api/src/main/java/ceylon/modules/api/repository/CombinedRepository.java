@@ -104,4 +104,13 @@ public class CombinedRepository implements Repository
 
       return repository.readModule(name, moduleFile);      
    }
+
+   public File getCompileDirectory()
+   {
+      Repository repository = current();
+      if (repository == null)
+         return null;
+
+      return repository.getCompileDirectory();      
+   }
 }

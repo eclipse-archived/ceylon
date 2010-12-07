@@ -58,4 +58,9 @@ public class RemoteRepository implements Repository
    {
       return null;  // TODO
    }
+
+   public File getCompileDirectory()
+   {
+      return null;  // TODO
+   }
 }

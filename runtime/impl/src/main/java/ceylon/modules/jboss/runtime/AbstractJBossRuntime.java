@@ -30,9 +30,9 @@ import org.jboss.modules.ModuleLoader;
 
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
+import ceylon.modules.api.repository.RepositoryFactory;
 import ceylon.modules.api.runtime.AbstractRuntime;
-import ceylon.modules.jboss.repository.RepositoryExtension;
-import ceylon.modules.jboss.repository.RepositoryExtensionFactory;
+import ceylon.modules.spi.repository.Repository;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -55,9 +55,9 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime
     * @param args the args
     * @return repository extension
     */
-   protected RepositoryExtension createRepository(Map<String, String> args)
+   protected Repository createRepository(Map<String, String> args)
    {
-      return RepositoryExtensionFactory.createRepository(args);
+      return RepositoryFactory.createRepository(args);
    }
 
    /**

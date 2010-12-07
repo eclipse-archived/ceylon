@@ -65,4 +65,11 @@ public interface Repository
     * @throws Exception for any error
     */
    Module readModule(ModuleName name, File moduleFile) throws Exception;
+
+   /**
+    * Get compile directory.
+    *
+    * @return classes dir if this is a source repository, null otherwise
+    */
+   File getCompileDirectory();
 }
