@@ -20,23 +20,55 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.osgi.runtime;
+package ceylon.modules.mc.runtime;
 
 import java.util.Map;
+
+import org.jboss.classloader.spi.ClassLoaderPolicy;
+import org.jboss.classloader.spi.ClassLoaderSystem;
+import org.jboss.classloader.spi.ParentPolicy;
 
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
 import ceylon.modules.api.runtime.AbstractRuntime;
 
 /**
- * OSGi based modular runtime.
+ * Abstarct Microcontainer based runtime.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class OSGiRuntime extends AbstractRuntime
+public abstract class AbstractMicrocontainerRuntime extends AbstractRuntime
 {
+   private ClassLoaderSystem system = createClassLoaderSystem();
+
+   /**
+    * Create classloader system.
+    *
+    * @return the classloader system.
+    */
+   protected abstract ClassLoaderSystem createClassLoaderSystem();
+
+   /**
+    * Create parent policy.
+    *
+    * @return the parent policy
+    */
+   protected abstract ParentPolicy createParentPolicy();
+
+   /**
+    * Create classloader policy.
+    *
+    * @param name the module name
+    * @param version the module version
+    * @param args the runtime args
+    * @return the classloader policy
+    */
+   protected abstract ClassLoaderPolicy createClassLoaderPolicy(ModuleName name, ModuleVersion version, Map<String, String> args);
+
    public ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception
    {
-      return null; // TODO
+      ParentPolicy parentPolicy = createParentPolicy();
+      ClassLoaderPolicy policy = createClassLoaderPolicy(name, version, args);
+      return system.registerClassLoaderPolicy(ClassLoaderSystem.DEFAULT_DOMAIN_NAME, parentPolicy, policy);
    }
 }

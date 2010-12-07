@@ -36,6 +36,7 @@
       <version.org.jboss.vfs>3.0.0.CR5</version.org.jboss.vfs>
       <version.org.jboss.netty>3.2.2.Final</version.org.jboss.netty>
       <version.org.jboss.common.core>2.2.17.GA</version.org.jboss.common.core>
+      <version.org.jboss.cl>2.2.0.Alpha8</version.org.jboss.cl>
       <version.osgi>4.2.0</version.osgi>
       <version.apache.felix>3.0.6</version.apache.felix>
       <version.org.jboss.shrinkwrap>1.0.0-alpha-11</version.org.jboss.shrinkwrap>
@@ -48,6 +49,7 @@
     <module>spi</module>
     <module>api</module>
     <module>impl</module>
+    <module>mc</module>
     <module>osgi</module>
     <module>testsuite</module>
   </modules>
@@ -176,6 +178,16 @@
          <artifactId>modules-impl</artifactId>
          <version>${project.version}</version>
       </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-mc</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-osgi</artifactId>
+         <version>${project.version}</version>
+      </dependency>
       
       <dependency>
          <groupId>org.jboss.logging</groupId>
@@ -208,6 +220,26 @@
         <version>${version.jboss.common.core}</version>
         <scope>provided</scope>
      </dependency -->
+
+      <dependency>
+        <groupId>org.jboss.cl</groupId>
+        <artifactId>jboss-classloading-vfs</artifactId>
+        <version>${version.org.jboss.cl}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-classloading-spi</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-spi</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-log4j</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
 
       <dependency>
          <groupId>org.osgi</groupId>

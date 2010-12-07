@@ -20,25 +20,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.jboss.repository;
+package ceylon.modules.api.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ceylon.modules.api.repository.RepositoryConstants;
 import ceylon.modules.spi.Constants;
 import ceylon.modules.spi.repository.Repository;
 
 /**
- * Repository factory.
- * Simple util to create repository instance from -rep value.
+ * Default repository factory.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RepositoryExtensionFactory
+public class RepositoryFactory
 {
-   private RepositoryExtensionFactory()
+   private RepositoryFactory()
    {
    }
 
@@ -48,7 +46,7 @@ public class RepositoryExtensionFactory
     * @param args the initial arguments
     * @return new repository instance
     */
-   public static RepositoryExtension createRepository(Map<String, String> args)
+   public static Repository createRepository(Map<String, String> args)
    {
       List<Repository> repositories = new ArrayList<Repository>();
 
@@ -56,25 +54,25 @@ public class RepositoryExtensionFactory
       if (rep != null)
       {
          if (rep.startsWith(RepositoryConstants.HTTP))
-            repositories.add(new RemoteRepositoryExtension(rep, args));
+            repositories.add(new RemoteRepository(rep, args));
          else if (rep.startsWith(RepositoryConstants.MAVEN))
-            repositories.add(new MavenRepositoryExtension(rep));
+            repositories.add(new MavenRepository(rep));
          else
-            repositories.add(new LocalRepositoryExtension(rep));
+            repositories.add(new LocalRepository(rep));
       }
 
       String src = args.get(Constants.SOURCE.toString());
       if (src != null)
       {
-         repositories.add(new SourceRepositoryExtension(src, args));
+         repositories.add(new SourceRepository(src, args));
       }
 
       if (args.containsKey(Constants.DEFAULT.toString()) == false)
-         repositories.add(new DefaultRepositoryExtension());
+         repositories.add(new DefaultRepository());
 
       if (repositories.isEmpty())
          throw new IllegalArgumentException("No repository defined: " + args);
 
-      return new CombinedRepositoryExtension(repositories.toArray(new Repository[repositories.size()]));
-   }
+      return new CombinedRepository(repositories.toArray(new Repository[repositories.size()]));
+   }   
 }

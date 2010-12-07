@@ -28,6 +28,7 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
+import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
 import ceylon.modules.api.runtime.AbstractRuntime;
 import ceylon.modules.jboss.repository.RepositoryExtension;
@@ -41,7 +42,7 @@ import ceylon.modules.jboss.repository.RepositoryExtensionFactory;
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime
 {
-   public ClassLoader createClassLoader(String name, ModuleVersion version, Map<String, String> args) throws Exception
+   public ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception
    {
       ModuleLoader moduleLoader = createModuleLoader(args);
       ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);

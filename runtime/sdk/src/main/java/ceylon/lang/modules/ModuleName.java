@@ -40,4 +40,9 @@ public class ModuleName
    {
       return name;
    }
+
+   public String toString()
+   {
+      return getName();
+   }
 }
