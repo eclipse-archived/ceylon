@@ -15,7 +15,7 @@ class TestHarness:
         self.runtime_builddir = os.path.join(builddir, "classes")
         self.compiler_jarfile = os.path.join(builddir, "lib/compiler.jar")
         self.testdir = os.path.join(self.basedir, "test")
-        self.verbosity = 2
+        self.verbosity = 0
 
     """The classpath required to run the Ceylon compiler
     """
