@@ -18,7 +18,7 @@ implements JavaFileObject
         this.f = f;
     }
 
-    public CeylonFileObject(JavaFileObject f, String sourcePath) {
+    public CeylonFileObject(JavaFileObject f, String[] sourcePath) {
         super(f);
         this.f = f;
     }

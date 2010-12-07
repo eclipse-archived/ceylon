@@ -279,21 +279,22 @@ public class Gen {
             }
         }
 
-        String prefix = fileManager.getSourcePath();
+        String[] prefixes = fileManager.getSourcePath();
         JCExpression pkg = null;
 
         // Figure out the package name by stripping the "-src" prefix and extracting
         // the package part of the fullname.
-        if (prefix != null && t.file.toString().startsWith(prefix)) {
-            String fullname = t.file.toString().substring(prefix.length());
-            assert fullname.endsWith(".ceylon");
-            fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
-            fullname = fullname.replace(File.separator, ".");
-            String packageName = Convert.packagePart(fullname);
-            if (! packageName.equals(""))
-                pkg = getPackage(packageName);
+        for (String prefix: prefixes) {
+            if (prefix != null && t.file.toString().startsWith(prefix)) {
+                String fullname = t.file.toString().substring(prefix.length());
+                assert fullname.endsWith(".ceylon");
+                fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
+                fullname = fullname.replace(File.separator, ".");
+                String packageName = Convert.packagePart(fullname);
+                if (! packageName.equals(""))
+                    pkg = getPackage(packageName);
+            }
         }
-
         JCCompilationUnit topLev =
             at(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
                     pkg, defs.toList());
@@ -599,7 +600,7 @@ public class Gen {
             type = mutableType(type);
         }
 
-        JCVariableDecl v = at(param).VarDef(make.Modifiers(0), name,
+        JCVariableDecl v = at(param).VarDef(make.Modifiers(FINAL), name,
                 type, null);
 
         return v;

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
@@ -44,13 +45,18 @@ import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 public class CeyloncFileManager extends JavacFileManager
     implements StandardJavaFileManager
 {
-    protected String sourcePath;
+    protected String[] sourcePath;
 
     public void setSourcePath(String sourcePath) {
-        this.sourcePath = sourcePath;
+        StringTokenizer st = new StringTokenizer(sourcePath, ":");
+        int size = st.countTokens();
+        this.sourcePath = new String[size];
+        for (int i = 0; i < size; i++) {
+            this.sourcePath[i] = st.nextToken();
+        }
     }
 
-    public String getSourcePath() {
+    public String[] getSourcePath() {
         return sourcePath;
     }
 
