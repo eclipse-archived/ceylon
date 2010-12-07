@@ -148,11 +148,12 @@ class TestCase:
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
             return
-        cmdline = open(os.path.join(dir, "cmdline")).read().strip().split() #XXX
+        cmdline = os.path.join(self.dir, "cmdline")
+        cmdline = open(cmdline, "r").read().strip().split() #XXX
         sp = harness.popen(
             "java",
             "-ea",
-            "-cp", ":".join((harness.runtime_builddir, dir)),
+            "-cp", ":".join((harness.runtime_builddir, self.dir)),
             "ceylon.language.Launcher", *cmdline)
         out, err = sp.communicate()
         if sp.returncode != 0:
