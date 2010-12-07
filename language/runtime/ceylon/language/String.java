@@ -23,4 +23,23 @@ public final class String extends Object
     public ceylon.language.String lowercase() {
         return instance(value.toLowerCase());
     }
+
+    public ceylon.language.Boolean operatorEqual(String s) {
+        return Boolean.instance(value.equals(s.value));
+    }
+
+    public static ceylon.language.String instance(java.lang.String... strings) {
+        StringBuffer buf = new StringBuffer();
+        for (java.lang.String s: strings)
+            buf.append(s);
+        return new ceylon.language.String(buf.toString());
+    }
+
+    public static ceylon.language.String instance(String... strings) {
+        StringBuffer buf = new StringBuffer();
+        for (String s: strings)
+            buf.append(s.value);
+        return new ceylon.language.String(buf.toString());
+    }
+
 }

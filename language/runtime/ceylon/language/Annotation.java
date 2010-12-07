@@ -1,4 +1,4 @@
 package ceylon.language;
-interface Annotation
+public interface Annotation
 {
 }
