@@ -48,7 +48,7 @@ public class CeyloncFileManager extends JavacFileManager
     protected String[] sourcePath;
 
     public void setSourcePath(String sourcePath) {
-        StringTokenizer st = new StringTokenizer(sourcePath, ":");
+        StringTokenizer st = new StringTokenizer(sourcePath, File.pathSeparator);
         int size = st.countTokens();
         this.sourcePath = new String[size];
         for (int i = 0; i < size; i++) {
