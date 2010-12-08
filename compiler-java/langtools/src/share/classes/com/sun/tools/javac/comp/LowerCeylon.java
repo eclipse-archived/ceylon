@@ -161,7 +161,7 @@ public class LowerCeylon extends TreeTranslator {
         tree.args = translate(tree.args);
 
         Symbol meth = TreeInfo.symbol(tree.meth);
-        List<Type> argtypes = meth.type.getParameterTypes();
+        List<Type> argtypes = tree.meth.type.getParameterTypes();
         if (allowEnums &&
             meth.name==names.init &&
             meth.owner == syms.enumSym)
@@ -270,6 +270,7 @@ public class LowerCeylon extends TreeTranslator {
             if (l.length() == 1) {
                 Type t1 = l.last();
                 if (t1.tag == CLASS) {
+                    tree = ceylonExtensionIfNeeded(tree, t1);
                     Scope scope = ((ClassSymbol) dstType.tsym).members();
                     Scope.Entry entry = scope.lookup(names.fromString("of"));
                     Symbol sym = entry.sym;

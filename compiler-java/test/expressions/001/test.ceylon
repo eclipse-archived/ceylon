@@ -14,7 +14,7 @@ void test(Process p) {
         p.writeLine("pass");
     }    
 
-    mutable Natural c := 0;
+    mutable Integer c := 0;
 
     while (c != 2) {
         c := c + 1;
