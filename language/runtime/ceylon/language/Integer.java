@@ -100,4 +100,9 @@ public final class Integer
     public ceylon.language.Integer succ() {
         return Integer.instance(value + 1);
     }
+
+    // Probably not spec-conformant
+    public ceylon.language.Integer complement() {
+        return instance(~value);
+    }
 }
