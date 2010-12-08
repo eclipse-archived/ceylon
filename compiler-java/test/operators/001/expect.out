@@ -1,5 +1,14 @@
+prefix increment
 1
 2
 2
+postfix increment
 3
 2
+prefix decrement
+57
+56
+56
+postfix decrement
+55
+56
