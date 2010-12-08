@@ -23,4 +23,14 @@ void test(Process process) {
     Natural f = d--;
     process.writeLine(d);
     process.writeLine(f);
+
+    process.writeLine("exponentiation");
+    Integer g = f ** a;
+    process.writeLine(g);
+
+    process.writeLine("negation");
+    Integer h = -g;
+    process.writeLine(h);
+    Integer i = -c;
+    process.writeLine(i);
 }

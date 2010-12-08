@@ -12,3 +12,8 @@ prefix decrement
 postfix decrement
 55
 56
+exponentiation
+175616
+negation
+-175616
+-2
