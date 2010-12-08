@@ -38,11 +38,11 @@ import org.jboss.classloading.spi.metadata.ClassLoadingMetaData;
 import org.jboss.classloading.spi.metadata.ClassLoadingMetaDataFactory;
 import org.jboss.classloading.spi.metadata.Requirement;
 import org.jboss.classloading.spi.metadata.RequirementsMetaData;
-import org.jboss.classloading.spi.version.Version;
 import org.jboss.classloading.spi.version.VersionComparatorRegistry;
 import org.jboss.classloading.spi.version.VersionRange;
 import org.jboss.dependency.plugins.AbstractController;
 import org.jboss.dependency.spi.Controller;
+import org.jboss.dependency.spi.ControllerState;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VirtualFile;
 import org.jboss.vfs.util.automount.Automounter;
@@ -97,6 +97,8 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
 
       Module module = repository.readModule(name, moduleFile);
       ClassLoadingMetaData clmd = new ClassLoadingMetaData();
+      clmd.setName(name.getName());
+      clmd.setVersion(version);
       Import[] imports = module.getDependencies();
       if (imports != null && imports.length > 0)
       {
@@ -147,20 +149,28 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
          Automounter.mount(this, root);
       }
 
+      ClassLoaderPolicyModule clpm;
       String contextName = name + ":" + version;
       ModulesControllerContext mcc = new ModulesControllerContext(contextName);
       try
       {
          controller.install(mcc);
+
+         VFSClassLoaderPolicyModule vclpm = new VFSClassLoaderPolicyModule(clmd, mcc, root);
+         vclpm.setClassNotFoundHandler(sources);
+         classLoading.addModule(vclpm);
+
+         controller.change(mcc, ControllerState.INSTALLED);
+
+         clpm = vclpm;
       }
       catch (Throwable t)
       {
-         throw new Exception(t);
+         throw new Exception("Cannot load module.", t);
       }
 
-      VFSClassLoaderPolicyModule clpm = new VFSClassLoaderPolicyModule(clmd, mcc, root);
-      clpm.setClassNotFoundHandler(sources);
-      classLoading.addModule(clpm);
+      if (ControllerState.INSTALLED.equals(mcc.getState()) == false)
+         throw new IllegalArgumentException("Missing dependency? - " + mcc.getDependencyInfo().getUnresolvedDependencies(null));
 
       return clpm;
    }
@@ -171,8 +181,7 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       {
          ModuleRequirement requirement = (ModuleRequirement) context.getRequirement();
          ModuleName name = new ModuleName(requirement.getName());
-         Version v = requirement.getFromVersion();
-         ModuleVersion version = new ModuleVersion(v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
+         ModuleVersion version = (ModuleVersion) requirement.getFrom();
          return registerModule(createModule(name, version)) != null;
       }
       catch (Exception e)

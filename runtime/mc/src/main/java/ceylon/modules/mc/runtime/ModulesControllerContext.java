@@ -23,6 +23,7 @@
 package ceylon.modules.mc.runtime;
 
 import org.jboss.dependency.plugins.AbstractControllerContext;
+import org.jboss.dependency.spi.ControllerMode;
 
 /**
  * Modules controller context.
@@ -34,5 +35,6 @@ class ModulesControllerContext extends AbstractControllerContext
    ModulesControllerContext(Object name)
    {
       super(name, ModulesControllerContextActions.INSTANCE);
+      setMode(ControllerMode.MANUAL);
    }
 }
