@@ -20,29 +20,11 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.mc.runtime;
-
-import org.jboss.classloader.plugins.filter.CombiningClassFilter;
-import org.jboss.classloader.spi.ParentPolicy;
-import org.jboss.classloader.spi.filter.ClassFilter;
-import org.jboss.classloader.spi.filter.ClassFilterUtils;
-import org.jboss.classloading.spi.metadata.ParentPolicyMetaData;
+package si.alesj.ceylon.test;
 
 /**
- * Ceylon parent policy.
- *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class CustomParentPolicyMetaData extends ParentPolicyMetaData
+public class Touch
 {
-   static CustomParentPolicyMetaData INSTANCE = new CustomParentPolicyMetaData();
-   
-   public ParentPolicy createParentPolicy()
-   {
-      ClassFilter[] filter = new ClassFilter[2];
-      filter[0] = ClassFilterUtils.JAVA_ONLY;
-      filter[1] = ClassFilterUtils.createRecursivePackageClassFilter("ceylon");
-      ClassFilter beforeFilter = new CombiningClassFilter(false, filter);
-      return new ParentPolicy(beforeFilter, ClassFilterUtils.NOTHING);
-   }
 }

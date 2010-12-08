@@ -27,6 +27,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 import org.junit.Test;
+import si.alesj.ceylon.test.Touch;
 
 /**
  * On demand tests.
@@ -46,6 +47,7 @@ public class OnDemandTestCase extends ModulesTest
 
       JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "si.alesj.ceylon-1.0.0.GA.car");
       lib2.addClass(si.alesj.ceylon.Module.class);
+      lib2.addClass(Touch.class);
       lib2.addResource("si/alesj/ceylon/test/config.xml");
 
       testArchive(module, lib1, lib2);

@@ -49,6 +49,7 @@ public class Module
             {
                throw new RuntimeException(e);
             }
+/*
             try
             {
                cl.loadClass("org.jboss.filtered.api.SomeAPI");
@@ -57,6 +58,7 @@ public class Module
             catch (ClassNotFoundException ignored)
             {
             }
+*/
             try
             {
                cl.loadClass("org.jboss.filtered.impl.SomeImpl");

@@ -45,6 +45,16 @@ public class Module
             
             // test resource on_demand
             ClassLoader cl = Module.this.getClass().getClassLoader();
+
+            try
+            {
+               cl.loadClass("si.alesj.ceylon.test.Touch"); // MC currently only works on classes
+            }
+            catch (ClassNotFoundException e)
+            {
+               throw new RuntimeException(e);
+            }
+
             String resource = "si/alesj/ceylon/test/config.xml";
             Object url = cl.getResource(resource);
             if (url == null)

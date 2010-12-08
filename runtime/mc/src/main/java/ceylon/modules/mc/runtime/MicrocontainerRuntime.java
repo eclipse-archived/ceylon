@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.Map;
 
 import org.jboss.classloader.plugins.filter.NegatingClassFilter;
+import org.jboss.classloader.spi.ClassLoaderDomain;
 import org.jboss.classloader.spi.ClassLoaderSystem;
 import org.jboss.classloader.spi.ClassNotFoundEvent;
 import org.jboss.classloader.spi.ClassNotFoundHandler;
@@ -36,6 +37,7 @@ import org.jboss.classloading.spi.dependency.Resolver;
 import org.jboss.classloading.spi.dependency.policy.ClassLoaderPolicyModule;
 import org.jboss.classloading.spi.metadata.ClassLoadingMetaData;
 import org.jboss.classloading.spi.metadata.ClassLoadingMetaDataFactory;
+import org.jboss.classloading.spi.metadata.ExportAll;
 import org.jboss.classloading.spi.metadata.Requirement;
 import org.jboss.classloading.spi.metadata.RequirementsMetaData;
 import org.jboss.classloading.spi.version.VersionComparatorRegistry;
@@ -62,6 +64,8 @@ import ceylon.modules.spi.repository.Repository;
  */
 public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime implements Resolver, ClassNotFoundHandler
 {
+   public static final String CEYLON_DOMAIN = "CeylonDomain";
+
    private Controller controller;
    private ClassLoading classLoading;
    private Node<Import> root;
@@ -84,7 +88,14 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
    {
       repository = RepositoryFactory.createRepository(args);
       classLoading.addResolver(this);
-      getSystem().addClassNotFoundHandler(this);
+
+      ClassLoaderDomain defaultDOmain = getSystem().getDefaultDomain();
+      ClassLoaderDomain domain = getSystem().getDomain(CEYLON_DOMAIN);
+      if (domain == null)
+      {
+         domain = getSystem().createAndRegisterDomain(CEYLON_DOMAIN, CustomParentPolicyMetaData.INSTANCE.createParentPolicy(), defaultDOmain);
+         domain.addClassNotFoundHandler(this);
+      }
 
       return createModule(name, version);
    }
@@ -99,6 +110,8 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       ClassLoadingMetaData clmd = new ClassLoadingMetaData();
       clmd.setName(name.getName());
       clmd.setVersion(version);
+      clmd.setDomain(CEYLON_DOMAIN);
+      clmd.setExportAll(ExportAll.NON_EMPTY);
       Import[] imports = module.getDependencies();
       if (imports != null && imports.length > 0)
       {
@@ -121,14 +134,12 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
                }
                current.setValue(i);
             }
-            else
-            {
-               VersionRange range = new VersionRange(i.getVersion(), true, i.getVersion(), true);
-               boolean reExport = i.getExports() != PathFilters.rejectAll();
-               // TODO -- more exact filtering?
-               Requirement requirement = factory.createRequireModule(path, range, i.isOptional(), reExport, false);
-               requirements.addRequirement(requirement);
-            }
+
+            VersionRange range = new VersionRange(i.getVersion(), true, i.getVersion(), true);
+            boolean reExport = i.getExports() != PathFilters.rejectAll();
+            // TODO -- more exact filtering?
+            Requirement requirement = factory.createRequireModule(path, range, i.isOptional(), reExport, i.isOnDemand());
+            requirements.addRequirement(requirement);
          }
       }
       clmd.setIncluded(new ClassFilterWrapper(module.getImports()));
@@ -180,6 +191,9 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       try
       {
          ModuleRequirement requirement = (ModuleRequirement) context.getRequirement();
+         if (requirement.isDynamic())
+            return false; // let class not found handler handle it
+
          ModuleName name = new ModuleName(requirement.getName());
          ModuleVersion version = (ModuleVersion) requirement.getFrom();
          return registerModule(createModule(name, version)) != null;
