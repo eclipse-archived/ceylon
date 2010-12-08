@@ -22,6 +22,8 @@
 
 package net.something.xyz;
 
+import java.lang.reflect.Method;
+
 import ceylon.lang.Process;
 import ceylon.lang.modules.Import;
 import ceylon.lang.modules.ModuleName;
@@ -40,17 +42,21 @@ public class Module
       {
          public void run(Process process)
          {
-            // test class on_demand
-            org.jboss.acme.Module.run();
-            
             // test resource on_demand
             ClassLoader cl = Module.this.getClass().getClassLoader();
 
             try
             {
+               // test class on_demand
+               Object m = cl.loadClass("org.jboss.acme.Module").newInstance();
+               Class<?> clazz = m.getClass();
+               ClassLoader clz = clazz.getClassLoader();
+               Method run = clazz.getMethod("run");
+               run.invoke(m);
+
                cl.loadClass("si.alesj.ceylon.test.Touch"); // MC currently only works on classes
             }
-            catch (ClassNotFoundException e)
+            catch (Exception e)
             {
                throw new RuntimeException(e);
             }

@@ -20,61 +20,59 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.lang.modules;
+package ceylon.lang.modules.helpers;
+
+import ceylon.lang.modules.PathFilter;
 
 /**
- * Filter holder.
+ * A path filter which simply inverts the result of another path filter.
  *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-abstract class Filterable
+final class InvertingPathFilter implements PathFilter
 {
-   private PathFilter exports;
-   private PathFilter imports;
+   private final PathFilter delegate;
 
-   protected Filterable(PathFilter exports, PathFilter imports)
+   /**
+    * Construct a new instance.
+    *
+    * @param delegate the filter to delegate to
+    */
+   InvertingPathFilter(final PathFilter delegate)
    {
-      this.exports = exports;
-      this.imports = imports;
+      if (delegate == null)
+      {
+         throw new IllegalArgumentException("delegate is null");
+      }
+      this.delegate = delegate;
    }
 
    /**
-    * Get default exports.
-    *
-    * @return the default exports
+    * {@inheritDoc}
     */
-   protected abstract PathFilter getDefaultExports();
-
-   /**
-    * Get default imports.
-    *
-    * @return the default imports
-    */
-   protected abstract PathFilter getDefaultImports();
-
-   /**
-    * Get exports.
-    *
-    * @return the exports
-    */
-   public PathFilter getExports()
+   public boolean accept(final String path)
    {
-      if (exports == null)
-         exports = getDefaultExports();
-
-      return exports;
+      return !delegate.accept(path);
    }
 
-   /**
-    * Get imports.
-    *
-    * @return the imports
-    */
-   public PathFilter getImports()
+   public int hashCode()
    {
-      if (imports == null)
-         imports = getDefaultImports();
+      return 47 * delegate.hashCode();
+   }
 
-      return imports;
+   public boolean equals(final Object obj)
+   {
+      return obj instanceof InvertingPathFilter && equals((InvertingPathFilter) obj);
+   }
+
+   public boolean equals(final InvertingPathFilter obj)
+   {
+      return obj != null && obj.delegate.equals(delegate);
+   }
+
+   public String toString()
+   {
+      return "not " + delegate.toString();
    }
 }

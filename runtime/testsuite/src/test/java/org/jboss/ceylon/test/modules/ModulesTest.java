@@ -36,7 +36,7 @@ import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.util.file.Files;
 
 import ceylon.modules.Main;
-import ceylon.modules.jboss.runtime.JBossRuntime;
+import ceylon.modules.mc.runtime.MicrocontainerRuntime;
 import ceylon.modules.spi.Constants;
 import org.junit.Assert;
 
@@ -47,6 +47,8 @@ import org.junit.Assert;
  */
 public abstract class ModulesTest
 {
+   private Class<? extends ceylon.modules.spi.runtime.Runtime> runtimeClazz = MicrocontainerRuntime.class;
+   
    protected File createModuleFile(File tmpdir, Archive module) throws Exception
    {
       String fullName = module.getName();
@@ -94,7 +96,7 @@ public abstract class ModulesTest
          String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
          Map<Constants, String> args = new HashMap<Constants, String>();
-         args.put(Constants.EXECUTABLE, JBossRuntime.class.getName());
+         args.put(Constants.EXECUTABLE, runtimeClazz.getName());
          args.put(Constants.MODULE, name + "/" + version);
          args.put(Constants.REPOSITORY, tmpdir.toString());
 
@@ -115,7 +117,7 @@ public abstract class ModulesTest
    protected void src(String module, String src, Map<Constants, String> extra) throws Exception
    {
       Map<Constants, String> args = new HashMap<Constants, String>();
-      args.put(Constants.EXECUTABLE, JBossRuntime.class.getName());
+      args.put(Constants.EXECUTABLE, runtimeClazz.getName());
       args.put(Constants.MODULE, module);
       args.put(Constants.SOURCE, src);
       args.put(Constants.DEFAULT, "false");

@@ -22,11 +22,14 @@
 
 package ceylon.lang.modules.helpers;
 
+import java.util.Collection;
+
 import ceylon.lang.modules.PathFilter;
 
 /**
  * Helper PathFilter impls.
  *
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class PathFilters
@@ -49,5 +52,73 @@ public class PathFilters
    public static PathFilter rejectAll()
    {
       return BooleanPathFilter.FALSE;
+   }
+
+   /**
+    * Get a path filter which returns {@code true} if all of the given filters return {@code true}.
+    *
+    * @param filters the filters
+    * @return the "all" filter
+    */
+   public static PathFilter all(PathFilter... filters)
+   {
+      return new AggregatePathFilter(false, filters);
+   }
+
+   /**
+    * Get a path filter which returns {@code true} if all of the given filters return {@code true}.
+    *
+    * @param filters the filters
+    * @return the "all" filter
+    */
+   public static PathFilter all(Collection<PathFilter> filters)
+   {
+      return all(filters.toArray(new PathFilter[filters.size()]));
+   }
+
+   /**
+    * Get a path filter which returns {@code true} if any of the given filters return {@code true}.
+    *
+    * @param filters the filters
+    * @return the "any" filter
+    */
+   public static PathFilter any(PathFilter... filters)
+   {
+      return new AggregatePathFilter(true, filters);
+   }
+
+   /**
+    * Get a path filter which returns {@code true} if any of the given filters return {@code true}.
+    *
+    * @param filters the filters
+    * @return the "any" filter
+    */
+   public static PathFilter any(Collection<PathFilter> filters)
+   {
+      return any(filters.toArray(new PathFilter[filters.size()]));
+   }
+
+   /**
+    * Get a path filter which is {@code true} when the given filter is {@code false}, and vice-versa.
+    *
+    * @param filter the filter
+    * @return the inverting filter
+    */
+   public static PathFilter not(PathFilter filter)
+   {
+      return new InvertingPathFilter(filter);
+   }
+
+   /**
+    * Get a path filter which matches a glob.  The given glob is a path separated
+    * by "{@code /}" characters, which may include the special "{@code *}" and "{@code **}" segment strings
+    * which match any directory and any number of nested directories, respectively.
+    *
+    * @param glob the glob
+    * @return a filter which returns {@code true} if the glob matches
+    */
+   public static PathFilter match(String glob)
+   {
+      return new GlobPathFilter(glob);
    }
 }

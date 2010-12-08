@@ -181,7 +181,13 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       }
 
       if (ControllerState.INSTALLED.equals(mcc.getState()) == false)
-         throw new IllegalArgumentException("Missing dependency? - " + mcc.getDependencyInfo().getUnresolvedDependencies(null));
+      {
+         Throwable error = mcc.getError();
+         if (error != null)
+            throw new Exception(error);
+         else
+            throw new IllegalArgumentException("Missing dependency? - " + mcc.getDependencyInfo().getUnresolvedDependencies(null));
+      }
 
       return clpm;
    }
