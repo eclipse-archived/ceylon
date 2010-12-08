@@ -26,7 +26,7 @@ public final class Mutable<T> {
     @SuppressWarnings("unchecked")
         public static final <N,T extends Numeric<N>> T postDecrement(Mutable<T> op) {
         Numeric<N> n = op.t;
-        N m = n.succ();
+        N m = n.pred();
         op.t = (T)m;
         return (T)n;
     }
@@ -40,7 +40,7 @@ public final class Mutable<T> {
     @SuppressWarnings("unchecked")
         public static final <N,T extends Numeric<N>> T preDecrement(Mutable<T> op) {
         Numeric<N> n = op.t;
-        N m = n.succ();
+        N m = n.pred();
         op.t = (T)m;
         return (T)m;
     }
