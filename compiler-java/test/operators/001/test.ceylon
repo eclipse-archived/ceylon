@@ -33,4 +33,8 @@ void test(Process process) {
     process.writeLine(h);
     Integer i = -c;
     process.writeLine(i);
+
+    process.writeLine("slotwise complement");
+    Integer j = ~g;
+    process.writeLine(j);
 }
