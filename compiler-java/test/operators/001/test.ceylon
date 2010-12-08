@@ -37,4 +37,22 @@ void test(Process process) {
     process.writeLine("slotwise complement");
     Integer j = ~g;
     process.writeLine(j);
+
+    // TODO: format
+
+    process.writeLine("multiplication");
+    Integer k = j * i;
+    process.writeLine(k);
+    
+    process.writeLine("division");
+    Integer l = k / d;
+    process.writeLine(l);
+    
+    process.writeLine("remainder");
+    Integer m = k % d;
+    process.writeLine(m);
+    
+    process.writeLine("slotwise and");
+    Natural n = k.natural() & l.natural();
+    process.writeLine(n);
 }
