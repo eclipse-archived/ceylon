@@ -35,13 +35,13 @@ public final class Mutable<T> {
         Numeric<N> n = op.t;
         N m = n.succ();
         op.t = (T)m;
-        return (T)n;
+        return (T)m;
     }
     @SuppressWarnings("unchecked")
         public static final <N,T extends Numeric<N>> T preDecrement(Mutable<T> op) {
         Numeric<N> n = op.t;
         N m = n.succ();
         op.t = (T)m;
-        return (T)n;
+        return (T)m;
     }
 }
