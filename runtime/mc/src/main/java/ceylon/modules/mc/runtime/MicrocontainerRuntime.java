@@ -89,10 +89,10 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       repository = RepositoryFactory.createRepository(args);
       classLoading.addResolver(this);
 
-      ClassLoaderDomain defaultDOmain = getSystem().getDefaultDomain();
       ClassLoaderDomain domain = getSystem().getDomain(CEYLON_DOMAIN);
       if (domain == null)
       {
+         ClassLoaderDomain defaultDOmain = getSystem().getDefaultDomain();
          domain = getSystem().createAndRegisterDomain(CEYLON_DOMAIN, CustomParentPolicyMetaData.INSTANCE.createParentPolicy(), defaultDOmain);
          domain.addClassNotFoundHandler(this);
       }
