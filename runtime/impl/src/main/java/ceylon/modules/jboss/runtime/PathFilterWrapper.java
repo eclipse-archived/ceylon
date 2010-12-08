@@ -44,4 +44,9 @@ class PathFilterWrapper implements PathFilter
    {
       return filter.accept(path);
    }
+
+   public String toString()
+   {
+      return filter.toString();
+   }
 }

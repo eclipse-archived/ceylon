@@ -55,4 +55,9 @@ class ClassFilterWrapper implements ClassFilter
    {
       return matchesResourcePath(ClassLoaderUtils.packageToPath(packageName));
    }
+
+   public String toString()
+   {
+      return filter.toString();
+   }
 }

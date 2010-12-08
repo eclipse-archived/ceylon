@@ -32,7 +32,7 @@ public class Module
 {
    public ceylon.lang.modules.Module getModule()
    {
-      ModuleName name = new ModuleName("is.alesj.ceylon");
+      ModuleName name = new ModuleName("si.alesj.ceylon");
       ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
       return new ceylon.lang.modules.Module(name, version, null, null, null);
    }
