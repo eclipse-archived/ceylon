@@ -25,14 +25,10 @@ package ceylon.modules.mc.runtime;
 import java.io.File;
 import java.util.Map;
 
-import org.jboss.classloader.plugins.filter.CombiningClassFilter;
 import org.jboss.classloader.plugins.filter.NegatingClassFilter;
 import org.jboss.classloader.spi.ClassLoaderSystem;
 import org.jboss.classloader.spi.ClassNotFoundEvent;
 import org.jboss.classloader.spi.ClassNotFoundHandler;
-import org.jboss.classloader.spi.ParentPolicy;
-import org.jboss.classloader.spi.filter.ClassFilter;
-import org.jboss.classloader.spi.filter.ClassFilterUtils;
 import org.jboss.classloading.plugins.metadata.ModuleRequirement;
 import org.jboss.classloading.spi.dependency.ClassLoading;
 import org.jboss.classloading.spi.dependency.ResolutionContext;
@@ -43,6 +39,7 @@ import org.jboss.classloading.spi.metadata.ClassLoadingMetaDataFactory;
 import org.jboss.classloading.spi.metadata.Requirement;
 import org.jboss.classloading.spi.metadata.RequirementsMetaData;
 import org.jboss.classloading.spi.version.Version;
+import org.jboss.classloading.spi.version.VersionComparatorRegistry;
 import org.jboss.classloading.spi.version.VersionRange;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VirtualFile;
@@ -71,20 +68,12 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
    {
       classLoading = new ClassLoading();
       root = new Node<Import>();
+      VersionComparatorRegistry.getInstance().registerVersionComparator(ModuleVersion.class, new ModulesVersionComparator());
    }
 
    protected ClassLoaderSystem createClassLoaderSystem()
    {
       return ClassLoaderSystem.getInstance();
-   }
-
-   protected ParentPolicy createParentPolicy()
-   {
-      ClassFilter[] filter = new ClassFilter[2];
-      filter[0] = ClassFilterUtils.JAVA_ONLY;
-      filter[1] = ClassFilterUtils.createRecursivePackageClassFilter("ceylon");
-      ClassFilter beforeFilter = new CombiningClassFilter(true, filter);
-      return new ParentPolicy(beforeFilter, ClassFilterUtils.NOTHING);
    }
 
    protected ClassLoaderPolicyModule createClassLoaderPolicyModule(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception
@@ -138,6 +127,7 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       }
       clmd.setIncluded(new ClassFilterWrapper(module.getImports()));
       clmd.setExcludedExport(new NegatingClassFilter(new ClassFilterWrapper(module.getExports())));
+      clmd.setParentPolicy(CustomParentPolicyMetaData.INSTANCE);
 
       VirtualFile root = VFS.getChild(moduleFile.toURI());
 

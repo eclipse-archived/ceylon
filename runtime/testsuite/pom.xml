@@ -30,6 +30,14 @@
          <groupId>ceylon</groupId>
          <artifactId>modules-impl</artifactId>
       </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-mc</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>ceylon</groupId>
+         <artifactId>modules-osgi</artifactId>
+      </dependency>
 
       <dependency>
         <groupId>org.jboss.shrinkwrap</groupId>
