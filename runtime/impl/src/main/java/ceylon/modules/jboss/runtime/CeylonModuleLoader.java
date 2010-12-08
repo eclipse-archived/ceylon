@@ -149,15 +149,15 @@ public class CeylonModuleLoader extends ModuleLoader
          if (module == null)
             throw new ModuleLoadException("No module descriptor in module: " + moduleFile);
 
-         PathFilter exportFilter = new PathFilterWrapper(module.getExports());
-         PathFilter importFilter = new PathFilterWrapper(module.getImports());
-
          final List<DependencySpec> deps = new ArrayList<DependencySpec>();
          ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
-         ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile, exportFilter);
+         ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile);
          builder.addResourceRoot(resourceLoader);
 
          Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
+
+         PathFilter exportFilter = new PathFilterWrapper(module.getExports());
+         PathFilter importFilter = new PathFilterWrapper(module.getImports());
 
          DependencySpec lds = DependencySpec.createLocalDependencySpec(importFilter, exportFilter);
          builder.addDependency(lds); // local resources

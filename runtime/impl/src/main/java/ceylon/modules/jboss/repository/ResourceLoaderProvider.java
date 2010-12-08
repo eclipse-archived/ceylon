@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.jar.JarFile;
 
 import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.PathFilter;
+import org.jboss.modules.PathFilters;
 import org.jboss.modules.ResourceLoader;
 
 import ceylon.modules.spi.repository.Repository;
@@ -45,26 +45,24 @@ public class ResourceLoaderProvider
     * @param moduleIdentifier the module identifier
     * @param repository the repository
     * @param moduleFile the module file
-    * @param filter the filter
     * @return new resource loader
     * @throws IOException for any I/O error
     */
    public static ResourceLoader getResourceLoader(
          ModuleIdentifier moduleIdentifier,
          Repository repository,
-         File moduleFile,
-         PathFilter filter) throws IOException
+         File moduleFile) throws IOException
    {
       File classesRoot = repository.getCompileDirectory();
       if (classesRoot != null)
       {
-         return new SourceResourceLoader(moduleFile, classesRoot, "", filter);
+         return new SourceResourceLoader(moduleFile, classesRoot, "", PathFilters.acceptAll());
       }
       else
       {
          JarFile jarFile = new JarFile(moduleFile);
          String rootName = moduleIdentifier + ".car"; // TODO -- ok?         
-         return new CarFileResourceLoader(jarFile, rootName, filter);
+         return new CarFileResourceLoader(jarFile, rootName, PathFilters.acceptAll());
       }
    }
 }
