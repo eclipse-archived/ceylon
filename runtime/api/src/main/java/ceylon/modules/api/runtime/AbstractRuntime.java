@@ -67,7 +67,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
    {
       String exe = args.get(Constants.MODULE.toString());
       if (exe == null)
-         throw new IllegalArgumentException("No executable defined: " + args);
+         throw new IllegalArgumentException("No initial module defined: " + args);
 
       int p = exe.indexOf("/");
       if (p == 0)

@@ -43,10 +43,10 @@ public class Main
       {
          execute(args);
       }
-      catch (Exception e)
+      catch (Throwable t)
       {
-         System.err.println("Illegal args: " + e);
-         e.printStackTrace();
+         System.err.println("Illegal args: " + t);
+         t.printStackTrace();
       }
    }
 
