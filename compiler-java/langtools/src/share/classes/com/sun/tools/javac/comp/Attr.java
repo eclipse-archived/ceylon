@@ -1936,10 +1936,8 @@ public class Attr extends JCTree.Visitor {
                         tree.selected = application;
                         visitSelect(tree);
                         return;
-                    } else {
-                        throw new RuntimeException();
                     }
-                }
+               }
 
             } else if (pt.tag == NONE || pt.tag == CLASS) {
                 // We are seeing a plain identifier as selector.

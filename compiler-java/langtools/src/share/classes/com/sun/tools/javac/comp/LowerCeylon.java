@@ -135,6 +135,13 @@ public class LowerCeylon extends TreeTranslator {
         result = tree;
     }
 
+    public void visitConditional(JCConditional tree) {
+        tree.cond = translate(tree.cond, syms.booleanType);
+        tree.truepart = translate(tree.truepart);
+        tree.falsepart = translate(tree.falsepart);
+        result = tree;
+    }
+
     public void visitForLoop(JCForLoop tree) {
         tree.init = translate(tree.init);
         tree.cond = translate(tree.cond, syms.booleanType);

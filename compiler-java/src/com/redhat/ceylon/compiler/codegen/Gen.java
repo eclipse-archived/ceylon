@@ -1465,8 +1465,7 @@ public class Gen {
         binaryOperators.put(CeylonParser.BITWISEOR,  "or");
         binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
         binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
-        //binaryOperators.put(CeylonParser.IDENTICAL,  "operatorIdentical");
-        //binaryOperators.put(CeylonParser.NOTEQ,      "operatorNotEqual");
+        binaryOperators.put(CeylonParser.IDENTICAL,  "operatorIdentical");
         binaryOperators.put(CeylonParser.COMPARE,    "compare");
 
         // Binary operators that act on intermediary Comparison objects
@@ -1505,12 +1504,46 @@ public class Gen {
         case CeylonParser.BITWISEAND:
         case CeylonParser.BITWISEOR:
         case CeylonParser.BITWISEXOR:
-        case CeylonParser.EQEQ:
-        //case CeylonParser.IDENTICAL:
-        //case CeylonParser.NOTEQ:
+        case CeylonParser.IDENTICAL:
         case CeylonParser.COMPARE:
             binary_operator = true;
             break;
+
+        case CeylonParser.NOTEQ:
+        {
+            Operator newOp = new Operator(CeylonParser.EQEQ, op.operands);
+            newOp = new Operator(CeylonParser.NOT, List.<CeylonTree>of(newOp));
+            return convert(newOp);
+        }
+
+        case CeylonParser.NOT:
+        {
+            return at(op).Apply(null, makeSelect("Boolean", "instance"),
+                    List.<JCExpression>of(at(op).Conditional(convertExpression(operands[0]),
+                            make.Literal(TypeTags.BOOLEAN, 0),
+                            make.Literal(TypeTags.BOOLEAN, 1))));
+        }
+
+        case CeylonParser.EQEQ:
+        {
+            // FIXME: op0 and op1 are evaluated twice.  If these have side-
+            // effects, this is a nasty bug.
+            JCExpression op0 = convertExpression(operands[0]);
+            JCExpression op1 = convertExpression(operands[1]);
+            JCExpression rhs = at(op).Conditional(
+                    at(op).Binary(JCTree.NE, op1,
+                            make.Literal(TypeTags.BOT, null)),
+                    make.Literal(TypeTags.BOOLEAN, 0),
+                    make.Literal(TypeTags.BOOLEAN, 1));
+            rhs = at(op).Apply(null, makeSelect("Boolean", "instance"), List.of(rhs));
+            JCExpression lhs = at(op).Apply(null,
+                    at(op).Select(op0, names.fromString("operatorEqual")),
+                    List.of(op1));
+            JCTree.JCBinary cond = at(op).Binary(JCTree.NE, op0,
+                    make.Literal(TypeTags.BOT, null));
+            JCExpression expr = at(op).Conditional(cond, lhs, rhs);
+            return expr;
+        }
 
         case CeylonParser.LT:
         case CeylonParser.GT:

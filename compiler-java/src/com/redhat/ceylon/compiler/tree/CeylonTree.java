@@ -2161,7 +2161,6 @@ public abstract class CeylonTree {
     public static class Operator extends CeylonTree {
         @NotAChild
         public int operatorKind;
-
         public List<CeylonTree> operands = List.<CeylonTree>nil();
 
         public void append(CeylonTree operand) {
@@ -2173,6 +2172,14 @@ public abstract class CeylonTree {
         }
 
         public void accept(Visitor v) { v.visit(this); }
+
+        public Operator(int operatorKind, List<CeylonTree> operands) {
+            this.operatorKind = operatorKind;
+            this.operands = operands;
+        }
+
+        public Operator() {
+        }
     }
 
     /**
