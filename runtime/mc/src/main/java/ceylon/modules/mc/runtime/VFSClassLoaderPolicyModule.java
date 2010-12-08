@@ -40,6 +40,7 @@ import org.jboss.classloading.spi.vfs.metadata.VFSClassLoaderFactory;
 import org.jboss.classloading.spi.vfs.policy.VFSClassLoaderPolicy;
 import org.jboss.classloading.spi.visitor.ResourceFilter;
 import org.jboss.classloading.spi.visitor.ResourceVisitor;
+import org.jboss.dependency.spi.ControllerContext;
 import org.jboss.vfs.VirtualFile;
 
 /**
@@ -63,17 +64,33 @@ public class VFSClassLoaderPolicyModule extends ClassLoaderPolicyModule
    private ClassNotFoundHandler classNotFoundHandler;
 
    /**
+    * Determine context name.
+    *
+    * @param context the context
+    * @return context's name
+    */
+   protected static String determineContextName(ControllerContext context)
+   {
+      if (context == null)
+         throw new IllegalArgumentException("Null controller context");
+
+      return context.getName().toString();
+   }
+
+   /**
     * Create a new VFSClassLoaderPolicyModule.
     *
     * @param classLoadingMetaData the classloading metadata
-    * @param contextName the context name
+    * @param context the controller context
     * @param vfsRoots the vfs roots
     */
-   public VFSClassLoaderPolicyModule(ClassLoadingMetaData classLoadingMetaData, String contextName, VirtualFile... vfsRoots)
+   public VFSClassLoaderPolicyModule(ClassLoadingMetaData classLoadingMetaData, ControllerContext context, VirtualFile... vfsRoots)
    {
-      super(classLoadingMetaData, contextName);
+      super(classLoadingMetaData, determineContextName(context));
       if (vfsRoots == null || vfsRoots.length == 0)
          throw new IllegalArgumentException("Illegal VFS roots: " + Arrays.toString(vfsRoots));
+
+      setControllerContext(context);
       this.vfsRoots = vfsRoots;
    }
 

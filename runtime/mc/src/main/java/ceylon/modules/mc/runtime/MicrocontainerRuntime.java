@@ -41,6 +41,8 @@ import org.jboss.classloading.spi.metadata.RequirementsMetaData;
 import org.jboss.classloading.spi.version.Version;
 import org.jboss.classloading.spi.version.VersionComparatorRegistry;
 import org.jboss.classloading.spi.version.VersionRange;
+import org.jboss.dependency.plugins.AbstractController;
+import org.jboss.dependency.spi.Controller;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VirtualFile;
 import org.jboss.vfs.util.automount.Automounter;
@@ -60,12 +62,14 @@ import ceylon.modules.spi.repository.Repository;
  */
 public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime implements Resolver, ClassNotFoundHandler
 {
+   private Controller controller;
    private ClassLoading classLoading;
    private Node<Import> root;
    private Repository repository;
 
    public MicrocontainerRuntime()
    {
+      controller = new AbstractController();
       classLoading = new ClassLoading();
       root = new Node<Import>();
       VersionComparatorRegistry.getInstance().registerVersionComparator(ModuleVersion.class, new ModulesVersionComparator());
@@ -143,7 +147,18 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
          Automounter.mount(this, root);
       }
 
-      VFSClassLoaderPolicyModule clpm = new VFSClassLoaderPolicyModule(clmd, name + ":" + version, root);
+      String contextName = name + ":" + version;
+      ModulesControllerContext mcc = new ModulesControllerContext(contextName);
+      try
+      {
+         controller.install(mcc);
+      }
+      catch (Throwable t)
+      {
+         throw new Exception(t);
+      }
+
+      VFSClassLoaderPolicyModule clpm = new VFSClassLoaderPolicyModule(clmd, mcc, root);
       clpm.setClassNotFoundHandler(sources);
       classLoading.addModule(clpm);
 
