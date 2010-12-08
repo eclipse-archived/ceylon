@@ -46,6 +46,11 @@ public class JavaCompilerAdapter extends AbstractCompilerAdapter
       super(".java");
    }
 
+   public File findSource(File root, String name)
+   {
+      return super.findSource(root, toPath(name));
+   }
+
    public File compile(File source, String name, final File classesRoot) throws IOException
    {
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -56,7 +61,7 @@ public class JavaCompilerAdapter extends AbstractCompilerAdapter
       if (task.call() == false) // start compilation
          throw new IllegalArgumentException("Cannot compile: " + source);
 
-      return new File(classesRoot, name.replace(".", "/") + ".class");
+      return new File(classesRoot, toPath(name, ".class"));
    }
 
    private static class FileJavaFileObject extends SimpleJavaFileObject

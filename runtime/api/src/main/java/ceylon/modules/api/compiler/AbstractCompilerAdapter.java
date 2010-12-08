@@ -60,6 +60,29 @@ public abstract class AbstractCompilerAdapter implements CompilerAdapter
    }
 
    /**
+    * Get class's path.
+    *
+    * @param className the class name
+    * @return the class' path
+    */
+   protected String toPath(String className)
+   {
+      return toPath(className, languageSuffix);
+   }
+
+   /**
+    * Get class's path.
+    *
+    * @param className the class name
+    * @param suffix the suffix
+    * @return the class' path
+    */
+   protected static String toPath(String className, String suffix)
+   {
+      return className.replace(".", "/") + suffix;
+   }
+
+   /**
     * Safe close.
     *
     * @param closeable the closeable

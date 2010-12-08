@@ -46,6 +46,7 @@ import org.jboss.classloading.spi.version.Version;
 import org.jboss.classloading.spi.version.VersionRange;
 import org.jboss.vfs.VFS;
 import org.jboss.vfs.VirtualFile;
+import org.jboss.vfs.util.automount.Automounter;
 
 import ceylon.lang.modules.Import;
 import ceylon.lang.modules.Module;
@@ -139,8 +140,23 @@ public class MicrocontainerRuntime extends AbstractMicrocontainerRuntime impleme
       clmd.setExcludedExport(new NegatingClassFilter(new ClassFilterWrapper(module.getExports())));
 
       VirtualFile root = VFS.getChild(moduleFile.toURI());
-      ClassLoaderPolicyModule clpm = new VFSClassLoaderPolicyModule(clmd, name + ":" + version, root);
+
+      ClassNotFoundHandler sources = null;
+      File classes = repository.getCompileDirectory();
+      if (classes != null)
+      {
+         sources = new SourcesClassNotFoundHandler(moduleFile, classes);
+         root = VFS.getChild(classes.toURI());
+      }
+      else
+      {
+         Automounter.mount(this, root);
+      }
+
+      VFSClassLoaderPolicyModule clpm = new VFSClassLoaderPolicyModule(clmd, name + ":" + version, root);
+      clpm.setClassNotFoundHandler(sources);
       classLoading.addModule(clpm);
+
       return clpm;
    }
 

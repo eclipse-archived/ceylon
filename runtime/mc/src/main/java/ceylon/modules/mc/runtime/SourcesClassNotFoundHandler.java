@@ -22,21 +22,40 @@
 
 package ceylon.modules.mc.runtime;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.jboss.classloader.spi.ClassNotFoundEvent;
 import org.jboss.classloader.spi.ClassNotFoundHandler;
-import org.jboss.vfs.VirtualFile;
+
+import ceylon.modules.api.compiler.CompilerAdapterFactory;
 
 /**
  * Sources class not found handler
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SourcesClassNotFoundHandler implements ClassNotFoundHandler
+class SourcesClassNotFoundHandler implements ClassNotFoundHandler
 {
-   private VirtualFile root;
-   
+   private File sources;
+   private File classes;
+
+   SourcesClassNotFoundHandler(File sources, File classes)
+   {
+      this.sources = sources;
+      this.classes = classes;
+   }
+
    public boolean classNotFound(ClassNotFoundEvent event)
    {
-      return false;
+      try
+      {
+         CompilerAdapterFactory factory = CompilerAdapterFactory.getInstance();
+         return factory.findAndCompile(sources, event.getClassName(), classes) != null;
+      }
+      catch (IOException e)
+      {
+         return false;
+      }
    }
 }
