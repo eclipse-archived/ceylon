@@ -72,7 +72,7 @@ public class Module extends Filterable
 
    protected PathFilter getDefaultExports()
    {
-      return PathFilters.match(name.getName());
+      return PathFilters.regexp(name.getName() + ".*");
    }
 
    protected PathFilter getDefaultImports()

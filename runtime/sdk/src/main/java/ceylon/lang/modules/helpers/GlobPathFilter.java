@@ -25,8 +25,6 @@ package ceylon.lang.modules.helpers;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ceylon.lang.modules.PathFilter;
-
 /**
  * Default implementation of PathFilter.  Uses glob based includes and excludes to determine whether to export.
  *
@@ -34,12 +32,9 @@ import ceylon.lang.modules.PathFilter;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final class GlobPathFilter implements PathFilter
+final class GlobPathFilter extends RegexpPathFilter
 {
    private static final Pattern GLOB_PATTERN = Pattern.compile("(\\*\\*?)|(\\?)|(\\\\.)|(/+)|([^*?]+)");
-
-   private final String glob;
-   private final Pattern pattern;
 
    /**
     * Construct a new instance.
@@ -48,19 +43,12 @@ final class GlobPathFilter implements PathFilter
     */
    GlobPathFilter(final String glob)
    {
-      pattern = getGlobPattern(glob);
-      this.glob = glob;
+      super(glob);
    }
 
-   /**
-    * Determine whether a path should be accepted.
-    *
-    * @param path the path to check
-    * @return true if the path should be accepted, false if not
-    */
-   public boolean accept(final String path)
+   protected Pattern getPattern(String regexp)
    {
-      return pattern.matcher(path).matches();
+      return getGlobPattern(regexp);
    }
 
    /**
@@ -136,35 +124,5 @@ final class GlobPathFilter implements PathFilter
          patternBuilder.append("(?:/.*)?");
       }
       return Pattern.compile(patternBuilder.toString());
-   }
-
-   public int hashCode()
-   {
-      return glob.hashCode();
-   }
-
-   public boolean equals(final Object obj)
-   {
-      return obj instanceof GlobPathFilter && equals((GlobPathFilter) obj);
-   }
-
-   public boolean equals(final GlobPathFilter obj)
-   {
-      return obj != null && obj.pattern.equals(pattern);
-   }
-
-   public String toString()
-   {
-      final StringBuilder b = new StringBuilder();
-      b.append("match ");
-      if (glob != null)
-      {
-         b.append('"').append(glob).append('"');
-      }
-      else
-      {
-         b.append('/').append(pattern).append('/');
-      }
-      return b.toString();
    }
 }

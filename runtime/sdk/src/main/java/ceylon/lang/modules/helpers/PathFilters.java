@@ -110,6 +110,17 @@ public class PathFilters
    }
 
    /**
+    * Get a path filter which matches a regexp.
+    *
+    * @param regexp the regexp
+    * @return a filter which returns {@code true} if the glob matches
+    */
+   public static PathFilter regexp(String regexp)
+   {
+      return new RegexpPathFilter(regexp);
+   }
+
+   /**
     * Get a path filter which matches a glob.  The given glob is a path separated
     * by "{@code /}" characters, which may include the special "{@code *}" and "{@code **}" segment strings
     * which match any directory and any number of nested directories, respectively.
@@ -117,7 +128,7 @@ public class PathFilters
     * @param glob the glob
     * @return a filter which returns {@code true} if the glob matches
     */
-   public static PathFilter match(String glob)
+   public static PathFilter glob(String glob)
    {
       return new GlobPathFilter(glob);
    }
