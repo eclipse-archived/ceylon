@@ -55,4 +55,12 @@ void test(Process process) {
     process.writeLine("slotwise and");
     Natural n = k.natural() & l.natural();
     process.writeLine(n);
+    
+    process.writeLine("addition");
+    Integer o = n + j;
+    process.writeLine(o);
+    
+    process.writeLine("subtraction");
+    Natural p = (l - o).natural();
+    process.writeLine(p);
 }
