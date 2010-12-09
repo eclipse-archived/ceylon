@@ -1003,6 +1003,7 @@ public class Gen {
             methodName = "preDecrement";
             break;
         case CeylonParser.MINUS:
+        case CeylonParser.BITWISENOT:
             // ????  Make a new operator with expr.operand as its operands.
             // This is rather evil.
             expr.operator.operands = List.of(expr.operand);
