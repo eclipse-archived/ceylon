@@ -14,6 +14,18 @@ void test(Process p) {
         p.writeLine("pass");
     }    
 
+    if (a === a) {
+        p.writeLine("pass");
+    } else {
+        p.writeLine("fail");
+    }        
+    
+    if (a === b) {
+        p.writeLine("fail");
+    } else {
+        p.writeLine("pass");
+    }    
+
     mutable Natural c := 0;
 
     while (c != 2) {
