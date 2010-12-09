@@ -63,4 +63,12 @@ void test(Process process) {
     process.writeLine("subtraction");
     Natural p = (l - o).natural();
     process.writeLine(p);
+
+    process.writeLine("slotwise or");
+    Natural q = p | n;
+    process.writeLine(q);
+
+    process.writeLine("slotwise xor");
+    Natural r = p ^ n;
+    process.writeLine(r);
 }
