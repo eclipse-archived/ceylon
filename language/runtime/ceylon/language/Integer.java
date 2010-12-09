@@ -52,10 +52,6 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public ceylon.language.Boolean operatorEqual(Integer s) {
-        return Boolean.instance(value == s.value);
-    }
-
     @Extension
     public ceylon.language.String string() {
         return ceylon.language.String.instance(java.lang.Long.toString(value));
