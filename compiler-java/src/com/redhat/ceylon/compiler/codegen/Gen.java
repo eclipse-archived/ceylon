@@ -1518,7 +1518,7 @@ public class Gen {
 
         case CeylonParser.NOT:
         {
-            return at(op).Apply(null, makeSelect("Boolean", "instance"),
+            return at(op).Apply(null, makeSelect(makeIdent(syms.ceylonBooleanType), "instance"),
                     List.<JCExpression>of(at(op).Conditional(convertExpression(operands[0]),
                             make.Literal(TypeTags.BOOLEAN, 0),
                             make.Literal(TypeTags.BOOLEAN, 1))));
@@ -1535,7 +1535,7 @@ public class Gen {
                             make.Literal(TypeTags.BOT, null)),
                     make.Literal(TypeTags.BOOLEAN, 0),
                     make.Literal(TypeTags.BOOLEAN, 1));
-            rhs = at(op).Apply(null, makeSelect("Boolean", "instance"), List.of(rhs));
+            rhs = at(op).Apply(null, makeSelect(makeIdent(syms.ceylonBooleanType), "instance"), List.of(rhs));
             JCExpression lhs = at(op).Apply(null,
                     at(op).Select(op0, names.fromString("operatorEqual")),
                     List.of(op1));
