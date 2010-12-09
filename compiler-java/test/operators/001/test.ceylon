@@ -1,4 +1,4 @@
-doc "Test operators"
+doc "Test arithmetic operators"
 void test(Process process) {
     process.writeLine("prefix increment");
     mutable Natural a = 1;
@@ -71,4 +71,10 @@ void test(Process process) {
     process.writeLine("slotwise xor");
     Natural r = p ^ n;
     process.writeLine(r);
+
+    /* TODO: WTF is this?
+    process.writeLine("slotwise complement in");
+    Natural s = q ~ r;
+    process.writeLine(s);
+    */
 }
