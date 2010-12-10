@@ -2,6 +2,8 @@ package com.sun.tools.javac.comp;
 
 import static com.sun.tools.javac.code.TypeTags.CLASS;
 
+import java.util.ArrayList;
+
 import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Source;
@@ -29,6 +31,7 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 
 public class LowerCeylon extends TreeTranslator {
@@ -61,6 +64,8 @@ public class LowerCeylon extends TreeTranslator {
     private Types types;
     private boolean debugLower;
 
+    private ArrayList<JCMethodDecl> methodStack = new ArrayList<JCMethodDecl>();
+
     protected LowerCeylon(Context context) {
         context.put(lowerKey, this);
         names = Name.Table.instance(context);
@@ -86,6 +91,19 @@ public class LowerCeylon extends TreeTranslator {
         debugLower = options.get("debuglower") != null;
     }
 
+    private JCMethodDecl getCurrentMethod() {
+        return methodStack.get(methodStack.size() - 1);
+    }
+
+    private void pushMethod(JCMethodDecl m) {
+        methodStack.add(m);
+    }
+
+    public JCMethodDecl popMethod() {
+        return methodStack.remove(methodStack.size() - 1);
+    }
+
+
     public void visitVarDef(JCVariableDecl tree) {
         tree.mods = translate(tree.mods);
         tree.vartype = translate(tree.vartype);
@@ -99,15 +117,20 @@ public class LowerCeylon extends TreeTranslator {
     }
 
      public void visitMethodDef(JCMethodDecl tree) {
-        if (tree.type.toString().contains("Optional"))
-            System.err.print("");
-        tree.mods = translate(tree.mods);
-        tree.restype = translate(tree.restype);
-        tree.typarams = translateTypeParams(tree.typarams);
-        tree.params = translateVarDefs(tree.params);
-        tree.thrown = translate(tree.thrown);
-        tree.body = translate(tree.body);
-        result = tree;
+         try {
+             pushMethod(tree);
+             if (tree.type.toString().contains("Optional"))
+                 System.err.print("");
+             tree.mods = translate(tree.mods);
+             tree.restype = translate(tree.restype);
+             tree.typarams = translateTypeParams(tree.typarams);
+             tree.params = translateVarDefs(tree.params);
+             tree.thrown = translate(tree.thrown);
+             tree.body = translate(tree.body);
+         } finally {
+             popMethod();
+         }
+         result = tree;
     }
 
     public void visitTypeApply(JCTypeApply tree) {
@@ -181,6 +204,12 @@ public class LowerCeylon extends TreeTranslator {
             }
         }
 
+        result = tree;
+    }
+
+    public void visitReturn(JCReturn tree) {
+        JCMethodDecl currentMethod = getCurrentMethod();
+        tree.expr = translate(tree.expr, ((MethodType)currentMethod.type).restype);
         result = tree;
     }
 
