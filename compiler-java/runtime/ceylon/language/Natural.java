@@ -108,4 +108,16 @@ public final class Natural
     public ceylon.language.Natural succ() {
         return Natural.instance(value + 1);
     }
+
+    public ceylon.language.Natural and(ceylon.language.Natural op) {
+        return Natural.instance(value & op.value);
+    }
+
+    public ceylon.language.Natural or(ceylon.language.Natural op) {
+        return Natural.instance(value | op.value);
+    }
+
+    public ceylon.language.Natural xor(ceylon.language.Natural op) {
+        return Natural.instance(value ^ op.value);
+    }
 }

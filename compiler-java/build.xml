@@ -64,6 +64,7 @@
        classpath="${antlr.lib}">
       <include name="com/redhat/**"/>
       <include name="com/sun/tools/javac/**"/>
+      <include name="com/sun/source/**"/>
     </javac>
   </target>
 

@@ -22,4 +22,8 @@ public abstract class Object extends Void {
     public Type getType () {
         return Types.create(getClass());
     }
+
+    public Boolean identical(Object other) {
+        return Boolean.instance(this == other);
+    }
 }

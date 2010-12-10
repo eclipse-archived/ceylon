@@ -1,0 +1,37 @@
+prefix increment
+1
+2
+2
+postfix increment
+3
+2
+prefix decrement
+57
+56
+56
+postfix decrement
+55
+56
+exponentiation
+175616
+negation
+-175616
+-2
+slotwise complement
+-175617
+multiplication
+351234
+division
+6386
+remainder
+4
+slotwise and
+6146
+addition
+-169471
+subtraction
+175857
+slotwise or
+179955
+slotwise xor
+177907

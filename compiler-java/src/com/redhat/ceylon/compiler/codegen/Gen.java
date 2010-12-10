@@ -1012,6 +1012,7 @@ public class Gen {
             methodName = "preDecrement";
             break;
         case CeylonParser.MINUS:
+        case CeylonParser.BITWISENOT:
             // ????  Make a new operator with expr.operand as its operands.
             // This is rather evil.
             expr.operator.operands = List.of(expr.operand);
@@ -1474,7 +1475,7 @@ public class Gen {
         binaryOperators.put(CeylonParser.BITWISEOR,  "or");
         binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
         binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
-        binaryOperators.put(CeylonParser.IDENTICAL,  "operatorIdentical");
+        binaryOperators.put(CeylonParser.IDENTICAL,  "identical");
         binaryOperators.put(CeylonParser.COMPARE,    "compare");
 
         // Binary operators that act on intermediary Comparison objects
