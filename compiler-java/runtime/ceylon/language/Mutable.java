@@ -16,9 +16,8 @@ public final class Mutable<T> {
         return t;
     }
 
-    @SuppressWarnings("unchecked")
     public static final <T> Mutable<T> of(T t) {
-        return new Mutable(t);
+        return new Mutable<T>(t);
     }
 
     @SuppressWarnings("unchecked")
