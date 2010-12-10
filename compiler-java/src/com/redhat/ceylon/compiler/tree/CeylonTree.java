@@ -132,6 +132,7 @@ public abstract class CeylonTree {
             throw new RuntimeException(e);
         }
         dst.token = token;
+        SourceLocation.reset();
         dst.source = SourceLocation.instance(src, path);
 
         ListBuffer<CeylonTree> children = new ListBuffer<CeylonTree>();
@@ -939,6 +940,8 @@ public abstract class CeylonTree {
      */
     public static class CallExpression extends CeylonTree {
         public CeylonTree method;
+
+        public CallExpression() { }
 
         public List<CeylonTree> args = List.<CeylonTree>nil();
 

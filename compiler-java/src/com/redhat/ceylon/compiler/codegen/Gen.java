@@ -620,6 +620,8 @@ public class Gen {
             new ListBuffer<JCAnnotation>();
         final ListBuffer<JCStatement> stmts =
             new ListBuffer<JCStatement>();
+        final ListBuffer<JCStatement> initStmts =
+            new ListBuffer<JCStatement>();
         final ListBuffer<JCTypeParameter> typeParams =
             new ListBuffer<JCTypeParameter>();
         final ListBuffer<JCExpression> satisfies =
@@ -632,8 +634,15 @@ public class Gen {
             }
             public void visit(CeylonTree.FormalParameter param) {
                 JCVariableDecl var = at(cdecl).VarDef(make.Modifiers(0),
+                        names.fromString(tempName()), convert(param.type()), null);
+                JCVariableDecl localVar = at(cdecl).VarDef(make.Modifiers(0),
                         makeName(param.names), convert(param.type()), null);
                 params.append(var);
+                defs.append(localVar);
+                initStmts.append(at(param).
+                        Exec(at(param).Assign(makeSelect("this",
+                                localVar.getName().toString()),
+                                at(param).Ident(var.getName()))));
             }
 
             public void visit(CeylonTree.Block b) {
@@ -722,7 +731,7 @@ public class Gen {
                     List.<JCTypeParameter>nil(),
                     params.toList(),
                     List.<JCExpression>nil(),
-                    at(cdecl).Block(0, stmts.toList()), null);
+                    at(cdecl).Block(0, initStmts.toList().appendList(stmts.toList())), null);
 
             defs.append(meth);
         }
@@ -1506,6 +1515,7 @@ public class Gen {
         case CeylonParser.BITWISEXOR:
         case CeylonParser.IDENTICAL:
         case CeylonParser.COMPARE:
+        case CeylonParser.EQEQ:
             binary_operator = true;
             break;
 
@@ -1522,27 +1532,6 @@ public class Gen {
                     List.<JCExpression>of(at(op).Conditional(convertExpression(operands[0]),
                             make.Literal(TypeTags.BOOLEAN, 0),
                             make.Literal(TypeTags.BOOLEAN, 1))));
-        }
-
-        case CeylonParser.EQEQ:
-        {
-            // FIXME: op0 and op1 are evaluated twice.  If these have side-
-            // effects, this is a nasty bug.
-            JCExpression op0 = convertExpression(operands[0]);
-            JCExpression op1 = convertExpression(operands[1]);
-            JCExpression rhs = at(op).Conditional(
-                    at(op).Binary(JCTree.NE, op1,
-                            make.Literal(TypeTags.BOT, null)),
-                    make.Literal(TypeTags.BOOLEAN, 0),
-                    make.Literal(TypeTags.BOOLEAN, 1));
-            rhs = at(op).Apply(null, makeSelect("Boolean", "instance"), List.of(rhs));
-            JCExpression lhs = at(op).Apply(null,
-                    at(op).Select(op0, names.fromString("operatorEqual")),
-                    List.of(op1));
-            JCTree.JCBinary cond = at(op).Binary(JCTree.NE, op0,
-                    make.Literal(TypeTags.BOT, null));
-            JCExpression expr = at(op).Conditional(cond, lhs, rhs);
-            return expr;
         }
 
         case CeylonParser.LT:

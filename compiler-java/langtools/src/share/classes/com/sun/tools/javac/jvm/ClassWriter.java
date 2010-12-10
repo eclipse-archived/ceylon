@@ -933,7 +933,7 @@ public class ClassWriter extends ClassFile {
             log.errWriter.println("---" + flagNames(v.flags()));
         }
         databuf.appendChar(pool.put(fieldName(v)));
-        databuf.appendChar(pool.put(typeSig(v.erasure(types))));
+        databuf.appendChar(pool.put(typeSig(v.externalType(types))));
         int acountIdx = beginAttrs();
         int acount = 0;
         if (v.getConstValue() != null) {

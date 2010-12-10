@@ -1,21 +1,16 @@
 public class SimpleList<T> (T? head, SimpleList<T>? tail)
     satisfies Iterable<T>
 {
-    public T? car = head;
-    public SimpleList<T> ? cdr = tail;
-
     public Iterator<T> iterator() {
         return SimpleIterator<T>(this);
     }
 
-   public class SimpleIterator<T> (SimpleList<T> ? l)
+   public class SimpleIterator<T> (SimpleList<T> ? list)
        satisfies Iterator<T>
    {
-        SimpleList<T> ? list = l;
-
         T? head() {
             if (exists list) {
-                return list.car;
+                return list.head;
             } else {
                 return null;
             }
@@ -23,7 +18,7 @@ public class SimpleList<T> (T? head, SimpleList<T>? tail)
 
         Iterator<T> tail() {
             if (exists list) {
-                return SimpleIterator<T>(list.cdr);
+                return SimpleIterator<T>(list.tail);
             } else {
                 return SimpleIterator<T>(null);
             }

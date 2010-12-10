@@ -182,8 +182,15 @@ public abstract class Symbol implements Element {
      */
     public Type externalType(Types types) {
         Type t = erasure(types);
-        if (t.tag == METHOD && Context.isCeylon())
-            t = eraseOptional(types, (MethodType)t);
+        if (Context.isCeylon()) {
+            if (t.tag == METHOD)
+                t = eraseOptional(types, (MethodType)t);
+            else if (t.tag == CLASS) {
+                t = eraseOptional(types, (ClassType)t);
+            } else if (t.toString().contains("Optional"))
+                System.err.print("");
+
+        }
         if (name == name.table.init && owner.hasOuterInstance()) {
             Type outerThisType = types.erasure(owner.type.getEnclosingType());
             return new MethodType(t.getParameterTypes().prepend(outerThisType),
