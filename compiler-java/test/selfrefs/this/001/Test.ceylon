@@ -1,10 +1,7 @@
 import com.redhat.ceylon.compiler.test.dump;
 
 doc "Test \"this\""
-class Test(Integer a, String b) {
-    Integer x = a;
-    String y = b;
-
+class Test(Integer x, String y) {
     void test1() {
         dump(this);
     }
