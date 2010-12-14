@@ -55,7 +55,7 @@ public final class Natural
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public ceylon.language.Boolean operatorEqual(ceylon.language.Natural s) {
+    public ceylon.language.Boolean equalsXXX(ceylon.language.Natural s) {
         return Boolean.instance(value == s.value);
     }
 

@@ -24,7 +24,7 @@ public final class String extends Object
         return instance(value.toLowerCase());
     }
 
-    public ceylon.language.Boolean operatorEqual(String s) {
+    public ceylon.language.Boolean equalsXXX(String s) {
         return Boolean.instance(value.equals(s.value));
     }
 

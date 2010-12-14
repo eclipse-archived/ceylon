@@ -1475,7 +1475,7 @@ public class Gen {
         binaryOperators.put(CeylonParser.BITWISEAND, "and");
         binaryOperators.put(CeylonParser.BITWISEOR,  "or");
         binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
-        binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
+        binaryOperators.put(CeylonParser.EQEQ,       "equalsXXX");
         binaryOperators.put(CeylonParser.IDENTICAL,  "identical");
         binaryOperators.put(CeylonParser.COMPARE,    "compare");
 
