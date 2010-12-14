@@ -1273,7 +1273,8 @@ public class Gen {
     }
 
     JCStatement convert(CeylonTree.ReturnStatement ret) {
-        JCExpression returnExpr = convertExpression(ret.expr());
+        CeylonTree expr = ret.expr();
+        JCExpression returnExpr = expr != null ? convertExpression(expr) : null;
         return at(ret).Return(returnExpr);
     }
 

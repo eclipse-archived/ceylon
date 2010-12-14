@@ -46,49 +46,22 @@ public class LowerCeylon extends TreeTranslator {
     }
 
     private Name.Table names;
-    private Log log;
     private Symtab syms;
-    private Resolve rs;
-    private Check chk;
-    private Attr attr;
     private TreeMaker make;
-    private DiagnosticPosition make_pos;
-    private ClassWriter writer;
-    private ClassReader reader;
-    private ConstFold cfolder;
-    private Target target;
     private Source source;
     private boolean allowEnums;
-    private final Name dollarAssertionsDisabled;
-    private final Name classDollar;
     private Types types;
-    private boolean debugLower;
 
     private ArrayList<JCMethodDecl> methodStack = new ArrayList<JCMethodDecl>();
 
     protected LowerCeylon(Context context) {
         context.put(lowerKey, this);
         names = Name.Table.instance(context);
-        log = Log.instance(context);
         syms = Symtab.instance(context);
-        rs = Resolve.instance(context);
-        chk = Check.instance(context);
-        attr = Attr.instance(context);
         make = TreeMaker.instance(context);
-        writer = ClassWriter.instance(context);
-        reader = ClassReader.instance(context);
-        cfolder = ConstFold.instance(context);
-        target = Target.instance(context);
         source = Source.instance(context);
         allowEnums = source.allowEnums();
-        dollarAssertionsDisabled = names.
-            fromString(target.syntheticNameChar() + "assertionsDisabled");
-        classDollar = names.
-            fromString("class" + target.syntheticNameChar());
-
         types = Types.instance(context);
-        Options options = Options.instance(context);
-        debugLower = options.get("debuglower") != null;
     }
 
     private JCMethodDecl getCurrentMethod() {
