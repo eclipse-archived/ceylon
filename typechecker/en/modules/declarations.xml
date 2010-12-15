@@ -1107,12 +1107,12 @@ public class Person { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>has the same name as the member class it refines, and</para>
+            </listitem>
             <listitem>
                 <para>has a parameter list with the same signature as the member 
                 class it refines, after substitution of type arguments specified 
                 in the <literal>extends</literal> or <literal>satisfies</literal>
                 clause, and either</para>
-            </listitem>
             </listitem>
             <listitem>
                 <para>extends the member class it refines, or, alternatively,</para>
