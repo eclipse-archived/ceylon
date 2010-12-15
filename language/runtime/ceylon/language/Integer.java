@@ -52,7 +52,7 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public ceylon.language.Boolean operatorEqual(Integer s) {
+    public ceylon.language.Boolean equalsXXX(ceylon.language.Integer s) {
         return Boolean.instance(value == s.value);
     }
 
