@@ -66,6 +66,8 @@ Setting up Eclipse to build the Ceylon compiler
 
     d) Click "Finish"
 
+    e) Do the same for "/usr/share/java/ant.jar"
+
  8. If you see an error of the form
 
     "Access restriction: Class is not accessible due to restriction on
