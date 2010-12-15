@@ -8,20 +8,10 @@ import sys
 class TestHarness:
     def __init__(self, basedir):
         self.basedir = basedir
-        self.antlr_jarfile = os.path.join(
-            self.basedir, "lib/antlrworks-1.3.1.jar")
-        libdir = os.path.join(self.basedir, "build", "lib")
-        self.compiler_jarfile = os.path.join(libdir, "compiler.jar")
-        self.runtime_jarfile = os.path.join(libdir, "runtime.jar")
+        self.ceylonc = os.path.join(basedir, "bin", "ceylonc")
+        self.runtime = os.path.join(self.basedir, "build", "lib", "runtime.jar")
         self.testdir = os.path.join(self.basedir, "test")
         self.verbosity = 0
-
-    """The classpath required to run the Ceylon compiler
-    """
-    def classpath(self, *extras):
-        return ":".join((self.runtime_jarfile,
-                         self.compiler_jarfile,
-                         self.antlr_jarfile) + extras)
 
     def popen(self, *cmd):
         if self.verbosity >= 2:
@@ -96,13 +86,7 @@ class TestCase:
             self.handle_error(harness, "", "nothing to compile\n")
             return
         paths.sort()
-        sp = harness.popen(
-            "java",
-            "-ea",
-            "-cp", harness.classpath(),
-            "com.redhat.ceylon.compiler.Main", 
-            "-src", self.dir,
-            *paths)
+        sp = harness.popen(harness.ceylonc, "-src", self.dir, *paths)
         out, err = sp.communicate()
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
@@ -112,7 +96,7 @@ class TestCase:
         sp = harness.popen(
             "java",
             "-ea",
-            "-cp", ":".join((harness.runtime_jarfile, self.dir)),
+            "-cp", ":".join((harness.runtime, self.dir)),
             "ceylon.language.Launcher", *cmdline)
         out, err = sp.communicate()
         if sp.returncode != 0:
