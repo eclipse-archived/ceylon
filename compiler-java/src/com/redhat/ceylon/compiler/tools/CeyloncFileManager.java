@@ -45,7 +45,7 @@ import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 public class CeyloncFileManager extends JavacFileManager
     implements StandardJavaFileManager
 {
-    protected String[] sourcePath;
+    protected String[] sourcePath = new String[0];
 
     public void setSourcePath(String sourcePath) {
         StringTokenizer st = new StringTokenizer(sourcePath, File.pathSeparator);

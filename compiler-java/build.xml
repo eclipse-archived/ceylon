@@ -23,6 +23,7 @@
 
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
+  <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -84,22 +85,28 @@
 
   <!-- Rule to build runtime classes from their Java and Ceylon sources -->
   <target name="runtime.classes" depends="compiler.jar">
-    <apply executable="java">
-      <arg value="-ea"/>
-      <arg value="-cp"/>
-      <arg value="${compiler.jar}:${antlr.lib}:${runtime.src}"/>
-      <arg value="com.redhat.ceylon.compiler.Main"/>
-      <arg value="-d"/>
-      <arg value="${build.classes}"/>
-      <arg value="-src"/>
-      <arg value="${runtime.src}"/>
-      <fileset dir="${runtime.src}/ceylon/language">
-	<include name="*.java"/>
-	<include name="*.ceylon"/>
-      </fileset>
-    </apply>
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
+      <classpath>
+        <pathelement location="${compiler.jar}"/>
+      </classpath>
+    </taskdef>
+    <ceylonc
+       compiler="bin/ceylonc"
+       srcdir="${runtime.src}"
+       destdir="${build.classes}"/>
   </target>
   
+  <!-- Rule to build runtime jar -->
+  <target name="runtime.jar" depends="runtime.classes">
+    <mkdir dir="${build.lib}"/>
+    <jar destfile="${runtime.jar}">
+      <fileset dir="${build.classes}">
+        <include name="ceylon/**"/>
+        <include name="com/redhat/ceylon/compiler/test/**"/>
+      </fileset>
+    </jar>
+  </target>
+
   <!-- Rule to run the parser regression tests -->
   <target name="test.parser" depends="compiler.jar">
     <mkdir dir="${parser.test.dst}"/>
@@ -124,7 +131,7 @@
   </target>
 
   <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="compiler.jar">
+  <target name="test.compiler" depends="compiler.jar,runtime.jar">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 

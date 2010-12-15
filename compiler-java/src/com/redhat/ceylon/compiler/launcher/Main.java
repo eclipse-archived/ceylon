@@ -372,7 +372,9 @@ public class Main extends com.sun.tools.javac.main.Main {
 
             if (fileManager instanceof CeyloncFileManager) {
                 CeyloncFileManager ceylonFileManager = (CeyloncFileManager)fileManager;
-                ceylonFileManager.setSourcePath(options.get("-src"));
+                String sourcePath = options.get("-src");
+                if (sourcePath != null)
+                    ceylonFileManager.setSourcePath(sourcePath);
             }
 
             comp = LanguageCompiler.instance(context);

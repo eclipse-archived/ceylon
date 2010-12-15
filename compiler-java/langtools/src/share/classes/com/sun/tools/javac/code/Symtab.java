@@ -160,6 +160,7 @@ public class Symtab {
     public final Type ceylonSequenceType;
     public final Type ceylonArrayListType;
     public final Type ceylonCharacterType;
+    public final Type ceylonBooleanType;
 
     /** The symbol representing the length field of an array.
      */
@@ -464,6 +465,7 @@ public class Symtab {
         ceylonSequenceType = enterClass("ceylon.language.Sequence");
         ceylonArrayListType = enterClass("ceylon.language.ArrayList");
         ceylonCharacterType = enterClass("ceylon.language.Character");
+        ceylonBooleanType = enterClass("ceylon.language.Boolean");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);

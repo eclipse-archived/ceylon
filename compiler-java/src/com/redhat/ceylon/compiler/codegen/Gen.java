@@ -1475,7 +1475,7 @@ public class Gen {
         binaryOperators.put(CeylonParser.BITWISEAND, "and");
         binaryOperators.put(CeylonParser.BITWISEOR,  "or");
         binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
-        binaryOperators.put(CeylonParser.EQEQ,       "operatorEqual");
+        binaryOperators.put(CeylonParser.EQEQ,       "equalsXXX");
         binaryOperators.put(CeylonParser.IDENTICAL,  "identical");
         binaryOperators.put(CeylonParser.COMPARE,    "compare");
 
@@ -1530,7 +1530,7 @@ public class Gen {
 
         case CeylonParser.NOT:
         {
-            return at(op).Apply(null, makeSelect("Boolean", "instance"),
+            return at(op).Apply(null, makeSelect(makeIdent(syms.ceylonBooleanType), "instance"),
                     List.<JCExpression>of(at(op).Conditional(convertExpression(operands[0]),
                             make.Literal(TypeTags.BOOLEAN, 0),
                             make.Literal(TypeTags.BOOLEAN, 1))));
