@@ -167,7 +167,8 @@ public class RecognizedOptions {
         XJCOV,
         XD,
         SOURCEFILE,
-        SRC);
+        SRC,
+        DEBUGCEYLON);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -514,6 +515,9 @@ public class RecognizedOptions {
         // output source after type erasure
         // new Option("-s",                                     "opt.s"),
         new HiddenOption(PRINTSOURCE),
+
+        // output source after type erasure
+        new HiddenOption(DEBUGCEYLON),
 
         // output shrouded class files
         // new Option("-scramble",                              "opt.scramble"),

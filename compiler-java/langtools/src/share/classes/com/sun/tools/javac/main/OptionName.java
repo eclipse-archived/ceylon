@@ -91,7 +91,8 @@ public enum OptionName {
     XJCOV("-Xjcov"),
     XD("-XD"),
     SOURCEFILE("sourcefile"),
-    SRC("-src");
+    SRC("-src"),
+    DEBUGCEYLON("-debugceylon");
 
     public final String optionName;
 
