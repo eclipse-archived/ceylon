@@ -84,20 +84,15 @@
 
   <!-- Rule to build runtime classes from their Java and Ceylon sources -->
   <target name="runtime.classes" depends="compiler.jar">
-    <apply executable="java">
-      <arg value="-ea"/>
-      <arg value="-cp"/>
-      <arg value="${compiler.jar}:${antlr.lib}:${runtime.src}"/>
-      <arg value="com.redhat.ceylon.compiler.Main"/>
-      <arg value="-d"/>
-      <arg value="${build.classes}"/>
-      <arg value="-src"/>
-      <arg value="${runtime.src}"/>
-      <fileset dir="${runtime.src}/ceylon/language">
-	<include name="*.java"/>
-	<include name="*.ceylon"/>
-      </fileset>
-    </apply>
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
+      <classpath>
+        <pathelement location="${compiler.jar}"/>
+      </classpath>
+    </taskdef>
+    <ceylonc
+       compilerclasspath="${compiler.jar}:${antlr.lib}"
+       srcdir="${runtime.src}"
+       destdir="${build.classes}"/>
   </target>
   
   <!-- Rule to run the parser regression tests -->
