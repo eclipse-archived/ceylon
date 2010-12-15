@@ -378,12 +378,14 @@ TypeConstraints?
             
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
-        
+            
+            <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
             of different supertypes that both refine the same member of a third supertype.
             If two supertypes both declare non-<literal>formal</literal> members that
             refine the same member of a third supertype, the interface must also refine
             the member.</para>
+            -->
             
             <!--
             <para>and the above declaration is equivalent to the following 
@@ -896,11 +898,13 @@ public class Person { ... }</programlisting>
         <para>The schema of the inherited members is formed by substituting type arguments
         specified in the <literal>extends</literal> clause.</para>
         
-        <para>An class may not inherit two non-<literal>formal</literal> members of 
+        <!--
+        <para>A class may not inherit two non-<literal>formal</literal> members of 
         different supertypes that both refine the same member of a third supertype.
         If two supertypes both declare non-<literal>formal</literal> members that
         refine the same member of a third supertype, the class must also refine
         the member.</para>
+        -->
             
         <para>Furthermore, the initializer of the superclass is always executed before the
         initializer of the subclass whenever the subclass is instantiated.</para>
