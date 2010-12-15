@@ -120,7 +120,7 @@
             </listitem>
             <listitem>
                 <para>it is a toplevel declaration in the package containing the program
-                element and is visible to the program element.</para>
+                element.</para>
             </listitem>
         </itemizedlist>
         
