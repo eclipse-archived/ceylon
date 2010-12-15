@@ -17,12 +17,6 @@ public void test(Process p) {
             }
         }
        
-        public void set(Integer x, Integer y, T elem) {
-            ensureCapacity(x);
-            ArrayList<T> slice = data[x];
-            slice[y] := elem;
-        }
-
         public ArrayList<T> value(Integer i) {
             ensureCapacity(i);
             return data[i];
