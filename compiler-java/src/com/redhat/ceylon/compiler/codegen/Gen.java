@@ -749,8 +749,8 @@ public class Gen {
                 superclass = makeIdent(syms.ceylonObjectType);
         }
         else {
-            List<String> name = cdecl.getSuperclass().name().components();
-            superclass = makeIdent(name);
+            CeylonTree.Type type = cdecl.getSuperclass();
+            superclass = convert(type);
         }
 
         if ((cdecl.flags & CeylonTree.EXTENSION) != 0) {
