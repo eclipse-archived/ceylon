@@ -64,9 +64,9 @@
 
         <itemizedlist>
             <listitem>
-                <para>both of the inherited declations are <literal>formal</literal>,
-                and both directly or indirectly refine some member of a common 
-                supertype</para>
+                <para>both of the inherited declations are <literal>formal</literal>
+                and directly or indirectly refine some member of a common 
+                supertype,</para>
             </listitem>
             <listitem>
                 <para>the class or interface contains a declaration that directly 
