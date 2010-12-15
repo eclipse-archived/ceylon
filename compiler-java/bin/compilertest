@@ -11,6 +11,7 @@ class TestHarness:
         self.ceylon = os.path.join(basedir, "bin", "ceylon")
         self.ceylonc = self.ceylon + "c"
         self.testdir = os.path.join(self.basedir, "test")
+        self.workdir = os.path.join(self.basedir, "build", "test", "compiler")
         self.verbosity = 0
 
     def popen(self, *cmd):
@@ -71,13 +72,17 @@ class TestHarness:
 
 class TestCase:
     def __init__(self, dir):
-        self.dir = dir
-        self.expectfile = os.path.join(self.dir, "expect.out")
-        self.actualfile = os.path.join(self.dir, "actual.out")
+        self.srcdir = dir
+        prefix = harness.testdir + os.sep
+        assert dir.startswith(prefix)
+        self.workdir = os.path.join(harness.workdir, dir[len(prefix):])
+        os.makedirs(self.workdir)
+        self.expectfile = os.path.join(self.srcdir, "expect.out")
+        self.actualfile = os.path.join(self.workdir, "actual.out")
 
     def run(self, harness):
         paths = []
-        for dir, dirs, files in os.walk(self.dir):
+        for dir, dirs, files in os.walk(self.srcdir):
             for file in files:
                 ext = file.split(".")[-1]
                 if ext in ("java", "ceylon"):
@@ -86,16 +91,20 @@ class TestCase:
             self.handle_error(harness, "", "nothing to compile\n")
             return
         paths.sort()
-        sp = harness.popen(harness.ceylonc, "-src", self.dir, *paths)
+        sp = harness.popen(
+            harness.ceylonc,
+            "-src", self.srcdir,
+            "-d", self.workdir,
+            *paths)
         out, err = sp.communicate()
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
             return
-        cmdline = os.path.join(self.dir, "cmdline")
+        cmdline = os.path.join(self.srcdir, "cmdline")
         cmdline = open(cmdline, "r").read().strip().split() #XXX
         sp = harness.popen(
             harness.ceylon,
-            "-cp", self.dir,
+            "-cp", self.workdir,
             *cmdline)
         out, err = sp.communicate()
         if sp.returncode != 0:
@@ -115,15 +124,10 @@ class TestCase:
             self.handle_error(harness, out, err)
 
     def handle_success(self, harness):
-        harness.log(self.dir, "success")
-        os.unlink(self.actualfile)
-        for dir, dirs, files in os.walk(self.dir):
-            for file in files:
-                if file.endswith(".class"):
-                    os.unlink(os.path.join(dir, file))
+        harness.log(self.srcdir, "success")
 
     def handle_failure(self, harness, out, err):
-        harness.log(self.dir, "failure")
+        harness.log(self.srcdir, "failure")
         if harness.verbosity >= 1:
             if err:
                 sys.stdout.write(err)
@@ -131,7 +135,7 @@ class TestCase:
                 sys.stdout.write(out)
 
     def handle_error(self, harness, out, err):
-        harness.log(self.dir, "error")
+        harness.log(self.srcdir, "error")
         if harness.verbosity >= 1:
             sys.stdout.write(out)
             sys.stdout.write(err)
