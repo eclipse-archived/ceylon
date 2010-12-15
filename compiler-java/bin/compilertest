@@ -8,8 +8,8 @@ import sys
 class TestHarness:
     def __init__(self, basedir):
         self.basedir = basedir
-        self.ceylonc = os.path.join(basedir, "bin", "ceylonc")
-        self.runtime = os.path.join(self.basedir, "build", "lib", "runtime.jar")
+        self.ceylon = os.path.join(basedir, "bin", "ceylon")
+        self.ceylonc = self.ceylon + "c"
         self.testdir = os.path.join(self.basedir, "test")
         self.verbosity = 0
 
@@ -94,10 +94,9 @@ class TestCase:
         cmdline = os.path.join(self.dir, "cmdline")
         cmdline = open(cmdline, "r").read().strip().split() #XXX
         sp = harness.popen(
-            "java",
-            "-ea",
-            "-cp", ":".join((harness.runtime, self.dir)),
-            "ceylon.language.Launcher", *cmdline)
+            harness.ceylon,
+            "-cp", self.dir,
+            *cmdline)
         out, err = sp.communicate()
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
