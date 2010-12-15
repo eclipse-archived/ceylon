@@ -20,7 +20,13 @@ public class ArrayListImpl<T>
     }
 
     ArrayListImpl() {
+        data = new java.util.ArrayList<T>();
     }
+
+    public ArrayListImpl(Natural initialCapacity) {
+        System.out.println(initialCapacity.intValue());
+        data = new java.util.ArrayList<T>(initialCapacity.intValue());
+     }
 
     public static <N> ArrayListImpl<N> of (N... args) {
         return new ArrayListImpl<N>(args);
@@ -46,7 +52,11 @@ public class ArrayListImpl<T>
     }
 
     public void $set(Integer key, T value) {
-        data.set(key.intValue(), value);
+        data.add(key.intValue(), value);
+    }
+
+    public void set(Integer key, T value) {
+        data.add(key.intValue(), value);
     }
 
     public static <T> ArrayList<T> arrayListOf(T[] args) {
