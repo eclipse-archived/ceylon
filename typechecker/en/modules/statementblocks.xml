@@ -54,8 +54,7 @@
                 the inherited declaration, or</para>
             </listitem>
             <listitem>
-                <para>the inherited declaration is not visible to the class or
-                interface.</para>
+                <para>the inherited declaration is a block local declaration.</para>
             </listitem>
         </itemizedlist>
         
@@ -77,13 +76,10 @@
                 refines the other inherited declaration, or</para>
             </listitem>
             <listitem>
-                <para>at least one of the inherited declarations is not visible 
-                to the class or interface.</para>
+                <para>at least one of the inherited declarations is a block local 
+                declaration.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: we should strive for a visibility model where if
-        X is visible to Y, and Y is visible to Z, then X is visible to Z.</para></comment>
         
     <section id="nameresolution">
         <title>Name resolution</title>
