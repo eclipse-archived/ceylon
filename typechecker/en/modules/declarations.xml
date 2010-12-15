@@ -61,8 +61,8 @@ TypeConstraints?
         <!--<literal>public</literal>--> toplevel method named <literal>hello()</literal> 
         must be defined in a file named <literal>hello.ceylon</literal>. A toplevel
         attribute named <literal>pi</literal> must be defined in a file named
-        <literal>pi.ceylon</literal>. Unlike Java, a compilation unit may contain multiple 
-        toplevel class or method declarations with the same name.</para>
+        <literal>pi.ceylon</literal>. <!--Unlike Java, a compilation unit may contain multiple 
+        toplevel class or method declarations with the same name.--></para>
         
         <para>A toplevel declaration may not be annotated <literal>formal</literal>,
         <literal>default</literal>, <literal>definite</literal>, or
@@ -1106,8 +1106,13 @@ public class Person { ... }</programlisting>
                 <para>is annotated <literal>actual</literal>,</para>
             </listitem>
             <listitem>
-                <para>has the same name as the member class it refines, and
-                either</para>
+                <para>has the same name as the member class it refines, and</para>
+            <listitem>
+                <para>has a parameter list with the same signature as the member 
+                class it refines, after substitution of type arguments specified 
+                in the <literal>extends</literal> or <literal>satisfies</literal>
+                clause, and either</para>
+            </listitem>
             </listitem>
             <listitem>
                 <para>extends the member class it refines, or, alternatively,</para>
@@ -1115,14 +1120,8 @@ public class Person { ... }</programlisting>
             <listitem>
                <para>extends the superclass of the member class it refines and 
                implements all interfaces implemented by the member class it 
-               refines, where the member class it refines is an 
-               <literal>formal</literal> member class with no body, and</para>
-            </listitem>
-            <listitem>
-                <para>has a parameter list with the same signature as the member 
-                class it refines, after substitution of type arguments specified 
-                in the <literal>extends</literal> or <literal>satisfies</literal>
-                clause.</para>
+               refines, where the member class it refines is a 
+               <literal>formal</literal> member class with no body.</para>
             </listitem>
         </itemizedlist>
         
@@ -1133,6 +1132,9 @@ public class Person { ... }</programlisting>
         refine some class defined by a supertype, and the class it refines 
         must be either <literal>formal</literal> or <literal>default</literal>.</para>
             
+        <para>A member class may not, directly or indirectly, refine two different
+        member classes not themselves annotated <literal>actual</literal>.</para>
+        
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
@@ -1888,7 +1890,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>A class may not not declare of inherit a method with the same name as
+            <para>A class may not not declare or inherit a method with the same name as
             an attribute it declares or inherits.</para>
             
             <para>An invocation expression is resolved to a particular overloaded method 

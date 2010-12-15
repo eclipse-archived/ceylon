@@ -14,21 +14,22 @@
     <para>There exists just one exception to this rule: a class body may not end in a 
     control directive.</para>
     
-    <comment><para>TODO: a named argument list looks very much like a block, but is not 
-    currently defined that way. The language would be more regular if we decided to just 
-    make it a block.</para></comment>
+    <comment><para>TODO: a named argument list looks very much like a block, but is 
+    not currently defined that way. The language would be more regular if we decided to 
+    just make it a block.</para></comment>
     
     <comment><para>TODO: Note that Java does not let you define an interface inside a 
-    method, so we should either add the same restriction, or figure out workaround. Java 
-    doesn't let you define a method inside a method either, but we can wrap the nested 
-    method in an anonymous class.</para></comment>
+    method, so we should either add the same restriction, or figure out workaround. 
+    Java doesn't let you define a method inside a method either, but we can wrap the 
+    nested method in an anonymous class.</para></comment>
     
-    <comment><para>TODO: Note that in Java, all nested classes of interfaces are considered 
-    static inner classes. This results in a very funny semantic for a class nested inside 
-    an interface nested inside another class: the class does not have access to the members 
-    of the containing class. In Ceylon, a nested class is allowed to invoke all its 
-    containing types. We need to figure out how to implement this. Also consider the related 
-    case of a class nested inside an interface nested inside a method.</para></comment>
+    <comment><para>TODO: Note that in Java, all nested classes of interfaces are 
+    considered static inner classes. This results in a very funny semantic for a class 
+    nested inside an interface nested inside another class: the class does not have 
+    access to the members of the containing class. In Ceylon, a nested class is allowed 
+    to invoke all its containing types. We need to figure out how to implement this. 
+    Also consider the related case of a class nested inside an interface nested inside 
+    a method.</para></comment>
             
     <section id="declarationvisibilityandblockstructure">
         <title>Declaration visibility and block structure</title>
@@ -53,11 +54,28 @@
                 declaration, or</para>
             </listitem>
             <listitem>
-                <para>the inherited declaration is not visible to the 
-                type.</para>
+                <para>the inherited declaration is not visible to the class or
+                interface.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A class or interface may not inherit two declarations with the
+        same name unless either:</para>
 
+        <itemizedlist>
+            <listitem>
+                <para>one of the inherited declarations refines the other 
+                inherited declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>at least one of the inherited declarations is not visible 
+                to the class or interface.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: we should strive for a visibility model where if
+        X is visible to Y, and Y is visible to Z, then X is visible to Z.</para></comment>
+        
     <section id="nameresolution">
         <title>Name resolution</title>
         
@@ -66,8 +84,8 @@
         element refers to a declaration elsewhere: a class, interface, type parameter, 
         method, attribute, or local.</para>
         
-        <para>
-        A declaration is <emphasis>in scope</emphasis> at a program element if:</para>
+        <para>A declaration is <emphasis>in scope</emphasis> at a program element if
+        and only if:</para>
         
         <itemizedlist>
             <listitem>
