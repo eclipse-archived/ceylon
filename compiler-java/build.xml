@@ -131,7 +131,7 @@
   </target>
 
   <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="compiler.jar">
+  <target name="test.compiler" depends="compiler.jar,runtime.jar">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 
