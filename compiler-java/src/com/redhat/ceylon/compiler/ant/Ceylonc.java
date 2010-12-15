@@ -43,10 +43,10 @@ public class Ceylonc extends MatchingTask {
     private File destDir;
     private File[] compileList;
 
-    // TODO: There must be a better way to get the classpath for the
+    // TODO: There must be a better way to get the path for the Ceylon
     // compiler into the compile() method.  Once that better way is
-    // found, remove all references to compilerClasspath in this file.
-    private Path compilerClasspath;
+    // found, remove all references to compilerExecutable in this file.
+    private File compilerExecutable;
 
     /**
      * Set the source directories to find the source Java and Ceylon files.
@@ -73,12 +73,8 @@ public class Ceylonc extends MatchingTask {
      * Set the classpath of the Ceylon compiler and its associated libraries.
      * @param classpath the classpath
      */
-    public void setCompilerclasspath(Path classpath) {
-        if (compilerClasspath == null) {
-            compilerClasspath = classpath;
-        } else {
-            compilerClasspath.append(classpath);
-        }
+    public void setCompiler(File executable) {
+        compilerExecutable = executable;
     }
 
     /**
@@ -180,12 +176,8 @@ public class Ceylonc extends MatchingTask {
                                      + "or is not a directory", getLocation());
         }
 
-        if (compilerClasspath == null) {
-            throw new BuildException("compilerclasspath attribute must be set!",
-                                     getLocation());
-        }
-        if (compilerClasspath.size() == 0) {
-            throw new BuildException("compilerclasspath attribute must be set!",
+        if (compilerExecutable == null) {
+            throw new BuildException("compiler attribute must be set!",
                                      getLocation());
         }
     }
@@ -198,11 +190,7 @@ public class Ceylonc extends MatchingTask {
             return;
 
         Commandline cmd = new Commandline();
-        cmd.setExecutable("java");
-        cmd.createArgument().setValue("-ea");
-        cmd.createArgument().setValue("-cp");
-        cmd.createArgument().setValue(compilerClasspath.toString());
-        cmd.createArgument().setValue("com.redhat.ceylon.compiler.Main");
+        cmd.setExecutable(compilerExecutable.getAbsolutePath());
         cmd.createArgument().setValue("-d");
         cmd.createArgument().setValue(destDir.getAbsolutePath());
         cmd.createArgument().setValue("-src");

@@ -91,7 +91,7 @@
       </classpath>
     </taskdef>
     <ceylonc
-       compilerclasspath="${compiler.jar}:${antlr.lib}"
+       compiler="bin/ceylonc"
        srcdir="${runtime.src}"
        destdir="${build.classes}"/>
   </target>
