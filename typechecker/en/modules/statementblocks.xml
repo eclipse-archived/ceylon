@@ -50,8 +50,8 @@
             
         <itemizedlist>
             <listitem>
-                <para>the contained declaration refines the inherited 
-                declaration, or</para>
+                <para>the contained declaration directly or indirectly refines 
+                the inherited declaration, or</para>
             </listitem>
             <listitem>
                 <para>the inherited declaration is not visible to the class or
@@ -64,8 +64,8 @@
 
         <itemizedlist>
             <listitem>
-                <para>one of the inherited declarations refines the other 
-                inherited declaration, or</para>
+                <para>one of the inherited declarations directly or indirectly 
+                refines the other inherited declaration, or</para>
             </listitem>
             <listitem>
                 <para>at least one of the inherited declarations is not visible 
