@@ -23,6 +23,7 @@
 
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
+  <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -95,6 +96,17 @@
        destdir="${build.classes}"/>
   </target>
   
+  <!-- Rule to build runtime jar -->
+  <target name="runtime.jar" depends="runtime.classes">
+    <mkdir dir="${build.lib}"/>
+    <jar destfile="${runtime.jar}">
+      <fileset dir="${build.classes}">
+        <include name="ceylon/**"/>
+        <include name="com/redhat/ceylon/compiler/test/**"/>
+      </fileset>
+    </jar>
+  </target>
+
   <!-- Rule to run the parser regression tests -->
   <target name="test.parser" depends="compiler.jar">
     <mkdir dir="${parser.test.dst}"/>
