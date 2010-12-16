@@ -35,3 +35,11 @@ to further increase verbosity.  So far:
  -vv  As above, but also prints the commands executed by the test
       harness.  Built files are retained, so all commands printed
       this way should be repeatable on the command line.
+
+The following tests currently fail:
+
+  test/bugs/000001
+  test/bugs/000002
+  test/expressions/102
+  test/imports/002
+  test/overloads/002
