@@ -1,25 +1,7 @@
 #!/usr/bin/env python
 
-import os
-import sys
+import ceylonwrap
 
-basedir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
-
-args = sys.argv[1:]
-tmp = []
-classpath = ""
-
-while args:
-    arg = args.pop(0)
-    if arg in ("-cp", "-classpath"):
-        classpath = args.pop(0)
-    else:
-        tmp.append(arg)
-
-if classpath:
-    classpath = ":" + classpath
-classpath = os.path.join(basedir, "build", "lib", "runtime.jar") + classpath
-
-args = ["java", "-ea", "-cp", classpath, "ceylon.language.Launcher"] + tmp
-
-os.execvp(args[0], args)
+command = ceylonwrap.Wrapper()
+command.addJar("build", "lib", "runtime.jar")
+command.run("ceylon.language.Launcher")
