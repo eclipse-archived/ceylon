@@ -6,6 +6,10 @@ import subprocess
 import sys
 
 class TestHarness:
+    CMDLINE   = "cmdline"
+    EXPECTOUT = "expect.out"
+    ACTUALOUT = "actual.out"
+    
     def __init__(self, basedir):
         self.basedir = basedir
         self.ceylon = os.path.join(basedir, "bin", "ceylon")
@@ -23,7 +27,7 @@ class TestHarness:
     def find_test_cases(self, restrictions):
         paths = []
         for dir, dirs, files in os.walk(self.testdir):
-            if "cmdline" in files:
+            if self.CMDLINE in files:
                 if restrictions:
                     for restriction in restrictions:
                         if (dir + os.sep).startswith(restriction):
@@ -76,9 +80,10 @@ class TestCase:
         prefix = harness.testdir + os.sep
         assert dir.startswith(prefix)
         self.workdir = os.path.join(harness.workdir, dir[len(prefix):])
-        os.makedirs(self.workdir)
-        self.expectfile = os.path.join(self.srcdir, "expect.out")
-        self.actualfile = os.path.join(self.workdir, "actual.out")
+        if not os.path.isdir(self.workdir):
+            os.makedirs(self.workdir)
+        self.expectfile = os.path.join(self.srcdir, harness.EXPECTOUT)
+        self.actualfile = os.path.join(self.workdir, harness.ACTUALOUT)
 
     def run(self, harness):
         paths = []
@@ -100,7 +105,7 @@ class TestCase:
         if sp.returncode != 0:
             self.handle_error(harness, out, err)
             return
-        cmdline = os.path.join(self.srcdir, "cmdline")
+        cmdline = os.path.join(self.srcdir, harness.CMDLINE)
         cmdline = open(cmdline, "r").read().strip().split() #XXX
         sp = harness.popen(
             harness.ceylon,
