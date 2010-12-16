@@ -59,7 +59,7 @@ public class ArrayListImpl<T>
         data.add(key.intValue(), value);
     }
 
-    public static <T> ArrayList<T> arrayListOf(T[] args) {
+    public static <T> ArrayList<T> arrayListOf(T... args) {
         ArrayList l = new ArrayList();
         l.data = new java.util.ArrayList<T>(java.util.Arrays.asList(args));
         return l;
