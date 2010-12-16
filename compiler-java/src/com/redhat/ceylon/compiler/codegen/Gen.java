@@ -303,7 +303,7 @@ public class Gen {
         topLev.sourcefile = t.file;
         topLev.isCeylonProgram = true;
 
-        // System.out.println(topLev);
+        System.out.println(topLev);
         return topLev;
     }
 
@@ -1566,7 +1566,12 @@ public class Gen {
         }
 
         case CeylonParser.IS:
-            return at(op).TypeTest(convertExpression(operands[0]), convertExpression(operands[1]));
+            // FIXME: Nasty cast here.  We can't call convertExpression()operands[1])
+            // because that returns TypeName.class, not simply TypeName.
+            CeylonTree.TypeName name = (CeylonTree.TypeName)operands[1];
+            return at(op).Apply(null, makeSelect(makeIdent(syms.ceylonBooleanType), "instance"),
+                    List.<JCExpression>of(at(op).TypeTest(convertExpression(operands[0]),
+                            makeIdent(name.components))));
 
         default:
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
