@@ -1,7 +1,7 @@
 public void test(Process p) {
     Integer size = 10;
 
-    Integer[] a = ArrayList<Integer>();
+    ArrayList<Integer> a = ArrayList<Integer>();
 
     mutable Integer i := 0;
     while (i < size) {
