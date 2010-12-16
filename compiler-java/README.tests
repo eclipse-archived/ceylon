@@ -2,12 +2,14 @@ The compiler regression test harness is the file "bin/compilertest".
 
 You can execute it directly, or by invoking Ant.
 
-Any directory under the top-level directory "test" containing a
-file called "expect.out" is a test case.  When a test case is run,
-the harness will compile all *.ceylon and *.java files under that
-directory and compare the output of the compiler to the contents
-of expect.out.  If they are different then the compiler's output
-will be saved in a file called "actual.out".
+Any directory under the top-level directory "test" containing a file
+called "cmdline" and a file called "expect.out" is a test case.  When
+a test case is run, the harness will compile all *.ceylon and *.java
+files under that directory, placing the resulting class files in a
+directory under "build/test/compiler/".  The command specified in the
+"cmdline" file is then executed, and the resulting output is stored in
+a file called "actual.out".  If the contents of actual.out match the
+contents of expect.out then the test passed.
 
 Note that a sneaky way to make a new test is to put the Java and
 Ceylon files into a directory with an empty expect.out, then run
@@ -30,4 +32,6 @@ it to be more verbose.  The option can be specified multiple times,
 to further increase verbosity.  So far:
 
  -v   Prints detailed output when tests do not succeed.
- -vv  As above, but also prints the commands it is executing.
+ -vv  As above, but also prints the commands executed by the test
+      harness.  Built files are retained, so all commands printed
+      this way should be repeatable on the command line.

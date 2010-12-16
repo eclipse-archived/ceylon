@@ -57,14 +57,20 @@ implements JavaFileObject
       * @return {@code true} if this file object is compatible; false
       * otherwise
       */
-     public boolean isNameCompatible(String simpleName, Kind kind)
-     {
-         if (kind == Kind.SOURCE)
-         {
+     public boolean isNameCompatible(String simpleName, Kind kind) {
+         if (kind == Kind.SOURCE) {
              String name = f.getName();
              String n = simpleName + ".ceylon";
              if (name.endsWith(n)) {
                  return true;
+             }
+
+             int limit = simpleName.indexOf("$$overload");
+             if (limit >= 0) {
+                 n = simpleName.substring(0, limit) + ".ceylon";
+                 if (name.endsWith(n)) {
+                     return true;
+                 }
              }
          }
 

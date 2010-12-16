@@ -1,14 +1,16 @@
-#!/bin/sh
+#!/usr/bin/env python
 
-basedir=$(dirname $0)
-if [ ! "$basedir" ]; then
-  echo >&2 "error: can't locate self"
-  exit 1
-fi
-basedir=$(cd $basedir/.. && pwd)
+import ceylonwrap
 
-rjar=$basedir/build/lib/runtime.jar
-cjar=$basedir/build/lib/compiler.jar
-ajar=$basedir/lib/antlrworks-1.3.1.jar
-
-exec java -ea -cp $rjar:$cjar:$ajar com.redhat.ceylon.compiler.Main $@
+command = ceylonwrap.Wrapper()
+# XXX start of awful mangling that clearly indicates I misdesigned the wrapper
+classpath = command.user_cp
+command.user_cp = []
+command.addJar("build", "lib", "runtime.jar")
+classpath = command.wrap_cp + classpath
+command.addJar("build", "lib", "compiler.jar")
+command.addJar("lib", "antlrworks-1.3.1.jar")
+command.args.insert(0, "-cp")
+command.args.insert(1, ":".join(classpath))
+# XXX end of awful mangling
+command.run("com.redhat.ceylon.compiler.Main")
