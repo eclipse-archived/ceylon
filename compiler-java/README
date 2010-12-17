@@ -1,0 +1,26 @@
+To build and test the compiler and runtime just run ant.
+
+Note that some of the tests currently fail.  There is a list
+of tests that are expected to fail at the end of README.tests.
+
+The compiler and runtime may be invoked using the scripts
+bin/ceylonc and bin/ceylon:
+
+  bin/ceylonc -src samples samples/helloworld.ceylon 
+  bin/ceylon -cp samples helloworld
+
+The -src argument to the compiler is required in order for
+the compiler to figure out each class's full name.  It is
+a colon-separated path, much like the -classpath argument.
+
+Once built, the compiler and runtime live in these jars:
+
+  build/lib/compiler.jar
+  build/lib/runtime.jar
+
+There is an Ant task for building Ceylon projects.  It will
+compile both Ceylon and Java sources into class files.  Look
+in the runtime.classes rule of build.xml to see how it works.
+
+If you want to build and run the Ceylon compiler in Eclipse
+then please see README.eclipse for setup instructions.
