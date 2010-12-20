@@ -13,6 +13,25 @@ The -src argument to the compiler is required in order for
 the compiler to figure out each class's full name.  It is
 a colon-separated path, much like the -classpath argument.
 
+There is a useful option, -debugceylon, that displays the Java(ish)
+code that the compiler generates.  Like this:
+
+ $ ./bin/ceylonc -debugceylon -src samples samples/helloworld.ceylon 
+
+public class helloworld extends .ceylon.language.Object {
+    
+    public helloworld() {
+        super();
+    }
+    
+    public static void run(final Process process) {
+        process.writeLine(.ceylon.language.String.instance("Hello World"));
+    }
+    static {
+        addAnnotation(helloworld.class, .ceylon.language.String.instance("helloworld"), doc.run(new .ceylon.language.String[]{.ceylon.language.String.instance("The classic Hello World program")}));
+    }
+}
+
 Once built, the compiler and runtime live in these jars:
 
   build/lib/compiler.jar
