@@ -5,6 +5,7 @@ class Wrapper:
     def __init__(self):
         self.basedir = os.path.dirname(
             os.path.dirname(os.path.realpath(sys.argv[0])))
+        self.boot_cp = []
         self.wrap_cp = []
         self.user_cp = []
         self.args = []
@@ -27,8 +28,11 @@ class Wrapper:
         self.wrap_cp.append(os.path.join(self.basedir, *parts))
 
     def run(self, mainclass):
-        args = ["java",
-                "-ea",
-                "-cp", ":".join(self.wrap_cp + self.user_cp),
-                mainclass] + self.args
+        args = ["java", "-ea"]
+        if self.boot_cp:
+            args.append(":".join(["-Xbootclasspath/p"] + self.boot_cp))
+        args.append("-cp")
+        args.append(":".join(self.wrap_cp + self.user_cp))
+        args.append(mainclass)
+        args.extend(self.args)
         os.execvp(args[0], args)
