@@ -1,6 +1,6 @@
 doc "Test method invocation"
 void test(Process process) {
-    Test t = Test(process);
+    TestClass t = TestClass(process);
 
     process.writeLine("Positional:");
     t.run("One", "Two", "Three");

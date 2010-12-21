@@ -1,4 +1,4 @@
-Test {
+TestClass {
   ceylon.language.Integer x = ceylon.language.Integer {
     long value = 17
   }
@@ -6,7 +6,7 @@ Test {
     java.lang.String value = "xyz?"
   }
 }
-Test {
+TestClass {
   ceylon.language.Integer x = ceylon.language.Integer {
     long value = 23
   }
@@ -14,7 +14,7 @@ Test {
     java.lang.String value = "hello!"
   }
 }
-Test {
+TestClass {
   ceylon.language.Integer x = ceylon.language.Integer {
     long value = 99
   }

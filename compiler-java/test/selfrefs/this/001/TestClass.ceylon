@@ -1,12 +1,12 @@
 import com.redhat.ceylon.compiler.test.dump;
 
-doc "Test \"this\""
-class Test(Integer x, String y) {
+doc "TestClass \"this\""
+class TestClass(Integer x, String y) {
     void test1() {
         dump(this);
     }
 
-    Test test2() {
+    TestClass test2() {
         return this;
     }
 

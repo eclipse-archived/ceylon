@@ -1,5 +1,5 @@
-doc "Test method invocation"
-class Test(Process p) {
+doc "TestClass method invocation"
+class TestClass(Process p) {
     Process process = p;
 
     void run(String a, String b, String c) {
