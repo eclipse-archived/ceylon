@@ -1305,29 +1305,21 @@ public class Resolve {
             if (sym.kind >= WRONG_MTHS)
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
         }
-        if (Context.isCeylon() && sym.kind >= WRONG_MTHS) {
+        if (Context.isCeylon() && sym.attribute(syms.ceylonToplevelOverloadType.tsym) != null) {
             assert site.getKind() == TypeKind.DECLARED;
             ClassType siteclass = (ClassType) site;
             Name sitename = siteclass.tsym.getQualifiedName();
-            if (!sitename.toString().contains("$$")) {
-                StringBuilder builder = new StringBuilder("$$");
-                for (Type arg : argtypes) {
-                    String type = arg.tsym.getQualifiedName().toString().replace('.', '$');
-                    builder.append(type.length());
-                    builder.append(type);
-                }
-                Name mangled_name = sitename.append(names.fromString(builder.toString()));
-                Symbol mangled_symbol = loadClass(env, mangled_name);
-                if (mangled_symbol.getKind() == ElementKind.CLASS) {
-                    TypeSymbol class_symbol = (TypeSymbol) mangled_symbol;
-                    Type mangled_site = new ClassType(site.getEnclosingType(), siteclass.typarams_field, class_symbol);
-                    if (types.isSubtype(mangled_site, site)) {
-                        mangled_symbol = resolveConstructor(pos, env, mangled_site, argtypes, typeargtypes);
-                        if (mangled_symbol.kind == MTH)
-                            throw new ManglingRequiredException(mangled_symbol.owner);
-                    }
-                }
+            assert !sitename.toString().contains("$$");
+            StringBuilder builder = new StringBuilder("$$");
+            for (Type arg : argtypes) {
+                String type = arg.tsym.getQualifiedName().toString().replace('.', '$');
+                builder.append(type.length());
+                builder.append(type);
             }
+            Name mangled_name = sitename.append(names.fromString(builder.toString()));
+            Symbol mangled_symbol = loadClass(env, mangled_name);
+            assert mangled_symbol.getKind() == ElementKind.CLASS;
+            throw new ManglingRequiredException(mangled_symbol);
         }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, names.init, true, argtypes, typeargtypes);
