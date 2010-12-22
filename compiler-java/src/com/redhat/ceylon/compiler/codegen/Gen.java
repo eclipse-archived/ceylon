@@ -640,7 +640,12 @@ public class Gen {
                         make.Literal("This constructor is a marker and should never be called")),
                     null)));
 
-            defs.append(at(decl).MethodDef(make.Modifiers(convertDeclFlags(overload.flags)),
+            List<JCAnnotation> annotations = List.<JCAnnotation>of(
+                make.Annotation(makeIdent(syms.ceylonToplevelOverloadType),
+                                List.<JCExpression>nil()));
+
+            defs.append(at(decl).MethodDef(make.Modifiers(convertDeclFlags(overload.flags),
+                                                          annotations),
                                            names.init,
                                            at(decl).TypeIdent(VOID),
                                            List.<JCTypeParameter>nil(),
