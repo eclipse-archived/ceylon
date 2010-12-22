@@ -623,6 +623,34 @@ public class Gen {
         return convert(t);
     }
 
+    private void insertOverloadedClassConstructors(final ListBuffer<JCTree> defs,
+                                                   final CeylonTree.ClassDeclaration decl) {
+        for (CeylonTree.ClassDeclaration overload: decl.toplevelOverloads) {
+            List<JCVariableDecl> params = List.<JCVariableDecl>nil();
+            for (CeylonTree.FormalParameter param: overload.params) {
+                params = params.append(at(decl).VarDef(make.Modifiers(0),
+                                                       names.fromString(param.name()),
+                                                       convert(param.type()),
+                                                       null));
+            }
+
+            List<JCStatement> stmts = List.<JCStatement>of(
+                at(decl).Throw(at(decl).NewClass(
+                    null, null, makeIdent(syms.runtimeExceptionType), List.<JCExpression>of(
+                        make.Literal("This constructor is a marker and should never be called")),
+                    null)));
+
+            defs.append(at(decl).MethodDef(make.Modifiers(convertDeclFlags(overload.flags)),
+                                           names.init,
+                                           at(decl).TypeIdent(VOID),
+                                           List.<JCTypeParameter>nil(),
+                                           params,
+                                           List.<JCExpression>nil(),
+                                           at(decl).Block(0, stmts),
+                                           null));
+        }
+    }
+
     public JCClassDecl convert(final CeylonTree.ClassOrInterfaceDeclaration cdecl) {
         final ListBuffer<JCVariableDecl> params =
             new ListBuffer<JCVariableDecl>();
@@ -748,6 +776,8 @@ public class Gen {
                     at(cdecl).Block(0, initStmts.toList().appendList(stmts.toList())), null);
 
             defs.append(meth);
+
+            insertOverloadedClassConstructors(defs, (CeylonTree.ClassDeclaration) cdecl);
         }
 
         if (annotations.length() > 0) {
