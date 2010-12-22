@@ -1103,6 +1103,13 @@ public abstract class CeylonTree {
         public boolean isInterface() {
             return false;
         }
+
+        @NotAChild
+        public List<ClassDeclaration> toplevelOverloads = List.<ClassDeclaration>nil();
+
+        public void addToplevelOverload(ClassDeclaration decl) {
+            toplevelOverloads = toplevelOverloads.append(decl);
+        }
     }
 
     /**

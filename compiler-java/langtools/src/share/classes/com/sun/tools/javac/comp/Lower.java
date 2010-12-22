@@ -2039,7 +2039,7 @@ public class Lower extends TreeTranslator {
         tree.mods.flags &= ClassFlags;
 
         // If this is an overloaded top-level class then fix up the names.
-        if (Context.isCeylon() && tree.isOverloadedToplevelCeylonClass) {
+        if (Context.isCeylon() && tree.name.toString().contains("$$overload")) {
             JCMethodDecl constructor = null;
             for (JCTree def : tree.defs) {
                 if (def.getKind() == Kind.METHOD) {

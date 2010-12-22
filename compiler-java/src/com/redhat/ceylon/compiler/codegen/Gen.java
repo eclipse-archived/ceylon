@@ -244,7 +244,38 @@ public class Gen {
         }
     }
 
+    private void handleOverloadedToplevelClasses(CeylonTree.CompilationUnit cu) {
+        CeylonTree.ClassDeclaration rootDecl = null;
+        String rootName = null;
+
+        for (CeylonTree.ClassDeclaration decl : cu.classDecls) {
+            String name = decl.nameAsString();
+            if (rootDecl == null) {
+                rootDecl = decl;
+                rootName = name;
+            }
+            else if (name.equals(rootName)) {
+                rootDecl.addToplevelOverload(decl);
+
+                TypeName tn = (TypeName) decl.name;
+                List<String> tmp = List.<String>nil();
+                int countdown = tn.components.size();
+                for (String component : tn.components) {
+                    if (--countdown == 0) {
+                        component += "$$overload";
+                        component += new Integer(rootDecl.toplevelOverloads.size()).toString();
+                    }
+                    tmp = tmp.append(component);
+                }
+                tn.components = tmp;
+            }
+        }
+    }
+
     public JCCompilationUnit convert(CeylonTree.CompilationUnit t) {
+        if (t.classDecls != null)
+            handleOverloadedToplevelClasses(t);
+
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
 
         t.visitChildren(new CeylonTree.Visitor () {
@@ -261,23 +292,6 @@ public class Gen {
                 methodClass(null, decl, defs, true);
             }
         });
-
-        // Mark overloaded top-level classes and make their names unique
-        JCClassDecl rootClass = null;
-        int overloadCount = 0;
-        for (JCTree def : defs) {
-            if (def.getKind() == Kind.CLASS) {
-                JCClassDecl classDef = (JCClassDecl) def;
-                if (rootClass == null) {
-                    rootClass = classDef;
-                }
-                else if (classDef.name.equals(rootClass.name)) {
-                    classDef.name = classDef.name.append(
-                        names.fromString("$$overload" + new Integer(++overloadCount).toString()));
-                    classDef.isOverloadedToplevelCeylonClass = true;
-                }
-            }
-        }
 
         String[] prefixes = fileManager.getSourcePath();
         JCExpression pkg = null;

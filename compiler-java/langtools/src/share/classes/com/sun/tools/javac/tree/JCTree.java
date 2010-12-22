@@ -607,8 +607,6 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public int getTag() {
             return CLASSDEF;
         }
-
-        public boolean isOverloadedToplevelCeylonClass;
     }
 
     /**
