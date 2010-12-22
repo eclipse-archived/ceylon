@@ -8,3 +8,9 @@ public class Multi(Natural count) extends Multi() {
         p.writeLine("I am the child");
     }
 }
+class Test() {
+    void test(Process p) {
+        Multi().test(p);
+        Multi(4).test(p);
+    }
+}
