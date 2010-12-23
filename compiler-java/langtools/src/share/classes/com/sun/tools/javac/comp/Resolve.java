@@ -1306,13 +1306,15 @@ public class Resolve {
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
         }
         if (Context.isCeylon() && sym.attribute(syms.ceylonToplevelOverloadType.tsym) != null) {
+            assert sym.getKind() == ElementKind.CONSTRUCTOR;
+            MethodSymbol marker_symbol = (MethodSymbol) sym;
             assert site.getKind() == TypeKind.DECLARED;
             ClassType siteclass = (ClassType) site;
             Name sitename = siteclass.tsym.getQualifiedName();
             assert !sitename.toString().contains("$$");
             StringBuilder builder = new StringBuilder("$$");
-            for (Type arg : argtypes) {
-                String type = arg.tsym.getQualifiedName().toString().replace('.', '$');
+            for (VarSymbol arg: marker_symbol.params()) {
+                String type = arg.type.tsym.getQualifiedName().toString().replace('.', '$');
                 builder.append(type.length());
                 builder.append(type);
             }
