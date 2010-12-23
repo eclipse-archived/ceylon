@@ -1958,6 +1958,25 @@ public class ClassReader extends ClassFile implements Completer {
      */
     public ClassSymbol loadClass(Name flatname) throws CompletionFailure {
         boolean absent = classes.get(flatname) == null;
+        if (absent && Context.isCeylon() && flatname.toString().contains("$$")) {
+            // If this is Ceylon, and flatname refers to an overloaded
+            // toplevel class that is currently being compiled, then
+            // the class will have been stored under its internally
+            // unique name (eg Multi$$overload1) rather than its final
+            // mangled name (eg Multi$$23ceylon$language$Natural).  We
+            // check for this, and add a second entry to the hashtable
+            // with the final mangled name if we find the class.
+            for (Map.Entry<Name, ClassSymbol> entry: classes.entrySet()) {
+                ClassSymbol sym = entry.getValue();
+                if (sym.flatname.equals(flatname)) {
+
+                    assert entry.getKey().toString().contains("$$overload");
+                    classes.put(flatname, sym);
+                    absent = false;
+                    break;
+                }
+            }
+        }
         ClassSymbol c = enterClass(flatname);
         if (c.members_field == null && c.completer != null) {
             try {
