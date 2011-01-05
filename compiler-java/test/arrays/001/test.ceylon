@@ -10,7 +10,7 @@ public void test(Process p) {
     }
 
     while (--i >= 0) {
-        p.writeLine(i);
+        p.writeLine(a[i]);
     }
 
     p.writeLine("");
