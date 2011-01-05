@@ -42,4 +42,5 @@ The following tests currently fail:
   test/bugs/000002
   test/expressions/102
   test/imports/002
-  test/overloads/002
+  test/loops/001
+  test/nestedmethods/002
