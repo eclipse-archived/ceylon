@@ -685,6 +685,34 @@ public class Grok extends CeylonTree.Visitor {
         current.context.setIfTrue(tree.block);
     }
 
+    public void visit(CeylonTree.ForStatement tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.append(tree);
+    }
+
+    public void visit(CeylonTree.ForIterator tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.setIterator(tree);
+    }
+
+    public void visit(CeylonTree.ForContainment tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.setContainment(tree);
+    }
+
+    public void visit(CeylonTree.LoopBlock tree) {
+        current.push(tree);
+        inner(tree);
+        current.pop();
+        current.context.setLoopBlock(tree.block);
+    }
+
     public void visit(CeylonTree.AttributeSetter tree) {
         current.push(tree);
         inner(tree);

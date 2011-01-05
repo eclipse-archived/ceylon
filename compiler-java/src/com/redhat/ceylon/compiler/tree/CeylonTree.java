@@ -419,6 +419,18 @@ public abstract class CeylonTree {
         bomb();
     }
 
+    public void setIterator(ForIterator iter) {
+        bomb();
+    }
+
+    public void setContainment(ForContainment block) {
+        bomb();
+    }
+
+    public void setLoopBlock(CeylonTree block) {
+        bomb();
+    }
+
     void pushType(Type t) {
         bomb();
     }
@@ -1422,6 +1434,13 @@ public abstract class CeylonTree {
      * A for containment
      */
     public static class ForContainment extends CeylonTree {
+        public CeylonTree operand;
+
+        public void append(CeylonTree expr) {
+            assert operand == null;
+            operand = expr;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1429,13 +1448,46 @@ public abstract class CeylonTree {
      * A for iterator
      */
     public static class ForIterator extends CeylonTree {
+        public Type type;
+        public MemberName name;
+        public ForContainment containment;
+
+        public void pushType(Type type) {
+            assert this.type == null;
+            this.type = type;
+        }
+
+        public void append(CeylonTree name) {
+            assert this.name == null;
+            assert name instanceof MemberName;
+            this.name = (MemberName) name;
+        }
+
+        public void setContainment(ForContainment c) {
+            assert containment == null;
+            containment = c;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
     /**
      * A for statement
      */
-    public static class ForStatement extends CeylonTree {
+    public static class ForStatement extends ControlStructure {
+        public ForIterator iterator;
+        public Block block;
+
+        public void setIterator(ForIterator iter) {
+            assert(iterator == null);
+            iterator = iter;
+        }
+
+        public void setLoopBlock(CeylonTree block) {
+            assert(this.block == null);
+            this.block = (Block) block;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
@@ -1842,6 +1894,13 @@ public abstract class CeylonTree {
      * A loop block
      */
     public static class LoopBlock extends CeylonTree {
+        public CeylonTree block;
+
+        public void append(CeylonTree block) {
+            assert this.block == null;
+            this.block = block;
+        }
+
         public void accept(Visitor v) { v.visit(this); }
     }
 
