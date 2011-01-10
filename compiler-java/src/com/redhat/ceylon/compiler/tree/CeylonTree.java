@@ -1475,12 +1475,12 @@ public abstract class CeylonTree {
      * A for statement
      */
     public static class ForStatement extends ControlStructure {
-        public ForIterator iterator;
+        public ForIterator iter;
         public Block block;
 
         public void setIterator(ForIterator iter) {
-            assert(iterator == null);
-            iterator = iter;
+            assert(this.iter == null);
+            this.iter = iter;
         }
 
         public void setLoopBlock(CeylonTree block) {
