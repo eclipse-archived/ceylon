@@ -602,6 +602,11 @@ public class Gen {
                                 List.<JCExpression>of(type));
     }
 
+    JCExpression iteratorType(JCExpression type) {
+        return make().TypeApply(makeIdent(syms.ceylonIteratorType),
+                                List.<JCExpression>of(type));
+    }
+
     JCVariableDecl convert(CeylonTree.FormalParameter param) {
         at(param);
         Name name = names.fromString(param.name());
@@ -987,6 +992,9 @@ public class Gen {
         public void visit(CeylonTree.WhileStatement stat) {
             stmts.append(convert(cdecl, stat));
         }
+        public void visit(CeylonTree.ForStatement stat) {
+            stmts.append(convert(cdecl, stat));
+        }
         public void visit(CeylonTree.MemberDeclaration decl) {
             for (JCTree def: convert(cdecl, decl))
                  stmts.append((JCStatement)def);
@@ -1236,6 +1244,69 @@ public class Gen {
             return result;
         }
     }
+
+    JCStatement convert(CeylonTree.ClassOrInterfaceDeclaration cdecl, CeylonTree.ForStatement stmt) {
+        JCExpression item_type = variableType(stmt.iter.type, null);
+
+        // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
+        JCVariableDecl iter_decl = at(stmt).VarDef(
+            make.Modifiers(0),
+            names.fromString(tempName()),
+            iteratorType(item_type),
+            at(stmt).Apply(null,
+                           at(stmt).Select(convert((MemberName) stmt.iter.containment.operand),
+                                           names.fromString("iterator")),
+                           List.<JCExpression>nil()));
+        List<JCStatement> outer = List.<JCStatement>of(iter_decl);
+        JCIdent iter = at(stmt).Ident(iter_decl.getName());
+
+        // ceylon.language.Optional<T> $ceylontmpY = $ceylontmpX.head();
+        JCVariableDecl optional_item_decl = at(stmt).VarDef(
+            make.Modifiers(FINAL),
+            names.fromString(tempName()),
+            optionalType(item_type),
+            at(stmt).Apply(null,
+                           at(stmt).Select(iter, names.fromString("head")),
+                           List.<JCExpression>nil()));
+        List<JCStatement> while_loop = List.<JCStatement>of(optional_item_decl);
+        JCIdent optional_item = at(stmt).Ident(optional_item_decl.getName());
+
+        // T n = $ceylontmpY.t;
+        JCVariableDecl item_decl = at(stmt).VarDef(
+                make.Modifiers(0),
+                names.fromString(stmt.iter.name.asString()),
+                item_type,
+                at(stmt).Apply(null,
+                               at(stmt).Select(optional_item, names.fromString("$internalErasedExists")),
+                               List.<JCExpression>nil()));
+        List<JCStatement> inner = List.<JCStatement>of(item_decl);
+
+        // The user-supplied contents of the loop
+        inner = inner.appendList(convertStmts(cdecl, stmt.block.stmts));
+
+        // if ($ceylontmpY != null) ... else break;
+        JCStatement test = at(stmt).If(
+                at(stmt).Binary(JCTree.NE, optional_item, make.Literal(TypeTags.BOT, null)),
+                at(stmt).Block(0, inner),
+                at(stmt).Block(0, List.<JCStatement>of(at(stmt).Break(null))));
+        while_loop = while_loop.append(test);
+
+        // $ceylontmpX = $ceylontmpX.tail();
+        JCExpression next = at(stmt).Assign(
+            iter,
+            at(stmt).Apply(null,
+                at(stmt).Select(iter, names.fromString("tail")),
+                List.<JCExpression>nil()));
+        while_loop = while_loop.append(at(stmt).Exec(next));
+
+        // while (True)...
+        outer = outer.append(
+            at(stmt).WhileLoop(
+                at(stmt).Literal(TypeTags.BOOLEAN, 1),
+                at(stmt).Block(0, while_loop)));
+
+        return at(stmt).Block(0, outer);
+   }
 
     JCExpression convert(CeylonTree.CallExpression ce) {
         final Singleton<JCExpression> expr =
