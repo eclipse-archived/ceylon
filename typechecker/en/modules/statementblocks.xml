@@ -891,7 +891,7 @@ else {
         log.info("Hi " user.name "!");
     }
     else {
-        log.info("Hello World!");
+        log.info("Hello, World!");
     }
 }</programlisting>
             

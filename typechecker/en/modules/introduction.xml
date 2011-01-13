@@ -479,7 +479,7 @@ public void hello() {
         <para>This command compiles the source to bytecode and runs the Java 
         Virtual Machine. You should see the following output in the console:</para>
         
-        <programlisting>Hello World!</programlisting>
+        <programlisting>Hello, World!</programlisting>
         
     </section>
         
