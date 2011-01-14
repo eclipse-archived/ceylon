@@ -818,14 +818,19 @@ public void hello() {
         need a <literal>new</literal> keyword to know when you're instantiating a class. 
         No, we don't know why Java needs it. You'll have to ask James.</para>
         
+        <!--
+        <para>(You'll always be able to tell immediately if something is an invocation or
+        an instantiation: just look at the case of the identifier!)</para>
+        -->
+        
         <para>I suppose you're worried that if Ceylon classes don't have constructors,
         then they also can't have multiple constructors. Does that mean we can't overload
         the initialization parameter list of a class?</para>
         
-        <para>I suppose now's a good time to break some more bad news: Ceylon doesn't
-        support method overloading either! But, actually, this is not as bad as it sounds. 
-        The truth is that overloading causes all kinds of problems in Java, especially 
-        when generics come into play. And in Ceylon, we can emulate any non-evil use of 
+        <para>I guess now's as good a time as any to break some more bad news: Ceylon doesn't
+        support method overloading either! But, actually, this isn't as bad as it sounds. 
+        The sad truth is that overloading is the source of various problems in Java, especially 
+        when generics come into play. And in Ceylon, we can emulate almost any non-evil use of 
         constructor or method overloading using:</para>
         
         <itemizedlist>
@@ -842,6 +847,39 @@ public void hello() {
             </listitem>
         </itemizedlist>
         
+        <para>We're not going to get into all the details of these workarounds right now, but
+        here's a quick example of each of the three techniques:</para>
+        
+        <programlisting>//defaulted parameter
+void print(String string = "\n") {
+    process.writeLine(string);
+}</programlisting>
+
+        <programlisting>//sequenced parameter
+void print(String... strings) {
+    for (String string in strings) {
+        process.writeLine(string);
+    }
+}</programlisting>
+
+        <programlisting>//enumerated type constraint
+void print&lt;T&gt;(T printable) 
+        given T of String | Named {
+    String string;
+    switch (T)
+    case (satisfies String) {
+        string = printable;
+    }
+    case (satisfies Named) {
+        string = printable.name;
+    }
+    process.writeLine(string);
+}</programlisting>
+        
+        <para>Don't worry if you don't completely understand the third example just yet. Just
+        think of it as a completely typesafe version of how you would write an "overloaded"
+        operation in a dynamic language like Smalltalk, Python, or Ruby.</para>
+          
         <para>To be completely honest, there are some circumstances where this approach ends
         up slightly more awkward than Java-style overloading. But that's a small price to pay
         for a language with clearer semantics, without nasty corner cases, that is ultimately
