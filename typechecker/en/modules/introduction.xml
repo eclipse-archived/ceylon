@@ -589,7 +589,7 @@ process.writeLine(greeting);]]></programlisting>
         
         <para>You should see the following output:</para>
         
-        <programlisting>Hello everybody!</programlisting>
+        <programlisting>Hello, everybody!</programlisting>
         
         <!-- 
         <para>There's also a postfix operator named <literal>exists</literal>. The
