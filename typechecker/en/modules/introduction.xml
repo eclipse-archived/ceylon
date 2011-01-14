@@ -536,7 +536,11 @@ public void hello() {
         a value of type <literal>Optional</literal>&mdash;that is, anything that 
         could cause a <literal>NullPointerException</literal> in 
         Java&mdash;without first checking that the value is not null using 
-        <literal>if (exists ... )</literal>.</para>
+        <literal>if (exists ... )</literal>. More formally, the 
+        <literal>if (exists ... )</literal> construct lets us extract a value of 
+        type <literal>X</literal> from a value of type 
+        <literal>Optional&lt;X&gt;</literal>, thereby allowing us to invoke the 
+        members of <literal>X</literal> upon the value.</para>
         
         <para>In fact, it's not even possible to use the equality operator 
         <literal>==</literal> with an expression of type <literal>Optional</literal>.
@@ -550,7 +554,7 @@ public void hello() {
         values in instances of <literal>Optional</literal>, don't be. 
         <literal>Optional</literal> isn't a <emphasis>reified</emphasis>
         type&mdash;it exists at compile time, when the compiler is validating
-        your code for typesafety, but then the compiler eliminates it as part of 
+        your code for typesafety, but the compiler eliminates it as part of 
         the compilation process, allowing the resulting bytecode to take advantage 
         of the efficient handling of null values in the virtual machine.</para>
         
