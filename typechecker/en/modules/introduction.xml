@@ -271,7 +271,7 @@
     eleven in C#). The built-in types are classes representing natural numbers, 
     integers, floating point numbers, arbitrary precision integers and 
     arbitrary precision decimals. <literal>Natural</literal>, 
-    <literal>Integer</literal> and <literal>Float</literal> values are 64 bit 
+    <literal>Integer</literal>, and <literal>Float</literal> values are 64 bit 
     by default, and may be optimized for 32 bit architectures via use of the 
     <literal>small</literal> annotation.</para>
     
