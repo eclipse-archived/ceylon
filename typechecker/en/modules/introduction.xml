@@ -990,7 +990,7 @@ abstract class Hello() {
             <para>Ceylon requires us to annotate abstract classes <literal>abstract</literal>,
             just like Java. This annotation specifies that a class cannot be instantiated,
             and can define abstract members. Like Java, Ceylon also requires us to annotate 
-            "abstract"" members that don't specify an implementation. However, in this case, 
+            "abstract" members that don't specify an implementation. However, in this case, 
             the required annotation is <literal>formal</literal>. Note that an attribute 
             that is never initialized is <emphasis>always</emphasis> a <literal>formal</literal> 
             attribute&mdash;Ceylon doesn't initialize attributes to zero unless you explicitly 
