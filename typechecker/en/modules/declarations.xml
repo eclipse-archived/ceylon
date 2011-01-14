@@ -64,6 +64,10 @@ TypeConstraints?
         <literal>pi.ceylon</literal>. <!--Unlike Java, a compilation unit may contain multiple 
         toplevel class or method declarations with the same name.--></para>
         
+        <comment><para>TODO: This doesn't work on platforms with case-insensitive filenames. 
+        If I have a method named <literal>x</literal>, and a class named <literal>X</literal>,
+        the filesystem can't distinguish them. We need a workaround!</para></comment>
+        
         <para>A toplevel declaration may not be annotated <literal>formal</literal>,
         <literal>default</literal>, <literal>definite</literal>, or
         <literal>actual</literal>.</para>
