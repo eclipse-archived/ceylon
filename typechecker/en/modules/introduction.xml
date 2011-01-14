@@ -454,12 +454,14 @@ public void hello() {
 }</programlisting>
 
         <para>
-        This code defines a method named <literal>hello()</literal>. The 
-        method is annotated <literal>public</literal>, which makes it 
-        accessible to code in other packages. When the method is executed, 
-        it calls the <literal>writeLine()</literal> method of an object 
-        named <literal>process</literal>. (This method displays its 
-        parameter on the console.)
+        This code defines a <emphasis>toplevel</emphasis> method&mdash;a 
+        method not associated with a type, a bit like a <literal>static</literal>
+        method in Java&mdash;named <literal>hello()</literal>. The method is 
+        annotated <literal>public</literal>, which makes it accessible to code 
+        in other packages. When the method is executed, it calls the 
+        <literal>writeLine()</literal> method of an object named 
+        <literal>process</literal>. (This method displays its parameter on the 
+        console.)
         </para>
         
         <para>
