@@ -63,7 +63,7 @@
 
         <itemizedlist>
             <listitem>
-                <para>both of the inherited declations are <literal>formal</literal>
+                <para>both of the inherited declarations are <literal>formal</literal>
                 and directly or indirectly refine some member of a common 
                 supertype,</para>
             </listitem>
