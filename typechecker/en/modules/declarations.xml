@@ -314,22 +314,23 @@ TypeConstraints?
             annotations. A member may have neither annotation. A member of an interface
             may not be annotated <literal>definite</literal>.</para>
             
+            <!--
             <para>A non-<literal>default</literal>, non-<literal>formal</literal> member
             of an interface may not be annotated <literal>actual</literal>, and may not 
             refine a member of a supertype. A <literal>formal</literal> or 
             <literal>default</literal> member may be annotated <literal>actual</literal>,
             and may refine a member of a supertype.</para>
-            
+            -->
             <!--
             <para>Every member of an interface inherits the visibility modifier of the 
             interface. No member of an interface may explicitly specify a visibilty
             modifer.</para>
             -->
-            
+            <!--
             <para>This rule insures that the "diamond inheritance" problem&mdash;where
             a type inherits two different concrete declarations of the same 
             member&mdash;can always be resolved by refining the member.</para>
-            
+            -->
             <!--
             <comment><para>Note: this means that interfaces can't have block-local members,
             even though a block-local helper method, attribute getter, or class could be 
@@ -806,10 +807,12 @@ public class Person { ... }</programlisting>
         <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
         may not be annotated <literal>definite</literal>.</para>
         
+        <!--
         <para>Every member annotated <literal>formal</literal>, <literal>default</literal> 
         or <literal>definite</literal> must declare or inherit a visibility modifier. A 
         block-local member may not be annotated <literal>formal</literal>, 
         <literal>default</literal> or <literal>definite</literal>.</para>
+        -->
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
@@ -1991,13 +1994,14 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         </section>
         
         <section id="defaultmethods">
-            <title>Default methods</title>
+            <title>Default and definite methods</title>
             
-            <para>A concrete member method may be annotated <literal>default</literal>.</para>
+            <para>A concrete member method may be annotated <literal>default</literal>
+            or <literal>definite</literal>.</para>
             
-            <para>A method annotated <literal>default</literal> inherits the visibility
-            of the class or interface to which it belongs, and may not explicitly
-            declare a visibility modifier annotation.</para>
+            <para>A method annotated <literal>default</literal> or <literal>definite</literal> 
+            inherits the visibility of the class or interface to which it belongs, and may 
+            not explicitly declare a visibility modifier annotation.</para>
         
         </section>
         
@@ -2482,13 +2486,14 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         </section>
         
         <section id="defaultattributes">
-            <title>Default attributes</title>
+            <title>Default and definite attributes</title>
             
-            <para>A concrete member attribute may be annotated <literal>default</literal>.</para>
+            <para>A concrete member attribute may be annotated <literal>default</literal>
+            or <literal>definite</literal>.</para>
             
-            <para>An attribute annotated <literal>default</literal> inherits the visibility
-            of the class or interface to which it belongs, and may not explicitly declare a 
-            visibility modifier annotation.</para>
+            <para>An attribute annotated <literal>default</literal> or <literal>definite</literal> 
+            inherits the visibility of the class or interface to which it belongs, and 
+            may not explicitly declare a visibility modifier annotation.</para>
         
         </section>
         
@@ -2634,7 +2639,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 
     </section>
         
-    <section id="declaration modifiers">
+    <section id="declarationmodifiers">
         <title>Declaration modifiers</title>
         
         <para>In Ceylon, all declaration modifiers are annotations.</para>
@@ -2785,8 +2790,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>a declaration that occurs directly inside a class body is not
-                visible to code outside the class definition, and</para>
+                <para>a declaration that occurs directly inside a class or interface 
+                body is not visible to code outside the class or interface definition, 
+                and</para>
             </listitem>
             <listitem>
                 <para>a toplevel declaration is not visible to code outside the package 
@@ -2820,6 +2826,10 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         
         <para>Note that the <literal>package</literal> modifier is redundant for toplevel 
         declarations.</para>
+        
+        <para>Note that a declaration annotated <literal>formal</literal>,
+        <literal>default</literal>, <literal>definite</literal>, or <literal>actual</literal>
+        inherits its visibility modifier.</para>
         
         <comment><para>TODO: Should we call the visibility levels <literal>public</literal>,
         <literal>shared</literal>, <literal>internal</literal> so they are all adjectives 
