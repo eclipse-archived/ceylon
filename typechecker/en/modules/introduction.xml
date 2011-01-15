@@ -933,7 +933,7 @@ public void hello() {
 class DefaultHello() {
     
     doc "The greeting"
-    package default String greeting = "Hello, World!";
+    default String greeting = "Hello, World!";
     
     doc "Print the greeting"
     package void say(OutputStream stream) { 
@@ -944,6 +944,11 @@ class DefaultHello() {
 
             <para>Notice that Ceylon forces as to declare attributes or methods that can be 
             refined (overridden) by annotating them <literal>default</literal>.</para>
+            
+            <para>We don't need to declare the visibility of the attribute annotated 
+            <literal>default</literal>. The visibility&mdash;in this case, 
+            <literal>package</literal>&mdash;is inherited from the class to which the
+            attribute belongs.</para>
             
             <para>Subclasses specify their superclass using the <literal>extends</literal>
             keyword, followed by the name of the superclass, followed by a list of arguments
@@ -978,7 +983,7 @@ class PersonalizedHello(String name) extends DefaultHello() {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    package formal String greeting;
+    formal String greeting;
     
     doc "Print the greeting"
     package void say(OutputStream stream) { 
@@ -996,6 +1001,11 @@ abstract class Hello() {
             attribute&mdash;Ceylon doesn't initialize attributes to zero unless you explicitly 
             tell it to!</para>
 
+            <para>We don't need to declare the visibility of the attribute annotated 
+            <literal>formal</literal>. The visibility&mdash;in this case, 
+            <literal>package</literal>&mdash;is inherited from the class to which the
+            attribute belongs.</para>
+            
             <para>One way to define an implementation for an inherited abstract attribute is 
             to simply assign a value to it in the subclass.</para>
 
@@ -1036,20 +1046,20 @@ class PersonalizedHello(String name) extends Hello() {
     
     formal void write(String string);
     
-    void writeLine(String string) {
+    public void writeLine(String string) {
         write(string);
         write(process.newLine);
     }
     
-    void writeFormattedLine(String formatString, Object... args) {
+    public void writeFormattedLine(String formatString, Object... args) {
         writeLine( formatter.format(formatString, args) );
     }
     
 }]]></programlisting>
             
-            <para>All members of an interface inherit the visibility modifier of the interface. 
-            Therefore, we don't need to explcitly annotate the members with a visibility
-            modifier.</para>
+            <para>All <literal>formal</literal> members inherit the visibility modifier of the 
+            interface. Therefore, we don't need to explcitly annotate these members with a 
+            visibility modifier.</para>
             
             <para>Note that we can't define a concrete value for the <literal>formatter</literal>
             attribute, since an interface may not define a simple attribute, and may not 
@@ -1643,7 +1653,7 @@ package assign greeting {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    package formal String greeting;
+    formal String greeting;
     
     actual Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
@@ -1682,7 +1692,7 @@ abstract class Hello() {
     
     id
     doc "The (abstract) greeting"
-    package formal String greeting;
+    formal String greeting;
     
     ...
         

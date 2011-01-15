@@ -77,7 +77,7 @@
     }
     
     doc "A developer-friendly string representing the instance."
-    public formal String string;
+    formal String string;
     
     ...
         
@@ -100,7 +100,7 @@
  -->
 <!--
     doc "A log object for the type."
-    public default Log log { 
+    default Log log { 
         return type.log 
     }
  -->
@@ -256,7 +256,7 @@
     doc "A developer-friendly string representing the instance,
          containing the name of the type, and the value of the
          given attributes." 
-    public default String string(Attribute<subtype,Object>... attributes) {
+    default String string(Attribute<subtype,Object>... attributes) {
         variable Character[] result := "";
         result .= with (type.name, "{");
         result .= forEach (Attribute<subtype,Object> a in attributes)
@@ -511,7 +511,7 @@ public abstract class Boolean()
     
     doc "The unary postfix existence operator 
          |x exists|."
-    public formal Boolean defined;
+    formal Boolean defined;
     
 }]]></programlisting>
 
@@ -1064,7 +1064,7 @@ while (exists local value = indexed.indexedValue(i)) {
     throws (UndefinedKeyException
             -> "if a value can not be defined for one of the 
                 given keys")
-    public default void define(Entry<U, V>... definitions) {
+    default void define(Entry<U, V>... definitions) {
         for (U key->V value in definitions) {
             this[key] := value;
         }
@@ -1074,7 +1074,7 @@ while (exists local value = indexed.indexedValue(i)) {
          for the key, or |null| if there was no value defined."
     throws (UndefinedKeyException
             -> "if a value can not be defined for the given key")
-    public default V? define(U key -> V value) {
+    default V? define(U key -> V value) {
         Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;

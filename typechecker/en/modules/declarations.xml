@@ -319,22 +319,26 @@ TypeConstraints?
             refine a member of a supertype. A <literal>formal</literal> or 
             <literal>default</literal> member may be annotated <literal>actual</literal>,
             and may refine a member of a supertype.</para>
-                    
+            
+            <!--
             <para>Every member of an interface inherits the visibility modifier of the 
             interface. No member of an interface may explicitly specify a visibilty
             modifer.</para>
+            -->
+            
+            <para>This rule insures that the "diamond inheritance" problem&mdash;where
+            a type inherits two different concrete declarations of the same 
+            member&mdash;can always be resolved by refining the member.</para>
+            
+            <!--
+            <comment><para>Note: this means that interfaces can't have block-local members,
+            even though a block-local helper method, attribute getter, or class could be 
+            useful, and would not cause diamond inheritance problems.</para></comment>
+            -->
             
             <para>An interface member is always visible to all other members of the
             interface.</para>
         
-            <para>These rules insure that the "diamond inheritance" problem&mdash;where
-            a type inherits two different concrete declarations of the same 
-            member&mdash;can always be resolved by refining the member.</para>
-            
-            <comment><para>Note: this means that interfaces can't have block-local members,
-            even though a block-local helper method, attribute getter, or class could be 
-            useful, and would not cause diamond inheritance problems.</para></comment>
-            
         </section>
         
         <!--
@@ -638,8 +642,8 @@ public class Person { ... }</programlisting>
         clients.</para>
         
         <programlisting>public abstract class Point() {
-    public formal Decimal x;
-    public formal Decimal y;
+    formal Decimal x;
+    formal Decimal y;
 }</programlisting>
         
         <programlisting>public class DiagonalPoint(Decimal distance) 
@@ -1075,10 +1079,25 @@ public class Person { ... }</programlisting>
           
         <para>A member class annotated <literal>formal</literal> may be instantiated.</para>
         
+        <para>A class annotated <literal>formal</literal> inherits the visibility of 
+        the class or interface to which it belongs, and may not explicitly declare a 
+        visibility modifier annotation.</para>
+        
         <para>A class which is not annotated <literal>abstract</literal> or 
         <literal>formal</literal> is called a <emphasis>concrete</emphasis> class.</para>
         
     </section>
+        
+        <section id="defaultclasses">
+            <title>Default classes</title>
+            
+            <para>A concrete member class may be annotated <literal>default</literal>.</para>
+            
+            <para>A class annotated <literal>default</literal> inherits the visibility
+            of the class or interface to which it belongs, and may not explicitly
+            declare a visibility modifier annotation.</para>
+        
+        </section>
         
     <section id="refiningmemberclasses">
         <title>Member class refinement</title>
@@ -1148,15 +1167,15 @@ public class Person { ... }</programlisting>
         instance.</para>
         
         <para>By default, the member class annotated <literal>actual</literal> 
-        has the same visibility modifier as the member class it refines. The
-        member class may not declare a stricter visibility modifier than the member 
-        class it refines.</para>
+        inherits the visibility modifier of the member class it refines. The member 
+        class may not declare a stricter visibility modifier annotation than the 
+        member class it refines.</para>
         
         <para>Note that, according to the rules above, the refining class usually
         extends the member class it refines:</para>
         
         <programlisting>public abstract class Reader() {
-    module formal class Buffer(Character... chars) 
+    formal class Buffer(Character... chars) 
             satisfies Character[] {}
     ...
 }</programlisting>
@@ -1175,7 +1194,7 @@ public class Person { ... }</programlisting>
         class it refines:</para>
         
         <programlisting>public abstract class Reader() {
-    module formal class Buffer(Character... chars) 
+    formal class Buffer(Character... chars) 
             satisfies Character[];
     ...
 }</programlisting>
@@ -1932,7 +1951,7 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the implementation of the method must be specified later in 
-                    the body in the body containing the method declaration,</para>
+                    the body containing the method declaration,</para>
                 </listitem>
                 <listitem>
                     <para>the method must be a member of an interface, and the method
@@ -1953,7 +1972,11 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
         
-            <programlisting>public formal U? get(V key);</programlisting>
+            <programlisting>formal U? get(V key);</programlisting>
+            
+            <para>A method annotated <literal>formal</literal> inherits the visibility
+            of the class or interface to which it belongs, and may not explicitly
+            declare a visibility modifier annotation.</para>
         
             <para>A toplevel method may not be annotated <literal>formal</literal> and 
             must have a method implementation (a block of code, or a reference to another 
@@ -1964,6 +1987,17 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
 
             <para>A method which is not annotated <literal>formal</literal> is called a 
             <emphasis>concrete</emphasis> method.</para>
+        
+        </section>
+        
+        <section id="defaultmethods">
+            <title>Default methods</title>
+            
+            <para>A concrete member method may be annotated <literal>default</literal>.</para>
+            
+            <para>A method annotated <literal>default</literal> inherits the visibility
+            of the class or interface to which it belongs, and may not explicitly
+            declare a visibility modifier annotation.</para>
         
         </section>
         
@@ -2027,13 +2061,13 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             <para>Then invocation of the method is polymorphic, and the actual
             method invoked depends upon the concrete type of the class instance.</para>
             
-            <para>By default, the method annotated <literal>actual</literal> has 
-            the same visibility modifier as the method it refines. The method may 
-            not declare a stricter visibility modifier than the method it 
-            refines.</para>
+            <para>By default, the method annotated <literal>actual</literal> 
+            inherits the visibility modifier of the method it refines. The method 
+            may not declare a stricter visibility modifier annotation than the method 
+            it refines.</para>
             
             <programlisting>public abstract class AbstractSquareRooter() {
-    public formal Float squareRoot(Float x);
+    formal Float squareRoot(Float x);
 }</programlisting>
 
             <programlisting>class ConcreteSquareRooter()
@@ -2430,8 +2464,12 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             <para>An attribute annotated <literal>formal</literal> may not specify an
             implementation (a specifier, initializer, or getter implementation).</para>
         
-            <programlisting>package formal variable String firstName;</programlisting>
+            <programlisting>formal variable String firstName;</programlisting>
 
+            <para>A method annotated <literal>formal</literal> inherits the visibility
+            of the class or interface to which it belongs, and may not explicitly
+            declare a visibility modifier annotation.</para>
+        
             <para>A toplevel attribute declaration may not be annotated <literal>formal</literal> 
             and must have a specifier or getter implementation.</para>
 
@@ -2440,6 +2478,17 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
 
             <para>An attribute which is not annotated <literal>formal</literal> is called 
             a <emphasis>concrete</emphasis> attribute.</para>
+        
+        </section>
+        
+        <section id="defaultattributes">
+            <title>Default attributes</title>
+            
+            <para>A concrete member attribute may be annotated <literal>default</literal>.</para>
+            
+            <para>An attribute annotated <literal>default</literal> inherits the visibility
+            of the class or interface to which it belongs, and may not explicitly declare a 
+            visibility modifier annotation.</para>
         
         </section>
         
@@ -2524,13 +2573,13 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             the actual attribute evaluated or assigned depends upon the concrete type 
             of the class instance.</para>
             
-            <para>By default, the attribute annotated <literal>actual</literal>
-            has the same visibility modifier as the attribute it refines. The
-            attribute may not declare a stricter visibility modifier than the 
-            attribute it refines.</para>
+            <para>By default, the attribute annotated <literal>actual</literal> inherits 
+            the visibility modifier of the attribute it refines. The attribute may not 
+            declare a stricter visibility modifier annotation than the attribute it 
+            refines.</para>
             
             <programlisting>module abstract class AbstractPi() {
-    module formal Float pi;
+    formal Float pi;
 }</programlisting>
 
             <programlisting>class ConcretePi() 
