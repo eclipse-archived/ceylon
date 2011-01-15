@@ -816,6 +816,10 @@ catch (Exception e) {
          to the container."
     formal Iterator<X> iterator();
     
+    actual default Boolean empty {
+        return !(iterator().head exists)
+    }
+
 }]]></programlisting>
         
         <para>A Ceylon <literal>Iterator</literal> is a stateless object
@@ -825,10 +829,6 @@ catch (Exception e) {
 
     formal X? head;
     formal Iterator<X> tail;
-
-    actual default Boolean empty {
-        return !(head exists)
-    }
 
 }]]></programlisting>
         
