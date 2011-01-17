@@ -163,8 +163,8 @@
         
         <programlisting>.33  //Error: floating point literals may not begin with a decimal point</programlisting>
         <programlisting>1.  //Error: floating point literals may not end with a decimal point</programlisting>
-        <programlisting>99E+3   //Error: floating point literals with an exponent must contain a decimal point</programlisting>
-        <programlisting>12_34 //Error: digit groups must be of length three</programlisting>
+        <programlisting>99E+3  //Error: floating point literals with an exponent must contain a decimal point</programlisting>
+        <programlisting>12_34  //Error: digit groups must be of length three</programlisting>
         
         <comment><para>TODO: The symbol <literal>.</literal> is also an operator. Are
         expressions like <literal>1.decimal</literal> and <literal>1.0.whole</literal>
