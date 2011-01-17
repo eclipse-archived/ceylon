@@ -43,7 +43,7 @@
         However, <literal>Void</literal> itself does not declare any 
         members.</para>
         
-        <programlisting>public abstract class Void() extends null {}</programlisting>
+        <programlisting>shared abstract class Void() extends null {}</programlisting>
         
         <para>The special syntax <literal>extends null</literal> indicates
         that <literal>Void</literal> has no superclass.</para>
@@ -68,16 +68,16 @@
         Expressions of type <literal>Object</literal> may be the subject of the 
         <literal>is</literal> operator (assignability).</para>
         
-        <programlisting><![CDATA[public abstract class Object() 
+        <programlisting><![CDATA[shared abstract class Object() 
         extends Void() {
     
     doc "The |Type| of the instance."
-    public Type<subtype> type {
+    shared Type<subtype> type {
         return ... 
     }
     
     doc "A developer-friendly string representing the instance."
-    formal String string;
+    shared formal String string;
     
     ...
         
@@ -94,13 +94,13 @@
 <!-- 
     doc "Binary assignability operator |x is Y|. Determine if the 
          instance is of the given |Type|."
-    public Boolean instanceOf(Type<Object> type) {
+    shared Boolean instanceOf(Type<Object> type) {
         return this.type.assignableTo(type)
     }    
  -->
 <!--
     doc "A log object for the type."
-    default Log log { 
+    shared default Log log { 
         return type.log 
     }
  -->
@@ -116,7 +116,7 @@
         may be compared using the binary operators <literal>&equals;</literal> 
         (equals) and <literal>!=</literal> (not equals).</para>
         
-        <programlisting><![CDATA[public interface Equality<in T> 
+        <programlisting><![CDATA[shared interface Equality<in T> 
         given T satisfies Equality<T> {
     
     doc "The equals operator |x == y|. Implementations should 
@@ -124,12 +124,12 @@
          the constraint that if |x==y| then |y==x|,
          and the constraint that if |x==y| and |y==z| then
          |x==z|."
-    formal Boolean equals(T other);
+    shared formal Boolean equals(T other);
     
     doc "The hash code of the instance. Implementations of |hash| 
          must respect the constraint that if |x==y| then 
          |x.hash==y.hash|."
-    formal Integer hash;
+    shared formal Integer hash;
     
 }]]></programlisting>
 
@@ -158,20 +158,20 @@
         <literal>IdentifiableObject</literal> support the binary operator 
         <literal>&identical;</literal> (identity equals).</para>
         
-        <programlisting><![CDATA[public abstract class IdentifiableObject() 
+        <programlisting><![CDATA[shared abstract class IdentifiableObject() 
         extends Object() 
         satisfies Equality<IdentifiableObject> {
 
     doc "The |Class| of the instance."
-    actual Class<subtype> type {
+    shared actual Class<subtype> type {
         return ... 
     }
     
-    default actual Boolean equals(IdentifiableObject that) {
+    shared default actual Boolean equals(IdentifiableObject that) {
         return this===that
     }
     
-    default actual Integer hash {
+    shared default actual Integer hash {
         return identityHash(this);
     }
         
@@ -180,8 +180,8 @@
         <para>The following toplevel methods expose the notion of object 
         identity:</para>
     
-        <programlisting>public Boolean identical(IdentifiableObject x, IdentifiableObject y) { return ... }</programlisting>
-        <programlisting>public Integer identityHash(IdentifiableObject x) { return ... }</programlisting>
+        <programlisting>shared Boolean identical(IdentifiableObject x, IdentifiableObject y) { return ... }</programlisting>
+        <programlisting>shared Integer identityHash(IdentifiableObject x) { return ... }</programlisting>
     
         <para>Classes written in other Java VM languages (including Java classes) 
         are considered subtypes of <literal>IdentifiableObject</literal>. Indeed,
@@ -193,7 +193,7 @@
         of <literal>equals()</literal>, <literal>hash</literal> and 
         <literal>string</literal> provided for them.</para>
         
-        <programlisting><![CDATA[public abstract class BaseObject() 
+        <programlisting><![CDATA[shared abstract class BaseObject() 
         extends IdentifiableObject() {
         
     Attribute<subtype,Object>[] idAttributes() {
@@ -204,7 +204,7 @@
     doc "The equals operator |x == y|. Default implementation compares
          attributes annotated |id|, or performs identity comparison."
     see (id)
-    default actual Boolean equals(IdentifiableObject that) {
+    shared default actual Boolean equals(IdentifiableObject that) {
         if (that.type!=type) {
             return false
         }
@@ -219,7 +219,7 @@
     
     doc "Compares the given attributes of this instance with the given
          attributes of the given instance."
-    public Boolean equals(IdentifiableObject that, Attribute<subtype,Object>... attributes) {
+    shared Boolean equals(IdentifiableObject that, Attribute<subtype,Object>... attributes) {
         if (is subtype that) {
             return forAll (Attribute<subtype,Object> a in attributes)
                         every ( a(this) == a(that) )
@@ -232,7 +232,7 @@
     doc "The hash code of the instance. Default implementation compares
          attributes annotated |id|, or assumes identity equality."
     see (id)
-    default actual Integer hash { 
+    shared default actual Integer hash { 
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
             return hash(idAttributes)
@@ -244,19 +244,19 @@
     
     doc "Computes the hash code of the instance using the given 
          attributes."
-    public Integer hash(Attribute<subtype,Object>... attributes) { ... }
+    shared Integer hash(Attribute<subtype,Object>... attributes) { ... }
         
     doc "A developer-friendly string representing the instance. 
          By default, the string contains the name of the type, 
          and the values of all attributes annotated |id|."
-    default actual String string {
+    shared default actual String string {
         return string(idAttributes())
     }
     
     doc "A developer-friendly string representing the instance,
          containing the name of the type, and the value of the
          given attributes." 
-    default String string(Attribute<subtype,Object>... attributes) {
+    shared default String string(Attribute<subtype,Object>... attributes) {
         variable Character[] result := "";
         result .= with (type.name, "{");
         result .= forEach (Attribute<subtype,Object> a in attributes)
@@ -279,15 +279,15 @@
         subject of the argument specification operators <literal>()</literal> 
         and <literal>{}</literal>.</para>
         
-        <programlisting><![CDATA[public interface Callable<out R, P...> {
-    formal R call(P... args);
+        <programlisting><![CDATA[shared interface Callable<out R, P...> {
+    shared formal R call(P... args);
 }]]></programlisting>
     
         <para>The following extension provides function <emphasis>composition</emphasis>, 
         combining a <literal>Callable&lt;Y,X&gt;</literal> with a <literal>Callable&lt;X,P...&gt;</literal>
         to produce a <literal>Callable&lt;Y,P...&gt;</literal>:</para>
         
-        <programlisting><![CDATA[public extension Y composeable<X,Y,P...>(Y this(X x))(X g(P... args))(P... args) {
+        <programlisting><![CDATA[shared extension Y composeable<X,Y,P...>(Y this(X x))(X g(P... args))(P... args) {
     Y compose(X g(P... args))(P... args) {
         Y composition(P... args) {
             return this(g(args))
@@ -306,7 +306,7 @@
        <literal>Callable&lt;R,T,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal>:</para>
 
-       <programlisting><![CDATA[public extension class Curryable<R,T,P...>(R this(T t, P... args)) {
+       <programlisting><![CDATA[shared extension class Curryable<R,T,P...>(R this(T t, P... args)) {
     R partial(T t)(P... p) {
         R curried(P... p) {
             return this(t, args)
@@ -324,7 +324,7 @@ void hello() = info.partial("Hello!");</programlisting>
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal> into a
        <literal>Callable&lt;R,T,P...&gt;</literal>:</para>
 
-       <programlisting><![CDATA[public extension class Flattenable<R,T,P...>(R this(T t)(P... args)) {
+       <programlisting><![CDATA[shared extension class Flattenable<R,T,P...>(R this(T t)(P... args)) {
     R flatten(T t, P... p) {
         return this(t)(p)
     }
@@ -339,7 +339,7 @@ void hello() = info.partial("Hello!");</programlisting>
        <literal>Callable&lt;Callable&lt;R,Q...&gt;,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,Q...&gt;</literal>:</para>
        
-       <programlisting><![CDATA[public extension class Shuffleable<R,P...,Q...>(R this(P... p)(Q... q)) {
+       <programlisting><![CDATA[shared extension class Shuffleable<R,P...,Q...>(R this(P... p)(Q... q)) {
    R shuffle(Q... q)(P... p) {
        R shuffled(P... p) {
            return this(p)(q)
@@ -363,7 +363,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         semantics. Instances of <literal>Gettable&lt;T&gt;</literal> are transparently 
         assignable to <literal>T</literal> (evaluation).</para>
         
-        <programlisting><![CDATA[public abstract class Gettable<out T>()
+        <programlisting><![CDATA[shared abstract class Gettable<out T>()
         extends Void() {}]]></programlisting>
         
         <para>Note that <literal>Gettable</literal> is not a subclass of 
@@ -372,7 +372,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>The following method allows a <literal>Gettable&lt;T&gt;</literal>
         to be treated as a <literal>Callable&lt;T&gt;</literal>:</para>
 
-        <programlisting><![CDATA[public T get<T>(Gettable<T> value)() { 
+        <programlisting><![CDATA[shared T get<T>(Gettable<T> value)() { 
     return value 
 }]]></programlisting>
     
@@ -381,13 +381,13 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         values. Expressions of type <literal>Settable</literal> support the binary
         operator <literal>:=</literal> (assign).</para>
         
-        <programlisting><![CDATA[public abstract class Settable<T>()
+        <programlisting><![CDATA[shared abstract class Settable<T>()
         extends Gettable<T>() {}]]></programlisting>
 
         <para>The following method allows an <literal>Settable&lt;T&gt;</literal>
         to be treated as a <literal>Callable&lt;T,T&gt;</literal>:</para>
 
-        <programlisting><![CDATA[public T set<T>(Settable<T> value)(T newValue) { 
+        <programlisting><![CDATA[shared T set<T>(Settable<T> value)(T newValue) { 
     return value := newValue; 
 }]]></programlisting>
     
@@ -401,9 +401,9 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         the binary <literal>||</literal> and <literal>&amp;&amp;</literal> 
         operators and the unary <literal>!</literal> operator.</para>
         
-        <programlisting><![CDATA[public object true extends Boolean() {}
-public object false extends Boolean() {}
-public abstract class Boolean() 
+        <programlisting><![CDATA[shared object true extends Boolean() {}
+shared object false extends Boolean() {}
+shared abstract class Boolean() 
         of true | false 
         extends Case() {}]]></programlisting>
 
@@ -416,14 +416,14 @@ public abstract class Boolean()
         type that may be used as a <literal>case</literal> in the 
         <literal>switch</literal> construct.</para>
         
-        <programlisting><![CDATA[public interface Matcher<in X> {
+        <programlisting><![CDATA[shared interface Matcher<in X> {
 
     doc "Determine if the given value matches
          this case, returning |true| iff the
          value matches."
-    formal Boolean matches(X value);
+    shared formal Boolean matches(X value);
     
-    Boolean matchesCase<Y>(Y? y) 
+    shared Boolean matchesCase<Y>(Y? y) 
             given Y abstracts X {
         if (exists y) {
             if (is X y) {
@@ -449,10 +449,10 @@ public abstract class Boolean()
         <para>An extension allows <literal>Matcher&lt;X&gt;</literal> to 
         function as <literal>Matcher&lt;X?&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension class OptionalMatcher<X>(Matcher<X> this) 
+        <programlisting><![CDATA[shared extension class OptionalMatcher<X>(Matcher<X> this) 
         satisfies Matcher<X?> {
         
-    actual Boolean matches(X? x) {
+    shared actual Boolean matches(X? x) {
         if (exists value) {
             return this.matches(x)
         }
@@ -467,11 +467,11 @@ public abstract class Boolean()
         function as <literal>Matcher&lt;Y&gt;</literal> where <literal>X</literal> 
         is a subtype of <literal>Y</literal>.</para>
         
-        <programlisting><![CDATA[public extension class SupertypeMatcher<X,Y>(Matcher<X> this) 
+        <programlisting><![CDATA[shared extension class SupertypeMatcher<X,Y>(Matcher<X> this) 
         satisfies Matcher<Y> 
         given X satisfies Y {
         
-    actual Boolean matches(Y y) {
+    shared actual Boolean matches(Y y) {
         if (is X y) {
             return this.matches(y)
         }
@@ -486,14 +486,14 @@ public abstract class Boolean()
         <para>The class <literal>Case</literal> is the supertype of anonymous 
         classes that may be cases in an <literal>of</literal> clause.</para>
         
-        <programlisting><![CDATA[public abstract class Case(String caseName=type.declarationName) 
+        <programlisting><![CDATA[shared abstract class Case(String caseName=type.declarationName) 
         satisfies Matcher<Object> {
     
-    actual Boolean matches(Object that) {
+    shared actual Boolean matches(Object that) {
         return this===that
     }
     
-    actual default String string = caseName;
+    shared actual default String string = caseName;
     
 }]]></programlisting>
 
@@ -505,20 +505,20 @@ public abstract class Boolean()
         <para>The class <literal>Optional</literal> represents a
         value that may be null.</para>
         
-        <programlisting><![CDATA[public abstract class Optional<out X>() 
+        <programlisting><![CDATA[shared abstract class Optional<out X>() 
         of Something<X> | Nothing<X>
         extends Void() {
     
     doc "The unary postfix existence operator 
          |x exists|."
-    formal Boolean defined;
+    shared formal Boolean defined;
     
 }]]></programlisting>
 
 <!--
     doc "The binary default operator 
          |x ? y|."
-    public T default<T>(T defaultValue) 
+    shared T default<T>(T defaultValue) 
             given T abstracts X;
 -->
 
@@ -538,19 +538,19 @@ public abstract class Boolean()
         <para>If an optional value is not null, it is represented by an
         instance of the subclass <literal>Something</literal>.</para>
         
-        <programlisting><![CDATA[public extension class Something<out X>(X this) 
+        <programlisting><![CDATA[shared extension class Something<out X>(X this) 
         extends X?() {
 
-    public extension X value = this;
+    shared extension X value = this;
     
-    actual Boolean defined { 
+    shared actual Boolean defined { 
         return true 
     }
     
 }]]></programlisting>
 
 <!-- 
-    actual T default<T>(T defaultValue) 
+    shared actual T default<T>(T defaultValue) 
             given T abstracts X {
         return value;
     }
@@ -558,10 +558,10 @@ public abstract class Boolean()
         <para>If an optional value is null, it is represented by an instance 
         of the subclass <literal>Nothing</literal>.</para>
 
-        <programlisting><![CDATA[public class Nothing<out X>() 
+        <programlisting><![CDATA[shared class Nothing<out X>() 
         extends X?() {
         
-    actual Boolean defined { 
+    shared actual Boolean defined { 
         return false 
     }
     
@@ -578,24 +578,24 @@ public abstract class Boolean()
         extension of <literal>Null</literal> enabled in every compilation unit.</para>
         
         <programlisting><![CDATA[doc "Represents a null reference."  
-public object null 
+shared object null 
         extends Void() {
 
-    public extension object matcher 
+    shared extension object matcher 
             satisfies Matcher<Object> {
-        actual Boolean matches(Object value) {
+        shared actual Boolean matches(Object value) {
             return false
         }
     }
     
-    public extension Nothing<X> nothing<X>() {
+    shared extension Nothing<X> nothing<X>() {
         return Nothing<X>()
     }
      
 }]]></programlisting>
         
 <!--
-    actual T default<T>(T defaultValue) 
+    shared actual T default<T>(T defaultValue) 
             given T abstracts X {
         return defaultValue;
     }
@@ -615,16 +615,16 @@ public object null
         <para>The class <literal>Exception</literal> is the base class for all
         exception types.</para>
         
-        <programlisting><![CDATA[public class Exception(Exception? cause=null, String? message=null) 
+        <programlisting><![CDATA[shared class Exception(Exception? cause=null, String? message=null) 
         extends IdentifiableObject() {
     
-    public String message = message ? cause?.message ? "";
+    shared String message = message ? cause?.message ? "";
     
-    public Exception cause = cause ? this;
+    shared Exception cause = cause ? this;
     
-    public StackTrace stackTrace { return ... }
+    shared StackTrace stackTrace { return ... }
     
-    actual String string {
+    shared actual String string {
         if (nonempty message) {
             return type.name + ": " + message
         }
@@ -643,17 +643,17 @@ public object null
         <para>The interface <literal>Usable</literal> represents an
         object with a lifecycle controlled by <literal>try</literal>.</para>
         
-        <programlisting><![CDATA[public interface Usable {
+        <programlisting><![CDATA[shared interface Usable {
 
     doc "Called before entry into a |try| block."
-    formal void begin();
+    shared formal void begin();
     
     doc "Called before normal exit from a |try| block."
-    formal void end();
+    shared formal void end();
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    default void end(Exception e) {
+    shared default void end(Exception e) {
         end();
     }
     
@@ -683,11 +683,11 @@ catch (Exception e) {
         of type <literal>Container?</literal> support the unary postfix 
         operator <literal>nonempty</literal>.</para>
         
-        <programlisting><![CDATA[public interface Container {
+        <programlisting><![CDATA[shared interface Container {
         
     doc "The nonempty operator. Determine if the container 
          is empty."
-    formal Boolean empty;
+    shared formal Boolean empty;
     
 }]]></programlisting>
         
@@ -695,13 +695,13 @@ catch (Exception e) {
         <literal>Container</literal> whose number of elements may be 
         determined.</para>
         
-        <programlisting>public interface Sized satisfies Container {
+        <programlisting>shared interface Sized satisfies Container {
         
     doc "The number of elements or entries belonging to the 
          container."
-    formal Natural size;
+    shared formal Natural size;
     
-    actual default Boolean empty {
+    shared actual default Boolean empty {
         return size==0
     }
     
@@ -712,35 +712,35 @@ catch (Exception e) {
         expression of type <literal>Category</literal> may occur as the
         right hand argument of the <literal>in</literal> operator.</para>
         
-        <programlisting><![CDATA[public interface Category {
+        <programlisting><![CDATA[shared interface Category {
     
     doc "Determine if the given object belongs to the category.
          Return |true| iff the given object belongs to the 
          category."
-    formal Boolean contains(Object object);
+    shared formal Boolean contains(Object object);
 
     doc "Determine if the given objects belong to the category.
          Return |true| iff all the given objects belong to the 
          category."
-    default Boolean contains(Object... objects) {
+    shared default Boolean contains(Object... objects) {
         return forAll(Object object in objects) every (contains(object))
     }
 
 }]]></programlisting>
         
         <!--
-        <programlisting><![CDATA[public interface Category {
+        <programlisting><![CDATA[shared interface Category {
     
     doc "Determine if the given element belongs to the category."
-    public Boolean contains(Object element);
+    shared Boolean contains(Object element);
 
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension class Categories(Category category) {
+        <programlisting><![CDATA[shared extension class Categories(Category category) {
         
     doc "Determine if all the given elements belong to the 
          category."
-    public Boolean contains(Object... elements) {
+    shared Boolean contains(Object... elements) {
         return forAll (Object elem in elements) every category.contains(elem)
     }
     
@@ -751,12 +751,12 @@ catch (Exception e) {
         following extension defines the binary <literal>in</literal>
         operator:</para>
     
-    <programlisting><![CDATA[public extension class Objects(Object this) {
+    <programlisting><![CDATA[shared extension class Objects(Object this) {
     
     doc "Determine if this object belongs to the given |Category|.
          The binary |in| operator."
     see (Category)
-    public Boolean in(Category category) {
+    shared Boolean in(Category category) {
         return category.contains(this)
     }
 
@@ -765,32 +765,32 @@ catch (Exception e) {
         <para>There is a mutable subtype, representing a category to which 
         objects may be added.</para>
         
-        <programlisting><![CDATA[public interface OpenCategory<in X> 
+        <programlisting><![CDATA[shared interface OpenCategory<in X> 
         satisfies Category 
         given X satisfies Object {
     
     doc "Add the given objects to the category. Return the number of 
          objects which did not already belong to the category."
-    public Natural add(X... objects);
+    shared Natural add(X... objects);
 
 }]]></programlisting>
 
         <!--
-        <programlisting><![CDATA[public interface OpenCategory<in X> 
+        <programlisting><![CDATA[shared interface OpenCategory<in X> 
         satisfies Category {
     
     doc "Add the given element to the category. Return |true| if 
          the element did not already belong to the category."
-    public Boolean add(X element);
+    shared Boolean add(X element);
 
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension class OpenCategories<in X>(OpenCategory<X> category) {
+        <programlisting><![CDATA[shared extension class OpenCategories<in X>(OpenCategory<X> category) {
         
     doc "Add the given elements to the category. Return |true| if 
          at least one element did not already belong to the 
          category."
-    public Boolean add(X... elements) {
+    shared Boolean add(X... elements) {
         Boolean added = false;
         for (X x in elements) {
             added |= category.add(x);
@@ -810,13 +810,13 @@ catch (Exception e) {
         object which can produce a sequence of values, and which can
         be iterated using a <literal>for</literal> loop.</para>
         
-        <programlisting><![CDATA[public interface Iterable<out X> satisfies Container {
+        <programlisting><![CDATA[shared interface Iterable<out X> satisfies Container {
     
     doc "A sequence of objects belonging
          to the container."
-    formal Iterator<X> iterator();
+    shared formal Iterator<X> iterator();
     
-    actual default Boolean empty {
+    shared actual default Boolean empty {
         return !(iterator().head exists)
     }
 
@@ -825,10 +825,10 @@ catch (Exception e) {
         <para>A Ceylon <literal>Iterator</literal> is a stateless object
         that produces a theoretically unbounded sequence of values.</para>
         
-        <programlisting><![CDATA[public interface Iterator<out X> {
+        <programlisting><![CDATA[shared interface Iterator<out X> {
 
-    formal X? head;
-    formal Iterator<X> tail;
+    shared formal X? head;
+    shared formal Iterator<X> tail;
 
 }]]></programlisting>
         
@@ -844,11 +844,11 @@ while (exists local value = iter.head) {
     <para>The following interface allows <literal>Iterable</literal> objects
     to be used with the <literal>in</literal> operator.</para>
     
-    <programlisting><![CDATA[public interface FiniteCategory<T>
+    <programlisting><![CDATA[shared interface FiniteCategory<T>
         satisfies Iterable<T> & Category
         given T satisfies Equality<T> {
         
-    actual default Boolean contains(Object... objects) {
+    shared actual default Boolean contains(Object... objects) {
         for (Object obj in objects) {
             if (is T obj) {
                 if ( forAll (Object elem in this) every (elem != obj) ) {
@@ -868,14 +868,14 @@ while (exists local value = iter.head) {
     
         <comment><para>TODO: should we provide for mutation/removal during 
         iteration:</para>
-        <programlisting><![CDATA[public interface OpenIterable<X> 
+        <programlisting><![CDATA[shared interface OpenIterable<X> 
         satisfies Iterable<X> {
-    actual OpenIterator<X> iterator();
+    shared actual OpenIterator<X> iterator();
 }]]></programlisting>
-        <programlisting><![CDATA[public interface OpenIterator<X> 
+        <programlisting><![CDATA[shared interface OpenIterator<X> 
         satisfies Iterator<X> {
-    actual variable X? head;
-    public void remove();
+    shared actual variable X? head;
+    shared void remove();
 }]]></programlisting></comment>
 
         <comment><para>TODO: this alternate solution abstracts efficient 
@@ -883,11 +883,11 @@ while (exists local value = iter.head) {
         the problem that the <literal>indexedValue()</literal> operation 
         accepts tokens from iterations of other objects, and is therefore 
         much less typesafe.</para>
-        <programlisting><![CDATA[public interface Indexed<out X, I> 
+        <programlisting><![CDATA[shared interface Indexed<out X, I> 
         given I satisfies Ordinal {
     
-    formal I firstIndex;
-    formal Gettable<X>? indexedValue(I index);
+    shared formal I firstIndex;
+    shared formal Gettable<X>? indexedValue(I index);
     
 }]]></programlisting>
         <para>For example, a <literal>Sequence&lt;X&gt;</literal> would 
@@ -901,11 +901,11 @@ while (exists local value = indexed.indexedValue(i)) {
     ++i;
 }]]></programlisting>
         <para>Mutation/removal during iteration would also be possible.</para>
-        <programlisting><![CDATA[public interface OpenIndexed<X, I> 
+        <programlisting><![CDATA[shared interface OpenIndexed<X, I> 
         satisfies Indexed<X,I>
         given I satisfies Ordinal {
-    actual variable Settable<X>? indexedValue(I index);
-    public void removeIndex(I index);
+    shared actual variable Settable<X>? indexedValue(I index);
+    shared void removeIndex(I index);
 }]]></programlisting>
 </comment>
     
@@ -920,23 +920,23 @@ while (exists local value = indexed.indexedValue(i)) {
         <para>Entries may be constructed using the <literal>-></literal> 
         operator.</para>
 
-            <programlisting><![CDATA[public class Entry<out U, out V>(U key, V value) 
+            <programlisting><![CDATA[shared class Entry<out U, out V>(U key, V value) 
         extends Object() 
         satisfies Equality<Entry<U,V>>
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
     
     doc "The key used to access the entry."
-    public U key = key;
+    shared U key = key;
     
     doc "The value associated with the key."
-    public V value = value;
+    shared V value = value;
     
-    actual Boolean equals(Entry<U,V> that) {
+    shared actual Boolean equals(Entry<U,V> that) {
         return this.key==that.key && this.value==that.value
     }
     
-    actual Integer hash = ... ; 
+    shared actual Integer hash = ... ; 
 
 }]]></programlisting>
 
@@ -950,7 +950,7 @@ while (exists local value = indexed.indexedValue(i)) {
         of some other type. It supports the binary operator
         <literal>[key]</literal> (lookup).</para>
 
-        <programlisting><![CDATA[public interface Correspondence<in U, out V>
+        <programlisting><![CDATA[shared interface Correspondence<in U, out V>
         is EnumerableCorrespondence<U,V>
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
@@ -958,14 +958,14 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    formal Gettable<V?> value(U key);
+    shared formal Gettable<V?> value(U key);
     
     doc "Binary sequenced lookup operator |x[keys]|. Return a list 
          of values defined for the given keys, in order."
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    default V[] values(U... keys) {
+    shared default V[] values(U... keys) {
         return from (U key in keys) select (this[key])
     }
     
@@ -974,48 +974,48 @@ while (exists local value = indexed.indexedValue(i)) {
     throws (UndefinedKeyException
             -> "if no value is defined for one of the given 
                 keys")
-    default Iterable<V> values(Iterable<U> keys) {
+    shared default Iterable<V> values(Iterable<U> keys) {
         return from (U key in keys) select (this[key])
     }
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
          given keys."
-    default Boolean defines(U... keys) {
+    shared default Boolean defines(U... keys) {
         return forAll (U key in keys) every (this[key] exists)
     }
     
 }]]></programlisting>
 
         <!--     
-        <programlisting><![CDATA[public interface Correspondence<in U, out V> {
+        <programlisting><![CDATA[shared interface Correspondence<in U, out V> {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key."
-    public V value(U key);
+    shared V value(U key);
     
     doc "Determine if there is a value defined for the given key."
-    public Boolean defines(U key);
+    shared Boolean defines(U key);
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
+        <programlisting><![CDATA[shared extension class Correspondences<in U, out V>(Correspondence<U, V> correspondence) {
 
     doc "Binary lookup operator x[keys]. Returns a list of values 
          defined for the given keys, in order."
-    public List<V> values(List<U> keys) {
+    shared List<V> values(List<U> keys) {
         return from (U key in keys) select correspondence.lookup(key)
     }
     
     doc "Binary lookup operator x[keys]. Returns a set of values 
          defined for the given set of keys."
-    public Set<V> values(Set<U> keys) {
+    shared Set<V> values(Set<U> keys) {
         return ( from (U key in keys) select correspondence.lookup(key) ).elements
     }
     
     doc "Determine if there are values defined for all the given 
     keys."
-    public Boolean defines(U... keys) {
+    shared Boolean defines(U... keys) {
         for (U key in keys) {
             if ( !correspondence.defines(key) ) {
                 return false
@@ -1032,11 +1032,11 @@ while (exists local value = indexed.indexedValue(i)) {
         <para>The metatype allows direct instantiation of the
         <literal>Correspondence</literal> interface:</para>
         
-        <programlisting><![CDATA[public interface EnumerableCorrespondence<U,V>
+        <programlisting><![CDATA[shared interface EnumerableCorrespondence<U,V>
         satisfies Callable<Correspondence<U,V>,Entry<U,V>...>
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
-    actual default Correspondence<U,V> call(Entry<U,V>... entries) {
+    shared actual default Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
             ...
@@ -1052,19 +1052,19 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <!-- Association? -->
 
-        <programlisting><![CDATA[public interface OpenCorrespondence<in U, V> 
+        <programlisting><![CDATA[shared interface OpenCorrespondence<in U, V> 
         satisfies Correspondence<U, V> 
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
     
-    actual Settable<V?> value(U key);
+    shared actual Settable<V?> value(U key);
     
     doc "Add the given entries, overriding any definitions that 
          already exist."
     throws (UndefinedKeyException
             -> "if a value can not be defined for one of the 
                 given keys")
-    default void define(Entry<U, V>... definitions) {
+    shared default void define(Entry<U, V>... definitions) {
         for (U key->V value in definitions) {
             this[key] := value;
         }
@@ -1074,7 +1074,7 @@ while (exists local value = indexed.indexedValue(i)) {
          for the key, or |null| if there was no value defined."
     throws (UndefinedKeyException
             -> "if a value can not be defined for the given key")
-    default V? define(U key -> V value) {
+    shared default V? define(U key -> V value) {
         Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;
@@ -1097,12 +1097,12 @@ while (exists local value = indexed.indexedValue(i)) {
         <literal>&gt;, &lt;, &lt;=, &gt;=</literal> and <literal>&lt;=&gt;</literal>
         (compare).</para>
         
-        <programlisting><![CDATA[public interface PartlyComparable<in T>
+        <programlisting><![CDATA[shared interface PartlyComparable<in T>
         given T satisfies PartlyComparable<T>
-    formal PartialComparison compare(T other);
+    shared formal PartialComparison compare(T other);
 }]]></programlisting>
 
-        <programlisting><![CDATA[public interface Comparable<in T> 
+        <programlisting><![CDATA[shared interface Comparable<in T> 
         satisfies Equality<T>, PartlyComparable<T>
         given T satisfies Comparable<T> {
     
@@ -1112,25 +1112,25 @@ while (exists local value = indexed.indexedValue(i)) {
          |x<=>y == Comparison.equal|, the constraint that 
          if |x>y| then |y<x|, and the constraint that if 
          |x>y| and |y>z| then |x>z|."
-    actual formal Comparison compare(T other);
+    shared actual formal Comparison compare(T other);
     
     doc "The binary |>| operator."
-    Boolean largerThan(T other) {
+    shared Boolean largerThan(T other) {
         return compare(other)==larger
     }
     
     doc "The binary |<| operator."
-    Boolean smallerThan(T other) {
+    shared Boolean smallerThan(T other) {
         return compare(other)==smaller
     }
     
     doc "The binary |>=| operator."
-    Boolean asLargeAs(T other) {
+    shared Boolean asLargeAs(T other) {
         return compare(other)!=smaller
     }
     
     doc "The binary |<=| operator."
-    Boolean asSmallAs(T other) {
+    shared Boolean asSmallAs(T other) {
         return compare(other)!=larger
     }
     
@@ -1138,19 +1138,19 @@ while (exists local value = indexed.indexedValue(i)) {
         
         <programlisting><![CDATA[doc "The receiving object is larger than 
      the given object."
-public object larger extends Comparison() {}
+shared object larger extends Comparison() {}
 
 doc "The receiving object is smaller than 
      the given object."
-public object smaller extends Comparison() {}
+shared object smaller extends Comparison() {}
 
 doc "The receiving object is exactly equal 
      to the given object."
-public object equal extends Comparison() {}
+shared object equal extends Comparison() {}
 
 doc "The receiving object is not comparable 
      to the given object."
-public object uncomparable extends PartialComparison() {}
+shared object uncomparable extends PartialComparison() {}
 
 doc "The result of a comparison between two
      |PartlyComparable| objects."
@@ -1160,7 +1160,7 @@ partial abstract class PartialComparison
 
 doc "The result of a comparison between two
      |Comparable| objects."
-public abstract class Comparison() 
+shared abstract class Comparison() 
         of larger | smaller | equal 
         extends PartialComparison() {}]]></programlisting>
 
@@ -1175,7 +1175,7 @@ public abstract class Comparison()
         <para>The toplevel methods <literal>min()</literal> and <literal>max()</literal>
         return the minimum and maximum values of a list of <literal>Comparable</literal>s.</para>
         
-        <programlisting><![CDATA[public X min<X>(X x, X... xs) 
+        <programlisting><![CDATA[shared X min<X>(X x, X... xs) 
         given X satisfies Comparable<X> {
     variable X min := x;
     for (X y in xs) { 
@@ -1186,7 +1186,7 @@ public abstract class Comparison()
     return min
 }]]></programlisting>
 
-        <programlisting><![CDATA[public X max<X>(X x, X... xs) 
+        <programlisting><![CDATA[shared X max<X>(X x, X... xs) 
         given X satisfies Comparable<X> {
     variable X max := x;
     for (X y in xs) { 
@@ -1205,17 +1205,17 @@ public abstract class Comparison()
         operators <literal>++</literal> (successor) and 
         <literal>--</literal> (predecessor).</para>
         
-        <programlisting><![CDATA[public interface Ordinal {
+        <programlisting><![CDATA[shared interface Ordinal {
 
     doc "The unary |++| operator. The successor of this instance."
     throws (OutOfRangeException
             -> "if this is the maximum value")
-    formal subtype successor;
+    shared formal subtype successor;
     
     doc "The unary |--| operator. The predecessor of this instance."
     throws (OutOfRangeException
             -> "if this is the minimum value")
-    formal subtype predecessor;
+    shared formal subtype predecessor;
     
 }]]></programlisting>
 
@@ -1227,22 +1227,22 @@ public abstract class Comparison()
         <para>The <literal>Bounded</literal> class represents a value
         from an upper-bounded list of natural numbers.</para>
         
-        <programlisting><![CDATA[public class Bounded<M>(Bounded<M> b)
+        <programlisting><![CDATA[shared class Bounded<M>(Bounded<M> b)
        extends Object()
        satisfies Comparable<Bounded<M>>, Number 
        given M satisfies Dimension {
    
     doc "The |Natural| representing this natural
          number."
-    public extension Natural natural { ... }
+    shared extension Natural natural { ... }
 
-    actual Comparison compare(Bounded<M> other) {
+    shared actual Comparison compare(Bounded<M> other) {
         return natural.compare(other.natural)
     }
 
     doc "This natural number, as a |Bounded<N>| where
          |N>=M|."
-    public extension Bounded<M+I> bounded<I>() 
+    shared extension Bounded<M+I> bounded<I>() 
             given I satisfies Dimension { ... }
    
 }]]></programlisting>
@@ -1254,7 +1254,7 @@ public abstract class Comparison()
         
         <programlisting><![CDATA[doc "A sequence of |Bounded<N+#1>| from
      from |#0| to |N|."
-public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>() 
+shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>() 
         given N satisfies Dimension  { ... }]]></programlisting>
 
     </section>
@@ -1269,22 +1269,22 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         operator <literal>[i..j]</literal> (subrange) in addition to operators 
         inherited from <literal>Correspondence</literal>:</para>
 
-        <programlisting><![CDATA[public interface Sequence<out X> 
+        <programlisting><![CDATA[shared interface Sequence<out X> 
         is EnumerableSequence<X>
         satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
         given X satisfies Equality<X> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
-    formal Natural? lastIndex;
+    shared formal Natural? lastIndex;
     
-    actual default Iterator<X> iterator() {
+    shared actual default Iterator<X> iterator() {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
-            actual X? head { 
+            shared actual X? head { 
                 return this[from] 
             }
-            actual Iterable<X> tail {
+            shared actual Iterable<X> tail {
                 return SequenceIterator(from+1)
             }
         }
@@ -1295,7 +1295,7 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         }
     }
     
-    actual default Boolean size {
+    shared actual default Boolean size {
         if (exists lastIndex) {
             return lastIndex+1
         }
@@ -1304,11 +1304,11 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         } 
     }
     
-    actual default Boolean empty {
+    shared actual default Boolean empty {
         return !(this.lastIndex exists)
     }
     
-    actual default Boolean contains(Object object) {
+    shared actual default Boolean contains(Object object) {
         if (is X object) {
             return forAny (X x in this) some (x==object)
         }
@@ -1319,19 +1319,19 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
     
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
-    default X? first {
+    shared default X? first {
         return this[0]
     }
     
     doc "The rest of the sequence, after removing 
          the first element."
-    default X[] rest {
+    shared default X[] rest {
         return this[1...]
     }
 
     doc "The last element of the sequence, or
          |null| if the sequence has no elements."
-    default X? last {
+    shared default X? last {
         if (exists Natural index = sequence.lastIndex) {
             return this[index]
         }
@@ -1344,10 +1344,10 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         
         <para>The metatype allows direct instantiation of <literal>X[]</literal>:</para>
         
-        <programlisting><![CDATA[public interface EnumerableSequence<X>
+        <programlisting><![CDATA[shared interface EnumerableSequence<X>
         satisfies Callable<X[],X...> 
         given X satisfies Equality<X> {
-    actual default X[] call(X... elements) {
+    shared actual default X[] call(X... elements) {
         return elements
     }
 }]]></programlisting>
@@ -1355,14 +1355,14 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         <para>The following extension provides access to the indices 
         of the sequence in a <literal>for</literal> loop.</para>
         
-        <programlisting><![CDATA[public extension class SequenceEntryIterable<X>(X[] this)
+        <programlisting><![CDATA[shared extension class SequenceEntryIterable<X>(X[] this)
         satisfies Iterable<Entry<Natural,X>> 
         given X satisfies Equality<X> {
         
-    actual Iterator<Entry<Natural,X>> iterator() {
+    shared actual Iterator<Entry<Natural,X>> iterator() {
         class EntryIterator(Natural from) 
                 satisfies Iterator<Entry<Natural,X>> {
-            actual Entry<Natural,X>? head {
+            shared actual Entry<Natural,X>? head {
                 if (exists X x = this[from]) {
                     return from->x
                 }
@@ -1370,7 +1370,7 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
                     return null;
                 }
             }
-            actual Iterable<Entry<Natural,X>> tail {
+            shared actual Iterable<Entry<Natural,X>> tail {
                 return EntryIterator(from+1)
             }
         }
@@ -1416,11 +1416,11 @@ public BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         <programlisting><![CDATA[doc "The binary join operator |x + y|. The returned 
      sequence does not reflect changes to the original 
      sequences."
-public T[] join<T>(T[]... sequences) 
+shared T[] join<T>(T[]... sequences) 
         given T satisfies Equality<T> {
             
     object joinedSequence satisfies T[] {
-        actual Natural? lastIndex {
+        shared actual Natural? lastIndex {
             variable Natural? result := null;
             for (T[] s in sequences) {
                 if (exists Natural last = s.lastIndex) {
@@ -1434,7 +1434,7 @@ public T[] join<T>(T[]... sequences)
             }
             return result
         }
-        actual Gettable<T?> value(Natural index) {
+        shared actual Gettable<T?> value(Natural index) {
             T? value {
                 variable Natural i := index;
                 for (T[] s in sequences) {
@@ -1462,11 +1462,11 @@ public T[] join<T>(T[]... sequences)
      with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
+shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         given T satisfies Equality<T> {
          
     object rangeSequence satisfies T[] {
-        actual Natural? lastIndex {
+        shared actual Natural? lastIndex {
             if (exists Natural last = sequence.lastIndex) {
                 if (exists to) {
                     if (to<last) {
@@ -1481,7 +1481,7 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
                 return null
             }
         } 
-        actual Gettable<T?> value(Natural index) {
+        shared actual Gettable<T?> value(Natural index) {
             T? value {
                 if (exists to) {
                     if (index>to) {
@@ -1501,20 +1501,20 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         <para>There is a mutable subtype which allows assignment to
         an index.</para>
         
-        <programlisting><![CDATA[public interface OpenSequence<X>
+        <programlisting><![CDATA[shared interface OpenSequence<X>
         satisfies X[] & OpenCorrespondence<Natural,X> 
         given X satisfies Equality<X> {}]]></programlisting>
 
         <para>A <literal>BoundedSequence</literal> adds a typesafe bound
         to the indices, allowing use of indices of type <literal>Bounded&lt;#n&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public interface BoundedSequence<out X, N>
+        <programlisting><![CDATA[shared interface BoundedSequence<out X, N>
         satisfies X[] 
         given X satisfies Equality<X> 
         given N satisfies Dimension {
         
-    formal Gettable<X> value(Bounded<N> index);
-    actual default Bounded<N>? lastIndex;
+    shared formal Gettable<X> value(Bounded<N> index);
+    shared actual default Bounded<N>? lastIndex;
     
 }]]></programlisting>
 
@@ -1522,18 +1522,18 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         of the bounded sequence in a <literal>for</literal> loop. The
         indices are of type <literal>Bounded&lt;N&gt;</literal>.</para>
         
-        <programlisting><![CDATA[public extension class SequenceEntryIterable<X,N>(BoundedSequence<X,N> this)
+        <programlisting><![CDATA[shared extension class SequenceEntryIterable<X,N>(BoundedSequence<X,N> this)
         satisfies Iterable<Entry<Bounded<N>,X>> 
         given X satisfies Equality<X> 
         given N satisfies Dimension {
         
-    actual Iterator<Entry<Bounded<N>,X>> iterator() {
+    shared actual Iterator<Entry<Bounded<N>,X>> iterator() {
         class EntryIterator(Bounded<N> from) 
                 satisfies Iterator<Entry<Bounded<N>,X>> {
-            actual Entry<Bounded<N>,X>? head {
+            shared actual Entry<Bounded<N>,X>? head {
                 return from->this[from]
             }
-            actual Iterable<Entry<Bounded<N>,X>> tail {
+            shared actual Iterable<Entry<Bounded<N>,X>> tail {
                 if ( from+1 < natural<N>() ) {
                     return EntryIterator(from.successor)
                 }
@@ -1550,10 +1550,10 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         <!--
         <para>A helper class adds a useful convenience attribute.</para>
         
-        <programlisting><![CDATA[public extension class BoundSequences<out X,n>(X[n] sequence) {
+        <programlisting><![CDATA[shared extension class BoundSequences<out X,n>(X[n] sequence) {
    
     doc "A sequence of all indices of the the sequence."
-    public Bounded<n>[n] indices {
+    shared Bounded<n>[n] indices {
         return when (n>0)
             then (Bounded<n>(0)..Bounded<n>(n-1))
             otherwise none
@@ -1564,30 +1564,30 @@ public T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         
         <para>There is a mutable subtype which allows assignment to an index.</para>
         
-        <programlisting><![CDATA[public interface OpenBoundedSequence<X,N>
+        <programlisting><![CDATA[shared interface OpenBoundedSequence<X,N>
         satisfies BoundedSequence<X,N> & OpenSequence<X> 
         given X satisfies Equality<X> {
-    public Settable<X> value(Bounded<N> index);
+    shared Settable<X> value(Bounded<N> index);
 }]]></programlisting>
 
         <para>The value <literal>none</literal> is transparently assignable to 
         <literal>X[]</literal> and <literal>X[0]</literal>.</para>
         
         <programlisting><![CDATA[doc "Represents an empty sequence."
-public object none {
+shared object none {
 
-    public extension class EmptySequence<out X>() 
+    shared extension class EmptySequence<out X>() 
             satisfies X[0] 
             given X satisfies Equality<X> {
         
-        actual Natural? lastIndex = null;
+        shared actual Natural? lastIndex = null;
         
-        actual Gettable<X?> value(Natural index) {
+        shared actual Gettable<X?> value(Natural index) {
             X? nullValue = null;
             return nullValue 
         }
         
-        actual Gettable<X> value(Bounded<#0> index) {
+        shared actual Gettable<X> value(Bounded<#0> index) {
             throw Exception()
         }
         
@@ -1598,25 +1598,25 @@ public object none {
         <para>The <literal>zip()</literal> function combines <literal>BoundedSequence</literal>s 
         into a single <literal>BoundedSequence</literal>.</para>
 
-        <programlisting><![CDATA[public BoundedSequence<T,N> zip<T,X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y, T producing(X x, Y y))
+        <programlisting><![CDATA[shared BoundedSequence<T,N> zip<T,X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y, T producing(X x, Y y))
         given N satisfies Dimension {
     return from (Bounded<N> i in zeroTo<N>()) 
                 select (producing(x[i],y[i]))
 }]]></programlisting>
 
-        <programlisting><![CDATA[public BoundedSequence<Entry<X,Y>,N> zip<X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y) 
+        <programlisting><![CDATA[shared BoundedSequence<Entry<X,Y>,N> zip<X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y) 
         given N satisfies Dimension {
     return zip(x,y,Entry)
 }]]></programlisting>
 
-        <programlisting><![CDATA[public T[n] zip<T,X,N>(BoundedSequence<X,N> lists..., T producing(X x...))  
+        <programlisting><![CDATA[shared T[n] zip<T,X,N>(BoundedSequence<X,N> lists..., T producing(X x...))  
         given N satisfies Dimension {
     return from (Bounded<N> i in zeroTo<N>()) 
                 select (producing(from (BoundedSequence<X,N> list in lists) select (list[i]));
 }]]></programlisting>
 
 <!--
-        <programlisting><![CDATA[public T[][n] zip<T,X,n>(X[n] lists...) {
+        <programlisting><![CDATA[shared T[][n] zip<T,X,n>(X[n] lists...) {
     return zip(lists,ArrayList)
 }]]></programlisting>
 -->
@@ -1630,28 +1630,28 @@ public object none {
         others. Ranges may be constructed using the <literal>..</literal> 
         operator:</para> 
         
-        <programlisting><![CDATA[public class Range<X>(X first, X last) 
+        <programlisting><![CDATA[shared class Range<X>(X first, X last) 
         extends Object() 
         satisfies X[] & Matcher<X> & Equality<Range<X>>
         given X satisfies Ordinal & Comparable<X> & Equality<X> { 
     
     doc "The first value in the range."
-    public X first = first;
+    shared X first = first;
     
     doc "The last value in the range."
-    public X last = last;
+    shared X last = last;
     
     doc "Return a |Sequence| of values in the range, 
          beginning at the first value, and 
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    public X[] by(Natural stepSize) { 
+    shared X[] by(Natural stepSize) { 
         return from (Natural index->X value in this) 
                     where (index%stepSize == 0) 
     }
     
-    public Natural? index(X x) {
+    shared Natural? index(X x) {
         if (x<first || x>last) {
             return null
         }
@@ -1667,10 +1667,10 @@ public object none {
         }
     }
     
-    actual Iterator<X> iterator() {
+    shared actual Iterator<X> iterator() {
         class RangeIterator(X x) 
                 satisfies Iterator<X> {
-            actual X? head { 
+            shared actual X? head { 
                 if (x>last) { 
                     return null 
                 } 
@@ -1678,16 +1678,16 @@ public object none {
                     return x 
                 }
             }
-            actual Iterator<X> tail {
+            shared actual Iterator<X> tail {
                 return RangeIterator(x.successor)
             }
         }
         return RangeIterator(first)
     }
     
-    actual Boolean empty = last<first;
+    shared actual Boolean empty = last<first;
     
-    actual Boolean contains(Object... objects) {
+    shared actual Boolean contains(Object... objects) {
         for (Object x in objects) {
             if (is X x) {
                 if ( x<first || x>last ) ) {
@@ -1703,13 +1703,13 @@ public object none {
         } 
     }
     
-    actual Boolean matches(X x) {
+    shared actual Boolean matches(X x) {
         return x>first && x<last
     }
     
-    actual Natural? lastIndex = index(last);
+    shared actual Natural? lastIndex = index(last);
     
-    actual Gettable<X?> value(Natural n) {
+    shared actual Gettable<X?> value(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
         variable X? value:=first;
@@ -1724,7 +1724,7 @@ public object none {
         return value
     }
     
-    actual Boolean equals(Range<X> that) {
+    shared actual Boolean equals(Range<X> that) {
         return that.first==first && that.last==last
     }
     
@@ -1762,24 +1762,24 @@ while (i<=max) {
         
         <para>UTF-16 Unicode Characters are represented by the following class:</para>
 
-        <programlisting><![CDATA[public class Character(small Natural utf16)
+        <programlisting><![CDATA[shared class Character(small Natural utf16)
         extends Object()
         satisfies Ordinal & Comparable<Character> & Matcher<Character> { 
     ... 
     
     doc "The UTF-8 encoding"
-    public String utf8 { return ... }
+    shared String utf8 { return ... }
     
-    public Character lowercase { return .. }
-    public Character uppercase { return .. }
+    shared Character lowercase { return .. }
+    shared Character uppercase { return .. }
     
-    public extension class StringToCharacter(String this) {
+    shared extension class StringToCharacter(String this) {
     
         doc "Parse the string representation of a |Character| in UTF-16"
-        public Character parseUtf16Character() { return ... }
+        shared Character parseUtf16Character() { return ... }
     
         doc "Parse the string representation of a |Character| in UTF-8"
-        public Character parseUtf8Character() { return ... }
+        shared Character parseUtf8Character() { return ... }
     
     }
  
@@ -1790,7 +1790,7 @@ while (i<=max) {
         among others. Any <literal>Character[]</literal> may be transparently
         converted to <literal>String</literal>.</para> 
                 
-        <programlisting><![CDATA[public extension class String(Character[] this) 
+        <programlisting><![CDATA[shared extension class String(Character[] this) 
         extends Object() 
         satisfies Character[] & Comparable<String> & Matcher<String> & Format {
     
@@ -1806,50 +1806,50 @@ while (i<=max) {
     
     doc "Split the string into tokens, using the given
          separator characters."
-    public Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
+    shared Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
     
     doc "Split the string into lines of text."
-    public Iterable<String> lines() { return tokens("\n\l\r") }
+    shared Iterable<String> lines() { return tokens("\n\l\r") }
     
-    public String replace(Character with(Character character)) { return ... }
+    shared String replace(Character with(Character character)) { return ... }
     
-    public String replace(Character character -> Character replacement) {
+    shared String replace(Character character -> Character replacement) {
         return replace() with (Character c) 
             (when (c==character) then (replacement) otherwise (c))
     }
     
-    public String replace(Correspondence<Character,Character> replacements) { 
+    shared String replace(Correspondence<Character,Character> replacements) { 
         return replace() with (Character c) (replacements[c] ? c)
     }
     
     doc "The string, with all characters in lowercase."
-    public String lowercase {
+    shared String lowercase {
         return replace() with (Character c) (c.lowercase)
     }
     
     doc "The string, with all characters in uppercase."
-    public String uppercase {
+    shared String uppercase {
         return replace() with (Character c) (c.uppercase)
     }
     
     doc "Remove the given characters from the beginning 
          and end of the string.
-    public String strip(Character[] whitespace = " \n\l\r\t") { return ... }
+    shared String strip(Character[] whitespace = " \n\l\r\t") { return ... }
     
     doc "Collapse substrings of the given characters into
          single space characters."
-    public String normalize(Character[] whitespace = " \n\l\r\t") { return ... }
+    shared String normalize(Character[] whitespace = " \n\l\r\t") { return ... }
     
     doc "Join the given strings, using this string as
          a separator."
-    public String join(String... strings) { return ... }
+    shared String join(String... strings) { return ... }
     
 }]]></programlisting>
         
         <para>The extension class <literal>StringBuilder</literal> makes it more 
         efficient to produce a string using procedural code:</para>
         
-        <programlisting><![CDATA[public extension class StringBuilder(Character[] this) {
+        <programlisting><![CDATA[shared extension class StringBuilder(Character[] this) {
         
     Character[] with(Character[] appendedStrings...) {
         variable OpenList<Character> list = ArrayList<Character>(this);
@@ -1887,12 +1887,12 @@ while (i<=max) {
         <!--
         <para>A string template is represented by an instance of <literal>StringTemplate</literal>.</para>
         
-        <programlisting>public class StringTemplate(...) {
+        <programlisting>shared class StringTemplate(...) {
         
     doc "Evaluate all interpolated expressions, producing 
          a constant character string with no interpolated
          expressions."
-    public extension String interpolate() { return ... }
+    shared extension String interpolate() { return ... }
 
 }</programlisting>
         -->
@@ -1902,17 +1902,17 @@ while (i<=max) {
     <section id="regex">
         <title>Regular expressions</title>
         
-        <programlisting><![CDATA[public extension class Regex(Quoted this)
+        <programlisting><![CDATA[shared extension class Regex(Quoted this)
         satisfies Matcher<String> { 
         
     doc "Return the substrings of the given string which
          match the parenthesized groups of the regex,
          ordered by the position of the opening parenthesis
          of the group." 
-    public Match? matchList(String string)() { return ... }
+    shared Match? matchList(String string)() { return ... }
     
     doc "Determine if the given string matches the regex."
-    actual Boolean matches(String string) { return ... }
+    shared actual Boolean matches(String string) { return ... }
     
     ... 
     
@@ -1972,37 +1972,37 @@ while (i<=max) {
         <para>The <literal>Number</literal> interface is the abstract supertype
         of all classes which represent numeric values.</para>
         
-        <programlisting><![CDATA[public interface Number {
+        <programlisting><![CDATA[shared interface Number {
     
     doc "Determine if the number represents
          an integer value"
-    formal Boolean integral;
+    shared formal Boolean integral;
     
     doc "Determine if the number is positive"
-    formal Boolean positive;
+    shared formal Boolean positive;
     
     doc "Determine if the number is negative"    
-    formal Boolean negative;
+    shared formal Boolean negative;
 
     doc "Determine if the number is zero"
-    formal Boolean zero;
+    shared formal Boolean zero;
     
     doc "Determine if the number is one"
-    formal Boolean unit;
+    shared formal Boolean unit;
     
     doc "The number, represented as a |Decimal|"
-    formal Decimal decimal;
+    shared formal Decimal decimal;
 
     doc "The number, represented as a |Float|"
     throws (FloatOverflowException
             -> "if the number is too large to be
                 represented as a |Float|")
-    formal Float float;
+    shared formal Float float;
     
     doc "The number, represented as an |Whole|,
          after truncation of any fractional 
          part"
-    formal Whole whole;
+    shared formal Whole whole;
     
     doc "The number, represented as an |Integer|,
          after truncation of any fractional 
@@ -2010,31 +2010,31 @@ while (i<=max) {
     throws (IntegerOverflowException
             -> "if the number is too large to be
                 represented as an |Integer|")
-    formal Integer integer;
+    shared formal Integer integer;
     
     doc "The number, represented as a |Natural|,
          after truncation of any fractional 
          part"
     throws (NegativeNumberException
             -> "if the number is negative")
-    formal Natural natural;
+    shared formal Natural natural;
     
     doc "The magnitude of the number"
-    formal subtype magnitude;
+    shared formal subtype magnitude;
     
     doc "1 if the number is positive, -1 if it
          is negative, or 0 if it is zero."
-    formal subtype sign;
+    shared formal subtype sign;
     
     doc "The fractional part of the number,
          after truncation of the integral
          part"
-    formal subtype fractionalPart;
+    shared formal subtype fractionalPart;
     
     doc "The integral value of the number 
          after truncation of the fractional
          part"
-    formal subtype wholePart;
+    shared formal subtype wholePart;
 
 }]]></programlisting>
 
@@ -2048,24 +2048,24 @@ while (i<=max) {
         support the compound assignment operators 
         <literal>+=, -=, /=, *=</literal>.</para>
 
-<programlisting><![CDATA[public interface Numeric<N>
+<programlisting><![CDATA[shared interface Numeric<N>
         satisfies Number & Comparable<N>
         given N satisfies Numeric<N> {
 
     doc "The binary |+| operator"
-    formal N plus(N number);
+    shared formal N plus(N number);
 
     doc "The binary |-| operator"
-    formal N minus(N number);
+    shared formal N minus(N number);
 
     doc "The binary |*| operator"
-    formal N times(N number);
+    shared formal N times(N number);
 
     doc "The binary |/| operator"
-    formal N divided(N number);
+    shared formal N divided(N number);
 
     doc "The binary |**| operator"
-    formal N power(N number);
+    shared formal N power(N number);
     
 }]]></programlisting>
 
@@ -2077,23 +2077,23 @@ while (i<=max) {
         <literal>++</literal> and <literal>--</literal> from 
         <literal>Ordinal</literal>.</para>
 
-<programlisting><![CDATA[public interface Integral<N>
+<programlisting><![CDATA[shared interface Integral<N>
         satisfies Numeric<N> & Ordinal
         given N satisfies Number {
 
     doc "The binary |%| operator"
-    formal N remainder(N number);
+    shared formal N remainder(N number);
 
 }]]></programlisting>
 
         <para>The type <literal>Invertable</literal> supports the unary
         prefix <literal>-</literal> operator.</para>
         
-        <programlisting><![CDATA[public interface Invertable<I> 
+        <programlisting><![CDATA[shared interface Invertable<I> 
     given I satisfies Number {
     
     doc "The unary |-| operator"
-    formal I inverse;
+    shared formal I inverse;
 
 }]]></programlisting>
         
@@ -2102,33 +2102,33 @@ while (i<=max) {
         <para><literal>Natural</literal> represents 63 bit unsigned integers
         (including zero).</para>
         
-        <programlisting><![CDATA[public class Natural(Natural natural)
+        <programlisting><![CDATA[shared class Natural(Natural natural)
         extends Object() 
         satisfies Integral<Natural> & Invertable<Integer> & Matcher<Integer> { 
     ... 
     
     doc "Implicit type promotion to |Integer|"
-    actual extension Integer integer { return ... }
+    shared actual extension Integer integer { return ... }
     
     doc "Implicit type promotion to |Whole|"
-    actual extension Whole whole { return ... }
+    shared actual extension Whole whole { return ... }
     
     doc "Implicit type promotion to |Float|"
-    actual extension Float float { return ... }
+    shared actual extension Float float { return ... }
     
     doc "Implicit type promotion to |Decimal|"
-    actual extension Decimal decimal { return ... }
+    shared actual extension Decimal decimal { return ... }
 
     doc "Shift bits left by the given number of places"
-    public Natural leftShift(Natural digits) { return ... }
+    shared Natural leftShift(Natural digits) { return ... }
     
     doc "Shift bits right by the given number of places"
-    public Natural rightShift(Natural digits) { return ... }
+    shared Natural rightShift(Natural digits) { return ... }
     
-    public extension class StringToNatural(String this) {
+    shared extension class StringToNatural(String this) {
     
         doc "Parse the string representation of a |Natural| in the given radix"
-        public Natural parseNatural(small Natural radix=10) { return ... }
+        shared Natural parseNatural(small Natural radix=10) { return ... }
         
     }
 
@@ -2143,24 +2143,24 @@ while (i<=max) {
 
         <para><literal>Integer</literal> represents 64 bit signed integers.</para>
 
-        <programlisting><![CDATA[public class Integer(Boolean sign, Natural natural)
+        <programlisting><![CDATA[shared class Integer(Boolean sign, Natural natural)
         extends Object() 
         satisfies Integral<Integer> & Invertable<Integer> & Matcher<Integer> {
     ...
     
     doc "Implicit type promotion to |Whole|"
-    actual extension Whole whole { return ... }
+    shared actual extension Whole whole { return ... }
     
     doc "Implicit type promotion to |Float|"
-    actual extension Float float { return ... }
+    shared actual extension Float float { return ... }
 
     doc "Implicit type promotion to |Decimal|"
-    actual extension Decimal decimal { return ... }
+    shared actual extension Decimal decimal { return ... }
 
-    public extension class StringToInteger(String this) {
+    shared extension class StringToInteger(String this) {
     
         doc "Parse the string representation of an |Integer| in the given radix"
-        public Integer parseInteger(small Natural radix=10) { return ... }
+        shared Integer parseInteger(small Natural radix=10) { return ... }
         
     }
 
@@ -2169,20 +2169,20 @@ while (i<=max) {
         <para><literal>Whole</literal> represents arbitrary-precision
         signed integers.</para>
 
-        <programlisting><![CDATA[public class Whole(Boolean sign, small Natural... digits)
+        <programlisting><![CDATA[shared class Whole(Boolean sign, small Natural... digits)
         extends Object() 
         satisfies Integral<Whole> & Invertable<Whole> {
     ...
     
-    public small Natural precision = ...;
+    shared small Natural precision = ...;
     
     doc "Implicit type promotion to |Decimal|"
-    actual extension Decimal decimal { return ... }
+    shared actual extension Decimal decimal { return ... }
     
-    public extension class StringToWhole(String this) {
+    shared extension class StringToWhole(String this) {
     
         doc "Parse the string representation of a |Whole| in the given radix"
-        public Whole parseWhole(small Natural radix=10) { return ... }
+        shared Whole parseWhole(small Natural radix=10) { return ... }
         
     }
 
@@ -2191,21 +2191,21 @@ while (i<=max) {
         <para><literal>Float</literal> represents 64 bit floating point
         values.</para>
 
-        <programlisting><![CDATA[public class Float(Float float)
+        <programlisting><![CDATA[shared class Float(Float float)
         extends Object() 
         satisfies Numeric<Float> & Invertable<Float> { 
     ... 
     
     doc "The natural logarithm of the number"
-    public Float ln { return ... }
+    shared Float ln { return ... }
     
     doc "Implicit type promotion to |Decimal|"
-    actual extension Decimal decimal { return ... }
+    shared actual extension Decimal decimal { return ... }
     
-    public extension class StringToFloat(String this) {
+    shared extension class StringToFloat(String this) {
     
         doc "Parse the string representation of a |Float| in the given radix"
-        public Float parseFloat(small Natural radix=10) { return ... }
+        shared Float parseFloat(small Natural radix=10) { return ... }
         
     }
 
@@ -2214,18 +2214,18 @@ while (i<=max) {
         <para><literal>Decimal</literal> represents arbitrary-precision
         and arbitrary-scale decimals.</para>
 
-        <programlisting><![CDATA[public class Decimal(Whole value, small Integer scale)
+        <programlisting><![CDATA[shared class Decimal(Whole value, small Integer scale)
         extends Object() 
         satisfies Numeric<Decimal> & Invertable<Decimal> {
     ...
 
-    public small Natural precision = ...;
-    public small Integer scale = ...;
+    shared small Natural precision = ...;
+    shared small Integer scale = ...;
     
-    public extension class StringToDecimal(String this) {
+    shared extension class StringToDecimal(String this) {
     
         doc "Parse the string representation of a |Decimal| in the given radix"
-        public Decimal parseDecimal(small Natural radix=10) { return ... }
+        shared Decimal parseDecimal(small Natural radix=10) { return ... }
         
     }
 
@@ -2242,28 +2242,28 @@ while (i<=max) {
         a "slot" function that accepts a key and returns a 
         <literal>Boolean</literal>.</para>
         
-        <programlisting><![CDATA[public interface Slots<B>
+        <programlisting><![CDATA[shared interface Slots<B>
         given B satisfies Slots<B> {
         
     doc "Slotwise or operator |x | y|. Implementations
          should respect the constraint that 
          |(x|y).slot(z)==(x.slot(z)||y.slot(z))|."
-    formal B or(B bits);
+    shared formal B or(B bits);
     
     doc "Slotwise and operator |x & y|. Implementations
          should respect the constraint that 
          |(x&y).slot(z)==(x.slot(z)&&y.slot(z))|."
-    formal B and(B bits);
+    shared formal B and(B bits);
     
     doc "Slotwise xor operator |x ^ y|. Implementations
          should respect the constraint that 
          |(x^y).slot(z)==((x|y).slot(z)&&!(x&y).slot(z))|.""
-    formal B xor(B bits);
+    shared formal B xor(B bits);
     
     doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
          that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|.""
-    formal B complement(B bits);
+    shared formal B complement(B bits);
     
 }]]></programlisting>
 
@@ -2275,13 +2275,13 @@ while (i<=max) {
         <para>The interface <literal>FixedSlots</literal> defines the 
         unary operator <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface FixedSlots<B> 
+        <programlisting><![CDATA[shared interface FixedSlots<B> 
         satisfies Slots<B> {
         
     doc "Slotwise complement operator |~x|. 
          Implementations should respect the constraint 
          that |(~x).slot(z)==!x.slot(z)|."
-    formal Bits<B> complement;
+    shared formal Bits<B> complement;
     
 }]]></programlisting>
 
@@ -2294,7 +2294,7 @@ while (i<=max) {
         string of boolean values, and supports the unary operator 
         <literal>~</literal>.</para>
         
-        <programlisting><![CDATA[public interface Bits<N> 
+        <programlisting><![CDATA[shared interface Bits<N> 
         satisfies BoundedSequence<Boolean,N> & Equality<Bits<N>> & FixedSlots<Bits<N>> 
         given N satisfies Dimension {}]]></programlisting>
 
@@ -2305,12 +2305,12 @@ while (i<=max) {
         <para>Boolean values are transparently converted to and from 
         <literal>Bits&lt;1&gt;</literal>.</para>
 
-        <programlisting><![CDATA[public extension class BooleanBit(Boolean this)
+        <programlisting><![CDATA[shared extension class BooleanBit(Boolean this)
         satisfies Bits<1> {
 
-    public extension Boolean boolean { return this }
+    shared extension Boolean boolean { return this }
 
-    actual Bits<1> or(Bits<1> bit) {
+    shared actual Bits<1> or(Bits<1> bit) {
         if (this) {
             return this
         else {
@@ -2318,7 +2318,7 @@ while (i<=max) {
         }
     }
     
-    actual Bits<1> and(Bits<1> bit) {
+    shared actual Bits<1> and(Bits<1> bit) {
         if (this) {
             return bit
         else {
@@ -2326,7 +2326,7 @@ while (i<=max) {
         }
     }
     
-    actual Bits<1> xor(Bits<1> bit) {
+    shared actual Bits<1> xor(Bits<1> bit) {
         if (this) {
             return bit.complement
         else {
@@ -2334,7 +2334,7 @@ while (i<=max) {
         }
     }
     
-    actual Bits<1> complement(Bits<1> bit) {
+    shared actual Bits<1> complement(Bits<1> bit) {
         if (this) {
             return bit.complement
         else {
@@ -2342,15 +2342,15 @@ while (i<=max) {
         }
     }
     
-    actual Bits<1> complement {
+    shared actual Bits<1> complement {
         return BooleanBit(!this)
     }
     
-    actual Gettable<Boolean> value(Bounded<1> index) {
+    shared actual Gettable<Boolean> value(Bounded<1> index) {
         return this
     }
     
-    actual Gettable<Boolean?> value(Natural key) {
+    shared actual Gettable<Boolean?> value(Natural key) {
         Boolean? result;
         if (key==0) {
             result = boolean 
@@ -2361,15 +2361,15 @@ while (i<=max) {
         return result
     }
     
-    actual Bounded<1> lastIndex {
+    shared actual Bounded<1> lastIndex {
         return 0
     }
     
 }]]></programlisting>
 
         <!--
-        <programlisting><![CDATA[public extension Bits<1> booleanToBits(Boolean b) { .... }]]></programlisting>
-        <programlisting><![CDATA[public extension Boolean bitsToBoolean(Bits<1> b) { return b[0] }]]></programlisting>
+        <programlisting><![CDATA[shared extension Bits<1> booleanToBits(Boolean b) { .... }]]></programlisting>
+        <programlisting><![CDATA[shared extension Boolean bitsToBoolean(Bits<1> b) { return b[0] }]]></programlisting>
         -->
 
         <comment><para>TODO: we need a bunch of functions for converting bit 
@@ -2385,47 +2385,47 @@ while (i<=max) {
         
         <para>A <literal>Function</literal> represents a toplevel method.</para>
 
-        <programlisting><![CDATA[public interface Function<out R, P...> 
+        <programlisting><![CDATA[shared interface Function<out R, P...> 
         satisfies Callable<R, P...> & Annotated {
         
-    formal String name;
+    shared formal String name;
     
-    formal Boolean extension;
+    shared formal Boolean extension;
     
-    formal Visiblity visibility;
+    shared formal Visiblity visibility;
     
-    formal Type<R> returnType;
-    formal Parameter<Object>[] parameters;
+    shared formal Type<R> returnType;
+    shared formal Parameter<Object>[] parameters;
     
-    formal void intercept( R onInvoke(R proceed(P... args), P... args) )();
+    shared formal void intercept( R onInvoke(R proceed(P... args), P... args) )();
 
 }]]></programlisting>
 
         <para>A <literal>Value</literal> represents a toplevel attribute.</para>
 
-        <programlisting><![CDATA[public interface Value<out T> 
+        <programlisting><![CDATA[shared interface Value<out T> 
         satisfies Annotated {
     
-    formal String name;
+    shared formal String name;
     
-    formal Boolean variable;    
+    shared formal Boolean variable;    
     
-    formal Visiblity visibility;
+    shared formal Visiblity visibility;
     
-    formal Type<T> type;
+    shared formal Type<T> type;
     
-    formal extension Gettable<T> value;
+    shared formal extension Gettable<T> value;
     
-    formal void intercept( T onGet(T proceed()) )();
+    shared formal void intercept( T onGet(T proceed()) )();
 
 }]]></programlisting>
 
-        <programlisting><![CDATA[public interface MutableValue<T> 
+        <programlisting><![CDATA[shared interface MutableValue<T> 
         satisfies Value<T> {
         
-    actual formal Settable<T> value;
+    shared actual formal Settable<T> value;
     
-    formal void intercept( void onSet(void proceed(T value), T value) )();
+    shared formal void intercept( void onSet(void proceed(T value), T value) )();
 
 }]]></programlisting>
 
@@ -2435,30 +2435,30 @@ while (i<=max) {
         <para>An instance of <literal>Type</literal> represent a type: an interface or 
         class, together with type arguments.</para>
         
-        <programlisting><![CDATA[public interface Type<out X> 
+        <programlisting><![CDATA[shared interface Type<out X> 
         satisfies Annotated {
         
-    formal String name;
+    shared formal String name;
     
-    formal Boolean variable;
+    shared formal Boolean variable;
     
-    formal Visiblity visibility;
+    shared formal Visiblity visibility;
     
     doc "Return all the attributes of the given 
          type."
-    formal Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
+    shared formal Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
     
     doc "Return all the methods of the given 
          callable type."
-    formal Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
+    shared formal Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
     
     doc "Return all the instantiable member classes 
          of the given callable type."
-    formal Set<MemberConcreteClass<X,Y,P...>> concreteClasses<Y,P...>(Type<Callable<Y,P...>> type);
+    shared formal Set<MemberConcreteClass<X,Y,P...>> concreteClasses<Y,P...>(Type<Callable<Y,P...>> type);
     
     doc "Return all the member types which are subtypes 
          of the given type."
-    formal Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
+    shared formal Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
     
     ...
     
@@ -2466,79 +2466,79 @@ while (i<=max) {
         
         <para>An instance of <literal>Interface</literal> represents an interface.</para>
         
-        <programlisting><![CDATA[public interface Interface<out X> 
+        <programlisting><![CDATA[shared interface Interface<out X> 
         satisfies Type<X> {}]]></programlisting>
 
         <para>An instance of <literal>Class</literal> represents a class.</para>
         
-        <programlisting><![CDATA[public interface Class<out X> 
+        <programlisting><![CDATA[shared interface Class<out X> 
         satisfies Type<X> {
     
-    formal Boolean abstract;
+    shared formal Boolean abstract;
     
 }]]></programlisting>
 
         <para>An instance of <literal>ConcreteClass</literal> represents a class
         which can be directly instantiated.</para>
         
-        <programlisting><![CDATA[public interface ConcreteClass<out X, P...> 
+        <programlisting><![CDATA[shared interface ConcreteClass<out X, P...> 
         satisfies Class<X> & Callable<X,P...> {
     
-    formal Boolean extension;
+    shared formal Boolean extension;
     
-    formal Parameter<Object>[] parameters;
+    shared formal Parameter<Object>[] parameters;
     
 }]]></programlisting>
 
         <para>An instance of <literal>Member</literal> represents a method, attribute,
         or member type.</para>
 
-        <programlisting><![CDATA[public interface Member<in X, out T> 
+        <programlisting><![CDATA[shared interface Member<in X, out T> 
         satisfies Annotated & Callable<T,X> {
     
-    formal String name;
+    shared formal String name;
     
-    formal Boolean default;
-    formal Boolean formal;
-    formal Boolean actual;
-    formal Boolean extension;
+    shared formal Boolean default;
+    shared formal Boolean formal;
+    shared formal Boolean actual;
+    shared formal Boolean extension;
     
-    formal Visiblity visibility;
+    shared formal Visiblity visibility;
     
-    formal Type<T> memberType;
+    shared formal Type<T> memberType;
     
 }]]></programlisting>
 
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
-        <programlisting><![CDATA[public interface Method<in X, R, P...> 
+        <programlisting><![CDATA[shared interface Method<in X, R, P...> 
         satisfies Member<X, Function<R, P...>> {
         
-    formal Type<R> returnType;
-    formal Parameter<Object>[] parameters;
+    shared formal Type<R> returnType;
+    shared formal Parameter<Object>[] parameters;
     
-    formal void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
+    shared formal void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
                     given S abstracts X;
     
 }]]></programlisting>
 
         <para>An <literal>Attribute</literal> represents an attribute declaration.</para>
 
-        <programlisting><![CDATA[public interface Attribute<in X, T> 
+        <programlisting><![CDATA[shared interface Attribute<in X, T> 
         satisfies Member<X, Value<T>> {
         
-    formal Boolean variable;
+    shared formal Boolean variable;
     
-    formal void intercept<S>( T onGet(S instance, T proceed()) )()
+    shared formal void intercept<S>( T onGet(S instance, T proceed()) )()
                     given S abstracts X;
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[public interface MutableAttribute<in X, T> 
+        <programlisting><![CDATA[shared interface MutableAttribute<in X, T> 
         extends Attribute<X, T>
         satisfies Member<X, MutableValue<T>> {  //this is OK since Member is covariant in T
         
-    formal void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
+    shared formal void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
                     given S abstracts X;
     
 }]]></programlisting>
@@ -2546,30 +2546,30 @@ while (i<=max) {
         <para>An instance of <literal>MemberType</literal> represents a member 
         type.</para>
         
-        <programlisting><![CDATA[public interface MemberType<X, Y> 
+        <programlisting><![CDATA[shared interface MemberType<X, Y> 
         satisfies Type<Y> & Member<X, Type<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberInterface</literal> represents a member 
         interface.</para>
         
-        <programlisting><![CDATA[public interface MemberInterface<X, Y> 
+        <programlisting><![CDATA[shared interface MemberInterface<X, Y> 
         satisfies MemberType<X, Y> & Member<X, Interface<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberClass</literal> represents a member 
         class.</para>
         
-        <programlisting><![CDATA[public interface MemberClass<X, Y> 
+        <programlisting><![CDATA[shared interface MemberClass<X, Y> 
         satisfies MemberType<X, Y> & Member<X, Class<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberConcreteClass</literal> represents a member 
         class that can be directly instantiated.</para>
         
-        <programlisting><![CDATA[public interface MemberConcreteClass<X, Y, P...> 
+        <programlisting><![CDATA[shared interface MemberConcreteClass<X, Y, P...> 
         satisfies MemberType<X, Y> & Member<X, ConcreteClass<Y,P...>> {
     
-    formal Parameter<Object>[] parameters;
+    shared formal Parameter<Object>[] parameters;
     
-    formal void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
+    shared formal void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
                     given S abstracts X;
     
 }]]></programlisting>
@@ -2577,19 +2577,19 @@ while (i<=max) {
         <para>A <literal>Parameter</literal> represents a parameter of a method 
         or class.</para>
 
-        <programlisting><![CDATA[public interface Parameter<out T> 
+        <programlisting><![CDATA[shared interface Parameter<out T> 
         satisfies Annotated {
-    formal String name;
-    formal Type<T> type;
+    shared formal String name;
+    shared formal Type<T> type;
 }]]></programlisting>
 
         <para>An <literal>Annotated</literal> program element may be asked for a
         list of its annotation values.</para>
 
-        <programlisting><![CDATA[public interface Annotated {
+        <programlisting><![CDATA[shared interface Annotated {
     doc "Return all the annotation values that are 
          assignable to the given type."
-    formal T[] annotations<T>(Type<T> type = Object) 
+    shared formal T[] annotations<T>(Type<T> type = Object) 
             given T satisfies Object;
 }]]></programlisting>
 
@@ -2611,14 +2611,14 @@ removeSayInterceptor();]]></programlisting>
         current process, command line arguments, and access to the standard input 
         and output streams.</para>
         
-        <programlisting><![CDATA[public object process {
+        <programlisting><![CDATA[shared object process {
     
-    public List<String> args = ... ;
+    shared List<String> args = ... ;
     
-    public Map<String,String> properties = ... ;
+    shared Map<String,String> properties = ... ;
     
-    public extension OutputStream out = .... ;
-    public extension InputStream in = .... ;
+    shared extension OutputStream out = .... ;
+    shared extension InputStream in = .... ;
     
 }]]></programlisting>
         
@@ -2636,16 +2636,16 @@ removeSayInterceptor();]]></programlisting>
         directly. Instead, an extension may decorate a class with a representation
         in a particular format.</para>
         
-        <programlisting>public interface Format {
-    formal String formatted;
+        <programlisting>shared interface Format {
+    shared formal String formatted;
 }</programlisting>
 
         <para>The package <literal>ceylon.language.util</literal>, which is not imported
         by default, defines a format useful only for debugging purposes:</para>
         
-        <programlisting>public extension class DebugFormat(Object? obj) 
+        <programlisting>shared extension class DebugFormat(Object? obj) 
         satisfies Format {
-    actual String formatted {
+    shared actual String formatted {
         if (obj exists) {
             return obj.string;
         }
@@ -2666,15 +2666,15 @@ removeSayInterceptor();]]></programlisting>
         <para>The class <literal>lang.Log</literal> allows all modules in an application
         to send log messages to a common output stream.</para>
         
-        <programlisting><![CDATA[public class Log(LogChannel channel, String category) {
+        <programlisting><![CDATA[shared class Log(LogChannel channel, String category) {
     
-    public void log(LogPriority priority, Gettable<String> message) {
+    shared void log(LogPriority priority, Gettable<String> message) {
         if ( channel.enabled(priority) ) {
             send(priority, message) );
         }
     }
     
-    public void log(LogPriority priority, String message) {
+    shared void log(LogPriority priority, String message) {
         if ( channel.enabled(priority) ) {
             send(priority, message) );
         }
@@ -2689,43 +2689,43 @@ removeSayInterceptor();]]></programlisting>
         <para>The class <literal>LogPriority</literal> defines an extensible set of
         levels of importance for log messages.</para>
 
-        <programlisting><![CDATA[public object trace extends LogPriority("Trace", 100) {}
-public object info extends LogPriority("Info", 200) {}
-public object warn extends LogPriority("Warn", 300) {}
-public object error extends LogPriority("Error", 400) {}
+        <programlisting><![CDATA[shared object trace extends LogPriority("Trace", 100) {}
+shared object info extends LogPriority("Info", 200) {}
+shared object warn extends LogPriority("Warn", 300) {}
+shared object error extends LogPriority("Error", 400) {}
 
 doc "The severity of a log message."
-public abstract class LogPriority(String string, Natural priority) {
-    actual String string = string;
-    module Natural priority = priority;
+shared abstract class LogPriority(String string, Natural priority) {
+    shared actual String string = string;
+    shared Natural priority = priority;
 }]]></programlisting>
 
         <para>The class <literal>LogMessage</literal> describes a log message:</para>
         
-        <programlisting><![CDATA[public class LogMessage(LogPriority priority, String category, String message) {
-    public Priority priority = priority;
-    public String category = category;
-    public String message = message;
-    public Datetime datetime = currentDatetime();
+        <programlisting><![CDATA[shared class LogMessage(LogPriority priority, String category, String message) {
+    shared Priority priority = priority;
+    shared String category = category;
+    shared String message = message;
+    shared Datetime datetime = currentDatetime();
 }]]></programlisting>
 
         <para>The following extensions make it easy to log from any object:</para>
         
-        <programlisting><![CDATA[public extension class ObjectLog(Object this) {
-    public Log log { 
+        <programlisting><![CDATA[shared extension class ObjectLog(Object this) {
+    shared Log log { 
         return Log(defaultLogChannel, this.type.name);
     }
 }]]></programlisting>
 
-        <programlisting><![CDATA[public extension class Logs(Log this) {
-    public void debug(Gettable<String> message) { this.log(debug, message); }
-    public void debug(String message) { this.log(debug, message); }
-    public void info(Gettable<String> message) { this.info(debug, message); }
-    public void info(String message) { this.info(debug, message); }
-    public void warn(Gettable<String> message) { this.warn(debug, message); }
-    public void warn(String message) { this.warn(debug, message); }
-    public void error(Gettable<String> message) { this.error(debug, message); }
-    public void error(String message) { this.error(debug, message); }
+        <programlisting><![CDATA[shared extension class Logs(Log this) {
+    shared void debug(Gettable<String> message) { this.log(debug, message); }
+    shared void debug(String message) { this.log(debug, message); }
+    shared void info(Gettable<String> message) { this.info(debug, message); }
+    shared void info(String message) { this.info(debug, message); }
+    shared void warn(Gettable<String> message) { this.warn(debug, message); }
+    shared void warn(String message) { this.warn(debug, message); }
+    shared void error(Gettable<String> message) { this.error(debug, message); }
+    shared void error(String message) { this.error(debug, message); }
 }]]></programlisting>
     
     </section>
@@ -2738,66 +2738,66 @@ public abstract class LogPriority(String string, Natural priority) {
         <comment><para>TODO: this stuff is just for illustration, the real
         date/time API will be much more complex and fully internationalized.</para></comment>
         
-        <programlisting><![CDATA[public class Instant() {
+        <programlisting><![CDATA[shared class Instant() {
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[public class Time(Natural hours, Natural minutes, 
+        <programlisting><![CDATA[shared class Time(Natural hours, Natural minutes, 
         Natural? seconds=null, Natural? milliseconds=null,
         Timezone? timezone=null) 
         extends Instant() {
-    public Natural hours = hours;
-    public Natural minutes = minutes;
-    public Natural? seconds = seconds;
-    public Natural? milliseconds = milliseconds;
-    public Timezone? timezone = timezone;
+    shared Natural hours = hours;
+    shared Natural minutes = minutes;
+    shared Natural? seconds = seconds;
+    shared Natural? milliseconds = milliseconds;
+    shared Timezone? timezone = timezone;
     ...
 }]]></programlisting>
         
-        <programlisting><![CDATA[public class Date(Integer year, Natural month, Natural day) 
+        <programlisting><![CDATA[shared class Date(Integer year, Natural month, Natural day) 
         extends Instant() {
-    public Integer year = year;
-    public Natural month = month;
-    public Natural day = day;
+    shared Integer year = year;
+    shared Natural month = month;
+    shared Natural day = day;
     ...
 }]]></programlisting>
         
-        <programlisting><![CDATA[public class Datetime(Time time, Date date) 
+        <programlisting><![CDATA[shared class Datetime(Time time, Date date) 
         extends Instant() {
-    public Time time = time;
-    public Date date = date;
+    shared Time time = time;
+    shared Date date = date;
     ...
 }]]></programlisting>
         
-        <programlisting><![CDATA[public class Interval<X>(X start, X end) 
+        <programlisting><![CDATA[shared class Interval<X>(X start, X end) 
         given X satisfies Instant {
-    public X start = start;
-    public X end = end;
-    public Duration<X> duration { return ... }
+    shared X start = start;
+    shared X end = end;
+    shared Duration<X> duration { return ... }
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[public class Duration<X>(Map<Granularity<X>, Natural> magnitude) 
+        <programlisting><![CDATA[shared class Duration<X>(Map<Granularity<X>, Natural> magnitude) 
         given X satisfies Instant {
 
-    public Map<Granularity<X>, Natural> magnitude = magnitude;
+    shared Map<Granularity<X>, Natural> magnitude = magnitude;
     
-    public X before(X instant) { ... }
-    public X after(X instant) { ... }
+    shared X before(X instant) { ... }
+    shared X after(X instant) { ... }
     
-    public Datetime before(Datetime instant) { ... }
-    public Datetime after(Datetime instant) { ... }
+    shared Datetime before(Datetime instant) { ... }
+    shared Datetime after(Datetime instant) { ... }
     
-    public Duration<X> add(Duration<X> duration) { ... }
-    public Duration<X> subtract(Duration<X> duration) { ... }
+    shared Duration<X> add(Duration<X> duration) { ... }
+    shared Duration<X> subtract(Duration<X> duration) { ... }
     
     ...
 }]]></programlisting>
 
-        <programlisting><![CDATA[public interface Granularity<X> 
+        <programlisting><![CDATA[shared interface Granularity<X> 
         given X satisfies Instant {}]]></programlisting>
 
-        <programlisting><![CDATA[public class DateGranularity()
+        <programlisting><![CDATA[shared class DateGranularity()
         satisfies Granularity<Date> {
     case year, 
     case month, 
@@ -2805,7 +2805,7 @@ public abstract class LogPriority(String string, Natural priority) {
     case day;
 }]]></programlisting>
 
-        <programlisting><![CDATA[public class TimeGranularity()
+        <programlisting><![CDATA[shared class TimeGranularity()
         satisfies Granularity<Time> {
     case hour, 
     case minute, 
@@ -2827,7 +2827,7 @@ public abstract class LogPriority(String string, Natural priority) {
      is executed only when assertions are enabled. If
      the block evaluates to false, throw an 
      |AssertionException| with the given message."
-public void assert(Gettable<String> message, Boolean that()) {
+shared void assert(Gettable<String> message, Boolean that()) {
     Boolean callerAssertionsEnabled  = ... ;
     if ( assertionsEnabled && !that() ) {
         throw AssertionException(message)
@@ -2843,7 +2843,7 @@ public void assert(Gettable<String> message, Boolean that()) {
         <!--
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      and return the result. Otherwise, return |null|."
-public Y? when<Y>(Boolean condition,
+shared Y? when<Y>(Boolean condition,
                   Y then()) {
     if (condition) {
         return then()
@@ -2856,7 +2856,7 @@ public Y? when<Y>(Boolean condition,
         <programlisting><![CDATA[doc "If the condition is true, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y when<Y>(Boolean condition,
+shared Y when<Y>(Boolean condition,
                  Y then(), 
                  Y otherwise()=get(null)) {
     if (condition) {
@@ -2869,7 +2869,7 @@ public Y when<Y>(Boolean condition,
 <!--
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      and return the result. Otherwise, return |null|."
-public Y? with<X,Y>(specified X? value,
+shared Y? with<X,Y>(specified X? value,
                     Y then(coordinated X x)) {
     if (exists value) {
         return then(value)
@@ -2882,7 +2882,7 @@ public Y? with<X,Y>(specified X? value,
         <programlisting><![CDATA[doc "If the value is non-null, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y with<X,Y>(specified X? value,
+shared Y with<X,Y>(specified X? value,
                    Y then(coordinated X x), 
                    Y otherwise()=get(null)) {
     if (exists value) {
@@ -2896,7 +2896,7 @@ public Y with<X,Y>(specified X? value,
         <programlisting><![CDATA[doc "If the given list is nonempty, evaluate first block,
      otherwise, evaluate second block. Return result
      of evaluation."
-public Y withFirst<X,Y>(X[] list,
+shared Y withFirst<X,Y>(X[] list,
                         Y pop(X first, X... rest), 
                         Y otherwise()=get(null)) {
     if (exists X first = list.first) {
@@ -2913,7 +2913,7 @@ public Y withFirst<X,Y>(X[] list,
         <programlisting><![CDATA[doc "Attempt to evaluate the first block. If an 
      exception occurs that matches the second block, 
      evaluate the block."
-public Y attempt<Y,E>(Y seek(),
+shared Y attempt<Y,E>(Y seek(),
                       Y except(E e)) {
     try {
         return seek()
@@ -2925,7 +2925,7 @@ public Y attempt<Y,E>(Y seek(),
 
         <programlisting><![CDATA[doc "Using the given resource, attempt to evaluate 
      the first block."
-public Y using<X,Y>(specified X resource,
+shared Y using<X,Y>(specified X resource,
                     Y seek(coordinated X x))
         given X satisfies Usable {
     try (resource) {
@@ -2938,7 +2938,7 @@ public Y using<X,Y>(specified X resource,
      the first block. If an exception occurs that 
      matches the second block, evaluate the second 
      block."
-public Y using<X,Y,E>(specified X resource,
+shared Y using<X,Y,E>(specified X resource,
                       Y seek(coordinated X x),
                       Y except(E e))
         given X satisfies Usable {
@@ -2955,7 +2955,7 @@ public Y using<X,Y,E>(specified X resource,
         <programlisting><![CDATA[doc "Evaluate the block which matches the selector value, and
      return the result of the evaluation. If no block matches
      the selector value, return a null value."
-public Y? select<X,Y>(X selector,
+shared Y? select<X,Y>(X selector,
                               cases Iterable<Entry<Matcher<X>, functor Y()>> value) {
     for (Matcher<X> match -> X evaluate() in value) {
         if ( match.test(selector) ) {
@@ -2969,7 +2969,7 @@ public Y? select<X,Y>(X selector,
      return the result of the evaluation. If no block matches
      the selector value, evaluate the last block and return
      the result of the evaluation."
-public Y select<X,Y>(X selector,
+shared Y select<X,Y>(X selector,
                      cases Iterable<Entry<Matcher<X>, functor Y()>> value,
                      Y otherwise()) {
     if (exists Y y = select(selector, value)) {
@@ -2986,7 +2986,7 @@ public Y select<X,Y>(X selector,
         support for loops.</para>
         
         <programlisting><![CDATA[doc "Repeat the block the given number of times."
-public void repeat(Natural repetitions, void times()) {
+shared void repeat(Natural repetitions, void times()) {
     variable Natural n:=0; 
     while (n<repetitions) {
         times();
@@ -2999,7 +2999,7 @@ public void repeat(Natural repetitions, void times()) {
         
         <programlisting><![CDATA[doc "Count the elements for which the block 
      evaluates to true."
-public Natural count<X>(iterated Iterable<X> elements,
+shared Natural count<X>(iterated Iterable<X> elements,
                         Boolean where(coordinated X x)) {
     variable Natural count := 0;
     for (X x in elements) {
@@ -3012,7 +3012,7 @@ public Natural count<X>(iterated Iterable<X> elements,
 
         <programlisting><![CDATA[doc "Return true iff for every element, the block 
      evaluates to true."
-public Boolean forAll<X>(iterated Iterable<X> elements,
+shared Boolean forAll<X>(iterated Iterable<X> elements,
                          Boolean every(coordinated X x)) {
     for (X x in elements) {
         if ( !every(x) ) {
@@ -3024,7 +3024,7 @@ public Boolean forAll<X>(iterated Iterable<X> elements,
 
         <programlisting><![CDATA[doc "Return true iff for some element, the block 
      evaluates to true."
-public Boolean forAny<X>(iterated Iterable<X> elements,
+shared Boolean forAny<X>(iterated Iterable<X> elements,
                          Boolean some(coordinated X x)) {
     Boolean where(X x) { return !some(x) }
     return !forAll(elements, where)
@@ -3034,7 +3034,7 @@ public Boolean forAny<X>(iterated Iterable<X> elements,
         <programlisting><![CDATA[doc "Return the first element for which the block 
      evaluates to true, or |null| if no such element 
      is found."
-public X? firstOrNull<X>(iterated Iterable<X> elements,
+shared X? firstOrNull<X>(iterated Iterable<X> elements,
                    Boolean where(coordinated X x)) {
     for (X x in elements) {
         if ( where(x) ) {
@@ -3048,7 +3048,7 @@ public X? firstOrNull<X>(iterated Iterable<X> elements,
      block evaluates to true, or the result of 
      evaluating the second block, if no such 
      element is found."
-public X first<X>(iterated Iterable<X> elements,
+shared X first<X>(iterated Iterable<X> elements,
                   Boolean where(coordinated X x),
                   X otherwise()=get(null)) {
     if (exists X first = first(elements, where)) {
@@ -3067,7 +3067,7 @@ public X first<X>(iterated Iterable<X> elements,
      these, evaluate the second block. Build a list 
      of the resulting values, ordered using the 
      third block, if specified."
-public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
+shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
                            Boolean where(coordinated X x) = always, 
                            Y select(coordinated X x) = id,
                            C by(coordinated X x) = id) 
@@ -3085,7 +3085,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         <comment><para>TODO: rewrite <literal>from()</literal> to delegate to 
         <literal>list()</literal>.</para></comment>
 
-        <programlisting><![CDATA[public List<X> tabulate(Natural length, X containing(Natural index)) {
+        <programlisting><![CDATA[shared List<X> tabulate(Natural length, X containing(Natural index)) {
     OpenList<X> list = ArrayList<X>();
     for (Natural i in 0..length-1) {
         list.append(containing(i));
@@ -3094,7 +3094,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
 }]]></programlisting>
         
         <!--
-        <programlisting><![CDATA[public List<X> generate(X first, X? next(X previous)) {
+        <programlisting><![CDATA[shared List<X> generate(X first, X? next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
     variable X? x := first;
@@ -3110,7 +3110,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
 }]]></programlisting>
         -->
         
-        <programlisting><![CDATA[public List<X> generate(Natural length, X first, X next(X previous)) {
+        <programlisting><![CDATA[shared List<X> generate(Natural length, X first, X next(X previous)) {
     OpenList<X> list = ArrayList<X>();
     list.append(first);
     variable X x := first;
@@ -3126,7 +3126,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         <literal>Generator</literal> instead of a method) Then to map its values into a 
         <literal>List</literal>, instantiate <literal>IteratorList</literal>.</para></comment>
         
-        <programlisting><![CDATA[public Y fold<X,Y>(Iterable<X> iterable, Y initial, Y using(Y y, X x)) {
+        <programlisting><![CDATA[shared Y fold<X,Y>(Iterable<X> iterable, Y initial, Y using(Y y, X x)) {
     variable Y y:=initial;
     for (X x in iterable) {
         y:=using(y,x);
@@ -3141,7 +3141,7 @@ public List<Y> from<X,Y,C>(iterated Iterable<X> elements,
      each given key. Each |Entry| is constructed 
      from the key and the value result of the 
      evaluation."
-public Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
+shared Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
                              V to(coordinated U key)) {
     Entry<U,V> of(U key) { return key->to(key) }
     return map(keys, of)
@@ -3151,7 +3151,7 @@ public Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
      each given value. Each |Entry| is constructed 
      from the value and the key result of the 
      evaluation."
-public Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
+shared Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
                            U from(coordinated V value)) { 
     Entry<U,V> of(V value) { return from(value)->value }
     return map(values, of)
@@ -3160,7 +3160,7 @@ public Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
         <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for 
      each given object and collecting the resulting 
      |Entry|s."
-public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
+shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
                            Entry<U,V> of(coordinated X element)) {
     OpenMap<U,V> map = HashMap<U,V>();
     for (X x in elements) {
@@ -3184,56 +3184,56 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         <para>The interface <literal>Collection</literal> is the 
         root of the Ceylon collections framework.</para>
         
-        <programlisting><![CDATA[public interface Collection<out X> 
+        <programlisting><![CDATA[shared interface Collection<out X> 
         satisfies Iterable<X> & Sized & Category
         given X satisfies Equality<X> {
         
     doc "Determine the number of times the given element
          appears in the collection."
-    public Natural count(Object element);
+    shared Natural count(Object element);
     
     doc "Determine the number of elements or entries for
          which the given condition evaluates to |true|."
-    public Natural count(Boolean where(X element));
+    shared Natural count(Boolean where(X element));
     
     doc "Determine if the given condition evaluates to |true|
          for at least one element or entry."
-    public Boolean contains(Boolean where(X element));
+    shared Boolean contains(Boolean where(X element));
     
     doc "The elements of the collection, as a |Set|."
-    public Set<X> elements;
+    shared Set<X> elements;
     
     doc "The elements of the collection for which the given
          condition evaluates to |true|, as a |Set|."
-    public Set<X> elements(Boolean where(X element));
+    shared Set<X> elements(Boolean where(X element));
     
     doc "The elements of the collection, sorted using the given
          comparison."
-    public List<X> sortedElements(Comparison by(X x, X y));
+    shared List<X> sortedElements(Comparison by(X x, X y));
     
     doc "An extension of the collection, with the given 
          elements. The returned collection reflects changes 
          made to the first collection."
-    public Collection<T> with<T>(T... elements) given T abstracts X;
+    shared Collection<T> with<T>(T... elements) given T abstracts X;
 
     doc "A mutable copy of the collection."
-    public OpenCollection<T> openCopy<T>() given T abstracts X;
+    shared OpenCollection<T> openCopy<T>() given T abstracts X;
     
     doc "An immutable copy of the collection."
-    public Collection<T> copy<T>() given T abstracts X;
+    shared Collection<T> copy<T>() given T abstracts X;
     
 }]]></programlisting>
 
-<!-- public Boolean containsAny(Object... objects); ??? -->
+<!-- shared Boolean containsAny(Object... objects); ??? -->
 
         <para>A decorator provides the ability to sort collections of
         <literal>Comparable</literal> values in natural order.</para>
         
-        <programlisting><![CDATA[public extension class CollectionsOfComparable<out X>(Collection<X> this) 
+        <programlisting><![CDATA[shared extension class CollectionsOfComparable<out X>(Collection<X> this) 
         given X satisfies Comparable<X> {
         
     doc "The elements of the collection, sorted in natural order."
-    public List<X> sortedElements() {
+    shared List<X> sortedElements() {
         return this.sortedElements() by (X x, X y) (x<=>y)
     }
     
@@ -3241,23 +3241,23 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
         <para>Mutable collections implement <literal>OpenCollection</literal>:</para>
         
-        <programlisting><![CDATA[public interface OpenCollection<X> 
+        <programlisting><![CDATA[shared interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
         given X satisfies Equality<X> {
     
     doc "Remove all elements or entries of the collection,
          resulting in an empty collection."
-    public Boolean clear();
+    shared Boolean clear();
     
     doc "Remove the given elements from the collection.
          Return the number of elements which belonged
          to the collection."
-    public Natural remove(X... elements);
+    shared Natural remove(X... elements);
     
     doc "Remove all elements from the collection for which
          the given condition evaluates to |true|. Return 
          the number of elements which were removed."
-    public Natural remove(Boolean where(X element));
+    shared Natural remove(Boolean where(X element));
     
 }]]></programlisting>
 
@@ -3268,32 +3268,32 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <para>Sets implement the following interface:</para>
             
-            <programlisting><![CDATA[public interface Set<out X> 
+            <programlisting><![CDATA[shared interface Set<out X> 
         satisfies Collection<X> 
         given X satisfies Equality<X> {
     
     doc "Determine if the set is a superset of the given set.
          Return |true| if it is a superset."
-    public Boolean superset(Set<Object> set);
+    shared Boolean superset(Set<Object> set);
 
     doc "Determine if the set is a subset of the given set.
          Return |true| if it is a subset."
-    public Boolean subset(Set<Object> set);
+    shared Boolean subset(Set<Object> set);
     
-    public actual Set<T> with<T>(T... elements) given T abstracts X;
-    public actual OpenSet<T> openCopy<T>() given T abstracts X;
-    public actual Set<T> copy<T>() given T abstracts X;    
+    shared actual Set<T> with<T>(T... elements) given T abstracts X;
+    shared actual OpenSet<T> openCopy<T>() given T abstracts X;
+    shared actual Set<T> copy<T>() given T abstracts X;    
 
-    public Set<T> union<T>(Set<T> set) 
+    shared Set<T> union<T>(Set<T> set) 
             given T abstracts X;
     
-    public Set<X> intersection<T>(Set<T> set) 
+    shared Set<X> intersection<T>(Set<T> set) 
             given T abstracts X;
     
-    public Set<T> exclusiveUnion<T>(Set<T> set) 
+    shared Set<T> exclusiveUnion<T>(Set<T> set) 
             given T abstracts X;
     
-    public Set<X> complement<T>(Set<T> set) 
+    shared Set<X> complement<T>(Set<T> set) 
             given T abstracts X;
     
 }]]></programlisting>
@@ -3301,23 +3301,23 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>The following extension defines the <literal>|, &amp;, ^, ~</literal>
             operators for <literal>Set</literal>s.</para>
             
-            <programlisting><![CDATA[public extension class SetSlots<X>(Set<X> this) 
+            <programlisting><![CDATA[shared extension class SetSlots<X>(Set<X> this) 
         satisfies Slots<Set<X>> {
     
-    actual Set<X> or(Set<X> set) {
+    shared actual Set<X> or(Set<X> set) {
         return this.union(set)
     }
     
-    actual Set<X> and(Set<X> set) {
+    shared actual Set<X> and(Set<X> set) {
         return this.intersection(set)
     }
     
-    actual Set<X> xor(Set<X> set) {
+    shared actual Set<X> xor(Set<X> set) {
         return this.exclusiveUnion(set)
     
     }
     
-    actual Set<X> complement(Set<X> set) {
+    shared actual Set<X> complement(Set<X> set) {
         return this.complement(set)
     }
     
@@ -3325,13 +3325,13 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension Set<T> newSet<T>(Type<Set<T>> this)(T... elements) {
+            <programlisting><![CDATA[shared extension Set<T> newSet<T>(Type<Set<T>> this)(T... elements) {
     return HashSet(elements)
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public interface OpenSet<X> 
+            <programlisting><![CDATA[shared interface OpenSet<X> 
         satisfies Set<X> & OpenCollection<X> 
         given X satisfies Equality<X> {}]]></programlisting>
 
@@ -3344,51 +3344,51 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             operators inherited from <literal>Collection</literal> and 
             <literal>Sequence</literal>:</para>
             
-            <programlisting><![CDATA[public interface List<out X> 
+            <programlisting><![CDATA[shared interface List<out X> 
         satisfies Collection<X> & X[] 
         given X satisfies Equality<X> {
     
     doc "The index of the first element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    public Natural? firstIndex(Boolean where(X element));
+    shared Natural? firstIndex(Boolean where(X element));
 
     doc "The index of the last element of the list
          which satisfies the condition, or |null| if 
          no element satsfies the condition."
-    public Natural? lastIndex(Boolean where(X element));
+    shared Natural? lastIndex(Boolean where(X element));
     
     doc "The elements of the list for which the given condition 
          evaluates to |true|, as a |List| with the original 
          order."
-    public List<X> elementList(Boolean where(X element));
+    shared List<X> elementList(Boolean where(X element));
     
     doc "A sublist beginning with the element at the first given 
          index up to and including the element at the second given 
          index. The size of the returned sublist is one more than 
          the difference between the two indexes. The returned list 
          does reflect changes to the original list."
-    public List<X> sublist(Natural from, Natural to=lastIndex);
+    shared List<X> sublist(Natural from, Natural to=lastIndex);
     
     doc "A sublist of the given length beginning with the 
          first element of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> leading(Natural length=1);
+    shared List<X> leading(Natural length=1);
     
     doc "A sublist of the given length ending with the 
          last element of the list. The returned list does 
          reflect changes to the original list."
-    public List<X> trailing(Natural length=1);
+    shared List<X> trailing(Natural length=1);
     
     doc "Split the list into sublists, each beginning at an
          element for which the predicate returns true."
-    public Iterable<List<X>> sublists(Boolean split(X element));
+    shared Iterable<List<X>> sublists(Boolean split(X element));
     
     doc "Split the list into sublists, each beginning at an
          element for which the predicate returns true. The 
          predicate may examine elements to the left and 
          right of the element under consideration."
-    public Iterable<List<X>> sublists( 
+    shared Iterable<List<X>> sublists( 
             Boolean split(
                       doc "The current element, which
                            will be the first element
@@ -3409,44 +3409,44 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
          reflect changes to the original list."
-    public actual List<T> with<T>(T... elements) given T abstracts X;
+    shared actual List<T> with<T>(T... elements) given T abstracts X;
     
     doc "An extension of the list with the given elements
          at the start of the list. The returned list does 
          reflect changes to the original list."
-    public List<T> withInitial<T>(T... elements) given T abstracts X;
+    shared List<T> withInitial<T>(T... elements) given T abstracts X;
     
     doc "The list in reverse order. The returned list does 
          reflect changes to the original list."
-    public List<X> reversed;
+    shared List<X> reversed;
     
     doc "The unsorted elements of the list. The returned 
          bag does reflect changes to the original list."
-    public Bag<X> unsorted;
+    shared Bag<X> unsorted;
     
     doc "A map from list index to element. The returned 
          map does reflect changes to the original list."
-    public Map<Natural,X> map;
+    shared Map<Natural,X> map;
     
     doc "Produce a new list by applying an operation to
          every element of the list."
-    public List<Y> transform<Y>(Y select(X element));
+    shared List<Y> transform<Y>(Y select(X element));
     
-    public actual OpenList<T> openCopy<T>() given T abstracts X;
-    public actual List<T> copy<T>() given T abstracts X;    
+    shared actual OpenList<T> openCopy<T>() given T abstracts X;
+    shared actual List<T> copy<T>() given T abstracts X;    
 
 }]]></programlisting>
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension List<T> newList<T>(Type<List<T>> this)(T... elements) {
+            <programlisting><![CDATA[shared extension List<T> newList<T>(Type<List<T>> this)(T... elements) {
     return ArrayList(elements)
 }]]></programlisting>
 
             <para>Any <literal>Sequence</literal> may be transparently converted to a 
             <literal>List</literal>:</para>
             
-            <programlisting>public extension List&lt;X&gt; sequenceToList(X[] this) {
+            <programlisting>shared extension List&lt;X&gt; sequenceToList(X[] this) {
     if (is List&lt;X&gt; this) {
         return this
     }
@@ -3460,7 +3460,7 @@ public Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             for a <literal>List</literal>:</para>
             
             <programlisting><![CDATA[doc "Quicksort for |List|s."
-public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
+shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
     if (exists X pivot = list.first) {
         local createPartition = quickSort(list.rest.elementList);  
                 //i.e. List<X> createPartition(Boolean where(X X)) = ...
@@ -3480,7 +3480,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public interface OpenList<X> 
+            <programlisting><![CDATA[shared interface OpenList<X> 
         satisfies List<X> & OpenCollection<X> & OpenSequence<X> 
         given X satisfies Equality<X> {
 
@@ -3490,15 +3490,15 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          element."
     throws (UndefinedKeyException
             -> "if the index is not in the list")
-    public X removeIndex(Natural at);
+    shared X removeIndex(Natural at);
     
     doc "Add the given elements at the end of the list."
-    public void append(X... elements);
+    shared void append(X... elements);
     
     doc "Add the given elements at the start of the list,
          incrementing the index of every existing element
          by the number of given elements."
-    public void prepend(X... elements);
+    shared void prepend(X... elements);
 
     doc "Insert the given elements beginning at the given
          index, incrementing the index of every existing 
@@ -3506,7 +3506,7 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          of given elements."
     throws (UndefinedKeyException
             -> "if the index is not in the list")
-    public void insert(Natural at, X... elements);
+    shared void insert(Natural at, X... elements);
     
     doc "Remove elements beginning with the first given index 
          up to and including the second given index,
@@ -3515,43 +3515,43 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          difference between the two indexes."
     throws (UndefinedKeyException
             -> "if the index is not in the list")
-    public void delete(Natural from, Natural to=lastIndex);
+    shared void delete(Natural from, Natural to=lastIndex);
     
     doc "Remove and return the first element, decrementing
          the index of every other element by one."
     throws (EmptyException
             -> "if the list is empty")
-    public X removeFirst();
+    shared X removeFirst();
 
     doc "Remove and return the last element."
     throws (EmptyException
             -> "if the list is empty")
-    public X removeLast();
+    shared X removeLast();
     
     doc "Reverse the order of the list."
-    public void reverse();
+    shared void reverse();
     
     doc "Reorder the elements of the list, according to the 
          given comparison."
-    public void resort(Comparison by(X x, X y));
+    shared void resort(Comparison by(X x, X y));
     
-    actual OpenList<X> leading(Natural length);
-    actual OpenList<X> trailing(Natural length);
-    actual OpenList<X> sublist(Natural from, Natural to);
-    actual OpenList<X> reversed;
-    actual OpenMap<Natural,X> map;
+    shared actual OpenList<X> leading(Natural length);
+    shared actual OpenList<X> trailing(Natural length);
+    shared actual OpenList<X> sublist(Natural from, Natural to);
+    shared actual OpenList<X> reversed;
+    shared actual OpenMap<Natural,X> map;
     
 }]]></programlisting>
             
         <para>A decorator provides the ability to resort lists of
         <literal>Comparable</literal> values in natural order.</para>
         
-        <programlisting><![CDATA[public extension class OpenListsOfComparable<out X>(OpenList<X> this) 
+        <programlisting><![CDATA[shared extension class OpenListsOfComparable<out X>(OpenList<X> this) 
         given X satisfies Comparable<X> {
         
     doc "Reorder the elements of the list, according to the 
          natural order."
-    public void resort() {
+    shared void resort() {
         this.resort() by (X x, X y) (x<=>y);
     }
     
@@ -3567,44 +3567,44 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <comment><para>TODO: is it OK that maps are not contravariant 
             in the key type?</para></comment>
             
-            <programlisting><![CDATA[public interface Map<U, out V>
+            <programlisting><![CDATA[shared interface Map<U, out V>
         satisfies Collection<Entry<U,V>> & Correspondence<U, V> 
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
     
     doc "The keys of the map, as a |Set|."
-    public Set<U> keys;
+    shared Set<U> keys;
     
     doc "The values of the map, as a |Bag|."
-    public Bag<V> values;
+    shared Bag<V> values;
     
     doc "A |Map| of each value belonging to the map, to the 
          |Set| of all keys at which that value occurs."
-    public Map<V, Set<U>> inverse;
+    shared Map<V, Set<U>> inverse;
     
     doc "Produce a new map by applying an operation to every 
          element of the map."
-    public Map<U, W> transform<W>(W? select(U key -> V value));
+    shared Map<U, W> transform<W>(W? select(U key -> V value));
     
     doc "The entries of the map for which the given condition 
          evaluates to |true|, as a |Map|."
-    public Map<U, V> entries(Boolean where(U key -> V value));
+    shared Map<U, V> entries(Boolean where(U key -> V value));
     
-    public actual Map<U, T> with<U,T>(Entry<U, T>... entries) given T abstracts V;
-    public actual OpenMap<U,T> openCopy<T>() given T abstracts V;
-    public actual Map<U,T> copy<U,T>() given T abstracts X;    
+    shared actual Map<U, T> with<U,T>(Entry<U, T>... entries) given T abstracts V;
+    shared actual OpenMap<U,T> openCopy<T>() given T abstracts V;
+    shared actual Map<U,T> copy<U,T>() given T abstracts X;    
     
 }]]></programlisting>
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension Map<U,V> newMap<U,V>(Type<Map<U,V>> this)(Entry<U,V>... elements) {
+            <programlisting><![CDATA[shared extension Map<U,V> newMap<U,V>(Type<Map<U,V>> this)(Entry<U,V>... elements) {
     return HashMap(elements)
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public interface OpenMap<U,V> 
+            <programlisting><![CDATA[shared interface OpenMap<U,V> 
         satisfies Map<U,V> & OpenCollection<Entry<U,V>> & OpenCorrespondence<U, V> 
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
@@ -3613,16 +3613,16 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          value of the removed entry."
     throws (UndefinedKeyException
             -> "if no value is defined for the given key")   
-    public V remove(U key);
+    shared V remove(U key);
     
     doc "Remove all entries from the map which have keys for 
          which the given condition evaluates to |true|. Return 
          entries which were removed."
-    public Map<U,V> remove(Boolean where(U key));
+    shared Map<U,V> remove(Boolean where(U key));
     
-    actual OpenSet<U> keys;
-    actual OpenBag<V> values;
-    actual OpenMap<V, Set<U>> inverse;
+    shared actual OpenSet<U> keys;
+    shared actual OpenBag<V> values;
+    shared actual OpenMap<V, Set<U>> inverse;
     
 }]]></programlisting>
             
@@ -3633,34 +3633,34 @@ public List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             
             <para>Bags implement the following interface:</para>
             
-            <programlisting><![CDATA[public interface Bag<out X> 
+            <programlisting><![CDATA[shared interface Bag<out X> 
         satisfies Collection<X> 
         given X satisfies Equality<X> {
     
     doc "A map from element to the number of occurrences of 
          the element. The returned map reflects changes to 
          the original bag."
-    public Map<X,Natural> map;
+    shared Map<X,Natural> map;
     
-    public actual Bag<T> with<T>(T... elements) given T abstracts X;
-    public actual OpenBag<T> openCopy<T>() given T abstracts X;
-    public actual Bag<T> copy<T>() given T abstracts X;    
+    shared actual Bag<T> with<T>(T... elements) given T abstracts X;
+    shared actual OpenBag<T> openCopy<T>() given T abstracts X;
+    shared actual Bag<T> copy<T>() given T abstracts X;    
     
 }]]></programlisting>
 
             <para>This extension allows direct instantiation of the interface:</para>
 
-            <programlisting><![CDATA[public extension Bag<T> newBag<T>(Type<Bag<T>> this)(T... elements) {
+            <programlisting><![CDATA[shared extension Bag<T> newBag<T>(Type<Bag<T>> this)(T... elements) {
     return HashBag(elements)
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
             
-            <programlisting><![CDATA[public interface OpenBag<X> 
+            <programlisting><![CDATA[shared interface OpenBag<X> 
         satisfies Bag<X> & OpenCollection<X> 
         given X satisfies Equality<X> {
         
-    actual OpenMap<X,Natural> map;
+    shared actual OpenMap<X,Natural> map;
     
 }]]></programlisting>
             

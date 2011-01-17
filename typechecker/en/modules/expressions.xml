@@ -182,7 +182,7 @@ Float area = pi * radius**2;</programlisting>
     ref:="Que honda!";
 }
 
-public variable String greeting := "'sup!";
+shared variable String greeting := "'sup!";
 setGreeting(greeting);</programlisting>
         
         <para>A <literal>Gettable</literal> object representing an expression that 
@@ -317,7 +317,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A floating point number literal is an expression of 
         type <literal>ceylon.language.Float</literal>.</para>
         
-       <programlisting>public Float pi = 3.14159;</programlisting>
+       <programlisting>shared Float pi = 3.14159;</programlisting>
         
         <!--
         <para>Equivalent to this Java code:</para>
@@ -399,12 +399,12 @@ if you prefer.";</programlisting>
         evaluated at compile time for single-quoted literals, alowing compile-time
         validation of the contents of the single-quoted string.</para>
         
-        <programlisting>public extension Date date(Quoted this) { return ... }</programlisting>
-        <programlisting>public extension class Regex(Quoted this) { return ... }</programlisting>
+        <programlisting>shared extension Date date(Quoted this) { return ... }</programlisting>
+        <programlisting>shared extension class Regex(Quoted this) { return ... }</programlisting>
         
         <comment><para>Note: for now we're only going to support validation against
         a regex, for example:</para>
-        <programlisting>public extension Date date(
+        <programlisting>shared extension Date date(
         matches('^(19|20)\d\d/(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])$') 
         Quoted this) { 
     return ... 
@@ -679,7 +679,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             
             <para>This attribute holds a reference to an invocation expression:</para>
             
-            <programlisting>public Gettable&lt;Decimal&gt; total = order.calculateTotal();</programlisting>
+            <programlisting>shared Gettable&lt;Decimal&gt; total = order.calculateTotal();</programlisting>
             
             <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
             may not be declared <literal>variable</literal>.</para>
@@ -838,7 +838,7 @@ sort(names, reverseAlpha);</programlisting>
         
         <para>This class has two callable parameters:</para>
         
-        <programlisting>public class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
+        <programlisting>shared class TextInput(Natural size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
  
         <para>This code instantiates the class, passing references to methods which set and
         get the attribute <literal>person.name</literal>:</para>
@@ -1204,7 +1204,7 @@ local comp = order(1,-1);</programlisting>
         <programlisting>{
     object values satisfies Iterable&lt;Order&gt; {
         head = order;
-        actual object tail satisfies Iterable&lt;Order&gt; {
+        shared actual object tail satisfies Iterable&lt;Order&gt; {
             head = null;
             tail = this;
         }
@@ -1278,7 +1278,7 @@ local comp = order(1,-1);</programlisting>
         
         <para>This class:</para>
         
-        <programlisting>public class Counter(Natural initialCount=0) {
+        <programlisting>shared class Counter(Natural initialCount=0) {
     
     variable Natural count := initialCount;
     
@@ -1329,11 +1329,11 @@ local comp = order(1,-1);</programlisting>
         
             <para>This method:</para>
         
-            <programlisting>public class Counter() {
+            <programlisting>shared class Counter() {
     
     variable Natural count := 0;
     
-    package void init(Natural initialCount=0) {
+    shared void init(Natural initialCount=0) {
         count:=initialCount;
     }
     
@@ -1456,9 +1456,9 @@ local comp = order(1,-1);</programlisting>
         <comment><para>TODO: Should we introduce the ability to declare functional parameters
         outside the parentheses in method and class definitions, in order to better respect the 
         intended invocation syntax? For example:</para>
-        <programlisting>public void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
-        <programlisting>public Y when&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
-        <programlisting>public void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
+        <programlisting>shared void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
+        <programlisting>shared Y when&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
+        <programlisting>shared void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
         </comment>
         
         <comment><para>TODO: Since this is our solution for "anonymous methods" (lambda 
@@ -1469,13 +1469,13 @@ local comp = order(1,-1);</programlisting>
         <literal>satisfies</literal> clauses, and the class body. For example:</para>
         <programlisting>File file = ... ;
 using() resource satisfies Usable {
-    actual void begin() {
+    shared actual void begin() {
         file.create();
     }
-    actual void end() { 
+    shared actual void end() { 
         file.close();
     }
-    actual void end(Exception e) { 
+    shared actual void end(Exception e) { 
         file.delete();
     }
 }</programlisting>
@@ -1509,7 +1509,7 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
+        <programlisting>shared List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
                          Boolean where(coordinated X x),
                          Y select(coordinated X x));</programlisting>
                   
@@ -1539,7 +1539,7 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>public List&lt;Y&gt; from&lt;X,Y&gt;(X x in Iterable&lt;X&gt; elements)
+        <programlisting>shared List&lt;Y&gt; from&lt;X,Y&gt;(X x in Iterable&lt;X&gt; elements)
                Boolean where(coordinated X x)
                Y select(coordinated X x);</programlisting></comment>
                 
@@ -1564,7 +1564,7 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public Y with&lt;X,Y&gt;(specified X? value, 
+        <programlisting>shared Y with&lt;X,Y&gt;(specified X? value, 
                    Y then(coordinated X x), 
                    Y otherwise());</programlisting>
                   
@@ -1578,7 +1578,7 @@ using() resource satisfies Usable {
         
         <para>And for the following method declaration:</para>
         
-        <programlisting>public Y using&lt;X,Y&gt;(specified X resource, 
+        <programlisting>shared Y using&lt;X,Y&gt;(specified X resource, 
                     Y seek(coordinated X x))
     given X satisfies Usable;</programlisting>
                   
@@ -1597,7 +1597,7 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>public Y with&lt;X,Y&gt;(X x = X? value) 
+        <programlisting>shared Y with&lt;X,Y&gt;(X x = X? value) 
      Y then(coordinated X x)
      Y otherwise;</programlisting></comment>
                 
@@ -1615,7 +1615,7 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public
+        <programlisting>shared
 Y select&lt;X, Y&gt;(X selector,
               cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... cases);</programlisting>
                   
@@ -1636,7 +1636,7 @@ Y select&lt;X, Y&gt;(X selector,
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>public
+        <programlisting>shared
 X attempt&lt;X&gt;(functor X() seek, 
              cases functor X(E e) given E satisfies Exception... except);</programlisting>
                   
@@ -1898,8 +1898,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             
             <programlisting>Task task = new Task() {
     timeout := 1000;
-    actual void run() { ... }
-    actual void fail(Exception e) { ... }
+    shared actual void run() { ... }
+    shared actual void fail(Exception e) { ... }
 };</programlisting>
 
             <programlisting>return new transactional Database 
@@ -1907,8 +1907,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
-    actual void create() { open(); }
-    actual void destroy() { close(); }
+    shared actual void create() { open(); }
+    shared actual void destroy() { close(); }
 };</programlisting>
             
             <para>An inline class is a literal object expression which may additionally:</para>

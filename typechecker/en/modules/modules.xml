@@ -400,7 +400,7 @@
         descriptor:</para>
         
         <programlisting>doc "A module descriptor."
-public class Module(
+shared class Module(
 
         doc "The name of the module."
         ModuleName name, 
@@ -434,7 +434,7 @@ public class Module(
         
         <programlisting>doc "Specifies an imported module (dependency) of a 
      module."
-public class Import(
+shared class Import(
 
         doc "The name of this imported module."
         ModuleName name, 

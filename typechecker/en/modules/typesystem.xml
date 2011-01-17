@@ -428,7 +428,8 @@
         <programlisting>InferableType: Type | "local"</programlisting>
         
         <para>Type inference is only allowed for block local declarations. The keyword
-        <literal>local</literal> may not be combined with a visibility modifier annotation.</para>
+        <literal>local</literal> may not be combined with the <literal>shared</literal>
+        annotation.</para>
         
         <comment><para>TODO: should we call this keyword <literal>define</literal>, in
         case we change our minds later about using it for non-local declarations?</para></comment>
@@ -644,7 +645,7 @@ String? firstWord = words[0];</programlisting>
         conditional supertype if the type arguments satisfy the bounds specified by the 
         condition.</para>
         
-        <programlisting><![CDATA[public interface Sequence<out T>
+        <programlisting><![CDATA[shared interface Sequence<out T>
         satisfies Iterable<T> &
                   Category &
                   Correspondence<Natural,T> & 
@@ -654,13 +655,13 @@ String? firstWord = words[0];</programlisting>
     ... 
 }
 
-public interface ElementwiseEquality
+shared interface ElementwiseEquality
         satisfies Equality<Sequence<IdentifiableObject>> &
                   Correspondence<Natural,IdentifiableObject> & 
                   Sized
         given T satisfies Equality<IdentifiableObject> {
 
-    actual Boolean equals(Sequence<IdentifiableObject> that) {
+    shared actual Boolean equals(Sequence<IdentifiableObject> that) {
         if (this.size!=that.size) { return false }
         for (Integer i in 0..size-1) {
             if (this[i]!=that[i]) { return false }
@@ -670,7 +671,7 @@ public interface ElementwiseEquality
         }
     }
 
-    actual Integer hash {
+    shared actual Integer hash {
         Integer h:=0;
         for (Integer i in 0..size-1) {
             h^=this[i].hash
@@ -682,7 +683,7 @@ public interface ElementwiseEquality
         
         <para>An even more flexible form of this, which allows "conditional members",
         would allow the following simplification to the above example:</para>
-        <programlisting><![CDATA[public interface Sequence<out T>
+        <programlisting><![CDATA[shared interface Sequence<out T>
         satisfies Iterable<T> &
                   Category &
                   Correspondence<Natural,T> & 
@@ -691,7 +692,7 @@ public interface ElementwiseEquality
                   if (T satisfies Equality<IdentifiableObject>) {        
     ... 
 
-    actual Boolean equals(Sequence<IdentifiableObject> that) 
+    shared actual Boolean equals(Sequence<IdentifiableObject> that) 
             if (T satisfies Equality<IdentifiableObject>) {
         if (this.size!=that.size) { return false }
         for (Integer i in 0..size-1) {
@@ -702,7 +703,7 @@ public interface ElementwiseEquality
         }
     }
 
-    actual Integer hash 
+    shared actual Integer hash 
             if (T satisfies Equality<IdentifiableObject>) {
         Integer h:=0;
         for (Integer i in 0..size-1) {
@@ -812,12 +813,12 @@ class Disjunction(Expression<Boolean>... terms)
         <comment><para>Note: metatypes are somewhat like Haskell type classes. They
         allow functions which operate polymorphically over the metamodel object 
         that represents a type:</para>
-        <programlisting><![CDATA[public interface Joinable<S> {
-    formal S empty;
-    formal S join(S x, S y); 
+        <programlisting><![CDATA[shared interface Joinable<S> {
+    shared formal S empty;
+    shared formal S join(S x, S y); 
 }
 
-public S join<S>(S... sequences)
+shared S join<S>(S... sequences)
         given S is Joinable<S> {
     S result := S.empty;
     for (S s in sequences) {
@@ -825,15 +826,15 @@ public S join<S>(S... sequences)
     }
     return result 
 }]]></programlisting>
-<programlisting><![CDATA[public interface JoinableLinkedList<T> 
+<programlisting><![CDATA[shared interface JoinableLinkedList<T> 
         satisfies Joinable<LinkedList<T>> {
-    actual LinkedList<T> empty = LinkedList<T>();
-    actual LinkedList<T> join(LinkedList<T> x, LinkedList<T> y) {
+    shared actual LinkedList<T> empty = LinkedList<T>();
+    shared actual LinkedList<T> join(LinkedList<T> x, LinkedList<T> y) {
         return x.append(y)
     }
 }
 
-public class LinkedList<T>(T... elements) 
+shared class LinkedList<T>(T... elements) 
         is JoinableLinkedList<T> 
         satisfies T[] { ... }]]></programlisting></comment>
         
@@ -1031,15 +1032,15 @@ public class LinkedList<T>(T... elements)
         of the type, and may only appear in covariant positions of the type definition.
         It is upper bounded by the type (and is therefore assignable to the type).</para>
         
-        <programlisting>public interface Wrapper&lt;out X&gt; {}</programlisting>
+        <programlisting>shared interface Wrapper&lt;out X&gt; {}</programlisting>
         
-        <programlisting>public abstract class Wrappable() {
-   public Wrapper&lt;subtype&gt; wrap() {
+        <programlisting>shared abstract class Wrappable() {
+   shared Wrapper&lt;subtype&gt; wrap() {
        return Wrapper(this)
    }
 }</programlisting>
         
-        <programlisting>public class Special() extends Wrappable() {}</programlisting>
+        <programlisting>shared class Special() extends Wrappable() {}</programlisting>
 
         <programlisting>Special special = Special();
 Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
@@ -1344,9 +1345,9 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <para>Where the type <literal>Dimension</literal> represents the natural numbers:</para>
         
-        <programlisting>public interface Dimension of Zero | Successor&lt;Nat&gt; {}
-public interface Zero satisfies Dimension {}
-public interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Dimension {}</programlisting>
+        <programlisting>shared interface Dimension of Zero | Successor&lt;Nat&gt; {}
+shared interface Zero satisfies Dimension {}
+shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Dimension {}</programlisting>
         
         <comment><para>TODO: should we allow more specific constraints on dimensional 
         type parameters, for example <literal>given N&gt;=#1</literal>.</para></comment>
@@ -1557,7 +1558,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <comment><para>Note: we will provide a function that does the opposite and obtains 
         the <literal>Natural</literal> that corresponds to a dimensional type, something
         like: 
-        <programlisting>public Natural natural&lt;N&gt;() given N satisfies Dimension { ... }</programlisting></para></comment>
+        <programlisting>shared Natural natural&lt;N&gt;() given N satisfies Dimension { ... }</programlisting></para></comment>
         
         <comment><para>TODO: should we allow ranges as arguments to dimensional type 
         parameters, for example, <literal>Vector&lt;#0...&gt;</literal> or
@@ -1932,7 +1933,7 @@ throws (DatabaseException
 see (LogoutAction.logout)
 scope (session) 
 action { description="Log In"; url="/login"; }
-public deprecated</programlisting>
+shared deprecated</programlisting>
 
         <para>An annotation is an invocation of a toplevel method that occurs when the 
         type is loaded by the virtual machine. The return value of the invocation is 
@@ -1941,7 +1942,7 @@ public deprecated</programlisting>
         <para>For example, the built-in <literal>doc</literal> annotation is defined as 
         follows:</para>
         
-        <programlisting>public annotation { of=any; occurs=onceEachElement; }
+        <programlisting>shared annotation { of=any; occurs=onceEachElement; }
 Description doc(String description) { 
     return Description(description.normalize())
 }</programlisting>

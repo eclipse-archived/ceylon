@@ -169,8 +169,8 @@
         <para>However, this code <emphasis>is</emphasis> legal, since class initialization 
         parameters and attributes may share a name:</para>
         
-        <programlisting>public class Person(String name) {
-    public String name = name;
+        <programlisting>shared class Person(String name) {
+    shared String name = name;
 }</programlisting>
 
         <para>Note that this code is not legal:</para>
@@ -213,11 +213,9 @@
             or <literal>actual</literal>.</para>
             
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
-            nested inside a block, a declaration directly contained in the body of a class 
-            may declare a visibility modifier, thus making the member accessible outside the 
-            body of the class. similarly, a declaration contained in the body of an interface
-            inherits the visibility modifier of the interface, making the member accessible 
-            outside the body of the interface.</para>
+            nested inside a block, a declaration directly contained in the body of a class or
+            interface may be annotated <literal>shared</literal>, thus making the member 
+            accessible outside the body of the class or interface.</para>
             
             <para>The body of a nested class, method, or attribute declaration may invoke, 
             evaluate, or assign any class, method, or attribute whose declaration is in scope 
@@ -293,7 +291,7 @@ String result = innerMethod();</programlisting>
 
             <programlisting>Object outerMethod(String s) {
     object middleObject {
-        actual String string {
+        shared actual String string {
             return s;
         }
     }
@@ -341,9 +339,9 @@ String result = middleObject.string;</programlisting>
         accessed via the self reference <literal>this</literal> or via the outer instance
         reference <literal>outer</literal>. For example:</para>
         
-        <programlisting>public class Item(String name) {
+        <programlisting>shared class Item(String name) {
     variable String name := name;
-    public void changeName(String name) {
+    shared void changeName(String name) {
         this.name := name;
     }
 }</programlisting>
@@ -886,7 +884,7 @@ else {
     throw NotEnoughMoneyException()
 }</programlisting>
 
-            <programlisting>public void welcome(User? user) {
+            <programlisting>shared void welcome(User? user) {
     if (exists user) {
         log.info("Hi " user.name "!");
     }
@@ -895,7 +893,7 @@ else {
     }
 }</programlisting>
             
-            <programlisting>public Payment payment(Order order) {
+            <programlisting>shared Payment payment(Order order) {
     if (exists Payment p = order.payment) {
         return p
     }
@@ -1075,7 +1073,7 @@ if (X satisfies Comparable&lt;X&gt;) {
             
             <para>For example:</para>
 
-            <programlisting>public PaymentProcessor processor {
+            <programlisting>shared PaymentProcessor processor {
     switch (payment.type) 
     case (null) { 
         throw NoPaymentTypeException()
@@ -1137,7 +1135,7 @@ if (X satisfies Comparable&lt;X&gt;) {
             
             <para>A Java-style overloaded method may be emulated as follows:</para>
             
-            <programlisting>public void print&lt;T&gt;(T value) 
+            <programlisting>shared void print&lt;T&gt;(T value) 
         given T of String | Integer | Float {
     switch (value)
     case (is String) { 
@@ -1153,7 +1151,7 @@ if (X satisfies Comparable&lt;X&gt;) {
 
             <para>Or, even better:</para>
             
-            <programlisting>public T join&lt;T&gt;(T x, T y) 
+            <programlisting>shared T join&lt;T&gt;(T x, T y) 
         given T of String | Integer {
     switch (T)
     case (satisfies String) { 

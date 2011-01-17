@@ -345,11 +345,10 @@
     
     <para>
     Ceylon features language-level <emphasis>package</emphasis> and 
-    <emphasis>module</emphasis> constructs, and language-level access control 
-    with four levels of visibility for program elements: block local (the 
-    default), <!--<literal>private</literal>,--> <literal>package</literal>, 
-    <literal>module</literal> and <literal>public</literal>. There's no 
-    equivalent to Java's <literal>protected</literal>.
+    <emphasis>module</emphasis> constructs, along with language-level access 
+    control via the <literal>shared</literal> annotation which can be used to 
+    express block-local, package-private, module-private, and public visibility 
+    for program elements. There's no equivalent to Java's <literal>protected</literal>.
     </para>
     
     </section>
@@ -448,25 +447,20 @@
         Here's a classic example, implemented in Ceylon:
         </para>
         
-        <programlisting>doc "The classic Hello World program"
-public void hello() {
+        <programlisting>void hello() {
     process.writeLine("Hello, World!");
 }</programlisting>
 
         <para>
         This code defines a <emphasis>toplevel</emphasis> method&mdash;a 
         method not associated with a type, a bit like a <literal>static</literal>
-        method in Java&mdash;named <literal>hello()</literal>. The method is 
-        annotated <literal>public</literal>, which makes it accessible to code 
-        in other packages. When the method is executed, it calls the 
-        <literal>writeLine()</literal> method of an object named 
-        <literal>process</literal>. (This method displays its parameter on the 
-        console.)
-        </para>
-        
-        <para>
-        The <literal>doc</literal> annotation contains documentation 
-        that is included in the output of the Ceylon documentation compiler.
+        method in Java&mdash;named <literal>hello()</literal>. <!--The method is 
+        annotated <literal>shared</literal>, which makes it accessible to code 
+        in other packages.--> The method is declared using the <literal>void</literal>
+        keyword, which means that it doesn't return a value. When the method is 
+        executed, it calls the <literal>writeLine()</literal> method of an object 
+        named <literal>process</literal>. (This method displays its parameter on 
+        the console.)
         </para>
         
         <para>Copy this code into a file named <literal>hello.ceylon</literal>
@@ -484,6 +478,56 @@ public void hello() {
         <programlisting>Hello, World!</programlisting>
         
     </section>
+    
+    <section>
+        <title>Adding inline documentation</title>
+        
+        <para>It's usually a good idea to add some kind of documentation to 
+        important methods. One way we could do this is by using a C-style
+        comment, either like this:</para>
+        
+        <programlisting>/*The classic Hello World program*/
+void hello() {
+    process.writeLine("Hello, World!");
+}</programlisting>
+
+        <para>Or like this:</para>
+        
+        <programlisting>//The classic Hello World program
+void hello() {
+    process.writeLine("Hello, World!");
+}</programlisting>
+        
+        <para>But it's much better to use the <literal>doc</literal>
+        annotation for comments that describe declarations.</para>
+
+        <programlisting>doc "The classic Hello World program"
+void hello() {
+    process.writeLine("Hello, World!");
+}</programlisting>
+
+        <para>
+        The <literal>doc</literal> annotation contains documentation that 
+        is included in the output of the Ceylon documentation compiler.
+        The documentation compiler supports several other annotations, 
+        including <literal>by</literal>, for specifying the author of a
+        program element, <literal>see</literal>, for referring to related 
+        code elements, and <literal>throws</literal>, for alerting the user 
+        to exception types thrown by an executable program element.
+        </para>
+        
+        <programlisting>doc "The classic Hello World program"
+by "Gavin"
+see (goodbye)
+void hello() {
+    process.writeLine("Hello, World!");
+}</programlisting>
+        
+        <para>There's also a <literal>deprecated</literal> annotation for
+        marking program elements that will be removed in a future version
+        of the module.</para>
+        
+    </section>
         
     <section>
         <title>Dealing with objects that aren't there</title>
@@ -497,7 +541,7 @@ public void hello() {
         </para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello() {
+void hello() {
     String? name = process.args.first;
     String greeting;
     if (exists name) {
@@ -626,39 +670,14 @@ process.writeLine(greeting);]]></programlisting>
         compilation error.
         </para>
         
-        <para>
-        Just like in Java or C#, a class defines the accessibility of its members 
-        using <emphasis>visibility modifier annotations</emphasis>, allowing the 
-        class to hide its internal implementation from clients. Unlike Java, members 
-        are hidden from code outside the body of the class <emphasis>by 
-        default</emphasis>&mdash;only members with explicit visibility modifiers are
-        visible to other toplevel types or methods, other compilation units, other 
-        packages, or other modules.
-        </para>
-        
-        <para>
-        And, of course, a class itself may be hidden from other code. By default,
-        a toplevel class is visible only inside the package in which it is defined.
-        To make it visible to other packages or modules, an explicit visibility
-        modifier is required. 
-        </para>
-        
-        <para>The visibility modifiers are: <literal>package</literal>,
-        <literal>module</literal>, and <literal>public</literal>. Ceylon doesn't
-        have anything like Java's <literal>protected</literal>. On the other hand,
-        Java doesn't have anything like Ceylon's <literal>module</literal> since 
-        Java has no standard module architecture.</para>
-        
         <para>Our first version of the <literal>Hello</literal> class has a
-        single attribute and a single method, both declared to have 
-        <literal>package</literal> visibility, making them accessible to other
-        code in the same package:</para>
+        single attribute and a single method:</para>
         
         <programlisting><![CDATA[doc "A personalized greeting"
 class Hello(String? name) {
     
     doc "The greeting"
-    package String greeting;
+    shared String greeting;
     if (exists name) {
         greeting = "Hello, " name "!";
     }
@@ -667,16 +686,78 @@ class Hello(String? name) {
     }
     
     doc "Print the greeting"
-    package void say(OutputStream stream) { 
+    shared void say(OutputStream stream) { 
         stream.writeLine(greeting); 
     }
     
 }]]></programlisting>
 
             <para>To understand this code completely, we're going to need to first
-            explore the concept of an attribute, and then discuss how object
-            initialization works in Ceylon.</para>
+            explore Ceylon's approach to program element accessibility&mdash; the
+            <literal>shared</literal> annotation above, then meet the concept of an 
+            attribute, and finally discuss how object initialization works in 
+            Ceylon.</para>
 
+        </section>
+        
+        <section>
+            <title>Hiding implementation details</title>
+            
+        <para>
+        In Java and C#, a class controls the accessibility of its members using 
+        visibility modifier annotations, allowing the class to hide its internal 
+        implementation from other code. The visibility modifiers select between 
+        pre-defined, definite visibility levels like <literal>public</literal>,
+        <literal>protected</literal>, package private, and <literal>private</literal>.
+        Ceylon provides just one annotation for access control. The key difference
+        is that Ceylon's <literal>shared</literal> annotation does not represent
+        a single definite scope. Rather, its meaning is contextual, relative to
+        the program element at which it appears. The <literal>shared</literal> 
+        annotation is in some cases more flexible, in certain cases less flexible, 
+        but almost always simpler and easier to use than the approach taken by Java 
+        and C#. And it's a far better fit to a language like Ceylon with a regular,
+        recursive block structure.
+        </para>
+        
+        <para>
+        Members of a class are hidden from code outside the body of the class 
+        <emphasis>by default</emphasis>&mdash;only members explicitly annotated 
+        <literal>shared</literal> are visible to other toplevel types or methods, 
+        other compilation units, other packages, or other modules. A 
+        <literal>shared</literal> member is visible to any code to which the class 
+        itself is visible.
+        </para>
+        
+        <para>
+        And, of course, a class itself may be hidden from other code. By default, a 
+        toplevel class is hidden from code outside the package in which the class is 
+        defined&mdash;only toplevel classes explicitly annotated <literal>shared</literal> 
+        are visible to other packages or modules. A <literal>shared</literal> toplevel
+        class is visible to any code to which the package containing the class is
+        visible.
+        </para>
+        
+        <para>Finally, a package may be hidden from packages in other modules. In 
+        fact, packages are hidden from code outside the module to which the package 
+        belongs <emphasis>by default</emphasis>&mdash;only <emphasis>shared</emphasis> 
+        packages explicitly exported by the containing module are visible to other 
+        modules.</para>
+        
+        <para>It's not possible to create a <literal>shared</literal> toplevel class 
+        with package-private members. Members of a <literal>shared</literal> toplevel 
+        class must be either <literal>shared</literal>&mdash;in which case they're 
+        visible outside the package containing the class, or 
+        un-<literal>shared</literal>&mdash;in which case they're only visible to the 
+        class itself. Package-private functionality <emphasis>must</emphasis> be
+        defined in un-<literal>shared</literal> (package-private) toplevel classes or 
+        interfaces. Likewise, a shared package can't contain a module-private toplevel 
+        class. Module-private toplevel classes must belong to unshared (module-private) 
+        packages.</para>
+        
+        <para>Note also that Ceylon doesn't have anything like Java's <literal>protected</literal>. 
+        On the other hand, Java doesn't support any kind of module-private visibility 
+        level, since Java has no standard module architecture.</para>
+                    
         </section>
         
         <section>
@@ -687,7 +768,7 @@ class Hello(String? name) {
             value is specified immediately after it is declared. Usually we can declare
             and specify the value of an attribute in a single line of code.</para>
             
-            <programlisting>package String greeting = "Hello, " name "!";</programlisting>
+            <programlisting>shared String greeting = "Hello, " name "!";</programlisting>
         
             <para>An attribute is a bit different to a Java field. It's an abstraction
             of the notion of a value. Some attributes are simple value holders like
@@ -699,7 +780,7 @@ class Hello(String? name) {
             <para>We could rewrite the attribute <literal>greeting</literal> as a 
             <emphasis>getter</emphasis>:</para>
 
-            <programlisting><![CDATA[package String greeting {
+            <programlisting><![CDATA[shared String greeting {
     if (exists name) {
         return "Hello, " name "!"
     }
@@ -762,7 +843,7 @@ else {
         
         <programlisting><![CDATA[class Hello(String? name) {
     
-    package String greeting {
+    shared String greeting {
         if (exists name) {
             return "Hello, " name "!"
         }
@@ -809,7 +890,7 @@ else {
         you the code that uses <literal>Hello</literal>!</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello() {
+void hello() {
     Hello(process.args.first).say(process);
 }]]></programlisting>
         
@@ -898,7 +979,7 @@ class Hello(String? name = process.args.first) {
     ...
 
     doc "Print the greeting" 
-    package void say(OutputStream stream = process) {
+    shared void say(OutputStream stream = process) {
         stream.writeLine(greeting);
     }
     
@@ -915,7 +996,7 @@ class Hello(String? name = process.args.first) {
         simple:</para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
-public void hello() {
+void hello() {
     Hello().say();
 }]]></programlisting>
         
@@ -933,10 +1014,10 @@ public void hello() {
 class DefaultHello() {
     
     doc "The greeting"
-    default String greeting = "Hello, World!";
+    shared default String greeting = "Hello, World!";
     
     doc "Print the greeting"
-    package void say(OutputStream stream) { 
+    shared void say(OutputStream stream) { 
         stream.writeLine(greeting); 
     }
     
@@ -945,10 +1026,12 @@ class DefaultHello() {
             <para>Notice that Ceylon forces as to declare attributes or methods that can be 
             refined (overridden) by annotating them <literal>default</literal>.</para>
             
+            <!--
             <para>We don't need to declare the visibility of the attribute annotated 
             <literal>default</literal>. The visibility&mdash;in this case, 
             <literal>package</literal>&mdash;is inherited from the class to which the
             attribute belongs.</para>
+            -->
             
             <para>Subclasses specify their superclass using the <literal>extends</literal>
             keyword, followed by the name of the superclass, followed by a list of arguments
@@ -959,7 +1042,7 @@ class DefaultHello() {
 class PersonalizedHello(String name) extends DefaultHello() {
     
     doc "The personalized greeting"
-    actual String greeting { 
+    shared actual String greeting { 
         return "Hello, " name "!" 
     }
     
@@ -971,9 +1054,11 @@ class PersonalizedHello(String name) extends DefaultHello() {
             detect errors. We can't inadvertantly refine a member or the superclass, or
             inadvertantly <emphasis>fail</emphasis> to refine it.</para>
             
+            <!--
             <para>On the other hand, we don't need to declare the visibility of the attribute
             annotated <literal>actual</literal>. The <literal>package</literal> annotation
             is inherited from the attribute it refines.</para>
+            -->
             
             <para>There's one problem with what we've just seen. A personalized greeting 
             is not really a kind of default greeting. This is a case for introducing an
@@ -983,10 +1068,10 @@ class PersonalizedHello(String name) extends DefaultHello() {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    formal String greeting;
+    shared formal String greeting;
     
     doc "Print the greeting"
-    package void say(OutputStream stream) { 
+    shared void say(OutputStream stream) { 
         stream.writeLine(greeting); 
     }
     
@@ -1000,11 +1085,13 @@ abstract class Hello() {
             that is never initialized is <emphasis>always</emphasis> a <literal>formal</literal> 
             attribute&mdash;Ceylon doesn't initialize attributes to zero unless you explicitly 
             tell it to!</para>
-
+            
+            <!--
             <para>We don't need to declare the visibility of the attribute annotated 
             <literal>formal</literal>. The visibility&mdash;in this case, 
             <literal>package</literal>&mdash;is inherited from the class to which the
             attribute belongs.</para>
+            -->
             
             <para>One way to define an implementation for an inherited abstract attribute is 
             to simply assign a value to it in the subclass.</para>
@@ -1021,7 +1108,7 @@ class DefaultHello() extends Hello() {
 class PersonalizedHello(String name) extends Hello() {
     
     doc "The personalized greeting"
-    actual String greeting { 
+    shared actual String greeting { 
         return "Hello, " name "!" 
     }
     
@@ -1040,26 +1127,22 @@ class PersonalizedHello(String name) extends Hello() {
             not define simple attributes or initialization logic. Let's take advantage of
             this to define a reusable <literal>Writer</literal> interface for Ceylon.</para>
             
-            <programlisting><![CDATA[public interface Writer {
+            <programlisting><![CDATA[shared interface Writer {
     
-    formal Formatter formatter;
+    shared formal Formatter formatter;
     
-    formal void write(String string);
+    shared formal void write(String string);
     
-    public void writeLine(String string) {
+    shared void writeLine(String string) {
         write(string);
         write(process.newLine);
     }
     
-    public void writeFormattedLine(String formatString, Object... args) {
+    shared void writeFormattedLine(String formatString, Object... args) {
         writeLine( formatter.format(formatString, args) );
     }
     
 }]]></programlisting>
-            
-            <para>All <literal>formal</literal> members inherit the visibility modifier of the 
-            interface. Therefore, we don't need to explcitly annotate these members with a 
-            visibility modifier.</para>
             
             <para>Note that we can't define a concrete value for the <literal>formatter</literal>
             attribute, since an interface may not define a simple attribute, and may not 
@@ -1067,11 +1150,11 @@ class PersonalizedHello(String name) extends Hello() {
             
             <para>Now let's define a concrete implementation of this interface.</para>
             
-            <programlisting>public class ConsoleWriter() satisfies Writer {
+            <programlisting>shared class ConsoleWriter() satisfies Writer {
     
     formatter = StringFormatter();
     
-    actual void write(String string) {
+    shared actual void write(String string) {
         process.write(string);
     }
     
@@ -1088,7 +1171,7 @@ class PersonalizedHello(String name) extends Hello() {
             where a separate abstract class defines a default implementation of some of 
             the members of an interface. In Ceylon, the default implementations can be
             specified by the interface itself. Even better, it's possible to add a new
-            member to an interface without breaking existsing implementations of the
+            member to an interface without breaking existing implementations of the
             interface.</para>
             
         </section>
@@ -1106,11 +1189,11 @@ object defaultHello extends Hello() {
     greeting = "Hello, World!";
 }]]></programlisting>
         
-            <programlisting>public object consoleWriter satisfies Writer {
+            <programlisting>shared object consoleWriter satisfies Writer {
     
     formatter = StringFormatter();
     
-    actual void write(String string) {
+    shared actual void write(String string) {
         process.write(string);
     }
     
@@ -1126,10 +1209,10 @@ object defaultHello extends Hello() {
         nested inside a method, getter, or setter results in an new object each time the 
         method, getter, or setter is executed.</para>
         
-        <programlisting><![CDATA[public Subscription register(Subscriber s) {
+        <programlisting><![CDATA[shared Subscription register(Subscriber s) {
     subscribers.append(s);
     object subscription satisfies Subscription {
-        actual void cancel() {
+        shared actual void cancel() {
             subscribers.remove(s);
         }
     }
@@ -1147,14 +1230,14 @@ object defaultHello extends Hello() {
         other parts of the program.) We'll see later that Ceylon also lets us think of
         a method as a parameterized attribute.</para>
                     
-        <para>It's often useful to provide a shorter, or more semantic name to an 
+        <para>It's often useful to provide a shorter or more semantic name to an 
         existing class or interface. For this, we use a type alias, for example:</para>
         
         <programlisting>interface People = Set&lt;Person&gt;;</programlisting>
         
         <para>or:</para>
         
-        <programlisting>public class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
+        <programlisting>shared class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
         
     </section>
         
@@ -1239,14 +1322,14 @@ case (is PersonalizedHello) {
         
         <para>This is Ceylon's version of a Java <literal>enum</literal>:</para>
         
-        <programlisting>public class Suit() 
+        <programlisting>shared class Suit() 
         of hearts | diamonds | clubs | spades 
         extends Case() {}
         
-public object hearts extends Suit() {}
-public object diamonds extends Suit() {}
-public object clubs extends Suit() {}
-public object spades extends Suit() {}</programlisting>
+shared object hearts extends Suit() {}
+shared object diamonds extends Suit() {}
+shared object clubs extends Suit() {}
+shared object spades extends Suit() {}</programlisting>
         
         <para>Of course, this is significantly more verbose than Java's version.
         But Ceylon's <literal>of</literal> clause is also a lot more flexible 
@@ -1419,7 +1502,7 @@ catch (FileCloseEception fe) {
             assign a value to a simple attribute we need to annotate it 
             <literal>variable</literal>:</para>
             
-            <programlisting>package variable String greeting := "Hello World";
+            <programlisting>shared variable String greeting := "Hello World";
 if (exists name) {
     greeting := "Hello, " name "!";
 }</programlisting>
@@ -1451,12 +1534,12 @@ if (exists name) {
             as a getter/setter pair:</para>
             
             <programlisting>doc "gets the greeting"
-public String greeting { 
+shared String greeting { 
     return grtng 
 }
 
 doc "sets the greeting"
-package assign greeting { 
+shared assign greeting { 
     grtng := greeting; 
 }</programlisting>
 
@@ -1467,12 +1550,12 @@ package assign greeting {
             special in the getter or setter. So here's a more realistic example:</para>
        
             <programlisting>doc "gets the greeting"
-public String greeting { 
+shared String greeting { 
     return grtng 
 }
 
 doc "sets the greeting"
-package assign greeting {
+shared assign greeting {
     if (nonempty greeting) {
         grtng := greeting.strip().normalize();
     }
@@ -1653,9 +1736,9 @@ package assign greeting {
 abstract class Hello() {
     
     doc "The (abstract) greeting"
-    formal String greeting;
+    shared formal String greeting;
     
-    actual Boolean equals(IdentifiableObject that) {
+    shared actual Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
             if (this.type!=that.type) {
                 return false
@@ -1669,9 +1752,9 @@ abstract class Hello() {
         }
     }
     
-    actual Integer hash = greeting.hash;
+    shared actual Integer hash = greeting.hash;
     
-    actual String string { 
+    shared actual String string { 
         return greeting 
     }
     
@@ -1692,7 +1775,7 @@ abstract class Hello() {
     
     id
     doc "The (abstract) greeting"
-    formal String greeting;
+    shared formal String greeting;
     
     ...
         
@@ -1814,11 +1897,11 @@ abstract class Hello() {
             operators such as <literal>+=</literal>, you'll have to declare the value 
             <literal>variable</literal>.</para>
             
-            <programlisting>module class Counter() {
+            <programlisting>shared class Counter() {
             
     variable Natural count := 0;
 
-    module Natural next() {
+    shared Natural next() {
         return ++count
     }
 
@@ -2193,11 +2276,11 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             observed by other objects in the system. We could use something like Java's
             <literal>Observer</literal>/<literal>Observable</literal> pattern:</para>
             
-            <programlisting>public interface Observer {
-    formal void observe(Event event);
+            <programlisting>shared interface Observer {
+    shared formal void observe(Event event);
 }</programlisting>
             
-            <programlisting>public abstract class Component() {
+            <programlisting>shared abstract class Component() {
             
     OpenList&lt;Observer&gt; observers = none;
     
@@ -2220,7 +2303,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             we define the <literal>addObserver()</literal> method to accept
             a function as a parameter.</para>
 
-            <programlisting>public abstract class Component() {
+            <programlisting>shared abstract class Component() {
             
     OpenList&lt;Callable&lt;Void,Event&gt;&gt; observers = none;
     
@@ -2254,7 +2337,7 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             <para>Now, any event observer can just pass a reference to one of its
             own methods to <literal>addObserver()</literal>:</para>
             
-            <programlisting>public class Listener(Component component) {
+            <programlisting>shared class Listener(Component component) {
     
     void onEvent(Event e) {
         //respond to the event
@@ -2385,7 +2468,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <para>Let's go back, once again, to the attribute <literal>greeting</literal> 
         of <literal>Hello</literal>:</para>
         
-        <programlisting><![CDATA[package String greeting {
+        <programlisting><![CDATA[shared String greeting {
     if (exists name) {
         return "Hello, " name "!"
     }
@@ -2412,7 +2495,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <literal>with()</literal> invokes the second function. We can use 
         <literal>with()</literal> to rewrite <literal>greeting</literal>:</para>
 
-<programlisting><![CDATA[package String greeting {
+<programlisting><![CDATA[shared String greeting {
     String helloName() { return "Hello, " name "!" }
     String helloWorld() { return "Hello, World!" }
     return with(name, helloName, helloWorld)
@@ -2430,7 +2513,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         to the callable parameters <literal>then</literal> and 
         <literal>otherwise</literal>.</para>
 
-<programlisting><![CDATA[package String greeting {
+<programlisting><![CDATA[shared String greeting {
     return with (name)
         //first inline callable argument
         then () {
@@ -2467,7 +2550,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         
         <para>The abbreviated code looks like this:</para>
 
-<programlisting><![CDATA[package String greeting {
+<programlisting><![CDATA[shared String greeting {
     return with (name) 
         then ("Hello, " name "!")
         otherwise ("Hello, World!")
@@ -2511,7 +2594,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
             <listitem>
                 <para>and, finally, coming back to the example from the previous section, 
                 <emphasis>callback registration</emphasis>:
-                <programlisting>public class Listener(Component component) {
+                <programlisting>shared class Listener(Component component) {
     component.addObserver() onEvent (Event e) {
         //respond to the event
         ...
@@ -2566,7 +2649,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <literal>greeting</literal>, using the <literal>?</literal>
         operator.</para>
         
-<programlisting><![CDATA[package String greeting {
+<programlisting><![CDATA[shared String greeting {
     return "Hello, " (name ? "World") "!"
 }]]></programlisting>
     
@@ -2688,7 +2771,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             <para>Now let's see an example of a named argument list with 
             an inline getter declaration:</para>
             
-            <programlisting>public Payment(PaymentMethod method, Currency currency, Float amount) { ... }</programlisting>
+            <programlisting>shared Payment(PaymentMethod method, Currency currency, Float amount) { ... }</programlisting>
             
             <programlisting>Payment payment {
     method = user.paymentMethod;
@@ -2705,11 +2788,11 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             <para>Finally, here's an example of a named argument list with 
             an inline <literal>object</literal> declaration:</para>
             
-            <programlisting><![CDATA[public void addObserver<T>(Observer<T> observer) { ... }]]></programlisting>
+            <programlisting><![CDATA[shared void addObserver<T>(Observer<T> observer) { ... }]]></programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     object observer satisfies Observer<UpdateEvent> {
-        actual void on(UpdateEvent e) {
+        shared actual void on(UpdateEvent e) {
             log.info("Update:" + $e);
         }
     }
@@ -2719,7 +2802,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             eliminate the <literal>Observer</literal> interface and pass a 
             method directly:</para>
             
-            <programlisting><![CDATA[public void addObserver<T>(void on(T e)) { ... }]]></programlisting>
+            <programlisting><![CDATA[shared void addObserver<T>(void on(T e)) { ... }]]></programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     void on(UpdateEvent e) {
@@ -2828,9 +2911,9 @@ Html hello(Request request) {
         
         <programlisting>doc "Represents a person"
 class Person(String firstName, String lastName, Language lang) {
-    package String firstName = firstName;
-    package String lastName = lastName;
-    package Language language = lang;
+    shared String firstName = firstName;
+    shared String lastName = lastName;
+    shared Language language = lang;
 }</programlisting>
         
         <para>Now, we'll create an interface which enumerates its cases&mdash;almost 
@@ -2899,7 +2982,7 @@ annotation {
     withType = Greeting;
     occurs = onceEachType; 
 }
-package Set&lt;People&gt; people(Person... people) {
+shared Set&lt;People&gt; people(Person... people) {
     return HashSet(people)
 }</programlisting>
 
@@ -2990,7 +3073,7 @@ class Hello(String? name) {
     }
     
     doc "The greeting"
-    package String greeting {
+    shared String greeting {
         if (exists name) {
             if (exists Person person = 
                     first (Person p in people) 
@@ -3008,7 +3091,7 @@ class Hello(String? name) {
     }
     
     doc "Print the greeting"
-    package void say(OutputStream stream) { 
+    shared void say(OutputStream stream) { 
         stream.writeLine(greeting); 
     }
     
@@ -3085,9 +3168,9 @@ assert() that (otype.arguments.first == String);  //assertion succeeds</programl
         collections can be mutable, it turns out to be incorrect. Consider the
         following possible definition of <literal>Collection</literal>:</para>
         
-        <programlisting>public interface Collection&lt;X&gt; {
-    formal Iterator&lt;X&gt; iterator();
-    formal void add(X x);
+        <programlisting>shared interface Collection&lt;X&gt; {
+    shared formal Iterator&lt;X&gt; iterator();
+    shared formal void add(X x);
 }</programlisting>
 
         <para>And let's suppose that <literal>Geek</literal> is a subtype of 
@@ -3126,12 +3209,12 @@ people.add( Person("Fonzie") );</programlisting>
         <para>Instead, we're going to refactor <literal>Collection</literal> into
         a pure producer interface and a pure consumer interface:</para>
         
-        <programlisting>public interface Producer&lt;out X&gt; {
-    formal Iterator&lt;X&gt; iterator();
+        <programlisting>shared interface Producer&lt;out X&gt; {
+    shared formal Iterator&lt;X&gt; iterator();
 }</programlisting>
 
-        <programlisting>public interface Consumer&lt;in X&gt; {
-    formal void add(X x);
+        <programlisting>shared interface Consumer&lt;in X&gt; {
+    shared formal void add(X x);
 }</programlisting>
 
         <para>Notice that we've annotated the type parameters of these interfaces.</para>
@@ -3184,7 +3267,7 @@ people.add( Person("Fonzie") );</programlisting>
         <para>We can define our <literal>Collection</literal> interface as a
         mixin of <literal>Producer</literal> with <literal>Consumer</literal>.</para>
         
-        <programlisting>public interface Collection&lt;X&gt; 
+        <programlisting>shared interface Collection&lt;X&gt; 
         satisfies Producer&lt;X&gt; &amp; Consumer&lt;X&gt; {}</programlisting>
         
         <para>Notice that <literal>Collection</literal> remains nonvariant in
@@ -3238,11 +3321,11 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         the most common kind of type constraint, an <emphasis>upper 
         bound</emphasis>.</para>
         
-        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        <programlisting>shared class Set&lt;out T&gt;(T... elements)
         given T satisfies Equality&lt;T&gt; {
     ...
         
-    public Boolean contains(Object obj) {
+    shared Boolean contains(Object obj) {
         if (is T obj) {
             return forAny (T t in bucket(obj.hash)) 
                         some (t==obj)
@@ -3270,10 +3353,10 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         The second-most common kind of type constraint in Ceylon is an 
         <emphasis>initialization parameter specification</emphasis>.</para>
         
-        <programlisting>public class Factory&lt;out T&gt;() 
+        <programlisting>shared class Factory&lt;out T&gt;() 
         given T(String s) {
         
-    public T produce(String string) {
+    shared T produce(String string) {
         return T(string)
     }
     
@@ -3309,11 +3392,11 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         adding a <literal>union()</literal> operation to our <literal>Set</literal> 
         interface. We might try the following:</para>
         
-        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        <programlisting>shared class Set&lt;out T&gt;(T... elements)
         given T satisfies Equality&lt;T&gt; {
     ...
     
-    public Set&lt;T&gt; union(Set&lt;T&gt; set) {   //compile error
+    shared Set&lt;T&gt; union(Set&lt;T&gt; set) {   //compile error
         return ....
     }
     
@@ -3323,11 +3406,11 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         parameter <literal>T</literal> in the type declaration of a method
         parameter. The following declaration would compile:</para>
         
-        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        <programlisting>shared class Set&lt;out T&gt;(T... elements)
         given T satisfies Equality&lt;T&gt; {
     ...
     
-    public Set&lt;Object&gt; union(Set&lt;Object&gt; set) {
+    shared Set&lt;Object&gt; union(Set&lt;Object&gt; set) {
         return ....
     }
     
@@ -3337,11 +3420,11 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         no matter what kind of set we pass in. A lower bound is the solution
         to our dilemma:</para>
         
-        <programlisting>public class Set&lt;out T&gt;(T... elements)
+        <programlisting>shared class Set&lt;out T&gt;(T... elements)
         given T satisfies Equality&lt;T&gt; {
     ...
     
-    public Set&lt;X&gt; union(Set&lt;X&gt; set) 
+    shared Set&lt;X&gt; union(Set&lt;X&gt; set) 
             given X abstracts T {
         return ....
     }
@@ -3391,8 +3474,8 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
             written as <literal>P...</literal> in the type parameter list of a generic
             type. Here's how Ceylon represents the type of a function:</para>
             
-            <programlisting><![CDATA[public interface Callable<out R, P...> {
-    formal R call(P... args);
+            <programlisting><![CDATA[shared interface Callable<out R, P...> {
+    shared formal R call(P... args);
 }]]></programlisting>
             
             <para>For example:</para>
@@ -3511,14 +3594,14 @@ say(outputStream);</programlisting>
         an <literal>extension</literal> annotation to the <literal>log</literal>
         attribute like this:</para>
         
-        <programlisting>public extension Log log { ... }</programlisting>
+        <programlisting>shared extension Log log { ... }</programlisting>
         
         <para>But since <literal>Object</literal> is built into the Ceylon SDK, 
         we don't have control over its code, and so we need to take a different 
         approach. We'll write a toplevel <emphasis>extension method</emphasis>,
         sometimes called a <emphasis>converter</emphasis>:</para>
         
-        <programlisting>public extension Log objectToLog(Object this) { 
+        <programlisting>shared extension Log objectToLog(Object this) { 
     return this.log
 }</programlisting>
         
@@ -3610,9 +3693,9 @@ class Hello(String? name) {
         <para>Therefore, it is normal to define a format in a separate class, for
         example:</para>
         
-        <programlisting>public class FloatFormat(Float float) 
+        <programlisting>shared class FloatFormat(Float float) 
         satisfies Format {
-    actual String formatted {
+    shared actual String formatted {
         return ... 
     }
 }</programlisting>
@@ -3625,9 +3708,9 @@ class Hello(String? name) {
         <para>But this gets verbose and boring. So we can define our format as an 
         extension, for example:</para>
         
-        <programlisting>public extension class FloatFormat(Float this) 
+        <programlisting>shared extension class FloatFormat(Float this) 
         satisfies Format {
-    actual String formatted {
+    shared actual String formatted {
         return ... 
     }
 }</programlisting>
@@ -3687,7 +3770,7 @@ class Hello(String? name) {
         example:</para>
         
         <programlisting>Datetime datetime = Datetime('25/03/2005', '12:00 AM PST');</programlisting>
-        <programlisting>public pattern('^\w+@((\w+)\.)+$') variable String emailAddress; </programlisting>
+        <programlisting>shared pattern('^\w+@((\w+)\.)+$') variable String emailAddress; </programlisting>
         <programlisting>Button { color = 'FF3B66'; label = "Click me"; }</programlisting>
         <programlisting>A { href = 'http://jboss.org/ceylon'; "Ceylon site" }</programlisting>
         
@@ -3695,7 +3778,7 @@ class Hello(String? name) {
         We write an extension to convert an instance of <literal>Quoted</literal> to a
         more semantic type, for example:</para>
         
-        <programlisting>public extension Color hexToColor(Quoted this) { return ... }</programlisting>
+        <programlisting>shared extension Color hexToColor(Quoted this) { return ... }</programlisting>
         
         <para>The Ceylon compiler treats extensions with the extended type 
         <literal>Quoted</literal> as a very special case. Unlike other extensions, an 
