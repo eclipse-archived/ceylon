@@ -486,7 +486,7 @@
         important methods. One way we could do this is by using a C-style
         comment, either like this:</para>
         
-        <programlisting>/*The classic Hello World program*/
+        <programlisting>/* The classic Hello World program */
 void hello() {
     process.writeLine("Hello, World!");
 }</programlisting>
