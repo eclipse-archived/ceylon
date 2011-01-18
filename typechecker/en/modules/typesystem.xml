@@ -1509,6 +1509,17 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <programlisting>TypeArgument: Type | Dimension</programlisting>
         
+        <para>A type argument may itself be a parameterized type or type parameter.</para>
+        
+        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        <programlisting>Entry&lt;String,Person?&gt;</programlisting>
+        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
+        <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
+        <programlisting>Callable&lt;String[],Object...&gt;</programlisting>
+        
+        <programlisting>Vector&lt;#10&gt;</programlisting>
+        <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
+        
         <section id="dimensions">
             <title>Dimensions</title>
         
@@ -1592,15 +1603,6 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
                  are no additional type arguments, and no sequenced type argument.</para>
              </listitem>
         </itemizedlist>
-        
-        <programlisting>Entry&lt;String,Person&gt;</programlisting>
-        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
-        <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
-        <programlisting>Map&lt;Key, Value&gt;</programlisting>
-        <programlisting>Callable&lt;String,Object...&gt;</programlisting>
-        
-        <programlisting>Vector&lt;#10&gt;</programlisting>
-        <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
         
         </section>
                 
@@ -1707,10 +1709,6 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         call this thing using named arguments?
         <programlisting>Method&lt;Order, Item, Product prod, Natural quantity&gt;</programlisting>
         </para></comment>
-        
-        <para>A type argument may itself be a parameterized type or type parameter.</para>
-        
-        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         
         <!--overloading:
         <para>Substitution of type arguments may result in an ambiguity:</para>
