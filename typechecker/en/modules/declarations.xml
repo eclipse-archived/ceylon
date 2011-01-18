@@ -478,7 +478,7 @@ TypeConstraints?
         
         <programlisting>shared class Counter(Natural initialCount=0) {
     
-    log.info("Initial count: " initialCount ".");
+    log.info("Initial count: " initialCount "");
     
     variable Natural n = initialCount;
     
