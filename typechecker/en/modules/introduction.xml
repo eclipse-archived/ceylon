@@ -2335,11 +2335,11 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             
     OpenList&lt;Observer&gt; observers = none;
     
-    void addObserver(Observer o) {
+    shared void addObserver(Observer o) {
         observers.append(o);
     }
     
-    void fire(Event event) {
+    shared void fire(Event event) {
         for (Observer o in observers) {
             o.observe(event);
         }
@@ -2358,11 +2358,11 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             
     OpenList&lt;Callable&lt;Void,Event&gt;&gt; observers = none;
     
-    void addObserver(void observe(Event event)) {
+    shared void addObserver(void observe(Event event)) {
         observers.append(observe);
     }
     
-    void fire(Event event) {
+    shared void fire(Event event) {
         for (void observe(Event event) in observers) {
             observe(event);
         }
@@ -2450,8 +2450,8 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             more likely that we're planning to store or pass the reference to the 
             inner method somewhere before invoking it.</para>
 
-            <programlisting>Natural inc(Natural arg) = incrementor(3);
-Natural five = inc(2);</programlisting>
+            <programlisting>Natural add3(Natural arg) = incrementor(3);
+Natural five = add3(2);</programlisting>
 
             <para>The first line demonstrates how a method can be defined using
             a <literal>=</literal> specification statement, just like a simple 
