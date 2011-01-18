@@ -2973,12 +2973,12 @@ class Person(String firstName, String lastName, Language lang) {
         exactly like a Java <literal>enum</literal>&mdash;to represent the built-in 
         languages that our program supports.</para>
         
-        <programlisting>interface Language of english | french | spanish | italian;
+        <programlisting>interface Language of english | french | spanish | italian {}
 
-object english extends Case("English") satisfies Language;
-object french extends Case("French") satisfies Language;
-object spanish extends Case("Spanish") satisfies Language;
-object italian extends Case("Italian") satisfies Language;</programlisting>
+object english extends Case("English") satisfies Language {}
+object french extends Case("French") satisfies Language {}
+object spanish extends Case("Spanish") satisfies Language {}
+object italian extends Case("Italian") satisfies Language {}</programlisting>
 
 <!--
         <para>The use of <literal>...</literal> at the end of the list of enumerated
