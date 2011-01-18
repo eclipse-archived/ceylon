@@ -769,6 +769,7 @@ class Hello(String? name) {
             and specify the value of an attribute in a single line of code.</para>
             
             <programlisting>shared String greeting = "Hello, " name "!";</programlisting>
+            <programlisting>shared Natural months = years * 12;</programlisting>
         
             <para>An attribute is a bit different to a Java field. It's an abstraction
             of the notion of a value. Some attributes are simple value holders like
