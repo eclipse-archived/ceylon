@@ -1215,6 +1215,17 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <programlisting>given T(Natural n) satisfies IdentifiableObject &amp; Comparable&lt;T&gt;</programlisting>
         
+        <programlisting>given X satisfies Number&lt;X&gt;
+given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+       
+        <programlisting>given S satisfies BoundedSequence&lt;Decimal,N&gt;</programlisting>
+
+        <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
+        
+        <programlisting>given N is Monoid&lt;N&gt;</programlisting>
+        
+        <programlisting>given T of String | Natural | Integer | Float</programlisting>
+        
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position. A subtype bound cannot be applied to
@@ -1269,17 +1280,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
                 bounds.</para>
             </listitem>
         </itemizedlist>
-        
-        <programlisting>given X satisfies Number&lt;X&gt;
-given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
-       
-        <programlisting>given S satisfies BoundedSequence&lt;Decimal,N&gt;</programlisting>
-
-        <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
-        
-        <programlisting>given N is Monoid&lt;N&gt;</programlisting>
-        
-        <programlisting>given T of String | Natural | Integer | Float</programlisting>
         
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
         
