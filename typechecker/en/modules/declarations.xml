@@ -256,29 +256,6 @@ TypeConstraints?
         <!--<section id="interfacebodies">
             <title>Interface bodies</title>-->
             
-        <para>Unlike the body of a class, method, or attribute, the body of an interface
-        is not executable, and does not directly contain procedural code.</para>
-
-        <para>The body of an interface contains:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>member (method, attribute, and member class) declarations, and</para>
-            </listitem>
-            <listitem>
-                <para>nested interface and <literal>abstract</literal> class declarations.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>InterfaceBody: "{" Declaration* "}"</programlisting>
-        
-        <para>An interface may declare <literal>formal</literal> methods, attributes,
-        and member classes, and concrete methods, attribute getters, attribute setters, 
-        and member classes. An interface may not declare a concrete simple attribute.
-        An interface may not declare a member <literal>object</literal>.</para>
-        
-        <para>A member of an interface may not be annotated <literal>definite</literal>.</para>
-        
         <programlisting>shared interface Comparable&lt;T&gt; {
     
     shared formal Comparison compare(T other);
@@ -293,6 +270,29 @@ TypeConstraints?
     
 }</programlisting>
 
+        <para>The body of an interface contains:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>member (method, attribute, and member class) declarations, and</para>
+            </listitem>
+            <listitem>
+                <para>nested interface and <literal>abstract</literal> class declarations.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>InterfaceBody: "{" Declaration* "}"</programlisting>
+        
+        <para>Unlike the body of a class, method, or attribute, the body of an interface
+        is not executable, and does not directly contain procedural code.</para>
+
+        <para>An interface may declare <literal>formal</literal> methods, attributes,
+        and member classes, and concrete methods, attribute getters, attribute setters, 
+        and member classes. An interface may not declare a concrete simple attribute.
+        An interface may not declare a member <literal>object</literal>.</para>
+        
+        <para>A member of an interface may not be annotated <literal>definite</literal>.</para>
+        
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the interface. A nested interface or 
         <literal>abstract</literal> class declaration is not part of the schema of the 
