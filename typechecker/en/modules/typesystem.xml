@@ -1778,7 +1778,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
             <listitem>
                 <para>obtaining the numeric value of a dimensional type parameter, for
-                example, <literal>for (Natural i in 0..n)</literal>.</para>
+                example, <literal>for (Natural i in 0..natural&lt;N&gt;())</literal>.</para>
             </listitem>
         </itemizedlist>
         
