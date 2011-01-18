@@ -1249,13 +1249,22 @@ public class Gen {
         JCExpression item_type = variableType(stmt.iter.type, null);
 
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
+        class ContainmentVisitor extends CeylonTree.Visitor {
+            JCExpression containment = null;
+
+            public void visit(CeylonTree.MemberName m) {
+                assert containment == null;
+                containment = convert(m);
+            }
+        };
+        ContainmentVisitor cv = new ContainmentVisitor();
+        stmt.iter.containment.operand.accept(cv);
         JCVariableDecl iter_decl = at(stmt).VarDef(
             make.Modifiers(0),
             names.fromString(tempName()),
             iteratorType(item_type),
             at(stmt).Apply(null,
-                           at(stmt).Select(convert((MemberName) stmt.iter.containment.operand),
-                                           names.fromString("iterator")),
+                           at(stmt).Select(cv.containment, names.fromString("iterator")),
                            List.<JCExpression>nil()));
         List<JCStatement> outer = List.<JCStatement>of(iter_decl);
         JCIdent iter = at(stmt).Ident(iter_decl.getName());
