@@ -2730,14 +2730,14 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
            new features of named argument lists, that make it especially 
            convenient to build object graphs.</para>
            
-           <para>First, note that the syntax we've already seen for specifying
-           a named argument value looks exactly like the syntax for refining
-           an abstract attribute. If you think about it, taking into account
-           that a method parameter may accept references to other methods, the 
-           whole problem of specifying values for named parameters starts to
-           look a lot like the problem of refining abstract members. Therefore,
-           Ceylon let's us reuse much of the member declaration syntax inside a
-           named argument list, including:</para>
+           <para>First, note that the syntax we've already seen for specifying 
+           a named argument value looks exactly like the syntax for refining a 
+           <literal>formal</literal> attribute. If you think about it, taking 
+           into account that a method parameter may accept references to other 
+           methods, the whole problem of specifying values for named parameters 
+           starts to look a lot like the problem of refining abstract members. 
+           Therefore, Ceylon let's us reuse much of the member declaration syntax 
+           inside a named argument list, including:</para>
            
            <itemizedlist>
                <listitem>
