@@ -1838,7 +1838,7 @@ abstract class Hello() {
                     <para><literal>Callable</literal> supports invocation, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Settable</literal> supports assignnment and compound
+                    <para><literal>Settable</literal> supports assignment and compound
                     assigment operators.</para>
                 </listitem>
             </itemizedlist>
