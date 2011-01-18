@@ -1100,6 +1100,10 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         
         <para>Sequenced type parameters are always non-variant.</para>
         
+        <programlisting>Type&lt;X, P...&gt;</programlisting>
+        <programlisting>Method&lt;X, T, P...&gt;</programlisting>
+        <programlisting>Tuple&lt;P...&gt;</programlisting>
+        
         <para>Inside the declaration of the parameterized type or method, a sequenced type 
         parameter may be used as a type argument to other types which accept a sequenced 
         type parameter, or it may be used as the type of the last parameter declared by a 
@@ -1107,10 +1111,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         parameter acts as a pseudo-type. It is treated by the Ceylon compiler as if it were 
         a type with no members, to which no other type may be assigned, and which can only 
         by assigned to itself.</para>
-        
-        <programlisting>Type&lt;X, P...&gt;</programlisting>
-        <programlisting>Method&lt;X, T, P...&gt;</programlisting>
-        <programlisting>Tuple&lt;P...&gt;</programlisting>
         
         <comment><para>TODO: should we let you declare a covariant sequenced type parameter?
         This is useful for modelling tuples.</para></comment>
