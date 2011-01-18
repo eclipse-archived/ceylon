@@ -1667,7 +1667,8 @@ shared assign greeting {
             <literal>Object</literal>, or narrow an expression of type <literal>Object</literal> 
             to a more specific type.</para>
             
-            <para>Since <literal>Object</literal> is a supertype of types like <literal>Float</literal>
+            <para>On the other hand,
+            since <literal>Object</literal> is a supertype of types like <literal>Float</literal>
             which are passed by value at the level of the Java Virtual Machine, you can't use 
             the <literal>===</literal> operator to test the identity of two values of type
             <literal>Object</literal>. Instead, there is a subclass of <literal>Object</literal>,
