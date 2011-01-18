@@ -452,15 +452,22 @@
 }</programlisting>
 
         <para>
-        This code defines a <emphasis>toplevel</emphasis> method&mdash;a 
-        method not associated with a type, a bit like a <literal>static</literal>
-        method in Java&mdash;named <literal>hello()</literal>. <!--The method is 
-        annotated <literal>shared</literal>, which makes it accessible to code 
-        in other packages.--> The method is declared using the <literal>void</literal>
-        keyword, which means that it doesn't return a value. When the method is 
-        executed, it calls the <literal>writeLine()</literal> method of an object 
-        named <literal>process</literal>. (This method displays its parameter on 
-        the console.)
+        This code defines a <emphasis>toplevel method</emphasis> named 
+        <literal>hello()</literal>. A toplevel method is just like a C function&mdash;it
+        belongs directly to the package that contains it, and is not a member of 
+        a specific type. You don't need a recieving object to invoke a toplevel
+        method. Ceylon doesn't have <literal>static</literal> methods, but you 
+        can think of toplevel methods as filling the same role. (Java-style
+        <literal>static</literal> methods would break the strict block structure
+        of the language.)
+        </para>
+        
+        <para>
+        This method is declared using the <literal>void</literal> keyword, which 
+        means that it doesn't return a value. When the method is executed, it 
+        calls the <literal>writeLine()</literal> method of an object named 
+        <literal>process</literal>. (This method displays its parameter on the 
+        console.)
         </para>
         
         <para>Copy this code into a file named <literal>hello.ceylon</literal>
