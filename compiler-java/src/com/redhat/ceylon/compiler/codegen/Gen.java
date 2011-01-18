@@ -1706,6 +1706,18 @@ public class Gen {
                     List.<JCExpression>of(at(op).TypeTest(convertExpression(operands[0]),
                             makeIdent(name.components))));
 
+        case CeylonParser.RANGE:
+            JCExpression lower = convertExpression(operands[0]);
+            JCExpression upper = convertExpression(operands[1]);
+            // FIXME #1: remove the hardwired syms.ceylonNaturalType
+            // FIXME #2: this generates a raw Range, not a Range<T>
+            return at(op).NewClass(
+                null,
+                List.<JCExpression>of(makeIdent(syms.ceylonNaturalType)),
+                makeIdent(syms.ceylonRangeType),
+                List.<JCExpression>of(lower, upper),
+                null);
+
         default:
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
         }
