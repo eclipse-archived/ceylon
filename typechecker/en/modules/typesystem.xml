@@ -1328,7 +1328,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     ...
 }</programlisting></comment>
 
-        <comment><para>TODO: Should be inherit generic type constraints from supertypes, 
+        <comment><para>TODO: Should we inherit generic type constraints from supertypes, 
         like in C#, or require them to be re-declared, like in Java?</para></comment>
         
     </section>
