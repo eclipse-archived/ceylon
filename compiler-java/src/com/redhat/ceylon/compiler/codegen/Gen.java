@@ -1256,6 +1256,10 @@ public class Gen {
                 assert containment == null;
                 containment = convert(m);
             }
+            public void visit(CeylonTree.Operator o) {
+                assert containment == null;
+                containment = convert(o);
+            }
         };
         ContainmentVisitor cv = new ContainmentVisitor();
         stmt.iter.containment.operand.accept(cv);
