@@ -10,11 +10,16 @@
             source archives,</para>
         </listitem>
         <listitem>
-            <para>the layout of a module repository, and</para>
+            <para>the layout of a module repository</para>
         </listitem>
         <listitem>
-            <para>the format of a module descriptor file which contains
-            information about the module, along with a list of its
+            <para>the format of the package descriptor files which contain
+            information about the packages contained in a module, including
+            whether a package is visible to other modules, and</para>
+        </listitem>
+        <listitem>
+            <para>the format of the module descriptor file which contains
+            information about a module, along with a list of its
             versioned dependencies.</para>
         </listitem>
     </itemizedlist>
@@ -236,8 +241,9 @@
         MANIFEST.MF
     org/
         hello/
-            module.class      //the module descriptor
+            module.class       //the module descriptor
             main/
+                package.class  //a package descriptor
                 hello.class
             default/
                 DefaultHello.class
@@ -285,8 +291,9 @@
         <programlisting><![CDATA[org.hello-1.0.0.src
     org/
         hello/
-            module.ceylon      //the module descriptor
+            module.ceylon       //the module descriptor
             main/
+                package.ceylon  //a package descriptor
                 hello.ceylon
             default/
                 DefaultHello.ceylon
@@ -385,6 +392,51 @@
         
     </section>
     
+    <section id="packagedescriptors">
+        <title>Package descriptors</title>
+        
+        <para>A <emphasis>package descriptor</emphasis> is a toplevel attribute 
+        named <literal>package</literal> of type <literal>Package</literal> of the 
+        package.</para>
+        
+        <para>A package may be <emphasis>shared</emphasis>. A shared package is
+        visible outside the containing module. The package descriptor is optional
+        for unshared packages.</para>
+        
+        <para>The following class defines the format of the Ceylon package
+        descriptor:</para>
+        
+        <programlisting>doc "A package descriptor."
+shared class Package(
+        
+        doc "The name of the package."
+        PackageName name, 
+        
+        doc "The visibility of the package."
+        Boolean shared = false,
+        
+        doc "A description of the package."
+        String? doc=null, 
+        
+        doc "The license under which the package
+             is distributed."
+        URL? license=null) { 
+    
+    ... 
+
+}</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>Package package {
+    name = 'org.hibernate.query';
+    shared = true;
+    doc = "The typesafe query API.";
+    license = 'http://www.gnu.org/licenses/lgpl.html';
+}</programlisting>
+
+    </section>
+        
     <section id="moduledescriptors">
         <title>Module descriptors</title>
         
