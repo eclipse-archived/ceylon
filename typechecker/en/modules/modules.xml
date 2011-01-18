@@ -479,7 +479,7 @@ shared class Import(
     doc = "The test suite for Hibernate";
     license = 'http://www.gnu.org/licenses/lgpl.html';
     void run() {
-        new TestSuite().run();
+        TestSuite().run();
     }
     Import {
         name = 'org.hibernate';
