@@ -2274,6 +2274,18 @@ voyage.append("Melbourne", "San Francisco", "Atlanta");]]></programlisting>
             <programlisting>Set&lt;String&gt; names = ... ;
 if ("gavin" in names) { ... }</programlisting>
             
+            <para>We usually add entries to an <literal>OpenSet</literal> using the
+            <literal>add()</literal> method.</para>
+            
+            <programlisting><![CDATA[OpenSet<String> names = none;
+names.add("Gavin");
+names.add("Andrew");]]></programlisting>
+            
+            <para>It's possible to add multiple elements at once:</para>
+            
+            <programlisting><![CDATA[OpenList<String> names = none;
+names.add("Gavin", "Andrew");]]></programlisting>
+            
             <para>Set union and intersection closely resemble bitwise or and bitwise and. 
             Therefore, Ceylon generalizes the traditional bitwise operators to 
             <literal>Set</literal>s.</para>
