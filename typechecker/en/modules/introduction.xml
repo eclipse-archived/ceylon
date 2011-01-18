@@ -2723,6 +2723,8 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
         Column("x",10) content (Natural row) ($row), 
         Column("x**2",12) content (Natural row) ($row**2));</programlisting>
            
+           <para>(Note the use of inline callable arguments!)</para>
+           
            <para>However, it's far more common to use named arguments to build 
            a complex graph of objects. In this section we're going to meet some 
            new features of named argument lists, that make it especially 
