@@ -739,8 +739,8 @@ class Hello(String? name) {
         
         <para>Finally, a package may be hidden from packages in other modules. In 
         fact, packages are hidden from code outside the module to which the package 
-        belongs <emphasis>by default</emphasis>&mdash;only <emphasis>shared</emphasis> 
-        packages are visible to other modules.</para>
+        belongs <emphasis>by default</emphasis>&mdash;only explicitly 
+        <emphasis>shared</emphasis> packages are visible to other modules.</para>
         
         <para>It's not possible to create a <literal>shared</literal> toplevel class 
         with package-private members. Members of a <literal>shared</literal> toplevel 
