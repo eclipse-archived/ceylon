@@ -1593,9 +1593,9 @@ shared assign greeting {
             
             <para>There's no special <literal>package</literal> statement in Ceylon. The 
             compiler determines the package and module to which a toplevel program element
-            belongs by the location of the source file to which it belongs. A class named
-            <literal>Hello</literal> in the package <literal>org.jboss.hello</literal>
-            must be defined in the file <literal>org/jboss/hello/Hello.ceylon</literal>.</para>
+            belongs by the location of the source file in which it is declared. A class named
+            <literal>Hello</literal> in the package <literal>org.jboss.hello</literal> must 
+            be defined in the file <literal>org/jboss/hello/Hello.ceylon</literal>.</para>
             
             <para>When a source file in one package refers to a toplevel program element
             in another package, it must explicitly import that program element. Ceylon, 
