@@ -1036,20 +1036,10 @@ shared class Person { ... }</programlisting>
         <para>If the class is annotated <literal>abstract</literal>, it is called an
         <literal>abstract</literal> class, or an <emphasis>abstract nested class</emphasis>.</para>
                 
-        <para>Alternatively, a class may omit a class body entirely.</para>
+        <para>Alternatively, a class may omit a class body entirely. Then the class must 
+        be a member class and must be annotated <literal>formal</literal>.</para>
         
         <programlisting>shared formal class Buffer(Character...) satisfies Character[];</programlisting>
-        
-        <para>Then the class must be either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a member class of an interface, or</para>
-            </listitem>
-            <listitem>
-                <para>a member class annotated <literal>formal</literal> of a class.</para>
-            </listitem>
-        </itemizedlist>
         
         <para>In this case, also, it is considered a <literal>formal</literal> member 
         class.</para>
@@ -1939,9 +1929,9 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
                 </listitem>
             </itemizedlist> 
             
-            <para>If the method is a member of an interface or is annotated 
-            <literal>formal</literal>, it is called a <literal>formal</literal> 
-            method, or, sometimes, an <emphasis>abstract method</emphasis>.</para>
+            <para>If the method is annotated <literal>formal</literal>, it is called a 
+            <literal>formal</literal> method, or, sometimes, an <emphasis>abstract 
+            method</emphasis>.</para>
             
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
@@ -2420,9 +2410,9 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 </listitem>
             </itemizedlist> 
             
-            <para>If the attribute is a member of an interface or is annotated 
-            <literal>formal</literal>, it is called a <literal>formal</literal> 
-            attribute, or, sometimes, an <emphasis>abstract method</emphasis>.</para>
+            <para>If the attribute is annotated <literal>formal</literal>, it is called 
+            a <literal>formal</literal> attribute, or, sometimes, an <emphasis>abstract 
+            attribute</emphasis>.</para>
             
             <para>An attribute annotated <literal>formal</literal> may not specify an
             implementation (a specifier, initializer, or getter implementation).</para>
