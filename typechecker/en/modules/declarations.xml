@@ -1955,7 +1955,8 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
             
             <para>A concrete member method may be annotated <literal>default</literal>
             or <literal>definite</literal>, in which case it may be refined by subtypes 
-            of the containing type.</para>
+            of the containing type. <emphasis>(Note that <literal>definite</literal> is 
+            a proposed feature for a future version of the language.)</emphasis></para>
             
         </section>
         
@@ -2435,7 +2436,8 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             
             <para>A concrete member attribute may be annotated <literal>default</literal>
             or <literal>definite</literal>, in which case it may be refined by subtypes 
-            of the containing type.</para>
+            of the containing type. <emphasis>(Note that <literal>definite</literal> is a 
+            proposed feature for a future version of the language.)</emphasis></para>
             
         </section>
         
