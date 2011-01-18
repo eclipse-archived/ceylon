@@ -1026,67 +1026,6 @@ shared class LinkedList<T>(T... elements)
         
         </section>
         
-       <section id="thesubtypekeyword">
-            <title>The <literal>subtype</literal> keyword</title>
-        
-        <para>Every Ceylon class or interface has an implicit type parameter that never
-        needs to be declared. This special type parameter, referred to using the keyword 
-        <literal>subtype</literal>, represents the concrete type of the current instance 
-        (the instance that is being invoked). It is considered a covariant type parameter
-        of the type, and may only appear in covariant positions of the type definition.
-        It is upper bounded by the type (and is therefore assignable to the type).</para>
-        
-        <programlisting>shared interface Wrapper&lt;out X&gt; {}</programlisting>
-        
-        <programlisting>shared abstract class Wrappable() {
-   shared Wrapper&lt;subtype&gt; wrap() {
-       return Wrapper(this)
-   }
-}</programlisting>
-        
-        <programlisting>shared class Special() extends Wrappable() {}</programlisting>
-
-        <programlisting>Special special = Special();
-Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
-
-        <para>The only expression assignable to the type <literal>subtype</literal> is
-        the special value <literal>this</literal>, except inside the body of a method or
-        attribute annotated <literal>definite</literal>, where the class that declares the
-        method or attribute is assignable to <literal>subtype</literal>. <emphasis>(Note 
-        that <literal>definite</literal> is a proposed feature for a future version of the 
-        language.)</emphasis></para>
-        
-        <comment><para>TODO: Should we allow you to refer to the concrete type of a
-        refining member class in a subclass of the current class using the syntax
-        <literal>subtype.MemberClass</literal>, to which the expression 
-        <literal>MemberClass(...)</literal> is assignable? And/or the concrete type of 
-        the containing class of a subtype of the current member class, using the syntax
-        <literal>outer.subtype</literal>, to which <literal>outer</literal> is 
-        assignable? Both would be considered implicit covariant 
-        type parameters.</para></comment>
-        
-        <comment><para>TODO: Should we let you declare type constraints on 
-        <literal>subtype</literal>? The only really useful case I can think of would 
-        be an initialization parameter constraint: <literal>given subtype(Foo foo, Bar bar)</literal>,
-        which would let you do <literal>subtype(foo, bar)</literal> to instantiate a new
-        instance of the concrete subclass of the current class, getting an expression
-        of type <literal>subtype</literal>. Note that <literal>given subtype satisfies Foo</literal>
-        (like a Scala "self type" declaration) is really not very different to declaring 
-        the type <literal>satisfies Foo</literal>. Perhaps <literal>given subtype is 
-        Metatype</literal> would be useful.</para>
-        </comment>
-        
-        <comment><para>TODO: Are metatypes constrained so that if <literal>X satisfies Y</literal> 
-        then <literal>X is Y</literal>? If so, then the type of <literal>y.type</literal> 
-        as currently declared is not specific enough (it should be assignable to all 
-        metatypes of Y). So if we do decide to add this constraint, then we should 
-        probably merge together the keyword <literal>subtype</literal> with attribute
-        <literal>Object.type</literal>, and get a new keyword, <literal>type</literal>,
-        which can be used as <literal>subtype</literal> is currently used, or as a
-        member, <literal>x.type</literal>.</para></comment>
-        
-        </section>
-        
         <section id="sequencedtypeparameters">
             <title>Sequenced type parameters</title>
         
@@ -1186,6 +1125,26 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>A constraint may not refer to a sequenced type parameter.</para>
+        
+        <para>A single <literal>given</literal> clause may specify multiple constraints
+        on a certain type parameter. For example, it may specify multiple upper bounds
+        together with an initialization parameter specification. If multiple upper bounds
+        are specified, at most one upper bound may be a class.</para>
+        
+        <programlisting>given T(Natural n) satisfies IdentifiableObject &amp; Comparable&lt;T&gt;</programlisting>
+        
+        <programlisting>given X satisfies Number&lt;X&gt;
+given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+       
+        <programlisting>given S satisfies BoundedSequence&lt;Decimal,N&gt;</programlisting>
+
+        <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
+        
+        <programlisting>given N is Monoid&lt;N&gt;</programlisting>
+        
+        <programlisting>given T of String | Natural | Integer | Float</programlisting>
+        
         <para>An initialization parameter specification allows instantiation of the type 
         represented by the type parameter within the body of the declaration.</para>
         
@@ -1207,26 +1166,6 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         return t.first.uppercase..t.last.uppercase 
     }
 }]]></programlisting>
-        
-        <para>A constraint may not refer to a sequenced type parameter.</para>
-        
-        <para>A single <literal>given</literal> clause may specify multiple constraints
-        on a certain type parameter. For example, it may specify multiple upper bounds
-        together with an initialization parameter specification. If multiple upper bounds
-        are specified, at most one upper bound may be a class.</para>
-        
-        <programlisting>given T(Natural n) satisfies IdentifiableObject &amp; Comparable&lt;T&gt;</programlisting>
-        
-        <programlisting>given X satisfies Number&lt;X&gt;
-given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
-       
-        <programlisting>given S satisfies BoundedSequence&lt;Decimal,N&gt;</programlisting>
-
-        <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
-        
-        <programlisting>given N is Monoid&lt;N&gt;</programlisting>
-        
-        <programlisting>given T of String | Natural | Integer | Float</programlisting>
         
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
@@ -1335,6 +1274,67 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
     </section>
     
+       <section id="thesubtypekeyword">
+            <title>The <literal>subtype</literal> keyword</title>
+        
+        <para>Every Ceylon class or interface has an implicit type parameter that never
+        needs to be declared. This special type parameter, referred to using the keyword 
+        <literal>subtype</literal>, represents the concrete type of the current instance 
+        (the instance that is being invoked). It is considered a covariant type parameter
+        of the type, and may only appear in covariant positions of the type definition.
+        It is upper bounded by the type (and is therefore assignable to the type).</para>
+        
+        <programlisting>shared interface Wrapper&lt;out X&gt; {}</programlisting>
+        
+        <programlisting>shared abstract class Wrappable() {
+   shared Wrapper&lt;subtype&gt; wrap() {
+       return Wrapper(this)
+   }
+}</programlisting>
+        
+        <programlisting>shared class Special() extends Wrappable() {}</programlisting>
+
+        <programlisting>Special special = Special();
+Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
+
+        <para>The only expression assignable to the type <literal>subtype</literal> is
+        the special value <literal>this</literal>, except inside the body of a method or
+        attribute annotated <literal>definite</literal>, where the class that declares the
+        method or attribute is assignable to <literal>subtype</literal>. <emphasis>(Note 
+        that <literal>definite</literal> is a proposed feature for a future version of the 
+        language.)</emphasis></para>
+        
+        <comment><para>TODO: Should we allow you to refer to the concrete type of a
+        refining member class in a subclass of the current class using the syntax
+        <literal>subtype.MemberClass</literal>, to which the expression 
+        <literal>MemberClass(...)</literal> is assignable? And/or the concrete type of 
+        the containing class of a subtype of the current member class, using the syntax
+        <literal>outer.subtype</literal>, to which <literal>outer</literal> is 
+        assignable? Both would be considered implicit covariant 
+        type parameters.</para></comment>
+        
+        <comment><para>TODO: Should we let you declare type constraints on 
+        <literal>subtype</literal>? The only really useful case I can think of would 
+        be an initialization parameter constraint: <literal>given subtype(Foo foo, Bar bar)</literal>,
+        which would let you do <literal>subtype(foo, bar)</literal> to instantiate a new
+        instance of the concrete subclass of the current class, getting an expression
+        of type <literal>subtype</literal>. Note that <literal>given subtype satisfies Foo</literal>
+        (like a Scala "self type" declaration) is really not very different to declaring 
+        the type <literal>satisfies Foo</literal>. Perhaps <literal>given subtype is 
+        Metatype</literal> would be useful.</para>
+        </comment>
+        
+        <comment><para>TODO: Are metatypes constrained so that if <literal>X satisfies Y</literal> 
+        then <literal>X is Y</literal>? If so, then the type of <literal>y.type</literal> 
+        as currently declared is not specific enough (it should be assignable to all 
+        metatypes of Y). So if we do decide to add this constraint, then we should 
+        probably merge together the keyword <literal>subtype</literal> with attribute
+        <literal>Object.type</literal>, and get a new keyword, <literal>type</literal>,
+        which can be used as <literal>subtype</literal> is currently used, or as a
+        member, <literal>x.type</literal>.</para></comment>
+        
+        </section>
+        
     <section id="dimensionaltypeparameters">
         <title>Dimensional type parameters</title>
             

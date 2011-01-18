@@ -1997,6 +1997,10 @@ if (obj in cat) { .... }</programlisting>
             
             <programlisting>Iterable&lt;Person&gt; people = ... ;
 for (Person p in people) { ... }</programlisting>
+
+            <para>(Note that the keyword <literal>in</literal> here is not really the
+            <literal>in</literal> operator. In this case, it's actually just part of the 
+            syntax of the <literal>for</literal> loop.)</para>
             
             <para>Much less abstract are the interfaces <literal>Correspondence</literal> and 
             <literal>Sequence</literal>. Let's start with <literal>Sequence</literal>, even 
@@ -2241,7 +2245,7 @@ cities.define("Emmanuel"->"Paris",
     stream.writeLine(person + " lives in " + city);
 }</programlisting>
             
-            <para>(Note that in this case, the <literal>-&gt;</literal> symbol isn't
+            <para>(Note that the <literal>-&gt;</literal> symbol here isn't
             really the entry construction operator we saw above. In this case it's
             actually part of the syntax of the <literal>for</literal> loop.)</para>
             
