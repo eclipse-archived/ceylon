@@ -436,7 +436,7 @@
     <section id="brieftutorial">
     <title>A brief tutorial</title>
     
-    <para>The following tutorial assumes some background in Java or a a Java-like
+    <para>The following tutorial assumes some background in Java or a Java-like
     language such as C#. Ceylon has very much in common with Java, but here we 
     emphasize how and why Ceylon differs from Java.</para>
     
