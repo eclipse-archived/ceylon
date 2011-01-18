@@ -405,21 +405,21 @@
         
         <para>Method, attribute, and parameter declarations must declare a type.</para>
         
+        <programlisting>Type: UnabbreviatedType Abbreviation*</programlisting>
+        
         <para>Types are identified by the name of the type (a class, interface, or 
         type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
-        <programlisting>Type: UnabbreviatedType Abbreviation*</programlisting>
+        <para>If a type has type parameters or a sequenced type parameter, a type argument 
+        list must be specified. If a type has no type parameters, and no sequenced type 
+        parameter, no type argument list may be specified.</para>        
         
         <para>If the type is a class or interface nested inside a containing class or 
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
         <programlisting>UnabbreviatedType: TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
-        
-        <para>If a type has type parameters or a sequenced type parameter, a type argument 
-        list must be specified. If a type has no type parameters, and no sequenced type 
-        parameter, no type argument list may be specified.</para>        
         
          <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
 
