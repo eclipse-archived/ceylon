@@ -1501,7 +1501,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
         </itemizedlist>
         
-        <para>A sequenced type argumement must appear last in the list of type arguments.</para>
+        <para>A sequenced type argument must appear last in the list of type arguments.</para>
                 
         <programlisting>SequencedType: TypeName "..."</programlisting>
         
