@@ -214,10 +214,10 @@ TypeConstraints?
         
         <programlisting>ImportWildcard: "..."</programlisting>
         
-        <para>An <literal>import</literal> statement may specify a list of alias imports 
-        followed by a wildcard. In this case, the alias imports are imported with the 
-        specified names, and all other toplevel declarations are imported with their 
-        declared names.</para>
+        <para>An <literal>import</literal> statement may specify a list of alias or 
+        <literal>implicit</literal> imports followed by a wildcard. In this case, the 
+        alias imports are imported with the specified names, and all other toplevel 
+        declarations are imported with their declared names.</para>
         
         <programlisting>import ceylon.collection { ... }</programlisting>
         
