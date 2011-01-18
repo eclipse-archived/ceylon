@@ -3030,7 +3030,7 @@ object italian extends Case("Italian") satisfies Language {}</programlisting>
         
         <programlisting>doc "An annotation for specifying a list of 
      people"
-shared annotation { 
+shared annotation {
     of = classes; 
     withType = Greeting;
     occurs = onceEachType; 
@@ -3580,7 +3580,7 @@ say(stream);</programlisting>
             
             <programlisting>Class&lt;PersonalizedHello,String&gt; ph = PersonalizedHello;
 Method&lt;Hello,Void,OutputStream&gt; hsay = Hello.say;
-Hello hello = dh("gavin");
+Hello hello = ph("gavin");
 void say(OutputStream stream) = hsay(hello);
 say(outputStream);</programlisting>
 
