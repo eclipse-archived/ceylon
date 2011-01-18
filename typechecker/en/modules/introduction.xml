@@ -526,6 +526,7 @@ void hello() {
         <programlisting>doc "The classic Hello World program"
 by "Gavin"
 see (goodbye)
+throws (IOException)
 void hello() {
     process.writeLine("Hello, World!");
 }</programlisting>
