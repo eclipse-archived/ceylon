@@ -1542,7 +1542,7 @@ if (exists name) {
             indirectly.</para>
             
             <para>Suppose our class has the following <literal>variable</literal> simple 
-            attribute, intended for internal consumption only:</para>
+            attribute, intended for internal consumption only, so un-<literal>shared</literal>:</para>
             
             <programlisting>variable String grtng := "Hello World";</programlisting>
             
