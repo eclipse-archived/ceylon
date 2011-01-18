@@ -9,7 +9,9 @@
     <para>A class is a recipe for producing new values, called <emphasis>instances</emphasis>
     of the class (or simply <emphasis>objects</emphasis>), and defines the operations and 
     attributes of the resulting values. A class instance may hold references to other 
-    objects, and has an identity distinct from these references. Each class declaration 
+    objects, and has an identity distinct from these references.</para>
+    
+    <para>Each class declaration 
     defines a type. However, not all types are classes. It is often advantageous to write 
     generic code that abstracts the concrete class of a value. This technique is called 
     <emphasis>polymorphism</emphasis>. Ceylon supports two different kinds of polymorphism:</para>
