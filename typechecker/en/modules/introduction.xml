@@ -1559,7 +1559,8 @@ shared assign greeting {
     grtng := greeting; 
 }</programlisting>
 
-            <para>Yes, this is a <emphasis>lot</emphasis> like a Java get/set method pair.
+            <para>Yes, this is a <emphasis>lot</emphasis> like a Java get/set method pair,
+            though the syntax is significantly streamlined.
             But since Ceylon attributes are polymorphic, and since you can redefine a simple
             attribute as a getter or getter/setter pair without affecting clients that call 
             the attribute, you rarely need to write this code unless you're doing something 
