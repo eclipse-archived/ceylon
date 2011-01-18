@@ -474,6 +474,25 @@ TypeConstraints?
 
         <programlisting>ClassBody: "{" (Declaration | Statement)* "}"</programlisting>
         
+        <para>The body of a class may contain executable code.</para>
+        
+        <programlisting>shared class Counter(Natural initialCount=0) {
+    
+    log.info("Initial count: " initialCount ".");
+    
+    variable Natural n = initialCount;
+    
+    shared void increment() {
+        n++;
+        log.info("Count: " n "");
+    }
+    
+    shared Natural count {
+        return n
+    }
+    
+}</programlisting>
+        
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the class. A nested interface or 
         <literal>abstract</literal> class declaration is not part of the schema of the 
