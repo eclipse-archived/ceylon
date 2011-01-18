@@ -3030,12 +3030,12 @@ object italian extends Case("Italian") satisfies Language {}</programlisting>
         
         <programlisting>doc "An annotation for specifying a list of 
      people"
-annotation { 
+shared annotation { 
     of = classes; 
     withType = Greeting;
     occurs = onceEachType; 
 }
-shared Set&lt;People&gt; people(Person... people) {
+Set&lt;People&gt; people(Person... people) {
     return HashSet(people)
 }</programlisting>
 
