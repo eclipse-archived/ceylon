@@ -1622,7 +1622,7 @@ shared assign greeting {
         </section>
         
         <section>
-            <title>On overview of the built-in types</title>
+            <title>An overview of the built-in types</title>
             
             <para>Just like Java, Ceylon has a class named <literal>Object</literal>. But
             in Ceylon, <literal>Object</literal> isn't the root of the type system. An
@@ -1952,7 +1952,7 @@ abstract class Hello() {
         </section>
         
         <section>
-            <title>Language-level collection types</title>
+            <title>An overview of the language-level collection types</title>
             
             <para>The collections module is one of the best features of Ceylon. However,
             collections are not considered part of the core language. Instead, the language 
@@ -2001,7 +2001,12 @@ for (Person p in people) { ... }</programlisting>
             <para>Much less abstract are the interfaces <literal>Correspondence</literal> and 
             <literal>Sequence</literal>. Let's start with <literal>Sequence</literal>, even 
             though a sequence is just a special type of <literal>Correspondence</literal>.</para>
-              
+            
+        </section>
+        
+        <section>
+            <title>Sequences</title>
+            
             <para>There's no arrays in Ceylon, but you can write the following code:</para>
             
             <programlisting>String[] voyage = { "Melbourne", "San Francisco", "Boston", "Atlanta", "Guanajuato" };
@@ -2098,11 +2103,27 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             meet later) that produces an <literal>Iterable&lt;Entry&lt;Natural,X&gt;&gt;</literal>
             for any <literal>Sequence&lt;X&gt;</literal>.</para>
             
+            <para>A <literal>Sequence</literal> is a <literal>Container</literal>, so we
+            can use the <literal>nonempty</literal> operator to determine if it has any
+            elements:</para>
+            
+            <programlisting>if (nonempty voyage) { ... }</programlisting>
+            
+            <para>We can find the exact number of elements using the <literal>size</literal>
+            attribute:</para>
+            
+            <programlisting>Natural stops = voyage.size;</programlisting>
+            
             <para>A <literal>Sequence</literal> is a <literal>Category</literal>, so we can 
             use the <literal>in</literal> operator with sequences:</para>
             
             <programlisting>if ("Paris" in voyage) { ... }</programlisting>
-
+            
+        </section>
+        
+        <section>
+            <title>Correspondences</title>
+            
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
             so we need something other than a <literal>Sequence</literal>. A
             <literal>Correspondence&lt;U,V&gt;</literal> is a mapping from keys of type
