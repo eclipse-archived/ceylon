@@ -1178,7 +1178,7 @@ class PersonalizedHello(String name) extends Hello() {
         </section>
     
     <section>
-        <title>Anonymous classes and type aliases</title>
+        <title>Anonymous classes</title>
         
         <para>If a class has no parameters, it's often possible to use a shortcut 
         declaration which defines a named instance of the class, without providing any 
@@ -1230,15 +1230,30 @@ object defaultHello extends Hello() {
         <literal>class</literal> declaration defines a named type that we can refer to in
         other parts of the program.) We'll see later that Ceylon also lets us think of
         a method as a parameterized attribute.</para>
-                    
+    
+    </section>
+    
+    <section>
+        <title>Type aliases</title>
+        
         <para>It's often useful to provide a shorter or more semantic name to an 
-        existing class or interface. For this, we use a type alias, for example:</para>
+        existing class or interface type, especially if the class or interface is
+        a parameterized type. For this, we use a type alias, for example:</para>
         
         <programlisting>interface People = Set&lt;Person&gt;;</programlisting>
         
-        <para>or:</para>
+        <para>A class alias must declare its parameters:</para>
         
         <programlisting>shared class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
+        
+        <para>An alias may be declared <literal>shared</literal>, and imported by a 
+        different package.</para>
+        
+        <para>Note that neither of these declarations defines a new type. Any instance
+        of <literal>People</literal> is an instance of <literal>Set&lt;Person&gt;</literal>
+        and any instance of <literal>Set&lt;Person&gt;</literal> is an instance of
+        <literal>People</literal>. A type alias is very similar to a C-style
+        <literal>typedef</literal>.</para>
         
     </section>
         
