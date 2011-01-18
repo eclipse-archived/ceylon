@@ -256,20 +256,6 @@ TypeConstraints?
         <!--<section id="interfacebodies">
             <title>Interface bodies</title>-->
             
-        <programlisting>shared interface Comparable&lt;T&gt; {
-    
-    shared formal Comparison compare(T other);
-    
-    shared Boolean greaterThan(T other) {
-        return compare(other)==larger
-    }
-    
-    shared Boolean lessThan(T other) {
-        return compare(other)==smaller
-    }
-    
-}</programlisting>
-
         <para>The body of an interface contains:</para>
         
         <itemizedlist>
@@ -285,6 +271,20 @@ TypeConstraints?
         
         <para>Unlike the body of a class, method, or attribute, the body of an interface
         is not executable, and does not directly contain procedural code.</para>
+
+        <programlisting>shared interface Comparable&lt;T&gt; {
+    
+    shared formal Comparison compare(T other);
+    
+    shared Boolean greaterThan(T other) {
+        return compare(other)==larger
+    }
+    
+    shared Boolean lessThan(T other) {
+        return compare(other)==smaller
+    }
+    
+}</programlisting>
 
         <para>An interface may declare <literal>formal</literal> methods, attributes,
         and member classes, and concrete methods, attribute getters, attribute setters, 
