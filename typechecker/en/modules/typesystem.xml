@@ -1213,6 +1213,8 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         together with an initialization parameter specification. If multiple upper bounds
         are specified, at most one upper bound may be a class.</para>
         
+        <programlisting>given T(Natural n) satisfies IdentifiableObject &amp; Comparable&lt;T&gt;</programlisting>
+        
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position. A subtype bound cannot be applied to
