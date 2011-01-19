@@ -1709,11 +1709,13 @@ public class Gen {
         case CeylonParser.RANGE:
             JCExpression lower = convertExpression(operands[0]);
             JCExpression upper = convertExpression(operands[1]);
-            // FIXME: remove the hardwired syms.ceylonNaturalType
-            return at(op).Apply(
-                List.<JCExpression>of(makeIdent(syms.ceylonNaturalType)),
-                makeSelect(makeIdent(syms.ceylonRangeType), "instance"),
-                List.<JCExpression>of(lower, upper));
+            JCExpression itemType = makeIdent(syms.ceylonNaturalType); // FIXME get properly!
+            return at(op).NewClass(
+                null,
+                null,
+                at(op).TypeApply(makeIdent(syms.ceylonRangeType), List.<JCExpression>of(itemType)),
+                List.<JCExpression>of(lower, upper),
+                null);
 
         default:
             throw new RuntimeException(CeylonParser.tokenNames[op.operatorKind]);
