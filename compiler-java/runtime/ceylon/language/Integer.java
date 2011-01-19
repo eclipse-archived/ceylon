@@ -97,11 +97,11 @@ public final class Integer
         return (int)value;
     }
 
-    public ceylon.language.Integer pred() {
+    public ceylon.language.Integer predecessor() {
         return Integer.instance(value - 1);
     }
 
-    public ceylon.language.Integer succ() {
+    public ceylon.language.Integer successor() {
         return Integer.instance(value + 1);
     }
 

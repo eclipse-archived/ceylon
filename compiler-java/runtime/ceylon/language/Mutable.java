@@ -16,30 +16,30 @@ public final class Mutable<T> {
         return new Mutable<T>(t);
     }
     @SuppressWarnings("unchecked")
-    public static final <N,T extends Numeric<N>> T postIncrement(Mutable<T> op) {
-        Numeric<N> n = op.t;
-        N m = n.succ();
+    public static final <O,T extends Ordinal<O>> T postIncrement(Mutable<T> op) {
+        Ordinal<O> n = op.t;
+        O m = n.successor();
         op.t = (T)m;
         return (T)n;
     }
     @SuppressWarnings("unchecked")
-    public static final <N,T extends Numeric<N>> T postDecrement(Mutable<T> op) {
-        Numeric<N> n = op.t;
-        N m = n.pred();
+    public static final <O,T extends Ordinal<O>> T postDecrement(Mutable<T> op) {
+        Ordinal<O> n = op.t;
+        O m = n.predecessor();
         op.t = (T)m;
         return (T)n;
     }
     @SuppressWarnings("unchecked")
-    public static final <N,T extends Numeric<N>> T preIncrement(Mutable<T> op) {
-        Numeric<N> n = op.t;
-        N m = n.succ();
+    public static final <O,T extends Ordinal<O>> T preIncrement(Mutable<T> op) {
+        Ordinal<O> n = op.t;
+        O m = n.successor();
         op.t = (T)m;
         return (T)m;
     }
     @SuppressWarnings("unchecked")
-    public static final <N,T extends Numeric<N>> T preDecrement(Mutable<T> op) {
-        Numeric<N> n = op.t;
-        N m = n.pred();
+    public static final <O,T extends Ordinal<O>> T preDecrement(Mutable<T> op) {
+        Ordinal<O> n = op.t;
+        O m = n.predecessor();
         op.t = (T)m;
         return (T)m;
     }
