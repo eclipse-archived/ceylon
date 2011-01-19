@@ -10,25 +10,25 @@ class Classes() {
 	
 	class WithAttributes() {
 		Natural count = 0;
-		mutable String description := "";
+		variable String description := "";
 		String countAsString { return $count; }
 		assign countAsString { count := countAsString.parseNatural; }
 	}
 	
 	abstract class WithAbstractMethods() {
-		void doNothing();
-		Natural returnZero();
-		String returnArgument(String arg);
+		shared formal void doNothing();
+		shared formal Natural returnZero();
+		shared formal String returnArgument(String arg);
 	}
 	
 	abstract class WithAbstractAttributes() {
-		Natural count;
-		mutable String description;
+		shared formal Natural count;
+		shared formal variable String description;
 	}
 	
 	class WithInitParameters(Natural count, String description) {
 		Natural count = count;
-		mutable String description := description;
+		variable String description := description;
 	}
 	
 	doc "This class has annotations. Remember that literal
@@ -49,38 +49,11 @@ class Classes() {
 		Float tol = tolerance;
 	}
 	
-	/*class WithClosedInstanceList() { case foo, case bar, case baz; }
-	
-	class WithOpenInstanceList() { case foo, case bar, case baz... }
-	
-	class WithInstanceListAndInitParameter(Integer i) {
-		case one(1), case two(2), case three(3); 
-		Integer value = i;
-	}
-	
-	class WithInstanceListAndFunctionalInitParameter(String name()) {
-		
-		case foo { String name() { return "Foo" } }, 
-		case bar { String name() { return "Bar" } },
-		case baz { String name() { return "Baz" } };
-		
-		String name() = name;
-		
-	}
-	
-	class WithAnnotatedInstanceList(Integer i) {
-		doc "1" numericValue(1) case one(1), 
-		doc "2" numericValue(2) case two(2), 
-		doc "3" numericValue(3) case three(3); 
-		Integer value = i;
-	}*/
-	
-    object foo extends Case() {}
-    object bar extends Case() {}
-    object baz extends Case() {}
-    class Qux {}
-    choice WithClosedInstanceList of foo, bar, baz, Qux;
-        
+    object foo extends Enum() {}
+    object bar extends Enum() {}
+    object baz extends Enum() {}
+    class Qux extends Enum() {}
+    class Enum() of foo | bar | baz | Qux extends Case() {}
     
 	class WithTypeParameters<X, Y>() {}
 	
@@ -96,24 +69,24 @@ class Classes() {
 		interface NestedInterface {}
 	}
 	
-	public interface Counter {
-		public Natural count;
-		public void inc();
+	shared interface Counter {
+		shared formal Natural count;
+		shared formal void inc();
 	}
 	
-	public interface Resettable {
-		void reset();
+	shared interface Resettable {
+		shared formal void reset();
 	}
 
 	class Satisfies() satisfies Counter {
-		mutable Natural count := 0;
-		void inc() { count++; }
+		shared actual variable Natural count := 0;
+		shared actual void inc() { count++; }
 	}
 	
 	class SatisfiesMultiple() satisfies Counter & Resettable {
-		mutable Natural count := 0;
-		void inc() { count++; }
-		void reset() { count := 0; }
+		shared actual variable Natural count := 0;
+		shared actual void inc() { count++; }
+		shared actual void reset() { count := 0; }
 	}
 	
 }

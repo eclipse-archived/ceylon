@@ -1,14 +1,16 @@
 abstract class Attributes() {
 
-	String abstractAttribute;
+	shared formal String abstractAttribute;
+	
+	shared Natural computedAttribute = 2 * 3 + 1;
 	
 	String immutableAttribute = "Hello World";
 	
-	mutable String mutableAttribute := "Hello World";
+	variable String mutableAttribute := "Hello World";
 	
 	String? nullAttribute = null;
 	
-	mutable String? nullMutableAttribute := null;
+	variable String? nullMutableAttribute := null;
 	
 	String attribute { return mutableAttribute.uppercase; }
 	
@@ -40,14 +42,14 @@ abstract class Attributes() {
 	
 	String attributeWithNestedClass {
 		class NestedClass(String param) {
-			String value = param.uppercase;
+			shared String value = param.uppercase;
 		}
 		return NestedClass(mutableAttribute).value;
 	}
 		
 	assign attributeWithNestedClass {
 		class NestedClass(String param) {
-			String value = param.lowercase;
+			shared String value = param.lowercase;
 		}
 		mutableAttribute:=NestedClass(attributeWithNestedClass).value;
 	}	
@@ -60,5 +62,15 @@ abstract class Attributes() {
 	    immutableAttribute)
 	column { name="columnName"; comment="some comment"; }
 	public String annotatedAttribute = immutableAttribute;
+	
+	class Name(String firstName, String lastName) {
+	    shared String firstName = firstName;
+	    shared String lastName = lastName;
+	}
+	
+	Name namedArgumentAttribute {
+	    firstName = "Gavin";
+	    lastName = "King";
+	}
 		
 }

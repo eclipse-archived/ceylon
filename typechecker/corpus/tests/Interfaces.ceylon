@@ -3,14 +3,14 @@ class Interfaces() {
 	interface Simple {}
 	
 	interface WithMethods {
-		void doNothing();
-		Natural returnZero();
-		String returnArgument(String arg);
+		shared formal void doNothing();
+		shared formal Natural returnZero();
+		shared formal String returnArgument(String arg);
 	}
 	
 	interface WithAttributes {
-		Natural count;
-		mutable String description;
+		shared formal Natural count;
+		shared formal variable String description;
 	}
 	
 	doc "This interface has annotations. Remember that literal
@@ -25,6 +25,8 @@ class Interfaces() {
 	interface WithAnnotations {}
 	
 	interface Satisfies satisfies Simple {}
+	
+	interface SatisfiesMultiple satisfies Simple & WithMethods & WithAttributes {}
 		
 	interface WithTypeParameters<X, Y> {}
 	
@@ -39,5 +41,11 @@ class Interfaces() {
 	interface WithNestedClass {
 		class NestedClass() {}
 	}
+
+    object foo extends Case() satisfies Enum {}
+    object bar extends Case() satisfies Enum {}
+    object baz extends Case() satisfies Enum {}
+    class Qux satisfies Enum {}
+    interface Enum of foo | bar | baz | Qux {}
 	
 }

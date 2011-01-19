@@ -20,12 +20,12 @@ class Arguments() {
 	
 	class SingleArgument() {
 		
-		void outp(String value) {
+		void output(String value) {
 			log.info(value);
 		}
 		
-		outp("Hello");
-		outp { value="Hi"; };
+		output("Hello");
+		output { value="Hi"; };
 		
 		class Output(String value) {
 			log.info(value);
@@ -87,11 +87,11 @@ class Arguments() {
 		logLazily { String message() { return "hello" } };
 	
 	
-		public void from<Y>(Y initial, 
+		shared void from<Y>(Y initial, 
 							Boolean until(Y y), 
 							Y each(Y y), 
 							void perform(Y y)) {
-			mutable Y y := initial;
+			variable Y y := initial;
 			while (!until(y)) {
 				perform(y);
 				y:=each(y);
@@ -116,7 +116,7 @@ class Arguments() {
 		};
 		
 		class Processor<X,Y>(Y process(X x)) {
-			Y handle(X x) { return process(x).strip }
+			shared Y handle(X x) { return process(x).strip }
 		}
 		
 		Processor<Float,String> p = 

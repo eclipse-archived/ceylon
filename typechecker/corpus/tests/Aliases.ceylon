@@ -18,12 +18,12 @@ class Aliases() {
     class ClassWithTypeParameter<T>(T value) = Qux<T>;
 
     class ClassWithTypeConstraint<T>(T value) 
-        given T satisfies Object & Equals<T>
+        given T satisfies Bar<Object> & Equality<T>
         = Qux<T>;
 
 	doc "an alias"
 	by "Gavin King" "Andrew Haley"
 	see (Foo, Bar, Baz)
-	public interface WithAnnotations = Bar<Baz<String>>;
+	shared interface WithAnnotations = Bar<Baz<String>>;
 	
 }

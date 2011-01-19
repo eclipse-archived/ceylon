@@ -114,13 +114,13 @@ class ControlStructures() {
 		}
 		while (true);
 		
-        mutable Integer n:=0
+        variable Integer n:=0
 		while (n<10) {
 			log.info(n);
 			n++;
 		}
 		
-		mutable Integer m:=0
+		variable Integer m:=0
 		do {
 			log.info(m);
 			m++;
@@ -245,7 +245,11 @@ class ControlStructures() {
 		    }
 		}
 		
-		class Color() { case red, case green, case blue; }
+		object red extends Color("Red") {}
+        object green extends Color("Green") {}
+		object blue extends Color("Blue") {}
+		class Color(String name) of red | green | blue extends Case(name) {}
+		
 		Color c = red;
 		switch(c)
 		case (red) {

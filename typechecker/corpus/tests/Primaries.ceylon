@@ -38,21 +38,23 @@ class Primaries() {
 	
 		String? nothing = null;
 
-		List<String> empty = none;
+		String[] empty = none;
+		
+		String? thisNothing = this.nothing;
 
 		Specials s = this;
 
 		class Subclass() extends Specials() {
-			Specials s = super;
+			String? superNothing = super.nothing;
 		}
 		
 	}
 	
 	class Enumerations() {
 	
-		List<String> empty = {};
-		List<String> singleton = { "hello" };
-		List<String> enumeration = { "foo", "bar", "baz" };
+		//List<String> empty = {};
+		String[] singleton = { "hello" };
+		String[] enumeration = { "foo", "bar", "baz" };
 	
 	}
 
@@ -60,9 +62,9 @@ class Primaries() {
 	
 		class Person(String name) {
 		
-			mutable String name := name;
+			shared variable String name := name;
 			
-			void hello() {
+			shared void hello() {
 				log.info("Hello " + name);
 			}
 			

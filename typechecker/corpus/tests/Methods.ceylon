@@ -10,9 +10,9 @@ class Methods() {
 			return this.methodWithParams
 		}
 		
-		void abstractMethod();
+		formal void abstractMethod();
 		
-		void methodReference() = this.voidMethod;
+		void methodReference() = this.simpleMethod;
 		
 		void methodReferenceWithParams(Whole amount, Object something) = this.voidMethodWithParam;
 		
@@ -78,9 +78,9 @@ class Methods() {
 			}
 		}
 		
-		String abstractMethod();
+		formal String abstractMethod();
 		
-		String methodReference() = this.nonvoidMethod;
+		String methodReference() = this.simpleMethod;
 		
 		String methodReferenceWithParam(Whole amount) = this.nonvoidMethodWithParam;
 		
@@ -128,6 +128,18 @@ class Methods() {
 			} 
 		};
 		
+        class Name(String firstName, Character? initial, String lastName) {
+            shared String firstName = firstName;
+            shared Character? initial = initial;
+            shared String lastName = lastName;
+        }
+    
+        Name namedArgumentMethod(String firstName, String lastName) {
+            firstName = firstName;
+            initial = null;
+            lastName = lastName;
+        }
+    
 	}
 
 }

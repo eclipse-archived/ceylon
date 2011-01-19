@@ -1,27 +1,27 @@
 class Generics() {
 
     class TypeWithParameter<X>(X init) {
-        mutable X x := init;
-        X process(X input) { return input }
+        shared variable X x := init;
+        shared X process(X input) { return input }
     }
     
     class TypeWithMultipleParameters<X,Y>(Map<X,Y> map) {
-        Y y(X x) { return map[y] }
+        shared Y y(X x) { return map[y] }
     }
     
     class TypeWithInParameter<in X>(String toString(X x)) {
-        String consume(X x) { return toString(x) }
+        shared String consume(X x) { return toString(x) }
     }
     
     class TypeWithOutParameter<out X>(X x) {
-        X produce() { return x }
-        X x = x;
+        shared X produce() { return x }
+        shared X x = x;
     }
     
     interface TypeWithVariantParameters<out X, in Y, Z> {
-        void consume(X x);
-        X produce();
-        mutable Z z;
+        shared formal void consume(X x);
+        shared formal X produce();
+        shared formal variable Z z;
     }
     
     class TypeWithUpperBoundParameter<X>(X produce())
@@ -33,12 +33,6 @@ class Generics() {
             given X abstracts String {
         accept(xx);
     }
-        
-    /*interface TypeWithSubtypeParameter<X>
-            given X = subtype {
-        X add(X x);
-        X multiply(X x);
-    }*/
         
     class TypeWithConstructableParameter<X>(String s, Natural n)
             given X(String s, Natural n) {
@@ -69,11 +63,11 @@ class Generics() {
 
 
     interface Processor<out X, in Y> {
-        X process(Y y);
+        shared formal X process(Y y);
     }
     
-    class ProcessorImpl<out X, in Y>(X p(Y y)) {
-        X process(Y y) {
+    class ProcessorImpl<out X, in Y>(X p(Y y)) satisfies Processor<X,Y> {
+        shared actual X process(Y y) {
             return p(y)
         }
     }
@@ -92,11 +86,11 @@ class Generics() {
     output(2,p);
     
     class ClassWithDimensionalParameter<#n>() {
-        mutable Bounded<#n> count := 0;
+        shared variable Bounded<#n> count := 0;
     }
     
     interface TypeWithDimensionalParameters<#m,#n> {
-        Float<#m,#n> matrix;
+        shared formal Float<#m,#n> matrix;
     }
     
     class ClassWithSequencedTypeParameter<P...>(Callable<Void,P...> callable) {
@@ -106,7 +100,7 @@ class Generics() {
     }
     
     interface InterfaceWithSequencedTypeParameter<T,Q...> {
-        T invokeSomething(Q... params);
+        shared formal T invokeSomething(Q... params);
     }
 
 }

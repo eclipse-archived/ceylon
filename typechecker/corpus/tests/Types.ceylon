@@ -25,7 +25,7 @@ abstract class Types() {
 	abstract class Bar<#n,#m,P...>() {
 	    Foo<#n> typeWithVariantDimension;
 	    Foo[m] sequenceWithVariantDimension;
-        Foo<#n+m+1> typeWithLinearDimension;
+        Foo<#n+#m+#1> typeWithLinearDimension;
         Foo[n+m+2] sequenceWithLinearDimension;
         Foo<P...> typeWithSequencedTypeArgument;
 	}

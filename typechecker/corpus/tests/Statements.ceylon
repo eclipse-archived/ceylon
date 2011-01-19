@@ -2,12 +2,12 @@ class Statements() {
 
 	String hello = "Hello World"; //specification
 	String getHello() = get(hello); //method specification
-	mutable String string := hello; //initialization
+	variable String string := hello; //initialization
 	string := "Hello Gavin"; //assignment
 	
 	Natural x;
 	x = 0; //lazy specification
-	mutable Natural y := x; //initialization
+	variable Natural y := x; //initialization
 	y := y*x; //assignment
 	y++; //increment
 	y--; //decrement
@@ -19,14 +19,14 @@ class Statements() {
 	y/=2; //divide
 	y%=7; //remainder
 	
-	mutable Boolean b := true;
+	variable Boolean b := true;
 	b||=b; //or
 	b&&=b; //and
 	b|=b; //bitwise or
 	b&=b; //bitwise and
 	b^=false; //exclusive or
 	
-	mutable String? qux := null;
+	variable String? qux := null;
 	qux ?= "Hello";
 	
 	class Bar(Boolean b) {}
@@ -36,8 +36,8 @@ class Statements() {
 	Bar { b=false; };
 	
 	class Foo() {
-		void instanceMethod(Natural n) {}
-		class Baz(String s) {}
+		shared void instanceMethod(Natural n) {}
+		shared class Baz(String s) {}
 	}
 
 	void method(Float f) {}

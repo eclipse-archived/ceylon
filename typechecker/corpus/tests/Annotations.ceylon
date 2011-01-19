@@ -2,16 +2,16 @@ class Annotations() {
 
 	class NoArguments() {
 
-		public deprecated default
+		shared deprecated default
 		void methodAnnotations(deprecated Natural param=0) {}
 		
-		public deprecated default
+		shared deprecated default
 		Natural attributeAnnotations = 1;
 		
-		package deprecated abstract
+		shared deprecated abstract
 		class ClassAnnotations() {}
 		
-		module
+		shared deprecated 
 		interface InterfaceAnnotations {}
 		
 	}
