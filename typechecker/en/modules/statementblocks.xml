@@ -247,9 +247,9 @@
 Inner innerObject = outerObject.Inner();
 innerObject.member();</programlisting>
             
-            <para>In this example, <literal>inner</literal> is the current instance of 
+            <para>In this example, <literal>innerObject</literal> is the current instance of 
             <literal>Inner</literal> when <literal>member()</literal> is executed, and
-            <literal>outer</literal> is the current instance of <literal>Outer</literal>.</para>
+            <literal>outerObject</literal> is the current instance of <literal>Outer</literal>.</para>
                         
             <para>If the nested declaration is nested directly or indirectly inside a block,
             then there is always a <emphasis>current frame</emphasis> of the block when the
