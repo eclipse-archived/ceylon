@@ -101,11 +101,11 @@ public final class Natural
         return (int)value;
     }
 
-    public ceylon.language.Natural pred() {
+    public ceylon.language.Natural predecessor() {
         return Natural.instance(value - 1);
     }
 
-    public ceylon.language.Natural succ() {
+    public ceylon.language.Natural successor() {
         return Natural.instance(value + 1);
     }
 
