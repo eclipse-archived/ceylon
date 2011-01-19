@@ -889,6 +889,15 @@ else {
         lot like a method declaration where the return type and the name of the 
         method are the same).</para>
         
+        <para>Oh, by the way, there's an even easier way to define 
+        <literal>greeting</literal>, using the <literal>?</literal>
+        operator.</para>
+        
+<programlisting><![CDATA[shared String greeting = "Hello, " (name ? "World") "!";]]></programlisting>
+
+        <para>The <literal>?</literal> operator returns its first argument if the
+        first argument is not null, or the its second argument otherwise.</para>
+    
         </section>
         
         <section>
@@ -2707,14 +2716,6 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         to <emphasis>use</emphasis> iterator methods than actually write them
         yourself.</para>
         
-        <para>Oh, by the way, there's an even easier way to define 
-        <literal>greeting</literal>, using the <literal>?</literal>
-        operator.</para>
-        
-<programlisting><![CDATA[shared String greeting {
-    return "Hello, " (name ? "World") "!"
-}]]></programlisting>
-    
         </section>
         
        <section>
