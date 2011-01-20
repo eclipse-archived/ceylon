@@ -627,6 +627,7 @@ String? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
+        <!--
         <comment><para>TODO: We could let a class or interface conditionally implement or 
         extend an interface, called a <emphasis>conditional supertype</emphasis>, depending 
         upon the argument of a type parameter.</para>
@@ -718,7 +719,8 @@ shared interface ElementwiseEquality
       
 }]]></programlisting>
         </comment>
-
+        -->
+        
     </section>
     
     <section id="cases">
@@ -781,7 +783,32 @@ class Disjunction(Expression<Boolean>... terms)
         old algebraic datatypes, simply by imposing the restriction that each case
         must include all the type parameters of the type.</para>
         
-        <para>Actually, a potentially better syntax would be:</para>
+        <para>We can even use this as the basis for a kind of "conditional"
+        subtyping:</para>
+        
+        <programlisting><![CDATA[interface Expression<T>
+        of NumericExpression<T> | BooleanExpression | StringExpression
+        given T of Number | Boolean | String { ... }
+        
+class NumericExpression<T>
+        satisfies Expression<T>
+        given T satisfies Number { ... }
+
+class BooleanExpression
+        satisfies Expression<Boolean> { ... }
+
+class StringExpression
+        satisfies Expression<String> { ... }]]></programlisting>
+        
+        <para>The compiler could reason that every <literal>Expression&lt;Integer&gt;</literal>
+        is actually a <literal>NumericExpression&lt;Integer&gt;</literal>, that
+        every <literal>Expression&lt;Boolean&gt;</literal> is actually a
+        <literal>BooleanExpression</literal> without the need for explicit mention
+        of the subtype.</para>
+        
+        <para>Actually, a potentially better syntax would make the conditions
+        explicit:</para>
+        
         <programlisting><![CDATA[interface Expression<T> 
         of Constant<Number> | Sum | Product 
                 if (T satisfies Number)
