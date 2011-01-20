@@ -779,6 +779,13 @@ class Conjunction(Expression<Boolean>... terms)
 class Disjunction(Expression<Boolean>... terms) 
         satisfies Expression<Boolean> { ... }]]></programlisting>
         
+        <para>The key here is that not every case listed in the <literal>of</literal>
+        clause is valid for every possible value of the type parameter <literal>T</literal>. 
+        Indeed, some cases do not even mention <literal>T</literal>, thus limiting 
+        the case to exactly one possible value of <literal>T</literal>. This, the
+        list of cases in a <literal>switch</literal> will depend upon the exact
+        type argument to <literal>T</literal>.</para>
+        
         <para>However, initially we can support only enumerated types and plain
         old algebraic datatypes, simply by imposing the restriction that each case
         must include all the type parameters of the type.</para>
