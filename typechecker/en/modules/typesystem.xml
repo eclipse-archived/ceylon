@@ -757,8 +757,52 @@ shared interface ElementwiseEquality
         <para>Therefore, the <literal>of</literal> declaration is used to simulate 
         enumerated types and algebraic datatypes.</para>
         
-        <comment><para>Note: Eventually, this syntax can easily support 
-        <emphasis>generalized algebraic datatypes</emphasis>. For example:</para>
+        <itemizedlist>
+            <listitem>
+                 <para>A <emphasis>simple algebraic datatype</emphasis> is a 
+                 parameterized type <literal>Simple&lt;T&gt;</literal> with a list 
+                 of cases where every case <literal>Case&lt;T&gt;</literal> is 
+                 parameterized by <literal>T</literal> and for every possible type 
+                 argument <literal>X</literal> satisfying the constraints on 
+                 <literal>T</literal> declared by <literal>Simple</literal>, 
+                 <literal>Case&lt;X&gt;</literal> is a legal produced type where 
+                 <literal>X</literal> also satisfies the constraints on 
+                 <literal>T</literal> declared by <literal>Case</literal> and the
+                 produced type <literal>Case&lt;X&gt;</literal> is assignable to 
+                 the produced type <literal>Simple&lt;X&gt;</literal>.</para>
+            </listitem>
+            <listitem>
+                 <para>A <emphasis>generalized algebraic datatype</emphasis> is a 
+                 parameterized type <literal>General&lt;T&gt;</literal> with a list 
+                 of cases where either (a) at least one case is not parameterized 
+                 by <literal>T</literal>&mdash;and is therefore assignable to 
+                 <literal>Simple&lt;Y&gt;</literal> only for some values of the
+                 type argument <literal>Y</literal>, or (b) for at least one case
+                 <literal>Case&lt;X&gt;</literal> there is a type argument 
+                 <literal>X</literal> satisfying the constraints on 
+                 <literal>T</literal> declared by <literal>Simple</literal> where 
+                 <literal>Case&lt;X&gt;</literal> is not a legal produced type 
+                 since <literal>X</literal> does not satisfy a constraint on 
+                 <literal>T</literal> declared by <literal>Case</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>NOTE: Support for generalized algebraic datatypes is a 
+        proposed feature for a future version of the language.</para></comment>
+        
+        <para>Any produced type formed from a simple algebraic datatype has the 
+        same list of cases as the simple algebraic datatype.</para>
+        
+        <para>A produced type formed from a generalized algebraic datatype may
+        have fewer cases than the generalized algebraic datatype itself. A case
+        of a generalized algebraic datatype is a case of the produced type only
+        if (a) the produced case type is a legal produced type, and (b) the 
+        produced case type is assignable to the produced type. In the extreme case 
+        that there is exactly one case of the produced type, the compiler treats 
+        references to the produced type as references to the produced case type.</para>
+        
+        <para>In the following example, the generalized algebraic datatype has 
+        more than one case for each value of <literal>T</literal>:</para>
         
         <programlisting><![CDATA[interface Expression<T> 
         of Constant<T> | Sum | Product | Conjunction | Disjunction
@@ -779,6 +823,7 @@ class Conjunction(Expression<Boolean>... terms)
 class Disjunction(Expression<Boolean>... terms) 
         satisfies Expression<Boolean> { ... }]]></programlisting>
         
+        <!--
         <para>The key here is that not every case listed in the <literal>of</literal>
         clause is valid for every possible value of the type parameter <literal>T</literal>. 
         Indeed, some cases do not even mention <literal>T</literal>, thus limiting 
@@ -792,6 +837,10 @@ class Disjunction(Expression<Boolean>... terms)
         
         <para>We can even use this as the basis for a kind of "conditional"
         subtyping:</para>
+        -->
+        
+        <para>In this example, the generalized algebraic datatype has exactly 
+        one case for each value of <literal>T</literal>:</para>
         
         <programlisting><![CDATA[interface Expression<T>
         of NumericExpression<T> | BooleanExpression | StringExpression
@@ -807,14 +856,17 @@ class BooleanExpression
 class StringExpression
         satisfies Expression<String> { ... }]]></programlisting>
         
+        <!--  
         <para>The compiler could reason that every <literal>Expression&lt;Integer&gt;</literal>
         is actually a <literal>NumericExpression&lt;Integer&gt;</literal>, that
         every <literal>Expression&lt;Boolean&gt;</literal> is actually a
         <literal>BooleanExpression</literal> without the need for explicit mention
         of the subtype.</para>
+        -->
         
-        <para>Actually, a potentially better syntax would make the conditions
-        explicit:</para>
+        <comment>
+        <para>TODO: Actually, a potentially better syntax for GADTs would make the 
+        conditions explicit:</para>
         
         <programlisting><![CDATA[interface Expression<T> 
         of Constant<Number> | Sum | Product 
