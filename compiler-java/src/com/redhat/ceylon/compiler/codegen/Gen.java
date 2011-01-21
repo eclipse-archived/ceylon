@@ -1709,11 +1709,10 @@ public class Gen {
         case CeylonParser.RANGE:
             JCExpression lower = convertExpression(operands[0]);
             JCExpression upper = convertExpression(operands[1]);
-            JCExpression itemType = makeIdent(syms.ceylonNaturalType); // FIXME get properly!
             return at(op).NewClass(
                 null,
                 null,
-                at(op).TypeApply(makeIdent(syms.ceylonRangeType), List.<JCExpression>of(itemType)),
+                at(op).TypeApply(makeIdent(syms.ceylonRangeType), List.<JCExpression>of(null)),
                 List.<JCExpression>of(lower, upper),
                 null);
 

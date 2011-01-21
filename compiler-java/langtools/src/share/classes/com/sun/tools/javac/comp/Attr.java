@@ -1450,6 +1450,22 @@ public class Attr extends JCTree.Visitor {
 //          System.out.println(clazz + " generated.");//DEBUG
         }
 
+        // Range objects from "for (X x in y..z)" constructs need their type arguments setting.
+        List<Type> argtypes = null;
+        if (Context.isCeylon()) {
+            if (tree.clazz.getTag() == JCTree.TYPEAPPLY) {
+                JCTypeApply ta = (JCTypeApply) tree.clazz;
+                if (ta.arguments.size() == 1 && ta.arguments.head == null) {
+                    assert ta.clazz.type.baseType() == syms.ceylonRangeType;
+                    assert tree.args.size() == 2;
+                    argtypes = attribArgs(tree.args, localEnv);
+                    Type lower = tree.args.head.type;
+                    assert tree.args.tail.head.type == lower;
+                    ta.arguments.head = make.QualIdent(lower.tsym);
+                }
+            }
+        }
+
         // Attribute clazz expression and store
         // symbol + type back into the attributed tree.
         Type clazztype = chk.checkClassType(
@@ -1475,7 +1491,8 @@ public class Attr extends JCTree.Visitor {
         }
 
         // Attribute constructor arguments.
-        List<Type> argtypes = attribArgs(tree.args, localEnv);
+        if (argtypes == null)
+            argtypes = attribArgs(tree.args, localEnv);
         List<Type> typeargtypes = attribTypes(tree.typeargs, localEnv);
 
         // If we have made no mistakes in the class type...
