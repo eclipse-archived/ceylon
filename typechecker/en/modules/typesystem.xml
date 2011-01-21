@@ -956,9 +956,10 @@ class StringExpression
         
         <programlisting>is Monoid&lt;T&gt;</programlisting>
         
-        <comment><para>Note: metatypes are somewhat like Haskell type classes. They
-        allow functions which operate polymorphically over the metamodel object 
-        that represents a type:</para>
+        <para>Metatypes allow a function to operate polymorphically over the 
+        metamodel object that represents a type. For example, a library could
+        define the following generic functionality:</para>
+        
         <programlisting><![CDATA[shared interface Joinable<S> {
     shared formal S empty;
     shared formal S join(S x, S y); 
@@ -972,6 +973,9 @@ shared S join<S>(S... sequences)
     }
     return result 
 }]]></programlisting>
+
+        <para>Which could be utilized as follows:</para>
+
 <programlisting><![CDATA[shared interface JoinableLinkedList<T> 
         satisfies Joinable<LinkedList<T>> {
     shared actual LinkedList<T> empty = LinkedList<T>();
@@ -982,7 +986,7 @@ shared S join<S>(S... sequences)
 
 shared class LinkedList<T>(T... elements) 
         is JoinableLinkedList<T> 
-        satisfies T[] { ... }]]></programlisting></comment>
+        satisfies T[] { ... }]]></programlisting>
         
     </section>
         
@@ -1540,8 +1544,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         constructor</emphasis>. <literal>Sequence</literal> is viewed as a function from 
         types <literal>T</literal> to produced types <literal>Sequence&lt;T&gt;</literal>.</para>
         
-        <comment>
-        <para>Note: parameterized type parameters allow functions to operate generically 
+        <para>Parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
                 
         <programlisting><![CDATA[M<U> map<M,U,V>(U function(V v), M<V> inputs)
@@ -1566,7 +1569,6 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         given T satisfies Equality<T> {
     return S(joinSequences(sequences))
 }]]></programlisting>
-        </comment>
         
         <comment>
         <para>TODO: We could allow other valid type constructors here. Especially,
