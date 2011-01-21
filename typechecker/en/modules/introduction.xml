@@ -1196,6 +1196,30 @@ class PersonalizedHello(String name) extends Hello() {
             
         </section>
         
+    <section>
+        <title>Type aliases</title>
+        
+        <para>It's often useful to provide a shorter or more semantic name to an 
+        existing class or interface type, especially if the class or interface is
+        a parameterized type. For this, we use a type alias, for example:</para>
+        
+        <programlisting>interface People = Set&lt;Person&gt;;</programlisting>
+        
+        <para>A class alias must declare its parameters:</para>
+        
+        <programlisting>shared class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
+        
+        <para>An alias may be declared <literal>shared</literal>, and imported by a 
+        different package.</para>
+        
+        <para>Note that neither of these declarations defines a new type. Any instance
+        of <literal>People</literal> is an instance of <literal>Set&lt;Person&gt;</literal>
+        and any instance of <literal>Set&lt;Person&gt;</literal> is an instance of
+        <literal>People</literal>. A type alias is very similar to a C-style
+        <literal>typedef</literal>.</para>
+        
+    </section>
+        
         <section>
             <title>Member classes and member class refinement</title>
             
@@ -1255,16 +1279,16 @@ BufferedReader.Buffer b = br.Buffer();</programlisting>
     ...
 }</programlisting>
 
-            <para>In this case, a concrete implementation of the member class might just
-            be a reference to another class, even a toplevel class.</para>
+            <para>In this case, a concrete implementation of the member class might 
+            just be a type alias of another class, even a toplevel class.</para>
 
             <programlisting>shared class BufferedFileReader(File file)
         extends BufferedReader(FileReader(file)) {
     shared actual class Buffer() = ArrayList&lt;Character&gt;;
 }</programlisting>
             
-            <para>We'll see below that <literal>Buffer</literal> is actually a 
-            <emphasis>type alias</emphasis> of <literal>ArrayList&lt;Character&gt;</literal>.</para>
+            <para>Here, <literal>BufferedFileReader.Buffer</literal> is actually an
+            alias of <literal>ArrayList&lt;Character&gt;</literal>.</para>
             
         </section>
     
@@ -1321,33 +1345,25 @@ object defaultHello extends Hello() {
         <literal>class</literal> declaration defines a named type that we can refer to in
         other parts of the program.) We'll see later that Ceylon also lets us think of
         a method as a parameterized attribute.</para>
-    
-    </section>
-    
-    <section>
-        <title>Type aliases</title>
         
-        <para>It's often useful to provide a shorter or more semantic name to an 
-        existing class or interface type, especially if the class or interface is
-        a parameterized type. For this, we use a type alias, for example:</para>
+        <para>An <literal>object</literal> declaration can refine an attribute declared 
+        <literal>formal</literal> or <literal>default</literal>.</para>
         
-        <programlisting>interface People = Set&lt;Person&gt;;</programlisting>
+        <programlisting>shared abstract class App() {
+    shared formal OutputStream stream;
+    ...
+}</programlisting>
         
-        <para>A class alias must declare its parameters:</para>
+        <programlisting>class ConsoleApp() extends App() {
+    shared actual object stream satisfies OutputStream { ... }
+    ...
+}</programlisting>
         
-        <programlisting>shared class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
-        
-        <para>An alias may be declared <literal>shared</literal>, and imported by a 
-        different package.</para>
-        
-        <para>Note that neither of these declarations defines a new type. Any instance
-        of <literal>People</literal> is an instance of <literal>Set&lt;Person&gt;</literal>
-        and any instance of <literal>Set&lt;Person&gt;</literal> is an instance of
-        <literal>People</literal>. A type alias is very similar to a C-style
-        <literal>typedef</literal>.</para>
+        <para>However, an <literal>object</literal> may not itself be declared 
+        <literal>formal</literal> or <literal>default</literal>.</para>
         
     </section>
-        
+    
     <section>
         <title>Testing the type of an object</title>
         
