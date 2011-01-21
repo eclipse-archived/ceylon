@@ -2961,12 +2961,12 @@ shared interface Observer<T> {
     }
 };]]></programlisting>
             
-            <para>Of course, a better way to solve this problem is to 
-            eliminate the <literal>Observer</literal> interface and pass a 
-            method directly:</para>
+            <para>Of course, as we saw earlier, a better way to solve this 
+            problem is to eliminate the <literal>Observer</literal> interface 
+            and pass a method directly:</para>
             
             <programlisting><![CDATA[shared interface Observable {
-    shared void addObserver<T>(void on(T e)) { ... }
+    shared void addObserver<T>(void on(T event)) { ... }
 }]]></programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
