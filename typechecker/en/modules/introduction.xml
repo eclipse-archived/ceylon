@@ -2945,7 +2945,13 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             <para>Finally, here's an example of a named argument list with 
             an inline <literal>object</literal> declaration:</para>
             
-            <programlisting><![CDATA[shared void addObserver<T>(Observer<T> observer) { ... }]]></programlisting>
+            <programlisting><![CDATA[shared interface Observable {
+    shared void addObserver<T>(Observer<T> observer) { ... }
+}
+
+shared interface Observer<T> {
+    shared formal on(T event);
+}]]></programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     object observer satisfies Observer<UpdateEvent> {
@@ -2959,7 +2965,9 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             eliminate the <literal>Observer</literal> interface and pass a 
             method directly:</para>
             
-            <programlisting><![CDATA[shared void addObserver<T>(void on(T e)) { ... }]]></programlisting>
+            <programlisting><![CDATA[shared interface Observable {
+    shared void addObserver<T>(void on(T e)) { ... }
+}]]></programlisting>
             
             <programlisting><![CDATA[observable.addObserver {
     void on(UpdateEvent e) {
