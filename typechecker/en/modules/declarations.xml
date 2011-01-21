@@ -312,8 +312,11 @@ TypeConstraints?
         <section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
-            <para>An interface member is always visible to all other members of the
-            interface.</para>
+            <para>An interface body is not an executable block of code, so the normal
+            visibility rules that apply to declarations inside blocks do not apply.
+            An interface member is always visible to all other members of the
+            interface. An interface member annotated <literal>shared</literal> is 
+            visible wherever the interface itself is visible.</para>
         
         </section>
         
@@ -396,8 +399,8 @@ TypeConstraints?
         
         <programlisting>shared interface Node&lt;T&gt; of Root&lt;T&gt; | Branch&lt;T&gt; | Leaf&lt;T&gt; { ... }</programlisting>
         
-        <para>The cases may be interfaces, classes, or anonymous classes. A case may be 
-        an <literal>abstract</literal> class. Each case must be a subtype of the
+        <para>The cases may be interfaces, classes, or toplevel anonymous classes. A case 
+        may be an <literal>abstract</literal> class. Each case must be a subtype of the
         interface type.</para>
         
         <para>If an anonymous class is a case of an interface type, it must extend
@@ -1186,8 +1189,8 @@ shared class Person { ... }</programlisting>
         <title>Anonymous classes</title>
         
         <para>An <literal>object</literal> declaration makes it possible to define
-        a class, instantiate an instance of the class, and declare an attribute 
-        referring to the class instance in a single declaration.</para>
+        a class, instantiate the class, and declare an attribute referring to the 
+        resulting class instance in a single declaration.</para>
         
         <programlisting>Object: Annotation* ObjectHeader ClassBody</programlisting>
         
@@ -1312,9 +1315,9 @@ shared class Leaf&lt;T&gt;(String name, T value)
 shared class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; right) 
         extends Node&lt;T&gt;(name) { ... }</programlisting>
                 
-        <para>The cases may be classes, or anonymous classes. A case may be an 
-        <literal>abstract</literal> class. Each case must be a subclass of the
-        class.</para>
+        <para>The cases may be classes or toplevel anonymous classes. A case may 
+        be an <literal>abstract</literal> class. Each case must be a subclass of 
+        the class.</para>
         
         <para>If an anonymous class is a case of a class, the class must extend
         <literal>ceylon.language.Case</literal>, directly or indirectly.</para>

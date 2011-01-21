@@ -740,10 +740,20 @@ shared interface ElementwiseEquality
         
         <programlisting>CaseType: MemberName | Type</programlisting>
         
-        <para>An anonymous class is identified by the name specified in the 
-        <literal>object</literal> declaration&mdash;an initial lowercase
-        identifier. Any anonymous class that appears as a case must extend the 
-        class <literal>ceylon.language.Case</literal>.</para>
+        <para>Each case is either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a subtype of the interface or <literal>abstract</literal> 
+                class, or</para>
+            </listitem>
+            <listitem>
+                <para>the name specified in the <literal>object</literal> 
+                declaration of a toplevel anonymous class that extends 
+                <literal>ceylon.language.Case</literal> and is a subtype of the 
+                interface or <literal>abstract</literal> class.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>of larger | smaller | equal</programlisting>
         
