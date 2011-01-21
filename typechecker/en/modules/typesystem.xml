@@ -1571,10 +1571,20 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
 }]]></programlisting>
         
         <comment>
-        <para>TODO: We could allow other valid type constructors here. Especially,
-        the identity type constructor <literal>id&lt;T&gt; == T</literal> and constant 
-        type constructors (non-parameterized types), for example, 
-        <literal>String&lt;T&gt; == String</literal>. For example:</para>
+        <para>TODO: There are at least two other interesting functions which map
+        types to types:</para>
+        <itemizedlist>
+            <listitem>
+                 <para>the identity type constructor <literal>id&lt;T&gt; == T</literal>, 
+                 and</para>
+            </listitem>
+            <listitem>
+                <para>constant type constructors (non-parameterized types), for 
+                example, <literal>String&lt;T&gt; == String</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        <para>Should we allow these type constructors as arguments to a 
+        parameterized type parameter?</para>
         
         <programlisting><![CDATA[Comparison compare<S,T>(S<T> x, S<T> y)
         given S<X> satisfies X[] | X
