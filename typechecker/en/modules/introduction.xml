@@ -2926,6 +2926,20 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             structure. Semantically, the two forms are equivalent. But in
             terms of readability, they are very different.</para>
             
+            <para>We could put the above totally declarative code in a file
+            named <literal>table.ceylon</literal> and it would look like
+            some kind of domain specific language for defining tables.
+            In fact, it's executable Ceylon code that may be validated for
+            syntactic correctness by the Ceylon compiler and then compiled 
+            to Java bytecode. Even better, any Ceylon IDE provides authoring 
+            support for our DSL. In complete contrast to the DSL support 
+            in some dynamic languages, any Ceylon DSL is completely 
+            typesafe! You can think of the definition of the 
+            <literal>Table</literal>, <literal>Column</literal> and 
+            <literal>Border</literal> classes as defining the "schema" or
+            "grammar" of the DSL. (In fact, they are really a syntax tree
+            for the DSL.)</para>
+            
             <para>Now let's see an example of a named argument list with 
             an inline getter declaration:</para>
             
@@ -2981,7 +2995,7 @@ shared interface Observer<T> {
         <section>
             <title>Defining user interfaces declaratively</title>
 
-        <para>Finally, lets create a web-based user interface for our
+        <para>Let's create a web-based user interface for our greeting
         program. We're going to use the module <literal>ceylon.html</literal>,
         which defines an API for specifying HTML pages as a tree of
         objects.</para>
@@ -3037,7 +3051,8 @@ shared interface Observer<T> {
     }
 }</programlisting>
 
-        <para>We're going to use this syntax to define our web page.</para>
+        <para>We're going to use this syntax to define the "template" for 
+        our web page.</para>
         
         <programlisting><![CDATA[import ceylon.html { ... };
 
@@ -3071,6 +3086,10 @@ Html hello(Request request) {
     
     <section>
         <title>Defining structured data formats</title>
+        
+        <comment><para>TODO: I don't like the example used in the following two 
+        sections. Need to come up with a better example to use to illustrate
+        these ideas.</para></comment>
         
         <para>Let's try and define our own structured data format, to personalize
         our program a little. First, we'll create a class to represent people:</para>
