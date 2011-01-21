@@ -1212,7 +1212,8 @@ class PersonalizedHello(String name) extends Hello() {
         <para>An alias may be declared <literal>shared</literal>, and imported by a 
         different package.</para>
         
-        <para>Note that neither of these declarations defines a new type. Any instance
+        <para>Note that neither of these declarations defines a new type. We're just
+        defining extra names for pre-existing types. Any instance
         of <literal>People</literal> is an instance of <literal>Set&lt;Person&gt;</literal>
         and any instance of <literal>Set&lt;Person&gt;</literal> is an instance of
         <literal>People</literal>. A type alias is very similar to a C-style
