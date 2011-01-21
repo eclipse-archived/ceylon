@@ -306,9 +306,6 @@ TypeConstraints?
 }</programlisting>
         -->
         
-        <comment><para>TODO: Are there conceptual problems with interfaces nested inside 
-        executable bodies: blocks and class bodies.</para></comment>
-        
         <section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
