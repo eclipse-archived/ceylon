@@ -1195,6 +1195,78 @@ class PersonalizedHello(String name) extends Hello() {
             interface.</para>
             
         </section>
+        
+        <section>
+            <title>Member classes and member class refinement</title>
+            
+            <para>You're probably used to the idea of an "inner" class in Java&mdash;a
+            class declaration nested inside another class or method. Since Ceylon is a 
+            language with a recursive block structure, the idea of a nested class is
+            more than natural. But in Ceylon, a non-<literal>abstract</literal> nested
+            class is actually considered a member of the containing type. For example,
+            <literal>BufferedReader</literal> defines the member class 
+            <literal>Buffer</literal>:</para>
+            
+            <programlisting>class BufferedReader(Reader reader) satisfies Reader {
+    shared default class Buffer() 
+            satisfies Character[] { ... }
+    ...
+}</programlisting>
+
+            <para><literal>Buffer</literal> is annotated <literal>shared</literal>, so
+            we can instantiate it like this:</para>
+            
+            <programlisting>BufferedReader br = BufferedReader(reader);
+BufferedReader.Buffer b = br.Buffer();</programlisting>
+
+            <para>Note that a nested type name must be qualified by the containing type
+            name when used outside of the containing type.</para>
+
+            <para><literal>Buffer</literal> is also annotated <literal>default</literal>, 
+            so we can refine it in a subtype of <literal>BufferedReader</literal>:</para>
+            
+            <programlisting>shared class BufferedFileReader(File file)
+        extends BufferedReader(FileReader(file)) {
+    shared actual class Buffer() 
+            extends BufferedReader.Buffer() { ... }
+}</programlisting>
+            
+            <para>That's right: Ceylon lets us "override" a nested class defined by a 
+            supertype!</para>
+            
+            <para>Note that <literal>BufferedFileReader.Buffer</literal> is a subclass 
+            of <literal>BufferedReader.Buffer</literal>.</para>
+            
+            <para>Now the instantiation <literal>br.Buffer()</literal> above is a 
+            polymorphic operation! It might return an instance of 
+            <literal>BufferedFileReader.Buffer</literal> or an instance of 
+            <literal>BufferedReader.Buffer</literal>, depending upon whether 
+            <literal>br</literal> refers to a plain <literal>BufferedReader</literal> 
+            or a <literal>BufferedFileReader</literal>. This is more than a cute trick.
+            Polymorphic instantiation lets us eliminate the "factory method pattern"
+            from our code.</para>
+            
+            <para>It's even possible to define a <literal>formal</literal> member class
+            of an <literal>abstract</literal> class:</para>
+            
+            <programlisting>abstract class BufferedReader(Reader reader) satisfies Reader {
+    shared formal class Buffer() 
+            satisfies Character[];
+    ...
+}</programlisting>
+
+            <para>In this case, a concrete implementation of the member class might just
+            be a reference to another class, even a toplevel class.</para>
+
+            <programlisting>shared class BufferedFileReader(File file)
+        extends BufferedReader(FileReader(file)) {
+    shared actual class Buffer() = ArrayList&lt;Character&gt;;
+}</programlisting>
+            
+            <para>We'll see below that <literal>Buffer</literal> is actually a 
+            <emphasis>type alias</emphasis> of <literal>ArrayList&lt;Character&gt;</literal>.</para>
+            
+        </section>
     
     <section>
         <title>Anonymous classes</title>
