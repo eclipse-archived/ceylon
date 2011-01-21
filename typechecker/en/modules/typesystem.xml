@@ -770,46 +770,76 @@ shared interface ElementwiseEquality
         <itemizedlist>
             <listitem>
                  <para>A <emphasis>simple algebraic datatype</emphasis> is a 
-                 parameterized type <literal>Simple&lt;T&gt;</literal> with a list 
-                 of cases where every case <literal>Case&lt;T&gt;</literal> is 
+                 parameterized type <literal>A&lt;T&gt;</literal> with a list 
+                 of cases where every case <literal>C&lt;T&gt;</literal> is 
                  parameterized by <literal>T</literal> and for every possible type 
                  argument <literal>X</literal> satisfying the constraints on 
-                 <literal>T</literal> declared by <literal>Simple</literal>, 
-                 <literal>Case&lt;X&gt;</literal> is a legal produced type where 
+                 <literal>T</literal> declared by <literal>A</literal>, 
+                 <literal>C&lt;X&gt;</literal> is a legal produced type where 
                  <literal>X</literal> also satisfies the constraints on 
-                 <literal>T</literal> declared by <literal>Case</literal> and the
-                 produced type <literal>Case&lt;X&gt;</literal> is assignable to 
-                 the produced type <literal>Simple&lt;X&gt;</literal>.</para>
+                 <literal>T</literal> declared by <literal>C</literal> and the
+                 produced type <literal>C&lt;X&gt;</literal> is assignable to 
+                 the produced type <literal>A&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
                  <para>A <emphasis>generalized algebraic datatype</emphasis> is a 
-                 parameterized type <literal>General&lt;T&gt;</literal> with a list 
+                 parameterized type <literal>A&lt;T&gt;</literal> with a list 
                  of cases where either (a) at least one case is not parameterized 
                  by <literal>T</literal>&mdash;and is therefore assignable to 
-                 <literal>Simple&lt;Y&gt;</literal> only for some values of the
-                 type argument <literal>Y</literal>, or (b) for at least one case
-                 <literal>Case&lt;X&gt;</literal> there is a type argument 
+                 <literal>A&lt;Y&gt;</literal> only for some values of the type 
+                 argument <literal>Y</literal>, or (b) for at least one case
+                 <literal>C&lt;X&gt;</literal> there is a type argument 
                  <literal>X</literal> satisfying the constraints on 
-                 <literal>T</literal> declared by <literal>Simple</literal> where 
-                 <literal>Case&lt;X&gt;</literal> is not a legal produced type 
+                 <literal>T</literal> declared by <literal>A</literal> where 
+                 <literal>C&lt;X&gt;</literal> is not a legal produced type 
                  since <literal>X</literal> does not satisfy a constraint on 
-                 <literal>T</literal> declared by <literal>Case</literal>.</para>
+                 <literal>T</literal> declared by <literal>C</literal>.</para>
             </listitem>
         </itemizedlist>
         
         <comment><para>NOTE: Support for generalized algebraic datatypes is a 
         proposed feature for a future version of the language.</para></comment>
         
-        <para>Any produced type formed from a simple algebraic datatype has the 
-        same list of cases as the simple algebraic datatype.</para>
+        <para>Given a parameterized type <literal>A&lt;T&gt;</literal>, a case 
+        <literal>C&lt;T&gt;</literal> of <literal>A&lt;T&gt;</literal>, and a
+        type argument <literal>X</literal> of <literal>T</literal>, we say that 
+        <literal>C&lt;X&gt;</literal> is the <emphasis>produced case</emphasis> 
+        of the produced type <literal>A&lt;X&gt;</literal>.</para>
         
-        <para>A produced type formed from a generalized algebraic datatype may
-        have fewer cases than the generalized algebraic datatype itself. A case
-        of a generalized algebraic datatype is a case of the produced type only
-        if (a) the produced case type is a legal produced type, and (b) the 
-        produced case type is assignable to the produced type. In the extreme case 
-        that there is exactly one case of the produced type, the compiler treats 
-        references to the produced type as references to the produced case type.</para>
+        <para>The cases of a produced type <literal>A&lt;X&gt;</literal> 
+        for a simple algebraic datatype <literal>A&lt;T&gt;</literal> and a type 
+        argument <literal>X</literal> include exactly every produced case 
+        <literal>C&lt;X&gt;</literal> for a case <literal>C&lt;T&gt;</literal> 
+        of <literal>A&lt;T&gt;</literal>. Therefore, for every case of the simple 
+        algebraic datatype <literal>A&lt;T&gt;</literal>, there is a corresponding 
+        produced case of <literal>A&lt;X&gt;</literal>.</para>
+        
+        <para>On the other hand, the cases of a produced type <literal>A&lt;X&gt;</literal> 
+        for a generalized algebraic datatype <literal>A&lt;T&gt;</literal> and a 
+        type argument <literal>X</literal> include only the following:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>every case <literal>C</literal> of <literal>A&lt;T&gt;</literal> 
+                which is not parameterized by <literal>T</literal> and which is 
+                assignable to <literal>A&lt;X&gt;</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>every produced case <literal>C&lt;X&gt;</literal> for a
+                case <literal>C&lt;T&gt;</literal> of <literal>A&lt;T&gt;</literal>
+                which is a legal produced type where <literal>X</literal> satisfies
+                all constraints on <literal>T</literal> declared by <literal>C</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Therefore, for a given case of the generalized algebraic datatype 
+        <literal>A&lt;T&gt;</literal>, there may be no corresponding case of 
+        <literal>A&lt;X&gt;</literal>. In the extreme case that there is exactly 
+        one case of the produced type <literal>A&lt;X&gt;</literal>, the compiler 
+        treats the type <literal>A&lt;X&gt;</literal> as a type alias of that 
+        unique case. Hence, <literal>A&lt;X&gt;</literal> may have members that
+        are not part of the parameterized type schema <literal>A&lt;T&gt;</literal>.</para>
         
         <para>In the following example, the generalized algebraic datatype has 
         more than one case for each value of <literal>T</literal>:</para>
@@ -832,6 +862,13 @@ class Conjunction(Expression<Boolean>... terms)
         satisfies Expression<Boolean> { ... }
 class Disjunction(Expression<Boolean>... terms) 
         satisfies Expression<Boolean> { ... }]]></programlisting>
+        
+        <para>Then <literal>Expression&lt;Number&gt;</literal> has the cases
+        <literal>Sum</literal>, <literal>Product</literal> and 
+        <literal>Constant&lt;Number&gt;</literal>, but 
+        <literal>Expression&lt;Boolean&gt;</literal> has the cases
+        <literal>Conjunction</literal>, <literal>Disjunction</literal> and 
+        <literal>Constant&lt;Number&gt;</literal>.</para>
         
         <!--
         <para>The key here is that not every case listed in the <literal>of</literal>
@@ -864,7 +901,16 @@ class BooleanExpression
         satisfies Expression<Boolean> { ... }
 
 class StringExpression
-        satisfies Expression<String> { ... }]]></programlisting>
+        satisfies Expression<String> { 
+    shared StringExpression uppercase { ... }
+    shared StringExpression lowercase { ... }
+    ...
+}]]></programlisting>
+        
+        <para>Then the type <literal>Expression&lt;String&gt;</literal> has the
+        attributes <literal>uppercase</literal> and <literal>lowercase</literal>,
+        even though the parameterized type <literal>Expression&lt;T&gt;</literal>
+        does not declare these members.</para>
         
         <!--  
         <para>The compiler could reason that every <literal>Expression&lt;Integer&gt;</literal>
