@@ -306,8 +306,8 @@ TypeConstraints?
 }</programlisting>
         -->
         
-        <comment><para>TODO: I think, at least for now, we should prohibit interfaces
-        nested inside executable bodies: blocks and class bodies.</para></comment>
+        <comment><para>TODO: Are there conceptual problems with interfaces nested inside 
+        executable bodies: blocks and class bodies.</para></comment>
         
         <section id="interfacemembervisibility">
             <title>Interface member visibility</title>
@@ -1080,9 +1080,9 @@ shared class Person { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>A member class annotated <literal>formal</literal> or
-                <literal>default</literal> may be refined by any class which 
-                is a subtype of the class or interface which declares the member 
-                class.</para>
+                <literal>default</literal> may be refined by any class or 
+                interface which is a subtype of the class or interface which 
+                declares the member class.</para>
             </listitem>
             <listitem>
                 <para>A member class annotated <literal>formal</literal> 
@@ -1094,10 +1094,7 @@ shared class Person { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>An interface may not refine a member class of an interface it
-        extends.</para>
-        
-        <para>A member class of a class <emphasis>refines</emphasis> a member 
+        <para>A member class of a subtype <emphasis>refines</emphasis> a member 
         class of a supertype if the first member class:</para>
         
         <itemizedlist>
@@ -1175,7 +1172,7 @@ shared class Person { ... }</programlisting>
     ...
 }</programlisting>
         
-        <para>A class alias may refine a member class.</para>
+        <para>A member class alias may refine a member class.</para>
         
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
