@@ -1437,8 +1437,8 @@ finally {
 
             <para>The <literal>retry</literal> directive re-evaluates the resource 
             expression, if any, and then re-executes the <literal>try</literal> block, 
-            calling <literal>begin()</literal> and <literal>end()</literal> upon the 
-            resource instance.</para>
+            calling <literal>begin()</literal> and <literal>end()</literal>/<literal>fail()</literal> 
+            upon the resource instance.</para>
 
             <programlisting>variable Natural retries := 0;
 try ( Transaction() ) {
