@@ -1946,6 +1946,11 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>Sequenced type parameters are not reified. None of the above operations can be
         performed with a sequenced type parameter.</para>
         
+        <para>The implicit type parameter <literal>subtype</literal> evaluates to the
+        concrete type of the current instance, as determined at runtime. This is different 
+        to other type parameters which reify to the type argument determined at compile
+        time.</para>
+        
         </section>
                 
     </section>
