@@ -163,7 +163,7 @@
         
         <programlisting>String uppercase(String string) {
     String string = string.uppercase;  //compiler error!
-    return string;
+    return string
 }</programlisting>
 
         <para>However, this code <emphasis>is</emphasis> legal, since class initialization 
@@ -278,7 +278,7 @@ innerObject.member();</programlisting>
             <programlisting>String outerMethod(String s)()() {
     String middleMethod()() {
         String innerMethod() {
-            return s;
+            return s
         }
         return innerMethod
     }
@@ -292,7 +292,7 @@ String result = innerMethod();</programlisting>
             <programlisting>Object outerMethod(String s) {
     object middleObject {
         shared actual String string {
-            return s;
+            return s
         }
     }
     return middleObject

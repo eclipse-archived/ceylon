@@ -2297,7 +2297,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <programlisting>Set&lt;String&gt; names {
     OpenSet&lt;String&gt; set = none;
     for (Person p in people) { set.add(p.name); }
-    return set.copy();
+    return set.copy()
 }
 
 ...
@@ -3409,14 +3409,14 @@ void createOrder(Order order) { ... }</programlisting>
                         try {
                             Result result = proceed(r,s);
                             currentTransaction.commit();
-                            return result;
+                            return result
                         }
                         catch (Exception e) {
                             currentTransaction.rollback();
                         }
                     }
                     else {
-                        return proceed(r,s);
+                        return proceed(r,s)
                     }
                 };
         }

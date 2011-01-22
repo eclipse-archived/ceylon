@@ -172,7 +172,7 @@
     }
     
     shared default actual Integer hash {
-        return identityHash(this);
+        return identityHash(this)
     }
         
 }]]></programlisting>
@@ -388,7 +388,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         to be treated as a <literal>Callable&lt;T,T&gt;</literal>:</para>
 
         <programlisting><![CDATA[shared T set<T>(Settable<T> value)(T newValue) { 
-    return value := newValue; 
+    return value := newValue
 }]]></programlisting>
     
     </section>
@@ -1078,7 +1078,7 @@ while (exists local value = indexed.indexedValue(i)) {
         Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;
-        return result;
+        return result
     }
 
 }]]></programlisting>
@@ -1367,7 +1367,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
                     return from->x
                 }
                 else {
-                    return null;
+                    return null
                 }
             }
             shared actual Iterable<Entry<Natural,X>> tail {
@@ -2689,7 +2689,7 @@ removeSayInterceptor();]]></programlisting>
         satisfies Format {
     shared actual String formatted {
         if (obj exists) {
-            return obj.string;
+            return obj.string
         }
         else {
             return "null"
@@ -2755,7 +2755,7 @@ shared abstract class LogPriority(String string, Natural priority) {
         
         <programlisting><![CDATA[shared extension class ObjectLog(Object this) {
     shared Log log { 
-        return Log(defaultLogChannel, this.type.name);
+        return Log(defaultLogChannel, this.type.name)
     }
 }]]></programlisting>
 

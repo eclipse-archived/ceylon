@@ -2810,7 +2810,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 
         
         <programlisting>shared extension Log objectToLog(Object this) {
-    return this.log;
+    return this.log
 }</programlisting>
         
         <programlisting>shared class Person(User user) {
