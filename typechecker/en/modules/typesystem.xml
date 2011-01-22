@@ -1469,10 +1469,13 @@ Wrapper<Special> wrapper = special.wrap();]]></programlisting>
         when the method is invoked. It is upper bounded by the declared type of the
         parameter (and is therefore assignable to the parameter type).</para>
         
-        <programlisting><![CDATA[Entry<Name, x.subtype> named(String name, Object x) {
+        <programlisting><![CDATA[Entry<Name,x.subtype> named(String name, Object x) {
     return Name(name) -> x
 }]]></programlisting>
-
+        
+        <programlisting><![CDATA[Person gavin = Person("Gavin");
+Entry<Name,Person> entry = named(gavin.name, gavin);]]></programlisting>
+        
         <para>The only expression assignable to the type <literal>x.subtype</literal> 
         is the parameter <literal>x</literal> itself.</para>
         
