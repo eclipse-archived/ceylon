@@ -3299,7 +3299,8 @@ Transactional transactional(Boolean requiresNew = false) {
         
         <para>This method simply produces an instance of the class
         <literal>Transactional</literal> that will be attached to the metamodel
-        of an annotated method.</para>
+        of an annotated method. The meta-annotation specifies that the annotation
+        may be applied to methods, and may occur at most once on any method.</para>
         
         <programlisting>shared class Transactional(Boolean requiresNew) {
     shared Boolean requiresNew = requiresNew;
