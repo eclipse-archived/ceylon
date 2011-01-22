@@ -15,6 +15,6 @@ shared class Product(String id, String shortDescription, String longDescription,
 	column { name="longDesc"; }
 	shared String longDescription = longDescription;
 	
-	shared mutable Decimal price := price;
+	shared variable Decimal price := price;
 	
 }

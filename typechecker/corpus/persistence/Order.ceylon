@@ -35,25 +35,25 @@ shared class Order() {
 	cascade(persist, merge, remove) deleteOrphans
 	OpenList<Item> itemList = ArrayList<Item>();
 	
-	shared mutable Status status := Status.draft;
+	shared variable Status status := draft;
 	
 	generated id column{ name="id"; }
-	public mutable String? orderId;
+	public variable String? orderId;
 	
 	shared Item addItem(Product product, Natural quantity=1) {
 		Item item = Item(this, product, quantity);
 		itemList.add(item);
-		return item;
+		return item
 	}
 	
 	transient
 	shared List<Item> items {
-		return itemList;
+		return itemList
 	}
 	
 	transient
 	shared Float total {
-		return Math.sum(items[].price);
+		return Math.sum(items[].price)
 	}
 	
 	
