@@ -3335,8 +3335,8 @@ void createOrder(Order order) { ... }</programlisting>
         we can omit the punctuation entirely.</para>
         
         <para>Annotations are available via the <emphasis>metamodel</emphasis>&mdash;Ceylon's
-        version of Java's reflection API. We're not going to discuss the metamodel 
-        here, but here's a quick example of one way we could obtain the annotation 
+        typesafe version of Java's reflection API. We're not going to discuss the metamodel 
+        in detail here, but here's a quick example of one way we could obtain the annotation 
         of the <literal>createOrder()</literal> method:</para>
         
         <programlisting>if (exists Transactional t = OrderManager.createOrder.annotations(Transactional).first) {
@@ -3344,9 +3344,20 @@ void createOrder(Order order) { ... }</programlisting>
     ...
 }</programlisting>
         
-        <para>Note that the expression <literal>OrderManager.createOrder</literal> 
-        evaluates to the metamodel object representing the method, an instance of
-        <literal>Method&lt;OrderManager,Void,Order&gt;</literal>.</para>
+        <para>Note that:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the expression <literal>Transactional</literal> evaluates
+                to the metamodel object representing the class&mdash;an instance of 
+                <literal>ConcreteClass&lt;Transactional&gt;</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>OrderManager.createOrder</literal> evaluates to the 
+                metamodel object representing the method&mdash;an instance of
+                <literal>Method&lt;OrderManager,Void,Order&gt;</literal>.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>We won't need to use reflection in our example, since Ceylon's
         module architecture includes special built-in support for using annotations 
