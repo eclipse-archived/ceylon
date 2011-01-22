@@ -1,9 +1,9 @@
 doc "A utility class for parsing unix-style
      command-line arguments."
-public class CommandLine(Process process) {
+shared class CommandLine(Process process) {
 
-	public alias NamedArguments satisfies Map<String, String>;
-	public alias ListedArguments satisfied List<String>;
+	shared interface NamedArguments = Map<String, String>;
+	shared interface ListedArguments = List<String>;
 
 	OpenMap<String,String> namedArgs = HashMap<String,String>();
 	OpenList<String> listedArgs = ArrayList<String>();
@@ -27,13 +27,13 @@ public class CommandLine(Process process) {
 	
 	doc "Named arguments given in the form 
 		 |-name value| at the command line."
-	public NamedArguments namedArguments {
-		return namedArgs;
+	shared NamedArguments namedArguments {
+		return namedArgs
 	}
 	
 	doc "Arguments listed at the command line."
-	public ListedArguments listedArguments {
-		return listedArgs;
+	shared ListedArguments listedArguments {
+		return listedArgs
 	}
 
 }

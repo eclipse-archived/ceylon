@@ -24,7 +24,7 @@ class Find(Process process) {
  	     using |-pattern|"
  	String pattern(CommandLine cl) {
  		try {
-			return commandLine.namedArguments["pattern"];
+			return commandLine.namedArguments["pattern"]
 		}
 		catch (UndefinedKeyException uke) {
 			log.error("No pattern specified.");
@@ -44,7 +44,7 @@ class Find(Process process) {
 			for (String path in paths) {
 				files.add( Path(path).files );
 			}
-			return files;
+			return files
 		}
 	}
 
