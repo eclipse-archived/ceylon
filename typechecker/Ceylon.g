@@ -413,6 +413,8 @@ type
     -> ^(TYPE typeNameWithArguments+ abbreviation*)
     | 'subtype' abbreviation*
     -> ^(TYPE 'subtype' abbreviation*)
+    | parameterName '.' 'subtype' abbreviation*
+    -> ^(TYPE parameterName 'subtype' abbreviation*)
     ;
 
 abbreviation
@@ -667,7 +669,6 @@ incrementDecrementExpression
 selfReference
     : 'this' //typeName?
     | 'super'
-    | 'outer'
     ;
 
 enumeration
@@ -718,22 +719,23 @@ selector
     ;
 
 memberSelector
-    : ('.' | '?.' | SPREAD) ( nameAndTypeArguments | 'outer' )
+    : ('.' | '?.' | SPREAD) nameAndTypeArguments
     ;
 
 nameAndTypeArguments
-    : typeNameAndTypeArguments | memberNameAndTypeArguments
+    : typeNameAndTypeArguments 
+    | memberNameAndTypeArguments 
+    | 'subtype' 
+    | 'outer'
     ;
 
 typeNameAndTypeArguments
-    : ( typeName | 'subtype' ) 
-      ( (typeArguments) => typeArguments )?
+    : typeName ( (typeArguments) => typeArguments )?
       //(ARRAY | ('?') => '?' )*
     ;
 
 memberNameAndTypeArguments
-    : memberName 
-      ( (typeArguments) => typeArguments )?
+    : memberName ( (typeArguments) => typeArguments )?
     ;
 
 elementSelector
