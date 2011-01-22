@@ -3014,6 +3014,7 @@ shared interface Observer<T> {
         natural to define a heirarchical structure like this. We could rewrite
         the expression above as follows:</para>
 
+<!-- 
         <programlisting>Html {
     head = Head { 
         title = "Hello World";
@@ -3033,7 +3034,8 @@ shared interface Observer<T> {
 
         <para>Or, even better, we could further simplify the syntax to the 
         following:</para>
-        
+-->
+
         <programlisting>Html {
     Head head { 
         title = "Hello World";
