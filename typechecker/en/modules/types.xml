@@ -2452,23 +2452,34 @@ while (i<=max) {
     
     doc "Return all the attributes of the given 
          type."
-    shared formal Set<Attribute<X,T>> attributes<T>(Type<T> type = Object);
+    shared formal Set<Attribute<S,T>> attributes<S,T>
+            (Type<S> t, Type<T> type = Object)
+            given S abstracts X;
     
     doc "Return all the methods of the given 
          callable type."
-    shared formal Set<Method<X,R,P...>> methods<R,P...>(Type<Callable<R,P...>> type);
+    shared formal Set<Method<S,R,P...>> methods<S,R,P...>
+            (Type<S> t, Type<Callable<R,P...>> type)
+            given S abstracts X;
     
     doc "Return all the instantiable member classes 
          of the given callable type."
-    shared formal Set<MemberConcreteClass<X,Y,P...>> concreteClasses<Y,P...>(Type<Callable<Y,P...>> type);
+    shared formal Set<MemberConcreteClass<S,Y,P...>> concreteClasses<S,Y,P...>
+            (Type<S> t, Type<Callable<Y,P...>> type)
+            given S abstracts X;
     
     doc "Return all the member types which are subtypes 
          of the given type."
-    shared formal Set<MemberType<X,Y>> types<Y>(Type<Y> type = Object);
+    shared formal Set<MemberType<S,Y>> types<S,Y>
+            (Type<S> t, Type<Y> type = Object)
+            given S abstracts X;
     
     ...
     
 }]]></programlisting>
+        
+        <comment><para>TODO: Do we really need <literal>Type</literal> to be covariant?
+        Look at all the mess it's causing!</para></comment>
         
         <para>An instance of <literal>Interface</literal> represents an interface.</para>
         

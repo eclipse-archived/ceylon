@@ -3353,9 +3353,9 @@ void createOrder(Order order) { ... }</programlisting>
         for a class, thus enabling transaction management for all methods of the 
         class which are annotated <literal>transactional</literal>.</para>
         
-        <programlisting><![CDATA[shared void addTransactionInterceptor(Class<Object> c) {
+        <programlisting><![CDATA[shared void addTransactionInterceptor<T>(Class<T> c) {
     //iterate the methods of the class
-    for (UntypedMethod m in c.untypedMethods) {
+    for (UntypedMethod<T> m in c.untypedMethods) {
         //let's see if the method is annotated "transactional"
         if ( exists Transactional t = m.annotations(Transactional).first ) {
             class TransactionInterceptor() 
@@ -3383,7 +3383,46 @@ void createOrder(Order order) { ... }</programlisting>
         }
     }
 }]]></programlisting>
-                
+        
+        <para>Because this is completely generic code, it uses the slightly 
+        awkward untyped version of the metamodel. If we know more about the
+        signature of a method we're intercepting, writing an interceptor
+        becomes much easier. For example, suppose that we're only interested
+        in action methods in some web framework, and we know that all action
+        methods have the following signature:</para>
+        
+        <programlisting>Result action(Request request, Session session) { .. }</programlisting>
+         
+        <para>Then the code above could be dramatically simplified:</para>
+        
+        <programlisting><![CDATA[shared void addTransactionInterceptor<T>(Class<T> c) {
+    //iterate the action methods of the class
+    for (OpenMethod<T,Result,Request,Session> m 
+                in c.openMethods(T,Callable<Result,Request,Session>)) {
+        //let's see if the method is annotated "transactional"
+        if ( exists Transactional t = m.annotations(Transactional).first ) {
+            //register interceptor method
+            m.intercept() 
+                onInvoke(Object instance, Result proceed(Request r, Session s), Request r, Session s) {
+                    if (!currentTransaction.inProcess || t.requiresNew) {
+                        currentTransaction.begin();
+                        try {
+                            Result result = proceed(r,s);
+                            currentTransaction.commit();
+                            return result;
+                        }
+                        catch (Exception e) {
+                            currentTransaction.rollback();
+                        }
+                    }
+                    else {
+                        return proceed(r,s);
+                    }
+                };
+        }
+    }
+}]]></programlisting>
+        
     </section>
     
     <section>
