@@ -1378,16 +1378,16 @@ while (!person.dead);</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the resource expression, if any, is evaluated, and then 
-                    <literal>begin()</literal> is called upon the resulting
-                    resource instance, then</para>
+                    <literal>begin()</literal> is called on the resulting resource 
+                    instance, then</para>
                 </listitem>
                 <listitem>
                     <para>the <literal>try</literal> block is executed, then</para>
                 </listitem>
                 <listitem>
-                    <para><literal>end()</literal> is called the resource instance, 
-                    if any, with the exception that propagated out of the 
-                    <literal>try</literal> block, if any, then</para>
+                    <para><literal>end()</literal> or <literal>fail()</literal> is 
+                    called on the resource instance, if any, with the exception that 
+                    propagated out of the <literal>try</literal> block, if any, then</para>
                 </listitem>
                 <listitem>
                     <para>if an exception did propagate out of the <literal>try</literal> 
