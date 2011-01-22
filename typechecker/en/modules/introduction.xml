@@ -3409,7 +3409,11 @@ void createOrder(Order order) { ... }</programlisting>
 }]]></programlisting>
         
         <para>The <literal>intercept()</literal> method of <literal>OpenMethod</literal>
-        registers the interceptor&mdash;a kind of callback method. You're probably 
+        registers the interceptor&mdash;a kind of callback method. Note that
+        we're using the inline callable argument syntax we met earlier to 
+        define the argument to the callable parameter <literal>onInvoke()</literal>.</para>
+        
+        <para>You're probably 
         not sure quite what to make of the syntax <literal>P...</literal> that 
         appears in this code. Don't worry, we'll get to that later, when we 
         discuss <emphasis>sequenced type parameters</emphasis>.</para>
