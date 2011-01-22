@@ -3334,8 +3334,8 @@ void createOrder(Order order) { ... }</programlisting>
         class that has transactional instances.</para>
         
         <para>We're going to use the Ceylon metamodel here. This isn't the right
-        time to get into the details of Ceylon's typesafe metamodel. All you need 
-        to understand right now is that the expression <literal>Transactional</literal> 
+        time to get into the details of Ceylon's typesafe metamodel. All you really
+        need to understand right now is that the expression <literal>Transactional</literal> 
         evaluates to the metamodel object representing the class 
         <literal>Transactional</literal>&mdash;an instance of 
         <literal>Class&lt;Transactional&gt;</literal>.</para>
