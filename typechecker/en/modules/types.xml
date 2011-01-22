@@ -2446,8 +2446,6 @@ while (i<=max) {
         
     shared formal String name;
     
-    shared formal Boolean variable;
-    
     shared formal Boolean shared;
     
     doc "Return all the members of the given type."
@@ -2523,8 +2521,8 @@ while (i<=max) {
         <para>An instance of <literal>Member</literal> represents a method, attribute,
         or member type.</para>
 
-        <programlisting><![CDATA[shared interface Member<in X, out T> 
-        satisfies Feature & Callable<T,X> {}]]></programlisting>
+        <programlisting><![CDATA[shared interface Member<in X, out T>
+        satisfies Feature<T> & Callable<T,X> {}]]></programlisting>
 
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
@@ -2550,6 +2548,8 @@ while (i<=max) {
         satisfies Member<X, Value<T>> {
         
     shared formal Boolean variable;
+    
+    shared formal Type<T> attributeType;
 
 }]]></programlisting>
 
