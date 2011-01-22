@@ -1,5 +1,7 @@
+import org.ceylon.ui { ... }
+
 doc "The application login screen"
-public class Login(Session session, Environment env) extends Window(env) {
+shared Window login(Session session) {
 	VerticalLayout {
 		alignVertically = center;
 		alignHorizontally = center;
