@@ -1205,8 +1205,9 @@ shared class LinkedList<T>(T... elements)
         a type with no members, to which no other type may be assigned, and which can only 
         by assigned to itself.</para>
         
-        <comment><para>TODO: should we let you declare a covariant sequenced type parameter?
-        This is useful for modelling tuples.</para></comment>
+        <comment><para>TODO: Should we let you declare a covariant sequenced type parameter?
+        This is useful for modelling tuples. Should we allow you to declare a contravariant
+        sequenced type parameter, and say that method parameter types are contravariant?</para></comment>
         
         <comment><para>TODO: should we let you write things like:</para>
         <programlisting>class Foo&lt;P...&gt;(Tuple&lt;Bar&lt;P&gt;...&gt; barTup) {
