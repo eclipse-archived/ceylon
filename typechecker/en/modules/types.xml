@@ -2383,45 +2383,114 @@ while (i<=max) {
         <para>The metamodel (reflection API) reifies the schema of a type, making it
         available to the program at runtime.</para>
         
-        <para>A <literal>Function</literal> represents a toplevel method.</para>
+        <para>An <literal>Annotated</literal> program element may be asked for a
+        list of its annotation values.</para>
 
-        <programlisting><![CDATA[shared interface Function<out R, P...> 
-        satisfies Callable<R, P...> & Annotated {
-        
-    shared formal String name;
+        <programlisting><![CDATA[shared interface Annotated {
+
+    doc "Return all the annotation values that are 
+         assignable to the given type."
+    shared formal T[] annotations<T>(Type<T> type = Object) 
+            given T satisfies Object;
     
-    shared formal Boolean extension;
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface Declaration
+        satisfies Annotated {
+
+    shared formal String name;
     
     shared formal Boolean shared;
     
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface ClassDeclaration<out X> {
+        
+    shared formal Boolean abstract;
+    
+    shared formal Parameter<Object>[] parameters;
+    
+}]]></programlisting>
+
+        <para>An instance of <literal>MemberDeclaration</literal> represents a 
+        nested declaration.</para>
+
+        <programlisting><![CDATA[shared interface MemberDeclaration
+        satisfies Declaration {
+    
+    shared formal Boolean default;
+    shared formal Boolean formal;
+    shared formal Boolean actual;
+    
+    shared formal Type<Object> declaringType;
+        
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface FunctionDeclaration<out R>
+        satisfies Declaration {
+        
     shared formal Type<R> returnType;
     shared formal Parameter<Object>[] parameters;
     
 }]]></programlisting>
 
+        <programlisting><![CDATA[shared interface ValueDeclaration<out T>
+        satisfies Declaration {
+        
+     shared formal Boolean variable;
+     
+     shared formal Type<T> valueType;
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface MethodDeclaration<out R>
+        satisfies MemberDeclaration & FunctionDeclaration<R> {}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface AttributeDeclaration<out T>
+        satisfies MemberDeclaration & ValueDeclaration<T> {}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface MutableAttributeDeclaration<out T>
+        satisfies MemberDeclaration & AttributeDeclaration<T> {}]]></programlisting>
+        
+        <programlisting><![CDATA[shared interface MemberClassDeclaration<out X>
+        satisfies MemberDeclaration & ClassDeclaration<X> {}]]></programlisting>
+
+        <para>A <literal>Parameter</literal> represents a parameter of a method 
+        or class.</para>
+
+        <programlisting><![CDATA[shared interface Parameter<out T> 
+        satisfies Annotated {
+        
+    shared formal String name;
+    
+    shared formal Type<T> type;
+    
+}]]></programlisting>
+
+        <para>A <literal>Function</literal> represents a toplevel method.</para>
+
+        <programlisting><![CDATA[shared interface Function<out R, P...> 
+        satisfies Callable<R, P...> & FunctionDeclaration<R> {}]]></programlisting>
+
         <programlisting><![CDATA[shared interface OpenFunction<R, P...> satisfies Function<R, P...> {
+        
     shared formal void intercept( R onInvoke(R proceed(P... args), P... args) )();
+    
 }]]></programlisting>
 
         <para>A <literal>Value</literal> represents a toplevel attribute.</para>
 
         <programlisting><![CDATA[shared interface Value<out T> 
-        satisfies Annotated {
-    
-    shared formal String name;
-    
-    shared formal Boolean variable;    
-    
-    shared formal Boolean shared;
-    
-    shared formal Type<T> type;
-    
+        satisfies ValueDeclaration<T> {
+        
     shared formal extension Gettable<T> value;
 
 }]]></programlisting>
         
         <programlisting><![CDATA[shared interface OpenValue<T> satisfies Value<T> {
+        
     shared formal void intercept( T onGet(T proceed()) )();
+    
 }]]></programlisting>
        
         <programlisting><![CDATA[shared interface MutableValue<T> 
@@ -2431,8 +2500,11 @@ while (i<=max) {
 
 }]]></programlisting>
         
-        <programlisting><![CDATA[shared interface OpenMutableValue<T> satisfies MutableValue<T> {
+        <programlisting><![CDATA[shared interface OpenMutableValue<T> 
+        satisfies MutableValue<T> & OpenValue<T> {
+        
     shared formal void intercept( void onSet(void proceed(T value), T value) )();
+    
 }]]></programlisting>
 
         <comment><para>TODO: should <literal>onSet()</literal> return the new value of
@@ -2442,20 +2514,18 @@ while (i<=max) {
         class, together with type arguments.</para>
         
         <programlisting><![CDATA[shared interface Type<out X> 
-        satisfies Annotated {
-        
-    shared formal String name;
+        satisfies Declaration {
     
-    shared formal Boolean shared;
-    
-    doc "Return all the members of the given type."
+    doc "Return all matching members of the given type, as 
+         callable instances of |Member|."
     shared formal Set<M> members<M>(Type<M> type = Member<X,Object>)
             given M satisfies Member<S,Object>
             given S abstracts X;
     
-    doc "Return all the features of the given type."
-    shared formal Set<F> members<F>(Type<F> type = Feature<Object>)
-            given F satisfies Feature<Object>;
+    doc "Return all matching members of the given type, as 
+         non-callable |MemberDeclaration| descriptors."
+    shared formal Set<M> memberDeclarations<M>(Type<M> type = MemberDeclaration<Object>)
+            given M satisfies MemberDeclaration<Object>;
     
     ...
     
@@ -2472,23 +2542,13 @@ while (i<=max) {
         <para>An instance of <literal>Class</literal> represents a class.</para>
         
         <programlisting><![CDATA[shared interface Class<out X> 
-        satisfies Type<X> {
-    
-    shared formal Boolean abstract;
-    
-}]]></programlisting>
+        satisfies Type<X> & ClassDeclaration<X> {}]]></programlisting>
 
         <para>An instance of <literal>ConcreteClass</literal> represents a class
         which can be directly instantiated.</para>
         
         <programlisting><![CDATA[shared interface ConcreteClass<out X, P...> 
-        satisfies Class<X> & Callable<X,P...> {
-    
-    shared formal Boolean extension;
-    
-    shared formal Parameter<Object>[] parameters;
-    
-}]]></programlisting>
+        satisfies Class<X> & Callable<X,P...> {}]]></programlisting>
 
         <programlisting><![CDATA[shared interface OpenConcreteClass<X, P...> 
         satisfies ConcreteClass<X> {
@@ -2497,42 +2557,16 @@ while (i<=max) {
     
 }]]></programlisting>
 
-        <para>An instance of <literal>Feature</literal> represents a nested
-        declaration.</para>
-
-        <programlisting><![CDATA[shared interface Feature<out T>
-        satisfies Annotated {
-    
-    shared formal String name;
-    
-    shared formal Boolean default;
-    shared formal Boolean formal;
-    shared formal Boolean actual;
-    shared formal Boolean extension;
-    
-    shared formal Boolean shared;
-    
-    shared formal Type<T> memberType;
-    
-    shared formal Type<Object> declaringType;
-        
-}]]></programlisting>
-
         <para>An instance of <literal>Member</literal> represents a method, attribute,
         or member type.</para>
 
         <programlisting><![CDATA[shared interface Member<in X, out T>
-        satisfies Feature<T> & Callable<T,X> {}]]></programlisting>
+        satisfies MemberDeclaration & Callable<T,X> {}]]></programlisting>
 
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
         <programlisting><![CDATA[shared interface Method<in X, out R, P...> 
-        satisfies Member<X, Function<R, P...>> {
-        
-    shared formal Type<R> returnType;
-    shared formal Parameter<Object>[] parameters;
-    
-}]]></programlisting>
+        satisfies Member<X, Function<R, P...>> & MethodDeclaration<R> {}]]></programlisting>
 
         <programlisting><![CDATA[shared interface OpenMethod<in X, R, P...> 
         satisfies Method<in X, R, P...>> {
@@ -2545,13 +2579,7 @@ while (i<=max) {
         <para>An <literal>Attribute</literal> represents an attribute declaration.</para>
 
         <programlisting><![CDATA[shared interface Attribute<in X, out T> 
-        satisfies Member<X, Value<T>> {
-        
-    shared formal Boolean variable;
-    
-    shared formal Type<T> attributeType;
-
-}]]></programlisting>
+        satisfies Member<X, Value<T>> & AttributeDeclaration<T> {}]]></programlisting>
 
         <programlisting><![CDATA[shared interface OpenAttribute<in X, T> 
         satisfies Attribute<X, T> {
@@ -2562,8 +2590,7 @@ while (i<=max) {
 }]]></programlisting>
 
         <programlisting><![CDATA[shared interface MutableAttribute<in X, T> 
-        satisfies Attribute<X, T> & Member<X, MutableValue<T>> {  //this is OK since Member is covariant in T
-}]]></programlisting>
+        satisfies Attribute<X, T> & Member<X, MutableValue<T>> & MutableAttributeDeclaration<T> {}]]></programlisting>
         
         <programlisting><![CDATA[shared interface OpenMutableAttribute<in X, T> 
         satisfies OpenAttribute<X, T> & MutableAttribute<X, T> {
@@ -2589,17 +2616,13 @@ while (i<=max) {
         class.</para>
         
         <programlisting><![CDATA[shared interface MemberClass<in X, out Y> 
-        satisfies MemberType<X, Y> & Member<X, Class<Y>> {}]]></programlisting>
+        satisfies MemberType<X, Y> & Member<X, Class<Y>> & MemberClassDeclaration<Y> {}]]></programlisting>
 
         <para>An instance of <literal>MemberConcreteClass</literal> represents a member 
         class that can be directly instantiated.</para>
         
         <programlisting><![CDATA[shared interface MemberConcreteClass<in X, out Y, P...> 
-        satisfies MemberType<X, Y> & Member<X, ConcreteClass<Y,P...>> {
-    
-    shared formal Parameter<Object>[] parameters;
-    
-}]]></programlisting>
+        satisfies MemberType<X, Y> & Member<X, ConcreteClass<Y,P...>> {}]]></programlisting>
 
         <programlisting><![CDATA[shared interface OpenMemberConcreteClass<in X, Y, P...> 
         satisfies MemberConcreteClass {
@@ -2607,25 +2630,6 @@ while (i<=max) {
     shared formal void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
                     given S abstracts X;
     
-}]]></programlisting>
-
-        <para>A <literal>Parameter</literal> represents a parameter of a method 
-        or class.</para>
-
-        <programlisting><![CDATA[shared interface Parameter<out T> 
-        satisfies Annotated {
-    shared formal String name;
-    shared formal Type<T> type;
-}]]></programlisting>
-
-        <para>An <literal>Annotated</literal> program element may be asked for a
-        list of its annotation values.</para>
-
-        <programlisting><![CDATA[shared interface Annotated {
-    doc "Return all the annotation values that are 
-         assignable to the given type."
-    shared formal T[] annotations<T>(Type<T> type = Object) 
-            given T satisfies Object;
 }]]></programlisting>
 
         <para>An interceptor may be removed by invoking the returned method reference:</para>

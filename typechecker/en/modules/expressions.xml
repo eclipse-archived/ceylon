@@ -2463,7 +2463,7 @@ setPerson(person);</programlisting>
         <para>The metamodel object for a type allows its members to be iterated:</para>
         
         <programlisting><![CDATA[Type<Object> type = obj.type;
-for (Feature<Value<String>> attribute in type.features(Feature<Value<String>>)) {
+for (AttributeDeclaration<String> attribute in type.members(AttributeDeclaration<String>)) {
     log.info(type.name + "." + attribute.name);
 }]]></programlisting>
         
