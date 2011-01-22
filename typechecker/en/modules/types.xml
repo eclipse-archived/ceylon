@@ -2392,7 +2392,7 @@ while (i<=max) {
     
     shared formal Boolean extension;
     
-    shared formal Visiblity visibility;
+    shared formal Boolean shared;
     
     shared formal Type<R> returnType;
     shared formal Parameter<Object>[] parameters;
@@ -2412,7 +2412,7 @@ while (i<=max) {
     
     shared formal Boolean variable;    
     
-    shared formal Visiblity visibility;
+    shared formal Boolean shared;
     
     shared formal Type<T> type;
     
@@ -2448,31 +2448,16 @@ while (i<=max) {
     
     shared formal Boolean variable;
     
-    shared formal Visiblity visibility;
+    shared formal Boolean shared;
     
-    doc "Return all the attributes of the given 
-         type."
-    shared formal Set<Attribute<S,T>> attributes<S,T>
-            (Type<S> t, Type<T> type = Object)
+    doc "Return all the members of the given type."
+    shared formal Set<M> members<M>(Type<M> type = Member<X,Object>)
+            given M satisfies Member<S,Object>
             given S abstracts X;
     
-    doc "Return all the methods of the given 
-         callable type."
-    shared formal Set<Method<S,R,P...>> methods<S,R,P...>
-            (Type<S> t, Type<Callable<R,P...>> type)
-            given S abstracts X;
-    
-    doc "Return all the instantiable member classes 
-         of the given callable type."
-    shared formal Set<MemberConcreteClass<S,Y,P...>> concreteClasses<S,Y,P...>
-            (Type<S> t, Type<Callable<Y,P...>> type)
-            given S abstracts X;
-    
-    doc "Return all the member types which are subtypes 
-         of the given type."
-    shared formal Set<MemberType<S,Y>> types<S,Y>
-            (Type<S> t, Type<Y> type = Object)
-            given S abstracts X;
+    doc "Return all the features of the given type."
+    shared formal Set<F> members<F>(Type<F> type = Feature<Object>)
+            given F satisfies Feature<Object>;
     
     ...
     
@@ -2514,11 +2499,11 @@ while (i<=max) {
     
 }]]></programlisting>
 
-        <para>An instance of <literal>Member</literal> represents a method, attribute,
-        or member type.</para>
+        <para>An instance of <literal>Feature</literal> represents a nested
+        declaration.</para>
 
-        <programlisting><![CDATA[shared interface Member<in X, out T> 
-        satisfies Annotated & Callable<T,X> {
+        <programlisting><![CDATA[shared interface Feature<out T>
+        satisfies Annotated {
     
     shared formal String name;
     
@@ -2527,11 +2512,19 @@ while (i<=max) {
     shared formal Boolean actual;
     shared formal Boolean extension;
     
-    shared formal Visiblity visibility;
+    shared formal Boolean shared;
     
     shared formal Type<T> memberType;
     
+    shared formal Type<Object> declaringType;
+        
 }]]></programlisting>
+
+        <para>An instance of <literal>Member</literal> represents a method, attribute,
+        or member type.</para>
+
+        <programlisting><![CDATA[shared interface Member<in X, out T> 
+        satisfies Feature & Callable<T,X> {}]]></programlisting>
 
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
@@ -2583,32 +2576,32 @@ while (i<=max) {
         <para>An instance of <literal>MemberType</literal> represents a member 
         type.</para>
         
-        <programlisting><![CDATA[shared interface MemberType<X, Y> 
+        <programlisting><![CDATA[shared interface MemberType<in X, out Y> 
         satisfies Type<Y> & Member<X, Type<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberInterface</literal> represents a member 
         interface.</para>
         
-        <programlisting><![CDATA[shared interface MemberInterface<X, Y> 
+        <programlisting><![CDATA[shared interface MemberInterface<in X, out Y> 
         satisfies MemberType<X, Y> & Member<X, Interface<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberClass</literal> represents a member 
         class.</para>
         
-        <programlisting><![CDATA[shared interface MemberClass<X, Y> 
+        <programlisting><![CDATA[shared interface MemberClass<in X, out Y> 
         satisfies MemberType<X, Y> & Member<X, Class<Y>> {}]]></programlisting>
 
         <para>An instance of <literal>MemberConcreteClass</literal> represents a member 
         class that can be directly instantiated.</para>
         
-        <programlisting><![CDATA[shared interface MemberConcreteClass<X, Y, P...> 
+        <programlisting><![CDATA[shared interface MemberConcreteClass<in X, out Y, P...> 
         satisfies MemberType<X, Y> & Member<X, ConcreteClass<Y,P...>> {
     
     shared formal Parameter<Object>[] parameters;
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[shared interface OpenMemberConcreteClass<X, Y, P...> 
+        <programlisting><![CDATA[shared interface OpenMemberConcreteClass<in X, Y, P...> 
         satisfies MemberConcreteClass {
     
     shared formal void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()

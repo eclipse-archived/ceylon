@@ -1170,6 +1170,12 @@ shared class LinkedList<T>(T... elements)
         <para>These rules apply to members declared by the type, and to members inherited from 
         supertypes.</para>
         
+        <comment><para>TODO: when working with contravariant type parameters, it would be
+        really nice to have a special <literal>bottom</literal> type, defined as the 
+        intersection of all types. Then, for example, <literal>Sender&lt;bottom&gt;</literal>
+        would be a supertype of <literal>Sender&lt;X&gt;</literal> for every 
+        type argument <literal>X</literal>.</para></comment>
+        
         </section>
         
         <section id="sequencedtypeparameters">

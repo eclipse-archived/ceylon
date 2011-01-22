@@ -2462,13 +2462,10 @@ setPerson(person);</programlisting>
             
         <para>The metamodel object for a type allows its members to be iterated:</para>
         
-        <programlisting>Type&lt;Object&gt; t = obj.type;
-for (Attribute&lt;Object,String&gt; a in t.attributes(String)) {
-    log.info(a.name + "=" + a(obj));
-}
-for (Method&lt;Object,String&gt; m in t.methods(Callable&lt;String&gt;)) {
-    log.info(m.name + "=" + m(obj)());
-}</programlisting>
+        <programlisting><![CDATA[Type<Object> t = obj.type;
+for (Feature<Value<String>> attribute in t.features(Feature<Value<String>>)) {
+    log.info(t.name + "." + attribute.name);
+}]]></programlisting>
         
         <para>The metamodel object for a class, attribute or method implements 
         <literal>Callable</literal> and is therefore invokable.</para>
