@@ -3350,8 +3350,8 @@ void createOrder(Order order) { ... }</programlisting>
         the method.</para>
         
         <para>Without further ado, here's a method that registers interceptors
-        for a class, thus enabling transaction management for all methods of
-        the class which are annotated <literal>transactional</literal>.</para>
+        for a class, thus enabling transaction management for all methods of the 
+        class which are annotated <literal>transactional</literal>.</para>
         
         <programlisting><![CDATA[shared void addTransactionInterceptor(Class<Object> c) {
     //iterate the methods of the class
