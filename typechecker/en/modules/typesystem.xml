@@ -411,7 +411,7 @@
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
-        <programlisting>UnabbreviatedType: TypeNameWithArguments ("." TypeNameWithArguments)* | "subtype"</programlisting>
+        <programlisting>UnabbreviatedType: TypeNameWithArguments ("." TypeNameWithArguments)* | Subtype</programlisting>
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
         
@@ -1429,33 +1429,52 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
     
        <section id="thesubtypekeyword">
             <title>The <literal>subtype</literal> keyword</title>
+            
+        <para>The keyword <literal>subtype</literal> is used to refer to the runtime 
+        type of an object.</para>
+            
+        <programlisting>Subtype: "subtype" | ParameterName "." "subtype"</programlisting>
         
-        <para>Every Ceylon class or interface has an implicit type parameter that never
-        needs to be declared. This special type parameter, referred to using the keyword 
-        <literal>subtype</literal>, represents the concrete type of the current instance 
+        <para>Every class or interface has an implicit type parameter that never needs 
+        to be declared. This special type parameter, referred to using the keyword 
+        <literal>subtype</literal>, represents the runtime type of the current instance 
         (the instance that is being invoked). It is considered a covariant type parameter
         of the type, and may only appear in covariant positions of the type definition.
         It is upper bounded by the type (and is therefore assignable to the type).</para>
         
-        <programlisting>shared interface Wrapper&lt;out X&gt; {}</programlisting>
+        <programlisting><![CDATA[shared interface Wrapper<out X> {}]]></programlisting>
         
-        <programlisting>shared abstract class Wrappable() {
-   shared Wrapper&lt;subtype&gt; wrap() {
+        <programlisting><![CDATA[shared abstract class Wrappable() {
+   shared Wrapper<subtype> wrap() {
        return Wrapper(this)
    }
-}</programlisting>
+}]]></programlisting>
         
-        <programlisting>shared class Special() extends Wrappable() {}</programlisting>
+        <programlisting><![CDATA[shared class Special() extends Wrappable() {}]]></programlisting>
 
-        <programlisting>Special special = Special();
-Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
+        <programlisting><![CDATA[Special special = Special();
+Wrapper<Special> wrapper = special.wrap();]]></programlisting>
 
         <para>The only expression assignable to the type <literal>subtype</literal> is
         the special value <literal>this</literal>, except inside the body of a method or
-        attribute annotated <literal>definite</literal>, where the class that declares the
-        method or attribute is assignable to <literal>subtype</literal>. <emphasis>(Note 
-        that <literal>definite</literal> is a proposed feature for a future version of the 
-        language.)</emphasis></para>
+        attribute annotated <literal>definite</literal>, where the class that declares 
+        the method or attribute is assignable to <literal>subtype</literal>. 
+        <emphasis>(Note that <literal>definite</literal> is a proposed feature for a 
+        future version of the language.)</emphasis></para>
+        
+        <para>Every method has an implicit type parameter for each parameter of the
+        method. For a method parameter <literal>x</literal>, the type parameter is
+        referred to using the syntax <literal>x.subtype</literal>. This special type
+        parameter represents the runtime type of the argument to the given parameter
+        when the method is invoked. It is upper bounded by the declared type of the
+        parameter (and is therefore assignable to the parameter type).</para>
+        
+        <programlisting><![CDATA[Entry<Name, x.subtype> named(String name, Object x) {
+    return Name(name) -> x
+}]]></programlisting>
+
+        <para>The only expression assignable to the type <literal>x.subtype</literal> 
+        is the parameter <literal>x</literal> itself.</para>
         
         <comment><para>TODO: Should we allow you to refer to the concrete type of a
         refining member class in a subclass of the current class using the syntax
@@ -1463,8 +1482,7 @@ Wrapper&lt;Special&gt; wrapper = special.wrap();</programlisting>
         <literal>MemberClass(...)</literal> is assignable? And/or the concrete type of 
         the containing class of a subtype of the current member class, using the syntax
         <literal>outer.subtype</literal>, to which <literal>outer</literal> is 
-        assignable? Both would be considered implicit covariant 
-        type parameters.</para></comment>
+        assignable? Both would be considered implicit covariant type parameters.</para></comment>
         
         <comment><para>TODO: Should we let you declare type constraints on 
         <literal>subtype</literal>? The only really useful case I can think of would 
@@ -1943,13 +1961,15 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
         </itemizedlist>
         
-        <para>Sequenced type parameters are not reified. None of the above operations can be
-        performed with a sequenced type parameter.</para>
+        <para>Sequenced type parameters are not reified. None of the above operations can 
+        be performed with a sequenced type parameter.</para>
         
-        <para>The implicit type parameter <literal>subtype</literal> evaluates to the
-        concrete type of the current instance, as determined at runtime. This is different 
-        to other type parameters which reify to the type argument determined at compile
-        time.</para>
+        <para>The implicit type parameter <literal>subtype</literal> evaluates to the 
+        concrete type of the current instance, as determined at runtime. Likewise, an 
+        implicit type parameter of form <literal>x.subtype</literal> evaluates to the 
+        concrete type of the method argument <literal>x</literal>, as determined at runtime. 
+        This is different to other type parameters which reify to the type argument 
+        determined at compile time.</para>
         
         </section>
                 
