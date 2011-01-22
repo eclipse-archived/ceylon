@@ -2937,8 +2937,8 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             typesafe! You can think of the definition of the 
             <literal>Table</literal>, <literal>Column</literal> and 
             <literal>Border</literal> classes as defining the "schema" or
-            "grammar" of the DSL. (In fact, they are really a syntax tree
-            for the DSL.)</para>
+            "grammar" of the DSL. (In fact, they are really defining the 
+            syntax tree for the DSL.)</para>
             
             <para>Now let's see an example of a named argument list with 
             an inline getter declaration:</para>
@@ -3084,6 +3084,7 @@ Html hello(Request request) {
         
     </section>
     
+    <!--
     <section>
         <title>Defining structured data formats</title>
         
@@ -3111,15 +3112,6 @@ object english extends Case("English") satisfies Language {}
 object french extends Case("French") satisfies Language {}
 object spanish extends Case("Spanish") satisfies Language {}
 object italian extends Case("Italian") satisfies Language {}</programlisting>
-
-<!--
-        <para>The use of <literal>...</literal> at the end of the list of enumerated
-        instances means that it's possible to create other <literal>Language</literal>s.
-        Very important in this case, since our list of languages is definitely not 
-        exhaustive! If our list of instances were exhaustive, we would terminate it
-        using <literal>;</literal>, thereby preventing other code from instantiating
-        additional <literal>Language</literal>s.</para>
--->
 
         <para>Now we can define the set of people known to our application like
         this:</para>
@@ -3282,6 +3274,116 @@ class Hello(String? name) {
     
 }</programlisting>
         
+    </section>
+    -->
+    
+    <section>
+        <title>Defining annotations</title>
+        
+        <para>We've seen plenty of examples of annotations built into Ceylon.
+        Application developers don't often define their own annotations, but
+        framework developers do this all the time. Let's see how we could define
+        an annotation for declarative transaction management in Ceylon.</para>
+        
+        <para>In Ceylon, an annotation is just a toplevel method that produces 
+        an ordinary type. The method must have the meta-annotation 
+        <literal>annotation</literal>.</para>
+        
+        <programlisting>shared annotation {
+    of = methods;
+    occurs = onceEachElement; 
+}
+Transactional transactional(Boolean requiresNew = false) {
+    return Transactional(requiresNew)
+}</programlisting>
+        
+        <para>This method simply produces an instance of the class
+        <literal>Transactional</literal> that will be attached to the metamodel
+        of an annotated method.</para>
+        
+        <programlisting>shared class Transactional(Boolean requiresNew) {
+    shared Boolean requiresNew = requiresNew;
+}</programlisting>
+        
+        <para>Now we can apply our annotation to a method of any class:</para>
+        
+        <programlisting>shared transactional void createOrder(Order order) { ... }</programlisting>
+        
+        <para>We can specify an explicit argument to the parameter of 
+        <literal>transactional</literal> using a positional argument list:</para>
+        
+        <programlisting>shared transactional (true) void createOrder(Order order) { ... }</programlisting>
+        
+        <para>Alternatively, we could use a named argument list:</para>
+        
+        <programlisting>shared transactional { requiresNew=true; } 
+void createOrder(Order order) { ... }</programlisting>
+        
+        <para>Now we need to define the framework code that makes use of the
+        <literal>transactional</literal> annotation. We're going to make use
+        of Ceylon's metamodel and demonstrate how reflection works in Ceylon.</para>
+        
+    </section>
+    
+    <section>
+        <title>Reflection and interception</title>
+        
+        <para>We're going to perform transaction management using an interceptor
+        that gets called whenever any method annotated <literal>transactional</literal>
+        is invoked. We have to explicitly register our interceptor with every
+        class that has transactional instances.</para>
+        
+        <para>We're going to use the Ceylon metamodel here. This isn't the right
+        time to get into the details of Ceylon's typesafe metamodel. All you need 
+        to understand right now is that the expression <literal>Transactional</literal> 
+        evaluates to the metamodel object representing the class 
+        <literal>Transactional</literal>&mdash;an instance of 
+        <literal>Class&lt;Transactional&gt;</literal>.</para>
+        
+        <para>We can obtain all instances of <literal>Transactional</literal>
+        attached to a method by annotations of the method using the following
+        statement:</para>
+        
+        <programlisting>Transactional[] annotations = m.annotations(Transactional);</programlisting>
+        
+        <para>Where <literal>m</literal> is a metamodel object representing
+        the method.</para>
+        
+        <para>Without further ado, here's a method that registers interceptors
+        for a class, thus enabling transaction management for all methods of
+        the class which are annotated <literal>transactional</literal>.</para>
+        
+        <programlisting><![CDATA[shared void addTransactionInterceptor(Class<Object> c) {
+    //iterate the methods of the class
+    for (UntypedMethod m in c.untypedMethods) {
+        //let's see if the method is annotated "transactional"
+        if ( exists Transactional t = m.annotations(Transactional).first ) {
+            class TransactionInterceptor() 
+                    satisfies Usable {
+                variable Boolean begun:=false;
+                shared actual void begin() {
+                    if (!currentTransaction.inProcess || t.requiresNew) {
+                        currentTransaction.begin();
+                        begun:=true;
+                    }
+                }
+                shared actual void end() {
+                    if (begun) {
+                        currentTransaction.commit();  
+                    }
+                }
+                shared actual void fail(Exception e) {
+                    if (begun) {
+                        currentTransaction.rollback();
+                    }
+                }
+            }
+            //register TransactionInterceptor
+            m.use(TransactionInterceptor);
+        }
+    }
+}]]></programlisting>
+                
     </section>
     
     <section>
