@@ -2418,9 +2418,11 @@ while (i<=max) {
 
         <para>A <literal>CallableDeclaration</literal> has formal parameters.</para>
 
-        <programlisting><![CDATA[shared interface CallableDeclaration 
+        <programlisting><![CDATA[shared interface CallableDeclaration<R>
         satisfies Declaration {
 
+    shared formal Type<R> returnType;
+    
     shared formal Parameter<Object>[] parameters;
 
 }]]></programlisting>
@@ -2439,7 +2441,8 @@ while (i<=max) {
         
         <para>A <literal>TypeDeclaration</literal> has members.</para>
         
-        <programlisting><![CDATA[shared interface TypeDeclaration {
+        <programlisting><![CDATA[shared interface TypeDeclaration
+        satisfies Declaration {
         
     doc "Return all matching members of the given type."
     shared formal Set<M> members<M>(Type<M> type = MemberDeclaration)
@@ -2449,8 +2452,8 @@ while (i<=max) {
         
         <para>A <literal>ClassDeclaration</literal> may be <literal>abstract</literal>.</para>
         
-        <programlisting><![CDATA[shared interface ClassDeclaration<out X> 
-        satisfies CallableDeclaration {
+        <programlisting><![CDATA[shared interface ClassDeclaration<X>
+        satisfies CallableDeclaration<X> & TypeDeclaration {
         
     shared formal Boolean abstract;
     
@@ -2473,11 +2476,7 @@ while (i<=max) {
         <para>A <literal>FunctionDeclaration</literal> includes a return type.</para>
         
         <programlisting><![CDATA[shared interface FunctionDeclaration<out R>
-        satisfies CallableDeclaration {
-        
-    shared formal Type<R> returnType;
-    
-}]]></programlisting>
+        satisfies CallableDeclaration<R> {}]]></programlisting>
 
         <para>A <literal>ValueDeclaration</literal> has a type, and may be
         <literal>variable</literal>.</para>
@@ -2550,9 +2549,6 @@ while (i<=max) {
         satisfies TypeDeclaration {
     ...
 }]]></programlisting>
-        
-        <comment><para>TODO: Do we really need <literal>Type</literal> to be covariant?
-        Look at all the mess it's causing!</para></comment>
         
         <para>An instance of <literal>Interface</literal> represents an interface.</para>
         
