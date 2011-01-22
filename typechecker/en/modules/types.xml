@@ -2380,8 +2380,17 @@ while (i<=max) {
     <section id="metamodel">
         <title>Metamodel</title>
         
-        <para>The metamodel (reflection API) reifies the schema of a type, making it
-        available to the program at runtime.</para>
+        <para>The metamodel (reflection API) reifies the schema of a type, making 
+        it available to the program at runtime.</para>
+        
+        <comment><para>TODO: This whole API is over-complex because of the 
+        <literal>in</literal> type parameter on <literal>Member</literal> and the
+        lack of a <literal>bottom</literal> type. It forced me to introduce the
+        <literal>*Declaration</literal> types in order to be able to hold a reference
+        to a member of an unknown type. With a <literal>bottom</literal> type we would 
+        be able to write <literal>Attribute&lt;bottom,String&gt;</literal> instead of 
+        <literal>AttributeDeclaration&lt;String&gt;</literal>. Actually this API is
+        the only place I have found myself wishing for Java-style wildcard types.</para></comment>
         
         <para>An <literal>Annotated</literal> program element may be asked for a
         list of its annotation values.</para>
@@ -2395,6 +2404,9 @@ while (i<=max) {
     
 }]]></programlisting>
 
+        <para>A <literal>Declaration</literal> has a name, and may be 
+        <literal>shared</literal>.</para>
+
         <programlisting><![CDATA[shared interface Declaration
         satisfies Annotated {
 
@@ -2404,16 +2416,38 @@ while (i<=max) {
     
 }]]></programlisting>
 
-        <programlisting><![CDATA[shared interface ClassDeclaration<out X> {
+        <para>A <literal>CallableDeclaration</literal> has formal parameters.</para>
+
+        <programlisting><![CDATA[shared interface CallableDeclaration 
+        satisfies Declaration {
+
+    shared formal Parameter<Object>[] parameters;
+
+}]]></programlisting>
+
+        <para>A <literal>Parameter</literal> represents a parameter of a method 
+        or class.</para>
+
+        <programlisting><![CDATA[shared interface Parameter<out T> 
+        satisfies Annotated {
+        
+    shared formal String name;
+    
+    shared formal Type<T> type;
+    
+}]]></programlisting>
+        
+        <para>A <literal>ClassDeclaration</literal> may be <literal>abstract</literal>.</para>
+        
+        <programlisting><![CDATA[shared interface ClassDeclaration<out X> 
+        satisfies CallableDeclaration {
         
     shared formal Boolean abstract;
     
-    shared formal Parameter<Object>[] parameters;
-    
 }]]></programlisting>
 
-        <para>An instance of <literal>MemberDeclaration</literal> represents a 
-        nested declaration.</para>
+        <para>A <literal>MemberDeclaration</literal> is a declaration that 
+        belongs to a type.</para>
 
         <programlisting><![CDATA[shared interface MemberDeclaration
         satisfies Declaration {
@@ -2425,15 +2459,19 @@ while (i<=max) {
     shared formal Type<Object> declaringType;
         
 }]]></programlisting>
-
+        
+        <para>A <literal>FunctionDeclaration</literal> includes a return type.</para>
+        
         <programlisting><![CDATA[shared interface FunctionDeclaration<out R>
-        satisfies Declaration {
+        satisfies CallableDeclaration {
         
     shared formal Type<R> returnType;
-    shared formal Parameter<Object>[] parameters;
     
 }]]></programlisting>
 
+        <para>A <literal>ValueDeclaration</literal> has a type, and may be
+        <literal>variable</literal>.</para>
+        
         <programlisting><![CDATA[shared interface ValueDeclaration<out T>
         satisfies Declaration {
         
@@ -2448,24 +2486,9 @@ while (i<=max) {
 
         <programlisting><![CDATA[shared interface AttributeDeclaration<out T>
         satisfies MemberDeclaration & ValueDeclaration<T> {}]]></programlisting>
-
-        <programlisting><![CDATA[shared interface MutableAttributeDeclaration<out T>
-        satisfies MemberDeclaration & AttributeDeclaration<T> {}]]></programlisting>
         
         <programlisting><![CDATA[shared interface MemberClassDeclaration<out X>
         satisfies MemberDeclaration & ClassDeclaration<X> {}]]></programlisting>
-
-        <para>A <literal>Parameter</literal> represents a parameter of a method 
-        or class.</para>
-
-        <programlisting><![CDATA[shared interface Parameter<out T> 
-        satisfies Annotated {
-        
-    shared formal String name;
-    
-    shared formal Type<T> type;
-    
-}]]></programlisting>
 
         <para>A <literal>Function</literal> represents a toplevel method.</para>
 
@@ -2590,7 +2613,7 @@ while (i<=max) {
 }]]></programlisting>
 
         <programlisting><![CDATA[shared interface MutableAttribute<in X, T> 
-        satisfies Attribute<X, T> & Member<X, MutableValue<T>> & MutableAttributeDeclaration<T> {}]]></programlisting>
+        satisfies Attribute<X, T> & Member<X, MutableValue<T>> {}]]></programlisting>
         
         <programlisting><![CDATA[shared interface OpenMutableAttribute<in X, T> 
         satisfies OpenAttribute<X, T> & MutableAttribute<X, T> {
