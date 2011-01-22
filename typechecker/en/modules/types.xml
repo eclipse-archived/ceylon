@@ -653,7 +653,7 @@ shared object null
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    shared default void end(Exception e) {
+    shared default void fail(Exception e) {
         end();
     }
     
@@ -2397,8 +2397,10 @@ while (i<=max) {
     shared formal Type<R> returnType;
     shared formal Parameter<Object>[] parameters;
     
-    shared formal void intercept( R onInvoke(R proceed(P... args), P... args) )();
+}]]></programlisting>
 
+        <programlisting><![CDATA[shared interface OpenFunction<R, P...> satisfies Function<R, P...> {
+    shared formal void intercept( R onInvoke(R proceed(P... args), P... args) )();
 }]]></programlisting>
 
         <para>A <literal>Value</literal> represents a toplevel attribute.</para>
@@ -2415,23 +2417,27 @@ while (i<=max) {
     shared formal Type<T> type;
     
     shared formal extension Gettable<T> value;
-    
-    shared formal void intercept( T onGet(T proceed()) )();
 
 }]]></programlisting>
-
+        
+        <programlisting><![CDATA[shared interface OpenValue<T> satisfies Value<T> {
+    shared formal void intercept( T onGet(T proceed()) )();
+}]]></programlisting>
+       
         <programlisting><![CDATA[shared interface MutableValue<T> 
         satisfies Value<T> {
         
     shared actual formal Settable<T> value;
-    
-    shared formal void intercept( void onSet(void proceed(T value), T value) )();
 
+}]]></programlisting>
+        
+        <programlisting><![CDATA[shared interface OpenMutableValue<T> satisfies MutableValue<T> {
+    shared formal void intercept( void onSet(void proceed(T value), T value) )();
 }]]></programlisting>
 
         <comment><para>TODO: should <literal>onSet()</literal> return the new value of
         the attribute instead of being <literal>void</literal>?</para></comment>
-
+        
         <para>An instance of <literal>Type</literal> represent a type: an interface or 
         class, together with type arguments.</para>
         
@@ -2490,6 +2496,13 @@ while (i<=max) {
     
 }]]></programlisting>
 
+        <programlisting><![CDATA[shared interface OpenConcreteClass<X, P...> 
+        satisfies ConcreteClass<X> {
+    
+    shared formal intercept(X onInstantiate(X proceed(P... args), P... args))();
+    
+}]]></programlisting>
+
         <para>An instance of <literal>Member</literal> represents a method, attribute,
         or member type.</para>
 
@@ -2511,12 +2524,17 @@ while (i<=max) {
 
         <para>A <literal>Method</literal> represents a method declaration.</para>
 
-        <programlisting><![CDATA[shared interface Method<in X, R, P...> 
+        <programlisting><![CDATA[shared interface Method<in X, out R, P...> 
         satisfies Member<X, Function<R, P...>> {
         
     shared formal Type<R> returnType;
     shared formal Parameter<Object>[] parameters;
     
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface OpenMethod<in X, R, P...> 
+        satisfies Method<in X, R, P...>> {
+
     shared formal void intercept<S>( R onInvoke(S instance, R proceed(P... args), P... args) )()
                     given S abstracts X;
     
@@ -2524,19 +2542,27 @@ while (i<=max) {
 
         <para>An <literal>Attribute</literal> represents an attribute declaration.</para>
 
-        <programlisting><![CDATA[shared interface Attribute<in X, T> 
+        <programlisting><![CDATA[shared interface Attribute<in X, out T> 
         satisfies Member<X, Value<T>> {
         
     shared formal Boolean variable;
-    
+
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface OpenAttribute<in X, T> 
+        satisfies Attribute<X, T> {
+        
     shared formal void intercept<S>( T onGet(S instance, T proceed()) )()
                     given S abstracts X;
     
 }]]></programlisting>
 
         <programlisting><![CDATA[shared interface MutableAttribute<in X, T> 
-        extends Attribute<X, T>
-        satisfies Member<X, MutableValue<T>> {  //this is OK since Member is covariant in T
+        satisfies Attribute<X, T> & Member<X, MutableValue<T>> {  //this is OK since Member is covariant in T
+}]]></programlisting>
+        
+        <programlisting><![CDATA[shared interface OpenMutableAttribute<in X, T> 
+        satisfies OpenAttribute<X, T> & MutableAttribute<X, T> {
         
     shared formal void intercept<S>( void onSet(S instance, void proceed(T value), T value) )()
                     given S abstracts X;
@@ -2568,6 +2594,11 @@ while (i<=max) {
         satisfies MemberType<X, Y> & Member<X, ConcreteClass<Y,P...>> {
     
     shared formal Parameter<Object>[] parameters;
+    
+}]]></programlisting>
+
+        <programlisting><![CDATA[shared interface OpenMemberConcreteClass<X, Y, P...> 
+        satisfies MemberConcreteClass {
     
     shared formal void intercept<S>( Y onCreate(S instance, Y proceed(P... args), P... args) )()
                     given S abstracts X;
