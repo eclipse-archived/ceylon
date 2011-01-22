@@ -3400,6 +3400,7 @@ void createOrder(Order order) { ... }</programlisting>
                 }
                 catch (Exception e) {
                     currentTransaction.rollback();
+                    throw e
                 }
             }
         }
