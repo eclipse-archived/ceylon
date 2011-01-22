@@ -2424,6 +2424,8 @@ while (i<=max) {
     shared formal Type<R> returnType;
     
     shared formal Parameter<Object>[] parameters;
+    
+    shared formal R unsafeCall(Object object);
 
 }]]></programlisting>
 
@@ -2487,6 +2489,8 @@ while (i<=max) {
      shared formal Boolean variable;
      
      shared formal Type<T> valueType;
+     
+     shared formal T unsafeGet(Object object);
     
 }]]></programlisting>
 
