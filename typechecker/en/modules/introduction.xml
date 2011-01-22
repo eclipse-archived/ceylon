@@ -3306,57 +3306,144 @@ Transactional transactional(Boolean requiresNew = false) {
     shared Boolean requiresNew = requiresNew;
 }</programlisting>
         
-        <para>Now we can apply our annotation to a method of any class:</para>
+        <para>Now we can apply our annotation to a method of any class.</para>
         
-        <programlisting>shared transactional void createOrder(Order order) { ... }</programlisting>
+        <programlisting>shared class OrderManager() {
+    shared transactional void createOrder(Order order) { ... }
+    ...
+}</programlisting>
         
-        <para>We can specify an explicit argument to the parameter of 
+        <para>For annotations with parameters, we might need to specify an
+        argument list. As with any other method invocation expression, we have a 
+        choice between the use of positional arguments or named arguments. We 
+        could specify an explicit argument to the parameter of 
         <literal>transactional</literal> using a positional argument list:</para>
         
-        <programlisting>shared transactional (true) void createOrder(Order order) { ... }</programlisting>
+        <programlisting>shared transactional (true) 
+void createOrder(Order order) { ... }</programlisting>
         
         <para>Alternatively, we could use a named argument list:</para>
         
         <programlisting>shared transactional { requiresNew=true; } 
 void createOrder(Order order) { ... }</programlisting>
+
+        <para>Or, as we've previously seen&mdash;check our various examples of the
+        <literal>doc</literal> annotation, for example&mdash;when the argument
+        of an annotation is a literal value such as a string or numeric literal, 
+        we can omit the punctuation entirely.</para>
         
-        <para>Now we need to define the framework code that makes use of the
-        <literal>transactional</literal> annotation. We're going to make use
-        of Ceylon's metamodel and demonstrate how reflection works in Ceylon.</para>
+        <para>Annotations are available via the <emphasis>metamodel</emphasis>&mdash;Ceylon's
+        version of Java's reflection API. We're not going to discuss the metamodel 
+        here, but here's a quick example of one way we could obtain the annotation 
+        of the <literal>createOrder()</literal> method:</para>
+        
+        <programlisting>if (exists Transactional t = OrderManager.createOrder.annotations(Transactional).first) {
+    Boolean requiresNew = t.requiresNew;
+    ...
+}</programlisting>
+        
+        <para>Note that the expression <literal>OrderManager.createOrder</literal> 
+        evaluates to the metamodel object representing the method, an instance of
+        <literal>Method&lt;OrderManager,Void,Order&gt;</literal>.</para>
+        
+        <para>We won't need to use reflection in our example, since Ceylon's
+        module architecture includes special built-in support for using annotations 
+        to add interceptors to methods.</para>
         
     </section>
     
     <section>
+        <title>Interceptors</title>
+        
+        <para>An <emphasis>interceptor</emphasis> allows frameworks to react to 
+        events like method invocations, class instantiations, or attribute 
+        evaluations. We don't need to write any special annotation scanning code 
+        to make use of interceptors. Ceylon handles this for us at class-loading 
+        time.</para>
+        
+        <para>All we need to do is have our <literal>Transactional</literal>
+        class implement the interface <literal>MethodAnnotation</literal>:</para>
+        
+        <programlisting><![CDATA[shared class Transactional(Boolean requiresNew) 
+        satisfies MethodAnnotation {
+        
+    shared Boolean requiresNew = requiresNew;
+    
+    shared actual void onDefineMethod<X,T,P...>(OpenMethod<X,T,P...> method) {
+        method.intercept() 
+                onInvoke(X instance, T proceed(P... args), P... args) {
+            if (currentTransaction.inProcess || !requiresNew) {
+                return proceed(args)
+            }
+            else {
+                currentTransaction.begin();
+                try {
+                    T result = proceed(args);
+                    currentTransaction.commit();
+                    return result
+                }
+                catch (Exception e) {
+                    currentTransaction.rollback();
+                }
+            }
+        }
+    }
+    
+}]]></programlisting>
+        
+        <para>The <literal>intercept()</literal> method of <literal>OpenMethod</literal>
+        registers the interceptor&mdash;a kind of callback method. You're probably 
+        not sure quite what to make of the syntax <literal>P...</literal> that 
+        appears in this code. Don't worry, we'll get to that later, when we 
+        discuss <emphasis>sequenced type parameters</emphasis>.</para>
+        
+    </section>
+    
+    <!--  
+    <section>
         <title>Reflection and interception</title>
         
-        <para>We're going to perform transaction management using an interceptor
-        that gets called whenever any method annotated <literal>transactional</literal>
-        is invoked. We have to explicitly register our interceptor with every
-        class that has transactional instances.</para>
+        <para>Now we need to define the framework code that makes use of the
+        <literal>transactional</literal> annotation. We're going to make use
+        of Ceylon's metamodel and demonstrate how reflection and interception
+        works in Ceylon.</para>
+        
+        <para>The first thing we're going to need to know is how to query the
+        annotations of a program element at runtime. How can we obtain the
+        instance of <literal>Transactional</literal> that the 
+        <literal>transaction</literal> annotation attached to an annotated
+        method from inside our framework code?</para>
         
         <para>We're going to use the Ceylon metamodel here. This isn't the right
         time to get into the details of Ceylon's typesafe metamodel. All you really
-        need to understand right now is that the expression <literal>Transactional</literal> 
+        need to understand right now is that an expression like <literal>Hello</literal> 
         evaluates to the metamodel object representing the class 
-        <literal>Transactional</literal>&mdash;an instance of 
-        <literal>Class&lt;Transactional&gt;</literal>.</para>
+        <literal>Hello</literal>&mdash;an instance of 
+        <literal>Class&lt;Hello&gt;</literal>.</para>
+        
+        <para>We can obtain metamodel objects representing the methods of
+        <literal>Hello</literal> like this:</para>
+        
+        <programlisting>UntypedMethod&lt;Hello&gt;[] methods = Hello.untypedMethods(Hello);</programlisting>
         
         <para>We can obtain all instances of <literal>Transactional</literal>
         attached to a method by annotations of the method using the following
         statement:</para>
         
-        <programlisting>Transactional[] annotations = m.annotations(Transactional);</programlisting>
+        <programlisting>Transactional[] annotations = method.annotations(Transactional);</programlisting>
         
-        <para>Where <literal>m</literal> is a metamodel object representing
+        <para>Where <literal>method</literal> is a metamodel object representing
         the method.</para>
         
-        <para>Without further ado, here's a method that registers interceptors
-        for a class, thus enabling transaction management for all methods of the 
-        class which are annotated <literal>transactional</literal>.</para>
+        <para>We're going to perform transaction management using an interceptor
+        that gets called whenever any method annotated <literal>transactional</literal>
+        is invoked. We have to explicitly register our interceptor with every
+        class that has transactional instances. Without further ado, here's a 
+        method that registers the interceptors for a class.</para>
         
         <programlisting><![CDATA[shared void addTransactionInterceptor<T>(Class<T> c) {
     //iterate the methods of the class
-    for (UntypedMethod<T> m in c.untypedMethods) {
+    for (UntypedMethod<T> m in c.untypedMethods(T)) {
         //let's see if the method is annotated "transactional"
         if ( exists Transactional t = m.annotations(Transactional).first ) {
             class TransactionInterceptor() 
@@ -3425,6 +3512,7 @@ void createOrder(Order order) { ... }</programlisting>
 }]]></programlisting>
         
     </section>
+    -->
     
     <section>
         <title>Defining generic types</title>
