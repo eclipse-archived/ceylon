@@ -2437,6 +2437,16 @@ while (i<=max) {
     
 }]]></programlisting>
         
+        <para>A <literal>TypeDeclaration</literal> has members.</para>
+        
+        <programlisting><![CDATA[shared interface TypeDeclaration {
+        
+    doc "Return all matching members of the given type."
+    shared formal Set<M> members<M>(Type<M> type = MemberDeclaration)
+            given M satisfies MemberDeclaration;
+            
+}]]></programlisting>
+        
         <para>A <literal>ClassDeclaration</literal> may be <literal>abstract</literal>.</para>
         
         <programlisting><![CDATA[shared interface ClassDeclaration<out X> 
@@ -2456,7 +2466,7 @@ while (i<=max) {
     shared formal Boolean formal;
     shared formal Boolean actual;
     
-    shared formal Type<Object> declaringType;
+    shared formal TypeDeclaration declaringType;
         
 }]]></programlisting>
         
@@ -2537,21 +2547,8 @@ while (i<=max) {
         class, together with type arguments.</para>
         
         <programlisting><![CDATA[shared interface Type<out X> 
-        satisfies Declaration {
-    
-    doc "Return all matching members of the given type, as 
-         callable instances of |Member|."
-    shared formal Set<M> members<M>(Type<M> type = Member<X,Object>)
-            given M satisfies Member<S,Object>
-            given S abstracts X;
-    
-    doc "Return all matching members of the given type, as 
-         non-callable |MemberDeclaration| descriptors."
-    shared formal Set<M> memberDeclarations<M>(Type<M> type = MemberDeclaration<Object>)
-            given M satisfies MemberDeclaration<Object>;
-    
+        satisfies TypeDeclaration {
     ...
-    
 }]]></programlisting>
         
         <comment><para>TODO: Do we really need <literal>Type</literal> to be covariant?
