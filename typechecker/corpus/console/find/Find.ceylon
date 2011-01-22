@@ -1,6 +1,6 @@
 doc "A command-line utility for searching for regular
      expression matches in files."
-class Find(Process process) {
+void find() {
 	
 	try {
  		CommandLine commandLine = CommandLine(process);
@@ -17,7 +17,7 @@ class Find(Process process) {
  	}
  	catch (Exception e) {
  		log.error(e.message);
- 		process.exit(1);
+ 		throw process.exit(1)
  	}
  	
  	doc "get the pattern specified on the command line
@@ -28,7 +28,7 @@ class Find(Process process) {
 		}
 		catch (UndefinedKeyException uke) {
 			log.error("No pattern specified.");
-			process.exit(1);
+			throw process.exit(1)
 		}
  	}
  	
@@ -37,7 +37,7 @@ class Find(Process process) {
 		CommandLine.ListedArguments paths = cl.listedArguments
 		if (paths.empty) {
 			log.error("No paths specified.");
-			process.exit(1);
+			throw process.exit(1)
 		}
 		else {
 			OpenList<File> files = ArrayList<File>();
