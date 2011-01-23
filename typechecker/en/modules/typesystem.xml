@@ -1661,12 +1661,12 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
     <section id="generictypearguments">
         <title>Generic type arguments</title>
             
-        <para>A list of <emphasis>type arguments</emphasis> produces a new type schema from a 
-        parameterized type schema, or a new method schema from a method schema with type 
-        parameters.</para>
+        <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
+        from a parameterized type schema, or a new method schema from a method schema 
+        with type parameters.</para>
         
-        <para>A type argument list is a list of types and dimensions, and an optional sequenced 
-        type argument.</para>
+        <para>A type argument list is a list of types and dimensions, and an optional 
+        sequenced type argument.</para>
         
         <programlisting>TypeArguments: "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
         
@@ -1674,12 +1674,12 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <itemizedlist>
             <listitem>
-                <para>a reference to a sequenced type parameter of the containing declaration, 
-                or</para>
+                <para>a reference to a sequenced type parameter of the containing 
+                declaration, or</para>
             </listitem>
             <listitem>
-                <para>a <emphasis>sequenced type</emphasis>, which represents a sequence of
-                values of some specified type.</para>
+                <para>a <emphasis>sequenced type</emphasis>, which represents a 
+                sequence of values of some specified type.</para>
             </listitem>
         </itemizedlist>
         
@@ -1701,6 +1701,25 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
+        
+        <para>Note that any type schema in which the special type parameter 
+        <literal>subtype</literal> occurs is considered a parameterized type. Any 
+        occurrence of the type is considered a produced type, where the type argument
+        to the type parameter <literal>subtype</literal> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the special type <literal>x.subtype</literal>, if the produced type 
+                occurs in the declaration of a method parameter <literal>x</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the type itself, otherwise.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that in principle the type argument to <literal>subtype</literal> is 
+        always the runtime type of the instance. However, except in the special case of
+        a method argument, there is no syntax for referring to this type.</para>
         
         <section id="dimensions">
             <title>Dimensions</title>
