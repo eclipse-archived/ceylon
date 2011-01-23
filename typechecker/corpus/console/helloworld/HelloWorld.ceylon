@@ -1,4 +1,4 @@
 doc "The classic Hello World program"
-class HelloWorld() {
+void helloWorld() {
 	log.info("Hello, World!");
 }
