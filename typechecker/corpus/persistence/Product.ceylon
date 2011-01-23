@@ -1,4 +1,4 @@
-import orm.mapping { ... }
+import orm.mapping { local pid = id, ... }
 import orm.logical { ... }
 
 entity table{ schema="orders"; name="product"; }
@@ -6,7 +6,7 @@ by "Gavin King"
    "Andrew Haley"
 shared class Product(String id, String shortDescription, String longDescription, Decimal price) {
 	
-	id
+	pid
 	shared String id = id;
 	
 	column { name="shortDesc"; }
