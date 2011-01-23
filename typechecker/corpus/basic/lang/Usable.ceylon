@@ -1,13 +1,15 @@
-public interface Usable {
+shared interface Usable {
 
     doc "Called before entry into a |try| block."
-    public void begin();
+    shared formal void begin();
     
     doc "Called before normal exit from a |try| block."
-    public void end();
+    shared formal void end();
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    public void end(Exception e);
+    shared default void fail(Exception e) {
+        end();
+    }
     
 }

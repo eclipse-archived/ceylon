@@ -1,8 +1,10 @@
-public interface Case<in X> {
-
-    doc "Determine if the given value matches
-         this case, returning |true| iff the
-         value matches."
-    public Boolean test(X value);
+shared abstract class Case(String caseName=type.declarationName) 
+        satisfies Matcher<Object> {
+    
+    shared actual Boolean matches(Object that) {
+        return this===that
+    }
+    
+    shared actual default String string = caseName;
     
 }

@@ -1,7 +1,7 @@
-public interface Container {
+shared interface Container {
         
-    doc "The nonempty operator. Determine 
-         if the container is empty."
-    public Boolean empty;
+    doc "The nonempty operator. Determine if the container 
+         is empty."
+    shared formal Boolean empty;
     
 }

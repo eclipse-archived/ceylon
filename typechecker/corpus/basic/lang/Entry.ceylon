@@ -1,17 +1,19 @@
-public class Entry<out U, out V>(U key, V value) {
+shared class Entry<out U, out V>(U key, V value) 
+        extends Object() 
+        satisfies Equality<Entry<U,V>>
+        given U satisfies Equality<U> 
+        given V satisfies Equality<V> {
     
     doc "The key used to access the entry."
-    public U key = key;
+    shared U key = key;
     
     doc "The value associated with the key."
-    public V value = value;
+    shared V value = value;
     
-    override public Boolean equals(Object that) {
-        return equals(that, key, value)
+    shared actual Boolean equals(Entry<U,V> that) {
+        return this.key==that.key && this.value==that.value
     }
     
-    override public Integer hash {
-        return hash(key, value)
-    }
+    shared actual Integer hash = 0; 
 
 }

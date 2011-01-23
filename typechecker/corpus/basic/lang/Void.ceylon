@@ -1,0 +1,1 @@
+shared abstract class Void() extends null {}
