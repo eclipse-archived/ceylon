@@ -1741,8 +1741,8 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <comment><para>TODO: Actually, a better way to define this stuff might be to say
         that the type <literal>x.subtype</literal> is a legitimate type for any expression
-        <literal>x</literal>, but then severely restrict the use of in expressions like
-        this in declaration schemas.</para></comment>
+        <literal>x</literal>, but then severely restrict the use of such types in declaration 
+        schemas.</para></comment>
         
         <section id="dimensions">
             <title>Dimensions</title>
