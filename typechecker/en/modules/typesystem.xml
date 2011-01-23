@@ -1702,10 +1702,10 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
         
-        <para>Note that any type schema in which the special type parameter 
-        <literal>subtype</literal> occurs is considered a parameterized type. Any 
-        occurrence of the type is considered a produced type, where the type argument
-        to the type parameter <literal>subtype</literal> is:</para>
+        <para>Any type schema in which the special type parameter <literal>subtype</literal> 
+        occurs is considered a parameterized type. Any occurrence of the type is considered 
+        a produced type, where the type argument to the type parameter <literal>subtype</literal> 
+        is:</para>
         
         <itemizedlist>
             <listitem>
@@ -1719,6 +1719,24 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <para>Note that in principle the type argument to <literal>subtype</literal> is 
         always the runtime type of the instance. However, except in the special case of
+        a method argument, there is no syntax for referring to this type.</para>
+        
+        <para>Any method schema in which the special type parameter <literal>x.subtype</literal> 
+        occurs is considered a parameterized method schema. The type argument to the type 
+        parameter <literal>x.subtype</literal> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the special type <literal>y.subtype</literal>, if the argument to
+                <literal>x</literal> is a method parameter <literal>y</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the statically determined type of the method argument, otherwise.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that in principle the type argument to <literal>x.subtype</literal> is 
+        always the runtime type of the argument. However, except in the special case of
         a method argument, there is no syntax for referring to this type.</para>
         
         <section id="dimensions">
