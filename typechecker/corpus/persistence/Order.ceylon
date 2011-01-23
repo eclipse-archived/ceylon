@@ -11,7 +11,7 @@ shared class Order() {
 	//TODO: address, payment, user
 	
 	shared class Status() 
-	        of draft, submitted, shipped, closed 
+	        of draft | submitted | shipped | closed 
 	        extends Case() {}
 	
     doc "A draft order being edited"
