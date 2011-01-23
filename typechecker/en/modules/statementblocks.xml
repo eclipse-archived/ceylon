@@ -1414,7 +1414,9 @@ catch (FileReadException fre) {
     log.info("could not read from file: " name "");
 }
 finally {
-    if (file.open) file.close();
+    if (file.open) {
+        file.close();
+    }
 }</programlisting>
             
             <programlisting>try (semaphore) {
