@@ -3,10 +3,10 @@ doc "A location which the player can visit.
      locations. Locations can contain things."
 see (Thing)
 see (Connection)
-package class Location(String name, String description, Connection... connections) {
+shared class Location(String name, String description, Connection... connections) {
 			
-	package String name = name;
-	package String description = description;
+	shared String name = name;
+	shared String description = description;
 		
 	OpenMap<Direction, Connection> connectionByDirection = HashMap<Direction, Connection>();
 	for (Connection conn in connections) {
@@ -15,27 +15,27 @@ package class Location(String name, String description, Connection... connection
 		
 	OpenMap<String, Thing> thingByName = HashMap<String, Thing>();
 		
-	package Connection connection(Direction direction) {
+	shared Connection connection(Direction direction) {
 		return connectionByDirection[direction];
 	}
 		
-	package List<String> thingNames {
-		return thingByName.keys;
+	shared List<String> thingNames {
+		return thingByName.keys
 	}
 		
-	package Bag<Thing> things {
-		return thingByName.values;
+	shared Bag<Thing> things {
+		return thingByName.values
 	}
 		
-	package Thing? thing(String name) {
-		return thingByName.valueOrNull(name);
+	shared Thing? thing(String name) {
+		return thingByName.valueOrNull(name)
 	}
 		
-	package void put(Thing thing) {
+	shared void put(Thing thing) {
 		thingByName[thing.name] := thing;
 	}
 		
-	package void remove(Thing thing) {
+	shared void remove(Thing thing) {
 		thingByName.remove(thing.name);
 	}
 		

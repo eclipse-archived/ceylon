@@ -1,5 +1,5 @@
 doc "The world."
-package class World() {
+class World() {
 	
 	//TODO!!
 	

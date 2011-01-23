@@ -1,16 +1,16 @@
 doc "An inanimate thing that the player 
      can pick up and drop in a different 
      location."
-mutable package class Artifact(String name, String description, Location location, 
+shared class Artifact(String name, String description, Location location, 
 								Float weight, Natural damage) 
 		extends Thing(name, description, location) {
 		
-	package Float weight = weight;
-	package Natural damage = damage;
+	shared Float weight = weight;
+	shared Natural damage = damage;
 		
 	doc "Get the artifact and put it
 	     in the player's backpack."
-	package void get(Adventure game) {
+	shared void get(Adventure game) {
 		if (game.backpackWeight + weight < 100) {
 			location.remove(this);
 			game.backpack.put(this);
@@ -25,7 +25,7 @@ mutable package class Artifact(String name, String description, Location locatio
 		
 	doc "Get the artifact and put it
 	     in the player's backpack."
-	package void drop(Adventure game) {
+	shared void drop(Adventure game) {
 	    if (location == game.backpack) {
 			game.backpack.remove(this);
 			game.currentLocation.put(this);
@@ -39,6 +39,6 @@ mutable package class Artifact(String name, String description, Location locatio
 	
 	doc "Override this to do something when
 	     the artifact is used."
-	package void use(Adventure game) {}
+	shared void use(Adventure game) {}
 		
 }

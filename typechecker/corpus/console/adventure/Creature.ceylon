@@ -1,15 +1,15 @@
 doc "An animate thing that can move between
      locations of its own accord (if the
      player asks nicely)."
-mutable package class Creature(String name, String description, Location location,
+shared class Creature(String name, String description, Location location,
 								Natural damage, Natural agility, Natural life) 
 		extends Thing(name, description, location) {
 		
-	package Natural damage = damage;
-	package Natural agility = agility;
-	package mutable Natural life = life;
+	shared Natural damage = damage;
+	shared Natural agility = agility;
+	shared mutable Natural life = life;
 		
-	package void go(Adventure game, Direction direction) {
+	shared void go(Adventure game, Direction direction) {
 		if ( cooperative(direction) ) {
 			Location newLocation = location.connection(direction);
 			location.remove(this);
@@ -22,7 +22,7 @@ mutable package class Creature(String name, String description, Location locatio
 		}
 	}
 	
-	package void kill(Adventure game, Artifact weapon) {
+	shared void kill(Adventure game, Artifact weapon) {
 		do {
 			Natural attack = game.random();
 			if ( attack>agility ) {
@@ -52,13 +52,13 @@ mutable package class Creature(String name, String description, Location locatio
 		
 	doc "Override this to implement special 
 	     rules for commanding the creature"
-	package Boolean cooperative(Direction direction) {
-		return true;
+	shared Boolean cooperative(Direction direction) {
+		return true
 	}
 	
 	doc "Override this to do special things
 	     when the creature dies (drop items, 
 	     end adventure)."
-	package void dead() {}
+	shared void dead() {}
 		
 }

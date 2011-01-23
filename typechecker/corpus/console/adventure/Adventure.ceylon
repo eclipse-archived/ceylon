@@ -1,27 +1,27 @@
 doc "A text-based adventure game."
-package mutable class Adventure(Process process) {
+void adventure() {
 
 	doc "The player's current location."
-	mutable package Location currentLocation := World.initialLocation; 
+	shared variable Location currentLocation := World.initialLocation; 
 
     doc "A special location for things which 
          the player has picked up." 
-	package Location backpack = new Location("your backpack", "Contains the things you have picked up.");
+	shared Location backpack = new Location("your backpack", "Contains the things you have picked up.");
 		
-	package mutable Natural life := 100;
+	shared variable Natural life := 100;
 	
     Random<Natural> rand = RandomNatural(1..10);
 	
-	package Float backpackWeight {
-		return Math.sum( backpack.things[].weight );
+	shared Float backpackWeight {
+		return Math.sum( backpack.things[].weight )
 	}
 	
-	package void display(String message) {
+	shared void display(String message) {
 		process.writeLine(message);
 	}
 	
-	package Natural random() {
-		return rand.next();
+	shared Natural random() {
+		return rand.next()shared
 	}
 	
 	void go(String where) {
