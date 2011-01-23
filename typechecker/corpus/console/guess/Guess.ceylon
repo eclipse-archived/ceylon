@@ -1,10 +1,10 @@
 doc "A simple number guessing game"
-class Guess(Process process) {
+void guess() {
 
 	Natural number = RandomNatural(1..100).next();
 		
-	mutable Number min := 1;
-	mutable Number max := 100;
+	variable Number min := 1;
+	variable Number max := 100;
 	
 	for ( Natural count in (0..9).reversed ) {
 
@@ -17,7 +17,7 @@ class Guess(Process process) {
 			Comparison comparison = number <=> guess;
 			if (comparison.equal) {
 				process.writeLine("You guessed right!");
-				break true
+				break
 			}
 			else {
 				process.writeLine("The number is " comparison ".");
