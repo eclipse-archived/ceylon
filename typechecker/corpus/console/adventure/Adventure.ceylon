@@ -6,7 +6,7 @@ void adventure() {
 
     doc "A special location for things which 
          the player has picked up." 
-	shared Location backpack = new Location("your backpack", "Contains the things you have picked up.");
+	shared Location backpack = Location("your backpack", "Contains the things you have picked up.");
 		
 	shared variable Natural life := 100;
 	
