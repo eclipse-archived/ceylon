@@ -27,6 +27,7 @@ tokens {
     CLASS_DECL;
     OBJECT_DECL;
     CONDITION;
+    CONTINUE_STMT;
     DO_BLOCK;
     DO_ITERATOR;
     EXPR;
@@ -281,12 +282,13 @@ throwDirective
     ;
 
 breakDirective
-    : 'break' expression?
-    -> ^(BREAK_STMT expression?)
+    : 'break'
+    -> ^(BREAK_STMT)
     ;
 
 continueDirective
     : 'continue'
+    -> ^(CONTINUE_STMT)
     ;
 
 retryDirective
