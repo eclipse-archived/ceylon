@@ -1,2 +1,5 @@
-The Ceylon language specification
+The Ceylon language specification.
+
+To build the pdf and html specifications, 
+type "ant" from the root directory.
 
