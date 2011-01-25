@@ -16,7 +16,7 @@ shared object uncomparable extends PartialComparison() {}
 
 doc "The result of a comparison between two
      |PartlyComparable| objects."
-partial abstract class PartialComparison
+partial abstract class PartialComparison()
         of uncomparable | Comparison
         extends Case() {}
 

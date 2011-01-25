@@ -12,7 +12,7 @@ class ControlStructures() {
 		for (String name in names) {
 			if (name == "Gavin") {
 				log.info("found");
-				break true
+				break
 			}
 		}
 		fail {
@@ -114,13 +114,13 @@ class ControlStructures() {
 		}
 		while (true);
 		
-        variable Integer n:=0
+        variable Integer n:=0;
 		while (n<10) {
 			log.info(n);
 			n++;
 		}
 		
-		variable Integer m:=0
+		variable Integer m:=0;
 		do {
 			log.info(m);
 			m++;

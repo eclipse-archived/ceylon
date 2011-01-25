@@ -21,7 +21,7 @@ void adventure() {
 	}
 	
 	shared Natural random() {
-		return rand.next()shared
+		return rand.next()
 	}
 	
 	void go(String where) {

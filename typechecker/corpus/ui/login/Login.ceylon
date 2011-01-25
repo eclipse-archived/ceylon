@@ -29,7 +29,7 @@ shared Window login(Session session) {
 					TextInput {
 						size = 15;
 						void onUpdate(String value) {
-							session.hashedPassword:=Util.hash(value); 
+							session.hashedPassword:=hash(value); 
 						}
 					}
 				}
@@ -44,3 +44,4 @@ shared Window login(Session session) {
 		}
 	}
 }
+

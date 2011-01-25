@@ -52,7 +52,7 @@ class Classes() {
     object foo extends Enum() {}
     object bar extends Enum() {}
     object baz extends Enum() {}
-    class Qux extends Enum() {}
+    class Qux() extends Enum() {}
     class Enum() of foo | bar | baz | Qux extends Case() {}
     
 	class WithTypeParameters<X, Y>() {}

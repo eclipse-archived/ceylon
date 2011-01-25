@@ -9,7 +9,7 @@ void guess() {
 	for ( Natural count in (0..9).reversed ) {
 
 		process.writeLine("I'm thinking of a number between " min " and " max ".");
-		process.writeLine("You have " count " guesses.")
+		process.writeLine("You have " count " guesses.");
 
 		try {
 			String input = process.readLine();

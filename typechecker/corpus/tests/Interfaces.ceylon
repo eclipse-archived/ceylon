@@ -45,7 +45,7 @@ class Interfaces() {
     object foo extends Case() satisfies Enum {}
     object bar extends Case() satisfies Enum {}
     object baz extends Case() satisfies Enum {}
-    class Qux satisfies Enum {}
+    class Qux() satisfies Enum {}
     interface Enum of foo | bar | baz | Qux {}
 	
 }

@@ -34,7 +34,7 @@ void find() {
  	
  	doc "get the file paths listed on the command line"
 	List<File> files(CommandLine cl) {
-		CommandLine.ListedArguments paths = cl.listedArguments
+		CommandLine.ListedArguments paths = cl.listedArguments;
 		if (paths.empty) {
 			log.error("No paths specified.");
 			throw process.exit(1)

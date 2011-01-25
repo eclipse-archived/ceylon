@@ -1,5 +1,5 @@
 shared interface Comparable<in T> 
-        satisfies Equality<T>, PartlyComparable<T>
+        satisfies Equality<T> & PartlyComparable<T>
         given T satisfies Comparable<T> {
     
     doc "The binary compare operator |<=>|. Compares this 

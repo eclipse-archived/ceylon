@@ -45,7 +45,7 @@ shared class Creature(String name, String description, Location location,
 				game.display("The " name " missed.");
 			}
 		}
-		while (life>0)
+		while (life>0);
 		game.display("You killed the " name ".");
 		dead();
 	}

@@ -15,7 +15,7 @@ shared class Artifact(String name, String description, Location location,
 			location.remove(this);
 			game.backpack.put(this);
 			location := game.backpack;
-			game.display("You put the " name " in your backpack.);
+			game.display("You put the " name " in your backpack.");
 		}
 		else {
 			game.display("The " name " is too heavy. Try dropping something else.");

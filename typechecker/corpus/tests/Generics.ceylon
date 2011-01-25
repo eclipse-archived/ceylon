@@ -85,13 +85,13 @@ class Generics() {
     
     output(2,p);
     
-    class ClassWithDimensionalParameter<#n>() {
+    /*class ClassWithDimensionalParameter<#n>() {
         shared variable Bounded<#n> count := 0;
     }
     
     interface TypeWithDimensionalParameters<#m,#n> {
         shared formal Float<#m,#n> matrix;
-    }
+    }*/
     
     class ClassWithSequencedTypeParameter<P...>(Callable<Void,P...> callable) {
         T call(P... args) {

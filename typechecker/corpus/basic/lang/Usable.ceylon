@@ -8,7 +8,7 @@ shared interface Usable {
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    shared default void fail(Exception e) {
+    shared default void abort(Exception e) {
         end();
     }
     

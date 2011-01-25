@@ -3,7 +3,7 @@ shared abstract class BaseObject()
         
     Attribute<subtype,Object>[] idAttributes() {
         return from ( Attribute<subtype,Object> a in type.attributes() ) 
-                    where ( nonempty a.annotations(Id) );
+                    where ( a.annotations(Id) nonempty )
     }
     
     doc "The equals operator |x == y|. Default implementation compares

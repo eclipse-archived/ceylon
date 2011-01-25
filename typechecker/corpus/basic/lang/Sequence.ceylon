@@ -19,6 +19,7 @@ shared interface Sequence<out X>
         }
         if (is Iterable<X> sequence) {
             return this.iterator()
+        }
         else {
             return SequenceIterator(0)
         }
@@ -37,9 +38,9 @@ shared interface Sequence<out X>
         return !(this.lastIndex exists)
     }
     
-    shared actual default Boolean contains(Object object) {
-        if (is X object) {
-            return forAny (X x in this) some (x==object)
+    shared actual default Boolean contains(Object obj) {
+        if (is X obj) {
+            return forAny (X x in this) some (x==obj)
         }
         else {
             return false

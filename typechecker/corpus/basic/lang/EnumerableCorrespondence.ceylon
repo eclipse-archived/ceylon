@@ -5,7 +5,7 @@ shared interface EnumerableCorrespondence<U,V>
     shared actual default Correspondence<U,V> call(Entry<U,V>... entries) {
         object correspondence 
                 satisfies Correspondence<U,V> {
-            throw
+            //TODO...
         }
         return correspondence
     }
