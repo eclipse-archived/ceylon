@@ -140,6 +140,10 @@ class Methods() {
             lastName = lastName;
         }
     
+        Div namedArgumentMethodWithVarargs(String firstName, String lastName) {
+            cssClass = "name";
+        	firstName, lastName
+        }
 	}
 
 }

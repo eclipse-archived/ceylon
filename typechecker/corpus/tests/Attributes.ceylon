@@ -73,4 +73,8 @@ abstract class Attributes() {
 	    lastName = "King";
 	}
 		
+    Div namedArgumentAttributeWithVarargs {
+        cssClass = "name";
+    	firstName, lastName
+    }
 }
