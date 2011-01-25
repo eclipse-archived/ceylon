@@ -1899,7 +1899,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
             <programlisting>Task task = new Task() {
     timeout := 1000;
     shared actual void run() { ... }
-    shared actual void fail(Exception e) { ... }
+    shared actual void abort(Exception e) { ... }
 };</programlisting>
 
             <programlisting>return new transactional Database 
@@ -3327,7 +3327,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
             <entry><literal>in</literal></entry>
             <entry><literal>lhs in rhs</literal></entry>
             <entry>in</entry>
-            <entry><literal>lhs.in(rhs)</literal></entry>
+            <entry><literal>lhs.element(rhs)</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Category</literal></entry>
             <entry><literal>Boolean</literal></entry>
