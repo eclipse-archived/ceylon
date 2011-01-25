@@ -190,9 +190,8 @@ controlStructureStart
     : 'if' | 'while' | 'do' | 'switch' | 'for' | 'try'
     ;
 
-//TODO: I don't understand why we need to distinguish
-//      methods from attributes at this stage. Why not
-//      do it later?
+//we don't need to distinguish methods from attributes
+//in the grammar
 declaration
     :
     annotations?
@@ -255,7 +254,7 @@ returnDirective
     ;
 
 throwDirective
-    : 'throw' expression? //| '...'
+    : 'throw' expression?
     -> ^(THROW_STMT expression?)
     ;
 
@@ -299,7 +298,7 @@ memberParameters
 //      style parameters below?
 memberDefinition
     : memberParameters?
-      ( /*'...' |*/ block | (specifier | initializer)? ';'! )
+      ( block | (specifier | initializer)? ';'! )
     ;
     
 interfaceDeclaration
@@ -564,11 +563,6 @@ expression
     -> ^(EXPR assignmentExpression)
     ;
 
-//Even though it looks like this is non-associative
-//assignment, it is actually right associative because
-//assignable can be an assignment
-//Note that = is not really an assignment operator, but 
-//can be used to init locals
 assignmentExpression
     : disjunctionExpression
       ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '~='^ | '&&='^ | '||='^ | '?='^) expression )?
@@ -655,8 +649,7 @@ incrementDecrementExpression
     ;
 
 selfReference
-    : 'this' //typeName?
-    | 'super'
+    : 'this' | 'super'
     ;
 
 enumeration
@@ -680,7 +673,6 @@ base
     | enumeration
     | selfReference
     | nameAndTypeArguments
-    //| inlineClassDeclaration
     ;
     
 selector 
