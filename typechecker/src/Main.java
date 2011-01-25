@@ -13,7 +13,14 @@ import com.redhat.ceylon.compiler.parser.CeylonParser;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		fileOrDir( new File(args[0]) );
+		String path;
+		if ( args.length==0 ) {
+			path = "corpus";
+		}
+		else {
+			path = args[0];
+		}
+		fileOrDir( new File(path) );
 	}
 	
 	private static void file(File file) throws Exception {
