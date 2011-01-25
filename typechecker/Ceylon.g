@@ -404,7 +404,7 @@ runtimeType
     ;
 
 abbreviation
-    : QMARK | ARRAY //| LBRACKET dimension ']'
+    : '?' | '[]' //| '[' dimension ']'
     ;
 
 
@@ -612,7 +612,7 @@ existenceEmptinessExpression
 
 defaultExpression
     : rangeIntervalEntryExpression 
-      (QMARK^ defaultExpression)?
+      ('?'^ defaultExpression)?
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -689,7 +689,7 @@ memberSelector
     ;
 
 memberOperator
-    : '.' | SAFEMEMBER | SPREAD
+    : '.' | '?.' | '[].'
     ;
 
 nameAndTypeArguments
@@ -701,7 +701,7 @@ nameAndTypeArguments
 
 typeNameAndTypeArguments
     : typeName ( (typeArguments) => typeArguments )?
-      //(ARRAY | ('?') => '?' )*
+      //('[]' | ('?') => '?' )*
     ;
 
 memberNameAndTypeArguments
@@ -709,12 +709,12 @@ memberNameAndTypeArguments
     ;
 
 elementSelector
-    : (SAFEINDEX | LBRACKET) elementsSpec ']'
-    -> ^(SUBSCRIPT_EXPR SAFEINDEX? elementsSpec)
+    : ('?[' | '[') elementsSpec ']'
+    -> ^(SUBSCRIPT_EXPR '?['? elementsSpec)
     ;
 
 /*selectorStart
-    : SAFEINDEX | LBRACKET
+    : '?[' | '['
     | '('
     | '{'
     | memberOperator
@@ -1049,18 +1049,9 @@ FractionalMagnitude
     : 'm' | 'u' | 'n' | 'p'
     ;
     
-fragment ELLIPSIS
-    :   '...'
-    ;
-
-fragment RANGE
-    :   '..'
-    ;
-
-fragment DOT
-    :   '.'
-    ;
-
+fragment ELLIPSIS: '...';
+fragment RANGE: '..';
+fragment DOT: '.' ;
 fragment FLOATLITERAL :;
 NATURALLITERAL
     : Digits
@@ -1068,9 +1059,9 @@ NATURALLITERAL
     | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
     ;
     
-fragment SPREAD :;
-fragment LBRACKET :;
-fragment ARRAY :;
+fragment SPREAD:'[].';
+fragment LBRACKET:'[';
+fragment ARRAY:'[]';
 BRACKETS
     : '['
     ( 
@@ -1080,9 +1071,9 @@ BRACKETS
     )
     ;    
 
-fragment SAFEMEMBER:;
-fragment SAFEINDEX:;
-fragment QMARK:;
+fragment SAFEMEMBER:'?.';
+fragment SAFEINDEX:'?[';
+fragment QMARK:'?';
 QMARKS
     : '?'
     (
