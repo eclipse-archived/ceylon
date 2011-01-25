@@ -14,6 +14,6 @@ shared class Entry<out U, out V>(U key, V value)
         return this.key==that.key && this.value==that.value
     }
     
-    shared actual Integer hash = 0; 
+    shared actual Integer hash = 0;
 
 }

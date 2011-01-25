@@ -9,6 +9,7 @@ options {
 tokens {
     ANNOTATION;
     ANNOTATION_LIST;
+    ANNOTATED_DECL;
     MEMBER_DECL;
     TYPE_DECL;
     ALIAS_DECL;
@@ -106,7 +107,7 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      declaration+
+      (annotations? declaration)+
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
        declaration+
@@ -156,8 +157,10 @@ packagePath
     ;
     
 block
-    : '{' declarationOrStatement* directiveStatement? '}'
-    -> ^(BLOCK declarationOrStatement* directiveStatement?)
+    : '{' declarationsAndStatements? '}'
+    -> ^(BLOCK declarationsAndStatements?)
+    //'{' ((declarationOrStatement)=> declarationOrStatement) ( directiveStatement | expression (',' expression)* )? '}'
+    //-> ^(BLOCK declarationOrStatement* directiveStatement?)
     ;
 
 /*inlineClassDeclaration
@@ -173,31 +176,59 @@ inlineClassBody
     : '{' declarationOrStatement* '}'
     ;*/
 
-declarationOrStatement
-    : (annotatedDeclarationStart) => declaration | statement
+declarationsAndStatements
+    : controlStructure declarationsAndStatements? 
+    | directiveStatement
+    
+    //TODO: merge the next two to a single case!!
+    | (specificationOrExpressionStart) => specificationOrExpressionStatement (';' declarationsAndStatements?)?
+    | (expressionListStart) => expressions
+    
+    | (annotatedDeclarationStart) => annotations?
+    (
+        (simpleDeclarationStart) => simpleDeclaration (';' declarationsAndStatements?)?
+      | declaration declarationsAndStatements? 
+    )
+    //if none of these works out, we should probably just try and parse
+    //it as a plain old single expression, to see how far we get!
+    ;
+
+interfaceDeclarations
+    : annotations?
+    ( 
+        (simpleDeclarationStart) => simpleDeclaration (';' interfaceDeclarations?)?
+      | declaration interfaceDeclarations? 
+    )
+    //if none of these works out, we should probably just try and parse
+    //it as a plain old single expression, to see how far we get!
+    ;
+
+
+specificationOrExpressionStart
+    : expression (';'|'=')
+    ;
+
+expressionListStart
+    : expression (','|'}')
+    ;
+
+simpleDeclarationStart
+    : memberHeader memberParameters? ('='|':='|';'|'}')
     ;
 
 //TODO: I don't understand why we need to distinguish
 //      methods from attributes at this stage. Why not
 //      do it later?
 declaration
-    :
-    annotations?
-    ( 
-        memberDeclaration 
-      -> ^(MEMBER_DECL memberDeclaration annotations?)
-      | typeDeclaration 
-      -> ^(TYPE_DECL typeDeclaration annotations?)
-    )
-/*    (((memberHeader memberParameters) => 
-            (mem=memberDeclaration 
-                -> ^(METHOD_DECL $mem $ann?)))
-    | (mem=memberDeclaration 
-            -> ^(MEMBER_DECL $mem $ann?))
-    | (typ=typeDeclaration 
-            -> ^(TYPE_DECL $typ $ann?))
-    | (inst=instance
-            -> ^(INSTANCE $inst $ann?)))*/
+    : memberDeclaration 
+    -> ^(MEMBER_DECL memberDeclaration)
+    | typeDeclaration 
+    -> ^(TYPE_DECL typeDeclaration)
+    ;
+
+simpleDeclaration
+    : simpleMemberDeclaration 
+    -> ^(MEMBER_DECL simpleMemberDeclaration)
     ;
 
 //special rule for syntactic predicates
@@ -257,7 +288,7 @@ statement
 //and we need to do a lot more work later in
 //the compiler
 specificationOrExpressionStatement
-    : expression specifier? ';'!
+    : expression specifier?
     ;
 
 directiveStatement
@@ -301,6 +332,10 @@ memberDeclaration
     : memberHeader memberDefinition
     ;
 
+simpleMemberDeclaration
+    : memberHeader simpleMemberDefinition
+    ;
+
 memberHeader
     : memberType memberName
     -> ^(MEMBER_TYPE memberType) memberName
@@ -321,8 +356,11 @@ memberParameters
 //      a parExpression, just like we do for Smalltalk
 //      style parameters below?
 memberDefinition
-    : memberParameters?
-      ( /*'...' |*/ block | (specifier | initializer)? ';'! )
+    : memberParameters? block
+    ;
+    
+simpleMemberDefinition
+    : memberParameters? (specifier | initializer)?
     ;
     
 interfaceDeclaration
@@ -338,8 +376,10 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    : '{'! declaration* '}'!
+    : '{'! interfaceDeclarations? '}'!
     ;
+
+
 
 classDeclaration
     :
@@ -366,8 +406,8 @@ objectDeclaration
     ;
 
 classBody
-    : '{' declarationOrStatement* '}'
-    -> ^(BLOCK declarationOrStatement*)
+    : block//'{' declarationOrStatement* '}'
+    //-> ^(BLOCK declarationOrStatement*)
  //    -> ^(CLASS_BODY ^(STMT_LIST $stmts))
     ;
 

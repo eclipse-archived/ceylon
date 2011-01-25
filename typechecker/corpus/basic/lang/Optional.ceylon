@@ -4,6 +4,6 @@ shared abstract class Optional<out X>()
     
     doc "The unary postfix existence operator 
          |x exists|."
-    shared formal Boolean defined;
+    shared formal Boolean defined
     
 }

@@ -10,10 +10,10 @@ shared T[] join<T>(T[]... sequences)
             for (T[] s in sequences) {
                 if (exists Natural last = s.lastIndex) {
                     if (exists result) {
-                        result += last;
+                        result += last
                     }
                     else {
-                        result := last;
+                        result := last
                     }
                 }
             }
@@ -28,7 +28,7 @@ shared T[] join<T>(T[]... sequences)
                             return s[i]
                         }
                         else {
-                            i-=last;
+                            i-=last
                         }
                     }
                 }

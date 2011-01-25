@@ -17,7 +17,7 @@ void adventure() {
 	}
 	
 	shared void display(String message) {
-		process.writeLine(message);
+		process.writeLine(message)
 	}
 	
 	shared Natural random() {
@@ -32,14 +32,14 @@ void adventure() {
 		Thing? thing = currentLocation.thing(name);
 		if (exists thing) {
 			if (is Artifact thing) {
-				thing.get(this);
+				thing.get(this)
 			}
 			else {
-				display("You can't pick up a " name ".");
+				display("You can't pick up a " name ".")
 			}
 		}
 		else {
-			display("You don't see a " name " here.");
+			display("You don't see a " name " here.")
 		}
 	}
 	
@@ -47,14 +47,14 @@ void adventure() {
 		Thing? thing = backpack.thing(name);
 		if (exists thing) {
 			if (is Artifact thing) {
-				thing.drop(this);
+				thing.drop(this)
 			}
 			else {
-				display("You can't drop a " name ".");
+				display("You can't drop a " name ".")
 			}
 		}
 		else {
-			display("You don't have a " name ".");
+			display("You don't have a " name ".")
 		}
 	}
 	
@@ -69,22 +69,22 @@ void adventure() {
 				Thing? weapon = backpack.thing(name);
 				if (exists weapon) {
 					if (is Artifact weapon) {
-						thing.kill(this, weapon);
+						thing.kill(this, weapon)
 					}
 					else {
-						display("You can't fight with a " weaponName ".");
+						display("You can't fight with a " weaponName ".")
 					}
 				}
 				else {
-					display("You don't have a " weaponName ".");
+					display("You don't have a " weaponName ".")
 				}		
 			}
 			else {
-				display("You can't kill a " name ".");
+				display("You can't kill a " name ".")
 			}
 		}
 		else {
-			display("You don't see a " name " here.");
+			display("You don't see a " name " here.")
 		}
 	}
 	
@@ -95,11 +95,11 @@ void adventure() {
 				thing.use(this);
 			}
 			else {
-				display("You can't use a " name ".");
+				display("You can't use a " name ".")
 			}
 		}
 		else {
-			display("You don't have a " name" .");
+			display("You don't have a " name" .")
 		}
 	}
 	
@@ -110,37 +110,36 @@ void adventure() {
 			String command = tokens.next();
 			switch(command)
 			case ("go") {
-				go( tokens.next() );
+				go( tokens.next() )
 			}
 			case ("get") {
-				get( tokens.next() );
+				get( tokens.next() )
 			}
 			case ("drop") {
-				drop( tokens.next() );
+				drop( tokens.next() )
 			}
 			case ("use") {
-				use( tokens.next() );
+				use( tokens.next() )
 			}
 			case ("tell") {
 				String name = tokens.next();
 				String go = tokens.next();
 				String where = tokens.next();
-				tell(name, where);
+				tell(name, where)
 			}
 			case ("kill") {
 				String name = tokens.next();
 				String with = tokens.next();
 				String weaponName = tokens.next();
-				kill(name, weaponName);
+				kill(name, weaponName)
 			}
 			else {
-				display("You don't know how to do that.");
+				display("You don't know how to do that.")
 			}
 		}
 		catch (ExhaustedIteratorException eie) {
-			display("Give me a bit more information, please!");
+			display("Give me a bit more information, please!")
 		}
 	}
 	
-
 }

@@ -10,13 +10,13 @@ shared class Location(String name, String description, Connection... connections
 		
 	OpenMap<Direction, Connection> connectionByDirection = HashMap<Direction, Connection>();
 	for (Connection conn in connections) {
-		connectionByDirection[conn.direction] := conn;
+		connectionByDirection[conn.direction] := conn
 	}
 		
 	OpenMap<String, Thing> thingByName = HashMap<String, Thing>();
 		
 	shared Connection connection(Direction direction) {
-		return connectionByDirection[direction];
+		return connectionByDirection[direction]
 	}
 		
 	shared List<String> thingNames {
@@ -32,11 +32,11 @@ shared class Location(String name, String description, Connection... connections
 	}
 		
 	shared void put(Thing thing) {
-		thingByName[thing.name] := thing;
+		thingByName[thing.name] := thing
 	}
 		
 	shared void remove(Thing thing) {
-		thingByName.remove(thing.name);
+		thingByName.remove(thing.name)
 	}
 		
 }

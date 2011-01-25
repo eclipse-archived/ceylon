@@ -3,7 +3,7 @@ shared X max<X>(X x, X... xs)
     variable X max := x;
     for (X y in xs) { 
         if (y>max) { 
-            max:=y;
+            max:=y
         }
     }
     return max

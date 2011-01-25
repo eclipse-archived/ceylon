@@ -22,10 +22,10 @@ void guess() {
 			else {
 				process.writeLine("The number is " comparison ".");
 				if (comparison.smaller && guess<max) {
-					max := guess;
+					max := guess
 				}
 				else if (comparison.larger && guess>min) {
-					min := guess;
+					min := guess
 				}
 			}
 		}
@@ -36,9 +36,9 @@ void guess() {
 		
 	}
 	fail {
-		process.writeLine("You ran out of guesses!");
+		process.writeLine("You ran out of guesses!")
 	}
 	
-	process.writeLine("Game over.");
+	process.writeLine("Game over.")
 		
 }

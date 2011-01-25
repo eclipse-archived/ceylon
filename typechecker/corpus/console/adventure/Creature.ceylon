@@ -15,10 +15,10 @@ shared class Creature(String name, String description, Location location,
 			location.remove(this);
 			newLocation.put(this);
 			game.currentLocation := newLocation;
-			game.display("" name " went " direction ".");
+			game.display("" name " went " direction ".")
 		}
 		else {
-		    game.display("" name " doesn't move an inch.");
+		    game.display("" name " doesn't move an inch.")
 		}
 	}
 	
@@ -27,7 +27,7 @@ shared class Creature(String name, String description, Location location,
 			Natural attack = game.random();
 			if ( attack>agility ) {
 				life -= weapon.damage;
-				game.display("You did " weapon.damage " points of damage.");
+				game.display("You did " weapon.damage " points of damage.")
 				
 			}
 			else {
@@ -38,16 +38,16 @@ shared class Creature(String name, String description, Location location,
 				game.life -= damage;
 				game.display("The " name " did " damage " points of damage.");
 				if (game.life<=0) {
-					game.display("You are dead.");
+					game.display("You are dead.")
 				}
 			}
 			else {
-				game.display("The " name " missed.");
+				game.display("The " name " missed.")
 			}
 		}
 		while (life>0);
 		game.display("You killed the " name ".");
-		dead();
+		dead()
 	}
 		
 	doc "Override this to implement special 
