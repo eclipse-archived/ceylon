@@ -198,7 +198,7 @@
         
     Attribute<subtype,Object>[] idAttributes() {
         return from ( Attribute<subtype,Object> a in type.attributes() ) 
-                    where ( a.annotations(Id) nonempty )
+                    where ( nonempty a.annotations(Id) );
     }
     
     doc "The equals operator |x == y|. Default implementation compares
@@ -653,7 +653,7 @@ shared object null
 
     doc "Called before exit from a |try| block when an
          exception occurs."
-    shared default void abort(Exception e) {
+    shared default void fail(Exception e) {
         end();
     }
     
@@ -717,13 +717,13 @@ catch (Exception e) {
     doc "Determine if the given object belongs to the category.
          Return |true| iff the given object belongs to the 
          category."
-    shared formal Boolean contains(Object obj);
+    shared formal Boolean contains(Object object);
 
     doc "Determine if the given objects belong to the category.
          Return |true| iff all the given objects belong to the 
          category."
     shared default Boolean contains(Object... objects) {
-        return forAll(Object obj in objects) every (contains(obj))
+        return forAll(Object object in objects) every (contains(object))
     }
 
 }]]></programlisting>
@@ -756,7 +756,7 @@ catch (Exception e) {
     doc "Determine if this object belongs to the given |Category|.
          The binary |in| operator."
     see (Category)
-    shared Boolean element(Category category) {
+    shared Boolean in(Category category) {
         return category.contains(this)
     }
 
@@ -1098,12 +1098,12 @@ while (exists local value = indexed.indexedValue(i)) {
         (compare).</para>
         
         <programlisting><![CDATA[shared interface PartlyComparable<in T>
-        given T satisfies PartlyComparable<T> {
+        given T satisfies PartlyComparable<T>
     shared formal PartialComparison compare(T other);
 }]]></programlisting>
 
         <programlisting><![CDATA[shared interface Comparable<in T> 
-        satisfies Equality<T> & PartlyComparable<T>
+        satisfies Equality<T>, PartlyComparable<T>
         given T satisfies Comparable<T> {
     
     doc "The binary compare operator |<=>|. Compares this 
@@ -1154,7 +1154,7 @@ shared object uncomparable extends PartialComparison() {}
 
 doc "The result of a comparison between two
      |PartlyComparable| objects."
-partial abstract class PartialComparison()
+partial abstract class PartialComparison
         of uncomparable | Comparison
         extends Case() {}
 
@@ -1290,7 +1290,6 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         }
         if (is Iterable<X> sequence) {
             return this.iterator()
-        }
         else {
             return SequenceIterator(0)
         }
@@ -1309,9 +1308,9 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         return !(this.lastIndex exists)
     }
     
-    shared actual default Boolean contains(Object obj) {
-        if (is X obj) {
-            return forAny (X x in this) some (x==obj)
+    shared actual default Boolean contains(Object object) {
+        if (is X object) {
+            return forAny (X x in this) some (x==object)
         }
         else {
             return false
@@ -2426,7 +2425,7 @@ while (i<=max) {
     
     shared formal Parameter<Object>[] parameters;
     
-    shared formal R unsafeCall(Object obj);
+    shared formal R unsafeCall(Object object);
 
 }]]></programlisting>
 
@@ -2491,7 +2490,7 @@ while (i<=max) {
      
      shared formal Type<T> valueType;
      
-     shared formal T unsafeGet(Object obj);
+     shared formal T unsafeGet(Object object);
     
 }]]></programlisting>
 

@@ -3482,7 +3482,7 @@ void createOrder(Order order) { ... }</programlisting>
                         currentTransaction.commit();  
                     }
                 }
-                shared actual void abort(Exception e) {
+                shared actual void fail(Exception e) {
                     if (begun) {
                         currentTransaction.rollback();
                     }
