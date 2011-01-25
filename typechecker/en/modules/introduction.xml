@@ -1611,9 +1611,31 @@ catch (FileCloseEception fe) {
     amount = order.total;
 }</programlisting>
         
-           <para>We'll have much more to say on the topic of named argument lists 
-           later. For now, all we need to know is that there are two different 
-           syntaxes for calling a method or instantiating a class. </para>
+           <para>Perhaps you're worried that this looks like a method that assigns the
+           values of three attributes of the declaring class, rather than a shortcut 
+           syntax for a named argument instantiation of the <literal>Payment</literal>
+           class. And that's a fair point. To a Java developer, that <emphasis>is</emphasis> 
+           what it looks like. There's two things that should alert you to what's really 
+           going on. The above method:</para>
+           
+           <itemizedlist>
+               <listitem>
+                   <para>has no <literal>return</literal> statement, but it's 
+                   not declared <literal>void</literal>, and</para>
+               </listitem>
+               <listitem>
+                   <para>contains a list of <literal>=</literal> specification 
+                   statements instead of <literal>:=</literal> assignment 
+                   expressions.</para>
+               </listitem>
+           </itemizedlist>
+           
+           <para>Once you're used to Ceylon's more flexible syntax, these differences
+           will usually stand out immediately.</para>
+           
+           <para>We'll have much more to say on the topic of named argument lists later. 
+           For now, all we need to know is that there are two different syntaxes for 
+           calling a method or instantiating a class. </para>
                        
        </section>
 
