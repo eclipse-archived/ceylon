@@ -1385,7 +1385,7 @@ while (!person.dead);</programlisting>
                     <para>the <literal>try</literal> block is executed, then</para>
                 </listitem>
                 <listitem>
-                    <para><literal>end()</literal> or <literal>fail()</literal> is 
+                    <para><literal>end()</literal> or <literal>abort()</literal> is 
                     called on the resource instance, if any, with the exception that 
                     propagated out of the <literal>try</literal> block, if any, then</para>
                 </listitem>
@@ -1439,7 +1439,7 @@ finally {
 
             <para>The <literal>retry</literal> directive re-evaluates the resource 
             expression, if any, and then re-executes the <literal>try</literal> block, 
-            calling <literal>begin()</literal> and <literal>end()</literal>/<literal>fail()</literal> 
+            calling <literal>begin()</literal> and <literal>end()</literal>/<literal>abort()</literal> 
             upon the resource instance.</para>
 
             <programlisting>variable Natural retries := 0;
