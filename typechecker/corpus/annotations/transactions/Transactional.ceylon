@@ -1,11 +1,3 @@
-shared annotation {
-    ofElements = methods;
-    occurs = onceEachElement; 
-}
-Transactional transactional(Boolean requiresNew = false) {
-    return Transactional(requiresNew)
-}
-
 shared class Transactional(Boolean requiresNew) 
         satisfies MethodAnnotation {
         
