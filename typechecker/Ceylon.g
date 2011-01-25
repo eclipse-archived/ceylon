@@ -164,14 +164,20 @@ declarationsAndStatements
     : 
     (
         controlStructure
-      | (specificationOrExpressionStart) => specificationOrExpressionStatement
+      | (specificationStatementStart) => specificationStatement
+      | (expressionStatementStart) => expressionStatement
       | (annotatedDeclarationStart) => declaration
     )*
     ;
 
 //special rule for syntactic predicates
-specificationOrExpressionStart
-    : expression (';'|'=')
+specificationStatementStart
+    : memberName '='
+    ;
+
+//special rule for syntactic predicates
+expressionStatementStart
+    : expression ';'
     ;
 
 //special rule for syntactic predicates
@@ -223,11 +229,12 @@ declarationKeyword
     | 'object'
     ;
 
-//Note that this rule is way too permissive,
-//and we need to do a lot more work later in
-//the compiler
-specificationOrExpressionStatement
-    : expression specifier? ';'!
+specificationStatement
+    : memberName specifier? ';'!
+    ;
+
+expressionStatement
+    : expression ';'!
     ;
 
 directiveStatement
