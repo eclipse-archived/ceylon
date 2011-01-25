@@ -1145,7 +1145,7 @@ fragment ARRAY :;
 BRACKETS
     : '['
     ( 
-      ( { input.LA(1) == ']' && input.LA(2) == '.' }? => '].' { $type = SPREAD; } )
+      ( { input.LA(1) == ']' && input.LA(2) == '.' && input.LA(3) != '.' }? => '].' { $type = SPREAD; } )
     | ( { input.LA(1) == ']' }? => ']' { $type = ARRAY; } )
     | { $type = LBRACKET; } 
     )
@@ -1157,8 +1157,8 @@ fragment QMARK:;
 QMARKS
     : '?'
     (
-      ( { input.LA(1) == '[' }? => '[' { $type = SAFEINDEX; } )
-    | ( { input.LA(1) == '.' }? => '.' { $type = SAFEMEMBER; } ) 
+      ( { input.LA(1) == '[' && input.LA(2) != ']' }? => '[' { $type = SAFEINDEX; } )
+    | ( { input.LA(1) == '.' && input.LA(2) != '.' }? => '.' { $type = SAFEMEMBER; } ) 
     | { $type = QMARK; }
     )
     ;

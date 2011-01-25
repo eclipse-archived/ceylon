@@ -15,7 +15,8 @@ abstract class Types() {
 	Foo[] sequenceType;
 	Foo? optionalType;
 	Foo[][] sequenceOfSequenceType;
-	//Foo word[]?;
+	Foo[]? x;
+	Foo?[] y;
 	//Foo<#2> typeWithDimension;
 	//Foo<#3,#5> typeWithMultipleDimensions;
 	//Foo[10] sequenceWithDimension;

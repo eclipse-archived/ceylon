@@ -53,7 +53,7 @@ class Operators() {
 	
 	String? input = null;
 	Iterable<String>? tokens = input?.tokens();
-	Sequence<Natural> sizes = tokens[].size;
+	Natural[] sizes = tokens[].size;
 	
 	//TODO: := .=
 	
