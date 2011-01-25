@@ -212,7 +212,8 @@ annotatedDeclarationStart
     ;
 
 declarationStart
-    : declarationKeyword | type '...'? LIDENTIFIER
+    : declarationKeyword 
+    | type '...'? LIDENTIFIER
     ;
 
 declarationKeyword
@@ -333,7 +334,7 @@ interfaceDeclaration
         metatypes?
         satisfiedTypes?
         typeConstraints?
-        (classBody | typeSpecifier ';'!)
+        (interfaceBody | typeSpecifier ';'!)
     ;
 
 interfaceBody
@@ -411,16 +412,23 @@ typeConstraints
     ;
 
 type
+    : staticType | runtimeType
+    ;
+
+staticType
     : typeNameWithArguments ('.' typeNameWithArguments)* abbreviation*
     -> ^(TYPE typeNameWithArguments+ abbreviation*)
-    | 'subtype' abbreviation*
+    ;
+
+runtimeType
+    : 'subtype' abbreviation*
     -> ^(TYPE 'subtype' abbreviation*)
-    | parameterName '.' 'subtype' abbreviation*
-    -> ^(TYPE parameterName 'subtype' abbreviation*)
+    /*| parameterName '.' 'subtype' abbreviation*
+    -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
 
 abbreviation
-    : '?' | ARRAY | LBRACKET dimension ']'
+    : '?' | ARRAY //| LBRACKET dimension ']'
     ;
 
 
@@ -466,7 +474,8 @@ typeArguments
     ;
 
 typeArgument
-    : type '...'? | '#'! dimension
+    : type '...'?
+    ; /*| '#'! dimension
     ;
 
 dimension
@@ -485,7 +494,7 @@ dimensionAtom
 
 parenDimension
     : '(' dimension ')'
-    ;
+    ;*/
 
 typeParameters
     : '<' typeParameter (',' typeParameter)* '>'
@@ -591,7 +600,7 @@ assignmentExpression
 //should '^' have a higher precedence?
 disjunctionExpression
     : conjunctionExpression 
-      ('||'^ conjunctionExpression)?
+      ('||'^ conjunctionExpression)*
     ;
 
 conjunctionExpression
@@ -1119,7 +1128,7 @@ QUOTEDLITERAL
 
 fragment
 QuotedLiteralPart
-    : ~('\'')
+    : ~('\'')*
     ;
 
 SIMPLESTRINGLITERAL
