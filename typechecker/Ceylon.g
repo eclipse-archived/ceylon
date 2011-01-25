@@ -156,25 +156,32 @@ packagePath
     ;
     
 block
-    : '{' declarationOrStatement* directiveStatement? '}'
-    -> ^(BLOCK declarationOrStatement* directiveStatement?)
+    : '{' declarationsAndStatements (directiveStatement | expressions)? '}'
+    -> ^(BLOCK declarationsAndStatements? directiveStatement? expressions?)
     ;
 
-/*inlineClassDeclaration
-    : 'new' 
-      annotations?
-      type
-      positionalArguments?
-      satisfiedTypes?
-      inlineClassBody
+declarationsAndStatements
+    : 
+    (
+        controlStructure
+      | (specificationOrExpressionStart) => specificationOrExpressionStatement
+      | (annotatedDeclarationStart) => declaration
+    )*
     ;
 
-inlineClassBody
-    : '{' declarationOrStatement* '}'
-    ;*/
+//special rule for syntactic predicates
+specificationOrExpressionStart
+    : expression (';'|'=')
+    ;
 
-declarationOrStatement
-    : (annotatedDeclarationStart) => declaration | statement
+//special rule for syntactic predicates
+expressionListStart
+    : expression (','|'}')
+    ;
+
+//special rule for syntactic predicates
+controlStructureStart 
+    : 'if' | 'while' | 'do' | 'switch' | 'for' | 'try'
     ;
 
 //TODO: I don't understand why we need to distinguish
@@ -189,15 +196,6 @@ declaration
       | typeDeclaration 
       -> ^(TYPE_DECL typeDeclaration annotations?)
     )
-/*    (((memberHeader memberParameters) => 
-            (mem=memberDeclaration 
-                -> ^(METHOD_DECL $mem $ann?)))
-    | (mem=memberDeclaration 
-            -> ^(MEMBER_DECL $mem $ann?))
-    | (typ=typeDeclaration 
-            -> ^(TYPE_DECL $typ $ann?))
-    | (inst=instance
-            -> ^(INSTANCE $inst $ann?)))*/
     ;
 
 //special rule for syntactic predicates
@@ -223,34 +221,6 @@ declarationKeyword
     | 'interface' 
     | 'class' 
     | 'object'
-    ;
-
-//by making these things keywords, we reduce the amount of
-//backtracking
-/*declarationAnnotation
-    : 'abstract'
-    | 'default'
-    | 'override'
-    | 'fixed'
-    | 'mutable'
-    | 'extension'
-    | 'volatile'
-    //| 'small'
-    | visibility
-    ;
-
-visibility
-    : 'public'
-    | 'module'
-    | 'package'
-    | 'private'
-    | 'protected'
-    ;*/
-
-statement 
-    : specificationOrExpressionStatement
-    | controlStructure
-    //| '...'
     ;
 
 //Note that this rule is way too permissive,
@@ -366,8 +336,8 @@ objectDeclaration
     ;
 
 classBody
-    : '{' declarationOrStatement* '}'
-    -> ^(BLOCK declarationOrStatement*)
+    : '{' declarationsAndStatements '}'
+    -> ^(BLOCK declarationsAndStatements?)
  //    -> ^(CLASS_BODY ^(STMT_LIST $stmts))
     ;
 
