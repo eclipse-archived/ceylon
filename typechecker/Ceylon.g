@@ -428,7 +428,7 @@ runtimeType
     ;
 
 abbreviation
-    : '?' | ARRAY //| LBRACKET dimension ']'
+    : QMARK | ARRAY //| LBRACKET dimension ']'
     ;
 
 
@@ -641,7 +641,7 @@ existenceEmptinessExpression
 
 defaultExpression
     : rangeIntervalEntryExpression 
-      ('?'^ defaultExpression)?
+      (QMARK^ defaultExpression)?
     ;
 
 //I wonder if it would it be cleaner to give 
@@ -688,22 +688,8 @@ enumeration
     ;
     
 primary
-options {backtrack=true;}
-/*
-    : b=base 
-    ((selector+
-     -> ^(SELECTOR_LIST $b selector+))
-    | -> $b
-    )
-*/
-// This backtracking predicate really shouldn't be necessary, and the ANTLR
-// book seems to agree, but the above doesn't work.
-//    : base selector+ -> ^(SELECTOR_LIST base selector+)
-//    | base
-    : //base selector* 
-    base selector+
+    : base selector*
     -> ^(EXPR base selector*)
-    | base
     ;
 
 postfixOperator
@@ -730,7 +716,11 @@ selector
     ;
 
 memberSelector
-    : ('.' | '?.' | SPREAD) nameAndTypeArguments
+    : memberOperator nameAndTypeArguments
+    ;
+
+memberOperator
+    : '.' | SAFEMEMBER | SPREAD
     ;
 
 nameAndTypeArguments
@@ -750,9 +740,17 @@ memberNameAndTypeArguments
     ;
 
 elementSelector
-    : '?'? LBRACKET elementsSpec ']'
-    -> ^(SUBSCRIPT_EXPR '?'? elementsSpec)
+    : (SAFEINDEX | LBRACKET) elementsSpec ']'
+    -> ^(SUBSCRIPT_EXPR SAFEINDEX? elementsSpec)
     ;
+
+/*selectorStart
+    : SAFEINDEX | LBRACKET
+    | '('
+    | '{'
+    | memberOperator
+    | postfixOperator
+    ;*/
 
 elementsSpec
     : additiveExpression ( '...' | '..' additiveExpression )?
@@ -1113,6 +1111,18 @@ BRACKETS
     )
     ;    
 
+fragment SAFEMEMBER:;
+fragment SAFEINDEX:;
+fragment QMARK:;
+QMARKS
+    : '?'
+    (
+      ( { input.LA(1) == '[' }? => '[' { $type = SAFEINDEX; } )
+    | ( { input.LA(1) == '.' }? => '.' { $type = SAFEMEMBER; } ) 
+    | { $type = QMARK; }
+    )
+    ;
+
 CHARLITERAL
     :   '`' ( ~ NonCharacterChars | EscapeSequence ) '`'
     ;
@@ -1390,10 +1400,6 @@ BITWISENOT
     :   '~'
     ;
 
-QMARK
-    :   '?'
-    ;
-
 COLON
     :   ':'
     ;
@@ -1496,10 +1502,6 @@ IS
 
 HASH
     :   '#'
-    ;
-
-QMARKDOT
-    :    '?.'
     ;
 
 POWER
