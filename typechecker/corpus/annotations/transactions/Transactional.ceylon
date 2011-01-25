@@ -32,7 +32,7 @@ shared class Transactional(Boolean requiresNew)
                     throw e
                 }
             }
-        }
+        };
     }
     
 }
