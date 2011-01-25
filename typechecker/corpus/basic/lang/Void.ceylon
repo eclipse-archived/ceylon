@@ -1,1 +1,1 @@
-shared abstract class Void() extends null {}
+shared abstract class Void() /*extends null*/ {}
