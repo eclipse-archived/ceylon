@@ -124,4 +124,18 @@ class MoreDeclarations() {
 		}
 	}
 	
+	shared class Payment(PaymentMethod method, Currency currency, Float amount) {}
+	
+	Payment payment { 
+		method = user.paymentMethod; 
+		currency = order.currency; 
+		Float amount {
+			variable Float total := 0.0; 
+			for (Item item in order.items) {
+				total += item.quantity * item.product.unitPrice; 
+			}
+			return total
+		}
+	}
+	
 }
