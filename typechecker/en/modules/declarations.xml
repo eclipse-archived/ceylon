@@ -1285,6 +1285,14 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         <literal>True</literal>, <literal>False</literal>, <literal>Null</literal>, 
         etc.</para></comment>
         
+        <comment><para>TODO: Alternatively, a different approach to making this feature
+        feel more regular, that is also perhaps more practically useful, would be to 
+        reconceptualize the syntax above as a kind of attribute declaration, and also
+        support a parameterized <literal>object</literal> declaration&mdash;which would
+        be a useful shortcut for specifying a callable parameter value in a named argument 
+        list or refining a method declaration when the callable parameter or method has an 
+        abstract return type.</para></comment>
+        
     </section>
     
     <section id="classeswithcases">
