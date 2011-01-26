@@ -185,16 +185,6 @@ expressionStatementStart
     : expression ';'
     ;
 
-//special rule for syntactic predicates
-expressionListStart
-    : expression (','|'}')
-    ;
-
-//special rule for syntactic predicates
-controlStructureStart 
-    : 'if' | 'while' | 'do' | 'switch' | 'for' | 'try'
-    ;
-
 //we don't need to distinguish methods from attributes
 //in the grammar
 declaration
