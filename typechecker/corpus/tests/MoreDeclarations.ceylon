@@ -124,6 +124,19 @@ class MoreDeclarations() {
 		}
 	}
 	
+	void print<T>(T printable) 
+			given T of String | Named {
+		 String string;
+		 switch (T) 
+		 case (satisfies String) {
+		 	string = printable;
+		 } 
+		 case (satisfies Named) {
+			 string = printable.name;
+		 }
+		 process.writeLine(string);
+	}
+	
 	shared class Payment(PaymentMethod method, Currency currency, Float amount) {}
 	
 	Payment payment { 
