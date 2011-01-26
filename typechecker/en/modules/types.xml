@@ -1649,7 +1649,8 @@ shared object none {
          reached."
     shared X[] by(Natural stepSize) { 
         return from (Natural index->X value in this) 
-                    where (index%stepSize == 0) 
+                    where (index%stepSize == 0)
+                    select (value)
     }
     
     shared Natural? index(X x) {
@@ -1691,7 +1692,7 @@ shared object none {
     shared actual Boolean contains(Object... objects) {
         for (Object x in objects) {
             if (is X x) {
-                if ( x<first || x>last ) ) {
+                if ( x<first || x>last ) {
                     return false
                 }
             }
@@ -2258,12 +2259,12 @@ while (i<=max) {
     
     doc "Slotwise xor operator |x ^ y|. Implementations
          should respect the constraint that 
-         |(x^y).slot(z)==((x|y).slot(z)&&!(x&y).slot(z))|.""
+         |(x^y).slot(z)==((x|y).slot(z)&&!(x&y).slot(z))|."
     shared formal B xor(B bits);
     
     doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
-         that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|.""
+         that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|."
     shared formal B complement(B bits);
     
 }]]></programlisting>
