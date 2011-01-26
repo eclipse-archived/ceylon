@@ -2752,7 +2752,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <programlisting>assert ("x must be zero") that (x&equals;0.0);</programlisting></para>
             </listitem>
             <listitem><emphasis>conditional expressions</emphasis>, such as:
-            <programlisting>return when (x>100.0) then (100.0) else (x)</programlisting>
+            <programlisting>return when (x>100.0) then (100.0) otherwise (x)</programlisting>
             </listitem>
             <listitem>
                 <para><emphasis>repetition</emphasis>, such as:
