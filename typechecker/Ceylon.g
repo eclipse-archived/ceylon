@@ -53,7 +53,6 @@ tokens {
     METATYPE_LIST;
     NAMED_ARG;
     SEQ_ARG;
-    NIL;
     RET_STMT;
     BLOCK;
     THROW_STMT;
@@ -102,6 +101,7 @@ tokens {
     EXISTS_EXPR;
     NONEMPTY_EXPR;
     IS_EXPR;
+    SATISFIES_EXPR;
     SPECIAL_ARG;
     //PRIMARY;
 }
@@ -894,6 +894,7 @@ isCondition
 
 satisfiesCondition
     : 'satisfies' type type
+    -> ^(SATISFIES_EXPR type type)
     ;
 
 controlStructure
@@ -956,6 +957,7 @@ isCaseCondition
 
 satisfiesCaseCondition
     : 'satisfies' type
+    -> ^(SATISFIES_EXPR type)
     ;
 
 forFail
