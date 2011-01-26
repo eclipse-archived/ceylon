@@ -39,4 +39,14 @@ class StatementsWithOperators() {
 	log.info("Hello, " person.firstName " " person.lastName ", the time is " Time() ".");
 	log.info("1 + 1 = " 1 + 1 "");
 	
+	assert ("x must be zero") that (x==0.0);
+	y := when (x>100.0) then (100.0) otherwise (x);
+	repeat (3) times { stream.writeLine("Hello!"); };
+	Natural[] cubes = list (30) containing (Natural i) (i**3);
+	String[] names = from (people) select (Person p) (p.name);
+	Boolean adults = forAll (people) every (Person p) (p.age>=18);
+	Float total = fold (items, 0.0) 
+					using (Float sum, Item item)
+						(sum + item.quantity*item.product.price);
+	
 }
