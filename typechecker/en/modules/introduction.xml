@@ -3078,7 +3078,7 @@ shared interface Observer<T> {
         <para>We're going to use this syntax to define the "template" for 
         our web page.</para>
         
-        <programlisting><![CDATA[import ceylon.html { ... };
+        <programlisting><![CDATA[import ceylon.html { ... }
 
 doc "A web page that displays a greeting"
 page '/hello.html'
