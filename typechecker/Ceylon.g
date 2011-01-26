@@ -20,6 +20,7 @@ tokens {
     ATTRIBUTE_SETTER;
     BREAK_STMT;
     CALL_EXPR;
+    CASE_LIST;
     CATCH_BLOCK;
     CATCH_STMT;
     CHAR_CST;
@@ -31,6 +32,8 @@ tokens {
     DO_BLOCK;
     DO_ITERATOR;
     EXPR;
+    EXPR_LIST;
+    EXPR_STMT;
     FINALLY_BLOCK;
     FORMAL_PARAMETER;
     FORMAL_PARAMETER_LIST;
@@ -44,8 +47,10 @@ tokens {
     IMPORT_ELEM;
     INIT_EXPR;
     INTERFACE_DECL;
+    INTERFACE_BODY;
     MEMBER_NAME;
     MEMBER_TYPE;
+    METATYPE_LIST;
     NAMED_ARG;
     SEQ_ARG;
     NIL;
@@ -66,7 +71,6 @@ tokens {
     SWITCH_EXPR;
     SWITCH_CASE_LIST;
     CASE_ITEM;
-    EXPR_LIST;
     CASE_DEFAULT;
     TYPE_CONSTRAINT_LIST;
     TYPE;
@@ -78,6 +82,8 @@ tokens {
     LOWER_BOUND;
     UPPER_BOUND;
     SELECTOR_LIST;
+    SPEC_EXPR;
+    SPEC_STMT;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
     STRING_CONCAT;
@@ -96,8 +102,7 @@ tokens {
     EXISTS_EXPR;
     NONEMPTY_EXPR;
     IS_EXPR;
-    GET_EXPR;
-    SET_EXPR;
+    SPECIAL_ARG;
     //PRIMARY;
 }
 
@@ -106,10 +111,10 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      declaration+
+      declarations
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
-       declaration+
+       declarations
     ;
 
 typeDeclaration
@@ -157,7 +162,7 @@ packagePath
     
 block
     : '{' declarationsAndStatements (directiveStatement | expressions)? '}'
-    -> ^(BLOCK declarationsAndStatements? directiveStatement? expressions?)
+    -> ^(BLOCK declarationsAndStatements? directiveStatement? expressions?) //note: the first ? is needed here!
     ;
 
 declarationsAndStatements
@@ -203,6 +208,10 @@ declaration
     )
     ;
 
+declarations
+    : declaration+
+    ;
+
 //special rule for syntactic predicates
 annotatedDeclarationStart
     : declarationStart
@@ -229,11 +238,13 @@ declarationKeyword
     ;
 
 specificationStatement
-    : memberName specifier? ';'!
+    : memberName specifier ';'
+    -> ^(SPEC_STMT memberName specifier)
     ;
 
 expressionStatement
-    : expression ';'!
+    : expression ';'
+    -> ^(EXPR_STMT expression)
     ;
 
 directiveStatement
@@ -289,7 +300,7 @@ memberType
     ;
 
 memberParameters
-    : typeParameters? formalParameters+ extraFormalParameters metatypes? typeConstraints?
+    : typeParameters? formalParameters+ extraFormalParameters? metatypes? typeConstraints?
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -314,7 +325,8 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    : '{'! declaration* '}'!
+    : '{' declarations? '}'
+    -> ^(INTERFACE_BODY declarations?)
     ;
 
 classDeclaration
@@ -323,7 +335,7 @@ classDeclaration
         typeName
         typeParameters?
         formalParameters
-        extraFormalParameters
+        extraFormalParameters?
         caseTypes?
         metatypes?
         extendedType?
@@ -343,8 +355,7 @@ objectDeclaration
 
 classBody
     : '{' declarationsAndStatements '}'
-    -> ^(BLOCK declarationsAndStatements?)
- //    -> ^(CLASS_BODY ^(STMT_LIST $stmts))
+    -> ^(CLASS_BODY declarationsAndStatements?) //note: the ? is needed here!
     ;
 
 extendedType
@@ -364,7 +375,7 @@ abstractedType
     
 caseTypes
     : 'of' caseType ('|' caseType)*
-    -> ^(ABSTRACTS_LIST caseType+)
+    -> ^(CASE_LIST caseType+)
     ;
 
 caseType 
@@ -373,8 +384,11 @@ caseType
     //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     ;
 
+//Support for metatypes
+//Note that we don't need this for now
 metatypes
     : 'is' type ('&' type)* 
+    -> ^(METATYPE_LIST type*)
     ;
 
 typeConstraint
@@ -487,7 +501,8 @@ ordinaryTypeParameter
     ;
 
 variance
-    : 'in' -> IN | 'out' -> OUT
+    : 'in' -> IN 
+    | 'out' -> OUT
     ;
     
 dimensionalTypeParameter
@@ -502,7 +517,7 @@ initializer
 
 specifier
     : '=' expression
-    -> ^(INIT_EXPR expression)
+    -> ^(SPEC_EXPR expression)
     ;
 
 typeSpecifier
@@ -739,7 +754,7 @@ namedArgument
     ;
 
 namedFunctionalArgument
-    : (formalParameterType|'local') parameterName formalParameters* block
+    : memberType parameterName formalParameters* block
     ;
 
 namedSpecifiedArgument
@@ -794,20 +809,26 @@ functionalArgumentDefinition
       ( block | parExpression /*| literal | specialValue*/ )
     ;
 
+//Support "T x in arg" in positional argument lists
+//Note that we don't need to support this yet
 specialArgument
-    : (type | 'local') memberName (containment | specifier)
+    : variableType memberName (containment | specifier)
+    -> ^(SPECIAL_ARG variableType? memberName containment? specifier?)
     //| isCondition
     //| existsCondition
-    ;
-
-extraFormalParameters
-    : extraFormalParameter*
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)*)?
     ;
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
     -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
+    ;
+
+//Support for declaring functional formal parameters outside
+//of the parenthesized list
+//Note that this is just a TODO in the spec
+extraFormalParameters
+    : extraFormalParameter+
+    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)+)
     ;
 
 //special rule for syntactic predicates
@@ -832,10 +853,14 @@ valueFormalParameter
     : '->' type parameterName
     ;
 
+//Support for "X x in Iterable<X> param" in formal parameter lists
+//Note that this is just a TODO in the spec
 iteratedFormalParameter
     : 'in' type parameterName
     ;
 
+//Support for "X x = X? param" in formal parameter lists
+//Note that this is just a TODO in the spec
 specifiedFormalParameter
     : '=' type parameterName
     ;
@@ -1024,7 +1049,11 @@ controlVariableOrExpression
     ;
 
 variable
-    : (type | 'local') memberName formalParameters*
+    : variableType memberName formalParameters*
+    ;
+
+variableType
+    : type | 'local'
     ;
 
 // Lexer
