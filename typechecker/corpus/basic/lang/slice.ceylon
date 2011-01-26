@@ -2,7 +2,7 @@ doc "The ternary range operator |x[from..to]|, along
      with the binary upper range |x[from...]| operator. 
      The returned sequence does not reflect changes 
      to the original sequence."
-shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
+shared T[] slice<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex) 
         given T satisfies Equality<T> {
          
     object rangeSequence satisfies T[] {
