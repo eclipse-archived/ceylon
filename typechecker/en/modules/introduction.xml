@@ -2965,7 +2965,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
             <para>Now let's see an example of a named argument list with 
             an inline getter declaration:</para>
             
-            <programlisting>shared Payment(PaymentMethod method, Currency currency, Float amount) { ... }</programlisting>
+            <programlisting>shared class Payment(PaymentMethod method, Currency currency, Float amount) { ... }</programlisting>
             
             <programlisting>Payment payment {
     method = user.paymentMethod;
