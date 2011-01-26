@@ -1,6 +1,6 @@
-Table table { 
-    title="Squares"; 
-    rows=5;
+Table squares(Natural min=1, Natural max) { 
+    title="Squares of natural numbers"; 
+    rows=max-min+1;
     Border border {
         padding=2;
         weight=1;
@@ -9,14 +9,14 @@ Table table {
         title="x"; 
         width=10; 
         String content(Natural row) {
-            return $row
+            return $(row+min)
         }
     },
     Column { 
         title="x**2"; 
         width=10; 
         String content(Natural row) {
-            return $row**2
+            return $((row+min)**2)
         }
     } 
 }
