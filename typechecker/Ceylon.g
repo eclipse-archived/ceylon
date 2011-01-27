@@ -526,7 +526,7 @@ nonstringLiteral
     ;
 
 stringExpression
-    : (SIMPLESTRINGLITERAL (interpolatedExpressionStart|SIMPLESTRINGLITERAL)) 
+    : (SIMPLESTRINGLITERAL interpolatedExpressionStart) 
         => stringTemplate
     -> ^(STRING_CONCAT stringTemplate)
     | stringLiteral
@@ -539,10 +539,7 @@ stringLiteral
 
 stringTemplate
     : SIMPLESTRINGLITERAL 
-    ( (interpolatedExpressionStart|SIMPLESTRINGLITERAL) => 
-        ( (interpolatedExpressionStart) => expression )? 
-        SIMPLESTRINGLITERAL 
-    )+
+    ((interpolatedExpressionStart) => expression SIMPLESTRINGLITERAL)+
     ;
 
 //special rule for syntactic predicates
