@@ -164,7 +164,7 @@ packagePath
     
 block
     : '{' blockDeclarationsAndStatements? '}'
-    -> ^(BLOCK blockDeclarationsAndStatements?) //note: the first ? is needed here!
+    -> ^(BLOCK blockDeclarationsAndStatements?)
     ;
 
 //This rule accounts for the problem that we
@@ -173,9 +173,9 @@ block
 //finish parsing it
 blockDeclarationsAndStatements
     : controlStructure blockDeclarationsAndStatements?
+    | directiveStatement
     | (specificationStart) => specificationStatement blockDeclarationsAndStatements?
     | (annotatedDeclarationStart) => annotatedDeclaration blockDeclarationsAndStatements?
-    | directiveStatement
     | expression 
     (
         ';' blockDeclarationsAndStatements?
@@ -364,7 +364,7 @@ objectDeclaration
 
 classBody
     : '{' annotatedDeclarationOrStatement* '}'
-    -> ^(CLASS_BODY annotatedDeclarationOrStatement*) //note: the ? is needed here!
+    -> ^(CLASS_BODY annotatedDeclarationOrStatement*)
     ;
 
 extendedType
