@@ -165,11 +165,15 @@ block
     -> ^(BLOCK blockDeclarationsAndStatements?) //note: the first ? is needed here!
     ;
 
+//This rule accounts for the problem that we
+//can't tell whether a member body is a block
+//or a named argument list until after we
+//finish parsing it
 blockDeclarationsAndStatements
     : 
     (
         controlStructure
-      | (specificationStatementStart) => specificationStatement
+      | (specificationStart) => specificationStatement
       | (annotatedDeclarationStart) => annotatedDeclaration
       | (expressionStatement) => expressionStatement
     )*
@@ -180,15 +184,15 @@ classDeclarationsAndStatements
     : 
     (
         controlStructure
-      | (specificationStatementStart) => specificationStatement
+      | (specificationStart) => specificationStatement
       | (annotatedDeclarationStart) => annotatedDeclaration
       | expressionStatement
     )*
     ;
 
 //special rule for syntactic predicates
-specificationStatementStart
-    : memberName '='
+specificationStart
+    : LIDENTIFIER '='
     ;
 
 //we don't need to distinguish methods from attributes
@@ -211,10 +215,10 @@ declarations
 //special rule for syntactic predicates
 annotatedDeclarationStart
     : declarationStart
-    | annotationName
+    | LIDENTIFIER
       ( 
           declarationStart
-        | annotationName
+        | LIDENTIFIER
         | nonstringLiteral | stringLiteral
         | arguments annotatedDeclarationStart
       )
@@ -771,7 +775,7 @@ namedSpecifiedArgument
     ;
 
 namedArgumentStart
-    : LIDENTIFIER '=' 
+    : specificationStart
     | declarationStart
     ;
 
