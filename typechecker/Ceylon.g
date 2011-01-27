@@ -552,6 +552,8 @@ interpolatedExpressionStart
     | LIDENTIFIER 
     | UIDENTIFIER 
     | selfReference 
+    | 'outer' 
+    | 'subtype'
     | nonstringLiteral
     | prefixOperator
     ;
