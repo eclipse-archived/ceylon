@@ -1057,17 +1057,6 @@ local comp = order(1,-1);</programlisting>
             <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
             <programlisting>input.Tokens()</programlisting>
             
-            <programlisting>Panel {
-    label = "Hello";
-    Input i = Input(),
-    Button {
-        label = "Hello";
-        action() {
-            log.info(i.value);
-        }
-    }
-}</programlisting>
-            
         </section>
         
         <section id="sequenceinstantiation">
@@ -1249,16 +1238,25 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>(1, 1, 2, 3, 5, 8)</programlisting>
         
-        <para>Alternatively, the argument to a sequence parameter may be a <literal>Sequence</literal> 
+        <para>Alternatively, the argument to a sequenced parameter may be a <literal>Sequence</literal> 
         of the parameter type.</para>
         
         <programlisting>({1, 1, 2, 3, 5, 8})</programlisting>
         
-        <!--
         <comment><para>TODO: Should we allow an argument to a sequenced parameter in a named
         argument list to be a local declaration, thus allowing the object to be referred to
-        later?</para></comment>
-        -->
+        later?</para>
+            <programlisting>Panel {
+    label = "Hello";
+    Input i = Input(),
+    Button {
+        label = "Hello";
+        action() {
+            log.info(i.value);
+        }
+    }
+}</programlisting>            
+        </comment>
         
         <!--
         <comment><para>TODO: actually, upon reflection, I think it might be better and more
