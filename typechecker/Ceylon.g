@@ -290,7 +290,12 @@ memberType
     ;
 
 memberParameters
-    : typeParameters? formalParameters+ extraFormalParameters? metatypes? typeConstraints?
+    : 
+        typeParameters? 
+        formalParameters+ 
+        extraFormalParameters? 
+        metatypes? 
+        typeConstraints?
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -382,13 +387,20 @@ metatypes
     ;
 
 typeConstraint
-    : 'given' typeName typeArguments? formalParameters? caseTypes? metatypes? satisfiedTypes? abstractedType?
-    -> ^(TYPE_CONSTRAINT typeName formalParameters? satisfiedTypes? abstractedType?)
+    : 
+        'given'!
+        typeName 
+        typeArguments? 
+        formalParameters? 
+        caseTypes? 
+        metatypes? 
+        satisfiedTypes? 
+        abstractedType?
     ;
     
 typeConstraints
     : typeConstraint+
-    -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
+    -> ^(TYPE_CONSTRAINT_LIST ^(TYPE_CONSTRAINT typeConstraint)+)
     ;
 
 type
@@ -482,7 +494,8 @@ typeParameters
     ;
 
 typeParameter
-    : ordinaryTypeParameter '...'? | '#'! dimensionalTypeParameter
+    : ordinaryTypeParameter '...'? 
+    | '#'! dimensionalTypeParameter
     ;
 
 ordinaryTypeParameter
@@ -833,9 +846,16 @@ formalParametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 formalParameter
-    : annotations? formalParameterType (parameterName | 'this') formalParameters*
-      ( valueFormalParameter | iteratedFormalParameter | (specifiedFormalParameterStart) => specifiedFormalParameter )? 
-      specifier?
+    : annotations? 
+      formalParameterType 
+      (parameterName | 'this') 
+      formalParameters*   //for callable parameters
+      (   //more exotic stuff
+          valueFormalParameter 
+        | iteratedFormalParameter 
+        | (specifiedFormalParameterStart) => specifiedFormalParameter 
+      )? 
+      specifier?   //for defaulted parameters
     ;
 
 valueFormalParameter
@@ -897,7 +917,12 @@ satisfiesCondition
     ;
 
 controlStructure
-    : ifElse | switchCaseElse | simpleWhile | doWhile | forFail | tryCatchFinally
+    : ifElse 
+    | switchCaseElse 
+    | simpleWhile 
+    | doWhile 
+    | forFail 
+    | tryCatchFinally
     ;
     
 ifElse
@@ -941,7 +966,9 @@ defaultCaseItem
     ;
 
 caseCondition
-    : expressions | isCaseCondition | satisfiesCaseCondition
+    : expressions 
+    | isCaseCondition 
+    | satisfiesCaseCondition
     ;
 
 expressions
