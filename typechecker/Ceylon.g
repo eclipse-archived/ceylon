@@ -1,8 +1,7 @@
 grammar Ceylon;
 
 options {
-    //backtrack=true;
-    memoize=true;
+    memoize=false;
     output=AST;
 }
 
