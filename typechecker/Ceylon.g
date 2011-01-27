@@ -625,20 +625,13 @@ comparisonExpression
       (('<=>'^ |'<'^ |'>'^ |'<='^ |'>='^ |'in'^ |'is'^|'extends'^|'satisfies'^) existenceEmptinessExpression)?
     ;
 
-/*
 existenceEmptinessExpression
-    : e=defaultExpression 
-    ('exists' -> ^(EXISTS_EXPR $e) 
-     | 'nonempty' -> ^(NONEMPTY_EXPR $e)
-     | -> $e)
-    ;
-*/
-
-existenceEmptinessExpression
-    : e=defaultExpression
-       (('exists' -> ^(EXISTS_EXPR $e))
-        | ('nonempty' -> ^(NONEMPTY_EXPR $e)) )?
-     -> $e
+    : defaultExpression
+    (
+        'exists' -> ^(EXISTS_EXPR defaultExpression)
+      | 'nonempty' -> ^(NONEMPTY_EXPR defaultExpression) 
+      | -> defaultExpression
+    )
     ;
 
 defaultExpression
