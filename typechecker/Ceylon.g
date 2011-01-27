@@ -175,6 +175,10 @@ blockDeclarationsAndStatements
         controlStructure
       | (specificationStart) => specificationStatement
       | (annotatedDeclarationStart) => annotatedDeclaration
+      //this following evil-looking predicate is okay because 
+      //if it fails halfway through, we end up re-parsing the 
+      //same tokens as an expression anyway - so the exact 
+      //same error results
       | (expressionStatement) => expressionStatement
     )*
     (directiveStatement | expressions)?
@@ -220,7 +224,7 @@ annotatedDeclarationStart
           declarationStart
         | LIDENTIFIER
         | nonstringLiteral | stringLiteral
-        | arguments annotatedDeclarationStart
+        | arguments annotatedDeclarationStart //we need to recurse because it could be an inline callable argument
       )
     ;
 
