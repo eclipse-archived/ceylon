@@ -17,6 +17,7 @@ tokens {
     ARG_LIST;
     ARG_NAME;
     ANON_METH;
+    ATTRIBUTE_DECL;
     ATTRIBUTE_SETTER;
     BREAK_STMT;
     CALL_EXPR;
@@ -50,6 +51,7 @@ tokens {
     INTERFACE_BODY;
     MEMBER_NAME;
     MEMBER_TYPE;
+    METHOD_DECL;
     METATYPE_LIST;
     NAMED_ARG;
     SEQ_ARG;
@@ -103,7 +105,7 @@ tokens {
     IS_EXPR;
     SATISFIES_EXPR;
     SPECIAL_ARG;
-    //PRIMARY;
+    PRIMARY;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -111,10 +113,10 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      declarations
+      annotatedDeclaration+
       EOF
     -> ^(IMPORT_LIST importDeclaration*)
-       declarations
+       annotatedDeclaration+
     ;
 
 typeDeclaration
@@ -161,7 +163,7 @@ packagePath
     ;
     
 block
-    : '{' blockDeclarationsAndStatements '}'
+    : '{' blockDeclarationsAndStatements? '}'
     -> ^(BLOCK blockDeclarationsAndStatements?) //note: the first ? is needed here!
     ;
 
@@ -170,28 +172,24 @@ block
 //or a named argument list until after we
 //finish parsing it
 blockDeclarationsAndStatements
-    : 
+    : controlStructure blockDeclarationsAndStatements?
+    | (specificationStart) => specificationStatement blockDeclarationsAndStatements?
+    | (annotatedDeclarationStart) => annotatedDeclaration blockDeclarationsAndStatements?
+    | directiveStatement
+    | expression 
     (
-        controlStructure
-      | (specificationStart) => specificationStatement
-      | (annotatedDeclarationStart) => annotatedDeclaration
-      //this following evil-looking predicate is okay because 
-      //if it fails halfway through, we end up re-parsing the 
-      //same tokens as an expression anyway - so the exact 
-      //same error results
-      | (expressionStatement) => expressionStatement
-    )*
-    (directiveStatement | expressions)?
+        ';' blockDeclarationsAndStatements?
+      -> ^(EXPR_STMT expression) blockDeclarationsAndStatements?
+      | (',' expression)* 
+      -> ^(EXPR_LIST expression+)
+    )
     ;
 
-classDeclarationsAndStatements
-    : 
-    (
-        controlStructure
-      | (specificationStart) => specificationStatement
-      | (annotatedDeclarationStart) => annotatedDeclaration
-      | expressionStatement
-    )*
+annotatedDeclarationOrStatement
+    : controlStructure
+    | (specificationStart) => specificationStatement
+    | (annotatedDeclarationStart) => annotatedDeclaration
+    | expressionStatement
     ;
 
 //special rule for syntactic predicates
@@ -210,10 +208,6 @@ annotatedDeclaration
       | typeDeclaration 
       -> ^(TYPE_DECL typeDeclaration annotations?)
     )
-    ;
-
-declarations
-    : annotatedDeclaration+
     ;
 
 //special rule for syntactic predicates
@@ -290,14 +284,20 @@ retryDirective
     ;
 
 memberDeclaration
-    : memberHeader memberDefinition
+    : memberHeader
+    ( 
+      memberParameters memberDefinition
+    -> ^(METHOD_DECL memberHeader memberParameters memberDefinition?)
+    | memberDefinition 
+    -> ^(ATTRIBUTE_DECL memberHeader memberDefinition?)
+    )
     ;
 
 memberHeader
     : memberType memberName
     -> ^(MEMBER_TYPE memberType) memberName
     | 'assign' memberName
-    -> ^(ATTRIBUTE_SETTER memberName)
+    -> ^(ATTRIBUTE_SETTER) memberName
     ;
 
 memberType
@@ -318,8 +318,7 @@ memberParameters
 //      a parExpression, just like we do for Smalltalk
 //      style parameters below?
 memberDefinition
-    : memberParameters?
-      ( block | (specifier | initializer)? ';'! )
+    : block | (specifier | initializer)? ';'!
     ;
     
 interfaceDeclaration
@@ -335,8 +334,8 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    : '{' declarations? '}'
-    -> ^(INTERFACE_BODY declarations?)
+    : '{' annotatedDeclaration* '}'
+    -> ^(INTERFACE_BODY annotatedDeclaration*)
     ;
 
 classDeclaration
@@ -364,8 +363,8 @@ objectDeclaration
     ;
 
 classBody
-    : '{' classDeclarationsAndStatements '}'
-    -> ^(CLASS_BODY classDeclarationsAndStatements?) //note: the ? is needed here!
+    : '{' annotatedDeclarationOrStatement* '}'
+    -> ^(CLASS_BODY annotatedDeclarationOrStatement*) //note: the ? is needed here!
     ;
 
 extendedType
@@ -691,7 +690,7 @@ enumeration
     
 primary
     : base selector*
-    -> ^(EXPR base selector*)
+    -> ^(PRIMARY base selector*)
     ;
 
 postfixOperator
