@@ -161,17 +161,28 @@ packagePath
     ;
     
 block
-    : '{' declarationsAndStatements (directiveStatement | expressions)? '}'
-    -> ^(BLOCK declarationsAndStatements? directiveStatement? expressions?) //note: the first ? is needed here!
+    : '{' blockDeclarationsAndStatements '}'
+    -> ^(BLOCK blockDeclarationsAndStatements?) //note: the first ? is needed here!
     ;
 
-declarationsAndStatements
+blockDeclarationsAndStatements
     : 
     (
         controlStructure
       | (specificationStatementStart) => specificationStatement
-      | (expressionStatementStart) => expressionStatement
-      | (annotatedDeclarationStart) => declaration
+      | (annotatedDeclarationStart) => annotatedDeclaration
+      | (expressionStatement) => expressionStatement
+    )*
+    (directiveStatement | expressions)?
+    ;
+
+classDeclarationsAndStatements
+    : 
+    (
+        controlStructure
+      | (specificationStatementStart) => specificationStatement
+      | (annotatedDeclarationStart) => annotatedDeclaration
+      | expressionStatement
     )*
     ;
 
@@ -180,14 +191,9 @@ specificationStatementStart
     : memberName '='
     ;
 
-//special rule for syntactic predicates
-expressionStatementStart
-    : expression ';'
-    ;
-
 //we don't need to distinguish methods from attributes
 //in the grammar
-declaration
+annotatedDeclaration
     :
     annotations?
     ( 
@@ -199,7 +205,7 @@ declaration
     ;
 
 declarations
-    : declaration+
+    : annotatedDeclaration+
     ;
 
 //special rule for syntactic predicates
@@ -209,7 +215,8 @@ annotatedDeclarationStart
       ( 
           declarationStart
         | annotationName
-        | annotationArguments annotatedDeclarationStart
+        | nonstringLiteral | stringLiteral
+        | arguments annotatedDeclarationStart
       )
     ;
 
@@ -349,8 +356,8 @@ objectDeclaration
     ;
 
 classBody
-    : '{' declarationsAndStatements '}'
-    -> ^(CLASS_BODY declarationsAndStatements?) //note: the ? is needed here!
+    : '{' classDeclarationsAndStatements '}'
+    -> ^(CLASS_BODY classDeclarationsAndStatements?) //note: the ? is needed here!
     ;
 
 extendedType
