@@ -1752,16 +1752,22 @@ Void goodbye() {
     }
 }</programlisting>
             
-            <comment><para>TODO: we could add a keyword or punctuation to help disambiguate 
-            the two forms of method implementation, for example:</para>
+            <comment><para>TODO: we could add a keyword or punctuation to help 
+            disambiguate the two forms of method implementation, for example:</para>
             <programlisting>Html login(HttpRequest request) with {
     Head head with { ... }
     Body body with { ... }
 }</programlisting>
-            <programlisting>Html login(HttpRequest request): {
-    Head head: { ... }
-    Body body: { ... }
-}</programlisting></comment>
+            <para>The following option is especially interesting because it 
+            would unify nicely with the sequence enumeration syntax we already 
+            have:</para>
+            <programlisting>Html login(HttpRequest request) = {
+    Head head = { ... }
+    Body body = { ... }
+}</programlisting>
+            <para>However, <literal>=</literal> already means specification of 
+            an immutable value, which is not what is happening here!</para>
+            </comment>
             
         </section>
                 
