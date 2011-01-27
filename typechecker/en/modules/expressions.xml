@@ -424,7 +424,7 @@ if you prefer.";</programlisting>
         <para>A character string <emphasis>template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <programlisting>StringTemplate: StringLiteral (Expression? StringLiteral)+</programlisting>
+        <programlisting>StringTemplate: StringLiteral (Expression StringLiteral)+</programlisting>
         
         <para>Each interpolated expression contained in the string template must be 
         an expression of type <literal>ceylon.language.Format</literal>.</para>

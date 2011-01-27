@@ -893,14 +893,14 @@ else {
         <literal>greeting</literal>, using the <literal>?</literal>
         operator.</para>
         
-        <programlisting><![CDATA[shared String greeting = "Hello, " (name ? "World") "!";]]></programlisting>
+        <programlisting><![CDATA[shared String greeting = "Hello, " name ? "World" "!";]]></programlisting>
 
         <para>The <literal>?</literal> operator returns its first argument if the
         first argument is not null, or its second argument otherwise. Its a more
         convenient way to handle null values in simple cases. It can even be chained:</para>
         
-        <programlisting><![CDATA[shared String greeting = "Hello, " (nickName ? name ? "World") "!";]]></programlisting>
-    
+        <programlisting><![CDATA[shared String greeting = "Hello, " nickName ? name ? "World" "!";]]></programlisting>
+        
         </section>
         
         <section>
