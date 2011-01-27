@@ -70,7 +70,8 @@ class Primaries() {
 		String paren = "Hello" (1+1) "World";
 		String defaultOperator = "Hello" null ? 3 "World";
 		String withStringLiteral = "Hello, " name ? "World" "!";
-		String withStringLiteral2 = "Hello, " nickName ? name ? "World" "!";	
+		String withStringLiteral2 = "Hello, " nickName ? name ? "World" "!";
+		String withEnum = "Hello" {1,2,3} "World";
 	}
 	
 	class Enumerations() {
