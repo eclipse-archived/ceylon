@@ -55,7 +55,9 @@
 
         <!-- TRANSLATOR: Duplicate this line for your language -->
         <antcall target="lang.docpdf"><param name="lang" value="en"/></antcall>
-
+        
+    	<copy file="${build.dir}/en/pdf/${docname}.pdf" todir="${basedir}"/>
+	
     </target>
 
     <target name="all.revdiff"
