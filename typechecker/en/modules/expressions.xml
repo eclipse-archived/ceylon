@@ -572,7 +572,7 @@ if you prefer.";</programlisting>
         <para>For a nested class, the containing instance may be obtained using
         the keyword <literal>outer</literal>.</para>
         
-        <programlisting>OuterReference: (Receiver ".") "outer"</programlisting>
+        <programlisting>OuterReference: (Receiver ".")? "outer"</programlisting>
         
         <para>The type of the outer instance reference is the type that contains 
         the declaration of the receiver expression type (which must be a nested 
