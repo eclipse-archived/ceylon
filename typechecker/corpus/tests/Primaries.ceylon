@@ -43,11 +43,34 @@ class Primaries() {
 		String? thisNothing = this.nothing;
 
 		Specials s = this;
+		
+		Primaries p = outer;
 
 		class Subclass() extends Specials() {
 			String? superNothing = super.nothing;
+			Primaries p = outer.outer;
 		}
 		
+	}
+	
+	class Templates() {
+		//String hw = "Hello" "World";
+		String reference = "Hello" hw "World";
+		String primary = "Hello" process.args.first "World";
+		String literal = "Hello" 3 "World";
+		String operator = "Hello" 1+1 "World";
+		String booleanOperator = "Hello" true || false "World";
+		String prefixOperator = "Hello" ++count "World";
+		String postfixOperator = "Hello" count++ "World";
+		String expOperator = "Hello" 3**2 "World";
+		String expOperator2 = "Hello" count**2 "World";
+		String negOperator = "Hello" -1 "World";
+		String instOperator = "Hello" key -> value "World";
+		String compareOperator = "Hello" count>10 "World";
+		String paren = "Hello" (1+1) "World";
+		String defaultOperator = "Hello" null ? 3 "World";
+		String withStringLiteral = "Hello, " name ? "World" "!";
+		String withStringLiteral2 = "Hello, " nickName ? name ? "World" "!";	
 	}
 	
 	class Enumerations() {
