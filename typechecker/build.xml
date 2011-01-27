@@ -41,11 +41,20 @@
     <!-- ################################################################## -->
 
     <target name="all.doc"
-            depends="clean"
+            depends="clean.doc"
             description="Compile documentation for all languages and all formats.">
 
         <!-- TRANSLATOR: Duplicate this line for your language -->
         <antcall target="lang.all"><param name="lang" value="en"/></antcall>
+
+    </target>
+
+    <target name="pdf.doc"
+            depends="clean.doc"
+            description="Compile PDF documentation for all languages.">
+
+        <!-- TRANSLATOR: Duplicate this line for your language -->
+        <antcall target="lang.docpdf"><param name="lang" value="en"/></antcall>
 
     </target>
 
@@ -59,12 +68,19 @@
 
     <!-- ################################################################## -->
 
-    <target name="clean">
+    <target name="clean"
+            description="Clean up everything."
+            depends="clean.doc,clean.antlr"/>
+
+    <target name="clean.doc">
 
         <!-- Delete build directory. -->
         <delete dir="${build.dir}"/>
+    	
+    </target>
+    
+	<target name="clean.antlr">
         <delete dir="${antlr.dst}"/>
-
     </target>
 
     <target name="lang.all">
@@ -202,7 +218,8 @@
         </java>
     </target>
 	
-	<target name="antlr">
+	<target name="antlr"
+	        description="Generate code from ANTLR grammar">
 	    <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/parser"/>
 	    <java classname="org.antlr.Tool">
 	      <arg value="-o"/>
