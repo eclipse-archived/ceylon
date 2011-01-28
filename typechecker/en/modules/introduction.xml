@@ -1991,8 +1991,8 @@ abstract class Hello() {
                     <para><literal>Integer</literal> represents signed integers,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Float</literal> represents floating point decimal 
-                    numbers,</para>
+                    <para><literal>Float</literal> represents floating point approximations
+                    to the real numbers,</para>
                 </listitem>
                 <listitem>
                     <para><literal>Whole</literal> represents arbitrary-precision signed 
