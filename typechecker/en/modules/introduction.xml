@@ -2931,7 +2931,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
             </listitem>
             <listitem>
                 <para><emphasis>repetition</emphasis>, such as:
-                <programlisting>repeat (3) times { stream.writeLine("Hello!"); }</programlisting></para>
+                <programlisting>repeat (3) times { stream.writeLine("Hello!"); };</programlisting></para>
             </listitem>
             <listitem>
                 <para><emphasis>tabulation</emphasis>, such as:
@@ -2958,7 +2958,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
     component.addObserver() onEvent (Event e) {
         //respond to the event
         ...
-    }
+    };
     ...
 }</programlisting></para>
             </listitem>
