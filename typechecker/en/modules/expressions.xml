@@ -317,7 +317,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A floating point number literal is an expression of 
         type <literal>ceylon.language.Float</literal>.</para>
         
-       <programlisting>shared Float pi = 3.14159;</programlisting>
+        <programlisting>shared Float pi = 3.14159;</programlisting>
+        
+        <comment><para>TODO: Actually, this is not the best definition,
+        since if we assign the literal to <literal>Decimal</literal>,
+        we don't want it to go through an intermediate conversion to
+        floating point representation.</para></comment>
         
         <!--
         <para>Equivalent to this Java code:</para>
