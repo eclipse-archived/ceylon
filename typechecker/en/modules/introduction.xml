@@ -2335,6 +2335,68 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
         </section>
         
         <section>
+            <title>Sequence gotchas for Java developers</title>
+            
+            <para>Superficially, a sequence type looks a lot like a Java array, but really
+            it's very, very different! First, of course, a sequence type <literal>String[]</literal>
+            is an immutable interface, it is not a mutable concrete type like an array.</para>
+            
+            <para>Furthermore, the index operation <literal>voyage[i]</literal> returns an
+            <literal>Optional</literal> type, which results in quite different code idioms.</para>
+            
+            <para>To begin with, we don't iterate sequences by index like in C or Java. The 
+            following code does not compile:</para>
+            
+            <programlisting>for (Natural i in 0..voyage.size-1) {
+    String city = voyage[i]; //compile error ... voyage[i] is a String?
+    ...
+}</programlisting>
+            
+            <para>Instead, if we need access to the index, we use the special form of 
+            <literal>for</literal> shown above:</para>
+            
+            <programlisting>for (Natural i -> String city in voyage) {
+    ...
+}</programlisting>
+            
+            <para>Likewise, we don't usually do an upfront check of an index against the 
+            sequence length:</para>
+            
+            <programlisting>if (i&gt;voyage.size-1) {
+    throw IndexOutOfBoundException()
+}
+else {
+    return voyage[i] //compile error ... voyage[i] is a String?
+}</programlisting>
+            
+            <para>Instead, we do the check after accessing the sequence element:</para>
+            
+            <programlisting>if (exists String city = voyage[i]) {
+    return city
+}
+else {
+    throw IndexOutOfBoundException()
+}</programlisting>
+            
+            <para>We especially don't ever need to write the following:</para>
+            
+            <programlisting>if (i&gt;voyage.size-1) {
+    return ""
+}
+else {
+    return voyage[i] //compile error ... voyage[i] is a String?
+}</programlisting>
+            
+            <para>This is much cleaner:</para>
+                        
+            <programlisting>return voyage[i] ? ""</programlisting>
+            
+            <para>All this may take a little getting used to. But what's nice is that
+            all the exact same idioms also apply to <literal>Correspondences</literal>.</para>
+            
+        </section>
+        
+        <section>
             <title>Correspondences</title>
             
             <para>Sometimes the keys of our collection elements aren't natural numbers, 
