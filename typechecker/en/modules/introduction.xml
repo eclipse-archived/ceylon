@@ -2184,7 +2184,9 @@ abstract class Hello() {
             </itemizedlist>
             
             <para>These are very simple interfaces, so many different types extend or implement 
-            them.</para>
+            them. Unlike Java&mdash;where collections support was bolted on later&mdash;Ceylon's
+            type system, collection types, control structures, and operators were designed to 
+            work seamlessly together from the start.</para>
             
             <para>A <literal>Container</literal> is an object that might be empty. Any 
             <literal>Container</literal> can be the subject of the <literal>nonempty</literal>
@@ -2249,10 +2251,10 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <programlisting>String? sf = voyage[2];</programlisting>
             
-            <para>Note that the lookup operator returns an optional type, in this case 
-            <literal>String?</literal>, to account for the possibility that the given index 
-            was outside of the range of indexes of the sequence. As we'll soon see, the lookup 
-            operator works with more than just sequences.</para>
+            <para>Note that the lookup operator returns an <literal>Optional</literal> type, 
+            in this case <literal>String?</literal>, to account for the possibility that the 
+            given index was outside of the range of indexes of the sequence. As we'll soon see, 
+            the lookup operator works with more than just sequences.</para>
             
             <para>The range expression <literal>voyage[1..3]</literal> evaluates to the 
             subsequence from the lower index <literal>1</literal> to the upper index 
@@ -2271,7 +2273,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             of numeric values. Rather, this is the single example of an overloaded operator in 
             Ceylon.</para>
             
-            <para>(Remember, these operators are just syntactic sugar for method invocation.)</para>
+            <para>(Remember, all these operators are just syntactic sugar for method invocation.)</para>
             
             <para>Just like in Java, the collection types are <emphasis>parameterized</emphasis> 
             or <emphasis>generic</emphasis> types. Unlike Java, there are no raw types&mdash;if
@@ -2289,6 +2291,10 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <programlisting>Object[] voyage = { "Atlanta", "Boston", "San Francisco" };</programlisting>
             
+            <para>Note that <literal>Sequence&lt;T&gt;</literal> is a <emphasis>covariant</emphasis> 
+            parameterized type. What this means is that <literal>Sequence&lt;String&gt;</literal> 
+            is assignable to <literal>Sequence&lt;Object&gt;</literal>.</para>
+            
             <para>Sequences of ordinal values are especially common, so there's an
             operator for constructing them, called the <emphasis>range</emphasis>
             operator:</para>
@@ -2304,9 +2310,19 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <programlisting>for (String city in voyage) {
     stream.writeLine(city);
 }</programlisting>
+            
+            <para>Ceylon doesn't need C-style <literal>for</literal> loops. Instead,
+            combine <literal>for</literal> with the range operator <literal>..</literal>.</para>
+            
+            <programlisting>variable Natural fac:=1;
+for (Natural n in 1..100) {
+    fac*=n;
+    process.writeLine("Factorial " n "! = " fac "");
+}</programlisting>
 
-            <para>If, for some reason, we need access to the index of each element, 
-            we can also do the following:</para>
+            <para>If, for any reason, we need to use the index of each element of
+            a sequence we can use a special variation of the <literal>for</literal>
+            loop:</para>
             
             <programlisting>for (Natural i -> String city in voyage) {
     stream.writeLine($i + ": " + city);
@@ -2339,18 +2355,29 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             
             <para>Superficially, a sequence type looks a lot like a Java array, but really
             it's very, very different! First, of course, a sequence type <literal>String[]</literal>
-            is an immutable interface, it is not a mutable concrete type like an array.</para>
+            is an immutable interface, it's not a mutable concrete type like an array. We
+            can't set the value of an element:</para>
+            
+            <programlisting>String[] voyage = .... ;
+voyage[0] := "Paris";  //compile error</programlisting>
+            
+            <para>If we need be able to assign to a sequence element, we need some kind of 
+            <literal>OpenSequence</literal>, usually an <literal>OpenList</literal>,
+            which we'll meet below. Of course, it's a good practice to avoid mutable data
+            structures whenever reasonable!</para>
             
             <para>Furthermore, the index operation <literal>voyage[i]</literal> returns an
-            <literal>Optional</literal> type, which results in quite different code idioms.</para>
-            
-            <para>To begin with, we don't iterate sequences by index like in C or Java. The 
+            <literal>Optional</literal> type, which results in quite different code idioms.
+            To begin with, we don't iterate sequences by index like in C or Java. The 
             following code does not compile:</para>
             
             <programlisting>for (Natural i in 0..voyage.size-1) {
-    String city = voyage[i]; //compile error ... voyage[i] is a String?
+    String city = voyage[i];  //compile error
     ...
 }</programlisting>
+            
+            <para>Here, <literal>voyage[i]</literal> is a <literal>String?</literal>, which
+            is not directly assignable to <literal>String</literal>.</para>
             
             <para>Instead, if we need access to the index, we use the special form of 
             <literal>for</literal> shown above:</para>
@@ -2366,7 +2393,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
     throw IndexOutOfBoundException()
 }
 else {
-    return voyage[i] //compile error ... voyage[i] is a String?
+    return voyage[i]  //compile error
 }</programlisting>
             
             <para>Instead, we do the check after accessing the sequence element:</para>
@@ -2384,7 +2411,7 @@ else {
     return ""
 }
 else {
-    return voyage[i] //compile error ... voyage[i] is a String?
+    return voyage[i]  //compile error
 }</programlisting>
             
             <para>This is much cleaner:</para>
@@ -2392,7 +2419,8 @@ else {
             <programlisting>return voyage[i] ? ""</programlisting>
             
             <para>All this may take a little getting used to. But what's nice is that
-            all the exact same idioms also apply to <literal>Correspondences</literal>.</para>
+            all the exact same idioms also apply to other kinds of 
+            <literal>Correspondence</literal>.</para>
             
         </section>
         
@@ -2431,6 +2459,12 @@ else {
             <para>Again, notice that the lookup operator returns an <literal>Optional</literal>
             result, to account for the possibility that there is no value defined for
             the given key.</para>
+            
+            <para>Note that <literal>Correspondence</literal> does not extend
+            <literal>Iterable</literal>, so we can't use a <literal>Correspondence</literal>
+            in a <literal>for</literal> loop. However, most subtypes of 
+            <literal>Correspondence</literal>, most notably <literal>Sequence</literal>
+            and <literal>Map</literal>, do extend <literal>Iterable</literal>.</para>
             
             <para>So far we haven't met anything from the collections module proper. 
             <literal>Sequence</literal> and <literal>Correspondence</literal> are part 
