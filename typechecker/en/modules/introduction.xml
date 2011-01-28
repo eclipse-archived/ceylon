@@ -537,15 +537,89 @@ void hello() {
         
     </section>
         
+        <section>
+            <title>Strings and string interpolation</title>
+            
+            <para>The Hello World program&mdash;wildly popular as it is&mdash;provides 
+            for a rather limited and monotonous user experience. A more typical<!-- though 
+            admittedly less popular--> program would produce output that 
+            sometimes varies between different runs.</para>
+            
+            <para>Let's ask our program to tell us a little more about itself.</para>
+            
+            <programlisting>doc "The Hello World program
+     ... version 1.1!"
+void hello() {
+    process.writeLine("Hello, this is Ceylon " process.languageVersion 
+                      " running on Java " process.javaVersion "!");
+}</programlisting>
+
+            <para>Here we can see two nice things about strings in Ceylon.
+            The first is that we can split a string across multiple lines.
+            That's especially useful when we're writing documentation in
+            a <literal>doc</literal> annotation. The second is that we can
+            interpolate expressions inside a string literal. Technically, a
+            string with expressions in it isn't really a literal 
+            anymore&mdash;it's considered a <emphasis>string 
+            template</emphasis>.</para>
+            
+            <para>A string template must begin and end in a string literal.
+            The following is <emphasis>not</emphasis> legal syntax:</para>
+            
+            <programlisting>process.writeLine("Hello, this is Ceylon " process.languageVersion);  //compile error!</programlisting>
+            
+            <para>A quick fix is to terminate the template with an empty string 
+            literal:</para>
+            
+            <programlisting>process.writeLine("Hello, this is Ceylon " process.languageVersion "");</programlisting>
+            
+            <para>Copy this code into <literal>hello.ceylon</literal> 
+            and run, as before:</para>
+        
+            <programlisting>ceylon hello</programlisting>
+        
+            <para>You should see something like this:</para>
+            
+            <programlisting>Hello, this is Ceylon 1.0.0 running on Java 1.6.0_22!</programlisting>
+            
+            <para>Note that this isn't the only way to concatenate strings in
+            Ceylon. Indeed, it's only useful when you're interpolating variables 
+            or expressions into an otherwise-constant string. The <literal>+</literal>
+            operator you're probably used to is an alternative, and more flexible
+            in many cases:</para>
+        
+            <programlisting>process.writeLine("Hello, this is Ceylon " + process.languageVersion + 
+                      " running on Java " + process.javaVersion + "!");</programlisting>
+            
+            <para>However, don't make the mistake of thinking that these two
+            approaches are always equivalent just because they result in the 
+            same output in this case. The <literal>+</literal> operator 
+            immediately evaluates its operand expressions and produces an
+            immutable <literal>String</literal> object. On the other hand, a 
+            string template is an expression of type 
+            <literal>Gettable&lt;String&gt;</literal>, which evaluates its
+            interpolated expressions <emphasis>lazily</emphasis>. If you print 
+            the same string template object twice, you might see different 
+            output the second time around! In fact, a string template is a kind 
+            of <emphasis>closure</emphasis>&mdash;an important concept we'll 
+            meet below.</para>
+            
+        </section>
+        
     <section>
         <title>Dealing with objects that aren't there</title>
         
+        <para>An even more exciting program would receive input and produce 
+        output that depends upon the input it receives. Of course, this places 
+        somewhat more demanding requirements upon the user, but the extra work 
+        does sometimes pay off!</para>
+        
         <para>
-        This improved version of the program takes a name as input from the 
-        command line. We have to account for the case where nothing was
-        specified at the command line, which gives us an opportunity to
-        explore how null values are treated in Ceylon, which is quite 
-        different to what you're probably used to in Java or C#.
+        Therefore, this improved version of the original Hello World program 
+        takes a name as input from the command line. We have to account for the 
+        case where nothing was specified at the command line, which gives us an 
+        opportunity to explore how null values are treated in Ceylon, which is 
+        quite different to what you're probably used to in Java or C#.
         </para>
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
