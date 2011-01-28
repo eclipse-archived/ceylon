@@ -65,6 +65,7 @@ tokens {
     TYPE_ARG_LIST;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
+    TYPE_SPECIFIER;
     WHILE_BLOCK;
     WHILE_STMT;
     SWITCH_STMT;
@@ -537,7 +538,8 @@ specifier
     ;
 
 typeSpecifier
-    : '='! type
+    : '=' type
+    -> ^(TYPE_SPECIFIER type)
     ;
 
 nonstringLiteral
