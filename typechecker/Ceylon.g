@@ -97,7 +97,7 @@ tokens {
     FAIL_BLOCK;
     LOOP_BLOCK;
     FOR_CONTAINMENT;
-    ENUM_LIST;
+    SEQUENCE_ENUM;
     SUPERCLASS;
     POSTFIX_EXPR;
     EXISTS_EXPR;
@@ -679,7 +679,7 @@ selfReference
 
 enumeration
     : '{' expressions '}'
-    -> ^(ENUM_LIST expressions)
+    -> ^(SEQUENCE_ENUM expressions)
     ;
     
 primary
