@@ -835,10 +835,15 @@ class Hello(String? name) {
         class. Module-private toplevel classes must belong to unshared (module-private) 
         packages.</para>
         
-        <para>Note also that Ceylon doesn't have anything like Java's <literal>protected</literal>. 
-        On the other hand, Java doesn't support any kind of module-private visibility 
-        level, since Java has no standard module architecture.</para>
-                    
+        <para>Ceylon doesn't have anything like Java's <literal>protected</literal>. 
+        The purpose of visibility rules and access control is to limit dependencies 
+        between code that is developed by different teams, maintained by different 
+        developers, or has different release cycles. From a software engineering point 
+        of view, any code element exposed to a different package or module is a 
+        dependency that must be managed. And a dependency is a dependency. It's not
+        any less of a dependency if the code to which the program element is exposed is 
+        in a subclass of the type which contains the program element!</para>
+        
         </section>
         
         <section>
