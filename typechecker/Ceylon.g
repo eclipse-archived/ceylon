@@ -180,7 +180,7 @@ memberBody
 blockDeclarationsAndStatements
     : controlStructure blockDeclarationsAndStatements?
     | directiveStatement
-    | (specificationStart) => specificationStatement blockDeclarationsAndStatements?
+    | (specificationStart) => specificationStatement blockDeclarationsAndStatements? //note: the syntactic predicate here is not really necessary, we could move this alt down into the final alt
     | (annotatedDeclarationStart) => annotatedDeclaration blockDeclarationsAndStatements?
     | expression 
     (
@@ -193,7 +193,7 @@ blockDeclarationsAndStatements
 
 annotatedDeclarationOrStatement
     : controlStructure
-    | (specificationStart) => specificationStatement
+    | (specificationStart) => specificationStatement //note: the syntactic predicate here is not really necessary, we could move this alt down into the final alt
     | (annotatedDeclarationStart) => annotatedDeclaration
     | expressionStatement
     ;
@@ -292,22 +292,28 @@ retryDirective
 memberDeclaration
     : 'assign' memberName block
     -> ^(ATTRIBUTE_SETTER memberName block)
-    | memberType memberName
+    | 'void' memberName methodParameters voidMethodDefinition
+    -> ^(METHOD_DECL 'void' memberName methodParameters voidMethodDefinition?)
+    | inferrableType memberName
       ( 
-        memberParameters methodDefinition
-      -> ^(METHOD_DECL memberType memberName memberParameters methodDefinition?)
+        methodParameters methodDefinition
+      -> ^(METHOD_DECL inferrableType memberName methodParameters methodDefinition?)
       | attributeDefinition 
-      -> ^(ATTRIBUTE_DECL memberType memberName attributeDefinition?)
+      -> ^(ATTRIBUTE_DECL inferrableType memberName attributeDefinition?)
       | memberBody
-      -> ^(ATTRIBUTE_GETTER memberType memberName memberBody)      
+      -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
       )
     ;
 
-memberType
-    : type | 'void' | 'local'
+inferrableType
+    : type | 'local'
     ;
 
-memberParameters
+memberType
+    : inferrableType | 'void'
+    ;
+
+methodParameters
     : 
         typeParameters? 
         formalParameters+ 
@@ -322,6 +328,10 @@ memberParameters
 //      style parameters below?
 methodDefinition
     : memberBody | specifier? ';'!
+    ;
+
+voidMethodDefinition
+    : block | specifier? ';'!
     ;
 
 attributeDefinition
@@ -829,8 +839,8 @@ functionalArgumentDefinition
 //Support "T x in arg" in positional argument lists
 //Note that we don't need to support this yet
 specialArgument
-    : variableType memberName (containment | specifier)
-    -> ^(SPECIAL_ARG variableType? memberName containment? specifier?)
+    : inferrableType memberName (containment | specifier)
+    -> ^(SPECIAL_ARG inferrableType memberName containment? specifier?)
     //| isCondition
     //| existsCondition
     ;
@@ -922,7 +932,7 @@ nonemptyCondition
     ;
 
 isCondition
-    : 'is' type ( (memberName '=') => memberName specifier | expression )
+    : 'is' type (memberName specifier | expression)
     -> ^(IS_EXPR type memberName? specifier? expression?)
     ;
 
@@ -1082,11 +1092,7 @@ controlVariableOrExpression
     ;
 
 variable
-    : variableType memberName formalParameters*
-    ;
-
-variableType
-    : type | 'local'
+    : inferrableType memberName formalParameters*
     ;
 
 // Lexer
