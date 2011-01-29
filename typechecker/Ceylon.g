@@ -17,6 +17,7 @@ tokens {
     ARG_NAME;
     ANON_METH;
     ATTRIBUTE_DECL;
+    ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BREAK_STMT;
     CALL_EXPR;
@@ -49,7 +50,6 @@ tokens {
     INTERFACE_DECL;
     INTERFACE_BODY;
     MEMBER_NAME;
-    MEMBER_TYPE;
     METHOD_DECL;
     METATYPE_LIST;
     NAMED_ARG;
@@ -284,20 +284,17 @@ retryDirective
     ;
 
 memberDeclaration
-    : memberHeader
-    ( 
-      memberParameters memberDefinition
-    -> ^(METHOD_DECL memberHeader memberParameters memberDefinition?)
-    | memberDefinition 
-    -> ^(ATTRIBUTE_DECL memberHeader memberDefinition?)
-    )
-    ;
-
-memberHeader
-    : memberType memberName
-    -> ^(MEMBER_TYPE memberType) memberName
-    | 'assign' memberName
-    -> ^(ATTRIBUTE_SETTER) memberName
+    : 'assign' memberName block
+    -> ^(ATTRIBUTE_SETTER memberName block)
+    | memberType memberName
+      ( 
+        memberParameters methodDefinition
+      -> ^(METHOD_DECL memberType memberName memberParameters methodDefinition?)
+      | attributeDefinition 
+      -> ^(ATTRIBUTE_DECL memberType memberName attributeDefinition?)
+      | block
+      -> ^(ATTRIBUTE_GETTER memberType memberName block)      
+      )
     ;
 
 memberType
@@ -317,8 +314,12 @@ memberParameters
 //      definition for a method or getter which returns
 //      a parExpression, just like we do for Smalltalk
 //      style parameters below?
-memberDefinition
-    : block | (specifier | initializer)? ';'!
+methodDefinition
+    : block | specifier? ';'!
+    ;
+
+attributeDefinition
+    : (specifier | initializer)? ';'!
     ;
     
 interfaceDeclaration
@@ -1223,6 +1224,7 @@ MULTI_COMMENT
         )*
         '*/'
         ;
+        
 ABSTRACTS
     : 'abstracts'
     ;
