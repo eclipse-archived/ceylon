@@ -180,27 +180,23 @@ memberBody
 blockDeclarationsAndStatements
     : controlStructure blockDeclarationsAndStatements?
     | directiveStatement
-    | (specificationStart) => specificationStatement blockDeclarationsAndStatements? //note: the syntactic predicate here is not really necessary, we could move this alt down into the final alt
     | (annotatedDeclarationStart) => annotatedDeclaration blockDeclarationsAndStatements?
-    | expression 
-    (
-        ';' blockDeclarationsAndStatements?
-      -> ^(EXPR_STMT expression) blockDeclarationsAndStatements?
-      | (',' expression)* 
-      -> ^(EXPR_LIST expression+)
-    )
+    | ( 
+        specificationStatement blockDeclarationsAndStatements? 
+      | expression 
+        (
+          ';' blockDeclarationsAndStatements?
+        -> ^(EXPR_STMT expression) blockDeclarationsAndStatements?
+        | (',' expression)* 
+        -> ^(EXPR_LIST expression+)
+        )
+      )
     ;
 
 annotatedDeclarationOrStatement
     : controlStructure
-    | (specificationStart) => specificationStatement //note: the syntactic predicate here is not really necessary, we could move this alt down into the final alt
     | (annotatedDeclarationStart) => annotatedDeclaration
-    | expressionStatement
-    ;
-
-//special rule for syntactic predicates
-specificationStart
-    : LIDENTIFIER '='
+    | (expressionStatement | specificationStatement)
     ;
 
 //we don't need to distinguish methods from attributes
@@ -788,9 +784,15 @@ namedSpecifiedArgument
     : parameterName specifier ';'!
     ;
 
+//special rule for syntactic predicate
 namedArgumentStart
     : specificationStart
     | declarationStart
+    ;
+
+//special rule for syntactic predicates
+specificationStart
+    : LIDENTIFIER '='
     ;
 
 parameterName
