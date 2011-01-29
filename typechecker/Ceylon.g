@@ -50,6 +50,7 @@ tokens {
     INTERFACE_DECL;
     INTERFACE_BODY;
     MEMBER_NAME;
+    MEMBER_BODY;
     METHOD_DECL;
     METATYPE_LIST;
     NAMED_ARG;
@@ -163,8 +164,13 @@ packagePath
     ;
     
 block
+    : '{' annotatedDeclarationOrStatement* directiveStatement? '}'
+    -> ^(BLOCK annotatedDeclarationOrStatement* directiveStatement?)
+    ;
+
+memberBody
     : '{' blockDeclarationsAndStatements? '}'
-    -> ^(BLOCK blockDeclarationsAndStatements?)
+    -> ^(MEMBER_BODY blockDeclarationsAndStatements?)
     ;
 
 //This rule accounts for the problem that we
@@ -292,8 +298,8 @@ memberDeclaration
       -> ^(METHOD_DECL memberType memberName memberParameters methodDefinition?)
       | attributeDefinition 
       -> ^(ATTRIBUTE_DECL memberType memberName attributeDefinition?)
-      | block
-      -> ^(ATTRIBUTE_GETTER memberType memberName block)      
+      | memberBody
+      -> ^(ATTRIBUTE_GETTER memberType memberName memberBody)      
       )
     ;
 
@@ -315,7 +321,7 @@ memberParameters
 //      a parExpression, just like we do for Smalltalk
 //      style parameters below?
 methodDefinition
-    : block | specifier? ';'!
+    : memberBody | specifier? ';'!
     ;
 
 attributeDefinition
