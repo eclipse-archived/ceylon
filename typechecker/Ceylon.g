@@ -172,42 +172,37 @@ block
     ;
 
 memberBody
-    : '{' blockDeclarationsAndStatements? '}'
-    -> ^(MEMBER_BODY blockDeclarationsAndStatements?)
+    : '{' memberBodyDeclarationsAndStatements? '}'
+    -> ^(MEMBER_BODY memberBodyDeclarationsAndStatements?)
     ;
 
 //This rule accounts for the problem that we
 //can't tell whether a member body is a block
 //or a named argument list until after we
 //finish parsing it
-blockDeclarationsAndStatements
-    : controlStructure blockDeclarationsAndStatements?
-    | directiveStatement
-    | (annotatedDeclarationStart) => annotatedDeclaration blockDeclarationsAndStatements?
-    | ( 
-        specificationStatement blockDeclarationsAndStatements?
-      | expressionsOrExpressionStatement
-      )
+memberBodyDeclarationsAndStatements
+    : (annotatedDeclarationStart) => annotatedDeclaration memberBodyDeclarationsAndStatements?
+    | ( specificationStatement memberBodyDeclarationsAndStatements?
+    | controlStructure memberBodyDeclarationsAndStatements?
+    | expressionsOrExpressionStatement
+    | directiveStatement )
     ;
-
+    
 expressionsOrExpressionStatement
     : expression 
       (
-        ';' blockDeclarationsAndStatements?
-      -> ^(EXPR_STMT expression) blockDeclarationsAndStatements?
+        ';' memberBodyDeclarationsAndStatements?
+      -> ^(EXPR_STMT expression) memberBodyDeclarationsAndStatements?
       | (',' expression)* 
       -> ^(EXPR_LIST expression+)
       )
     ;
     
 annotatedDeclarationOrStatement
-    : controlStructure
-    | (annotatedDeclarationStart) => annotatedDeclaration
-    | (expressionStatement | specificationStatement)
+    : (annotatedDeclarationStart) => annotatedDeclaration
+    | (controlStructure | expressionStatement | specificationStatement)
     ;
 
-//we don't need to distinguish methods from attributes
-//in the grammar
 annotatedDeclaration
     :
     annotations?
