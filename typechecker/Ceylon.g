@@ -293,22 +293,54 @@ retryDirective
     -> ^(RETRY_STMT)
     ;
 
+//TODO: should we allow the shortcut style of method
+//      definition for a method or getter which returns
+//      a parExpression, just like we do for Smalltalk
+//      style parameters below?
 memberDeclaration
+    : objectDeclaration
+    -> ^(OBJECT_DECL objectDeclaration)
+    | setterDeclaration
+    -> ^(ATTRIBUTE_SETTER setterDeclaration)
+    | voidMethodDeclaration
+    -> ^(METHOD_DECL voidMethodDeclaration)
+    | typedMethodOrAttributeDeclaration
+    ;
+
+objectDeclaration
     : 'object' memberName objectDefinition
-    -> ^(OBJECT_DECL memberName objectDefinition)
-    | 'assign' memberName block
-    -> ^(ATTRIBUTE_SETTER memberName block)
-    | 'void' memberName methodParameters voidMethodDefinition
-    -> ^(METHOD_DECL 'void' memberName methodParameters voidMethodDefinition?)
-    | inferrableType memberName
-      ( 
-        methodParameters methodDefinition
-      -> ^(METHOD_DECL inferrableType memberName methodParameters methodDefinition?)
-      | attributeDefinition 
-      -> ^(ATTRIBUTE_DECL inferrableType memberName attributeDefinition?)
-      | memberBody
-      -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
-      )
+    ;
+
+voidMethodDeclaration
+    : 'void' memberName voidMethodDefinition
+    ;
+
+setterDeclaration
+    : 'assign' memberName block
+    ;
+
+voidMethodDefinition
+    : methodParameters (block | specifier? ';'!)
+    ;
+
+methodDefinition
+    : methodParameters (memberBody | specifier? ';'!)
+    ;
+
+attributeDefinition
+    : (specifier | initializer)? ';'!
+    ;
+
+typedMethodOrAttributeDeclaration
+    : inferrableType memberName
+    ( 
+      methodDefinition
+    -> ^(METHOD_DECL inferrableType memberName methodDefinition)
+    | attributeDefinition
+    -> ^(ATTRIBUTE_DECL inferrableType memberName attributeDefinition?)
+    | memberBody
+    -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
+    )
     ;
 
 inferrableType
@@ -327,22 +359,6 @@ methodParameters
 objectDefinition
     : extendedType? satisfiedTypes? classBody
     ;
-
-//TODO: should we allow the shortcut style of method
-//      definition for a method or getter which returns
-//      a parExpression, just like we do for Smalltalk
-//      style parameters below?
-methodDefinition
-    : memberBody | specifier? ';'!
-    ;
-
-voidMethodDefinition
-    : block | specifier? ';'!
-    ;
-
-attributeDefinition
-    : (specifier | initializer)? ';'!
-    ;
     
 interfaceDeclaration
     :
@@ -353,7 +369,11 @@ interfaceDeclaration
         metatypes?
         satisfiedTypes?
         typeConstraints?
-        (interfaceBody | typeSpecifier ';'!)
+        interfaceDefinition
+    ;
+
+interfaceDefinition
+    : interfaceBody | typeSpecifier ';'!
     ;
 
 interfaceBody
@@ -373,7 +393,11 @@ classDeclaration
         extendedType?
         satisfiedTypes?
         typeConstraints?
-        (classBody | typeSpecifier? ';'!)
+        classDefinition
+    ;
+
+classDefinition
+    : classBody | typeSpecifier? ';'!
     ;
 
 classBody
@@ -792,21 +816,42 @@ namedArgument
     ;
 
 namedArgumentDeclaration
-    : 'object' parameterName objectDefinition
-    -> parameterName ^(OBJECT_ARG parameterName objectDefinition)
-    /*'assign' memberName block
-    -> ^(ATTRIBUTE_SETTER memberName block)*/
-    | 'void' parameterName formalParameters+ block
-    -> parameterName ^(METHOD_ARG 'void' parameterName formalParameters+ block)
-    | inferrableType parameterName
-      ( 
-        formalParameters+ memberBody
-      -> parameterName ^(METHOD_ARG inferrableType parameterName formalParameters+ memberBody)
-      | memberBody
-      ->parameterName ^(ATTRIBUTE_ARG inferrableType parameterName memberBody)      
-      )
+    : objectArgument
+    | voidMethodArgument
+    | typedMethodOrGetterArgument
     ;
     
+    /*'assign' memberName block
+    -> ^(ATTRIBUTE_SETTER memberName block)*/
+
+objectArgument
+    : 'object' parameterName objectDefinition
+    -> parameterName ^(OBJECT_ARG parameterName objectDefinition)
+    ;
+
+voidMethodArgument
+    : 'void' parameterName voidMethodArgumentDefinition
+    -> parameterName ^(METHOD_ARG 'void' parameterName voidMethodArgumentDefinition)
+    ;
+
+voidMethodArgumentDefinition
+    : formalParameters+ block
+    ;
+
+methodArgumentDefinition
+    : formalParameters+ memberBody
+    ;
+    
+typedMethodOrGetterArgument
+    : inferrableType parameterName
+    ( 
+      methodArgumentDefinition
+    -> parameterName ^(METHOD_ARG inferrableType parameterName methodArgumentDefinition)
+    | memberBody
+    -> parameterName ^(ATTRIBUTE_ARG inferrableType parameterName memberBody)      
+    )
+    ;
+
 namedSpecifiedArgument
     : parameterName specifier ';'
     -> ^(SPEC_ARG parameterName specifier)
