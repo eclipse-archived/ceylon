@@ -8,26 +8,25 @@ options {
 tokens {
     ANNOTATION;
     ANNOTATION_LIST;
-    MEMBER_DECL;
-    TYPE_DECL;
     ALIAS_DECL;
-    ABSTRACT_MEMBER_DECL;
     ANNOTATION_NAME;
-    ARG_LIST;
     ARG_NAME;
-    ANON_METH;
+    INLINE_METHOD_ARG;
+    ATTRIBUTE_ARG;
     ATTRIBUTE_DECL;
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
+    BLOCK;
     BREAK_STMT;
     CALL_EXPR;
+    CASE_DEFAULT;
+    CASE_ITEM;
     CASE_LIST;
     CATCH_BLOCK;
     CATCH_STMT;
     CHAR_CST;
     CLASS_BODY;
     CLASS_DECL;
-    OBJECT_DECL;
     CONDITION;
     CONTINUE_STMT;
     DO_BLOCK;
@@ -35,7 +34,11 @@ tokens {
     EXPR;
     EXPR_LIST;
     EXPR_STMT;
+    FAIL_BLOCK;
     FINALLY_BLOCK;
+    FOR_CONTAINMENT;
+    FOR_ITERATOR;
+    FOR_STMT;
     FORMAL_PARAMETER;
     FORMAL_PARAMETER_LIST;
     IF_FALSE;
@@ -49,21 +52,32 @@ tokens {
     INIT_EXPR;
     INTERFACE_DECL;
     INTERFACE_BODY;
+    MEMBER_DECL;
     MEMBER_NAME;
     MEMBER_BODY;
+    METHOD_ARG;
     METHOD_DECL;
     METATYPE_LIST;
     NAMED_ARG;
-    SEQ_ARG;
+    NAMED_ARG_LIST;
+    OBJECT_DECL;
+    OBJECT_ARG;
+    POS_ARG;
+    POS_ARG_LIST;
+    POSTFIX_EXPR;
+    PRIMARY;
     RET_STMT;
-    BLOCK;
-    THROW_STMT;
     RETRY_STMT;
+    SATISFIES_EXPR;
+    SEQ_ARG;
+    SPECIAL_ARG;
+    THROW_STMT;
     TRY_BLOCK;
     TRY_CATCH_STMT;
     TRY_RESOURCE;
     TRY_STMT;
     TYPE_ARG_LIST;
+    TYPE_DECL;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
@@ -72,8 +86,6 @@ tokens {
     SWITCH_STMT;
     SWITCH_EXPR;
     SWITCH_CASE_LIST;
-    CASE_ITEM;
-    CASE_DEFAULT;
     TYPE_CONSTRAINT_LIST;
     TYPE;
     TYPE_CONSTRAINT;
@@ -84,8 +96,11 @@ tokens {
     LOWER_BOUND;
     UPPER_BOUND;
     SELECTOR_LIST;
+    SEQUENCE_ENUM;
+    SPEC_ARG;
     SPEC_EXPR;
     SPEC_STMT;
+    SUPERCLASS;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
     STRING_CONCAT;
@@ -93,20 +108,10 @@ tokens {
     FLOAT_CST;
     STRING_CST;
     QUOTE_CST;
-    FOR_STMT;
-    FOR_ITERATOR;
-    FAIL_BLOCK;
     LOOP_BLOCK;
-    FOR_CONTAINMENT;
-    SEQUENCE_ENUM;
-    SUPERCLASS;
-    POSTFIX_EXPR;
     EXISTS_EXPR;
     NONEMPTY_EXPR;
     IS_EXPR;
-    SATISFIES_EXPR;
-    SPECIAL_ARG;
-    PRIMARY;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -125,8 +130,6 @@ typeDeclaration
     -> ^(CLASS_DECL classDeclaration)
     | interfaceDeclaration
     -> ^(INTERFACE_DECL interfaceDeclaration)
-    | objectDeclaration
-    -> ^(OBJECT_DECL objectDeclaration)
     ;
 
 importDeclaration
@@ -182,17 +185,21 @@ blockDeclarationsAndStatements
     | directiveStatement
     | (annotatedDeclarationStart) => annotatedDeclaration blockDeclarationsAndStatements?
     | ( 
-        specificationStatement blockDeclarationsAndStatements? 
-      | expression 
-        (
-          ';' blockDeclarationsAndStatements?
-        -> ^(EXPR_STMT expression) blockDeclarationsAndStatements?
-        | (',' expression)* 
-        -> ^(EXPR_LIST expression+)
-        )
+        specificationStatement blockDeclarationsAndStatements?
+      | expressionsOrExpressionStatement
       )
     ;
 
+expressionsOrExpressionStatement
+    : expression 
+      (
+        ';' blockDeclarationsAndStatements?
+      -> ^(EXPR_STMT expression) blockDeclarationsAndStatements?
+      | (',' expression)* 
+      -> ^(EXPR_LIST expression+)
+      )
+    ;
+    
 annotatedDeclarationOrStatement
     : controlStructure
     | (annotatedDeclarationStart) => annotatedDeclaration
@@ -286,7 +293,9 @@ retryDirective
     ;
 
 memberDeclaration
-    : 'assign' memberName block
+    : 'object' memberName objectDefinition
+    -> ^(OBJECT_DECL memberName objectDefinition)
+    | 'assign' memberName block
     -> ^(ATTRIBUTE_SETTER memberName block)
     | 'void' memberName methodParameters voidMethodDefinition
     -> ^(METHOD_DECL 'void' memberName methodParameters voidMethodDefinition?)
@@ -316,6 +325,10 @@ methodParameters
         extraFormalParameters? 
         metatypes? 
         typeConstraints?
+    ;
+
+objectDefinition
+    : extendedType? satisfiedTypes? classBody
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -364,15 +377,6 @@ classDeclaration
         satisfiedTypes?
         typeConstraints?
         (classBody | typeSpecifier? ';'!)
-    ;
-
-objectDeclaration
-    :
-        'object'!
-        memberName
-        extendedType?
-        satisfiedTypes?
-        classBody
     ;
 
 classBody
@@ -773,15 +777,28 @@ arguments
     ;
     
 namedArgument
-    : namedSpecifiedArgument | namedFunctionalArgument
+    : namedSpecifiedArgument | namedArgumentDeclaration
     ;
 
-namedFunctionalArgument
-    : memberType parameterName formalParameters* block
+namedArgumentDeclaration
+    : 'object' parameterName objectDefinition
+    -> parameterName ^(OBJECT_ARG parameterName objectDefinition)
+    /*'assign' memberName block
+    -> ^(ATTRIBUTE_SETTER memberName block)*/
+    | 'void' parameterName formalParameters+ block
+    -> parameterName ^(METHOD_ARG 'void' parameterName formalParameters+ block)
+    | inferrableType parameterName
+      ( 
+        formalParameters+ memberBody
+      -> parameterName ^(METHOD_ARG inferrableType parameterName formalParameters+ memberBody)
+      | memberBody
+      ->parameterName ^(ATTRIBUTE_ARG inferrableType parameterName memberBody)      
+      )
     ;
-
+    
 namedSpecifiedArgument
-    : parameterName specifier ';'!
+    : parameterName specifier ';'
+    -> ^(SPEC_ARG parameterName specifier)
     ;
 
 //special rule for syntactic predicate
@@ -802,7 +819,7 @@ parameterName
 
 namedArguments
     : '{' ((namedArgumentStart) => namedArgument)* expressions? '}'
-    -> ^(ARG_LIST ^(NAMED_ARG namedArgument)* ^(SEQ_ARG expressions)?)
+    -> ^(NAMED_ARG_LIST ^(NAMED_ARG namedArgument)* ^(SEQ_ARG expressions)?)
     ;
 
 parExpression 
@@ -811,7 +828,7 @@ parExpression
     
 positionalArguments
     : '(' ( positionalArgument (',' positionalArgument)* )? ')'
-    -> ^(ARG_LIST positionalArgument*)
+    -> ^(POS_ARG_LIST ^(POS_ARG positionalArgument)*)
     ;
 
 positionalArgument
@@ -822,15 +839,8 @@ positionalArgument
 //a smalltalk-style parameter to a positional parameter
 //invocation
 functionalArgument
-    : functionalArgumentHeader functionalArgumentDefinition
-    -> ^(NAMED_ARG functionalArgumentHeader? ^(ANON_METH functionalArgumentDefinition))
-    ;
-    
-functionalArgumentHeader
-    : parameterName
-    -> ^(ARG_NAME parameterName)
-    /*| 'case' '(' expressions ')'
-    -> ^(CASE_ITEM expressions)*/
+    : parameterName functionalArgumentDefinition
+    -> ^(NAMED_ARG parameterName ^(INLINE_METHOD_ARG parameterName functionalArgumentDefinition))
     ;
 
 functionalArgumentDefinition
