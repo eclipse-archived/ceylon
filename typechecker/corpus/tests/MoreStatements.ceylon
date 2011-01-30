@@ -13,7 +13,6 @@ class StatementsWithOperators() {
 	List<String> names = {person1, person2, person3}[].name;
 	String? name = person?.name;
 	this.total += item.price;
-	if ( nonempty args[i] && args[i]?.first != `-` ) { }
 	Float vol = length**3;
 	map.define(person.name->person);
 	order.lineItems[index] := LineItem { product = prod; quantity = 1; };

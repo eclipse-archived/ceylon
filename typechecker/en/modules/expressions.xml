@@ -2567,9 +2567,7 @@ createItemMethod.intercept()
     <programlisting>String? name = person?.name;</programlisting>
     
     <programlisting>this.total += item.price;</programlisting>
-    
-    <programlisting>if ( nonempty args[i] &amp;&amp; args[i]?.first != `-` ) { ... }</programlisting>
-    
+        
     <programlisting>Float vol = length**3;</programlisting>
     
     <programlisting>map.define(person.name->person);</programlisting>
