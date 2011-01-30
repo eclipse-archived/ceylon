@@ -308,36 +308,24 @@ memberDeclaration
     ;
 
 objectDeclaration
-    : 'object' memberName objectDefinition
+    : 'object' memberName extendedType? satisfiedTypes? classBody
     ;
 
 voidMethodDeclaration
-    : 'void' memberName voidMethodDefinition
+    : 'void' memberName methodParameters (block | specifier? ';'!)
     ;
 
 setterDeclaration
     : 'assign' memberName block
     ;
 
-voidMethodDefinition
-    : methodParameters (block | specifier? ';'!)
-    ;
-
-methodDefinition
-    : methodParameters (memberBody | specifier? ';'!)
-    ;
-
-attributeDefinition
-    : (specifier | initializer)? ';'!
-    ;
-
 typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
-      methodDefinition
-    -> ^(METHOD_DECL inferrableType memberName methodDefinition)
-    | attributeDefinition
-    -> ^(ATTRIBUTE_DECL inferrableType memberName attributeDefinition?)
+      methodParameters (memberBody | specifier? ';')
+    -> ^(METHOD_DECL inferrableType memberName methodParameters memberBody? specifier?)
+    | (specifier | initializer)? ';'
+    -> ^(ATTRIBUTE_DECL inferrableType memberName specifier? initializer?)
     | memberBody
     -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
     )
@@ -355,10 +343,6 @@ methodParameters
         metatypes? 
         typeConstraints?
     ;
-
-objectDefinition
-    : extendedType? satisfiedTypes? classBody
-    ;
     
 interfaceDeclaration
     :
@@ -369,11 +353,7 @@ interfaceDeclaration
         metatypes?
         satisfiedTypes?
         typeConstraints?
-        interfaceDefinition
-    ;
-
-interfaceDefinition
-    : interfaceBody | typeSpecifier ';'!
+        (interfaceBody | typeSpecifier ';'!)
     ;
 
 interfaceBody
@@ -393,11 +373,7 @@ classDeclaration
         extendedType?
         satisfiedTypes?
         typeConstraints?
-        classDefinition
-    ;
-
-classDefinition
-    : classBody | typeSpecifier? ';'!
+        (classBody | typeSpecifier? ';'!)
     ;
 
 classBody
@@ -825,28 +801,20 @@ namedArgumentDeclaration
     -> ^(ATTRIBUTE_SETTER memberName block)*/
 
 objectArgument
-    : 'object' parameterName objectDefinition
-    -> parameterName ^(OBJECT_ARG parameterName objectDefinition)
+    : 'object' parameterName extendedType? satisfiedTypes? classBody
+    -> parameterName ^(OBJECT_ARG parameterName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
-    : 'void' parameterName voidMethodArgumentDefinition
-    -> parameterName ^(METHOD_ARG 'void' parameterName voidMethodArgumentDefinition)
+    : 'void' parameterName formalParameters+ block
+    -> parameterName ^(METHOD_ARG 'void' parameterName formalParameters+ block)
     ;
 
-voidMethodArgumentDefinition
-    : formalParameters+ block
-    ;
-
-methodArgumentDefinition
-    : formalParameters+ memberBody
-    ;
-    
 typedMethodOrGetterArgument
     : inferrableType parameterName
     ( 
-      methodArgumentDefinition
-    -> parameterName ^(METHOD_ARG inferrableType parameterName methodArgumentDefinition)
+      (formalParameters+ memberBody)
+    -> parameterName ^(METHOD_ARG inferrableType parameterName formalParameters+ memberBody)
     | memberBody
     -> parameterName ^(ATTRIBUTE_ARG inferrableType parameterName memberBody)      
     )
@@ -900,7 +868,7 @@ functionalArgument
 
 functionalArgumentDefinition
     : ( (formalParametersStart) => formalParameters )? 
-      ( block | parExpression /*| literal | specialValue*/ )
+      (block | parExpression)
     ;
 
 //Support "T x in arg" in positional argument lists
