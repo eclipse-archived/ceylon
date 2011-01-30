@@ -436,21 +436,20 @@ type
     ;
 
 staticType
-    : typeNameWithArguments ('.' typeNameWithArguments)* abbreviation*
-    -> ^(TYPE typeNameWithArguments+ abbreviation*)
+    : typeNameWithArguments ('.' typeNameWithArguments)* typeAbbreviation*
+    -> ^(TYPE typeNameWithArguments+ typeAbbreviation*)
     ;
 
 runtimeType
-    : 'subtype' abbreviation*
-    -> ^(TYPE 'subtype' abbreviation*)
+    : 'subtype' typeAbbreviation*
+    -> ^(TYPE 'subtype' typeAbbreviation*)
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
 
-abbreviation
+typeAbbreviation
     : '?' | '[]' //| '[' dimension ']'
     ;
-
 
 typeNameWithArguments
     : typeName typeArguments?
@@ -728,6 +727,7 @@ selector
     | argumentsWithFunctionalArguments
     -> ^(CALL_EXPR argumentsWithFunctionalArguments)
     | elementSelector
+    -> ^(SUBSCRIPT_EXPR elementSelector)
     | postfixOperator 
     -> ^(POSTFIX_EXPR postfixOperator)
     ;
@@ -741,33 +741,24 @@ memberOperator
     ;
 
 nameAndTypeArguments
-    : typeNameAndTypeArguments 
-    | memberNameAndTypeArguments 
+    : (typeName|memberName) ((typeArgumentsStart) => typeArguments)?
     | 'subtype' 
     | 'outer'
     ;
 
-typeNameAndTypeArguments
-    : typeName ( (typeArguments) => typeArguments )?
-      //('[]' | ('?') => '?' )*
-    ;
-
-memberNameAndTypeArguments
-    : memberName ( (typeArguments) => typeArguments )?
+//special rule for syntactic predicate to 
+//determine if we have a < operator, or a
+//type argument list
+typeArgumentsStart
+    : '<' 
+      (UIDENTIFIER ('.' UIDENTIFIER)* | 'subtype') 
+      typeAbbreviation*
+      ('>'|'<'|','|'...')
     ;
 
 elementSelector
     : ('?[' | '[') elementsSpec ']'
-    -> ^(SUBSCRIPT_EXPR '?['? elementsSpec)
     ;
-
-/*selectorStart
-    : '?[' | '['
-    | '('
-    | '{'
-    | memberOperator
-    | postfixOperator
-    ;*/
 
 elementsSpec
     : additiveExpression ( '...' | '..' additiveExpression )?
@@ -797,9 +788,6 @@ namedArgumentDeclaration
     | typedMethodOrGetterArgument
     ;
     
-    /*'assign' memberName block
-    -> ^(ATTRIBUTE_SETTER memberName block)*/
-
 objectArgument
     : 'object' parameterName extendedType? satisfiedTypes? classBody
     -> parameterName ^(OBJECT_ARG parameterName extendedType? satisfiedTypes? classBody)
