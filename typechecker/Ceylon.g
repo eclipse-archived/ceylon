@@ -220,7 +220,9 @@ annotatedDeclaration
     )
     ;
 
-//special rule for syntactic predicates
+//special rule for syntactic predicate
+//to distinguish between an annotation
+//and an expression statement
 annotatedDeclarationStart
     : declarationStart
     | LIDENTIFIER
@@ -232,6 +234,9 @@ annotatedDeclarationStart
       )
     ;
 
+//special rule for syntactic predicates
+//that distinguish declarations from
+//expressions
 declarationStart
     : declarationKeyword 
     | type '...'? LIDENTIFIER
@@ -592,7 +597,9 @@ stringTemplate
     ((interpolatedExpressionStart) => expression SIMPLESTRINGLITERAL)+
     ;
 
-//special rule for syntactic predicates
+//special rule for syntactic predicate
+//to distinguish an interpolated expression
+//in a string template
 //this includes every token that could be 
 //the beginning of an expression, except 
 //for SIMPLESTRINGLITERAL and '['
@@ -814,6 +821,8 @@ namedSpecifiedArgument
     ;
 
 //special rule for syntactic predicate
+//to distinguish between a named argument
+//and a sequenced argument
 namedArgumentStart
     : specificationStart | declarationStart
     ;
@@ -881,7 +890,10 @@ extraFormalParameters
     -> ^(PARAM_LIST ^(PARAM extraFormalParameter)+)
     ;
 
-//special rule for syntactic predicates
+//special rule for syntactic predicate
+//to distinguish between a formal 
+//parameter list and a parenthisized body 
+//of an inline callable argument
 //be careful with this one, since it 
 //matches "()", which can also be an 
 //argument list
@@ -922,6 +934,7 @@ specifiedFormalParameter
     : '=' type parameterName
     ;
 
+//special rule for syntactic predicate
 specifiedFormalParameterStart
     : '=' declarationStart
     ;
