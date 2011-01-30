@@ -310,10 +310,6 @@ inferrableType
     : type | 'local'
     ;
 
-memberType
-    : inferrableType | 'void'
-    ;
-
 methodParameters
     : 
         typeParameters? 
@@ -804,8 +800,7 @@ namedSpecifiedArgument
 
 //special rule for syntactic predicate
 namedArgumentStart
-    : specificationStart
-    | declarationStart
+    : specificationStart | declarationStart
     ;
 
 //special rule for syntactic predicates
