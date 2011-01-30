@@ -470,7 +470,16 @@ annotation
     ;
 
 annotationArguments
-    : arguments | ( nonstringLiteral | stringLiteral )+
+    : arguments | literalArguments
+    ;
+
+literalArguments
+    : literalArgument+
+    -> ^(POS_ARG_LIST ^(POS_ARG literalArgument)+)
+    ;
+    
+literalArgument
+    : nonstringLiteral | stringLiteral
     ;
 
 typeName
