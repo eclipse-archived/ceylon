@@ -11,7 +11,6 @@ tokens {
     ALIAS_DECL;
     ANNOTATION_NAME;
     ARG_NAME;
-    INLINE_METHOD_ARG;
     ATTRIBUTE_ARG;
     ATTRIBUTE_DECL;
     ATTRIBUTE_GETTER;
@@ -50,6 +49,8 @@ tokens {
     IMPORT_PATH;
     IMPORT_ELEM;
     INIT_EXPR;
+    INLINE_METHOD_ARG;
+    INLINE_ARG_LIST;
     INTERFACE_DECL;
     INTERFACE_BODY;
     MEMBER_DECL;
@@ -764,9 +765,14 @@ elementsSpec
     ;
 
 argumentsWithFunctionalArguments
-    : arguments functionalArgument*
+    : arguments functionalArguments?
     ;
-    
+
+functionalArguments
+    : functionalArgument+
+    -> ^(INLINE_ARG_LIST functionalArgument+)
+    ;
+
 arguments
     : positionalArguments | namedArguments
     ;
