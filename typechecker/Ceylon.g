@@ -55,7 +55,7 @@ tokens {
     INTERFACE_BODY;
     MEMBER_DECL;
     MEMBER_NAME;
-    MEMBER_BODY;
+    BROKEN_MEMBER_BODY;
     METHOD_ARG;
     METHOD_DECL;
     METATYPE_LIST;
@@ -172,28 +172,33 @@ block
     -> ^(BLOCK annotatedDeclarationOrStatement* directiveStatement?)
     ;
 
-memberBody
-    : '{' memberBodyDeclarationsAndStatements? '}'
-    -> ^(MEMBER_BODY memberBodyDeclarationsAndStatements?)
-    ;
-
 //This rule accounts for the problem that we
 //can't tell whether a member body is a block
 //or a named argument list until after we
 //finish parsing it
-memberBodyDeclarationsAndStatements
-    : (annotatedDeclarationStart) => annotatedDeclaration memberBodyDeclarationsAndStatements?
-    | ( specificationStatement memberBodyDeclarationsAndStatements?
-    | controlStructure memberBodyDeclarationsAndStatements?
-    | expressionsOrExpressionStatement
+memberBody
+    : (namedArguments) => namedArguments //first try to match with no directives or control structures
+    | (block) => block //if there is a "return" directives control structures, it must be a block
+    //if it doesn't match as a block or as a named argument
+    //list, then there must be an error somewhere, so parse
+    //it again looking for the error
+    | '{' brokenMemberBody? '}' 
+    -> ^(BROKEN_MEMBER_BODY brokenMemberBody?)
+    ;
+
+brokenMemberBody
+    : (annotatedDeclarationStart) => annotatedDeclaration brokenMemberBody?
+    | ( specificationStatement brokenMemberBody?
+    | controlStructure brokenMemberBody?
+    | expressionStatementOrList
     | directiveStatement )
     ;
     
-expressionsOrExpressionStatement
+expressionStatementOrList
     : expression 
       (
-        ';' memberBodyDeclarationsAndStatements?
-      -> ^(EXPR_STMT expression) memberBodyDeclarationsAndStatements?
+        ';' brokenMemberBody?
+      -> ^(EXPR_STMT expression) brokenMemberBody?
       | (',' expression)* 
       -> ^(EXPR_LIST expression+)
       )
