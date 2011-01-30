@@ -131,5 +131,40 @@ class Arguments() {
 			};
 			
 	}
+	
+	class ExoticArgs() {
+		
+		class Name(String first, String last) {
+			shared default String firstName = first;
+			shared default String lastName = last;
+		}
+		
+		void printName(Name name) { log.info(name.first + " " + name.last); }
+		
+		printName { 
+			name = Name("Gavin", "King"); 
+		};
+		
+		printName {
+			Name name {
+				first = "Gavin";
+				last = "King";
+			}
+		};
+		
+		printName {
+			Name name {
+				return Name("Gavin", "King")
+			}
+		};
+		
+		printName {
+			object name extends Name("Gavin", "King") {
+				actual String first { return super.first.uppercase }
+				actual String last { return super.last.uppercase }
+			}
+		};
+		
+	}
 
 }
