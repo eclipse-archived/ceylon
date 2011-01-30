@@ -10,7 +10,6 @@ tokens {
     ANNOTATION_LIST;
     ALIAS_DECL;
     ANNOTATION_NAME;
-    ARG_NAME;
     ATTRIBUTE_ARG;
     ATTRIBUTE_DECL;
     ATTRIBUTE_GETTER;
@@ -38,8 +37,9 @@ tokens {
     FOR_CONTAINMENT;
     FOR_ITERATOR;
     FOR_STMT;
-    FORMAL_PARAMETER;
-    FORMAL_PARAMETER_LIST;
+    PARAM_NAME;
+    PARAM;
+    PARAM_LIST;
     IF_FALSE;
     IF_STMT;
     IF_TRUE;
@@ -815,7 +815,7 @@ specificationStart
 
 parameterName
     : LIDENTIFIER
-    -> ^(ARG_NAME LIDENTIFIER)
+    -> ^(PARAM_NAME LIDENTIFIER)
     ;
 
 namedArguments
@@ -860,7 +860,7 @@ specialArgument
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER formalParameter)*)
+    -> ^(PARAM_LIST ^(PARAM formalParameter)*)
     ;
 
 //Support for declaring functional formal parameters outside
@@ -868,7 +868,7 @@ formalParameters
 //Note that this is just a TODO in the spec
 extraFormalParameters
     : extraFormalParameter+
-    -> ^(FORMAL_PARAMETER_LIST ^(FORMAL_PARAMETER extraFormalParameter)+)
+    -> ^(PARAM_LIST ^(PARAM extraFormalParameter)+)
     ;
 
 //special rule for syntactic predicates
