@@ -216,7 +216,7 @@ annotatedDeclarationStart
 //expressions
 declarationStart
     : declarationKeyword 
-    | unabbreviatedType typeAbbreviation* '...'? LIDENTIFIER
+    | type '...'? LIDENTIFIER
     ;
 
 declarationKeyword
@@ -408,9 +408,8 @@ typeConstraints
     ;
 
 type
-    : (unabbreviatedType typeAbbreviation) => 
-          typeAsArgument (typeAbbreviationAsArgument^)* typeAbbreviation^
-    | unabbreviatedType
+    : (unabbreviatedType -> unabbreviatedType) 
+      (typeAbbreviation -> ^(TYPE typeAbbreviation ^(TYPE_ARG_LIST $type)))*
     ;
 
 unabbreviatedType
@@ -422,19 +421,8 @@ unabbreviatedType
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
 
-typeAsArgument
-    : unabbreviatedType
-    -> ^(TYPE_ARG_LIST unabbreviatedType)
-    ;
-
-typeAbbreviationAsArgument
-    : typeAbbreviation
-    -> ^(TYPE_ARG_LIST typeAbbreviation)
-    ;
-
 typeAbbreviation
-    : QMARK -> ^(TYPE QMARK)
-    | ARRAY -> ^(TYPE ARRAY)
+    : '?' | '[]'
     //| '[' dimension ']'
     ;
 
