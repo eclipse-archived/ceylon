@@ -14,6 +14,7 @@ tokens {
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BLOCK;
+    BASE;
     CALL_EXPR;
     CASE_LIST;
     CHAR_CST;
@@ -157,8 +158,9 @@ block
 //can't tell whether a member body is a block
 //or a named argument list until after we
 //finish parsing it
-memberBody options {memoize=true;}
+memberBody[Object mt] options {memoize=true;}
     : (namedArguments) => namedArguments //first try to match with no directives or control structures
+    -> ^(BLOCK ^(DIRECTIVE ^(RETURN ^(EXPR ^(PRIMARY ^(CALL_EXPR ^(BASE {((CommonTree)$mt).getChild(0)}) namedArguments))))))
     | (block) => block //if there is a "return" directives control structures, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -304,11 +306,11 @@ setterDeclaration
 typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
-      methodParameters (memberBody | specifier? ';')
+      methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
     -> ^(METHOD_DECL inferrableType memberName methodParameters memberBody? specifier?)
     | (specifier | initializer)? ';'
     -> ^(ATTRIBUTE_DECL inferrableType memberName specifier? initializer?)
-    | memberBody
+    | memberBody[$inferrableType.tree]
     -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
     )
     ;
@@ -674,7 +676,7 @@ exponentiationExpression
 
 incrementDecrementExpression
     : ('++'^ | '--'^) incrementDecrementExpression
-    | primary
+    | primary -> ^(PRIMARY primary)
     ;
 
 selfReference
@@ -685,9 +687,9 @@ enumeration
     : '{' expressions '}'
     -> ^(SEQUENCE_ENUM expressions)
     ;
-    
+
 primary
-    : ( base -> ^(PRIMARY base) )
+    : ( base -> ^(BASE base) )
     ( 
       memberSelector
       -> ^(MEMBER_EXPR $primary memberSelector)
@@ -782,9 +784,9 @@ voidMethodArgument
 typedMethodOrGetterArgument
     : inferrableType parameterName
     ( 
-      (formalParameters+ memberBody)
+      (formalParameters+ memberBody[$inferrableType.tree])
     -> parameterName ^(METHOD_ARG inferrableType parameterName formalParameters+ memberBody)
-    | memberBody
+    | memberBody[$inferrableType.tree]
     -> parameterName ^(ATTRIBUTE_ARG inferrableType parameterName memberBody)      
     )
     ;
