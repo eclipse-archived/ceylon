@@ -1116,6 +1116,9 @@ FractionalMagnitude
     ;
     
 fragment FLOATLITERAL :;
+//distinguish a float literal from 
+//a natural literals followed by a
+//member invocation or range op
 NATURALLITERAL
     : Digits
       ( 
@@ -1125,26 +1128,32 @@ NATURALLITERAL
       )
     ;
     
-fragment SPREAD:'[].';
-fragment LBRACKET:'[';
-fragment ARRAY:'[]';
-BRACKETS
+fragment SPREAD: '[].';
+fragment ARRAY: '[]';
+fragment LBRACKET: '[';
+//distinguish the spread operator "x[]."
+//from a sequenced type "T[]..."
+LBRACKETS
     : '['
-    ( 
-      ( { input.LA(1) == ']' && input.LA(2) == '.' && input.LA(3) != '.' }? => '].' { $type = SPREAD; } )
-    | ( { input.LA(1) == ']' }? => ']' { $type = ARRAY; } )
-    | { $type = LBRACKET; } 
+    (
+      (']' '.' ~'.') => '].' { $type = SPREAD; }
+    | (']') => ']' { $type = ARRAY; }
+    | { $type = LBRACKET; }
     )
-    ;    
+    ;
 
-fragment SAFEMEMBER:'?.';
-fragment SAFEINDEX:'?[';
-fragment QMARK:'?';
+fragment SAFEMEMBER: '?.';
+fragment SAFEINDEX: '?[';
+fragment QMARK: '?';
+//distinguish the safe index operator "x?[i]"
+//from an abbreviated type "T?[]"
+//and the safe member operator "x?.y" from 
+//the sequenced type "T?..."
 QMARKS
     : '?'
     (
-      ( { input.LA(1) == '[' && input.LA(2) != ']' }? => '[' { $type = SAFEINDEX; } )
-    | ( { input.LA(1) == '.' && input.LA(2) != '.' }? => '.' { $type = SAFEMEMBER; } ) 
+      ('[' ~']') => '[' { $type = SAFEINDEX; }
+    | ('.' ~'.') => '.' { $type = SAFEMEMBER; }
     | { $type = QMARK; }
     )
     ;
