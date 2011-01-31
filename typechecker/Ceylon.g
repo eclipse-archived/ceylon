@@ -176,7 +176,7 @@ block
 //can't tell whether a member body is a block
 //or a named argument list until after we
 //finish parsing it
-memberBody
+memberBody options {memoize=true;}
     : (namedArguments) => namedArguments //first try to match with no directives or control structures
     | (block) => block //if there is a "return" directives control structures, it must be a block
     //if it doesn't match as a block or as a named argument
@@ -204,7 +204,7 @@ expressionStatementOrList
       )
     ;
     
-annotatedDeclarationOrStatement
+annotatedDeclarationOrStatement options {memoize=true;}
     : (annotatedDeclarationStart) => annotatedDeclaration
     | (controlStructure | expressionStatement | specificationStatement)
     ;
@@ -892,7 +892,7 @@ extraFormalParameters
 
 //special rule for syntactic predicate
 //to distinguish between a formal 
-//parameter list and a parenthisized body 
+//parameter list and a parenthesized body 
 //of an inline callable argument
 //be careful with this one, since it 
 //matches "()", which can also be an 
