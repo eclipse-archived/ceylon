@@ -120,7 +120,7 @@ importDeclaration
     ;
 
 importElements
-    : importElement (',' importElement)* (',' importWildcard)?
+    : importElement (','! importElement)* (','! importWildcard)?
     | importWildcard
     ;
 
