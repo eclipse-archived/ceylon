@@ -20,6 +20,7 @@ tokens {
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
+    DIRECTIVE;
     EXPR;
     EXPR_LIST;
     EXPR_STMT;
@@ -42,6 +43,7 @@ tokens {
     INTERFACE_BODY;
     MEMBER_DECL;
     MEMBER_NAME;
+    MEMBER_EXPR;
     BROKEN_MEMBER_BODY;
     METHOD_ARG;
     METHOD_DECL;
@@ -239,7 +241,8 @@ expressionStatement
     ;
 
 directiveStatement
-    : directive (';'!)?
+    : directive ';'?
+    -> ^(DIRECTIVE directive)
     ;
 
 directive
@@ -684,13 +687,22 @@ enumeration
     ;
     
 primary
-    : base selector*
-    -> ^(PRIMARY base selector*)
-    ;
+    : ( base -> ^(PRIMARY base) )
+    ( 
+      memberSelector
+      -> ^(MEMBER_EXPR $primary memberSelector)
+      | argumentsWithFunctionalArguments
+      -> ^(CALL_EXPR $primary argumentsWithFunctionalArguments)
+      | elementSelector
+      -> ^(SUBSCRIPT_EXPR $primary elementSelector)
+      | postfixOperator 
+      -> ^(POSTFIX_EXPR $primary postfixOperator)
+    )*
+   ;
 
 postfixOperator
     : '--' | '++'
-    ;	
+    ;
 
 base 
     : nonstringLiteral
@@ -699,16 +711,6 @@ base
     | enumeration
     | selfReference
     | nameAndTypeArguments
-    ;
-    
-selector 
-    : memberSelector
-    | argumentsWithFunctionalArguments
-    -> ^(CALL_EXPR argumentsWithFunctionalArguments)
-    | elementSelector
-    -> ^(SUBSCRIPT_EXPR elementSelector)
-    | postfixOperator 
-    -> ^(POSTFIX_EXPR postfixOperator)
     ;
 
 memberSelector
@@ -720,7 +722,7 @@ memberOperator
     ;
 
 nameAndTypeArguments
-    : (typeName|memberName) ((typeArgumentsStart) => typeArguments)?
+    : (typeName | memberName) ((typeArgumentsStart) => typeArguments)?
     | 'subtype' 
     | 'outer'
     ;
@@ -773,8 +775,8 @@ objectArgument
     ;
 
 voidMethodArgument
-    : 'void' parameterName formalParameters+ block
-    -> parameterName ^(METHOD_ARG 'void' parameterName formalParameters+ block)
+    : VOID parameterName formalParameters+ block
+    -> parameterName ^(METHOD_ARG VOID parameterName formalParameters+ block)
     ;
 
 typedMethodOrGetterArgument
