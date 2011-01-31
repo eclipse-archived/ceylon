@@ -1262,19 +1262,19 @@ LINE_COMMENT
 
 MULTI_COMMENT
     :   '/*'
-        {
-            $channel=HIDDEN;
-        }
         (    ~('/'|'*')
         |    ('/' ~'*') => '/'
         |    ('*' ~'/') => '*'
         |    MULTI_COMMENT
         )*
         '*/'
+        {
+            skip();
+        }
         ;
         
 ABSTRACTS
-    : 'abstracts'
+    :   'abstracts'
     ;
 
 ASSIGN
@@ -1406,11 +1406,7 @@ TRY
     ;
 
 RETRY
-    : 'retry'
-    ;
-
-UNION
-    : 'union'
+    :   'retry'
     ;
 
 VOID
