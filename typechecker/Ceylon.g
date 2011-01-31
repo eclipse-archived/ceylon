@@ -216,7 +216,7 @@ annotatedDeclarationStart
 //expressions
 declarationStart
     : declarationKeyword 
-    | type '...'? LIDENTIFIER
+    | unabbreviatedType typeAbbreviation* '...'? LIDENTIFIER
     ;
 
 declarationKeyword
@@ -408,23 +408,34 @@ typeConstraints
     ;
 
 type
-    : staticType | runtimeType
+    : (unabbreviatedType typeAbbreviation) => 
+          typeAsArgument (typeAbbreviationAsArgument^)* typeAbbreviation^
+    | unabbreviatedType
     ;
 
-staticType
-    : typeNameWithArguments ('.' typeNameWithArguments)* typeAbbreviation*
-    -> ^(TYPE typeNameWithArguments+ typeAbbreviation*)
-    ;
-
-runtimeType
-    : 'subtype' typeAbbreviation*
-    -> ^(TYPE 'subtype' typeAbbreviation*)
+unabbreviatedType
+    : typeNameWithArguments ('.' typeNameWithArguments)* 
+    -> ^(TYPE typeNameWithArguments+ )
+    | SUBTYPE 
+    -> ^(TYPE SUBTYPE)
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
 
+typeAsArgument
+    : unabbreviatedType
+    -> ^(TYPE_ARG_LIST unabbreviatedType)
+    ;
+
+typeAbbreviationAsArgument
+    : typeAbbreviation
+    -> ^(TYPE_ARG_LIST typeAbbreviation)
+    ;
+
 typeAbbreviation
-    : '?' | '[]' //| '[' dimension ']'
+    : QMARK -> ^(TYPE QMARK)
+    | ARRAY -> ^(TYPE ARRAY)
+    //| '[' dimension ']'
     ;
 
 typeNameWithArguments
