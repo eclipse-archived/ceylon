@@ -58,6 +58,8 @@ tokens {
     PRIMARY;
     SATISFIES_EXPR;
     SEQ_ARG;
+    SEQ_TYPE;
+    SEQ_TYPE_PARAMETER;
     SPECIAL_ARG;
     TRY_CATCH_STMT;
     TRY_RESOURCE;
@@ -483,7 +485,7 @@ typeArguments
     ;
 
 typeArgument
-    : type '...'?
+    : type ( '...' -> ^(SEQ_TYPE type) | -> type ) 
     ; /*| '#'! dimension
     ;
 
@@ -511,13 +513,11 @@ typeParameters
     ;
 
 typeParameter
-    : ordinaryTypeParameter '...'? 
-    //| '#'! dimensionalTypeParameter
-    ;
-
-ordinaryTypeParameter
     : variance? typeName
     -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
+    | typeName '...'
+    -> ^(SEQ_TYPE_PARAMETER typeName)
+    //| '#'! dimensionalTypeParameter
     ;
 
 variance
@@ -918,7 +918,8 @@ extraFormalParameter
     ;
 
 formalParameterType
-    : type '...'? | 'void'
+    : type ( '...' -> ^(SEQ_TYPE type) | -> type )
+    | VOID -> VOID
     ;
 
 // Control structures.
