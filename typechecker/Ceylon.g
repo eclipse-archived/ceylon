@@ -126,8 +126,8 @@ importElement
     ;
 
 importWildcard
-    : '...'
-    -> ^(IMPORT_WILDCARD)
+    : ELLIPSIS
+    -> ^(IMPORT_WILDCARD[$ELLIPSIS])
     ;
 
 importAlias
@@ -422,7 +422,10 @@ unabbreviatedType
     ;
 
 typeAbbreviation
-    : '?' | '[]'
+    : QMARK
+    -> ^(TYPE_NAME UIDENTIFIER[$QMARK,"Optional"])
+    | ARRAY 
+    -> ^(TYPE_NAME UIDENTIFIER[$ARRAY,"Sequence"])
     //| '[' dimension ']'
     ;
 
