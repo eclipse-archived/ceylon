@@ -675,7 +675,7 @@ negationComplementExpression
 
 exponentiationExpression
     : incrementDecrementExpression 
-      ('**'^ incrementDecrementExpression)?
+      ('**'^ exponentiationExpression)?
     ;
 
 incrementDecrementExpression
