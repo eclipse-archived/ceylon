@@ -222,7 +222,7 @@ annotatedDeclarationStart
 //expressions
 declarationStart
     : declarationKeyword 
-    | type '...'? LIDENTIFIER
+    | type ('...' | LIDENTIFIER)
     ;
 
 declarationKeyword
