@@ -1115,14 +1115,14 @@ FractionalMagnitude
     : 'm' | 'u' | 'n' | 'p'
     ;
     
-fragment ELLIPSIS: '...';
-fragment RANGE: '..';
-fragment DOT: '.' ;
 fragment FLOATLITERAL :;
 NATURALLITERAL
     : Digits
-      ( Magnitude | { input.LA(2) != '.' }? => '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOATLITERAL; } )?
-    | '.' ( '..' { $type = ELLIPSIS; } | '.'  { $type = RANGE; } | { $type = DOT; } )
+      ( 
+        ('.' ('0'..'9')) => 
+        '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOATLITERAL; } 
+      | Magnitude?
+      )
     ;
     
 fragment SPREAD:'[].';
@@ -1378,6 +1378,15 @@ VOID
 WHILE
     :   'while'
     ;
+
+ELLIPSIS
+    :   '...';
+
+RANGE
+    :   '..';
+
+DOT
+    :   '.' ;
 
 LPAREN
     :   '('
