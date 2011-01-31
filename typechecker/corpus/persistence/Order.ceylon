@@ -38,7 +38,7 @@ shared class Order() {
 	shared variable Status status := draft;
 	
 	generated id column{ name="id"; }
-	public variable String? orderId;
+	shared variable String? orderId := null;
 	
 	shared Item addItem(Product product, Natural quantity=1) {
 		Item item = Item(this, product, quantity);
