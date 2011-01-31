@@ -8,46 +8,33 @@ options {
 tokens {
     ANNOTATION;
     ANNOTATION_LIST;
-    ALIAS_DECL;
     ANNOTATION_NAME;
     ATTRIBUTE_ARG;
     ATTRIBUTE_DECL;
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BLOCK;
-    BREAK_STMT;
     CALL_EXPR;
-    CASE_DEFAULT;
-    CASE_ITEM;
     CASE_LIST;
-    CATCH_BLOCK;
-    CATCH_STMT;
     CHAR_CST;
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
-    CONTINUE_STMT;
-    DO_BLOCK;
-    DO_ITERATOR;
     EXPR;
     EXPR_LIST;
     EXPR_STMT;
-    FAIL_BLOCK;
-    FINALLY_BLOCK;
-    FOR_CONTAINMENT;
     FOR_ITERATOR;
     FOR_STMT;
     PARAM_NAME;
     PARAM;
     PARAM_LIST;
-    IF_FALSE;
     IF_STMT;
-    IF_TRUE;
     IMPORT_DECL;
     IMPORT_LIST;
     IMPORT_WILDCARD;
     IMPORT_PATH;
     IMPORT_ELEM;
+    IMPORT_ALIAS;
     INIT_EXPR;
     INLINE_METHOD_ARG;
     INLINE_ARG_LIST;
@@ -67,25 +54,19 @@ tokens {
     POS_ARG_LIST;
     POSTFIX_EXPR;
     PRIMARY;
-    RET_STMT;
-    RETRY_STMT;
     SATISFIES_EXPR;
     SEQ_ARG;
     SPECIAL_ARG;
-    THROW_STMT;
-    TRY_BLOCK;
     TRY_CATCH_STMT;
     TRY_RESOURCE;
-    TRY_STMT;
     TYPE_ARG_LIST;
     TYPE_DECL;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
-    WHILE_BLOCK;
     WHILE_STMT;
+    DO_WHILE_STMT;
     SWITCH_STMT;
-    SWITCH_EXPR;
     SWITCH_CASE_LIST;
     TYPE_CONSTRAINT_LIST;
     TYPE;
@@ -109,10 +90,6 @@ tokens {
     FLOAT_CST;
     STRING_CST;
     QUOTE_CST;
-    LOOP_BLOCK;
-    EXISTS_EXPR;
-    NONEMPTY_EXPR;
-    IS_EXPR;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -144,8 +121,8 @@ importElements
     ;
 
 importElement
-    : 'implicit'? importAlias? importedName
-    -> ^(IMPORT_ELEM 'implicit'? importAlias? importedName)
+    : IMPLICIT? importAlias? importedName
+    -> ^(IMPORT_ELEM IMPLICIT? importAlias? importedName)
     ;
 
 importWildcard
@@ -155,7 +132,7 @@ importWildcard
 
 importAlias
     : 'local' importedName '='
-    -> ^(ALIAS_DECL importedName)
+    -> ^(IMPORT_ALIAS importedName)
     ;
 
 importedName
@@ -274,28 +251,23 @@ directive
     ;
 
 returnDirective
-    : 'return' expression?
-    -> ^(RET_STMT expression?)
+    : 'return'^ expression?
     ;
 
 throwDirective
-    : 'throw' expression?
-    -> ^(THROW_STMT expression?)
+    : 'throw'^ expression?
     ;
 
 breakDirective
-    : 'break'
-    -> ^(BREAK_STMT)
+    : 'break'^
     ;
 
 continueDirective
-    : 'continue'
-    -> ^(CONTINUE_STMT)
+    : 'continue'^
     ;
 
 retryDirective
-    : 'retry'
-    -> ^(RETRY_STMT)
+    : 'retry'^
     ;
 
 //TODO: should we allow the shortcut style of method
@@ -313,7 +285,7 @@ memberDeclaration
     ;
 
 objectDeclaration
-    : 'object' memberName extendedType? satisfiedTypes? classBody
+    : 'object'! memberName extendedType? satisfiedTypes? classBody
     ;
 
 voidMethodDeclaration
@@ -321,7 +293,7 @@ voidMethodDeclaration
     ;
 
 setterDeclaration
-    : 'assign' memberName block
+    : 'assign'! memberName block
     ;
 
 typedMethodOrAttributeDeclaration
@@ -407,8 +379,7 @@ caseTypes
     ;
 
 caseType 
-    : type 
-    | memberName
+    : type | memberName
     //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     ;
 
@@ -536,7 +507,7 @@ typeParameters
 
 typeParameter
     : ordinaryTypeParameter '...'? 
-    | '#'! dimensionalTypeParameter
+    //| '#'! dimensionalTypeParameter
     ;
 
 ordinaryTypeParameter
@@ -545,8 +516,7 @@ ordinaryTypeParameter
     ;
 
 variance
-    : 'in' -> IN 
-    | 'out' -> OUT
+    : 'in' | 'out'
     ;
     
 dimensionalTypeParameter
@@ -658,8 +628,8 @@ comparisonExpression
 existenceEmptinessExpression
     : defaultExpression
     (
-        'exists' -> ^(EXISTS_EXPR defaultExpression)
-      | 'nonempty' -> ^(NONEMPTY_EXPR defaultExpression) 
+        EXISTS -> ^(EXISTS defaultExpression)
+      | NONEMPTY -> ^(NONEMPTY defaultExpression) 
       | -> defaultExpression
     )
     ;
@@ -949,6 +919,11 @@ formalParameterType
 
 // Control structures.
 
+controlCondition
+    : condition
+    -> ^(CONDITION condition)
+    ;
+
 condition
     : expression 
     | existsCondition 
@@ -958,23 +933,19 @@ condition
     ;
 
 existsCondition
-    : 'exists' controlVariableOrExpression
-    -> ^(EXISTS_EXPR controlVariableOrExpression)
+    : 'exists'^ controlVariableOrExpression
     ;
     
 nonemptyCondition
-    : 'nonempty' controlVariableOrExpression
-    -> ^(NONEMPTY_EXPR controlVariableOrExpression)
+    : 'nonempty'^ controlVariableOrExpression
     ;
 
 isCondition
-    : 'is' type (memberName specifier | expression)
-    -> ^(IS_EXPR type memberName? specifier? expression?)
+    : 'is'^ type (memberName specifier | expression)
     ;
 
 satisfiesCondition
-    : 'satisfies' type type
-    -> ^(SATISFIES_EXPR type type)
+    : 'satisfies'^ type type
     ;
 
 controlStructure
@@ -992,13 +963,11 @@ ifElse
     ;
 
 ifBlock
-    : 'if' '(' condition ')' block
-    -> ^(CONDITION condition) ^(IF_TRUE block)
+    : 'if'^ '('! controlCondition ')'! block
     ;
 
 elseBlock
-    : 'else' (ifElse | block)
-    -> ^(IF_FALSE block? ifElse?)
+    : 'else'^ (ifElse | block)
     ;
 
 switchCaseElse
@@ -1007,8 +976,7 @@ switchCaseElse
     ;
 
 switchHeader
-    : 'switch' '(' expression ')'
-    -> ^(SWITCH_EXPR expression)
+    : 'switch'^ '('! expression ')'!
     ;
 
 cases 
@@ -1017,13 +985,11 @@ cases
     ;
     
 caseItem
-    : 'case' '(' caseCondition ')' block
-    -> ^(CASE_ITEM caseCondition block)
+    : 'case'^ '('! caseCondition ')'! block
     ;
 
 defaultCaseItem
-    : 'else' block
-    -> ^(CASE_DEFAULT block)
+    : 'else'^ block
     ;
 
 caseCondition
@@ -1038,13 +1004,11 @@ expressions
     ;
 
 isCaseCondition
-    : 'is' type
-    -> ^(IS_EXPR type)
+    : 'is'^ type
     ;
 
 satisfiesCaseCondition
-    : 'satisfies' type
-    -> ^(SATISFIES_EXPR type)
+    : 'satisfies'^ type
     ;
 
 forFail
@@ -1053,13 +1017,11 @@ forFail
     ;
 
 forBlock
-    : 'for' '(' forIterator ')' block
-    -> forIterator ^(LOOP_BLOCK block)
+    : 'for'^ '('! forIterator ')'! block
     ;
 
 failBlock
-    : 'fail' block
-    -> ^(FAIL_BLOCK block)
+    : 'fail'^ block
     ;
 
 forIterator
@@ -1068,33 +1030,29 @@ forIterator
     ;
     
 containment
-    : 'in' expression
-    -> ^(FOR_CONTAINMENT expression)
+    : 'in'^ expression
     ;
     
 doWhile
-    : doBlock loopCondition ';'
-    -> ^(WHILE_STMT doBlock loopCondition)
+    : doBlock whileCondition ';'
+    -> ^(DO_WHILE_STMT doBlock whileCondition)
+    ;
+
+whileCondition
+    : 'while'^ '('! controlCondition ')'!
     ;
 
 simpleWhile
-    : loopCondition whileBlock
-    -> ^(WHILE_STMT loopCondition whileBlock)
-    ;
-
-loopCondition
-    : 'while' '(' condition ')'
-    -> ^(CONDITION condition)
+    : whileBlock
+    -> ^(WHILE_STMT whileBlock)
     ;
 
 whileBlock
-    : block
-    -> ^(WHILE_BLOCK block)
+    : 'while'^ '('! controlCondition ')'! block
     ;
 
 doBlock
-    : 'do' block
-    -> ^(DO_BLOCK block)
+    : 'do'^ block
     ;
 
 tryCatchFinally
@@ -1103,18 +1061,15 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try' ('(' resource ')')? block
-    -> ^(TRY_STMT resource? ^(TRY_BLOCK block))
+    : 'try'^ ('('! resource ')'!)? block
     ;
 
 catchBlock
-    : 'catch' '(' variable ')' block
-    -> ^(CATCH_STMT variable ^(CATCH_BLOCK block))
+    : 'catch'^ '('! variable ')'! block
     ;
 
 finallyBlock
-    : 'finally' block
-    -> ^(FINALLY_BLOCK block)
+    : 'finally'^ block
     ;
 
 resource
