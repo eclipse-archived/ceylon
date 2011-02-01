@@ -2095,6 +2095,24 @@ abstract class Hello() {
             <programlisting>Float oneHundredth = 0.01;</programlisting>
             <programlisting>Float oneMillion = 1.0E+6;</programlisting>
             
+            <para>The digits of a numeric literal may be grouped using underscores. If the 
+            digits are grouped, then groups must contain exactly three digits.</para>
+            
+            <programlisting>Natural twoMillionAndOne = 2_000_001;</programlisting>
+            <programlisting>Float pi = 3.141_592_654;</programlisting>
+            
+            <para>A very large or small numeric literals may be qualified by one of the standard 
+            SI unit prefixes: <literal>m</literal>, <literal>u</literal>, <literal>n</literal>,
+            <literal>p</literal>, <literal>f</literal>, <literal>k</literal>, <literal>M</literal>,
+            <literal>G</literal>, <literal>T</literal>, <literal>P</literal>.</para>
+            
+            <programlisting>Float red = 390.0n;  //n (nano) means "E-9""</programlisting>
+            <programlisting>Float galaxyDiameter = 900.0P;  //P (peta) means E15</programlisting>
+            <programlisting>Float hydrogenRadius = 25.0p;  //p (pico) means E-12</programlisting>
+            <programlisting>Decimal usGovDebt = 14.0T;  //T (tera) means E12</programlisting>
+            <programlisting>Float brainCellSize = 4.0u;  //u (micro) means E-6</programlisting>
+            <programlisting>Natural deathsUnderCommunism = 94M;  //M (mega) means E6</programlisting>
+            
             <para>Widening type conversions are implicit, since the <literal>ceylon.language</literal> 
             package defines a set of built-in <emphasis>extensions</emphasis> (a concept 
             we'll meet later) that take care of this:</para>
