@@ -143,8 +143,8 @@
         
         <programlisting>Exponent: ("E"|"e") ("+"|"-")? Digits</programlisting>
         
-        <programlisting>Magnitude: "k" | "M" | "G" | "T"</programlisting>
-        <programlisting>FractionalMagnitude: "m" | "u" | "n" | "p"</programlisting>
+        <programlisting>Magnitude: "k" | "M" | "G" | "T" | "P"</programlisting>
+        <programlisting>FractionalMagnitude: "m" | "u" | "n" | "p" | "f"</programlisting>
         
         <para>The following examples are legal numeric literals:</para>
         
