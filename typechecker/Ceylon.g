@@ -1134,12 +1134,12 @@ Exponent
 
 fragment
 Magnitude
-    : 'k' | 'M' | 'G' | 'T'
+    : 'k' | 'M' | 'G' | 'T' | 'P'
     ;
 
 fragment
 FractionalMagnitude
-    : 'm' | 'u' | 'n' | 'p'
+    : 'm' | 'u' | 'n' | 'p' | 'f'
     ;
     
 fragment FLOATLITERAL :;
