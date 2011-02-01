@@ -38,8 +38,6 @@ tokens {
     IMPORT_ELEM;
     IMPORT_ALIAS;
     INIT_EXPR;
-    INLINE_METHOD_ARG;
-    INLINE_ARG_LIST;
     INTERFACE_DECL;
     INTERFACE_BODY;
     MEMBER_DECL;
@@ -774,7 +772,7 @@ argumentsWithFunctionalArguments
 
 functionalArguments
     : functionalArgument+
-    -> ^(INLINE_ARG_LIST functionalArgument+)
+    -> ^(NAMED_ARG_LIST functionalArgument+)
     ;
 
 arguments
@@ -856,12 +854,21 @@ positionalArgument
 //invocation
 functionalArgument
     : parameterName functionalArgumentDefinition
-    -> ^(NAMED_ARG parameterName ^(INLINE_METHOD_ARG parameterName functionalArgumentDefinition))
+    -> ^(NAMED_ARG parameterName ^(METHOD_ARG 'local' parameterName functionalArgumentDefinition))
     ;
 
 functionalArgumentDefinition
-    : ( (formalParametersStart) => formalParameters )? 
-      (block | parExpression)
+    : functionalArgumentParameters functionalArgumentBody
+    ;
+
+functionalArgumentParameters
+    : (formalParametersStart) => formalParameters //-> formalParameters 
+    | -> ^(PARAM_LIST)
+    ;
+
+functionalArgumentBody
+    : block //-> block
+    | parExpression -> ^(BLOCK ^(DIRECTIVE ^(RETURN parExpression)))
     ;
 
 //Support "T x in arg" in positional argument lists
