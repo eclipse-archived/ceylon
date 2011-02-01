@@ -162,7 +162,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK ^(DIRECTIVE ^(RETURN ^(EXPR ^(PRIMARY ^(CALL_EXPR ^(BASE {((CommonTree)$mt).getChild(0)}) namedArguments))))))
+    -> ^(BLOCK ^(DIRECTIVE ^(RETURN ^(EXPR ^(PRIMARY ^(CALL_EXPR ^(BASE ^(TYPE_REF {((CommonTree)$mt).getChild(0)})) namedArguments))))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
