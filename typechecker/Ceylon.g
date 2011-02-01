@@ -862,12 +862,12 @@ functionalArgumentDefinition
     ;
 
 functionalArgumentParameters
-    : (formalParametersStart) => formalParameters //-> formalParameters 
+    : (formalParametersStart) => formalParameters
     | -> ^(PARAM_LIST)
     ;
 
 functionalArgumentBody
-    : block //-> block
+    : block
     | parExpression -> ^(BLOCK ^(DIRECTIVE ^(RETURN parExpression)))
     ;
 
