@@ -69,6 +69,8 @@ tokens {
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
+    TYPE_REF;
+    MEMBER_REF;
     WHILE_STMT;
     DO_WHILE_STMT;
     SWITCH_STMT;
@@ -691,7 +693,7 @@ enumeration
 primary
     : ( base -> ^(BASE base) )
     ( 
-      memberSelector
+        memberSelector
       -> ^(MEMBER_EXPR $primary memberSelector)
       | argumentsWithFunctionalArguments
       -> ^(CALL_EXPR $primary argumentsWithFunctionalArguments)
@@ -712,21 +714,39 @@ base
     | parExpression
     | enumeration
     | selfReference
-    | nameAndTypeArguments
+    | typeReference
+    | memberReference
     ;
 
 memberSelector
-    : memberOperator nameAndTypeArguments
+    : ('.' | '?.' | '[].') (memberReference | typeReference)
     ;
 
-memberOperator
-    : '.' | '?.' | '[].'
+typeReference
+    : typeInExpression ( (typeInExpressionStart) => '.' typeInExpression )*
+    -> ^(TYPE_REF typeInExpression+)
     ;
 
-nameAndTypeArguments
-    : (typeName | memberName) ((typeArgumentsStart) => typeArguments)?
+memberReference
+    : memberInExpression
+    -> ^(MEMBER_REF memberInExpression)
     | 'subtype' 
     | 'outer'
+    ;
+
+memberInExpression
+    : memberName ((typeArgumentsStart) => typeArguments)?
+    ;
+
+typeInExpression
+    : typeName ((typeArgumentsStart) => typeArguments)?
+    ;
+
+//special rule for syntactic predicate so
+//that qualified type names are consumed
+//greedily into a single TYPE_REF node
+typeInExpressionStart
+    : '.' typeName
     ;
 
 //special rule for syntactic predicate to 
