@@ -34,6 +34,14 @@ class Primaries() {
 		
 	}
 	
+	class Members() {
+		String n  = 99.string;
+		Natural hk = 99k.successor;
+		String f = 99.99.string;
+		Natural s = hk.size;
+		Natural splus1 = s.plus(1);
+	}
+	
 	class Specials() {
 	
 		String? nothing = null;
