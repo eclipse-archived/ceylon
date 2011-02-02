@@ -1,5 +1,13 @@
 The Ceylon language specification.
+==================================
 
 To build the pdf and html specifications, 
 type "ant" from the root directory.
 
+Type system model
+-----------------
+The code is stored under src/
+The dependencies are under lib/
+You need also some generated classes:
+ - generated in gensrc/
+ - by running 'ant anlr'
