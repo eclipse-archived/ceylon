@@ -1,5 +1,14 @@
+#Ignored files
+
+# build system
 build
 bin
 gensrc
 output
+
+#IDEs
+.idea
+*.iml
+
+# Documentation
 Project Ceylon *.pdf
