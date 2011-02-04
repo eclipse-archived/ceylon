@@ -1,7 +1,5 @@
 grammar Walkergen;
 
-options { output=template; }
-
 @parser::header { package com.redhat.ceylon.compiler.treegen; }
 @lexer::header { package com.redhat.ceylon.compiler.treegen; }
 
@@ -57,24 +55,24 @@ nodeList :
 
 node : '^' '('
        n=NODE_NAME 
-       { println("public void walk" + className($n.text) +"(Visitor visitor, " + className($n.text) + " node) {"); }
-       { println("    visitor.visit(node);"); }
+       { println("    public void walk" + className($n.text) +"(Visitor visitor, " + className($n.text) + " node) {"); }
+       { println("        visitor.visit(node);"); }
        extendsNode?
        (DESCRIPTION? subnode)*
        (DESCRIPTION? field)*
        ')'
-       { println("}"); }
+       { println("    }\n"); }
      ;
 
 extendsNode : ':' n=NODE_NAME 
             ;
 
 subnode : n=NODE_NAME OPTIONAL?
-          { println("    walk" + className($n.text) + "(visitor, " + fieldName($n.text) + ");"); }
+          { println("        walk" + className($n.text) + "(visitor, node.get" + className($n.text) + "());"); }
         | mn=NODE_NAME MANY 
-          { println("    for (" + className($mn.text) + " subnode: node.get" + className($mn.text) +"()) {"); }
-          { println("        walk" + className($mn.text) + "(visitor, subnode);"); }
-          { println("    }"); }
+          { println("        for (" + className($mn.text) + " subnode: node.get" + className($mn.text) +"()) {"); }
+          { println("            walk" + className($mn.text) + "(visitor, subnode);"); }
+          { println("        }"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME ';'

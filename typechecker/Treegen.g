@@ -1,7 +1,5 @@
 grammar Treegen;
 
-options { output=template; }
-
 @parser::header { package com.redhat.ceylon.compiler.treegen; }
 @lexer::header { package com.redhat.ceylon.compiler.treegen; }
 
@@ -57,25 +55,25 @@ nodeList : {
            ;
 
 node : '^' '(' 
-       { print("public static class "); }
+       { print("    public static class "); }
        n=NODE_NAME 
        { print(className($n.text)); }
-       extendsNode? 
+       extendsNode
        { println(" {"); }
-       { println("    public static final String ANTLR_NODE_NAME = \"" + $n.text + "\";"); }
-       { println("    public static final int ANTLR_NODE_TYPE = " + $n.text + ";"); }
-       { println("    public final CommonTree treeNode;"); }
-       { println("    public " + className($n.text) + "(CommonTree treeNode) {" ); }
-       { println("        this.treeNode = treeNode;" ); }
-       { println("    }" ); }
+       { println("        public static final String ANTLR_NODE_NAME = \"" + $n.text + "\";"); }
+       { println("        public static final int ANTLR_NODE_TYPE = " + $n.text + ";"); }
+       { println("        public " + className($n.text) + "(CommonTree treeNode) {" ); }
+       { println("            super(treeNode);" ); }
+       { println("        }" ); }
        (memberDescription? subnode)*
        (memberDescription? field)*
        ')' 
-       { println("}\n"); }
+       { println("    }\n"); }
      ;
 
 extendsNode : ':' n=NODE_NAME 
               { print(" extends " + className($n.text)); }
+            | { print(" extends Node"); }
             ;
 
 nodeDescription : d=DESCRIPTION 
@@ -87,20 +85,20 @@ memberDescription : d=DESCRIPTION
                   ;
 
 subnode : n=NODE_NAME OPTIONAL?
-          { println("    private " + className($n.text) + " " + fieldName($n.text) + ";"); }
-          { println("    public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
-          { println("    public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }"); }
+          { println("        private " + className($n.text) + " " + fieldName($n.text) + ";"); }
+          { println("        public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
+          { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }"); }
         | mn=NODE_NAME MANY 
-          { println("    private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
+          { println("        private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
                                " = new ArrayList<" + className($mn.text) + ">();"); }
-          { println("    public List<" + className($mn.text) + "> get" + className($mn.text) + "() { return " + fieldName($mn.text) + "; }"); }
-          { println("    public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + ".add(node); }"); }
+          { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "() { return " + fieldName($mn.text) + "; }"); }
+          { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + ".add(node); }"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME 
-          { println("    private " + $t.text + " " + $f.text+ ";"); }
-          { println("    public " + $t.text + " get" + $f.text + "() { return " + $f.text + "; }"); }
-          { println("    public void set" + $t.text + "(" + $f.text + " value) { " + $f.text + " = value; }"); }
+          { println("        private " + $t.text + " " + $f.text+ ";"); }
+          { println("        public " + $t.text + " get" + $f.text + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + $t.text + "(" + $f.text + " value) { " + $f.text + " = value; }"); }
         ';'
       ;
 

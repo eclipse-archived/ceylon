@@ -1,7 +1,5 @@
 grammar Visitorgen;
 
-options { output=template; }
-
 @parser::header { package com.redhat.ceylon.compiler.treegen; }
 @lexer::header { package com.redhat.ceylon.compiler.treegen; }
 
@@ -51,12 +49,12 @@ nodeList : {
            }
            (DESCRIPTION? node)+ 
            EOF
-           { println("}"); }
+           { println("\n}"); }
            ;
 
 node : '^' '('
        n=NODE_NAME 
-       { println("public void visit(" + className($n.text) + " that);"); }
+       { println("    public void visit(" + className($n.text) + " that);"); }
        extendsNode? 
        (DESCRIPTION? subnode)*
        (DESCRIPTION? field)*
