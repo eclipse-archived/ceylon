@@ -44,7 +44,6 @@ grammar Treegen;
 
 nodeList : { 
            println("package com.redhat.ceylon.compiler.tree;\n");
-           println("import static com.redhat.ceylon.compiler.parser.CeylonParser.*;\n");
            println("import static com.redhat.ceylon.compiler.tree.Walker.*;\n");
            println("import org.antlr.runtime.tree.CommonTree;\n");
            println("import java.util.*;\n");
@@ -61,8 +60,6 @@ node : '^' '('
        { print(className($n.text)); }
        extendsNode
        { println(" {"); }
-       { println("        //public static final String ANTLR_NODE_NAME = \"" + $n.text + "\";"); }
-       { println("        //public static final int ANTLR_NODE_TYPE = " + $n.text + ";"); }
        { println("        public " + className($n.text) + "(CommonTree treeNode) {" ); }
        { println("            super(treeNode);" ); }
        { println("        }" ); }
@@ -82,11 +79,11 @@ extendsNode : ':' n=NODE_NAME
             ;
 
 nodeDescription : d=DESCRIPTION 
-                  { println("/**\n * " + $d.text.replace("\"", "") + "\n */"); }
+                  { println("    /**\n     * " + $d.text.replace("\"", "") + "\n     */"); }
                   ;
 
 memberDescription : d=DESCRIPTION 
-                    { println("    /** \n     * " + $d.text.replace("\"", "") + "\n     */"); }
+                    { println("        /** \n         * " + $d.text.replace("\"", "") + "\n         */"); }
                   ;
 
 subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
