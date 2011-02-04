@@ -89,28 +89,23 @@ extendsNode : ':' n=NODE_NAME
             ;
 
 subnode : n=NODE_NAME '?'?
-          { println("        {"); }
-          { println("            CommonTree childTreeNode = getChild(treeNode, " + $n.text + ");"); }
-          { println("            if (childTreeNode!=null) node.set" + className($n.text) + "(build" + className($n.text) + "(childTreeNode));"); }
-          { println("        }"); }
+          { println("        CommonTree " + fieldName($n.text) + "TreeNode = getChild(treeNode, " + $n.text + ");"); }
+          { println("        if (" + fieldName($n.text) + "TreeNode!=null) node.set" + className($n.text) + "(build" + className($n.text) + "(" + fieldName($n.text) + "TreeNode));"); }
         | n=NODE_NAME '?'? 
-          { println("        {"); }
-          { println("            CommonTree childTreeNode;"); }
           '(' (
           s=NODE_NAME 
-          { println("            childTreeNode = getChild(treeNode, " + $s.text + ");"); }
-          { println("            if (childTreeNode!=null) node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
-          )+ ')' 
-          { println("        }"); }
+          { println("        CommonTree " + fieldName($s.text) + "TreeNode = getChild(treeNode, " + $s.text + ");"); }
+          { println("        if (" + fieldName($s.text) + "TreeNode!=null) node.set" + className($n.text) + "(build" + className($s.text) + "(" + fieldName($s.text) + "TreeNode));"); }
+          )+ ')'
         | mn=NODE_NAME '*'
-          { println("        for (CommonTree childTreeNode: getChildren(treeNode, " + $mn.text + ")) {"); }
-          { println("            node.add" + className($mn.text) + "(build" + className($mn.text) + "(childTreeNode));"); }
+          { println("        for (CommonTree " + fieldName($mn.text) + "TreeNode: getChildren(treeNode, " + $mn.text + ")) {"); }
+          { println("            node.add" + className($mn.text) + "(build" + className($mn.text) + "(" + fieldName($mn.text) + "TreeNode));"); }
           { println("        }"); }
         | mn=NODE_NAME '*'
           '(' (
           s=NODE_NAME
-          { println("        for (CommonTree childTreeNode: getChildren(treeNode, " + $s.text + ")) {"); }
-          { println("            node.add" + className($mn.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("        for (CommonTree " + fieldName($s.text) + "TreeNode: getChildren(treeNode, " + $s.text + ")) {"); }
+          { println("            node.add" + className($mn.text) + "(build" + className($s.text) + "(" + fieldName($s.text) + "TreeNode));"); }
           { println("        }"); }
           )+ ')' 
         ;
