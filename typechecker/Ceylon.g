@@ -105,7 +105,7 @@ compilationUnit
     : importDeclaration*
       annotatedDeclaration+
       EOF
-    -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration*) annotatedDeclaration+)
+    -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration+)
     ;
 
 typeDeclaration

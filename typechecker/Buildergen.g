@@ -51,6 +51,7 @@ nodeList :
     println("import java.util.*;\n");
     println("public class TreeBuilder {\n");
     println("    CommonTree getChild(CommonTree node, int type) {");
+    println("        if (node.getChildren()!=null)");
     println("        for (CommonTree child: (List<CommonTree>) node.getChildren()) {");
     println("            if (type==child.getType()) return child;");
     println("        }");
@@ -58,6 +59,7 @@ nodeList :
     println("    }\n");
     println("    List<CommonTree> getChildren(CommonTree node, int type) {");
     println("        List<CommonTree> list = new ArrayList<CommonTree>();");
+    println("        if (node.getChildren()!=null)");
     println("        for (CommonTree child: (List<CommonTree>) node.getChildren()) {");
     println("            if (type==child.getType()) list.add(child);");
     println("        }");
