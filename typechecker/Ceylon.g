@@ -21,6 +21,7 @@ tokens {
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
+    COMPILATION_UNIT;
     DIRECTIVE;
     EXPR;
     EXPR_LIST;
@@ -104,8 +105,7 @@ compilationUnit
     : importDeclaration*
       annotatedDeclaration+
       EOF
-    -> ^(IMPORT_LIST importDeclaration*)
-       annotatedDeclaration+
+    -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration*) annotatedDeclaration+)
     ;
 
 typeDeclaration

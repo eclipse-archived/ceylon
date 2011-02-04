@@ -13,8 +13,12 @@
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir"             value="${basedir}/build"/>
+	<property name="build.classes" location="${build.dir}/classes"/>
 
-    <!-- Support files for build process. -->
+	<property name="src" location="src"/>
+    <property name="gensrc" location="gensrc"/>
+
+	<!-- Support files for build process. -->
     <property name="support.dir"           value="${imported.basedir}/support"/>
 
     <!-- Base name for documentation artifacts. -->
@@ -220,7 +224,9 @@
         </java>
     </target>
 	
-	<target name="antlr"
+	<target name="antlr" depends="antlr.parser,antlr.tree"/>
+	
+	<target name="antlr.parser"
 	        description="Generate code from ANTLR grammar">
 	    <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/parser"/>
 	    <java classname="org.antlr.Tool">
@@ -231,6 +237,44 @@
 	        <pathelement location="${antlr.lib}"/>
 	      </classpath>
 	    </java>
+	</target>
+	
+    <target name="antlr.tree"
+            description="Generate code from ANTLR grammar">
+        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/treegen"/>
+        <java classname="org.antlr.Tool">
+          <arg value="-o"/>
+          <arg value="${antlr.dst}/com/redhat/ceylon/compiler/treegen"/>
+          <arg value="Treegen.g"/>
+          <arg value="Buildergen.g"/>
+          <arg value="Printergen.g"/>
+          <classpath>
+            <pathelement location="${antlr.lib}"/>
+          </classpath>
+        </java>
+    </target>
+    
+	  <target name="treegen" depends="antlr.tree, antlr.parser">
+	    <mkdir dir="${build.classes}"/>
+	    <javac
+	       srcdir="${src}:${gensrc}"
+	       destdir="${build.classes}"
+	       debug="true"
+	       classpath="${antlr.lib}">
+           <exclude name="Main.java"/>
+	    </javac>
 	  </target>
+	
+	<target name="tree" depends="treegen"
+            description="Generate the tree builder code">
+		<mkdir dir="${gensrc}/com/redhat/ceylon/compiler/tree"/>
+		<java classname="com.redhat.ceylon.compiler.treegen.Generate">
+        <arg value="Ceylon.nodes"/>
+        <classpath>
+          <pathelement location="${antlr.lib}"/>
+          <pathelement location="${build.classes}"/>
+        </classpath>
+        </java>
+	</target>
 
 </project>

@@ -1,0 +1,3 @@
+"A file containing Ceylon source."
+^(COMPILATION_UNIT TYPE_DECL*)
+^(TYPE_DECL)

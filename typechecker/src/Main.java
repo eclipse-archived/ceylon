@@ -6,9 +6,13 @@ import java.io.InputStream;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.redhat.ceylon.compiler.tree.Printer;
+import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.tree.TreeBuilder;
 
 public class Main {
 
@@ -36,7 +40,10 @@ public class Main {
         CeylonParser parser = new CeylonParser(tokens);
         CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
-        //CommonTree t = (CommonTree)r.getTree();
+        CommonTree t = (CommonTree)r.getTree();
+        
+        CompilationUnit cu = new TreeBuilder().buildCompilationUnit(t);
+        new Printer().printCompilationUnit(cu);
 
         if (lexer.getNumberOfSyntaxErrors() != 0) {
             System.out.println("Lexer failed");
@@ -50,10 +57,7 @@ public class Main {
         
 		}
         
-
 	}
-
-	
 	
 	private static void fileOrDir(File file) throws Exception {
 		if (file.isDirectory()) 
@@ -61,8 +65,6 @@ public class Main {
 		else
 			file(file);
 	}
-
-
 
 	private static void dir(File dir) throws Exception {
 		for (File file: dir.listFiles()) 
