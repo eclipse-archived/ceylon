@@ -59,14 +59,14 @@ node : '^' '('
        n=NODE_NAME 
        { print(className($n.text)); }
        extendsNode
-       { println(" {"); }
+       { println(" {\n"); }
        { println("        public " + className($n.text) + "(CommonTree treeNode) {" ); }
        { println("            super(treeNode);" ); }
-       { println("        }" ); }
+       { println("        }\n" ); }
        { println("        public void visit(Visitor visitor) {" ); }
        { println("            visitor.visit(this);" ); }
        { println("            walk" + className($n.text) +"(visitor, this);"); }      
-       { println("        }" ); }
+       { println("        }\n" ); }
        (memberDescription? subnode)*
        (memberDescription? field)*
        ')' 
@@ -89,18 +89,18 @@ memberDescription : d=DESCRIPTION
 subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
           { println("        private " + className($n.text) + " " + fieldName($n.text) + ";"); }
           { println("        public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
-          { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }"); }
+          { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }\n"); }
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')?
           { println("        private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
                                " = new ArrayList<" + className($mn.text) + ">();"); }
           { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "() { return " + fieldName($mn.text) + "; }"); }
-          { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + ".add(node); }"); }
+          { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + ".add(node); }\n"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME 
           { println("        private " + $t.text + " " + $f.text+ ";"); }
           { println("        public " + $t.text + " get" + $f.text + "() { return " + $f.text + "; }"); }
-          { println("        public void set" + $t.text + "(" + $f.text + " value) { " + $f.text + " = value; }"); }
+          { println("        public void set" + $t.text + "(" + $f.text + " value) { " + $f.text + " = value; }\n"); }
         ';'
       ;
 

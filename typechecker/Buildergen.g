@@ -89,14 +89,17 @@ extendsNode : ':' n=NODE_NAME
             ;
 
 subnode : n=NODE_NAME '?'?
-          { println("        node.set" + className($n.text) + "(build" + className($n.text) + "(getChild(treeNode, " + $n.text + ")));"); }
+          { println("        {"); }
+          { println("            CommonTree childTreeNode = getChild(treeNode, " + $n.text + ");"); }
+          { println("            if (childTreeNode!=null) node.set" + className($n.text) + "(build" + className($n.text) + "(childTreeNode));"); }
+          { println("        }"); }
         | n=NODE_NAME '?'? 
           { println("        {"); }
-          { println("        CommonTree childTreeNode;"); }
+          { println("            CommonTree childTreeNode;"); }
           '(' (
           s=NODE_NAME 
-          { println("        childTreeNode = getChild(treeNode, " + $s.text + ");"); }
-          { println("        if (childTreeNode!=null) node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("            childTreeNode = getChild(treeNode, " + $s.text + ");"); }
+          { println("            if (childTreeNode!=null) node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
           )+ ')' 
           { println("        }"); }
         | mn=NODE_NAME '*'
