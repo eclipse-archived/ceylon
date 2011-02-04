@@ -45,7 +45,10 @@ grammar Visitorgen;
 nodeList : { 
            println("package com.redhat.ceylon.compiler.tree;\n");
            println("import static com.redhat.ceylon.compiler.tree.Tree.*;\n");
-           println("public interface Visitor {\n");
+           println("public abstract class Visitor {\n");
+           println("    public void visitAny(Node that) {");
+           println("        throw new RuntimeException();");
+           println("    }\n");
            }
            (DESCRIPTION? node)+ 
            EOF
@@ -54,7 +57,7 @@ nodeList : {
 
 node : '^' '('
        n=NODE_NAME 
-       { println("    public void visit(" + className($n.text) + " that);"); }
+       { println("    public void visit(" + className($n.text) + " that) { visitAny(that); }"); }
        extendsNode? 
        (DESCRIPTION? subnode)*
        (DESCRIPTION? field)*
@@ -63,8 +66,8 @@ node : '^' '('
 
 extendsNode : ':' n=NODE_NAME;
 
-subnode : n=NODE_NAME OPTIONAL?
-        | mn=NODE_NAME MANY 
+subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
+        | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
         ;
 
 field : TYPE_NAME FIELD_NAME ';';

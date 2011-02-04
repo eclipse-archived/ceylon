@@ -88,12 +88,28 @@ extendsNode : ':' n=NODE_NAME
               { println("        build" + className($n.text) + "(treeNode, node);"); }
             ;
 
-subnode : n=NODE_NAME OPTIONAL?
+subnode : n=NODE_NAME '?'?
           { println("        node.set" + className($n.text) + "(build" + className($n.text) + "(getChild(treeNode, " + $n.text + ")));"); }
-        | mn=NODE_NAME MANY 
+        | n=NODE_NAME '?'? 
+          { println("        {"); }
+          { println("        CommonTree childTreeNode;"); }
+          '(' (
+          s=NODE_NAME 
+          { println("        childTreeNode = getChild(treeNode, " + $s.text + ");"); }
+          { println("        if (childTreeNode!=null) node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          )+ ')' 
+          { println("        }"); }
+        | mn=NODE_NAME '*'
           { println("        for (CommonTree childTreeNode: getChildren(treeNode, " + $mn.text + ")) {"); }
           { println("            node.add" + className($mn.text) + "(build" + className($mn.text) + "(childTreeNode));"); }
           { println("        }"); }
+        | mn=NODE_NAME '*'
+          '(' (
+          s=NODE_NAME
+          { println("        for (CommonTree childTreeNode: getChildren(treeNode, " + $s.text + ")) {"); }
+          { println("            node.add" + className($mn.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("        }"); }
+          )+ ')' 
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME ';'
@@ -115,6 +131,8 @@ MANY : '*'|'+';
 OPTIONAL : '?';
 
 EXTENDS : ':';
+
+EQUALS : '=';
 
 SEMI : ';';
 

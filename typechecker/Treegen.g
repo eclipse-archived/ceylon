@@ -45,6 +45,7 @@ grammar Treegen;
 nodeList : { 
            println("package com.redhat.ceylon.compiler.tree;\n");
            println("import static com.redhat.ceylon.compiler.parser.CeylonParser.*;\n");
+           println("import static com.redhat.ceylon.compiler.tree.Walker.*;\n");
            println("import org.antlr.runtime.tree.CommonTree;\n");
            println("import java.util.*;\n");
            println("public class Tree {\n");
@@ -60,10 +61,14 @@ node : '^' '('
        { print(className($n.text)); }
        extendsNode
        { println(" {"); }
-       { println("        public static final String ANTLR_NODE_NAME = \"" + $n.text + "\";"); }
-       { println("        public static final int ANTLR_NODE_TYPE = " + $n.text + ";"); }
+       { println("        //public static final String ANTLR_NODE_NAME = \"" + $n.text + "\";"); }
+       { println("        //public static final int ANTLR_NODE_TYPE = " + $n.text + ";"); }
        { println("        public " + className($n.text) + "(CommonTree treeNode) {" ); }
        { println("            super(treeNode);" ); }
+       { println("        }" ); }
+       { println("        public void visit(Visitor visitor) {" ); }
+       { println("            visitor.visit(this);" ); }
+       { println("            walk" + className($n.text) +"(visitor, this);"); }      
        { println("        }" ); }
        (memberDescription? subnode)*
        (memberDescription? field)*
@@ -84,11 +89,11 @@ memberDescription : d=DESCRIPTION
                     { println("    /** \n     * " + $d.text.replace("\"", "") + "\n     */"); }
                   ;
 
-subnode : n=NODE_NAME OPTIONAL?
+subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
           { println("        private " + className($n.text) + " " + fieldName($n.text) + ";"); }
           { println("        public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
           { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }"); }
-        | mn=NODE_NAME MANY 
+        | mn=NODE_NAME '*' ('(' NODE_NAME* ')')?
           { println("        private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
                                " = new ArrayList<" + className($mn.text) + ">();"); }
           { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "() { return " + fieldName($mn.text) + "; }"); }

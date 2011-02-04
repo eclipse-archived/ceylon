@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.tree.Tree.TypeDecl;
+import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.TreeBuilder;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.tree.Walker;
@@ -46,19 +47,12 @@ public class Main {
         
         CompilationUnit cu = new TreeBuilder().buildCompilationUnit(t);
         Visitor v = new Visitor() {
-			
-			@Override
-			public void visit(TypeDecl that) {
-				System.out.println("TypeDecl");
-				
-			}
-			
-			@Override
-			public void visit(CompilationUnit that) {
-				System.out.println("CompilationUnit");
-			}
-		};
-        new Walker().walkCompilationUnit(v, cu);
+        	@Override
+        	public void visitAny(Node that) {
+        		System.out.println(that);
+        	}
+        };
+        Walker.walkCompilationUnit(v, cu);
 
         if (lexer.getNumberOfSyntaxErrors() != 0) {
             System.out.println("Lexer failed");

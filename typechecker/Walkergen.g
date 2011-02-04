@@ -55,8 +55,8 @@ nodeList :
 
 node : '^' '('
        n=NODE_NAME 
-       { println("    public void walk" + className($n.text) +"(Visitor visitor, " + className($n.text) + " node) {"); }
-       { println("        visitor.visit(node);"); }
+       { println("    public static void walk" + className($n.text) +"(Visitor visitor, " + className($n.text) + " node) {"); }
+       { println("        //node.visit(visitor);"); }
        extendsNode?
        (DESCRIPTION? subnode)*
        (DESCRIPTION? field)*
@@ -67,11 +67,13 @@ node : '^' '('
 extendsNode : ':' n=NODE_NAME 
             ;
 
-subnode : n=NODE_NAME OPTIONAL?
-          { println("        walk" + className($n.text) + "(visitor, node.get" + className($n.text) + "());"); }
-        | mn=NODE_NAME MANY 
+subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
+          { println("        //walk" + className($n.text) + "(visitor, node.get" + className($n.text) + "());"); }
+          { println("        if (node.get" + className($n.text) + "()!=null) node.get" + className($n.text) + "().visit(visitor);"); }
+        | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
           { println("        for (" + className($mn.text) + " subnode: node.get" + className($mn.text) +"()) {"); }
-          { println("            walk" + className($mn.text) + "(visitor, subnode);"); }
+          { println("            //walk" + className($mn.text) + "(visitor, subnode);"); }
+          { println("            subnode.visit(visitor);"); }
           { println("        }"); }
         ;
 
