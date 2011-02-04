@@ -130,8 +130,6 @@ OPTIONAL : '?';
 
 EXTENDS : ':';
 
-EQUALS : '=';
-
 SEMI : ';';
 
 DESCRIPTION : '\"' (~'\"')* '\"';
