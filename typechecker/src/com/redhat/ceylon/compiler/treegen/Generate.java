@@ -15,7 +15,8 @@ public class Generate {
 		File file = new File(args[0]);
 		tree(file);
 		builder(file);
-		printer(file);
+		walker(file);
+		visitor(file);
 	}
 	
 	private static void tree(File file) throws Exception {
@@ -42,13 +43,25 @@ public class Generate {
         parser.nodeList();
 	}
 	
-	private static void printer(File file) throws Exception {
+	private static void walker(File file) throws Exception {
         InputStream is = new FileInputStream( file );
         ANTLRInputStream input = new ANTLRInputStream(is);
-        PrintergenLexer lexer = new PrintergenLexer(input);
+        WalkergenLexer lexer = new WalkergenLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        PrintergenParser parser = new PrintergenParser(tokens);
-        File out = new File("gensrc/com/redhat/ceylon/compiler/tree/Printer.java");
+        WalkergenParser parser = new WalkergenParser(tokens);
+        File out = new File("gensrc/com/redhat/ceylon/compiler/tree/Walker.java");
+        out.createNewFile();
+        parser.out=new PrintStream(out);
+        parser.nodeList();
+	}
+	
+	private static void visitor(File file) throws Exception {
+        InputStream is = new FileInputStream( file );
+        ANTLRInputStream input = new ANTLRInputStream(is);
+        VisitorgenLexer lexer = new VisitorgenLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        VisitorgenParser parser = new VisitorgenParser(tokens);
+        File out = new File("gensrc/com/redhat/ceylon/compiler/tree/Visitor.java");
         out.createNewFile();
         parser.out=new PrintStream(out);
         parser.nodeList();

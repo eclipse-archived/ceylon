@@ -1,4 +1,4 @@
-grammar Printergen;
+grammar Visitorgen;
 
 options { output=template; }
 
@@ -44,45 +44,32 @@ options { output=template; }
     
 }
 
-nodeList : 
-    {
-    println("package com.redhat.ceylon.compiler.tree;\n");
-    println("import static com.redhat.ceylon.compiler.tree.Tree.*;\n");
-    println("public class Printer {\n");
-    }
+nodeList : { 
+           println("package com.redhat.ceylon.compiler.tree;\n");
+           println("import static com.redhat.ceylon.compiler.tree.Tree.*;\n");
+           println("public interface Visitor {\n");
+           }
            (DESCRIPTION? node)+ 
            EOF
-    { println("}"); }
+           { println("}"); }
            ;
 
 node : '^' '('
        n=NODE_NAME 
-       { println("public void print" + className($n.text) +"(" + className($n.text) + " node) {"); }
-       { println("    System.out.println(\"" + className($n.text) + " {\");"); }
-       extendsNode?
+       { println("public void visit(" + className($n.text) + " that);"); }
+       extendsNode? 
        (DESCRIPTION? subnode)*
        (DESCRIPTION? field)*
-       ')' 
-       { println("    System.out.println(\"}\");"); }
-       { println("}"); }
+       ')'
      ;
 
-extendsNode : ':' n=NODE_NAME 
-              { println("    print" + className($n.text) + "(node);"); }
-            ;
+extendsNode : ':' n=NODE_NAME;
 
 subnode : n=NODE_NAME OPTIONAL?
-          { println("    System.out.print(\"" + fieldName($n.text) + "=\");"); }
-          { println("    print" + className($n.text) + "(node.get" + className($n.text) + "());"); }
         | mn=NODE_NAME MANY 
-          { println("    System.out.println(\"" + fieldName($mn.text) + "=\");"); }
-          { println("    for (" + className($mn.text) + " subnode: node.get" + className($mn.text) +"()) {"); }
-          { println("        print" + className($mn.text) + "(subnode);"); }
-          { println("    }"); }
         ;
 
-field : t=TYPE_NAME f=FIELD_NAME ';'
-      ;
+field : TYPE_NAME FIELD_NAME ';';
 
 NODE_NAME : ('A'..'Z'|'_')+;
 

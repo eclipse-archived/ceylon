@@ -10,9 +10,11 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
-import com.redhat.ceylon.compiler.tree.Printer;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.tree.Tree.TypeDecl;
 import com.redhat.ceylon.compiler.tree.TreeBuilder;
+import com.redhat.ceylon.compiler.tree.Visitor;
+import com.redhat.ceylon.compiler.tree.Walker;
 
 public class Main {
 
@@ -43,7 +45,20 @@ public class Main {
         CommonTree t = (CommonTree)r.getTree();
         
         CompilationUnit cu = new TreeBuilder().buildCompilationUnit(t);
-        new Printer().printCompilationUnit(cu);
+        Visitor v = new Visitor() {
+			
+			@Override
+			public void visit(TypeDecl that) {
+				System.out.println("TypeDecl");
+				
+			}
+			
+			@Override
+			public void visit(CompilationUnit that) {
+				System.out.println("CompilationUnit");
+			}
+		};
+        new Walker().walkCompilationUnit(v, cu);
 
         if (lexer.getNumberOfSyntaxErrors() != 0) {
             System.out.println("Lexer failed");
