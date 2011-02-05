@@ -830,7 +830,7 @@ typedMethodOrGetterArgument
 
 namedSpecifiedArgument
     : parameterName specifier ';'
-    -> ^(SPECIFIED_ARGUMENT parameterName specifier)
+    -> parameterName ^(SPECIFIED_ARGUMENT parameterName specifier)
     ;
 
 //special rule for syntactic predicate
