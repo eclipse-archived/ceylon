@@ -237,7 +237,7 @@ declarationKeyword
 
 specificationStatement
     : memberName specifier ';'
-    -> ^(SPECIFIER_STATEMENT memberName specifier)
+    -> ^(SPECIFIER_STATEMENT ^(MEMBER_REFERENCE memberName) specifier)
     ;
 
 expressionStatement
