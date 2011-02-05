@@ -3814,6 +3814,11 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     from <literal>i</literal> to <literal>j-1</literal>, like in most other
     languages?</para></comment>
     
+    <comment><para>TODO: I'm increasingly warming to the idea of a non-destructive 
+    add ("with") operator <literal>@</literal> and <literal>@=</literal>. This is
+    an operation that is very efficient for some kinds of data structures (linked lists, 
+    etc).</para></comment>
+    
     </section>
     
     <section id="constructors">
