@@ -12,7 +12,7 @@
     IMPORT_WILDCARD?)
 
 ^(IMPORT_PATH 
-    LIDENTIFIER*)
+    PACKAGE_NAME*)
 
 ^(IMPORT_ELEM 
     IMPLICIT? 
@@ -419,24 +419,27 @@
     STRING_LITERAL* 
     EXPRESSION*)
 
+"An annotation name."
+^(ANNOTATION_NAME)
+
+"A package name."
+^(PACKAGE_NAME)
+
 "A type name."
-^(TYPE_NAME UIDENTIFIER)
+^(TYPE_NAME)
 
 "A member name."
-^(MEMBER_NAME LIDENTIFIER)
+^(MEMBER_NAME)
 
 "A parameter name."
-^(PARAMETER_NAME LIDENTIFIER)
+^(PARAMETER_NAME)
 
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 
     ANNOTATION*)
 
 "A program element annotation."
-^(ANNOTATION)
+^(ANNOTATION 
+    ANNOTATION_NAME
+    ARGUMENT_LIST?(NAMED_ARGUMENT_LIST POSITIONAL_ARGUMENT_LIST))
 
-"An initial lowercase identifier."
-^(LIDENTIFIER)
-
-"An initial uppercase identifier."
-^(UIDENTIFIER)
