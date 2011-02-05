@@ -54,7 +54,7 @@ nodeList : {
            ;
 
 node : '^' '('
-       n=NODE_NAME 
+       n=NODE_NAME
        (
          { println("    public void visit(" + className($n.text) + " that) { visitAny(that); }"); }
        | ':' en=NODE_NAME
@@ -65,7 +65,7 @@ node : '^' '('
        ')'
      ;
 
-subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
+subnode : n=NODE_NAME '?'? f=FIELD_NAME? ('(' NODE_NAME* ')')?
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
         ;
 

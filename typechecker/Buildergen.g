@@ -32,6 +32,10 @@ grammar Buildergen;
         return result.toString();
     }
     
+    String initialUpper(String s) {
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+    
     void print(String text) {
        out.print(text); 
     }
@@ -81,7 +85,20 @@ extendsNode : ':' n=NODE_NAME
               { println("        build" + className($n.text) + "(treeNode, node);"); }
             ;
 
-subnode : n=NODE_NAME '?'?
+subnode : n=NODE_NAME '?'? f=FIELD_NAME
+          { println("            if (childTreeNode.getType()==" + $n.text + " && node.get" + initialUpper($f.text) + "()==null) {"); }
+          { println("                node.set" + initialUpper($f.text) + "(build" + className($n.text) + "(childTreeNode));"); }
+          { println("                continue;"); }
+          { println("            }"); }
+        | n=NODE_NAME '?'? g=FIELD_NAME
+          '(' (
+          s=NODE_NAME 
+          { println("            if (childTreeNode.getType()==" + $s.text + " && node.get" + initialUpper($g.text) + "()==null) {"); }
+          { println("                node.set" + initialUpper($g.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("                continue;"); }
+          { println("            }"); }
+          )+ ')'
+         | n=NODE_NAME '?'?
           { println("            if (childTreeNode.getType()==" + $n.text + " && node.get" + className($n.text) + "()==null) {"); }
           { println("                node.set" + className($n.text) + "(build" + className($n.text) + "(childTreeNode));"); }
           { println("                continue;"); }

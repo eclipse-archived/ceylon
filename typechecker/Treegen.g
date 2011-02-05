@@ -32,6 +32,10 @@ grammar Treegen;
         return result.toString();
     }
     
+    String initialUpper(String s) {
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+    
     void print(String text) {
        out.print(text); 
     }
@@ -88,7 +92,12 @@ memberDescription : d=DESCRIPTION
                     { println("        /** \n         * " + $d.text.replace("\"", "") + "\n         */"); }
                   ;
 
-subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
+subnode : 
+          n=NODE_NAME '?'? f=FIELD_NAME ('(' NODE_NAME* ')')?
+          { println("        private " + className($n.text) + " " + $f.text + ";"); }
+          { println("        public " + className($n.text) + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(" + className($n.text) + " node) { " + $f.text + " = node; }\n"); }
+        | n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
           { println("        private " + className($n.text) + " " + fieldName($n.text) + ";"); }
           { println("        public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
           { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }\n"); }

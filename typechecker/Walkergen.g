@@ -32,6 +32,10 @@ grammar Walkergen;
         return result.toString();
     }
     
+    String initialUpper(String s) {
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+    
     void print(String text) {
        out.print(text); 
     }
@@ -68,7 +72,10 @@ extendsNode : ':'
               { println("        walk" + className($n.text) +"(visitor, node);"); }
             ;
 
-subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
+subnode : n=NODE_NAME '?'? f=FIELD_NAME ('(' NODE_NAME* ')')?
+          { println("        if (node.get" + initialUpper($f.text) + "()!=null)"); }
+          { println("            node.get" + initialUpper($f.text) + "().visit(visitor);"); }
+        | n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
           { println("        if (node.get" + className($n.text) + "()!=null)"); }
           { println("            node.get" + className($n.text) + "().visit(visitor);"); }
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
