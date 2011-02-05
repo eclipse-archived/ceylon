@@ -50,25 +50,6 @@ nodeList :
     println("import org.antlr.runtime.tree.CommonTree;\n");
     println("import java.util.*;\n");
     println("public class TreeBuilder {\n");
-    println("    CommonTree getChild(CommonTree node, int type) {");
-    println("        if (node.getChildren()!=null)");
-    println("        for (CommonTree child: (List<CommonTree>) node.getChildren()) {");
-    println("            if (type==child.getType()) return child;");
-    println("        }");
-    println("        return null;");
-    println("    }\n");
-    println("    List<CommonTree> getChildren(CommonTree node, int type) {");
-    println("        List<CommonTree> list = new ArrayList<CommonTree>();");
-    println("        if (node.getChildren()!=null)");
-    println("        for (CommonTree child: (List<CommonTree>) node.getChildren()) {");
-    println("            if (type==child.getType()) list.add(child);");
-    println("        }");
-    println("        return list;");
-    println("    }\n");
-    println("    List<CommonTree> getChildren(CommonTree node) {");
-    println("        if (node.getChildren()==null) return new ArrayList<CommonTree>();");
-    println("        return node.getChildren();");
-    println("    }\n");
     }
            (DESCRIPTION? node)+ 
            EOF
@@ -84,7 +65,13 @@ node : '^' '('
        { println("    }\n"); }
        { println("    public void build" + className($n.text) + "(CommonTree treeNode, " + className($n.text) + " node) {"); }
        extendsNode?
-       (DESCRIPTION? subnode)*
+       (
+       { println("        @SuppressWarnings(\"unchecked\")"); }
+       { println("        List<CommonTree> children = (List<CommonTree>) treeNode.getChildren();"); }
+       { println("        if (children!=null) for (CommonTree childTreeNode: children) {"); }
+       (DESCRIPTION? subnode)+
+       { println("        }"); }
+       )?
        (DESCRIPTION? field)*
        ')' 
        { println("    }\n"); }
@@ -95,26 +82,23 @@ extendsNode : ':' n=NODE_NAME
             ;
 
 subnode : n=NODE_NAME '?'?
-          { println("        CommonTree " + fieldName($n.text) + "TreeNode = getChild(treeNode, " + $n.text + ");"); }
-          { println("        if (" + fieldName($n.text) + "TreeNode!=null) node.set" + className($n.text) + "(build" + className($n.text) + "(" + fieldName($n.text) + "TreeNode));"); }
+          { println("            if (childTreeNode.getType()==" + $n.text + ")"); }
+          { println("                node.set" + className($n.text) + "(build" + className($n.text) + "(childTreeNode));"); }
         | n=NODE_NAME '?'? 
           '(' (
           s=NODE_NAME 
-          { println("        CommonTree " + fieldName($s.text) + "TreeNode = getChild(treeNode, " + $s.text + ");"); }
-          { println("        if (" + fieldName($s.text) + "TreeNode!=null) node.set" + className($n.text) + "(build" + className($s.text) + "(" + fieldName($s.text) + "TreeNode));"); }
+          { println("            if (childTreeNode.getType()==" + $s.text + ")"); }
+          { println("                node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
           )+ ')'
         | mn=NODE_NAME '*'
-          { println("        for (CommonTree " + fieldName($mn.text) + "TreeNode: getChildren(treeNode, " + $mn.text + ")) {"); }
-          { println("            node.add" + className($mn.text) + "(build" + className($mn.text) + "(" + fieldName($mn.text) + "TreeNode));"); }
-          { println("        }"); }
+          { println("            if (childTreeNode.getType()==" + $mn.text + ")"); }
+          { println("                node.add" + className($mn.text) + "(build" + className($mn.text) + "(childTreeNode));"); }
         | mn=NODE_NAME '*'
-          { println("        for (CommonTree " + fieldName($mn.text) + "TreeNode: getChildren(treeNode)) {"); }
           '(' (
           s=NODE_NAME
-          { println("            if (" + fieldName($mn.text) + "TreeNode.getType()==" + $s.text + ")"); }
-          { println("                node.add" + className($mn.text) + "(build" + className($s.text) + "(" + fieldName($mn.text) + "TreeNode));"); }
+          { println("            if (childTreeNode.getType()==" + $s.text + ")"); }
+          { println("                node.add" + className($mn.text) + "(build" + className($s.text) + "(childTreeNode));"); }
           )+ ')' 
-          { println("        }"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME ';'
