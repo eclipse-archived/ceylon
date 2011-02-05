@@ -60,7 +60,7 @@ public class Main {
 
             void indent() {
                 for (int i = 0; i < depth; i++)
-                    print("    ");
+                    print("   ");
             }
             
             @Override
