@@ -19,7 +19,6 @@ tokens {
     CLASS_DECLARATION;
     BOOLEAN_CONDITION;
     COMPILATION_UNIT;
-    //DIRECTIVE;
     EXPRESSION;
     EXPRESSION_LIST;
     EXPRESSION_STATEMENT;
@@ -53,7 +52,6 @@ tokens {
     POSITIONAL_ARGUMENT;
     POSITIONAL_ARGUMENT_LIST;
     POSTFIX_OPERATOR_EXPRESSION;
-    //PRIMARY;
     SATISFIES_EXPRESSION;
     SEQUENCED_ARGUMENT;
     SEQUENCED_TYPE;
@@ -82,7 +80,6 @@ tokens {
     SPECIFIED_ARGUMENT;
     SPECIFIER_EXPRESSION;
     SPECIFIER_STATEMENT;
-    //STATEMENT;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
     STRING_TEMPLATE;
@@ -167,7 +164,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN ^(EXPRESSION /*^(PRIMARY*/ ^(INVOCATION_EXPRESSION /*^(PRIMARY*/{$mt} namedArguments))))
+    -> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION {$mt} namedArguments))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -196,7 +193,7 @@ expressionStatementOrList
     
 annotatedDeclarationOrStatement options {memoize=true;}
     : (annotatedDeclarationStart) => annotatedDeclaration
-    | statement //-> ^(STATEMENT statement)
+    | statement
     ;
 
 statement 
@@ -259,7 +256,6 @@ expressionStatement
 
 directiveStatement
     : directive ';'?
-    //-> ^(DIRECTIVE directive)
     ;
 
 directive
@@ -439,9 +435,9 @@ unabbreviatedType
 
 typeAbbreviation
     : DEFAULT_OP
-    -> ^(TYPE_NAME UIDENTIFIER[$DEFAULT_OP,"Optional"])
+    -> ^(TYPE_NAME[$DEFAULT_OP,"Optional"])
     | ARRAY 
-    -> ^(TYPE_NAME UIDENTIFIER[$ARRAY,"Sequence"])
+    -> ^(TYPE_NAME[$ARRAY,"Sequence"])
     //| '[' dimension ']'
     ;
 
@@ -468,7 +464,7 @@ annotationArguments
 
 literalArguments
     : literalArgument+
-    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION /*^(PRIMARY*/ literalArgument))+)
+    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION literalArgument))+)
     ;
     
 literalArgument
