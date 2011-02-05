@@ -14,7 +14,7 @@ tokens {
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BLOCK;
-    CALL_EXPRESSION;
+    INVOCATION_EXPRESSION;
     CLASS_BODY;
     CLASS_DECLARATION;
     BOOLEAN_CONDITION;
@@ -53,7 +53,7 @@ tokens {
     POSITIONAL_ARGUMENT;
     POSITIONAL_ARGUMENT_LIST;
     POSTFIX_OPERATOR_EXPRESSION;
-    PRIMARY;
+    //PRIMARY;
     SATISFIES_EXPRESSION;
     SEQUENCED_ARGUMENT;
     SEQUENCED_TYPE;
@@ -167,7 +167,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN ^(EXPRESSION ^(PRIMARY ^(CALL_EXPRESSION ^(PRIMARY {$mt}) namedArguments)))))
+    -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN ^(EXPRESSION /*^(PRIMARY*/ ^(INVOCATION_EXPRESSION /*^(PRIMARY*/{$mt} namedArguments))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -468,7 +468,7 @@ annotationArguments
 
 literalArguments
     : literalArgument+
-    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION ^(PRIMARY literalArgument)))+)
+    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION /*^(PRIMARY*/ literalArgument))+)
     ;
     
 literalArgument
@@ -681,7 +681,7 @@ exponentiationExpression
 
 incrementDecrementExpression
     : ('++'^ | '--'^) incrementDecrementExpression
-    | primary -> ^(PRIMARY primary)
+    | primary
     ;
 
 selfReference
@@ -697,13 +697,13 @@ primary
     : (base -> base)
     ( 
         memberSelectionOperator (memberReference | typeReference)
-      -> ^(memberSelectionOperator ^(PRIMARY $primary) memberReference? typeReference?)
+      -> ^(memberSelectionOperator $primary memberReference? typeReference?)
       | elementSelectionOperator elementsSpec ']'
-      -> ^(elementSelectionOperator ^(PRIMARY $primary) elementsSpec)
+      -> ^(elementSelectionOperator $primary elementsSpec)
       | postfixOperator 
-      -> ^(postfixOperator ^(PRIMARY $primary))
+      -> ^(postfixOperator $primary)
       | argumentsWithFunctionalArguments
-      -> ^(CALL_EXPRESSION ^(PRIMARY $primary) argumentsWithFunctionalArguments)
+      -> ^(INVOCATION_EXPRESSION $primary argumentsWithFunctionalArguments)
     )*
    ;
 
