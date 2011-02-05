@@ -26,6 +26,7 @@
 
 ^(IMPORT_WILDCARD)
 
+"A declaration."
 ^(DECL:ABSTRACT_STATEMENT)
 
 "An annotated class or interface declaration."
@@ -69,21 +70,26 @@
     TYPE? 
     BLOCK)
 
-
+"A method or attribute body containing statements and declarations."
 ^(BLOCK 
     ABSTRACT_STATEMENT*(TYPE_DECL MEMBER_DECL STATEMENT) 
     DIRECTIVE?)
 
+"A class body."
 ^(CLASS_BODY 
     ABSTRACT_STATEMENT*(TYPE_DECL MEMBER_DECL STATEMENT))
 
+"An interface body."
 ^(INTERFACE_BODY 
     DECL*(TYPE_DECL MEMBER_DECL))
 
+"A produced type."
 ^(TYPE TYPE_NAME TYPE_ARG_LIST?)
 
+"A list of type arguments in a produced type."
 ^(TYPE_ARG_LIST TYPE*)
 
+"A control directive."
 ^(DIRECTIVE 
     ABSTRACT_DIRECTIVE*(RETURN THROW CONTINUE BREAK RETRY))
 
@@ -94,10 +100,14 @@
 ^(BREAK:ABSTRACT_DIRECTIVE)
 ^(RETRY:ABSTRACT_DIRECTIVE)
 
+"A statement or declaration."
 ^(ABSTRACT_STATEMENT)
+
+"A statement."
 ^(STATEMENT:ABSTRACT_STATEMENT 
     ABSTRACT_EXECUTABLE_STATEMENT(SPEC_STMT EXPR_STMT IF SWITCH TRY FOR WHILE))
 
+"An expression statement, specification statement, or control structure."
 ^(ABSTRACT_EXECUTABLE_STATEMENT)
 ^(SPEC_STMT:ABSTRACT_EXECUTABLE_STATEMENT SPEC_EXPR)
 ^(EXPR_STMT:ABSTRACT_EXECUTABLE_STATEMENT EXPR)
@@ -107,40 +117,52 @@
 ^(FOR:ABSTRACT_EXECUTABLE_STATEMENT)
 ^(WHILE:ABSTRACT_EXECUTABLE_STATEMENT)
 
+"A parenthesized list of expressions."
 ^(EXPR_LIST 
     EXPR*)
 
+"An expression."
 ^(EXPR:ABSTRACT_ATOM 
     PRIMARY?)
 
 ^(PRIMARY 
     ABSTRACT_RECEIVER(CALL_EXPR MEMBER_EXPR BASE))
 
+"The receiver of a member reference or invocation expression."
 ^(ABSTRACT_RECEIVER)
 
+"An invocation expression."
 ^(CALL_EXPR:ABSTRACT_RECEIVER
     ABSTRACT_RECEIVER(CALL_EXPR MEMBER_EXPR BASE)
     ABSTRACT_ARG_LIST(NAMED_ARG_LIST POS_ARG_LIST))
 
+"A qualified member reference expression."
 ^(MEMBER_EXPR:ABSTRACT_RECEIVER 
     ABSTRACT_RECEIVER(CALL_EXPR MEMBER_EXPR BASE) 
     MEMBER_REF)
 
-^(MEMBER_REF 
+"A reference to a member in an expression."
+^(MEMBER_REF:ABSTRACT_ATOM
     MEMBER_NAME 
     TYPE_ARG_LIST?)
 
-^(TYPE_REF 
+"A reference to a type in an expression."
+^(TYPE_REF:ABSTRACT_ATOM
     TYPE_NAME 
     TYPE_ARG_LIST?)
 
 ^(BASE:ABSTRACT_RECEIVER 
-    ABSTRACT_ATOM(EXPR SEQUENCE_ENUM FLOAT_LITERAL NATURAL_LITERAL 
+    ABSTRACT_ATOM(TYPE_REF MEMBER_REF EXPR SEQUENCE_ENUM FLOAT_LITERAL NATURAL_LITERAL 
                   CHAR_LITERAL QUOTED_LITERAL STRING_LITERAL STRING_CONCAT))
 
+"A list of arguments in an invocation expression."
 ^(ABSTRACT_ARG_LIST)
+
+"A list of named arguments."
 ^(NAMED_ARG_LIST:ABSTRACT_ARG_LIST 
     NAMED_ARG*)
+
+"A list of positional arguments."
 ^(POS_ARG_LIST:ABSTRACT_ARG_LIST 
     POS_ARG*)
 
@@ -154,9 +176,11 @@
     PARAM_NAME 
     SPEC_EXPR)
 
+"A specifier expression."
 ^(SPEC_EXPR 
     EXPR)
 
+"A member reference, type reference, literal, string template, or parenthesized expression."
 ^(ABSTRACT_ATOM)
 ^(SEQUENCE_ENUM:ABSTRACT_ATOM 
     EXPR_LIST)
@@ -165,19 +189,30 @@
 ^(CHAR_LITERAL:ABSTRACT_ATOM)
 ^(QUOTED_LITERAL:ABSTRACT_ATOM)
 ^(STRING_LITERAL:ABSTRACT_ATOM)
+
+"A string template."
 ^(STRING_CONCAT:ABSTRACT_ATOM 
     STRING_LITERAL* 
     EXPR*)
 
+"A type name."
 ^(TYPE_NAME UIDENTIFIER)
+
+"A member name."
 ^(MEMBER_NAME LIDENTIFIER)
+
+"A parameter name."
 ^(PARAM_NAME LIDENTIFIER)
 
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 
     ANNOTATION*)
 
+"A program element annotation."
 ^(ANNOTATION)
 
+"An initial lowercase identifier."
 ^(LIDENTIFIER)
+
+"An initial uppercase identifier."
 ^(UIDENTIFIER)
