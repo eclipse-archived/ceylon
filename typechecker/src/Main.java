@@ -2,9 +2,7 @@
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -60,18 +58,18 @@ public class Main {
 
             void indent() {
                 for (int i = 0; i < depth; i++)
-                    print("   ");
+                    print("|  ");
             }
             
             @Override
             public void visitAny(Node node) {
                 if (depth>0) newline();
                 indent();
-                print("^(" + node.getText());
+                print("+ ");
+                print(node.getText());
                 depth++;
                 super.visitAny(node);
                 depth--;
-                print(")");
                 if (depth==0) newline();
             }
         };
