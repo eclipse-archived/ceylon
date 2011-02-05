@@ -91,26 +91,30 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME
           { println("                continue;"); }
           { println("            }"); }
         | n=NODE_NAME '?'? g=FIELD_NAME
+          { println("            if (node.get" + initialUpper($g.text) + "()==null) {"); }
           '(' (
           s=NODE_NAME 
-          { println("            if (childTreeNode.getType()==" + $s.text + " && node.get" + initialUpper($g.text) + "()==null) {"); }
-          { println("                node.set" + initialUpper($g.text) + "(build" + className($s.text) + "(childTreeNode));"); }
-          { println("                continue;"); }
-          { println("            }"); }
+          { println("                if (childTreeNode.getType()==" + $s.text + ") {"); }
+          { println("                    node.set" + initialUpper($g.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("                    continue;"); }
+          { println("                }"); }
           )+ ')'
+          { println("            }"); }
          | n=NODE_NAME '?'?
           { println("            if (childTreeNode.getType()==" + $n.text + " && node.get" + className($n.text) + "()==null) {"); }
           { println("                node.set" + className($n.text) + "(build" + className($n.text) + "(childTreeNode));"); }
           { println("                continue;"); }
           { println("            }"); }
         | n=NODE_NAME '?'? 
+          { println("            if (node.get" + className($n.text) + "()==null) {"); }
           '(' (
           s=NODE_NAME 
-          { println("            if (childTreeNode.getType()==" + $s.text + " && node.get" + className($n.text) + "()==null) {"); }
-          { println("                node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
-          { println("                continue;"); }
-          { println("            }"); }
+          { println("                if (childTreeNode.getType()==" + $s.text + ") {"); }
+          { println("                    node.set" + className($n.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("                    continue;"); }
+          { println("                }"); }
           )+ ')'
+          { println("            }"); }
         | mn=NODE_NAME '*'
           { println("            if (childTreeNode.getType()==" + $mn.text + ") {"); }
           { println("                node.add" + className($mn.text) + "(build" + className($mn.text) + "(childTreeNode));"); }
