@@ -65,6 +65,8 @@ node : '^' '('
        { println("        }\n" ); }
        { println("        public void visit(Visitor visitor) {" ); }
        { println("            visitor.visit(this);" ); }
+       { println("        }\n" ); }
+       { println("        @Override public void visitChildren(Visitor visitor) {" ); }
        { println("            walk" + className($n.text) +"(visitor, this);"); }      
        { println("        }\n" ); }
        (memberDescription? subnode)*

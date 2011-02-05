@@ -2,7 +2,9 @@
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -46,10 +48,32 @@ public class Main {
         
         CompilationUnit cu = new Builder().buildCompilationUnit(t);
         Visitor v = new Visitor() {
-        	@Override
-        	public void visitAny(Node that) {
-        		System.out.println(that);
-        	}
+            int depth=0;
+
+            void print(String str) {
+            	System.out.print(str);
+            }
+
+            void newline() {
+                print("\n");
+            }
+
+            void indent() {
+                for (int i = 0; i < depth; i++)
+                    print("    ");
+            }
+            
+            @Override
+            public void visitAny(Node node) {
+                if (depth>0) newline();
+                indent();
+                print("^(" + node.getText());
+                depth++;
+                super.visitAny(node);
+                depth--;
+                print(")");
+                if (depth==0) newline();
+            }
         };
         Walker.walkCompilationUnit(v, cu);
 

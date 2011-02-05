@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.tree;
 
 import org.antlr.runtime.tree.CommonTree;
 
-public class Node {
+public abstract class Node {
 	
 	private String text;
 	public final CommonTree treeNode;
@@ -23,6 +23,8 @@ public class Node {
 	public CommonTree getTreeNode() {
 		return treeNode;
 	}
+	
+	public abstract void visitChildren(Visitor visitor);
 	
 	@Override
 	public String toString() {

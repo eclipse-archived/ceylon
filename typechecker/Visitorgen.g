@@ -46,7 +46,7 @@ nodeList : {
            println("package com.redhat.ceylon.compiler.tree;\n");
            println("import static com.redhat.ceylon.compiler.tree.Tree.*;\n");
            println("public abstract class Visitor {\n");
-           println("    public void visitAny(Node that) {}\n");
+           println("    public void visitAny(Node that) { that.visitChildren(this); }\n");
            }
            (DESCRIPTION? node)+ 
            EOF
