@@ -787,8 +787,8 @@ objectArgument
     ;
 
 voidMethodArgument
-    : VOID parameterName formalParameters+ block
-    -> parameterName ^(METHOD_ARGUMENT VOID parameterName formalParameters+ block)
+    : VOID_MODIFIER parameterName formalParameters+ block
+    -> parameterName ^(METHOD_ARGUMENT VOID_MODIFIER parameterName formalParameters+ block)
     ;
 
 typedMethodOrGetterArgument
@@ -940,7 +940,7 @@ extraFormalParameter
 
 formalParameterType
     : type ( '...' -> ^(SEQUENCED_TYPE type) | -> type )
-    | VOID -> VOID
+    | VOID_MODIFIER -> VOID_MODIFIER
     ;
 
 // Control structures.
@@ -1399,7 +1399,7 @@ RETRY
     :   'retry'
     ;
 
-VOID
+VOID_MODIFIER
     :   'void'
     ;
 
