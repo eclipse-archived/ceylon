@@ -45,7 +45,6 @@ tokens {
     METHOD_ARGUMENT;
     METHOD_DECLARATION;
     METATYPES;
-    NAMED_ARGUMENT;
     NAMED_ARGUMENT_LIST;
     OBJECT_DECLARATION;
     OBJECT_ARGUMENT;
@@ -810,21 +809,21 @@ namedArgumentDeclaration
     
 objectArgument
     : OBJECT_DECLARATION parameterName extendedType? satisfiedTypes? classBody
-    -> parameterName ^(OBJECT_ARGUMENT[$OBJECT_DECLARATION] parameterName extendedType? satisfiedTypes? classBody)
+    -> ^(OBJECT_ARGUMENT[$OBJECT_DECLARATION] parameterName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
     : VOID_MODIFIER parameterName formalParameters+ block
-    -> parameterName ^(METHOD_ARGUMENT VOID_MODIFIER parameterName formalParameters+ block)
+    -> ^(METHOD_ARGUMENT VOID_MODIFIER parameterName formalParameters+ block)
     ;
 
 typedMethodOrGetterArgument
     : inferrableType parameterName
     ( 
       (formalParameters+ memberBody[$inferrableType.tree])
-    -> parameterName ^(METHOD_ARGUMENT inferrableType parameterName formalParameters+ memberBody)
+    -> ^(METHOD_ARGUMENT inferrableType parameterName formalParameters+ memberBody)
     | memberBody[$inferrableType.tree]
-    -> parameterName ^(ATTRIBUTE_ARGUMENT inferrableType parameterName memberBody)      
+    -> ^(ATTRIBUTE_ARGUMENT inferrableType parameterName memberBody)      
     )
     ;
 
@@ -852,7 +851,7 @@ parameterName
 
 namedArguments
     : LBRACE ((namedArgumentStart) => namedArgument)* expressions? '}'
-    -> ^(NAMED_ARGUMENT_LIST[$LBRACE] ^(NAMED_ARGUMENT namedArgument)* ^(SEQUENCED_ARGUMENT expressions)?)
+    -> ^(NAMED_ARGUMENT_LIST[$LBRACE] namedArgument* ^(SEQUENCED_ARGUMENT expressions)?)
     ;
 
 parExpression 
@@ -873,7 +872,7 @@ positionalArgument
 //invocation
 functionalArgument
     : parameterName functionalArgumentDefinition
-    -> ^(NAMED_ARGUMENT parameterName ^(METHOD_ARGUMENT 'local' parameterName functionalArgumentDefinition))
+    -> ^(METHOD_ARGUMENT 'local' parameterName functionalArgumentDefinition)
     ;
 
 functionalArgumentDefinition
