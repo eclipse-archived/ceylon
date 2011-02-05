@@ -63,7 +63,9 @@ node : '^' '('
        { println("    }\n"); }
      ;
 
-extendsNode : ':' n=NODE_NAME 
+extendsNode : ':' 
+              n=NODE_NAME
+              { println("         walk" + className($n.text) +"(visitor, node);"); }
             ;
 
 subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
