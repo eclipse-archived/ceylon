@@ -17,7 +17,7 @@ tokens {
     CALL_EXPRESSION;
     CLASS_BODY;
     CLASS_DECLARATION;
-    CONDITION;
+    BOOLEAN_CONDITION;
     COMPILATION_UNIT;
     //DIRECTIVE;
     EXPRESSION;
@@ -29,7 +29,6 @@ tokens {
     PARAMETER;
     PARAMETER_LIST;
     IF_STATEMENT;
-    IMPORT_DECLARATION;
     IMPORT_LIST;
     IMPORT_WILDCARD;
     IMPORT_PATH;
@@ -65,20 +64,14 @@ tokens {
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
-    TYPE_REFERENCE;
-    MEMBER_REFERENCE;
+    MEMBER;
     WHILE_STATEMENT;
     DO_WHILE_STATEMENT;
     SWITCH_STATEMENT;
     SWITCH_CASE_LIST;
     TYPE_CONSTRAINT_LIST;
     TYPE;
-    TYPE_CONSTRAINT;
     TYPE_DECLARATION;
-    ABSTRACTED_TYPE;
-    EXTENDED_TYPE;
-    SATISFIED_TYPES;
-    CASE_TYPES;
     SUBSCRIPT_EXPRESSION;
     LOWER_BOUND;
     UPPER_BOUND;
@@ -91,6 +84,15 @@ tokens {
     TYPE_VARIANCE;
     TYPE_PARAMETER;
     STRING_TEMPLATE;
+    VARIABLE;
+    VARIABLE_OR_EXPRESSION;
+    EXISTS_CONDITION;
+    NONEMPTY_CONDITION;
+    SATISFIES_CONDITION;
+    IS_CONDITION;
+    IS_CASE;
+    SATISFIES_CASE;
+    MATCH_CASE;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -105,14 +107,11 @@ compilationUnit
 
 typeDeclaration
     : classDeclaration
-    -> ^(CLASS_DECLARATION classDeclaration)
     | interfaceDeclaration
-    -> ^(INTERFACE_DECLARATION interfaceDeclaration)
     ;
 
 importDeclaration
-    : 'import' packagePath '{' importElements '}'
-      -> ^(IMPORT_DECLARATION packagePath importElements)
+    : 'import'^ packagePath '{'! importElements '}'!
     ;
 
 importElements
@@ -131,8 +130,8 @@ importWildcard
     ;
 
 importAlias
-    : 'local' importedName '='
-    -> ^(IMPORT_ALIAS importedName)
+    : LOCAL_MODIFIER importedName '='
+    -> ^(IMPORT_ALIAS[$LOCAL_MODIFIER] importedName)
     ;
 
 importedName
@@ -145,8 +144,8 @@ packagePath
     ;
     
 block
-    : '{' annotatedDeclarationOrStatement* directiveStatement? '}'
-    -> ^(BLOCK annotatedDeclarationOrStatement* directiveStatement?)
+    : LBRACE annotatedDeclarationOrStatement* directiveStatement? '}'
+    -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement* directiveStatement?)
     ;
 
 //This rule accounts for the problem that we
@@ -155,7 +154,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN ^(EXPRESSION ^(PRIMARY ^(CALL_EXPRESSION ^(PRIMARY ^(TYPE_REFERENCE {((CommonTree)$mt).getChild(0)})) namedArguments)))))
+    -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN ^(EXPRESSION ^(PRIMARY ^(CALL_EXPRESSION ^(PRIMARY {$mt}) namedArguments)))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -237,7 +236,7 @@ declarationKeyword
 
 specificationStatement
     : memberName specifier ';'
-    -> ^(SPECIFIER_STATEMENT ^(MEMBER_REFERENCE memberName) specifier)
+    -> ^(SPECIFIER_STATEMENT ^(MEMBER memberName) specifier)
     ;
 
 expressionStatement
@@ -284,7 +283,6 @@ retryDirective
 //      style parameters below?
 memberDeclaration
     : objectDeclaration
-    -> ^(OBJECT_DECLARATION objectDeclaration)
     | setterDeclaration
     -> ^(ATTRIBUTE_SETTER setterDeclaration)
     | voidMethodDeclaration
@@ -293,7 +291,7 @@ memberDeclaration
     ;
 
 objectDeclaration
-    : 'object'! memberName extendedType? satisfiedTypes? classBody
+    : 'object'^ memberName extendedType? satisfiedTypes? classBody
     ;
 
 voidMethodDeclaration
@@ -331,7 +329,7 @@ methodParameters
     
 interfaceDeclaration
     :
-        'interface'!
+        'interface'^
         typeName
         typeParameters?
         caseTypes?
@@ -342,13 +340,13 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    : '{' annotatedDeclaration* '}'
-    -> ^(INTERFACE_BODY annotatedDeclaration*)
+    : LBRACE annotatedDeclaration* '}'
+    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclaration*)
     ;
 
 classDeclaration
     :
-        'class'!
+        'class'^
         typeName
         typeParameters?
         formalParameters
@@ -362,8 +360,8 @@ classDeclaration
     ;
 
 classBody
-    : '{' annotatedDeclarationOrStatement* '}'
-    -> ^(CLASS_BODY annotatedDeclarationOrStatement*)
+    : LBRACE annotatedDeclarationOrStatement* '}'
+    -> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement*)
     ;
 
 extendedType
@@ -383,20 +381,21 @@ caseTypes
     ;
 
 caseType 
-    : type | memberName
+    : type 
+    | memberName -> ^(MEMBER memberName)
     //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     ;
 
 //Support for metatypes
 //Note that we don't need this for now
 metatypes
-    : 'is' type ('&' type)* 
-    -> ^(METATYPES type*)
+    : IS_OP type ('&' type)* 
+    -> ^(METATYPES[$IS_OP] type*)
     ;
 
 typeConstraint
     : 
-        'given'!
+        'given'^
         typeName 
         typeArguments? 
         formalParameters? 
@@ -465,22 +464,22 @@ literalArgument
 
 typeName
     : UIDENTIFIER
-    -> ^(TYPE_NAME UIDENTIFIER)
+    -> ^(TYPE_NAME[$UIDENTIFIER])
     ;
 
 annotationName
     : LIDENTIFIER
-    -> ^(ANNOTATION_NAME LIDENTIFIER)
+    -> ^(ANNOTATION_NAME[$LIDENTIFIER])
     ;
 
 memberName 
     : LIDENTIFIER
-    -> ^(MEMBER_NAME LIDENTIFIER)
+    -> ^(MEMBER_NAME[$LIDENTIFIER])
     ;
 
 typeArguments
-    : '<' typeArgument (',' typeArgument)* '>'
-    -> ^(TYPE_ARGUMENT_LIST typeArgument+)
+    : SMALLER_OP typeArgument (',' typeArgument)* '>'
+    -> ^(TYPE_ARGUMENT_LIST[$SMALLER_OP] typeArgument+)
     ;
 
 typeArgument
@@ -507,20 +506,21 @@ parenDimension
     ;*/
 
 typeParameters
-    : '<' typeParameter (',' typeParameter)* '>'
-    -> ^(TYPE_PARAMETER_LIST typeParameter+)
+    : SMALLER_OP typeParameter (',' typeParameter)* '>'
+    -> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
     ;
 
 typeParameter
     : variance? typeName
-    -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
+    -> ^(TYPE_PARAMETER variance? typeName)
     | typeName '...'
     -> ^(SEQUENCED_TYPE_PARAMETER typeName)
     //| '#'! dimensionalTypeParameter
     ;
 
 variance
-    : 'in' | 'out'
+    : IN_OP -> ^(TYPE_VARIANCE[$IN_OP])
+    | OUT -> ^(TYPE_VARIANCE[$OUT])
     ;
     
 dimensionalTypeParameter
@@ -529,18 +529,18 @@ dimensionalTypeParameter
     ;
     
 initializer
-    : ':=' expression
-    -> ^(INITIALIZER_EXPRESSION expression)
+    : ASSIGN_OP expression
+    -> ^(INITIALIZER_EXPRESSION[$ASSIGN_OP] expression)
     ;
 
 specifier
-    : '=' expression
-    -> ^(SPECIFIER_EXPRESSION expression)
+    : SPECIFY expression
+    -> ^(SPECIFIER_EXPRESSION[$SPECIFY] expression)
     ;
 
 typeSpecifier
-    : '=' type
-    -> ^(TYPE_SPECIFIER type)
+    : SPECIFY type
+    -> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
 nonstringLiteral
@@ -676,8 +676,8 @@ selfReference
     ;
 
 enumeration
-    : '{' expressions '}'
-    -> ^(SEQUENCE_ENUMERATION expressions)
+    : LBRACE expressions '}'
+    -> ^(SEQUENCE_ENUMERATION[$LBRACE] expressions)
     ;
 
 primary
@@ -714,12 +714,12 @@ memberSelector
 
 typeReference
     : typeInExpression ( (typeInExpressionStart) => '.' typeInExpression )*
-    -> ^(TYPE_REFERENCE typeInExpression+)
+    -> ^(TYPE typeInExpression+)
     ;
 
 memberReference
     : memberInExpression
-    -> ^(MEMBER_REFERENCE memberInExpression)
+    -> ^(MEMBER memberInExpression)
     | 'subtype' 
     | 'outer'
     ;
@@ -782,8 +782,8 @@ namedArgumentDeclaration
     ;
     
 objectArgument
-    : 'object' parameterName extendedType? satisfiedTypes? classBody
-    -> parameterName ^(OBJECT_ARGUMENT parameterName extendedType? satisfiedTypes? classBody)
+    : OBJECT_DECLARATION parameterName extendedType? satisfiedTypes? classBody
+    -> parameterName ^(OBJECT_ARGUMENT[$OBJECT_DECLARATION] parameterName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
@@ -820,12 +820,12 @@ specificationStart
 
 parameterName
     : LIDENTIFIER
-    -> ^(PARAMETER_NAME LIDENTIFIER)
+    -> ^(PARAMETER_NAME[$LIDENTIFIER])
     ;
 
 namedArguments
-    : '{' ((namedArgumentStart) => namedArgument)* expressions? '}'
-    -> ^(NAMED_ARGUMENT_LIST ^(NAMED_ARGUMENT namedArgument)* ^(SEQUENCED_ARGUMENT expressions)?)
+    : LBRACE ((namedArgumentStart) => namedArgument)* expressions? '}'
+    -> ^(NAMED_ARGUMENT_LIST[$LBRACE] ^(NAMED_ARGUMENT namedArgument)* ^(SEQUENCED_ARGUMENT expressions)?)
     ;
 
 parExpression 
@@ -833,8 +833,8 @@ parExpression
     ;
     
 positionalArguments
-    : '(' ( positionalArgument (',' positionalArgument)* )? ')'
-    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT positionalArgument)*)
+    : LPAREN ( positionalArgument (',' positionalArgument)* )? ')'
+    -> ^(POSITIONAL_ARGUMENT_LIST[$LPAREN] ^(POSITIONAL_ARGUMENT positionalArgument)*)
     ;
 
 positionalArgument
@@ -873,8 +873,8 @@ specialArgument
     ;
 
 formalParameters
-    : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(PARAMETER_LIST ^(PARAMETER formalParameter)*)
+    : LPAREN (formalParameter (',' formalParameter)*)? ')'
+    -> ^(PARAMETER_LIST[$LPAREN] ^(PARAMETER formalParameter)*)
     ;
 
 //Support for declaring functional formal parameters outside
@@ -947,31 +947,34 @@ formalParameterType
 
 controlCondition
     : condition
-    -> ^(CONDITION condition)
     ;
 
 condition
     : expression 
-    | existsCondition 
-    | nonemptyCondition 
+    -> ^(BOOLEAN_CONDITION expression)
+    | existsCondition
+    | nonemptyCondition
     | isCondition 
     | satisfiesCondition
     ;
-
-existsCondition
-    : 'exists'^ controlVariableOrExpression
-    ;
     
+existsCondition
+    : EXISTS controlVariableOrExpression 
+    -> ^(EXISTS_CONDITION[$EXISTS] ^(VARIABLE_OR_EXPRESSION controlVariableOrExpression))
+    ;
 nonemptyCondition
-    : 'nonempty'^ controlVariableOrExpression
+    : NONEMPTY controlVariableOrExpression 
+    -> ^(NONEMPTY_CONDITION[$NONEMPTY] ^(VARIABLE_OR_EXPRESSION controlVariableOrExpression))
     ;
 
 isCondition
-    : 'is'^ type (memberName specifier | expression)
+    : IS_OP type (memberName specifier | expression)
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE_OR_EXPRESSION ^(VARIABLE type memberName)? specifier? expression?))
     ;
 
 satisfiesCondition
-    : 'satisfies'^ type type
+    : SATISFIED_TYPES type type
+    -> ^(SATISFIES_CONDITION[$SATISFIED_TYPES] type+)
     ;
 
 controlStructure
@@ -1020,6 +1023,7 @@ defaultCaseItem
 
 caseCondition
     : expressions 
+    -> ^(MATCH_CASE expressions)
     | isCaseCondition 
     | satisfiesCaseCondition
     ;
@@ -1030,11 +1034,13 @@ expressions
     ;
 
 isCaseCondition
-    : 'is'^ type
+    : IS_OP type
+    -> ^(IS_CASE[$IS_OP] type)
     ;
 
 satisfiesCaseCondition
-    : 'satisfies'^ type
+    : SATISFIED_TYPES type
+    -> ^(SATISFIES_CASE[$SATISFIED_TYPES] type)
     ;
 
 forFail
@@ -1056,7 +1062,7 @@ forIterator
     ;
     
 containment
-    : 'in'^ expression
+    : 'in'! expression
     ;
     
 doWhile
@@ -1100,7 +1106,7 @@ finallyBlock
 
 resource
     : controlVariableOrExpression
-    -> ^(TRY_RESOURCE controlVariableOrExpression)
+    -> ^(TRY_RESOURCE ^(VARIABLE_OR_EXPRESSION controlVariableOrExpression))
     ;
 
 controlVariableOrExpression
@@ -1110,6 +1116,7 @@ controlVariableOrExpression
 
 variable
     : inferrableType memberName formalParameters*
+    -> ^(VARIABLE inferrableType memberName formalParameters*)
     ;
 
 // Lexer
@@ -1275,15 +1282,15 @@ BREAK
     :   'break'
     ;
 
-CASE
+CASE_CLAUSE
     :   'case'
     ;
 
-CATCH
+CATCH_CLAUSE
     :   'catch'
     ;
 
-CLASS
+CLASS_DECLARATION
     :   'class'
     ;
 
@@ -1291,11 +1298,11 @@ CONTINUE
     :   'continue'
     ;
 
-DO
+DO_CLAUSE
     :   'do'
     ;
     
-ELSE
+ELSE_CLAUSE
     :   'else'
     ;            
 
@@ -1307,23 +1314,23 @@ EXTENDED_TYPE
     :   'extends'
     ;
 
-FINALLY
+FINALLY_CLAUSE
     :   'finally'
     ;
 
-FOR
+FOR_CLAUSE
     :   'for'
     ;
 
-FAIL
+FAIL_CLAUSE
     :   'fail'
     ;
 
-GIVEN
+TYPE_CONSTRAINT
     :   'given'
     ;
 
-IF
+IF_CLAUSE
     :   'if'
     ;
 
@@ -1339,11 +1346,11 @@ IMPLICIT
     :   'implicit'
     ;
 
-INTERFACE
+INTERFACE_DECLARATION
     :   'interface'
     ;
 
-LOCAL
+LOCAL_MODIFIER
     :   'local'
     ;
 
@@ -1359,7 +1366,7 @@ SUPER
     :   'super'
     ;
 
-SWITCH
+SWITCH_CLAUSE
     :   'switch'
     ;
 
@@ -1371,7 +1378,7 @@ OUTER
     :   'outer'
     ;
 
-OBJECT
+OBJECT_DECLARATION
     :   'object'
     ;
 
@@ -1391,7 +1398,7 @@ THROW
     :   'throw'
     ;
 
-TRY
+TRY_CLAUSE
     :   'try'
     ;
 
@@ -1403,7 +1410,7 @@ VOID_MODIFIER
     :   'void'
     ;
 
-WHILE
+WHILE_CLAUSE
     :   'while'
     ;
 
