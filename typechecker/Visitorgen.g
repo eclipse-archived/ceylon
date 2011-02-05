@@ -55,14 +55,15 @@ nodeList : {
 
 node : '^' '('
        n=NODE_NAME 
-       { println("    public void visit(" + className($n.text) + " that) { visitAny(that); }"); }
-       extendsNode? 
+       (
+         { println("    public void visit(" + className($n.text) + " that) { visitAny(that); }"); }
+       | ':' en=NODE_NAME
+         { println("    public void visit(" + className($n.text) + " that) { visit((" + className($en.text) + ") that); }"); }
+       ) 
        (DESCRIPTION? subnode)*
        (DESCRIPTION? field)*
        ')'
      ;
-
-extendsNode : ':' n=NODE_NAME;
 
 subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
