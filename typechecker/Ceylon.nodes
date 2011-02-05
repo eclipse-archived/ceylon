@@ -125,16 +125,20 @@
 ^(PARAMETER_LIST 
     PARAMETER*)
 ^(PARAMETER 
-    TYPE 
+    TYPE?
+    SEQUENCED_TYPE?
     PARAMETER_NAME 
     SPECIFIER_EXPRESSION?)
 
 ^(TYPE_PARAMETER_LIST 
-    TYPE_PARAMETER*)
+    TYPE_PARAMETER*
+    SEQUENCED_TYPE_PARAMETER?)
 ^(TYPE_PARAMETER
     TYPE_VARIANCE?
     TYPE_NAME)
 ^(TYPE_VARIANCE)
+^(SEQUENCED_TYPE_PARAMETER
+    TYPE_NAME)
 
 "A method or attribute body containing statements and declarations."
 ^(BLOCK 
@@ -164,7 +168,11 @@
 
 "A list of type arguments in a produced type."
 ^(TYPE_ARGUMENT_LIST 
-    TYPE*)
+    TYPE*
+    SEQUENCED_TYPE?)
+
+^(SEQUENCED_TYPE
+    TYPE)
 
 "A control directive."
 ^(DIRECTIVE)
@@ -467,7 +475,11 @@
 
 "A list of named arguments."
 ^(NAMED_ARGUMENT_LIST:ARGUMENT_LIST 
-    NAMED_ARGUMENT*)
+    NAMED_ARGUMENT*
+    SEQUENCED_ARGUMENT*)
+
+^(SEQUENCED_ARGUMENT 
+    EXPRESSION_LIST)
 
 "A list of positional arguments."
 ^(POSITIONAL_ARGUMENT_LIST:ARGUMENT_LIST 
