@@ -95,6 +95,8 @@ tokens {
     PACKAGE_NAME;
     POSTFIX_INCREMENT_OP;
     POSTFIX_DECREMENT_OP;
+    NEGATIVE_OP;
+    FLIP_OP;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -666,8 +668,14 @@ multiplicativeExpression
     ;
 
 negationComplementExpression 
-    : ('-'^ | '~'^ | '$'^) negationComplementExpression
+    : unaryMinusOrComplementOperator^ negationComplementExpression
     | exponentiationExpression
+    ;
+
+unaryMinusOrComplementOperator
+    : DIFFERENCE_OP -> NEGATIVE_OP[$DIFFERENCE_OP]
+    | COMPLEMENT_OP -> FLIP_OP[$COMPLEMENT_OP]
+    | '$'
     ;
 
 exponentiationExpression
