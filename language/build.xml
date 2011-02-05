@@ -263,6 +263,7 @@
 	       debug="true"
 	       classpath="${antlr.lib}">
            <exclude name="Main.java"/>
+	       <exclude name="com/redhat/ceylon/compiler/tree/Node.java"/>
 	    </javac>
 	  </target>
 	
