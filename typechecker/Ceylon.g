@@ -15,7 +15,6 @@ tokens {
     ATTRIBUTE_SETTER;
     BLOCK;
     CALL_EXPRESSION;
-    CASE_LIST;
     CLASS_BODY;
     CLASS_DECLARATION;
     CONDITION;
@@ -45,7 +44,7 @@ tokens {
     BROKEN_MEMBER_BODY;
     METHOD_ARGUMENT;
     METHOD_DECLARATION;
-    METATYPE_LIST;
+    METATYPES;
     NAMED_ARGUMENT;
     NAMED_ARGUMENT_LIST;
     OBJECT_DECLARATION;
@@ -76,8 +75,10 @@ tokens {
     TYPE;
     TYPE_CONSTRAINT;
     TYPE_DECLARATION;
-    SATISFIES_LIST;
-    ABSTRACTS_LIST;
+    ABSTRACTED_TYPE;
+    EXTENDED_TYPE;
+    SATISFIED_TYPES;
+    CASE_TYPES;
     SUBSCRIPT_EXPRESSION;
     LOWER_BOUND;
     UPPER_BOUND;
@@ -86,7 +87,6 @@ tokens {
     SPECIFIED_ARGUMENT;
     SPECIFIER_EXPRESSION;
     SPECIFIER_STATEMENT;
-    EXTENDS_EXPRESSION;
     //STATEMENT;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
@@ -367,23 +367,19 @@ classBody
     ;
 
 extendedType
-    : 'extends' type positionalArguments
-    -> ^(EXTENDS_EXPRESSION type positionalArguments) 
+    : 'extends'^ type positionalArguments
     ;
 
 satisfiedTypes
-    : 'satisfies' type ('&' type)*
-    -> ^(SATISFIES_LIST type+)
+    : 'satisfies'^ type ('&'! type)*
     ;
 
 abstractedType
-    : 'abstracts' type
-    -> ^(ABSTRACTS_LIST type)
+    : 'abstracts'^ type
     ;
     
 caseTypes
-    : 'of' caseType ('|' caseType)*
-    -> ^(CASE_LIST caseType+)
+    : 'of'^ caseType ('|'! caseType)*
     ;
 
 caseType 
@@ -395,7 +391,7 @@ caseType
 //Note that we don't need this for now
 metatypes
     : 'is' type ('&' type)* 
-    -> ^(METATYPE_LIST type*)
+    -> ^(METATYPES type*)
     ;
 
 typeConstraint
@@ -1267,7 +1263,7 @@ MULTI_COMMENT
         }
         ;
         
-ABSTRACTS
+ABSTRACTED_TYPE
     :   'abstracts'
     ;
 
@@ -1307,7 +1303,7 @@ EXISTS
     :   'exists'
     ;
 
-EXTENDS_EXPRESSION
+EXTENDED_TYPE
     :   'extends'
     ;
 
@@ -1331,7 +1327,7 @@ IF
     :   'if'
     ;
 
-SATISFIES
+SATISFIED_TYPES
     :   'satisfies'
     ;
 
@@ -1379,7 +1375,7 @@ OBJECT
     :   'object'
     ;
 
-OF
+CASE_TYPES
     :   'of'
     ;
 
