@@ -36,7 +36,7 @@ tokens {
     IMPORT_PATH;
     IMPORT_ELEM;
     IMPORT_ALIAS;
-    INIT_EXPRESSION;
+    INITIALIZER_EXPRESSION;
     INTERFACE_DECLARATION;
     INTERFACE_BODY;
     MEMBER_DECLARATION;
@@ -430,8 +430,8 @@ unabbreviatedType
     ;
 
 typeAbbreviation
-    : QMARK
-    -> ^(TYPE_NAME UIDENTIFIER[$QMARK,"Optional"])
+    : DEFAULT_OP
+    -> ^(TYPE_NAME UIDENTIFIER[$DEFAULT_OP,"Optional"])
     | ARRAY 
     -> ^(TYPE_NAME UIDENTIFIER[$ARRAY,"Sequence"])
     //| '[' dimension ']'
@@ -534,7 +534,7 @@ dimensionalTypeParameter
     
 initializer
     : ':=' expression
-    -> ^(INIT_EXPRESSION expression)
+    -> ^(INITIALIZER_EXPRESSION expression)
     ;
 
 specifier
@@ -599,7 +599,7 @@ expression
 
 assignmentExpression
     : disjunctionExpression
-      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '~='^ | '&&='^ | '||='^ | '?='^) expression )?
+      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '~='^ | '&&='^ | '||='^ | '?='^) assignmentExpression )?
     ;
 
 //should '^' have a higher precedence?
@@ -1151,7 +1151,7 @@ NATURAL_LITERAL
       )
     ;
     
-fragment SPREAD: '[].';
+fragment SPREAD_OP: '[].';
 fragment ARRAY: '[]';
 fragment LBRACKET: '[';
 //distinguish the spread operator "x[]."
@@ -1159,15 +1159,15 @@ fragment LBRACKET: '[';
 LBRACKETS
     : '['
     (
-      (']' '.' ~'.') => '].' { $type = SPREAD; }
+      (']' '.' ~'.') => '].' { $type = SPREAD_OP; }
     | (']') => ']' { $type = ARRAY; }
     | { $type = LBRACKET; }
     )
     ;
 
-fragment SAFEMEMBER: '?.';
-fragment SAFEINDEX: '?[';
-fragment QMARK: '?';
+fragment SAFE_MEMBER: '?.';
+fragment SAFE_INDEX: '?[';
+fragment DEFAULT_OP: '?';
 //distinguish the safe index operator "x?[i]"
 //from an abbreviated type "T?[]"
 //and the safe member operator "x?.y" from 
@@ -1175,9 +1175,9 @@ fragment QMARK: '?';
 QMARKS
     : '?'
     (
-      ('[' ~']') => '[' { $type = SAFEINDEX; }
-    | ('.' ~'.') => '.' { $type = SAFEMEMBER; }
-    | { $type = QMARK; }
+      ('[' ~']') => '[' { $type = SAFE_INDEX; }
+    | ('.' ~'.') => '.' { $type = SAFE_MEMBER; }
+    | { $type = DEFAULT_OP; }
     )
     ;
 
@@ -1414,7 +1414,7 @@ WHILE
 ELLIPSIS
     :   '...';
 
-RANGE
+RANGE_OP
     :   '..';
 
 DOT
@@ -1440,7 +1440,7 @@ RBRACKET
     :   ']'
     ;
 
-SEMI
+SEMICOLON
     :   ';'
     ;
 
@@ -1448,178 +1448,179 @@ COMMA
     :   ','
     ;
 
-EQ
-    :   '='
-    ;
-
-RENDER
-    :   '$'
-    ;
-
-NOT
-    :   '!'
-    ;
-
-BITWISENOT
-    :   '~'
+HASH
+    :   '#'
     ;
 
 COLON
     :   ':'
     ;
     
-COLONEQ
+SPECIFY
+    :   '='
+    ;
+
+FORMAT_OP
+    :   '$'
+    ;
+
+NOT_OP
+    :   '!'
+    ;
+
+COMPLEMENT_OP
+    :   '~'
+    ;
+
+ASSIGN_OP
     :   ':='
     ;
 
-EQEQ
+EQUAL_OP
     :   '=='
     ;
 
-IDENTICAL
+IDENTICAL_OP
     :   '==='
     ;
 
-AND
+AND_OP
     :   '&&'
     ;
 
-OR
+OR_OP
     :   '||'
     ;
 
-INCREMENT
+INCREMENT_OP
     :   '++'
     ;
 
-DECREMENT
+DECREMENT_OP
     :   '--'
     ;
 
-PLUS
+SUM_OP
     :   '+'
     ;
 
-MINUS
+DIFFERENCE_OP
     :   '-'
     ;
 
-TIMES
+PRODUCT_OP
     :   '*'
     ;
 
-DIVIDED
+QUOTIENT_OP
     :   '/'
     ;
 
-BITWISEAND
+INTERSECTION_OP
     :   '&'
     ;
 
-BITWISEOR
+UNION_OP
     :   '|'
     ;
 
-BITWISEXOR
+XOR_OP
     :   '^'
     ;
 
-REMAINDER
+REMAINDER_OP
     :   '%'
     ;
 
-NOTEQ
+NOT_EQUAL_OP
     :   '!='
     ;
 
-GT
+LARGER_OP
     :   '>'
     ;
 
-LT
+SMALLER_OP
     :   '<'
     ;        
 
-GTEQ
+LARGE_AS_OP
     :   '>='
     ;
 
-LTEQ
+SMALL_AS_OP
     :   '<='
     ;        
 
-ENTRY
+ENTRY_OP
     :   '->'
     ;
     
-COMPARE
+COMPARE_OP
     :   '<=>'
     ;
     
-IN
+IN_OP
     :   'in'
     ;
 
-IS
+IS_OP
     :   'is'
     ;
 
-HASH
-    :   '#'
-    ;
-
-POWER
+POWER_OP
     :    '**'
     ;
 
-DOTEQ
+APPLY_OP
     :   '.='
     ;
 
-PLUSEQ
+ADD_ASSIGN_OP
     :   '+='
     ;
 
-MINUSEQ
+SUBTRACT_ASSIGN_OP
     :   '-='
     ;
 
-TIMESEQ
+MULTIPLY_ASSIGN_OP
     :   '*='
     ;
 
-DIVIDEDEQ
+DIVIDE_ASSIGN_OP
     :   '/='
     ;
 
-BITWISEANDEQ
+INTERSECT_ASSIGN_OP
     :   '&='
     ;
 
-BITWISEOREQ
+UNION_ASSIGN_OP
     :   '|='
     ;
 
-BITWISEXOREQ
+XOR_ASSIGN_OP
     :   '^='
     ;
 
-BITWISNOTEQ
+COMPLEMENT_ASSIGN_OP
     :   '~='
     ;
-REMAINDEREQ
+    
+REMAINDER_ASSIGN_OP
     :   '%='
     ;
 
-QMARKEQ
+DEFAULT_ASSIGN_OP
     :   '?='
     ;
 
-ANDEQ
+AND_ASSIGN_OP
     :   '&&='
     ;
 
-OREQ
+OR_ASSIGN_OP
     :   '||='
     ;
 
