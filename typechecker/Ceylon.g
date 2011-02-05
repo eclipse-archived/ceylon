@@ -52,7 +52,7 @@ tokens {
     OBJECT_ARGUMENT;
     POSITIONAL_ARGUMENT;
     POSITIONAL_ARGUMENT_LIST;
-    POSTFIX_EXPRESSION;
+    POSTFIX_OPERATOR_EXPRESSION;
     PRIMARY;
     SATISFIES_EXPRESSION;
     SEQUENCED_ARGUMENT;
@@ -74,7 +74,7 @@ tokens {
     TYPE_CONSTRAINT_LIST;
     TYPE;
     TYPE_DECLARATION;
-    SUBSCRIPT_EXPRESSION;
+    INDEX_EXPRESSION;
     LOWER_BOUND;
     UPPER_BOUND;
     SELECTOR_LIST;
@@ -96,6 +96,8 @@ tokens {
     SATISFIES_CASE;
     MATCH_CASE;
     PACKAGE_NAME;
+    POSTFIX_INCREMENT_OP;
+    POSTFIX_DECREMENT_OP;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -699,14 +701,15 @@ primary
       | argumentsWithFunctionalArguments
       -> ^(CALL_EXPRESSION ^(PRIMARY $primary) argumentsWithFunctionalArguments)
       | elementSelector
-      -> ^(SUBSCRIPT_EXPRESSION ^(PRIMARY $primary) elementSelector)
+      -> ^(INDEX_EXPRESSION ^(PRIMARY $primary) elementSelector)
       | postfixOperator 
-      -> ^(POSTFIX_EXPRESSION ^(PRIMARY $primary) postfixOperator)
+      -> ^(POSTFIX_OPERATOR_EXPRESSION ^(PRIMARY $primary) postfixOperator)
     )*
    ;
 
 postfixOperator
-    : '--' | '++'
+    : DECREMENT_OP -> ^(POSTFIX_DECREMENT_OP[$DECREMENT_OP])
+    | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
     ;
 
 base 
@@ -765,8 +768,17 @@ elementSelector
     ;
 
 elementsSpec
-    : additiveExpression ( '...' | '..' additiveExpression )?
-    -> ^(LOWER_BOUND additiveExpression) ^(UPPER_BOUND additiveExpression)?	
+    : lowerBound ( '...'! | '..'! upperBound )?
+    ;
+
+lowerBound
+    : additiveExpression 
+    -> ^(LOWER_BOUND ^(EXPRESSION additiveExpression))
+    ;
+
+upperBound
+    : additiveExpression 
+    -> ^(UPPER_BOUND ^(EXPRESSION additiveExpression))
     ;
 
 argumentsWithFunctionalArguments
@@ -1167,7 +1179,7 @@ NATURAL_LITERAL
     
 fragment SPREAD_OP: '[].';
 fragment ARRAY: '[]';
-fragment LBRACKET: '[';
+fragment INDEX_OP: '[';
 //distinguish the spread operator "x[]."
 //from a sequenced type "T[]..."
 LBRACKETS
@@ -1175,12 +1187,12 @@ LBRACKETS
     (
       (']' '.' ~'.') => '].' { $type = SPREAD_OP; }
     | (']') => ']' { $type = ARRAY; }
-    | { $type = LBRACKET; }
+    | { $type = INDEX_OP; }
     )
     ;
 
-fragment SAFE_MEMBER: '?.';
-fragment SAFE_INDEX: '?[';
+fragment SAFE_MEMBER_OP: '?.';
+fragment SAFE_INDEX_OP: '?[';
 fragment DEFAULT_OP: '?';
 //distinguish the safe index operator "x?[i]"
 //from an abbreviated type "T?[]"
@@ -1189,8 +1201,8 @@ fragment DEFAULT_OP: '?';
 QMARKS
     : '?'
     (
-      ('[' ~']') => '[' { $type = SAFE_INDEX; }
-    | ('.' ~'.') => '.' { $type = SAFE_MEMBER; }
+      ('[' ~']') => '[' { $type = SAFE_INDEX_OP; }
+    | ('.' ~'.') => '.' { $type = SAFE_MEMBER_OP; }
     | { $type = DEFAULT_OP; }
     )
     ;
@@ -1431,7 +1443,7 @@ ELLIPSIS
 RANGE_OP
     :   '..';
 
-DOT
+MEMBER_OP
     :   '.' ;
 
 LPAREN
