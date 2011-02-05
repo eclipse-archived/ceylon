@@ -10,9 +10,9 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.redhat.ceylon.compiler.tree.Builder;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.tree.TreeBuilder;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.tree.Walker;
 
@@ -44,7 +44,7 @@ public class Main {
 
         CommonTree t = (CommonTree)r.getTree();
         
-        CompilationUnit cu = new TreeBuilder().buildCompilationUnit(t);
+        CompilationUnit cu = new Builder().buildCompilationUnit(t);
         Visitor v = new Visitor() {
         	@Override
         	public void visitAny(Node that) {

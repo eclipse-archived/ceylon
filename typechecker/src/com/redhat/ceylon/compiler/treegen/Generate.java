@@ -37,7 +37,7 @@ public class Generate {
         BuildergenLexer lexer = new BuildergenLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         BuildergenParser parser = new BuildergenParser(tokens);
-        File out = new File("gensrc/com/redhat/ceylon/compiler/tree/TreeBuilder.java");
+        File out = new File("gensrc/com/redhat/ceylon/compiler/tree/Builder.java");
         out.createNewFile();
         parser.out=new PrintStream(out);
         parser.nodeList();

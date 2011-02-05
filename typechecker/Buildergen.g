@@ -49,7 +49,7 @@ nodeList :
     println("import static com.redhat.ceylon.compiler.parser.CeylonParser.*;\n");
     println("import org.antlr.runtime.tree.CommonTree;\n");
     println("import java.util.*;\n");
-    println("public class TreeBuilder {\n");
+    println("public class Builder {\n");
     }
            (DESCRIPTION? node)+ 
            EOF
