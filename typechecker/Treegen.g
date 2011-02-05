@@ -92,9 +92,9 @@ subnode : n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
           { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }\n"); }
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')?
           { println("        private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
-                               " = new ArrayList<" + className($mn.text) + ">();"); }
-          { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "() { return " + fieldName($mn.text) + "; }"); }
-          { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + ".add(node); }\n"); }
+                               "s = new ArrayList<" + className($mn.text) + ">();"); }
+          { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "s() { return " + fieldName($mn.text) + "s; }"); }
+          { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + "s.add(node); }\n"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME 
