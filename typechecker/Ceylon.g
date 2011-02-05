@@ -93,6 +93,7 @@ tokens {
     IS_CASE;
     SATISFIES_CASE;
     MATCH_CASE;
+    PACKAGE_NAME;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -139,10 +140,15 @@ importedName
     ;
 
 packagePath
-    : LIDENTIFIER ('.' LIDENTIFIER)*
-    -> ^(IMPORT_PATH LIDENTIFIER*)
+    : packageName ('.' packageName)*
+    -> ^(IMPORT_PATH packageName*)
     ;
-    
+
+packageName
+    : LIDENTIFIER
+    -> ^(PACKAGE_NAME[$LIDENTIFIER])
+    ;
+
 block
     : LBRACE annotatedDeclarationOrStatement* directiveStatement? '}'
     -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement* directiveStatement?)
@@ -455,7 +461,7 @@ annotationArguments
 
 literalArguments
     : literalArgument+
-    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT literalArgument)+)
+    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION ^(PRIMARY literalArgument)))+)
     ;
     
 literalArgument
