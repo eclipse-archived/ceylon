@@ -10,9 +10,8 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
-import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.tree.Tree.TypeDecl;
 import com.redhat.ceylon.compiler.tree.Node;
+import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.tree.TreeBuilder;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.tree.Walker;

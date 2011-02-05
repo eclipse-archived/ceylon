@@ -9,85 +9,85 @@ tokens {
     ANNOTATION;
     ANNOTATION_LIST;
     ANNOTATION_NAME;
-    ATTRIBUTE_ARG;
-    ATTRIBUTE_DECL;
+    ATTRIBUTE_ARGUMENT;
+    ATTRIBUTE_DECLARATION;
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BLOCK;
     BASE;
-    CALL_EXPR;
+    CALL_EXPRESSION;
     CASE_LIST;
     CLASS_BODY;
-    CLASS_DECL;
+    CLASS_DECLARATION;
     CONDITION;
     COMPILATION_UNIT;
     DIRECTIVE;
-    EXPR;
-    EXPR_LIST;
-    EXPR_STMT;
+    EXPRESSION;
+    EXPRESSION_LIST;
+    EXPRESSION_STATEMENT;
     FOR_ITERATOR;
-    FOR_STMT;
-    PARAM_NAME;
-    PARAM;
-    PARAM_LIST;
-    IF_STMT;
-    IMPORT_DECL;
+    FOR_STATEMENT;
+    PARAMETER_NAME;
+    PARAMETER;
+    PARAMETER_LIST;
+    IF_STATEMENT;
+    IMPORT_DECLARATION;
     IMPORT_LIST;
     IMPORT_WILDCARD;
     IMPORT_PATH;
     IMPORT_ELEM;
     IMPORT_ALIAS;
-    INIT_EXPR;
-    INTERFACE_DECL;
+    INIT_EXPRESSION;
+    INTERFACE_DECLARATION;
     INTERFACE_BODY;
-    MEMBER_DECL;
+    MEMBER_DECLARATION;
     MEMBER_NAME;
-    MEMBER_EXPR;
+    MEMBER_EXPRESSION;
     BROKEN_MEMBER_BODY;
-    METHOD_ARG;
-    METHOD_DECL;
+    METHOD_ARGUMENT;
+    METHOD_DECLARATION;
     METATYPE_LIST;
-    NAMED_ARG;
-    NAMED_ARG_LIST;
-    OBJECT_DECL;
-    OBJECT_ARG;
-    POS_ARG;
-    POS_ARG_LIST;
-    POSTFIX_EXPR;
+    NAMED_ARGUMENT;
+    NAMED_ARGUMENT_LIST;
+    OBJECT_DECLARATION;
+    OBJECT_ARGUMENT;
+    POSITIONAL_ARGUMENT;
+    POSITIONAL_ARGUMENT_LIST;
+    POSTFIX_EXPRESSION;
     PRIMARY;
-    SATISFIES_EXPR;
-    SEQ_ARG;
-    SEQ_TYPE;
-    SEQ_TYPE_PARAMETER;
-    SPECIAL_ARG;
-    TRY_CATCH_STMT;
+    SATISFIES_EXPRESSION;
+    SEQUENCED_ARGUMENT;
+    SEQUENCED_TYPE;
+    SEQUENCED_TYPE_PARAMETER;
+    SPECIAL_ARGUMENT;
+    TRY_CATCH_STATEMENT;
     TRY_RESOURCE;
-    TYPE_ARG_LIST;
-    TYPE_DECL;
+    TYPE_ARGUMENT_LIST;
+    TYPE_DECLARATION;
     TYPE_NAME;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
-    TYPE_REF;
-    MEMBER_REF;
-    WHILE_STMT;
-    DO_WHILE_STMT;
-    SWITCH_STMT;
+    TYPE_REFERENCE;
+    MEMBER_REFERENCE;
+    WHILE_STATEMENT;
+    DO_WHILE_STATEMENT;
+    SWITCH_STATEMENT;
     SWITCH_CASE_LIST;
     TYPE_CONSTRAINT_LIST;
     TYPE;
     TYPE_CONSTRAINT;
-    TYPE_DECL;
+    TYPE_DECLARATION;
     SATISFIES_LIST;
     ABSTRACTS_LIST;
-    SUBSCRIPT_EXPR;
+    SUBSCRIPT_EXPRESSION;
     LOWER_BOUND;
     UPPER_BOUND;
     SELECTOR_LIST;
-    SEQUENCE_ENUM;
-    SPEC_ARG;
-    SPEC_EXPR;
-    SPEC_STMT;
-    SUPERCLASS;
+    SEQUENCE_ENUMERATION;
+    SPECIFIED_ARGUMENT;
+    SPECIFIER_EXPRESSION;
+    SPECIFIER_STATEMENT;
+    EXTENDS_EXPRESSION;
     STATEMENT;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
@@ -106,14 +106,14 @@ compilationUnit
 
 typeDeclaration
     : classDeclaration
-    -> ^(CLASS_DECL classDeclaration)
+    -> ^(CLASS_DECLARATION classDeclaration)
     | interfaceDeclaration
-    -> ^(INTERFACE_DECL interfaceDeclaration)
+    -> ^(INTERFACE_DECLARATION interfaceDeclaration)
     ;
 
 importDeclaration
     : 'import' packagePath '{' importElements '}'
-      -> ^(IMPORT_DECL packagePath importElements)
+      -> ^(IMPORT_DECLARATION packagePath importElements)
     ;
 
 importElements
@@ -156,7 +156,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK ^(DIRECTIVE ^(RETURN ^(EXPR ^(PRIMARY ^(CALL_EXPR ^(BASE ^(TYPE_REF {((CommonTree)$mt).getChild(0)})) namedArguments))))))
+    -> ^(BLOCK ^(DIRECTIVE ^(RETURN ^(EXPRESSION ^(PRIMARY ^(CALL_EXPRESSION ^(BASE ^(TYPE_REFERENCE {((CommonTree)$mt).getChild(0)})) namedArguments))))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -177,9 +177,9 @@ expressionStatementOrList
     : expression 
       (
         ';' brokenMemberBody?
-      -> ^(EXPR_STMT expression) brokenMemberBody?
+      -> ^(EXPRESSION_STATEMENT expression) brokenMemberBody?
       | (',' expression)* 
-      -> ^(EXPR_LIST expression+)
+      -> ^(EXPRESSION_LIST expression+)
       )
     ;
     
@@ -199,9 +199,9 @@ annotatedDeclaration
     annotations?
     ( 
         memberDeclaration 
-      -> ^(MEMBER_DECL memberDeclaration annotations?)
+      -> ^(MEMBER_DECLARATION memberDeclaration annotations?)
       | typeDeclaration 
-      -> ^(TYPE_DECL typeDeclaration annotations?)
+      -> ^(TYPE_DECLARATION typeDeclaration annotations?)
     )
     ;
 
@@ -238,12 +238,12 @@ declarationKeyword
 
 specificationStatement
     : memberName specifier ';'
-    -> ^(SPEC_STMT memberName specifier)
+    -> ^(SPECIFIER_STATEMENT memberName specifier)
     ;
 
 expressionStatement
     : expression ';'
-    -> ^(EXPR_STMT expression)
+    -> ^(EXPRESSION_STATEMENT expression)
     ;
 
 directiveStatement
@@ -285,11 +285,11 @@ retryDirective
 //      style parameters below?
 memberDeclaration
     : objectDeclaration
-    -> ^(OBJECT_DECL objectDeclaration)
+    -> ^(OBJECT_DECLARATION objectDeclaration)
     | setterDeclaration
     -> ^(ATTRIBUTE_SETTER setterDeclaration)
     | voidMethodDeclaration
-    -> ^(METHOD_DECL voidMethodDeclaration)
+    -> ^(METHOD_DECLARATION voidMethodDeclaration)
     | typedMethodOrAttributeDeclaration
     ;
 
@@ -309,9 +309,9 @@ typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
       methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
-    -> ^(METHOD_DECL inferrableType memberName methodParameters memberBody? specifier?)
+    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier?)
     | (specifier | initializer)? ';'
-    -> ^(ATTRIBUTE_DECL inferrableType memberName specifier? initializer?)
+    -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
     | memberBody[$inferrableType.tree]
     -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
     )
@@ -369,7 +369,7 @@ classBody
 
 extendedType
     : 'extends' type positionalArguments
-    -> ^(SUPERCLASS type positionalArguments) 
+    -> ^(EXTENDS_EXPRESSION type positionalArguments) 
     ;
 
 satisfiedTypes
@@ -418,7 +418,7 @@ typeConstraints
 
 type
     : (unabbreviatedType -> unabbreviatedType) 
-      (typeAbbreviation -> ^(TYPE typeAbbreviation ^(TYPE_ARG_LIST $type)))*
+      (typeAbbreviation -> ^(TYPE typeAbbreviation ^(TYPE_ARGUMENT_LIST $type)))*
     ;
 
 unabbreviatedType
@@ -461,7 +461,7 @@ annotationArguments
 
 literalArguments
     : literalArgument+
-    -> ^(POS_ARG_LIST ^(POS_ARG literalArgument)+)
+    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT literalArgument)+)
     ;
     
 literalArgument
@@ -485,11 +485,11 @@ memberName
 
 typeArguments
     : '<' typeArgument (',' typeArgument)* '>'
-    -> ^(TYPE_ARG_LIST typeArgument+)
+    -> ^(TYPE_ARGUMENT_LIST typeArgument+)
     ;
 
 typeArgument
-    : type ( '...' -> ^(SEQ_TYPE type) | -> type ) 
+    : type ( '...' -> ^(SEQUENCED_TYPE type) | -> type ) 
     ; /*| '#'! dimension
     ;
 
@@ -520,7 +520,7 @@ typeParameter
     : variance? typeName
     -> ^(TYPE_PARAMETER ^(TYPE_VARIANCE variance)? typeName)
     | typeName '...'
-    -> ^(SEQ_TYPE_PARAMETER typeName)
+    -> ^(SEQUENCED_TYPE_PARAMETER typeName)
     //| '#'! dimensionalTypeParameter
     ;
 
@@ -535,12 +535,12 @@ dimensionalTypeParameter
     
 initializer
     : ':=' expression
-    -> ^(INIT_EXPR expression)
+    -> ^(INIT_EXPRESSION expression)
     ;
 
 specifier
     : '=' expression
-    -> ^(SPEC_EXPR expression)
+    -> ^(SPECIFIER_EXPRESSION expression)
     ;
 
 typeSpecifier
@@ -595,7 +595,7 @@ prefixOperator
 
 expression
     : assignmentExpression
-    -> ^(EXPR assignmentExpression)
+    -> ^(EXPRESSION assignmentExpression)
     ;
 
 assignmentExpression
@@ -682,20 +682,20 @@ selfReference
 
 enumeration
     : '{' expressions '}'
-    -> ^(SEQUENCE_ENUM expressions)
+    -> ^(SEQUENCE_ENUMERATION expressions)
     ;
 
 primary
     : ( base -> ^(BASE base) )
     ( 
         memberSelector
-      -> ^(MEMBER_EXPR $primary memberSelector)
+      -> ^(MEMBER_EXPRESSION $primary memberSelector)
       | argumentsWithFunctionalArguments
-      -> ^(CALL_EXPR $primary argumentsWithFunctionalArguments)
+      -> ^(CALL_EXPRESSION $primary argumentsWithFunctionalArguments)
       | elementSelector
-      -> ^(SUBSCRIPT_EXPR $primary elementSelector)
+      -> ^(SUBSCRIPT_EXPRESSION $primary elementSelector)
       | postfixOperator 
-      -> ^(POSTFIX_EXPR $primary postfixOperator)
+      -> ^(POSTFIX_EXPRESSION $primary postfixOperator)
     )*
    ;
 
@@ -719,12 +719,12 @@ memberSelector
 
 typeReference
     : typeInExpression ( (typeInExpressionStart) => '.' typeInExpression )*
-    -> ^(TYPE_REF typeInExpression+)
+    -> ^(TYPE_REFERENCE typeInExpression+)
     ;
 
 memberReference
     : memberInExpression
-    -> ^(MEMBER_REF memberInExpression)
+    -> ^(MEMBER_REFERENCE memberInExpression)
     | 'subtype' 
     | 'outer'
     ;
@@ -769,7 +769,7 @@ argumentsWithFunctionalArguments
 
 functionalArguments
     : functionalArgument+
-    -> ^(NAMED_ARG_LIST functionalArgument+)
+    -> ^(NAMED_ARGUMENT_LIST functionalArgument+)
     ;
 
 arguments
@@ -788,27 +788,27 @@ namedArgumentDeclaration
     
 objectArgument
     : 'object' parameterName extendedType? satisfiedTypes? classBody
-    -> parameterName ^(OBJECT_ARG parameterName extendedType? satisfiedTypes? classBody)
+    -> parameterName ^(OBJECT_ARGUMENT parameterName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
     : VOID parameterName formalParameters+ block
-    -> parameterName ^(METHOD_ARG VOID parameterName formalParameters+ block)
+    -> parameterName ^(METHOD_ARGUMENT VOID parameterName formalParameters+ block)
     ;
 
 typedMethodOrGetterArgument
     : inferrableType parameterName
     ( 
       (formalParameters+ memberBody[$inferrableType.tree])
-    -> parameterName ^(METHOD_ARG inferrableType parameterName formalParameters+ memberBody)
+    -> parameterName ^(METHOD_ARGUMENT inferrableType parameterName formalParameters+ memberBody)
     | memberBody[$inferrableType.tree]
-    -> parameterName ^(ATTRIBUTE_ARG inferrableType parameterName memberBody)      
+    -> parameterName ^(ATTRIBUTE_ARGUMENT inferrableType parameterName memberBody)      
     )
     ;
 
 namedSpecifiedArgument
     : parameterName specifier ';'
-    -> ^(SPEC_ARG parameterName specifier)
+    -> ^(SPECIFIED_ARGUMENT parameterName specifier)
     ;
 
 //special rule for syntactic predicate
@@ -825,12 +825,12 @@ specificationStart
 
 parameterName
     : LIDENTIFIER
-    -> ^(PARAM_NAME LIDENTIFIER)
+    -> ^(PARAMETER_NAME LIDENTIFIER)
     ;
 
 namedArguments
     : '{' ((namedArgumentStart) => namedArgument)* expressions? '}'
-    -> ^(NAMED_ARG_LIST ^(NAMED_ARG namedArgument)* ^(SEQ_ARG expressions)?)
+    -> ^(NAMED_ARGUMENT_LIST ^(NAMED_ARGUMENT namedArgument)* ^(SEQUENCED_ARGUMENT expressions)?)
     ;
 
 parExpression 
@@ -839,7 +839,7 @@ parExpression
     
 positionalArguments
     : '(' ( positionalArgument (',' positionalArgument)* )? ')'
-    -> ^(POS_ARG_LIST ^(POS_ARG positionalArgument)*)
+    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT positionalArgument)*)
     ;
 
 positionalArgument
@@ -851,7 +851,7 @@ positionalArgument
 //invocation
 functionalArgument
     : parameterName functionalArgumentDefinition
-    -> ^(NAMED_ARG parameterName ^(METHOD_ARG 'local' parameterName functionalArgumentDefinition))
+    -> ^(NAMED_ARGUMENT parameterName ^(METHOD_ARGUMENT 'local' parameterName functionalArgumentDefinition))
     ;
 
 functionalArgumentDefinition
@@ -860,7 +860,7 @@ functionalArgumentDefinition
 
 functionalArgumentParameters
     : (formalParametersStart) => formalParameters
-    | -> ^(PARAM_LIST)
+    | -> ^(PARAMETER_LIST)
     ;
 
 functionalArgumentBody
@@ -872,14 +872,14 @@ functionalArgumentBody
 //Note that we don't need to support this yet
 specialArgument
     : inferrableType memberName (containment | specifier)
-    -> ^(SPECIAL_ARG inferrableType memberName containment? specifier?)
+    -> ^(SPECIAL_ARGUMENT inferrableType memberName containment? specifier?)
     //| isCondition
     //| existsCondition
     ;
 
 formalParameters
     : '(' (formalParameter (',' formalParameter)*)? ')'
-    -> ^(PARAM_LIST ^(PARAM formalParameter)*)
+    -> ^(PARAMETER_LIST ^(PARAMETER formalParameter)*)
     ;
 
 //Support for declaring functional formal parameters outside
@@ -887,7 +887,7 @@ formalParameters
 //Note that this is just a TODO in the spec
 extraFormalParameters
     : extraFormalParameter+
-    -> ^(PARAM_LIST ^(PARAM extraFormalParameter)+)
+    -> ^(PARAMETER_LIST ^(PARAMETER extraFormalParameter)+)
     ;
 
 //special rule for syntactic predicate
@@ -944,7 +944,7 @@ extraFormalParameter
     ;
 
 formalParameterType
-    : type ( '...' -> ^(SEQ_TYPE type) | -> type )
+    : type ( '...' -> ^(SEQUENCED_TYPE type) | -> type )
     | VOID -> VOID
     ;
 
@@ -990,7 +990,7 @@ controlStructure
     
 ifElse
     : ifBlock elseBlock?
-    -> ^(IF_STMT ifBlock elseBlock?)
+    -> ^(IF_STATEMENT ifBlock elseBlock?)
     ;
 
 ifBlock
@@ -1003,7 +1003,7 @@ elseBlock
 
 switchCaseElse
     : switchHeader ( '{' cases '}' | cases )
-    -> ^(SWITCH_STMT switchHeader cases)
+    -> ^(SWITCH_STATEMENT switchHeader cases)
     ;
 
 switchHeader
@@ -1031,7 +1031,7 @@ caseCondition
 
 expressions
     : expression (',' expression)*
-    -> ^(EXPR_LIST expression+)
+    -> ^(EXPRESSION_LIST expression+)
     ;
 
 isCaseCondition
@@ -1044,7 +1044,7 @@ satisfiesCaseCondition
 
 forFail
     : forBlock failBlock?
-    -> ^(FOR_STMT forBlock failBlock?)
+    -> ^(FOR_STATEMENT forBlock failBlock?)
     ;
 
 forBlock
@@ -1066,7 +1066,7 @@ containment
     
 doWhile
     : doBlock whileCondition ';'
-    -> ^(DO_WHILE_STMT doBlock whileCondition)
+    -> ^(DO_WHILE_STATEMENT doBlock whileCondition)
     ;
 
 whileCondition
@@ -1075,7 +1075,7 @@ whileCondition
 
 simpleWhile
     : whileBlock
-    -> ^(WHILE_STMT whileBlock)
+    -> ^(WHILE_STATEMENT whileBlock)
     ;
 
 whileBlock
@@ -1088,7 +1088,7 @@ doBlock
 
 tryCatchFinally
     : tryBlock catchBlock* finallyBlock?
-    -> ^(TRY_CATCH_STMT tryBlock catchBlock* finallyBlock?)
+    -> ^(TRY_CATCH_STATEMENT tryBlock catchBlock* finallyBlock?)
     ;
 
 tryBlock
@@ -1308,7 +1308,7 @@ EXISTS
     :   'exists'
     ;
 
-EXTENDS
+EXTENDS_EXPRESSION
     :   'extends'
     ;
 
