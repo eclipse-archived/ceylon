@@ -65,6 +65,10 @@ nodeList :
     println("        }");
     println("        return list;");
     println("    }\n");
+    println("    List<CommonTree> getChildren(CommonTree node) {");
+    println("        if (node.getChildren()==null) return new ArrayList<CommonTree>();");
+    println("        return node.getChildren();");
+    println("    }\n");
     }
            (DESCRIPTION? node)+ 
            EOF
@@ -104,12 +108,13 @@ subnode : n=NODE_NAME '?'?
           { println("            node.add" + className($mn.text) + "(build" + className($mn.text) + "(" + fieldName($mn.text) + "TreeNode));"); }
           { println("        }"); }
         | mn=NODE_NAME '*'
+          { println("        for (CommonTree " + fieldName($mn.text) + "TreeNode: getChildren(treeNode)) {"); }
           '(' (
           s=NODE_NAME
-          { println("        for (CommonTree " + fieldName($s.text) + "TreeNode: getChildren(treeNode, " + $s.text + ")) {"); }
-          { println("            node.add" + className($mn.text) + "(build" + className($s.text) + "(" + fieldName($s.text) + "TreeNode));"); }
-          { println("        }"); }
+          { println("            if (" + fieldName($mn.text) + "TreeNode.getType()==" + $s.text + ")"); }
+          { println("                node.add" + className($mn.text) + "(build" + className($s.text) + "(" + fieldName($mn.text) + "TreeNode));"); }
           )+ ')' 
+          { println("        }"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME ';'
