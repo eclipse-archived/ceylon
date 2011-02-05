@@ -692,8 +692,8 @@ enumeration
 primary
     : (base -> base)
     ( 
-        memberSelectionOperator (memberReference | typeReference)
-      -> ^(memberSelectionOperator $primary memberReference? typeReference?)
+        memberSelectionOperator (m=memberReference | t=typeReference)
+      -> ^(memberSelectionOperator $primary $m? $t?)
       | elementSelectionOperator elementsSpec ']'
       -> ^(elementSelectionOperator $primary elementsSpec)
       | postfixOperator 
