@@ -47,6 +47,7 @@ public class Main {
         CompilationUnit cu = new Builder().buildCompilationUnit(t);
         Visitor v = new Visitor() {
             int depth=0;
+            //boolean inType=false;
 
             void print(String str) {
             	System.out.print(str);
@@ -61,12 +62,36 @@ public class Main {
                     print("|  ");
             }
             
+            /*@Override
+            public void visit(Type node) {
+            	if (!inType) {
+                    if (depth>0) newline();
+                    indent();
+                    print("+ ");
+            	}
+                if (node.getTypeName()!=null) {
+                	print(node.getTypeName().getText());
+                	boolean oldInType = inType;
+                	inType=true;
+                	if (node.getTypeArgumentList()!=null)
+                        visit(node.getTypeArgumentList());
+                	inType=oldInType;
+                }
+            }
+            
+            @Override
+            public void visit(TypeArgumentList node) {
+            	print("<");
+                super.visitAny(node);
+                print(">");
+            }*/
+            
             @Override
             public void visitAny(Node node) {
                 if (depth>0) newline();
                 indent();
                 print("+ ");
-                print(node.getText());
+                print(node.getText() + " (" + node.getTreeNode().getLine() + ":" + node.getTreeNode().getCharPositionInLine()  + ")");
                 depth++;
                 super.visitAny(node);
                 depth--;
