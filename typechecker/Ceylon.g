@@ -17,7 +17,6 @@ tokens {
     BASE;
     CALL_EXPR;
     CASE_LIST;
-    CHAR_CST;
     CLASS_BODY;
     CLASS_DECL;
     CONDITION;
@@ -89,13 +88,10 @@ tokens {
     SPEC_EXPR;
     SPEC_STMT;
     SUPERCLASS;
+    STATEMENT;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
     STRING_CONCAT;
-    INT_CST;
-    FLOAT_CST;
-    STRING_CST;
-    QUOTE_CST;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -189,7 +185,13 @@ expressionStatementOrList
     
 annotatedDeclarationOrStatement options {memoize=true;}
     : (annotatedDeclarationStart) => annotatedDeclaration
-    | (controlStructure | expressionStatement | specificationStatement)
+    | statement -> ^(STATEMENT statement)
+    ;
+
+statement 
+    : controlStructure 
+    | expressionStatement 
+    | specificationStatement
     ;
 
 annotatedDeclaration
@@ -547,31 +549,26 @@ typeSpecifier
     ;
 
 nonstringLiteral
-    : NATURALLITERAL
-    -> ^(INT_CST NATURALLITERAL)
-    | FLOATLITERAL
-    -> ^(FLOAT_CST FLOATLITERAL)
-    | QUOTEDLITERAL
-    -> ^(QUOTE_CST QUOTEDLITERAL)
-    | CHARLITERAL
-    -> ^(CHAR_CST CHARLITERAL)
+    : NATURAL_LITERAL
+    | FLOAT_LITERAL
+    | QUOTED_LITERAL
+    | CHAR_LITERAL
     ;
 
 stringExpression
-    : (SIMPLESTRINGLITERAL interpolatedExpressionStart) 
+    : (STRING_LITERAL interpolatedExpressionStart) 
         => stringTemplate
     -> ^(STRING_CONCAT stringTemplate)
     | stringLiteral
     ;
 
 stringLiteral
-    : SIMPLESTRINGLITERAL
-    -> ^(STRING_CST SIMPLESTRINGLITERAL)
+    : STRING_LITERAL
     ;
 
 stringTemplate
-    : SIMPLESTRINGLITERAL 
-    ((interpolatedExpressionStart) => expression SIMPLESTRINGLITERAL)+
+    : STRING_LITERAL 
+      ((interpolatedExpressionStart) => expression STRING_LITERAL)+
     ;
 
 //special rule for syntactic predicate
@@ -1142,15 +1139,15 @@ FractionalMagnitude
     : 'm' | 'u' | 'n' | 'p' | 'f'
     ;
     
-fragment FLOATLITERAL :;
+fragment FLOAT_LITERAL :;
 //distinguish a float literal from 
 //a natural literals followed by a
 //member invocation or range op
-NATURALLITERAL
+NATURAL_LITERAL
     : Digits
       ( 
         ('.' ('0'..'9')) => 
-        '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOATLITERAL; } 
+        '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOAT_LITERAL; } 
       | Magnitude?
       )
     ;
@@ -1185,7 +1182,7 @@ QMARKS
     )
     ;
 
-CHARLITERAL
+CHAR_LITERAL
     :   '`' ( ~ NonCharacterChars | EscapeSequence ) '`'
     ;
 
@@ -1194,7 +1191,7 @@ NonCharacterChars
     :    '`' | '\\' | '\t' | '\n' | '\f' | '\r' | '\b'
     ;
 
-QUOTEDLITERAL
+QUOTED_LITERAL
     :   '\'' QuotedLiteralPart '\''
     ;
 
@@ -1203,7 +1200,7 @@ QuotedLiteralPart
     : ~('\'')*
     ;
 
-SIMPLESTRINGLITERAL
+STRING_LITERAL
     :   '"' StringPart '"'
     ;
 
