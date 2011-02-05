@@ -696,14 +696,14 @@ enumeration
 primary
     : (base -> base)
     ( 
-        memberSelector
-      -> ^(MEMBER_EXPRESSION ^(PRIMARY $primary) memberSelector)
+        memberSelectionOperator (memberReference | typeReference)
+      -> ^(memberSelectionOperator ^(PRIMARY $primary) memberReference? typeReference?)
+      | elementSelectionOperator elementsSpec ']'
+      -> ^(elementSelectionOperator ^(PRIMARY $primary) elementsSpec)
+      | postfixOperator 
+      -> ^(postfixOperator ^(PRIMARY $primary))
       | argumentsWithFunctionalArguments
       -> ^(CALL_EXPRESSION ^(PRIMARY $primary) argumentsWithFunctionalArguments)
-      | elementSelector
-      -> ^(INDEX_EXPRESSION ^(PRIMARY $primary) elementSelector)
-      | postfixOperator 
-      -> ^(POSTFIX_OPERATOR_EXPRESSION ^(PRIMARY $primary) postfixOperator)
     )*
    ;
 
@@ -722,8 +722,8 @@ base
     | memberReference
     ;
 
-memberSelector
-    : ('.' | '?.' | '[].') (memberReference | typeReference)
+memberSelectionOperator
+    : '.' | '?.' | '[].' 
     ;
 
 typeReference
@@ -763,8 +763,8 @@ typeArgumentsStart
       ('>'|'<'|','|'...')
     ;
 
-elementSelector
-    : ('?[' | '[') elementsSpec ']'
+elementSelectionOperator
+    : '?[' | '['
     ;
 
 elementsSpec
