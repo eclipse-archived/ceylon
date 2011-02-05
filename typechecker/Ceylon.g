@@ -14,14 +14,13 @@ tokens {
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BLOCK;
-    BASE;
     CALL_EXPRESSION;
     CASE_LIST;
     CLASS_BODY;
     CLASS_DECLARATION;
     CONDITION;
     COMPILATION_UNIT;
-    DIRECTIVE;
+    //DIRECTIVE;
     EXPRESSION;
     EXPRESSION_LIST;
     EXPRESSION_STATEMENT;
@@ -88,10 +87,10 @@ tokens {
     SPECIFIER_EXPRESSION;
     SPECIFIER_STATEMENT;
     EXTENDS_EXPRESSION;
-    STATEMENT;
+    //STATEMENT;
     TYPE_VARIANCE;
     TYPE_PARAMETER;
-    STRING_CONCAT;
+    STRING_TEMPLATE;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -156,7 +155,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK ^(DIRECTIVE ^(RETURN ^(EXPRESSION ^(PRIMARY ^(CALL_EXPRESSION ^(BASE ^(TYPE_REFERENCE {((CommonTree)$mt).getChild(0)})) namedArguments))))))
+    -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN ^(EXPRESSION ^(PRIMARY ^(CALL_EXPRESSION ^(PRIMARY ^(TYPE_REFERENCE {((CommonTree)$mt).getChild(0)})) namedArguments)))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -185,7 +184,7 @@ expressionStatementOrList
     
 annotatedDeclarationOrStatement options {memoize=true;}
     : (annotatedDeclarationStart) => annotatedDeclaration
-    | statement -> ^(STATEMENT statement)
+    | statement //-> ^(STATEMENT statement)
     ;
 
 statement 
@@ -248,7 +247,7 @@ expressionStatement
 
 directiveStatement
     : directive ';'?
-    -> ^(DIRECTIVE directive)
+    //-> ^(DIRECTIVE directive)
     ;
 
 directive
@@ -558,7 +557,7 @@ nonstringLiteral
 stringExpression
     : (STRING_LITERAL interpolatedExpressionStart) 
         => stringTemplate
-    -> ^(STRING_CONCAT stringTemplate)
+    -> ^(STRING_TEMPLATE stringTemplate)
     | stringLiteral
     ;
 
@@ -686,16 +685,16 @@ enumeration
     ;
 
 primary
-    : ( base -> ^(BASE base) )
+    : (base -> base)
     ( 
         memberSelector
-      -> ^(MEMBER_EXPRESSION $primary memberSelector)
+      -> ^(MEMBER_EXPRESSION ^(PRIMARY $primary) memberSelector)
       | argumentsWithFunctionalArguments
-      -> ^(CALL_EXPRESSION $primary argumentsWithFunctionalArguments)
+      -> ^(CALL_EXPRESSION ^(PRIMARY $primary) argumentsWithFunctionalArguments)
       | elementSelector
-      -> ^(SUBSCRIPT_EXPRESSION $primary elementSelector)
+      -> ^(SUBSCRIPT_EXPRESSION ^(PRIMARY $primary) elementSelector)
       | postfixOperator 
-      -> ^(POSTFIX_EXPRESSION $primary postfixOperator)
+      -> ^(POSTFIX_EXPRESSION ^(PRIMARY $primary) postfixOperator)
     )*
    ;
 
@@ -865,7 +864,7 @@ functionalArgumentParameters
 
 functionalArgumentBody
     : block
-    | parExpression -> ^(BLOCK ^(DIRECTIVE ^(RETURN parExpression)))
+    | parExpression -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN parExpression))
     ;
 
 //Support "T x in arg" in positional argument lists
