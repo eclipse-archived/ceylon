@@ -437,9 +437,11 @@
 ^(POSTFIX_INCREMENT_OP:POSTFIX_OPERATOR_EXPRESSION)
 ^(POSTFIX_DECREMENT_OP:POSTFIX_OPERATOR_EXPRESSION)
 
-"An invocation expression."
+"An invocation expression. Note that in the special case of 
+inline callable arguments, there may be more than one
+argument list."
 ^(INVOCATION_EXPRESSION:POSTFIX_EXPRESSION
-    ARGUMENT_LIST(NAMED_ARGUMENT_LIST POSITIONAL_ARGUMENT_LIST))
+    NAMED_ARGUMENT_LIST? POSITIONAL_ARGUMENT_LIST?)
 
 "A qualified member reference expression."
 ^(MEMBER_EXPRESSION:PRIMARY
