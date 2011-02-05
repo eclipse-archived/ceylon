@@ -32,8 +32,10 @@ tokens {
     IMPORT_LIST;
     IMPORT_WILDCARD;
     IMPORT_PATH;
-    IMPORT_ELEM;
-    IMPORT_ALIAS;
+    IMPORT_MEMBER;
+    IMPORT_TYPE;
+    TYPE_ALIAS;
+    MEMBER_ALIAS;
     INITIALIZER_EXPRESSION;
     INTERFACE_DECLARATION;
     INTERFACE_BODY;
@@ -121,8 +123,10 @@ importElements
     ;
 
 importElement
-    : IMPLICIT? importAlias? importedName
-    -> ^(IMPORT_ELEM IMPLICIT? importAlias? importedName)
+    : IMPLICIT? memberAlias? memberName
+    -> ^(IMPORT_MEMBER IMPLICIT? memberAlias? memberName)
+    | IMPLICIT? typeAlias? typeName
+    -> ^(IMPORT_TYPE IMPLICIT? typeAlias? typeName)
     ;
 
 importWildcard
@@ -130,13 +134,14 @@ importWildcard
     -> ^(IMPORT_WILDCARD[$ELLIPSIS])
     ;
 
-importAlias
-    : LOCAL_MODIFIER importedName '='
-    -> ^(IMPORT_ALIAS[$LOCAL_MODIFIER] importedName)
+memberAlias
+    : LOCAL_MODIFIER memberName '='
+    -> ^(MEMBER_ALIAS[$LOCAL_MODIFIER] memberName)
     ;
 
-importedName
-    : typeName | memberName
+typeAlias
+    : LOCAL_MODIFIER typeName '='
+    -> ^(TYPE_ALIAS[$LOCAL_MODIFIER] typeName)
     ;
 
 packagePath
