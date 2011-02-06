@@ -264,6 +264,7 @@
 	       classpath="${antlr.lib}">
            <exclude name="Main.java"/>
 	       <exclude name="com/redhat/ceylon/compiler/tree/Node.java"/>
+	       <exclude name="com/redhat/ceylon/compiler/analyzer/DeclarationVisitor.java"/>
 	    </javac>
 	  </target>
 	
