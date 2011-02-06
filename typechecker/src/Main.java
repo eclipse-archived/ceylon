@@ -8,13 +8,13 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.analyzer.DeclarationVisitor;
+import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.redhat.ceylon.compiler.tree.Builder;
-import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.tree.Visitor;
-import com.redhat.ceylon.compiler.tree.Walker;
 
 public class Main {
 
@@ -45,60 +45,12 @@ public class Main {
         CommonTree t = (CommonTree)r.getTree();
         
         CompilationUnit cu = new Builder().buildCompilationUnit(t);
-        Visitor v = new Visitor() {
-            int depth=0;
-            //boolean inType=false;
-
-            void print(String str) {
-            	System.out.print(str);
-            }
-
-            void newline() {
-                print("\n");
-            }
-
-            void indent() {
-                for (int i = 0; i < depth; i++)
-                    print("|  ");
-            }
-            
-            /*@Override
-            public void visit(Type node) {
-            	if (!inType) {
-                    if (depth>0) newline();
-                    indent();
-                    print("+ ");
-            	}
-                if (node.getTypeName()!=null) {
-                	print(node.getTypeName().getText());
-                	boolean oldInType = inType;
-                	inType=true;
-                	if (node.getTypeArgumentList()!=null)
-                        visit(node.getTypeArgumentList());
-                	inType=oldInType;
-                }
-            }
-            
-            @Override
-            public void visit(TypeArgumentList node) {
-            	print("<");
-                super.visitAny(node);
-                print(">");
-            }*/
-            
-            @Override
-            public void visitAny(Node node) {
-                if (depth>0) newline();
-                indent();
-                print("+ ");
-                print(node.getText() + " (" + node.getTreeNode().getLine() + ":" + node.getTreeNode().getCharPositionInLine()  + ")");
-                depth++;
-                super.visitAny(node);
-                depth--;
-                if (depth==0) newline();
-            }
-        };
-        Walker.walkCompilationUnit(v, cu);
+        
+        Visitor v = new PrintVisitor();
+        cu.visit(v);
+        
+        Package p = new Package();
+        cu.visit(new DeclarationVisitor(p));
 
         if (lexer.getNumberOfSyntaxErrors() != 0) {
             System.out.println("Lexer failed");
