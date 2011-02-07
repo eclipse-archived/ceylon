@@ -428,15 +428,17 @@ typeNameWithArguments
     
 annotations
     : annotation+
-    -> ^(ANNOTATION_LIST annotation+)
+    -> ^(ANNOTATION_LIST ^(ANNOTATION annotation)+)
     ;
 
 //TODO: we could minimize backtracking by limiting the 
 //kind of expressions that can appear as arguments to
 //the annotation
 annotation
-    : annotationName annotationArguments?
-    -> ^(ANNOTATION annotationName annotationArguments?)
+    : annotationName
+    -> ^(INVOCATION_EXPRESSION ^(MEMBER annotationName) ^(POSITIONAL_ARGUMENT_LIST))
+    | annotationName annotationArguments
+    -> ^(INVOCATION_EXPRESSION ^(MEMBER annotationName) annotationArguments)
     ;
 
 annotationArguments

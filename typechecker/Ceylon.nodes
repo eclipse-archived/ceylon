@@ -559,8 +559,7 @@ argument list."
 
 "A program element annotation."
 ^(ANNOTATION 
-    IDENTIFIER
-    ARGUMENT_LIST?(NAMED_ARGUMENT_LIST POSITIONAL_ARGUMENT_LIST))
+    INVOCATION_EXPRESSION)
 
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 
