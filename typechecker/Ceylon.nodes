@@ -558,8 +558,7 @@ argument list."
     EXPRESSION*)
 
 "A program element annotation."
-^(ANNOTATION 
-    INVOCATION_EXPRESSION)
+^(ANNOTATION:INVOCATION_EXPRESSION)
 
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 

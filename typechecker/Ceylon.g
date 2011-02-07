@@ -436,9 +436,9 @@ annotations
 //the annotation
 annotation
     : annotationName
-    -> ^(INVOCATION_EXPRESSION ^(MEMBER annotationName) ^(POSITIONAL_ARGUMENT_LIST))
+    -> ^(MEMBER annotationName) ^(POSITIONAL_ARGUMENT_LIST)
     | annotationName annotationArguments
-    -> ^(INVOCATION_EXPRESSION ^(MEMBER annotationName) annotationArguments)
+    -> ^(MEMBER annotationName) annotationArguments
     ;
 
 annotationArguments
