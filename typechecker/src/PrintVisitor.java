@@ -23,7 +23,11 @@ public class PrintVisitor extends Visitor {
 	    if (depth>0) newline();
 	    indent();
 	    print("+ ");
-	    print(node.getText() + " (" + node.getTreeNode().getLine() + ":" + node.getTreeNode().getCharPositionInLine()  + ")");
+	    print(node.getText() + 
+	    		" [" + node.getClass().getSimpleName() + 
+	    		"] (" + node.getAntlrTreeNode().getLine() + 
+	    		":" + node.getAntlrTreeNode().getCharPositionInLine()  + 
+	    		")");
 	    depth++;
 	    super.visitAny(node);
 	    depth--;
