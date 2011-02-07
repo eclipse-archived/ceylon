@@ -20,4 +20,10 @@ public class Module implements Scope<Package> {
 	public List<Package> getMembers() {
 		return packages;
 	}
+	
+	@Override
+	public Scope<Structure> getContainer() {
+		return null;
+	}
+	
 }

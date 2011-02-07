@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface Scope<T> {
 	List<T> getMembers();
+	Scope<Structure> getContainer();
 }

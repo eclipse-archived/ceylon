@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Structure;
+import com.redhat.ceylon.compiler.model.TypeParameter;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -39,9 +40,18 @@ public class DeclarationVisitor extends Visitor {
 		model.setContainer(scope);
 		scope.getMembers().add(model); //TODO: do we really need to include control statements here?
 	}
-
+	
+	@Override
+	public void visitAny(Node that) {
+		that.setScope(declarationScopes.peek());
+		super.visitAny(that);
+	}
+    
+	@Override
 	public void visit(Tree.CompilationUnit that) {
 		compilationUnit = new CompilationUnit();
+		that.setModelNode(compilationUnit);
+		compilationUnit.setTreeNode(that);
 		super.visit(that);
 	}
 	
@@ -61,6 +71,13 @@ public class DeclarationVisitor extends Visitor {
 		declarationScopes.push(i);
 		super.visit(that);
 		declarationScopes.pop();
+	}
+
+	@Override
+	public void visit(Tree.TypeParameter that) {
+		TypeParameter t = new TypeParameter();
+		visitDeclaration(that, t);
+		super.visit(that);
 	}
 
 	@Override

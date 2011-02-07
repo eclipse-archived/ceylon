@@ -28,4 +28,10 @@ public class Package implements Scope<Structure> {
 	public List<Structure> getMembers() {
 		return members;
 	}
+
+	@Override
+	public Scope<Structure> getContainer() {
+		return null;
+	}
+	
 }
