@@ -16,7 +16,6 @@ tokens {
     BLOCK;
     INVOCATION_EXPRESSION;
     CLASS_BODY;
-    CLASS_DECLARATION;
     BOOLEAN_CONDITION;
     COMPILATION_UNIT;
     EXPRESSION;
@@ -36,7 +35,6 @@ tokens {
     TYPE_ALIAS;
     MEMBER_ALIAS;
     INITIALIZER_EXPRESSION;
-    INTERFACE_DECLARATION;
     INTERFACE_BODY;
     MEMBER_DECLARATION;
     MEMBER_NAME;
@@ -106,11 +104,6 @@ compilationUnit
       annotatedDeclaration+
       EOF
     -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration+)
-    ;
-
-typeDeclaration
-    : classDeclaration
-    | interfaceDeclaration
     ;
 
 importDeclaration
@@ -205,12 +198,14 @@ statement
 
 annotatedDeclaration
     :
-    annotations?
+    annotations!?
     ( 
-        memberDeclaration 
-      -> ^(MEMBER_DECLARATION memberDeclaration annotations?)
-      | typeDeclaration 
-      -> ^(TYPE_DECLARATION typeDeclaration annotations?)
+      objectDeclaration[$annotations.tree]
+    | setterDeclaration[$annotations.tree]
+    | voidMethodDeclaration[$annotations.tree]
+    | typedMethodOrAttributeDeclaration[$annotations.tree]
+    | classDeclaration[$annotations.tree]
+    | interfaceDeclaration[$annotations.tree]
     )
     ;
 
@@ -287,40 +282,31 @@ retryDirective
     : 'retry'^
     ;
 
-//TODO: should we allow the shortcut style of method
-//      definition for a method or getter which returns
-//      a parExpression, just like we do for Smalltalk
-//      style parameters below?
-memberDeclaration
-    : objectDeclaration
-    | setterDeclaration
-    -> ^(ATTRIBUTE_SETTER setterDeclaration)
-    | voidMethodDeclaration
-    -> ^(METHOD_DECLARATION voidMethodDeclaration)
-    | typedMethodOrAttributeDeclaration
+objectDeclaration[Object annotations]
+    : OBJECT_DECLARATION memberName extendedType? satisfiedTypes? classBody
+    -> ^(OBJECT_DECLARATION memberName extendedType? satisfiedTypes? classBody {$annotations})
     ;
 
-objectDeclaration
-    : 'object'^ memberName extendedType? satisfiedTypes? classBody
+voidMethodDeclaration[Object annotations]
+    : VOID_MODIFIER memberName methodParameters (block | specifier? ';')
+    -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters block? specifier? {$annotations})
+    
     ;
 
-voidMethodDeclaration
-    : 'void' memberName methodParameters (block | specifier? ';'!)
+setterDeclaration[Object annotations]
+    : ASSIGN memberName block
+    -> ^(ATTRIBUTE_SETTER[$ASSIGN] memberName block {$annotations})
     ;
 
-setterDeclaration
-    : 'assign'! memberName block
-    ;
-
-typedMethodOrAttributeDeclaration
+typedMethodOrAttributeDeclaration[Object annotations]
     : inferrableType memberName
     ( 
       methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
-    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier?)
+    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier? {$annotations})
     | (specifier | initializer)? ';'
-    -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
+    -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer? {$annotations})
     | memberBody[$inferrableType.tree]
-    -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
+    -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody {$annotations})      
     )
     ;
 
@@ -329,24 +315,21 @@ inferrableType
     ;
 
 methodParameters
-    : 
-        typeParameters? 
-        parameters+ 
-        extraParameters? 
-        metatypes? 
-        typeConstraints?
+    : typeParameters? parameters+ extraParameters? metatypes? typeConstraints?
     ;
     
-interfaceDeclaration
-    :
-        'interface'^
-        typeName
-        typeParameters?
-        caseTypes?
-        metatypes?
-        satisfiedTypes?
+interfaceDeclaration[Object annotations]
+    : INTERFACE_DECLARATION
+      typeName typeParameters?
+      caseTypes? metatypes? satisfiedTypes?
+      typeConstraints?
+      (interfaceBody | typeSpecifier ';')
+    -> ^(INTERFACE_DECLARATION
+        typeName typeParameters? 
+        caseTypes? metatypes? satisfiedTypes?
         typeConstraints?
-        (interfaceBody | typeSpecifier ';'!)
+        interfaceBody? typeSpecifier?
+        {$annotations})
     ;
 
 interfaceBody
@@ -354,19 +337,18 @@ interfaceBody
     -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclaration*)
     ;
 
-classDeclaration
-    :
-        'class'^
-        typeName
-        typeParameters?
-        parameters
-        extraParameters?
-        caseTypes?
-        metatypes?
-        extendedType?
-        satisfiedTypes?
+classDeclaration[Object annotations]
+    : CLASS_DECLARATION
+      typeName typeParameters? parameters extraParameters?
+      caseTypes? metatypes? extendedType? satisfiedTypes?
+      typeConstraints?
+      (classBody | typeSpecifier? ';')
+    -> ^(CLASS_DECLARATION
+        typeName typeParameters? parameters extraParameters?
+        caseTypes? metatypes? extendedType? satisfiedTypes?
         typeConstraints?
-        (classBody | typeSpecifier? ';'!)
+        classBody? typeSpecifier?
+        {$annotations})
     ;
 
 classBody
