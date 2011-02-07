@@ -5,7 +5,6 @@ import java.util.Stack;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.CompilationUnit;
 import com.redhat.ceylon.compiler.model.ControlBlock;
-import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
@@ -16,7 +15,6 @@ import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Structure;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
-import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
 public class DeclarationVisitor extends Visitor {
 	Stack<Scope<Structure>> declarationScopes = new Stack<Scope<Structure>>();
