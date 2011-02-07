@@ -16,7 +16,7 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Functional extends Typed implements Scope<Structure> {
+public class Functional extends Typed implements Scope {
 	
 	List<List<Parameter>> parameters = new ArrayList<List<Parameter>>();
 	

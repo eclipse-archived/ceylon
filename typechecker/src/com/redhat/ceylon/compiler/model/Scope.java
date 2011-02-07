@@ -10,7 +10,7 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public interface Scope<T> {
-	List<T> getMembers();
-	Scope<Structure> getContainer();
+public interface Scope {
+	List<Structure> getMembers();
+	Scope getContainer();
 }

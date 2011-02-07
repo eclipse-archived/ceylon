@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.model;
 
 public class Structure extends Model {
 	
-	Scope<Structure> container;
+	Scope container;
 	CompilationUnit compilationUnit;
 	
 	public CompilationUnit getCompilationUnit() {
@@ -12,10 +12,11 @@ public class Structure extends Model {
 		this.compilationUnit = compilationUnit;
 	}
 
-	public Scope<Structure> getContainer() {
+	public Scope getContainer() {
 		return container;
 	}
-	public void setContainer(Scope<Structure> scope) {
+	
+	public void setContainer(Scope scope) {
 		this.container = scope;
 	}
 	

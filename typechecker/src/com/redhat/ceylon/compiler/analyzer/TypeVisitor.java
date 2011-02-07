@@ -27,7 +27,7 @@ public class TypeVisitor extends Visitor {
 		Type type = new Type();
 		that.setModelNode(type);
 		type.setTreeNode(that);
-		Scope<Structure> scope = that.getScope();
+		Scope scope = that.getScope();
 		while (true) {
 			for ( Structure s: scope.getMembers() ) {
 				if (s instanceof GenericType) {

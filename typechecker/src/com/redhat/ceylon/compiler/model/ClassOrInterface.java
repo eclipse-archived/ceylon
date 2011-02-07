@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassOrInterface extends GenericType implements Scope<Structure> {
+public class ClassOrInterface extends GenericType implements Scope {
 	
 	List<Structure> members = new ArrayList<Structure>();
 

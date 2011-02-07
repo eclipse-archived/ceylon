@@ -18,20 +18,21 @@ import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class DeclarationVisitor extends Visitor {
-	Scope<Structure> scope;
+	
+	Scope scope;
 	CompilationUnit compilationUnit;
 	
 	public DeclarationVisitor(Package p) {
 		scope = p;
 	}
 	
-	private Scope<Structure> enterScope(Scope<Structure> innerScope) {
-		Scope<Structure> outerScope = scope;
+	private Scope enterScope(Scope innerScope) {
+		Scope outerScope = scope;
 		scope = innerScope;
 		return outerScope;
 	}
 
-	private void exitScope(Scope<Structure> outerScope) {
+	private void exitScope(Scope outerScope) {
 		scope = outerScope;
 	}
 
@@ -66,7 +67,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.ClassDeclaration that) {
 		Class c = new Class();
 		visitDeclaration(that, c);
-		Scope<Structure> o = enterScope(c);
+		Scope o = enterScope(c);
 		super.visit(that);
 		exitScope(o);
 	}
@@ -75,7 +76,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.InterfaceDeclaration that) {
 		Interface i = new Interface();
 		visitDeclaration(that, i);
-		Scope<Structure> o = enterScope(i);
+		Scope o = enterScope(i);
 		super.visit(that);
 		exitScope(o);
 	}
@@ -91,7 +92,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.MethodDeclaration that) {
 		Method m = new Method();
 		visitDeclaration(that, m);
-		Scope<Structure> o = enterScope(m);
+		Scope o = enterScope(m);
 		super.visit(that);
 		exitScope(o);
 	}
@@ -107,7 +108,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.AttributeGetter that) {
 		Getter g = new Getter();
 		visitDeclaration(that, g);
-		Scope<Structure> o = enterScope(g);
+		Scope o = enterScope(g);
 		super.visit(that);
 		exitScope(o);
 	}
@@ -116,18 +117,16 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.Parameter that) {
 		Parameter p = new Parameter();
 		visitDeclaration(that, p);
-		Scope<Structure> o = enterScope(p);
+		Scope o = enterScope(p);
 		super.visit(that);
 		exitScope(o);
 	}
-	
-	//TODO: variables in try, catch, if, for, while blocks
 
 	@Override
 	public void visit(Tree.ControlClause that) {
 		ControlBlock c = new ControlBlock();
 		visitStructure(that, c);
-		Scope<Structure> o = enterScope(c);
+		Scope o = enterScope(c);
 		super.visit(that);
 		exitScope(o);
 	}

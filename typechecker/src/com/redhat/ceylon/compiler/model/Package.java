@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Package implements Scope<Structure> {
+public class Package implements Scope {
 	String name;
 	Module module;
 	List<Structure> members = new ArrayList<Structure>();
@@ -30,7 +30,7 @@ public class Package implements Scope<Structure> {
 	}
 
 	@Override
-	public Scope<Structure> getContainer() {
+	public Scope getContainer() {
 		return null;
 	}
 	

@@ -3,14 +3,13 @@ package com.redhat.ceylon.compiler.tree;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.model.Scope;
-import com.redhat.ceylon.compiler.model.Structure;
 
 public abstract class Node {
 	
 	private String text;
 	private final CommonTree antlrTreeNode;
 	private com.redhat.ceylon.compiler.model.Model modelNode;
-	private Scope<Structure> scope;
+	private Scope scope;
 	
 	protected Node(CommonTree antlrTreeNode) {
 		this.antlrTreeNode = antlrTreeNode; 
@@ -20,11 +19,11 @@ public abstract class Node {
 	/**
 	 * The scope within which the node occurs. 
 	 */
-	public Scope<Structure> getScope() {
+	public Scope getScope() {
 		return scope;
 	}
 
-	public void setScope(Scope<Structure> scope) {
+	public void setScope(Scope scope) {
 		this.scope = scope;
 	}
 

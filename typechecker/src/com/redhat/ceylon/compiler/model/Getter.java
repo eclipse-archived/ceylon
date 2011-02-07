@@ -9,7 +9,7 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Getter extends Typed implements Scope<Structure> {
+public class Getter extends Typed implements Scope {
 	
 	List<Structure> members = new ArrayList<Structure>();
 

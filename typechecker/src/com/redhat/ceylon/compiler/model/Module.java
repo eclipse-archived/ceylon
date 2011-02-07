@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Module implements Scope<Package> {
+public class Module {
 	
 	String name;
 	List<Package> packages = new ArrayList<Package>();
@@ -16,14 +16,8 @@ public class Module implements Scope<Package> {
 		this.name = name;
 	}
 	
-	@Override
 	public List<Package> getMembers() {
 		return packages;
-	}
-	
-	@Override
-	public Scope<Structure> getContainer() {
-		return null;
 	}
 	
 }

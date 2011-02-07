@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenericType extends Declaration implements Generic {
+	
 	Type extendedType;
 	List<Type> satisfiedTypes = new ArrayList<Type>();
 	List<Type> caseTypes = new ArrayList<Type>();
