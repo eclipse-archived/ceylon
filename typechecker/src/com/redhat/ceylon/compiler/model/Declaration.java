@@ -11,21 +11,12 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Declaration extends Node {
+public class Declaration extends Structure {
 	
 	String name;
 	Boolean shared;
-	Scope<Declaration> container;
-	CompilationUnit compilationUnit;
 	List<Annotation> annotations = new ArrayList<Annotation>();
 	
-	public CompilationUnit getCompilationUnit() {
-		return compilationUnit;
-	}
-	public void setCompilationUnit(CompilationUnit compilationUnit) {
-		this.compilationUnit = compilationUnit;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -38,13 +29,6 @@ public class Declaration extends Node {
 	}
 	public void setShared(Boolean shared) {
 		this.shared = shared;
-	}
-	
-	public Scope<Declaration> getContainer() {
-		return container;
-	}
-	public void setContainer(Scope<Declaration> scope) {
-		this.container = scope;
 	}
 	
 	public List<Annotation> getAnnotations() {

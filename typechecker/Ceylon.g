@@ -90,6 +90,8 @@ tokens {
     NEGATIVE_OP;
     FLIP_OP;
     IDENTIFIER;
+    VALUE_ITERATOR;
+    KEY_VALUE_ITERATOR;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -1063,8 +1065,13 @@ failBlock
     ;
 
 forIterator
-    : variable ('->' variable)? containment
-    -> ^(FOR_ITERATOR variable+ containment)
+    : v=variable 
+    (
+      containment
+      -> ^(VALUE_ITERATOR $v containment)
+      | '->' vv=variable containment
+      -> ^(KEY_VALUE_ITERATOR $v $vv containment)
+    )
     ;
     
 containment

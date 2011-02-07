@@ -3,12 +3,12 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassOrInterface extends GenericType implements Scope<Declaration> {
+public class ClassOrInterface extends GenericType implements Scope<Structure> {
 	
-	List<Declaration> members = new ArrayList<Declaration>();
+	List<Structure> members = new ArrayList<Structure>();
 
 	@Override
-	public List<Declaration> getMembers() {
+	public List<Structure> getMembers() {
 		return members;
 	}
 

@@ -3,10 +3,10 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Package implements Scope<Declaration> {
+public class Package implements Scope<Structure> {
 	String name;
 	Module module;
-	List<Declaration> members = new ArrayList<Declaration>();
+	List<Structure> members = new ArrayList<Structure>();
 
 	public Module getModule() {
 		return module;
@@ -25,7 +25,7 @@ public class Package implements Scope<Declaration> {
 	}
 
 	@Override
-	public List<Declaration> getMembers() {
+	public List<Structure> getMembers() {
 		return members;
 	}
 }
