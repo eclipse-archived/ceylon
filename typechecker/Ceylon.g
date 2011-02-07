@@ -331,8 +331,8 @@ inferrableType
 methodParameters
     : 
         typeParameters? 
-        formalParameters+ 
-        extraFormalParameters? 
+        parameters+ 
+        extraParameters? 
         metatypes? 
         typeConstraints?
     ;
@@ -359,8 +359,8 @@ classDeclaration
         'class'^
         typeName
         typeParameters?
-        formalParameters
-        extraFormalParameters?
+        parameters
+        extraParameters?
         caseTypes?
         metatypes?
         extendedType?
@@ -408,7 +408,7 @@ typeConstraint
         'given'^
         typeName 
         typeArguments? 
-        formalParameters? 
+        parameters? 
         caseTypes? 
         metatypes? 
         satisfiedTypes? 
@@ -813,15 +813,15 @@ objectArgument
     ;
 
 voidMethodArgument
-    : VOID_MODIFIER parameterName formalParameters+ block
-    -> ^(METHOD_ARGUMENT VOID_MODIFIER parameterName formalParameters+ block)
+    : VOID_MODIFIER parameterName parameters+ block
+    -> ^(METHOD_ARGUMENT VOID_MODIFIER parameterName parameters+ block)
     ;
 
 typedMethodOrGetterArgument
     : inferrableType parameterName
     ( 
-      (formalParameters+ memberBody[$inferrableType.tree])
-    -> ^(METHOD_ARGUMENT inferrableType parameterName formalParameters+ memberBody)
+      (parameters+ memberBody[$inferrableType.tree])
+    -> ^(METHOD_ARGUMENT inferrableType parameterName parameters+ memberBody)
     | memberBody[$inferrableType.tree]
     -> ^(ATTRIBUTE_ARGUMENT inferrableType parameterName memberBody)      
     )
@@ -880,7 +880,7 @@ functionalArgumentDefinition
     ;
 
 functionalArgumentParameters
-    : (formalParametersStart) => formalParameters
+    : (parametersStart) => parameters
     | -> ^(PARAMETER_LIST)
     ;
 
@@ -898,17 +898,17 @@ specialArgument
     //| existsCondition
     ;
 
-formalParameters
-    : LPAREN (formalParameter (',' formalParameter)*)? ')'
-    -> ^(PARAMETER_LIST[$LPAREN] ^(PARAMETER formalParameter)*)
+parameters
+    : LPAREN (parameter (',' parameter)*)? ')'
+    -> ^(PARAMETER_LIST[$LPAREN] ^(PARAMETER parameter)*)
     ;
 
 //Support for declaring functional formal parameters outside
 //of the parenthesized list
 //Note that this is just a TODO in the spec
-extraFormalParameters
-    : extraFormalParameter+
-    -> ^(PARAMETER_LIST ^(PARAMETER extraFormalParameter)+)
+extraParameters
+    : extraParameter+
+    -> ^(PARAMETER_LIST ^(PARAMETER extraParameter)+)
     ;
 
 //special rule for syntactic predicate
@@ -918,7 +918,7 @@ extraFormalParameters
 //be careful with this one, since it 
 //matches "()", which can also be an 
 //argument list
-formalParametersStart
+parametersStart
     : '(' ( annotatedDeclarationStart | ')' )
     ;
     
@@ -926,26 +926,26 @@ formalParametersStart
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
-formalParameter
+parameter
     : annotations? 
       formalParameterType 
       (parameterName | 'this') 
-      formalParameters*   //for callable parameters
+      parameters*   //for callable parameters
       (   //more exotic stuff
-          valueFormalParameter 
-        | iteratedFormalParameter 
+          valueParameter 
+        | iteratedParameter 
         | (specifiedFormalParameterStart) => specifiedFormalParameter 
       )? 
       specifier?   //for defaulted parameters
     ;
 
-valueFormalParameter
+valueParameter
     : '->' type parameterName
     ;
 
 //Support for "X x in Iterable<X> param" in formal parameter lists
 //Note that this is just a TODO in the spec
-iteratedFormalParameter
+iteratedParameter
     : 'in' type parameterName
     ;
 
@@ -960,8 +960,8 @@ specifiedFormalParameterStart
     : '=' declarationStart
     ;
 
-extraFormalParameter
-    : formalParameterType parameterName formalParameters*
+extraParameter
+    : formalParameterType parameterName parameters*
     ;
 
 formalParameterType
@@ -1141,8 +1141,8 @@ controlVariableOrExpression
     ;
 
 variable
-    : inferrableType memberName formalParameters*
-    -> ^(VARIABLE inferrableType memberName formalParameters*)
+    : inferrableType memberName parameters*
+    -> ^(VARIABLE inferrableType memberName parameters*)
     ;
 
 // Lexer
