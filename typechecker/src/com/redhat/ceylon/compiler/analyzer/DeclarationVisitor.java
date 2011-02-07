@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
+import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.tree.Tree;
@@ -42,50 +43,63 @@ public class DeclarationVisitor extends Visitor {
 
 	@Override
 	public void visit(Tree.InterfaceDeclaration that) {
-		Interface c = new Interface();
-		c.setCompilationUnit(compilationUnit);
-		c.setName(that.getTypeName().getText());
+		Interface i = new Interface();
+		i.setCompilationUnit(compilationUnit);
+		i.setName(that.getTypeName().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
-		c.setContainer(scope);
-		scope.getMembers().add(c);
-		declarationScopes.push(c);
+		i.setContainer(scope);
+		scope.getMembers().add(i);
+		declarationScopes.push(i);
 		super.visit(that);
 		declarationScopes.pop();
 	}
 
 	@Override
 	public void visit(Tree.MethodDeclaration that) {
-		Method c = new Method();
-		c.setCompilationUnit(compilationUnit);
-		c.setName(that.getMemberName().getText());
+		Method m = new Method();
+		m.setCompilationUnit(compilationUnit);
+		m.setName(that.getMemberName().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
-		c.setContainer(scope);
-		scope.getMembers().add(c);
-		declarationScopes.push(c);
+		m.setContainer(scope);
+		scope.getMembers().add(m);
+		declarationScopes.push(m);
 		super.visit(that);
 		declarationScopes.pop();
 	}
 
 	@Override
 	public void visit(Tree.AttributeDeclaration that) {
-		SimpleValue c = new SimpleValue();
-		c.setCompilationUnit(compilationUnit);
-		c.setName(that.getMemberName().getText());
+		SimpleValue v = new SimpleValue();
+		v.setCompilationUnit(compilationUnit);
+		v.setName(that.getMemberName().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
-		c.setContainer(scope);
-		scope.getMembers().add(c);
+		v.setContainer(scope);
+		scope.getMembers().add(v);
 		super.visit(that);
 	}
 
 	@Override
 	public void visit(Tree.AttributeGetter that) {
-		Getter c = new Getter();
-		c.setCompilationUnit(compilationUnit);
-		c.setName(that.getMemberName().getText());
+		Getter g = new Getter();
+		g.setCompilationUnit(compilationUnit);
+		g.setName(that.getMemberName().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
-		c.setContainer(scope);
-		scope.getMembers().add(c);
-		declarationScopes.push(c);
+		g.setContainer(scope);
+		scope.getMembers().add(g);
+		declarationScopes.push(g);
+		super.visit(that);
+		declarationScopes.pop();
+	}
+	
+	@Override
+	public void visit(Tree.Parameter that) {
+		Parameter p = new Parameter();
+		p.setCompilationUnit(compilationUnit);
+		p.setName(that.getParameterName().getText());
+		Scope<Declaration> scope = declarationScopes.peek();
+		p.setContainer(scope);
+		scope.getMembers().add(p);
+		declarationScopes.push(p);
 		super.visit(that);
 		declarationScopes.pop();
 	}

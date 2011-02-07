@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,9 +9,8 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Method extends Functional implements Scope<Declaration>, Generic {
+public class Method extends Functional implements Generic {
 	List<TypeParameter> typeParameters;
-	List<Declaration> members = new ArrayList<Declaration>();
 	Boolean formal;
 	
 	public Boolean isFormal() {
@@ -23,11 +21,6 @@ public class Method extends Functional implements Scope<Declaration>, Generic {
 		this.formal = formal;
 	}
 	
-	@Override
-	public List<Declaration> getMembers() {
-		return members;
-	}
-
 	public Type getType() {
 		return type;
 	}

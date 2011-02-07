@@ -16,11 +16,19 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Functional extends Typed {
+public class Functional extends Typed implements Scope<Declaration> {
 	
 	List<List<Parameter>> parameters = new ArrayList<List<Parameter>>();
 	
+	List<Declaration> members = new ArrayList<Declaration>();
+
 	public List<List<Parameter>> parameters() {
 		return parameters;
 	}
+
+	@Override
+	public List<Declaration> getMembers() {
+		return members;
+	}
+
 }
