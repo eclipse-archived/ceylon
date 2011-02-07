@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.analyzer;
 
-import java.util.Stack;
-
 import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Structure;
@@ -11,17 +9,18 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class TypeVisitor extends Visitor {
 	
-	Stack<Type> types = new Stack<Type>();
+	Type outerType;
 	
 	@Override public void visit(Tree.Type that) {
 		Type t = getModel(that);
-		if ( !types.empty() ) {
-			Type producedType = types.peek();
-			producedType.getTypeArguments().add(t);
+		if (outerType!=null) {
+			outerType.getTypeArguments().add(t);
 		}
-		types.push(t);
+		Type o = outerType;
+		outerType = t;
 		super.visit(that);
-		types.pop();
+		outerType = o;
+		//System.out.println(t);
 	}
 
 	private Type getModel(Tree.Type that) {

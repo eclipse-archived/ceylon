@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.analyzer;
 
-import java.util.Stack;
-
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.CompilationUnit;
 import com.redhat.ceylon.compiler.model.ControlBlock;
@@ -20,13 +18,23 @@ import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class DeclarationVisitor extends Visitor {
-	Stack<Scope<Structure>> declarationScopes = new Stack<Scope<Structure>>();
+	Scope<Structure> scope;
 	CompilationUnit compilationUnit;
 	
 	public DeclarationVisitor(Package p) {
-		declarationScopes.push(p);
+		scope = p;
 	}
 	
+	private Scope<Structure> enterScope(Scope<Structure> innerScope) {
+		Scope<Structure> outerScope = scope;
+		scope = innerScope;
+		return outerScope;
+	}
+
+	private void exitScope(Scope<Structure> outerScope) {
+		scope = outerScope;
+	}
+
 	private void visitDeclaration(Tree.Declaration that, Declaration model) {
 		model.setName(that.getIdentifier().getText());
 		visitStructure(that, model);
@@ -36,14 +44,13 @@ public class DeclarationVisitor extends Visitor {
 		that.setModelNode(model);
 		model.setTreeNode(that);
 		model.setCompilationUnit(compilationUnit);
-		Scope<Structure> scope = declarationScopes.peek();
 		model.setContainer(scope);
 		scope.getMembers().add(model); //TODO: do we really need to include control statements here?
 	}
 	
 	@Override
 	public void visitAny(Node that) {
-		that.setScope(declarationScopes.peek());
+		that.setScope(scope);
 		super.visitAny(that);
 	}
     
@@ -59,18 +66,18 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.ClassDeclaration that) {
 		Class c = new Class();
 		visitDeclaration(that, c);
-		declarationScopes.push(c);
+		Scope<Structure> o = enterScope(c);
 		super.visit(that);
-		declarationScopes.pop();
+		exitScope(o);
 	}
 
 	@Override
 	public void visit(Tree.InterfaceDeclaration that) {
 		Interface i = new Interface();
 		visitDeclaration(that, i);
-		declarationScopes.push(i);
+		Scope<Structure> o = enterScope(i);
 		super.visit(that);
-		declarationScopes.pop();
+		exitScope(o);
 	}
 
 	@Override
@@ -84,9 +91,9 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.MethodDeclaration that) {
 		Method m = new Method();
 		visitDeclaration(that, m);
-		declarationScopes.push(m);
+		Scope<Structure> o = enterScope(m);
 		super.visit(that);
-		declarationScopes.pop();
+		exitScope(o);
 	}
 
 	@Override
@@ -100,18 +107,18 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.AttributeGetter that) {
 		Getter g = new Getter();
 		visitDeclaration(that, g);
-		declarationScopes.push(g);
+		Scope<Structure> o = enterScope(g);
 		super.visit(that);
-		declarationScopes.pop();
+		exitScope(o);
 	}
 	
 	@Override
 	public void visit(Tree.Parameter that) {
 		Parameter p = new Parameter();
 		visitDeclaration(that, p);
-		declarationScopes.push(p);
+		Scope<Structure> o = enterScope(p);
 		super.visit(that);
-		declarationScopes.pop();
+		exitScope(o);
 	}
 	
 	//TODO: variables in try, catch, if, for, while blocks
@@ -120,9 +127,9 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.ControlClause that) {
 		ControlBlock c = new ControlBlock();
 		visitStructure(that, c);
-		declarationScopes.push(c);
+		Scope<Structure> o = enterScope(c);
 		super.visit(that);
-		declarationScopes.pop();
+		exitScope(o);
 	}
 	
 	@Override
@@ -132,7 +139,6 @@ public class DeclarationVisitor extends Visitor {
 		that.setModelNode(v);
 		v.setCompilationUnit(compilationUnit);
 		v.setName(that.getIdentifier().getText());
-		Scope<Structure> scope = declarationScopes.peek();
 		v.setContainer(scope);
 		scope.getMembers().add(v);
 	}
