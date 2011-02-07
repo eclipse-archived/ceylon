@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.ParameterName;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.model.Package;
 
@@ -95,7 +96,13 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.Parameter that) {
 		Parameter p = new Parameter();
 		p.setCompilationUnit(compilationUnit);
-		p.setName(that.getParameterName().getText());
+		ParameterName parameterName = that.getParameterName();
+		if (parameterName==null) {
+			p.setName("this");
+		}
+		else {
+			p.setName(parameterName.getText());
+		}
 		Scope<Declaration> scope = declarationScopes.peek();
 		p.setContainer(scope);
 		scope.getMembers().add(p);
@@ -103,4 +110,12 @@ public class DeclarationVisitor extends Visitor {
 		super.visit(that);
 		declarationScopes.pop();
 	}
+	
+	//TODO: variables in try, catch, if, for, while blocks
+
+	@Override
+	public void visit(Tree.ControlClause that) {
+		
+	}
+
 }
