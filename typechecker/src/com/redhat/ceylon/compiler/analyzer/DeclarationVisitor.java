@@ -8,13 +8,12 @@ import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
+import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.tree.Tree;
-import com.redhat.ceylon.compiler.tree.Tree.ParameterName;
 import com.redhat.ceylon.compiler.tree.Visitor;
-import com.redhat.ceylon.compiler.model.Package;
 
 public class DeclarationVisitor extends Visitor {
 	Stack<Scope<Declaration>> declarationScopes = new Stack<Scope<Declaration>>();
@@ -33,7 +32,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.ClassDeclaration that) {
 		Class c = new Class();
 		c.setCompilationUnit(compilationUnit);
-		c.setName(that.getTypeName().getText());
+		c.setName(that.getIdentifier().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
 		c.setContainer(scope);
 		scope.getMembers().add(c);
@@ -46,7 +45,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.InterfaceDeclaration that) {
 		Interface i = new Interface();
 		i.setCompilationUnit(compilationUnit);
-		i.setName(that.getTypeName().getText());
+		i.setName(that.getIdentifier().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
 		i.setContainer(scope);
 		scope.getMembers().add(i);
@@ -59,7 +58,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.MethodDeclaration that) {
 		Method m = new Method();
 		m.setCompilationUnit(compilationUnit);
-		m.setName(that.getMemberName().getText());
+		m.setName(that.getIdentifier().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
 		m.setContainer(scope);
 		scope.getMembers().add(m);
@@ -72,7 +71,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.AttributeDeclaration that) {
 		SimpleValue v = new SimpleValue();
 		v.setCompilationUnit(compilationUnit);
-		v.setName(that.getMemberName().getText());
+		v.setName(that.getIdentifier().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
 		v.setContainer(scope);
 		scope.getMembers().add(v);
@@ -83,7 +82,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.AttributeGetter that) {
 		Getter g = new Getter();
 		g.setCompilationUnit(compilationUnit);
-		g.setName(that.getMemberName().getText());
+		g.setName(that.getIdentifier().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
 		g.setContainer(scope);
 		scope.getMembers().add(g);
@@ -96,13 +95,7 @@ public class DeclarationVisitor extends Visitor {
 	public void visit(Tree.Parameter that) {
 		Parameter p = new Parameter();
 		p.setCompilationUnit(compilationUnit);
-		ParameterName parameterName = that.getParameterName();
-		if (parameterName==null) {
-			p.setName("this");
-		}
-		else {
-			p.setName(parameterName.getText());
-		}
+		p.setName(that.getIdentifier().getText());
 		Scope<Declaration> scope = declarationScopes.peek();
 		p.setContainer(scope);
 		scope.getMembers().add(p);

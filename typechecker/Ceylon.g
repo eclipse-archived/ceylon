@@ -8,7 +8,6 @@ options {
 tokens {
     ANNOTATION;
     ANNOTATION_LIST;
-    ANNOTATION_NAME;
     ATTRIBUTE_ARGUMENT;
     ATTRIBUTE_DECLARATION;
     ATTRIBUTE_GETTER;
@@ -23,7 +22,6 @@ tokens {
     EXPRESSION_STATEMENT;
     FOR_ITERATOR;
     FOR_STATEMENT;
-    PARAMETER_NAME;
     PARAMETER;
     PARAMETER_LIST;
     IF_STATEMENT;
@@ -37,7 +35,6 @@ tokens {
     INITIALIZER_EXPRESSION;
     INTERFACE_BODY;
     MEMBER_DECLARATION;
-    MEMBER_NAME;
     MEMBER_EXPRESSION;
     BROKEN_MEMBER_BODY;
     METHOD_ARGUMENT;
@@ -58,7 +55,6 @@ tokens {
     TRY_RESOURCE;
     TYPE_ARGUMENT_LIST;
     TYPE_DECLARATION;
-    TYPE_NAME;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
     MEMBER;
@@ -89,11 +85,11 @@ tokens {
     IS_CASE;
     SATISFIES_CASE;
     MATCH_CASE;
-    PACKAGE_NAME;
     POSTFIX_INCREMENT_OP;
     POSTFIX_DECREMENT_OP;
     NEGATIVE_OP;
     FLIP_OP;
+    IDENTIFIER;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -144,7 +140,7 @@ packagePath
 
 packageName
     : LIDENTIFIER
-    -> ^(PACKAGE_NAME[$LIDENTIFIER])
+    -> ^(IDENTIFIER[$LIDENTIFIER])
     ;
 
 block
@@ -418,9 +414,9 @@ unabbreviatedType
 
 typeAbbreviation
     : DEFAULT_OP
-    -> ^(TYPE_NAME[$DEFAULT_OP,"Optional"])
+    -> ^(IDENTIFIER[$DEFAULT_OP,"Optional"])
     | ARRAY 
-    -> ^(TYPE_NAME[$ARRAY,"Sequence"])
+    -> ^(IDENTIFIER[$ARRAY,"Sequence"])
     //| '[' dimension ']'
     ;
 
@@ -456,17 +452,17 @@ literalArgument
 
 typeName
     : UIDENTIFIER
-    -> ^(TYPE_NAME[$UIDENTIFIER])
+    -> ^(IDENTIFIER[$UIDENTIFIER])
     ;
 
 annotationName
     : LIDENTIFIER
-    -> ^(ANNOTATION_NAME[$LIDENTIFIER])
+    -> ^(IDENTIFIER[$LIDENTIFIER])
     ;
 
 memberName 
     : LIDENTIFIER
-    -> ^(MEMBER_NAME[$LIDENTIFIER])
+    -> ^(IDENTIFIER[$LIDENTIFIER])
     ;
 
 typeArguments
@@ -823,12 +819,14 @@ namedArgumentStart
 
 //special rule for syntactic predicates
 specificationStart
-    : LIDENTIFIER '='
+    : (LIDENTIFIER|'this') '='
     ;
 
 parameterName
     : LIDENTIFIER
-    -> ^(PARAMETER_NAME[$LIDENTIFIER])
+    -> ^(IDENTIFIER[$LIDENTIFIER])
+    | THIS 
+    -> ^(IDENTIFIER[$THIS])
     ;
 
 namedArguments
@@ -910,8 +908,8 @@ parametersStart
 // list in a later pass of the compiler.
 parameter
     : annotations? 
-      formalParameterType 
-      (parameterName | 'this') 
+      parameterType
+      parameterName
       parameters*   //for callable parameters
       (   //more exotic stuff
           valueParameter 
@@ -943,10 +941,10 @@ specifiedFormalParameterStart
     ;
 
 extraParameter
-    : formalParameterType parameterName parameters*
+    : parameterType parameterName parameters*
     ;
 
-formalParameterType
+parameterType
     : type ( '...' -> ^(SEQUENCED_TYPE type) | -> type )
     | VOID_MODIFIER -> VOID_MODIFIER
     ;
