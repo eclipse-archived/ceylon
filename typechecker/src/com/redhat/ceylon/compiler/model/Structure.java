@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.model;
 
-public class Structure extends Node {
+public class Structure extends Model {
 	
 	Scope<Structure> container;
 	CompilationUnit compilationUnit;

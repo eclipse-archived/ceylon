@@ -1,5 +1,5 @@
 package com.redhat.ceylon.compiler.model;
 
-public class Annotation extends Node {
+public class Annotation extends Model {
 
 }

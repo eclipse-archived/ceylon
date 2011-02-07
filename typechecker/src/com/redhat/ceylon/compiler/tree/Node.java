@@ -5,13 +5,22 @@ import org.antlr.runtime.tree.CommonTree;
 public abstract class Node {
 	
 	private String text;
-	public final CommonTree treeNode;
+	private final CommonTree antlrTreeNode;
+	private com.redhat.ceylon.compiler.model.Model modelNode;
 	
-	protected Node(CommonTree treeNode) {
-		this.treeNode = treeNode; 
-		text = treeNode.getText();
+	protected Node(CommonTree antlrTreeNode) {
+		this.antlrTreeNode = antlrTreeNode; 
+		text = antlrTreeNode.getText();
 	}
 	
+	public com.redhat.ceylon.compiler.model.Model getModelNode() {
+		return modelNode;
+	}
+
+	public void setModelNode(com.redhat.ceylon.compiler.model.Model modelNode) {
+		this.modelNode = modelNode;
+	}
+
 	public String getText() {
 		return text;
 	}
@@ -20,8 +29,8 @@ public abstract class Node {
 		this.text = text;
 	}
 	
-	public CommonTree getTreeNode() {
-		return treeNode;
+	public CommonTree getAntlrTreeNode() {
+		return antlrTreeNode;
 	}
 	
 	public abstract void visitChildren(Visitor visitor);
