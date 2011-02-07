@@ -1,8 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
-import com.redhat.ceylon.compiler.model.GenericType;
-import com.redhat.ceylon.compiler.model.Scope;
-import com.redhat.ceylon.compiler.model.Structure;
+import com.redhat.ceylon.compiler.model.Method;
+import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -11,8 +10,27 @@ public class TypeVisitor extends Visitor {
 	
 	Type outerType;
 	
+	@Override
+	public void visit(Tree.AnyAttributeDeclaration that) {
+		super.visit(that);
+		( (SimpleValue) that.getModelNode() )
+			.setType( (Type) that.getTypeOrSubtype().getModelNode() );
+	}
+	
+	@Override
+	public void visit(Tree.MethodDeclaration that) {
+		super.visit(that);
+		( (Method) that.getModelNode() )
+			.setType( (Type) that.getTypeOrSubtype().getModelNode() );
+	}
+	
 	@Override public void visit(Tree.Type that) {
-		Type t = getModel(that);
+		Type type = new Type();
+		that.setModelNode(type);
+		type.setTreeNode(that);
+		type.setGenericType( Util.getDeclaration(that) );
+		//TODO: handle type arguments by substitution
+		Type t = type;
 		if (outerType!=null) {
 			outerType.getTypeArguments().add(t);
 		}
@@ -23,25 +41,13 @@ public class TypeVisitor extends Visitor {
 		//System.out.println(t);
 	}
 
-	private Type getModel(Tree.Type that) {
-		Type type = new Type();
-		that.setModelNode(type);
-		type.setTreeNode(that);
-		Scope scope = that.getScope();
-		while (true) {
-			for ( Structure s: scope.getMembers() ) {
-				if (s instanceof GenericType) {
-					GenericType d = (GenericType) s;
-					if (d.getName().equals(that.getIdentifier().getText())) {
-						type.setGenericType(d);
-						return type;
-					}
-				}
-			}
-			scope = scope.getContainer();
-			if (scope==null) {
-				throw new RuntimeException("Type not found: " + that.getIdentifier().getText());
-			}
-		}
+	/**
+	 * Suppress resolution of types that appear after the
+	 * member selection operator "."
+	 */
+	@Override
+	public void visit(Tree.MemberExpression that) {
+	    that.getPrimary().visit(this);			
 	}
+	
 }

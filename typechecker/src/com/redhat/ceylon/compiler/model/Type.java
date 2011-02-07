@@ -22,8 +22,19 @@ public class Type extends Model {
 	
 	@Override
 	public String toString() {
-		return genericType.getName() + 
-			typeArguments.toString().replace('[', '<').replace(']', '>');
+		return "Type[" + getProducedTypeName() + "]";
+	}
+
+	public String getProducedTypeName() {
+		String producedTypeName = genericType.getName();
+		if (!typeArguments.isEmpty()) {
+			producedTypeName+="<";
+			for (Type t: typeArguments) {
+				producedTypeName+=t.getProducedTypeName();
+			}
+			producedTypeName+=">";
+		}
+		return producedTypeName;
 	}
 	
 }

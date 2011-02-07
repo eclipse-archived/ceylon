@@ -35,4 +35,12 @@ public class Declaration extends Structure {
 		return annotations;
 	}
 	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + 
+			"[" + name + "]";
+	}
+	
+
+	
 }
