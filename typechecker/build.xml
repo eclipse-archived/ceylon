@@ -262,9 +262,7 @@
 	       destdir="${build.classes}"
 	       debug="true"
 	       classpath="${antlr.lib}">
-           <exclude name="Main.java"/>
-	       <exclude name="com/redhat/ceylon/compiler/tree/Node.java"/>
-	       <exclude name="com/redhat/ceylon/compiler/analyzer/DeclarationVisitor.java"/>
+	       <include name="com/redhat/ceylon/compiler/treegen/*.java"/>
 	    </javac>
 	  </target>
 	
