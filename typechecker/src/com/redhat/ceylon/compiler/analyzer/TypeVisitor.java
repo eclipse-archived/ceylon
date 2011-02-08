@@ -84,7 +84,7 @@ public class TypeVisitor extends Visitor {
             //TODO: set the type to Void
         }
         else {
-	        setType(that, that.getTypeOrSubtype());
+            setType(that, that.getTypeOrSubtype());
         }
     }
     
@@ -94,15 +94,15 @@ public class TypeVisitor extends Visitor {
         setType(that, that.getType());
     }
     
-	private void setType(Node that, TypeOrSubtype type) {
-		if (type==null) {
-			throw new RuntimeException("type inference not yet supported");
+    private void setType(Node that, TypeOrSubtype type) {
+        if (type==null) {
+            throw new RuntimeException("type inference not yet supported");
         }
         else {
-        	Type t = (Type) type.getModelNode();
-        	( (Typed) that.getModelNode() ).setType(t);
+            Type t = (Type) type.getModelNode();
+            ( (Typed) that.getModelNode() ).setType(t);
         }
-	}
+    }
     
     @Override 
     public void visit(Tree.Type that) {
