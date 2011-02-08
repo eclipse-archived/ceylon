@@ -2,16 +2,17 @@ package com.redhat.ceylon.compiler.analyzer;
 
 import java.util.List;
 
-import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.model.Import;
-import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
-import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Type;
+import com.redhat.ceylon.compiler.model.Typed;
+import com.redhat.ceylon.compiler.model.Unit;
+import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
+import com.redhat.ceylon.compiler.tree.Tree.TypeOrSubtype;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class TypeVisitor extends Visitor {
@@ -73,41 +74,35 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyAttributeDeclaration that) {
         super.visit(that);
-        if (that.getTypeOrSubtype()==null) {
-            throw new RuntimeException("type inference not yet supported");
-        }
-        else {
-            Type t = (Type) that.getTypeOrSubtype().getModelNode();
-            ( (SimpleValue) that.getModelNode() ).setType(t);
-        }
+        setType(that, that.getTypeOrSubtype());
     }
-    
+
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         if (that.getVoidModifier()!=null) {
             //TODO: set the type to Void
         }
-        else if (that.getTypeOrSubtype()==null) {
-            throw new RuntimeException("type inference not yet supported");
-        }
         else {
-            Type t = (Type) that.getTypeOrSubtype().getModelNode();
-            ( (Method) that.getModelNode() ).setType(t);
+	        setType(that, that.getTypeOrSubtype());
         }
     }
     
     @Override
     public void visit(Tree.Variable that) {
         super.visit(that);
-        if (that.getType()==null) {
-            throw new RuntimeException("type inference not yet supported");
+        setType(that, that.getType());
+    }
+    
+	private void setType(Node that, TypeOrSubtype type) {
+		if (type==null) {
+			throw new RuntimeException("type inference not yet supported");
         }
         else {
-            Type t = (Type) that.getType().getModelNode();
-            ( (SimpleValue) that.getModelNode() ).setType(t);
+        	Type t = (Type) type.getModelNode();
+        	( (Typed) that.getModelNode() ).setType(t);
         }
-    }
+	}
     
     @Override 
     public void visit(Tree.Type that) {
