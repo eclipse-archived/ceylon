@@ -10,4 +10,10 @@ The code is stored under src/
 The dependencies are under lib/
 You need also some generated classes:
  - generated in gensrc/
- - by running 'ant anlr'
+ - by running 'ant clean tree'
+
+Note on the ant build system (UNSTABLE)
+---------------------------------------
+antlr.parser: generates the parser for the language
+antlr.tree: generates the parser for the Ceylon.nodes file hich contains a specification of the tree structure
+the typesafe tree is generated from the Ceylon.nodes specification
