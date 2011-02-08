@@ -9,6 +9,9 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.analyzer.DeclarationVisitor;
+import com.redhat.ceylon.compiler.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.analyzer.TypeVisitor;
+import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
@@ -50,7 +53,16 @@ public class Main {
         cu.visit(v);
         
         Package p = new Package();
-        cu.visit(new DeclarationVisitor(p));
+        Module m = new Module();
+        p.setModule(m);
+        m.getPackages().add(p);
+        
+        DeclarationVisitor dv = new DeclarationVisitor(p);
+		cu.visit(dv);
+        
+        cu.visit(new TypeVisitor(dv.getCompilationUnit()));
+
+        cu.visit(new ExpressionVisitor());
 
         if (lexer.getNumberOfSyntaxErrors() != 0) {
             System.out.println("Lexer failed");
