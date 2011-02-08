@@ -91,12 +91,12 @@ public class TypeVisitor extends Visitor {
 		type.setTreeNode(that);
 		type.setGenericType( Util.getDeclaration(that) );
 		//TODO: handle type arguments by substitution
-		Type t = type;
+		that.setTypeModel(type);
 		if (outerType!=null) {
-			outerType.getTypeArguments().add(t);
+			outerType.getTypeArguments().add(type);
 		}
 		Type o = outerType;
-		outerType = t;
+		outerType = type;
 		super.visit(that);
 		outerType = o;
 		//System.out.println(t);

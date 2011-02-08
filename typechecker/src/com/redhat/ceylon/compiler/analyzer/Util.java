@@ -60,11 +60,11 @@ class Util {
 	}
 
 	private static Declaration getDeclaration(Scope scope, Unit unit, String name) {
-		while (true) {
+		while (scope!=null) {
 			//imports hide declarations in same package
 			//but not declarations in local scopes
 			if (scope instanceof Package && unit!=null) {
-				Declaration d = getDeclaration(unit, name);
+				Declaration d = getImportedDeclaration(unit, name);
 				if (d!=null) {
 					return d;
 				}
@@ -74,12 +74,15 @@ class Util {
 				return d;
 			}
 			scope = scope.getContainer();
-			if (scope==null) {
-				throw new RuntimeException("Member not found: " + name);
-			}
 		}
+		throw new RuntimeException("Member not found: " + name);
 	}
-
+	
+	/**
+	 * Search only directly inside the given scope,
+	 * without considering containing scopes or 
+	 * imports. 
+	 */
 	private static Declaration getLocalDeclaration(Scope scope, String name) {
 		for ( Structure s: scope.getMembers() ) {
 			if (s instanceof Declaration) {
@@ -92,8 +95,12 @@ class Util {
 		return null;
 	}
 	
-	private static Declaration getDeclaration(Unit cu, String name) {
-		for (Import i: cu.getImports()) {
+	/**
+	 * Search the imports of a compilation unit 
+	 * for the declaration. 
+	 */
+	static Declaration getImportedDeclaration(Unit u, String name) {
+		for (Import i: u.getImports()) {
 			Declaration d = i.getDeclaration();
 			if (d.getName().equals(name)) {
 				return d;

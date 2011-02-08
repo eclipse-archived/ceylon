@@ -2,16 +2,19 @@ package com.redhat.ceylon.compiler.tree;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Scope;
+import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Unit;
 
 public abstract class Node {
 	
 	private String text;
 	private final CommonTree antlrTreeNode;
-	private com.redhat.ceylon.compiler.model.Model modelNode;
+	private Model modelNode;
 	private Scope scope;
 	private Unit unit;
+	private Type typeModel;
 	
 	protected Node(CommonTree antlrTreeNode) {
 		this.antlrTreeNode = antlrTreeNode; 
@@ -27,6 +30,18 @@ public abstract class Node {
 
 	public void setScope(Scope scope) {
 		this.scope = scope;
+	}
+	
+	/**
+	 * The type of this node. Note that many 
+	 * nodes do not have a type.
+	 */
+	public Type getTypeModel() {
+		return typeModel;
+	}
+	
+	public void setTypeModel(Type type) {
+		this.typeModel = type;
 	}
 	
 	/**
