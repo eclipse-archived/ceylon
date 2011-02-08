@@ -30,8 +30,7 @@ tokens {
     IMPORT_PATH;
     IMPORT_MEMBER;
     IMPORT_TYPE;
-    TYPE_ALIAS;
-    MEMBER_ALIAS;
+    ALIAS;
     INITIALIZER_EXPRESSION;
     INTERFACE_BODY;
     MEMBER_DECLARATION;
@@ -127,12 +126,12 @@ importWildcard
 
 memberAlias
     : LOCAL_MODIFIER memberName '='
-    -> ^(MEMBER_ALIAS[$LOCAL_MODIFIER] memberName)
+    -> ^(ALIAS[$LOCAL_MODIFIER] memberName)
     ;
 
 typeAlias
     : LOCAL_MODIFIER typeName '='
-    -> ^(TYPE_ALIAS[$LOCAL_MODIFIER] typeName)
+    -> ^(ALIAS[$LOCAL_MODIFIER] typeName)
     ;
 
 packagePath

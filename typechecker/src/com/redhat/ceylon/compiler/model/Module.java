@@ -25,4 +25,13 @@ public class Module {
 		return dependencies;
 	}
 	
+	public List<Package> getAllPackages() {
+		List<Package> list = new ArrayList<Package>();
+		list.addAll(packages);
+		for (Module m: dependencies) {
+			list.addAll(m.getPackages());
+		}
+		return list;
+	}
+	
 }

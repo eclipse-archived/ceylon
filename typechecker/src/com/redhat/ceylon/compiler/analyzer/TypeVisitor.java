@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
@@ -19,7 +20,7 @@ public class TypeVisitor extends Visitor {
 	
 	Type outerType;
 	
-	Tree.ImportPath importPath;
+	Package importPackage;
 	
 	public TypeVisitor(Unit cu) {
 		unit = cu;
@@ -27,21 +28,14 @@ public class TypeVisitor extends Visitor {
 	
 	@Override
 	public void visit(Tree.ImportPath that) {
-		importPath = that;
+		importPackage = getPackage(that.getIdentifiers());
 	}
 	
 	Package getPackage(List<Identifier> importPath) {
 		Module m = unit.getPackage().getModule();
-		for (Package mp: m.getPackages()) {
+		for (Package mp: m.getAllPackages()) {
 			if ( hasName(importPath, mp) ) {
 				return mp;
-			}
-		}
-		for (Module d: m.getDependencies()) {
-			for (Package dp: d.getPackages()) {
-				if ( hasName(importPath, dp) ) {
-					return dp;
-				}
 			}
 		}
 		throw new RuntimeException("Package not found");
@@ -62,33 +56,20 @@ public class TypeVisitor extends Visitor {
 	}
 	
 	@Override
-	public void visit(Tree.ImportMember that) {
+	public void visit(Tree.ImportMemberOrType that) {
 		Import i = new Import();
-		if (that.getMemberAlias()==null) {
+		Alias alias = that.getAlias();
+		if (alias==null) {
 			i.setAlias(that.getIdentifier().getText());
 		}
 		else {
-			i.setAlias(that.getMemberAlias().getIdentifier().getText());
+			i.setAlias(alias.getIdentifier().getText());
 		}
-		Package p = getPackage(importPath.getIdentifiers());
-		i.setDeclaration( Util.getDeclaration(p, that.getIdentifier()) );
+		i.setDeclaration( Util.getDeclaration(importPackage, 
+					that.getIdentifier()) );
 		unit.getImports().add(i);
 	}
-	
-	@Override
-	public void visit(Tree.ImportType that) {
-		Import i= new Import();
-		if (that.getTypeAlias()==null) {
-			i.setAlias(that.getIdentifier().getText());
-		}
-		else {
-			i.setAlias(that.getTypeAlias().getIdentifier().getText());
-		}
-		Package p = getPackage(importPath.getIdentifiers());
-		i.setDeclaration( Util.getDeclaration(p, that.getIdentifier()) );
-		unit.getImports().add(i);
-	}
-	
+		
 	@Override
 	public void visit(Tree.AnyAttributeDeclaration that) {
 		super.visit(that);
