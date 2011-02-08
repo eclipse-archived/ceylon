@@ -141,13 +141,11 @@ public class DeclarationVisitor extends Visitor {
 	
 	@Override
 	public void visit(Tree.Variable that) {
+		super.visit(that);
 		//TODO: what about callable variables?!
 		SimpleValue v = new SimpleValue();
-		that.setModelNode(v);
-		v.setUnit(unit);
 		v.setName(that.getIdentifier().getText());
-		v.setContainer(scope);
-		scope.getMembers().add(v);
+		visitStructure(that, v);
 	}
 
 }

@@ -73,15 +73,40 @@ public class TypeVisitor extends Visitor {
 	@Override
 	public void visit(Tree.AnyAttributeDeclaration that) {
 		super.visit(that);
-		( (SimpleValue) that.getModelNode() )
-			.setType( (Type) that.getTypeOrSubtype().getModelNode() );
+		if (that.getTypeOrSubtype()==null) {
+			throw new RuntimeException("type inference not yet supported");
+		}
+		else {
+			Type t = (Type) that.getTypeOrSubtype().getModelNode();
+			( (SimpleValue) that.getModelNode() ).setType(t);
+		}
 	}
 	
 	@Override
 	public void visit(Tree.MethodDeclaration that) {
 		super.visit(that);
-		( (Method) that.getModelNode() )
-			.setType( (Type) that.getTypeOrSubtype().getModelNode() );
+		if (that.getVoidModifier()!=null) {
+			//TODO: set the type to Void
+		}
+		else if (that.getTypeOrSubtype()==null) {
+			throw new RuntimeException("type inference not yet supported");
+		}
+		else {
+			Type t = (Type) that.getTypeOrSubtype().getModelNode();
+			( (Method) that.getModelNode() ).setType(t);
+		}
+	}
+	
+	@Override
+	public void visit(Tree.Variable that) {
+		super.visit(that);
+		if (that.getType()==null) {
+			throw new RuntimeException("type inference not yet supported");
+		}
+		else {
+			Type t = (Type) that.getType().getModelNode();
+			( (SimpleValue) that.getModelNode() ).setType(t);
+		}
 	}
 	
 	@Override 
