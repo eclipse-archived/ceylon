@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
 import com.redhat.ceylon.compiler.model.Class;
-import com.redhat.ceylon.compiler.model.CompilationUnit;
+import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Getter;
@@ -20,10 +20,16 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class DeclarationVisitor extends Visitor {
 	
 	Scope scope;
-	CompilationUnit compilationUnit;
+	Unit unit;
+	final Package pkg;
 	
 	public DeclarationVisitor(Package p) {
 		scope = p;
+		pkg = p;
+	}
+	
+	public Unit getCompilationUnit() {
+		return unit;
 	}
 	
 	private Scope enterScope(Scope innerScope) {
@@ -44,7 +50,7 @@ public class DeclarationVisitor extends Visitor {
 	private void visitStructure(Node that, Structure model) {
 		that.setModelNode(model);
 		model.setTreeNode(that);
-		model.setCompilationUnit(compilationUnit);
+		model.setUnit(unit);
 		model.setContainer(scope);
 		scope.getMembers().add(model); //TODO: do we really need to include control statements here?
 	}
@@ -52,14 +58,16 @@ public class DeclarationVisitor extends Visitor {
 	@Override
 	public void visitAny(Node that) {
 		that.setScope(scope);
+		that.setUnit(unit);
 		super.visitAny(that);
 	}
     
 	@Override
 	public void visit(Tree.CompilationUnit that) {
-		compilationUnit = new CompilationUnit();
-		that.setModelNode(compilationUnit);
-		compilationUnit.setTreeNode(that);
+		unit = new Unit();
+		that.setModelNode(unit);
+		unit.setTreeNode(that);
+		unit.setPackage(pkg);
 		super.visit(that);
 	}
 	
@@ -136,7 +144,7 @@ public class DeclarationVisitor extends Visitor {
 		//TODO: what about callable variables?!
 		SimpleValue v = new SimpleValue();
 		that.setModelNode(v);
-		v.setCompilationUnit(compilationUnit);
+		v.setUnit(unit);
 		v.setName(that.getIdentifier().getText());
 		v.setContainer(scope);
 		scope.getMembers().add(v);

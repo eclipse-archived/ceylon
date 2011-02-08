@@ -7,6 +7,7 @@ public class Module {
 	
 	String name;
 	List<Package> packages = new ArrayList<Package>();
+	List<Module> dependencies = new ArrayList<Module>();
 	
 	public String getName() {
 		return name;
@@ -16,8 +17,12 @@ public class Module {
 		this.name = name;
 	}
 	
-	public List<Package> getMembers() {
+	public List<Package> getPackages() {
 		return packages;
+	}
+	
+	public List<Module> getDependencies() {
+		return dependencies;
 	}
 	
 }

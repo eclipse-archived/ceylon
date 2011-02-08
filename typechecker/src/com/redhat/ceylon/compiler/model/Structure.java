@@ -3,13 +3,13 @@ package com.redhat.ceylon.compiler.model;
 public class Structure extends Model {
 	
 	Scope container;
-	CompilationUnit compilationUnit;
+	Unit unit;
 	
-	public CompilationUnit getCompilationUnit() {
-		return compilationUnit;
+	public Unit getUnit() {
+		return unit;
 	}
-	public void setCompilationUnit(CompilationUnit compilationUnit) {
-		this.compilationUnit = compilationUnit;
+	public void setUnit(Unit compilationUnit) {
+		this.unit = compilationUnit;
 	}
 
 	public Scope getContainer() {

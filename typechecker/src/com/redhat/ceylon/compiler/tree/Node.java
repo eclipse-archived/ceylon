@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.tree;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.model.Scope;
+import com.redhat.ceylon.compiler.model.Unit;
 
 public abstract class Node {
 	
@@ -10,6 +11,7 @@ public abstract class Node {
 	private final CommonTree antlrTreeNode;
 	private com.redhat.ceylon.compiler.model.Model modelNode;
 	private Scope scope;
+	private Unit unit;
 	
 	protected Node(CommonTree antlrTreeNode) {
 		this.antlrTreeNode = antlrTreeNode; 
@@ -25,6 +27,18 @@ public abstract class Node {
 
 	public void setScope(Scope scope) {
 		this.scope = scope;
+	}
+	
+	/**
+	 * The compilation unit in which the node
+	 * occurs.
+	 */
+	public Unit getUnit() {
+		return unit;
+	}
+	
+	public void setUnit(Unit unit) {
+		this.unit = unit;
 	}
 
 	/**

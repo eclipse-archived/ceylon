@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Package implements Scope {
-	String name;
+	List<String> name;
 	Module module;
 	List<Structure> members = new ArrayList<Structure>();
 
@@ -16,11 +16,11 @@ public class Package implements Scope {
 		this.module = module;
 	}
 
-	public String getName() {
+	public List<String> getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(List<String> name) {
 		this.name = name;
 	}
 

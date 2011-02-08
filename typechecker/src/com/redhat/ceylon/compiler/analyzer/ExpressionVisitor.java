@@ -9,9 +9,8 @@ import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class ExpressionVisitor extends Visitor {
-
-	Type receivingType;
 	
+	Type receivingType;
 	//Primaries:
 	
 	@Override public void visit(Tree.MemberExpression that) {
