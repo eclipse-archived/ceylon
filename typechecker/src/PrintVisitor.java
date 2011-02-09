@@ -28,6 +28,9 @@ public class PrintVisitor extends Visitor {
                 "] (" + node.getAntlrTreeNode().getLine() + 
                 ":" + node.getAntlrTreeNode().getCharPositionInLine()  + 
                 ")");
+        if (node.getTypeModel()!=null) {
+            print(" -> " + node.getTypeModel().getProducedTypeName());
+        }
         depth++;
         super.visitAny(node);
         depth--;

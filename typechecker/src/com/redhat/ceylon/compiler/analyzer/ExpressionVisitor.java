@@ -6,7 +6,6 @@ import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Scope;
-import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.tree.Tree;
@@ -28,47 +27,70 @@ public class ExpressionVisitor extends Visitor {
         classOrInterface = o;
     }
     
+    //Type inference for members declared "local":
+    
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        if (that.getTypeOrSubtype()==null) {
-            Type t = that.getSpecifierOrInitializerExpression().getExpression().getTypeModel();
-            if (t==null) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
+            if ( that.getSpecifierOrInitializerExpression()!=null ) {
+                setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
+                        that.getSpecifierOrInitializerExpression(),
+                        (Typed) that.getModelNode());
+            }
+            else {
                 throw new RuntimeException("Could not infer type of: " + 
                         that.getIdentifier().getText());
             }
-            that.setTypeModel(t);
-            ( (SimpleValue) that.getModelNode() ).setType(t);
         }
     }
-    
+
     @Override public void visit(Tree.AttributeGetter that) {
         super.visit(that);
-        if (that.getTypeOrSubtype()==null) {
-            setType(that, that.getBlock());
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
+            setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
+                    that.getBlock(),
+                    (Typed) that.getModelNode());
         }
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if (that.getTypeOrSubtype()==null && that.getVoidModifier()==null) {
-            setType(that, that.getBlock());
-        }
-    }
-
-    private void setType(Tree.MethodOrAttributeDeclaration that, Tree.Block block) {
-        Directive d = block.getDirective();
-        if (d!=null && (d instanceof Return)) {
-            Type t = ((Return) d).getExpression().getTypeModel();
-            if (t==null) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
+            if (that.getBlock()!=null) {
+                setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
+                        that.getBlock(),
+                        (Typed) that.getModelNode());
+            }
+            else if ( that.getSpecifierExpression()!=null ) {
+                setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
+                        that.getSpecifierExpression(),
+                        (Typed) that.getModelNode());  //TODO: this is hackish
+            }
+            else {
                 throw new RuntimeException("Could not infer type of: " + 
                         that.getIdentifier().getText());
             }
+        }
+    }
+
+    private void setType(Tree.LocalModifier that, 
+            Tree.SpecifierOrInitializerExpression s, Typed dec) {
+        Type t = s.getExpression().getTypeModel();
+        that.setTypeModel(t);
+        dec.setType(t);
+    }
+    
+    private void setType(Tree.LocalModifier that, 
+            Tree.Block block, Typed dec) {
+        Directive d = block.getDirective();
+        if (d!=null && (d instanceof Return)) {
+            Type t = ((Return) d).getExpression().getTypeModel();
             that.setTypeModel(t);
-            ( (Typed) that.getModelNode() ).setType(t);
+            dec.setType(t);
         }
         else {
-            throw new RuntimeException("Could not infer type of: " + 
-                    that.getIdentifier().getText());
+            throw new RuntimeException("Could not infer type of: " +
+                    dec.getName());
         }
     }
     

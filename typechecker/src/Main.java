@@ -79,7 +79,8 @@ public class Main {
             cu.visit(new TypeVisitor(dv.getCompilationUnit()));
     
             cu.visit(new ExpressionVisitor());
-        
+            
+            cu.visit(v);
         }
         
     }

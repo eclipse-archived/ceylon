@@ -95,7 +95,7 @@ public class TypeVisitor extends Visitor {
     }
     
     private void setType(Node that, TypeOrSubtype type) {
-        if (type!=null) { //if the type declaration is missing, we do type inference later
+        if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             Type t = (Type) type.getModelNode();
             ( (Typed) that.getModelNode() ).setType(t);
         }
