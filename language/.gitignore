@@ -5,6 +5,7 @@ build
 bin
 gensrc
 output
+out
 
 #IDEs
 .idea
