@@ -26,6 +26,9 @@ import com.redhat.ceylon.compiler.util.PrintVisitor;
 
 public class Main {
 
+    private static final String MODULE_FILE = "module.ceylon";
+    private static boolean ENABLE_MODULE_AND_PACKAGE = false;
+
     public static void main(String[] args) throws Exception {
         String path;
         if ( args.length==0 ) {
@@ -34,10 +37,26 @@ public class Main {
         else {
             path = args[0];
         }
-        fileOrDir( new File(path) );
+
+        if ( path.equals("corpus/multisource") ) {
+            //Today only multisource respects the module / package structure defined in the Ceylon spec
+            ENABLE_MODULE_AND_PACKAGE = true;
+        }
+        Context context = new Context();
+        final File file = new File(path);
+        if ( file.isDirectory() ) {
+            //root directory is the src dir => start from here
+            for ( File subfile : file.listFiles() )
+            fileOrDir(subfile, context );
+        }
+        else {
+            //simple file compilation
+            //TODO is that really valid?
+            fileOrDir(file, context );
+        }
     }
     
-    private static void file(File file) throws Exception {
+    private static void file(File file, Context context) throws Exception {
         if ( file.getName().endsWith(".ceylon") ) {
         
             System.out.println("Parsing " + file.getName());
@@ -66,13 +85,20 @@ public class Main {
             
             Visitor v = new PrintVisitor();
             cu.visit(v);
-            
-            Package p = new Package();
-            p.setName(Arrays.asList(new String[]{"test"}));
-            Module m = new Module();
-            m.setName(Arrays.asList(new String[]{"test"}));
-            p.setModule(m);
-            m.getPackages().add(p);
+
+            Package p;
+
+            if (ENABLE_MODULE_AND_PACKAGE) {
+                p = context.getPackage();
+            }
+            else {
+                p = new Package();
+                p.setName(Arrays.asList(new String[]{"test"}));
+                Module m = new Module();
+                m.setName(Arrays.asList(new String[]{"test"}));
+                p.setModule(m);
+                m.getPackages().add(p);
+            }
             
             DeclarationVisitor dv = new DeclarationVisitor(p);
             cu.visit(dv);
@@ -86,16 +112,27 @@ public class Main {
         
     }
     
-    private static void fileOrDir(File file) throws Exception {
-        if (file.isDirectory()) 
-            dir(file);
-        else
-            file(file);
+    private static void fileOrDir(File file, Context context) throws Exception {
+        if (file.isDirectory()) {
+            dir(file, context);
+        }
+        else {
+            file(file, context);
+        }
     }
 
-    private static void dir(File dir) throws Exception {
-        for (File file: dir.listFiles()) 
-            fileOrDir(file);
+    private static void dir(File dir, Context context) throws Exception {
+        context.push( dir.getName() );
+        final File[] files = dir.listFiles();
+        for (File file: files) {
+            if ( MODULE_FILE.equals( file.getName() ) ) {
+                context.defineModule();
+            }
+        }
+        for (File file: files) {
+            fileOrDir(file, context);
+        }
+        context.pop();
     }
 
 }
