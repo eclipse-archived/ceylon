@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.analyzer;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
@@ -12,7 +13,6 @@ import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.tree.Tree.TypeOrSubtype;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class TypeVisitor extends Visitor {
@@ -80,12 +80,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if (that.getVoidModifier()!=null) {
-            //TODO: set the type to Void
-        }
-        else {
-            setType(that, that.getTypeOrSubtype());
-        }
+        setType(that, that.getTypeOrSubtype());
     }
     
     @Override
@@ -94,7 +89,7 @@ public class TypeVisitor extends Visitor {
         setType(that, that.getType());
     }
     
-    private void setType(Node that, TypeOrSubtype type) {
+    private void setType(Node that, Tree.TypeOrSubtype type) {
         if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             Type t = (Type) type.getModelNode();
             ( (Typed) that.getModelNode() ).setType(t);
@@ -116,7 +111,18 @@ public class TypeVisitor extends Visitor {
         outerType = type;
         super.visit(that);
         outerType = o;
-        //System.out.println(t);
+    }
+    
+    @Override 
+    public void visit(Tree.VoidModifier that) {
+        Type type = new Type();
+        that.setModelNode(type);
+        type.setTreeNode(that);
+        //TODO: use the Void from the language package!
+        Class c = new Class();
+        c.setName("Void");
+        type.setGenericType(c);
+        that.setTypeModel(type);
     }
 
     /**
