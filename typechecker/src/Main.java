@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -16,6 +17,8 @@ import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.redhat.ceylon.compiler.parser.LexError;
+import com.redhat.ceylon.compiler.parser.ParseError;
 import com.redhat.ceylon.compiler.tree.Builder;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -46,7 +49,17 @@ public class Main {
             CeylonParser parser = new CeylonParser(tokens);
             CeylonParser.compilationUnit_return r = parser.compilationUnit();
     
-            CommonTree t = (CommonTree)r.getTree();
+        	List<LexError> lexerErrors = lexer.getErrors();
+        	for (LexError le: lexerErrors) {
+                System.out.println("Lexer error: " + le.getMessage(lexer));
+        	}
+
+        	List<ParseError> parserErrors = parser.getErrors();
+        	for (ParseError pe: parserErrors) {
+                System.out.println("Parser error: " + pe.getMessage(parser));
+        	}
+
+        	CommonTree t = (CommonTree)r.getTree();
             
             CompilationUnit cu = new Builder().buildCompilationUnit(t);
             
@@ -66,16 +79,6 @@ public class Main {
             cu.visit(new TypeVisitor(dv.getCompilationUnit()));
     
             cu.visit(new ExpressionVisitor());
-    
-            if (lexer.getNumberOfSyntaxErrors() != 0) {
-                System.out.println("Lexer failed");
-            }
-            else if (parser.getNumberOfSyntaxErrors() != 0) {
-                System.out.println("Parser failed");
-            }
-            else {
-                System.out.println("Parser succeeded");
-            }
         
         }
         

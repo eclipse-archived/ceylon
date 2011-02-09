@@ -96,6 +96,30 @@ tokens {
 @parser::header { package com.redhat.ceylon.compiler.parser; }
 @lexer::header { package com.redhat.ceylon.compiler.parser; }
 
+@members {
+    private java.util.List<ParseError> errors 
+            = new java.util.ArrayList<ParseError>();
+    @Override public void displayRecognitionError(String[] tn,
+            RecognitionException re) {
+        errors.add(new ParseError(re, tn));
+    }
+    public java.util.List<ParseError> getErrors() {
+        return errors;
+    }
+}
+
+@lexer::members {
+    private java.util.List<LexError> errors 
+            = new java.util.ArrayList<LexError>();
+    @Override public void displayRecognitionError(String[] tn,
+            RecognitionException re) {
+        errors.add(new LexError(re, tn));
+    }
+    public java.util.List<LexError> getErrors() {
+        return errors;
+    }
+}
+
 compilationUnit
     : importDeclaration*
       annotatedDeclaration+
