@@ -39,7 +39,7 @@ public class TypeVisitor extends Visitor {
                 return mp;
             }
         }
-        throw new RuntimeException("Package not found");
+        throw new RuntimeException( "Package not found: " + PrintUtil.importPathToString(importPath) );
     }
 
     private boolean hasName(List<Identifier> importPath, Package mp) {
