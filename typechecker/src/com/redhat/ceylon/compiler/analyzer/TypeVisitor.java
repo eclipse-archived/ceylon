@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.tree.Tree.TypeOrSubtype;
 import com.redhat.ceylon.compiler.tree.Visitor;
+import com.redhat.ceylon.compiler.util.PrintUtil;
 
 public class TypeVisitor extends Visitor {
     
@@ -39,7 +40,7 @@ public class TypeVisitor extends Visitor {
                 return mp;
             }
         }
-        throw new RuntimeException( "Package not found: " + PrintUtil.importPathToString(importPath) );
+        throw new RuntimeException( "Package not found: " + PrintUtil.importNodeToString(importPath) );
     }
 
     private boolean hasName(List<Identifier> importPath, Package mp) {
