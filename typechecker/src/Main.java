@@ -3,6 +3,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -53,7 +54,9 @@ public class Main {
             cu.visit(v);
             
             Package p = new Package();
+            p.setName(Arrays.asList(new String[]{"test"}));
             Module m = new Module();
+            m.setName(Arrays.asList(new String[]{"test"}));
             p.setModule(m);
             m.getPackages().add(p);
             

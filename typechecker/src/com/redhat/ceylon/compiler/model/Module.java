@@ -5,15 +5,15 @@ import java.util.List;
 
 public class Module {
 	
-	String name;
+	List<String> name;
 	List<Package> packages = new ArrayList<Package>();
 	List<Module> dependencies = new ArrayList<Module>();
 	
-	public String getName() {
+	public List<String> getName() {
 		return name;
 	}
 	
-	public void setName(String name) {
+	public void setName(List<String> name) {
 		this.name = name;
 	}
 	
@@ -32,6 +32,11 @@ public class Module {
 			list.addAll(m.getPackages());
 		}
 		return list;
+	}
+	
+	@Override
+	public String toString() {
+		return "Module[" + name + "]";
 	}
 	
 }

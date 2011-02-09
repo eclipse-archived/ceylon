@@ -34,4 +34,9 @@ public class Package implements Scope {
 		return null;
 	}
 	
+	@Override
+	public String toString() {
+		return "Package[" + name + "]";
+	}
+	
 }

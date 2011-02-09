@@ -41,6 +41,4 @@ public class Declaration extends Structure {
 			"[" + name + "]";
 	}
 	
-
-	
 }
