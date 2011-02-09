@@ -11,15 +11,15 @@ import org.antlr.runtime.CommonTokenStream;
 
 public class Generate {
 
-	public static void main(String[] args) throws Exception {
-		File file = new File(args[0]);
-		tree(file);
-		builder(file);
-		walker(file);
-		visitor(file);
-	}
-	
-	private static void tree(File file) throws Exception {
+    public static void main(String[] args) throws Exception {
+        File file = new File(args[0]);
+        tree(file);
+        builder(file);
+        walker(file);
+        visitor(file);
+    }
+    
+    private static void tree(File file) throws Exception {
         InputStream is = new FileInputStream( file );
         ANTLRInputStream input = new ANTLRInputStream(is);
         TreegenLexer lexer = new TreegenLexer(input);
@@ -29,9 +29,9 @@ public class Generate {
         out.createNewFile();
         parser.out=new PrintStream(out);
         parser.nodeList();
-	}
+    }
 
-	private static void builder(File file) throws Exception {
+    private static void builder(File file) throws Exception {
         InputStream is = new FileInputStream( file );
         ANTLRInputStream input = new ANTLRInputStream(is);
         BuildergenLexer lexer = new BuildergenLexer(input);
@@ -41,9 +41,9 @@ public class Generate {
         out.createNewFile();
         parser.out=new PrintStream(out);
         parser.nodeList();
-	}
-	
-	private static void walker(File file) throws Exception {
+    }
+    
+    private static void walker(File file) throws Exception {
         InputStream is = new FileInputStream( file );
         ANTLRInputStream input = new ANTLRInputStream(is);
         WalkergenLexer lexer = new WalkergenLexer(input);
@@ -53,9 +53,9 @@ public class Generate {
         out.createNewFile();
         parser.out=new PrintStream(out);
         parser.nodeList();
-	}
-	
-	private static void visitor(File file) throws Exception {
+    }
+    
+    private static void visitor(File file) throws Exception {
         InputStream is = new FileInputStream( file );
         ANTLRInputStream input = new ANTLRInputStream(is);
         VisitorgenLexer lexer = new VisitorgenLexer(input);
@@ -65,6 +65,6 @@ public class Generate {
         out.createNewFile();
         parser.out=new PrintStream(out);
         parser.nodeList();
-	}
-	
+    }
+    
 }
