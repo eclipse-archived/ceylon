@@ -95,10 +95,7 @@ public class TypeVisitor extends Visitor {
     }
     
     private void setType(Node that, TypeOrSubtype type) {
-        if (type==null) {
-            throw new RuntimeException("type inference not yet supported");
-        }
-        else {
+        if (type!=null) { //if the type declaration is missing, we do type inference later
             Type t = (Type) type.getModelNode();
             ( (Typed) that.getModelNode() ).setType(t);
         }

@@ -6,11 +6,14 @@ import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Scope;
+import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.Directive;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
+import com.redhat.ceylon.compiler.tree.Tree.Return;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 
@@ -23,6 +26,50 @@ public class ExpressionVisitor extends Visitor {
         classOrInterface = (ClassOrInterface) that.getModelNode();
         super.visit(that);
         classOrInterface = o;
+    }
+    
+    @Override public void visit(Tree.AttributeDeclaration that) {
+        super.visit(that);
+        if (that.getTypeOrSubtype()==null) {
+            Type t = that.getSpecifierOrInitializerExpression().getExpression().getTypeModel();
+            if (t==null) {
+                throw new RuntimeException("Could not infer type of: " + 
+                        that.getIdentifier().getText());
+            }
+            that.setTypeModel(t);
+            ( (SimpleValue) that.getModelNode() ).setType(t);
+        }
+    }
+    
+    @Override public void visit(Tree.AttributeGetter that) {
+        super.visit(that);
+        if (that.getTypeOrSubtype()==null) {
+            setType(that, that.getBlock());
+        }
+    }
+
+    @Override public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        if (that.getTypeOrSubtype()==null && that.getVoidModifier()==null) {
+            setType(that, that.getBlock());
+        }
+    }
+
+    private void setType(Tree.MethodOrAttributeDeclaration that, Tree.Block block) {
+        Directive d = block.getDirective();
+        if (d!=null && (d instanceof Return)) {
+            Type t = ((Return) d).getExpression().getTypeModel();
+            if (t==null) {
+                throw new RuntimeException("Could not infer type of: " + 
+                        that.getIdentifier().getText());
+            }
+            that.setTypeModel(t);
+            ( (Typed) that.getModelNode() ).setType(t);
+        }
+        else {
+            throw new RuntimeException("Could not infer type of: " + 
+                    that.getIdentifier().getText());
+        }
     }
     
     //Primaries:
