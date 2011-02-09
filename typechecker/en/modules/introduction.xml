@@ -13,13 +13,16 @@
         <title>Language overview</title>
     
     <para>
-    Ceylon is a general-purpose, imperative, statically-typed, object-oriented, 
-    higher-order language featuring a syntax similar to Java and C#. By 
-    <emphasis>object-oriented</emphasis>, we mean that the language features a 
-    nominative type system where a type is a set of named attributes and 
+    Ceylon is a general-purpose, imperative, statically-typed, block-structured, 
+    object-oriented, higher-order language featuring a syntax similar to Java and 
+    C#. By <emphasis>object-oriented</emphasis>, we mean that the language features 
+    a nominative type system where a type is a set of named attributes and 
     operations, and that it supports inheritance and subtype polymorphism. By 
     <emphasis>higher-order</emphasis>, we mean that every named program element
-    (every attribute, every operation, and every type) is a value. 
+    (every attribute, every operation, and every type) is a value. By 
+    <emphasis>block-structured</emphasis>, we mean to say that the language features
+    lexical scoping and an extremely regular recursive syntax for declarations and
+    statements.
     </para>
     
     <para>
