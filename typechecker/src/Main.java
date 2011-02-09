@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.parser.ParseError;
 import com.redhat.ceylon.compiler.tree.Builder;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.tree.Visitor;
+import com.redhat.ceylon.compiler.util.PrintVisitor;
 
 public class Main {
 

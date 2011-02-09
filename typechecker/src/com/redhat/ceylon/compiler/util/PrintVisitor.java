@@ -1,3 +1,4 @@
+package com.redhat.ceylon.compiler.util;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
