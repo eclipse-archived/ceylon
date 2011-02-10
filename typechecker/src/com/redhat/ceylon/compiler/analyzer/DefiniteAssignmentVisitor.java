@@ -65,27 +65,37 @@ public class DefiniteAssignmentVisitor extends Visitor {
         }
         else {
             boolean c = cannotAssign;
+            boolean d = declared;
             cannotAssign=true;
             super.visit(that);
             cannotAssign = c;
+            declared = d;
         }
     }
     
     @Override
     public void visit(Tree.IfStatement that) {
+        
+        boolean d = declared;
         boolean o = definitelyAssigned;
         boolean p = possiblyAssigned;
+        
         super.visit(that.getIfClause());
         boolean definitelyAssignedByIfClause = definitelyAssigned;
         boolean possiblyAssignedByIfClause = possiblyAssigned;
+        declared = d;
         definitelyAssigned = o;
         possiblyAssigned = p;
+        
         if (that.getElseClause()!=null)
             super.visit(that.getElseClause());
+        declared = d;
         boolean definitelyAssignedByElseClause = definitelyAssigned;
         boolean possiblyAssignedByElseClause = possiblyAssigned;
+        
         definitelyAssigned = o || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
-        possiblyAssigned = o || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+        possiblyAssigned = p || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+        
     }
     
     @Override
@@ -96,58 +106,68 @@ public class DefiniteAssignmentVisitor extends Visitor {
     @Override
     public void visit(Tree.WhileClause that) {
         boolean c = cannotAssign;
+        boolean d = declared;
         cannotAssign=true;
         super.visit(that);
         cannotAssign = c;
+        declared = d;
     }
     
     @Override
     public void visit(Tree.DoClause that) {
         boolean c = cannotAssign;
+        boolean d = declared;
         cannotAssign=true;
         super.visit(that);
         cannotAssign = c;
+        declared = d;
     }
 
     @Override
-    public void visit(Tree.ForStatement that) {
-        boolean o = definitelyAssigned;
+    public void visit(Tree.ForClause that) {
         boolean c = cannotAssign;
+        boolean d = declared;        
         cannotAssign = true;
-        super.visit(that.getForClause());
+        super.visit(that);
         cannotAssign = c;
-        if (that.getFailClause()!=null)
-            super.visit(that.getFailClause());
-        definitelyAssigned = o;
+        declared = d;
     }
     
 
     @Override
     public void visit(Tree.FailClause that) {
         boolean o = definitelyAssigned;
+        boolean d = declared;
         super.visit(that);
         definitelyAssigned = o;
+        declared = d;
     }
 
     @Override
     public void visit(Tree.TryClause that) {
         boolean o = definitelyAssigned;
+        boolean d = declared;
         super.visit(that);
         definitelyAssigned = o;
+        declared = d;
     }
 
     @Override
     public void visit(Tree.CatchClause that) {
         boolean o = definitelyAssigned;
+        boolean d = declared;
         super.visit(that);
         definitelyAssigned = o;
+        declared = d;
     }
     
     @Override
     public void visit(Tree.FinallyClause that) {
         boolean o = definitelyAssigned;
+        boolean d = declared;
         super.visit(that);
         definitelyAssigned = o;
+        declared = d;
     }
 
     /**
