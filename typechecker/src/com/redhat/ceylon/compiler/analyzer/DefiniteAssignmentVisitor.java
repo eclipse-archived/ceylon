@@ -7,22 +7,19 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class DefiniteAssignmentVisitor extends Visitor {
     
     Typed declaration;
-    boolean assigned = false;
+    boolean definitelyAssigned = false;
+    boolean possiblyAssigned = false;
         
     public DefiniteAssignmentVisitor(Typed declaration) {
         this.declaration = declaration;
     }
     
-    public boolean isAssigned() {
-        return assigned;
-    }
-
     @Override
     public void visit(Tree.AnnotationList that) {}
     
     @Override
     public void visit(Tree.Member that) {
-        if (!assigned && Util.getDeclaration(that)==declaration) {
+        if (!definitelyAssigned && Util.getDeclaration(that)==declaration) {
             throw new RuntimeException("Not definitely assigned: " + 
                     that.getIdentifier().getText());
         }
@@ -30,30 +27,45 @@ public class DefiniteAssignmentVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
+        if (possiblyAssigned) {
+            throw new RuntimeException("Not definitely unassigned: " + 
+                    that.getMember().getIdentifier().getText());
+        }
         if (Util.getDeclaration(that.getMember())==declaration) {
-            assigned=true;
+            definitelyAssigned=true;
+            possiblyAssigned=true;
         }
         super.visit(that);
     }
     
     @Override
     public void visit(Tree.Declaration that) {
-        Boolean o = assigned;
+        //TODO: I think this stuff is unnecessary
+        //      what we really should be checking 
+        //      is that the nested dec doesn't try
+        //      to assign it at all!
+        Boolean o = definitelyAssigned;
+        Boolean p = possiblyAssigned;
         super.visit(that);
-        assigned = o;
+        definitelyAssigned = o;
+        possiblyAssigned = p;
     }
     
     @Override
     public void visit(Tree.IfStatement that) {
-        boolean o = assigned;
-        assigned = false;
+        boolean o = definitelyAssigned;
+        boolean p = possiblyAssigned;
         super.visit(that.getIfClause());
-        boolean assignedByIfClause = assigned;
-        assigned = false;
+        boolean definitelyAssignedByIfClause = definitelyAssigned;
+        boolean possiblyAssignedByIfClause = possiblyAssigned;
+        definitelyAssigned = o;
+        possiblyAssigned = p;
         if (that.getElseClause()!=null)
             super.visit(that.getElseClause());
-        boolean assignedByElseClause = assigned;
-        assigned = o || (assignedByIfClause && assignedByElseClause);
+        boolean definitelyAssignedByElseClause = definitelyAssigned;
+        boolean possiblyAssignedByElseClause = possiblyAssigned;
+        definitelyAssigned = o || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
+        possiblyAssigned = o || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
     }
     
     @Override
@@ -63,9 +75,9 @@ public class DefiniteAssignmentVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileClause that) {
-        Boolean o = assigned;
+        Boolean o = definitelyAssigned;
         super.visit(that);
-        assigned = o;
+        definitelyAssigned = o;
     }
     
     //Note: we do not need DoClause, here since it 
@@ -73,44 +85,48 @@ public class DefiniteAssignmentVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ForStatement that) {
-        boolean o = assigned;
-        assigned = false;
+        boolean o = definitelyAssigned;
+        boolean p = possiblyAssigned;
         super.visit(that.getForClause());
-        boolean assignedByForClause = assigned;
-        assigned = false;
+        boolean definitelyAssignedByForClause = definitelyAssigned;
+        boolean possiblyAssignedByForClause = possiblyAssigned;
+        definitelyAssigned = o;
+        possiblyAssigned = p;
         if (that.getFailClause()!=null)
             super.visit(that.getFailClause());
-        boolean assignedByFailClause = assigned;
-        assigned = o || (assignedByForClause && assignedByFailClause);
+        boolean definitelyAssignedByFailClause = definitelyAssigned;
+        boolean possiblyAssignedByFailClause = possiblyAssigned;
+        definitelyAssigned = o || (definitelyAssignedByForClause && definitelyAssignedByFailClause);
+        possiblyAssigned = o || possiblyAssignedByForClause || possiblyAssignedByFailClause;
     }
     
 
     @Override
     public void visit(Tree.FailClause that) {
-        Boolean o = assigned;
+        Boolean o = definitelyAssigned;
         super.visit(that);
-        assigned = o;
+        definitelyAssigned = o;
     }
 
     @Override
     public void visit(Tree.TryClause that) {
-        Boolean o = assigned;
+        Boolean o = definitelyAssigned;
         super.visit(that);
-        assigned = o;
+        definitelyAssigned = o;
     }
 
     @Override
     public void visit(Tree.CatchClause that) {
-        Boolean o = assigned;
+        Boolean o = definitelyAssigned;
         super.visit(that);
-        assigned = o;
+        definitelyAssigned = o;
     }
     
     @Override
     public void visit(Tree.FinallyClause that) {
-        Boolean o = assigned;
+        Boolean o = definitelyAssigned;
         super.visit(that);
-        assigned = o;
+        definitelyAssigned = o;
     }
 
     /**
