@@ -979,7 +979,7 @@ parameterType
 // Control structures.
 
 controlCondition
-    : condition
+    : '('! condition ')'!
     ;
 
 condition
@@ -1025,7 +1025,7 @@ ifElse
     ;
 
 ifBlock
-    : 'if'^ '('! controlCondition ')'! block
+    : 'if'^ controlCondition block
     ;
 
 elseBlock
@@ -1104,12 +1104,8 @@ containment
     ;
     
 doWhile
-    : doBlock whileCondition ';'
-    -> ^(DO_WHILE_STATEMENT doBlock whileCondition)
-    ;
-
-whileCondition
-    : 'while'^ '('! controlCondition ')'!
+    : doBlock ';'
+    -> ^(DO_WHILE_STATEMENT doBlock)
     ;
 
 simpleWhile
@@ -1118,11 +1114,11 @@ simpleWhile
     ;
 
 whileBlock
-    : 'while'^ '('! controlCondition ')'! block
+    : 'while'^ controlCondition block
     ;
 
 doBlock
-    : 'do'^ block
+    : 'do'^ block 'while'! controlCondition
     ;
 
 tryCatchFinally

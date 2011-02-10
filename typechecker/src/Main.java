@@ -11,6 +11,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.analyzer.DeclarationVisitor;
+import com.redhat.ceylon.compiler.analyzer.DefiniteAssignmentControllerVisitor;
 import com.redhat.ceylon.compiler.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.model.Module;
@@ -80,6 +81,8 @@ public class Main {
             cu.visit(new TypeVisitor(dv.getCompilationUnit()));
     
             cu.visit(new ExpressionVisitor());
+            
+            cu.visit(new DefiniteAssignmentControllerVisitor(cu));
             
             cu.visit(v);
         }
