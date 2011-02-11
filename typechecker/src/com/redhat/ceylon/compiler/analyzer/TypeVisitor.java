@@ -80,8 +80,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        i.setDeclaration( Util.getDeclaration(importPackage, 
-                    that.getIdentifier()) );
+        i.setDeclaration( Util.getDeclaration(importPackage, that) );
         unit.getImports().add(i);
     }
         
