@@ -114,29 +114,11 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override 
-    public void visit(Tree.AnyAttributeDeclaration that) {
+    public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
         setModelType(that, that.getTypeOrSubtype());
     }
-    
-    @Override 
-    public void visit(Tree.MethodDeclaration that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-
-    @Override
-    public void visit(Tree.Variable that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
-    @Override
-    public void visit(Tree.Parameter that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
+        
     private void setModelType(Node that, Tree.TypeOrSubtype type) {
         if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             Type t = (Type) type.getModelNode();
