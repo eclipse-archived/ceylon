@@ -6,10 +6,14 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class DefiniteReturnVisitor extends Visitor {
     
     boolean definitelyReturns = false;
-    boolean brokenOrContinued = false;
+    boolean broken = false;
+    boolean canReturn = false;
+    boolean canBreakOrContinue = false;
         
     @Override
     public void visit(Tree.AttributeGetter that) {
+        boolean c = canReturn;
+        canReturn = true;
         boolean d = definitelyReturns;
         definitelyReturns = false;
         super.visit(that);
@@ -18,25 +22,55 @@ public class DefiniteReturnVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         definitelyReturns = d;
+        canReturn = c;
     }
 
     @Override
     public void visit(Tree.MethodDeclaration that) {
+        if (that.getBlock()!=null) {
+            boolean c = canReturn;
+            canReturn = true;
+            boolean d = definitelyReturns;
+            definitelyReturns = false;
+            super.visit(that);
+            if (that.getBlock()!=null && 
+                    !(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
+                if (!definitelyReturns) {
+                    throw new RuntimeException("Does not definitely return: " + 
+                            that.getIdentifier().getText());
+                }
+            }
+            definitelyReturns = d;
+            canReturn = c;
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AttributeSetter that) {
+        boolean c = canReturn;
+        canReturn = true;
         boolean d = definitelyReturns;
         definitelyReturns = false;
         super.visit(that);
-        if (that.getBlock()!=null && 
-                !(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
-            if (!definitelyReturns) {
-                throw new RuntimeException("Does not definitely return: " + 
-                        that.getIdentifier().getText());
-            }
-        }
+        canReturn = c;
+        definitelyReturns = d;
+    }
+    
+    @Override
+    public void visit(Tree.ClassOrInterfaceDeclaration that) {
+        boolean c = canReturn;
+        canReturn = false;
+        boolean d = definitelyReturns;
+        definitelyReturns = false;
+        super.visit(that);
+        canReturn = c;
         definitelyReturns = d;
     }
     
     @Override
     public void visit(Tree.Return that) {
+        if (!canReturn)
+            throw new RuntimeException("nothing to return from");
         super.visit(that);
         definitelyReturns = true;
     }
@@ -49,12 +83,18 @@ public class DefiniteReturnVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Break that) {
-        brokenOrContinued = true;
+        if (!canBreakOrContinue)
+            throw new RuntimeException("nothing to break");
+        super.visit(that);
+        broken = true;
     }
 
     @Override
     public void visit(Tree.Continue that) {
-        brokenOrContinued = true;
+        if (!canBreakOrContinue)
+            throw new RuntimeException("nothing to continue");
+        super.visit(that);
+        definitelyReturns = true;
     }
     
     @Override
@@ -76,51 +116,66 @@ public class DefiniteReturnVisitor extends Visitor {
     @Override
     public void visit(Tree.WhileClause that) {
         boolean d = definitelyReturns;
-        boolean b = brokenOrContinued;
-        brokenOrContinued = false;
+        boolean b = broken;
+        boolean c = canBreakOrContinue;
+        canBreakOrContinue = true;
+        broken = false;
         super.visit(that);
         definitelyReturns = d;
-        brokenOrContinued = b;
+        broken = b;
+        canBreakOrContinue = c;
     }
 
     @Override
     public void visit(Tree.DoClause that) {
         boolean d = definitelyReturns;
-        boolean b = brokenOrContinued;
-        brokenOrContinued = false;
+        boolean b = broken;
+        boolean c = canBreakOrContinue;
+        canBreakOrContinue = true;
+        broken = false;
         super.visit(that);
-        definitelyReturns = d || (definitelyReturns && !brokenOrContinued);
-        brokenOrContinued = b;
+        definitelyReturns = d || (definitelyReturns && !broken);
+        broken = b;
+        canBreakOrContinue = c;
     }
 
     @Override
     public void visit(Tree.IfStatement that) {
         boolean d = definitelyReturns;
+        
         visit(that.getIfClause());
         boolean definitelyReturnsFromIf = definitelyReturns;
         definitelyReturns = d;
+        
         boolean definitelyReturnsFromElse = false;
         if (that.getElseClause()!=null) {
             visit(that.getElseClause());
             definitelyReturnsFromElse = definitelyReturns;
         }
+        
         definitelyReturns = d || (definitelyReturnsFromIf && definitelyReturnsFromElse);
     }
 
     @Override
     public void visit(Tree.ForStatement that) {
-        boolean b = brokenOrContinued;
         boolean d = definitelyReturns;
-        brokenOrContinued = false;
+        
+        boolean b = broken;
+        boolean c = canBreakOrContinue;
+        canBreakOrContinue = true;
+        broken = false;
         visit(that.getForClause());
-        boolean definitelyReturnsFromFor = definitelyReturns && !brokenOrContinued;
-        brokenOrContinued = b;
+        boolean definitelyReturnsFromFor = definitelyReturns && !broken;
+        broken = b;
         definitelyReturns = d;
+        canBreakOrContinue = c;
+        
         boolean definitelyReturnsFromFail = false;
         if (that.getFailClause()!=null) {
             visit(that.getFailClause());
             definitelyReturnsFromFail = definitelyReturns;
         }
+        
         definitelyReturns = d || (definitelyReturnsFromFor && definitelyReturnsFromFail);
     }
 
