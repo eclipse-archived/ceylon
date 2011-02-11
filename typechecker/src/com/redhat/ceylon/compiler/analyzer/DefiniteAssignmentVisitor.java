@@ -84,6 +84,16 @@ public class DefiniteAssignmentVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Break that) {
+        definitelyAssigned = true;
+    }
+
+    @Override
+    public void visit(Tree.Continue that) {
+        definitelyAssigned = true;
+    }
+    
+    @Override
     public void visit(Tree.IfStatement that) {
         
         boolean d = declared;

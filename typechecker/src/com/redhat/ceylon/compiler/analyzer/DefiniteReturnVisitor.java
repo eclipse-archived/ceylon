@@ -46,6 +46,12 @@ public class DefiniteReturnVisitor extends Visitor {
         definitelyReturns = true;
     }
     
+    //TODO: break and contine????
+    //      they have the result that a for or do
+    //      that looks like it definitely returns
+    //      really doesn't, since the return statement
+    //      is not reached in some branches
+    
     @Override
     public void visit(Tree.ExecutableStatement that) {
         if (definitelyReturns) {
