@@ -316,7 +316,7 @@ voidMethodDeclaration[Object annotations]
 
 setterDeclaration[Object annotations]
     : ASSIGN memberName block
-    -> ^(ATTRIBUTE_SETTER[$ASSIGN] memberName block {$annotations})
+    -> ^(ATTRIBUTE_SETTER[$ASSIGN] VOID_MODIFIER memberName block {$annotations})
     ;
 
 typedMethodOrAttributeDeclaration[Object annotations]
