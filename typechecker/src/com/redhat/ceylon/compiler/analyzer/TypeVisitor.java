@@ -9,10 +9,10 @@ import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
-import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
+import com.redhat.ceylon.compiler.tree.Tree.TypeOrSubtype;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.util.PrintUtil;
 
@@ -114,36 +114,15 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override 
-    public void visit(Tree.AnyAttributeDeclaration that) {
+    public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
-    @Override 
-    public void visit(Tree.MethodDeclaration that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-
-    @Override
-    public void visit(Tree.Variable that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
-    @Override
-    public void visit(Tree.Parameter that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
-    private void setModelType(Node that, Tree.TypeOrSubtype type) {
+        TypeOrSubtype type = that.getTypeOrSubtype();
         if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             Type t = (Type) type.getModelNode();
             ( (Typed) that.getModelNode() ).setType(t);
         }
     }
-    
+        
     /**
      * Suppress resolution of types that appear after the
      * member selection operator "."
