@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class DefiniteReturnVisitor extends Visitor {
     
     boolean definitelyReturns = false;
+    boolean brokenOrContinued = false;
         
     @Override
     public void visit(Tree.AttributeGetter that) {
@@ -46,11 +47,15 @@ public class DefiniteReturnVisitor extends Visitor {
         definitelyReturns = true;
     }
     
-    //TODO: break and contine????
-    //      they have the result that a for or do
-    //      that looks like it definitely returns
-    //      really doesn't, since the return statement
-    //      is not reached in some branches
+    @Override
+    public void visit(Tree.Break that) {
+        brokenOrContinued = true;
+    }
+
+    @Override
+    public void visit(Tree.Continue that) {
+        brokenOrContinued = true;
+    }
     
     @Override
     public void visit(Tree.ExecutableStatement that) {
@@ -71,8 +76,21 @@ public class DefiniteReturnVisitor extends Visitor {
     @Override
     public void visit(Tree.WhileClause that) {
         boolean d = definitelyReturns;
+        boolean b = brokenOrContinued;
+        brokenOrContinued = false;
         super.visit(that);
-        definitelyReturns = d;   
+        definitelyReturns = d;
+        brokenOrContinued = b;
+    }
+
+    @Override
+    public void visit(Tree.DoClause that) {
+        boolean d = definitelyReturns;
+        boolean b = brokenOrContinued;
+        brokenOrContinued = false;
+        super.visit(that);
+        definitelyReturns = d || (definitelyReturns && !brokenOrContinued);
+        brokenOrContinued = b;
     }
 
     @Override
@@ -91,9 +109,12 @@ public class DefiniteReturnVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ForStatement that) {
+        boolean b = brokenOrContinued;
         boolean d = definitelyReturns;
+        brokenOrContinued = false;
         visit(that.getForClause());
-        boolean definitelyReturnsFromFor = definitelyReturns;
+        boolean definitelyReturnsFromFor = definitelyReturns && !brokenOrContinued;
+        brokenOrContinued = b;
         definitelyReturns = d;
         boolean definitelyReturnsFromFail = false;
         if (that.getFailClause()!=null) {
