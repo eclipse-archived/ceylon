@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
+import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Directive;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
@@ -15,7 +16,15 @@ import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
 import com.redhat.ceylon.compiler.tree.Tree.Return;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
-
+/**
+ * Third and final phase of type analysis.
+ * Finally visit all expressions and determine their types.
+ * Use type inference to assign types to declarations with
+ * the local modifier.
+ * 
+ * @author Gavin King
+ *
+ */
 public class ExpressionVisitor extends Visitor {
     
     ClassOrInterface classOrInterface;
@@ -76,6 +85,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getIdentifier().getText());
             }
         }
+        setModelType(that, that.getTypeOrSubtype());
     }
 
     @Override public void visit(Tree.AttributeGetter that) {
@@ -85,6 +95,7 @@ public class ExpressionVisitor extends Visitor {
                     that.getBlock(),
                     (Typed) that.getModelNode());
         }
+        setModelType(that, that.getTypeOrSubtype());
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
@@ -105,6 +116,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getIdentifier().getText());
             }
         }
+        setModelType(that, that.getTypeOrSubtype());
     }
 
     private void setType(Tree.LocalModifier that, 
@@ -125,6 +137,19 @@ public class ExpressionVisitor extends Visitor {
         else {
             throw new RuntimeException("Could not infer type of: " +
                     dec.getName());
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Variable that) {
+        super.visit(that);
+        setModelType(that, that.getTypeOrSubtype());
+    }
+    
+    private void setModelType(Node that, Tree.TypeOrSubtype type) {
+        if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
+            Type t = (Type) type.getModelNode();
+            ( (Typed) that.getModelNode() ).setType(t);
         }
     }
     

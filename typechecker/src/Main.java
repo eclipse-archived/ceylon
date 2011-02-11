@@ -63,22 +63,22 @@ public class Main {
     private static void executePhases(Context context) {
         final List<PhasedUnit> stagedUnits = context.getPhasedUnits();
         for (PhasedUnit su : stagedUnits) {
-            su.visitAndPrint();
+            su.display();
         }
         for (PhasedUnit su : stagedUnits) {
-            su.visitDeclarations();
-            su.visitAssignments();
-            su.visitReturns();
+            su.scanDeclarations();
+            su.validateSpecification();
+            su.validateControlFlow();
         }
         for (PhasedUnit su : stagedUnits) {
-            su.visitTypes();
+            su.scanTypeDeclarations();
         }
         for (PhasedUnit su : stagedUnits) {
-            su.visitExpressions();
+            su.analyseTypes();
         }
         //TODO we print before and after, not sure why but Gavin added the call
         for (PhasedUnit su : stagedUnits) {
-            su.visitAndPrint();
+            su.display();
         }
     }
 

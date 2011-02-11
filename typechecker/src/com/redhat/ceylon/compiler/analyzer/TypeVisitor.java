@@ -7,15 +7,23 @@ import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Type;
-import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
-import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.util.PrintUtil;
 
+/**
+ * Second phase of type analysis.
+ * Scan the compilation unit looking for literal
+ * type declarations and maps them to the associated
+ * model objects. Also builds up a list of imports
+ * for the compilation unit.
+ * 
+ * @author Gavin King
+ *
+ */
 public class TypeVisitor extends Visitor {
     
     Unit unit;
@@ -24,8 +32,8 @@ public class TypeVisitor extends Visitor {
     
     Package importPackage;
     
-    public TypeVisitor(Unit cu) {
-        unit = cu;
+    public TypeVisitor(Unit u) {
+        unit = u;
     }
     
     @Override
@@ -73,31 +81,6 @@ public class TypeVisitor extends Visitor {
         unit.getImports().add(i);
     }
         
-    @Override
-    public void visit(Tree.AnyAttributeDeclaration that) {
-        super.visit(that);
-        setType(that, that.getTypeOrSubtype());
-    }
-
-    @Override
-    public void visit(Tree.MethodDeclaration that) {
-        super.visit(that);
-        setType(that, that.getTypeOrSubtype());
-    }
-    
-    @Override
-    public void visit(Tree.Variable that) {
-        super.visit(that);
-        setType(that, that.getTypeOrSubtype());
-    }
-    
-    private void setType(Node that, Tree.TypeOrSubtype type) {
-        if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-            Type t = (Type) type.getModelNode();
-            ( (Typed) that.getModelNode() ).setType(t);
-        }
-    }
-    
     @Override 
     public void visit(Tree.Type that) {
         Type type = new Type();

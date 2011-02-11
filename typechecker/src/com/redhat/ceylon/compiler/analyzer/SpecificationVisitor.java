@@ -5,7 +5,17 @@ import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.This;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
-public class DefiniteAssignmentVisitor extends Visitor {
+/**
+ * Validates that non-variable values are well-defined
+ * within the local scope in which they occur. Checks
+ * that they are not used before they are defined, that
+ * they are always specified before they are used, and
+ * that they are never specified twice.
+ * 
+ * @author Gavin King
+ *
+ */
+public class SpecificationVisitor extends Visitor {
     
     Typed declaration;
     
@@ -14,7 +24,7 @@ public class DefiniteAssignmentVisitor extends Visitor {
     boolean cannotAssign = true;
     boolean declared = false;
         
-    public DefiniteAssignmentVisitor(Typed declaration) {
+    public SpecificationVisitor(Typed declaration) {
         this.declaration = declaration;
     }
     

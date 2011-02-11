@@ -3,7 +3,16 @@ package com.redhat.ceylon.compiler.analyzer;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
-public class DefiniteReturnVisitor extends Visitor {
+/**
+ * Validates that flow of control is well-defined.
+ * Checks that control directives occur only where
+ * they are allowed, and that every non-void method 
+ * always ends via return or throw.
+ * 
+ * @author Gavin King
+ *
+ */
+public class ControlFlowVisitor extends Visitor {
     
     boolean definitelyReturns = false;
     boolean broken = false;

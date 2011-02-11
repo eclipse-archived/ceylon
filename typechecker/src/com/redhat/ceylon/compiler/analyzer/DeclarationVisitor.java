@@ -17,6 +17,17 @@ import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
+/**
+ * First phase of type analysis.
+ * Scan a compilation unit searching for declarations,
+ * and builds up the model objects. At this point, all
+ * we know is the name of the declaration and what
+ * kind of declaration it is. The model objects do not
+ * contain type information.
+ * 
+ * @author Gavin King
+ *
+ */
 public class DeclarationVisitor extends Visitor {
     
     Scope scope;
