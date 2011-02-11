@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.analyzer;
 
 import com.redhat.ceylon.compiler.model.Class;
-import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Getter;
@@ -13,6 +12,7 @@ import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Structure;
 import com.redhat.ceylon.compiler.model.TypeParameter;
+import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -56,6 +56,7 @@ public class DeclarationVisitor extends Visitor {
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
         model.setName(that.getIdentifier().getText());
         visitStructure(that, model);
+        unit.getDeclarations().add(model);
     }
 
     private void visitStructure(Node that, Structure model) {

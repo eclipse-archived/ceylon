@@ -67,8 +67,8 @@ public class Main {
         }
         for (PhasedUnit su : stagedUnits) {
             su.scanDeclarations();
-            su.validateSpecification();
             su.validateControlFlow();
+            su.validateSpecification();
         }
         for (PhasedUnit su : stagedUnits) {
             su.scanTypeDeclarations();

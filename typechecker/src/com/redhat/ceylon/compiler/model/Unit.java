@@ -7,6 +7,7 @@ public class Unit extends Model {
 	
 	List<Import> imports = new ArrayList<Import>();
 	Package pkg;
+    private List<Declaration> declarations = new ArrayList<Declaration>();
 	
 	public List<Import> getImports() {
 		return imports;
@@ -19,5 +20,9 @@ public class Unit extends Model {
 	public void setPackage(Package p) {
 		pkg = p;
 	}
+	
+	public List<Declaration> getDeclarations() {
+        return declarations;
+    }
 	
 }
