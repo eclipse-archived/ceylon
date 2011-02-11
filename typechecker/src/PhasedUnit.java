@@ -1,9 +1,10 @@
 import com.redhat.ceylon.compiler.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.analyzer.DefiniteAssignmentControllerVisitor;
+import com.redhat.ceylon.compiler.analyzer.DefiniteReturnVisitor;
 import com.redhat.ceylon.compiler.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.analyzer.TypeVisitor;
-import com.redhat.ceylon.compiler.model.*;
 import com.redhat.ceylon.compiler.model.Package;
+import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.util.PrintVisitor;
 
@@ -36,6 +37,10 @@ public class PhasedUnit {
         compilationUnitTree.visit(new ExpressionVisitor());
     }
     
+    public void visitReturns() {
+        compilationUnitTree.visit(new DefiniteReturnVisitor());
+    }
+
     public void visitAssignments() {
         compilationUnitTree.visit(new DefiniteAssignmentControllerVisitor(compilationUnitTree));
     }

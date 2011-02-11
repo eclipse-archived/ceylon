@@ -74,24 +74,37 @@ public class DefiniteAssignmentVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Return that) {
+        definitelyAssigned = true;
+    }
+
+    @Override
+    public void visit(Tree.Throw that) {
+        definitelyAssigned = true;
+    }
+    
+    @Override
     public void visit(Tree.IfStatement that) {
         
         boolean d = declared;
         boolean o = definitelyAssigned;
         boolean p = possiblyAssigned;
         
-        super.visit(that.getIfClause());
+        visit(that.getIfClause());
         boolean definitelyAssignedByIfClause = definitelyAssigned;
         boolean possiblyAssignedByIfClause = possiblyAssigned;
         declared = d;
         definitelyAssigned = o;
         possiblyAssigned = p;
         
-        if (that.getElseClause()!=null)
-            super.visit(that.getElseClause());
-        declared = d;
-        boolean definitelyAssignedByElseClause = definitelyAssigned;
-        boolean possiblyAssignedByElseClause = possiblyAssigned;
+        boolean definitelyAssignedByElseClause = false;
+        boolean possiblyAssignedByElseClause = false;
+        if (that.getElseClause()!=null) {
+            visit(that.getElseClause());
+            declared = d;
+            definitelyAssignedByElseClause = definitelyAssigned;
+            possiblyAssignedByElseClause = possiblyAssigned;
+        }
         
         definitelyAssigned = o || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
         possiblyAssigned = p || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
@@ -101,8 +114,11 @@ public class DefiniteAssignmentVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchStatement that) {
         //TODO!!!
+        //if every case and the default case definitely
+        //assigns, then it is definitely assigned after
+        //the switch statement
     }
-    
+        
     @Override
     public void visit(Tree.WhileClause that) {
         boolean c = cannotAssign;
@@ -145,6 +161,10 @@ public class DefiniteAssignmentVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TryClause that) {
+        //TODO: this isn't correct - if there are 
+        //      no catch clauses, and the try clause 
+        //      definitely assigns, it is definitely
+        //      assigned after the try
         boolean o = definitelyAssigned;
         boolean d = declared;
         super.visit(that);
@@ -163,10 +183,8 @@ public class DefiniteAssignmentVisitor extends Visitor {
     
     @Override
     public void visit(Tree.FinallyClause that) {
-        boolean o = definitelyAssigned;
         boolean d = declared;
         super.visit(that);
-        definitelyAssigned = o;
         declared = d;
     }
 

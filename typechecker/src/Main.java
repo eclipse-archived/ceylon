@@ -68,6 +68,7 @@ public class Main {
         for (PhasedUnit su : stagedUnits) {
             su.visitDeclarations();
             su.visitAssignments();
+            su.visitReturns();
         }
         for (PhasedUnit su : stagedUnits) {
             su.visitTypes();
