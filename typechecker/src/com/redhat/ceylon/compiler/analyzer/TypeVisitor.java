@@ -88,7 +88,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.Variable that) {
         super.visit(that);
-        setType(that, that.getType());
+        setType(that, that.getTypeOrSubtype());
     }
     
     private void setType(Node that, Tree.TypeOrSubtype type) {

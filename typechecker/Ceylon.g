@@ -1100,7 +1100,8 @@ forIterator
     ;
     
 containment
-    : 'in'! expression
+    : 'in' expression
+    -> ^(SPECIFIER_EXPRESSION expression)
     ;
     
 doWhile

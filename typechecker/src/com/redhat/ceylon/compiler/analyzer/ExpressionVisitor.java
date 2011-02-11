@@ -29,6 +29,40 @@ public class ExpressionVisitor extends Visitor {
     
     //Type inference for members declared "local":
     
+    @Override public void visit(Tree.VariableOrExpression that) {
+        super.visit(that);
+        if (that.getSpecifierExpression()!=null 
+                && that.getVariable()!=null
+                && (that.getVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+            setType((Tree.LocalModifier) that.getVariable().getTypeOrSubtype(), 
+                    that.getSpecifierExpression(), 
+                    (Typed) that.getVariable().getModelNode());
+        }
+    }
+    
+    @Override public void visit(Tree.ValueIterator that) {
+        super.visit(that);
+        if ((that.getVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+            setType((Tree.LocalModifier) that.getVariable().getTypeOrSubtype(), 
+                    that.getSpecifierExpression(), 
+                    (Typed) that.getVariable().getModelNode());
+        }
+    }
+    
+    @Override public void visit(Tree.KeyValueIterator that) {
+        super.visit(that);
+        if ((that.getKeyVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+            setType((Tree.LocalModifier) that.getKeyVariable().getTypeOrSubtype(), 
+                    that.getSpecifierExpression(), 
+                    (Typed) that.getKeyVariable().getModelNode());
+        }
+        if ((that.getValueVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+            setType((Tree.LocalModifier) that.getValueVariable().getTypeOrSubtype(), 
+                    that.getSpecifierExpression(), 
+                    (Typed) that.getValueVariable().getModelNode());
+        }
+    }
+    
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
