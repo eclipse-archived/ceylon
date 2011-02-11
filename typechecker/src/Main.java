@@ -138,7 +138,7 @@ public class Main {
 
             CommonTree t = (CommonTree) r.getTree();
             CompilationUnit cu = new Builder().buildCompilationUnit(t);
-            PhasedUnit phasedUnit = new PhasedUnit(cu,p);
+            PhasedUnit phasedUnit = new PhasedUnit(file.getName(),cu,p);
             context.addStagedUnit(phasedUnit);
             
         }
