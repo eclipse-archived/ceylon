@@ -40,8 +40,6 @@ public class SpecificationVisitor extends Visitor {
                 that.getErrors().add( new AnalysisError(that, 
                         "Not yet declared: " + 
                         that.getIdentifier().getText()) );
-               throw new RuntimeException("Not yet declared: " + 
-                        that.getIdentifier().getText());
             }
             else if (!definitelyAssigned) {
                 that.getErrors().add( new AnalysisError(that, 
