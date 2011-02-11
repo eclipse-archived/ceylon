@@ -45,6 +45,10 @@ public class PhasedUnit {
     }
 
     public void validateSpecification() {
+        //TODO: This is too strict - it does not account for cases where 
+        //      a member *is* allowed to be called before it is declared!
+        //      I think the only relevant cases are members of a class that
+        //      occur in the declaration section, and members of interfaces.
         for (Declaration d: unit.getDeclarations()) {
             if (d instanceof SimpleValue) {
                 if (d.getTreeNode() instanceof Tree.AttributeDeclaration) {
