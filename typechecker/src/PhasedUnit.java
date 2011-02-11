@@ -47,9 +47,14 @@ public class PhasedUnit {
     public void validateSpecification() {
         for (Declaration d: unit.getDeclarations()) {
             if (d instanceof SimpleValue) {
-                Tree.AttributeDeclaration ad = (Tree.AttributeDeclaration) d.getTreeNode();
-                if (ad.getSpecifierOrInitializerExpression()==null) {
-                    compilationUnit.visit(new SpecificationVisitor((SimpleValue) d));
+                if (d.getTreeNode() instanceof Tree.AttributeDeclaration) {
+                    Tree.AttributeDeclaration ad = (Tree.AttributeDeclaration) d.getTreeNode();
+                    if (ad.getSpecifierOrInitializerExpression()==null) {
+                        compilationUnit.visit(new SpecificationVisitor((SimpleValue) d));
+                    }
+                }
+                else {
+                    //control structure "variables" always come with specifiers
                 }
             }
             if (d instanceof Method) {

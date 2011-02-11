@@ -158,6 +158,7 @@ public class DeclarationVisitor extends Visitor {
         SimpleValue v = new SimpleValue();
         v.setName(that.getIdentifier().getText());
         visitStructure(that, v);
+        unit.getDeclarations().add(v);
     }
 
 }
