@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.model;
 
+import com.redhat.ceylon.compiler.tree.Tree;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,10 @@ public class Type extends Model {
 	}
 
 	public String getProducedTypeName() {
+        if (genericType == null) {
+            //unknown type
+            return null;
+        }
 		String producedTypeName = genericType.getName();
 		if (!typeArguments.isEmpty()) {
 			producedTypeName+="<";
