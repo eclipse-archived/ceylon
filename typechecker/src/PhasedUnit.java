@@ -36,17 +36,17 @@ public class PhasedUnit {
     }
 
     void scanTypeDeclarations() {
-        System.out.println("Scan Type declarations for " + fileName);
+        System.out.println("Scan type declarations for " + fileName);
         compilationUnit.visit( new TypeVisitor(unit) );
     }
 
     public void analyseTypes() {
-        System.out.println("Run Analyse phase  for " + fileName);
+        System.out.println("Run analysis phase for " + fileName);
         compilationUnit.visit(new ExpressionVisitor());
     }
     
     public void validateControlFlow() {
-        System.out.println("Validate control workflow for " + fileName);
+        System.out.println("Validate control flow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
     }
 
