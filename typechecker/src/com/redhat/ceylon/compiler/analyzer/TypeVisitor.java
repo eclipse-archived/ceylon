@@ -7,7 +7,9 @@ import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Type;
+import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
+import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Alias;
 import com.redhat.ceylon.compiler.tree.Tree.Identifier;
@@ -16,10 +18,14 @@ import com.redhat.ceylon.compiler.util.PrintUtil;
 
 /**
  * Second phase of type analysis.
- * Scan the compilation unit looking for literal
- * type declarations and maps them to the associated
- * model objects. Also builds up a list of imports
- * for the compilation unit.
+ * Scan the compilation unit looking for literal type 
+ * declarations and maps them to the associated model 
+ * objects. Also builds up a list of imports for the 
+ * compilation unit. Finally, assigns types to the 
+ * associated model objects of declarations declared 
+ * using the local modifier (this must be done in
+ * this phase, since shared declarations may be used
+ * out of order in expressions).
  * 
  * @author Gavin King
  *
@@ -38,18 +44,16 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ImportPath that) {
-        importPackage = getPackage(that.getIdentifiers());
-    }
-    
-    Package getPackage(List<Identifier> importPath) {
         Module m = unit.getPackage().getModule();
         for (Package mp: m.getAllPackages()) {
-            if ( hasName(importPath, mp) ) {
-                return mp;
+            if ( hasName(that.getIdentifiers(), mp) ) {
+                importPackage = mp;
+                return;
             }
         }
-        throw new RuntimeException( "Package not found: " + 
-                PrintUtil.importNodeToString(importPath) );
+        that.getErrors().add( new AnalysisError(that, 
+                "Package not found: " + 
+                PrintUtil.importNodeToString(that.getIdentifiers()) ) );
     }
 
     private boolean hasName(List<Identifier> importPath, Package mp) {
@@ -109,7 +113,38 @@ public class TypeVisitor extends Visitor {
         type.setGenericType(c);
         that.setTypeModel(type);
     }
+    
+    @Override 
+    public void visit(Tree.AnyAttributeDeclaration that) {
+        super.visit(that);
+        setModelType(that, that.getTypeOrSubtype());
+    }
+    
+    @Override 
+    public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        setModelType(that, that.getTypeOrSubtype());
+    }
 
+    @Override
+    public void visit(Tree.Variable that) {
+        super.visit(that);
+        setModelType(that, that.getTypeOrSubtype());
+    }
+    
+    @Override
+    public void visit(Tree.Parameter that) {
+        super.visit(that);
+        setModelType(that, that.getTypeOrSubtype());
+    }
+    
+    private void setModelType(Node that, Tree.TypeOrSubtype type) {
+        if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
+            Type t = (Type) type.getModelNode();
+            ( (Typed) that.getModelNode() ).setType(t);
+        }
+    }
+    
     /**
      * Suppress resolution of types that appear after the
      * member selection operator "."

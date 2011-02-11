@@ -21,7 +21,8 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  * Finally visit all expressions and determine their types.
  * Use type inference to assign types to declarations with
  * the local modifier. Finally, assigns types to the 
- * associated model objects of declarations.
+ * associated model objects of declarations declared using
+ * the local modifier.
  * 
  * @author Gavin King
  *
@@ -46,7 +47,7 @@ public class ExpressionVisitor extends Visitor {
                 && (that.getVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             setType((Tree.LocalModifier) that.getVariable().getTypeOrSubtype(), 
                     that.getSpecifierExpression(), 
-                    (Typed) that.getVariable().getModelNode());
+                    that.getVariable());
         }
     }
     
@@ -55,7 +56,7 @@ public class ExpressionVisitor extends Visitor {
         if ((that.getVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             setType((Tree.LocalModifier) that.getVariable().getTypeOrSubtype(), 
                     that.getSpecifierExpression(), 
-                    (Typed) that.getVariable().getModelNode());
+                    that.getVariable());
         }
     }
     
@@ -64,12 +65,12 @@ public class ExpressionVisitor extends Visitor {
         if ((that.getKeyVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             setType((Tree.LocalModifier) that.getKeyVariable().getTypeOrSubtype(), 
                     that.getSpecifierExpression(), 
-                    (Typed) that.getKeyVariable().getModelNode());
+                    that.getKeyVariable());
         }
         if ((that.getValueVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             setType((Tree.LocalModifier) that.getValueVariable().getTypeOrSubtype(), 
                     that.getSpecifierExpression(), 
-                    (Typed) that.getValueVariable().getModelNode());
+                    that.getValueVariable());
         }
     }
     
@@ -79,14 +80,14 @@ public class ExpressionVisitor extends Visitor {
             if ( that.getSpecifierOrInitializerExpression()!=null ) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
                         that.getSpecifierOrInitializerExpression(),
-                        (Typed) that.getModelNode());
+                        that);
             }
             else {
-                throw new RuntimeException("Could not infer type of: " + 
-                        that.getIdentifier().getText());
+                that.getErrors().add( new AnalysisError(that, 
+                        "Could not infer type of: " + 
+                        that.getIdentifier().getText()) );
             }
         }
-        setModelType(that, that.getTypeOrSubtype());
     }
 
     @Override public void visit(Tree.AttributeGetter that) {
@@ -94,9 +95,8 @@ public class ExpressionVisitor extends Visitor {
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
                     that.getBlock(),
-                    (Typed) that.getModelNode());
+                    that);
         }
-        setModelType(that, that.getTypeOrSubtype());
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
@@ -105,58 +105,41 @@ public class ExpressionVisitor extends Visitor {
             if (that.getBlock()!=null) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
                         that.getBlock(),
-                        (Typed) that.getModelNode());
+                        that);
             }
             else if ( that.getSpecifierExpression()!=null ) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
                         that.getSpecifierExpression(),
-                        (Typed) that.getModelNode());  //TODO: this is hackish
+                        that);  //TODO: this is hackish
             }
             else {
-                throw new RuntimeException("Could not infer type of: " + 
-                        that.getIdentifier().getText());
+                that.getErrors().add( new AnalysisError(that, 
+                        "Could not infer type of: " + 
+                        that.getIdentifier().getText()) );
             }
         }
-        setModelType(that, that.getTypeOrSubtype());
     }
 
-    private void setType(Tree.LocalModifier that, 
-            Tree.SpecifierOrInitializerExpression s, Typed dec) {
+    private void setType(Tree.LocalModifier local, 
+            Tree.SpecifierOrInitializerExpression s, 
+            Node that) {
         Type t = s.getExpression().getTypeModel();
-        that.setTypeModel(t);
-        dec.setType(t);
+        local.setTypeModel(t);
+        ((Typed) that.getModelNode()).setType(t);
     }
     
-    private void setType(Tree.LocalModifier that, 
-            Tree.Block block, Typed dec) {
+    private void setType(Tree.LocalModifier local, 
+            Tree.Block block, Tree.Declaration that) {
         Directive d = block.getDirective();
         if (d!=null && (d instanceof Return)) {
             Type t = ((Return) d).getExpression().getTypeModel();
-            that.setTypeModel(t);
-            dec.setType(t);
+            local.setTypeModel(t);
+            ((Typed) that.getModelNode()).setType(t);
         }
         else {
-            throw new RuntimeException("Could not infer type of: " +
-                    dec.getName());
-        }
-    }
-    
-    @Override
-    public void visit(Tree.Variable that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
-    @Override
-    public void visit(Tree.Parameter that) {
-        super.visit(that);
-        setModelType(that, that.getTypeOrSubtype());
-    }
-    
-    private void setModelType(Node that, Tree.TypeOrSubtype type) {
-        if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-            Type t = (Type) type.getModelNode();
-            ( (Typed) that.getModelNode() ).setType(t);
+            local.getErrors().add( new AnalysisError(local, 
+                    "Could not infer type of: " + 
+                    that.getIdentifier().getText()) );
         }
     }
     
@@ -164,36 +147,40 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.MemberExpression that) {
         that.getPrimary().visit(this);
-        GenericType gt = that.getPrimary().getTypeModel().getGenericType();
-        if (gt instanceof Scope) {
-            MemberOrType mt = that.getMemberOrType();
-            if (mt instanceof Tree.Member) {
-                Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt);
-                that.setTypeModel(member.getType());
-                //TODO: handle type arguments by substitution
-                mt.setModelNode(member);
-            }
-            else if (mt instanceof Tree.Type) {
-                GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt);
-                Type t = new Type();
-                t.setGenericType(member);
-                t.setTreeNode(that);
-                //TODO: handle type arguments by substitution
-                that.setTypeModel(t);
-                mt.setModelNode(member);
-            }
-            else if (mt instanceof Tree.Outer) {
-                if (!(gt instanceof ClassOrInterface)) {
-                    throw new RuntimeException("Can't use outer on a type parameter");
+        Type pt = that.getPrimary().getTypeModel();
+        if (pt!=null) {
+            GenericType gt = pt.getGenericType();
+            if (gt instanceof Scope) {
+                MemberOrType mt = that.getMemberOrType();
+                if (mt instanceof Tree.Member) {
+                    Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt);
+                    that.setTypeModel(member.getType());
+                    //TODO: handle type arguments by substitution
+                    mt.setModelNode(member);
                 }
-                Type t = getOuterType((ClassOrInterface) gt);
-                that.setTypeModel(t);
-            }
-            else {
-                //TODO: handle type parameters by looking at
-                //      their upper bound constraints 
-                //TODO: handle x.outer
-                throw new RuntimeException("Not yet supported");
+                else if (mt instanceof Tree.Type) {
+                    GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt);
+                    Type t = new Type();
+                    t.setGenericType(member);
+                    t.setTreeNode(that);
+                    //TODO: handle type arguments by substitution
+                    that.setTypeModel(t);
+                    mt.setModelNode(member);
+                }
+                else if (mt instanceof Tree.Outer) {
+                    if (!(gt instanceof ClassOrInterface)) {
+                        that.getErrors().add( new AnalysisError(that, 
+                                "Can't use outer on a type parameter"));
+                    }
+                    Type t = getOuterType(mt, (ClassOrInterface) gt);
+                    that.setTypeModel(t);
+                }
+                else {
+                    //TODO: handle type parameters by looking at
+                    //      their upper bound constraints 
+                    //TODO: handle x.outer
+                    throw new RuntimeException("Not yet supported");
+                }
             }
         }
     }
@@ -204,7 +191,10 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
-        that.setTypeModel( that.getPrimary().getTypeModel() ); //TODO: this is hackish
+        Type pt = that.getPrimary().getTypeModel();
+        if (pt!=null) {
+            that.setTypeModel(pt); //TODO: this is hackish
+        }
         //TODO: validate argument types are assignable to parameter types
     }
     
@@ -215,7 +205,10 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
-        that.setTypeModel( that.getPrimary().getTypeModel() );
+        Type pt = that.getPrimary().getTypeModel();
+        if (pt!=null) {
+            that.setTypeModel(pt);
+        }
     }
         
     //Atoms:
@@ -224,7 +217,15 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        that.setTypeModel( Util.getDeclaration(that).getType() );
+        Type t = Util.getDeclaration(that).getType();
+        if (t==null) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Could not determine type of member reference: " +
+                    that.getIdentifier().getText()) );
+        }
+        else {
+            that.setTypeModel(t);
+        }
     }
     
     @Override public void visit(Tree.Type that) {
@@ -237,15 +238,22 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Expression that) {
         //i.e. this is a parenthesized expression
         super.visit(that);
-        that.setTypeModel( that.getTerm().getTypeModel() );
+        Type t = that.getTerm().getTypeModel();
+        if (t==null) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Could not determine type of expression") );
+        }
+        else {
+            that.setTypeModel(t);
+        }
     }
     
     @Override public void visit(Tree.Outer that) {
-        Type t = getOuterType( that.getScope() );
+        Type t = getOuterType(that, that.getScope());
         that.setTypeModel(t);
     }
 
-    private Type getOuterType(Scope scope) {
+    private Type getOuterType(Node that, Scope scope) {
         Boolean foundInner = false;
         while (!(scope instanceof Package)) {
             if (scope instanceof ClassOrInterface) {
@@ -261,29 +269,38 @@ public class ExpressionVisitor extends Visitor {
             }
             scope = scope.getContainer();
         }
-        throw new RuntimeException("Can't use outer outside of nested class or interface");
+        that.getErrors().add( new AnalysisError(that, 
+                "Can't use outer outside of nested class or interface"));
+        return null;
     }
     
     @Override public void visit(Tree.Super that) {
         if (classOrInterface==null) {
-            throw new RuntimeException("Can't use super outside a class");
+            that.getErrors().add( new AnalysisError(that, 
+                    "Can't use super outside a class"));
         }
-        if (!(classOrInterface instanceof Class)) {
-            throw new RuntimeException("Can't use super inside an interface");
+        else if (!(classOrInterface instanceof Class)) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Can't use super inside an interface"));
         }
-        Type t = classOrInterface.getExtendedType();
-        //TODO: type arguments
-        that.setTypeModel(t);
+        else {
+            Type t = classOrInterface.getExtendedType();
+            //TODO: type arguments
+            that.setTypeModel(t);
+        }
     }
     
     @Override public void visit(Tree.This that) {
         if (classOrInterface==null) {
-            throw new RuntimeException("Can't use this outside a class or interface");
+            that.getErrors().add( new AnalysisError(that, 
+                    "Can't use this outside a class or interface"));
         }
-        Type t = new Type();
-        t.setGenericType(classOrInterface);
-        //TODO: type arguments
-        that.setTypeModel(t);
+        else {
+            Type t = new Type();
+            t.setGenericType(classOrInterface);
+            //TODO: type arguments
+            that.setTypeModel(t);
+        }
     }
     
     @Override public void visit(Tree.Subtype that) {

@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Type;
@@ -15,6 +19,7 @@ public abstract class Node {
     private Scope scope;
     private Unit unit;
     private Type typeModel;
+    private List<AnalysisError> errors = new ArrayList<AnalysisError>();
     
     protected Node(CommonTree antlrTreeNode) {
         this.antlrTreeNode = antlrTreeNode; 
@@ -61,11 +66,11 @@ public abstract class Node {
      * corresponding model object, since the two data structures
      * are not isomorphic.
      */
-    public com.redhat.ceylon.compiler.model.Model getModelNode() {
+    public Model getModelNode() {
         return modelNode;
     }
 
-    public void setModelNode(com.redhat.ceylon.compiler.model.Model modelNode) {
+    public void setModelNode(Model modelNode) {
         this.modelNode = modelNode;
     }
     
@@ -86,6 +91,10 @@ public abstract class Node {
      */
     public CommonTree getAntlrTreeNode() {
         return antlrTreeNode;
+    }
+    
+    public List<AnalysisError> getErrors() {
+        return errors;
     }
     
     public abstract void visitChildren(Visitor visitor);

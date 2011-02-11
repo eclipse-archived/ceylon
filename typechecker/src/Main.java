@@ -62,9 +62,9 @@ public class Main {
 
     private static void executePhases(Context context) {
         final List<PhasedUnit> stagedUnits = context.getPhasedUnits();
-        for (PhasedUnit su : stagedUnits) {
+        /*for (PhasedUnit su : stagedUnits) {
             su.display();
-        }
+        }*/
         for (PhasedUnit su : stagedUnits) {
             su.scanDeclarations();
             su.validateControlFlow();

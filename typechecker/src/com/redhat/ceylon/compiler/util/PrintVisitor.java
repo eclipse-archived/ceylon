@@ -32,6 +32,9 @@ public class PrintVisitor extends Visitor {
         if (node.getTypeModel()!=null) {
             print(" -> " + node.getTypeModel().getProducedTypeName());
         }
+        if (!node.getErrors().isEmpty()) {
+            print(" <-- ** " + node.getErrors() + " **");
+        }
         depth++;
         super.visitAny(node);
         depth--;

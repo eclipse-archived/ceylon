@@ -27,8 +27,9 @@ public class ControlFlowVisitor extends Visitor {
         definitelyReturns = false;
         super.visit(that);
         if (!definitelyReturns) {
-            throw new RuntimeException("Does not definitely return: " + 
-                    that.getIdentifier().getText());
+            that.getErrors().add( new AnalysisError(that, 
+                    "Does not definitely return: " + 
+                    that.getIdentifier().getText()) );
         }
         definitelyReturns = d;
         canReturn = c;
@@ -45,8 +46,9 @@ public class ControlFlowVisitor extends Visitor {
             if (that.getBlock()!=null && 
                     !(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
                 if (!definitelyReturns) {
-                    throw new RuntimeException("Does not definitely return: " + 
-                            that.getIdentifier().getText());
+                    that.getErrors().add( new AnalysisError(that, 
+                            "Does not definitely return: " + 
+                            that.getIdentifier().getText()) );
                 }
             }
             definitelyReturns = d;
@@ -78,8 +80,10 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Return that) {
-        if (!canReturn)
-            throw new RuntimeException("nothing to return from");
+        if (!canReturn) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Nothing to return from") );
+        }
         super.visit(that);
         definitelyReturns = true;
     }
@@ -92,16 +96,20 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Break that) {
-        if (!canBreakOrContinue)
-            throw new RuntimeException("nothing to break");
+        if (!canBreakOrContinue) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "No loop to break") );
+        }
         super.visit(that);
         broken = true;
     }
 
     @Override
     public void visit(Tree.Continue that) {
-        if (!canBreakOrContinue)
-            throw new RuntimeException("nothing to continue");
+        if (!canBreakOrContinue) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "No loop to continue") );
+        }
         super.visit(that);
         definitelyReturns = true;
     }
@@ -109,7 +117,8 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.ExecutableStatement that) {
         if (definitelyReturns) {
-            throw new RuntimeException("Unreachable code");
+            that.getErrors().add( new AnalysisError(that, 
+                    "Unreachable code") );
         }
         super.visit(that);
     }
@@ -117,7 +126,8 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Directive that) {
         if (definitelyReturns) {
-            throw new RuntimeException("Unreachable code");
+            that.getErrors().add( new AnalysisError(that, 
+                    "Unreachable code") );
         }
         super.visit(that);
     }
