@@ -20,31 +20,38 @@ public class PhasedUnit {
     private Tree.CompilationUnit compilationUnit;
     private Package pkg;
     private Unit unit;
+    private String fileName;
 
-    public PhasedUnit(Tree.CompilationUnit cu, Package p) {
+    public PhasedUnit(String fileName, Tree.CompilationUnit cu, Package p) {
         this.compilationUnit = cu;
         this.pkg = p;
+        this.fileName = fileName;
     }
 
     void scanDeclarations() {
+        System.out.println("Scan declarations for " + fileName);
         DeclarationVisitor dv = new DeclarationVisitor(pkg);
         compilationUnit.visit(dv);
         unit = dv.getCompilationUnit();
     }
 
     void scanTypeDeclarations() {
+        System.out.println("Scan Type declarations for " + fileName);
         compilationUnit.visit( new TypeVisitor(unit) );
     }
 
     public void analyseTypes() {
+        System.out.println("Run Analyse phase  for " + fileName);
         compilationUnit.visit(new ExpressionVisitor());
     }
     
     public void validateControlFlow() {
+        System.out.println("Validate control workflow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
     }
 
     public void validateSpecification() {
+        System.out.println("Validate specification for " + fileName);
         //TODO: This is too strict - it does not account for cases where 
         //      a member *is* allowed to be called before it is declared!
         //      I think the only relevant cases are members of a class that
@@ -72,6 +79,7 @@ public class PhasedUnit {
     }
 
     public void display() {
+        System.out.println("Display " + fileName);
         compilationUnit.visit (new PrintVisitor() );
     }
 
