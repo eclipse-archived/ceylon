@@ -122,14 +122,15 @@ public class ExpressionVisitor extends Visitor {
 
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
-            Node that) {
+            Tree.TypedDeclaration that) {
         Type t = s.getExpression().getTypeModel();
         local.setTypeModel(t);
         ((Typed) that.getModelNode()).setType(t);
     }
     
     private void setType(Tree.LocalModifier local, 
-            Tree.Block block, Tree.Declaration that) {
+            Tree.Block block, 
+            Tree.TypedDeclaration that) {
         Directive d = block.getDirective();
         if (d!=null && (d instanceof Return)) {
             Type t = ((Return) d).getExpression().getTypeModel();
