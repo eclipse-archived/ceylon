@@ -20,7 +20,8 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  * Third and final phase of type analysis.
  * Finally visit all expressions and determine their types.
  * Use type inference to assign types to declarations with
- * the local modifier.
+ * the local modifier. Finally, assigns types to the 
+ * associated model objects of declarations.
  * 
  * @author Gavin King
  *
