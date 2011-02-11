@@ -89,7 +89,13 @@ public class TypeVisitor extends Visitor {
         Type type = new Type();
         that.setModelNode(type);
         type.setTreeNode(that);
-        type.setGenericType( Util.getDeclaration(that) );
+        if ( that.getIdentifier() == null ) {
+            //FIXME subtype case
+            that.getErrors().add( new AnalysisError(that, "subtype not supported") );
+        }
+        else {
+            type.setGenericType( Util.getDeclaration(that) );
+        }
         //TODO: handle type arguments by substitution
         that.setTypeModel(type);
         if (outerType!=null) {
