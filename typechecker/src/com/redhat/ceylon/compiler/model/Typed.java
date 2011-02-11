@@ -18,5 +18,16 @@ public class Typed extends Declaration {
 	public void setType(Type type) {
 		this.type = type;
 	}
+	
+	@Override
+	public String toString() {
+	    if (type==null) {
+	        return super.toString();
+	    }
+	    else {
+	        return super.toString().replace(']', ':') + 
+	        type.getProducedTypeName() + "]";
+	    }
+	}
 
 }
