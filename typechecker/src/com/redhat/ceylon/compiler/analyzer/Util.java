@@ -17,8 +17,10 @@ class Util {
      * occurs. Imports are taken into account.
      */
     static GenericType getDeclaration(Tree.Type that) {
-        return (GenericType) getDeclaration(that.getScope(), that.getUnit(), 
-                    that.getIdentifier());
+        final GenericType declaration = (GenericType) getDeclaration(that.getScope(), that.getUnit(),
+                that.getIdentifier());
+        checkForError(that, declaration);
+        return declaration;
     }
     
     /**
@@ -26,8 +28,10 @@ class Util {
      * are ignored.
      */
     static GenericType getDeclaration(Scope scope, Tree.Type that) {
-        return (GenericType) getDeclaration(scope, null, 
-                    that.getIdentifier());
+        final GenericType declaration = (GenericType) getDeclaration(scope, null,
+                that.getIdentifier());
+        checkForError(that, declaration);
+        return declaration;
     }
 
     /**
@@ -35,8 +39,10 @@ class Util {
      * occurs. Imports are taken into account.
      */
     static Typed getDeclaration(Tree.Member that) {
-        return (Typed) getDeclaration(that.getScope(), that.getUnit(), 
-                    that.getIdentifier());
+        final Typed declaration = (Typed) getDeclaration(that.getScope(), that.getUnit(),
+                that.getIdentifier());
+        checkForError(that, declaration);
+        return declaration;
     }
 
     /**
@@ -44,15 +50,37 @@ class Util {
      * are ignored.
      */
     static Typed getDeclaration(Scope scope, Tree.Member that) {
-        return (Typed) getDeclaration(scope, null, 
-                    that.getIdentifier());
+        final Typed declaration = (Typed) getDeclaration(scope, null,
+                that.getIdentifier());
+        checkForError(that, declaration);
+        return declaration;
     }
-    
+
     /**
      * Resolve the declaration against the given package.
      */
-    static Declaration getDeclaration(Package pkg, Tree.Identifier id) {
-        return getDeclaration(pkg, null, id);
+    static Declaration getDeclaration(Package pkg, Tree.ImportMemberOrType that) {
+        final Declaration declaration = getDeclaration(pkg, null, that.getIdentifier());
+        checkForError(that, declaration);
+        return declaration;
+    }
+
+    private static void checkForError(Tree.Member that, Declaration declaration) {
+        if (declaration == null) {
+            that.getErrors().add( new AnalysisError(that, "Member not found: " + that.getIdentifier().getText() ) );
+        }
+    }
+
+    private static void checkForError(Tree.Type that, Declaration declaration) {
+        if (declaration == null) {
+            that.getErrors().add( new AnalysisError(that, "Type not found: " + that.getIdentifier().getText() ) );
+        }
+    }
+
+    private static void checkForError(Tree.ImportMemberOrType that, Declaration declaration) {
+        if (declaration == null) {
+            that.getErrors().add( new AnalysisError(that, "Import not found: " + that.getIdentifier().getText() ) );
+        }
     }
 
     private static Declaration getDeclaration(Scope scope, Unit unit, Tree.Identifier id) {
@@ -75,7 +103,7 @@ class Util {
             }
             scope = scope.getContainer();
         }
-        throw new RuntimeException("Member not found: " + name);
+        return null;
     }
     
     /**
