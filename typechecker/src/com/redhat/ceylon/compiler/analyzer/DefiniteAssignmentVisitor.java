@@ -75,27 +75,30 @@ public class DefiniteAssignmentVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Return that) {
+        super.visit(that);
         definitelyAssigned = true;
     }
 
     @Override
     public void visit(Tree.Throw that) {
+        super.visit(that);
         definitelyAssigned = true;
     }
     
     @Override
     public void visit(Tree.Break that) {
+        super.visit(that);
         definitelyAssigned = true;
     }
 
     @Override
     public void visit(Tree.Continue that) {
+        super.visit(that);
         definitelyAssigned = true;
     }
     
     @Override
     public void visit(Tree.IfStatement that) {
-        
         boolean d = declared;
         boolean o = definitelyAssigned;
         boolean p = possiblyAssigned;
@@ -118,7 +121,6 @@ public class DefiniteAssignmentVisitor extends Visitor {
         
         definitelyAssigned = o || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
         possiblyAssigned = p || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
-        
     }
     
     @Override
