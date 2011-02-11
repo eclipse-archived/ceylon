@@ -17,7 +17,8 @@ class Util {
      * occurs. Imports are taken into account.
      */
     static GenericType getDeclaration(Tree.Type that) {
-        final GenericType declaration = (GenericType) getDeclaration(that.getScope(), that.getUnit(),
+        final GenericType declaration = (GenericType) getDeclaration(that.getScope(), 
+                that.getUnit(),
                 that.getIdentifier());
         checkForError(that, declaration);
         return declaration;
@@ -67,19 +68,22 @@ class Util {
 
     private static void checkForError(Tree.Member that, Declaration declaration) {
         if (declaration == null) {
-            that.getErrors().add( new AnalysisError(that, "Member not found: " + that.getIdentifier().getText() ) );
+            that.getErrors().add( new AnalysisError(that, "Member not found: " + 
+                    that.getIdentifier().getText() ) );
         }
     }
 
     private static void checkForError(Tree.Type that, Declaration declaration) {
         if (declaration == null) {
-            that.getErrors().add( new AnalysisError(that, "Type not found: " + that.getIdentifier().getText() ) );
+            that.getErrors().add( new AnalysisError(that, "Type not found: " + 
+                    that.getIdentifier().getText() ) );
         }
     }
 
     private static void checkForError(Tree.ImportMemberOrType that, Declaration declaration) {
         if (declaration == null) {
-            that.getErrors().add( new AnalysisError(that, "Import not found: " + that.getIdentifier().getText() ) );
+            that.getErrors().add( new AnalysisError(that, "Import not found: " + 
+                    that.getIdentifier().getText() ) );
         }
     }
 
