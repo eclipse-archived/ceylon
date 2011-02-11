@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.model;
 
-import com.redhat.ceylon.compiler.tree.Tree;
-
 import java.util.ArrayList;
 import java.util.List;
 
