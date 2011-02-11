@@ -66,6 +66,8 @@ public class PhasedUnit {
                 compilationUnit.visit(new SpecificationVisitor((Method) d,
                         ad.getSpecifierExpression()!=null || ad.getBlock()!=null));
             }
+            //TODO: classes, interfaces, getters
+            //TODO: variable attributes (definite initialization)
         }
     }
 
