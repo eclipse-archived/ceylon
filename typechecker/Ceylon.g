@@ -189,10 +189,11 @@ memberBody[Object mt] options { backtrack=true; memoize=true; }
 
 brokenMemberBody
     : (annotatedDeclarationStart) => annotatedDeclaration brokenMemberBody?
-    | ( specificationStatement brokenMemberBody?
-    | controlStructure brokenMemberBody?
-    | expressionStatementOrList
-    | directiveStatement )
+    | ( 
+        specificationStatement brokenMemberBody?
+      | expressionStatementOrList
+      | directiveStatement
+      )
     ;
     
 expressionStatementOrList
@@ -207,18 +208,11 @@ expressionStatementOrList
     
 annotatedDeclarationOrStatement options {memoize=true;}
     : (annotatedDeclarationStart) => annotatedDeclaration
-    | statement
-    ;
-
-statement
-    : controlStructure 
-    | expressionStatement 
-    | specificationStatement
+    | (expressionStatement | specificationStatement)
     ;
 
 annotatedDeclaration
-    :
-    annotations?
+    : annotations?
     ( 
       objectDeclaration^
     | setterDeclaration^
@@ -226,7 +220,8 @@ annotatedDeclaration
     | typedMethodOrAttributeDeclaration^
     | classDeclaration^
     | interfaceDeclaration^
-    | ':'! statement^
+    | controlStructure^
+    | ':'! (expressionStatement^ | specificationStatement^)
     )
     ;
 
@@ -259,6 +254,12 @@ declarationKeyword
     | 'interface' 
     | 'class' 
     | 'object'
+    | 'if'
+    | 'switch'
+    | 'for'
+    | 'while'
+    | 'do'
+    | 'try'
     | ':'
     ;
 
