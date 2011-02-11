@@ -40,7 +40,6 @@ tokens {
     METHOD_DECLARATION;
     METATYPES;
     NAMED_ARGUMENT_LIST;
-    OBJECT_DECLARATION;
     OBJECT_ARGUMENT;
     POSITIONAL_ARGUMENT;
     POSITIONAL_ARGUMENT_LIST;
@@ -211,7 +210,7 @@ annotatedDeclarationOrStatement options {memoize=true;}
     | statement
     ;
 
-statement 
+statement
     : controlStructure 
     | expressionStatement 
     | specificationStatement
@@ -219,14 +218,15 @@ statement
 
 annotatedDeclaration
     :
-    annotations!?
+    annotations?
     ( 
-      objectDeclaration[$annotations.tree]
-    | setterDeclaration[$annotations.tree]
-    | voidMethodDeclaration[$annotations.tree]
-    | typedMethodOrAttributeDeclaration[$annotations.tree]
-    | classDeclaration[$annotations.tree]
-    | interfaceDeclaration[$annotations.tree]
+      objectDeclaration^
+    | setterDeclaration^
+    | voidMethodDeclaration^
+    | typedMethodOrAttributeDeclaration^
+    | classDeclaration^
+    | interfaceDeclaration^
+    | ':'! statement^
     )
     ;
 
@@ -259,6 +259,7 @@ declarationKeyword
     | 'interface' 
     | 'class' 
     | 'object'
+    | ':'
     ;
 
 specificationStatement
@@ -303,31 +304,30 @@ retryDirective
     : 'retry'^
     ;
 
-objectDeclaration[Object annotations]
-    : OBJECT_DECLARATION memberName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_DECLARATION memberName extendedType? satisfiedTypes? classBody {$annotations})
+objectDeclaration
+    : 'object' memberName extendedType? satisfiedTypes? classBody
     ;
 
-voidMethodDeclaration[Object annotations]
+voidMethodDeclaration
     : VOID_MODIFIER memberName methodParameters (block | specifier? ';')
-    -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters block? specifier? {$annotations})
+    -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters block? specifier?)
     
     ;
 
-setterDeclaration[Object annotations]
+setterDeclaration
     : ASSIGN memberName block
-    -> ^(ATTRIBUTE_SETTER[$ASSIGN] VOID_MODIFIER memberName block {$annotations})
+    -> ^(ATTRIBUTE_SETTER[$ASSIGN] VOID_MODIFIER memberName block)
     ;
 
-typedMethodOrAttributeDeclaration[Object annotations]
+typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
       methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
-    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier? {$annotations})
+    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier?)
     | (specifier | initializer)? ';'
-    -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer? {$annotations})
+    -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
     | memberBody[$inferrableType.tree]
-    -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody {$annotations})      
+    -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
     )
     ;
 
@@ -339,18 +339,12 @@ methodParameters
     : typeParameters? parameters+ extraParameters? metatypes? typeConstraints?
     ;
     
-interfaceDeclaration[Object annotations]
-    : INTERFACE_DECLARATION
+interfaceDeclaration
+    : 'interface'^
       typeName typeParameters?
       caseTypes? metatypes? satisfiedTypes?
       typeConstraints?
-      (interfaceBody | typeSpecifier ';')
-    -> ^(INTERFACE_DECLARATION
-        typeName typeParameters? 
-        caseTypes? metatypes? satisfiedTypes?
-        typeConstraints?
-        interfaceBody? typeSpecifier?
-        {$annotations})
+      (interfaceBody | typeSpecifier ';'!)
     ;
 
 interfaceBody
@@ -358,18 +352,12 @@ interfaceBody
     -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclaration*)
     ;
 
-classDeclaration[Object annotations]
-    : CLASS_DECLARATION
+classDeclaration
+    : 'class'^
       typeName typeParameters? parameters extraParameters?
       caseTypes? metatypes? extendedType? satisfiedTypes?
       typeConstraints?
-      (classBody | typeSpecifier? ';')
-    -> ^(CLASS_DECLARATION
-        typeName typeParameters? parameters extraParameters?
-        caseTypes? metatypes? extendedType? satisfiedTypes?
-        typeConstraints?
-        classBody? typeSpecifier?
-        {$annotations})
+      (classBody | typeSpecifier? ';'!)
     ;
 
 classBody

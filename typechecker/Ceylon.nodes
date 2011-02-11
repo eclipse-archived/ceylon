@@ -30,8 +30,7 @@
 ^(IMPORT_WILDCARD)
 
 "A declaration."
-^(DECLARATION:STATEMENT 
-    ANNOTATION_LIST?
+^(DECLARATION:STATEMENT
     IDENTIFIER)
 
 "A class, interface, or type parameter declaration."
@@ -185,7 +184,8 @@
 ^(RETRY:DIRECTIVE)
 
 "A statement or declaration."
-^(STATEMENT)
+^(STATEMENT
+    ANNOTATION_LIST?)
 
 "An expression statement, specification statement, or control structure."
 ^(EXECUTABLE_STATEMENT:STATEMENT)
