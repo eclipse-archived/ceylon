@@ -18,14 +18,16 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class SpecificationVisitor extends Visitor {
     
     Typed declaration;
+    boolean assignedByDeclaration;
     
     boolean definitelyAssigned = false;
     boolean possiblyAssigned = false;
     boolean cannotAssign = true;
     boolean declared = false;
         
-    public SpecificationVisitor(Typed declaration) {
+    public SpecificationVisitor(Typed declaration, boolean assignedByDeclaration) {
         this.declaration = declaration;
+        this.assignedByDeclaration = assignedByDeclaration;
     }
     
     @Override
@@ -69,6 +71,10 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Declaration that) {
         if (that.getModelNode()==declaration) {
+            if (assignedByDeclaration) {
+                definitelyAssigned = true;
+                possiblyAssigned = true;
+            }
             super.visit(that);
             declared = true;
             cannotAssign = false;
@@ -81,6 +87,30 @@ public class SpecificationVisitor extends Visitor {
             cannotAssign = c;
             declared = d;
         }
+    }
+    
+    @Override
+    public void visit(Tree.MethodDeclaration that) {
+        if (that.getModelNode()==declaration &&
+                that.getBlock()!=null)
+            declared = true;
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.Variable that) {
+        if (that.getModelNode()==declaration)
+            declared = true;
+        super.visit(that);
+        
+    }
+    
+    @Override
+    public void visit(Tree.AttributeGetter that) {
+        if (that.getModelNode()==declaration)
+            declared = true;
+        super.visit(that);
+        
     }
     
     @Override

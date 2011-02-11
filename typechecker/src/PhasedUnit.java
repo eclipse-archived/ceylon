@@ -49,19 +49,18 @@ public class PhasedUnit {
             if (d instanceof SimpleValue) {
                 if (d.getTreeNode() instanceof Tree.AttributeDeclaration) {
                     Tree.AttributeDeclaration ad = (Tree.AttributeDeclaration) d.getTreeNode();
-                    if (ad.getSpecifierOrInitializerExpression()==null) {
-                        compilationUnit.visit(new SpecificationVisitor((SimpleValue) d));
-                    }
+                    compilationUnit.visit(new SpecificationVisitor((SimpleValue) d,
+                            ad.getSpecifierOrInitializerExpression()!=null));
                 }
                 else {
                     //control structure "variables" always come with specifiers
+                    compilationUnit.visit(new SpecificationVisitor((SimpleValue) d, true));
                 }
             }
             if (d instanceof Method) {
                 Tree.MethodDeclaration ad = (Tree.MethodDeclaration) d.getTreeNode();
-                if (ad.getSpecifierExpression()==null && ad.getBlock()==null) {
-                    compilationUnit.visit(new SpecificationVisitor((Method) d));
-                }
+                compilationUnit.visit(new SpecificationVisitor((Method) d,
+                        ad.getSpecifierExpression()!=null || ad.getBlock()!=null));
             }
         }
     }
