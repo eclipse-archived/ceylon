@@ -284,7 +284,7 @@ directiveStatement2
     ;
 
 directiveStatement
-    : directive ';'?
+    : directive ';'!?
     ;
 
 directive
@@ -316,7 +316,7 @@ retryDirective
     ;
 
 objectDeclaration
-    : 'object' memberName extendedType? satisfiedTypes? classBody
+    : 'object'^ memberName extendedType? satisfiedTypes? classBody
     ;
 
 voidMethodDeclaration
