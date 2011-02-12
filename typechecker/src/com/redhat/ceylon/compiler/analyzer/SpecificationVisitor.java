@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.analyzer;
 
-import com.redhat.ceylon.compiler.model.Typed;
+import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.This;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -17,17 +17,15 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  */
 public class SpecificationVisitor extends Visitor {
     
-    Typed declaration;
-    boolean assignedByDeclaration;
+    final Declaration declaration;
     
     boolean definitelyAssigned = false;
     boolean possiblyAssigned = false;
     boolean cannotAssign = true;
     boolean declared = false;
         
-    public SpecificationVisitor(Typed declaration, boolean assignedByDeclaration) {
+    public SpecificationVisitor(Declaration declaration) {
         this.declaration = declaration;
-        this.assignedByDeclaration = assignedByDeclaration;
     }
     
     @Override
@@ -67,8 +65,10 @@ public class SpecificationVisitor extends Visitor {
                         "Not definitely unassigned: " + 
                         that.getMember().getIdentifier().getText()) );
             }
-            definitelyAssigned=true;
-            possiblyAssigned=true;
+            else {
+                definitelyAssigned=true;
+                possiblyAssigned=true;
+            }
         }
         super.visit(that);
     }
@@ -76,10 +76,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Declaration that) {
         if (that.getModelNode()==declaration) {
-            if (assignedByDeclaration) {
-                definitelyAssigned = true;
-                possiblyAssigned = true;
-            }
+            cannotAssign = true;
             super.visit(that);
             declared = true;
             cannotAssign = false;
@@ -87,35 +84,71 @@ public class SpecificationVisitor extends Visitor {
         else {
             boolean c = cannotAssign;
             boolean d = declared;
+            boolean a = definitelyAssigned;
+            boolean p = possiblyAssigned;
             cannotAssign=true;
             super.visit(that);
             cannotAssign = c;
             declared = d;
+            definitelyAssigned = a;
+            possiblyAssigned = p;
         }
     }
     
     @Override
     public void visit(Tree.MethodDeclaration that) {
         if (that.getModelNode()==declaration &&
-                that.getBlock()!=null)
+                that.getBlock()!=null) {
             declared = true;
-        super.visit(that);        
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
+        super.visit(that);
+        if (that.getModelNode()==declaration &&
+                that.getSpecifierExpression()!=null) {
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
+            
     }
     
     @Override
     public void visit(Tree.Variable that) {
-        if (that.getModelNode()==declaration)
-            declared = true;
         super.visit(that);
-        
+        if (that.getModelNode()==declaration) {
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AttributeDeclaration that) {
+        super.visit(that);        
+        if (that.getModelNode()==declaration &&
+                that.getSpecifierOrInitializerExpression()!=null) {
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
     }
     
     @Override
     public void visit(Tree.AttributeGetter that) {
-        if (that.getModelNode()==declaration)
+        if (that.getModelNode()==declaration){
             declared = true;
-        super.visit(that);
-        
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.ClassOrInterfaceDeclaration that) {
+        if (that.getModelNode()==declaration){
+            declared = true;
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
+        super.visit(that);        
     }
     
     @Override
