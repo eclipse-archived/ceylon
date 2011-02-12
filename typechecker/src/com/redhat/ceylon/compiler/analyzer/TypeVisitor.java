@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.analyzer;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.model.Class;
+import com.redhat.ceylon.compiler.model.Declaration;
+import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
@@ -80,8 +82,16 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        i.setDeclaration( Util.getDeclaration(importPackage, that) );
-        unit.getImports().add(i);
+        Declaration d = Util.getDeclaration(importPackage, that);
+        if (d==null) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "imported declaration not found: " + 
+                    that.getIdentifier().getText() ) );
+        }
+        else {
+            i.setDeclaration(d);
+            unit.getImports().add(i);
+        }
     }
         
     @Override 
@@ -89,22 +99,24 @@ public class TypeVisitor extends Visitor {
         Type type = new Type();
         that.setModelNode(type);
         type.setTreeNode(that);
-        if ( that.getIdentifier() == null ) {
-            //FIXME subtype case
-            that.getErrors().add( new AnalysisError(that, "subtype not supported") );
+        GenericType d = Util.getDeclaration(that);
+        if (d==null) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "type declaration not found: " + 
+                    that.getIdentifier().getText() ) );
         }
         else {
-            type.setGenericType( Util.getDeclaration(that) );
+            type.setGenericType(d);
+            //TODO: handle type arguments by substitution
+            that.setTypeModel(type);
+            if (outerType!=null) {
+                outerType.getTypeArguments().add(type);
+            }
+            Type o = outerType;
+            outerType = type;
+            super.visit(that);
+            outerType = o;
         }
-        //TODO: handle type arguments by substitution
-        that.setTypeModel(type);
-        if (outerType!=null) {
-            outerType.getTypeArguments().add(type);
-        }
-        Type o = outerType;
-        outerType = type;
-        super.visit(that);
-        outerType = o;
     }
     
     @Override 
