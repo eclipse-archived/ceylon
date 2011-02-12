@@ -20,7 +20,7 @@ class Util {
         final GenericType declaration = (GenericType) getDeclaration(that.getScope(), 
                 that.getUnit(),
                 that.getIdentifier());
-        checkForError(that, declaration);
+        //checkForError(that, declaration);
         return declaration;
     }
     
@@ -31,7 +31,7 @@ class Util {
     static GenericType getDeclaration(Scope scope, Tree.Type that) {
         final GenericType declaration = (GenericType) getDeclaration(scope, null,
                 that.getIdentifier());
-        checkForError(that, declaration);
+        //checkForError(that, declaration);
         return declaration;
     }
 
@@ -42,7 +42,7 @@ class Util {
     static Typed getDeclaration(Tree.Member that) {
         final Typed declaration = (Typed) getDeclaration(that.getScope(), that.getUnit(),
                 that.getIdentifier());
-        checkForError(that, declaration);
+        //checkForError(that, declaration);
         return declaration;
     }
 
@@ -53,7 +53,7 @@ class Util {
     static Typed getDeclaration(Scope scope, Tree.Member that) {
         final Typed declaration = (Typed) getDeclaration(scope, null,
                 that.getIdentifier());
-        checkForError(that, declaration);
+        //checkForError(that, declaration);
         return declaration;
     }
 
@@ -62,11 +62,11 @@ class Util {
      */
     static Declaration getDeclaration(Package pkg, Tree.ImportMemberOrType that) {
         final Declaration declaration = getDeclaration(pkg, null, that.getIdentifier());
-        checkForError(that, declaration);
+        //checkForError(that, declaration);
         return declaration;
     }
 
-    private static void checkForError(Tree.Member that, Declaration declaration) {
+    /*private static void checkForError(Tree.Member that, Declaration declaration) {
         if (declaration == null) {
             that.getErrors().add( new AnalysisError(that, "Member not found: " + 
                     that.getIdentifier().getText() ) );
@@ -85,7 +85,7 @@ class Util {
             that.getErrors().add( new AnalysisError(that, "Import not found: " + 
                     that.getIdentifier().getText() ) );
         }
-    }
+    }*/
 
     private static Declaration getDeclaration(Scope scope, Unit unit, Tree.Identifier id) {
         return getDeclaration(scope, unit, id.getText());

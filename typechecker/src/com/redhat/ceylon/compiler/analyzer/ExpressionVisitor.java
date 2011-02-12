@@ -155,26 +155,42 @@ public class ExpressionVisitor extends Visitor {
                 MemberOrType mt = that.getMemberOrType();
                 if (mt instanceof Tree.Member) {
                     Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt);
-                    that.setTypeModel(member.getType());
-                    //TODO: handle type arguments by substitution
-                    mt.setModelNode(member);
+                    if (member==null) {
+                        that.getErrors().add( new AnalysisError(that, 
+                                "Could not determine target of member reference: " +
+                                ((Tree.Member) mt).getIdentifier().getText()) );
+                    }
+                    else {
+                        that.setTypeModel(member.getType());
+                        //TODO: handle type arguments by substitution
+                        mt.setModelNode(member);
+                    }
                 }
                 else if (mt instanceof Tree.Type) {
                     GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt);
-                    Type t = new Type();
-                    t.setGenericType(member);
-                    t.setTreeNode(that);
-                    //TODO: handle type arguments by substitution
-                    that.setTypeModel(t);
-                    mt.setModelNode(member);
+                    if (member==null) {
+                        that.getErrors().add( new AnalysisError(that, 
+                                "Could not determine target of member type reference: " +
+                                ((Tree.Type) mt).getIdentifier().getText()) );
+                    }
+                    else {
+                        Type t = new Type();
+                        t.setGenericType(member);
+                        t.setTreeNode(that);
+                        //TODO: handle type arguments by substitution
+                        that.setTypeModel(t);
+                        mt.setModelNode(member);
+                    }
                 }
                 else if (mt instanceof Tree.Outer) {
                     if (!(gt instanceof ClassOrInterface)) {
                         that.getErrors().add( new AnalysisError(that, 
                                 "Can't use outer on a type parameter"));
                     }
-                    Type t = getOuterType(mt, (ClassOrInterface) gt);
-                    that.setTypeModel(t);
+                    else {
+                        Type t = getOuterType(mt, (ClassOrInterface) gt);
+                        that.setTypeModel(t);
+                    }
                 }
                 else {
                     //TODO: handle type parameters by looking at
@@ -218,14 +234,22 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        Type t = Util.getDeclaration(that).getType();
-        if (t==null) {
+        Typed d = Util.getDeclaration(that);
+        if (d==null) {
             that.getErrors().add( new AnalysisError(that, 
-                    "Could not determine type of member reference: " +
+                    "Could not determine target of member reference: " +
                     that.getIdentifier().getText()) );
         }
         else {
-            that.setTypeModel(t);
+            Type t = d.getType();
+            if (t==null) {
+                that.getErrors().add( new AnalysisError(that, 
+                        "Could not determine type of member reference: " +
+                        that.getIdentifier().getText()) );
+            }
+            else {
+                that.setTypeModel(t);
+            }
         }
     }
     
