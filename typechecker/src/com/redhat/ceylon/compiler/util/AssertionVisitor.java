@@ -53,6 +53,5 @@ public class AssertionVisitor extends Visitor {
             foundError = true;
         super.visitAny(that);
     }
-
     
 }
