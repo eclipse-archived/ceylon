@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.tree.Tree.Directive;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
 import com.redhat.ceylon.compiler.tree.Tree.Return;
+import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -263,13 +264,20 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Expression that) {
         //i.e. this is a parenthesized expression
         super.visit(that);
-        Type t = that.getTerm().getTypeModel();
-        if (t==null) {
+        Term term = that.getTerm();
+        if (term==null) {
             that.getErrors().add( new AnalysisError(that, 
-                    "Could not determine type of expression") );
+            "Expression not well formed") );
         }
         else {
-            that.setTypeModel(t);
+            Type t = term.getTypeModel();
+            if (t==null) {
+                that.getErrors().add( new AnalysisError(that, 
+                        "Could not determine type of expression") );
+            }
+            else {
+                that.setTypeModel(t);
+            }
         }
     }
     
