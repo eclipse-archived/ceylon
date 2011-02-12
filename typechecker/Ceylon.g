@@ -121,9 +121,9 @@ tokens {
 
 compilationUnit
     : importDeclaration*
-      annotatedDeclaration+
+      annotatedDeclaration2+
       EOF
-    -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration+)
+    -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration2+)
     ;
 
 importDeclaration
@@ -168,8 +168,8 @@ packageName
     ;
 
 block
-    : LBRACE annotatedDeclarationOrStatement* directiveStatement? '}'
-    -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement* directiveStatement?)
+    : LBRACE annotatedDeclarationOrStatement2* directiveStatement2? '}'
+    -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement2* directiveStatement2?)
     ;
 
 //This rule accounts for the problem that we
@@ -191,6 +191,7 @@ brokenMemberBody
     : (annotatedDeclarationStart) => annotatedDeclaration brokenMemberBody?
     | ( 
         specificationStatement brokenMemberBody?
+      | controlStructure brokenMemberBody?
       | expressionStatementOrList
       | directiveStatement
       )
@@ -205,10 +206,18 @@ expressionStatementOrList
       -> ^(EXPRESSION_LIST expression+)
       )
     ;
-    
+
+annotatedDeclarationOrStatement2
+    : compilerAnnotation* annotatedDeclarationOrStatement^
+    ;
+
 annotatedDeclarationOrStatement options {memoize=true;}
     : (annotatedDeclarationStart) => annotatedDeclaration
-    | (expressionStatement | specificationStatement)
+    | statement
+    ;
+
+annotatedDeclaration2
+    : compilerAnnotation* annotatedDeclaration^
     ;
 
 annotatedDeclaration
@@ -220,8 +229,6 @@ annotatedDeclaration
     | typedMethodOrAttributeDeclaration^
     | classDeclaration^
     | interfaceDeclaration^
-    | controlStructure^
-    | ':'! (expressionStatement^ | specificationStatement^)
     )
     ;
 
@@ -254,13 +261,12 @@ declarationKeyword
     | 'interface' 
     | 'class' 
     | 'object'
-    | 'if'
-    | 'switch'
-    | 'for'
-    | 'while'
-    | 'do'
-    | 'try'
-    | ':'
+    ;
+
+statement
+    : specificationStatement
+    | expressionStatement
+    | controlStructure
     ;
 
 specificationStatement
@@ -271,6 +277,10 @@ specificationStatement
 expressionStatement
     : expression ';'
     -> ^(EXPRESSION_STATEMENT expression)
+    ;
+
+directiveStatement2
+    : compilerAnnotation* directiveStatement^
     ;
 
 directiveStatement
@@ -349,8 +359,8 @@ interfaceDeclaration
     ;
 
 interfaceBody
-    : LBRACE annotatedDeclaration* '}'
-    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclaration*)
+    : LBRACE annotatedDeclaration2* '}'
+    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclaration2*)
     ;
 
 classDeclaration
@@ -362,8 +372,8 @@ classDeclaration
     ;
 
 classBody
-    : LBRACE annotatedDeclarationOrStatement* '}'
-    -> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement*)
+    : LBRACE annotatedDeclarationOrStatement2* '}'
+    -> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 extendedType
@@ -451,6 +461,10 @@ annotation
     -> ^(MEMBER annotationName) ^(POSITIONAL_ARGUMENT_LIST)
     | annotationName annotationArguments
     -> ^(MEMBER annotationName) annotationArguments
+    ;
+
+compilerAnnotation
+    : '@'^ annotationName ( '['! STRING_LITERAL ']'! )?
     ;
 
 annotationArguments
@@ -1649,6 +1663,10 @@ AND_ASSIGN_OP
 
 OR_ASSIGN_OP
     :   '||='
+    ;
+
+COMPILER_ANNOTATION
+    :   '@'
     ;
 
 LIDENTIFIER 

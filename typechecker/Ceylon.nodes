@@ -31,6 +31,7 @@
 
 "A declaration."
 ^(DECLARATION:STATEMENT
+    ANNOTATION_LIST?
     IDENTIFIER)
 
 "A class, interface, or type parameter declaration."
@@ -185,7 +186,11 @@
 
 "A statement or declaration."
 ^(STATEMENT
-    ANNOTATION_LIST?)
+    COMPILER_ANNOTATION*)
+
+^(COMPILER_ANNOTATION
+    IDENTIFIER
+    STRING_LITERAL?)
 
 "An expression statement, specification statement, or control structure."
 ^(EXECUTABLE_STATEMENT:STATEMENT)
