@@ -330,7 +330,6 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Subtype that) {
         //TODO!
-        throw new RuntimeException();
     }
     
     @Override public void visit(Tree.StringTemplate that) {
