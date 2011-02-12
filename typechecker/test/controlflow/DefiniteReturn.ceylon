@@ -4,6 +4,9 @@ interface DefiniteReturn {
     void doSomethingElse() {}
     void doNothing() {}
     @error Boolean testSomething()  { @error return false }
+    class X() {}
+    
+    //void methods:
     
     void voidMethodWithNoReturn() {
         doSomething();
@@ -199,7 +202,41 @@ interface DefiniteReturn {
         }
     }
     
-    class X() {}
+    void voidMethodWithReturnInWhile() {
+        while (testSomething()) {
+            doSomething();
+            return
+        }
+        doSomethingElse();
+    }
+    
+    void voidMethodWithReturnInWhile2() {
+        while (testSomething()) {
+            doSomething();
+            return
+        }
+        doSomethingElse();
+        return
+    }
+    
+    void voidMethodWithReturnInDo() {
+        do {
+            doSomething();
+            return
+        }
+        while (testSomething());
+    }
+    
+    void voidMethodWithStatementAfterReturnInDo() {
+        do {
+            doSomething();
+            return
+        }
+        while (testSomething());
+        @error doSomethingElse();
+    }
+    
+    //non-void methods
     
     @error X methodWithNoReturn() {
         doSomething();
@@ -431,6 +468,42 @@ interface DefiniteReturn {
         }
     }
     
+    @error X methodWithReturnInWhile() {
+        while (testSomething()) {
+            doSomething();
+            return X()
+        }
+        doSomethingElse();
+    }
+    
+    X methodWithReturnInWhile2() {
+        while (testSomething()) {
+            doSomething();
+            return X()
+        }
+        doSomethingElse();
+        return X()
+    }
+    
+    X methodWithReturnInDo() {
+        do {
+            doSomething();
+            return X()
+        }
+        while (testSomething());
+    }
+    
+    X methodWithStatementAfterReturnInDo() {
+        do {
+            doSomething();
+            return X()
+        }
+        while (testSomething());
+        @error doSomethingElse();
+    }
+    
+    //getters
+    
     @error X getterWithNoReturn {
         doSomething();
         doSomethingElse();
@@ -636,6 +709,42 @@ interface DefiniteReturn {
             return X()
         }
     }
+    
+    @error X getterWithReturnInWhile {
+        while (testSomething()) {
+            doSomething();
+            return X()
+        }
+        doSomethingElse();
+    }
+    
+    X getterWithReturnInWhile2 {
+        while (testSomething()) {
+            doSomething();
+            return X()
+        }
+        doSomethingElse();
+        return X()
+    }
+    
+    X getterWithReturnInDo {
+        do {
+            doSomething();
+            return X()
+        }
+        while (testSomething());
+    }
+    
+    X getterWithStatementAfterReturnInDo {
+        do {
+            doSomething();
+            return X()
+        }
+        while (testSomething());
+        @error doSomethingElse();
+    }
+    
+    //misc combinations
     
     class ClassWithReturn() {
         if (testSomething()) {
