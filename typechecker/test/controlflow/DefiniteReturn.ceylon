@@ -744,6 +744,236 @@ interface DefiniteReturn {
         @error doSomethingElse();
     }
     
+    //setters
+    
+    assign setterWithNoReturn {
+        doSomething();
+        doSomethingElse();
+    }
+    
+    assign setterWithReturn {
+        doSomething();
+        return
+    }
+    
+    assign setterWithThrow {
+        doSomething();
+        throw
+    }
+    
+    assign setterWithReturnInIf {
+        if (testSomething()) {
+            doSomething();
+            return
+        }
+        doSomethingElse();
+    }
+    
+    assign setterWithThrowInIf {
+        if (testSomething()) {
+            doSomething();
+            throw
+        }
+        doSomethingElse();
+    }
+    
+    assign setterWithReturnInIf2 {
+        if (testSomething()) {
+            doSomething();
+            return
+        }
+        else {
+            doSomethingElse();
+        }
+        doNothing();
+    }
+    
+    assign setterWithThrowInIf2 {
+        if (testSomething()) {
+            doSomething();
+            throw
+        }
+        else {
+            doSomethingElse();
+        }
+        doNothing();
+    }
+    
+    assign setterWithReturnInNestedIf {
+        if (testSomething()) {
+            if (testSomething()) {
+                doSomething();
+                return
+            }
+        }
+        else {
+            doSomethingElse();
+            return
+        }
+    }
+    
+    assign setterWithReturnInNestedIf2 {
+        if (testSomething()) {
+            if (testSomething()) {
+                doSomething();
+                return
+            }
+        }
+        else {
+            doSomethingElse();
+        }
+        return
+    }
+    
+    assign setterWithReturnInNestedIf3 {
+        if (testSomething()) {
+            if (testSomething()) {
+                doSomething();
+                return
+            }
+            else {
+                doNothing();
+                return
+            }
+        }
+        else {
+            doSomethingElse();
+            return
+        }
+    }
+    
+    assign setterWithReturnInElse {
+        if (testSomething()) {
+            doSomething();
+        }
+        else {
+            doNothing();
+            return
+        }
+        doSomethingElse();
+    }
+    
+    assign setterWithThrowInElse {
+        if (testSomething()) {
+            doSomething();
+        }
+        else {
+            doNothing();
+            throw
+        }
+        doSomethingElse();
+    }
+    
+    assign setterWithReturnInIfAndElse {
+        if (testSomething()) {
+            doSomething();
+            return
+        }
+        else {
+            doSomethingElse();
+            return
+        }
+    }
+    
+    assign setterWithThrowInIfAndElse {
+        if (testSomething()) {
+            doSomething();
+            throw
+        }
+        else {
+            doSomethingElse();
+            throw
+        }
+    }
+    
+    assign setterWithStatementAfterDefiniteReturn {
+        if (testSomething()) {
+            doSomething();
+            return
+        }
+        else {
+            doSomethingElse();
+            return
+        }
+        @error doNothing();
+    }
+    
+    assign setterWithStatementAfterDefiniteThrow {
+        if (testSomething()) {
+            doSomething();
+            throw
+        }
+        else {
+            doSomethingElse();
+            throw
+        }
+        @error doNothing();
+    }
+    
+    assign setterWithReturnInFor {
+        for (X x in {X()}) {
+            doSomething();
+            return
+        }
+        doNothing();
+    }
+    
+    assign setterWithReturnInFor2 {
+        for (X x in {X()}) {
+            doSomething();
+            return
+        }
+        fail {
+            doSomethingElse();
+        }
+        doNothing();
+    }
+    
+    assign setterWithReturnInForAndFail {
+        for (X x in {X()}) {
+            doSomething();
+            return
+        }
+        fail {
+            doSomethingElse();
+            return
+        }
+    }
+    
+    assign setterWithReturnInWhile {
+        while (testSomething()) {
+            doSomething();
+            return
+        }
+        doSomethingElse();
+    }
+    
+    assign setterWithReturnInWhile2 {
+        while (testSomething()) {
+            doSomething();
+            return
+        }
+        doSomethingElse();
+        return
+    }
+    
+    assign setterWithReturnInDo {
+        do {
+            doSomething();
+            return
+        }
+        while (testSomething());
+    }
+    
+    assign setterWithStatementAfterReturnInDo {
+        do {
+            doSomething();
+            return
+        }
+        while (testSomething());
+        @error doSomethingElse();
+    }
+    
     //misc combinations
     
     class ClassWithReturn() {
