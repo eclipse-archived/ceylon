@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 
 public class AssertionVisitor extends Visitor {
     
-    boolean broken = false;
+    boolean expectingError = false;
     boolean foundError = false;
 
     @Override
@@ -15,10 +15,12 @@ public class AssertionVisitor extends Visitor {
             if (c.getIdentifier().getText().equals("type")) {
                 String expectedType = c.getStringLiteral().getText();
                 String actualType = that.getTypeOrSubtype().getTypeModel().getProducedTypeName();
-                assert actualType.equals(expectedType.substring(1,expectedType.length()-1)) :
-                    c.getIdentifier().getText()  + " is not of type " + expectedType + 
-                    " at "+ that.getAntlrTreeNode().getLine() + ":" +
-                    that.getAntlrTreeNode().getCharPositionInLine();;
+                if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
+                    System.err.println(
+                        c.getIdentifier().getText()  + 
+                        " is not of type " + expectedType + 
+                        " at "+ that.getAntlrTreeNode().getLine() + ":" +
+                        that.getAntlrTreeNode().getCharPositionInLine());
             }
         }
         super.visit(that);
@@ -26,20 +28,22 @@ public class AssertionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Statement that) {
-        boolean b = broken;
+        boolean b = expectingError;
         boolean f = foundError;
-        broken = false;
+        expectingError = false;
         foundError = false;
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
-            if (c.getIdentifier().getText().equals("broken")) {
-                broken = true;
+            if (c.getIdentifier().getText().equals("error")) {
+                expectingError = true;
             }
         }
         super.visit(that);
-        assert broken==foundError : "broken at " + 
-            that.getAntlrTreeNode().getLine() + ":" +
-            that.getAntlrTreeNode().getCharPositionInLine();
-        broken = b;
+        if (expectingError!=foundError)
+            System.err.println(
+                (expectingError ? "no " : "") + "error encountered at " + 
+                that.getAntlrTreeNode().getLine() + ":" +
+                that.getAntlrTreeNode().getCharPositionInLine());
+        expectingError = b;
         foundError = f;
     }
     
