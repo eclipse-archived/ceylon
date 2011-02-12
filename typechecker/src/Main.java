@@ -22,7 +22,8 @@ public class Main {
 
     private static final String MODULE_FILE = "module.ceylon";
     private static boolean ENABLE_MODULE_AND_PACKAGE = false;
-
+    private static boolean noisy;
+    
     /**
      * When run with the argument corpus/multisource
      * the code supports proper module and allow for multisource compilation
@@ -38,7 +39,9 @@ public class Main {
         else {
             path = args[0];
         }
-
+        
+        noisy = System.getProperties().containsKey("verbose");
+        
         if ( path.equals("corpus/multisource") ) {
             //Today only multisource respects the module / package structure defined in the Ceylon spec
             ENABLE_MODULE_AND_PACKAGE = true;
@@ -78,7 +81,7 @@ public class Main {
         }
         //TODO we print before and after, not sure why but Gavin added the call
         for (PhasedUnit su : stagedUnits) {
-            su.display();
+            if (noisy) su.display();
             su.runAssertions();
         }
     }
