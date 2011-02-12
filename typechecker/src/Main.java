@@ -79,6 +79,7 @@ public class Main {
         //TODO we print before and after, not sure why but Gavin added the call
         for (PhasedUnit su : stagedUnits) {
             su.display();
+            su.runAssertions();
         }
     }
 

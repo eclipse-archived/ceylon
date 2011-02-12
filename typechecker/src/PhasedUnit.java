@@ -4,11 +4,10 @@ import com.redhat.ceylon.compiler.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.model.Declaration;
-import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
-import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.util.PrintVisitor;
 
 /**
@@ -50,6 +49,11 @@ public class PhasedUnit {
         compilationUnit.visit(new ControlFlowVisitor());
     }
 
+    public void runAssertions() {
+        System.out.println("Running assertions for " + fileName);
+        compilationUnit.visit(new AssertionVisitor());
+    }
+
     public void validateSpecification() {
         System.out.println("Validate specification for " + fileName);
         //TODO: This is too strict - it does not account for cases where 
@@ -57,23 +61,7 @@ public class PhasedUnit {
         //      I think the only relevant cases are members of a class that
         //      occur in the declaration section, and members of interfaces.
         for (Declaration d: unit.getDeclarations()) {
-            if (d instanceof SimpleValue) {
-                if (d.getTreeNode() instanceof Tree.AttributeDeclaration) {
-                    Tree.AttributeDeclaration ad = (Tree.AttributeDeclaration) d.getTreeNode();
-                    compilationUnit.visit(new SpecificationVisitor((SimpleValue) d,
-                            ad.getSpecifierOrInitializerExpression()!=null));
-                }
-                else {
-                    //control structure "variables" always come with specifiers
-                    compilationUnit.visit(new SpecificationVisitor((SimpleValue) d, true));
-                }
-            }
-            if (d instanceof Method) {
-                Tree.MethodDeclaration ad = (Tree.MethodDeclaration) d.getTreeNode();
-                compilationUnit.visit(new SpecificationVisitor((Method) d,
-                        ad.getSpecifierExpression()!=null || ad.getBlock()!=null));
-            }
-            //TODO: classes, interfaces, getters
+            compilationUnit.visit(new SpecificationVisitor(d));
             //TODO: variable attributes (definite initialization)
         }
     }
