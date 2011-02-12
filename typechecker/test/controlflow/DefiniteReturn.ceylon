@@ -169,6 +169,36 @@ interface DefiniteReturn {
         @error doNothing();
     }
     
+    void voidMethodWithReturnInFor() {
+        for (X x in {X()}) {
+            doSomething();
+            return
+        }
+        doNothing();
+    }
+    
+    void voidMethodWithReturnInFor2() {
+        for (X x in {X()}) {
+            doSomething();
+            return
+        }
+        fail {
+            doSomethingElse();
+        }
+        doNothing();
+    }
+    
+    void voidMethodWithReturnInForAndFail() {
+        for (X x in {X()}) {
+            doSomething();
+            return
+        }
+        fail {
+            doSomethingElse();
+            return
+        }
+    }
+    
     class X() {}
     
     @error X methodWithNoReturn() {
@@ -222,6 +252,30 @@ interface DefiniteReturn {
             doSomethingElse();
         }
         doNothing();
+    }
+    
+    X methodWithReturnInIf3() {
+        if (testSomething()) {
+            doSomething();
+            return X()
+        }
+        else {
+            doSomethingElse();
+        }
+        doNothing();
+        return X()
+    }
+    
+    X methodWithThrowInIf3() {
+        if (testSomething()) {
+            doSomething();
+            throw
+        }
+        else {
+            doSomethingElse();
+        }
+        doNothing();
+        throw
     }
     
     @error X methodWithReturnInNestedIf() {
@@ -333,6 +387,48 @@ interface DefiniteReturn {
             throw
         }
         @error doNothing();
+    }
+    
+    @error X methodWithReturnInFor() {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        doNothing();
+    }
+    
+    @error X methodWithReturnInFor2() {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        fail {
+            doSomethingElse();
+        }
+        doNothing();
+    }
+    
+    X methodWithReturnInFor3() {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        fail {
+            doSomethingElse();
+        }
+        doNothing();
+        return X()
+    }
+    
+    X methodWithReturnInForAndFail() {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        fail {
+            doSomethingElse();
+            return X()
+        }
     }
     
     @error X getterWithNoReturn {
@@ -497,6 +593,48 @@ interface DefiniteReturn {
             throw
         }
         @error doNothing();
+    }
+    
+    @error X getterWithReturnInFor {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        doNothing();
+    }
+    
+    @error X getterWithReturnInFor2 {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        fail {
+            doSomethingElse();
+        }
+        doNothing();
+    }
+    
+    X getterWithReturnInFor3 {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        fail {
+            doSomethingElse();
+        }
+        doNothing();
+        return X()
+    }
+    
+    X getterWithReturnInForAndFail {
+        for (X x in {X()}) {
+            doSomething();
+            return X()
+        }
+        fail {
+            doSomethingElse();
+            return X()
+        }
     }
     
     class ClassWithReturn() {
