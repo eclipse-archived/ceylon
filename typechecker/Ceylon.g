@@ -430,8 +430,7 @@ type
 unabbreviatedType
     : typeNameWithArguments ('.' typeNameWithArguments)* 
     -> ^(TYPE typeNameWithArguments+ )
-    | SUBTYPE 
-    -> ^(TYPE SUBTYPE)
+    | SUBTYPE
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
