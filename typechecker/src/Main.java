@@ -40,7 +40,7 @@ public class Main {
             path = args[0];
         }
         
-        noisy = System.getProperties().containsKey("verbose");
+        noisy = "true".equals(System.getProperties().getProperty("verbose"));
         
         if ( path.equals("corpus/multisource") ) {
             //Today only multisource respects the module / package structure defined in the Ceylon spec
