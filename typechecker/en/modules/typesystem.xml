@@ -670,21 +670,21 @@ shared interface ElementwiseEquality
         given T satisfies Equality<IdentifiableObject> {
 
     shared actual Boolean equals(Sequence<IdentifiableObject> that) {
-        if (this.size!=that.size) { return false }
+        if (this.size!=that.size) { return false; }
         for (Integer i in 0..size-1) {
-            if (this[i]!=that[i]) { return false }
+            if (this[i]!=that[i]) { return false; }
         }
         fail {
-            return true
+            return true;
         }
     }
 
     shared actual Integer hash {
         Integer h:=0;
         for (Integer i in 0..size-1) {
-            h^=this[i].hash
+            h^=this[i].hash;
         }
-        return h
+        return h;
     }
       
 }]]></programlisting>
@@ -702,12 +702,12 @@ shared interface ElementwiseEquality
 
     shared actual Boolean equals(Sequence<IdentifiableObject> that) 
             if (T satisfies Equality<IdentifiableObject>) {
-        if (this.size!=that.size) { return false }
+        if (this.size!=that.size) { return false; }
         for (Integer i in 0..size-1) {
-            if (this[i]!=that[i]) { return false }
+            if (this[i]!=that[i]) { return false; }
         }
         fail {
-            return true
+            return true;
         }
     }
 
@@ -715,9 +715,9 @@ shared interface ElementwiseEquality
             if (T satisfies Equality<IdentifiableObject>) {
         Integer h:=0;
         for (Integer i in 0..size-1) {
-            h^=this[i].hash
+            h^=this[i].hash;
         }
-        return h
+        return h;
     }
       
 }]]></programlisting>
@@ -974,7 +974,7 @@ shared S join<S>(S... sequences)
     for (S s in sequences) {
         result := S.join(result,s);
     }
-    return result 
+    return result;
 }]]></programlisting>
 
         <para>Which could be utilized as follows:</para>
@@ -983,7 +983,7 @@ shared S join<S>(S... sequences)
         satisfies Joinable<LinkedList<T>> {
     shared actual LinkedList<T> empty = LinkedList<T>();
     shared actual LinkedList<T> join(LinkedList<T> x, LinkedList<T> y) {
-        return x.append(y)
+        return x.append(y);
     }
 }
 
@@ -1221,7 +1221,7 @@ shared class LinkedList<T>(T... elements)
 }</programlisting>
         <para>It's probably only really useful if we also let you do stuff like this:</para>
         <programlisting><![CDATA[List<T> zip<T,P...>(List<P>... x, T producing(P... args)) {
-    return from (Natural i in 0..min(x.lastIndex...)) select (f(x[i]...))
+    return from (Natural i in 0..min(x.lastIndex...)) select (f(x[i]...));
 }]]></programlisting></comment>
 
         </section>
@@ -1306,7 +1306,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting><![CDATA[T create<T>(Object object) 
         given T(String s) { 
-    return T(object.string.lowercase) 
+    return T(object.string.lowercase);
 }]]></programlisting>
         
         <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
@@ -1316,10 +1316,10 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         given T of String | Range<Character> { 
     switch (T)
     case (satisfies String) { 
-        return t.uppercase 
+        return t.uppercase;
     }
     case (satisfies Range<Character>) { 
-        return t.first.uppercase..t.last.uppercase 
+        return t.first.uppercase..t.last.uppercase;
     }
 }]]></programlisting>
         
@@ -1449,7 +1449,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting><![CDATA[shared abstract class Wrappable() {
    shared Wrapper<subtype> wrap() {
-       return Wrapper(this)
+       return Wrapper(this);
    }
 }]]></programlisting>
         
@@ -1473,7 +1473,7 @@ Wrapper<Special> wrapper = special.wrap();]]></programlisting>
         parameter (and is therefore assignable to the parameter type).</para>
         
         <programlisting><![CDATA[Entry<Name,x.subtype> named(String name, Object x) {
-    return Name(name) -> x
+    return Name(name) -> x;
 }]]></programlisting>
         
         <programlisting><![CDATA[Person gavin = Person("Gavin");
@@ -1567,7 +1567,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         
         <programlisting><![CDATA[R<Entry<U,V>> entry<R,U,V>(R<U> u, R<V> v) 
         given R<T>(T x) satisfies Reference<T> {
-    return R(u.value->v.value)
+    return R(u.value->v.value);
 }]]></programlisting>
 
         <para>Note that the argument to a parameterized type parameter is not, strictly
@@ -1589,7 +1589,7 @@ WeakReference<Entry<Person,Org>> e = entry(person, org);  //infers X==WeakRefere
     for (V input in inputs) {
         outputs.=add(function(input));
     }
-    return outputs
+    return outputs;
 }]]></programlisting>
 
         <programlisting>Set&lt;Person&gt; people = ... ;
@@ -1603,7 +1603,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         given S<E>(E... es) satisfies E[] 
         given E satisfies Equality<E>
         given T satisfies Equality<T> {
-    return S(joinSequences(sequences))
+    return S(joinSequences(sequences));
 }]]></programlisting>
         
         <comment>
@@ -1627,23 +1627,23 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         given T satisfies PartlyComparable<T> {
     switch (S<T>)
     case (T) {
-        return x<=>y
+        return x<=>y;
     }
     case (T[]) {
         for (local i in 0..min(x.size,y.size)) {
             Comparison c = x[i]<=>y[i];
             switch (c)
             case (larger) {
-                return larger
+                return larger;
             }
             case (smaller) {
-                return smaller
+                return smaller;
             }
             else {
-                continue
+                continue;
             }
         }
-        return uncomparable
+        return uncomparable;
     }
 }]]></programlisting>
 

@@ -277,11 +277,11 @@ TypeConstraints?
     shared formal Comparison compare(T other);
     
     shared Boolean greaterThan(T other) {
-        return compare(other)==larger
+        return compare(other)==larger;
     }
     
     shared Boolean lessThan(T other) {
-        return compare(other)==smaller
+        return compare(other)==smaller;
     }
     
 }</programlisting>
@@ -488,7 +488,7 @@ TypeConstraints?
     }
     
     shared Natural count {
-        return n
+        return n;
     }
     
 }</programlisting>
@@ -551,7 +551,7 @@ TypeConstraints?
         attribute getter, or attribute setter:</para>
         
         <programlisting>shared class Key(Lock lock) {
-    shared Lock lock { return lock }
+    shared Lock lock { return lock; }
 }</programlisting>
 
         <programlisting>shared class Key(Lock lock) {
@@ -738,7 +738,7 @@ shared class Person { ... }</programlisting>
     Node createNode() {
         Node node = Node();
         nodes.add(node);    //compiler error (forward reference in initializer)
-        return node
+        return node;
     }
     OpenList&lt;Node&gt; nodes = none;
 }</programlisting>
@@ -750,7 +750,7 @@ shared class Person { ... }</programlisting>
     Node createNode() {
         Node node = Node();
         nodes.add(node);
-        return node
+        return node;
     }
     class Node() {}
 }</programlisting>
@@ -1502,14 +1502,14 @@ shared choice TransactionPropagationStyle
             extends BaseTransactionPropagation() { 
         shared actual void inProgress(Transaction tx) {}
         shared actual void notInProgress(Transaction tx) {
-            throw TransactionMandatory()
+            throw TransactionMandatory();
         }
     }
     
     shared object notSupported 
             extends BaseTransactionPropagation() { 
         shared actual void inProgress(Transaction tx) {
-            throw TransactionNotSupported()
+            throw TransactionNotSupported();
         }
         shared actual void notInProgress(Transaction tx) {}
     }
@@ -1517,7 +1517,7 @@ shared choice TransactionPropagationStyle
     shared object requiresNew 
             extends BaseTransactionPropagation() { 
         shared actual void inProgress(Transaction tx) {
-            throw TransactionRequiresNew()
+            throw TransactionRequiresNew();
         }
         shared actual void notInProgress(Transaction tx) {
             tx.begin();
@@ -1645,11 +1645,11 @@ shared choice TransactionPropagationStyle
         assignable to the return type of the method.</para>
         
         <programlisting>shared Integer add(Integer x, Integer y) {
-    return x + y
+    return x + y;
 }</programlisting>
     
         <programlisting>Identifier createToken() {
-    return Token()
+    return Token();
 }</programlisting>
 
         <programlisting>shared void print(Object... objects) {
@@ -1664,12 +1664,12 @@ shared choice TransactionPropagationStyle
 
         <programlisting>shared Set&lt;T&gt; singleton&lt;T&gt;(T element) 
         given T satisfies Comparable&lt;T&gt; {
-    return TreeSet(element)
+    return TreeSet(element);
 }</programlisting>
 
         <programlisting>shared Float[n] float&lt;#n&gt;(Decimal[n] decimals) {
     return Vector&lt;Float,#n&gt;() 
-                containing (Bounded&lt;#n&gt; i) (decimals[i].float)
+                containing (Bounded&lt;#n&gt; i) (decimals[i].float);
 }</programlisting>
 
         <para>Note that a method which declares the return type <literal>Void</literal>
@@ -1684,7 +1684,7 @@ void hello() {
 }
         
 Void goodbye() {
-    return say("goodbye")
+    return say("goodbye");
 }</programlisting>
         
         <para>A block local method with a single <literal>return</literal> directive may 
@@ -1693,7 +1693,7 @@ Void goodbye() {
         returned expression.</para>
         
         <programlisting>local add(Integer x, Integer y) {
-    return x + y
+    return x + y;
 }</programlisting>
         
         </section>
@@ -1749,7 +1749,7 @@ Void goodbye() {
         body = Body { 
             Div { "Hello World" } 
         };
-    }
+    };
 }</programlisting>
             
             <comment><para>TODO: we could add a keyword or punctuation to help 
@@ -1797,8 +1797,8 @@ Void goodbye() {
         method.</para>
         
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y }
-    return order
+    Comparison order(Natural x, Natural y) { return x&lt;=&gt;y; }
+    return order;
 }</programlisting>
 
         <para>Otherwise, if the <literal>return</literal> expression type is assignable 
@@ -1811,7 +1811,7 @@ Void goodbye() {
         <para>This method declaration:</para>
         
         <programlisting>Comparison getOrder()(Natural x, Natural y) {
-    return x&lt;=&gt;y
+    return x&lt;=&gt;y;
 }</programlisting>
 
         <para>is equivalent to the previous example. The compiler infers a method with
@@ -1847,7 +1847,7 @@ Void goodbye() {
         <para>This method declaration:</para>
         
         <programlisting>shared String fullName(String firstName)(String middleName)(String lastName) {
-    return firstName + " " + middleName + " " lastName
+    return firstName + " " + middleName + " " lastName;
 }</programlisting>
         
         <para>Is equivalent to:</para>
@@ -1855,11 +1855,11 @@ Void goodbye() {
         <programlisting>shared String fullName(String firstName)(String middleName)(String lastName) {
     String fullName2(String middleName)(String lastName) {
         String fullName3(String lastName) {
-            return firstName + " " + middleName + " " + lastName
+            return firstName + " " + middleName + " " + lastName;
         }
-        return fullName3
+        return fullName3;
     }
-    return fullName2
+    return fullName2;
 }</programlisting>
         
         <!--
@@ -2297,7 +2297,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
     for (LineItem li in lineItems) {
         sum += li.amount;
     }
-    return sum
+    return sum;
 }</programlisting>
         
             <para>If an attribute getter has a matching attribute setter, we say that 
@@ -2305,7 +2305,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             non-<literal>variable</literal>.</para>
             
             <!--
-            <programlisting>shared Float total { return items.totalPrice }</programlisting>
+            <programlisting>shared Float total { return items.totalPrice; }</programlisting>
             <para>is equivalent to this Java code:</para>
         
             <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
@@ -2320,7 +2320,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             be the type of the returned expression.</para>
         
             <programlisting>local name { 
-    return Name(firstName, initial, lastName) 
+    return Name(firstName, initial, lastName);
 }</programlisting>
                 
         </section>
@@ -2346,7 +2346,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
     return Module {
         name = 'org.hibernate';
         version = '3.0.0';
-    }
+    };
 }</programlisting>
 
             <comment><para>TODO: should this syntax build a new object each time the attribute 
@@ -2368,7 +2368,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
             assigned. Every attribute setter must have a corresponding getter with the
             same name.</para>
 
-            <programlisting>shared String name { return join(firstName, lastName) }
+            <programlisting>shared String name { return join(firstName, lastName); }
 shared assign name { firstName = first(name); lastName = last(name); }</programlisting>
             
             <!--
@@ -2824,7 +2824,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
                 
         
         <programlisting>shared extension Log objectToLog(Object this) {
-    return this.log
+    return this.log;
 }</programlisting>
         
         <programlisting>shared class Person(User user) {
@@ -2837,11 +2837,11 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         given N extends Number, Comparable&lt;N&gt; {
     
     shared N[] positiveElements() {
-        return this.elements() where (N n) (n&gt;0)
+        return this.elements() where (N n) (n&gt;0);
     }
     
     shared N[] elementsLessThan(N limit) {
-        return this.elements() where (N n) (n&lt;limit)
+        return this.elements() where (N n) (n&lt;limit);
     }
     
     ...   
@@ -2852,7 +2852,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
     for (Natural i in 0..size-1) {
         result.append(value);
     }
-    return result
+    return result;
 }</programlisting>
         
         <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
@@ -3078,7 +3078,7 @@ Float[] tenZeroes = Sequence(10,0.0);</programlisting>
         
         <programlisting>shared extension class StringType(Type&lt;String&gt; this) {
     shared String concat(String a, String b) { 
-        return a + " " + b 
+        return a + " " + b;
     }
 }</programlisting>
 
@@ -3155,7 +3155,7 @@ Float[] tenZeroes = Sequence(10,0.0);</programlisting>
     occurs = onceEachType; 
 }
 Entity entity(LockMode lockMode) { 
-    return Entity(lockMode) 
+    return Entity(lockMode);
 }</programlisting>
 
         <programlisting>shared annotation { 
@@ -3164,7 +3164,7 @@ Entity entity(LockMode lockMode) {
     occurs = onceEachElement; 
 }
 PatternValidator pattern(Regex regex) { 
-    return PatternValidator(regex)
+    return PatternValidator(regex);
 }</programlisting>
             
     </section>
@@ -3203,32 +3203,32 @@ PatternValidator pattern(Regex regex) {
         
         <programlisting>inherited annotation { of=any; occurs = onceEachElement; }
 shared Description doc(String description) {
-    return Description(description.normalize())
+    return Description(description.normalize());
 }</programlisting>
     
         <programlisting>annotation { of=any; occurs = onceEachElement; }
 shared Author[] by(String... authors) {
     return from (String author in authors) 
-                select Author(author.normalize())
+                select Author(author.normalize());
 }</programlisting>
     
         <programlisting>annotation { of=any; }
 shared RelatedElement see(ProgramElement pe) {
-    return Related(pe)
+    return Related(pe);
 }</programlisting>
     
         <programlisting>annotation { of=any; }
 shared RelatedElement see(ProgramElement pe -> String description) {
-    return Related(pe, description.normalize())
+    return Related(pe, description.normalize());
 }</programlisting>
     
         <programlisting>annotation { of={classes, methods, attributes}; }
 shared Related throws(Type&lt;Exception&gt; type) {
-    return ThrownException(type)
+    return ThrownException(type);
 }</programlisting>
         
         <programlisting>shared ThrownException throws(Type&lt;Exception&gt; type -> String description) {
-    return ThrownException(type, description.normalize())
+    return ThrownException(type, description.normalize());
 }</programlisting>
 
         <comment><para>TODO: Should the documentation annotations be erased by 

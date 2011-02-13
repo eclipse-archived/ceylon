@@ -168,11 +168,11 @@
     }
     
     shared default actual Boolean equals(IdentifiableObject that) {
-        return this===that
+        return this===that;
     }
     
     shared default actual Integer hash {
-        return identityHash(this)
+        return identityHash(this);
     }
         
 }]]></programlisting>
@@ -198,7 +198,7 @@
         
     Attribute<subtype,Object>[] idAttributes() {
         return from ( Attribute<subtype,Object> a in type.attributes() ) 
-                    where ( a.annotations(Id) nonempty )
+                    where ( a.annotations(Id) nonempty );
     }
     
     doc "The equals operator |x == y|. Default implementation compares
@@ -206,14 +206,14 @@
     see (id)
     shared default actual Boolean equals(IdentifiableObject that) {
         if (that.type!=type) {
-            return false
+            return false;
         }
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
-            return equals(that, idAttributes)
+            return equals(that, idAttributes);
         }
         else {
-            return super.equals(that)
+            return super.equals(that);
         }
     }
     
@@ -222,10 +222,10 @@
     shared Boolean equals(IdentifiableObject that, Attribute<subtype,Object>... attributes) {
         if (is subtype that) {
             return forAll (Attribute<subtype,Object> a in attributes)
-                        every ( a(this) == a(that) )
+                        every ( a(this) == a(that) );
         }
         else {
-            return false
+            return false;
         }
     }
     
@@ -235,10 +235,10 @@
     shared default actual Integer hash { 
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
-            return hash(idAttributes)
+            return hash(idAttributes);
         }
         else {
-            return super.hash
+            return super.hash;
         }
     }
     
@@ -250,7 +250,7 @@
          By default, the string contains the name of the type, 
          and the values of all attributes annotated |id|."
     shared default actual String string {
-        return string(idAttributes())
+        return string(idAttributes());
     }
     
     doc "A developer-friendly string representing the instance,
@@ -262,7 +262,7 @@
         result .= forEach (Attribute<subtype,Object> a in attributes)
                     with ({ a.name, "=", $a(this), ";" });
         result .= with ("}");
-        return result 
+        return result;
     }
     
     ...
@@ -290,11 +290,11 @@
         <programlisting><![CDATA[shared extension Y composeable<X,Y,P...>(Y this(X x))(X g(P... args))(P... args) {
     Y compose(X g(P... args))(P... args) {
         Y composition(P... args) {
-            return this(g(args))
+            return this(g(args));
         }
-        return composition
+        return composition;
     }
-    return compose
+    return compose;
 }]]></programlisting>
 
        <para>For example:</para>
@@ -309,9 +309,9 @@
        <programlisting><![CDATA[shared extension class Curryable<R,T,P...>(R this(T t, P... args)) {
     R partial(T t)(P... p) {
         R curried(P... p) {
-            return this(t, args)
+            return this(t, args);
         }
-        return curried
+        return curried;
     }
 }]]></programlisting>
        
@@ -326,7 +326,7 @@ void hello() = info.partial("Hello!");</programlisting>
 
        <programlisting><![CDATA[shared extension class Flattenable<R,T,P...>(R this(T t)(P... args)) {
     R flatten(T t, P... p) {
-        return this(t)(p)
+        return this(t)(p);
     }
 }]]></programlisting>
        
@@ -342,9 +342,9 @@ void hello() = info.partial("Hello!");</programlisting>
        <programlisting><![CDATA[shared extension class Shuffleable<R,P...,Q...>(R this(P... p)(Q... q)) {
    R shuffle(Q... q)(P... p) {
        R shuffled(P... p) {
-           return this(p)(q)
+           return this(p)(q);
        }
-       return shuffled
+       return shuffled;
    }
 }]]></programlisting>
         
@@ -373,7 +373,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         to be treated as a <literal>Callable&lt;T&gt;</literal>:</para>
 
         <programlisting><![CDATA[shared T get<T>(Gettable<T> value)() { 
-    return value 
+    return value;
 }]]></programlisting>
     
         <para>The subtype <literal>Settable</literal> represents a reference
@@ -388,7 +388,7 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         to be treated as a <literal>Callable&lt;T,T&gt;</literal>:</para>
 
         <programlisting><![CDATA[shared T set<T>(Settable<T> value)(T newValue) { 
-    return value := newValue
+    return value := newValue;
 }]]></programlisting>
     
     </section>
@@ -427,15 +427,15 @@ shared abstract class Boolean()
             given Y abstracts X {
         if (exists y) {
             if (is X y) {
-                return matches(y)
+                return matches(y);
             }
             else {
-                return false
+                return false;
             }
         }
         else {
             //match only if this is a case(null)
-            return this==null.matcher
+            return this==null.matcher;
         }
     }
         
@@ -454,10 +454,10 @@ shared abstract class Boolean()
         
     shared actual Boolean matches(X? x) {
         if (exists value) {
-            return this.matches(x)
+            return this.matches(x);
         }
         else {
-            return false
+            return false;
         }
     }
     
@@ -473,10 +473,10 @@ shared abstract class Boolean()
         
     shared actual Boolean matches(Y y) {
         if (is X y) {
-            return this.matches(y)
+            return this.matches(y);
         }
         else {
-            return false
+            return false;
         }
     }
         
@@ -490,7 +490,7 @@ shared abstract class Boolean()
         satisfies Matcher<Object> {
     
     shared actual Boolean matches(Object that) {
-        return this===that
+        return this===that;
     }
     
     shared actual default String string = caseName;
@@ -544,7 +544,7 @@ shared abstract class Boolean()
     shared extension X value = this;
     
     shared actual Boolean defined { 
-        return true 
+        return true;
     }
     
 }]]></programlisting>
@@ -562,7 +562,7 @@ shared abstract class Boolean()
         extends X?() {
         
     shared actual Boolean defined { 
-        return false 
+        return false;
     }
     
 }]]></programlisting>
@@ -584,12 +584,12 @@ shared object null
     shared extension object matcher 
             satisfies Matcher<Object> {
         shared actual Boolean matches(Object value) {
-            return false
+            return false;
         }
     }
     
     shared extension Nothing<X> nothing<X>() {
-        return Nothing<X>()
+        return Nothing<X>();
     }
      
 }]]></programlisting>
@@ -626,10 +626,10 @@ shared object null
     
     shared actual String string {
         if (nonempty message) {
-            return type.name + ": " + message
+            return type.name + ": " + message;
         }
         else {
-            return type.name
+            return type.name;
         }
     }
     
@@ -702,7 +702,7 @@ catch (Exception e) {
     shared formal Natural size;
     
     shared actual default Boolean empty {
-        return size==0
+        return size==0;
     }
     
 }</programlisting>
@@ -723,7 +723,7 @@ catch (Exception e) {
          Return |true| iff all the given objects belong to the 
          category."
     shared default Boolean contains(Object... objects) {
-        return forAll(Object obj in objects) every (contains(obj))
+        return forAll(Object obj in objects) every (contains(obj));
     }
 
 }]]></programlisting>
@@ -741,7 +741,7 @@ catch (Exception e) {
     doc "Determine if all the given elements belong to the 
          category."
     shared Boolean contains(Object... elements) {
-        return forAll (Object elem in elements) every category.contains(elem)
+        return forAll (Object elem in elements) every category.contains(elem);
     }
     
 }]]></programlisting>
@@ -757,7 +757,7 @@ catch (Exception e) {
          The binary |in| operator."
     see (Category)
     shared Boolean element(Category category) {
-        return category.contains(this)
+        return category.contains(this);
     }
 
 }]]></programlisting>
@@ -795,7 +795,7 @@ catch (Exception e) {
         for (X x in elements) {
             added |= category.add(x);
         }
-        return added
+        return added;
     }
     
 }]]></programlisting>
@@ -817,7 +817,7 @@ catch (Exception e) {
     shared formal Iterator<X> iterator();
     
     shared actual default Boolean empty {
-        return !(iterator().head exists)
+        return !(iterator().head exists);
     }
 
 }]]></programlisting>
@@ -852,15 +852,15 @@ while (exists local value = iter.head) {
         for (Object obj in objects) {
             if (is T obj) {
                 if ( forAll (Object elem in this) every (elem != obj) ) {
-                    return false
+                    return false;
                 }
             }
             else {
-                return false
+                return false;
             }
         }
         fail {
-            return true
+            return true;
         }
     }
     
@@ -933,7 +933,7 @@ while (exists local value = indexed.indexedValue(i)) {
     shared V value = value;
     
     shared actual Boolean equals(Entry<U,V> that) {
-        return this.key==that.key && this.value==that.value
+        return this.key==that.key && this.value==that.value;
     }
     
     shared actual Integer hash = ... ; 
@@ -966,7 +966,7 @@ while (exists local value = indexed.indexedValue(i)) {
             -> "if no value is defined for one of the given 
                 keys")
     shared default V[] values(U... keys) {
-        return from (U key in keys) select (this[key])
+        return from (U key in keys) select (this[key]);
     }
     
     doc "Binary iterated lookup operator |x[keys]|. Return an iterator
@@ -975,14 +975,14 @@ while (exists local value = indexed.indexedValue(i)) {
             -> "if no value is defined for one of the given 
                 keys")
     shared default Iterable<V> values(Iterable<U> keys) {
-        return from (U key in keys) select (this[key])
+        return from (U key in keys) select (this[key]);
     }
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
          given keys."
     shared default Boolean defines(U... keys) {
-        return forAll (U key in keys) every (this[key] exists)
+        return forAll (U key in keys) every (this[key] exists);
     }
     
 }]]></programlisting>
@@ -1004,13 +1004,13 @@ while (exists local value = indexed.indexedValue(i)) {
     doc "Binary lookup operator x[keys]. Returns a list of values 
          defined for the given keys, in order."
     shared List<V> values(List<U> keys) {
-        return from (U key in keys) select correspondence.lookup(key)
+        return from (U key in keys) select correspondence.lookup(key);
     }
     
     doc "Binary lookup operator x[keys]. Returns a set of values 
          defined for the given set of keys."
     shared Set<V> values(Set<U> keys) {
-        return ( from (U key in keys) select correspondence.lookup(key) ).elements
+        return ( from (U key in keys) select correspondence.lookup(key) ).elements;
     }
     
     doc "Determine if there are values defined for all the given 
@@ -1018,11 +1018,11 @@ while (exists local value = indexed.indexedValue(i)) {
     shared Boolean defines(U... keys) {
         for (U key in keys) {
             if ( !correspondence.defines(key) ) {
-                return false
+                return false;
             }
         }
         fail {
-            return true
+            return true;
         }
     }
     
@@ -1041,7 +1041,7 @@ while (exists local value = indexed.indexedValue(i)) {
                 satisfies Correspondence<U,V> {
             ...
         }
-        return correspondence
+        return correspondence;
     }
 }]]></programlisting>
         
@@ -1078,7 +1078,7 @@ while (exists local value = indexed.indexedValue(i)) {
         Settable<V?> definition = this[key];
         V? result = definition;
         definition := value;
-        return result
+        return result;
     }
 
 }]]></programlisting>
@@ -1116,22 +1116,22 @@ while (exists local value = indexed.indexedValue(i)) {
     
     doc "The binary |>| operator."
     shared Boolean largerThan(T other) {
-        return compare(other)==larger
+        return compare(other)==larger;
     }
     
     doc "The binary |<| operator."
     shared Boolean smallerThan(T other) {
-        return compare(other)==smaller
+        return compare(other)==smaller;
     }
     
     doc "The binary |>=| operator."
     shared Boolean asLargeAs(T other) {
-        return compare(other)!=smaller
+        return compare(other)!=smaller;
     }
     
     doc "The binary |<=| operator."
     shared Boolean asSmallAs(T other) {
-        return compare(other)!=larger
+        return compare(other)!=larger;
     }
     
 }]]></programlisting>
@@ -1183,7 +1183,7 @@ shared abstract class Comparison()
             min:=y;
         }
     }
-    return min
+    return min;
 }]]></programlisting>
 
         <programlisting><![CDATA[shared X max<X>(X x, X... xs) 
@@ -1194,7 +1194,7 @@ shared abstract class Comparison()
             max:=y;
         }
     }
-    return max
+    return max;
 }]]></programlisting>
 
         <para>The <literal>Ordinal</literal> interface represents 
@@ -1237,7 +1237,7 @@ shared abstract class Comparison()
     shared extension Natural natural { ... }
 
     shared actual Comparison compare(Bounded<M> other) {
-        return natural.compare(other.natural)
+        return natural.compare(other.natural);
     }
 
     doc "This natural number, as a |Bounded<N>| where
@@ -1282,62 +1282,62 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
             shared actual X? head { 
-                return this[from] 
+                return this[from];
             }
             shared actual Iterable<X> tail {
-                return SequenceIterator(from+1)
+                return SequenceIterator(from+1);
             }
         }
         if (is Iterable<X> sequence) {
-            return this.iterator()
+            return this.iterator();
         }
         else {
-            return SequenceIterator(0)
+            return SequenceIterator(0);
         }
     }
     
     shared actual default Boolean size {
         if (exists lastIndex) {
-            return lastIndex+1
+            return lastIndex+1;
         }
         else {
-            return 0
+            return 0;
         } 
     }
     
     shared actual default Boolean empty {
-        return !(this.lastIndex exists)
+        return !(this.lastIndex exists);
     }
     
     shared actual default Boolean contains(Object obj) {
         if (is X obj) {
-            return forAny (X x in this) some (x==obj)
+            return forAny (X x in this) some (x==obj);
         }
         else {
-            return false
+            return false;
         }
     }
     
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
     shared default X? first {
-        return this[0]
+        return this[0];
     }
     
     doc "The rest of the sequence, after removing 
          the first element."
     shared default X[] rest {
-        return this[1...]
+        return this[1...];
     }
 
     doc "The last element of the sequence, or
          |null| if the sequence has no elements."
     shared default X? last {
         if (exists Natural index = sequence.lastIndex) {
-            return this[index]
+            return this[index];
         }
         else {
-            return null
+            return null;
         }
     }
    
@@ -1349,7 +1349,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         satisfies Callable<X[],X...> 
         given X satisfies Equality<X> {
     shared actual default X[] call(X... elements) {
-        return elements
+        return elements;
     }
 }]]></programlisting>
         
@@ -1365,17 +1365,17 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
                 satisfies Iterator<Entry<Natural,X>> {
             shared actual Entry<Natural,X>? head {
                 if (exists X x = this[from]) {
-                    return from->x
+                    return from->x;
                 }
                 else {
-                    return null
+                    return null;
                 }
             }
             shared actual Iterable<Entry<Natural,X>> tail {
-                return EntryIterator(from+1)
+                return EntryIterator(from+1);
             }
         }
-        return EntryIterator(0)
+        return EntryIterator(0);
     }
     
 }]]></programlisting>
@@ -1433,7 +1433,7 @@ shared T[] join<T>(T[]... sequences)
                     }
                 }
             }
-            return result
+            return result;
         }
         shared actual Gettable<T?> value(Natural index) {
             T? value {
@@ -1441,21 +1441,21 @@ shared T[] join<T>(T[]... sequences)
                 for (T[] s in sequences) {
                     if (exists Natural last = s.lastIndex) {
                         if (i<=last) {
-                            return s[i]
+                            return s[i];
                         }
                         else {
                             i-=last;
                         }
                     }
                 }
-                return null
+                return null;
                 
             }
-            return value
+            return value;
         }
     }
     
-    return copy(joinedSequence) //take a shallow copy
+    return copy(joinedSequence); //take a shallow copy
     
 }]]></programlisting>
         
@@ -1471,31 +1471,31 @@ shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
             if (exists Natural last = sequence.lastIndex) {
                 if (exists to) {
                     if (to<last) {
-                        return to-from
+                        return to-from;
                     }
                     else {
-                        return last-from
+                        return last-from;
                     }
                 }
             }
             else {
-                return null
+                return null;
             }
         } 
         shared actual Gettable<T?> value(Natural index) {
             T? value {
                 if (exists to) {
                     if (index>to) {
-                        return null
+                        return null;
                     }
                 }
-                return sequence[index+from]
+                return sequence[index+from];
             }
-            return value
+            return value;
         }
      }
 
-    return copy(rangeSequence) //take a shallow copy
+    return copy(rangeSequence); //take a shallow copy
     
 }]]></programlisting>
         
@@ -1532,18 +1532,18 @@ shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         class EntryIterator(Bounded<N> from) 
                 satisfies Iterator<Entry<Bounded<N>,X>> {
             shared actual Entry<Bounded<N>,X>? head {
-                return from->this[from]
+                return from->this[from];
             }
             shared actual Iterable<Entry<Bounded<N>,X>> tail {
                 if ( from+1 < natural<N>() ) {
-                    return EntryIterator(from.successor)
+                    return EntryIterator(from.successor);
                 }
                 else {
-                    return none
+                    return none;
                 }
             }
         }
-        return EntryIterator(0)
+        return EntryIterator(0);
     }
     
 }]]></programlisting>
@@ -1557,7 +1557,7 @@ shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
     shared Bounded<n>[n] indices {
         return when (n>0)
             then (Bounded<n>(0)..Bounded<n>(n-1))
-            otherwise none
+            otherwise none;
     }
    
 }]]></programlisting>
@@ -1585,11 +1585,11 @@ shared object none {
         
         shared actual Gettable<X?> value(Natural index) {
             X? nullValue = null;
-            return nullValue 
+            return nullValue;
         }
         
         shared actual Gettable<X> value(Bounded<#0> index) {
-            throw Exception()
+            throw Exception();
         }
         
     }
@@ -1602,12 +1602,12 @@ shared object none {
         <programlisting><![CDATA[shared BoundedSequence<T,N> zip<T,X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y, T producing(X x, Y y))
         given N satisfies Dimension {
     return from (Bounded<N> i in zeroTo<N>()) 
-                select (producing(x[i],y[i]))
+                select (producing(x[i],y[i]));
 }]]></programlisting>
 
         <programlisting><![CDATA[shared BoundedSequence<Entry<X,Y>,N> zip<X,Y,N>(BoundedSequence<X,N> x, BoundedSequence<Y,N> y) 
         given N satisfies Dimension {
-    return zip(x,y,Entry)
+    return zip(x,y,Entry);
 }]]></programlisting>
 
         <programlisting><![CDATA[shared T[n] zip<T,X,N>(BoundedSequence<X,N> lists..., T producing(X x...))  
@@ -1650,12 +1650,12 @@ shared object none {
     shared X[] by(Natural stepSize) { 
         return from (Natural index->X value in this) 
                     where (index%stepSize == 0)
-                    select (value)
+                    select (value);
     }
     
     shared Natural? index(X x) {
         if (x<first || x>last) {
-            return null
+            return null;
         }
         else {
             //optimize this for numbers!
@@ -1665,7 +1665,7 @@ shared object none {
                 ++index;
                 ++value;
             }
-            return index
+            return index;
         }
     }
     
@@ -1674,17 +1674,17 @@ shared object none {
                 satisfies Iterator<X> {
             shared actual X? head { 
                 if (x>last) { 
-                    return null 
+                    return null;
                 } 
                 else { 
-                    return x 
+                    return x;
                 }
             }
             shared actual Iterator<X> tail {
-                return RangeIterator(x.successor)
+                return RangeIterator(x.successor);
             }
         }
-        return RangeIterator(first)
+        return RangeIterator(first);
     }
     
     shared actual Boolean empty = last<first;
@@ -1693,20 +1693,20 @@ shared object none {
         for (Object x in objects) {
             if (is X x) {
                 if ( x<first || x>last ) {
-                    return false
+                    return false;
                 }
             }
             else {
-                return false
+                return false;
             }
         }
         fail {
-            return true
+            return true;
         } 
     }
     
     shared actual Boolean matches(X x) {
-        return x>first && x<last
+        return x>first && x<last;
     }
     
     shared actual Natural? lastIndex = index(last);
@@ -1720,14 +1720,14 @@ shared object none {
             ++value;
             if (value>last) {
                 value := null;
-                break
+                break;
             }
         }
-        return value
+        return value;
     }
     
     shared actual Boolean equals(Range<X> that) {
-        return that.first==first && that.last==last
+        return that.first==first && that.last==last;
     }
     
     ...
@@ -1801,7 +1801,7 @@ while (i<=max) {
         chars = this;
     }
     else {
-        chars = copy(this)
+        chars = copy(this);
     }
     
     ... 
@@ -1817,21 +1817,21 @@ while (i<=max) {
     
     shared String replace(Character character -> Character replacement) {
         return replace() with (Character c) 
-            (when (c==character) then (replacement) otherwise (c))
+            (when (c==character) then (replacement) otherwise (c));
     }
     
     shared String replace(Correspondence<Character,Character> replacements) { 
-        return replace() with (Character c) (replacements[c] ? c)
+        return replace() with (Character c) (replacements[c] ? c);
     }
     
     doc "The string, with all characters in lowercase."
     shared String lowercase {
-        return replace() with (Character c) (c.lowercase)
+        return replace() with (Character c) (c.lowercase);
     }
     
     doc "The string, with all characters in uppercase."
     shared String uppercase {
-        return replace() with (Character c) (c.uppercase)
+        return replace() with (Character c) (c.uppercase);
     }
     
     doc "Remove the given characters from the beginning 
@@ -1867,7 +1867,7 @@ while (i<=max) {
         for (X x in objects) {
             list.append(with(x));
         }
-        return list 
+        return list;
     }
     
     Character[] forEach<X>(iterated Iterable<X> objects, 
@@ -1878,7 +1878,7 @@ while (i<=max) {
                 list.append(s);
             }
         }
-        return list 
+        return list;
     }
        
 }]]></programlisting>
@@ -2310,61 +2310,61 @@ while (i<=max) {
         <programlisting><![CDATA[shared extension class BooleanBit(Boolean this)
         satisfies Bits<1> {
 
-    shared extension Boolean boolean { return this }
+    shared extension Boolean boolean { return this; }
 
     shared actual Bits<1> or(Bits<1> bit) {
         if (this) {
-            return this
+            return this;
         else {
-            return bit
+            return bit;
         }
     }
     
     shared actual Bits<1> and(Bits<1> bit) {
         if (this) {
-            return bit
+            return bit;
         else {
-            return false
+            return false;
         }
     }
     
     shared actual Bits<1> xor(Bits<1> bit) {
         if (this) {
-            return bit.complement
+            return bit.complement;
         else {
-            return bit
+            return bit;
         }
     }
     
     shared actual Bits<1> complement(Bits<1> bit) {
         if (this) {
-            return bit.complement
+            return bit.complement;
         else {
-            return this
+            return this;
         }
     }
     
     shared actual Bits<1> complement {
-        return BooleanBit(!this)
+        return BooleanBit(!this);
     }
     
     shared actual Gettable<Boolean> value(Bounded<1> index) {
-        return this
+        return this;
     }
     
     shared actual Gettable<Boolean?> value(Natural key) {
         Boolean? result;
         if (key==0) {
-            result = boolean 
+            result = boolean;
         }
         else {
-            result = null
+            result = null;
         }
-        return result
+        return result;
     }
     
     shared actual Bounded<1> lastIndex {
-        return 0
+        return 0;
     }
     
 }]]></programlisting>
@@ -2708,10 +2708,10 @@ removeSayInterceptor();]]></programlisting>
         satisfies Format {
     shared actual String formatted {
         if (obj exists) {
-            return obj.string
+            return obj.string;
         }
         else {
-            return "null"
+            return "null";
         }
     }
 }</programlisting>
@@ -2731,13 +2731,13 @@ removeSayInterceptor();]]></programlisting>
     
     shared void log(LogPriority priority, Gettable<String> message) {
         if ( channel.enabled(priority) ) {
-            send(priority, message) );
+            send(priority, message);
         }
     }
     
     shared void log(LogPriority priority, String message) {
         if ( channel.enabled(priority) ) {
-            send(priority, message) );
+            send(priority, message);
         }
     }
     
@@ -2774,7 +2774,7 @@ shared abstract class LogPriority(String string, Natural priority) {
         
         <programlisting><![CDATA[shared extension class ObjectLog(Object this) {
     shared Log log { 
-        return Log(defaultLogChannel, this.type.name)
+        return Log(defaultLogChannel, this.type.name);
     }
 }]]></programlisting>
 
@@ -2891,7 +2891,7 @@ shared abstract class LogPriority(String string, Natural priority) {
 shared void assert(Gettable<String> message, Boolean that()) {
     Boolean callerAssertionsEnabled  = ... ;
     if ( assertionsEnabled && !that() ) {
-        throw AssertionException(message)
+        throw AssertionException(message);
     }
 }]]></programlisting>
 
@@ -2921,10 +2921,10 @@ shared Y when<Y>(Boolean condition,
                  Y then(), 
                  Y otherwise()=get(null)) {
     if (condition) {
-        return then()
+        return then();
     }
     else {
-        return otherwise()
+        return otherwise();
     }
 }]]></programlisting>
 <!--
@@ -2933,10 +2933,10 @@ shared Y when<Y>(Boolean condition,
 shared Y? with<X,Y>(specified X? value,
                     Y then(coordinated X x)) {
     if (exists value) {
-        return then(value)
+        return then(value);
     }
     else {
-        return null
+        return null;
     }
 }]]></programlisting>
 -->
@@ -2947,10 +2947,10 @@ shared Y with<X,Y>(specified X? value,
                    Y then(coordinated X x), 
                    Y otherwise()=get(null)) {
     if (exists value) {
-        return then(value)
+        return then(value);
     }
     else {
-        return otherwise()
+        return otherwise();
     }
 }]]></programlisting>
 
@@ -2961,10 +2961,10 @@ shared Y withFirst<X,Y>(X[] list,
                         Y pop(X first, X... rest), 
                         Y otherwise()=get(null)) {
     if (exists X first = list.first) {
-        return pop(first, list.rest)
+        return pop(first, list.rest);
     }
     else {
-        return otherwise()
+        return otherwise();
     }
 }]]></programlisting>
 
@@ -2977,10 +2977,10 @@ shared Y withFirst<X,Y>(X[] list,
 shared Y attempt<Y,E>(Y seek(),
                       Y except(E e)) {
     try {
-        return seek()
+        return seek();
     }
     catch (E e) {
-        return except(e)
+        return except(e);
     }
 }]]></programlisting>
 
@@ -2990,7 +2990,7 @@ shared Y using<X,Y>(specified X resource,
                     Y seek(coordinated X x))
         given X satisfies Usable {
     try (resource) {
-        return seek(resource)
+        return seek(resource);
     }
 }]]></programlisting>
 
@@ -3004,10 +3004,10 @@ shared Y using<X,Y,E>(specified X resource,
                       Y except(E e))
         given X satisfies Usable {
     try (resource) {
-        return seek(resource)
+        return seek(resource);
     }
     catch (E e) {
-        return except(e)
+        return except(e);
     }
 }]]></programlisting>
 -->  
@@ -3020,7 +3020,7 @@ shared Y? select<X,Y>(X selector,
                               cases Iterable<Entry<Matcher<X>, functor Y()>> value) {
     for (Matcher<X> match -> X evaluate() in value) {
         if ( match.test(selector) ) {
-            return evaluate(value)
+            return evaluate(value);
         }
     }
     return null;
@@ -3034,10 +3034,10 @@ shared Y select<X,Y>(X selector,
                      cases Iterable<Entry<Matcher<X>, functor Y()>> value,
                      Y otherwise()) {
     if (exists Y y = select(selector, value)) {
-        return y
+        return y;
     }
     else {
-        return otherwise()
+        return otherwise();
     }
 }]]></programlisting>
 
@@ -3068,7 +3068,7 @@ shared Natural count<X>(iterated Iterable<X> elements,
             ++count;
         }
     }
-    return count
+    return count;
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Return true iff for every element, the block 
@@ -3077,18 +3077,18 @@ shared Boolean forAll<X>(iterated Iterable<X> elements,
                          Boolean every(coordinated X x)) {
     for (X x in elements) {
         if ( !every(x) ) {
-            return false
+            return false;
         }
     }
-    return true
+    return true;
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Return true iff for some element, the block 
      evaluates to true."
 shared Boolean forAny<X>(iterated Iterable<X> elements,
                          Boolean some(coordinated X x)) {
-    Boolean where(X x) { return !some(x) }
-    return !forAll(elements, where)
+    Boolean where(X x) { return !some(x); }
+    return !forAll(elements, where);
 }]]></programlisting>
 
 <!--
@@ -3099,10 +3099,10 @@ shared X? firstOrNull<X>(iterated Iterable<X> elements,
                    Boolean where(coordinated X x)) {
     for (X x in elements) {
         if ( where(x) ) {
-            return x
+            return x;
         }
     }
-    return null
+    return null;
 }]]></programlisting>
 -->
         <programlisting><![CDATA[doc "Return the first element for which the first 
@@ -3113,10 +3113,10 @@ shared X first<X>(iterated Iterable<X> elements,
                   Boolean where(coordinated X x),
                   X otherwise()=get(null)) {
     if (exists X first = first(elements, where)) {
-        return first
+        return first;
     }
     else {
-        return otherwise()
+        return otherwise();
     }
 }]]></programlisting>
         
@@ -3140,7 +3140,7 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         }
     }
     list.sort(by);
-    return list
+    return list;
 }]]></programlisting>
 
         <comment><para>TODO: rewrite <literal>from()</literal> to delegate to 
@@ -3151,7 +3151,7 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
     for (Natural i in 0..length-1) {
         list.append(containing(i));
     }
-    return list
+    return list;
 }]]></programlisting>
         
         <!--
@@ -3165,7 +3165,7 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
             list.append(x);
         }
         else {
-            return list
+            return list;
         }
     }
 }]]></programlisting>
@@ -3179,7 +3179,7 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
         x := element(x);
         list.append(x);
     }
-    return list
+    return list;
 }]]></programlisting>
 
         <comment><para>TODO: Actually, <literal>generate()</literal> should return just a
@@ -3192,7 +3192,7 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
     for (X x in iterable) {
         y:=using(y,x);
     }
-    return y
+    return y;
 }]]></programlisting>
         
         <para>The <literal>ceylon.language.comprehension.map</literal> package defines 
@@ -3204,8 +3204,8 @@ shared List<Y> from<X,Y,C>(iterated Iterable<X> elements,
      evaluation."
 shared Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
                              V to(coordinated U key)) {
-    Entry<U,V> of(U key) { return key->to(key) }
-    return map(keys, of)
+    Entry<U,V> of(U key) { return key->to(key); }
+    return map(keys, of);
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for 
@@ -3214,8 +3214,8 @@ shared Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
      evaluation."
 shared Map<U,V> mapTo<U,V>(iterated Iterable<V> values,
                            U from(coordinated V value)) { 
-    Entry<U,V> of(V value) { return from(value)->value }
-    return map(values, of)
+    Entry<U,V> of(V value) { return from(value)->value; }
+    return map(values, of);
 }]]></programlisting>
 
         <programlisting><![CDATA[doc "Construct a |Map| by evaluating the block for 
@@ -3295,7 +3295,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         
     doc "The elements of the collection, sorted in natural order."
     shared List<X> sortedElements() {
-        return this.sortedElements() by (X x, X y) (x<=>y)
+        return this.sortedElements() by (X x, X y) (x<=>y);
     }
     
 }]]></programlisting>
@@ -3366,20 +3366,20 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         satisfies Slots<Set<X>> {
     
     shared actual Set<X> or(Set<X> set) {
-        return this.union(set)
+        return this.union(set);
     }
     
     shared actual Set<X> and(Set<X> set) {
-        return this.intersection(set)
+        return this.intersection(set);
     }
     
     shared actual Set<X> xor(Set<X> set) {
-        return this.exclusiveUnion(set)
+        return this.exclusiveUnion(set);
     
     }
     
     shared actual Set<X> complement(Set<X> set) {
-        return this.complement(set)
+        return this.complement(set);
     }
     
 }]]></programlisting>
@@ -3387,7 +3387,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>This extension allows direct instantiation of the interface:</para>
 
             <programlisting><![CDATA[shared extension Set<T> newSet<T>(Type<Set<T>> this)(T... elements) {
-    return HashSet(elements)
+    return HashSet(elements);
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
@@ -3501,7 +3501,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             <para>This extension allows direct instantiation of the interface:</para>
 
             <programlisting><![CDATA[shared extension List<T> newList<T>(Type<List<T>> this)(T... elements) {
-    return ArrayList(elements)
+    return ArrayList(elements);
 }]]></programlisting>
 
             <para>Any <literal>Sequence</literal> may be transparently converted to a 
@@ -3509,10 +3509,10 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
             
             <programlisting>shared extension List&lt;X&gt; sequenceToList(X[] this) {
     if (is List&lt;X&gt; this) {
-        return this
+        return this;
     }
     else {
-        return SequenceList(this)
+        return SequenceList(this);
     }
 }</programlisting>
             
@@ -3527,10 +3527,10 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
                 //i.e. List<X> createPartition(Boolean where(X X)) = ...
         local smaller = byIncreasing.partial(pivot);                       
                 //i.e. Boolean smaller(X x) = ...
-        return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller))
+        return createPartition(smaller) + {x} + createPartition(Boolean.complement(smaller));
     }
     else {
-        return none
+        return none;
     }
 }]]></programlisting>
 
@@ -3660,7 +3660,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>This extension allows direct instantiation of the interface:</para>
 
             <programlisting><![CDATA[shared extension Map<U,V> newMap<U,V>(Type<Map<U,V>> this)(Entry<U,V>... elements) {
-    return HashMap(elements)
+    return HashMap(elements);
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>
@@ -3712,7 +3712,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             <para>This extension allows direct instantiation of the interface:</para>
 
             <programlisting><![CDATA[shared extension Bag<T> newBag<T>(Type<Bag<T>> this)(T... elements) {
-    return HashBag(elements)
+    return HashBag(elements);
 }]]></programlisting>
 
             <para>There is a mutable subtype:</para>

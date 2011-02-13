@@ -85,13 +85,13 @@
         The value produced by the invocation expression is a copy of the value produced by 
         execution of the <literal>return</literal> directive expression.</para>
         
-        <programlisting>Person myself(Person me) { return me }
+        <programlisting>Person myself(Person me) { return me; }
 Person p = ...;
 assert() that (myself(p)&identical;p); //assertion never fails</programlisting>
 
         <programlisting>Semaphore s = Semaphore();
 this.semaphore = s;
-assert() that (semaphore&identical;s) //assertion never fails</programlisting>
+assert() that (semaphore&identical;s); //assertion never fails</programlisting>
         
         <para>A new object is produced by execution of a class instantiation expression.
         The Ceylon compiler guarantees that if execution of a class initializer terminates
@@ -591,10 +591,10 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
 
         <programlisting>class Catalog() {
     class Schema() {
-        Catalog catalog { return outer }
+        Catalog catalog { return outer; }
         class Table() {
-            Schema schema { return outer }
-            Catalog catalog { return outer.outer }
+            Schema schema { return outer; }
+            Catalog catalog { return outer.outer; }
         }
     }
 }</programlisting>
@@ -676,7 +676,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             
             <para>This method returns a reference:</para>
             
-            <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name }</programlisting>
+            <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name; }</programlisting>
             
             <para>This class has an initialization parameter which accepts a reference:</para>
             
@@ -838,7 +838,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
 
         <para>This code passes a reference to a local method to the method.</para>
         
-        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x }
+        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; }
 sort(names, reverseAlpha);</programlisting>
         
         <para>This class has two callable parameters:</para>
@@ -865,12 +865,12 @@ sort(names, reverseAlpha);</programlisting>
         
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     if (reverse) {
-        Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x }
-        return reverse
+        Comparison reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+        return reverse;
     }
     else {
-        Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y }
-        return natural
+        Comparison natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+        return natural;
     }
 }</programlisting>
 
@@ -878,12 +878,12 @@ sort(names, reverseAlpha);</programlisting>
 
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     if (reverse) {
-        local reverse(Natural x, Natural y) { return y&lt;=&gt;x }
-        return reverse
+        local reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+        return reverse;
     }
     else {
-        local natural(Natural x, Natural y) { return x&lt;=&gt;y }
-        return natural
+        local natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+        return natural;
     }
 }</programlisting>
 
@@ -1184,7 +1184,7 @@ local comp = order(1,-1);</programlisting>
         for (Item item in items) {
             sum += item.amount;
         }
-        return total
+        return total;
     }
 }</programlisting>
         
@@ -1213,13 +1213,13 @@ local comp = order(1,-1);</programlisting>
 }</programlisting>
         
         <programlisting>{ 
-    Comparison by(X x, X y) { return x&lt;=&gt;y } 
+    Comparison by(X x, X y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
         <para>This is simpler using type inference:</para>
 
         <programlisting>{ 
-    local by(X x, X y) { return x&lt;=&gt;y } 
+    local by(X x, X y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
         <comment><para>TODO: should the named argument list be allowed to contain arbitrary 
@@ -1769,7 +1769,7 @@ except (SomethingElseWrong sew) {
                 For example:</para>
                 <programlisting><![CDATA[Producer<T> producer<T,P>()
         given P() satisfies Producer<T> {
-    return P()
+    return P();
 }]]></programlisting>
                 <programlisting><![CDATA[T sum<T,M>(T[] ts) 
         given M() satisfies Monoid<T> {
@@ -1985,8 +1985,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>Natural age = person.age;</programlisting>
         <programlisting>person.say("Hello!");</programlisting>
         <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
-        <programlisting>return person.name</programlisting>
-        <programlisting>throw Exception()</programlisting>
+        <programlisting>return person.name;</programlisting>
+        <programlisting>throw Exception();</programlisting>
         <programlisting>if (exists local head = iter.head) { ... }</programlisting>
         
         <para>If a reference object is of type <literal>Settable</literal>, its value may also 
@@ -2151,7 +2151,7 @@ setName("Gavin");</programlisting>
 
         <para>Even the following are possible:</para>
         
-        <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name }
+        <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name; }
 getName(p) := "Gavin";</programlisting>
 
         <programlisting>setName(Settable&lt;String&gt; name, String value) { name:=value; }
@@ -2498,13 +2498,13 @@ countAttribute(this)++;</programlisting>
 countAttribute.intercept() 
     onGet (Counter c, Natural proceed()) {
         log.debug("getting");
-        return proceed()
+        return proceed();
     };
     
 countAttribute.intercept() 
     onSet (Counter c, void proceed(Natural n), Natural value) {
         log.debug("setting");
-        proceed(value)
+        proceed(value);
     };</programlisting>
 
         <programlisting>OpenMethod&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
@@ -2514,7 +2514,7 @@ createItemMethod.intercept()
               Product product, Natural quantity) {
         log.debug("invoking in transaction");
         try (Transaction()) {
-            return proceed(product,quantity)
+            return proceed(product,quantity);
         }
     };</programlisting>
     

@@ -872,10 +872,10 @@ class Hello(String? name) {
 
             <programlisting><![CDATA[shared String greeting {
     if (exists name) {
-        return "Hello, " name "!"
+        return "Hello, " name "!";
     }
     else {
-        return "Hello, World!"
+        return "Hello, World!";
     }
 }]]></programlisting>
 
@@ -935,10 +935,10 @@ else {
     
     shared String greeting {
         if (exists name) {
-            return "Hello, " name "!"
+            return "Hello, " name "!";
         }
         else {
-            return "Hello, World!"
+            return "Hello, World!";
         }
     }
     
@@ -1144,8 +1144,8 @@ class DefaultHello() {
 class PersonalizedHello(String name) extends DefaultHello() {
     
     doc "The personalized greeting"
-    shared actual String greeting { 
-        return "Hello, " name "!" 
+    shared actual String greeting {
+        return "Hello, " name "!";
     }
     
 }]]></programlisting>
@@ -1211,7 +1211,7 @@ class PersonalizedHello(String name) extends Hello() {
     
     doc "The personalized greeting"
     shared actual String greeting { 
-        return "Hello, " name "!" 
+        return "Hello, " name "!";
     }
     
 }]]></programlisting>
@@ -1415,7 +1415,7 @@ object defaultHello extends Hello() {
             subscribers.remove(s);
         }
     }
-    return subscription
+    return subscription;
 }]]></programlisting>
         
         <para>Notice how this code example makes clever use of the fact that the nested
@@ -1494,7 +1494,7 @@ else {
         <programlisting>Boolean electronicPayment {
     return payment is CreditCardPayment 
         || payment is DebitCardPayment 
-        || payment is DirectDebitPayment
+        || payment is DirectDebitPayment;
 }</programlisting>
                 
         -->
@@ -1597,11 +1597,11 @@ shared object spades extends Suit() {}</programlisting>
 }
 catch (FileExistsException|FileWriteException fe) {
     log.error("Could not write file", fe); 
-    throw fe
+    throw fe;
 }
 catch (FileCloseEception fe) {
     log.error("Could not close file", fe); 
-    throw fe
+    throw fe;
 }</programlisting>
         -->
         
@@ -1682,7 +1682,7 @@ catch (FileCloseEception fe) {
         method = user.paymentMethod;
         currency = order.currency;
         amount = order.total;
-    }
+    };
 }</programlisting>
         
            <para>using the following abbreviated syntax:</para>
@@ -1763,7 +1763,7 @@ if (exists name) {
             
             <programlisting>doc "gets the greeting"
 shared String greeting { 
-    return grtng 
+    return grtng;
 }
 
 doc "sets the greeting"
@@ -1780,7 +1780,7 @@ shared assign greeting {
        
             <programlisting>doc "gets the greeting"
 shared String greeting { 
-    return grtng 
+    return grtng;
 }
 
 doc "sets the greeting"
@@ -1789,7 +1789,7 @@ shared assign greeting {
         grtng := greeting.strip().normalize();
     }
     else {
-        throw IllegalArgumentException("greeting can not be empty")
+        throw IllegalArgumentException("greeting can not be empty");
     }
 }</programlisting>
 
@@ -1971,21 +1971,21 @@ abstract class Hello() {
     shared actual Boolean equals(IdentifiableObject that) {
         if (is Hello that) {
             if (this.type!=that.type) {
-                return false
+                return false;
             }
             else {
-                return that.greeting==this.greeting
+                return that.greeting==this.greeting;
             }
         } 
         else {
-            return false
+            return false;
         }
     }
     
     shared actual Integer hash = greeting.hash;
     
     shared actual String string { 
-        return greeting 
+        return greeting;
     }
     
     ...
@@ -2150,7 +2150,7 @@ abstract class Hello() {
     variable Natural count := 0;
 
     shared Natural next() {
-        return ++count
+        return ++count;
     }
 
 }</programlisting>
@@ -2411,33 +2411,33 @@ voyage[0] := "Paris";  //compile error</programlisting>
             sequence length:</para>
             
             <programlisting>if (i&gt;voyage.size-1) {
-    throw IndexOutOfBoundException()
+    throw IndexOutOfBoundException();
 }
 else {
-    return voyage[i]  //compile error
+    return voyage[i];  //compile error
 }</programlisting>
             
             <para>Instead, we do the check after accessing the sequence element:</para>
             
             <programlisting>if (exists String city = voyage[i]) {
-    return city
+    return city;
 }
 else {
-    throw IndexOutOfBoundException()
+    throw IndexOutOfBoundException();
 }</programlisting>
             
             <para>We especially don't ever need to write the following:</para>
             
             <programlisting>if (i&gt;voyage.size-1) {
-    return ""
+    return "";
 }
 else {
-    return voyage[i]  //compile error
+    return voyage[i];  //compile error
 }</programlisting>
             
             <para>This is much cleaner:</para>
                         
-            <programlisting>return voyage[i] ? ""</programlisting>
+            <programlisting>return voyage[i] ? "";</programlisting>
             
             <para>All this may take a little getting used to. But what's nice is that
             all the exact same idioms also apply to other kinds of 
@@ -2515,7 +2515,7 @@ else {
             <programlisting>Set&lt;String&gt; names {
     OpenSet&lt;String&gt; set = none;
     for (Person p in people) { set.add(p.name); }
-    return set.copy()
+    return set.copy();
 }
 
 ...
@@ -2745,9 +2745,9 @@ Set&lt;String&gt; complement = someSet ~ someOtherSet;</programlisting>
             
             <programlisting>Natural incrementor(Natural n)(Natural arg) {
     Natural increment(Natural arg) {
-        return n+arg
+        return n+arg;
     }
-    return increment
+    return increment;
 }</programlisting>
 
             <para>Here, we define a method <literal>increment()</literal> inside
@@ -2802,7 +2802,7 @@ Natural five = add3(2);</programlisting>
             alternative:</para>
             
             <programlisting>Natural incrementor(Natural n)(Natural arg) {
-    return n.plus
+    return n.plus;
 }</programlisting>
 
             <para>In this case, we simply return a reference to the <literal>plus()</literal>
@@ -2817,7 +2817,7 @@ Natural five = add3(2);</programlisting>
             <para>And here's the second alternative:</para>
 
             <programlisting>Natural incrementor(Natural n)(Natural arg) {
-    return n+arg
+    return n+arg;
 }</programlisting>
 
             <para>In this case, the compiler does the job of automatically inferring 
@@ -2831,7 +2831,7 @@ Natural five = add3(2);</programlisting>
             extension to "curry" the first parameter of a method:</para>
             
             <programlisting>Natural add(Natural n, Natural m) {
-    return n+m
+    return n+m;
 }
 
 Natural inc(Natural arg) = add.partial(3);</programlisting>
@@ -2851,10 +2851,10 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         
         <programlisting><![CDATA[shared String greeting {
     if (exists name) {
-        return "Hello, " name "!"
+        return "Hello, " name "!";
     }
     else {
-        return "Hello, World!"
+        return "Hello, World!";
     }
 }]]></programlisting>
 
@@ -2877,9 +2877,9 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
         <literal>with()</literal> to rewrite <literal>greeting</literal>:</para>
 
 <programlisting><![CDATA[shared String greeting {
-    String helloName() { return "Hello, " name "!" }
-    String helloWorld() { return "Hello, World!" }
-    return with(name, helloName, helloWorld)
+    String helloName() { return "Hello, " name "!"; }
+    String helloWorld() { return "Hello, World!"; }
+    return with(name, helloName, helloWorld);
 }]]></programlisting>
 
         <para>Well, that's certainly more functional, but it's also a lot more verbose. 
@@ -2898,12 +2898,12 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
     return with (name)
         //first inline callable argument
         then () {
-            return "Hello, " name "!"
+            return "Hello, " name "!";
         }
         //second inline callable argument
         otherwise () {
-            return "Hello, World!"
-        }
+            return "Hello, World!";
+        };
 }]]></programlisting>
 
         <para>Note that there are three <literal>return</literal> statements here. The 
@@ -2925,7 +2925,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <para>specifying the method return values in parentheses, instead of 
                 writing <literal>return</literal> statements surrounded by 
                 braces&mdash;we're allowed to write <literal>("Hello, World!")</literal> 
-                instead of <literal>{ return "Hello, World!" }</literal>.</para>
+                instead of <literal>{ return "Hello, World!"; }</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -2934,7 +2934,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
 <programlisting><![CDATA[shared String greeting {
     return with (name) 
         then ("Hello, " name "!")
-        otherwise ("Hello, World!")
+        otherwise ("Hello, World!");
 }]]></programlisting>
         
         <para>This syntax might look a little unfamiliar at first, but you'll soon get 
@@ -2948,7 +2948,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
                 <programlisting>assert ("x must be zero") that (x&equals;0.0);</programlisting></para>
             </listitem>
             <listitem><emphasis>conditional expressions</emphasis>, such as:
-            <programlisting>return when (x>100.0) then (100.0) otherwise (x)</programlisting>
+            <programlisting>return when (x>100.0) then (100.0) otherwise (x);</programlisting>
             </listitem>
             <listitem>
                 <para><emphasis>repetition</emphasis>, such as:
@@ -3097,14 +3097,14 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
         heading="x"; 
         width=10;
         String content(Natural row) {
-            return $row
+            return $row;
         }
     }, 
     Column { 
         heading="x**2"; 
         width=12;
         String content(Natural row) {
-            return $row**2
+            return $row**2;
         }
     }
 };</programlisting>
@@ -3126,14 +3126,14 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
         title="x"; 
         width=10; 
         String content(Natural row) {
-            return $row
+            return $row;
         }
     }, 
     Column { 
         title="x**2"; 
         width=10; 
         String content(Natural row) {
-            return $row**2
+            return $row**2;
         }
     } 
 }</programlisting>
@@ -3171,7 +3171,7 @@ class Border(Natural padding, Natural weight) { ... }</programlisting>
         for (Item item in order.items) {
             total += item.quantity * item.product.unitPrice;
         }
-        return total
+        return total;
     }
 }</programlisting>
             
@@ -3380,7 +3380,7 @@ shared annotation {
     occurs = onceEachType; 
 }
 Set&lt;People&gt; people(Person... people) {
-    return HashSet(people)
+    return HashSet(people);
 }</programlisting>
 
         <para>The meta-annotation <literal>annotation</literal> specifies that this 
@@ -3455,17 +3455,17 @@ class Hello(String? name) {
         people = annotation;
     }
     else {
-        throw Exception("Not annotated people")
+        throw Exception("Not annotated people");
     }
     
     doc "The word for \"Hello\" in the given 
          language"
     String word(Language language) {
         switch (language) {
-            case (english) { return "Hello" }
-            case (spanish) { return "Hola" }
-            case (french) { return "Bonjour" }
-            case (italian) { return "Ciao" }
+            case (english) { return "Hello"; }
+            case (spanish) { return "Hola"; }
+            case (french) { return "Bonjour"; }
+            case (italian) { return "Ciao"; }
         }
     }
     
@@ -3476,14 +3476,14 @@ class Hello(String? name) {
                     first (Person p in people) 
                         where (p.firstName &equals; name)) {
                 return "" word(p.language) ", " 
-                       person.firstName " " person.lastName "!"
+                       person.firstName " " person.lastName "!";
             }
             else {
-                return "Hello, " name "!"
+                return "Hello, " name "!";
             }
         }
         else {
-            return "Hello, World!"
+            return "Hello, World!";
         }
     }
     
@@ -3514,7 +3514,7 @@ class Hello(String? name) {
     occurs = onceEachElement; 
 }
 Transactional transactional(Boolean requiresNew = false) {
-    return Transactional(requiresNew)
+    return Transactional(requiresNew);
 }</programlisting>
         
         <para>This method simply produces an instance of the class
@@ -3607,18 +3607,18 @@ void createOrder(Order order) { ... }</programlisting>
         method.intercept() 
                 onInvoke(X instance, T proceed(P... args), P... args) {
             if (currentTransaction.inProcess || !requiresNew) {
-                return proceed(args)
+                return proceed(args);
             }
             else {
                 currentTransaction.begin();
                 try {
                     T result = proceed(args);
                     currentTransaction.commit();
-                    return result
+                    return result;
                 }
                 catch (Exception e) {
                     currentTransaction.rollback();
-                    throw e
+                    throw e;
                 }
             }
         }
@@ -3737,14 +3737,14 @@ void createOrder(Order order) { ... }</programlisting>
                         try {
                             Result result = proceed(r,s);
                             currentTransaction.commit();
-                            return result
+                            return result;
                         }
                         catch (Exception e) {
                             currentTransaction.rollback();
                         }
                     }
                     else {
-                        return proceed(r,s)
+                        return proceed(r,s);
                     }
                 };
         }
@@ -3983,10 +3983,10 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
     shared Boolean contains(Object obj) {
         if (is T obj) {
             return forAny (T t in bucket(obj.hash)) 
-                        some (t==obj)
+                        some (t==obj);
         }
         else {
-            return false
+            return false;
         }
     }
 
@@ -4012,7 +4012,7 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         given T(String s) {
         
     shared T produce(String string) {
-        return T(string)
+        return T(string);
     }
     
 }</programlisting>
@@ -4032,10 +4032,10 @@ geekConsumer.add( Geek("James Gosling") );</programlisting>
         given T of Float | Decimal {
     switch (T)
     case (satisfies Float) {
-        return sqrtFloat(x)
+        return sqrtFloat(x);
     }
     case (satisfies Decimal) {
-        return sqrtDecimal(x)
+        return sqrtDecimal(x);
     }
 }</programlisting>
 
@@ -4257,7 +4257,7 @@ say(outputStream);</programlisting>
         sometimes called a <emphasis>converter</emphasis>:</para>
         
         <programlisting>shared extension Log objectToLog(Object this) { 
-    return this.log
+    return this.log;
 }</programlisting>
         
         <para>The extended type is the type of the parameter of the converter.

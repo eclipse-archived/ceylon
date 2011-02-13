@@ -163,7 +163,7 @@
         
         <programlisting>String uppercase(String string) {
     String string = string.uppercase;  //compiler error!
-    return string
+    return string;
 }</programlisting>
 
         <para>However, this code <emphasis>is</emphasis> legal, since class initialization 
@@ -176,17 +176,17 @@
         <para>Note that this code is not legal:</para>
         
         <programlisting>Entry&lt;Float,Float&gt; xy() {
-    Float x { return y }  //compiler error!
-    Float y { return x }
-    return x->y
+    Float x { return y; }  //compiler error!
+    Float y { return x; }
+    return x->y;
 }</programlisting>
 
         <para>Nor is this code legal, since all three statements occur inside the
         initializer of the class:</para>
         
         <programlisting>class Point() {
-    Float x { return y }  //compiler error!
-    Float y { return x }
+    Float x { return y; }  //compiler error!
+    Float y { return x; }
     Entry&lt;Float,Float&gt; xy = x->y;
 }</programlisting>
 
@@ -194,8 +194,8 @@
         occur in the initializer of the class:</para>
         
         <programlisting>class Point() {
-    Float x { return y }
-    Float y { return x }
+    Float x { return y; }
+    Float y { return x; }
 }</programlisting>
     
     </section>
@@ -278,11 +278,11 @@ innerObject.member();</programlisting>
             <programlisting>String outerMethod(String s)()() {
     String middleMethod()() {
         String innerMethod() {
-            return s
+            return s;
         }
-        return innerMethod
+        return innerMethod;
     }
-    return middleMethod
+    return middleMethod;
 }
 
 String middleMethod()() = outerMethod("hello");
@@ -292,10 +292,10 @@ String result = innerMethod();</programlisting>
             <programlisting>Object outerMethod(String s) {
     object middleObject {
         shared actual String string {
-            return s
+            return s;
         }
     }
-    return middleObject
+    return middleObject;
 }
 
 Object middleObject = outerMethod("hello");
@@ -350,11 +350,11 @@ String result = middleObject.string;</programlisting>
     String name = name;
     class Schema(String name) {
         String name = name;
-        String catalogName { return outer.name }
+        String catalogName { return outer.name; }
         class Table(String name) {
             String name = name;
-            String schemaName { return outer.name }
-            String catalogName { return outer.outer.name }
+            String schemaName { return outer.name; }
+            String catalogName { return outer.outer.name; }
         }
     }
 }</programlisting>
@@ -473,9 +473,9 @@ try (lock) { ... }</programlisting>
             
         <para>Control directive statements end execution of the current block and force 
         the flow of execution to resume in some outer scope. They may only appear at the 
-        end of a block, so the semicolon terminator is optional.</para>
+        end of a block.<!--, so the semicolon terminator is optional--></para>
 
-        <programlisting>DirectiveStatement: Directive ";"?</programlisting>
+        <programlisting>DirectiveStatement: Directive ";"</programlisting>
         
         <para>Ceylon provides the following control directives:</para>
         
@@ -494,12 +494,12 @@ try (lock) { ... }</programlisting>
 
         <para>For example:</para>
         
-        <programlisting>throw Exception()</programlisting>
-        <programlisting>retry</programlisting>
-        <programlisting>return x+y</programlisting>
+        <programlisting>throw Exception();</programlisting>
+        <programlisting>retry;</programlisting>
+        <programlisting>return x+y;</programlisting>
         <programlisting>return "Hello"</programlisting>
-        <programlisting>break</programlisting>
-        <programlisting>continue</programlisting>
+        <programlisting>break;</programlisting>
+        <programlisting>continue;</programlisting>
         
         <para>The <literal>return</literal> directive may not appear outside the body of 
         a method or attribute getter. In the case of a <literal>void</literal> method, no 
@@ -534,7 +534,7 @@ try (lock) { ... }</programlisting>
         <programlisting>Throw: "throw" Expression?</programlisting>
         
         <comment><para>TODO: Crazy idea: let <literal>...</literal> be a shortcut for
-        <literal>throw NotYetImplemented()</literal>. Too cute?</para></comment>
+        <literal>throw NotYetImplemented();</literal>. Too cute?</para></comment>
         
         <para>A <literal>retry</literal> directive may not appear outside of a
         <literal>catch</literal> block.</para>
@@ -757,14 +757,14 @@ else {
         a <literal>Sequence&lt;X&gt;</literal>, for example:</para>
         <programlisting>String join(String[] strings, String with) {
     if (nonempty String first, String... rest = strings) {
-        return first + with + join(rest, with)
+        return first + with + join(rest, with);
     }
 }</programlisting>
         <para>This looks very much like Haskell/ML-style list pattern matching, but it's not any 
         simpler to write than this idiom:</para>
         <programlisting>String join(String[] strings, String with) {
     if (exists String first = strings.first) {
-        return first + with + join(strings.rest, with)
+        return first + with + join(strings.rest, with);
     }
 }</programlisting></comment>
                         
@@ -881,7 +881,7 @@ else {
     payment.paid := true;
 }
 else {
-    throw NotEnoughMoneyException()
+    throw NotEnoughMoneyException();
 }</programlisting>
 
             <programlisting>shared void welcome(User? user) {
@@ -895,10 +895,10 @@ else {
             
             <programlisting>shared Payment payment(Order order) {
     if (exists Payment p = order.payment) {
-        return p
+        return p;
     }
     else { 
-        return Payment(order)
+        return Payment(order);
     }
 }</programlisting>
 
@@ -909,7 +909,7 @@ else {
 }</programlisting>
             
             <programlisting>if (is CardPayment p = order.payment) {
-    return p.card
+    return p.card;
 }</programlisting>
             
         <programlisting>List&lt;X&gt; xs = ...;
@@ -922,7 +922,7 @@ if (X satisfies Comparable&lt;X&gt;) {
     else {
         x0 = x;
     }
-    return forAll(X y in xs) every (x&lt;=x0)
+    return forAll(X y in xs) every (x&lt;=x0);
 }</programlisting>
 <!-- 
         <programlisting>String string&lt;P...&gt;(Tuple&lt;P...&gt; tuple) {
@@ -930,7 +930,7 @@ if (X satisfies Comparable&lt;X&gt;) {
         return $tuple.head + ", " + string(tuple.tail);
     }
     else {
-        return ";"
+        return ";";
     }
 }</programlisting>
 -->
@@ -1076,16 +1076,16 @@ if (X satisfies Comparable&lt;X&gt;) {
             <programlisting>shared PaymentProcessor processor {
     switch (payment.type) 
     case (null) { 
-        throw NoPaymentTypeException()
+        throw NoPaymentTypeException();
     }
     case (credit, debit) { 
-        return cardPaymentProcessor
+        return cardPaymentProcessor;
     }
     case (check) { 
-        return checkPaymentProcessor
+        return checkPaymentProcessor;
     }
     else { 
-        return interactivePaymentProcessor
+        return interactivePaymentProcessor;
     }
 }</programlisting>
             
@@ -1155,10 +1155,10 @@ if (X satisfies Comparable&lt;X&gt;) {
         given T of String | Integer {
     switch (T)
     case (satisfies String) { 
-        return x+y 
+        return x+y;
     }
     case (satisfies Integer) { 
-        return (IntegerFormat(x,2)+IntegerFormat(y,2)).parseInteger(2) 
+        return (IntegerFormat(x,2)+IntegerFormat(y,2)).parseInteger(2);
     }
 }</programlisting>
             
@@ -1273,7 +1273,7 @@ for (Integer i in -10..10) {
     log.debug("Testing person: " p.name ".");
     if (p.age >= 18) {
         log.info("Found an adult: " p.name ".");
-        break
+        break;
     }
 }
 fail {
@@ -1430,10 +1430,10 @@ finally {
             
             <programlisting>try ( Transaction() ) {
     try ( Session s = Session() ) {
-        return s.get(Person, id)
+        return s.get(Person, id);
     }
     catch (NotFoundException e) {
-        return null
+        return null;
     }
 }</programlisting>
 
@@ -1449,10 +1449,10 @@ try ( Transaction() ) {
 catch (TransactionTimeoutException e) {
     if (retries &lt; 3) {
         retries++;
-        retry
+        retry;
     }
     else {
-        throw e
+        throw e;
     }
 }</programlisting>
         
